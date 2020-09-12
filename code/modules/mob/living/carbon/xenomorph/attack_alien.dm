@@ -120,8 +120,17 @@
 						emote("roar")
 						return TRUE
 
+			var/obj/item/clothing/accessory/health/armor_plate
+
+			if(w_uniform && w_uniform.armor_plate && w_uniform.armor_plate.armor_health > 0)
+				armor_plate = w_uniform.armor_plate
+
 			//The normal attack proceeds
-			playsound(loc, "alien_claw_flesh", 25, 1)
+
+			if(armor_plate)
+				playsound(loc, armor_plate.armor_hitsound, 25, 1)
+			else
+				playsound(loc, "alien_claw_flesh", 25, 1)
 			M.visible_message(SPAN_DANGER("[M] slashes [src]!"), \
 			SPAN_DANGER("You slash [src]!"), null, null, CHAT_TYPE_XENO_COMBAT)
 
@@ -146,6 +155,17 @@
 
 			if(M.behavior_delegate)
 				n_damage = M.behavior_delegate.melee_attack_modify_damage(n_damage, src)
+
+			if(armor_plate)
+				var/damage_to_nullify = armor_plate.armor_health
+				armor_plate.armor_health = max(armor_plate.armor_health - n_damage*armor_plate.slash_durability_mult, 0)
+
+				n_damage = max(n_damage - damage_to_nullify, 0)
+
+				armor_plate.update_icon()
+				if(!armor_plate.armor_health)
+					show_message(SPAN_WARNING("You feel [armor_plate] break apart."), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
+					return
 
 			//nice messages so people know that armor works
 			if(n_damage <= 0.34*damage)

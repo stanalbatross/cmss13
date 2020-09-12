@@ -408,7 +408,9 @@
 			break
 		if(istype(e, /obj/limb/chest) && occ["lung_ruptured"])
 			lung_ruptured = "Lung ruptured:<br>"
-		if(e.status & LIMB_SPLINTED)
+		if(e.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+			splint = "Nanosplinted<br>"
+		else if(e.status & LIMB_SPLINTED)
 			splint = "Splinted<br>"
 		for(var/datum/effects/bleeding/external/E in e.bleeding_effects_list)
 			bled = "Bleeding<br>"

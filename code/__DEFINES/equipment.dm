@@ -43,6 +43,7 @@
 #define ITEM_PREDATOR			128 // Specific predator item interactions.
 #define MOB_LOCK_ON_EQUIP		256	// Lock this item to the mob that equips it up until permadeath
 #define BLOCK_KNOCKDOWN			512	// Wearing this will stop you from being pushed over
+#define ITEM_OVERRIDE_NORTHFACE	1024 // For backpacks if they should have unique layering functions
 
 //==========================================================================================
 

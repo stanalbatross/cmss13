@@ -14,6 +14,14 @@
 	var/defense_type = /obj/structure/machinery/defenses
 	var/deployment_time = SECONDS_3
 
+	var/module_type = 0
+
+/obj/item/defenses/handheld/Initialize(mapload, ...)
+	. = ..()
+	
+	var/obj/structure/machinery/defenses/O
+	module_type = initial(O.module_type)
+
 /obj/item/defenses/handheld/examine(mob/user)
 	. = ..()
 

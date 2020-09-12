@@ -344,11 +344,72 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	desc = "A heavy-duty chestrig used by some USCM technicians."
 	icon_state = "marinesatch_techi"
 
-/obj/item/storage/backpack/marine/satchel/intel
-	name = "\improper USCM lightweight expedition pack"
-	desc = "A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to USCM intelligence officers."
-	icon_state = "marinesatch_io"
-	max_storage_space = 20
+var/global/list/radio_packs = list()
+
+/obj/item/storage/backpack/marine/satchel/rto
+	name = "\improper USCM Radio Telephone Pack"
+	desc = "A heavy-duty pack, used for telecommunications between central command. Commonly carried by RTOs."
+	icon_state = "rto_backpack"
+	has_gamemode_skin = FALSE
+
+	flags_item = ITEM_OVERRIDE_NORTHFACE
+
+	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/rto)
+	var/obj/structure/transmitter/internal/internal_transmitter
+
+/obj/item/storage/backpack/marine/satchel/rto/Initialize()
+	. = ..()
+	internal_transmitter = new(src)
+	
+	if(isturf(loc))
+		internal_transmitter.set_external_object(src)
+	else
+		internal_transmitter.set_external_object(loc)
+
+	actions += new/datum/action/human_action/activable/droppod()
+
+	radio_packs += src
+
+/obj/item/storage/backpack/marine/satchel/rto/Dispose()
+	. = ..()
+	radio_packs -= src
+
+/obj/item/storage/backpack/marine/satchel/rto/pickup(mob/user)
+	. = ..()
+	internal_transmitter.set_external_object(user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.comm_title)
+			internal_transmitter.phone_id = "[H.comm_title] [H]"
+		else if(H.job)
+			internal_transmitter.phone_id = "[H.job] [H]"
+		else
+			internal_transmitter.phone_id = "[H]"
+	else
+		internal_transmitter.phone_id = "[user]"
+
+/obj/item/storage/backpack/marine/satchel/rto/dropped(mob/user)
+	. = ..()
+	internal_transmitter.set_external_object(src)
+	internal_transmitter.phone_id = "[src]"
+
+/obj/item/storage/backpack/marine/satchel/rto/attack_hand(mob/user)
+	if(user.back == src)
+		internal_transmitter.set_external_object(user)
+		internal_transmitter.attack_hand(user)
+	else if(internal_transmitter.get_calling_phone())
+		if(internal_transmitter.attached_to && internal_transmitter.attached_to.loc != internal_transmitter)
+			return . = ..()
+		internal_transmitter.attack_hand(user)
+	else
+		. = ..()
+
+/obj/item/storage/backpack/marine/satchel/rto/attackby(obj/item/W, mob/user)
+	if(internal_transmitter && internal_transmitter.attached_to == W)
+		internal_transmitter.attackby(W, user)
+	else
+		. = ..()
+	
 
 /obj/item/storage/backpack/marine/smock
 	name = "\improper M3 sniper's smock"

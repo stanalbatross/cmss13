@@ -37,6 +37,9 @@ most of them are tied into map-placed objects. This should be reworked in the fu
 #define ACCESS_MARINE_KITCHEN       30
 #define ACCESS_MARINE_CAPTAIN		31
 
+#define ACCESS_MARINE_RTOPREP 		30
+#define ACCESS_MARINE_RTODROP 		31
+
 //Surface access levels
 #define ACCESS_CIVILIAN_PUBLIC 		100
 #define ACCESS_CIVILIAN_LOGISTICS 	101

@@ -17,6 +17,8 @@
 	var/sentry_type = "sentry" //Used for the icon
 	handheld_type = /obj/item/defenses/handheld/sentry
 
+	module_type = DEFENSE_SENTRY_BASE
+
 /obj/structure/machinery/defenses/sentry/Initialize()
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread

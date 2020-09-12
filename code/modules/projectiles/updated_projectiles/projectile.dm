@@ -799,6 +799,19 @@
 
 		damage_result = armor_damage_reduction(config.marine_ranged, damage, armor, P.ammo.penetration)
 
+		var/obj/item/clothing/accessory/health/armor_plate
+
+		if(w_uniform && w_uniform.armor_plate && w_uniform.armor_plate.armor_health > 0)
+			armor_plate = w_uniform.armor_plate
+
+		if(armor_plate)
+			var/damage_to_nullify = armor_plate.armor_health
+			armor_plate.armor_health = max(armor_plate.armor_health - damage_result*armor_plate.projectile_durability_mult, 0)
+
+			damage_result = max(damage_result - damage_to_nullify, 0)
+
+			armor_plate.update_icon()
+
 		if(damage_result <= 5)
 			to_chat(src,SPAN_XENONOTICE("Your armor absorbs the force of [P]!"))
 		if(damage_result <= 3)

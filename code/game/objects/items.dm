@@ -84,7 +84,7 @@
 	appearance_flags = KEEP_TOGETHER //taken from blood.dm
 	var/global/list/blood_overlay_cache = list() //taken from blood.dm
 
-/obj/item/proc/on_dropped()
+/obj/item/proc/on_dropped(var/mob/user)
 	if(event_dropped)
 		event_dropped.fire_event(src)
 
@@ -303,7 +303,7 @@ cases. Override_icon_state should be a list.*/
 // apparently called whenever an item is removed from a slot, container, or anything else.
 //the call happens after the item's potential loc change.
 /obj/item/proc/dropped(mob/user as mob)
-	on_dropped()
+	on_dropped(user)
 
 	for(var/X in actions)
 		var/datum/action/A = X

@@ -385,8 +385,7 @@
 							if(!surgery) break
 							S.limb_ref.heal_damage(S.limb_ref.brute_dam - 20,0)
 						if(!surgery) break
-						S.limb_ref.status &= ~LIMB_BROKEN
-						S.limb_ref.status &= ~LIMB_SPLINTED
+						S.limb_ref.status &= ~(LIMB_SPLINTED|LIMB_SPLINTED_INDESTRUCTIBLE|LIMB_BROKEN)
 						S.limb_ref.status |= LIMB_REPAIRED
 						S.limb_ref.perma_injury = 0
 						H.pain.recalculate_pain()

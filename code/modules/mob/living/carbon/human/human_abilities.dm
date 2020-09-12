@@ -172,6 +172,111 @@ CULT
 
 	addtimer(CALLBACK(src, .proc/update_button_icon), amount)
 
+/datum/action/human_action/activable/droppod
+	name = "Call Droppod"
+	action_icon_state = "techpod_deploy"
+
+	var/obj/structure/droppod/tech/assigned_droppod
+	var/datum/squad/assigned_squad
+
+/datum/action/human_action/activable/droppod/use_ability(atom/A)
+	. = ..()
+	if(!can_use_action())
+		return
+
+	if(!assigned_squad)
+		return
+
+	var/mob/living/carbon/human/H = owner
+
+	var/turf/T = get_turf(A)
+
+	if(!T)
+		return
+
+	if(assigned_droppod && !(assigned_droppod.droppod_flags & DROPPOD_DROPPED))
+		if(alert(H, "Do you want to prevent the drop of the current pod", "Cancel Droppod", "No", "Yes") == "Yes")
+			if(!(assigned_droppod.droppod_flags & (DROPPOD_DROPPING|DROPPOD_DROPPED)))
+				var/datum/tech/tech_to_use = assigned_droppod.attached_tech
+				if(tech_to_use)
+					assigned_squad.dropped_techs -= tech_to_use
+				qdel(assigned_droppod)
+				assigned_droppod = null
+				return
+			else
+				to_chat(H, SPAN_WARNING("It's too late to cancel the droppod now!"))
+				return
+		else
+			return
+
+	if(!(T in view(H)))
+		to_chat(H, SPAN_WARNING("This target can't be seen!"))
+		return
+	
+	if(get_dist(T, H) > 5)
+		to_chat(H, SPAN_WARNING("This target is too far away!"))
+		return
+
+	if(!(T.z in SURFACE_Z_LEVELS))
+		to_chat(H, SPAN_WARNING("The droppod cannot land here!"))
+		return
+
+	if(protected_by_pylon(TURF_PROTECTION_CAS, T))
+		to_chat(H, SPAN_WARNING("The droppod cannot punch through an organic ceiling!"))
+		return
+
+	var/list/list_of_techs = list()
+
+	for(var/datum/tech/tech_to_use in unlocked_droppod_techs)
+		if(tech_to_use in assigned_squad.dropped_techs)
+			continue
+		
+		list_of_techs = list("[tech_to_use.name]" = tech_to_use)
+
+	if(!list_of_techs.len)
+		to_chat(H, SPAN_WARNING("No droppods currently available."))
+		return
+
+	var/input = input(H, "Choose a tech to deploy at this location", "Tech deployment") as null|anything in list_of_techs
+
+	if(!input)
+		return
+	
+	var/datum/tech/tech_to_deploy = list_of_techs[input]
+
+	if(!tech_to_deploy)
+		return
+
+	if(tech_to_deploy in assigned_squad.dropped_techs)
+		return
+
+	var/area/turf_area = get_area(T)
+
+	if(!turf_area)
+		return
+
+	var/land_time = max(turf_area.ceiling, 1) * SECONDS_20
+
+	playsound(T, 'sound/effects/alert.ogg', 75)
+	assigned_droppod = new(T, land_time, tech_to_deploy)
+	for(var/mob/living/carbon/human/M in assigned_squad.marines_list)
+		to_chat(M, SPAN_BLUE("<b>SUPPLY DROP REQUEST:</b> Droppod requested at LONGITUDE: [obfuscate_x(T.x)], LATITUDE: [obfuscate_y(T.y)]. ETA [Floor(land_time*0.1)] seconds."))
+
+	assigned_squad.dropped_techs += tech_to_deploy
+
+/datum/action/human_action/activable/droppod/give_action(user)
+	if(!ishuman(user))
+		return
+
+	var/mob/living/carbon/human/H = user
+
+	if(!H.assigned_squad)
+		return
+
+	if(H.job == JOB_SQUAD_RTO)
+		assigned_squad = H.assigned_squad
+		return . = ..()
+
 /datum/action/human_action/activable/cult
 	name = "Activable Cult Ability"
 

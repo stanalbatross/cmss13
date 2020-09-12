@@ -98,7 +98,9 @@
 		
 		var/obj/effect/alien/weeds/W = locate() in T
 		if(W)
-			if(W.weed_strength >= WEED_LEVEL_HIVE)
+			if(W.indestructible)
+				continue
+			else if(W.weed_strength >= WEED_LEVEL_HIVE)
 				continue
 			else if (W.linked_hive == node.linked_hive && W.weed_strength == node.weed_strength)
 				continue
@@ -194,6 +196,9 @@
 		overlays += secretion
 
 /obj/effect/alien/weeds/ex_act(severity)
+	if(indestructible)
+		return
+
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if(prob(50))
@@ -205,6 +210,9 @@
 			qdel(src)
 
 /obj/effect/alien/weeds/attack_alien(mob/living/carbon/Xenomorph/X)
+	if(indestructible)
+		return
+
 	if(X.hivenumber != linked_hive.hivenumber)
 		X.animation_attack_on(src)
 
@@ -217,6 +225,9 @@
 
 
 /obj/effect/alien/weeds/attackby(obj/item/W, mob/living/user)
+	if(indestructible)
+		return FALSE
+
 	if(QDELETED(W) || QDELETED(user) || (W.flags_item & NOBLUDGEON))
 		return 0
 
@@ -244,15 +255,24 @@
 	return TRUE //don't call afterattack
 
 /obj/effect/alien/weeds/proc/healthcheck()
+	if(indestructible)
+		return
+
 	if(health <= 0)
 		qdel(src)
 
 /obj/effect/alien/weeds/flamer_fire_act(dam)
+	if(indestructible)
+		return
+
 	. = ..()
 	if(!QDELETED(src))
 		QDEL_IN(src, rand(SECONDS_1, SECONDS_2)) // 1-2 seconds
 
 /obj/effect/alien/weeds/acid_spray_act()
+	if(indestructible)
+		return
+
 	. = ..()
 	health -= 20 * WEED_XENO_DAMAGEMULT
 	healthcheck()

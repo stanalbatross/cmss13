@@ -8,6 +8,8 @@
 	disassemble_time = 10
 	var/datum/shape/rectangle/range_bounds
 
+	module_type = DEFENSE_PLANTED_FLAG
+
 /obj/structure/machinery/defenses/planted_flag/Initialize()
 	. = ..()
 

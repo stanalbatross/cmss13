@@ -36,6 +36,15 @@
 		user.count_niche_stat(STATISTICS_NICHE_CADES)
 	addtimer(CALLBACK(src, .proc/update_icon), 0)
 
+	var/area/A = get_area(loc)
+	if(A.r_node && A.r_node.treeid == TREE_MARINE)
+		var/datum/techtree/marine/T = A.r_node.tree
+		if(!istype(T))
+			return
+		
+		T.apply_barricade_health(src)
+		T.affected_barricades[A.r_node] += src
+
 /obj/structure/barricade/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
 	if (PF)

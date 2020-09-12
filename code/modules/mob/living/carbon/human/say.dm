@@ -116,6 +116,12 @@
 		message_range = 2
 
 
+	if(istype(get_active_hand(), /obj/item/phone))
+		var/obj/item/phone/P = get_active_hand()
+
+		P.handle_speak(message, speaking, src)
+
+	
 	..(message, speaking, verb, alt_name, italics, message_range, speech_sound, sound_vol, 0, message_mode)	//ohgod we should really be passing a datum here.
 
 	INVOKE_ASYNC(src, /mob/living/carbon/human/proc/say_to_radios, used_radios, message, message_mode, verb, speaking)

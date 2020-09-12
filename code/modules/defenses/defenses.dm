@@ -19,6 +19,8 @@
 	var/disassemble_time = 20
 	var/static = FALSE
 
+	var/module_type = 0
+
 /obj/structure/machinery/defenses/New(var/loc, var/faction)
 	..(loc)
 	if(!isnull(faction))

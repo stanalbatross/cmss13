@@ -585,6 +585,15 @@ United States Colonial Marines
 		SKILL_ENDURANCE = SKILL_ENDURANCE_TRAINED
 	)
 
+/datum/skills/rto
+	name = "Squad RT Operator"
+	skills = list(
+		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
+		SKILL_LEADERSHIP = SKILL_LEAD_TRAINED,
+		SKILL_CONSTRUCTION = SKILL_CONSTRUCTION_ENGI,
+		SKILL_MEDICAL = SKILL_MEDICAL_TRAINED,
+	)
+
 /datum/skills/SL
 	name = "Squad Leader"
 	skills = list(
@@ -606,7 +615,6 @@ United States Colonial Marines
 		SKILL_MELEE_WEAPONS = SKILL_MELEE_TRAINED,
 		SKILL_RESEARCH = SKILL_RESEARCH_TRAINED,
 	)
-
 
 /*
 -------------------------

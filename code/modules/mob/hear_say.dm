@@ -1,7 +1,8 @@
 // At minimum every mob has a hear_say proc.
 
 /mob/proc/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
-	if(!client)
+	
+	if(!client && !(mind && mind.current != src))
 		return
 
 	if(sleeping || stat == 1)
@@ -38,21 +39,25 @@
 	if(italics)
 		message = "<i>[message]</i>"
 
+	var/mob/to_receive = src
+	if(mind && mind.current != src)
+		to_receive = mind.current
+
 	if(sdisabilities & DEAF || ear_deaf)
 		if(speaker == src)
-			to_chat(src, SPAN_WARNING("You cannot hear yourself speak!"))
+			to_chat(to_receive, SPAN_WARNING("You cannot hear yourself speak!"))
 		else
-			to_chat(src, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] talks but you cannot hear \him.")
+			to_chat(to_receive, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
-		to_chat(src, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] [verb], <span class='[style]'>\"[message]\"</span>")
-		if (speech_sound && (get_dist(speaker, src) <= world_view_size && src.z == speaker.z))
+		to_chat(to_receive, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] [verb], <span class='[style]'>\"[message]\"</span>")
+		if (speech_sound && (get_dist(speaker, src) <= world_view_size && src.z == speaker.z) && client)
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
 			playsound_client(src.client, speech_sound, source, sound_vol, GET_RANDOM_FREQ)
 
 
 /mob/proc/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0, var/vname ="", var/command = 0)
 
-	if(!client)
+	if(!client && !(mind && mind.current != src))
 		return
 
 	if(sleeping || stat==1) //If unconscious or sleeping
@@ -86,15 +91,17 @@
 
 	if(vname)
 		speaker_name = vname
-
-	if(istype(speaker, /mob/living/carbon/human))
+		comm_paygrade = ""
+	else if(istype(speaker, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = speaker
 		comm_paygrade = H.get_paygrade()
 		if(H.voice)
 			speaker_name = H.voice
 
+	
 	if(hard_to_hear)
 		speaker_name = "unknown"
+		comm_paygrade = ""
 
 	var/changed_voice
 
@@ -156,19 +163,23 @@
 		if(3)
 			fontsize_style = "large"
 
+	var/mob/to_receive = src
+	if(mind && mind.current != src)
+		to_receive = mind.current
+
 	if(sdisabilities & DEAF || ear_deaf)
 		if(prob(20))
-			to_chat(src, SPAN_WARNING("You feel your headset vibrate but can hear nothing from it!"))
+			to_chat(to_receive, SPAN_WARNING("You feel your headset vibrate but can hear nothing from it!"))
 	else if(track)
 		if(!command)
-			to_chat(src, "[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
+			to_chat(to_receive, "[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
 		else
-			to_chat(src, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
+			to_chat(to_receive, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
 	else
 		if(!command)
-			to_chat(src, "[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
+			to_chat(to_receive, "[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
 		else
-			to_chat(src, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
+			to_chat(to_receive, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
 
 /mob/proc/hear_signlang(var/message, var/verb = "gestures", var/datum/language/language, var/mob/speaker = null)
 	var/comm_paygrade = ""

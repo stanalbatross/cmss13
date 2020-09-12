@@ -18,6 +18,30 @@
 	verbs -= debug_verbs
 	verbs += /client/proc/enable_debug_verbs
 
+/client/proc/enter_tree()
+	set category = "Debug"
+	set name = "A: Enter Tech Tree"
+
+	if(!check_rights(R_DEBUG)) 
+		return
+
+	var/list/trees = list() 
+	
+	for(var/T in SStechtree.trees)
+		trees += list("[T]" = SStechtree.trees[T])
+
+	var/value = input(src, "Choose which tree to enter", "") in trees
+
+	if(!value)
+		to_chat(src, SPAN_WARNING("Something went wrong"))
+		return
+
+	var/datum/techtree/tree = trees[value]
+
+	var/should_force = input(src, "Do you want to force yourself into the tree?", "") in list("Yes", "No")
+
+	tree.enter_mob(src.mob, should_force == "Yes")
+
 /client/proc/check_round_statistics()
 	set category = "Debug"
 	set name = "C: Round Statistics"

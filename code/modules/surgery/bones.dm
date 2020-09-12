@@ -68,7 +68,7 @@
 		SPAN_NOTICE("You set the bone in [target]'s [affected.display_name] in place with \the [tool]."))
 	user.count_niche_stat(STATISTICS_NICHE_SURGERY_BONES)
 	affected.status &= ~LIMB_BROKEN
-	affected.status &= ~LIMB_SPLINTED
+	affected.status &= ~(LIMB_SPLINTED|LIMB_SPLINTED_INDESTRUCTIBLE|LIMB_BROKEN)
 	affected.status |= LIMB_REPAIRED
 	affected.bone_repair_stage = 0
 	affected.perma_injury = 0

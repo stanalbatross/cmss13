@@ -61,6 +61,8 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	setup_round_stats()
 	return 1
 
+/datum/game_mode/proc/ds_first_drop(var/datum/shuttle/ferry/marine/m_shuttle)
+	return
 
 ///post_setup()
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things

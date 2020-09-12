@@ -1340,7 +1340,7 @@
 			return
 		for(var/bodypart in list("l_leg","r_leg","l_arm","r_arm","r_hand","l_hand","r_foot","l_foot","chest","head","groin"))
 			var/obj/limb/l = HT.get_limb(bodypart)
-			if(l && l.status & LIMB_SPLINTED)
+			if(l && (l.status & LIMB_SPLINTED) && !(l.status & LIMB_SPLINTED_INDESTRUCTIBLE))
 				if(HS == HT)
 					if((bodypart in list("l_arm", "l_hand")) && (cur_hand == "l_hand"))
 						same_arm_side = TRUE
@@ -1366,6 +1366,9 @@
 					W.amount = 0 //we checked that we have at least one bodypart splinted, so we can create it no prob. Also we need amount to be 0
 					W.add_fingerprint(HS)
 					for(var/obj/limb/l in to_splint)
+						if(l.status & LIMB_SPLINTED_INDESTRUCTIBLE) //Indestructible splints only removable via surgery
+							continue
+
 						amount_removed += 1
 						l.status &= ~LIMB_SPLINTED
 						pain.recalculate_pain()

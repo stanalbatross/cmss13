@@ -242,6 +242,9 @@
 		INVOKE_ASYNC(src, .proc/equip_to_slot_timed, W, slot, redraw_mob, permanent, start_loc)
 		return TRUE
 
+	if(W.loc != src)
+		W.pickup(src)
+
 	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
 	if(permanent)
 		W.flags_inventory |= CANTSTRIP
@@ -679,6 +682,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(istype(mliv))
 		if(newdir)
 			mliv.on_movement(0)
+
+	if(back && (back.flags_item & ITEM_OVERRIDE_NORTHFACE))
+		update_inv_back()
+
 	return 1
 
 

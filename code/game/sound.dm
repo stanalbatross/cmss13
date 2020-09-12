@@ -90,6 +90,12 @@
 						continue
 					hearers += P.client
 
+	for(var/mob/living/carbon/hologram/H in hologram_list)
+		var/mob/linked_mob = H.linked_mob
+
+		if(linked_mob.z == turf_source.z && get_dist(linked_mob, turf_source) <= sound_range)
+			hearers += H.client
+
 	SSsound.queue(S, hearers)
 	return S.channel
 
@@ -127,9 +133,12 @@
 
 	var/list/hearers = list()
 	for(var/mob/living/M in A.contents)
-		if(!M || !M.client || !M.client.soundOutput)
-			continue
-		hearers += M.client
+		if(M.mind && istype(M.mind.current, /mob/living/carbon/hologram) && M.mind.current.client)
+			hearers += M.mind.current.client
+		else
+			if(!M || !M.client || !M.client.soundOutput) 
+				continue
+			hearers += M.client
 	SSsound.queue(S, hearers)
 
 /client/proc/playtitlemusic()
@@ -149,6 +158,8 @@
 	for(var/mob/M in GLOB.player_list)
 		if (M.z == z && M.client.soundOutput)
 			hearers += M.client
+		else if(M.z == z && M.mind && istype(M.mind.current, /mob/living/carbon/hologram) && M.mind.current.client)
+			hearers += M.mind.current.client
 	SSsound.queue(S, hearers)
 
 // The pick() proc has a built-in chance that can be added to any option by adding ,X; to the end of an option, where X is the % chance it will play.

@@ -70,6 +70,7 @@
 #define SS_INIT_LIGHTING           12
 #define SS_INIT_LANDMARK           11
 #define SS_INIT_DEFCON             9
+#define SS_INIT_TECHTREE           8.5
 #define SS_INIT_LAW                6
 #define SS_INIT_FZ_TRANSITIONS     5
 #define SS_INIT_ATOMS              4
@@ -118,6 +119,7 @@
 #define SS_PRIORITY_MIDI       	   40
 #define SS_PRIORITY_ENTITY	       37
 #define SS_PRIORITY_DEFCON         35
+#define SS_PRIORITY_TECHTREE       35
 #define SS_PRIORITY_UNSPECIFIED    30
 #define SS_PRIORITY_ROUND_RECORDING 83
 #define SS_PRIORITY_PROCESS        25

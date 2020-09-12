@@ -9,6 +9,8 @@
 	var/image/flick_image
 	handheld_type = /obj/item/defenses/handheld/bell_tower
 
+	module_type = DEFENSE_BELL_TOWER
+
 /obj/structure/machinery/defenses/bell_tower/Initialize()
 	. = ..()
 

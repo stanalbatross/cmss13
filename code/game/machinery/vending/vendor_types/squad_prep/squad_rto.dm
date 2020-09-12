@@ -1,23 +1,16 @@
 //------------GEAR VENDOR---------------
 
-/obj/structure/machinery/cm_vending/gear/intelligence_officer
-	name = "\improper ColMarTech Intelligence Officer Gear Rack"
-	desc = "An automated gear rack for Intelligence Officers."
+/obj/structure/machinery/cm_vending/gear/rto
+	name = "\improper ColMarTech Radio Telephone Operator Gear Rack"
+	desc = "An automated gear rack for RTOs."
 	icon_state = "intel_gear"
-	req_access = list(ACCESS_MARINE_BRIDGE)
-	vendor_role = list(JOB_INTEL)
+	req_access = list(ACCESS_MARINE_RTOPREP)
+	vendor_role = list(JOB_SQUAD_RTO)
 
 	listed_products = list(
-		list("INTELLIGENCE SET (MANDATORY)", 0, null, null, null),
-		list("Essential Intelligence Set", 0, /obj/effect/essentials_set/intelligence_officer, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_MANDATORY),
-
-		list("WEAPONS", 0, null, null, null),
-		list("M41A Pulse Rifle MK1", 30, /obj/item/weapon/gun/rifle/m41aMK1 , null, VENDOR_ITEM_RECOMMENDED),
-
 		list("SUPPLIES", 0, null, null, null),
 		list("Autoinjector Pouch (Full)", 15, /obj/item/storage/pouch/autoinjector/full, null, VENDOR_ITEM_RECOMMENDED),
 		list("Binoculars", 5, /obj/item/device/binoculars, null, VENDOR_ITEM_REGULAR),
-		list("Data Detector", 15, /obj/item/device/motiondetector/intel, null, VENDOR_ITEM_REGULAR),
 		list("Fire Extinguisher (Portable)", 5, /obj/item/tool/extinguisher/mini, null, VENDOR_ITEM_REGULAR),
 		list("Fulton Recovery Device", 10, /obj/item/stack/fulton, null, VENDOR_ITEM_REGULAR),
 		list("Large Magazine Pouch", 10, /obj/item/storage/pouch/magazine/large, null, VENDOR_ITEM_REGULAR),
@@ -51,74 +44,22 @@
 		list("Vertical Grip", 10, /obj/item/attachable/verticalgrip, null, VENDOR_ITEM_REGULAR)
 	)
 
-//------------GUNS VENDOR---------------
-
-/obj/structure/machinery/cm_vending/sorted/cargo_guns/intelligence_officer
-	name = "\improper ColMarTech Intelligence Officer Weapons Rack"
-	desc = "An automated weapon rack hooked up to a small storage of standard-issue weapons. Can be accessed only by the Intelligence Officers."
-	icon_state = "guns"
-	req_access = list(ACCESS_MARINE_BRIDGE)
-	vendor_role = list(JOB_INTEL)
-
-	listed_products = list(
-		list("PRIMARY FIREARMS", -1, null, null),
-		list("L42A Battle Rifle", 4, /obj/item/weapon/gun/rifle/l42a, VENDOR_ITEM_REGULAR),
-		list("M39 Submachine Gun", 4, /obj/item/weapon/gun/smg/m39, VENDOR_ITEM_REGULAR),
-		list("M37A2 Pump Shotgun", 4, /obj/item/weapon/gun/shotgun/pump, VENDOR_ITEM_REGULAR),
-		list("M41A Pulse Rifle MK2", 4, /obj/item/weapon/gun/rifle/m41a, VENDOR_ITEM_REGULAR),
-
-		list("PRIMARY AMMUNITION", -1, null, null),
-		list("Box of Buckshot Shells (12g)", 12, /obj/item/ammo_magazine/shotgun/buckshot, VENDOR_ITEM_REGULAR),
-		list("Box of Flechette Shells (12g)", 12, /obj/item/ammo_magazine/shotgun/flechette, VENDOR_ITEM_REGULAR),
-		list("Box of Shotgun Slugs (12g)", 12, /obj/item/ammo_magazine/shotgun/slugs, VENDOR_ITEM_REGULAR),
-		list("L42A Magazine (10x24mm)", 24, /obj/item/ammo_magazine/rifle/l42a, VENDOR_ITEM_REGULAR),
-		list("M39 HV Magazine (10x20mm)", 24, /obj/item/ammo_magazine/smg/m39, VENDOR_ITEM_REGULAR),
-		list("M41A Magazine (10x24mm)", 24, /obj/item/ammo_magazine/rifle, VENDOR_ITEM_REGULAR),
-		list("M41A MK1 Magazine (10x24mm)", 9, /obj/item/ammo_magazine/rifle/m41aMK1, VENDOR_ITEM_REGULAR),
-
-		list("SIDEARMS", -1, null, null),
-		list("88 Mod 4 Combat Pistol", 4, /obj/item/weapon/gun/pistol/mod88, VENDOR_ITEM_REGULAR),
-		list("M44 Combat Revolver", 4, /obj/item/weapon/gun/revolver/m44, VENDOR_ITEM_REGULAR),
-		list("M4A3 Service Pistol", 4, /obj/item/weapon/gun/pistol/m4a3, VENDOR_ITEM_REGULAR),
-
-		list("SIDEARM AMMUNITION", -1, null, null),
-		list("88M4 AP Magazine (9mm)", 20, /obj/item/ammo_magazine/pistol/mod88, VENDOR_ITEM_REGULAR),
-		list("M44 Speedloader (.44)", 20, /obj/item/ammo_magazine/revolver, VENDOR_ITEM_REGULAR),
-		list("M4A3 Magazine (9mm)", 20, /obj/item/ammo_magazine/pistol, VENDOR_ITEM_REGULAR),
-		list("M4A3 AP Magazine (9mm)", 8, /obj/item/ammo_magazine/pistol/ap, VENDOR_ITEM_REGULAR),
-		list("M4A3 HP Magazine (9mm)", 8, /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
-		list("VP78 Magazine (9mm)", 16, /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR),
-
-		list("ATTACHMENTS", -1, null, null),
-		list("Magnetic Harness", 4, /obj/item/attachable/magnetic_harness, VENDOR_ITEM_MANDATORY),
-		list("Rail Flashlight", 8, /obj/item/attachable/flashlight, VENDOR_ITEM_REGULAR),
-		list("Underbarrel Flashlight Grip", 4, /obj/item/attachable/flashlight/grip, VENDOR_ITEM_RECOMMENDED),
-
-		list("UTILITIES", -1, null, null),
-		list("M11 Throwing Knife", 18, /obj/item/weapon/melee/throwing_knife, VENDOR_ITEM_REGULAR),
-		list("M5 Bayonet", 4, /obj/item/attachable/bayonet, VENDOR_ITEM_REGULAR),
-		list("M89-S Signal Flare Pack", 2, /obj/item/storage/box/m94/signal, VENDOR_ITEM_REGULAR),
-		list("M94 Marking Flare pack", 20, /obj/item/storage/box/m94, VENDOR_ITEM_RECOMMENDED)
-	)
-
-/obj/structure/machinery/cm_vending/sorted/cargo_guns/intelligence_officer/populate_product_list(var/scale)
-	return
-
 //------------CLOTHING VENDOR---------------
 
-//MARINE_CAN_BUY_SHOES MARINE_CAN_BUY_UNIFORM currently not used
-/obj/structure/machinery/cm_vending/clothing/intelligence_officer
-	name = "\improper ColMarTech Intelligence Officer Equipment Rack"
-	desc = "An automated rack hooked up to a colossal storage of Intelligence Officer standard-issue equipment."
-	req_access = list(ACCESS_MARINE_BRIDGE)
-	vendor_role = list(JOB_INTEL)
+/obj/structure/machinery/cm_vending/clothing/rto
+	name = "\improper ColMarTech Radio Telephone Operator Equipment Rack"
+	desc = "An automated rack hooked up to a colossal storage of RTO standard-issue equipment."
+	req_access = list(ACCESS_MARINE_RTOPREP)
+	vendor_role = list(JOB_SQUAD_RTO)
 
 	listed_products = list(
 		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
+		list("Boots", 0, /obj/item/clothing/shoes/marine/knife, MARINE_CAN_BUY_SHOES, VENDOR_ITEM_MANDATORY),
+		list("Uniform", 0, /obj/item/clothing/under/marine/officer/rto, MARINE_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
 		list("Gloves", 0, /obj/item/clothing/gloves/yellow, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
-		list("Armor", 0, /obj/item/clothing/suit/storage/marine/intel, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
+		list("Armor", 0, /obj/item/clothing/suit/storage/marine/rto, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
 		list("Headset", 0, /obj/item/device/radio/headset/almayer/mcom, MARINE_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
-		list("Satchel", 0, /obj/item/storage/backpack/marine/satchel/intel, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
+		list("Radio Telephone Pack", 0, /obj/item/storage/backpack/marine/satchel/rto, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 		list("MRE", 0, /obj/item/storage/box/MRE, MARINE_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 
 		list("PERSONAL SIDEARM (CHOOSE 1)", 0, null, null, null),
@@ -158,19 +99,9 @@
 		list("Beret, Standard", 0, /obj/item/clothing/head/beret/cm, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
 		list("Beret, Tan", 0, /obj/item/clothing/head/beret/cm/tan, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
 		list("USCM Officer Cap", 0, /obj/item/clothing/head/cmcap/ro, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
-		list("XM12 Intel Helmet", 0, /obj/item/clothing/head/helmet/marine/intel, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_RECOMMENDED),
+		list("XM12 Operator Helmet", 0, /obj/item/clothing/head/helmet/marine/rto, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_RECOMMENDED),
 
 		list("MASK (CHOOSE 1)", 0, null, null, null),
 		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
 		list("Heat Absorbent Coif", 0, /obj/item/clothing/mask/rebreather/scarf, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR)
-	)
-
-//------------ESSENTIAL SETS---------------
-
-/obj/effect/essentials_set/intelligence_officer
-	spawned_gear_list = list(
-		/obj/item/tool/crowbar,
-		/obj/item/stack/fulton,
-		/obj/item/device/motiondetector/intel,
-		/obj/item/device/binoculars
 	)

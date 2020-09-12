@@ -6,6 +6,8 @@
 	sentry_type = "flamer"
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer
 
+	module_type = DEFENSE_SENTRY_FLAMER
+
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
 	P.generate_bullet(new ammo.default_ammo)

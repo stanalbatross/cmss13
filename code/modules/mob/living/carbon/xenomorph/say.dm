@@ -110,10 +110,17 @@
 
 	for (var/mob/S in GLOB.player_list)
 		var/hear_hivemind = 0
+		var/mob/living/carbon/hologram/H = S
+
 		if(ishuman(S))
-			var/mob/living/carbon/human/H = S
-			if(H.hivenumber)
-				hear_hivemind = H.hivenumber
+			var/mob/living/carbon/human/Hu = S
+			if(Hu.hivenumber)
+				hear_hivemind = Hu.hivenumber
+
+		if(istype(H))
+			var/mob/living/carbon/Xenomorph/X = H.linked_mob
+			if(istype(X))
+				hear_hivemind = X.hivenumber
 
 		if(!QDELETED(S) && (isXeno(S) || S.stat == DEAD || hear_hivemind) && !istype(S,/mob/new_player))
 			var/mob/living/carbon/Xenomorph/X = src

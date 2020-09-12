@@ -38076,9 +38076,6 @@
 	},
 /area/almayer/squads/bravo/req)
 "ctf" = (
-/obj/effect/landmark/start{
-	name = "Intelligence Officer"
-	},
 /obj/item/device/radio/intercom{
 	freerange = 1;
 	name = "General Listening Channel";
@@ -40531,16 +40528,6 @@
 	tag = "icon-sterile_green_side (EAST)"
 	},
 /area/almayer/medical/chemistry)
-"eZH" = (
-/obj/effect/landmark/start{
-	name = "Intelligence Officer"
-	},
-/turf/open/floor/almayer{
-	dir = 6;
-	icon_state = "silver";
-	tag = "icon-silver (WEST)"
-	},
-/area/almayer/command/computerlab)
 "fac" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
 /obj/structure/machinery/light,
@@ -41207,12 +41194,6 @@
 	},
 /turf/open/floor/wood,
 /area/almayer/living/pilotbunks)
-"fJF" = (
-/obj/structure/machinery/cm_vending/gear/intelligence_officer,
-/turf/open/floor/almayer{
-	icon_state = "silverfull"
-	},
-/area/almayer/command/computerlab)
 "fJO" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ammo_magazine/rifle/l42a,
@@ -41727,6 +41708,13 @@
 	},
 /turf/open/floor/wood,
 /area/almayer/command/corporateliason)
+"guM" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/machinery/cm_vending/clothing/rto,
+/turf/open/floor/almayer,
+/area/almayer/hallways/port_hallway)
 "guS" = (
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall6";
@@ -41837,6 +41825,23 @@
 "gyC" = (
 /turf/closed/wall/almayer,
 /area/almayer/squads/bravo/req)
+"gyP" = (
+/obj/effect/landmark{
+	name = "JoinLateCryo"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	tag = "icon-SE-out"
+	},
+/obj/effect/landmark/start{
+	name = "Squad RT Operator"
+	},
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "red";
+	tag = "icon-red (WEST)"
+	},
+/area/almayer/living/cryo_cells)
 "gzr" = (
 /obj/structure/stairs{
 	dir = 8
@@ -43434,6 +43439,13 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hallways/starboard_hallway)
+"iAT" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/machinery/cm_vending/gear/rto,
+/turf/open/floor/almayer,
+/area/almayer/hallways/port_hallway)
 "iBE" = (
 /obj/structure/disposalpipe/segment{
 	dir = 2;
@@ -44038,12 +44050,6 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hull/lower_hull)
-"jgN" = (
-/obj/structure/machinery/cm_vending/sorted/cargo_guns/intelligence_officer,
-/turf/open/floor/almayer{
-	icon_state = "silverfull"
-	},
-/area/almayer/command/computerlab)
 "jgS" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
@@ -48829,6 +48835,24 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/command/cic)
+"osJ" = (
+/obj/effect/landmark{
+	name = "JoinLateCryo"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	tag = "icon-SE-out"
+	},
+/obj/structure/disposalpipe/segment,
+/obj/effect/landmark/start{
+	name = "Squad RT Operator"
+	},
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "blue";
+	tag = "icon-blue (WEST)"
+	},
+/area/almayer/living/cryo_cells)
 "otq" = (
 /obj/structure/machinery/light{
 	dir = 8;
@@ -51874,16 +51898,6 @@
 	tag = "icon-sterile_green_side (EAST)"
 	},
 /area/almayer/medical/containment)
-"rRO" = (
-/obj/effect/landmark/start{
-	name = "Intelligence Officer"
-	},
-/turf/open/floor/almayer{
-	dir = 4;
-	icon_state = "silver";
-	tag = "icon-green (EAST)"
-	},
-/area/almayer/command/computerlab)
 "rRU" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
 /obj/structure/bed/chair{
@@ -57251,7 +57265,6 @@
 	},
 /area/almayer/medical/upper_medical)
 "xNv" = (
-/obj/structure/machinery/cm_vending/clothing/intelligence_officer,
 /turf/open/floor/almayer{
 	icon_state = "silverfull"
 	},
@@ -98083,12 +98096,12 @@ cmK
 cnK
 aHq
 ctf
-rRO
 iLO
 iLO
 iLO
-rRO
-eZH
+iLO
+iLO
+cnq
 aHq
 aDw
 aiC
@@ -98288,10 +98301,10 @@ aHq
 xNv
 xNv
 xNv
-jgN
-fJF
-fJF
-fJF
+xNv
+xNv
+xNv
+xNv
 aHq
 aSz
 aiC
@@ -104673,7 +104686,7 @@ bBg
 bdx
 bfp
 bhj
-biZ
+gyP
 bkV
 bhj
 biZ
@@ -104683,7 +104696,7 @@ xba
 bSh
 bvH
 bxn
-byx
+osJ
 bvH
 bxn
 byx
@@ -105098,7 +105111,7 @@ bCG
 bbr
 buH
 bHc
-bIT
+iAT
 nsY
 cel
 cfs
@@ -105301,7 +105314,7 @@ bCG
 bbr
 buH
 bHc
-bIT
+guM
 nsY
 nye
 vlA

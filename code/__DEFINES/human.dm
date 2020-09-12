@@ -18,6 +18,7 @@
 #define LIMB_MUTATED 16 //limb is deformed by mutations
 #define LIMB_AMPUTATED 32 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
 #define LIMB_REPAIRED 64 //we just repaired the bone, stops the gelling after setting
+#define LIMB_SPLINTED_INDESTRUCTIBLE 128 // Splint is indestructible
 
 ///////////////SURGERY DEFINES///////////////
 #define SPECIAL_SURGERY_INVALID	"special_surgery_invalid"
@@ -111,14 +112,15 @@
 #define HEAD_GARB_LAYER_4		12	//  |
 #define HEAD_GARB_LAYER_5		11	// End here
 #define HEAD_GARB_LAYER			10
-#define COLLAR_LAYER			9
-#define HANDCUFF_LAYER			8
-#define LEGCUFF_LAYER			7
-#define L_HAND_LAYER			6
-#define R_HAND_LAYER			5
-#define BURST_LAYER				4	//Chestburst overlay
-#define TARGETED_LAYER			3	//for target sprites when held at gun point, and holo cards.
-#define FIRE_LAYER				2	//If you're on fire		//BS12: Layer for the target overlay from weapon targeting system
-#define EFFECTS_LAYER			1  //If you're hit by an acid DoT
+#define BACK_FRONT_LAYER        9 // For backpacks when mob is facing north
+#define COLLAR_LAYER			8
+#define HANDCUFF_LAYER			7
+#define LEGCUFF_LAYER			6
+#define L_HAND_LAYER			5
+#define R_HAND_LAYER			4
+#define BURST_LAYER				3	//Chestburst overlay
+#define TARGETED_LAYER			2	//for target sprites when held at gun point, and holo cards.
+#define FIRE_LAYER				1	//If you're on fire		//BS12: Layer for the target overlay from weapon targeting system
+#define EFFECTS_LAYER			0  //If you're hit by an acid DoT
 #define TOTAL_LAYERS			37
 //////////////////////////////////

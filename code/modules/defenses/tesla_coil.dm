@@ -13,6 +13,8 @@
 	health = 150
 	health_max = 150
 
+	module_type = DEFENSE_TESLA_COIL
+
 /obj/structure/machinery/defenses/tesla_coil/Initialize()
 	. = ..()
 

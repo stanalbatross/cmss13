@@ -183,7 +183,7 @@
 
 /datum/equipment_preset/uscm/intel
 	name = "USCM Intelligence Officer (IO) (Cryo)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/silver
 	access = list(
@@ -202,7 +202,7 @@
 	role_comm_title = "IO"
 	skills = /datum/skills/intel
 
-	utility_under = list(/obj/item/clothing/under/marine/officer/intel)
+	utility_under = list(/obj/item/clothing/under/marine/officer/rto)
 
 /datum/equipment_preset/uscm/intel/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
@@ -222,21 +222,21 @@
 	name = "USCM Intelligence Officer (IO)"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	utility_under = list(/obj/item/clothing/under/marine/officer/intel)
+	utility_under = list(/obj/item/clothing/under/marine/officer/rto)
 
 /datum/equipment_preset/uscm/intel/full/load_gear(mob/living/carbon/human/H)
 
-	var/obj/item/clothing/under/marine/officer/intel/U = new(H)
+	var/obj/item/clothing/under/marine/officer/rto/U = new(H)
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
 	U.attach_accessory(H, W)
 	H.equip_to_slot_or_del(U, WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp78(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/intel(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/intel(src), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/rto(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/rto(src), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(src), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/intel(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/rto(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/document(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/binoculars(H), WEAR_L_HAND)
@@ -311,6 +311,22 @@
 		backItem = /obj/item/storage/backpack/marine/medic
 
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
+
+/*****************************************************************************************************/
+
+/datum/equipment_preset/uscm/rto
+	name = "USCM (Cryo) Squad RT Operator"
+	flags = EQUIPMENT_PRESET_EXTRA
+
+	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_RTOPREP)
+	assignment = JOB_SQUAD_RTO
+	rank = JOB_SQUAD_RTO
+	paygrade = "E4"
+	role_comm_title = "RTO"
+	skills = /datum/skills/rto
+
+/datum/equipment_preset/uscm/rto/load_gear(mob/living/carbon/human/H)
+	return // No gear
 
 /*****************************************************************************************************/
 
@@ -573,3 +589,31 @@
 
 /*****************************************************************************************************/
 
+
+/datum/equipment_preset/uscm/rto_equipped
+	name = "USCM Cryo RT Operator (Equipped)"
+	flags = EQUIPMENT_PRESET_EXTRA
+
+	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_RTOPREP)
+	assignment = JOB_SQUAD_RTO
+	rank = JOB_SQUAD_RTO
+	paygrade = "E4"
+	role_comm_title = "RTO"
+	skills = /datum/skills/rto
+
+/datum/equipment_preset/uscm/rto_equipped/load_gear(mob/living/carbon/human/H)
+	//TODO: add backpacks and satchels
+	var/obj/item/clothing/under/marine/officer/rto/U = new(H)
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	U.attach_accessory(H, W)
+	H.equip_to_slot_or_del(U, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_EAR)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp78(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/rto(H), WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/rto(src), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(src), WEAR_HANDS)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/rto(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/document(H), WEAR_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/device/binoculars(H), WEAR_L_HAND)

@@ -217,13 +217,15 @@
 	if(pulledby && get_dist(src, pulledby) > 1)//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()
 
-
 	if (s_active && !( s_active in contents ) && get_turf(s_active) != get_turf(src))	//check !( s_active in contents ) first so we hopefully don't have to call get_turf() so much.
 		s_active.close(src)
 
 	// Check if we're still pulling something
 	if(pulling)
 		SEND_SIGNAL(pulling, COMSIG_MOB_DRAGGED, src)
+	
+	if(back && (back.flags_item & ITEM_OVERRIDE_NORTHFACE))
+		update_inv_back()
 
 
 
@@ -602,7 +604,9 @@
 							show_limb = 1
 			if(show_limb)
 				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] [fracture_info][org_bleed][org_incision][org_advice]"
-				if(org.status & LIMB_SPLINTED)
+				if(org.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+					dat += "(Nanosplinted)"
+				else if(org.status & LIMB_SPLINTED)
 					dat += "(Splinted)"
 				dat += "\n"
 

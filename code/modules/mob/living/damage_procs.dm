@@ -33,6 +33,12 @@
 		if(BRAIN)
 			adjustBrainLoss(damage)
 			damage = damage * PAIN_ORGAN_DAMAGE_MULTIPLIER
+	
+	if(mind && istype(mind.current, /mob/living/carbon/hologram) && damage > 0)
+		var/mob/living/carbon/hologram/H = mind.current
+
+		H.mob_return_to_body()
+
 	pain.apply_pain(damage, damagetype)
 	updatehealth()
 	return 1
