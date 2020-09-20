@@ -647,6 +647,7 @@ Defined in conflicts.dm of the #defines folder.
 	zoom_offset = 6
 	zoom_viewsize = 7
 	var/dynamic_aim_slowdown = SLOWDOWN_ADS_MINISCOPE_DYNAMIC
+	var/aiming_delay = 25
 
 /obj/item/attachable/scope/mini/New()
 	..()
@@ -656,7 +657,7 @@ Defined in conflicts.dm of the #defines folder.
 	if(istype(G, /obj/item/weapon/gun/launcher/rocket) || istype(G, /obj/item/weapon/gun/launcher/m92))
 		zoom_offset = 3
 		allows_movement	= 0
-		if(do_after(user, 25, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		if(do_after(user, aiming_delay, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			. = ..()
 	else
 		zoom_offset = initial(zoom_offset)
@@ -674,6 +675,13 @@ Defined in conflicts.dm of the #defines folder.
 
 			user.add_zoomout_handler(handler)
 
+/obj/item/attachable/scope/mini/nsg23
+	name = "W-Y 2x telescopic mini-scope"
+	icon_state = "nsg23scope"
+	attach_icon = "nsg23scope_a"
+	desc = "A scope researched internally, based on the ARMAT S4 mini-scope. Compared to the S4 mini-scope, it has improved handling. Press the 'use rail attachment' HUD icon or use the verb of the same name to zoom."
+	aiming_delay = 0
+	dynamic_aim_slowdown = SLOWDOWN_ADS_RIFLE //lighter handling W-Y AR gets light handling!
 
 /obj/item/attachable/scope/mini/hunting //can only be attached to the hunting rifle to prevent vending hunting rifles to cannibalize scopes
 	name = "2x hunting mini-scope"
@@ -736,6 +744,17 @@ Defined in conflicts.dm of the #defines folder.
 	size_mod = 2
 	pixel_shift_x = 30
 	pixel_shift_y = 14
+
+
+/obj/item/attachable/stock/nsg23
+	name = "W-Y RE93 Absorbing Stock"
+	desc = "Absorbs weapon kick via internal recoil springs. You probably shouldn't be able to see this."
+	icon_state = "nsg23stock"
+	slot = "stock"
+	melee_mod = -10 //it's kind of hollow
+	pixel_shift_x = 0 //fix these
+	pixel_shift_y = 0
+	flags_attach_features = NO_FLAGS
 
 /obj/item/attachable/stock/shotgun
 	name = "\improper M37 wooden stock"
