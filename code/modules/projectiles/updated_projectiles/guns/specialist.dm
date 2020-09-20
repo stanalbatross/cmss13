@@ -237,8 +237,8 @@
 
 
 /obj/item/weapon/gun/rifle/m4ra/set_gun_attachment_offsets()
-	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 17,"rail_x" = 12, "rail_y" = 23, "under_x" = 23, "under_y" = 13, "stock_x" = 24, "stock_y" = 13)
-//also logs for AA canno
+	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 19,"rail_x" = 12, "rail_y" = 23, "under_x" = 23, "under_y" = 13, "stock_x" = 24, "stock_y" = 13)
+
 /obj/item/weapon/gun/rifle/m4ra/set_gun_config_values()
 	..()
 	fire_delay = config.high_fire_delay
@@ -270,7 +270,6 @@
 	item_state = "m56"
 
 	fire_sound = "gun_smartgun"
-	fire_rattle	= "gun_smartgun_rattle"
 	reload_sound = 'sound/weapons/handling/gun_sg_reload.ogg'
 	unload_sound = 'sound/weapons/handling/gun_sg_unload.ogg'
 	current_mag = /obj/item/ammo_magazine/smartgun
@@ -316,11 +315,10 @@
 	starting_attachment_types = list(/obj/item/attachable/smartbarrel)
 
 
-/obj/item/weapon/gun/smartgun/Initialize(mapload, ...)
-	. = ..()
+/obj/item/weapon/gun/smartgun/New()
+	..()
 	ammo_primary = ammo_list[ammo_primary]
 	ammo_secondary = ammo_list[ammo_secondary]
-	AddElement(/datum/element/magharness)
 
 /obj/item/weapon/gun/smartgun/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 16,"rail_x" = 17, "rail_y" = 18, "under_x" = 22, "under_y" = 14, "stock_x" = 22, "stock_y" = 14)
@@ -730,6 +728,11 @@
 		if(!auto_fire)
 			processing_objects.Remove(src)
 
+/obj/item/weapon/gun/smartgun/equipped(mob/living/carbon/human/H, slot)
+	..()
+	registerListener(src, EVENT_GUN_DROPPED, "gdrp_sg", CALLBACK(src, .proc/handle_harness))
+	registerListener(src, EVENT_LAUNCH_CHECK, "lc_sg", CALLBACK(src, .proc/harness_launch_cancel))
+
 /obj/item/weapon/gun/smartgun/dirty
 	name = "\improper M56D 'Dirty' smartgun"
 	desc = "The actual firearm in the 4-piece M56D Smartgun System. If you have this, you're about to bring some serious pain to anyone in your way.\nYou may toggle firing restrictions by using a special action."
@@ -881,7 +884,7 @@
 	last_fired = world.time
 	for(var/mob/O in viewers(world_view_size, user))
 		O.show_message(SPAN_DANGER("[user] fired a grenade!"), 1)
-	to_chat(user, SPAN_WARNING("You fire the grenade launcher! [grenades.len-1]/[max_grenades] grenades remaining"))
+	to_chat(user, SPAN_WARNING("You fire the grenade launcher!"))
 	var/obj/item/explosive/grenade/F = grenades[1]
 	grenades -= F
 	F.loc = user.loc
@@ -890,15 +893,16 @@
 	var/pass_flags = NO_FLAGS
 	if(is_lobbing)
 		pass_flags = LIST_FLAGS_ADD(pass_flags, PASS_MOB_THRU, PASS_HIGH_OVER)
-	F.active = 1
-	F.icon_state = initial(F.icon_state) + "_active"
+
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
 	if(F && F.loc) //Apparently it can get deleted before the next thing takes place, so it runtimes.
 		msg_admin_attack("[key_name_admin(user)] fired a grenade ([F.name]) from \a ([name]).")
 		log_game("[key_name_admin(user)] used a grenade ([name]).")
+		F.icon_state = initial(F.icon_state) + "_active"
+		F.active = 1
 		F.update_icon()
 		playsound(F.loc, fire_sound, 50, 1)
-		addtimer(CALLBACK(F, /obj/item/explosive.proc/prime), min(10, F.det_time))
+		addtimer(CALLBACK(F, /obj/item/explosive.proc/prime), 1 SECONDS)
 
 /obj/item/weapon/gun/launcher/m81
 	name = "\improper M81 grenade launcher"
@@ -1014,14 +1018,14 @@
 	F.loc = user.loc
 	F.throw_range = 20
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user)
-	F.icon_state = initial(F.icon_state) + "_active"
-	F.active = 1
 	if(F && F.loc) //Apparently it can get deleted before the next thing takes place, so it runtimes.
 		msg_admin_attack("[key_name_admin(user)] fired a grenade ([F.name]) from \a ([name]).")
 		log_game("[key_name_admin(user)] used a grenade ([name]).")
+		F.icon_state = initial(F.icon_state) + "_active"
+		F.active = 1
 		F.update_icon()
 		playsound(F.loc, fire_sound, 50, 1)
-		addtimer(CALLBACK(F, /obj/item/explosive.proc/prime), min(10, F.det_time))
+		addtimer(CALLBACK(F, /obj/item/explosive.proc/prime), 1 SECONDS)
 
 
 /obj/item/weapon/gun/launcher/m81/riot
@@ -1097,7 +1101,7 @@
 		if(!skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ROCKET)
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 			return 0
-		if(current_mag && current_mag.current_rounds > 0)
+		if(current_mag.current_rounds > 0)
 			make_rocket(user, 0, 1)
 
 /obj/item/weapon/gun/launcher/rocket/load_into_chamber(mob/user)
