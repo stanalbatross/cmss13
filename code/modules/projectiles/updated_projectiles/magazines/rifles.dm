@@ -213,3 +213,32 @@
 	max_rounds = 10
 	gun_type = /obj/item/weapon/gun/rifle/hunting
 	w_class = SIZE_SMALL
+
+//-------------------------------------------------------
+//W-Y NeuSturmgewehr 23 Assault Rifle
+
+/obj/item/ammo_magazine/rifle/nsg23
+	name = "\improper W-Y NSG 23 magazine (7x62mm)"
+	desc = "A W-Y NSG 23 assault rifle magazine."
+	caliber = "7.62x39mm"
+	icon_state = "nsg23"
+	item_state = "nsg23"
+	w_class = SIZE_MEDIUM
+	default_ammo = /datum/ammo/bullet/rifle
+	max_rounds = 30
+	gun_type = /obj/item/weapon/gun/rifle/nsg23
+
+/obj/item/ammo_magazine/rifle/nsg23/extended
+	name = "\improper W-Y NSG 23 extended magazine (7x62mm)"
+	desc = "A W-Y NSG 23 assault rifle magazine. This one contains 45 bullets."
+	icon_state = "nsg23_ext"
+	item_state = "nsg23_ext"
+	max_rounds = 45
+	bonus_overlay = "nsg_23_ex"
+
+/obj/item/ammo_magazine/rifle/nsg23/ap
+	name = "\improper W-Y NSG 23 armor-piercing magazine (7x62mm)"
+	desc = "A W-Y NSG 23 assault rifle magazine. This one is armor piercing."
+	icon_state = "nsg23_ap"
+	item_state = "nsg23_ap"
+	default_ammo = /datum/ammo/bullet/rifle/ap

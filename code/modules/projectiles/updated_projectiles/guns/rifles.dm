@@ -96,6 +96,74 @@
 /obj/item/weapon/gun/rifle/m41a/stripped
 	starting_attachment_types = list()
 
+
+/obj/item/weapon/gun/rifle/nsg23
+	name = "\improper W-Y NSG 23 Assault Rifle"
+	desc = "A rare sight, this rifle is seen most commonly in the hands of Weston-Yamada PMCs. Compared to the M41A MK2, it has noticeably improved handling and vastly improved performance at long and medium range, but compares similarly up close.\n Intended to be used in burst-fire."
+	icon_state = "nsg23"
+	item_state = "nsg23"
+	fire_sound = "gun_pulse" //?
+	reload_sound = 'sound/weapons/handling/m41_reload.ogg'
+	unload_sound = 'sound/weapons/handling/m41_unload.ogg'
+	aim_slowdown = SLOWDOWN_ADS_SMG
+	wield_delay = WIELD_DELAY_FAST
+	current_mag = /obj/item/ammo_magazine/rifle/nsg23/ap
+	attachable_allowed = list(
+						/obj/item/attachable/suppressor,
+						/obj/item/attachable/bayonet,
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/quickfire,
+						/obj/item/attachable/reflex,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/bipod,
+						/obj/item/attachable/extended_barrel,
+						/obj/item/attachable/heavy_barrel,
+						/obj/item/attachable/burstfire_assembly,
+						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/stock/nsg23,
+						/obj/item/attachable/attached_gun/grenade,
+						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/shotgun,
+						/obj/item/attachable/attached_gun/extinguisher,
+						/obj/item/attachable/scope,
+						/obj/item/attachable/scope/mini,
+						/obj/item/attachable/scope/mini/nsg23)
+
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_BURST_ON
+	starting_attachment_types = list(/obj/item/attachable/stock/nsg23,
+								/obj/item/attachable/scope/mini/nsg23,
+								/obj/item/attachable/attached_gun/flamer)
+
+/obj/item/weapon/gun/rifle/nsg23/set_gun_attachment_offsets()
+	attachable_offset = list("muzzle_x" = 30, "muzzle_y" = 17,"rail_x" = 10, "rail_y" = 22, "under_x" = 19, "under_y" = 12, "stock_x" = -14, "stock_y" = -3)
+	//fix offsets!
+
+/obj/item/weapon/gun/rifle/nsg23/set_gun_config_values()
+	..()
+	fire_delay = config.med_fire_delay
+	burst_amount = config.med_burst_value
+	burst_delay = config.mlow_fire_delay
+	accuracy_mult = config.base_hit_accuracy_mult + config.high_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult - config.high_hit_accuracy_mult
+	scatter = config.low_scatter_value
+	burst_scatter_mult = config.min_scatter_value
+	scatter_unwielded = config.max_scatter_value
+	damage_mult = config.base_hit_damage_mult + config.hmed_hit_damage_mult
+	damage_falloff_mult = 0
+	recoil_unwielded = config.high_recoil_value
+
+/obj/item/weapon/gun/rifle/nsg23/handle_starting_attachment()
+	..()
+	var/obj/item/attachable/stock/nsg23/S = new(src)
+	//S.hidden = TRUE // the gun's sprite already shows a scope
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
+	update_attachable(S.slot)
+
+//variant without ugl attachment
+/obj/item/weapon/gun/rifle/nsg23/stripped
+	starting_attachment_types = list(/obj/item/attachable/stock/nsg23) //it's kind of built into the sprite
+
 //-------------------------------------------------------
 //M41A PMC VARIANT
 
