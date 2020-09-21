@@ -102,12 +102,12 @@
 	desc = "A rare sight, this rifle is seen most commonly in the hands of Weston-Yamada PMCs. Compared to the M41A MK2, it has noticeably improved handling and vastly improved performance at long and medium range, but compares similarly up close.\n Intended to be used in burst-fire."
 	icon_state = "nsg23"
 	item_state = "nsg23"
-	fire_sound = "gun_pulse" //?
-	reload_sound = 'sound/weapons/handling/m41_reload.ogg'
-	unload_sound = 'sound/weapons/handling/m41_unload.ogg'
+	fire_sound = "gun_nsg23"
+	reload_sound = 'sound/weapons/handling/nsg23_reload.ogg'
+	unload_sound = 'sound/weapons/handling/nsg23_unload.ogg'
 	aim_slowdown = SLOWDOWN_ADS_SMG
 	wield_delay = WIELD_DELAY_FAST
-	current_mag = /obj/item/ammo_magazine/rifle/nsg23/ap
+	current_mag = /obj/item/ammo_magazine/rifle/nsg23
 	attachable_allowed = list(
 						/obj/item/attachable/suppressor,
 						/obj/item/attachable/bayonet,
