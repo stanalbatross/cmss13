@@ -105,7 +105,7 @@
 	fire_sound = "gun_nsg23"
 	reload_sound = 'sound/weapons/handling/nsg23_reload.ogg'
 	unload_sound = 'sound/weapons/handling/nsg23_unload.ogg'
-	cocked_sound = 'sound/weapons/handling/nsg23_cocked.ogg' //bruh
+	cocked_sound = 'sound/weapons/handling/nsg23_cocked.ogg'
 	aim_slowdown = SLOWDOWN_ADS_SMG
 	wield_delay = WIELD_DELAY_FAST
 	current_mag = /obj/item/ammo_magazine/rifle/nsg23
