@@ -220,7 +220,7 @@
 /obj/item/ammo_magazine/rifle/nsg23
 	name = "\improper W-Y NSG 23 magazine (7x62mm)"
 	desc = "A W-Y NSG 23 assault rifle magazine."
-	caliber = "7.62x39mm"
+	caliber = "7.62x39mm" //incidentally is compatible with mar40 magazines.
 	icon_state = "nsg23"
 	item_state = "nsg23"
 	w_class = SIZE_MEDIUM
