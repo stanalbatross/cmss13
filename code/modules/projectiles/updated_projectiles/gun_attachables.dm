@@ -747,7 +747,7 @@ Defined in conflicts.dm of the #defines folder.
 
 
 /obj/item/attachable/stock/nsg23
-	name = "W-Y RE93 Absorbing Stock"
+	name = "RE93 absorbing stock"
 	desc = "Absorbs weapon kick via internal recoil springs. You probably shouldn't be able to see this."
 	icon_state = "nsg23stock"
 	slot = "stock"
