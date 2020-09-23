@@ -131,8 +131,7 @@
 						/obj/item/attachable/scope/mini/nsg23)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_BURST_ON
-	starting_attachment_types = list(/obj/item/attachable/stock/nsg23,
-								/obj/item/attachable/scope/mini/nsg23,
+	starting_attachment_types = list(/obj/item/attachable/scope/mini/nsg23,
 								/obj/item/attachable/attached_gun/flamer)
 
 /obj/item/weapon/gun/rifle/nsg23/set_gun_attachment_offsets()
@@ -156,14 +155,13 @@
 /obj/item/weapon/gun/rifle/nsg23/handle_starting_attachment()
 	..()
 	var/obj/item/attachable/stock/nsg23/S = new(src)
-	//S.hidden = TRUE // the gun's sprite already shows a scope
 	S.flags_attach_features &= ~ATTACH_REMOVABLE
 	S.Attach(src)
 	update_attachable(S.slot)
 
 //variant without ugl attachment
 /obj/item/weapon/gun/rifle/nsg23/stripped
-	starting_attachment_types = list(/obj/item/attachable/stock/nsg23) //it's kind of built into the sprite
+	starting_attachment_types = list() //starts with the stock anyways due to handle_starting_attachment()
 
 //-------------------------------------------------------
 //M41A PMC VARIANT
