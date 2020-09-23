@@ -676,7 +676,7 @@ Defined in conflicts.dm of the #defines folder.
 			user.add_zoomout_handler(handler)
 
 /obj/item/attachable/scope/mini/nsg23
-	name = "W-Y 2x telescopic mini-scope"
+	name = "S96 2x telescopic mini-scope"
 	icon_state = "nsg23scope"
 	attach_icon = "nsg23scope_a"
 	desc = "A W-Y-developed scope researched internally, based on the ARMAT S4 mini-scope. Compared to the S4 mini-scope, it has improved handling. Press the 'use rail attachment' HUD icon or use the verb of the same name to zoom."
