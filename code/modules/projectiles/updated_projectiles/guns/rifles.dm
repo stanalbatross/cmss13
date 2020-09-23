@@ -98,7 +98,7 @@
 
 
 /obj/item/weapon/gun/rifle/nsg23
-	name = "\improper W-Y NSG 23 Assault Rifle"
+	name = "\improper NSG 23 assault rifle"
 	desc = "A rare sight, this rifle is seen most commonly in the hands of Weston-Yamada PMCs. Compared to the M41A MK2, it has noticeably improved handling and vastly improved performance at long and medium range, but compares similarly up close.\n Intended to be used in burst-fire."
 	icon_state = "nsg23"
 	item_state = "nsg23"
