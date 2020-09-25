@@ -4,7 +4,6 @@
 	handle_fire() //Check if we're on fire
 
 /mob/living/carbon/Destroy()
-	QDEL_NULL_LIST(internal_organs)
 
 	for(var/datum/disease/virus in viruses)
 		virus.cure()

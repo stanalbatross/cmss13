@@ -11,8 +11,6 @@
 	throw_range = 5
 
 	attack_verb = list("attacked", "slapped", "whacked")
-	organ_type = /datum/internal_organ/brain
-	organ_tag = "brain"
 
 	var/mob/living/brain/brainmob = null
 
@@ -45,26 +43,3 @@
 		to_chat(user, "You can feel the small spark of life still left in this one.")
 	else
 		to_chat(user, "This one seems particularly lifeless. Perhaps it will regain some of its luster later..")
-
-/obj/item/organ/brain/removed(var/mob/living/target,var/mob/living/user)
-
-	..()
-
-
-
-	var/mob/living/carbon/human/H = target
-	var/obj/item/organ/brain/B = src
-	if(istype(B) && istype(H))
-		B.transfer_identity(target)
-
-/obj/item/organ/brain/replaced(var/mob/living/target)
-
-	if(target.key)
-		target.ghostize()
-
-	if(brainmob)
-		if(brainmob.mind)
-			brainmob.mind.transfer_to(target)
-		else
-			target.key = brainmob.key
-			if(target.client) target.client.change_view(world_view_size)

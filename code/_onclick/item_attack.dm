@@ -25,16 +25,23 @@
 	return FALSE
 
 
-/obj/item/proc/attack(mob/living/M, mob/living/user, def_zone)
+/obj/item/proc/attack(mob/living/M, mob/living/user)
 	if(flags_item & NOBLUDGEON)
 		return FALSE
 
 	if (!istype(M)) // not sure if this is the right thing...
 		return FALSE
 
-	if (M.can_be_operated_on()) //Checks if mob is lying down on table for surgery
-		if (do_surgery(M,user,src))
-			return FALSE
+	var/def_zone = user.zone_selected
+
+	if(ishuman(M))
+		if (flags_item & SURGERY_TOOL)
+			var/mob/living/carbon/human/H = M
+			for(var/datum/surgery_procedure/S in H.surgery_procedures)
+				if(S.try_do_step(user, user.zone_selected))
+					return FALSE
+
+
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user

@@ -544,7 +544,7 @@
 		dat += "\nHealth Analyzer results for [src]:\n\tOverall Status: [src.stat > 1 ? "<b>DEAD</b>" : "<b>[src.health - src.halloss]% healthy"]</b>\n"
 	dat += "\tType:    [SET_CLASS("Oxygen", INTERFACE_BLUE)]-[SET_CLASS("Toxin", INTERFACE_GREEN)]-[SET_CLASS("Burns", INTERFACE_ORANGE)]-[SET_CLASS("Brute", INTERFACE_RED)]\n"
 	dat += "\tDamage: \t[SET_CLASS(OX, INTERFACE_BLUE)] - [SET_CLASS(TX, INTERFACE_GREEN)] - [SET_CLASS(BU, INTERFACE_ORANGE)] - [SET_CLASS(BR, INTERFACE_RED)]\n"
-	dat += "\tUntreated: {B}=Burns,{T}=Trauma,{F}=Fracture\n"
+	dat += "\tUntreated: {B}=Burns,{T}=Trauma,\n"
 
 	var/unrevivable = 0
 
@@ -557,30 +557,26 @@
 			var/open_incision = TRUE
 			if(org.surgery_open_stage == 0)
 				open_incision = FALSE
-			if((org.brute_dam > 0 && !org.is_bandaged()) || open_incision)
+			if(org.brute_dam > 0 || open_incision)
 				brute_treated = FALSE
-			if(org.burn_dam > 0 && !org.is_salved())
+			if(org.burn_dam > 0)
 				burn_treated = FALSE
 
 			if(org.status & LIMB_DESTROYED)
 				dat += "\t\t [capitalize(org.display_name)]: <span class='scannerb'>Missing!</span>\n"
 				continue
 
-			var/bleeding_check = FALSE
-			for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
-				bleeding_check = TRUE
-				break
-			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || (org.status & LIMB_SPLINTED) || open_incision || bleeding_check)
+
+			var/bleeding_check = org.bleeding_effect ? TRUE : FALSE
+			var/integrity_damage = org.integrity_damage 
+
+			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || integrity_damage || open_incision || bleeding_check)
 
 			var/org_name = "[capitalize(org.display_name)][org.status & LIMB_ROBOT ? " (Cybernetic)" : ""]"
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
 			burn_info += "[burn_treated ? "" : "{B}"]"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
 			brute_info += "[brute_treated ? "" : "{T}"]"
-			var/fracture_info = ""
-			if(org.status & LIMB_BROKEN)
-				fracture_info = "{F}"
-				show_limb = 1
 
 			var/org_bleed = ""
 			if(bleeding_check)
@@ -588,30 +584,12 @@
 
 			var/org_incision = (open_incision?" <span class='scanner'>Open surgical incision</span>":"")
 			var/org_advice = ""
-			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-				switch(org.name)
-					if("head")
-						fracture_info = ""
-						if(org.brute_dam > 40 || src.getBrainLoss() >= 20)
-							org_advice = " Possible Skull Fracture."
-							show_limb = 1
-					if("chest")
-						fracture_info = ""
-						if(org.brute_dam > 40 || src.getOxyLoss() > 50)
-							org_advice = " Possible Chest Fracture."
-							show_limb = 1
-					if("groin")
-						fracture_info = ""
-						if(org.brute_dam > 40 || src.getToxLoss() > 50)
-							org_advice = " Possible Groin Fracture."
-							show_limb = 1
+
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] [fracture_info][org_bleed][org_incision][org_advice]"
-				if(org.status & LIMB_SPLINTED)
-					dat += "(Splinted)"
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] - ["INTEGRITY: [integrity_damage/2]%"] [org_bleed][org_incision][org_advice]"
 				dat += "\n"
 
-	// Show red messages - broken bokes, etc
+	// Show red messages - broken bokes,
 	if (src.getCloneLoss())
 		dat += "\t<span class='scanner'> *Subject appears to have been imperfectly cloned.</span>\n"
 	for(var/datum/disease/D in src.viruses)
@@ -637,18 +615,12 @@
 
 		if(H.embedded_items.len > 0)
 			embedded_item_detected = TRUE
-
-		var/core_fracture = 0
-		for(var/X in H.limbs)
-			var/obj/limb/e = X
-			for(var/datum/effects/bleeding/internal/I in e.bleeding_effects_list)
-				internal_bleed_detected = TRUE
-				break
-			if(e.status & LIMB_BROKEN)
-				if(!((e.name == "l_arm") || (e.name == "r_arm") || (e.name == "l_leg") || (e.name == "r_leg") || (e.name == "l_hand") || (e.name == "r_hand") || (e.name == "l_foot") || (e.name == "r_foot")))
-					core_fracture = 1
-		if(core_fracture)
-			dat += "\t[SPAN_SCANNER("*<b>Bone fractures</b> detected. Advanced scanner required for location.")]\n"
+		var/limb_integrity_damaged
+		for(var/obj/limb/L in H.limbs)
+			if(L.integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
+				limb_integrity_damaged++
+		if(limb_integrity_damaged)
+			dat += "\t[SPAN_SCANNER("*<b>Unoptimal Integrity</b> detected in [limb_integrity_damaged] limbs.")]\n"
 		if(internal_bleed_detected)
 			dat += "\t[SPAN_SCANNER("*<b>Internal bleeding</b> detected. Advanced scanner required for location.")]\n"
 		if(embedded_item_detected)

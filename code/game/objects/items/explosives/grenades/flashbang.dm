@@ -91,16 +91,15 @@
 //This really should be in mob not every check
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if (E && E.damage >= E.min_bruised_damage)
+		if (H.eye_damage >= HUMAN_EYE_BRUISE_DMG)
 			to_chat(M, SPAN_WARNING("Your eyes start to burn badly!"))
 			if(!banglet && !(istype(src , /obj/item/explosive/grenade/flashbang/clusterbang)))
-				if (E.damage >= E.min_broken_damage)
+				if (H.eye_damage >= HUMAN_EYE_BROKEN_DMG)
 					to_chat(M, SPAN_WARNING("You can't see anything!"))
-	if (M.ear_damage >= 15)
+	if (M.ear_damage >= HUMAN_EAR_BRUISE_DMG)
 		to_chat(M, SPAN_WARNING("Your ears start to ring badly!"))
 		if(!banglet && !(istype(src , /obj/item/explosive/grenade/flashbang/clusterbang)))
-			if (prob(M.ear_damage - 10 + 5))
+			if (M.ear_damage >= HUMAN_EAR_BROKEN_DMG)
 				to_chat(M, SPAN_WARNING("You can't hear anything!"))
 				M.sdisabilities |= DEAF
 	else

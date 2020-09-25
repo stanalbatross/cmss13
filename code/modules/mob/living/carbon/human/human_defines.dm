@@ -66,7 +66,7 @@
 	var/failed_last_breath = 0 //This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
 
 	var/last_dam = -1	//Used for determining if we need to process all limbs or just some or even none.
-	var/list/limbs_to_process = list()// limbs we check until they are good.
+	var/list/limbs_to_process = list()//  we check until they are good.
 
 	var/list/flavor_texts = list()
 	var/recently_unbuckled = 0
@@ -81,7 +81,6 @@
 	var/holo_card_color = "" //which color type of holocard is printed on us
 
 	var/list/limbs = list()
-	var/list/internal_organs_by_name = list() // so internal organs have less ickiness too
 
 	var/chem_effect_flags = 0
 	var/chem_effect_reset_time = 8
@@ -143,6 +142,15 @@
 
 	var/datum/agent/agent_holder
 
+	var/list/surgery_procedures = list()
+	//Vars currently in use by limbs
+	var/bonus_knockdown
+	var/zoom_blocked //Can't use zoom
+	var/special_vision_blocked  //Can't see in the dark, etc  
+	var/xeno_neurotoxin_buff //Increases effectiveness of xeno neurotoxin 
+	var/minimum_gun_recoil
+	var/minimum_wield_delay
+
 /client/var/cached_human_playtime
 
 /client/proc/get_total_human_playtime(var/skip_cache = FALSE)
@@ -161,3 +169,4 @@
 	cached_human_playtime = total_marine_playtime
 
 	return total_marine_playtime
+

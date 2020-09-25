@@ -117,11 +117,6 @@
 		if(4)
 			if(prob(2))
 				affected_mob.hallucination = max(75, affected_mob.hallucination)
-			if(prob(0.5))
-				var/affected_organ = pick("heart","lungs","liver","kidneys")
-				var/mob/living/carbon/human/H = affected_mob
-				var/datum/internal_organ/I =  H.internal_organs_by_name[affected_organ]
-				I.damage += 5
 
 	if(prob(2))
 		affected_mob.emote(pick("twitch","blink_r","shiver"))

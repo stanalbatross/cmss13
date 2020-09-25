@@ -4,7 +4,7 @@
 	desc = "A tube of paste containing swarms of repair nanites. Very effective in repairing robotic machinery."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "tube"
-	
+
 	amount = 10
 	max_amount = 10
 	w_class = SIZE_SMALL
@@ -45,8 +45,4 @@
 				else
 					to_chat(user, SPAN_NOTICE("Nothing to fix here."))
 		else
-			if (H.can_be_operated_on())
-				if (do_surgery(H,user,src))
-					return
-			else
-				to_chat(user, SPAN_NOTICE("Nothing to fix in here."))
+			to_chat(user, SPAN_NOTICE("Nothing to fix in here."))

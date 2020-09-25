@@ -4,8 +4,8 @@
 	icon_state = "surgical_tray"
 	flags_atom = FPRINT|CONDUCT
 	w_class = SIZE_LARGE //Should not fit in backpacks
-	storage_slots = 12
-	max_storage_space = 24
+	storage_slots = 15
+	max_storage_space = 30
 	use_sound = "toolbox"
 	matter = list("plastic" = 3000)
 	can_hold = list(
@@ -18,6 +18,7 @@
 	return
 
 /obj/item/storage/surgical_tray/fill_preset_inventory()
+	new /obj/item/tool/surgery/drapes(src)
 	new /obj/item/tool/surgery/scalpel/manager(src)
 	new /obj/item/tool/surgery/scalpel(src)
 	new /obj/item/tool/surgery/hemostat(src)

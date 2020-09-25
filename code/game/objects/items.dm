@@ -698,6 +698,11 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 			return
 		user.zoom_cooldown = world.time + 20
 
+		var/mob/living/carbon/human/H = user 
+		if(H.zoom_blocked)
+			to_chat(user, SPAN_WARNING("Ack! Your head hurts tremendously as you try to look through \the [zoom_device], making you unable to procede!"))
+			return
+
 		if(user.client)
 			user.client.change_view(viewsize)
 

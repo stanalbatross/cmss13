@@ -9,9 +9,9 @@ mob/var/next_pain_time = 0
 // partname is the name of a body part
 // amount is a num from 1 to 100
 mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0)
-	if(stat >= DEAD || (world.time < next_pain_time && !force)) 
+	if(stat >= DEAD || (world.time < next_pain_time && !force))
 		return
-	if(pain.reduction_pain < 0) 
+	if(pain.reduction_pain < 0)
 		return //any pain reduction
 
 	var/msg
@@ -60,11 +60,11 @@ mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0
 // message is the custom message to be displayed
 // flash_strength is 0 for weak pain flash, 1 for strong pain flash
 mob/living/carbon/human/proc/custom_pain(message, flash_strength)
-	if(stat >= UNCONSCIOUS) 
+	if(stat >= UNCONSCIOUS)
 		return
-	if(!pain.feels_pain) 
+	if(!pain.feels_pain)
 		return
-	if(pain.reduction_pain <= PAIN_REDUCTION_HEAVY) 
+	if(pain.reduction_pain <= PAIN_REDUCTION_HEAVY)
 		return //anything as or more powerful than tramadol
 
 	var/msg = SPAN_DANGER("[message]")
@@ -77,11 +77,11 @@ mob/living/carbon/human/proc/custom_pain(message, flash_strength)
 	next_pain_time = world.time + 100
 
 mob/living/carbon/human/proc/handle_pain()
-	if(stat >= UNCONSCIOUS) 
+	if(stat >= UNCONSCIOUS)
 		return 	// not when sleeping
-	if(!pain.feels_pain) 
+	if(!pain.feels_pain)
 		return
-	if(pain.reduction_pain <= PAIN_REDUCTION_HEAVY) 
+	if(pain.reduction_pain <= PAIN_REDUCTION_HEAVY)
 		return //anything as or more powerful than tramadol
 
 	var/maxdam = 0
@@ -92,31 +92,21 @@ mob/living/carbon/human/proc/handle_pain()
 		Amputated, dead, or missing limbs don't cause pain messages.
 		Broken limbs that are also splinted do not cause pain messages either.
 		*/
-		if(E.status & (LIMB_DESTROYED)) 
+		if(E.status & (LIMB_DESTROYED))
 			continue
 
 		dam = E.get_damage()
-		if(E.status & LIMB_BROKEN & LIMB_SPLINTED)
-			dam -= E.min_broken_damage //If they have a splinted body part, and it's broken, we want to subtract bone break damage.
-		// make the choice of the organ depend on damage,
-		// but also sometimes use one of the less damaged ones
+
 		if(dam > maxdam && (maxdam == 0 || prob(70)) )
 			damaged_organ = E
 			maxdam = dam
-	
+
 	if(maxdam == 0)
 		return
 
 	if(damaged_organ)
 		pain(damaged_organ.display_name, maxdam, 0)
 
-
-	// Damage to internal organs hurts a lot.
-	var/obj/limb/parent
-	for(var/datum/internal_organ/I in internal_organs)
-		if(I.damage > 2) if(prob(2))
-			parent = get_limb(I.parent_limb)
-			custom_pain("You feel a sharp pain in your [parent.display_name]!", 1)
 
 	var/toxDamageMessage = null
 	var/toxMessageProb = 1
@@ -138,5 +128,5 @@ mob/living/carbon/human/proc/handle_pain()
 			toxMessageProb = 5
 			toxDamageMessage = "Your body aches all over, it's driving you mad!"
 
-	if(toxDamageMessage && prob(toxMessageProb)) 
+	if(toxDamageMessage && prob(toxMessageProb))
 		custom_pain(toxDamageMessage, toxin_damage >= 35)

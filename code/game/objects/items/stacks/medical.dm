@@ -1,3 +1,7 @@
+#define GROUP_SPLINTS "splint"
+#define GROUP_BANDAGES "bandage"
+#define GROUP_OINTMENTS "ointment"
+
 /obj/item/stack/medical
 	name = "medical pack"
 	singular_name = "medical pack"
@@ -7,8 +11,32 @@
 	w_class = SIZE_SMALL
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 20
-	var/heal_brute = 0
-	var/heal_burn = 0
+	var/onlimb_health = 10
+	var/brute_autoheal //damage healed per life tick
+	var/burn_autoheal
+	var/limb_integrity_levels_neutralized = NO_FLAGS
+
+	var/application_sound = 'sound/handling/bandage.ogg'
+	var/required_skill = SKILL_MEDICAL_MEDIC
+	var/low_skill_delay = 2 //IN SECONDS
+	var/regular_delay = 0
+	var/heals_prosthesis = FALSE
+	//onmob icon
+	var/icon/cached_limb_icon
+	var/icon_state_prefix
+
+/obj/item/stack/medical/Destroy()
+	if(istype(loc, /obj/limb))
+		var/obj/limb/L = loc
+		L.remove_medical_item(src)
+	. = ..()
+
+
+/obj/item/stack/medical/proc/take_onlimb_damage(brute, burn)
+	onlimb_health = max(0, onlimb_health - brute - burn)
+	if(!onlimb_health)
+		return FALSE
+	return TRUE
 
 /obj/item/stack/medical/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(!istype(M))
@@ -25,63 +53,32 @@
 	if(!affecting)
 		to_chat(user, SPAN_WARNING("[H] has no [parse_zone(user.zone_selected)]!"))
 		return 1
-
-	if(affecting.display_name == "head")
-		if(H.head && istype(H.head,/obj/item/clothing/head/helmet/space))
-			to_chat(user, SPAN_WARNING("You can't apply [src] through [H.head]!"))
+	if(heals_prosthesis)
+		if(!(affecting.status & LIMB_ROBOT))
+			to_chat(user, SPAN_WARNING("This isn't useful at all on an organic limb."))
 			return 1
 	else
-		if(H.wear_suit && istype(H.wear_suit,/obj/item/clothing/suit/space))
-			to_chat(user, SPAN_WARNING("You can't apply [src] through [H.wear_suit]!"))
+		if(affecting.status & LIMB_ROBOT)
+			to_chat(user, SPAN_WARNING("This isn't useful at all on a robotic limb."))
 			return 1
 
-	if(affecting.status & LIMB_ROBOT)
-		to_chat(user, SPAN_WARNING("This isn't useful at all on a robotic limb."))
-		return 1
+	if(affecting.apply_medical_item(src, user))
+		return TRUE
 
-	H.UpdateDamageIcon()
+/*
+
+	da items
+
+*/
 
 /obj/item/stack/medical/bruise_pack
 	name = "roll of gauze"
 	singular_name = "medical gauze"
 	desc = "Some sterile gauze to wrap around bloody stumps and lacerations."
 	icon_state = "brutepack"
-	
+	brute_autoheal = 0.2
 	stack_id = "bruise pack"
 
-/obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if(..())
-		return 1
-
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-
-		if(user.skills)
-			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-				if(!do_after(user, 10, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, M, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-					return 1
-
-		var/obj/limb/affecting = H.get_limb(user.zone_selected)
-
-		if(affecting.surgery_open_stage == 0)
-			if(!affecting.bandage())
-				to_chat(user, SPAN_WARNING("The wounds on [M]'s [affecting.display_name] have already been bandaged."))
-				return 1
-			else
-				var/possessive = "[user == M ? "your" : "[M]'s"]"
-				var/possessive_their = "[user == M ? "their" : "[M]'s"]"
-				user.affected_message(M,
-					SPAN_HELPFUL("You <b>bandage</b> [possessive] <b>[affecting.display_name]</b>."),
-					SPAN_HELPFUL("[user] <b>bandages</b> your <b>[affecting.display_name]</b>."),
-					SPAN_NOTICE("[user] bandages [possessive_their] [affecting.display_name]."))
-				use(1)
-				playsound(user, 'sound/handling/bandage.ogg', 25, 1, 2)
-		else
-			if(H.can_be_operated_on()) //Checks if mob is lying down on table for surgery
-				if(do_surgery(H,user,src))
-					return
-			else
-				to_chat(user, SPAN_NOTICE("The [affecting.display_name] is cut open, you'll need more than a bandage!"))
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
@@ -89,43 +86,9 @@
 	gender = PLURAL
 	singular_name = "ointment"
 	icon_state = "ointment"
-	heal_burn = 1
-	
+	burn_autoheal = 0.2
 	stack_id = "ointment"
-
-/obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if(..())
-		return 1
-
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-
-		if(user.skills)
-			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-				if(!do_after(user, 10, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, M, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-					return 1
-
-		var/obj/limb/affecting = H.get_limb(user.zone_selected)
-
-		if(affecting.surgery_open_stage == 0)
-			if(!affecting.salve())
-				to_chat(user, SPAN_WARNING("The wounds on [M]'s [affecting.display_name] have already been salved."))
-				return 1
-			else
-				var/possessive = "[user == M ? "your" : "[M]'s"]"
-				var/possessive_their = "[user == M ? "their" : "[M]'s"]"
-				user.affected_message(M,
-					SPAN_HELPFUL("You <b>salve the wounds</b> on [possessive] <b>[affecting.display_name]</b>."),
-					SPAN_HELPFUL("[user] <b>salves the wounds</b> on your <b>[affecting.display_name]</b>."),
-					SPAN_NOTICE("[user] salves the wounds [possessive_their] [affecting.display_name]."))
-				use(1)
-				playsound(user, 'sound/handling/ointment_spreading.ogg', 25, 1, 2)				
-		else
-			if (H.can_be_operated_on())        //Checks if mob is lying down on table for surgery
-				if (do_surgery(H,user,src))
-					return
-			else
-				to_chat(user, SPAN_NOTICE("The [affecting.display_name] is cut open, you'll need more than a bandage!"))
+	application_sound = 'sound/handling/ointment_spreading.ogg'
 
 
 /obj/item/stack/medical/advanced/bruise_pack
@@ -133,51 +96,9 @@
 	singular_name = "advanced trauma kit"
 	desc = "An advanced trauma kit for severe injuries."
 	icon_state = "traumakit"
-	heal_brute = 12
-	
+	brute_autoheal = 0.6
 	stack_id = "advanced bruise pack"
-
-
-
-/obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M, mob/user)
-	if(..())
-		return 1
-
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-
-		var/heal_amt = heal_brute
-		if(user.skills)
-			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC)) //untrained marines have a hard time using it
-				to_chat(user, SPAN_WARNING("You start fumbling with [src]."))
-				if(!do_after(user, 30, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, M, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-					return
-				heal_amt = 3 //non optimal application means less healing
-
-		var/obj/limb/affecting = H.get_limb(user.zone_selected)
-
-		if(affecting.surgery_open_stage == 0)
-			var/bandaged = affecting.bandage()
-
-			if(!bandaged)
-				to_chat(user, SPAN_WARNING("The wounds on [M]'s [affecting.display_name] have already been treated."))
-				return 1
-			else
-				var/possessive = "[user == M ? "your" : "[M]'s"]"
-				var/possessive_their = "[user == M ? "their" : "[M]'s"]"
-				user.affected_message(M,
-					SPAN_HELPFUL("You <b>clean and seal</b> the wounds on [possessive] <b>[affecting.display_name]</b> with bioglue."),
-					SPAN_HELPFUL("[user] <b>cleans and seals</b> the wounds on your <b>[affecting.display_name]</b> with bioglue."),
-					SPAN_NOTICE("[user] cleans and seals the wounds on [possessive_their] [affecting.display_name] with bioglue."))
-			if(bandaged)
-				H.apply_damage(-heal_amt, BRUTE, affecting)
-				use(1)
-		else
-			if(H.can_be_operated_on())        //Checks if mob is lying down on table for surgery
-				if(do_surgery(H, user, src))
-					return
-			else
-				to_chat(user, SPAN_NOTICE("The [affecting.display_name] is cut open, you'll need more than a bandage!"))
+	low_skill_delay = 3
 
 /obj/item/stack/medical/advanced/bruise_pack/tajaran
 	name = "\improper S'rendarr's Hand leaf"
@@ -185,7 +106,6 @@
 	desc = "A poultice made of soft leaves that is rubbed on bruises."
 	icon = 'icons/obj/items/harvest.dmi'
 	icon_state = "shandp"
-	heal_brute = 15
 	stack_id = "Hand leaf"
 
 /obj/item/stack/medical/advanced/ointment/tajaran
@@ -194,7 +114,6 @@
 	desc = "A poultice made of cold, blue petals that is rubbed on burns."
 	icon = 'icons/obj/items/harvest.dmi'
 	icon_state = "mtearp"
-	heal_burn = 15
 	stack_id = "Tear petals"
 
 /obj/item/stack/medical/advanced/ointment
@@ -202,47 +121,9 @@
 	singular_name = "advanced burn kit"
 	desc = "An advanced treatment kit for severe burns."
 	icon_state = "burnkit"
-	heal_burn = 12
-	
+	burn_autoheal = 0.8
 	stack_id = "advanced burn kit"
-
-/obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if(..())
-		return 1
-
-	if(istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-
-		var/heal_amt = heal_burn
-		if(user.skills)
-			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC)) //untrained marines have a hard time using it
-				to_chat(user, SPAN_WARNING("You start fumbling with [src]."))
-				if(!do_after(user, 30, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, M, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-					return
-				heal_amt = 3 //non optimal application means less healing
-
-		var/obj/limb/affecting = H.get_limb(user.zone_selected)
-
-		if(affecting.surgery_open_stage == 0)
-			if(!affecting.salve())
-				to_chat(user, SPAN_WARNING("The wounds on [M]'s [affecting.display_name] have already been salved."))
-				return 1
-			else
-				var/possessive = "[user == M ? "your" : "[M]'s"]"
-				var/possessive_their = "[user == M ? "their" : "[M]'s"]"
-				user.affected_message(M,
-					SPAN_HELPFUL("You <b>cover the wounds</b> on [possessive] <b>[affecting.display_name]</b> with regenerative membrane."),
-					SPAN_HELPFUL("[user] <b>covers the wounds</b> on your <b>[affecting.display_name]</b> with regenerative membrane."),
-					SPAN_NOTICE("[user] covers the wounds on [possessive_their] [affecting.display_name] with regenerative membrane."))
-
-				H.apply_damage(-heal_amt, BURN, affecting)
-				use(1)
-		else
-			if(H.can_be_operated_on()) //Checks if mob is lying down on table for surgery
-				if(do_surgery(H,user,src))
-					return
-			else
-				to_chat(user, SPAN_NOTICE("The [affecting.display_name] is cut open, you'll need more than a bandage!"))
+	low_skill_delay = 3
 
 /obj/item/stack/medical/splint
 	name = "medical splints"
@@ -252,50 +133,11 @@
 	amount = 5
 	max_amount = 5
 	stack_id = "splint"
+	limb_integrity_levels_neutralized = LIMB_INTEGRITY_CONCERNING
+	application_sound = 'sound/handling/splint1.ogg'
 
-/obj/item/stack/medical/splint/attack(mob/living/carbon/M, mob/user)
-	if(..()) return 1
+	low_skill_delay = 0
+	regular_delay = 5
 
-	if(user.action_busy)
-		return
 
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/limb/affecting = H.get_limb(user.zone_selected)
-		var/limb = affecting.display_name
 
-		if(!(affecting.name in list("l_arm", "r_arm", "l_leg", "r_leg", "r_hand", "l_hand", "r_foot", "l_foot", "chest", "groin", "head")))
-			to_chat(user, SPAN_WARNING("You can't apply a splint there!"))
-			return
-
-		if(affecting.status & LIMB_DESTROYED)
-			var/message = SPAN_WARNING("[user == M ? "You don't" : "[M] doesn't"] have \a [limb]!")
-			to_chat(user, message)
-			return
-
-		if(affecting.status & LIMB_SPLINTED)
-			var/message = "[user == M ? "Your" : "[M]'s"]"
-			to_chat(user, SPAN_WARNING("[message] [limb] is already splinted!"))
-			return
-
-		if(M != user)
-			var/possessive = "[user == M ? "your" : "[M]'s"]"
-			var/possessive_their = "[user == M ? "their" : "[M]'s"]"
-			user.affected_message(M,
-				SPAN_HELPFUL("You <b>start splinting</b> [possessive] <b>[affecting.display_name]</b>."),
-				SPAN_HELPFUL("[user] <b>starts splinting</b> your <b>[affecting.display_name]</b>."),
-				SPAN_NOTICE("[user] starts splinting [possessive_their] [affecting.display_name]."))
-		else
-			if((!user.hand && (affecting.name in list("r_arm", "r_hand"))) || (user.hand && (affecting.name in list("l_arm", "l_hand"))))
-				to_chat(user, SPAN_WARNING("You can't apply a splint to the \
-					[affecting.name == "r_hand"||affecting.name == "l_hand" ? "hand":"arm"] you're using!"))
-				return
-			// Self-splinting
-			user.affected_message(M,
-				SPAN_HELPFUL("You <b>start splinting</b> your <b>[affecting.display_name]</b>."),
-				,
-				SPAN_NOTICE("[user] starts splinting their [affecting.display_name]."))
-
-		if(affecting.apply_splints(src, user, M)) // Referenced in external organ helpers.
-			use(1)
-			playsound(user, 'sound/handling/splint1.ogg', 25, 1, 2)	

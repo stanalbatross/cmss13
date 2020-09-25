@@ -147,8 +147,6 @@
 
 				if(affecting)
 					affecting.take_damage(damage, 0)
-					if(affecting.parent)
-						affecting.parent.add_autopsy_data("[plant_damage_noun]", damage)
 				else
 					H.apply_damage(damage, BRUTE)
 

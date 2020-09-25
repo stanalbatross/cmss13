@@ -46,8 +46,7 @@
 			//Chemicals in the body
 			handle_chemicals_in_body()
 
-			//Organs and blood
-			handle_organs()
+			//Blood
 			handle_blood()
 
 			//Random events (vomiting etc)
@@ -73,6 +72,8 @@
 	else if(stat != DEAD)
 		handle_stasis_bag()
 
+	//Handle limbs and wounds
+	handle_limbs()
 
 	stabilize_body_temperature() //Body temperature adjusts itself (self-regulation) (even when dead)
 

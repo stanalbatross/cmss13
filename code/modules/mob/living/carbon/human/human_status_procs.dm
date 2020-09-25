@@ -14,6 +14,7 @@
 		if(round(amount) && src.contents && src.contents.len)
 			for(var/obj/item/weapon/wristblades/W in src.contents)
 				W = new /obj/item/weapon/wristblades
+	amount += bonus_knockdown
 	..()
 
 /mob/living/carbon/human/KnockOut(var/amount, var/force = FALSE)

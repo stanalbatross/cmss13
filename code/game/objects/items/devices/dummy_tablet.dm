@@ -14,7 +14,7 @@
 
 /obj/item/device/professor_dummy_tablet/proc/link_mob(mob/living/carbon/human/H)
     linked_dummy = H
-
+/*
 /obj/item/device/professor_dummy_tablet/attack_self(mob/user as mob)
     interact(user)
 
@@ -201,3 +201,4 @@
     linked_dummy.emote("scream")
     updateUsrDialog()
     return TRUE
+*/

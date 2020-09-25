@@ -344,7 +344,6 @@ var/list/datum/mob_hud/huds = list(
 		holder3.icon_state = "hudsynth"
 	else
 		var/revive_enabled = check_tod() && is_revivable()
-		var/datum/internal_organ/heart/heart = islist(internal_organs_by_name) ? internal_organs_by_name["heart"] : null
 
 		var/holder2_set = 0
 		if(hivenumber)
@@ -396,7 +395,7 @@ var/list/datum/mob_hud/huds = list(
 						holder3.icon_state = "huddead"
 						holder2_set = 1
 			else
-				if(heart && (heart.is_broken() && check_tod())) // broken heart icon
+				if(!check_tod()) // broken heart icon
 					holder.icon_state = "huddeadheart"
 					if(!holder2_set)
 						holder2.icon_state = "huddeadheart"

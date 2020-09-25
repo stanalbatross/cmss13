@@ -42,6 +42,7 @@
 	var/recalculate_move_delay = TRUE // Whether move delay needs to be recalculated, on by default so that new mobs actually get movement delay calculated upon creation
 	var/monkeyizing = null	//Carbon
 	var/hand = null
+	var/eye_damage
 	var/eye_blind = null	//Carbon
 	var/eye_blurry = null	//Carbon
 	var/ear_deaf = null		//Carbon

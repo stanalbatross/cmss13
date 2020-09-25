@@ -1126,27 +1126,6 @@ var/const/MAX_SAVE_SLOTS = 10
 								organ_data[second_limb] = "cyborg"
 							if(third_limb && organ_data[third_limb] == "amputated")
 								organ_data[third_limb] = null
-				if("organs")
-					var/organ_name = input(user, "Which internal function do you want to change?") as null|anything in list("Heart", "Eyes")
-					if(!organ_name) return
-
-					var/organ = null
-					switch(organ_name)
-						if("Heart")
-							organ = "heart"
-						if("Eyes")
-							organ = "eyes"
-
-					var/new_state = input(user, "What state do you wish the organ to be in?") as null|anything in list("Normal","Assisted","Mechanical")
-					if(!new_state) return
-
-					switch(new_state)
-						if("Normal")
-							organ_data[organ] = null
-						if("Assisted")
-							organ_data[organ] = "assisted"
-						if("Mechanical")
-							organ_data[organ] = "mechanical"
 
 				if("skin_style")
 					var/skin_style_name = input(user, "Select a new skin style") as null|anything in list("default1", "default2", "default3")
@@ -1382,13 +1361,6 @@ var/const/MAX_SAVE_SLOTS = 10
 //				O.destspawn = 1
 			if(status == "cyborg")
 				O.status |= LIMB_ROBOT
-		else
-			var/datum/internal_organ/I = character.internal_organs_by_name[name]
-			if(I)
-				if(status == "assisted")
-					I.mechassist()
-				else if(status == "mechanical")
-					I.mechanize()
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES
@@ -1446,13 +1418,6 @@ var/const/MAX_SAVE_SLOTS = 10
 		if(O)
 			if(status == "cyborg")
 				O.status |= LIMB_ROBOT
-		else
-			var/datum/internal_organ/I = character.internal_organs_by_name[name]
-			if(I)
-				if(status == "assisted")
-					I.mechassist()
-				else if(status == "mechanical")
-					I.mechanize()
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES

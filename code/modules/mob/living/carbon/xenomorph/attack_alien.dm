@@ -123,8 +123,9 @@
 			//The normal attack proceeds
 			playsound(loc, "alien_claw_flesh", 25, 1)
 			M.visible_message(SPAN_DANGER("[M] slashes [src]!"), \
-			SPAN_DANGER("You slash [src]!"), null, null, CHAT_TYPE_XENO_COMBAT)
-
+			SPAN_DANGER("You slash [src]'s [affecting.display_name]!"), null, null, CHAT_TYPE_XENO_COMBAT)
+			if(affecting.integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CONCERNING)
+				to_chat(M, SPAN_XENO("You sense some weakness in [src]'s [affecting.display_name]"))
 			last_damage_source = initial(M.name)
 			last_damage_mob = M
 

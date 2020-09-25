@@ -28,9 +28,6 @@
 		if(nutrition > 0 && stat != 2)
 			nutrition = max (0, nutrition - HUNGER_FACTOR)
 
-
-		handle_trace_chems()
-
 	else nutrition = NUTRITION_NORMAL //synthetics are never hungry
 
 	//updatehealth() moved to Life()

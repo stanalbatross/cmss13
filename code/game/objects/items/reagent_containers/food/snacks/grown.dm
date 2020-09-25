@@ -158,9 +158,7 @@
 /obj/item/reagent_container/food/snacks/grown/mtear/attack_self(mob/user as mob)
 	if(istype(user.loc,/turf/open/space))
 		return
-	var/obj/item/stack/medical/advanced/ointment/tajaran/poultice = new /obj/item/stack/medical/advanced/ointment/tajaran(user.loc)
 
-	poultice.heal_burn = potency
 	qdel(src)
 
 	to_chat(user, SPAN_NOTICE("You mash the petals into a poultice."))
@@ -168,9 +166,7 @@
 /obj/item/reagent_container/food/snacks/grown/shand/attack_self(mob/user as mob)
 	if(istype(user.loc,/turf/open/space))
 		return
-	var/obj/item/stack/medical/advanced/bruise_pack/tajaran/poultice = new /obj/item/stack/medical/advanced/bruise_pack/tajaran(user.loc)
 
-	poultice.heal_brute = potency
 	qdel(src)
 
 	to_chat(user, SPAN_NOTICE("You mash the leaves into a poultice."))

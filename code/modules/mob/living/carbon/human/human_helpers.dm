@@ -187,16 +187,10 @@
 
 
 /mob/living/carbon/human/has_brain()
-	var/datum/internal_organ/brain = LAZYACCESS(internal_organs_by_name, "brain")
-	if(istype(brain))
-		return TRUE
-	return FALSE
+	return TRUE
 
 /mob/living/carbon/human/has_eyes()
-	var/datum/internal_organ/eyes = LAZYACCESS(internal_organs_by_name, "eyes")
-	if(istype(eyes) && !eyes.cut_away)
-		return TRUE
-	return FALSE
+	return TRUE
 
 
 /mob/living/carbon/human/is_mob_restrained(var/check_grab = 1)
@@ -329,23 +323,10 @@
 	return FALSE
 
 /mob/living/carbon/human/proc/get_broken_limbs()
-	var/list/BL = list()
-	for(var/obj/limb/L in limbs)
-		if(L.status & LIMB_BROKEN)
-			BL += L.display_name
-	return BL
 
 /mob/living/carbon/human/proc/has_broken_limbs()
-	for(var/obj/limb/L in limbs)
-		if(L.status & LIMB_BROKEN)
-			return TRUE
-	return FALSE
 
 /mob/living/carbon/human/proc/has_splinted_limbs()
-	for(var/obj/limb/L in limbs)
-		if(L.status & LIMB_SPLINTED)
-			return TRUE
-	return FALSE
 
 /mob/living/carbon/human/proc/has_foreign_object()
 	for(var/obj/limb/L in limbs)

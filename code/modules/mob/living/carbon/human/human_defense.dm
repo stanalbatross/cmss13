@@ -152,9 +152,6 @@ Contains most of the procs that are called when a mob is attacked by something
 	for(var/obj/limb/O in limbs)
 		if(O.status & LIMB_DESTROYED)	continue
 		O.emp_act(severity)
-		for(var/datum/internal_organ/I in O.internal_organs)
-			if(I.robotic == 0)	continue
-			I.emp_act(severity)
 	..()
 
 

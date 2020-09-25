@@ -131,7 +131,7 @@
 	M.drowsyness = min(M.drowsyness + potency,15*potency)
 	M.reagent_move_delay_modifier += potency
 	M.recalculate_move_delay = TRUE
-	if(prob(10)) 
+	if(prob(10))
 		M.emote(pick("yawn","gasp"))
 
 /datum/chem_property/negative/hemolytic/process_critical(mob/living/M, var/potency = 1)
@@ -151,30 +151,37 @@
 	if(!L || L.status & LIMB_ROBOT)
 		return
 	..()
+	/*
 	if(prob(5*potency))
 		var/datum/wound/internal_bleeding/I = new (0)
 		L.add_bleeding(I, TRUE)
 		L.wounds += I
+	*/
 	if(prob(5*potency))
 		spawn L.owner.emote("me", 1, "coughs up blood!")
 		L.owner.drip(10)
 
 /datum/chem_property/negative/hemorrhaging/process_overdose(mob/living/M, var/potency = 1)
+	/*
 	if(!ishuman(M))
 		return
 	var/mob/living/carbon/human/H = M
 	var/obj/limb/L = pick(H.limbs)
+
 	if(L.internal_organs)
 		var/datum/internal_organ/O = pick(L.internal_organs)//Organs can't bleed, so we just damage them
 		O.damage += 0.5*potency
+	*/
 
 /datum/chem_property/negative/hemorrhaging/process_critical(mob/living/M, var/potency = 1)
+	/*
 	if(prob(20*potency) && ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/limb/L = pick(H.limbs)
 		var/datum/wound/internal_bleeding/I = new (0)
 		L.add_bleeding(I, TRUE)
 		L.wounds += I
+	*/
 
 /datum/chem_property/negative/carcinogenic
 	name = PROPERTY_CARCINOGENIC
@@ -257,9 +264,7 @@
 		return
 	..()
 	var/mob/living/carbon/human/H = M
-	var/datum/internal_organ/eyes/L = H.internal_organs_by_name["eyes"]
-	if(L)
-		L.damage += 0.75*potency
+	H.eye_damage += 0.75*potency
 
 /datum/chem_property/negative/oculotoxic/process_overdose(mob/living/M, var/potency = 1)
 	M.sdisabilities |= BLIND

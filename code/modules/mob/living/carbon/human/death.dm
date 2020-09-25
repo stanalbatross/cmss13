@@ -35,7 +35,7 @@
 /mob/living/carbon/human/dust_animation()
 	new /obj/effect/overlay/temp/dust_animation(loc, src, "dust-h")
 
-/mob/living/carbon/human/death(var/cause, var/gibbed)
+/mob/living/carbon/human/death(var/cause, var/gibbed, perma)
 	if(stat == DEAD)
 		return
 	GLOB.alive_human_list -= src
@@ -44,6 +44,9 @@
 		disable_lights()
 		disable_special_items()
 		disable_headsets() //Disable radios for dead people to reduce load
+	if(perma)
+		status_flags |= PERMANENTLY_DEAD
+
 	if(pulledby && isXeno(pulledby)) // Xenos lose grab on dead humans
 		pulledby.stop_pulling()
 	//Handle species-specific deaths.
@@ -74,3 +77,4 @@
 				to_chat(last_living_human, SPAN_ANNOUNCEMENT_HEADER_BLUE("Panic creeps up your spine. You realize that you are the last survivor."))
 
 	return ..(cause, gibbed, species.death_message)
+

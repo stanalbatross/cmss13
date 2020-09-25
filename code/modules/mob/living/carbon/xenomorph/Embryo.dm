@@ -253,13 +253,9 @@
 			var/mob/living/carbon/human/H = victim
 			H.last_damage_source = "chestbursting"
 			H.last_damage_mob = null
-			var/datum/internal_organ/O
-			var/i
-			for(i in list("heart","lungs")) //This removes (and later garbage collects) both organs. No heart means instant death.
-				O = H.internal_organs_by_name[i]
-				H.internal_organs_by_name -= i
-				H.internal_organs -= O
-		victim.death("chestbursting") // Certain species were still surviving bursting (predators), DEFINITELY kill them this time.
+			H.death("chestbursting", perma = TRUE)
+		else
+			victim.death("chestbursting") // Certain species were still surviving bursting (predators), DEFINITELY kill them this time.
 		victim.chestburst = 2
 		victim.update_burst()
 

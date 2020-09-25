@@ -17,21 +17,6 @@
 
 		var/b_volume = blood_volume
 
-		// Damaged heart virtually reduces the blood volume, as the blood isn't
-		// being pumped properly anymore.
-		if(species && species.has_organ["heart"])
-			var/datum/internal_organ/heart/heart = internal_organs_by_name["heart"]
-			if(!heart)
-				b_volume = 0
-			else if(reagents.has_reagent("peridaxon"))
-				b_volume *= 1
-			else if(heart.damage > 1 && heart.damage < heart.min_bruised_damage)
-				b_volume *= 0.8
-			else if(heart.damage >= heart.min_bruised_damage && heart.damage < heart.min_broken_damage)
-				b_volume *= 0.6
-			else if(heart.damage >= heart.min_broken_damage && heart.damage < INFINITY)
-				b_volume *= 0.3
-
 	//Effects of bloodloss
 		switch(b_volume)
 			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)

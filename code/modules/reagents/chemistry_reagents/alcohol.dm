@@ -64,6 +64,7 @@
 	if(d >= pass_out)
 		M:knocked_out = max(M:knocked_out, 20)
 		M:drowsyness  = max(M:drowsyness, 30)
+		/*
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			var/datum/internal_organ/liver/L = H.internal_organs_by_name["liver"]
@@ -72,6 +73,7 @@
 			else if(istype(L))
 				L.take_damage(0.1, 1)
 			H.apply_damage(0.1, TOX)
+		*/
 
 /datum/reagent/ethanol/reaction_obj(var/obj/O, var/volume)
 	if(istype(O,/obj/item/paper))
@@ -313,6 +315,7 @@
 			M.druggy = max(M.druggy, 60)
 			if(prob(10)) M.emote(pick("twitch","giggle"))
 			if(prob(30)) M.apply_damage(2, TOX)
+			/*
 			if(prob(5)) if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/datum/internal_organ/heart/L = H.internal_organs_by_name["heart"]
@@ -324,6 +327,7 @@
 				var/datum/internal_organ/heart/L = H.internal_organs_by_name["heart"]
 				if(L && istype(L))
 					L.take_damage(100, 0)
+			*/
 	holder.remove_reagent(src.id, FOOD_METABOLISM)
 	return 1
 

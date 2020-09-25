@@ -345,17 +345,13 @@
 	if(volume > overdose)
 		if(!ishuman(M))
 			return
-		var/mob/living/carbon/human/H = M
-		var/datum/internal_organ/heart/E = H.internal_organs_by_name["heart"]
-		if(prob(5) && E)
-			E.damage += 0.1
+		if(prob(5))
 			M.emote(pick("twitch", "blink_r", "shiver"))
 		if(volume > overdose_critical)
 			M.apply_damage(2, TOX) //Overdose starts getting bad
 			M.make_jittery(10)
 			M.KnockOut(20)
-			if(prob(10) && E)
-				E.damage += 0.5
+			if(prob(10))
 				M.emote(pick("twitch", "blink_r", "shiver"))
 
 /datum/reagent/drink/coffee/icecoffee

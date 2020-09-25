@@ -21,12 +21,6 @@
 	H.apply_damage(100, BRUTE)
 	H.apply_damage(100, BRUTE)
 	if(xenovictim)
-		var/datum/internal_organ/O
-		var/i
-		for(i in list("heart","lungs"))
-			O = H.internal_organs_by_name[i]
-			H.internal_organs_by_name -= i
-			H.internal_organs -= O
 		H.chestburst = 2
 		H.update_burst()
 		//buckle to nest

@@ -125,6 +125,9 @@
 /// From /atom/movable/proc/launch_towards
 #define COMSIG_MOVABLE_PRE_THROW "movable_pre_throw"
 	#define COMPONENT_CANCEL_THROW (1<<0)
+///from base of obj/item/attack(): (/mob/living/target, /mob/living/user)
+#define COMSIG_ITEM_ATTACK "item_attack"
+	#define COMPONENT_CANCEL_ATTACK_CHAIN (1<<0)
 
 ///from /obj/item/device/agents/floppy_disk/proc/insert_drive
 #define COMSIG_AGENT_DISK_INSERTED "agent_disk_inserted"

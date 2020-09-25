@@ -144,11 +144,13 @@
 	M.apply_damage(0.5*potency, TOX)
 
 /datum/chem_property/neutral/alcoholic/process_critical(mob/living/M, var/potency = 1)
+	/*
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/datum/internal_organ/liver/L = H.internal_organs_by_name["liver"]
 		if(L)
 			L.damage += 0.5*potency
+	*/
 
 /datum/chem_property/neutral/hallucinogenic
 	name = PROPERTY_HALLUCINOGENIC

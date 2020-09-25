@@ -11,13 +11,11 @@
 #define POCKET_STRIP_DELAY 20
 
 ///////////////////LIMB DEFINES///////////////////
-#define LIMB_BROKEN 1
-#define LIMB_DESTROYED 2 //limb is missing
-#define LIMB_ROBOT 4
-#define LIMB_SPLINTED 8
-#define LIMB_MUTATED 16 //limb is deformed by mutations
-#define LIMB_AMPUTATED 32 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
-#define LIMB_REPAIRED 64 //we just repaired the bone, stops the gelling after setting
+#define LIMB_DESTROYED 1 //limb is missing
+#define LIMB_ROBOT 2
+#define LIMB_MUTATED 4 //limb is deformed by mutations
+#define LIMB_AMPUTATED 8 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
+#define LIMB_REPAIRED 16 //we just repaired the bone, stops the gelling after setting
 
 ///////////////SURGERY DEFINES///////////////
 #define SPECIAL_SURGERY_INVALID	"special_surgery_invalid"
@@ -69,6 +67,24 @@
 #define LIMB_PRINTING_TIME 550
 #define LIMB_METAL_AMOUNT 125
 
+#define WOUND_TIER_MILD 1
+#define WOUND_TIER_GRAVE 2
+
+#define MINIMUM_AUTOHEAL_HEALTH 50
+#define MINIMUM_AUTOHEAL_DAMAGE_INTERVAL 10 SECONDS
+
+#define LIMB_BLEEDING_DAMAGE_THRESHOLD 10
+
+#define HUMAN_EYE_BRUISE_DMG 15
+#define HUMAN_EYE_BROKEN_DMG 35
+#define HUMAN_EAR_BRUISE_DMG 15
+#define HUMAN_EAR_BROKEN_DMG 35
+
+#define EYE_PROTECTION_NO_EYES 2
+
+#define SIDE_LEFT 1
+#define SIDE_RIGHT 2
+
 // Surgery chance modifiers
 #define SURGERY_MULTIPLIER_SMALL 	0.10
 #define SURGERY_MULTIPLIER_MEDIUM 	0.20
@@ -81,6 +97,29 @@
 #define COMMAND_ORDER_MOVE 		"move"
 #define COMMAND_ORDER_FOCUS 	"focus"
 #define COMMAND_ORDER_HOLD 		"hold"
+
+//Limb stuff
+#define LIMB_INTEGRITY_AUTOHEAL_THRESHOLD 39
+#define MAX_LIMB_INTEGRITY 200
+#define MINIMUM_AUTOHEAL_DAMAGE_INTERVAL 10 SECONDS
+#define MINIMUM_AUTOHEAL_HEALTH 50
+
+#define LIMB_INTEGRITY_PERFECT      (0)
+#define LIMB_INTEGRITY_OKAY         (1 << 0)
+#define LIMB_INTEGRITY_CONCERNING   (1 << 1)
+#define LIMB_INTEGRITY_SERIOUS      (1 << 2)
+#define LIMB_INTEGRITY_CRITICAL     (1 << 3)
+#define LIMB_INTEGRITY_NONE         (1 << 4)
+
+#define LIMB_INTEGRITY_THRESHOLD_COMPLETE 0 //0-39
+#define LIMB_INTEGRITY_THRESHOLD_OKAY 40 //40-69
+#define LIMB_INTEGRITY_THRESHOLD_CONCERNING 70 //70-99
+#define LIMB_INTEGRITY_THRESHOLD_SERIOUS 100 //100-139
+#define LIMB_INTEGRITY_THRESHOLD_CRITICAL 140 //140-199
+#define LIMB_INTEGRITY_THRESHOLD_NONE 200
+
+#define MOVEMENT_LIMBS list("l_leg", "r_leg", "l_hand", "r_hand")
+#define HANDLING_LIMBS list("l_arm", "r_arm", "l_foot", "r_foot")
 
 //Human Overlays Indexes used in update_icons/////////
 #define UNDERWEAR_LAYER			37

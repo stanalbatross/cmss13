@@ -34,13 +34,7 @@
 		return FALSE	//godmode
 
 	if(species.has_organ["brain"])
-		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
-		if(sponge)
-			sponge.take_damage(amount)
-			sponge.damage = Clamp(sponge.damage, 0, maxHealth*2)
-			brainloss = sponge.damage
-		else
-			brainloss = 200
+		brainloss = Clamp(brainloss + amount, 0, maxHealth*2)
 	else
 		brainloss = 0
 
@@ -50,12 +44,7 @@
 		return FALSE	//godmode
 
 	if(species.has_organ["brain"])
-		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
-		if(sponge)
-			sponge.damage = Clamp(amount, 0, maxHealth*2)
-			brainloss = sponge.damage
-		else
-			brainloss = 200
+		brainloss = Clamp(amount, 0, maxHealth*2)
 	else
 		brainloss = 0
 
@@ -63,15 +52,7 @@
 
 	if(status_flags & GODMODE)
 		return FALSE	//godmode
-
-	if(species.has_organ["brain"])
-		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
-		if(istype(sponge)) //Make sure they actually have a brain
-			brainloss = min(sponge.damage,maxHealth*2)
-		else
-			brainloss = 50 //No brain!
-	else
-		brainloss = 0
+		
 	return brainloss
 
 //These procs fetch a cumulative total damage from all limbs
@@ -329,15 +310,6 @@ This function restores all limbs.
 	for(var/obj/limb/E in limbs)
 		E.rejuvenate()
 
-	//replace missing internal organs
-	for(var/organ_slot in species.has_organ)
-		var/internal_organ_type = species.has_organ[organ_slot]
-		if(!internal_organs_by_name[organ_slot])
-			var/datum/internal_organ/IO = new internal_organ_type(src)
-			internal_organs_by_name[organ_slot] = IO
-
-
-
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/limb/E = get_limb(zone)
 	if(E.heal_damage(brute, burn))
@@ -438,38 +410,6 @@ This function restores all limbs.
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
 	return TRUE
-
-// Heal or damage internal organs
-// Organ has to be either a internal organ by string or a limb with internal organs in.
-/mob/living/carbon/human/apply_internal_damage(var/damage = 0, var/organ)
-	if(!damage)
-		return
-
-	var/obj/limb/L = null
-	var/datum/internal_organ/I
-	if(internal_organs_by_name[organ])
-		I = internal_organs_by_name[organ]
-	else if(istype(organ, /datum/internal_organ))
-		I = organ
-	else
-		if(isorgan(organ))
-			L = organ
-		else
-			L = get_limb(check_zone(organ))
-		if(istype(L) && !isnull(L) && L.internal_organs)
-			I = pick(internal_organs)
-
-	if(isnull(I))
-		return
-
-	if(istype(I) && !isnull(I))
-		if(damage > 0)
-			I.take_damage(damage)
-		else
-			// The damage is negative so we want to heal, but heal damage only takes positive numbers.
-			I.heal_damage(-1 * damage)
-
-	pain.apply_pain(damage * PAIN_ORGAN_DAMAGE_MULTIPLIER)
 
 /mob/living/carbon/human/apply_stamina_damage(var/damage, var/def_zone, var/armor_type)
 	if(!def_zone || !armor_type || !stamina)

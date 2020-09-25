@@ -83,13 +83,10 @@
 		return ..()
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if(E)
-			var/safety = H.get_eye_protection()
-			if(!safety)
-				to_chat(user, SPAN_DANGER("You stab [H] in the eyes with the [src]!"))
-				visible_message(SPAN_DANGER("[user] stabs [H] in the eyes with the [src]!"))
-				E.damage += rand(8,20)
+		if(!H.get_eye_protection())
+			to_chat(user, SPAN_DANGER("You stab [H] in the eyes with the [src]!"))
+			visible_message(SPAN_DANGER("[user] stabs [H] in the eyes with the [src]!"))
+			H.eye_damage += rand(8,20)
 	return ..()
 
 /*
@@ -342,37 +339,32 @@
 	var/safety = user.get_eye_protection()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if(!E)
-			return
-		if(E.robotic == ORGAN_ROBOT)
-			return
 		switch(safety)
 			if(1)
 				to_chat(user, SPAN_DANGER("Your eyes sting a little."))
-				E.damage += rand(1, 2)
-				if(E.damage > 12)
+				H.eye_damage += rand(1, 2)
+				if(H.eye_damage > 12)
 					H.eye_blurry += rand(3,6)
 			if(0)
 				to_chat(user, SPAN_WARNING("Your eyes burn."))
-				E.damage += rand(2, 4)
-				if(E.damage > 10)
-					E.damage += rand(4,10)
+				H.eye_damage += rand(2, 4)
+				if(H.eye_damage > 10)
+					H.eye_blurry += rand(4,10)
 			if(-1)
 				to_chat(user, SPAN_WARNING("Your thermals intensify [src]'s glow. Your eyes itch and burn severely."))
 				H.eye_blurry += rand(12,20)
-				E.damage += rand(12, 16)
+				H.eye_damage += rand(12, 16)
 		if(safety<2)
 
-			if (E.damage >= E.min_broken_damage)
+			if (H.eye_damage >= HUMAN_EYE_BROKEN_DMG)
 				to_chat(H, SPAN_WARNING("You go blind! Maybe welding without protection wasn't such a great idea..."))
 				return
 
-			if (E.damage >= E.min_bruised_damage)
+			if (H.eye_damage >= HUMAN_EYE_BRUISE_DMG)
 				to_chat(H, SPAN_WARNING("Your vision starts blurring and your eyes hurt terribly!"))
 				return
 
-			if(E.damage > 5)
+			if(H.eye_damage > 5)
 				to_chat(H, SPAN_WARNING("Your eyes are really starting to hurt. This can't be good for you!"))
 				return
 

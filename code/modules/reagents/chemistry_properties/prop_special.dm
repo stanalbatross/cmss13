@@ -38,11 +38,13 @@
 
 /datum/chem_property/special/hypergenetic/process(mob/living/M, var/potency = 1)
 	M.heal_limb_damage(0.2+potency)
+	/*
 	if(!ishuman(M))
 		return
 	var/mob/living/carbon/human/H = M
 	for(var/datum/internal_organ/O in H.internal_organs)
 		M.apply_internal_damage(-potency, O)
+	*/
 
 /datum/chem_property/special/hypergenetic/process_overdose(mob/living/M, var/potency = 1)
 	M.adjustCloneLoss(2*potency)
@@ -245,11 +247,6 @@
 		D.stage--
 		if(D.stage < 1)
 			D.cure()
-	if(!ishuman(M))
-		return
-	var/mob/living/carbon/human/H = M
-	for(var/datum/internal_organ/I in H.internal_organs)
-		M.apply_internal_damage(1, I)
 
 /datum/chem_property/special/radius
 	name = PROPERTY_RADIUS

@@ -528,17 +528,20 @@
 	if(world.time < pull_time) //Need to wait until it's pulled out to aim
 		return
 
-	var/obj/item/I = user.get_inactive_hand()
-	if(I)
-		user.drop_inv_item_on_ground(I)
-
 	if(ishuman(user))
-		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/mob/living/carbon/human/wielder = user
+		if(world.time < (pull_time + wielder.minimum_wield_delay))
+			return
+		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/obj/limb/hand = wielder.get_limb(check_hand)
 		if(!istype(hand) || !hand.is_usable())
 			to_chat(user, SPAN_WARNING("Your other hand can't hold \the [src]!"))
 			return
+
+	var/obj/item/I = user.get_inactive_hand()
+	if(I)
+		user.drop_inv_item_on_ground(I)
+
 
 	flags_item 	   ^= WIELDED
 	name 	   += " (Wielded)"
@@ -1334,8 +1337,9 @@ and you're good to go.
 			total_recoil += RECOIL_AMOUNT_TIER_5
 		else
 			total_recoil -= user.skills.get_skill_level(SKILL_FIREARMS)*RECOIL_AMOUNT_TIER_5
-
-	if(total_recoil > 0 && ishuman(user))
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		total_recoil = max(total_recoil + H.minimum_gun_recoil, H.minimum_gun_recoil)
 		if(total_recoil >= 4)
 			shake_camera(user, total_recoil/2, total_recoil)
 		else

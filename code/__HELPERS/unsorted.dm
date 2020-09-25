@@ -1156,6 +1156,8 @@ var/global/image/action_blue_power_up
 	if(!istype(L))
 		return FALSE
 
+	delay += L.action_delay
+
 	// This var will only be used for checks that require target to be living.
 	var/mob/living/T = target
 	var/target_is_mob = FALSE

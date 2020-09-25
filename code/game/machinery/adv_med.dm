@@ -259,7 +259,6 @@
 		dat = format_occupant_data(od)
 		N.fields["last_scan_time"] = od["stationtime"]
 		N.fields["last_scan_result"] = dat
-		N.fields["autodoc_data"] = generate_autodoc_surgery_list(H)
 		visible_message(SPAN_NOTICE("\The [src] pings as it stores the scan report of [connected.occupant.real_name]"))
 		playsound(src.loc, 'sound/machines/screen_output1.ogg', 25)
 	else
@@ -313,9 +312,7 @@
 		"blood_amount" = H.blood_volume,
 		"disabilities" = H.sdisabilities,
 		"tg_diseases_list" = H.viruses.Copy(),
-		"lung_ruptured" = H.is_lung_ruptured(),
 		"external_organs" = H.limbs.Copy(),
-		"internal_organs" = H.internal_organs.Copy(),
 		"species_organs" = H.species.has_organ //Just pass a reference for this, it shouldn't ever be modified outside of the datum.
 		)
 	return occupant_data
@@ -385,7 +382,7 @@
 
 	dat += "<HR><table>"
 	dat += "<tr>"
-	dat += "<th>Organ</th>"
+	dat += "<th>Limb</th>"
 	dat += "<th>Burn Damage</th>"
 	dat += "<th>Brute Damage</th>"
 	dat += "<th>Other Wounds</th>"
@@ -397,24 +394,12 @@
 		var/imp = ""
 		var/bled = ""
 		var/robot = ""
-		var/splint = ""
-		var/internal_bleeding = ""
-		var/lung_ruptured = ""
 
 		dat += "<tr>"
 
-		for(var/datum/effects/bleeding/internal/I in e.bleeding_effects_list)
-			internal_bleeding = "Internal bleeding<br>"
-			break
-		if(istype(e, /obj/limb/chest) && occ["lung_ruptured"])
-			lung_ruptured = "Lung ruptured:<br>"
-		if(e.status & LIMB_SPLINTED)
-			splint = "Splinted<br>"
-		for(var/datum/effects/bleeding/external/E in e.bleeding_effects_list)
+		if(e.bleeding_effect)
 			bled = "Bleeding<br>"
 			break
-		if(e.status & LIMB_BROKEN)
-			AN = "[e.broken_description]<br>"
 		if(e.status & LIMB_ROBOT)
 			robot = "Prosthetic<br>"
 		if(e.surgery_open_stage)
@@ -438,15 +423,15 @@
 			else
 				imp += "Unknown body present<br>"
 
-		if(!AN && !open && !imp && !bled && !internal_bleeding && !lung_ruptured)
+		if(!AN && !open && !imp && !bled)
 			AN = "None"
 
 		if(!(e.status & LIMB_DESTROYED))
-			dat += "<td>[e.display_name]</td><td>[e.burn_dam]</td><td>[e.brute_dam]</td><td>[robot][bled][AN][splint][open][imp][internal_bleeding][lung_ruptured]</td>"
+			dat += "<td>[e.display_name]</td><td>[e.burn_dam]</td><td>[e.brute_dam]</td><td>[robot][bled][AN][open][imp]</td>"
 		else
 			dat += "<td>[e.display_name]</td><td>-</td><td>-</td><td>Not Found</td>"
 		dat += "</tr>"
-
+	/*
 	for(var/datum/internal_organ/i in occ["internal_organs"])
 		var/mech = ""
 		if(i.robotic == ORGAN_ASSISTED)
@@ -460,13 +445,15 @@
 		dat += "<tr>"
 		dat += "<td>[i.name]</td><td>N/A</td><td>[i.damage]</td><td>[mech]</td>"
 		dat += "</tr>"
+	*/
 	dat += "</table>"
-
+	/*
 	var/list/species_organs = occ["species_organs"]
 	for(var/organ_name in species_organs)
 		if(!locate(species_organs[organ_name]) in occ["internal_organs"])
 			dat += SET_CLASS("No [organ_name] detected.", INTERFACE_RED)
 			dat += "<BR>"
+	*/
 
 	if(occ["sdisabilities"] & BLIND)
 		dat += SET_CLASS("Cataracts detected.", INTERFACE_RED)

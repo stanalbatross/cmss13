@@ -17,30 +17,13 @@
 
 	reducible_tally += max(pain.pain_slowdown, stamina.stamina_slowdown) // Get the highest slowdown and apply that
 
-	// Limb break/loss slowdown
-	// Wheelchairs depend on different limbs than walking, which is...cute
-	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
-		for(var/organ_name in list("l_hand","r_hand","l_arm","r_arm","chest","groin","head"))
-			var/obj/limb/E = get_limb(organ_name)
-			if(!E || (E.status & LIMB_DESTROYED))
-				. += MOVE_REDUCTION_LIMB_DESTROYED
-			if(E.status & LIMB_SPLINTED)
-				. += MOVE_REDUCTION_LIMB_SPLINTED
-			else if(E.status & LIMB_BROKEN)
-				. += MOVE_REDUCTION_LIMB_BROKEN
-	else
+	if(!istype(buckled, /obj/structure/bed/chair/wheelchair))
 		if(shoes)
 			. += shoes.slowdown
 
-		for(var/organ_name in list("l_foot","r_foot","l_leg","r_leg","chest","groin","head"))
-			var/obj/limb/E = get_limb(organ_name)
-			if(!E || (E.status & LIMB_DESTROYED))
-				. += MOVE_REDUCTION_LIMB_DESTROYED
-			// Splinted limbs are not as punishing
-			if(E.status & LIMB_SPLINTED)
-				. += MOVE_REDUCTION_LIMB_SPLINTED
-			else if(E.status & LIMB_BROKEN)
-				. += MOVE_REDUCTION_LIMB_BROKEN
+	for(var/organ_name in MOVEMENT_LIMBS)
+		var/obj/limb/E = get_limb(organ_name)
+		. += E.get_slowdown()
 
 
 	var/hungry = (500 - nutrition)/5 // So overeat would be 100 and default level would be 80

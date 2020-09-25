@@ -57,7 +57,6 @@ var/global/list/chemical_identified_list = list()	//List of all identified objec
 var/global/list/list/chemical_gen_classes_list = list("C" = list(),"C1" = list(),"C2" = list(),"C3" = list(),"C4" = list(),"C5" = list(),"C6" = list(),"T1" = list(),"T2" = list(),"T3" = list(),"T4" = list(),"omega" = list(),"tau" = list())
 
 var/global/list/landmarks_list = list()				//List of all landmarks created
-var/global/list/surgery_steps = list()				//List of all surgery steps  |BS12
 var/global/list/side_effects = list()				//List of all medical sideeffects types by thier names |BS12
 var/global/list/ammo_list = list()					//List of all ammo types. Used by guns to tell the projectile how to act.
 var/global/list/joblist = list()					//List of all jobstypes, minus borg and AI
@@ -211,14 +210,6 @@ var/global/list/resin_build_order_hivelord = list()
 			else
 				facial_hair_styles_male_list += H.name
 				facial_hair_styles_female_list += H.name
-
-	// Surgery Steps - Initialize all /datum/surgery_step into a list
-	paths = typesof(/datum/surgery_step)-/datum/surgery_step
-	surgery_steps = list()
-	for(var/T in paths)
-		var/datum/surgery_step/S = new T
-		surgery_steps += S
-	sort_surgeries()
 
 	// List of job. I can't believe this was calculated multiple times per tick!
 	paths = typesof(/datum/job)-/datum/job

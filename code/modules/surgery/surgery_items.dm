@@ -4,6 +4,7 @@
 /obj/item/tool/surgery
 	icon = 'icons/obj/items/surgery_tools.dmi'
 	attack_speed = 4 // reduced
+	flags_item = SURGERY_TOOL
 
 /*
  * Retractor
@@ -15,7 +16,7 @@
 	matter = list("metal" = 10000, "glass" = 5000)
 	flags_atom = FPRINT|CONDUCT
 	w_class = SIZE_SMALL
-	
+
 
 /*
  * Hemostat
@@ -27,7 +28,7 @@
 	matter = list("metal" = 5000, "glass" = 2500)
 	flags_atom = FPRINT|CONDUCT
 	w_class = SIZE_SMALL
-	
+
 	attack_verb = list("attacked", "pinched")
 
 /*
@@ -40,7 +41,7 @@
 	matter = list("metal" = 5000, "glass" = 2500)
 	flags_atom = FPRINT|CONDUCT
 	w_class = SIZE_TINY
-	
+
 	attack_verb = list("burnt")
 
 /*
@@ -55,7 +56,7 @@
 	flags_atom = FPRINT|CONDUCT
 	force = 0
 	w_class = SIZE_SMALL
-	
+
 	attack_verb = list("drilled")
 
 /*
@@ -74,7 +75,7 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 5
 	matter = list("metal" = 10000, "glass" = 5000)
-	
+
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /*
@@ -121,7 +122,7 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 5
 	matter = list("metal" = 20000,"glass" = 10000)
-	
+
 	attack_verb = list("attacked", "slashed", "sawed", "cut")
 	sharp = IS_SHARP_ITEM_BIG
 	edge = 1
@@ -139,7 +140,7 @@
 	icon_state = "fixovein"
 	force = 0
 	throwforce = 1.0
-	
+
 	w_class = SIZE_SMALL
 	var/usage_amount = 10
 
@@ -327,8 +328,30 @@
 				new /obj/effect/decal/remains/xeno(T.loc)
 				qdel(T)
 
+/obj/item/tool/surgery/drapes
+	name = "surgical drapes"
+	desc = "Used to cover a limb prior to the beginning of a surgical procedure"
+	icon = 'icons/obj/items/items.dmi'
+	icon_state = "sheet"
+	w_class = SIZE_SMALL
+	flags_item = NOBLUDGEON
 
-
-
-
-
+/obj/item/tool/surgery/drapes/attack(mob/living/carbon/human/H, mob/living/user)
+    if(!istype(H) || user.a_intent != INTENT_HELP)
+        ..()
+    var/obj/limb/L = H.get_limb(user.zone_selected)
+    for(var/datum/surgery_procedure/S in H.surgery_procedures)
+        if(S.affected_limb != L)
+            continue
+        if(alert(user, "Cancel [H]'s [S.name]? ", "Cancel Procedure", "Yes", "No") == "Yes")
+            S.cancel_procedure(user)
+        return
+    var/list/avaiable_surgeries = L.get_avaiable_surgeries()
+    var/choice = input(user, "Begin which surgery procedure?", "Surgery") in avaiable_surgeries + list("Cancel" = null)
+    var/datum/surgery_procedure/selected = avaiable_surgeries[choice]
+    if(!selected)
+        return
+    to_chat(user, SPAN_NOTICE("You begin to prepare [H]'s [L.display_name] for \an [selected.name]"))
+    if(do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+        to_chat(user, SPAN_HELPFUL("[H]'s [L.display_name] is ready for the [selected.name]"))
+        H.surgery_procedures += selected

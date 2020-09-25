@@ -169,8 +169,6 @@
 			if(affecting)
 				to_chat(M, SPAN_DANGER("You land heavily on your [affecting.display_name]!"))
 				affecting.take_damage(damage, 0)
-				if(affecting.parent)
-					affecting.parent.add_autopsy_data("Misadventure", damage)
 			else
 				to_chat(H, SPAN_DANGER("You land heavily!"))
 				H.apply_damage(damage, BRUTE)

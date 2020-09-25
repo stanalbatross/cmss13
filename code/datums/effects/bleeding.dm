@@ -46,7 +46,7 @@
 
 /datum/effects/bleeding/Destroy()
 	if(limb)
-		limb.bleeding_effects_list -= src
+		limb.bleeding_effect = null
 	..()
 
 
