@@ -152,6 +152,9 @@
 	damage_falloff_mult = 0
 	recoil_unwielded = config.high_recoil_value
 
+/obj/item/weapon/gun/rifle/nsg23/toggle_burst() //it's a BURST gun. shooting it in single fire would only bring sadness
+	to_chat(usr, "<span class='warning'>This weapon can only fire in bursts!</span>")
+
 /obj/item/weapon/gun/rifle/nsg23/handle_starting_attachment()
 	..()
 	var/obj/item/attachable/stock/nsg23/S = new(src)
