@@ -693,7 +693,7 @@
 		to_chat(X, SPAN_XENODANGER("You heal [targetXeno]!"))
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You are healed by [X]!"))
 		targetXeno.gain_health(heal_amount + bonus_heal)
-		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] places its claws on [targetXeno], and its wounds are quickly sealed!"))	//marines probably should know if a xeno gets healed
+		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] places its claws on [targetXeno], and it spasms as its wounds are quickly sealed!"))	//marines probably should know if a xeno gets healed
 		use_plasma = TRUE	//it's already hard enough to gauge health without hp showing on the mob 
 		targetXeno.xeno_jitter(SECONDS_2)
 		targetXeno.flick_heal_overlay(SECONDS_3, "#D9F500")//so the visible_message and recovery overlay will warn marines and possibly predators that the xenomorph has been healed!
