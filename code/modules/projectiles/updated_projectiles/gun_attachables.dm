@@ -653,7 +653,6 @@ Defined in conflicts.dm of the #defines folder.
 	zoom_offset = 6
 	zoom_viewsize = 7
 	var/dynamic_aim_slowdown = SLOWDOWN_ADS_MINISCOPE_DYNAMIC
-	var/aiming_delay = 25
 
 /obj/item/attachable/scope/mini/New()
 	..()
@@ -663,7 +662,7 @@ Defined in conflicts.dm of the #defines folder.
 	if(istype(G, /obj/item/weapon/gun/launcher/rocket) || istype(G, /obj/item/weapon/gun/launcher/m92))
 		zoom_offset = 3
 		allows_movement	= 0
-		if(do_after(user, aiming_delay, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		if(do_after(user, 25, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			. = ..()
 	else
 		zoom_offset = initial(zoom_offset)
@@ -686,7 +685,6 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "nsg23scope"
 	attach_icon = "nsg23scope_a"
 	desc = "A W-Y-developed scope researched internally, based on the ARMAT S4 mini-scope. Compared to the S4 mini-scope, it has improved handling. Press the 'use rail attachment' HUD icon or use the verb of the same name to zoom."
-	aiming_delay = 0
 	dynamic_aim_slowdown = SLOWDOWN_ADS_RIFLE //lighter handling W-Y AR gets light handling!
 
 /obj/item/attachable/scope/mini/hunting //can only be attached to the hunting rifle to prevent vending hunting rifles to cannibalize scopes
