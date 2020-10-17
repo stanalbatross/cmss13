@@ -680,6 +680,12 @@ Defined in conflicts.dm of the #defines folder.
 
 			user.add_zoomout_handler(handler)
 
+/obj/item/attachable/scope/mini/nsg23
+	name = "S96 2x telescopic mini-scope"
+	icon_state = "nsg23scope"
+	attach_icon = "nsg23scope_a"
+	desc = "A W-Y-developed scope researched internally, based on the ARMAT S4 mini-scope. Compared to the S4 mini-scope, it has improved handling. Press the 'use rail attachment' HUD icon or use the verb of the same name to zoom."
+	dynamic_aim_slowdown = SLOWDOWN_ADS_HALFRIFLE //lighter handling W-Y AR gets light handling!
 
 /obj/item/attachable/scope/mini/hunting //can only be attached to the hunting rifle to prevent vending hunting rifles to cannibalize scopes
 	name = "2x hunting mini-scope"
@@ -1126,6 +1132,15 @@ Defined in conflicts.dm of the #defines folder.
 	else
 		R.flags_equip_slot |= SLOT_WAIST
 
+/obj/item/attachable/stock/nsg23 //purely for the sprite.
+	name = "RE93 absorbing stock"
+	desc = "Absorbs weapon kick via internal recoil springs. You probably shouldn't be able to see this."
+	icon_state = "nsg23stock"
+	slot = "stock"
+	melee_mod = -10 //it's kind of hollow
+	pixel_shift_x = 0 //fix these
+	pixel_shift_y = 0
+	flags_attach_features = NO_FLAGS
 
 ////////////// Underbarrel Attachments ////////////////////////////////////
 
