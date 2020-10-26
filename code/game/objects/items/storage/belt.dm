@@ -409,15 +409,39 @@
 	icon_state = "knifebelt"
 	item_state = "marinebelt" // aslo temp, maybe somebody update these icons with better ones?
 	w_class = SIZE_LARGE
-	storage_slots = 6
+	storage_slots = 30
 	max_w_class = SIZE_TINY
-	max_storage_space = 6
+	max_storage_space = 30
 	can_hold=list(/obj/item/weapon/melee/throwing_knife)
 
 /obj/item/storage/belt/knifepouch/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
 	item_state = "marinebelt" //PLACEHOLDER. Override, since it has no unique state.
+	new /obj/item/weapon/melee/throwing_knife(src) //yes. YES
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
 	new /obj/item/weapon/melee/throwing_knife(src)
 	new /obj/item/weapon/melee/throwing_knife(src)
 	new /obj/item/weapon/melee/throwing_knife(src)
