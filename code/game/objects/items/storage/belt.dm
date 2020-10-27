@@ -405,7 +405,7 @@
 
 /obj/item/storage/belt/knifepouch
 	name="\improper M276 pattern knife rig"
-	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is specially designed with four holsters to store throwing knives. Not commonly issued, but kept in service."
+	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is specially designed with holsters to store throwing knives. Not commonly issued, but kept in service."
 	icon_state = "knifebelt"
 	item_state = "marinebelt" // aslo temp, maybe somebody update these icons with better ones?
 	w_class = SIZE_LARGE
@@ -414,7 +414,7 @@
 	max_storage_space = 30
 	can_hold=list(/obj/item/weapon/melee/throwing_knife)
 
-/obj/item/storage/belt/knifepouch/Initialize()
+/obj/item/storage/belt/knifepouch/full/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
 	item_state = "marinebelt" //PLACEHOLDER. Override, since it has no unique state.
