@@ -101,14 +101,30 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
+<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
+=======
+	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_WEAK/2 //50, just enough to break a fence in one throw
+	throw_speed = SPEED_INSTANT
+>>>>>>> ioooo
 	throw_range = 7
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
 	flags_armor_protection = SLOT_FACE
 
+<<<<<<< HEAD
+=======
+/obj/item/weapon/melee/throwing_knife/runnner
+	name ="\improper M11 throwing knife 230"
+	force = 230
+
+/obj/item/weapon/melee/throwing_knife/holyshit
+	name ="\improper M11 throwing knife 600"
+	force = 600
+
+>>>>>>> ioooo
 /obj/item/weapon/melee/unathiknife
 	name = "duelling knife"
 	desc = "A length of leather-bound wood studded with razor-sharp teeth. How crude."

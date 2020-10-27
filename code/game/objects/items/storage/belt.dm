@@ -414,7 +414,7 @@
 	max_storage_space = 30
 	can_hold=list(/obj/item/weapon/melee/throwing_knife)
 
-/obj/item/storage/belt/knifepouch/Initialize()
+/obj/item/storage/belt/knifepouch/full/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
 	item_state = "marinebelt" //PLACEHOLDER. Override, since it has no unique state.
