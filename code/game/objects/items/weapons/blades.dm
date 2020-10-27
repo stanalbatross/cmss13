@@ -96,19 +96,26 @@
 	icon='icons/obj/items/weapons/weapons.dmi'
 	icon_state = "throwing_knife"
 	item_state = "combat_knife"
-	desc="A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively."
+	desc ="A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively. Also, not even close to effective."
 	flags_atom = FPRINT|CONDUCT
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
-	throwforce = MELEE_FORCE_STRONG
-	throw_speed = SPEED_VERY_FAST
+	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_WEAK/2 //50, just enough to break a fence in one throw
+	throw_speed = SPEED_INSTANT
 	throw_range = 7
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
 	flags_armor_protection = SLOT_FACE
 
+/obj/item/weapon/melee/throwing_knife/runnner
+	name ="\improper M11 throwing knife 230"
+	force = 230
+
+/obj/item/weapon/melee/throwing_knife/holyshit
+	name ="\improper M11 throwing knife 600"
+	force = 600
 
 /obj/item/weapon/melee/unathiknife
 	name = "duelling knife"
