@@ -104,6 +104,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
 =======
@@ -119,6 +120,11 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 7 // just remove the buffs. armor is pain on xenos
 >>>>>>> Does some stuff
+=======
+	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_WEAK/2 //50, just enough to break a fence in one throw
+	throw_speed = SPEED_INSTANT
+	throw_range = 7
+>>>>>>> ioooo
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
