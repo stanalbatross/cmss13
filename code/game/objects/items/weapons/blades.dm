@@ -102,10 +102,14 @@
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
 <<<<<<< HEAD
+<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
 =======
 	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_WEAK/2 //50, just enough to break a fence in one throw
+=======
+	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_NORMAL //70 + stupid throw stuff. very powerful against humans now
+>>>>>>> Update blades.dm
 	throw_speed = SPEED_INSTANT
 >>>>>>> ioooo
 	throw_range = 7
