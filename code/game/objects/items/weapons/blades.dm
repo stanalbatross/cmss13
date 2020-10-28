@@ -122,11 +122,11 @@
 =======
 /obj/item/weapon/melee/throwing_knife/runnner
 	name ="\improper M11 throwing knife 230"
-	force = 230
+	throwforce = 230
 
 /obj/item/weapon/melee/throwing_knife/holyshit
 	name ="\improper M11 throwing knife 600"
-	force = 600
+	throwforce = 600
 
 >>>>>>> ioooo
 /obj/item/weapon/melee/unathiknife
