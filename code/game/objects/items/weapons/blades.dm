@@ -101,7 +101,7 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
-	throwforce = MELEE_FORCE_MEGA_STRONG //80 damage, usable against humans, not so much against most xenos.
+	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 7
 	hitsound = 'sound/weapons/slash.ogg'
@@ -128,7 +128,7 @@
 	item_state = "pizza_cutter"
 	desc = "Before you is holy relic of a bygone era when the great Pizza Lords reigned supreme. You know either that or it's just a big damn pizza cutter."
 	sharp = IS_SHARP_ITEM_ACCURATE
-	force = MELEE_FORCE_MEGA_STRONG
+	force = MELEE_FORCE_VERY_STRONG
 	edge = 1
 
 
@@ -144,7 +144,7 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_STRONG
 	w_class = SIZE_TINY
-	throwforce = MELEE_FORCE_MEGA_STRONG
+	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 6
 	hitsound = 'sound/weapons/slash.ogg'

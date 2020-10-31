@@ -244,8 +244,7 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "upp_bayonet"
 	item_state = "combat_knife"
 	desc = "The standard-issue bayonet of the UPP, the Type 80 is balanced to also function as an effective throwing knife."
-	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_WEAK //60 damage, theoretically usable against humans, not so much against xenos.
-	throw_speed = SPEED_VERY_FAST
+	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_range = 7
 
 /obj/item/attachable/extended_barrel
