@@ -103,7 +103,7 @@
 	w_class = SIZE_TINY
 	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
-	throw_range = 7 // just remove the buffs. armor is pain on xenos
+	throw_range = 7
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
