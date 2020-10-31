@@ -143,11 +143,7 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_STRONG
 	w_class = SIZE_TINY
-<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
-=======
-	throwforce = MELEE_FORCE_MEGA_STRONG
->>>>>>> Does some stuff
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 6
 	hitsound = 'sound/weapons/slash.ogg'
