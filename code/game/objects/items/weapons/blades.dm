@@ -96,7 +96,7 @@
 	icon='icons/obj/items/weapons/weapons.dmi'
 	icon_state = "throwing_knife"
 	item_state = "combat_knife"
-	desc = "A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively. Extremely deadly against insurgents, somewhat against armored enemies, but a joke to everything else."
+	desc = "A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used optimally, although it is not very effective in most cases."
 	flags_atom = FPRINT|CONDUCT
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_WEAK
