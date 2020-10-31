@@ -102,6 +102,7 @@
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
 	throwforce = MELEE_FORCE_VERY_STRONG
+	throw_speed = SPEED_VERY_FAST
 	throw_range = 7
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
