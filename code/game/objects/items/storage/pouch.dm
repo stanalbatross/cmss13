@@ -110,15 +110,33 @@
 		/obj/item/attachable/bayonet
 	)
 	icon_state = "bayonet"
-	storage_slots = 3
+	storage_slots = 10
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 
 /obj/item/storage/pouch/bayonet/full/Initialize()
 	. = ..()
-	new /obj/item/attachable/bayonet(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
+	new /obj/item/weapon/melee/throwing_knife(src)
 
 /obj/item/storage/pouch/bayonet/upp/Initialize()
 	. = ..()
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
+	new /obj/item/attachable/bayonet/upp(src)
 	new /obj/item/attachable/bayonet/upp(src)
 
 /obj/item/storage/pouch/survival

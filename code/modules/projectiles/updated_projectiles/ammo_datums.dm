@@ -608,7 +608,7 @@
 	..()
 	damage = config.high_hit_damage
 	scatter = -config.low_scatter_value
-	penetration= config.hmed_armor_penetration
+	penetration = config.hmed_armor_penetration
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/bullet/rifle/m4ra/incendiary
