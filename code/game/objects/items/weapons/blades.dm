@@ -96,26 +96,18 @@
 	icon='icons/obj/items/weapons/weapons.dmi'
 	icon_state = "throwing_knife"
 	item_state = "combat_knife"
-	desc ="A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively. Also, not even close to effective."
+	desc = "A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively. Extremely deadly against insurgents, somewhat against armored enemies, but a joke to everything else."
 	flags_atom = FPRINT|CONDUCT
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_WEAK
 	w_class = SIZE_TINY
-	throwforce = MELEE_FORCE_VERY_STRONG + MELEE_FORCE_NORMAL //70 + stupid throw stuff. very powerful against humans now
-	throw_speed = SPEED_INSTANT
-	throw_range = 7
+	throwforce = MELEE_FORCE_MEGA_STRONG //80 damage, usable against humans, not so much against most xenos.
+	throw_speed = SPEED_VERY_FAST
+	throw_range = 7 // just remove the buffs. armor is pain on xenos
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
 	flags_armor_protection = SLOT_FACE
-
-/obj/item/weapon/melee/throwing_knife/runnner
-	name ="\improper M11 throwing knife 230"
-	throwforce = 230
-
-/obj/item/weapon/melee/throwing_knife/holyshit
-	name ="\improper M11 throwing knife 600"
-	throwforce = 600
 
 /obj/item/weapon/melee/unathiknife
 	name = "duelling knife"
@@ -136,7 +128,7 @@
 	item_state = "pizza_cutter"
 	desc = "Before you is holy relic of a bygone era when the great Pizza Lords reigned supreme. You know either that or it's just a big damn pizza cutter."
 	sharp = IS_SHARP_ITEM_ACCURATE
-	force = MELEE_FORCE_VERY_STRONG
+	force = MELEE_FORCE_MEGA_STRONG
 	edge = 1
 
 
@@ -152,7 +144,7 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_STRONG
 	w_class = SIZE_TINY
-	throwforce = MELEE_FORCE_STRONG
+	throwforce = MELEE_FORCE_MEGA_STRONG
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 6
 	hitsound = 'sound/weapons/slash.ogg'
