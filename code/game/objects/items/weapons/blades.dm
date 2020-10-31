@@ -103,6 +103,7 @@
 	w_class = SIZE_TINY
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
 	throw_speed = SPEED_VERY_FAST
 =======
@@ -113,11 +114,17 @@
 	throw_speed = SPEED_INSTANT
 >>>>>>> ioooo
 	throw_range = 7
+=======
+	throwforce = MELEE_FORCE_MEGA_STRONG //80 damage, usable against humans, not so much against most xenos.
+	throw_speed = SPEED_VERY_FAST
+	throw_range = 7 // just remove the buffs. armor is pain on xenos
+>>>>>>> Does some stuff
 	hitsound = 'sound/weapons/slash.ogg'
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	flags_equip_slot = SLOT_STORE|SLOT_FACE
 	flags_armor_protection = SLOT_FACE
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 /obj/item/weapon/melee/throwing_knife/runnner
@@ -129,6 +136,8 @@
 	throwforce = 600
 
 >>>>>>> ioooo
+=======
+>>>>>>> Does some stuff
 /obj/item/weapon/melee/unathiknife
 	name = "duelling knife"
 	desc = "A length of leather-bound wood studded with razor-sharp teeth. How crude."
@@ -148,7 +157,7 @@
 	item_state = "pizza_cutter"
 	desc = "Before you is holy relic of a bygone era when the great Pizza Lords reigned supreme. You know either that or it's just a big damn pizza cutter."
 	sharp = IS_SHARP_ITEM_ACCURATE
-	force = MELEE_FORCE_VERY_STRONG
+	force = MELEE_FORCE_MEGA_STRONG
 	edge = 1
 
 
@@ -164,7 +173,11 @@
 	sharp = IS_SHARP_ITEM_ACCURATE
 	force = MELEE_FORCE_STRONG
 	w_class = SIZE_TINY
+<<<<<<< HEAD
 	throwforce = MELEE_FORCE_VERY_STRONG
+=======
+	throwforce = MELEE_FORCE_MEGA_STRONG
+>>>>>>> Does some stuff
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 6
 	hitsound = 'sound/weapons/slash.ogg'
