@@ -421,7 +421,7 @@
 
 /obj/item/storage/belt/knifepouch/full/Initialize()
 	. = ..()
-	for (var/i in 1 to storage_slots)
+	for(var/i in 1 to storage_slots)
 		new /obj/item/weapon/melee/throwing_knife(src)
 
 /obj/item/storage/belt/grenade
