@@ -414,40 +414,15 @@
 	max_storage_space = 30
 	can_hold=list(/obj/item/weapon/melee/throwing_knife)
 
-/obj/item/storage/belt/knifepouch/full/Initialize()
+/obj/item/storage/belt/knifepouch/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
 	item_state = "marinebelt" //PLACEHOLDER. Override, since it has no unique state.
-	new /obj/item/weapon/melee/throwing_knife(src) //yes. YES
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
+
+/obj/item/storage/belt/knifepouch/full/Initialize()
+	. = ..()
+	for (var/i in 1 to storage_slots)
+		new /obj/item/weapon/melee/throwing_knife(src)
 
 /obj/item/storage/belt/grenade
 	name="\improper M276 pattern M40 HEDP rig"
