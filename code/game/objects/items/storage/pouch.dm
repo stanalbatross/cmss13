@@ -115,29 +115,13 @@
 
 /obj/item/storage/pouch/bayonet/full/Initialize()
 	. = ..()
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
+	for(var/i in 1 to storage_slots)
+		new /obj/item/weapon/melee/throwing_knife(src)
 
 /obj/item/storage/pouch/bayonet/upp/Initialize()
 	. = ..()
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
-	new /obj/item/attachable/bayonet/upp(src)
+	for(var/i in 1 to storage_slots)
+		new /obj/item/attachable/bayonet/upp(src)
 
 /obj/item/storage/pouch/survival
 	name = "survival pouch"
