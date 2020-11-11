@@ -93,7 +93,7 @@
 /area/yautja)
 "aA" = (
 /obj/structure/surface/table/reinforced,
-/obj/item/tool/surgery/bonegel/predatorbonegel,
+/obj/item/tool/surgery/cell_gel/predatorbonegel,
 /obj/item/tool/surgery/hemostat/predatorhemostat,
 /obj/item/tool/surgery/bonesetter/predatorbonesetter,
 /turf/open/floor/holofloor{

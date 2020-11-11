@@ -35,6 +35,7 @@
 	var/processing = FALSE
 
 	var/surgery_open_stage = 0
+	var/surgery_state_pain
 
 	var/obj/item/hidden = null
 	var/list/implants = list()

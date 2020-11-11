@@ -5155,7 +5155,7 @@
 /area/prison/cellblock/maxsec/south)
 "amo" = (
 /obj/structure/surface/table/reinforced,
-/obj/item/tool/surgery/bonegel,
+/obj/item/tool/surgery/cell_gel,
 /obj/item/tool/surgery/bonesetter,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{

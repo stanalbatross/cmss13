@@ -112,7 +112,7 @@
 /area/prison/medbay/surgery)
 "pQ" = (
 /obj/structure/surface/table/reinforced,
-/obj/item/tool/surgery/bonegel,
+/obj/item/tool/surgery/cell_gel,
 /obj/item/tool/surgery/bonesetter,
 /turf/open/floor/prison{
 	tag = "icon-whitegreenfull (SOUTHWEST)";

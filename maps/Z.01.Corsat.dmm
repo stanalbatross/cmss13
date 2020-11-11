@@ -5154,7 +5154,7 @@
 /obj/structure/surface/table/reinforced,
 /obj/item/tool/surgery/scalpel,
 /obj/item/tool/surgery/retractor,
-/obj/item/tool/surgery/bonegel,
+/obj/item/tool/surgery/cell_gel,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/corsat{
 	dir = 9;
@@ -57684,7 +57684,7 @@
 	pixel_x = 12;
 	pixel_y = 2
 	},
-/obj/item/tool/surgery/bonegel,
+/obj/item/tool/surgery/cell_gel,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/corsat{
 	icon_state = "greenwhite"

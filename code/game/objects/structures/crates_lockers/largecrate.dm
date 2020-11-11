@@ -309,7 +309,7 @@
 	new /obj/item/tool/surgery/FixOVein(src)
 	new /obj/item/tool/surgery/hemostat(src)
 	new /obj/item/tool/surgery/scalpel(src)
-	new /obj/item/tool/surgery/bonegel(src)
+	new /obj/item/tool/surgery/cell_gel(src)
 	new /obj/item/tool/surgery/retractor(src)
 	new /obj/item/tool/surgery/bonesetter(src)
 	new /obj/item/tool/surgery/circular_saw(src)

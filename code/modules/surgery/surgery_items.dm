@@ -128,9 +128,10 @@
 	edge = 1
 
 //misc, formerly from code/defines/weapons.dm
-/obj/item/tool/surgery/bonegel
-	name = "bone gel"
-	icon_state = "bone-gel"
+/obj/item/tool/surgery/cell_gel
+	name = "CellGro"
+	desc = "A gel with regenerative properties, used to accelerate natural healing. Sadly, it does not cure baldness"
+	icon_state = "cell-gel"
 	force = 0
 	w_class = SIZE_SMALL
 	throwforce = 1.0
@@ -155,6 +156,26 @@
 	attack_verb = list("attacked", "hit", "bludgeoned")
 	matter = list("plastic" = 7500)
 
+/obj/item/tool/surgery/handheld_pump
+	name = "handheld surgical pump"
+	desc = "This sucks. Literally"
+	icon_state = "pump"
+	force = 0
+	throwforce = 9.0
+	throw_speed = SPEED_VERY_FAST
+	throw_range = 5
+	w_class = SIZE_SMALL
+	attack_verb = list("attacked", "hit", "bludgeoned")
+	matter = list("plastic" = 7500)
+
+/obj/item/tool/surgery/surgical_line
+	name = "surgical line"
+	desc = "A roll of military grade surgical line, able to seal almost seamlessly any wound. Also works as a fishing line for maritime deployments"
+	icon_state = "line"
+	force = 0
+	throwforce = 1.0
+
+	w_class = SIZE_SMALL
 /*
  * Predator Retractor
  */
@@ -206,7 +227,7 @@
 /*
  * Predator Bonegel
  */
-/obj/item/tool/surgery/bonegel/predatorbonegel
+/obj/item/tool/surgery/cell_gel/predatorbonegel
 	name = "gel gun"
 	icon_state = "predator_bone-gel"
 

@@ -91,7 +91,7 @@
 	src.modules += new /obj/item/tool/surgery/hemostat(src)
 	src.modules += new /obj/item/tool/surgery/retractor(src)
 	src.modules += new /obj/item/tool/surgery/cautery(src)
-	src.modules += new /obj/item/tool/surgery/bonegel(src)
+	src.modules += new /obj/item/tool/surgery/cell_gel(src)
 	src.modules += new /obj/item/tool/surgery/FixOVein(src)
 	src.modules += new /obj/item/tool/surgery/bonesetter(src)
 	src.modules += new /obj/item/tool/surgery/circular_saw(src)

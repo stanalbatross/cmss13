@@ -462,7 +462,7 @@
 	color = "#6b675e"
 	},
 /obj/item/tool/surgery/FixOVein/predatorFixOVein,
-/obj/item/tool/surgery/bonegel/predatorbonegel,
+/obj/item/tool/surgery/cell_gel/predatorbonegel,
 /obj/item/tool/surgery/bonesetter/predatorbonesetter,
 /obj/item/tool/surgery/surgicaldrill/predatorsurgicaldrill,
 /turf/open/floor/corsat{
