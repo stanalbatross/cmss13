@@ -26,6 +26,10 @@
 
 
 /obj/item/proc/attack(mob/living/M, mob/living/user)
+	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user)
+	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
+		return TRUE
+	
 	if(flags_item & NOBLUDGEON)
 		return FALSE
 
@@ -33,15 +37,6 @@
 		return FALSE
 
 	var/def_zone = user.zone_selected
-
-	if(ishuman(M))
-		if (flags_item & SURGERY_TOOL)
-			var/mob/living/carbon/human/H = M
-			for(var/datum/surgery_procedure/S in H.surgery_procedures)
-				if(S.try_do_step(user, user.zone_selected))
-					return FALSE
-
-
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user

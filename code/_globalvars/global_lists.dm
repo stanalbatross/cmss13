@@ -46,6 +46,8 @@ var/global/list/freed_mob_list = list() 	// List of mobs freed for ghosts
 
 var/global/list/xeno_datum_list = list() // multi-d list of xeno datums
 
+GLOBAL_LIST_EMPTY(surgeries_list)
+
 //Chem Stuff
 var/global/list/chemical_reactions_filtered_list	//List of all /datum/chemical_reaction datums filtered by reaction components. Used during chemical reactions
 var/global/list/chemical_reactions_list		//List of all /datum/chemical_reaction datums indexed by reaction id. Used to search for the result instead of the components.
@@ -245,6 +247,11 @@ var/global/list/resin_build_order_hivelord = list()
 
 		if(S.flags & IS_WHITELISTED)
 			whitelisted_species += S.name
+
+	//Surgeries
+	paths = subtypesof(/datum/surgery)
+	for(var/T in paths)
+		GLOB.surgeries_list += new T
 
 	// Our ammo stuff is initialized here.
 	var/blacklist[] = list(/datum/ammo,/datum/ammo/energy, /datum/ammo/energy/yautja, /datum/ammo/energy/yautja/rifle, /datum/ammo/bullet/shotgun, /datum/ammo/xeno)

@@ -142,7 +142,6 @@
 
 	var/datum/agent/agent_holder
 
-	var/list/surgery_procedures = list()
 	//Vars currently in use by limbs
 	var/bonus_knockdown
 	var/zoom_blocked //Can't use zoom

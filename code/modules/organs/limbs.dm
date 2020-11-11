@@ -15,7 +15,8 @@
 	var/burn_dam = 0
 	var/max_damage = 0
 	var/integrity_damage = 0 //INT damage sets the levels
-	var/integrity_level = NO_FLAGS //Levels are not cumulative, but instead, are flags. This is so to allow some levels to be neutralized without changing the others (ex: level 3 effects are neutralized, but 2 and 4 are in effect)
+	var/integrity_level = 0
+	var/integrity_level_effects = NO_FLAGS //Levels are not cumulative, but instead, are flags. This is so to allow some levels to be neutralized without changing the others (ex: level 3 effects are neutralized, but 2 and 4 are in effect)
 
 	var/last_dam_time
 
@@ -26,8 +27,6 @@
 	var/healing_naturally = TRUE //natural healing is limited by health and other stuff
 	var/max_medical_items = 3
 	var/list/medical_items = list() //obj/item/stack/medical
-
-	var/list/avaiable_surgeries = list(/datum/surgery_procedure/open_limb, /datum/surgery_procedure/close_limb)
 
 	var/obj/limb/parent
 	var/list/obj/limb/children
@@ -123,36 +122,59 @@
 	recalculate_integrity_level()
 
 /obj/limb/proc/recalculate_integrity_level()
-	var/new_level
+	integrity_level = 0
+	var/new_effects
 	if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
-		new_level |= LIMB_INTEGRITY_OKAY
+		integrity_level++
+		new_effects |= LIMB_INTEGRITY_EFFECT_OKAY
 		if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CONCERNING)
-			new_level |= LIMB_INTEGRITY_CONCERNING
+			integrity_level++
+			new_effects |= LIMB_INTEGRITY_EFFECT_CONCERNING
 			if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_SERIOUS)
-				new_level |= LIMB_INTEGRITY_SERIOUS
+				integrity_level++
+				new_effects |= LIMB_INTEGRITY_EFFECT_SERIOUS
 				if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CRITICAL)
-					new_level |= LIMB_INTEGRITY_CRITICAL
-					if(integrity_damage >= LIMB_INTEGRITY_NONE)
-						new_level |= LIMB_INTEGRITY_NONE
+					integrity_level++
+					new_effects |= LIMB_INTEGRITY_EFFECT_CRITICAL
+					if(integrity_damage >= LIMB_INTEGRITY_EFFECT_NONE)
+						integrity_level++
+						new_effects |= LIMB_INTEGRITY_EFFECT_NONE
 	
-	new_level &= ~neutralized_integrity_effects
+	new_effects &= ~neutralized_integrity_effects
 
-	if(new_level == integrity_level)
+	if(new_effects == integrity_level)
 		return
 
-	var/added_effects = ~integrity_level & new_level
-	var/removed_effects = integrity_level & ~new_level
-	integrity_level = new_level
+	var/added_effects = ~integrity_level & new_effects
+	var/removed_effects = integrity_level & ~new_effects
 
 	reapply_integrity_effects(added_effects, removed_effects)
 
 /obj/limb/proc/reapply_integrity_effects(added, removed)
 
-/mob/living/carbon/human/proc/check_limb_integrity(limb_name, level)
+//Set damage to the desired level's threshold, so when the effects are recalculated
+//the level is set
+/obj/limb/proc/set_integrity_level(new_level)
+	switch(new_level)
+		if(LIMB_INTEGRITY_EFFECT_OKAY)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_OKAY
+		if(LIMB_INTEGRITY_EFFECT_CONCERNING)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CONCERNING
+		if(LIMB_INTEGRITY_EFFECT_SERIOUS)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_SERIOUS
+		if(LIMB_INTEGRITY_EFFECT_CRITICAL)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CRITICAL
+		if(LIMB_INTEGRITY_EFFECT_NONE)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_NONE
+		else
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_PERFECT
+	recalculate_integrity()
+
+/mob/living/carbon/human/proc/check_limb_integrity_effect(limb_name, level)
 	var/obj/limb/L = get_limb(limb_name)
 	if(!L)
 		return FALSE
-	if(L.integrity_level & level)
+	if(L.integrity_level_effects & level)
 		return TRUE
 	return TRUE
 
@@ -208,22 +230,6 @@
 	last_dam_time = world.time
 	owner.updatehealth()
 	update_icon()
-
-/obj/limb/proc/get_avaiable_surgeries()
-	var/list/L = avaiable_surgeries.Copy()
-
-	var/list/r_list = list()
-	var/datum/surgery_procedure/S
-	for(var/T in L)
-		S = new T(owner, src)
-		if(S.is_avaiable())
-			r_list[S.name] = S
-
-	if(owner.status_flags & XENO_HOST)
-		S = new /datum/surgery_procedure/alien_embryo_removal(owner, src)
-		r_list[S.name] = S
-
-	return r_list
 
 /obj/limb/proc/heal_damage(brute, burn, internal = 0, robo_repair = 0)
 	if(status & LIMB_ROBOT && !robo_repair)
@@ -720,14 +726,14 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/chest/reapply_integrity_effects(added, removed)
 	..()
-	if(removed & LIMB_INTEGRITY_CONCERNING)
+	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.bonus_knockdown -= 2
-	else if(added & LIMB_INTEGRITY_CONCERNING)
+	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.bonus_knockdown += 2
 
 /obj/limb/chest/take_damage(brute, burn, sharp, edge, used_weapon, list/forbidden_limbs, no_limb_loss, impact_name, damage_source, mob/attack_source)
 	if(burn)
-		if(integrity_level & LIMB_INTEGRITY_SERIOUS)
+		if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS)
 			burn *= 2
 	. = ..()
 
@@ -744,9 +750,9 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/groin/reapply_integrity_effects(added, removed)
 	..()
-	if(removed & LIMB_INTEGRITY_CONCERNING)
+	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.xeno_neurotoxin_buff -= 1.75
-	else if(added & LIMB_INTEGRITY_CONCERNING)
+	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.xeno_neurotoxin_buff += 1.75
 
 /obj/limb/leg
@@ -755,15 +761,15 @@ This function completely restores a damaged organ to perfect condition.
 	max_damage = 35
 
 /obj/limb/leg/get_slowdown()
-	if(integrity_level & LIMB_INTEGRITY_CONCERNING)
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		return 0.4
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
 
-	if(removed & LIMB_INTEGRITY_SERIOUS)
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil -= 1
-	else if(added & LIMB_INTEGRITY_SERIOUS)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil += 1
 
 /obj/limb/foot
@@ -779,14 +785,14 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/arm/reapply_integrity_effects(added, removed)
 	..()
 
-	if(removed & LIMB_INTEGRITY_CONCERNING)
+	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.minimum_wield_delay -= 1
-	else if(added & LIMB_INTEGRITY_CONCERNING)
+	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.minimum_wield_delay += 1
 
-	if(removed & LIMB_INTEGRITY_SERIOUS) //This is really nasty
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS) //This is really nasty
 		owner.action_delay -= 3 SECONDS
-	else if(added & LIMB_INTEGRITY_SERIOUS)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.action_delay += 3 SECONDS
 
 /obj/limb/hand
@@ -867,14 +873,14 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/head/reapply_integrity_effects(added, removed)
 
-	if(removed & LIMB_INTEGRITY_CONCERNING)
+	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.zoom_blocked -= 1
-	else if(added & LIMB_INTEGRITY_CONCERNING)
+	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.zoom_blocked += 1
 
-	if(removed & LIMB_INTEGRITY_SERIOUS) //This is really nasty
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS) //This is really nasty
 		owner.special_vision_blocked -= 1
-	else if(added & LIMB_INTEGRITY_SERIOUS)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.special_vision_blocked += 1
 
 /obj/limb/head/update_overlays()

@@ -1,33 +1,85 @@
+//Mostly ported from tg
 
-/datum/surgery_procedure
-	var/cur_step = 1
-	var/list/common_steps = list(/datum/surgery_step)
-	var/special_sequence_change_point = 0
-	var/list/special_sequence = list()
-	var/using_special_sequence = FALSE
-	var/name = "procedure"
-	var/desc = ""
-	var/open_stage = 1
+/datum/surgery
+	var/name = "surgery"
+	var/desc = "surgery description"
 	var/step_in_progress = FALSE
-	var/mob/living/carbon/human/affected_mob
+	var/list/steps = list()
+	var/status = 1 
+	var/mob/living/target
 	var/obj/limb/affected_limb
+	var/list/possible_locs = ALL_LIMBS 							//Multiple locations
 
-/datum/surgery_procedure/New(subject, limb)
-	affected_mob = subject
-	affected_limb = limb
+	var/can_cancel = TRUE										//Can cancel this surgery after step 1 with cautery
+	var/list/target_mobtypes = list(/mob/living/carbon/human)	//Acceptable Species
+	var/location = LIMB_CHEST									//Surgery location
+	var/requires_bodypart_type = LIMB_ORGANIC				//Prevents you from performing an operation on incorrect limbs. 0 for any limb type
+
+	var/requires_bodypart = TRUE								//Surgery available only when a bodypart is present, or only when it is missing.
+	var/requires_real_bodypart = FALSE							//Some surgeries don't work on limbs that don't really exist
+	var/lying_required = TRUE									//Does the vicitm needs to be lying down.
+	var/self_operable = FALSE									//Can the surgery be performed on yourself.
+
+/datum/surgery/New(surgery_target, surgery_location, surgery_limb)
 	..()
+	if(surgery_target)
+		target = surgery_target
+		target.surgeries += src
+		if(surgery_location)
+			location = surgery_location
+		if(surgery_limb)
+			affected_limb = surgery_limb
 
-/datum/surgery_procedure/Destroy()
-	affected_mob = null
+/datum/surgery/Destroy()
+	affected_limb = null
+	if(target)
+		target.surgeries -= src
+	target = null
 	affected_limb = null
 	. = ..()
 
-/datum/surgery_procedure/proc/is_avaiable()
-	if(affected_limb.surgery_open_stage == open_stage)
+/datum/surgery/proc/can_start(mob/user, mob/living/patient) //FALSE to not show in list
+	return TRUE
+	//Might add the surgery computer later
+
+/datum/surgery/proc/next_step(mob/user, intent)
+	if(location != user.zone_selected)
+		return FALSE
+	if(step_in_progress)
 		return TRUE
+
+	var/try_to_fail = FALSE
+	if(intent == INTENT_DISARM)
+		try_to_fail = TRUE
+	
+	var/datum/surgery_step/S = get_surgery_step()
+	if(S)
+		var/obj/item/tool = user.get_active_hand()
+		if(S.try_op(user, target, user.zone_selected, tool, src, try_to_fail))
+			return TRUE
+		if(tool && tool.flags_item & SURGERY_TOOL) //Just because you used the wrong tool it doesn't mean you meant to whack the patient with it
+			to_chat(user, "<span class='warning'>This step requires a different tool!</span>")
+			return TRUE
 	return FALSE
 
-/datum/surgery_procedure/proc/try_do_step(mob/living/carbon/human/user, def_zone)
+/datum/surgery/proc/get_surgery_step()
+	var/step_type = steps[status]
+	return new step_type
+
+/datum/surgery/proc/get_surgery_next_step()
+	if(status < steps.len)
+		var/step_type = steps[status + 1]
+		return new step_type
+	else
+		return null
+
+/datum/surgery/proc/complete()
+	qdel(src)
+/*
+/datum/surgery/proc/is_avaiable()
+	return TRUE
+
+/datum/surgery/proc/try_do_step(mob/living/carbon/human/user, def_zone)
 	if(!ishuman(user))
 		return FALSE
 	if(affected_mob.get_limb(def_zone) != affected_limb)
@@ -42,23 +94,9 @@
 	if(step_in_progress)
 		return FALSE
 	var/obj/item/tool = user.get_active_hand()
-	var/datum/surgery_step/S
-	var/can_procede = FALSE
-	var/step_type
-	if(cur_step == special_sequence_change_point)
-		step_type = special_sequence[cur_step]
-		S = new step_type
-		if(S.can_do_step(user, src, tool))
-			using_special_sequence = TRUE
-			can_procede = TRUE
-	if(!can_procede)
-		if(using_special_sequence)
-			step_type = special_sequence[cur_step]
-		else
-			step_type = common_steps[cur_step]
-		S = new step_type
-		if(!S.can_do_step(user, src, tool))
-			return FALSE
+	var/datum/surgery_step/S = new step_sequence[current_step]
+	if(!S.can_do_step(user, src, tool))
+		return FALSE
 
 	S.begin_step(user)
 	step_in_progress = TRUE
@@ -82,7 +120,7 @@
 	step_in_progress = FALSE
 	return TRUE
 
-/datum/surgery_procedure/proc/cancel_procedure(mob/living/carbon/human/user)
+/datum/surgery/proc/cancel_procedure(mob/living/carbon/human/user)
 	if(!ishuman(user))
 		return
 	if(user.a_intent == INTENT_HARM) //Check for Hippocratic Oath
@@ -109,14 +147,16 @@
 		end_interrupted()
 		finish()
 
-/datum/surgery_procedure/proc/advance_step()
-	if(++cur_step > (using_special_sequence ? length(special_sequence) : length(common_steps)))
+/datum/surgery/proc/advance_step()
+	if(++cur_step > length(step_sequence)))
 		return FALSE
 	return TRUE
 
-/datum/surgery_procedure/proc/get_sucess_multipliers()
+/datum/surgery/proc/get_sucess_multipliers()
 	var/multipler = 1
 	. = multipler
+	//Need to replace this with surgery speed
+	/*
 	if(!isSynth(affected_mob) && !isYautja(affected_mob))
 		if(locate(/obj/structure/bed/roller, affected_mob.loc))
 			multipler -= SURGERY_MULTIPLIER_SMALL
@@ -132,182 +172,30 @@
 		if(istype(affected_mob.loc, /turf/open/shuttle/dropship))
 			multipler -= SURGERY_MULTIPLIER_HUGE
 		multipler = Clamp(multipler, 0, 1)
+	*/
 
-/datum/surgery_procedure/proc/finish()
-	affected_mob.surgery_procedures -= src
+/datum/surgery/proc/finish()
+	affected_mob.surgeries -= src
 	qdel(src)
 
-/datum/surgery_procedure/proc/end_sucess() //Heal wounds and whatever else
-	SEND_SIGNAL(affected_limb, COMSIG_SURGERY_SUCESS, type)
+/datum/surgery/proc/end_sucess()
 
-/datum/surgery_procedure/proc/end_interrupted() //Deal damage or something
-	if(cur_step == 1)
-		return FALSE
+/datum/surgery/proc/end_interrupted() //Deal damage or something
 
-/datum/surgery_procedure/open_limb
-	common_steps = list(/datum/surgery_step/incision, /datum/surgery_step/clamp, /datum/surgery_step/retract)
-	name = "Open Limb"
-	open_stage = 0
+//LIMB INTEGRITY HEALING PROCEDURES
+//INTEGRITY DAMAGE LEVEL 2 -> 1
 
-/datum/surgery_procedure/open_limb/end_sucess()
-	..()
-	affected_limb.surgery_open_stage = 1
-
-/datum/surgery_procedure/close_limb
-	common_steps = list(/datum/surgery_step/unretract, /datum/surgery_step/cauterize)
-	name = "Close limb"
-	open_stage = 1
-
-/datum/surgery_procedure/close_limb/end_sucess()
-	..()
-	affected_limb.surgery_open_stage = 0
-
-/datum/surgery_procedure/replace_missing_limb
-	name = "Prosthetical Replacement"
-	common_steps = list(/datum/surgery_step,
-						/datum/surgery_step,
-						/datum/surgery_step,
-						/datum/surgery_step,
-						/datum/surgery_step,
-						/datum/surgery_step)
-
-/datum/surgery_procedure/replace_missing_limb/is_avaiable()
-	if(!(affected_limb.status) & LIMB_DESTROYED)
-		return FALSE
-	. = ..()
-
-/datum/surgery_procedure/replace_missing_limb/end_sucess()
-	. = ..()
-	affected_limb.rejuvenate()				
-
-/datum/surgery_procedure/alien_embryo_removal
-	name = "Alien Embryo Removal"
-
-/datum/surgery_procedure/alien_embryo_removal/end_sucess(mob/user)
-	. = ..()
-	var/obj/item/alien_embryo/A = locate() in affected_mob
-	if(A)
-		user.visible_message(SPAN_WARNING("[user] rips a wriggling parasite out of [affected_mob]'s ribcage!"),
-							 SPAN_WARNING("You rip a wriggling parasite out of [affected_mob]'s ribcage!"))
-		user.count_niche_stat(STATISTICS_NICHE_SURGERY_LARVA)
-		var/mob/living/carbon/Xenomorph/Larva/L = locate() in affected_mob //the larva was fully grown, ready to burst.
-		if(L)
-			L.forceMove(affected_mob.loc)
-			qdel(A)
-		else
-			A.forceMove(affected_mob.loc)
-			affected_mob.status_flags &= ~XENO_HOST
-	
-//Death stack removal
-/*
-/datum/surgery_procedure/remove_death_stack
-	var/req_stacks = 1 //Only avaiable if you have this many stacks
-	var/limited_to_req_stacks = TRUE //If false, also avaiable when there are more stacks than required
-
-/datum/surgery_procedure/remove_death_stack/is_avaiable()
-	. = ..()
-	if(!.)
-		return
-	if(limited_to_req_stacks)
-		if(affected_mob.stacked_deaths == req_stacks)
-			return TRUE
+/datum/surgery/stitching
+	step_sequence = list()
+/datum/surgery/stitching/is_avaiable()
+	if(affected_limb.integrity_level == LIMB_INTEGRITY_OKAY)
+		return TRUE
 	else
-		if(affected_mob.stacked_deaths >= req_stacks)
-			return TRUE
+		return FALSE
+/datum/surgery/stitching/end_interrupted()
+	affected_limb.take_damage(5)	
 
-/datum/surgery_procedure/remove_death_stack/end_sucess()
-	if(affected_mob.stacked_deaths)
-		affected_mob.stacked_deaths--
-	. = ..()
-
-//Gonna make these the coolest procedures
-/datum/surgery_procedure/remove_death_stack/brain_repair
-/datum/surgery_procedure/remove_death_stack/heart_transplant
-/datum/surgery_procedure/remove_death_stack/intestinal_cleansing
-*/
-/*
-
-	Mild wound procedures
-	General idea is that you're fixing the upper to mid "layers" of the body
-
-*/
-
-/datum/surgery_procedure/fix_bone
-    name = "Bone Reparation Procedure"
-    common_steps = list(/datum/surgery_step/move_bone,
-                        /datum/surgery_step/drain_blood_bone,
-                        /datum/surgery_step/pick_fragments,
-                        /datum/surgery_step/glue_fragments,
-                        /datum/surgery_step/heal_bone,
-                        /datum/surgery_step/set_bone)
-    open_stage = 1
-
-/datum/surgery_procedure/fix_bone/hairline
-    name = "Bone Reparation Procedure (Hairline)"
-    special_sequence_change_point = 3
-    special_sequence = list(null,
-                          null,
-                          /datum/surgery_step/fill_fracture,
-                          /datum/surgery_step/heal_bone
-                          )//Skips fragment picking & setting
-
-/datum/surgery_procedure/fix_bone/broken
-    name = "Bone Reparation Procedure (Broken)"
-    special_sequence_change_point = 1
-    special_sequence = list(/datum/surgery_step/remove_bone,
-                          /datum/surgery_step/drain_blood_bone,
-                          /datum/surgery_step/glue_ends,
-                          /datum/surgery_step/replace_bone
-                          )
-/datum/surgery_procedure/fix_bone/dislocation
-    name = "Bone Reparation Procedure (Dislocation)"
-    special_sequence_change_point = 1
-    special_sequence = list(/datum/surgery_step/heal_trauma,
-                          /datum/surgery_step/realign_bone,
-                          /datum/surgery_step/set_bone,
-                          /datum/surgery_step/heal_bone
-                          )
-
-/datum/surgery_procedure/fix_muscle
-    name = "Muscle Reparation Procedure"
-    open_stage = 1
-    common_steps = list(/datum/surgery_step/drain_blood_muscle,
-                        /datum/surgery_step/tension_muscle,
-                        /datum/surgery_step/rebuild_muscle_veins,
-                        /datum/surgery_step/apply_synthmuscle,
-                        /datum/surgery_step/apply_muscle_growth,
-                        /datum/surgery_step/stitch_muscle)
-
-/datum/surgery_procedure/fix_muscle/tendon
-    name = "Muscle Reparation Procedure (Severed Tendon)"
-    special_sequence_change_point = 1
-    special_sequence = list(/datum/surgery_step/pull_tendon,
-                          /datum/surgery_step/stitch_muscle,
-                          /datum/surgery_step/apply_muscle_growth,
-                          /datum/surgery_step/heal_tendon_bone
-                          )
-
-/datum/surgery_procedure/fix_muscle/tear
-    name = "Muscle Reparation Procedure (Partial Tear)"
-    special_sequence_change_point = 2
-    special_sequence = list(null,
-                          /datum/surgery_step/apply_synthmuscle,
-                          /datum/surgery_step/apply_muscle_growth,
-                          /datum/surgery_step/stitch_muscle
-                          )
-
-/datum/surgery_procedure/fix_muscle/hemorrage
-    name = "Muscle Reparation Procedure (Hemorraging)"
-    special_sequence_change_point = 2
-    special_sequence = list(null,
-                          /datum/surgery_step/retract_muscle,
-                          /datum/surgery_step/rebuild_muscle_veins,
-                          /datum/surgery_step/apply_muscle_growth
-                          )
-
-/*
-
-	Severe wound procedures
-	Messing with organs
-
+/datum/surgery/stitching/end_sucess()
+	affected_limb.set_integrity_level(LIMB_INTEGRITY_PERFECT)
+	
 */

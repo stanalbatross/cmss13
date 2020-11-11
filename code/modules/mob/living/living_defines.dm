@@ -75,3 +75,4 @@
 	var/datum/stamina/stamina
 
 	var/action_delay //for do_after
+	var/list/surgeries = list()

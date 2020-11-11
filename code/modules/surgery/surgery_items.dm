@@ -336,22 +336,6 @@
 	w_class = SIZE_SMALL
 	flags_item = NOBLUDGEON
 
-/obj/item/tool/surgery/drapes/attack(mob/living/carbon/human/H, mob/living/user)
-    if(!istype(H) || user.a_intent != INTENT_HELP)
-        ..()
-    var/obj/limb/L = H.get_limb(user.zone_selected)
-    for(var/datum/surgery_procedure/S in H.surgery_procedures)
-        if(S.affected_limb != L)
-            continue
-        if(alert(user, "Cancel [H]'s [S.name]? ", "Cancel Procedure", "Yes", "No") == "Yes")
-            S.cancel_procedure(user)
-        return
-    var/list/avaiable_surgeries = L.get_avaiable_surgeries()
-    var/choice = input(user, "Begin which surgery procedure?", "Surgery") in avaiable_surgeries + list("Cancel" = null)
-    var/datum/surgery_procedure/selected = avaiable_surgeries[choice]
-    if(!selected)
-        return
-    to_chat(user, SPAN_NOTICE("You begin to prepare [H]'s [L.display_name] for \an [selected.name]"))
-    if(do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-        to_chat(user, SPAN_HELPFUL("[H]'s [L.display_name] is ready for the [selected.name]"))
-        H.surgery_procedures += selected
+/obj/item/tool/surgery/drapes/New()
+	. = ..()
+	AddComponent(/datum/component/surgery_initiator, null)

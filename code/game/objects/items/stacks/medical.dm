@@ -133,7 +133,7 @@
 	amount = 5
 	max_amount = 5
 	stack_id = "splint"
-	limb_integrity_levels_neutralized = LIMB_INTEGRITY_CONCERNING
+	limb_integrity_levels_neutralized = LIMB_INTEGRITY_EFFECT_CONCERNING
 	application_sound = 'sound/handling/splint1.ogg'
 
 	low_skill_delay = 0

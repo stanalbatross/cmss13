@@ -20,15 +20,6 @@
 						SPAN_NOTICE("You extinguished the fire on [src]."), null, 5)
 				return 1
 
-			if(skillcheck(M, SKILL_SURGERY, SKILL_SURGERY_TRAINED))
-				if(length(surgery_procedures))
-					var/obj/limb/L = get_limb(M.zone_selected)
-					for(var/datum/surgery_procedure/S in surgery_procedures)
-						if(S.affected_limb != L)
-							continue
-						if(S.try_do_step(M, M.zone_selected))
-							return TRUE
-
 			// If unconcious with oxygen damage, do CPR. If dead, we do CPR 
 			if(!(stat == UNCONSCIOUS && getOxyLoss() > 0) && !(stat == DEAD))
 				help_shake_act(M)

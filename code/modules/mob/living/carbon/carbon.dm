@@ -117,9 +117,20 @@
 	recalculate_move_delay = TRUE
 	..()
 
+/mob/living/carbon/attackby(obj/item/W, mob/living/user)
+	for(var/datum/surgery/S in surgeries)
+		if(lying || !S.lying_required)
+			if((S.self_operable || user != src) && (user.a_intent == INTENT_HELP || user.a_intent == INTENT_DISARM))
+				if(S.next_step(user,user.a_intent))
+					return TRUE
+	. = ..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
-	if(!istype(M, /mob/living/carbon)) return
+	for(var/datum/surgery/S in surgeries)
+		if(lying || !S.lying_required)
+			if(M.a_intent == INTENT_HELP || M.a_intent == INTENT_DISARM)
+				if(S.next_step(M, M.a_intent))
+					return TRUE
 
 	for(var/datum/disease/D in viruses)
 		if(D.spread_by_touch())
