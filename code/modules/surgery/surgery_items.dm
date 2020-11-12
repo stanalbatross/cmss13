@@ -101,9 +101,9 @@
 	damtype = "fire"
 	force = 15.0
 
-/obj/item/tool/surgery/scalpel/manager
-	name = "incision management system"
-	desc = "A true extension of the surgeon's body, this marvel instantly and completely prepares an incision allowing for the immediate commencement of therapeutic steps."
+/obj/item/tool/surgery/pict_system
+	name = "PICT system"
+	desc = "(Precision Incision and Cauterization Tool). A tool used for the most complicated procedures, where fluid leakage from incisions must be avoided."
 	icon_state = "scalpel_manager_on"
 	force = 7.5
 

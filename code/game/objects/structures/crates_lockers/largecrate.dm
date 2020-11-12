@@ -313,7 +313,7 @@
 	new /obj/item/tool/surgery/retractor(src)
 	new /obj/item/tool/surgery/bonesetter(src)
 	new /obj/item/tool/surgery/circular_saw(src)
-	new /obj/item/tool/surgery/scalpel/manager(src)
+	new /obj/item/tool/surgery/pict_system(src)
 
 
 /obj/structure/largecrate/hunter_games_supplies

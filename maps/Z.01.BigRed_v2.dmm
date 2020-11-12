@@ -3001,7 +3001,7 @@
 /area/bigredv2/caves_lambda)
 "ahz" = (
 /obj/structure/surface/table/reinforced,
-/obj/item/tool/surgery/scalpel/manager,
+/obj/item/tool/surgery/pict_system,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/mars_cave{
 	icon_state = "mars_cave_5";
@@ -12168,7 +12168,7 @@
 /area/bigredv2/outside/nw)
 "aEw" = (
 /obj/structure/surface/table,
-/obj/item/tool/surgery/scalpel/manager,
+/obj/item/tool/surgery/pict_system,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;

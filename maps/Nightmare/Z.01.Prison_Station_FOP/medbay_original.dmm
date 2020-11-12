@@ -319,7 +319,7 @@
 "rG" = (
 /obj/structure/surface/table/reinforced,
 /obj/item/tool/surgery/circular_saw,
-/obj/item/tool/surgery/scalpel/manager,
+/obj/item/tool/surgery/pict_system,
 /turf/open/floor/prison{
 	tag = "icon-whitegreenfull (SOUTHWEST)";
 	icon_state = "whitegreenfull";

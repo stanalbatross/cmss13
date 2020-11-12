@@ -10,7 +10,6 @@
 	matter = list("plastic" = 3000)
 	can_hold = list(
 		/obj/item/tool/surgery,
-		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/nanopaste
 	)
 
@@ -30,6 +29,7 @@
 	new /obj/item/tool/surgery/handheld_pump
 	new /obj/item/tool/surgery/bonesetter(src)
 	new /obj/item/tool/surgery/FixOVein(src)
+	new /obj/item/tool/surgery/pict_system(src)
 	new /obj/item/stack/nanopaste(src)
 
 /obj/item/storage/surgical_tray/update_icon()

@@ -1653,7 +1653,7 @@
 	pixel_x = -12;
 	pixel_y = 2
 	},
-/obj/item/tool/surgery/scalpel/manager,
+/obj/item/tool/surgery/pict_system,
 /turf/open/floor{
 	tag = "icon-whitebluefull (NORTHEAST)";
 	icon_state = "whitebluefull";

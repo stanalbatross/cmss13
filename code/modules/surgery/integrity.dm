@@ -40,6 +40,7 @@
     name = "Superficial Restoration"
     steps = list(/datum/surgery_step/move_bone,
                  /datum/surgery_step/incision,
+                 /datum/surgery_step/clamp_bleeders,
                  /datum/surgery_step/retract_skin,
                  /datum/surgery_step/dig_shrapnel,
                  /datum/surgery_step/close_ruptured_veins,

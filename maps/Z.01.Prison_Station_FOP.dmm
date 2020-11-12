@@ -6057,7 +6057,7 @@
 "aoB" = (
 /obj/structure/surface/table/reinforced,
 /obj/item/tool/surgery/circular_saw,
-/obj/item/tool/surgery/scalpel/manager,
+/obj/item/tool/surgery/pict_system,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	dir = 10;
