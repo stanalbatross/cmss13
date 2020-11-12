@@ -586,7 +586,7 @@
 			var/org_advice = ""
 
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] - INTEGRITY LOSS: [integrity_damage/2]% [org.integrity_level ? "{T[org.integrity_level]}":""] [org_bleed][org_incision][org_advice]"
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | <font color='purple'>Integrity: [integrity_damage/2] [org.integrity_level ? "{T[org.integrity_level]}":""]</font> [org_bleed][org_incision][org_advice]"
 				dat += "\n"
 
 	// Show red messages - broken bokes,

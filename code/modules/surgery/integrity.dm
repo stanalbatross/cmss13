@@ -2,7 +2,7 @@
 /datum/surgery/stitching
     name = "Simple Restoration"
     steps = list(/datum/surgery_step/apply_healing_paste,
-                 /datum/surgery_step/pull_skin,
+                 /datum/surgery_step/retract_skin,
                  /datum/surgery_step/sew_flesh)
     lying_required = FALSE
     self_operable = TRUE
@@ -27,15 +27,6 @@
     . = ..()
     target.apply_damage(-3, BRUTE,target_zone)
 
-/datum/surgery_step/retract_skin
-    name = "Retract skin"
-    time = 2 SECONDS
-    tools = list(/obj/item/tool/surgery/retractor = 100, /obj/item/tool/surgery/hemostat = 60, /obj/item/attachable/bayonet = 40, /obj/item/stack/cable_coil = 25)
-
-/datum/surgery_step/pull_skin/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
-    user.visible_message(SPAN_NOTICE("[user] starts retracting [target]'s [parse_zone(target_zone)]'s skin with \the [tool]."),
-		SPAN_NOTICE("You start retracting \the [parse_zone(target_zone)]'s skin with \the [tool]..."))
-
 /datum/surgery_step/sew_flesh
     name = "Suture"
     time = 3 SECONDS    
@@ -48,7 +39,7 @@
 /datum/surgery/superficial_restoration
     name = "Superficial Restoration"
     steps = list(/datum/surgery_step/move_bone,
-                 /datum/surgery_step/superficial_incision,
+                 /datum/surgery_step/incision,
                  /datum/surgery_step/retract_skin,
                  /datum/surgery_step/dig_shrapnel,
                  /datum/surgery_step/close_ruptured_veins,
@@ -74,15 +65,6 @@
      user.visible_message(SPAN_NOTICE("[user] grabs [target]'s [parse_zone(target_zone)] and attempts to push its dislocated bones into place."),
 		SPAN_NOTICE("You start pushing [target]'s [parse_zone(target_zone)]'s bones into place ..."))
 
-/datum/surgery_step/superficial_incision
-    name = "Superficial Incision"
-    tools = list(/obj/item/tool/surgery/scalpel = 100, /obj/item/attachable/bayonet = 80, /obj/item/tool/kitchen/knife = 65, /obj/item/shard = 35)
-    time = 2 SECONDS
-
-/datum/surgery_step/superficial_incision/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
-     user.visible_message(SPAN_NOTICE("[user] start making an incision on [target]'s [parse_zone(target_zone)] with \the [tool]."),
-		SPAN_NOTICE("You start making an incision on [target]'s [parse_zone(target_zone)] with \the [tool] ..."))
-        
 /datum/surgery_step/dig_shrapnel
     name = "Dig shrapnel"
     tools = list(/obj/item/tool/surgery/hemostat = 100, /obj/item/tool/surgery/scalpel = 60, /obj/item/attachable/bayonet = 40, /obj/item/tool/kitchen/knife = 20)
@@ -94,7 +76,7 @@
         
 /datum/surgery_step/close_ruptured_veins
     name = "Close vein ruptures"
-    tools = list(/obj/item/tool/surgery/FixOVein = 100, /obj/item/tool/surgery/cautery = 60, /obj/item/tool/lighter = 35)
+    tools = list(/obj/item/tool/surgery/cell_gel = 100, /obj/item/tool/surgery/cautery = 60, /obj/item/tool/lighter = 35)
     time = 4 SECONDS
 
 /datum/surgery_step/close_ruptured_veins/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -109,12 +91,3 @@
 /datum/surgery_step/drain_blood/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
      user.visible_message(SPAN_NOTICE("[user] starts draining blood pools from [target]'s [parse_zone(target_zone)] with \the [tool]."),
 		SPAN_NOTICE("You start draining the blood pools inside \the [parse_zone(target_zone)] with \the [tool] ..."))
-
-/datum/surgery_step/close_incision
-    name = "Close incision"
-    tools = list(/obj/item/tool/surgery/surgical_line = 100, /obj/item/tool/surgery/cautery = 75, /obj/item/tool/lighter = 50, /obj/item/stack/cable_coil = 10)
-    time = 2 SECONDS
-
-/datum/surgery_step/close_incision/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
-     user.visible_message(SPAN_NOTICE("[user] starts closing the incision on [target]'s [parse_zone(target_zone)] with \the [tool]."),
-		SPAN_NOTICE("You start closing the incision on \the [parse_zone(target_zone)] with \the [tool] ..."))

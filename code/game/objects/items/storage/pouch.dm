@@ -335,6 +335,29 @@
 	new /obj/item/storage/pill_bottle/bicaridine(src)
 	new /obj/item/storage/pill_bottle/kelotane(src)
 
+/obj/item/storage/pouch/medical/surgery
+	name = "field surgery pouch"
+	desc = "Specially designed to hold all surgical tools one might need for performing simple operations on the field."
+	icon_state = "surgery"
+	storage_slots = 9
+	can_hold = list(
+		/obj/item/tool/surgery,
+		/obj/item/clothing/mask/gas/anesthetic
+	)
+
+/obj/item/storage/pouch/medical/surgery/full/Initialize()
+	. = ..()
+	new /obj/item/tool/surgery/scalpel(src)
+	new /obj/item/tool/surgery/hemostat(src)
+	new /obj/item/tool/surgery/retractor(src)
+	new /obj/item/tool/surgery/surgical_line(src)
+	new /obj/item/tool/surgery/cell_gel(src)
+	new /obj/item/tool/surgery/handheld_pump(src)
+	new /obj/item/tool/surgery/cautery(src)	
+	new /obj/item/tool/surgery/drapes(src)
+	new /obj/item/clothing/mask/gas/anesthetic(src)
+	
+
 /obj/item/storage/pouch/medical/frt_kit
 	name = "first responder technical pouch"
 	desc = "Holds everything one might need for rapid field triage and treatment. Make sure to coordinate with the proper field medics."

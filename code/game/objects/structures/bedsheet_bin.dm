@@ -16,6 +16,9 @@ LINEN BINS
 	throw_range = 2
 	w_class = SIZE_SMALL
 
+/obj/item/bedsheet/New()
+	. = ..()
+	AddComponent(/datum/component/surgery_initiator, null)
 
 /obj/item/bedsheet/attack_self(mob/user as mob)
 	user.drop_held_item()

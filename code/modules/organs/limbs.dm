@@ -22,7 +22,7 @@
 
 	var/brute_autoheal = 0.02 //per life tick
 	var/burn_autoheal = 0.04
-	var/integrity_autoheal = 0.01
+	var/integrity_autoheal = 0.3
 	var/neutralized_integrity_effects = NO_FLAGS
 	var/healing_naturally = TRUE //natural healing is limited by health and other stuff
 	var/max_medical_items = 3
@@ -35,7 +35,6 @@
 	var/processing = FALSE
 
 	var/surgery_open_stage = 0
-	var/surgery_state_pain
 
 	var/obj/item/hidden = null
 	var/list/implants = list()

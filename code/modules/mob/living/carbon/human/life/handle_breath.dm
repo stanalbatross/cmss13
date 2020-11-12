@@ -52,6 +52,10 @@
 
 /mob/living/carbon/human/proc/get_breath_from_internal()
 	if(internal)
+		if(istype(wear_mask,/obj/item/clothing/mask/gas/anesthetic))
+			var/obj/item/clothing/mask/gas/anesthetic/F = wear_mask
+			if(F.internal_tank == internal)
+				return F.internal_tank.return_air()
 		if(istype(buckled,/obj/structure/machinery/optable))
 			var/obj/structure/machinery/optable/O = buckled
 			if(O.anes_tank)

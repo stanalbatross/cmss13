@@ -352,8 +352,7 @@
 /obj/item/tool/surgery/drapes
 	name = "surgical drapes"
 	desc = "Used to cover a limb prior to the beginning of a surgical procedure"
-	icon = 'icons/obj/items/items.dmi'
-	icon_state = "sheet"
+	icon_state = "drapes"
 	w_class = SIZE_SMALL
 	flags_item = NOBLUDGEON
 

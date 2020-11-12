@@ -82,7 +82,7 @@
 		if(prob(pain_failure_chance))
 			failure(user, target, target_zone, tool, surgery)
 			target.emote("pain")
-			to_chat(user, SPAN_DANGER("[target] moved during the surgery! Use anesthetics!"))
+			to_chat(user, SPAN_DANGER("[target] moved during the surgery! Use anesthetics or painkillers!"))
 			surgery.step_in_progress = FALSE
 			return FALSE
 

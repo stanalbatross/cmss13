@@ -139,3 +139,75 @@
 	unacidable = TRUE
 	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP|COVEREYES|COVERMOUTH|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT|ALLOWCPR|BLOCKSHARPOBJ
+
+/obj/item/clothing/mask/gas/anesthetic
+	name = "anesthetic mask"
+	desc = "A sterile mask provided with detachable anesthetic gas tanks, useful for performing surgery in unfavourable conditions. Hurry, however, as it will automatically remove itself after one minute to prevent malpractice!"
+	icon_state = "anesthetic"
+	item_state = "anesthetic"
+	time_to_equip = 2 SECONDS
+	time_to_unequip = 2 SECONDS
+	var/obj/item/tank/anesthetic/internal_tank
+	var/internals_on = TRUE
+	var/balddoc_safety_timer
+
+/obj/item/clothing/mask/gas/anesthetic/New(loc)
+	..()
+	internal_tank = new
+
+/obj/item/clothing/mask/gas/anesthetic/Destroy()
+	qdel(internal_tank)
+	var/mob/living/carbon/user = loc
+	if(istype(user))
+		user.internal = null
+	internal_tank = null
+	deltimer(balddoc_safety_timer)
+	. = ..()
+	
+
+/obj/item/clothing/mask/gas/anesthetic/attack_self(mob/user)
+	internals_on = !internals_on
+	to_chat(user, SPAN_NOTICE("You toggle the anesthetic mask [internals_on? "on":"off"]"))
+	update_anesthetic()
+
+/obj/item/clothing/mask/gas/anesthetic/equipped(mob/user, slot)
+	if(slot == WEAR_FACE)
+		update_anesthetic()
+	return ..()
+
+/obj/item/clothing/mask/gas/anesthetic/dropped()
+	update_anesthetic()
+	return ..()
+
+/obj/item/clothing/mask/gas/anesthetic/verb/toggle_internal_tank()
+	set name = "Toggle Internal Tank"
+	set category = "Object"
+
+	if(usr.stat != 0 || !ishuman(usr))
+		return
+	internals_on = !internals_on
+	to_chat(usr, SPAN_NOTICE("You toggle the anesthetic mask [internals_on? "on":"off"]"))
+	update_anesthetic()
+
+/obj/item/clothing/mask/gas/anesthetic/proc/update_anesthetic()
+	if(balddoc_safety_timer)
+		deltimer(balddoc_safety_timer)
+	var/mob/living/carbon/human/user = loc
+	if(!istype(user))
+		return
+	if(user.wear_mask != src)
+		return
+
+	if(internals_on)
+		user.internal = internal_tank
+		to_chat(user, SPAN_NOTICE("<i>You start to feel sleepy...</i>"))
+		balddoc_safety_timer = addtimer(CALLBACK(src,.proc/baldness_countermeasure), MINUTES_1)
+	else
+		user.internal = null
+		user.AdjustSleeping(5) //Wake them up a bit
+
+/obj/item/clothing/mask/gas/anesthetic/proc/baldness_countermeasure()
+	balddoc_safety_timer = 0
+	playsound(loc, 'sound/machines/twobeep.ogg', 30, sound_range = 3)
+	internals_on = FALSE
+	update_anesthetic()

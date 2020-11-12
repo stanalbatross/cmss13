@@ -62,6 +62,7 @@
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/storage/pouch/medical(src)
 	new /obj/item/storage/pouch/medical(src)
+	new /obj/item/storage/pouch/medical/surgery(src)
 	new /obj/item/storage/pouch/syringe(src)
 	new /obj/item/storage/pouch/medkit(src)
 	new /obj/item/storage/pouch/medkit(src)
