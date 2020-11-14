@@ -82,6 +82,7 @@
 /datum/equipment_preset/synth/uscm/wo
 	name = "WO Support Synthetic"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND_WO
+	skills = /datum/skills/wo_synthetic
 
 /datum/equipment_preset/synth/uscm/wo/load_gear(mob/living/carbon/human/H)
 
