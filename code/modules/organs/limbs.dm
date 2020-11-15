@@ -11,6 +11,7 @@
 	var/icon_position = 0
 	var/damage_state = "=="
 
+	var/total_dam = 0
 	var/brute_dam = 0
 	var/burn_dam = 0
 	var/max_damage = 0
@@ -22,7 +23,7 @@
 
 	var/brute_autoheal = 0.02 //per life tick
 	var/burn_autoheal = 0.04
-	var/integrity_autoheal = 0.3
+	var/integrity_autoheal = 0.1
 	var/neutralized_integrity_effects = NO_FLAGS
 	var/healing_naturally = TRUE //natural healing is limited by health and other stuff
 	var/max_medical_items = 3
@@ -95,13 +96,13 @@
 	processing = FALSE
 
 /obj/limb/process()
-	if(brute_dam == 0 && burn_dam == 0 && integrity_damage == 0)
+	if(!total_dam && integrity_damage == 0)
 		return
 
 	if(world.time - last_dam_time < MINIMUM_AUTOHEAL_DAMAGE_INTERVAL)
 		return
 	if(healing_naturally)
-		if(owner.health < MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
+		if(total_dam > MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
 			return
 	//Integrity autoheal
 	if(integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
@@ -142,11 +143,11 @@
 	
 	new_effects &= ~neutralized_integrity_effects
 
-	if(new_effects == integrity_level)
+	if(new_effects == integrity_level_effects)
 		return
 
-	var/added_effects = ~integrity_level & new_effects
-	var/removed_effects = integrity_level & ~new_effects
+	var/added_effects = ~integrity_level_effects & new_effects
+	var/removed_effects = integrity_level_effects & ~new_effects
 
 	reapply_integrity_effects(added_effects, removed_effects)
 
@@ -176,7 +177,7 @@
 		return FALSE
 	if(L.integrity_level_effects & level)
 		return TRUE
-	return TRUE
+	return FALSE
 
 /****************************************************
 			   DAMAGE PROCS
@@ -214,9 +215,11 @@
 
 	brute_dam += brute
 	burn_dam += burn
+	total_dam = brute_dam + burn_dam
 	if(!is_ff)
 		if((owner.stat != DEAD))
-			take_integrity_damage(brute * 0.7) //Need to adjust to skills and armor
+			var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
+			take_integrity_damage(brute * int_conversion) //Need to adjust to skills and armor
 			if(brute > LIMB_BLEEDING_DAMAGE_THRESHOLD)
 				add_bleeding(brute)
 
@@ -231,15 +234,16 @@
 	owner.updatehealth()
 	update_icon()
 
-/obj/limb/proc/heal_damage(brute, burn, internal = 0, robo_repair = 0)
+/obj/limb/proc/heal_damage(brute, burn, autoheal = FALSE, robo_repair = 0)
 	if(status & LIMB_ROBOT && !robo_repair)
 		return
 
-	if(brute)
+	if(brute && !autoheal)
 		remove_all_bleeding(TRUE)
 
-	brute_dam = brute > brute_dam ? 0 : brute_dam - brute
-	burn_dam = burn > burn_dam ? 0 : burn_dam - burn
+	brute_dam = max(0, brute_dam - brute)
+	burn_dam = max(0, burn_dam - burn)
+	total_dam = brute_dam + burn_dam
 
 	owner.updatehealth()
 
@@ -256,6 +260,7 @@ This function completely restores a damaged organ to perfect condition.
 		status = 0
 	brute_dam = 0
 	burn_dam = 0
+	total_dam = 0
 	integrity_damage = 0
 	recalculate_integrity()
 

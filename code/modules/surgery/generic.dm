@@ -7,6 +7,11 @@
 	user.visible_message(SPAN_NOTICE("[user] starts making an incision on [target]'s [parse_zone(target_zone)] with \the [tool]."),
 		SPAN_NOTICE("You start making an incision on [target]'s [parse_zone(target_zone)] with \the [tool] ..."))
 
+/datum/surgery_step/incision/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	target.apply_damage(2, BRUTE, target_zone)
+	return ..()
+	
+
 /datum/surgery_step/clamp_bleeders
 	name = "Clamp Bleeders"
 	tools = list(/obj/item/tool/surgery/hemostat = 100, /obj/item/tool/wirecutters = 65, /obj/item/stack/cable_coil = 15)
@@ -15,6 +20,11 @@
 /datum/surgery_step/clamp_bleeders/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	user.visible_message(SPAN_NOTICE("[user] begins to clamp bleeders on [target]'s [parse_zone(target_zone)] with \the [tool]."),
 		SPAN_NOTICE("You start clamping bleeders on [target]'s [parse_zone(target_zone)] with \the [tool] ..."))
+
+/datum/surgery_step/clamp_bleeders/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	surgery.affected_limb.add_bleeding(5)
+	. = ..()
+	
 
 /datum/surgery_step/close_incision
 	name = "Close incision"
@@ -47,8 +57,13 @@
 /datum/surgery_step/saw_ribcage/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	user.visible_message(SPAN_NOTICE("[user] saws [target]'s ribcage open!"),
 		SPAN_NOTICE("You saw [target]'s ribcage open!"))
-	surgery.affected_limb.take_damage(50)
+	target.apply_damage(50, BRUTE, target_zone)
 	return ..()
+
+/datum/surgery_step/saw_ribcage/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	surgery.affected_limb.take_damage(25)
+	. = ..()
+	
 
 /datum/surgery_step/open_ribcage
 	name = "Open ribcage"

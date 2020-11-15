@@ -142,7 +142,7 @@
 
 /obj/item/clothing/mask/gas/anesthetic
 	name = "anesthetic mask"
-	desc = "A sterile mask provided with detachable anesthetic gas tanks, useful for performing surgery in unfavourable conditions. Hurry, however, as it will automatically remove itself after one minute to prevent malpractice!"
+	desc = "A sterile mask provided with detachable anesthetic gas tanks, useful for performing surgery in unfavourable conditions. Hurry, however, as it will automatically deactivate itself after one minute to prevent malpractice!"
 	icon_state = "anesthetic"
 	item_state = "anesthetic"
 	time_to_equip = 2 SECONDS
