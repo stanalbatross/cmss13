@@ -118,6 +118,12 @@
 
 #define MOVEMENT_LIMBS list("l_leg", "r_leg", "l_hand", "r_hand")
 #define HANDLING_LIMBS list("l_arm", "r_arm", "l_foot", "r_foot")
+#define EXTREMITY_LIMBS list("l_leg", "r_leg", "l_hand", "r_hand", "l_arm", "r_arm", "l_foot", "r_foot")
+
+#define NO_INTERNAL_DAMAGE 0
+#define INT_DMG_MULTIPLIER_NORMAL 1
+#define INT_DMG_MULTIPLIER_SHARP 1.2
+#define INT_DMG_MULTIPLIER_VERYSHARP 1.5
 
 //Human Overlays Indexes used in update_icons/////////
 #define UNDERWEAR_LAYER			37

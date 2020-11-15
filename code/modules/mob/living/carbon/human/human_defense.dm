@@ -199,9 +199,16 @@ Contains most of the procs that are called when a mob is attacked by something
 		user.flick_attack_overlay(src, "punch")
 	else
 		user.flick_attack_overlay(src, "punch")
+	var/int_damage_multiplier
+	if(weapon_edge)
+		int_damage_multiplier = INT_DMG_MULTIPLIER_VERYSHARP
+	else if(weapon_sharp)
+		int_damage_multiplier = INT_DMG_MULTIPLIER_SHARP
+	else
+		int_damage_multiplier = INT_DMG_MULTIPLIER_NORMAL
 
 	var/damage = armor_damage_reduction(GLOB.marine_melee, I.force, armor, (weapon_sharp?30:0) + (weapon_edge?10:0)) // no penetration frm punches
-	apply_damage(damage, I.damtype, affecting, sharp=weapon_sharp, edge=weapon_edge, used_weapon=I)
+	apply_damage(damage, I.damtype, affecting, int_damage_multiplier)
 
 	var/bloody = 0
 	if((I.damtype == BRUTE || I.damtype == HALLOSS) && prob(I.force*2 + 25))
@@ -298,8 +305,16 @@ Contains most of the procs that are called when a mob is attacked by something
 	var/weapon_sharp = is_sharp(O)
 	var/weapon_edge = has_edge(O)
 
+	var/int_damage_multiplier
+	if(weapon_edge)
+		int_damage_multiplier = INT_DMG_MULTIPLIER_VERYSHARP
+	else if(weapon_sharp)
+		int_damage_multiplier = INT_DMG_MULTIPLIER_SHARP
+	else
+		int_damage_multiplier = INT_DMG_MULTIPLIER_NORMAL
+
 	var/damage = armor_damage_reduction(GLOB.marine_melee, impact_damage, armor, (weapon_sharp?30:0) + (weapon_edge?10:0))
-	apply_damage(damage, dtype, affecting, sharp=weapon_sharp, edge=weapon_edge, used_weapon=O)
+	apply_damage(damage, dtype, affecting, int_damage_multiplier)
 
 	if (damage > 5)
 		last_damage_source = initial(AM.name)

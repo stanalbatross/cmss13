@@ -1023,7 +1023,7 @@ and you're good to go.
 			var/t = "\[[time_stamp()]\] <b>[key_name(user)]</b> committed suicide with <b>[src]</b>" //Log it.
 			if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
 				t += " after playing Russian Roulette"
-				user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", sharp = 1)
+				user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", INT_DMG_MULTIPLIER_VERYSHARP)
 				user.apply_damage(200, OXY) //In case someone tried to defib them. Won't work.
 				user.death("russian roulette with \a [name]")
 				msg_admin_ff("[key_name(user)] lost at Russian Roulette with \a [name] in [get_area(user)] [ffl]")
@@ -1034,7 +1034,7 @@ and you're good to go.
 					to_chat(user, SPAN_NOTICE("Ow..."))
 					user.apply_effect(110, AGONY, 0)
 				else
-					user.apply_damage(projectile_to_fire.damage * 2.5, projectile_to_fire.ammo.damage_type, "head", used_weapon = "Point blank shot in the mouth with \a [projectile_to_fire]", sharp = 1)
+					user.apply_damage(projectile_to_fire.damage * 2.5, projectile_to_fire.ammo.damage_type, "head", INT_DMG_MULTIPLIER_VERYSHARP)
 					user.apply_damage(100, OXY)
 					if(ishuman(user) && user == M)
 						var/mob/living/carbon/human/HM = user

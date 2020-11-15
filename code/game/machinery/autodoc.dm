@@ -7,7 +7,7 @@
 	density = 1
 	anchored = 1
 	var/mob/living/carbon/human/occupant = null
-	var/heal_rate = 1
+	var/heal_rate = 3.5
 	var/healing_limb = FALSE
 	var/list/limbs_to_heal
 	var/obj/limb/cur_limb
@@ -86,7 +86,7 @@
 	heal_toxin = TRUE
 	time_to_start = 20 SECONDS
 	if(ishuman(occupant))
-		limbs_to_heal = occupant.limbs.Copy()
+		limbs_to_heal = occupant.get_damaged_limbs(null,null,TRUE)
 
 /obj/structure/machinery/autodoc/process()
 	if(occupant)
@@ -100,17 +100,18 @@
 				go_out()
 				return
 			cur_limb = pick(limbs_to_heal)//Random for inconvenience
-			
 		if(!healing_limb)
 			time_to_start -= 3.5 SECONDS
 			if(time_to_start > 0)
 				return
 			healing_limb = TRUE
+			icon_state = "autodoc_operate"
 		else
 			if(!cur_limb.integrity_damage)
 				limbs_to_heal -= cur_limb
 				healing_limb = FALSE
 				cur_limb = null
+				icon_state = "autodoc_closed"
 				return
 			cur_limb.take_integrity_damage(-heal_rate)
 			// keep them alive
@@ -350,6 +351,6 @@
 /obj/structure/machinery/autodoc_console/process()
 	updateUsrDialog()
 
-	
+
 
 /obj/structure/machinery/autodoc/event

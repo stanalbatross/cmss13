@@ -14,11 +14,13 @@
 	var/onlimb_health = 10
 	var/brute_autoheal //damage healed per life tick
 	var/burn_autoheal
+	var/integrity_autoheal //Only heals integrity if it's below level 1 
 	var/limb_integrity_levels_neutralized = NO_FLAGS
+	var/stops_bleeding = TRUE
 
 	var/application_sound = 'sound/handling/bandage.ogg'
 	var/required_skill = SKILL_MEDICAL_MEDIC
-	var/low_skill_delay = 2 //IN SECONDS
+	var/low_skill_delay = 2 SECONDS
 	var/regular_delay = 0
 	var/heals_prosthesis = FALSE
 	//onmob icon
@@ -87,14 +89,15 @@
 	singular_name = "ointment"
 	icon_state = "ointment"
 	burn_autoheal = 0.2
+	integrity_autoheal = 1
 	stack_id = "ointment"
 	application_sound = 'sound/handling/ointment_spreading.ogg'
 
 
 /obj/item/stack/medical/advanced/bruise_pack
-	name = "advanced trauma kit"
-	singular_name = "advanced trauma kit"
-	desc = "An advanced trauma kit for severe injuries."
+	name = "restoration patches"
+	singular_name = "restoration patch"
+	desc = "A high-tech patch containing microscopic needles and contracting microfibers that promotes the accelerated healing of wounds, such as cuts and punctures"
 	icon_state = "traumakit"
 	brute_autoheal = 0.6
 	stack_id = "advanced bruise pack"
@@ -117,11 +120,12 @@
 	stack_id = "Tear petals"
 
 /obj/item/stack/medical/advanced/ointment
-	name = "advanced burn kit"
-	singular_name = "advanced burn kit"
-	desc = "An advanced treatment kit for severe burns."
+	name = "rejuvenation patches"
+	singular_name = "rejuvenation patch"
+	desc = "A high-tech patch containing microscopic needles and contracting microfibers that relaxes muscles and stimulates cell growth around the application area, making it useful for healing burns and trauma"
 	icon_state = "burnkit"
 	burn_autoheal = 0.8
+	integrity_autoheal = 3
 	stack_id = "advanced burn kit"
 	low_skill_delay = 3
 
@@ -135,9 +139,10 @@
 	stack_id = "splint"
 	limb_integrity_levels_neutralized = LIMB_INTEGRITY_EFFECT_CONCERNING
 	application_sound = 'sound/handling/splint1.ogg'
+	stops_bleeding = FALSE
 
-	low_skill_delay = 0
-	regular_delay = 5
+	low_skill_delay = 7 SECONDS
+	regular_delay = 3 SECONDS
 
 
 

@@ -121,7 +121,9 @@
 					var/obj/item/reagent_container/food/snacks/xenomeat = new /obj/item/reagent_container/food/snacks/xenomeat(T.loc)
 					xenomeat.name = "raw [xeno_victim.age_prefix][xeno_victim.caste_name] steak"
 				else if(victim && isturf(victim.loc))
-					victim.apply_damage(100,BRUTE,pick("r_leg","l_leg","r_arm","l_arm"),0,1,1) //Basically just rips off a random limb.
+					var/obj/limb/L = victim.get_limb(pick(EXTREMITY_LIMBS))
+					if(L)
+						L.droplimb()
 					var/obj/item/reagent_container/food/snacks/meat/meat = new /obj/item/reagent_container/food/snacks/meat(victim.loc)
 					meat.name = "raw [victim.name] steak"
 				T.butchery_progress = 3
@@ -158,8 +160,9 @@
 				else if(victim && isturf(T.loc))
 					visible_message("<b>[src] reaches down and rips out \the [T]'s spinal cord and skull!</b>.","<b>You firmly grip the revealed spinal column and rip [T]'s head off!</b>")
 					var/mob/living/carbon/human/H = T
-					if(H.get_limb("head"))
-						H.apply_damage(150,BRUTE,"head",0,1,1)
+					var/obj/limb/head = H.get_limb("head")
+					if(head)
+						head.droplimb()
 					else
 						var/obj/item/reagent_container/food/snacks/meat/meat = new /obj/item/reagent_container/food/snacks/meat(victim.loc)
 						meat.name = "raw [victim.name] steak"

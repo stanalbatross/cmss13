@@ -108,7 +108,7 @@
 	if(integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
 		take_integrity_damage(-integrity_autoheal)
 
-	heal_damage(brute_autoheal, burn_autoheal)
+	heal_damage(brute_autoheal, burn_autoheal, TRUE)
 
 /obj/limb/proc/get_slowdown()
 	return 0
@@ -140,7 +140,7 @@
 					if(integrity_damage >= LIMB_INTEGRITY_EFFECT_NONE)
 						integrity_level++
 						new_effects |= LIMB_INTEGRITY_EFFECT_NONE
-	
+
 	new_effects &= ~neutralized_integrity_effects
 
 	if(new_effects == integrity_level_effects)
@@ -194,21 +194,18 @@
 	if(prob(probability))
 		droplimb(0, 0, "EMP")
 	else
-		take_damage(damage, 0, 1, 1, used_weapon = "EMP")
-
+		take_damage(damage, 0, 1)
 /*
 	Describes how limbs (body parts) of human mobs get damage applied.
-	Less clear vars:
-	*	impact_name: name of an "impact icon." For now, is only relevant for projectiles but can be expanded to apply to melee weapons with special impact sprites.
 */
-/obj/limb/proc/take_damage(brute, burn, sharp, edge, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/damage_source = "dismemberment", var/mob/attack_source = null)
+/obj/limb/proc/take_damage(brute, burn, integrity_damage_multiplier = 1, var/mob/attack_source = null)
 	if((brute <= 0) && (burn <= 0))
 		return 0
 
 	if(status & LIMB_DESTROYED)
 		return 0
 	var/is_ff = FALSE
-	if(istype(attack_source) && attack_source.faction == owner.faction)
+	if(istype(attack_source) && attack_source.faction == owner.faction && attack_source != owner)
 		brute /= 2
 		is_ff = TRUE
 
@@ -219,7 +216,7 @@
 	if(!is_ff)
 		if((owner.stat != DEAD))
 			var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
-			take_integrity_damage(brute * int_conversion) //Need to adjust to skills and armor
+			take_integrity_damage(brute * int_conversion * integrity_damage_multiplier) //Need to adjust to skills and armor
 			if(brute > LIMB_BLEEDING_DAMAGE_THRESHOLD)
 				add_bleeding(brute)
 
@@ -643,14 +640,17 @@ This function completely restores a damaged organ to perfect condition.
 	var/possessive = "[user == owner ? "your" : "[owner]'s"]"
 	var/possessive_their = "[user == owner ? "their" : "[owner]'s"]"
 	user.affected_message(owner,
-		SPAN_HELPFUL("You apply \an <b>[item.name]</b> to [possessive] <b>[display_name]</b>."),
-		SPAN_HELPFUL("[user] applies \an <b>[item.name]</b> to your <b>[display_name]</b>."),
-		SPAN_NOTICE("[user] applies \an [item.name] to [possessive_their] [display_name]."))
+		SPAN_HELPFUL("You apply <b>[item.name]</b> to [possessive] <b>[display_name]</b>."),
+		SPAN_HELPFUL("[user] applies <b>[item.name]</b> to your <b>[display_name]</b>."),
+		SPAN_NOTICE("[user] applies [item.name] to [possessive_their] [display_name]."))
 	item.use(1)
 	playsound(user, item.application_sound, 25, 1, 2)
 	//Add the item
-	medical_items += new item.type(src, 1)
+	var/obj/item/stack/medical/new_item = new item.type(src, 1)
+	medical_items += new_item
 	recalculate_health_effects()
+	if(new_item.stops_bleeding && bleeding_effect)
+		remove_all_bleeding()
 
 	owner.update_med_icon()
 	return TRUE
@@ -670,6 +670,7 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/proc/recalculate_health_effects()
 	brute_autoheal = initial(brute_autoheal)
 	burn_autoheal = initial(burn_autoheal)
+	integrity_autoheal = initial(integrity_autoheal)
 	var/old_neutralized = neutralized_integrity_effects
 	neutralized_integrity_effects = 0
 
@@ -680,6 +681,9 @@ This function completely restores a damaged organ to perfect condition.
 		if(M.burn_autoheal > burn_autoheal)
 			burn_autoheal = M.burn_autoheal
 			healing_naturally = FALSE
+		if(M.integrity_autoheal > integrity_autoheal)
+			integrity_autoheal = M.integrity_autoheal
+
 		neutralized_integrity_effects |= M.limb_integrity_levels_neutralized
 	if(neutralized_integrity_effects != old_neutralized)
 		recalculate_integrity_level()

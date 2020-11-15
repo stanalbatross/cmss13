@@ -387,7 +387,7 @@
 	if(!do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_HOSTILE) || !user.Adjacent(H))
 		return -1
 
-	H.apply_damage(500, BRUTE, "head", no_limb_loss = TRUE, impact_name = impact_name, impact_limbs = impact_limbs, permanent_kill = TRUE) //not coming back
+	H.apply_damage(500, BRUTE, "head", NO_INTERNAL_DAMAGE, permanent_kill = TRUE) //not coming back
 	H.visible_message(SPAN_DANGER("[M] WAS EXECUTED!"), \
 		SPAN_HIGHDANGER("You were Executed!"))
 

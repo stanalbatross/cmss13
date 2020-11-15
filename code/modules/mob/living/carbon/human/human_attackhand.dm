@@ -111,7 +111,7 @@
 
 			damage += attack.damage
 			damage = armor_damage_reduction(GLOB.marine_melee, damage, armor, 0) // no penetration frm punches
-			apply_damage(damage, BRUTE, affecting, sharp=attack.sharp, edge=attack.edge)
+			apply_damage(damage, BRUTE, affecting)
 
 
 		if(INTENT_DISARM)

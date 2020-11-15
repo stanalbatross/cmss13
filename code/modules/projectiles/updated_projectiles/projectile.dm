@@ -760,7 +760,7 @@
 
 	if(damage)
 		bullet_message(P)
-		apply_damage(damage, P.ammo.damage_type, P.def_zone, 0, 0, P)
+		apply_damage(damage, P.ammo.damage_type, P.def_zone)
 		P.play_damage_effect(src)
 		if(ammo_flags & AMMO_INCENDIARY)
 			var/datum/reagent/napalm/ut/N = new()
@@ -832,7 +832,7 @@
 	bullet_message(P) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
 
 	if(damage || (ammo_flags && AMMO_SPECIAL_EMBED))
-		apply_damage(damage_result, P.ammo.damage_type, P.def_zone, impact_name = P.ammo.impact_name, impact_limbs = P.ammo.impact_limbs, firer = P.firer)
+		apply_damage(damage_result, P.ammo.damage_type, P.def_zone, firer = P.firer)
 		P.play_damage_effect(src)
 
 		if(ammo_flags & AMMO_INCENDIARY)

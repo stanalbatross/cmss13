@@ -52,7 +52,7 @@
 
 	if(status_flags & GODMODE)
 		return FALSE	//godmode
-		
+
 	return brainloss
 
 //These procs fetch a cumulative total damage from all limbs
@@ -99,10 +99,10 @@
 		var/obj/limb/O = X
 		if(O.name == organ_name)
 			if(amount > 0)
-				O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+				O.take_damage(amount, 0,)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(-amount, 0, internal=0, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(-amount, 0, robo_repair=(O.status & LIMB_ROBOT))
 			break
 
 
@@ -115,10 +115,10 @@
 		var/obj/limb/O = X
 		if(O.name == organ_name)
 			if(amount > 0)
-				O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+				O.take_damage(0, amount)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(0, -amount, internal=0, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(0, -amount, robo_repair=(O.status & LIMB_ROBOT))
 			break
 
 
@@ -207,10 +207,10 @@
 ////////////////////////////////////////////
 
 //Returns a list of damaged limbs
-/mob/living/carbon/human/proc/get_damaged_limbs(var/brute, var/burn)
+/mob/living/carbon/human/proc/get_damaged_limbs(var/brute, var/burn, var/integrity)
 	var/list/obj/limb/parts = list()
 	for(var/obj/limb/O in limbs)
-		if((brute && O.brute_dam) || (burn && O.burn_dam) || !(O.surgery_open_stage == 0))
+		if((brute && O.brute_dam) || (burn && O.burn_dam) || (internal && O.integrity_damage))
 			parts += O
 	return parts
 
@@ -244,14 +244,14 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //Damages ONE external organ, organ gets randomly selected from damagable ones.
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
-/mob/living/carbon/human/take_limb_damage(var/brute, var/burn, var/sharp = 0, var/edge = 0)
+/mob/living/carbon/human/take_limb_damage(var/brute, var/burn, var/int_dmg_mult = 1)
 	var/list/obj/limb/parts = get_damageable_limbs()
 	if(!parts.len)	return
 	var/obj/limb/picked = pick(parts)
 	if(brute != 0)
-		apply_damage(brute, BRUTE, picked, sharp, edge)
+		apply_damage(brute, BRUTE, picked, int_dmg_mult)
 	if(burn != 0)
-		apply_damage(burn, BURN, picked, sharp, edge)
+		apply_damage(burn, BURN, picked, int_dmg_mult)
 	UpdateDamageIcon()
 	updatehealth()
 	speech_problem_flag = 1
@@ -354,9 +354,8 @@ This function restores all limbs.
 	*	permanent_kill: whether this attack causes human to become irrevivable
 */
 /mob/living/carbon/human/apply_damage(var/damage = 0, var/damagetype = BRUTE, var/def_zone = null, \
-	var/sharp = 0, var/edge = 0, var/obj/used_weapon = null, var/no_limb_loss = FALSE, \
-	var/impact_name = null, var/impact_limbs = null, var/permanent_kill = FALSE, var/mob/firer = null, \
-	var/force = FALSE
+	var/int_dmg_multiplier = 1, var/permanent_kill = FALSE,\
+	var/mob/firer = null, var/force = FALSE
 )
 	if(protection_aura)
 		damage = round(damage * ((15 - protection_aura) / 15))
@@ -387,20 +386,16 @@ This function restores all limbs.
 			damageoverlaytemp = 20
 			if(species.brute_mod && !force)
 				damage = damage * species.brute_mod
-			var/temp_impact_name = null
-			if(organ.body_part & impact_limbs)
-				temp_impact_name = impact_name
-			if(organ.take_damage(damage, 0, sharp, edge, used_weapon, no_limb_loss = no_limb_loss, impact_name = temp_impact_name, attack_source = firer))
-				UpdateDamageIcon()
+
+			organ.take_damage(damage, 0, int_dmg_multiplier, attack_source = firer)
+
 		if(BURN)
 			damageoverlaytemp = 20
 			if(species.burn_mod && !force)
 				damage = damage * species.burn_mod
-			var/temp_impact_name = null
-			if(organ.body_part & impact_limbs)
-				temp_impact_name = impact_name
-			if(organ.take_damage(0, damage, sharp, edge, used_weapon, no_limb_loss = no_limb_loss, impact_name = temp_impact_name, attack_source = firer))
-				UpdateDamageIcon()
+
+			organ.take_damage(0, damage, int_dmg_multiplier, attack_source = firer)
+
 
 	pain.apply_pain(damage, damagetype)
 

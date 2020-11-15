@@ -154,7 +154,7 @@
 			else if(n_damage <= 0.67*damage)
 				show_message(SPAN_WARNING("Your armor softens the blow!"), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
 
-			apply_damage(n_damage, BRUTE, affecting, sharp = 1, edge = 1) //This should slicey dicey
+			apply_damage(n_damage, BRUTE, affecting) //This should slicey dicey
 			if(acid_damage)
 				playsound(loc, "acid_hit", 25, 1)
 				var/armor_block_acid = getarmor(affecting, ARMOR_BIO)
