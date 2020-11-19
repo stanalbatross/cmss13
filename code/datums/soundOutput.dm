@@ -46,7 +46,10 @@
 
 	S.status = T.status
 	if(owner.mob.ear_deaf > 0 || (owner.mob.mind && owner.mob.mind.original.ear_deaf > 0 && owner.mob.stat != DEAD) )
-		S.status |= SOUND_MUTE
+		if(T.file_muffled)
+			S.file = T.file_muffled
+		else
+			S.status |= SOUND_MUTE
 
 	sound_to(owner,S)
 

@@ -15,9 +15,11 @@
 	var/immobile = FALSE //Used for prebuilt ones.
 	var/obj/item/ammo_magazine/ammo = new /obj/item/ammo_magazine/sentry
 	var/sentry_type = "sentry" //Used for the icon
-	handheld_type = /obj/item/defenses/handheld/sentry
+	var/sentry_range = SENTRY_RANGE
 
-	module_type = DEFENSE_SENTRY_BASE
+	var/damage_mult = 1
+	var/accuracy_mult = 1
+	handheld_type = /obj/item/defenses/handheld/sentry
 
 /obj/structure/machinery/defenses/sentry/Initialize()
 	. = ..()
@@ -220,6 +222,8 @@
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
 	P.generate_bullet(new ammo.default_ammo)
+	P.damage *= damage_mult
+	P.accuracy *= accuracy_mult
 	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE, faction_group)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	ammo.current_rounds--
@@ -308,7 +312,7 @@
 			continue
 
 		var/list/turf/path = getline2(src, A, include_from_atom = FALSE)
-		if(!path.len || get_dist(src, A) > SENTRY_RANGE)
+		if(!path.len || get_dist(src, A) > sentry_range)
 			if(A == target)
 				target = null
 			targets.Remove(A)
@@ -404,7 +408,44 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 		deployment_system = null
 	. = ..()
 
+#define SENTRY_SNIPER_RANGE 20
+/obj/structure/machinery/defenses/sentry/dmr
+	name = "UA 725-D Sniper Sentry"
+	desc = "A fully-automated defence turret with long-range targeting capabilities. Armed with a modified M32-S Autocannon and an internal belt feed."
+	fire_delay = 2.5 SECONDS
+	ammo = new /obj/item/ammo_magazine/sentry
+	sentry_range = SENTRY_SNIPER_RANGE
+	accuracy_mult = 5
+	damage_mult = 2
+	handheld_type = /obj/item/defenses/handheld/sentry/dmr
 
+/obj/structure/machinery/defenses/sentry/dmr/set_range()
+	switch(dir)
+		if(EAST)
+			range_bounds = RECT(x + (SENTRY_SNIPER_RANGE/2), y, SENTRY_SNIPER_RANGE, SENTRY_SNIPER_RANGE)
+		if(WEST)
+			range_bounds = RECT(x - (SENTRY_SNIPER_RANGE/2), y, SENTRY_SNIPER_RANGE, SENTRY_SNIPER_RANGE)
+		if(NORTH)
+			range_bounds = RECT(x, y + (SENTRY_SNIPER_RANGE/2), SENTRY_SNIPER_RANGE, SENTRY_SNIPER_RANGE)
+		if(SOUTH)
+			range_bounds = RECT(x, y - (SENTRY_SNIPER_RANGE/2), SENTRY_SNIPER_RANGE, SENTRY_SNIPER_RANGE)
+
+#undef SENTRY_SNIPER_RANGE
+/obj/structure/machinery/defenses/sentry/shotgun
+	name = "UA 12-G Shotgun Sentry"
+	fire_delay = 2.5 SECONDS
+	sentry_range = 2
+	ammo = new /obj/item/ammo_magazine/sentry/shotgun
+	accuracy_mult = 2 // Misses a lot since shotgun ammo has low accuracy, this should ensure a lot of shots actually hit.
+	handheld_type = /obj/item/defenses/handheld/sentry/shotgun
+
+/obj/structure/machinery/defenses/sentry/mini
+	name = "UA 512-M mini sentry"
+	fire_delay = 0.15 SECONDS
+	damage_mult = 0.4
+	density = FALSE
+	disassemble_time = 0.75 SECONDS
+	handheld_type = /obj/item/defenses/handheld/sentry/mini
 
 #undef SENTRY_FIREANGLE
 #undef SENTRY_RANGE

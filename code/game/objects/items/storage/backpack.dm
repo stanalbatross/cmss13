@@ -409,7 +409,13 @@ var/global/list/radio_packs = list()
 		internal_transmitter.attackby(W, user)
 	else
 		. = ..()
-	
+
+/obj/item/storage/backpack/marine/satchel/rto/proc/new_droppod_tech_unlocked(datum/tech/N)
+	playsound(get_turf(loc), 'sound/machines/techpod/techpod_rto_notif.ogg', 100, FALSE, 1, muffledin = 'sound/machines/techpod/techpod_rto_notif_muffled.ogg')
+
+	if(ismob(loc))
+		var/mob/M = loc
+		to_chat(M, SPAN_PURPLE("[htmlicon(src, M)] New droppod available ([N.name])."))
 
 /obj/item/storage/backpack/marine/smock
 	name = "\improper M3 sniper's smock"

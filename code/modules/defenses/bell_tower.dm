@@ -9,7 +9,6 @@
 	var/image/flick_image
 	handheld_type = /obj/item/defenses/handheld/bell_tower
 
-	module_type = DEFENSE_BELL_TOWER
 
 /obj/structure/machinery/defenses/bell_tower/Initialize()
 	. = ..()
@@ -50,6 +49,9 @@
 		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction_group)
 		FE.linked_bell = src
 		tripwires_placed += FE
+
+/obj/structure/machinery/defenses/bell_tower/proc/mob_crossed(var/mob/M)
+	playsound(loc, 'sound/misc/bell.wav', 50, 0, 50)
 
 /obj/structure/machinery/defenses/bell_tower/Destroy()
 	. = ..()
@@ -101,10 +103,108 @@
 	if(!linked_bell.flick_image)
 		linked_bell.flick_image = image('icons/obj/structures/machinery/defenses.dmi', icon_state = "bell_tower_alert")
 	linked_bell.flick_image.flick_overlay(linked_bell, 11)
-	playsound(loc, 'sound/misc/bell.wav', 50, 0, 50)
+	linked_bell.mob_crossed(M)
 	M.AdjustSuperslowed(BELL_TOWER_EFFECT)
 	to_chat(M, SPAN_DANGER("The frequence of the noise slows you down!"))
 
+#define BELL_TOWER_MD_ALPHA 60
+/obj/item/device/motiondetector/internal
+	name = "internal motion detector"
 
+	var/obj/structure/machinery/defenses/bell_tower/md/linked_tower
+
+/obj/item/device/motiondetector/internal/apply_debuff(mob/target)
+	var/mob/living/to_apply = target
+
+	if(istype(to_apply))
+		to_apply.SetSuperslowed(1)
+		to_chat(to_apply, SPAN_WARNING("You feel very heavy."))
+
+/obj/structure/machinery/defenses/bell_tower/md
+	name = "R-1NG motion detector tower"
+	desc = "A tactical advanced version of the motion detector. Has an increased range, cloaks itself and disrupts the activity of hostiles nearby."
+	handheld_type = /obj/item/defenses/handheld/bell_tower/md
+	var/cloak_alpha = BELL_TOWER_MD_ALPHA
+	var/obj/item/device/motiondetector/internal/md
+
+/obj/structure/machinery/defenses/bell_tower/md/Initialize()
+	. = ..()
+	animate(src, alpha = cloak_alpha, time = SECONDS_2, easing = LINEAR_EASING)
+
+/obj/structure/machinery/defenses/bell_tower/md/setup_tripwires()
+	md = new(src)
+	md.linked_tower = src
+	md.iff_signal = LAZYACCESS(faction_group, 1)
+	md.toggle_active(null, FALSE)
+
+	if(!md.iff_signal)
+		md.iff_signal = FACTION_MARINE
+
+/obj/structure/machinery/defenses/bell_tower/md/clear_tripwires()
+	if(md)
+		md.linked_tower = null
+		QDEL_NULL(md)
+	
+
+#undef BELL_TOWER_MD_ALPHA
+#define BELL_TOWER_CLOAKER_ALPHA 20
+/obj/structure/machinery/defenses/bell_tower/cloaker
+	name = "camouflaged R-1NG bell tower"
+	desc = "A tactical advanced version of a normal alarm. Designed to trigger an old instinct ingrained in humans when they hear a wake-up alarm, for fast response. This one is camouflaged"
+	handheld_type = /obj/item/defenses/handheld/bell_tower/cloaker
+	var/cloak_alpha = BELL_TOWER_CLOAKER_ALPHA
+	density = FALSE
+
+/obj/structure/machinery/defenses/bell_tower/cloaker/Initialize()
+	. = ..()
+	animate(src, alpha = cloak_alpha, time = SECONDS_2, easing = LINEAR_EASING)
+
+/obj/structure/machinery/defenses/bell_tower/cloaker/mob_crossed(var/turf/location)
+	/// PLACEHOLDER
+	return
+	
+
+#undef BELL_TOWER_CLOAKER_ALPHA
+
+#define IMP_SLOWDOWN_TIME 1
+/obj/item/device/imp
+	name = "IMP frame mount"
+	icon = 'icons/obj/items/clothing/backpacks.dmi'
+	icon_state = "rto_backpack"
+	w_class = SIZE_LARGE
+	flags_equip_slot = SLOT_BACK
+	var/slowdown_amount = IMP_SLOWDOWN_TIME
+	var/area_range = BELL_TOWER_RANGE
+
+
+/obj/item/device/imp/equipped(mob/user, slot)
+	. = ..()
+	if(slot == WEAR_BACK)
+		processing_objects.Add(src)
+	
+
+/obj/item/device/imp/process()
+	if(!ismob(loc))
+		processing_objects.Remove(src)
+		return
+	
+	var/mob/M = loc
+	
+	if(M.back != src)
+		processing_objects.Remove(src)
+		return
+	
+	if(!M.x && !M.y && !M.z)
+		return
+
+	var/list/targets = SSquadtree.players_in_range(RECT(M.x, M.y, area_range, area_range), M.z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
+	if(!targets)
+		return
+	
+	for(var/mob/living/carbon/Xenomorph/X in targets)
+		X.SetSuperslowed(BELL_TOWER_EFFECT)
+		playsound(X, 'sound/misc/bell.wav', 50, 0, 50)
+
+#undef IMP_SLOWDOWN_TIME
 #undef BELL_TOWER_RANGE
 #undef BELL_TOWER_EFFECT

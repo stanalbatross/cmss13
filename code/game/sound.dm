@@ -1,6 +1,7 @@
 
 /datum/sound_template //Basically a sound datum, but only serves as a way to carry info to soundOutput
 	var/file //The sound itself
+	var/file_muffled // Muffled variant for those that are deaf
 	var/wait = 0
 	var/repeat = 0
 	var/channel = 0
@@ -31,7 +32,7 @@
 //status: the regular 4 sound flags
 //falloff: max range till sound volume starts dropping as distance increases
 
-/proc/playsound(atom/source, soundin, vol = 100, vary = FALSE, sound_range, vol_cat = VOLUME_SFX, channel = 0, status , falloff = 1)
+/proc/playsound(atom/source, soundin, vol = 100, vary = FALSE, sound_range, vol_cat = VOLUME_SFX, channel = 0, status , falloff = 1, muffledin)
 	if(isarea(source))
 		error("[source] is an area and is trying to make the sound: [soundin]")
 		return FALSE
@@ -47,6 +48,12 @@
 	S.channel = channel ? channel : get_free_channel()
 	S.status = status
 	S.falloff = falloff
+
+	var/sound/SDMf = muffledin
+	if(istype(SDMf))
+		S.file_muffled = SDMf.file
+	else
+		S.file_muffled = get_sfx(muffledin)
 
 	var/turf/turf_source = get_turf(source)
 	if(!turf_source)
@@ -284,6 +291,8 @@
 				S = pick("sound/voice/human_female_grenadethrow_1.ogg", 'sound/voice/human_female_grenadethrow_2.ogg', 'sound/voice/human_female_grenadethrow_3.ogg')
 			if("female_warcry")
 				S = pick('sound/voice/warcry/female_charge.ogg', 'sound/voice/warcry/female_yell1.ogg', 'sound/voice/warcry/warcry_female_1.ogg', 'sound/voice/warcry/warcry_female_2.ogg', 'sound/voice/warcry/warcry_female_3.ogg', 'sound/voice/warcry/warcry_female_4.ogg', 'sound/voice/warcry/warcry_female_5.ogg', 'sound/voice/warcry/warcry_female_6.ogg')
+			if("rtb_handset")
+				S = pick('sound/machines/telephone/rtb_handset_1.ogg', 'sound/machines/telephone/rtb_handset_2.ogg', 'sound/machines/telephone/rtb_handset_3.ogg', 'sound/machines/telephone/rtb_handset_4.ogg', 'sound/machines/telephone/rtb_handset_5.ogg')
 
 	return S
 

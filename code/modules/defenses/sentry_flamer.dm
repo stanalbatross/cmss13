@@ -6,7 +6,8 @@
 	sentry_type = "flamer"
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer
 
-	module_type = DEFENSE_SENTRY_FLAMER
+/obj/structure/machinery/defenses/sentry/flamer/Initialize()
+	. = ..()
 
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
@@ -30,3 +31,44 @@
 	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "sentry explosion")
 	if(!QDELETED(src))
 		qdel(src)
+
+
+/obj/structure/machinery/defenses/sentry/flamer/mini
+	name = "UA 45-FM Mini Sentry"
+	fire_delay = 10
+	ammo = new /obj/item/ammo_magazine/sentry_flamer/mini
+	handheld_type = /obj/item/defenses/handheld/sentry/flamer/mini
+	
+
+/obj/structure/machinery/defenses/sentry/flamer/mini/destroyed_action()
+	visible_message("[htmlicon(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
+	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
+
+	cell_explosion(loc, 10, 10, null, "sentry explosion")
+	if(!disposed)
+		qdel(src)
+
+#define FLAMER_SENTRY_SNIPER_RANGE 14
+/obj/structure/machinery/defenses/sentry/flamer/plasma
+	name = "UA 60-FP Plasma Sentry"
+	ammo = new /obj/item/ammo_magazine/sentry_flamer/glob
+	fire_delay = 10 SECONDS
+	sentry_range = FLAMER_SENTRY_SNIPER_RANGE
+	handheld_type = /obj/item/defenses/handheld/sentry/flamer/plasma
+
+/obj/structure/machinery/defenses/sentry/flamer/plasma/set_range()
+	switch(dir)
+		if(EAST)
+			range_bounds = RECT(x + (FLAMER_SENTRY_SNIPER_RANGE/2), y, FLAMER_SENTRY_SNIPER_RANGE, FLAMER_SENTRY_SNIPER_RANGE)
+		if(WEST)
+			range_bounds = RECT(x - (FLAMER_SENTRY_SNIPER_RANGE/2), y, FLAMER_SENTRY_SNIPER_RANGE, FLAMER_SENTRY_SNIPER_RANGE)
+		if(NORTH)
+			range_bounds = RECT(x, y + (FLAMER_SENTRY_SNIPER_RANGE/2), FLAMER_SENTRY_SNIPER_RANGE, FLAMER_SENTRY_SNIPER_RANGE)
+		if(SOUTH)
+			range_bounds = RECT(x, y - (FLAMER_SENTRY_SNIPER_RANGE/2), FLAMER_SENTRY_SNIPER_RANGE, FLAMER_SENTRY_SNIPER_RANGE)
+
+#undef FLAMER_SENTRY_SNIPER_RANGE
+/obj/structure/machinery/defenses/sentry/flamer/assault
+	name = "UA 55-FA Flamer Assault Sentry"
+	ammo = new /obj/item/ammo_magazine/sentry_flamer/assault
+	handheld_type = /obj/item/defenses/handheld/sentry/flamer/assault

@@ -157,6 +157,8 @@
 			var/mob/living/carbon/human/H = M
 			if(H.get_target_lock(iff_signal))
 				continue
+
+		apply_debuff(M)
 		ping_count++
 		if(human_user)
 			show_blip(human_user, M)
@@ -169,6 +171,8 @@
 	update_icon()
 	scanning = FALSE
 
+/obj/item/device/motiondetector/proc/apply_debuff()
+	return
 
 /obj/item/device/motiondetector/proc/show_blip(mob/user, mob/target)
 	set waitfor = 0

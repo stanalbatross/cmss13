@@ -1910,6 +1910,42 @@
 	var/datum/reagent/napalm/blue/R = new()
 	new /obj/flamer_fire(T, source, source_mob, R, 0)
 
+/datum/ammo/flamethrower/sentry_flamer/glob
+	var/datum/effect_system/smoke_spread/phosphorus/smoke
+
+/datum/ammo/flamethrower/sentry_flamer/glob/New()
+	. = ..()
+	smoke = new()
+
+/datum/ammo/flamethrower/sentry_flamer/glob/drop_flame(turf/T, source, source_mob)
+	if(!istype(T)) 
+		return
+	smoke.set_up(1, 0, T)
+	smoke.start()
+
+/datum/ammo/flamethrower/sentry_flamer/glob/Dispose()
+	qdel(smoke)
+	return ..()
+
+/datum/ammo/flamethrower/sentry_flamer/assault
+	name = "light fire"
+
+/datum/ammo/flamethrower/sentry_flamer/assault/drop_flame(turf/T, source, source_mob)
+	if(!istype(T)) 
+		return
+	var/datum/reagent/napalm/blue/R = new()
+	R.durationfire = config.instant_burntime
+	new /obj/flamer_fire(T, source, source_mob, R, 0)
+	
+/datum/ammo/flamethrower/sentry_flamer/mini
+	name = "normal fire"
+
+/datum/ammo/flamethrower/sentry_flamer/mini/drop_flame(turf/T, source, source_mob)
+	if(!istype(T)) 
+		return
+	var/datum/reagent/napalm/R = new()
+	new /obj/flamer_fire(T, source, source_mob, R, 0)
+
 /datum/ammo/flare
 	name = "flare"
 	ping = null //no bounce off.

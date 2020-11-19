@@ -101,6 +101,7 @@ var/global/list/transmitters = list()
         T.caller = src
 
         to_chat(user, SPAN_PURPLE("[htmlicon(src, user)] Dialing [to_call].."))
+        playsound(get_turf(user), "rtb_handset")
 
         processing_objects += T
     else
@@ -111,6 +112,7 @@ var/global/list/transmitters = list()
             to_chat(M, SPAN_PURPLE("[htmlicon(src, M)] [phone_id] has picked up."))
         
         to_chat(user, SPAN_PURPLE("[htmlicon(src, user)] Picked up a call from [T.phone_id]."))
+        playsound(get_turf(user), "rtb_handset")
 
     var/mob/living/carbon/human/H = user
 
@@ -178,6 +180,7 @@ var/global/list/transmitters = list()
     if(ismob(attached_to.loc))
         var/mob/M = attached_to.loc
         M.drop_held_item(attached_to)
+        playsound(get_turf(M), "rtb_handset")
     
     attached_to.forceMove(src)
     attached_to.setup_beam()

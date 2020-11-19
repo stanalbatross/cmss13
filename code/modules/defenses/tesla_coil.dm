@@ -8,12 +8,13 @@
 	desc = "A perfected way of producing high-voltage, low-current and high frquency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock."
 	var/list/targets
 	var/last_fired = 0
+	var/tesla_range = TESLA_COIL_RANGE
+	var/fire_delay = TESLA_COIL_FIREDELAY
 	handheld_type = /obj/item/defenses/handheld/tesla_coil
 	disassemble_time = 10
 	health = 150
 	health_max = 150
 
-	module_type = DEFENSE_TESLA_COIL
 
 /obj/structure/machinery/defenses/tesla_coil/Initialize()
 	. = ..()
@@ -63,7 +64,7 @@
 /obj/structure/machinery/defenses/tesla_coil/proc/get_target()
 	targets = list()
 
-	for(var/mob/living/M in oview(TESLA_COIL_RANGE, src))
+	for(var/mob/living/M in oview(tesla_range, src))
 		if(M.stat & DEAD || isrobot(M)) 
 			continue
 
@@ -73,12 +74,12 @@
 
 		targets += M
 	
-	for(var/obj/structure/machinery/defenses/D in oview(TESLA_COIL_RANGE, src))
+	for(var/obj/structure/machinery/defenses/D in oview(tesla_range, src))
 		if(D.turned_on)
 			targets += D
 
 /obj/structure/machinery/defenses/tesla_coil/proc/fire(var/atoms)
-	if(!(world.time - last_fired >= TESLA_COIL_FIREDELAY) || !turned_on)
+	if(!(world.time - last_fired >= fire_delay) || !turned_on)
 		return
 
 	last_fired = world.time
@@ -91,8 +92,8 @@
 			var/mob/living/M = A
 			if(!check_path(M))
 				continue
-			M.Daze(TESLA_COIL_DAZE_EFFECT)
-			M.Superslow(TESLA_COIL_SLOW_EFFECT)
+
+			apply_debuff(M)
 		else if(istype(A, /obj/structure/machinery/defenses))
 			var/obj/structure/machinery/defenses/D = A
 			D.power_off()
@@ -106,6 +107,10 @@
 		Beam(A, "electric", 'icons/effects/beam.dmi', 5, 5)
 
 	targets = null
+
+/obj/structure/machinery/defenses/tesla_coil/proc/apply_debuff(var/mob/living/M)
+	M.Daze(TESLA_COIL_DAZE_EFFECT)
+	M.Superslow(TESLA_COIL_SLOW_EFFECT)
 
 /obj/structure/machinery/defenses/tesla_coil/proc/check_path(var/mob/living/M)
 	if(!istype(M))
@@ -140,6 +145,34 @@
 	SetLuminosity(0)
 	. = ..()
 
+#define TESLA_COIL_STUN_FIRE_DELAY 6 SECONDS
+#define TESLA_COIL_STUN_EFFECT 1
+/obj/structure/machinery/defenses/tesla_coil/stun
+	name = "21S overclocked tesla coil"
+	desc = "A perfected way of producing high-voltage, low-current and high frquency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock. This one is significantly overclocked, providing a lot more voltage at the cost of speed."
+	fire_delay = TESLA_COIL_STUN_FIRE_DELAY
+	handheld_type = /obj/item/defenses/handheld/tesla_coil/stun
+
+/obj/structure/machinery/defenses/tesla_coil/stun/apply_debuff(var/mob/living/M)
+	if(M.mob_size >= MOB_SIZE_BIG)
+		M.SetSuperslowed(TESLA_COIL_SLOW_EFFECT)
+	else
+		M.SetKnockeddown(TESLA_COIL_STUN_EFFECT)
+	
+	M.SetDazed(TESLA_COIL_DAZE_EFFECT * 1.5) // 1.5x as effective as normal tesla
+
+#undef TESLA_COIL_STUN_FIRE_DELAY
+/obj/structure/machinery/defenses/tesla_coil/micro
+	name = "\improper 25S micro tesla coil"
+	desc = "A perfected way of producing high-voltage, low-current and high frquency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock. This one is smaller and more lightweight."
+	handheld_type = /obj/item/defenses/handheld/tesla_coil/micro
+	disassemble_time = 0.5 SECONDS
+	health = 75
+	health_max = 75
+	density = FALSE
+
+/obj/structure/machinery/defenses/tesla_coil/micro/apply_debuff(var/mob/living/M)
+	M.SetSuperslowed(TESLA_COIL_SLOW_EFFECT) // Only applies slowness
 
 #undef TESLA_COIL_FIREDELAY
 #undef TESLA_COIL_RANGE

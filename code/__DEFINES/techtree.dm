@@ -40,3 +40,6 @@
 #define DROPPOD_DROPPING 2
 #define DROPPOD_OPEN 4
 #define DROPPOD_STRIPPED 8
+
+#define GET_TREE(treeid) SStechtree? SStechtree.trees[treeid] : null
+#define GET_NODE(treeid, nodeid) SStechtree? SStechtree.trees[treeid].get
