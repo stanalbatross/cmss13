@@ -196,6 +196,8 @@ var/global/list/transmitters = list()
     return
 
 /obj/structure/transmitter/proc/handle_speak(var/message, var/datum/language/L, var/mob/speaking)
+    if(L.flags & SIGNLANG) return
+
     var/obj/structure/transmitter/T = get_calling_phone()
 
     if(!istype(T))
@@ -250,7 +252,9 @@ var/global/list/transmitters = list()
     . = ..()
     remove_attached()
 
-/obj/item/phone/proc/handle_speak(var/message, var/datum/language/L, var/mob/speaking)
+/obj/item/phone/proc/handle_speak(var/mob/speaking, var/message, var/datum/language/L)
+    SIGNAL_HANDLER
+
     if(!attached_to)
         return
 
@@ -347,6 +351,8 @@ var/global/list/transmitters = list()
 /obj/item/phone/on_dropped(var/mob/user)
     . = ..()
 
+    UnregisterSignal(user, COMSIG_LIVING_SPEAK)
+
     set_raised(FALSE, user)
     setup_beam(src)
 
@@ -357,6 +363,8 @@ var/global/list/transmitters = list()
 
 /obj/item/phone/pickup(mob/user)
     . = ..()
+
+    RegisterSignal(user, COMSIG_LIVING_SPEAK, .proc/handle_speak)
     setup_beam(user)
 
 /obj/item/phone/proc/setup_beam(var/atom/A)

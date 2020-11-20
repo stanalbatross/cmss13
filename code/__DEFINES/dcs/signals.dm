@@ -119,3 +119,6 @@
 
 #define COMSIG_CLIENT_MOB_MOVE	"client_mob_move"
 	#define COMPONENT_OVERRIDE_MOVE	(1<<0)
+
+#define COMSIG_LIVING_SPEAK "living_speak"
+	#define COMPONENT_OVERRIDE_SPEAK (1<<0)
