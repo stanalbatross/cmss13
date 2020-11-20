@@ -45,7 +45,6 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 #define JOB_PILOT						"Pilot Officer"
 #define JOB_CREWMAN						"Vehicle Crewman"
-#define JOB_INTEL						"Intelligence Officer"
 
 #define JOB_POLICE						"Military Police"
 #define JOB_WARDEN						"Military Warden"

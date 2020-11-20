@@ -571,7 +571,6 @@ var/list/datum/mob_hud/huds = list(
 			if(JOB_XO) marine_rk = "xo"
 			if(JOB_CO) marine_rk = "co"
 			if(JOB_PILOT) marine_rk = "po"
-			if(JOB_INTEL) marine_rk = "io"
 			if(JOB_CREWMAN) marine_rk = "tc"
 		if(assigned_squad.squad_leader == src)
 			marine_rk = "leader"
@@ -615,7 +614,6 @@ var/list/datum/mob_hud/huds = list(
 				marine_rk = "so"
 				border_rk = "command"
 			if(JOB_PILOT) marine_rk = "po"
-			if(JOB_INTEL) marine_rk = "io"
 			if(JOB_CREWMAN) marine_rk = "tc"
 		if(marine_rk)
 			var/image/I = image('icons/mob/hud/hud.dmi',src, "hudmarinesquad")
