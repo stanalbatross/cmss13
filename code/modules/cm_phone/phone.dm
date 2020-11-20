@@ -1,7 +1,7 @@
 var/global/list/transmitters = list()
 
 /obj/structure/transmitter
-    name = "\improper telephone receiver"
+    name = "telephone receiver"
     icon = 'icons/obj/structures/structures.dmi'
     icon_state = "wall_phone"
 
@@ -117,8 +117,8 @@ var/global/list/transmitters = list()
 
     playsound(loc, null, channel = ring_channel)
 
+    attached_to.pickup(H)
     H.put_in_active_hand(attached_to)
-    attached_to.setup_beam(H)
     
     update_icon()
 
@@ -199,7 +199,6 @@ var/global/list/transmitters = list()
     if(L.flags & SIGNLANG) return
 
     var/obj/structure/transmitter/T = get_calling_phone()
-
     if(!istype(T))
         return
 
@@ -231,7 +230,7 @@ var/global/list/transmitters = list()
     reset_call()
 
 /obj/item/phone
-    name = "\improper telephone"
+    name = "telephone"
     icon = 'icons/obj/items/misc.dmi'
     icon_state = "rpb_phone"
     
@@ -255,7 +254,8 @@ var/global/list/transmitters = list()
 /obj/item/phone/proc/handle_speak(var/mob/speaking, var/message, var/datum/language/L)
     SIGNAL_HANDLER
 
-    if(!attached_to)
+    if(!attached_to || loc == attached_to)
+        UnregisterSignal(speaking, COMSIG_LIVING_SPEAK)
         return
 
     attached_to.handle_speak(message, L, speaking)
