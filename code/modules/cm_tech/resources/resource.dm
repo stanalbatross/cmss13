@@ -92,7 +92,7 @@
     if(health > 0 || treeid == TREE_NONE)
         return
 
-    processing_resources.Remove(src)
+    GLOB.processing_resources.Remove(src)
 
     if(!tree)
         return
@@ -172,8 +172,8 @@
     if(!T)
         return
 
-    if(!(src in processing_resources))
-        processing_resources.Add(src)
+    if(!(src in GLOB.processing_resources))
+        GLOB.processing_resources.Add(src)
 
     if(tree)
         tree.on_node_lost(src)

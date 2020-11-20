@@ -107,3 +107,15 @@
 #define COMSIG_ITEM_EQUIPPED "item_equipped"
 
 #define COMSIG_ITEM_UNEQUIPPED "item_unequipped"
+
+#define COMSIG_MOB_ENTER_TREE "mob_enter_tree"
+	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
+
+#define COMSIG_MOB_TAKE_DAMAGE "mob_take_damage"
+	#define COMPONENT_BLOCK_DAMAGE (1<<0)
+
+#define COMSIG_MOB_RESET_VIEW "mob_reset_view"
+	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
+
+#define COMSIG_CLIENT_MOB_MOVE	"client_mob_move"
+	#define COMPONENT_OVERRIDE_MOVE	(1<<0)

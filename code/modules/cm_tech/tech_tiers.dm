@@ -62,7 +62,7 @@
     color = "#FF00FF"
     max_techs = 1
 
-var/global/list/tech_tiers = list(
+GLOBAL_LIST_INIT(tech_tiers, list(
     TECH_TIER_FREE = new /datum/tier/free(),
     TECH_TIER_ONE = new /datum/tier/one(), 
     TECH_TIER_TRANSITION_ONETWO = new /datum/tier/one_transition_two(), 
@@ -71,4 +71,4 @@ var/global/list/tech_tiers = list(
     TECH_TIER_THREE = new /datum/tier/three(), 
     TECH_TIER_TRANSITION_THREEFOUR = new /datum/tier/one_transition_two(), 
     TECH_TIER_FOUR = new /datum/tier/four()
-) // we need them in order
+))

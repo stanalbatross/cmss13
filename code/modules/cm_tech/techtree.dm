@@ -59,7 +59,8 @@
 
         for(var/turf/pos in block(locate(x_offset, y_offset, zlevel), locate(x_offset + tier_length*2, y_offset + 2, zlevel)))
             pos.ChangeTurf(/turf/open/blank)
-            pos.color = tech_tiers[tier].color
+            var/datum/tier/T = GLOB.tech_tiers[tier]
+            pos.color = T.color
 
         var/node_pos = x_offset + 1
         for(var/node in all_techs[tier])
@@ -90,71 +91,45 @@
 /datum/techtree/proc/has_access(var/mob/M, var/access_required)
     return FALSE
 
-/datum/techtree/proc/purchase_node(var/mob/M, var/datum/tech/T, var/mob/messages_to)
+/datum/techtree/proc/purchase_node(var/mob/M, var/datum/tech/T)
     if(!M || M.stat == DEAD)
         return
 
-    if(!has_access(M, TREE_ACCESS_MODIFY))
-        to_chat(messages_to, SPAN_WARNING("You lack the necessary permission required to use this tree"))
-        return 
-
-    if(LAZYLEN(unlocked_techs[T.tier]) >= tech_tiers[T.tier].max_techs)
-        to_chat(messages_to, SPAN_WARNING("You can't purchase any more techs of this tier!"))
+    if(T.type in unlocked_techs[T.tier])
+        M.show_message(SPAN_WARNING("This node is already unlocked!"))
         return
-
-    if(!istype(T) || !(T.name in all_techs[T.tier]))
-        to_chat(messages_to, SPAN_WARNING("You cannot purchase this node!"))
-        return
-
-    if(T.name in unlocked_techs[T.tier])
-        to_chat(messages_to, SPAN_WARNING("This node is already unlocked!"))
-        return
-
-    if(!check_and_use_points(T))
-        to_chat(messages_to, SPAN_WARNING("Not enough points to purchase this node."))
-        return
-
-    if(!T.can_unlock(M))
+    
+    if(!T.can_unlock(M, src))
         return
 
     unlock_node(T)
-    to_chat(messages_to, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
+    
+    to_chat(M, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
 
 /datum/techtree/proc/unlock_node(var/datum/tech/T)
-    if(T.name in unlocked_techs[T.tier] || !T.name in all_techs[T.tier])
+    if((T.type in unlocked_techs[T.tier]) || !(T.type in all_techs[T.tier]))
         return
 
     T.unlocked = TRUE
     T.on_unlock()
 
     if(T.processing_info == TECH_UNLOCKED_PROCESS)
-        processing_techs.Add(T)
+        GLOB.processing_techs.Add(T)
 
-    unlocked_techs[T.tier] += list(T.name = T)
-    cached_unlocked_techs += list(T.name = T)
+    unlocked_techs[T.tier] += list(T.type = T)
+    cached_unlocked_techs += list(T.type = T)
 
 /datum/techtree/proc/enter_mob(var/mob/M, var/force)
     if(!M.mind || M.stat == DEAD)
-        return FALSE
-
-    var/datum/mind/mob_mind = M.mind
-
-    if(istype(M, /mob/living/carbon/hologram/))
         return FALSE
 
     if(!has_access(M, TREE_ACCESS_VIEW) && !force)
         to_chat(M, SPAN_WARNING("You do not have access to this tech tree"))
         return FALSE
 
-    var/mob/living/carbon/hologram/H = new(entrance)
-    mob_mind.transfer_to(H, TRUE)
+    if(SEND_SIGNAL(M, COMSIG_MOB_ENTER_TREE, src, force) & COMPONENT_CANCEL_TREE_ENTRY) return
 
-    H.name = M.name
-
-    mob_mind.original = M
-    H.linked_mob = M
-
-    M.mind = mob_mind
+    new/mob/hologram(entrance, M)
 
     return TRUE
 

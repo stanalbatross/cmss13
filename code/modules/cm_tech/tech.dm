@@ -18,7 +18,24 @@
 /datum/tech/proc/fire()
     return
 
-/datum/tech/proc/can_unlock(var/mob/M)
+/datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree) // messages_to is the 
+    if(!tree.has_access(M, TREE_ACCESS_MODIFY))
+        to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
+        return 
+
+    var/datum/tier/t_target = GLOB.tech_tiers[tier]
+    if(LAZYLEN(tree.unlocked_techs[tier]) >= t_target.max_techs)
+        to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
+        return
+
+    if(!(type in tree.all_techs[tier]))
+        to_chat(M, SPAN_WARNING("You cannot purchase this node!"))
+        return
+        
+    if(!tree.check_and_use_points(src))
+        to_chat(M, SPAN_WARNING("Not enough points to purchase this node."))
+        return
+    
     return TRUE
 
 /datum/tech/proc/on_unlock()

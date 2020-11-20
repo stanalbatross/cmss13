@@ -1,6 +1,4 @@
-var/list/hologram_list = list()
-
-/mob/living/carbon/hologram
+/mob/hologram
     name = "hologram"
     desc = "It seems to be a visual projection of someone" //jinkies!
     icon = 'icons/mob/mob.dmi'
@@ -11,69 +9,72 @@ var/list/hologram_list = list()
     mouse_opacity = FALSE
 
     var/mob/linked_mob
+    var/datum/action/leave_hologram/leave_button
     alpha = 0
 
-/mob/living/carbon/hologram/movement_delay()
+/mob/hologram/movement_delay()
     . = -2 // Very fast speed, so they can navigate through easily, they can't ever have movement delay whilst as a hologram
 
-/datum/hud/hologram/New(mob/living/carbon/hologram, ui_style='icons/mob/hud/human_midnight.dmi')
-	..()
+/mob/hologram/Initialize(mapload, var/mob/M)
+    if(!M)
+        return INITIALIZE_HINT_QDEL
 
-/mob/living/carbon/hologram/create_hud()
-    if(!hud_used)
-        hud_used = new /datum/hud/hologram(src)
-
-/mob/living/carbon/hologram/Initialize()
     . = ..()
 
-    hologram_list.Add(src)
+    RegisterSignal(M, COMSIG_CLIENT_MOB_MOVE, .proc/handle_move)
+    RegisterSignal(M, COMSIG_MOB_RESET_VIEW, .proc/handle_view)
+    RegisterSignal(M, COMSIG_MOB_TAKE_DAMAGE, .proc/take_damage)
+    RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
 
-    var/datum/action/leave_hologram/LH = new()
-    LH.give_action(src)
+    linked_mob = M
+    linked_mob.reset_view()
 
-/mob/living/carbon/hologram/process()
-    . = ..()
-    if(!linked_mob || linked_mob.stat == DEAD)
+    leave_button = new()
+    leave_button.linked_hologram = src
+    leave_button.give_action(M)
+
+/mob/hologram/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
+    SIGNAL_HANDLER
+    return COMPONENT_CANCEL_TREE_ENTRY
+
+/mob/hologram/proc/take_damage(var/mob/M, var/damage, var/damagetype)
+    SIGNAL_HANDLER
+    
+    if(damage > 5)
         qdel(src)
+
+/mob/hologram/proc/handle_move(var/mob/M, NewLoc, direct)
+    SIGNAL_HANDLER
+
+    src.Move(get_step(src.loc, direct), direct)
+    return COMPONENT_OVERRIDE_MOVE
+
+/mob/hologram/proc/handle_view(var/mob/M, var/atom/target)
+    if(M.client)
+        M.client.perspective = EYE_PERSPECTIVE
+        M.client.eye = src
     
-    if(linked_mob.mind != mind)
-        qdel(src)
+    return COMPONENT_OVERRIDE_VIEW
 
-/mob/living/carbon/hologram/proc/return_to_body()
-    if(!mind || !linked_mob)
-        return
-
-    mind.transfer_to(linked_mob, TRUE)
-
-/mob/living/carbon/hologram/say(message, datum/language/speaking, verb, alt_name, italics, message_range, sound/speech_sound, sound_vol, nolog, message_mode)
-    if(linked_mob)
-        linked_mob.say(message, speaking, verb, alt_name, italics, message_range, speech_sound, sound_vol, nolog, message_mode)
-    
-    return
-    
-/mob/living/carbon/hologram/verb/mob_return_to_body()
-    set name = "Return to body"
-    set category = "IC"
-
-    return_to_body()
-    qdel(src)
-
-/mob/living/carbon/hologram/Destroy()
-    . = ..()
-    return_to_body()
+/mob/hologram/Destroy()
+    UnregisterSignal(linked_mob, COMSIG_MOB_RESET_VIEW)
+    linked_mob.reset_view()
     linked_mob = null
 
-    hologram_list.Remove(src)
-    return
+    return ..()
 
 /datum/action/leave_hologram
     name = "Leave"
     action_icon_state = "techtree_exit"
 
+    var/mob/hologram/linked_hologram
+
 /datum/action/leave_hologram/action_activate()
-    var/mob/living/carbon/hologram/H = owner
+    remove_action(owner)
 
-    if(!istype(H))
-        return
+    QDEL_NULL(linked_hologram)
+    qdel(src)
 
-    H.mob_return_to_body()
+/datum/action/leave_hologram/Destroy()
+    QDEL_NULL(linked_hologram)
+    return ..()

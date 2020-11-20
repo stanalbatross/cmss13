@@ -27,10 +27,10 @@
 
     switch(access_required)
         if(TREE_ACCESS_VIEW)
-            if(H.wear_id && ACCESS_MARINE_LEADER in H.wear_id.access)
+            if(H.wear_id && (ACCESS_MARINE_LEADER in H.wear_id.access))
                 return TRUE
         if(TREE_ACCESS_MODIFY)
-            if(H.wear_id && ACCESS_MARINE_COMMANDER in H.wear_id.access)
+            if(H.wear_id && (ACCESS_MARINE_COMMANDER in H.wear_id.access))
                 return TRUE
 
     return FALSE
@@ -86,7 +86,7 @@
 
     A.update_power_channels(FALSE, FALSE, FALSE)
 
-    while(affected_barricades[RN].len)
+    while(length(affected_barricades[RN]))
         var/obj/structure/barricade/B = affected_barricades[RN][affected_barricades.len]
 
         affected_barricades[RN] -= B

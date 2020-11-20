@@ -282,11 +282,6 @@ var/savefile/iconCache = new /savefile("data/iconCache.sav") //Cache of icons fo
 	if (!target || !message)
 		return
 
-	var/mob/M = target
-
-	if(ismob(M) && !M.client && istype(M.mind.current, /mob/living/carbon/hologram))
-		target = M.mind.current
-
 	if(!SSchat?.initialized)
 		to_chat_forced(target, message)
 		return

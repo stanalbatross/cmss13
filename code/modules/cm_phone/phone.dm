@@ -92,7 +92,6 @@ var/global/list/transmitters = list()
         if(!istype(T) || QDELETED(T))
             transmitters -= T
             CRASH("Qdelled/improper atom inside transmitters list! (istype returned: [istype(T)], QDELETED returned: [QDELETED(T)])")
-            return
 
         if(TRANSMITTER_UNAVAILABLE(T))
             return
@@ -296,7 +295,6 @@ var/global/list/transmitters = list()
 
 /obj/item/phone/proc/on_beam_removed()
     set waitfor = FALSE
-    . = ..()
 
     var/tether_to
     if(isturf(loc))

@@ -1,5 +1,5 @@
-var/global/list/processing_techs = list()
-var/global/list/processing_resources = list()
+GLOBAL_LIST_EMPTY(processing_resources)
+GLOBAL_LIST_EMPTY(processing_techs)
 
 SUBSYSTEM_DEF(techtree)
     name     = "Tech Tree"
@@ -45,7 +45,7 @@ SUBSYSTEM_DEF(techtree)
             Tu.ChangeTurf(/turf/closed/void, list(/turf/closed/void))
             new /area/techtree(Tu)
 
-        for(var/tier in tech_tiers)
+        for(var/tier in GLOB.tech_tiers)
             tree.unlocked_techs += list("[tier]" = list())
             tree.all_techs += list("[tier]" = list())
 
@@ -57,12 +57,12 @@ SUBSYSTEM_DEF(techtree)
                 continue
 
             if(tree.flags & node.flags)
-                tree.all_techs[tier] += list(node.name = node)
+                tree.all_techs[tier] += list(node.type = node)
                 nodes += node
 
                 node.holder = tree
                 if(node.processing_info == TECH_ALWAYS_PROCESS)
-                    processing_techs.Add(node)
+                    GLOB.processing_techs.Add(node)
 
         tree.generate_tree()
     
@@ -92,8 +92,8 @@ SUBSYSTEM_DEF(techtree)
 
 /datum/controller/subsystem/techtree/fire(resumed = FALSE)
     if (!resumed)
-        currentrun_nodes = processing_techs.Copy()
-        currentrun_resource = processing_resources.Copy()
+        currentrun_nodes = GLOB.processing_techs.Copy()
+        currentrun_resource = GLOB.processing_resources.Copy()
 
     while (currentrun_nodes.len)
         var/datum/tech/o = currentrun_nodes[currentrun_nodes.len]

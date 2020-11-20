@@ -106,16 +106,14 @@
 // Sets the Xeno's view to its observed target if that target is set. Otherwise, resets the xeno's view to itself.
 // Please handle typechecking outside this proc
 /mob/living/carbon/Xenomorph/reset_view(atom/A)
-	if (client)
+	. = ..(A)
+	if (!. && client)
 
 		// Is our observed xeno configured and are we alive?
 		if(observed_xeno && !stat)
 			client.perspective = EYE_PERSPECTIVE
 			client.eye = observed_xeno
-
 		// Otherwise, use default reset_view 
-		else
-			. = ..(A)
 
 // Handle HREF clicks through hive status and hivemind
 /mob/living/carbon/Xenomorph/Topic(href, href_list)

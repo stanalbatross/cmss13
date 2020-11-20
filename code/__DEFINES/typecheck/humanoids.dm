@@ -14,5 +14,3 @@
 #define isSynth(A)  (ishuman(A) && istype(A?:species, /datum/species/synthetic))
 #define isEarlySynthetic(A) (ishuman(A) && istype(A?:species, /datum/species/synthetic/early_synthetic))
 #define hasorgans(A) ishuman(A)
-
-#define ishologram(A) (istype(A, /mob/living/carbon/hologram/))

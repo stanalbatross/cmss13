@@ -46,16 +46,9 @@
 
 	if(isobserver(usr))
 		return
-
-	if(!usr.mind || !usr.mind.original || usr.mind.original.stat == DEAD)
-		return
-    
-	var/mob/M = usr.mind.original
-
-	var/mob/send_messages_to = usr
-
+		
 	if(!info.holder)
 		return
 
 	if(href_list["purchase_node"])
-		info.holder.purchase_node(M, info, send_messages_to)
+		info.holder.purchase_node(usr, info)

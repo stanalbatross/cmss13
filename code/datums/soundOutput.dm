@@ -23,17 +23,6 @@
 	if(T.x && T.y && T.z)		
 		var/turf/owner_turf = get_turf(owner.mob)
 		
-		if(istype(owner.mob, /mob/living/carbon/hologram))
-			var/mob/living/carbon/hologram/H = owner.mob
-			if(H.linked_mob)
-				owner_turf = null
-				var/turf/linked_mob_turf = get_turf(H.linked_mob)
-
-				S.x = T.x - linked_mob_turf.x
-				S.y = 0
-				S.z = T.y - linked_mob_turf.y
-				S.falloff = T.falloff
-		
 		if(owner_turf)
 			if(T.z != owner_turf.z && owner_turf.z == interior_manager.interior_z)	//if we are in interior and hear sound from outside
 				S.falloff = T.falloff
