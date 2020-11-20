@@ -242,6 +242,6 @@
 /obj/item/projectile/pill
     var/obj/item/reagent_container/pill/source_pill
 
-/obj/item/projectile/pill/Dispose()
+/obj/item/projectile/pill/Destroy()
     . = ..()
     source_pill = null

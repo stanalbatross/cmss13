@@ -58,7 +58,7 @@ var/list/hologram_list = list()
     return_to_body()
     qdel(src)
 
-/mob/living/carbon/hologram/Dispose()
+/mob/living/carbon/hologram/Destroy()
     . = ..()
     return_to_body()
     linked_mob = null

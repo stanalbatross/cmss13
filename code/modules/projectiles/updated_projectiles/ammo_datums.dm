@@ -1923,7 +1923,7 @@
 	smoke.set_up(1, 0, T)
 	smoke.start()
 
-/datum/ammo/flamethrower/sentry_flamer/glob/Dispose()
+/datum/ammo/flamethrower/sentry_flamer/glob/Destroy()
 	qdel(smoke)
 	return ..()
 
@@ -1934,7 +1934,7 @@
 	if(!istype(T)) 
 		return
 	var/datum/reagent/napalm/blue/R = new()
-	R.durationfire = config.instant_burntime
+	R.durationfire = BURN_TIME_INSTANT
 	new /obj/flamer_fire(T, source, source_mob, R, 0)
 	
 /datum/ammo/flamethrower/sentry_flamer/mini

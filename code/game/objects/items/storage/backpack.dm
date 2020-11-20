@@ -370,7 +370,7 @@ var/global/list/radio_packs = list()
 
 	radio_packs += src
 
-/obj/item/storage/backpack/marine/satchel/rto/Dispose()
+/obj/item/storage/backpack/marine/satchel/rto/Destroy()
 	. = ..()
 	radio_packs -= src
 

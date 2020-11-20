@@ -223,7 +223,7 @@ datum/preferences/proc/job_pref_to_gear_preset()
 			return "USCM Cryo Specialist (Equipped)"
 		if(JOB_SQUAD_SMARTGUN)
 			return "USCM Cryo Smartgunner (Equipped)"
-		if(ROLE_MARINE_RTO)
+		if(JOB_SQUAD_RTO)
 			return "USCM Cryo RT Operator (Equipped)"
 		if(JOB_CO)
 			return "USCM Captain (CO)"

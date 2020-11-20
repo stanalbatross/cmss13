@@ -216,7 +216,7 @@ var/global/list/transmitters = list()
     else
         . = ..()
 
-/obj/structure/transmitter/Dispose()
+/obj/structure/transmitter/Destroy()
     . = ..()
     if(attached_to)
         if(attached_to.loc == src)
@@ -247,7 +247,7 @@ var/global/list/transmitters = list()
         attach_to(loc)
         external_object = attached_to
     
-/obj/item/phone/Dispose()
+/obj/item/phone/Destroy()
     . = ..()
     remove_attached()
 

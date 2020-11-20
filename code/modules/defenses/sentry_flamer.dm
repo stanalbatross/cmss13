@@ -45,7 +45,7 @@
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 
 	cell_explosion(loc, 10, 10, null, "sentry explosion")
-	if(!disposed)
+	if(!QDELETED(src))
 		qdel(src)
 
 #define FLAMER_SENTRY_SNIPER_RANGE 14

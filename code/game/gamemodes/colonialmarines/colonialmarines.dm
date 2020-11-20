@@ -277,7 +277,7 @@
 
 /datum/game_mode/colonialmarines/ds_first_drop(var/datum/shuttle/ferry/marine/m_shuttle)
 	SStechtree.activate_passive_nodes()
-	add_timer(CALLBACK(SStechtree, /datum/subsystem/techtree/.proc/activate_all_nodes), SECONDS_20)
+	addtimer(CALLBACK(SStechtree, /datum/controller/subsystem/techtree/.proc/activate_all_nodes), SECONDS_20)
 
 ///////////////////////////
 //Checks to see who won///

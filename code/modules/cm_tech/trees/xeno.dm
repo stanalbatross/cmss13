@@ -103,12 +103,7 @@
 
         X.visible_message(SPAN_HELPFUL("\The [X] glows as a warm aura envelops them."), \
                     SPAN_HELPFUL("You feel a warm aura envelop you."))
-        
-        var/image/I = get_busy_icon(BUSY_ICON_MEDICAL)
-        I.appearance_flags = RESET_ALPHA|KEEP_APART
-        I.alpha = 255
-        X.overlays += I
 
-        add_timer(CALLBACK(src, .proc/remove_heal_overlay, X, I), SECONDS_2)
+        X.flick_heal_overlay(SECONDS_2, "#00FF00")
         X.gain_health(xeno_heal_amount)
     last_heal = world.time + SECONDS_3 // Every 3 second

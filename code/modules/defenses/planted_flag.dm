@@ -86,7 +86,7 @@
 		WB.flags_in_range.Add(src)
 		flags_in_range.Add(WB)
 
-/obj/structure/machinery/defenses/planted_flag/warbanner/Dispose()
+/obj/structure/machinery/defenses/planted_flag/warbanner/Destroy()
 	for(var/O in flags_in_range)
 		var/obj/structure/machinery/defenses/planted_flag/warbanner/WB = O
 		WB.flags_in_range.Remove(src)

@@ -1,31 +1,20 @@
-var/datum/subsystem/techtree/SStechtree
-
 var/global/list/processing_techs = list()
 var/global/list/processing_resources = list()
 
-/datum/subsystem/techtree
+SUBSYSTEM_DEF(techtree)
     name     = "Tech Tree"
     init_order    = SS_INIT_TECHTREE
     priority      = SS_PRIORITY_TECHTREE
 
-    var/datum/techtree/trees[]
-    var/datum/tech/nodes[]
+    var/list/datum/techtree/trees = list()
+    var/list/datum/tech/nodes = list()
 
-    var/obj/structure/resource_node/resources[]
+    var/list/obj/structure/resource_node/resources = list()
 
     var/list/currentrun_nodes = list()
     var/list/currentrun_resource = list()
 
-
-/datum/subsystem/techtree/New()
-    trees = list()
-    nodes = list()
-
-    resources = list()
-
-    NEW_SS_GLOBAL(SStechtree)
-
-/datum/subsystem/techtree/Initialize()
+/datum/controller/subsystem/techtree/Initialize()
     var/list/tech_trees = subtypesof(/datum/techtree)
     var/list/tech_nodes = subtypesof(/datum/tech)
 
@@ -53,8 +42,7 @@ var/global/list/processing_resources = list()
         tree.passive_node = passive_node
 
         for(var/turf/Tu in block(z_min, z_max))
-            Tu.ChangeTurf(/turf/closed/void, TRUE)
-            Tu.old_turf = "/turf/closed/void"
+            Tu.ChangeTurf(/turf/closed/void, list(/turf/closed/void))
             new /area/techtree(Tu)
 
         for(var/tier in tech_tiers)
@@ -65,7 +53,7 @@ var/global/list/processing_resources = list()
             var/datum/tech/node = new N()
             var/tier = node.tier
 
-            if(node.flags == NO_FLAGS || !tier in tree.all_techs)
+            if(node.flags == NO_FLAGS || !(tier in tree.all_techs))
                 continue
 
             if(tree.flags & node.flags)
@@ -80,7 +68,7 @@ var/global/list/processing_resources = list()
     
     . = ..()
 
-/datum/subsystem/techtree/proc/activate_passive_nodes()
+/datum/controller/subsystem/techtree/proc/activate_passive_nodes()
     for(var/name in trees)
         var/datum/techtree/T = trees[name]
 
@@ -89,7 +77,7 @@ var/global/list/processing_resources = list()
         
         T.passive_node.make_active()
 
-/datum/subsystem/techtree/proc/activate_all_nodes()
+/datum/controller/subsystem/techtree/proc/activate_all_nodes()
     for(var/obj/structure/resource_node/RN in resources)
         if(QDELETED(RN))
             resources.Remove(RN)
@@ -102,7 +90,7 @@ var/global/list/processing_resources = list()
         
 
 
-/datum/subsystem/techtree/fire(resumed = FALSE)
+/datum/controller/subsystem/techtree/fire(resumed = FALSE)
     if (!resumed)
         currentrun_nodes = processing_techs.Copy()
         currentrun_resource = processing_resources.Copy()
@@ -111,10 +99,10 @@ var/global/list/processing_resources = list()
         var/datum/tech/o = currentrun_nodes[currentrun_nodes.len]
         currentrun_nodes.len--
 
-        if (!o || o.disposed)
+        if (!o || QDELETED(o))
             continue
 
-        o.process()
+        o.fire()
         if (MC_TICK_CHECK)
             return
 
@@ -122,7 +110,7 @@ var/global/list/processing_resources = list()
         var/obj/structure/resource_node/o = currentrun_resource[currentrun_resource.len]
         currentrun_resource.len--
 
-        if (!istype(o) || o.disposed || o.next_cycle_at > world.time)
+        if (!istype(o) || QDELETED(o) || o.next_cycle_at > world.time)
             continue
 
         o.cycle()

@@ -61,7 +61,7 @@
         controlled_area = A
         A.r_node = src
 
-/obj/structure/resource_node/Dispose()
+/obj/structure/resource_node/Destroy()
     . = ..()
 
     if(tree)

@@ -28,15 +28,15 @@
 /obj/structure/droppod/Initialize(mapload, var/time_to_drop = 0)
     . = ..()
     warn_turf(loc)
-    add_timer(CALLBACK(src, .proc/drop_on_target, loc), time_to_drop)
-    add_timer(CALLBACK(src, .proc/play_landing_sound, loc), time_to_drop + drop_time - 3.5 SECONDS) // Sound file is 4 seconds long
+    addtimer(CALLBACK(src, .proc/drop_on_target, loc), time_to_drop)
+    addtimer(CALLBACK(src, .proc/play_landing_sound, loc), time_to_drop + drop_time - 3.5 SECONDS) // Sound file is 4 seconds long
 
     update_icon()
 
 /obj/structure/droppod/proc/play_landing_sound(var/turf/loc)
     playsound(loc, 'sound/machines/techpod/techpod_drill.ogg', 100, TRUE, 75)
 
-/obj/structure/droppod/Dispose()
+/obj/structure/droppod/Destroy()
     . = ..()
     if(warning_zone)
         qdel(warning_zone)
@@ -113,7 +113,7 @@
     pixel_y = 32*tiles_to_take
     animate(src, pixel_y = 0, time = drop_time, easing = LINEAR_EASING)
 
-    add_timer(CALLBACK(src, .proc/land, T), drop_time)
+    addtimer(CALLBACK(src, .proc/land, T), drop_time)
 
 /obj/structure/droppod/proc/land(var/turf/T)
     playsound(T, 'sound/machines/techpod/techpod_hit.ogg', 100, 75)
@@ -140,4 +140,4 @@
     droppod_flags |= DROPPOD_DROPPED
     update_icon()
 
-    add_timer(CALLBACK(src, .proc/open), SECONDS_3)
+    addtimer(CALLBACK(src, .proc/open), SECONDS_3)

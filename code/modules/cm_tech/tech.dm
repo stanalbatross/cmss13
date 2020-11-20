@@ -15,7 +15,7 @@
 
     var/datum/techtree/holder
 
-/datum/tech/proc/process()
+/datum/tech/proc/fire()
     return
 
 /datum/tech/proc/can_unlock(var/mob/M)
