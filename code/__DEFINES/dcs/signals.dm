@@ -96,3 +96,14 @@
 #define COMSIG_TRACKING_PLANTED "tracking_planted"
 ///from /obj/item/device/agents/tracking_device/attackby
 #define COMSIG_TRACKING_DISARMED "tracking_disarmed"
+
+// need to do this for now thanks to shit code
+#define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
+	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
+
+#define COMSIG_HUMAN_XENO_ATTACK "human_attack_alien"
+	#define COMPONENT_CANCEL_XENO_ATTACK (1<<0)
+
+#define COMSIG_ITEM_EQUIPPED "item_equipped"
+
+#define COMSIG_ITEM_UNEQUIPPED "item_unequipped"

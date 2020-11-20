@@ -73,17 +73,64 @@
     if(!istype(S))
         return
     has_suit = S
-    has_suit.armor_plate = src
     forceMove(has_suit)
+
+    RegisterSignal(S, COMSIG_ITEM_EQUIPPED, .proc/check_to_signal)
+    RegisterSignal(S, COMSIG_ITEM_DROPPED, .proc/unassign_signals)
+
+    var/mob/living/carbon/human/H = user
+    if(istype(H) && H.w_uniform == S)
+        check_to_signal(S, user, WEAR_BODY)
 
     if(user)
         to_chat(user, SPAN_NOTICE("You attach [src] to [has_suit]."))
+
+/obj/item/clothing/accessory/health/proc/check_to_signal(obj/item/clothing/S, mob/living/user, slot)
+    SIGNAL_HANDLER
+
+    if(slot == WEAR_BODY)
+        RegisterSignal(user, COMSIG_HUMAN_XENO_ATTACK, .proc/take_slash_damage)
+        RegisterSignal(user, COMSIG_HUMAN_BULLET_ACT, .proc/take_bullet_damage)
+    else
+        unassign_signals(S, user)
+
+/obj/item/clothing/accessory/health/proc/unassign_signals(obj/item/clothing/S, mob/living/user)
+    SIGNAL_HANDLER
+
+    UnregisterSignal(user, COMSIG_HUMAN_XENO_ATTACK)
+    UnregisterSignal(user, COMSIG_HUMAN_BULLET_ACT)
+
+/obj/item/clothing/accessory/health/proc/take_bullet_damage(mob/living/user, damage)
+    var/damage_to_nullify = armor_health
+    armor_health = max(armor_health - damage*projectile_durability_mult, 0)
+
+    update_icon()
+
+    if(damage_to_nullify) 
+        playsound(user, armor_hitsound, 25, 1)
+        return COMPONENT_CANCEL_BULLET_ACT
+
+/obj/item/clothing/accessory/health/proc/take_slash_damage(mob/living/user, damage)
+    var/damage_to_nullify = armor_health
+    armor_health = max(armor_health - damage*slash_durability_mult, 0)
+
+    update_icon()
+    if(!armor_health && damage_to_nullify)
+        user.show_message(SPAN_WARNING("You feel [src] break apart."), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
+
+    if(damage_to_nullify)
+        playsound(user, armor_hitsound, 25, 1)
+        return COMPONENT_CANCEL_XENO_ATTACK
 
 /obj/item/clothing/accessory/health/on_removed(mob/living/user, obj/item/clothing/C)
     if(!has_suit)
         return
 
-    has_suit.armor_plate = null
+    unassign_signals(user)
+
+    UnregisterSignal(C, COMSIG_ITEM_EQUIPPED)
+    UnregisterSignal(C, COMSIG_ITEM_UNEQUIPPED)
+
     has_suit = null
     if(usr)
         usr.put_in_hands(src)

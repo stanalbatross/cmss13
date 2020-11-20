@@ -16,8 +16,6 @@
 	var/drag_unequip = FALSE
 	var/blood_overlay_type = "" //which type of blood overlay to use on the mob when bloodied
 
-	var/obj/item/clothing/accessory/health/armor_plate
-
 /obj/item/clothing/get_examine_line()
 	. = ..()
 	var/list/ties = list()
