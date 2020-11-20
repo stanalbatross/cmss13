@@ -117,9 +117,9 @@ var/global/list/transmitters = list()
 
     playsound(loc, null, channel = ring_channel)
 
-    attached_to.pickup(H)
     H.put_in_active_hand(attached_to)
-    
+    attached_to.pickup(H)
+
     update_icon()
 
 #undef TRANSMITTER_UNAVAILABLE
