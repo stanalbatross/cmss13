@@ -34,6 +34,10 @@
 
 	if(!hive)
 		return FALSE
+
+	var/should_override = hive.should_override_alliance(src)
+	if(should_override)
+		return should_override == XENO_HIVE_ALLIED
 	
 	switch(hive.slashing_allowed)
 		if(XENO_SLASH_ALLOWED)
@@ -49,6 +53,27 @@
 /mob/living/carbon/proc/match_hivemind(var/mob/living/carbon/C)
 	if(!istype(C))
 		return FALSE
+
+	var/override_source
+	var/override_target
+
+	var/datum/hive_status/hive
+	if(hivenumber)
+		hive = hive_datum[hivenumber]
+		override_source = hive.should_override_alliance(C)
+		if(!C.hivenumber && override_source)
+			return override_source == XENO_HIVE_ALLIED
+
+	if(C.hivenumber)
+		hive = hive_datum[C.hivenumber]
+		override_target = hive.should_override_alliance(src)
+		if(!hivenumber && override_target)
+			return override_target == XENO_HIVE_ALLIED
+		
+	if(override_source && override_target && override_source == override_target)
+		return override_source == XENO_HIVE_ALLIED
+
+
 
 	return C.allied_to_hivenumber(hivenumber) && allied_to_hivenumber(C.hivenumber)
 

@@ -119,6 +119,7 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_PMC_GUNNER					"PMC Specialist"
 #define JOB_PMC_SNIPER					"PMC Sharpshooter"
 #define JOB_PMC_NINJA					"PMC Ninja"
+#define JOB_PMC_XENO_HANDLER            "PMC Xeno Handler"
 #define JOB_PMC_COMMANDO				"PMC Commando"
 #define JOB_PMC_LEADER					"PMC Leader"
 #define JOB_PMC_LEAD_INVEST				"PMC Lead Investigator"

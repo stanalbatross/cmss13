@@ -118,7 +118,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/bulk_fetcher,
 	/client/proc/debug_game_history,
 	/client/proc/construct_env_dmm,
-	/client/proc/enter_tree
+	/client/proc/enter_tree,
+	/client/proc/set_tree_points
 )
 
 var/list/clan_verbs = list(

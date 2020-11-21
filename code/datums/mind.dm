@@ -26,6 +26,9 @@
 		msg_admin_niche("[key]/[ckey] has tried to transfer to deleted [new_character].")
 		return
 
+	if(new_character in freed_mob_list)
+		freed_mob_list -= new_character
+
 	if(current)	
 		current.mind = null	//remove ourself from our old body's mind variable
 		nanomanager.user_transferred(current, new_character) // transfer active NanoUI instances to new user

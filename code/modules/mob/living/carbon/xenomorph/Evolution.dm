@@ -64,7 +64,7 @@
 		to_chat(src, SPAN_WARNING("You can't evolve in your current state."))
 		return
 
-	if((!hive.living_xeno_queen) && castepick != "Queen" && !isXenoLarva(src))
+	if((!hive.living_xeno_queen) && castepick != "Queen" && !isXenoLarva(src) && !hive.allow_no_queen_actions)
 		to_chat(src, SPAN_WARNING("The Hive is shaken by the death of the last Queen. You can't find the strength to evolve."))
 		return
 
@@ -106,13 +106,13 @@
 	var/pooled_factor = min(hive.stored_larva, sqrt(4*hive.stored_larva))
 	pooled_factor = round(pooled_factor)
 
-	var/totalXenos = hive.totalXenos.len + pooled_factor
+	var/totalXenos = length(hive.totalXenos) + pooled_factor
 
-	if(tier == 1 && (((hive.tier_2_xenos.len + hive.tier_3_xenos.len) / totalXenos) * hive.tier_slot_multiplier) >= 0.5 && castepick != "Queen")
+	if(tier == 1 && (((length(hive.tier_2_xenos) + length(hive.tier_3_xenos)) / max(totalXenos, 1)) * hive.tier_slot_multiplier) >= 0.5 && castepick != "Queen")
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 2, wait for either more aliens to be born or someone to die."))
 		return
 
-	else if(tier == 2 && ((hive.tier_3_xenos.len / hive.totalXenos.len) * hive.tier_slot_multiplier) >= 0.25 && castepick != "Queen")
+	else if(tier == 2 && ((length(hive.tier_3_xenos) / max(totalXenos, 1)) * hive.tier_slot_multiplier) >= 0.25 && castepick != "Queen")
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 3, wait for either more aliens to be born or someone to die."))
 		return
 

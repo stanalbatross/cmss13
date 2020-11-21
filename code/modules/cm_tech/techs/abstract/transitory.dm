@@ -45,7 +45,7 @@
     next = /datum/tier/two
     var/techs_to_unlock = 3
 
-    required_points = 5
+    required_points = 0
 
 /datum/tech/transitory/tier2/check_tier_level(var/mob/M, var/datum/techtree/tree)
     . = ..()
@@ -65,7 +65,7 @@
 
     flags = TREE_FLAG_MARINE|TREE_FLAG_XENO
 
-    required_points = 10
+    required_points = 0
 
     before = /datum/tier/two
     next = /datum/tier/three
@@ -76,7 +76,7 @@
 
     flags = TREE_FLAG_MARINE|TREE_FLAG_XENO
 
-    required_points = 150
+    required_points = 0
 
     before = /datum/tier/three
     next = /datum/tier/four

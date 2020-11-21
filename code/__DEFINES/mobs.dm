@@ -123,6 +123,10 @@
 #define XENO_HIVE_BRAVO 4
 #define XENO_HIVE_CHARLIE 5
 #define XENO_HIVE_DELTA 6
+#define XENO_HIVE_SUBMISSIVE 7
+
+#define XENO_HIVE_ALLIED 1
+#define XENO_HIVE_NOT_ALLIED 2
 
 //=================================================
 
