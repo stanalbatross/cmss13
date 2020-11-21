@@ -70,11 +70,9 @@
     var/mob/hologram/linked_hologram
 
 /datum/action/leave_hologram/action_activate()
-    remove_action(owner)
-
-    QDEL_NULL(linked_hologram)
     qdel(src)
 
 /datum/action/leave_hologram/Destroy()
+    linked_hologram.leave_button = null
     QDEL_NULL(linked_hologram)
     return ..()
