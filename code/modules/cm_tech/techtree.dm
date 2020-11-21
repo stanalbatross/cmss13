@@ -13,7 +13,7 @@
 
     var/points = 0
 
-    var/tier = TECH_TIER_ONE
+    var/datum/tier/tier = /datum/tier/free
 
     var/turf/entrance
 
@@ -27,10 +27,19 @@
 
     var/obj/structure/resource_node/passive_node
 
-    var/list/unlocked_tiers = list(TECH_TIER_FREE, TECH_TIER_ONE)
+    var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
 
 /datum/techtree/New()
     . = ..()
+
+    for(var/type in tree_tiers)
+        var/datum/tier/T = new type()
+
+        T.holder = src
+        tree_tiers[type] = T
+        
+
+    tier = tree_tiers[tier]
 
 /datum/techtree/proc/generate_tree()
     if(!zlevel)
@@ -57,10 +66,11 @@
 
         var/x_offset = (longest_tier - tier_length) + 1
 
+        var/datum/tier/T = tree_tiers[tier]
         for(var/turf/pos in block(locate(x_offset, y_offset, zlevel), locate(x_offset + tier_length*2, y_offset + 2, zlevel)))
             pos.ChangeTurf(/turf/open/blank)
-            var/datum/tier/T = GLOB.tech_tiers[tier]
-            pos.color = T.color
+            pos.color = T.disabled_color
+            LAZYADD(T.tier_turfs, pos)
 
         var/node_pos = x_offset + 1
         for(var/node in all_techs[tier])
@@ -95,7 +105,7 @@
     if(!M || M.stat == DEAD)
         return
 
-    if(T.type in unlocked_techs[T.tier])
+    if(T.type in unlocked_techs[T.tier.type])
         M.show_message(SPAN_WARNING("This node is already unlocked!"))
         return
     
@@ -107,16 +117,16 @@
     to_chat(M, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
 
 /datum/techtree/proc/unlock_node(var/datum/tech/T)
-    if((T.type in unlocked_techs[T.tier]) || !(T.type in all_techs[T.tier]))
+    if((T.type in unlocked_techs[T.tier.type]) || !(T.type in all_techs[T.tier.type]))
         return
 
     T.unlocked = TRUE
-    T.on_unlock()
+    T.on_unlock(src)
 
     if(T.processing_info == TECH_UNLOCKED_PROCESS)
         GLOB.processing_techs.Add(T)
 
-    unlocked_techs[T.tier] += list(T.type = T)
+    unlocked_techs[T.tier.type] += list(T.type = T)
     cached_unlocked_techs += list(T.type = T)
 
 /datum/techtree/proc/enter_mob(var/mob/M, var/force)

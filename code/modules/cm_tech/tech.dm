@@ -6,14 +6,17 @@
 
     var/flags = NO_FLAGS
 
-    var/processing_info = TECH_ALWAYS_PROCESS
+    var/processing_info = TECH_NEVER_PROCESS
 
     var/required_points = 0
-    var/tier = TECH_TIER_ONE
+    var/datum/tier/tier = /datum/tier/one
 
     var/unlocked = FALSE
 
     var/datum/techtree/holder
+
+/datum/tech/proc/setup_tree(var/datum/techtree/T)
+    return
 
 /datum/tech/proc/fire()
     return
@@ -23,12 +26,16 @@
         to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
         return 
 
-    var/datum/tier/t_target = GLOB.tech_tiers[tier]
-    if(LAZYLEN(tree.unlocked_techs[tier]) >= t_target.max_techs)
+    if(tree.tier.tier < tier.tier)
+        to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
+        return
+
+    var/datum/tier/t_target = tree.tree_tiers[tier.type]
+    if(LAZYLEN(tree.unlocked_techs[tier.type]) >= t_target.max_techs)
         to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
         return
 
-    if(!(type in tree.all_techs[tier]))
+    if(!(type in tree.all_techs[tier.type]))
         to_chat(M, SPAN_WARNING("You cannot purchase this node!"))
         return
         
@@ -38,7 +45,7 @@
     
     return TRUE
 
-/datum/tech/proc/on_unlock()
+/datum/tech/proc/on_unlock(var/datum/techtree/tree)
     return
 
 /datum/tech/proc/show_info(var/mob/M)

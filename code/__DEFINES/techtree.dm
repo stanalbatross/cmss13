@@ -1,13 +1,3 @@
-#define TECH_TIER_ONE "t1"
-#define TECH_TIER_TWO "t2"
-#define TECH_TIER_THREE "t3"
-#define TECH_TIER_FOUR "t4"
-
-#define TECH_TIER_FREE "free"
-#define TECH_TIER_TRANSITION_ONETWO "t1-t2"
-#define TECH_TIER_TRANSITION_TWOTHREE "t2-t3"
-#define TECH_TIER_TRANSITION_THREEFOUR "t3-t4"
-
 #define TECH_ALWAYS_PROCESS 1 // Always process
 #define TECH_UNLOCKED_PROCESS 2 // Only processes when unlocked
 #define TECH_NEVER_PROCESS 3 // Never processes
@@ -43,3 +33,19 @@
 
 #define GET_TREE(treeid) SStechtree? SStechtree.trees[treeid] : null
 #define GET_NODE(treeid, nodeid) SStechtree? SStechtree.trees[treeid].get
+
+// For tiers
+#define INFINITE_TECHS -1
+
+#define TIER_FLAG_TRANSITORY 1
+
+#define TECH_TIER_GAMEPLAY list(\
+    /datum/tier/free,\
+    /datum/tier/one,\
+    /datum/tier/one_transition_two,\
+    /datum/tier/two,\
+    /datum/tier/two_transition_three,\
+    /datum/tier/three,\
+    /datum/tier/three_transition_four,\
+    /datum/tier/four\
+)

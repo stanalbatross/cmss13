@@ -45,21 +45,25 @@ SUBSYSTEM_DEF(techtree)
             Tu.ChangeTurf(/turf/closed/void, list(/turf/closed/void))
             new /area/techtree(Tu)
 
-        for(var/tier in GLOB.tech_tiers)
-            tree.unlocked_techs += list("[tier]" = list())
-            tree.all_techs += list("[tier]" = list())
+        for(var/tier in tree.tree_tiers)
+            LAZYADD(tree.unlocked_techs, tier)
+            LAZYADD(tree.all_techs, tier)
+            tree.unlocked_techs[tier] = list()
+            tree.all_techs[tier] = list()
 
         for(var/N in tech_nodes)
             var/datum/tech/node = new N()
             var/tier = node.tier
 
             if(node.flags == NO_FLAGS || !(tier in tree.all_techs))
+                qdel(node)
                 continue
 
             if(tree.flags & node.flags)
                 tree.all_techs[tier] += list(node.type = node)
-                nodes += node
+                LAZYADD(nodes, node)
 
+                node.tier = tree.tree_tiers[node.tier]
                 node.holder = tree
                 if(node.processing_info == TECH_ALWAYS_PROCESS)
                     GLOB.processing_techs.Add(node)
