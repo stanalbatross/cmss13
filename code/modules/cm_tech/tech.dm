@@ -15,9 +15,6 @@
 
     var/datum/techtree/holder
 
-/datum/tech/proc/setup_tree(var/datum/techtree/T)
-    return
-
 /datum/tech/proc/fire()
     return
 
@@ -26,13 +23,7 @@
         to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
         return 
 
-    if(tree.tier.tier < tier.tier)
-        to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
-        return
-
-    var/datum/tier/t_target = tree.tree_tiers[tier.type]
-    if(LAZYLEN(tree.unlocked_techs[tier.type]) >= t_target.max_techs)
-        to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
+    if(!check_tier_level(M, tree))
         return
 
     if(!(type in tree.all_techs[tier.type]))
@@ -45,6 +36,18 @@
     
     return TRUE
 
+/datum/tech/proc/check_tier_level(var/mob/M, var/datum/techtree/tree)
+    if(tree.tier.tier < tier.tier)
+        to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
+        return
+
+    var/datum/tier/t_target = tree.tree_tiers[tier.type]
+    if(LAZYLEN(tree.unlocked_techs[tier.type]) >= t_target.max_techs)
+        to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
+        return
+
+    return TRUE
+
 /datum/tech/proc/on_unlock(var/datum/techtree/tree)
     return
 
@@ -54,7 +57,7 @@
         total_points = holder.points
 
     var/list/data = list(
-        "xeno" = TREE_FLAG_XENO & flags,
+        "xeno" = TREE_FLAG_XENO & holder.flags,
         "name" = name,
         "desc" = desc,
         "cost" = required_points,

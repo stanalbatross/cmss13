@@ -7,7 +7,7 @@
     var/datum/tier/before
     var/datum/tier/next
 
-/datum/tech/transitory/can_unlock(var/mob/M, var/datum/techtree/tree) // messages_to is the 
+/datum/tech/transitory/check_tier_level(var/mob/M, var/datum/techtree/tree) // messages_to is the 
     if(before && before != tree.tier.type)
         to_chat(M, SPAN_WARNING("You can't unlock this node!"))
         return
@@ -43,12 +43,29 @@
 
     before = /datum/tier/one
     next = /datum/tier/two
+    var/techs_to_unlock = 3
+
+    required_points = 5
+
+/datum/tech/transitory/tier2/check_tier_level(var/mob/M, var/datum/techtree/tree)
+    . = ..()
+
+    if(!.)
+        return .
+
+    var/amount_of_unlocked_techs = LAZYLEN(tree.unlocked_techs[before])
+
+    if(amount_of_unlocked_techs < techs_to_unlock)
+        to_chat(M, SPAN_WARNING("You must unlock [techs_to_unlock - amount_of_unlocked_techs] techs from [initial(before.name)]"))
+        return FALSE
 
 /datum/tech/transitory/tier3
     name = "Unlock tier 3"
     tier = /datum/tier/two_transition_three
 
     flags = TREE_FLAG_MARINE|TREE_FLAG_XENO
+
+    required_points = 10
 
     before = /datum/tier/two
     next = /datum/tier/three
@@ -59,5 +76,35 @@
 
     flags = TREE_FLAG_MARINE|TREE_FLAG_XENO
 
+    required_points = 150
+
     before = /datum/tier/three
     next = /datum/tier/four
+
+    // This is sadly disabled for now
+    var/control_points_needed = 0.5
+
+/datum/tech/transitory/tier4/check_tier_level(var/mob/M, var/datum/techtree/tree) // Can unlock this at any tier after 2
+    if(tree.tier.tier < initial(before.tier))
+        to_chat(M, SPAN_WARNING("You can't unlock this node!"))
+        return
+    
+    /*
+    var/list/resources = SStechtree.resources
+
+    var/total = 0
+    var/controlled = 0
+    for(var/a in resources)
+        var/obj/structure/resource_node/R = a
+
+        if(!(R.z in GAME_PLAY_Z_LEVELS))
+            continue
+
+        if(R.tree == tree)
+            controlled++
+        
+        total++
+
+    */
+
+    return TRUE
