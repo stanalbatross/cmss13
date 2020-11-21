@@ -18,7 +18,7 @@
 /datum/tech/proc/fire()
     return
 
-/datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree) // messages_to is the 
+/datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree)
     if(!tree.has_access(M, TREE_ACCESS_MODIFY))
         to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
         return 

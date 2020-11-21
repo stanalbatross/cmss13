@@ -16,6 +16,8 @@ var/global/list/unlocked_droppod_techs = list()
     return data
 
 /datum/tech/droppod/on_unlock()
+    . = ..()
+
     unlocked_droppod_techs += src
 
     for(var/obj/item/storage/backpack/marine/satchel/rto/radio_pack in radio_packs)

@@ -24,7 +24,7 @@
         <b>PURCHASED</b>
     {{else}}
         <b>Total Points:</b> {{:data.total_points}}<br>
-        <b>Cost:</b> {{:data.cost}}<br>
+        <b>Cost:</b>{{if data.cost == 0}} FREE {{else}} {{:data.cost}} {{/if}}<br>
         {{:helper.link('Purchase', null, { 'purchase_node' : 1 }, null, null)}}
     {{/if}}
 </div>
