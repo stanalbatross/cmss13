@@ -12,7 +12,7 @@
 
 	var/can_cancel = TRUE										//Can cancel this surgery after step 1 with cautery
 	var/list/target_mobtypes = list(/mob/living/carbon/human)	//Acceptable Species
-	var/location = LIMB_CHEST									//Surgery location
+	var/location = "chest"									//Surgery location
 	var/requires_bodypart_type = LIMB_ORGANIC				//Prevents you from performing an operation on incorrect limbs. 0 for any limb type
 
 	var/requires_bodypart = TRUE								//Surgery available only when a bodypart is present, or only when it is missing.

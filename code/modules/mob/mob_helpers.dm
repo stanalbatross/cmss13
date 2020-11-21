@@ -75,11 +75,7 @@ var/global/list/limb_types_by_name = list(
 	"l_leg" = /obj/limb/leg/l_leg,
 	"r_leg" = /obj/limb/leg/r_leg,
 	"l_arm" = /obj/limb/arm/l_arm,
-	"r_arm" = /obj/limb/arm/r_arm,
-	"l_hand" = /obj/limb/hand/l_hand,
-	"r_hand" = /obj/limb/hand/r_hand,
-	"l_foot" = /obj/limb/foot/l_foot,
-	"r_foot" = /obj/limb/foot/r_foot,
+	"r_arm" = /obj/limb/arm/r_arm
 )
 
 /proc/check_zone(zone)
@@ -89,6 +85,15 @@ var/global/list/limb_types_by_name = list(
 			zone = "head"
 		if("mouth")
 			zone = "head"
+		if("l_hand")
+			zone = "l_arm"
+		if("r_hand")
+			zone = "r_arm"
+		if("l_foot")
+			zone = "l_leg"
+		if("r_foot")
+			zone = "r_leg"
+
 	return zone
 
 // Returns zone with a certain probability. If the probability fails, or no zone is specified, then a random body part is chosen.

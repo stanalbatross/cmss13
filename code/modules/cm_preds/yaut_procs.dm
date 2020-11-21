@@ -193,18 +193,10 @@
 				return
 			if ("Behead")
 				limb = "head"
-			if ("Delimb - right hand")
-				limb = "r_hand"
-			if ("Delimb - left hand")
-				limb = "l_hand"
 			if ("Delimb - right arm")
 				limb = "r_arm"
 			if ("Delimb - left arm")
 				limb = "l_arm"
-			if ("Delimb - right foot")
-				limb = "r_foot"
-			if ("Delimb - left foot")
-				limb = "l_foot"
 			if ("Delimb - right leg")
 				limb = "r_leg"
 			if ("Delimb - left leg")

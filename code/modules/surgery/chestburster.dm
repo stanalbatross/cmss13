@@ -1,6 +1,6 @@
 /datum/surgery/chestburster_removal
 	name = "Experimental Xenomorph Parasite Removal"
-	possible_locs = list(LIMB_CHEST)
+	possible_locs = list("chest")
 	pain_reduction_required = PAIN_REDUCTION_FULL
 	steps = list(
 		/datum/surgery_step/incision,

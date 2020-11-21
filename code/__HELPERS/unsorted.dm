@@ -1696,19 +1696,23 @@ proc/get_mob_with_client_list()
 
 
 /proc/parse_zone(zone)
-	if(zone == "r_hand") return "right hand"
-	else if (zone == "l_hand") return "left hand"
-	else if (zone == "l_arm") return "left arm"
-	else if (zone == "r_arm") return "right arm"
-	else if (zone == "l_leg") return "left leg"
-	else if (zone == "r_leg") return "right leg"
-	else if (zone == "l_foot") return "left foot"
-	else if (zone == "r_foot") return "right foot"
-	else if (zone == "l_hand") return "left hand"
-	else if (zone == "r_hand") return "right hand"
-	else if (zone == "l_foot") return "left foot"
-	else if (zone == "r_foot") return "right foot"
-	else return zone
+	var/parsed
+	switch(zone)
+		if("r_hand")
+			parsed = "right hand"
+		if("l_hand")
+			parsed = "left hand"
+		if("r_arm")
+			parsed = "right arm"
+		if("l_arm")
+			parsed = "left arm"
+		if("r_leg")
+			parsed = "right leg"
+		if("l_leg")
+			parsed = "left leg"
+		else
+			parsed = zone
+	return parsed
 
 /proc/get(atom/loc, type)
 	while(loc)

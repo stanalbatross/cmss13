@@ -362,13 +362,7 @@ var/list/default_onmob_icons = list(
 #define LIMB_ROBOTIC   2
 
 
-#define LIMB_HEAD		"head"
-#define LIMB_CHEST		"chest"
-#define LIMB_L_ARM		"l_arm"
-#define LIMB_R_ARM		"r_arm"
-#define LIMB_L_LEG		"l_leg"
-#define LIMB_R_LEG		"r_leg"
 
-#define ALL_LIMBS list(LIMB_HEAD,LIMB_CHEST,LIMB_L_ARM,LIMB_R_ARM,LIMB_L_LEG,LIMB_R_LEG)
+#define ALL_LIMBS list("head","chest","l_arm","r_arm","l_leg","r_leg")
 
 

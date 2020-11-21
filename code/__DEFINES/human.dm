@@ -116,9 +116,9 @@
 #define LIMB_INTEGRITY_THRESHOLD_CRITICAL 140 //140-199
 #define LIMB_INTEGRITY_THRESHOLD_NONE 200
 
-#define MOVEMENT_LIMBS list("l_leg", "r_leg", "l_hand", "r_hand")
-#define HANDLING_LIMBS list("l_arm", "r_arm", "l_foot", "r_foot")
-#define EXTREMITY_LIMBS list("l_leg", "r_leg", "l_hand", "r_hand", "l_arm", "r_arm", "l_foot", "r_foot")
+#define MOVEMENT_LIMBS list("l_leg", "r_leg")
+#define HANDLING_LIMBS list("l_arm", "r_arm")
+#define EXTREMITY_LIMBS list("l_leg", "r_leg", "l_arm", "r_arm")
 
 #define NO_INTERNAL_DAMAGE 0
 #define INT_DMG_MULTIPLIER_NORMAL 1
