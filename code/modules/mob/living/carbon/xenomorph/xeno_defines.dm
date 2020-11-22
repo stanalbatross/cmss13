@@ -714,6 +714,20 @@
 
 	var/mob/living/carbon/human/leader
 
+/datum/hive_status/corrupted/submissive/New()
+	. = ..()
+	hive_structures_limit[XENO_STRUCTURE_EGGMORPH] = 0
+	hive_structures_limit[XENO_STRUCTURE_EVOPOD] = 0
+
+/datum/hive_status/corrupted/submissive/add_xeno(mob/living/carbon/Xenomorph/X)
+	. = ..()
+	if(leader)
+		X.faction_group = leader.faction_group
+
+/datum/hive_status/corrupted/submissive/remove_xeno(mob/living/carbon/Xenomorph/X, hard)
+	. = ..()
+	X.faction_group = list(X.faction)
+
 /datum/hive_status/corrupted/submissive/should_override_alliance(var/mob/living/carbon/human/H, var/limit)
 	if(!leader) 
 		return ..()

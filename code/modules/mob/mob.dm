@@ -201,6 +201,10 @@
 	. += speed
 	move_delay = .
 
+/mob/Move(NewLoc, direct)
+	. = ..()
+	SEND_SIGNAL(src, COMSIG_MOB_MOVE, NewLoc, direct)
+
 /mob/proc/Life()
 	if(client == null)
 		away_timer++

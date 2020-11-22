@@ -153,10 +153,8 @@
 		if(M == loc) continue //device user isn't detected
 		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
 		if(isrobot(M)) continue
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			if(H.get_target_lock(iff_signal))
-				continue
+		if(M.get_target_lock(iff_signal))
+			continue
 
 		apply_debuff(M)
 		ping_count++

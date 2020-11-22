@@ -68,8 +68,7 @@
 		if(M.stat & DEAD || isrobot(M)) 
 			continue
 
-		var/mob/living/carbon/human/H = M
-		if(istype(H) && H.get_target_lock(faction_group)) 
+		if(M.get_target_lock(faction_group)) 
 			continue
 
 		targets += M

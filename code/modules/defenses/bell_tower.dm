@@ -92,10 +92,8 @@
 		return
 
 	var/mob/M = A
-	if(ishuman(M)) 
-		var/mob/living/carbon/human/H = M
-		if(H.get_target_lock(faction))
-			return
+	if(M.get_target_lock(faction))
+		return
 	
 	if(linked_bell.last_mob_activated == M)
 		return

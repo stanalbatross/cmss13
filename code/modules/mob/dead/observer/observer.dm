@@ -644,7 +644,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		var/name_to_use = freed_mob.name
 		var/attempts = 1
 		while(name_to_use in fixed_list)
-			name_to_use = "[name_to_use] [attempts]"
+			name_to_use = "[freed_mob.name] [attempts]"
 			attempts++
 
 		fixed_list.Add(name_to_use)

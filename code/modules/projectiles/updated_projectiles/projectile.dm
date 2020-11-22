@@ -301,10 +301,8 @@
 				var/mob/living/dL = dA
 				if(dL.is_dead())
 					continue
-				if(ishuman(dL))
-					var/mob/living/carbon/human/H = dL
-					if(!isnull(iff_group) && H.get_target_lock(iff_group))
-						continue
+				if(!isnull(iff_group) && dL.get_target_lock(iff_group))
+					continue
 
 				if(ammo_flags & AMMO_SKIPS_ALIENS && isXeno(dL))
 					var/mob/living/carbon/Xenomorph/X = dL
@@ -691,6 +689,9 @@
 	. = ..()
 	if(.)
 		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+		if(!isnull(P.iff_group) && get_target_lock(P.iff_group))
+			return FALSE
+		
 		if(ammo_flags & AMMO_SKIPS_ALIENS)
 			var/mob/living/carbon/Xenomorph/X = P.firer
 			if(!istype(X))

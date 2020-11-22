@@ -232,8 +232,8 @@
 		if(shuttle && auto_shuttle_launch)
 			shuttle.launch()
 
+		var/i = 0
 		if(picked_candidates.len)
-			var/i = 0
 			for(var/datum/mind/M in picked_candidates)
 				members += M
 				i++
@@ -241,9 +241,10 @@
 					break //Some logic. Hopefully this will never happen..
 				create_member(M)
 			
-			if(spawn_max_amount && i < mob_max)
-				for(var/c in i to mob_max)
-					create_member()
+
+		if(spawn_max_amount && i < mob_max)
+			for(var/c in i to mob_max)
+				create_member()
 
 		candidates = list()
 

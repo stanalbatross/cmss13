@@ -1276,7 +1276,7 @@
 	tag = "icon-tube1 (NORTH)"
 	},
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/prop/almayer/computer,
+/obj/effect/landmark/railgun_computer,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -23980,7 +23980,7 @@
 "buZ" = (
 /obj/structure/machinery/light,
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/prop/almayer/computer{
+/obj/effect/landmark/railgun_computer{
 	dir = 1
 	},
 /turf/open/floor/almayer{

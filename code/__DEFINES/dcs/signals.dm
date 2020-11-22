@@ -69,19 +69,45 @@
 /// For when a mob is dragged
 #define COMSIG_MOB_DRAGGED "mob_dragged"
 
+/// For when /mob/Move() is called
+#define COMSIG_MOB_MOVE "mob_move"
+
 /// For when a mob is devoured by a Xeno
 #define COMSIG_MOB_DEVOURED "mob_devoured"
 	#define COMPONENT_CANCEL_DEVOUR	(1<<0)
 
+#define COMSIG_MOB_ENTER_TREE "mob_enter_tree"
+	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
+
+#define COMSIG_MOB_TAKE_DAMAGE "mob_take_damage"
+	#define COMPONENT_BLOCK_DAMAGE (1<<0)
+
+#define COMSIG_MOB_RESET_VIEW "mob_reset_view"
+	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
+
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
+
+#define COMSIG_LIVING_SPEAK "living_speak"
+	#define COMPONENT_OVERRIDE_SPEAK (1<<0)
 
 /// From /obj/item/device/defibrillator/attack
 #define COMSIG_HUMAN_REVIVED "human_revived"
 
+#define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
+	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
+
+#define COMSIG_HUMAN_XENO_ATTACK "human_attack_alien"
+	#define COMPONENT_CANCEL_XENO_ATTACK (1<<0)
+
 // /obj/item signals
 ///from base of obj/item/dropped(): (mob/user)
 #define COMSIG_ITEM_DROPPED "item_drop"
+
+#define COMSIG_ITEM_EQUIPPED "item_equipped"
+
+#define COMSIG_ITEM_UNEQUIPPED "item_unequipped"
+
 /// From /atom/movable/proc/launch_towards
 #define COMSIG_MOVABLE_PRE_THROW "movable_pre_throw"
 	#define COMPONENT_CANCEL_THROW (1<<0)
@@ -97,28 +123,5 @@
 ///from /obj/item/device/agents/tracking_device/attackby
 #define COMSIG_TRACKING_DISARMED "tracking_disarmed"
 
-// need to do this for now thanks to shit code
-#define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
-	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
-
-#define COMSIG_HUMAN_XENO_ATTACK "human_attack_alien"
-	#define COMPONENT_CANCEL_XENO_ATTACK (1<<0)
-
-#define COMSIG_ITEM_EQUIPPED "item_equipped"
-
-#define COMSIG_ITEM_UNEQUIPPED "item_unequipped"
-
-#define COMSIG_MOB_ENTER_TREE "mob_enter_tree"
-	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
-
-#define COMSIG_MOB_TAKE_DAMAGE "mob_take_damage"
-	#define COMPONENT_BLOCK_DAMAGE (1<<0)
-
-#define COMSIG_MOB_RESET_VIEW "mob_reset_view"
-	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
-
 #define COMSIG_CLIENT_MOB_MOVE	"client_mob_move"
 	#define COMPONENT_OVERRIDE_MOVE	(1<<0)
-
-#define COMSIG_LIVING_SPEAK "living_speak"
-	#define COMPONENT_OVERRIDE_SPEAK (1<<0)

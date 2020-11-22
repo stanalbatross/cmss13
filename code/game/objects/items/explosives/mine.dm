@@ -157,12 +157,12 @@
 	try_to_prime(AM)
 
 
-/obj/item/explosive/mine/proc/try_to_prime(mob/living/carbon/human/H)
+/obj/item/explosive/mine/proc/try_to_prime(mob/living/H)
 	if(!active || triggered)
 		return
-	if(!isliving(H))
+	if(!istype(H))
 		return
-	if((istype(H) && H.get_target_lock(iff_signal)) || isrobot(H))
+	if(H.get_target_lock(iff_signal) || isrobot(H))
 		return
 
 	H.visible_message(SPAN_DANGER("[htmlicon(src, viewers(src))] The [name] clicks as [H] moves in front of it."), \

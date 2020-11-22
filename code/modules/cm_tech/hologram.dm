@@ -2,15 +2,13 @@
     name = "hologram"
     desc = "It seems to be a visual projection of someone" //jinkies!
     icon = 'icons/mob/mob.dmi'
-    icon_state = "ghost"
+    icon_state = "hologram"
     canmove = TRUE 
     blinded = 0
 
-    mouse_opacity = FALSE
-
     var/mob/linked_mob
     var/datum/action/leave_hologram/leave_button
-    alpha = 0
+    invisibility = INVISIBILITY_OBSERVER
 
 /mob/hologram/movement_delay()
     . = -2 // Very fast speed, so they can navigate through easily, they can't ever have movement delay whilst as a hologram

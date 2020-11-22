@@ -271,13 +271,11 @@
 				targets.Remove(A)
 				continue
 
-			if(ishuman(A))
-				var/mob/living/carbon/human/H = A
-				if(H.get_target_lock(faction_group) || H.invisibility)
-					if(A == target)
-						target = null
-					targets.Remove(H)
-					continue
+			if(M.get_target_lock(faction_group) || M.invisibility)
+				if(M == target)
+					target = null
+				targets.Remove(M)
+				continue
 
 		else if(!(A.type in other_targets))
 			if(A == target)
