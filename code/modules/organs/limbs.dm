@@ -35,7 +35,7 @@
 
 	var/processing = FALSE
 
-	var/surgery_open_stage = 0
+	var/active_surgeries
 
 	var/obj/item/hidden = null
 	var/list/implants = list()
@@ -706,10 +706,10 @@ This function completely restores a damaged organ to perfect condition.
 
 //called when limb is removed or robotized, any ongoing surgery and related vars are reset
 /obj/limb/proc/reset_limb_surgeries()
-	surgery_open_stage = 0
-
-
-
+	for(var/datum/surgery/S in owner.surgeries)
+		if(S.location == name)
+			owner.surgeries -= S
+			qdel(S)
 
 /****************************************************
 			   LIMB TYPES

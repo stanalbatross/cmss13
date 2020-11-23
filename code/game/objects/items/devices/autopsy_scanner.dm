@@ -44,9 +44,11 @@
 	if(!S)
 		to_chat(usr, "<b>You can't scan this body part.</b>")
 		return
+	/*
 	if(!S.surgery_open_stage)
 		to_chat(usr, "<b>You have to cut the limb open first!</b>")
 		return
+	*/
 	for(var/mob/O in viewers(M))
 		O.show_message(SPAN_DANGER("[user.name] scans the wounds on [M.name]'s [S.display_name] with \the [src.name]"), 1)
 

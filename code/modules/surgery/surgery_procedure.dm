@@ -31,8 +31,11 @@
 			location = surgery_location
 		if(surgery_limb)
 			affected_limb = surgery_limb
+			affected_limb.active_surgeries++
 
 /datum/surgery/Destroy()
+	if(istype(affected_limb))
+		affected_limb.active_surgeries--
 	affected_limb = null
 	if(target)
 		target.surgeries -= src

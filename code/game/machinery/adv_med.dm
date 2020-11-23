@@ -402,8 +402,8 @@
 			break
 		if(e.status & LIMB_ROBOT)
 			robot = "Prosthetic<br>"
-		if(e.surgery_open_stage)
-			open = "Open<br>"
+		if(e.active_surgeries)
+			open = "Under Surgery<br>"
 
 		var/unknown_body = 0
 		if (e.implants.len)

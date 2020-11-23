@@ -544,20 +544,31 @@
 		dat += "\nHealth Analyzer results for [src]:\n\tOverall Status: [src.stat > 1 ? "<b>DEAD</b>" : "<b>[src.health - src.halloss]% healthy"]</b>\n"
 	dat += "\tType:    [SET_CLASS("Oxygen", INTERFACE_BLUE)]-[SET_CLASS("Toxin", INTERFACE_GREEN)]-[SET_CLASS("Burns", INTERFACE_ORANGE)]-[SET_CLASS("Brute", INTERFACE_RED)]\n"
 	dat += "\tDamage: \t[SET_CLASS(OX, INTERFACE_BLUE)] - [SET_CLASS(TX, INTERFACE_GREEN)] - [SET_CLASS(BU, INTERFACE_ORANGE)] - [SET_CLASS(BR, INTERFACE_RED)]\n"
-	dat += "\tUntreated: {B}=Burns,{T}=Trauma,\n"
+	dat += "\t<b>Limb specific information</b>\n"
 
 	var/unrevivable = 0
 
 	// Show specific limb damage
 	if(istype(src, /mob/living/carbon/human) && mode == 1)
 		var/mob/living/carbon/human/H = src
+		var/brute_treated
+		var/burn_treated
+		var/under_surgery
+		var/autohealing
+		var/item_healing
 		for(var/obj/limb/org in H.limbs)
-			var/brute_treated = TRUE
-			var/burn_treated = TRUE
-			var/open_incision = TRUE
-			if(org.surgery_open_stage == 0)
-				open_incision = FALSE
-			if(org.brute_dam > 0 || open_incision)
+			brute_treated = TRUE
+			burn_treated = TRUE
+			under_surgery = FALSE
+			autohealing = FALSE
+			item_healing = TRUE
+			if(org.active_surgeries)
+				under_surgery = TRUE
+			if(org.total_dam && org.total_dam <= MINIMUM_AUTOHEAL_HEALTH)
+				autohealing = TRUE
+			if(!org.healing_naturally)
+				item_healing = TRUE
+			if(org.brute_dam > 0)
 				brute_treated = FALSE
 			if(org.burn_dam > 0)
 				burn_treated = FALSE
@@ -570,23 +581,22 @@
 			var/bleeding_check = org.bleeding_effect ? TRUE : FALSE
 			var/integrity_damage = org.integrity_damage 
 
-			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || integrity_damage || open_incision || bleeding_check)
+			var/show_limb = (!brute_treated || !burn_treated || integrity_damage || under_surgery || autohealing ||bleeding_check)
 
 			var/org_name = "[capitalize(org.display_name)][org.status & LIMB_ROBOT ? " (Cybernetic)" : ""]"
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
-			burn_info += "[burn_treated ? "" : "{B}"]"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
-			brute_info += "[brute_treated ? "" : "{T}"]"
-
+			var/integrity_info = "<font color='purple'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font>"
 			var/org_bleed = ""
 			if(bleeding_check)
 				org_bleed = "<span class='scannerb'>(Bleeding)</span>"
 
-			var/org_incision = (open_incision?" <span class='scanner'>Open surgical incision</span>":"")
-			var/org_advice = ""
+			var/org_surgery = under_surgery ? "<span class='scanner'>(Surgery)</span>":""
+			var/org_healing = item_healing || autohealing ? SET_CLASS("(Healing)",INTERFACE_GREEN):""
 
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | <font color='purple'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font> [org_bleed][org_incision][org_advice]"
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | [integrity_info] | [org_bleed][org_healing][org_surgery]"
+				
 				dat += "\n"
 
 	// Show red messages - broken bokes,
