@@ -719,6 +719,22 @@
 	hive_structures_limit[XENO_STRUCTURE_EGGMORPH] = 0
 	hive_structures_limit[XENO_STRUCTURE_EVOPOD] = 0
 
+/datum/hive_status/corrupted/submissive/proc/make_leader(var/mob/living/carbon/human/H)
+	if(!istype(H))
+		return
+
+	if(leader)
+		UnregisterSignal(leader, COMSIG_PARENT_QDELETING)
+
+	leader = H
+	RegisterSignal(leader, COMSIG_PARENT_QDELETING, .proc/handle_qdelete)
+
+/datum/hive_status/corrupted/submissive/proc/handle_qdelete(var/mob/living/carbon/human/H)
+	SIGNAL_HANDLER
+
+	if(H == leader)
+		leader = null
+
 /datum/hive_status/corrupted/submissive/add_xeno(mob/living/carbon/Xenomorph/X)
 	. = ..()
 	if(leader)

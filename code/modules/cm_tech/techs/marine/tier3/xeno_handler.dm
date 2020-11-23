@@ -47,8 +47,9 @@
         new_mob = new/mob/living/carbon/human(spawn_loc)
         new_mob.create_hud()
         arm_equipment(new_mob, "Weston-Yamada PMC (Xeno Handler)", TRUE, TRUE)
+
+        hive.make_leader(new_mob)
         leader = new_mob
-        hive.leader = new_mob
 
 
     else

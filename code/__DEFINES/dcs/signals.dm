@@ -80,6 +80,8 @@
 	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
 
 #define COMSIG_MOB_TAKE_DAMAGE "mob_take_damage"
+#define COMSIG_XENO_TAKE_DAMAGE "xeno_take_damage"
+#define COMSIG_HUMAN_TAKE_DAMAGE "human_take_damage"
 	#define COMPONENT_BLOCK_DAMAGE (1<<0)
 
 #define COMSIG_MOB_RESET_VIEW "mob_reset_view"

@@ -1,5 +1,5 @@
 /mob/hologram
-    name = "hologram"
+    name = "Hologram"
     desc = "It seems to be a visual projection of someone" //jinkies!
     icon = 'icons/mob/mob.dmi'
     icon_state = "hologram"
@@ -22,18 +22,17 @@
     RegisterSignal(M, COMSIG_CLIENT_MOB_MOVE, .proc/handle_move)
     RegisterSignal(M, COMSIG_MOB_RESET_VIEW, .proc/handle_view)
     RegisterSignal(M, COMSIG_MOB_TAKE_DAMAGE, .proc/take_damage)
-    RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
+    RegisterSignal(M, COMSIG_HUMAN_TAKE_DAMAGE, .proc/take_damage)
+    RegisterSignal(M, COMSIG_XENO_TAKE_DAMAGE, .proc/take_damage)
 
     linked_mob = M
     linked_mob.reset_view()
 
+    name = "[initial(name)] ([M.name])"
+
     leave_button = new()
     leave_button.linked_hologram = src
     leave_button.give_action(M)
-
-/mob/hologram/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
-    SIGNAL_HANDLER
-    return COMPONENT_CANCEL_TREE_ENTRY
 
 /mob/hologram/proc/take_damage(var/mob/M, var/damage, var/damagetype)
     SIGNAL_HANDLER
@@ -74,3 +73,17 @@
     linked_hologram.leave_button = null
     QDEL_NULL(linked_hologram)
     return ..()
+
+/mob/hologram/techtree/Initialize(mapload, mob/M)
+    . = ..()
+    RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
+
+
+/mob/hologram/techtree/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
+    SIGNAL_HANDLER
+    return COMPONENT_CANCEL_TREE_ENTRY
+    
+RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
+/mob/hologram/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
+    SIGNAL_HANDLER
+    return COMPONENT_CANCEL_TREE_ENTRY

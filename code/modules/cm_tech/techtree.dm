@@ -139,7 +139,7 @@
 
     if(SEND_SIGNAL(M, COMSIG_MOB_ENTER_TREE, src, force) & COMPONENT_CANCEL_TREE_ENTRY) return
 
-    var/mob/hologram/HG = new(entrance, M)
+    var/mob/hologram/techtree/HG = new(entrance, M)
     HG.name = "Eye ([M.name])"
 
     return TRUE

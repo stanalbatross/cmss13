@@ -398,7 +398,7 @@ This function restores all limbs.
 		..(damage, damagetype, def_zone)
 		return TRUE
 
-	if(SEND_SIGNAL(src, COMSIG_MOB_TAKE_DAMAGE, damage, damagetype) & COMPONENT_BLOCK_DAMAGE) return
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_TAKE_DAMAGE, damage, damagetype) & COMPONENT_BLOCK_DAMAGE) return
 
 	var/obj/limb/organ = null
 	if(isorgan(def_zone))

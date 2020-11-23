@@ -37,9 +37,8 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 
 /obj/structure/machinery/computer/railgun
     name = "railgun computer"
-    var/mob/living/carbon/human/operator
 
-    var/mob/hologram/eye
+    var/mob/hologram/railgun/eye
     var/turf/last_location
     var/target_z = SURFACE_Z_LEVEL
 
