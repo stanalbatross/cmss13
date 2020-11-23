@@ -53,9 +53,9 @@
 //=================================================
 
 //sdisabilities
-#define BLIND			1
-#define MUTE			2
-#define DEAF			4
+#define DISABILITY_BLIND		1
+#define DISABILITY_MUTE			2
+#define DISABILITY_DEAF			4
 //=================================================
 
 //mob/var/stat things

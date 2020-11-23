@@ -6,10 +6,12 @@
     canmove = TRUE 
     blinded = FALSE
 
-    var/mob/linked_mob
-    var/datum/action/leave_hologram/leave_button
     invisibility = INVISIBILITY_OBSERVER
     sight = SEE_SELF
+    layer = ABOVE_FLY_LAYER
+
+    var/mob/linked_mob
+    var/datum/action/leave_hologram/leave_button
 
 /mob/hologram/movement_delay()
     . = -2 // Very fast speed, so they can navigate through easily, they can't ever have movement delay whilst as a hologram
@@ -57,12 +59,18 @@
     
     return COMPONENT_OVERRIDE_VIEW
 
+
+/mob/hologram/BlockedPassDirs(atom/movable/mover, target_dir)
+    return NO_BLOCKED_MOVEMENT
+
 /mob/hologram/Destroy()
     UnregisterSignal(linked_mob, COMSIG_MOB_RESET_VIEW)
     linked_mob.reset_view()
     linked_mob = null
 
     return ..()
+
+
 
 /datum/action/leave_hologram
     name = "Leave"
@@ -79,7 +87,7 @@
     return ..()
 
 /mob/hologram/techtree/Initialize(mapload, mob/M)
-    . = ..()
+    . = ..(mapload, M)
     RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
 
 

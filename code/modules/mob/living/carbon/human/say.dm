@@ -213,7 +213,7 @@
 	if(silent)
 		message = ""
 		handled = 1
-	if(sdisabilities & MUTE)
+	if(sdisabilities & DISABILITY_MUTE)
 		message = ""
 		handled = 1
 	if(wear_mask)

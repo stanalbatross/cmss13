@@ -135,7 +135,7 @@
 	user.visible_message(SPAN_NOTICE("[user] cauterizes the incision around [target]'s eyes with \the [tool]."), \
 	SPAN_NOTICE("You cauterize the incision around [target]'s eyes with \the [tool]."))
 	target.disabilities &= ~NEARSIGHTED
-	target.sdisabilities &= ~BLIND
+	target.sdisabilities &= ~DISABILITY_BLIND
 	var/datum/internal_organ/eyes/E = target.internal_organs_by_name["eyes"]
 	E.damage = 0
 	E.eye_surgery_stage = 0

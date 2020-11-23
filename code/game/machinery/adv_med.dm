@@ -470,7 +470,7 @@
 			dat += SET_CLASS("No [organ_name] detected.", INTERFACE_RED)
 			dat += "<BR>"
 
-	if(occ["sdisabilities"] & BLIND)
+	if(occ["sdisabilities"] & DISABILITY_BLIND)
 		dat += SET_CLASS("Cataracts detected.", INTERFACE_RED)
 		dat += "<BR>"
 	if(occ["sdisabilities"] & NEARSIGHTED)

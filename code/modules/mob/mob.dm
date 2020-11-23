@@ -109,19 +109,19 @@
 	if(!client || !client.prefs)	return
 
 	if (type)
-		if(type & 1 && (sdisabilities & BLIND || blinded) )//Vision related
+		if(type & 1 && (sdisabilities & DISABILITY_BLIND || blinded) )//Vision related
 			if (!alt)
 				return
 			else
 				msg = alt
 				type = alt_type
-		if (type & 2 && (sdisabilities & DEAF || ear_deaf))//Hearing related
+		if (type & 2 && (sdisabilities & DISABILITY_DEAF || ear_deaf))//Hearing related
 			if (!alt)
 				return
 			else
 				msg = alt
 				type = alt_type
-				if (type & 1 && (sdisabilities & BLIND))
+				if (type & 1 && (sdisabilities & DISABILITY_BLIND))
 					return
 	if(message_flags == CHAT_TYPE_OTHER || client.prefs && (message_flags & client.prefs.chat_display_preferences) > 0) // or logic between types
 		if(stat == UNCONSCIOUS)

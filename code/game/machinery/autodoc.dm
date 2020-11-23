@@ -212,7 +212,7 @@
 			if(L.surgery_open_stage)
 				surgery_list += create_autodoc_surgery(L,LIMB_SURGERY,"open")
 	var/datum/internal_organ/I = M.internal_organs_by_name["eyes"]
-	if(I && (M.disabilities & NEARSIGHTED || M.sdisabilities & BLIND || I.damage > 0))
+	if(I && (M.disabilities & NEARSIGHTED || M.sdisabilities & DISABILITY_BLIND || I.damage > 0))
 		surgery_list += create_autodoc_surgery(null,ORGAN_SURGERY,"eyes",0,I)
 	if(M.getBruteLoss() > 0)
 		surgery_list += create_autodoc_surgery(null,EXTERNAL_SURGERY,"brute")
@@ -345,7 +345,7 @@
 								sleep(CAUTERY_MAX_DURATION)
 								if(!surgery) break
 								H.disabilities &= ~NEARSIGHTED
-								H.sdisabilities &= ~BLIND
+								H.sdisabilities &= ~DISABILITY_BLIND
 								E.damage = 0
 								E.eye_surgery_stage = 0
 

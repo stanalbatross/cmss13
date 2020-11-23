@@ -14,7 +14,7 @@
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
 	if (language && (language.flags & NONVERBAL))
-		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker.z == z && get_dist(speaker, src) <= world_view_size))
+		if (!speaker || (src.sdisabilities & DISABILITY_BLIND || src.blinded) || !(speaker.z == z && get_dist(speaker, src) <= world_view_size))
 			message = stars(message)
 
 	if(!say_understands(speaker,language))
@@ -43,7 +43,7 @@
 	if(mind && mind.current != src)
 		to_receive = mind.current
 
-	if(sdisabilities & DEAF || ear_deaf)
+	if(sdisabilities & DISABILITY_DEAF || ear_deaf)
 		if(speaker == src)
 			to_chat(to_receive, SPAN_WARNING("You cannot hear yourself speak!"))
 		else
@@ -71,7 +71,7 @@
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
 	if (language && (language.flags & NONVERBAL))
-		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
+		if (!speaker || (src.sdisabilities & DISABILITY_BLIND || src.blinded) || !(speaker in view(src)))
 			message = stars(message)
 
 	if(!say_understands(speaker,language))
@@ -167,7 +167,7 @@
 	if(mind && mind.current != src)
 		to_receive = mind.current
 
-	if(sdisabilities & DEAF || ear_deaf)
+	if(sdisabilities & DISABILITY_DEAF || ear_deaf)
 		if(prob(20))
 			to_chat(to_receive, SPAN_WARNING("You feel your headset vibrate but can hear nothing from it!"))
 	else if(track)

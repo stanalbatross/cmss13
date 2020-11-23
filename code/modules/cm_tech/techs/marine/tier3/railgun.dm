@@ -62,11 +62,17 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 
     eye = new(last_location, operator)
     RegisterSignal(eye, COMSIG_MOB_MOVE, .proc/check_and_set_zlevel)
-    RegisterSignal(eye, COMSIG_PARENT_PREQDELETED, .proc/remove_current_operator)
+    RegisterSignal(eye, COMSIG_PARENT_QDELETING, .proc/remove_current_operator)
 
 /obj/structure/machinery/computer/railgun/proc/check_and_set_zlevel(var/mob/hologram/railgun/H, var/turf/NewLoc, var/direction)
+    if(!NewLoc)
+        H.loc = last_location
+        return COMPONENT_OVERRIDE_MOVE
+        
+
     if(NewLoc.z != target_z && H.z != target_z)
-        H.loc = locate(1, 1, target_z)
+        H.z = target_z
+        return COMPONENT_OVERRIDE_MOVE
         
 /obj/structure/machinery/computer/railgun/proc/remove_current_operator()
     SIGNAL_HANDLER
@@ -81,6 +87,7 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 
     UnregisterSignal(operator, COMSIG_PARENT_QDELETING)
     UnregisterSignal(operator, COMSIG_MOB_MOVE)
+    operator.update_sight()
     operator = null
 
 /obj/structure/machinery/computer/railgun/attack_hand(var/mob/living/carbon/human/H)
@@ -98,21 +105,29 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 
 /mob/hologram/railgun
     name = "Camera"
+    density = FALSE
 
 /mob/hologram/railgun/Initialize(mapload, mob/M)
-    . = ..()
+    . = ..(mapload, M)
     RegisterSignal(M, COMSIG_HUMAN_UPDATE_SIGHT, .proc/see_only_turf)
-    M.sight = SEE_MOBS
+    RegisterSignal(src, COMSIG_TURF_ENTER, .proc/allow_turf_entry)
+    M.update_sight()
 
 /mob/hologram/railgun/proc/see_only_turf(var/mob/living/carbon/human/H)
     SIGNAL_HANDLER
 
-    H.sight = SEE_MOBS
+    H.see_in_dark = 50
+    H.sight = (SEE_TURFS|BLIND)
+    H.see_invisible = SEE_INVISIBLE_MINIMUM
     return COMPONENT_OVERRIDE_UPDATE_SIGHT
 
 /mob/hologram/railgun/handle_view(var/mob/M, var/atom/target)
     if(M.client)
-        M.client.perspective = MOB_PERSPECTIVE
+        M.client.perspective = EYE_PERSPECTIVE
         M.client.eye = src
 
     return COMPONENT_OVERRIDE_VIEW
+
+/mob/hologram/railgun/proc/allow_turf_entry()
+    SIGNAL_HANDLER
+    return COMPONENT_TURF_ALLOW_MOVEMENT
