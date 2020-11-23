@@ -4,11 +4,12 @@
     icon = 'icons/mob/mob.dmi'
     icon_state = "hologram"
     canmove = TRUE 
-    blinded = 0
+    blinded = FALSE
 
     var/mob/linked_mob
     var/datum/action/leave_hologram/leave_button
     invisibility = INVISIBILITY_OBSERVER
+    sight = SEE_SELF
 
 /mob/hologram/movement_delay()
     . = -2 // Very fast speed, so they can navigate through easily, they can't ever have movement delay whilst as a hologram
@@ -24,6 +25,7 @@
     RegisterSignal(M, COMSIG_MOB_TAKE_DAMAGE, .proc/take_damage)
     RegisterSignal(M, COMSIG_HUMAN_TAKE_DAMAGE, .proc/take_damage)
     RegisterSignal(M, COMSIG_XENO_TAKE_DAMAGE, .proc/take_damage)
+    
 
     linked_mob = M
     linked_mob.reset_view()
@@ -47,6 +49,8 @@
     return COMPONENT_OVERRIDE_MOVE
 
 /mob/hologram/proc/handle_view(var/mob/M, var/atom/target)
+    SIGNAL_HANDLER
+
     if(M.client)
         M.client.perspective = EYE_PERSPECTIVE
         M.client.eye = src
@@ -80,10 +84,5 @@
 
 
 /mob/hologram/techtree/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
-    SIGNAL_HANDLER
-    return COMPONENT_CANCEL_TREE_ENTRY
-    
-RegisterSignal(M, COMSIG_MOB_ENTER_TREE, .proc/disallow_tree_entering)
-/mob/hologram/proc/disallow_tree_entering(var/mob/M, var/datum/techtree/T, var/force)
     SIGNAL_HANDLER
     return COMPONENT_CANCEL_TREE_ENTRY

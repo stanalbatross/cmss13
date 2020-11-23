@@ -60,19 +60,20 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
     if(!last_location)
         last_location = locate(1, 1, target_z)
 
-    eye = new(last_location)
+    eye = new(last_location, operator)
     RegisterSignal(eye, COMSIG_MOB_MOVE, .proc/check_and_set_zlevel)
-    RegisterSignal(eye, COMSIG_PARENT_QDELETING, .proc/remove_current_operator)
+    RegisterSignal(eye, COMSIG_PARENT_PREQDELETED, .proc/remove_current_operator)
 
-/obj/structure/machinery/computer/railgun/proc/check_and_set_zlevel(var/mob/hologram/H, var/turf/NewLoc, var/direction)
-    if(H.z != target_z)
-        H.z = target_z
+/obj/structure/machinery/computer/railgun/proc/check_and_set_zlevel(var/mob/hologram/railgun/H, var/turf/NewLoc, var/direction)
+    if(NewLoc.z != target_z && H.z != target_z)
+        H.loc = locate(1, 1, target_z)
         
 /obj/structure/machinery/computer/railgun/proc/remove_current_operator()
     SIGNAL_HANDLER
     if(!operator) return
 
     if(eye)
+        last_location = eye.loc
         if(eye.gc_destroyed)
             eye = null
         else
@@ -83,7 +84,7 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
     operator = null
 
 /obj/structure/machinery/computer/railgun/attack_hand(var/mob/living/carbon/human/H)
-    if(!..())
+    if(..())
         return
 
     if(!istype(H))
@@ -93,4 +94,25 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
         to_chat(H, SPAN_WARNING("Someone is already using this computer!"))
         return
 
-    remove_current_operator()
+    set_operator(H)
+
+/mob/hologram/railgun
+    name = "Camera"
+
+/mob/hologram/railgun/Initialize(mapload, mob/M)
+    . = ..()
+    RegisterSignal(M, COMSIG_HUMAN_UPDATE_SIGHT, .proc/see_only_turf)
+    M.sight = SEE_MOBS
+
+/mob/hologram/railgun/proc/see_only_turf(var/mob/living/carbon/human/H)
+    SIGNAL_HANDLER
+
+    H.sight = SEE_MOBS
+    return COMPONENT_OVERRIDE_UPDATE_SIGHT
+
+/mob/hologram/railgun/handle_view(var/mob/M, var/atom/target)
+    if(M.client)
+        M.client.perspective = MOB_PERSPECTIVE
+        M.client.eye = src
+
+    return COMPONENT_OVERRIDE_VIEW

@@ -102,6 +102,9 @@
 #define COMSIG_HUMAN_XENO_ATTACK "human_attack_alien"
 	#define COMPONENT_CANCEL_XENO_ATTACK (1<<0)
 
+#define COMSIG_HUMAN_UPDATE_SIGHT "human_update_sight"
+	#define COMPONENT_OVERRIDE_UPDATE_SIGHT (1<<0)
+
 // /obj/item signals
 ///from base of obj/item/dropped(): (mob/user)
 #define COMSIG_ITEM_DROPPED "item_drop"
