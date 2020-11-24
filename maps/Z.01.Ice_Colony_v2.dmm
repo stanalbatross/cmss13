@@ -27583,7 +27583,7 @@
 /area/ice_colony/underground/medical/treatment)
 "bth" = (
 /obj/structure/surface/table,
-/obj/item/stack/nanopaste,
+/obj/item/stack/medical/nanopaste,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 8;

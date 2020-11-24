@@ -517,7 +517,7 @@
 		to_chat(src, SPAN_XENOWARNING("You can't harm this host!"))
 		return
 
-	if(!L || L.body_part == BODY_FLAG_CHEST || L.body_part == BODY_FLAG_GROIN || (L.status & LIMB_DESTROYED)) //Only limbs and head.
+	if(!L || L.body_part == BODY_FLAG_CHEST || L.body_part == BODY_FLAG_GROIN || (L.destroyed)) //Only limbs and head.
 		to_chat(src, SPAN_XENOWARNING("You can't rip off that limb."))
 		return FALSE
 	var/limb_time = rand(40,60)
@@ -532,10 +532,10 @@
 		to_chat(src, SPAN_NOTICE("You stop ripping off the limb."))
 		return FALSE
 
-	if(L.status & LIMB_DESTROYED)
+	if(L.destroyed)
 		return FALSE
 
-	if(L.status & LIMB_ROBOT)
+	if(L.status == LIMB_ROBOTIC)
 		L.take_damage(rand(30,40), 0, 0) // just do more damage
 		visible_message(SPAN_XENOWARNING("You hear [M]'s [L.display_name] being pulled beyond its load limits!"), \
 		SPAN_XENOWARNING("[M]'s [L.display_name] begins to tear apart!"))
@@ -554,7 +554,7 @@
 		to_chat(src, SPAN_NOTICE("You stop ripping off the limb."))
 		return FALSE
 
-	if(L.status & LIMB_DESTROYED)
+	if(L.destroyed)
 		return FALSE
 
 	visible_message(SPAN_XENOWARNING("[src] rips [M]'s [L.display_name] away from \his body!"), \

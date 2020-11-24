@@ -22,7 +22,7 @@ Contains most of the procs that are called when a mob is attacked by something
 				msg_admin_attack("[key_name(src)] was disarmed by a stun effect in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
 
 				drop_inv_item_on_ground(c_hand)
-				if (affected.status & LIMB_ROBOT)
+				if (affected.status == LIMB_ROBOTIC)
 					emote("me", 1, "drops what they were holding, their [affected.display_name] malfunctioning!")
 				else
 					var/emote_scream = pick("screams in pain and", "lets out a sharp cry and", "cries out and")
@@ -150,7 +150,7 @@ Contains most of the procs that are called when a mob is attacked by something
 		if(!O)	continue
 		O.emp_act(severity)
 	for(var/obj/limb/O in limbs)
-		if(O.status & LIMB_DESTROYED)	continue
+		if(O.destroyed)	continue
 		O.emp_act(severity)
 	..()
 
@@ -172,7 +172,7 @@ Contains most of the procs that are called when a mob is attacked by something
 	var/obj/limb/affecting = get_limb(target_zone)
 	if (!affecting)
 		return 0
-	if(affecting.status & LIMB_DESTROYED)
+	if(affecting.destroyed)
 		to_chat(user, "What [affecting.display_name]?")
 		return 0
 	var/hit_area = affecting.display_name
@@ -212,7 +212,7 @@ Contains most of the procs that are called when a mob is attacked by something
 
 	var/bloody = 0
 	if((I.damtype == BRUTE || I.damtype == HALLOSS) && prob(I.force*2 + 25))
-		if(!(affecting.status & LIMB_ROBOT))
+		if(!(affecting.status == LIMB_ROBOTIC))
 			I.add_mob_blood(src)	//Make the weapon bloody, not the person.
 			if(prob(33))
 				bloody = 1

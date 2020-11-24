@@ -609,7 +609,7 @@
 
 	if(isSynth(victim))
 		var/obj/limb/head/synthhead = victim.get_limb("head")
-		if(synthhead.status & LIMB_DESTROYED)
+		if(synthhead.destroyed)
 			return
 
 	if(locate(/obj/item/alien_embryo) in victim) //Maybe they ate it??

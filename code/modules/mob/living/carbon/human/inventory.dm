@@ -29,7 +29,7 @@
 	for(var/X in limbs)
 		var/obj/limb/E = X
 		if(E.name == org_name)
-			return !(E.status & LIMB_DESTROYED)
+			return !(E.destroyed)
 
 /mob/living/carbon/human/proc/has_limb_for_slot(slot)
 	switch(slot)

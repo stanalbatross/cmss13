@@ -897,7 +897,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/new_limb = input("Please choose an organ to add.","Organ",null) as null|anything in typesof(/obj/limb)-/obj/limb
+		var/new_limb = input("Please choose an organ to add.","Organ",null) as null|anything in subtypesof(/obj/limb)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -906,15 +906,11 @@ body
 		var/obj/limb/EO = locate(new_limb) in M.limbs
 		if(!EO)
 			return
-		if(!(EO.status & LIMB_DESTROYED))
+		if(!EO.destroyed)
 			to_chat(usr, "Mob already has that organ.")
 			return
 
-		EO.status = NO_FLAGS
-		EO.reset_limb_surgeries()
-		M.update_body(0)
-		M.updatehealth()
-		M.UpdateDamageIcon()
+		EO.rejuvenate()
 
 	else if(href_list["amplimb"])
 		if(!check_rights(R_SPAWN))
@@ -934,7 +930,7 @@ body
 		var/obj/limb/EO = locate(rem_limb) in M.limbs
 		if(!EO)
 			return
-		if(EO.status & LIMB_DESTROYED)
+		if(EO.destroyed)
 			to_chat(usr, "Mob doesn't have that limb.")
 			return
 		EO.droplimb(1)
@@ -957,7 +953,7 @@ body
 		var/obj/limb/EO = locate(rem_limb) in M.limbs
 		if(!EO)
 			return
-		if(EO.status & LIMB_DESTROYED)
+		if(EO.destroyed)
 			to_chat(usr, "Mob doesn't have that limb.")
 			return
 		EO.droplimb()

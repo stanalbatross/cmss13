@@ -303,13 +303,13 @@
 /obj/item/stack/cable_coil/random/New()
 	color = pick(COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_WHITE, COLOR_PINK, COLOR_YELLOW, COLOR_CYAN)
 	..()
-
+/*
 /obj/item/stack/cable_coil/attack(mob/M as mob, mob/user as mob)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		
 		var/obj/limb/S = H.get_limb(user.zone_selected)
-		if(!(S.status & LIMB_ROBOT) || user.a_intent != INTENT_HELP)
+		if(!(S.status == LIMB_ROBOTIC) || user.a_intent != INTENT_HELP)
 			return ..()
 
 		if(user.action_busy)
@@ -335,3 +335,4 @@
 
 	else
 		return ..()
+*/

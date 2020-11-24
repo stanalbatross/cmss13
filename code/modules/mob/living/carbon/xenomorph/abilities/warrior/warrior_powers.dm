@@ -146,7 +146,7 @@
 
 	var/obj/limb/L = H.get_limb(check_zone(X.zone_selected))
 
-	if (ishuman(H) && (!L || (L.status & LIMB_DESTROYED)))
+	if (ishuman(H) && (!L || (L.destroyed)))
 		return
 
 	
@@ -177,7 +177,7 @@
 
 		if(isYautja(H))
 			damage = rand(base_punch_damage_pred, base_punch_damage_pred + damage_variance)
-		else if(L.status & LIMB_ROBOT)
+		else if(L.status == LIMB_ROBOTIC)
 			damage = rand(base_punch_damage_synth, base_punch_damage_synth + damage_variance)
 		/*
 		else
@@ -207,7 +207,7 @@
 	if(ishuman(H))
 		if(isYautja(H))
 			damage = rand(boxer_punch_damage_pred, boxer_punch_damage_pred + damage_variance)
-		else if(L.status & LIMB_ROBOT)
+		else if(L.status == LIMB_ROBOTIC)
 			damage = rand(boxer_punch_damage_synth, boxer_punch_damage_synth + damage_variance)
 
 	H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")

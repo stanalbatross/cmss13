@@ -28555,7 +28555,7 @@
 /obj/item/tool/crowbar,
 /obj/item/tool/screwdriver,
 /obj/item/tool/wrench,
-/obj/item/stack/nanopaste,
+/obj/item/stack/medical/nanopaste,
 /obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/corsat{
 	dir = 8;

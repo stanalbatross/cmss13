@@ -400,7 +400,7 @@
 		if(e.bleeding_effect)
 			bled = "Bleeding<br>"
 			break
-		if(e.status & LIMB_ROBOT)
+		if(e.status == LIMB_ROBOTIC)
 			robot = "Prosthetic<br>"
 		if(e.active_surgeries)
 			open = "Under Surgery<br>"
@@ -426,7 +426,7 @@
 		if(!AN && !open && !imp && !bled)
 			AN = "None"
 
-		if(!(e.status & LIMB_DESTROYED))
+		if(!(e.destroyed))
 			dat += "<td>[e.display_name]</td><td>[e.burn_dam]</td><td>[e.brute_dam]</td><td>[robot][bled][AN][open][imp]</td>"
 		else
 			dat += "<td>[e.display_name]</td><td>-</td><td>-</td><td>Not Found</td>"

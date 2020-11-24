@@ -10,13 +10,6 @@
 #define HUMAN_STRIP_DELAY 40 //takes 40ds = 4s to strip someone.
 #define POCKET_STRIP_DELAY 20
 
-///////////////////LIMB DEFINES///////////////////
-#define LIMB_DESTROYED 1 //limb is missing
-#define LIMB_ROBOT 2
-#define LIMB_MUTATED 4 //limb is deformed by mutations
-#define LIMB_AMPUTATED 8 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
-#define LIMB_REPAIRED 16 //we just repaired the bone, stops the gelling after setting
-
 ///////////////SURGERY DEFINES///////////////
 #define SPECIAL_SURGERY_INVALID	"special_surgery_invalid"
 

@@ -564,7 +564,7 @@
 			item_healing = TRUE
 			if(org.active_surgeries)
 				under_surgery = TRUE
-			if(org.total_dam && org.total_dam <= MINIMUM_AUTOHEAL_HEALTH)
+			if(org.status == LIMB_ORGANIC && org.total_dam && org.total_dam <= MINIMUM_AUTOHEAL_HEALTH)
 				autohealing = TRUE
 			if(!org.healing_naturally)
 				item_healing = TRUE
@@ -573,7 +573,7 @@
 			if(org.burn_dam > 0)
 				burn_treated = FALSE
 
-			if(org.status & LIMB_DESTROYED)
+			if(org.destroyed)
 				dat += "\t\t [capitalize(org.display_name)]: <span class='scannerb'>Missing!</span>\n"
 				continue
 
@@ -583,7 +583,7 @@
 
 			var/show_limb = (!brute_treated || !burn_treated || integrity_damage || under_surgery || autohealing ||bleeding_check)
 
-			var/org_name = "[capitalize(org.display_name)][org.status & LIMB_ROBOT ? " (Cybernetic)" : ""]"
+			var/org_name = "[capitalize(org.display_name)][org.status == LIMB_ROBOTIC ? " (Cybernetic)" : ""]"
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
 			var/integrity_info = "<font color='purple'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font>"

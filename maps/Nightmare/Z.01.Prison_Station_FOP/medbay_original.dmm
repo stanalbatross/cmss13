@@ -271,7 +271,7 @@
 "ra" = (
 /obj/structure/surface/table/reinforced,
 /obj/item/stack/medical/advanced/bruise_pack,
-/obj/item/stack/nanopaste,
+/obj/item/stack/medical/nanopaste,
 /turf/open/floor/prison{
 	tag = "icon-whitegreenfull (SOUTHWEST)";
 	icon_state = "whitegreenfull";

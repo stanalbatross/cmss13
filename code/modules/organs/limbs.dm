@@ -40,7 +40,8 @@
 	var/obj/item/hidden = null
 	var/list/implants = list()
 
-	var/status //limb status flags
+	var/destroyed = FALSE
+	var/status = LIMB_ORGANIC //Regular or robot
 
 	var/mob/living/carbon/human/owner = null
 	var/vital //Lose a vital limb, die immediately.
@@ -98,17 +99,18 @@
 /obj/limb/process()
 	if(!total_dam && integrity_damage == 0)
 		return
-
+	if(!(brute_autoheal || burn_autoheal || integrity_autoheal))
+		return
 	if(world.time - last_dam_time < MINIMUM_AUTOHEAL_DAMAGE_INTERVAL)
 		return
 	if(healing_naturally)
 		if(total_dam > MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
 			return
 	//Integrity autoheal
-	if(integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
+	if(integrity_autoheal && integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
 		take_integrity_damage(-integrity_autoheal)
-
-	heal_damage(brute_autoheal, burn_autoheal, TRUE)
+	if(brute_autoheal || burn_autoheal)
+		heal_damage(brute_autoheal, burn_autoheal, TRUE)
 
 /obj/limb/proc/get_slowdown()
 	return 0
@@ -184,7 +186,7 @@
 ****************************************************/
 
 /obj/limb/emp_act(severity)
-	if(!(status & LIMB_ROBOT))	//meatbags do not care about EMP
+	if(!(status == LIMB_ROBOTIC))	//meatbags do not care about EMP
 		return
 	var/probability = 30
 	var/damage = 15
@@ -202,7 +204,7 @@
 	if((brute <= 0) && (burn <= 0))
 		return 0
 
-	if(status & LIMB_DESTROYED)
+	if(destroyed)
 		return 0
 	var/is_ff = FALSE
 	if(istype(attack_source) && attack_source.faction == owner.faction && attack_source != owner)
@@ -232,7 +234,7 @@
 	update_icon()
 
 /obj/limb/proc/heal_damage(brute, burn, autoheal = FALSE, robo_repair = 0)
-	if(status & LIMB_ROBOT && !robo_repair)
+	if(status == LIMB_ROBOTIC && !robo_repair)
 		return
 
 	if(brute && !autoheal)
@@ -251,10 +253,6 @@ This function completely restores a damaged organ to perfect condition.
 */
 /obj/limb/proc/rejuvenate()
 	damage_state = "=="
-	if(status & LIMB_ROBOT)	//Robotic organs stay robotic.  Fix because right click rejuvinate makes IPC's organs organic.
-		status = LIMB_ROBOT
-	else
-		status = 0
 	brute_dam = 0
 	burn_dam = 0
 	total_dam = 0
@@ -280,7 +278,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(!(SSticker.current_state >= GAME_STATE_PLAYING)) //If the game hasnt started, don't add bleed. Hacky fix to avoid having 100 bleed effect from roundstart.
 		return
 
-	if(status & LIMB_ROBOT)
+	if(status == LIMB_ROBOTIC)
 		return
 	if(bleeding_effect)
 		bleeding_effect.add_on(damage_taken)
@@ -295,13 +293,13 @@ This function completely restores a damaged organ to perfect condition.
 
 
 /obj/limb/update_icon(forced = FALSE)
-	if(has_stump_icon && (!parent || !(parent.status & LIMB_DESTROYED)))
+	if(has_stump_icon && (!parent || !(parent.destroyed)))
 		icon = 'icons/mob/humans/dam_human.dmi'
 		icon_state = "stump_[icon_name]"
 
 	var/race_icon = owner.species.icobase
 
-	if (status & LIMB_ROBOT && !(owner.species && owner.species.flags & IS_SYNTHETIC))
+	if (status == LIMB_ROBOTIC && !(owner.species && owner.species.flags & IS_SYNTHETIC))
 		icon = 'icons/mob/robotic.dmi'
 		icon_state = "[icon_name]"
 		return
@@ -338,7 +336,7 @@ This function completely restores a damaged organ to perfect condition.
 // new damage icon system
 // returns just the brute/burn damage code
 /obj/limb/proc/damage_state_text()
-	if(status & LIMB_DESTROYED)
+	if(destroyed)
 		return "--"
 
 	var/tburn = 0
@@ -367,149 +365,113 @@ This function completely restores a damaged organ to perfect condition.
 			   DISMEMBERMENT
 ****************************************************/
 
-//Recursive setting of all child organs to amputated
-/obj/limb/proc/setAmputatedTree()
-	for(var/obj/limb/O in children)
-		O.status |= LIMB_AMPUTATED
-		O.setAmputatedTree()
-
-/mob/living/carbon/human/proc/remove_random_limb(var/delete_limb = 0)
-	var/list/limbs_to_remove = list()
-	for(var/obj/limb/E in limbs)
-		if(istype(E, /obj/limb/chest) || istype(E, /obj/limb/groin) || istype(E, /obj/limb/head))
-			continue
-		limbs_to_remove += E
-	if(limbs_to_remove.len)
-		var/obj/limb/L = pick(limbs_to_remove)
-		var/limb_name = L.display_name
-		L.droplimb(0, delete_limb)
-		return limb_name
-	return null
-
-//Handles dismemberment
+//Only removes the limb, negative effects should be added elsewhere
 /obj/limb/proc/droplimb(amputation, var/delete_limb = 0, var/cause)
 	if(!owner)
 		return
-	if(status & LIMB_DESTROYED)
+	if(destroyed)
 		return
-	else
-		if(body_part == BODY_FLAG_CHEST)
-			return
-		if(status & LIMB_ROBOT)
-			status = LIMB_DESTROYED|LIMB_ROBOT
-		else
-			status = LIMB_DESTROYED
-			owner.pain.apply_pain(PAIN_BONE_BREAK)
-		if(amputation)
-			status |= LIMB_AMPUTATED
-		for(var/i in implants)
-			implants -= i
-			if(is_sharp(i) || istype(i, /obj/item/shard/shrapnel))
-				owner.embedded_items -= i
-			qdel(i)
+	if(body_part == BODY_FLAG_CHEST)
+		return
 
-		for(var/i in medical_items)
-			remove_medical_item(i)
+	for(var/i in implants)
+		implants -= i
+		if(is_sharp(i) || istype(i, /obj/item/shard/shrapnel))
+			owner.embedded_items -= i
+		qdel(i)
 
-		remove_all_bleeding()
+	for(var/i in medical_items)
+		remove_medical_item(i)
 
-		if(hidden)
-			hidden.forceMove(owner.loc)
-			hidden = null
+	remove_all_bleeding()
 
-		// If any organs are attached to this, destroy them
-		for(var/obj/limb/O in children)
-			O.droplimb(amputation, delete_limb, cause)
-		/*
-		if(parent && !amputation)
-			var/datum/wound/W
-			if(max_damage < 50) W = new/datum/wound/lost_limb/small(max_damage)
-			else 				W = new/datum/wound/lost_limb(max_damage)
-		*/
+	if(hidden)
+		hidden.forceMove(owner.loc)
+		hidden = null
 
-		//we reset the surgery related variables
-		reset_limb_surgeries()
+	// If any organs are attached to this, destroy them
+	for(var/obj/limb/O in children)
+		O.droplimb(amputation, delete_limb, cause)
 
-		var/organ	//Dropped limb object
-		switch(body_part)
-			if(BODY_FLAG_HEAD)
-				if(owner.species.flags & IS_SYNTHETIC) //special head for synth to allow brainmob to talk without an MMI
-					organ = /obj/item/limb/head/synth
-				else
-					organ = /obj/item/limb/head
-				owner.drop_inv_item_on_ground(owner.glasses, null, TRUE)
-				owner.drop_inv_item_on_ground(owner.head, null, TRUE)
-				owner.drop_inv_item_on_ground(owner.wear_ear, null, TRUE)
-				owner.drop_inv_item_on_ground(owner.wear_mask, null, TRUE)
-				owner.update_hair()
-			if(BODY_FLAG_ARM_RIGHT)
-				if(status & LIMB_ROBOT)
-					organ = /obj/item/robot_parts/r_arm
-				else
-					organ = /obj/item/limb/arm/r_arm
-					organ = /obj/item/limb/hand/r_hand
-				if(owner.w_uniform && !amputation)
-					var/obj/item/clothing/under/U = owner.w_uniform
-					U.removed_parts |= body_part
-					owner.update_inv_w_uniform()
-				owner.drop_inv_item_on_ground(owner.gloves, null, TRUE)
-				owner.drop_inv_item_on_ground(owner.r_hand, null, TRUE)
-			if(BODY_FLAG_ARM_LEFT)
-				if(status & LIMB_ROBOT)
-					organ = /obj/item/robot_parts/l_arm
-				else
-					organ = /obj/item/limb/arm/l_arm
-					organ = /obj/item/limb/hand/l_hand
-				if(owner.w_uniform && !amputation)
-					var/obj/item/clothing/under/U = owner.w_uniform
-					U.removed_parts |= body_part
-					owner.update_inv_w_uniform()
-				owner.drop_inv_item_on_ground(owner.gloves, null, TRUE)
-				owner.drop_inv_item_on_ground(owner.l_hand, null, TRUE)
-			if(BODY_FLAG_LEG_RIGHT)
-				if(status & LIMB_ROBOT)
-					organ = /obj/item/robot_parts/r_leg
-				else
-					organ = /obj/item/limb/leg/r_leg
-					organ = /obj/item/limb/foot/r_foot
-				if(owner.w_uniform && !amputation)
-					var/obj/item/clothing/under/U = owner.w_uniform
-					U.removed_parts |= body_part
-					owner.update_inv_w_uniform()
-				owner.drop_inv_item_on_ground(owner.shoes, null, TRUE)
-			if(BODY_FLAG_LEG_LEFT)
-				if(status & LIMB_ROBOT)
-					organ = /obj/item/robot_parts/l_leg
-				else
-					organ = /obj/item/limb/leg/l_leg
-					organ = /obj/item/limb/foot/l_foot
-				if(owner.w_uniform && !amputation)
-					var/obj/item/clothing/under/U = owner.w_uniform
-					U.removed_parts |= body_part
-					owner.update_inv_w_uniform()
-				owner.drop_inv_item_on_ground(owner.shoes, null, TRUE)
+	//we reset the surgery related variables
+	reset_limb_surgeries()
 
-		if(!delete_limb)
-			owner.visible_message(SPAN_WARNING("[owner.name]'s [display_name] flies off in an arc!"),
-			SPAN_HIGHDANGER("<b>Your [display_name] goes flying off!</b>"),
-			SPAN_WARNING("You hear a terrible sound of ripping tendons and flesh!"), 3)
-			var/obj/item/limb_item
-			if(ispath(organ, /obj/item/limb))
-				limb_item = new organ(owner.loc, owner)
+	var/organ	//Dropped limb object
+	switch(body_part)
+		if(BODY_FLAG_HEAD)
+			if(owner.species.flags & IS_SYNTHETIC) //special head for synth to allow brainmob to talk without an MMI
+				organ = /obj/item/limb/head/synth
 			else
-				limb_item = new organ(owner.loc)
+				organ = /obj/item/limb/head
+			owner.drop_inv_item_on_ground(owner.glasses, null, TRUE)
+			owner.drop_inv_item_on_ground(owner.head, null, TRUE)
+			owner.drop_inv_item_on_ground(owner.wear_ear, null, TRUE)
+			owner.drop_inv_item_on_ground(owner.wear_mask, null, TRUE)
+			owner.update_hair()
+		if(BODY_FLAG_ARM_RIGHT)
+			if(status == LIMB_ROBOTIC)
+				organ = /obj/item/robot_parts/r_arm
+			else
+				organ = /obj/item/limb/arm/r_arm
+			if(owner.w_uniform && !amputation)
+				var/obj/item/clothing/under/U = owner.w_uniform
+				U.removed_parts |= body_part
+				owner.update_inv_w_uniform()
+			owner.drop_inv_item_on_ground(owner.gloves, null, TRUE)
+			owner.drop_inv_item_on_ground(owner.r_hand, null, TRUE)
+		if(BODY_FLAG_ARM_LEFT)
+			if(status == LIMB_ROBOTIC)
+				organ = /obj/item/robot_parts/l_arm
+			else
+				organ = /obj/item/limb/arm/l_arm
+			if(owner.w_uniform && !amputation)
+				var/obj/item/clothing/under/U = owner.w_uniform
+				U.removed_parts |= body_part
+				owner.update_inv_w_uniform()
+			owner.drop_inv_item_on_ground(owner.gloves, null, TRUE)
+			owner.drop_inv_item_on_ground(owner.l_hand, null, TRUE)
+		if(BODY_FLAG_LEG_RIGHT)
+			if(status == LIMB_ROBOTIC)
+				organ = /obj/item/robot_parts/r_leg
+			else
+				organ = /obj/item/limb/leg/r_leg
+			if(owner.w_uniform && !amputation)
+				var/obj/item/clothing/under/U = owner.w_uniform
+				U.removed_parts |= body_part
+				owner.update_inv_w_uniform()
+			owner.drop_inv_item_on_ground(owner.shoes, null, TRUE)
+		if(BODY_FLAG_LEG_LEFT)
+			if(status == LIMB_ROBOTIC)
+				organ = /obj/item/robot_parts/l_leg
+			else
+				organ = /obj/item/limb/leg/l_leg
+			if(owner.w_uniform && !amputation)
+				var/obj/item/clothing/under/U = owner.w_uniform
+				U.removed_parts |= body_part
+				owner.update_inv_w_uniform()
+			owner.drop_inv_item_on_ground(owner.shoes, null, TRUE)
 
-			//Throw organs around
-			step(limb_item, pick(cardinal))
+	if(!delete_limb)
+		owner.visible_message(SPAN_WARNING("[owner.name]'s [display_name] flies off in an arc!"),
+		SPAN_HIGHDANGER("<b>Your [display_name] goes flying off!</b>"),
+		SPAN_WARNING("You hear a terrible sound of ripping tendons and flesh!"), 3)
+		var/obj/item/limb_item
+		if(ispath(organ, /obj/item/limb))
+			limb_item = new organ(owner.loc, owner)
+		else
+			limb_item = new organ(owner.loc)
 
-		owner.update_body(1)
-		owner.UpdateDamageIcon(1)
-		owner.update_med_icon()
+		//Throw organs around
+		step(limb_item, pick(cardinal))
 
-		// OK so maybe your limb just flew off, but if it was attached to a pair of cuffs then hooray! Freedom!
-		release_restraints()
+	owner.update_body(1)
+	owner.UpdateDamageIcon(1)
+	owner.update_med_icon()
 
-		if(vital) owner.death(cause)
+	// OK so maybe your limb just flew off, but if it was attached to a pair of cuffs then hooray! Freedom!
+	release_restraints()
+
+	if(vital) owner.death(cause)
 
 /****************************************************
 			   HELPERS
@@ -533,7 +495,7 @@ This function completely restores a damaged organ to perfect condition.
 		owner.drop_inv_item_on_ground(owner.legcuffed)
 /*
 /obj/limb/proc/fracture()
-	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOT) )
+	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOTIC) )
 		if (knitting_time != -1)
 			knitting_time = -1
 			to_chat(owner, SPAN_WARNING("You feel your [src] stop knitting together as it absorbs damage!"))
@@ -560,11 +522,8 @@ This function completely restores a damaged organ to perfect condition.
 */
 
 /obj/limb/proc/robotize()
-	status &= ~LIMB_AMPUTATED
-	status &= ~LIMB_DESTROYED
-	status &= ~LIMB_MUTATED
-	status &= ~LIMB_REPAIRED
-	status |= LIMB_ROBOT
+	status = LIMB_ROBOTIC
+
 	reset_limb_surgeries()
 
 	for (var/obj/limb/T in children)
@@ -572,7 +531,7 @@ This function completely restores a damaged organ to perfect condition.
 			T.robotize()
 
 	update_icon()
-
+/*
 /obj/limb/proc/mutate()
 	src.status |= LIMB_MUTATED
 	owner.update_body()
@@ -580,16 +539,16 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/proc/unmutate()
 	src.status &= ~LIMB_MUTATED
 	owner.update_body()
-
+*/
 /obj/limb/proc/get_damage()	//returns total damage
 	return brute_dam + burn_dam
 
 
 /obj/limb/proc/is_usable()
-	return !(status & (LIMB_DESTROYED|LIMB_MUTATED))
+	return !destroyed
 
 /obj/limb/proc/is_malfunctioning()
-	return ((status & LIMB_ROBOT) && prob(brute_dam + burn_dam))
+	return ((status == LIMB_ROBOTIC) && prob(brute_dam + burn_dam))
 
 /obj/limb/proc/embed(var/obj/item/W, var/silent = 0)
 	if(!W || QDELETED(W) || (W.flags_item & (NODROP|DELONDROP)) || W.embeddable == FALSE)
@@ -618,7 +577,7 @@ This function completely restores a damaged organ to perfect condition.
 		var/obj/item/stack/medical/removed_item = input(user, "Please choose an item to replace", "Medical Item Application") in (medical_items + "Cancel")
 		if(!istype(removed_item))
 			return FALSE
-		medical_items -= removed_item
+		remove_medical_item(removed_item)
 	//Pasted from medical.dm
 	var/do_after_time = item.regular_delay
 	if(user.skills && item.low_skill_delay)
@@ -653,7 +612,7 @@ This function completely restores a damaged organ to perfect condition.
 		return
 	medical_items -= item
 	recalculate_health_effects()
-	if(destroyed)
+	if(destroyed || item.destroy_on_removal)
 		qdel(item)
 	else
 		item.loc = get_turf(owner)
@@ -773,12 +732,12 @@ This function completely restores a damaged organ to perfect condition.
 		owner.minimum_gun_recoil -= 1
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil += 1
-
+/*
 /obj/limb/foot
 	name = "foot"
 	display_name = "foot"
 	max_damage = 30
-
+*/
 /obj/limb/arm
 	name = "arm"
 	display_name = "arm"
@@ -796,12 +755,12 @@ This function completely restores a damaged organ to perfect condition.
 		owner.action_delay -= 3 SECONDS
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.action_delay += 3 SECONDS
-
+/*
 /obj/limb/hand
 	name = "hand"
 	display_name = "hand"
 	max_damage = 30
-
+*/
 /obj/limb/arm/l_arm
 	name = "l_arm"
 	display_name = "left arm"

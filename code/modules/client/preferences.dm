@@ -1336,7 +1336,7 @@ var/const/MAX_SAVE_SLOTS = 10
 //				O.status |= LIMB_DESTROYED
 //				O.destspawn = 1
 			if(status == "cyborg")
-				O.status |= LIMB_ROBOT
+				O.status |= LIMB_ROBOTIC
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES
@@ -1393,7 +1393,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		var/obj/limb/O = character.get_limb(name)
 		if(O)
 			if(status == "cyborg")
-				O.status |= LIMB_ROBOT
+				O.status |= LIMB_ROBOTIC
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES

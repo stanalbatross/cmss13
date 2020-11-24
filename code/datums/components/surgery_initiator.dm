@@ -63,8 +63,8 @@
 			if(affecting)
 				if(!surgeryloop_two.requires_bodypart)
 					continue
-				//if(surgeryloop_two.requires_bodypart_type && affecting.status != surgeryloop_two.requires_bodypart_type)
-					//continue
+				if(surgeryloop_two.requires_bodypart_type && affecting.status != surgeryloop_two.requires_bodypart_type)
+					continue
 			else if(carbontarget && surgeryloop_two.requires_bodypart) //mob with no limb in surgery zone when we need a limb
 				continue
 			if(surgeryloop_two.lying_required && !livingtarget.lying)
@@ -94,8 +94,8 @@
 			if(affecting)
 				if(!surgeryinstance_notonmob.requires_bodypart)
 					return
-				//if(surgeryinstance_notonmob.requires_bodypart_type && affecting.status != surgeryinstance_notonmob.requires_bodypart_type)
-					//return
+				if(surgeryinstance_notonmob.requires_bodypart_type && affecting.status != surgeryinstance_notonmob.requires_bodypart_type)
+					return
 			else if(carbontarget && surgeryinstance_notonmob.requires_bodypart)
 				return
 			if(surgeryinstance_notonmob.lying_required && !livingtarget.lying)

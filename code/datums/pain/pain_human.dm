@@ -16,8 +16,7 @@
 	var/mob/living/carbon/human/H = source_mob
 
 	for(var/obj/limb/O in H.limbs)
-		// Delimbed
-		if((O.status & LIMB_DESTROYED) && !(O.status & LIMB_AMPUTATED))
+		if(O.integrity_level_effects & LIMB_INTEGRITY_EFFECT_NONE)
 			apply_pain(PAIN_DELIMB)
 
 

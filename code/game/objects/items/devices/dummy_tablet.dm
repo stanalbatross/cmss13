@@ -113,7 +113,7 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
             var/amount = 0
             amount = input(usr, "Amount?") as num|null
@@ -127,7 +127,7 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
             var/amount = 0
             amount = input(usr, "Amount?") as num|null
@@ -147,7 +147,7 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
             limb.fracture()
         if ("blood_loss")
@@ -163,9 +163,9 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
-            if(linked_dummy.get_limb(selection).status & LIMB_DESTROYED)
+            if(linked_dummy.get_limb(selection).destroyed)
                 return
             var/datum/wound/internal_bleeding/I = new (0)//<- copied from limbs.dm, doesn't have any issues with cybernetics
             limb.add_bleeding(I, TRUE)
@@ -177,7 +177,7 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
             var/obj/item/shard/shrapnel/s = new /obj/item/shard/shrapnel()
             limb.embed(s)
@@ -188,7 +188,7 @@
             var/obj/limb/limb = linked_dummy.get_limb(selection)
             if (!istype(limb))
                 return
-            if(limb.status & LIMB_DESTROYED)
+            if(limb.destroyed)
                 return
             limb.droplimb(1, 0, "tablet")
             playsound(loc, 'sound/weapons/slice.ogg', 25)

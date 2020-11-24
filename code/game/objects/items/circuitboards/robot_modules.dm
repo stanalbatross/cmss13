@@ -78,7 +78,7 @@
 	name = "surgeon robot module"
 	stacktypes = list(
 		/obj/item/stack/medical/advanced/bruise_pack = 5,
-		/obj/item/stack/nanopaste = 5
+		/obj/item/stack/medical/nanopaste = 5
 		)
 
 /obj/item/circuitboard/robot_module/surgeon/Initialize()
@@ -98,7 +98,7 @@
 	src.modules += new /obj/item/tool/surgery/surgicaldrill(src)
 	src.modules += new /obj/item/tool/extinguisher/mini(src)
 	src.modules += new /obj/item/stack/medical/advanced/bruise_pack(src)
-	src.modules += new /obj/item/stack/nanopaste(src)
+	src.modules += new /obj/item/stack/medical/nanopaste(src)
 	src.modules += new /obj/item/tool/weldingtool/largetank(src)
 	src.modules += new /obj/item/tool/crowbar(src)
 	src.modules += new /obj/item/robot/stun(src)

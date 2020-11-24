@@ -244,13 +244,15 @@
 		var/status = ""
 		var/brutedamage = org.brute_dam
 		var/burndamage = org.burn_dam
-		if(org.status & LIMB_DESTROYED)
+		if(org.destroyed)
 			status = "MISSING!"
 		else
+			/*
 			if(org.status & LIMB_MUTATED)
 				if(status)
 					status += " and "
 				status += "weirdly shapen"
+			*/
 			if(halloss > 0)
 				if(status)
 					status += " and "

@@ -183,7 +183,7 @@
 	else //should never be happening, but just in case
 		toggle(TRUE)
 
-
+/*
 /obj/item/tool/weldingtool/attack(mob/M, mob/user)
 
 	if(hasorgans(M))
@@ -191,7 +191,7 @@
 		var/obj/limb/S = H.get_limb(user.zone_selected)
 
 		if (!S) return
-		if(!(S.status & LIMB_ROBOT) || user.a_intent != INTENT_HELP)
+		if(!(S.status & LIMB_ROBOTIC) || user.a_intent != INTENT_HELP)
 			return ..()
 
 		if(user.action_busy)
@@ -220,7 +220,7 @@
 
 	else
 		return ..()
-
+*/
 /obj/item/tool/weldingtool/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) return
 	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)

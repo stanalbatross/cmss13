@@ -143,7 +143,8 @@
 		/obj/item/stack/medical/ointment,
 		/obj/item/reagent_container/hypospray/autoinjector/skillless/tramadol,
 		/obj/item/reagent_container/hypospray/autoinjector/skillless,
-		/obj/item/stack/medical/bruise_pack
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/nanopaste
 	)
 
 /obj/item/storage/pouch/firstaid/full

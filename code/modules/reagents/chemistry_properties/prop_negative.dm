@@ -148,7 +148,7 @@
 		return
 	var/mob/living/carbon/human/H = M
 	var/obj/limb/L = pick(H.limbs)
-	if(!L || L.status & LIMB_ROBOT)
+	if(!L || L.status == LIMB_ROBOTIC)
 		return
 	..()
 	/*

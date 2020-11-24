@@ -59,14 +59,14 @@
 /mob/living/carbon/human/getBruteLoss(var/organic_only=0)
 	var/amount = 0
 	for(var/obj/limb/O in limbs)
-		if(!(organic_only && O.status & LIMB_ROBOT))
+		if(!(organic_only && O.status == LIMB_ROBOTIC))
 			amount += O.brute_dam
 	return amount
 
 /mob/living/carbon/human/getFireLoss(var/organic_only=0)
 	var/amount = 0
 	for(var/obj/limb/O in limbs)
-		if(!(organic_only && O.status & LIMB_ROBOT))
+		if(!(organic_only && O.status == LIMB_ROBOTIC))
 			amount += O.burn_dam
 	return amount
 
@@ -102,7 +102,7 @@
 				O.take_damage(amount, 0,)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(-amount, 0, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(-amount, 0, robo_repair=(O.status == LIMB_ROBOTIC))
 			break
 
 
@@ -118,7 +118,7 @@
 				O.take_damage(0, amount)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(0, -amount, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(0, -amount, robo_repair=(O.status == LIMB_ROBOTIC))
 			break
 
 
@@ -140,14 +140,14 @@
 	if(species && species.flags & (IS_SYNTHETIC|NO_SCAN))
 		cloneloss = 0
 		return
-
+	/*
 	var/heal_prob = max(0, 80 - getCloneLoss())
 	var/mut_prob = min(80, getCloneLoss()+10)
 	if(amount > 0)
 		if(prob(mut_prob))
 			var/list/obj/limb/candidates = list()
 			for(var/obj/limb/O in limbs)
-				if(O.status & (LIMB_ROBOT|LIMB_DESTROYED|LIMB_MUTATED)) continue
+				if(O.status == LIMB_ROBOTIC || O.destroyed) continue
 				candidates |= O
 			if(candidates.len)
 				var/obj/limb/O = pick(candidates)
@@ -167,7 +167,7 @@
 			if(O.status & LIMB_MUTATED)
 				O.unmutate()
 				to_chat(src, SPAN_NOTICE("Your [O.display_name] is shaped normally again."))
-
+	*/
 
 // Defined here solely to take species flags into account without having to recast at mob/living level.
 /mob/living/carbon/human/getOxyLoss()

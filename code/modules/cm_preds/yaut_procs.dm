@@ -204,7 +204,7 @@
 
 		var/limbName = parse_zone(limb)
 		var/mob/living/carbon/human/H = T
-		if(H.get_limb(limb).status & LIMB_DESTROYED)
+		if(H.get_limb(limb).destroyed)
 			to_chat(src, "The victim lacks a [limbName].")
 			return
 		if(limb == "head")
@@ -212,7 +212,7 @@
 		else
 			visible_message("<b>[src] reaches down and starts removing [T]'s [limbName].</b>","<b>You reach down and start removing [T]'s [limbName].</b>")
 		if(do_after(src,90, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE) && Adjacent(T))
-			if(H.get_limb(limb).status & LIMB_DESTROYED)
+			if(H.get_limb(limb).destroyed)
 				to_chat(src, "The victim lacks a [limbName].")
 				return
 			H.get_limb(limb).droplimb(1, 0, "butchering")

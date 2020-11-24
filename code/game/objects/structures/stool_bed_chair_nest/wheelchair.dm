@@ -31,10 +31,10 @@
 		var/obj/limb/right_hand = driver.get_limb("r_hand")
 		var/working_hands = 2
 		move_delay = initial(move_delay)
-		if(!left_hand || (left_hand.status & LIMB_DESTROYED))
+		if(!left_hand || (left_hand.destroyed))
 			move_delay += 4 //harder to move a wheelchair with a single hand
 			working_hands--
-		if(!right_hand || (right_hand.status & LIMB_DESTROYED))
+		if(!right_hand || (right_hand.destroyed))
 			move_delay += 4
 			working_hands--
 		if(!working_hands)

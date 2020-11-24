@@ -328,7 +328,7 @@
 
 	var/obj/limb/L = H.get_limb(check_zone(X.zone_selected))
 
-	if (ishuman(H) && (!L || (L.status & LIMB_DESTROYED)))
+	if (ishuman(H) && (!L || (L.destroyed)))
 		return
 
 	if (!check_and_use_plasma_owner())

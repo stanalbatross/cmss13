@@ -349,7 +349,7 @@
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when polyacided or when updating a human's name variable
 /mob/living/carbon/human/proc/get_face_name()
 	var/obj/limb/head/head = get_limb("head")
-	if(!head || head.disfigured || (head.status & LIMB_DESTROYED) || !real_name)	//disfigured. use id-name if possible
+	if(!head || head.disfigured || (head.destroyed) || !real_name)	//disfigured. use id-name if possible
 		return "Unknown"
 	return real_name
 
@@ -914,12 +914,7 @@
 
 /mob/living/carbon/human/revive(keep_viruses)
 	for(var/obj/limb/O in limbs)
-		if(O.status & LIMB_ROBOT)
-			O.status = LIMB_ROBOT
-		else
-			O.status = NO_FLAGS
-		O.heal_damage(1000,1000,1,1)
-		O.reset_limb_surgeries()
+		O.rejuvenate()
 
 	var/obj/limb/head/h = get_limb("head")
 	if(QDELETED(h))

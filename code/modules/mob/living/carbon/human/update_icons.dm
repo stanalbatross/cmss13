@@ -105,7 +105,7 @@ There are several things that need to be remembered:
 
 /mob/living/carbon/human/UpdateDamageIcon()
 	for(var/obj/limb/O in limbs)
-		if(!(O.status & LIMB_DESTROYED))
+		if(!(O.destroyed))
 			O.update_icon()
 
 /mob/living/proc/AddSleepingIcon()
@@ -130,7 +130,7 @@ There are several things that need to be remembered:
 	var/g = get_gender_name(gender)
 	vis_contents.Cut()
 	for(var/obj/limb/part in limbs)
-		if(part.status & LIMB_DESTROYED)
+		if(part.destroyed)
 			continue
 		vis_contents += part
 		part.update_icon(TRUE)
@@ -157,7 +157,7 @@ There are several things that need to be remembered:
 	remove_overlay(FACIAL_LAYER)
 
 	var/obj/limb/head/head_organ = get_limb("head")
-	if(!head_organ || (head_organ.status & LIMB_DESTROYED))
+	if(!head_organ || (head_organ.destroyed))
 		return
 
 	if((head && (head.flags_inv_hide & HIDEALLHAIR)) || (wear_mask && (wear_mask.flags_inv_hide & HIDEALLHAIR)))

@@ -43467,7 +43467,7 @@
 /obj/item/tool/surgery/circular_saw,
 /obj/item/tool/surgery/bonesetter,
 /obj/item/tool/surgery/FixOVein,
-/obj/item/stack/nanopaste,
+/obj/item/stack/medical/nanopaste,
 /obj/structure/surface/table/reinforced,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
@@ -64419,7 +64419,7 @@
 /obj/item/tool/surgery/circular_saw,
 /obj/item/tool/surgery/bonesetter,
 /obj/item/tool/surgery/FixOVein,
-/obj/item/stack/nanopaste,
+/obj/item/stack/medical/nanopaste,
 /obj/structure/surface/table/reinforced,
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{

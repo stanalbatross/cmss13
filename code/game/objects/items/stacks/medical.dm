@@ -1,7 +1,3 @@
-#define GROUP_SPLINTS "splint"
-#define GROUP_BANDAGES "bandage"
-#define GROUP_OINTMENTS "ointment"
-
 /obj/item/stack/medical
 	name = "medical pack"
 	singular_name = "medical pack"
@@ -17,6 +13,7 @@
 	var/integrity_autoheal //Only heals integrity if it's below level 1 
 	var/limb_integrity_levels_neutralized = NO_FLAGS
 	var/stops_bleeding = TRUE
+	var/destroy_on_removal = TRUE
 
 	var/application_sound = 'sound/handling/bandage.ogg'
 	var/required_skill = SKILL_MEDICAL_MEDIC
@@ -56,11 +53,11 @@
 		to_chat(user, SPAN_WARNING("[H] has no [parse_zone(user.zone_selected)]!"))
 		return 1
 	if(heals_prosthesis)
-		if(!(affecting.status & LIMB_ROBOT))
+		if(!(affecting.status == LIMB_ROBOTIC))
 			to_chat(user, SPAN_WARNING("This isn't useful at all on an organic limb."))
 			return 1
 	else
-		if(affecting.status & LIMB_ROBOT)
+		if(affecting.status == LIMB_ROBOTIC)
 			to_chat(user, SPAN_WARNING("This isn't useful at all on a robotic limb."))
 			return 1
 
@@ -144,5 +141,20 @@
 	low_skill_delay = 7 SECONDS
 	regular_delay = 3 SECONDS
 
+
+/obj/item/stack/medical/nanopaste
+	name = "nanopaste"
+	singular_name = "nanopaste"
+	desc = "A greyish paste used to repair damaged prosthetic and synthetic limbs"
+	icon_state = "tube"
+
+	amount = 10
+	max_amount = 10
+	brute_autoheal = 0.8
+	burn_autoheal = 0.8
+	heals_prosthesis = TRUE
+	w_class = SIZE_SMALL
+	stack_id = "nanopaste"
+	application_sound = 'sound/handling/ointment_spreading.ogg'
 
 

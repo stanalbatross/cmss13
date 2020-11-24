@@ -245,7 +245,7 @@
 
 		if (!affecting)
 			return
-		if(affecting.status & LIMB_DESTROYED)
+		if(affecting.destroyed)
 			to_chat(user, "What [affecting.display_name]?")
 			return
 		var/hit_area = affecting.display_name
