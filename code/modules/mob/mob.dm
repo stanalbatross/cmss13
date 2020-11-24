@@ -312,6 +312,8 @@
 			else
 				client.perspective = EYE_PERSPECTIVE
 				client.eye = loc
+		
+		client.mouse_pointer_icon = mouse_icon
 	return
 
 

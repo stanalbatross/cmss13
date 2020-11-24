@@ -1228,6 +1228,8 @@
 /mob/living/carbon/human/update_sight()
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_UPDATE_SIGHT) & COMPONENT_OVERRIDE_UPDATE_SIGHT) return
 
+	sight &= ~BLIND // Never have blind on by default
+
 	if(stat == DEAD)
 		sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)
 		see_in_dark = 8

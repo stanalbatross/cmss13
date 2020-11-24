@@ -56,6 +56,7 @@
     if(M.client)
         M.client.perspective = EYE_PERSPECTIVE
         M.client.eye = src
+        M.client.mouse_pointer_icon = mouse_icon
     
     return COMPONENT_OVERRIDE_VIEW
 
@@ -69,8 +70,6 @@
     linked_mob = null
 
     return ..()
-
-
 
 /datum/action/leave_hologram
     name = "Leave"

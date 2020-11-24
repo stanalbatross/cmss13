@@ -56,6 +56,7 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
     operator = H
     RegisterSignal(operator, COMSIG_PARENT_QDELETING, .proc/remove_current_operator)
     RegisterSignal(operator, COMSIG_MOB_MOVE, .proc/remove_current_operator)
+    RegisterSignal(operator, COMSIG_MOB_POST_CLICK, .proc/fire_gun)
 
     if(!last_location)
         last_location = locate(1, 1, target_z)
@@ -65,15 +66,40 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
     RegisterSignal(eye, COMSIG_PARENT_QDELETING, .proc/remove_current_operator)
 
 /obj/structure/machinery/computer/railgun/proc/check_and_set_zlevel(var/mob/hologram/railgun/H, var/turf/NewLoc, var/direction)
+    SIGNAL_HANDLER
     if(!NewLoc)
         H.loc = last_location
         return COMPONENT_OVERRIDE_MOVE
-        
 
     if(NewLoc.z != target_z && H.z != target_z)
         H.z = target_z
         return COMPONENT_OVERRIDE_MOVE
-        
+
+/obj/structure/machinery/computer/railgun/proc/fire_gun(var/mob/living/carbon/human/H, var/atom/A, var/mods)
+    SIGNAL_HANDLER
+
+    if(!H.client)
+        return
+
+    var/turf/T = get_turf(A)
+    if(!istype(T))    
+        return
+
+    var/obj/effect/lz/warning_zone = new(T)
+
+    var/image/I = image(warning_zone.icon, warning_zone.loc, warning_zone.icon_state, warning_zone.layer)
+    H.client.images += I
+
+    addtimer(CALLBACK(src, .proc/land_shot, T, H.client, warning_zone, I), SECONDS_10)
+
+/obj/structure/machinery/computer/railgun/proc/land_shot(var/turf/T, var/client/firer, var/obj/effect/lz/warning_zone, var/image/to_remove)
+    if(warning_zone)
+        qdel(warning_zone)
+
+    if(firer)
+        firer.images -= to_remove
+        explosion(T, 1, 0, 2, explosion_source = "railgun", explosion_source_mob = firer.mob)
+
 /obj/structure/machinery/computer/railgun/proc/remove_current_operator()
     SIGNAL_HANDLER
     if(!operator) return
@@ -87,6 +113,7 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 
     UnregisterSignal(operator, COMSIG_PARENT_QDELETING)
     UnregisterSignal(operator, COMSIG_MOB_MOVE)
+    UnregisterSignal(operator, COMSIG_MOB_POST_CLICK)
     operator.update_sight()
     operator = null
 
@@ -106,6 +133,7 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
 /mob/hologram/railgun
     name = "Camera"
     density = FALSE
+    mouse_icon = 'icons/effects/mouse_pointer/mecha_mouse.dmi'
 
 /mob/hologram/railgun/Initialize(mapload, mob/M)
     . = ..(mapload, M)
@@ -120,13 +148,6 @@ GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_
     H.sight = (SEE_TURFS|BLIND)
     H.see_invisible = SEE_INVISIBLE_MINIMUM
     return COMPONENT_OVERRIDE_UPDATE_SIGHT
-
-/mob/hologram/railgun/handle_view(var/mob/M, var/atom/target)
-    if(M.client)
-        M.client.perspective = EYE_PERSPECTIVE
-        M.client.eye = src
-
-    return COMPONENT_OVERRIDE_VIEW
 
 /mob/hologram/railgun/proc/allow_turf_entry()
     SIGNAL_HANDLER

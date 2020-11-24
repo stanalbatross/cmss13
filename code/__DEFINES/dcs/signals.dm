@@ -87,6 +87,8 @@
 #define COMSIG_MOB_RESET_VIEW "mob_reset_view"
 	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
 
+#define COMSIG_MOB_POST_CLICK "mob_post_click"
+
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
 
