@@ -66,7 +66,7 @@
 // SENTRY BASE AND UPGRADES
 /obj/item/defenses/handheld/sentry
 	name = "handheld UA 571-C sentry gun"
-	icon_state = "uac_sentry_handheld"
+	icon_state = "Normal uac_sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry
 
 /obj/item/defenses/handheld/sentry/Initialize(mapload, ...)
@@ -79,21 +79,24 @@
 
 /obj/item/defenses/handheld/sentry/dmr
 	name = "handheld UA 725-D sniper sentry"
+	icon_state = "DMR uac_sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/dmr
 
 /obj/item/defenses/handheld/sentry/shotgun
 	name = "handheld UA 12-G shotgun sentry"
+	icon_state = "Shotgun uac_sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/shotgun
 
 /obj/item/defenses/handheld/sentry/mini
 	name = "handheld UA 512-M mini sentry"
+	icon_state = "Mini uac_sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/mini
 	deployment_time = 0.75 SECONDS
 
 // FLAMER BASE AND UPGRADES
 /obj/item/defenses/handheld/sentry/flamer
 	name = "handheld UA 42-F sentry flamer"
-	icon_state = "uac_flamer_handheld"
+	icon_state = "Normal uac_flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer
 	var/ammo_convert
 
@@ -128,31 +131,36 @@
 
 /obj/item/defenses/handheld/sentry/flamer/mini
 	name = "handheld UA 45-FM mini sentry"
+	icon_state = "Mini uac_flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer/mini
 	deployment_time = 0.75 SECONDS
 	ammo_convert = /obj/item/ammo_magazine/sentry_flamer/mini
 /obj/item/defenses/handheld/sentry/flamer/plasma
 	name = "handheld UA 60-FP plasma sentry"
+	icon_state = "Plasma uac_flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer/plasma
 	ammo_convert = /obj/item/ammo_magazine/sentry_flamer/glob
 
 /obj/item/defenses/handheld/sentry/flamer/assault
 	name = "handheld UA 55-FA flamer assault sentry"
+	icon_state = "Assault uac_flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer/assault
 	ammo_convert = /obj/item/ammo_magazine/sentry_flamer/assault
 
 // TESLA BASE AND UPGRADES
 /obj/item/defenses/handheld/tesla_coil
 	name = "handheld 21S tesla coil"
-	icon_state = "tesla_coil_handheld"
+	icon_state = "Normal tesla_coil_handheld"
 	defense_type = /obj/structure/machinery/defenses/tesla_coil
 
 
 /obj/item/defenses/handheld/tesla_coil/stun
 	name = "handheld 21S overclocked tesla coil"
+	icon_state = "Stun tesla_coil_handheld"
 	defense_type = /obj/structure/machinery/defenses/tesla_coil/stun
 /obj/item/defenses/handheld/tesla_coil/micro
 	name = "handheld 25S micro tesla coil"
+	icon_state = "Micro tesla_coil_handheld"
 	defense_type = /obj/structure/machinery/defenses/tesla_coil/micro
 	deployment_time = 0.75 SECONDS
 
@@ -166,15 +174,17 @@
 // BELL TOWER BASE AND UPGRADES
 /obj/item/defenses/handheld/bell_tower
 	name = "handheld R-1NG bell tower"
-	icon_state = "bell_tower_handheld"
+	icon_state = "Normal bell_tower_handheld"
 	defense_type = /obj/structure/machinery/defenses/bell_tower
 
 /obj/item/defenses/handheld/bell_tower/md
 	name = "handheld R-1NG motion detector tower"
+	icon_state = "MD bell_tower_handheld"
 	defense_type = /obj/structure/machinery/defenses/bell_tower/md
 
 /obj/item/defenses/handheld/bell_tower/cloaker
 	name = "handheld camouflaged R-1NG bell tower"
+	icon_state = "Cloaker bell_tower_handheld"
 	defense_type = /obj/structure/machinery/defenses/bell_tower/cloaker
 
 /obj/item/defenses/handheld/bell_tower/Initialize(mapload, ...)
@@ -188,7 +198,7 @@
 // JIMA TOWER BASE AND UPGRADES
 /obj/item/defenses/handheld/planted_flag
 	name = "handheld JIMA planted flag"
-	icon_state = "planted_flag_handheld"
+	icon_state = "Normal planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag
 	deployment_time = SECONDS_1
 
@@ -202,10 +212,12 @@
 
 /obj/item/defenses/handheld/planted_flag/warbanner
 	name = "handheld JIMA planted warbanner"
+	icon_state = "Warbanner planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag/warbanner
 
 /obj/item/defenses/handheld/planted_flag/range
 	name = "handheld extended JIMA planted flag"
+	icon_state = "Range planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag/range
 
 	

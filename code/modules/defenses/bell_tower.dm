@@ -3,6 +3,7 @@
 
 /obj/structure/machinery/defenses/bell_tower
 	name = "\improper R-1NG bell tower"
+	icon = 'icons/obj/structures/machinery/defenses/bell_tower.dmi'
 	desc = "A tactical advanced version of a normal alarm. Designed to trigger an old instinct ingrained in humans when they hear a wake-up alarm, for fast response."
 	var/list/tripwires_placed = list()
 	var/mob/last_mob_activated
@@ -22,10 +23,10 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		overlays += "bell_tower_destroyed"
+		overlays += "[defense_type] bell_tower_destroyed"
 		return
 
-	overlays += "bell_tower"
+	overlays += "[defense_type] bell_tower"
 
 /obj/structure/machinery/defenses/bell_tower/power_on_action()
 	clear_tripwires()
@@ -99,7 +100,7 @@
 		return
 	linked_bell.last_mob_activated = M
 	if(!linked_bell.flick_image)
-		linked_bell.flick_image = image('icons/obj/structures/machinery/defenses.dmi', icon_state = "bell_tower_alert")
+		linked_bell.flick_image = image(icon, icon_state = "[defense_type] bell_tower_alert")
 	linked_bell.flick_image.flick_overlay(linked_bell, 11)
 	linked_bell.mob_crossed(M)
 	M.AdjustSuperslowed(BELL_TOWER_EFFECT)
@@ -124,6 +125,7 @@
 	handheld_type = /obj/item/defenses/handheld/bell_tower/md
 	var/cloak_alpha = BELL_TOWER_MD_ALPHA
 	var/obj/item/device/motiondetector/internal/md
+	defense_type = "MD"
 
 /obj/structure/machinery/defenses/bell_tower/md/Initialize()
 	. = ..()
@@ -152,6 +154,7 @@
 	handheld_type = /obj/item/defenses/handheld/bell_tower/cloaker
 	var/cloak_alpha = BELL_TOWER_CLOAKER_ALPHA
 	density = FALSE
+	defense_type = "Cloaker"
 
 /obj/structure/machinery/defenses/bell_tower/cloaker/Initialize()
 	. = ..()

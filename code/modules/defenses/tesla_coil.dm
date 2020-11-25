@@ -5,6 +5,7 @@
 
 /obj/structure/machinery/defenses/tesla_coil
 	name = "\improper 21S tesla coil"
+	icon = 'icons/obj/structures/machinery/defenses/tesla.dmi'
 	desc = "A perfected way of producing high-voltage, low-current and high frquency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock."
 	var/list/targets
 	var/last_fired = 0
@@ -28,19 +29,13 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		var/image/I = image('icons/obj/structures/machinery/defenses.dmi', icon_state = "tesla_coil_destroyed")
-		I.pixel_y = 3
-		overlays += I
+		overlays += image(icon, icon_state = "[defense_type] tesla_coil_destroyed", pixel_y = 3)
 		return
 
 	if(turned_on)
-		var/image/I = image('icons/obj/structures/machinery/defenses.dmi', icon_state = "tesla_coil_on")
-		I.pixel_y = 3
-		overlays += I
+		overlays += image(icon, icon_state = "[defense_type] tesla_coil_on", pixel_y = 3)
 	else
-		var/image/I = image('icons/obj/structures/machinery/defenses.dmi', icon_state = "tesla_coil")
-		I.pixel_y = 3
-		overlays += I
+		overlays += image(icon, icon_state = "[defense_type] tesla_coil", pixel_y = 3)
 
 /obj/structure/machinery/defenses/tesla_coil/power_on_action()
 	SetLuminosity(7)

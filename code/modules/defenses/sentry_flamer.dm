@@ -1,5 +1,6 @@
 /obj/structure/machinery/defenses/sentry/flamer
 	name = "\improper UA 42-F sentry flamer"
+	icon = 'icons/obj/structures/machinery/defenses/flamer.dmi'
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an special flamer and a 100 liters fuel tank."
 	fire_delay = 30
 	ammo = new /obj/item/ammo_magazine/sentry_flamer
@@ -35,6 +36,7 @@
 
 /obj/structure/machinery/defenses/sentry/flamer/mini
 	name = "UA 45-FM Mini Sentry"
+	defense_type = "Mini"
 	fire_delay = 10
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/mini
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer/mini
@@ -51,6 +53,7 @@
 #define FLAMER_SENTRY_SNIPER_RANGE 14
 /obj/structure/machinery/defenses/sentry/flamer/plasma
 	name = "UA 60-FP Plasma Sentry"
+	defense_type = "Plasma"
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/glob
 	fire_delay = 10 SECONDS
 	sentry_range = FLAMER_SENTRY_SNIPER_RANGE
@@ -70,5 +73,6 @@
 #undef FLAMER_SENTRY_SNIPER_RANGE
 /obj/structure/machinery/defenses/sentry/flamer/assault
 	name = "UA 55-FA Flamer Assault Sentry"
+	defense_type = "Assault"
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/assault
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer/assault

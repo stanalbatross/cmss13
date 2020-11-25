@@ -3,6 +3,7 @@
 #define SENTRY_MUZZLELUM	3
 /obj/structure/machinery/defenses/sentry
 	name = "\improper UA 571-C sentry gun"
+	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 500-round drum magazine."
 	req_one_access = list(ACCESS_MARINE_ENGINEERING, ACCESS_MARINE_ENGPREP, ACCESS_MARINE_LEADER)
 	var/list/targets = list() // Lists of current potential targets
@@ -78,16 +79,16 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		overlays += "uac_[sentry_type]_destroyed"
+		overlays += "[defense_type] uac_[sentry_type]_destroyed"
 		return
 
 	if(!ammo || ammo && !ammo.current_rounds)
-		overlays += "uac_[sentry_type]_noammo"
+		overlays += "[defense_type] uac_[sentry_type]_noammo"
 		return
 	if(turned_on)
-		overlays += "uac_[sentry_type]_on"
+		overlays += "[defense_type] uac_[sentry_type]_on"
 	else
-		overlays += "uac_[sentry_type]"
+		overlays += "[defense_type] uac_[sentry_type]"
 
 /obj/structure/machinery/defenses/sentry/attack_hand(mob/user as mob)
 	if(immobile)
@@ -410,6 +411,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 /obj/structure/machinery/defenses/sentry/dmr
 	name = "UA 725-D Sniper Sentry"
 	desc = "A fully-automated defence turret with long-range targeting capabilities. Armed with a modified M32-S Autocannon and an internal belt feed."
+	defense_type = "DMR"
 	fire_delay = 2.5 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry
 	sentry_range = SENTRY_SNIPER_RANGE
@@ -431,6 +433,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 #undef SENTRY_SNIPER_RANGE
 /obj/structure/machinery/defenses/sentry/shotgun
 	name = "UA 12-G Shotgun Sentry"
+	defense_type = "Shotgun"
 	fire_delay = 2.5 SECONDS
 	sentry_range = 2
 	ammo = new /obj/item/ammo_magazine/sentry/shotgun
@@ -439,6 +442,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 
 /obj/structure/machinery/defenses/sentry/mini
 	name = "UA 512-M mini sentry"
+	defense_type = "Mini"
 	fire_delay = 0.15 SECONDS
 	damage_mult = 0.4
 	density = FALSE

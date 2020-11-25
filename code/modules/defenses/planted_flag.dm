@@ -3,6 +3,7 @@
 
 /obj/structure/machinery/defenses/planted_flag
 	name = "\improper JIMA planted flag"
+	icon = 'icons/obj/structures/machinery/defenses/planted_flag.dmi'
 	desc = "A planted flag with the iconic USCM flag plastered all over it, you feel a burst of energy by its mere sight."
 	handheld_type = /obj/item/defenses/handheld/planted_flag
 	disassemble_time = 10
@@ -26,13 +27,13 @@
 
 	overlays.Cut()
 	if(stat == DEFENSE_DAMAGED)
-		overlays += "planted_flag_destroyed"
+		overlays += "[defense_type] planted_flag_destroyed"
 		return
 
 	if(turned_on)
-		overlays += "planted_flag"
+		overlays += "[defense_type] planted_flag"
 	else
-		overlays += "planted_flag_off"
+		overlays += "[defense_type] planted_flag_off"
 
 /obj/structure/machinery/defenses/planted_flag/power_on_action()
 	apply_area_effect()

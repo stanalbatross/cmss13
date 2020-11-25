@@ -1,7 +1,7 @@
 /obj/structure/machinery/defenses
 	name = "Don't see this"
 	desc = "Call for help."
-	icon = 'icons/obj/structures/machinery/defenses.dmi'
+	icon = 'icons/obj/structures/machinery/defenses/defense_base.dmi'
 	icon_state = "defense_base_off"
 	anchored = TRUE
 	unacidable = TRUE
@@ -17,6 +17,7 @@
 	var/defense_icon = "uac_sentry"
 	var/handheld_type = /obj/item/defenses/handheld
 	var/disassemble_time = 20
+	var/defense_type = "Normal"
 	var/static = FALSE
 
 
