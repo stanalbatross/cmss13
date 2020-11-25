@@ -1,7 +1,7 @@
 /obj/item/defenses/handheld
 	name = "Don't see this."
 	desc = "A compact version of the USCM defenses. Designed for quick deployment of the associated type in the field."
-	icon = 'icons/obj/structures/machinery/defenses.dmi'
+	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	icon_state = "uac_sentry_handheld"
 	
 	force = 5
@@ -66,6 +66,7 @@
 // SENTRY BASE AND UPGRADES
 /obj/item/defenses/handheld/sentry
 	name = "handheld UA 571-C sentry gun"
+	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	icon_state = "Normal uac_sentry_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry
 
@@ -96,6 +97,7 @@
 // FLAMER BASE AND UPGRADES
 /obj/item/defenses/handheld/sentry/flamer
 	name = "handheld UA 42-F sentry flamer"
+	icon = 'icons/obj/structures/machinery/defenses/flamer.dmi'
 	icon_state = "Normal uac_flamer_handheld"
 	defense_type = /obj/structure/machinery/defenses/sentry/flamer
 	var/ammo_convert
@@ -156,6 +158,7 @@
 
 /obj/item/defenses/handheld/tesla_coil/stun
 	name = "handheld 21S overclocked tesla coil"
+	icon = 'icons/obj/structures/machinery/defenses/tesla.dmi'
 	icon_state = "Stun tesla_coil_handheld"
 	defense_type = /obj/structure/machinery/defenses/tesla_coil/stun
 /obj/item/defenses/handheld/tesla_coil/micro
@@ -174,6 +177,7 @@
 // BELL TOWER BASE AND UPGRADES
 /obj/item/defenses/handheld/bell_tower
 	name = "handheld R-1NG bell tower"
+	icon = 'icons/obj/structures/machinery/defenses/bell_tower.dmi'
 	icon_state = "Normal bell_tower_handheld"
 	defense_type = /obj/structure/machinery/defenses/bell_tower
 
@@ -198,6 +202,7 @@
 // JIMA TOWER BASE AND UPGRADES
 /obj/item/defenses/handheld/planted_flag
 	name = "handheld JIMA planted flag"
+	icon = 'icons/obj/structures/machinery/defenses/planted_flag.dmi'
 	icon_state = "Normal planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag
 	deployment_time = SECONDS_1

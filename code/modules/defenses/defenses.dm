@@ -1,7 +1,7 @@
 /obj/structure/machinery/defenses
 	name = "Don't see this"
 	desc = "Call for help."
-	icon = 'icons/obj/structures/machinery/defenses/defense_base.dmi'
+	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	icon_state = "defense_base_off"
 	anchored = TRUE
 	unacidable = TRUE
