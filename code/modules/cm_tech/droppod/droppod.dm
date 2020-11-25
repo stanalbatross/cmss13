@@ -23,7 +23,7 @@
     layer = ABOVE_FLY_LAYER
     appearance_flags = TILE_BOUND | KEEP_TOGETHER
 
-    var/obj/effect/lz/warning_zone
+    var/obj/effect/warning/droppod/warning_zone
 
 /obj/structure/droppod/Initialize(mapload, var/time_to_drop = 0)
     . = ..()

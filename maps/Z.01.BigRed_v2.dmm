@@ -32798,6 +32798,10 @@
 	tag = "icon-darkblue2"
 	},
 /area/bigredv2/caves/eta/research)
+"vzu" = (
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/floor/plating,
+/area/bigredv2/outside/space_port)
 "vKv" = (
 /turf/open/floor{
 	dir = 8;
@@ -41223,7 +41227,7 @@ acg
 aah
 aah
 aah
-aah
+vzu
 aah
 aah
 aah

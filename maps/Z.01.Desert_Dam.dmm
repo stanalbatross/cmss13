@@ -67269,6 +67269,14 @@
 	},
 /turf/open/asphalt,
 /area/desert_dam/exterior/valley/valley_labs)
+"ybQ" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/asphalt,
+/area/desert_dam/exterior/valley/valley_northwest)
 "ydw" = (
 /obj/structure/window/framed/hangar/reinforced,
 /obj/structure/blocker/forcefield/vehicles,
@@ -77644,7 +77652,7 @@ aqg
 aDc
 aqg
 aqg
-aDc
+ybQ
 aqg
 aqg
 aDc

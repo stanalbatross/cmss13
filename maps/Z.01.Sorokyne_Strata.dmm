@@ -38634,6 +38634,10 @@
 /obj/effect/decal/strata_decals/catwalk/prison,
 /turf/open/floor/greengrid,
 /area/strata/ag/interior/restricted/devroom)
+"jvM" = (
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/floor/strata,
+/area/strata/ag/interior/nearlz1)
 "jww" = (
 /obj/structure/sign/biohazard,
 /turf/closed/wall/strata_outpost_ribbed,
@@ -51610,7 +51614,7 @@ cqE
 cqE
 cqE
 cqE
-cqE
+jvM
 cqE
 cqE
 cqE

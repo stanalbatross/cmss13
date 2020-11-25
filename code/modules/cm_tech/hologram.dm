@@ -69,6 +69,9 @@
     linked_mob.reset_view()
     linked_mob = null
 
+    if(leave_button)
+        QDEL_NULL(leave_button)
+
     return ..()
 
 /datum/action/leave_hologram

@@ -113,7 +113,7 @@
 	if (!mover || !isturf(mover.loc))
 		return FALSE
 
-	var/override = SEND_SIGNAL(mover, COMSIG_TURF_ENTER, forget)
+	var/override = SEND_SIGNAL(mover, COMSIG_TURF_ENTER, src, forget)
 	if(override)
 		return override & COMPONENT_TURF_ALLOW_MOVEMENT
 

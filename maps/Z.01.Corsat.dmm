@@ -67289,6 +67289,15 @@
 	icon_state = "marked"
 	},
 /area/corsat/sigma/hangar/arrivals)
+"wJG" = (
+/obj/structure/pipes/standard/manifold/hidden/green{
+	dir = 1
+	},
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/floor/corsat{
+	icon_state = "squares"
+	},
+/area/corsat/sigma/hangar)
 "wJM" = (
 /turf/open/floor/corsat{
 	dir = 8;
@@ -125707,7 +125716,7 @@ aeK
 afO
 ajU
 aeB
-dQW
+wJG
 irp
 aDI
 awp

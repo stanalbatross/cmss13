@@ -9381,6 +9381,10 @@
 	},
 /turf/open/floor/kutjevo/colors/green/tile,
 /area/kutjevo/interior/oob)
+"DE" = (
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/auto_turf/sand/layer1,
+/area/kutjevo/exterior/lz_dunes)
 "DF" = (
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/coagulation{
@@ -21243,7 +21247,7 @@ Kv
 jk
 WG
 jk
-Kv
+DE
 jk
 Kv
 Kv

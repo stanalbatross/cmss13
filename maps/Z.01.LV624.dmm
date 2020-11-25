@@ -17748,6 +17748,10 @@
 /obj/structure/flora/jungle/vines/heavy,
 /turf/open/gm/grass,
 /area/lv624/lazarus/landing_zones/lz1)
+"eEo" = (
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/floor,
+/area/lv624/lazarus/landing_zones/lz1)
 "eHm" = (
 /obj/structure/bed,
 /obj/effect/decal/cleanable/blood,
@@ -52695,7 +52699,7 @@ aDi
 pYd
 aGz
 lZl
-aGz
+eEo
 eaJ
 aGz
 eaJ

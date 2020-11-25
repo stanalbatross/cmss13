@@ -53643,6 +53643,10 @@
 	icon_state = "whitepurple"
 	},
 /area/prison/research/secret/testing)
+"xOc" = (
+/obj/effect/landmark/railgun_camera_pos,
+/turf/open/floor/plating,
+/area/prison/hanger/main)
 "xQq" = (
 /obj/effect/decal/cleanable/cobweb2,
 /turf/open/floor/plating,
@@ -102414,7 +102418,7 @@ bia
 biU
 aYM
 aYM
-aYM
+xOc
 aYM
 aYM
 aYM
