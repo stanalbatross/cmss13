@@ -187,9 +187,11 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
         else
             QDEL_NULL(eye)
 
-    UnregisterSignal(operator, COMSIG_PARENT_QDELETING)
-    UnregisterSignal(operator, COMSIG_MOB_MOVE)
-    UnregisterSignal(operator, COMSIG_MOB_POST_CLICK)
+    UnregisterSignal(operator, list(
+        COMSIG_PARENT_QDELETING,
+        COMSIG_MOB_MOVE,
+        COMSIG_MOB_POST_CLICK
+    ))
     operator.update_sight()
     operator = null
 
@@ -206,13 +208,13 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 
     #define INPUT_COORD "Input Co-ordinates"
     if(alert(H, "View a specific co-ordinate, or continue without inputting a co-ordinate?", "Railgun Computer", INPUT_COORD, "Continue without inputting a co-ordinate") == INPUT_COORD)
-        var/x = input(H, "Longitude") as num|null
-        var/y = input(H, "Latitude") as num|null
+        var/x_coord = input(H, "Longitude") as num|null
+        var/y_coord = input(H, "Latitude") as num|null
 
-        if(!x || !y)
+        if(!x_coord || !y_coord)
             return
         
-        last_location = locate(deobfuscate_x(x), deobfuscate_y(y), target_z)
+        last_location = locate(deobfuscate_x(x_coord), deobfuscate_y(y_coord), target_z)
 
     #undef INPUT_COORD
 

@@ -27,7 +27,8 @@
     RegisterSignal(M, COMSIG_MOB_TAKE_DAMAGE, .proc/take_damage)
     RegisterSignal(M, COMSIG_HUMAN_TAKE_DAMAGE, .proc/take_damage)
     RegisterSignal(M, COMSIG_XENO_TAKE_DAMAGE, .proc/take_damage)
-    
+    RegisterSignal(M, COMSIG_BINOCULAR_ATTACK_SELF, .proc/handle_binoc)
+    RegisterSignal(M, COMSIG_BINOCULAR_HANDLE_CLICK, .proc/handle_binoc)
 
     linked_mob = M
     linked_mob.reset_view()
@@ -37,6 +38,10 @@
     leave_button = new()
     leave_button.linked_hologram = src
     leave_button.give_action(M)
+
+/mob/hologram/proc/handle_binoc()
+    SIGNAL_HANDLER
+    return TRUE
 
 /mob/hologram/proc/take_damage(var/mob/M, var/damage, var/damagetype)
     SIGNAL_HANDLER

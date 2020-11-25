@@ -89,6 +89,10 @@
 
 #define COMSIG_MOB_POST_CLICK "mob_post_click"
 
+// Return a nonzero value to cancel these actions
+#define COMSIG_BINOCULAR_ATTACK_SELF "binocular_attack_self"
+#define COMSIG_BINOCULAR_HANDLE_CLICK "binocular_handle_click"
+
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
 
