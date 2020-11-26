@@ -556,23 +556,28 @@
 		var/under_surgery
 		var/autohealing
 		var/item_healing
+		var/perma_dmg
 		for(var/obj/limb/org in H.limbs)
 			brute_treated = TRUE
 			burn_treated = TRUE
 			under_surgery = FALSE
 			autohealing = FALSE
-			item_healing = TRUE
+			item_healing = FALSE
+			perma_dmg = FALSE
 			if(org.active_surgeries)
 				under_surgery = TRUE
-			if(org.status == LIMB_ORGANIC && org.total_dam && org.total_dam <= MINIMUM_AUTOHEAL_HEALTH)
-				autohealing = TRUE
+			if(org.can_autoheal)
+				var/limb_health = org.get_damage()
+				if(limb_health && limb_health <= MINIMUM_AUTOHEAL_HEALTH && (stat != DEAD))
+					autohealing = TRUE
 			if(!org.healing_naturally)
 				item_healing = TRUE
 			if(org.brute_dam > 0)
 				brute_treated = FALSE
 			if(org.burn_dam > 0)
 				burn_treated = FALSE
-
+			if(org.perma_min_damage)
+				perma_dmg = TRUE
 			if(org.destroyed)
 				dat += "\t\t [capitalize(org.display_name)]: <span class='scannerb'>Missing!</span>\n"
 				continue
@@ -581,7 +586,7 @@
 			var/bleeding_check = org.bleeding_effect ? TRUE : FALSE
 			var/integrity_damage = org.integrity_damage 
 
-			var/show_limb = (!brute_treated || !burn_treated || integrity_damage || under_surgery || autohealing ||bleeding_check)
+			var/show_limb = (!brute_treated || !burn_treated || integrity_damage || under_surgery || autohealing ||bleeding_check || perma_dmg)
 
 			var/org_name = "[capitalize(org.display_name)][org.status == LIMB_ROBOTIC ? " (Cybernetic)" : ""]"
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
@@ -593,9 +598,10 @@
 
 			var/org_surgery = under_surgery ? "<span class='scanner'>(Surgery)</span>":""
 			var/org_healing = item_healing || autohealing ? SET_CLASS("(Healing)",INTERFACE_GREEN):""
+			var/org_perma_dmg = perma_dmg ? SET_CLASS("!(PERMA [org.perma_min_damage])!",INTERFACE_BAD):""
 
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | [integrity_info] | [org_bleed][org_healing][org_surgery]"
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | [integrity_info] | [org_perma_dmg][org_bleed][org_healing][org_surgery]"
 				
 				dat += "\n"
 

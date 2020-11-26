@@ -37,7 +37,7 @@
 		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/mob/living/carbon/human/wielder = user
 		var/obj/limb/hand = wielder.get_limb(check_hand)
-		if( !istype(hand) || !hand.is_usable() )
+		if( !istype(hand) || hand.destroyed )
 			to_chat(user, SPAN_WARNING("Your other hand can't hold [src]!"))
 			return
 

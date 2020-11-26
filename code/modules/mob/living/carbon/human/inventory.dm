@@ -92,13 +92,13 @@
 
 /mob/living/carbon/human/put_in_l_hand(obj/item/W)
 	var/obj/limb/O = get_limb("l_arm")
-	if(!O || !O.is_usable())
+	if(!O || O.destroyed)
 		return FALSE
 	. = ..()
 
 /mob/living/carbon/human/put_in_r_hand(obj/item/W)
 	var/obj/limb/O = get_limb("r_arm")
-	if(!O || !O.is_usable())
+	if(!O || O.destroyed)
 		return FALSE
 	. = ..()
 

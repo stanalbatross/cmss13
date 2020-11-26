@@ -11,19 +11,21 @@
 	var/icon_position = 0
 	var/damage_state = "=="
 
-	var/total_dam = 0
 	var/brute_dam = 0
 	var/burn_dam = 0
 	var/max_damage = 0
 	var/integrity_damage = 0 //INT damage sets the levels
 	var/integrity_level = 0
 	var/integrity_level_effects = NO_FLAGS //Levels are not cumulative, but instead, are flags. This is so to allow some levels to be neutralized without changing the others (ex: level 3 effects are neutralized, but 2 and 4 are in effect)
+	var/perma_min_damage = 0
 
 	var/last_dam_time
 
 	var/brute_autoheal = 0.02 //per life tick
 	var/burn_autoheal = 0.04
 	var/integrity_autoheal = 0.1
+	var/can_autoheal = TRUE
+
 	var/neutralized_integrity_effects = NO_FLAGS
 	var/healing_naturally = TRUE //natural healing is limited by health and other stuff
 	var/max_medical_items = 3
@@ -97,23 +99,33 @@
 	processing = FALSE
 
 /obj/limb/process()
-	if(!total_dam && integrity_damage == 0)
-		return
-	if(!(brute_autoheal || burn_autoheal || integrity_autoheal))
+	if(!brute_dam && !burn_dam && !integrity_damage)
 		return
 	if(world.time - last_dam_time < MINIMUM_AUTOHEAL_DAMAGE_INTERVAL)
 		return
 	if(healing_naturally)
-		if(total_dam > MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
+		if(!can_autoheal)
+			stop_processing()
+			return
+		if((brute_dam + burn_dam) > MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
 			return
 	//Integrity autoheal
 	if(integrity_autoheal && integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
 		take_integrity_damage(-integrity_autoheal)
 	if(brute_autoheal || burn_autoheal)
-		heal_damage(brute_autoheal, burn_autoheal, TRUE)
+		heal_damage(brute_autoheal, burn_autoheal, TRUE, TRUE)
 
-/obj/limb/proc/get_slowdown()
-	return 0
+/obj/limb/proc/set_status(status = LIMB_ORGANIC)
+	switch(status)
+		if(LIMB_ORGANIC)
+			can_autoheal = TRUE
+			status = LIMB_ORGANIC
+		if(LIMB_ROBOTIC)
+			can_autoheal = FALSE
+			status = LIMB_ROBOTIC
+		else
+			return FALSE
+	return TRUE
 
 //Integrity damage changes the integrity level
 /obj/limb/proc/take_integrity_damage(amount)
@@ -154,6 +166,10 @@
 	reapply_integrity_effects(added_effects, removed_effects)
 
 /obj/limb/proc/reapply_integrity_effects(added, removed)
+	if(added & LIMB_INTEGRITY_EFFECT_NONE)
+		perma_min_damage += 80
+	else if(removed & LIMB_INTEGRITY_EFFECT_NONE)
+		perma_min_damage -= 80
 
 //Set damage to the desired level's threshold, so when the effects are recalculated
 //the level is set
@@ -196,7 +212,7 @@
 	if(prob(probability))
 		droplimb(0, 0, "EMP")
 	else
-		take_damage(damage, 0, 1)
+		take_damage(damage)
 /*
 	Describes how limbs (body parts) of human mobs get damage applied.
 */
@@ -214,7 +230,6 @@
 
 	brute_dam += brute
 	burn_dam += burn
-	total_dam = brute_dam + burn_dam
 	if(!is_ff)
 		if((owner.stat != DEAD))
 			var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
@@ -226,7 +241,7 @@
 			for(var/obj/item/stack/medical/M in medical_items)
 				if(!M.take_onlimb_damage(brute, burn))
 					remove_medical_item(M, TRUE)
-	if(!processing)
+	if(!processing && can_autoheal)
 		start_processing()
 
 	last_dam_time = world.time
@@ -242,7 +257,6 @@
 
 	brute_dam = max(0, brute_dam - brute)
 	burn_dam = max(0, burn_dam - burn)
-	total_dam = brute_dam + burn_dam
 
 	owner.updatehealth()
 
@@ -255,7 +269,7 @@ This function completely restores a damaged organ to perfect condition.
 	damage_state = "=="
 	brute_dam = 0
 	burn_dam = 0
-	total_dam = 0
+	perma_min_damage = 0
 	integrity_damage = 0
 	recalculate_integrity()
 
@@ -523,7 +537,7 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/proc/robotize()
 	status = LIMB_ROBOTIC
-
+	can_autoheal = FALSE
 	reset_limb_surgeries()
 
 	for (var/obj/limb/T in children)
@@ -540,15 +554,8 @@ This function completely restores a damaged organ to perfect condition.
 	src.status &= ~LIMB_MUTATED
 	owner.update_body()
 */
-/obj/limb/proc/get_damage()	//returns total damage
-	return brute_dam + burn_dam
-
-
-/obj/limb/proc/is_usable()
-	return !destroyed
-
-/obj/limb/proc/is_malfunctioning()
-	return ((status == LIMB_ROBOTIC) && prob(brute_dam + burn_dam))
+/obj/limb/proc/get_damage()
+	return max(brute_dam + burn_dam, perma_min_damage)
 
 /obj/limb/proc/embed(var/obj/item/W, var/silent = 0)
 	if(!W || QDELETED(W) || (W.flags_item & (NODROP|DELONDROP)) || W.embeddable == FALSE)
@@ -603,6 +610,8 @@ This function completely restores a damaged organ to perfect condition.
 	recalculate_health_effects()
 	if(new_item.stops_bleeding && bleeding_effect)
 		remove_all_bleeding()
+	if(!processing)
+		start_processing()
 
 	owner.update_med_icon()
 	return TRUE
@@ -620,9 +629,14 @@ This function completely restores a damaged organ to perfect condition.
 	owner.update_med_icon()
 
 /obj/limb/proc/recalculate_health_effects()
-	brute_autoheal = initial(brute_autoheal)
-	burn_autoheal = initial(burn_autoheal)
-	integrity_autoheal = initial(integrity_autoheal)
+	if(can_autoheal)
+		brute_autoheal = initial(brute_autoheal)
+		burn_autoheal = initial(burn_autoheal)
+		integrity_autoheal = initial(integrity_autoheal)
+	else
+		brute_autoheal = 0
+		burn_autoheal = 0
+		integrity_autoheal = 0
 	var/old_neutralized = neutralized_integrity_effects
 	neutralized_integrity_effects = 0
 
@@ -720,10 +734,6 @@ This function completely restores a damaged organ to perfect condition.
 	name = "leg"
 	display_name = "leg"
 	max_damage = 35
-
-/obj/limb/leg/get_slowdown()
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CONCERNING)
-		return 0.4
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
@@ -834,7 +844,7 @@ This function completely restores a damaged organ to perfect condition.
 	var/disfigured = 0 //whether the head is disfigured.
 
 /obj/limb/head/reapply_integrity_effects(added, removed)
-
+	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.zoom_blocked -= 1
 	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)

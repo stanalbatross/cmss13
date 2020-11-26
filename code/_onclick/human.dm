@@ -76,7 +76,7 @@
 		return
 
 	var/obj/limb/temp = get_limb(hand ? "l_hand" : "r_hand")
-	if(temp && !temp.is_usable())
+	if(temp && temp.destroyed)
 		to_chat(src, SPAN_NOTICE("You try to move your [temp.display_name], but cannot!"))
 		return
 

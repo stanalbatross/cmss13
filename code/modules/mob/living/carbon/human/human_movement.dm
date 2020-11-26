@@ -22,8 +22,8 @@
 			. += shoes.slowdown
 
 	for(var/organ_name in MOVEMENT_LIMBS)
-		var/obj/limb/E = get_limb(organ_name)
-		. += E.get_slowdown()
+		if(check_limb_integrity_effect(organ_name, LIMB_INTEGRITY_EFFECT_CONCERNING))
+			. += 0.4
 
 
 	var/hungry = (500 - nutrition)/5 // So overeat would be 100 and default level would be 80

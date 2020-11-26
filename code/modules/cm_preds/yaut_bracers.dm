@@ -274,7 +274,7 @@
 			to_chat(user, SPAN_WARNING("Your other hand must be free to activate your off-hand wristblade!"))
 			is_lefthand_full = TRUE
 		var/obj/limb/hand = user.get_limb(user.hand ? "l_hand" : "r_hand")
-		if(!istype(hand) || !hand.is_usable())
+		if(!istype(hand) || hand.destroyed)
 			to_chat(user, SPAN_WARNING("You can't hold that!"))
 			return
 		var/obj/item/weapon/wristblades/N = new()

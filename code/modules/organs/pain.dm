@@ -24,7 +24,7 @@ mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0
 			msg = "You [pick("wince","shiver","grimace")] in pain"
 			var/i
 			for(var/obj/limb/O in list(right_hand, left_hand))
-				if(!O || !O.is_usable()) continue //Not if the organ can't possibly function.
+				if(!O || O.destroyed) continue //Not if the organ can't possibly function.
 				if(O.name == "l_hand") 	drop_l_hand()
 				else 					drop_r_hand()
 				i++

@@ -5,17 +5,15 @@
 		health = species.total_health
 		stat = CONSCIOUS
 		return
-	var/total_burn	= 0
-	var/total_brute	= 0
-	for(var/obj/limb/O in limbs)	//hardcoded to streamline things a bit
-		total_brute	+= O.brute_dam
-		total_burn	+= O.burn_dam
+	var/limb_dmg
+	for(var/obj/limb/O in limbs)
+		limb_dmg += O.get_damage()
 
 	var/oxy_l = ((species && species.flags & NO_BREATHE) ? 0 : getOxyLoss())
 	var/tox_l = ((species && species.flags & NO_POISON) ? 0 : getToxLoss())
 	var/clone_l = getCloneLoss()
 
-	health = ((species != null)? species.total_health : 200) - oxy_l - tox_l - clone_l - total_burn - total_brute
+	health = ((species != null)? species.total_health : 200) - oxy_l - tox_l - clone_l - limb_dmg
 
 	if(isSynth(src) && pulledby && health <= 0 && isXeno(pulledby))	// Xenos lose grab on critted synths
 		pulledby.stop_pulling()
