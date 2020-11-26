@@ -100,7 +100,7 @@
 		return
 	linked_bell.last_mob_activated = M
 	if(!linked_bell.flick_image)
-		linked_bell.flick_image = image(icon, icon_state = "[defense_type] bell_tower_alert")
+		linked_bell.flick_image = image(linked_bell.icon, icon_state = "[linked_bell.defense_type] bell_tower_alert")
 	linked_bell.flick_image.flick_overlay(linked_bell, 11)
 	linked_bell.mob_crossed(M)
 	M.AdjustSuperslowed(BELL_TOWER_EFFECT)
