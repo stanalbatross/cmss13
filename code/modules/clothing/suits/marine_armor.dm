@@ -67,9 +67,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		WEAR_JACKET = 'icons/mob/humans/onmob/suit_1.dmi'
 	)
 	flags_atom = FPRINT|CONDUCT
-	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
-	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
-	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
 	min_cold_protection_temperature = ARMOR_min_cold_protection_temperature
 	max_heat_protection_temperature = ARMOR_max_heat_protection_temperature
 	blood_overlay_type = "armor"

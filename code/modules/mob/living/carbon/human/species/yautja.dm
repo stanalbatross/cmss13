@@ -107,18 +107,11 @@
 	for(var/obj/limb/L in H.limbs)
 		switch(L.name)
 			if("groin","chest")
-				L.min_broken_damage = 40
 				L.max_damage = 200
 			if("head")
-				L.min_broken_damage = 40
 				L.max_damage = 60
-			if("l_hand","r_hand","r_foot","l_foot")
-				L.min_broken_damage = 25
-				L.max_damage = 30
 			if("r_leg","r_arm","l_leg","l_arm")
-				L.min_broken_damage = 30
 				L.max_damage = 35
-		L.time_to_knit = -1
 
 /datum/species/yautja/handle_post_spawn(var/mob/living/carbon/human/H)
 	GLOB.alive_human_list -= H
@@ -129,21 +122,11 @@
 	for(var/obj/limb/L in H.limbs)
 		switch(L.name)
 			if("groin","chest")
-				L.min_broken_damage = 80
 				L.max_damage = 200
-				L.time_to_knit = 1200 // 10 mins
 			if("head")
-				L.min_broken_damage = 70
 				L.max_damage = 90
-				L.time_to_knit = 1200 // 10 mins
-			if("l_hand","r_hand","r_foot","l_foot")
-				L.min_broken_damage = 40
-				L.max_damage = 60
-				L.time_to_knit = 600 // 5 mins
 			if("r_leg","r_arm","l_leg","l_arm")
-				L.min_broken_damage = 60
 				L.max_damage = 80
-				L.time_to_knit = 600 // 5 mins
 
 
 	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]

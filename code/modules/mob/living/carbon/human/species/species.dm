@@ -78,12 +78,12 @@
 	// Species-specific abilities.
 	var/list/inherent_verbs
 	var/list/has_organ = list(
-		"heart" =    /datum/internal_organ/heart,
-		"lungs" =    /datum/internal_organ/lungs,
-		"liver" =    /datum/internal_organ/liver,
-		"kidneys" =  /datum/internal_organ/kidneys,
-		"brain" =    /datum/internal_organ/brain,
-		"eyes" =     /datum/internal_organ/eyes
+		"heart" =    TRUE,
+		"lungs" =    TRUE,
+		"liver" =    TRUE,
+		"kidneys" =  TRUE,
+		"brain" =    TRUE,
+		"eyes" =     TRUE
 		)
 
 	var/knock_down_reduction = 1 //how much the knocked_down effect is reduced per Life call.
@@ -114,8 +114,6 @@
 
 /datum/species/proc/create_organs(var/mob/living/carbon/human/H) //Handles creation of mob organs and limbs.
 	H.limbs = list()
-	H.internal_organs = list()
-	H.internal_organs_by_name = list()
 
 	//This is a basic humanoid limb setup.
 	var/obj/limb/chest/C = new(null, H)
@@ -123,29 +121,14 @@
 	var/obj/limb/groin/G = new(C, H)
 	H.limbs += G
 	H.limbs += new/obj/limb/head(C, H)
-	var/obj/limb/arm/l_arm/LA = new(C, H)
-	H.limbs += LA
-	var/obj/limb/arm/r_arm/RA = new(C, H)
-	H.limbs += RA
-	var/obj/limb/leg/l_leg/LL = new(G, H)
-	H.limbs += LL
-	var/obj/limb/leg/r_leg/RL = new(G, H)
-	H.limbs += RL
-	H.limbs +=  new/obj/limb/hand/l_hand(LA, H)
-	H.limbs +=  new/obj/limb/hand/r_hand(RA, H)
-	H.limbs +=  new/obj/limb/foot/l_foot(LL, H)
-	H.limbs +=  new/obj/limb/foot/r_foot(RL, H)
-
-	for(var/organ in has_organ)
-		var/organ_type = has_organ[organ]
-		H.internal_organs_by_name[organ] = new organ_type(H)
+	H.limbs += new/obj/limb/arm/l_arm(C, H)
+	H.limbs += new/obj/limb/arm/r_arm(C, H)
+	H.limbs += new/obj/limb/leg/l_leg(G, H)
+	H.limbs += new/obj/limb/leg/r_leg(G, H)
 
 	if(flags & IS_SYNTHETIC)
 		for(var/obj/limb/E in H.limbs)
-			if(E.status & LIMB_DESTROYED) continue
-			E.status |= LIMB_ROBOT
-		for(var/datum/internal_organ/I in H.internal_organs)
-			I.mechanize()
+			E.set_status(LIMB_ROBOTIC)
 
 /datum/species/proc/initialize_pain(mob/living/carbon/human/H)
 	if(pain_type)

@@ -210,7 +210,7 @@
 	siemens_coefficient = 0.50
 	var/wired = 0
 	var/obj/item/cell/cell = 0
-	flags_armor_protection = BODY_FLAG_HANDS
+	flags_armor_protection = BODY_FLAG_HANDS | BODY_FLAG_ARMS
 	flags_equip_slot = SLOT_HANDS
 	attack_verb = list("challenged")
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/hands_monkey.dmi')
@@ -334,7 +334,7 @@
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	siemens_coefficient = 0.9
-	flags_armor_protection = BODY_FLAG_FEET
+	flags_armor_protection = BODY_FLAG_FEET | BODY_FLAG_LEGS
 	flags_equip_slot = SLOT_FEET
 	permeability_coefficient = 0.50
 	slowdown = SHOES_SLOWDOWN
