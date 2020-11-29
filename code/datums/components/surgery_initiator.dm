@@ -61,7 +61,7 @@
 			if(!surgeryloop_two.possible_locs.Find(selected_zone))
 				continue
 			if(affecting)
-				if(!surgeryloop_two.requires_bodypart)
+				if(surgeryloop_two.requires_bodypart && affecting.destroyed) //Temporary while limbs aren't LITERALLY removed
 					continue
 				if(surgeryloop_two.requires_bodypart_type && affecting.status != surgeryloop_two.requires_bodypart_type)
 					continue

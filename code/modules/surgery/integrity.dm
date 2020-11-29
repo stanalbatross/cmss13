@@ -181,3 +181,20 @@
 /datum/surgery_step/heal_bone/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
     . = ..()
     target.apply_damage(5, TOX)
+
+/datum/surgery/close_stump
+    name = "Seal limb stump"
+    steps = list(
+        /datum/surgery_step/clamp_bleeders,
+        /datum/surgery_step/retract_skin,
+        /datum/surgery_step/carve_amputation,
+        /datum/surgery_step/close_ruptured_veins,
+        /datum/surgery_step/close_amputation
+    )
+    requires_bodypart = FALSE
+
+/datum/surgery/close_stump/can_start(mob/user, mob/living/patient)
+    if(!affected_limb.brute_dam && !affected_limb.burn_dam && !affected_limb.integrity_damage)
+        return FALSE
+    return ..()
+    

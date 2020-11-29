@@ -1684,6 +1684,7 @@
 #include "code\modules\surgery\chestburster.dm"
 #include "code\modules\surgery\generic.dm"
 #include "code\modules\surgery\integrity.dm"
+#include "code\modules\surgery\limb_replacements.dm"
 #include "code\modules\surgery\surgery_items.dm"
 #include "code\modules\surgery\surgery_procedure.dm"
 #include "code\modules\surgery\surgery_steps.dm"

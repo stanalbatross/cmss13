@@ -162,6 +162,7 @@
 
 	var/added_effects = ~integrity_level_effects & new_effects
 	var/removed_effects = integrity_level_effects & ~new_effects
+	integrity_level_effects = new_effects
 
 	reapply_integrity_effects(added_effects, removed_effects)
 
@@ -271,6 +272,7 @@ This function completely restores a damaged organ to perfect condition.
 	burn_dam = 0
 	perma_min_damage = 0
 	integrity_damage = 0
+	destroyed = FALSE
 	recalculate_integrity()
 
 	remove_all_bleeding()
@@ -408,7 +410,10 @@ This function completely restores a damaged organ to perfect condition.
 		O.droplimb(amputation, delete_limb, cause)
 
 	//we reset the surgery related variables
-	reset_limb_surgeries()
+	if(!amputation) //Lazy fix
+		reset_limb_surgeries()
+
+	destroyed = TRUE
 
 	var/organ	//Dropped limb object
 	switch(body_part)
@@ -742,6 +747,9 @@ This function completely restores a damaged organ to perfect condition.
 		owner.minimum_gun_recoil -= 1
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil += 1
+	if(added & LIMB_INTEGRITY_EFFECT_NONE)
+		droplimb()
+
 /*
 /obj/limb/foot
 	name = "foot"
@@ -765,6 +773,10 @@ This function completely restores a damaged organ to perfect condition.
 		owner.action_delay -= 3 SECONDS
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.action_delay += 3 SECONDS
+
+	if(added & LIMB_INTEGRITY_EFFECT_NONE)
+		droplimb()
+
 /*
 /obj/limb/hand
 	name = "hand"

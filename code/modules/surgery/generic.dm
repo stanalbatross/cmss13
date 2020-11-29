@@ -103,3 +103,21 @@
 		user.visible_message(SPAN_NOTICE("[user] succeeds... somewhat"),
 			SPAN_NOTICE("You succeed... more or less"))
 	return TRUE
+
+/datum/surgery_step/cauterize
+	name = "Cauterize"
+	tools = list(/obj/item/tool/surgery/cautery = 100, /obj/item/tool/lighter = 35)
+	time = 6 SECONDS
+	required_surgery_skill = SKILL_SURGERY_TRAINED
+
+/datum/surgery_step/cauterize/preop(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	user.visible_message(SPAN_NOTICE("[user] starts cauterizing [target]'s [parse_zone(target_zone)] with \the [tool]."),
+		SPAN_NOTICE("You start cauterizing \the [parse_zone(target_zone)] with \the [tool] ..."))
+
+/datum/surgery_step/cauterize/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	surgery.affected_limb.remove_all_bleeding()
+	return ..()
+
+/datum/surgery_step/cauterize/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	target.apply_damage(5, BURN, target_zone)
+	return ..()

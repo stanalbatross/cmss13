@@ -18,11 +18,11 @@
 
 	// Check if they have a functioning hand.
 	var/obj/limb/E = user.get_limb("l_hand")
-	if(E && E.destroyed)
+	if(E && !E.destroyed)
 		return TRUE
 
 	E = user.get_limb("r_hand")
-	if(E && E.destroyed)
+	if(E && !E.destroyed)
 		return TRUE
 
 	return FALSE
