@@ -8,7 +8,7 @@
 	matter = list("metal" = 500, "glass" = 0)
 	var/construction_time = 100
 	var/list/construction_cost = list("metal"=20000,"glass"=5000)
-	var/list/part = null
+	var/body_part
 
 /obj/item/robot_parts/l_arm
 	name = "robot left arm"
@@ -16,7 +16,7 @@
 	icon_state = "l_arm"
 	construction_time = 200
 	construction_cost = list("metal"=18000)
-	part = list("l_arm","l_hand")
+	body_part = BODY_FLAG_ARM_LEFT
 
 /obj/item/robot_parts/r_arm
 	name = "robot right arm"
@@ -24,7 +24,7 @@
 	icon_state = "r_arm"
 	construction_time = 200
 	construction_cost = list("metal"=18000)
-	part = list("r_arm","r_hand")
+	body_part = BODY_FLAG_ARM_RIGHT
 
 /obj/item/robot_parts/l_leg
 	name = "robot left leg"
@@ -32,7 +32,7 @@
 	icon_state = "l_leg"
 	construction_time = 200
 	construction_cost = list("metal"=15000)
-	part = list("l_leg","l_foot")
+	body_part = BODY_FLAG_LEG_LEFT
 
 /obj/item/robot_parts/r_leg
 	name = "robot right leg"
@@ -40,7 +40,7 @@
 	icon_state = "r_leg"
 	construction_time = 200
 	construction_cost = list("metal"=15000)
-	part = list("r_leg","r_foot")
+	body_part = BODY_FLAG_LEG_RIGHT
 
 /obj/item/robot_parts/chest
 	name = "robot torso"

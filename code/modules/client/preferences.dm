@@ -221,6 +221,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Ethnicity:</b> <a href='?_src_=prefs;preference=ethnicity;task=input'><b>[ethnicity]</b></a><br>"
 	dat += "<b>Body Type:</b> <a href='?_src_=prefs;preference=body_type;task=input'><b>[body_type]</b></a><br>"
 	dat += "<b>Poor Eyesight:</b> <a href='?_src_=prefs;preference=disabilities'><b>[disabilities == 0 ? "No" : "Yes"]</b></a><br>"
+	dat += "<b>Limbs:</b> <a href='?_src_=prefs;preference=limbs;task=input'>Adjust</a><br>"
 	dat += "<br>"
 
 	dat += "<h2><b><u>Occupation Choices:</u></b></h2>"
@@ -1094,14 +1095,14 @@ var/const/MAX_SAVE_SLOTS = 10
 						if("Right Arm")
 							limb = "r_arm"
 
-					var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in list("Normal","Prothesis") //"Amputated"
+					var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in list("Normal","Prosthesis") //"Amputated"
 					if(!new_state) return
 
 					switch(new_state)
 						if("Normal")
-							organ_data[limb] = null
-						if("Prothesis")
-							organ_data[limb] = "cyborg"
+							organ_data[limb] = LIMB_ORGANIC
+						if("Prosthesis")
+							organ_data[limb] = LIMB_ROBOTIC
 
 				if("skin_style")
 					var/skin_style_name = input(user, "Select a new skin style") as null|anything in list("default1", "default2", "default3")
@@ -1327,16 +1328,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	// Destroy/cyborgize organs
 
 	for(var/name in organ_data)
-
-		var/status = organ_data[name]
 		var/obj/limb/O = character.get_limb(name)
-		if(O)
-//			if(status == "amputated")
-//				O.amputated = 1
-//				O.status |= LIMB_DESTROYED
-//				O.destspawn = 1
-			if(status == "cyborg")
-				O.status |= LIMB_ROBOTIC
+		O?.set_status(organ_data[name])
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES
@@ -1388,12 +1381,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	// Destroy/cyborgize organs
 
 	for(var/name in organ_data)
-
-		var/status = organ_data[name]
 		var/obj/limb/O = character.get_limb(name)
-		if(O)
-			if(status == "cyborg")
-				O.status |= LIMB_ROBOTIC
+		O?.set_status(organ_data[name])
+
 
 	if(underwear > underwear_f.len || underwear < 1)
 		underwear = 0 //I'm sure this is 100% unnecessary, but I'm paranoid... sue me. //HAH NOW NO MORE MAGIC CLONING UNDIES

@@ -193,8 +193,11 @@
     )
     requires_bodypart = FALSE
 
-/datum/surgery/close_stump/can_start(mob/user, mob/living/patient)
-    if(!affected_limb.brute_dam && !affected_limb.burn_dam && !affected_limb.integrity_damage)
+/datum/surgery/close_stump/can_start(mob/user, mob/living/carbon/patient)
+    var/obj/limb/L = patient.get_limb(user.zone_selected)
+    if(!L)
+        return FALSE
+    if(!L.get_damage())
         return FALSE
     return ..()
     

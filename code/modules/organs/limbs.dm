@@ -115,8 +115,8 @@
 	if(brute_autoheal || burn_autoheal)
 		heal_damage(brute_autoheal, burn_autoheal, TRUE, TRUE)
 
-/obj/limb/proc/set_status(status = LIMB_ORGANIC)
-	switch(status)
+/obj/limb/proc/set_status(new_status = LIMB_ORGANIC)
+	switch(new_status)
 		if(LIMB_ORGANIC)
 			can_autoheal = TRUE
 			status = LIMB_ORGANIC
@@ -151,7 +151,7 @@
 				if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CRITICAL)
 					integrity_level++
 					new_effects |= LIMB_INTEGRITY_EFFECT_CRITICAL
-					if(integrity_damage >= LIMB_INTEGRITY_EFFECT_NONE)
+					if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_NONE)
 						integrity_level++
 						new_effects |= LIMB_INTEGRITY_EFFECT_NONE
 
@@ -309,7 +309,7 @@ This function completely restores a damaged organ to perfect condition.
 
 
 /obj/limb/update_icon(forced = FALSE)
-	if(has_stump_icon && (!parent || !(parent.destroyed)))
+	if(has_stump_icon && (!parent || parent.destroyed))
 		icon = 'icons/mob/humans/dam_human.dmi'
 		icon_state = "stump_[icon_name]"
 

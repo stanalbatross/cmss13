@@ -61,8 +61,12 @@
 			if(!surgeryloop_two.possible_locs.Find(selected_zone))
 				continue
 			if(affecting)
-				if(surgeryloop_two.requires_bodypart && affecting.destroyed) //Temporary while limbs aren't LITERALLY removed
-					continue
+				if(surgeryloop_two.requires_bodypart) //Temporary while limbs aren't LITERALLY removed
+					if(affecting.destroyed)
+						continue
+				else
+					if(!affecting.destroyed)
+						continue
 				if(surgeryloop_two.requires_bodypart_type && affecting.status != surgeryloop_two.requires_bodypart_type)
 					continue
 			else if(carbontarget && surgeryloop_two.requires_bodypart) //mob with no limb in surgery zone when we need a limb
@@ -92,8 +96,12 @@
 			if(carbontarget)
 				affecting = carbontarget.get_limb(check_zone(selected_zone))
 			if(affecting)
-				if(!surgeryinstance_notonmob.requires_bodypart)
-					return
+				if(surgeryinstance_notonmob.requires_bodypart) //Temporary while limbs aren't LITERALLY removed
+					if(affecting.destroyed)
+						return
+				else
+					if(!affecting.destroyed)
+						return
 				if(surgeryinstance_notonmob.requires_bodypart_type && affecting.status != surgeryinstance_notonmob.requires_bodypart_type)
 					return
 			else if(carbontarget && surgeryinstance_notonmob.requires_bodypart)

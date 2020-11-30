@@ -1,6 +1,7 @@
 
 obj/item/limb
 	icon = 'icons/mob/humans/species/r_human.dmi'
+	var/body_flag
 
 obj/item/limb/New(loc, mob/living/carbon/human/H)
 	..(loc)
@@ -42,6 +43,7 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 
 /obj/item/limb/arm/l_arm
 	name = "left arm"
+	body_flag = BODY_FLAG_ARM_LEFT
 	icon_state = "l_arm"
 /obj/item/limb/foot/l_foot
 	name = "left foot"
@@ -51,9 +53,11 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 	icon_state = "l_hand"
 /obj/item/limb/leg/l_leg
 	name = "left leg"
+	body_flag = BODY_FLAG_LEG_LEFT
 	icon_state = "l_leg"
 /obj/item/limb/arm/r_arm
 	name = "right arm"
+	body_flag = BODY_FLAG_ARM_RIGHT
 	icon_state = "r_arm"
 /obj/item/limb/foot/r_foot
 	name = "right foot"
@@ -63,12 +67,14 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 	icon_state = "r_hand"
 /obj/item/limb/leg/r_leg
 	name = "right leg"
+	body_flag = BODY_FLAG_LEG_RIGHT
 	icon_state = "r_leg"
 
 /obj/item/limb/head
 	name = "head"
 	icon_state = "head_m"
 	unacidable = TRUE
+	body_flag = BODY_FLAG_HEAD
 	var/mob/living/brain/brainmob
 	var/brain_op_stage = 0
 	var/brain_item_type = /obj/item/organ/brain
