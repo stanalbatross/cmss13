@@ -11,7 +11,7 @@
 
     options = list()
 
-/datum/tech/droppod/item/modular_armor_upgrade/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/droppod/item/engi_czsp/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
     // We can change the options depending on who's accessing this
     var/list/newOptions
     LAZYINITLIST(newOptions)

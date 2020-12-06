@@ -1,6 +1,6 @@
 /datum/tech/xeno_handler
     name = "Advanced Exobiology"
-    desc = "Gives the marines the LTB tank and 2 kits to make vehicle crewmen. The kits will be delivered by ASRS."
+    desc = "Give the Marines a Xeno ERT"
     icon_state = "red"
 
     flags = TREE_FLAG_MARINE
