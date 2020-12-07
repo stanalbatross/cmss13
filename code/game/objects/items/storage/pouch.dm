@@ -129,9 +129,9 @@
 /obj/item/storage/pouch/survival/full/fill_preset_inventory()
 	new /obj/item/device/flashlight(src)
 	new /obj/item/tool/crowbar/red(src)
-	new /obj/item/reagent_container/pill/tramadol(src)
-	new /obj/item/stack/medical/bruise_pack (src, 3)
-	new /obj/item/stack/sheet/metal(src, 60)
+	new /obj/item/reagent_container/hypospray/autoinjector/skillless(src)
+	new /obj/item/stack/medical/bruise_pack(src)
+	new /obj/item/stack/sheet/metal/large_stack(src)
 
 
 /obj/item/storage/pouch/firstaid

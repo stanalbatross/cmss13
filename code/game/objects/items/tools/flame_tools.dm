@@ -436,6 +436,18 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 7200
 	chem_volume = 30
 
+/obj/item/clothing/mask/cigarette/cigar/classic
+	name = "classic cigar"
+	desc = "This thing is covered with dust and what seems to be toolbox residue. For the old-fashioned."
+	icon_state = "cigar2_off"
+	icon_on = "cigar2_on"
+	icon_off = "cigar2_off"
+	smoketime = 120 MINUTES
+	chem_volume = 40
+
+/obj/item/clothing/mask/cigarette/cigar/classic/Initialize()
+	. = ..()
+	reagents.add_reagent("nicotine",20)
 
 /obj/item/clothing/mask/cigarette/cigar/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/tool/weldingtool))

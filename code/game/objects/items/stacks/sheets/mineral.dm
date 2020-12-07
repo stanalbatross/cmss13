@@ -90,13 +90,22 @@ var/global/list/datum/stack_recipe/iron_recipes = list ( \
 	icon_state = "sheet-sandstone"
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 5
-
+	amount_sprites = TRUE
 	sheettype = "sandstone"
 	stack_id = "sandstone"
 
 /obj/item/stack/sheet/mineral/sandstone/New()
 	..()
 	recipes = sandstone_recipes
+
+/obj/item/stack/sheet/mineral/sandstone/small_stack
+	amount = STACK_10
+
+/obj/item/stack/sheet/mineral/sandstone/medium_stack
+	amount = STACK_25
+
+/obj/item/stack/sheet/mineral/sandstone/large_stack
+	amount = STACK_50
 
 /obj/item/stack/sheet/mineral/diamond
 	name = "diamond"
@@ -135,7 +144,7 @@ var/global/list/datum/stack_recipe/iron_recipes = list ( \
 	desc = "Phoron is an extremely rare mineral with exotic properties, often used in cutting-edge research. Just getting it into a stable, solid form is already hard enough."
 	singular_name = "phoron ingot"
 	icon_state = "sheet-phoron"
-
+	amount_sprites = TRUE
 	perunit = 2000
 	sheettype = "phoron"
 	stack_id = "phoron"

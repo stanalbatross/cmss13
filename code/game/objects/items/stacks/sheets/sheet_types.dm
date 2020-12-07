@@ -50,14 +50,15 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 )
 
 /obj/item/stack/sheet/metal
-	name = "metal"
-	desc = "Sheets made out of metal. It has been dubbed Metal Sheets."
+	name = "metal sheets"
+	desc = "Sheets made out of metal. They have been dubbed Metal Sheets."
 	singular_name = "metal sheet"
 	icon_state = "sheet-metal"
+	item_state = "sheet-metal"
 	matter = list("metal" = 3750)
 	throwforce = 14.0
 	flags_atom = FPRINT|CONDUCT
-	
+	amount_sprites = TRUE
 	stack_id = "metal"
 
 /obj/item/stack/sheet/metal/small_stack
@@ -88,15 +89,15 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 	)
 
 /obj/item/stack/sheet/plasteel
-	name = "plasteel"
+	name = "plasteel sheets"
 	singular_name = "plasteel sheet"
-	desc = "This sheet is an alloy of iron and phoron."
+	desc = "These sheets are an alloy of iron and phoron."
 	icon_state = "sheet-plasteel"
 	item_state = "sheet-plasteel"
 	matter = list("metal" = 3750)
 	throwforce = 15.0
 	flags_atom = FPRINT|CONDUCT
-	
+	amount_sprites = TRUE
 	stack_id = "plasteel"
 
 /obj/item/stack/sheet/plasteel/New(var/loc, var/amount=null)
@@ -109,6 +110,9 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 
 /obj/item/stack/sheet/plasteel/medium_stack
 	amount = STACK_30
+
+/obj/item/stack/sheet/plasteel/large_stack
+	amount = STACK_50
 
 /*
  * Wood
@@ -133,7 +137,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	singular_name = "wood plank"
 	icon_state = "sheet-wood"
 	item_state = "sheet-wood"
-	
+	amount_sprites = TRUE
 	stack_id = "wood plank"
 
 /obj/item/stack/sheet/wood/cyborg
@@ -242,7 +246,7 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 		)) \
 )
 
-/obj/item/stack/sheet/cardboard	//BubbleWrap
+/obj/item/stack/sheet/cardboard
 	name = "cardboard"
 	desc = "Large sheets of card, like boxes folded flat."
 	singular_name = "cardboard sheet"

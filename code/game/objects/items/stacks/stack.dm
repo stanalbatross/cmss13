@@ -18,12 +18,25 @@
 	var/max_amount //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
 	var/stack_id //used to determine if two stacks are of the same kind.
 	attack_speed = 3	//makes collect stacks off the floor and such less of a pain
+	var/amount_sprites = FALSE //does it have sprites for extra amount, like metal, plasteel, or wood
 
 /obj/item/stack/New(var/loc, var/amount = null)
 	..()
 	if(amount)
 		src.amount = amount
+	update_icon_state()
 
+/obj/item/stack/proc/update_icon_state()
+	if(!amount_sprites)
+		return
+	if(amount == 1)
+		icon_state = initial(icon_state) //if it has only one stack, it is the singular sprite
+	else if(amount == max_amount)
+		icon_state = "[initial(icon_state)]-4" //if it's the maximum amount only, use the maximum sprite (for sheets, 4 sheet sprite)
+	else if(amount < (max_amount * (1/2)))
+		icon_state = "[initial(icon_state)]-2" //if it's under two thirds but above 1, use this sprite (2 sheets), so you can differentiate between random metal and any organized stacks
+	else
+		icon_state = "[initial(icon_state)]-3" //otherwise use this sprite (3 sheets)
 
 /obj/item/stack/Destroy()
 	if (usr && usr.interactee == src)
@@ -160,6 +173,7 @@
 			var/obj/item/stack/new_item = O
 			new_item.amount = R.res_amount * multiplier
 		amount -= R.req_amount * multiplier
+		update_icon_state()
 
 		if(amount <= 0)
 			var/oldsrc = src
@@ -213,6 +227,7 @@
 	if(used > amount) //If it's larger than what we have, no go.
 		return 0
 	amount -= used
+	update_icon_state()
 	if(amount <= 0)
 		if(usr && loc == usr)
 			usr.temp_drop_inv_item(src)
@@ -277,7 +292,9 @@
 			if(to_transfer <= 0)
 				return
 			to_chat(user, SPAN_INFO("You transfer [to_transfer] between the stacks."))
+			update_icon_state()
 			S.add(to_transfer)
+			S.update_icon_state()
 			if (S && usr.interactee==S)
 				INVOKE_ASYNC(S, /obj/item/stack/.proc/interact, usr)
 			src.use(to_transfer)
