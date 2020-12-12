@@ -204,6 +204,9 @@
 
 
 /mob/living/carbon/human/proc/process_glasses(var/obj/item/clothing/glasses/G)
+	if(SEND_SIGNAL(src, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS) & COMPONENT_BLOCK_GLASSES_SIGHT_BONUS)
+		return
+
 	if(G && G.active)
 		see_in_dark += G.darkness_view
 		if(G.vision_flags)

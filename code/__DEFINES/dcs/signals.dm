@@ -159,5 +159,5 @@
 #define COMSIG_MOB_PRE_ITEM_ZOOM "mob_pre_item_zoom"
 	#define COMPONENT_CANCEL_ZOOM (1<<0)
 
-#define COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION "mob_pre_special_vision_application"
-	#define COMPONENT_BLOCK_SPECIAL_VISION_BONUS (1<<0)
+#define COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS "mob_pre_special_vision_application"
+	#define COMPONENT_BLOCK_GLASSES_SIGHT_BONUS (1<<0)

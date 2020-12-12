@@ -139,6 +139,7 @@
 	recalculate_integrity_level()
 
 /obj/limb/proc/recalculate_integrity_level()
+	var/old_level = integrity_level
 	integrity_level = 0
 	var/new_effects
 	if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
@@ -156,6 +157,9 @@
 					if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_NONE)
 						integrity_level++
 						new_effects |= LIMB_INTEGRITY_EFFECT_NONE
+
+	if(integrity_level > old_level)
+		integrity_warning()
 
 	new_effects &= ~neutralized_integrity_effects
 
@@ -178,19 +182,37 @@
 //the level is set
 /obj/limb/proc/set_integrity_level(new_level)
 	switch(new_level)
-		if(LIMB_INTEGRITY_EFFECT_OKAY)
+		if(LIMB_INTEGRITY_OKAY)
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_OKAY
-		if(LIMB_INTEGRITY_EFFECT_CONCERNING)
+		if(LIMB_INTEGRITY_CONCERNING)
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CONCERNING
-		if(LIMB_INTEGRITY_EFFECT_SERIOUS)
+		if(LIMB_INTEGRITY_SERIOUS)
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_SERIOUS
-		if(LIMB_INTEGRITY_EFFECT_CRITICAL)
+		if(LIMB_INTEGRITY_CRITICAL)
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CRITICAL
-		if(LIMB_INTEGRITY_EFFECT_NONE)
+		if(LIMB_INTEGRITY_NONE)
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_NONE
 		else
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_PERFECT
 	recalculate_integrity()
+
+/obj/limb/proc/integrity_warning()
+	switch(integrity_level)
+		if(LIMB_INTEGRITY_OKAY)
+			playsound(owner, 'sound/effects/bone_break2.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] feels weird..."))
+		if(LIMB_INTEGRITY_CONCERNING)
+			playsound(owner, 'sound/effects/bone_break4.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] begins to tingle..."))
+		if(LIMB_INTEGRITY_SERIOUS)
+			playsound(owner, 'sound/effects/bone_break6.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] starts to feel hot..."))
+		if(LIMB_INTEGRITY_CRITICAL)
+			playsound(owner, 'sound/effects/bone_break1.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("You can barely feel your [display_name]!!"))
+		if(LIMB_INTEGRITY_NONE)
+			playsound(owner, 'sound/effects/limb_gore.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("You can't feel your [display_name]!!"))
 
 /****************************************************
 			   DAMAGE PROCS
@@ -752,12 +774,14 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
-
+	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING || added & LIMB_INTEGRITY_EFFECT_CONCERNING)
+		owner.recalculate_move_delay = TRUE
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil -= 1
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.minimum_gun_recoil += 1
 	if(added & LIMB_INTEGRITY_EFFECT_NONE)
+		owner.recalculate_move_delay = TRUE
 		droplimb()
 
 /*
@@ -873,16 +897,16 @@ This function completely restores a damaged organ to perfect condition.
 		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
 
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS) //This is really nasty
-		UnregisterSignal(owner, COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION)
+		UnregisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		RegisterSignal(owner, COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION, .proc/block_special_vision)
+		RegisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS, .proc/block_special_vision)
 
 /obj/limb/head/proc/block_zoom()
 	to_chat(owner, SPAN_WARNING("Ack! Your head hurts tremendously, making you unable to procede!"))
 	return COMPONENT_CANCEL_ZOOM
 
 /obj/limb/head/proc/block_special_vision()
-	return COMPONENT_BLOCK_SPECIAL_VISION_BONUS
+	return COMPONENT_BLOCK_GLASSES_SIGHT_BONUS
 
 /obj/limb/head/update_overlays()
 	..()
