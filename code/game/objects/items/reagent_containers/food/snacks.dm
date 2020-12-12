@@ -118,6 +118,7 @@
 					reagents.trans_to_ingest(M, reagents.total_volume)
 				bitecount++
 				On_Consume(M)
+			SEND_SIGNAL(M, COMSIG_MOB_INGESTION, src)
 			return 1
 
 	return 0

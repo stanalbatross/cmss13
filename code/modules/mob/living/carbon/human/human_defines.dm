@@ -144,8 +144,6 @@
 
 	//Vars currently in use by limbs
 	var/bonus_knockdown
-	var/zoom_blocked //Can't use zoom
-	var/special_vision_blocked  //Can't see in the dark, etc  
 	var/xeno_neurotoxin_buff //Increases effectiveness of xeno neurotoxin 
 	var/minimum_gun_recoil
 	var/minimum_wield_delay

@@ -153,3 +153,11 @@
 
 #define COMSIG_GRENADE_PRE_PRIME "grenade_pre_prime"
 	#define COMPONENT_GRENADE_PRIME_CANCEL	(1<<0)
+
+#define COMSIG_MOB_INGESTION "mob_ingestion"
+
+#define COMSIG_MOB_PRE_ITEM_ZOOM "mob_pre_item_zoom"
+	#define COMPONENT_CANCEL_ZOOM (1<<0)
+
+#define COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION "mob_pre_special_vision_application"
+	#define COMPONENT_BLOCK_SPECIAL_VISION_BONUS (1<<0)

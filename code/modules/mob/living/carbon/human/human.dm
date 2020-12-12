@@ -1197,13 +1197,14 @@
 		see_invisible = SEE_INVISIBLE_LEVEL_TWO
 	else
 		sight &= ~(SEE_TURFS|SEE_MOBS|SEE_OBJS)
-		if(!special_vision_blocked)
-			see_in_dark = species.darksight
-			see_invisible = see_in_dark > 2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING
-			if(glasses)
-				process_glasses(glasses)
-			else
-				see_invisible = SEE_INVISIBLE_LIVING
+		if(SEND_SIGNAL(src, COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION) & COMPONENT_BLOCK_SPECIAL_VISION_BONUS)
+			return
+		see_in_dark = species.darksight
+		see_invisible = see_in_dark > 2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING
+		if(glasses)
+			process_glasses(glasses)
+		else
+			see_invisible = SEE_INVISIBLE_LIVING
 
 
 

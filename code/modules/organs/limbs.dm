@@ -127,6 +127,8 @@
 			return FALSE
 	return TRUE
 
+/obj/limb/proc/get_slowdown()
+
 //Integrity damage changes the integrity level
 /obj/limb/proc/take_integrity_damage(amount)
 	integrity_damage = max(min(integrity_damage + amount, MAX_LIMB_INTEGRITY),0)
@@ -189,14 +191,6 @@
 		else
 			integrity_damage = LIMB_INTEGRITY_THRESHOLD_PERFECT
 	recalculate_integrity()
-
-/mob/living/carbon/human/proc/check_limb_integrity_effect(limb_name, level)
-	var/obj/limb/L = get_limb(limb_name)
-	if(!L)
-		return FALSE
-	if(L.integrity_level_effects & level)
-		return TRUE
-	return FALSE
 
 /****************************************************
 			   DAMAGE PROCS
@@ -734,11 +728,27 @@ This function completely restores a damaged organ to perfect condition.
 		owner.xeno_neurotoxin_buff -= 1.75
 	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
 		owner.xeno_neurotoxin_buff += 1.75
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		UnregisterSignal(owner, COMSIG_MOB_INGESTION)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		RegisterSignal(owner, COMSIG_MOB_INGESTION, .proc/ingestion_toxic_damage)
+
+/obj/limb/groin/proc/ingestion_toxic_damage(mob/living/carbon/human/H, obj/item/ingested)
+	to_chat(owner, SPAN_WARNING("You feel slightly nauseous shortly after ingesting \the [ingested]"))
+	owner.apply_damage(5, TOX)
 
 /obj/limb/leg
 	name = "leg"
 	display_name = "leg"
 	max_damage = 35
+
+/obj/limb/leg/get_slowdown()
+	. = ..()
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CONCERNING)
+		. += 0.4
+	if(destroyed)
+		. += 2
+
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
@@ -858,14 +868,21 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/head/reapply_integrity_effects(added, removed)
 	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_CONCERNING)
-		owner.zoom_blocked -= 1
+		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
 	else if(added & LIMB_INTEGRITY_EFFECT_CONCERNING)
-		owner.zoom_blocked += 1
+		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
 
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS) //This is really nasty
-		owner.special_vision_blocked -= 1
+		UnregisterSignal(owner, COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		owner.special_vision_blocked += 1
+		RegisterSignal(owner, COMSIG_MOB_PRE_SPECIAL_VISION_APPLICATION, .proc/block_special_vision)
+
+/obj/limb/head/proc/block_zoom()
+	to_chat(owner, SPAN_WARNING("Ack! Your head hurts tremendously, making you unable to procede!"))
+	return COMPONENT_CANCEL_ZOOM
+
+/obj/limb/head/proc/block_special_vision()
+	return COMPONENT_BLOCK_SPECIAL_VISION_BONUS
 
 /obj/limb/head/update_overlays()
 	..()

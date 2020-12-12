@@ -42,8 +42,7 @@ var/global/list/randomized_pill_icons
 			if(H.species.flags & IS_SYNTHETIC)
 				to_chat(H, SPAN_DANGER("You can't eat pills."))
 				return
-			if(H.check_limb_integrity_effect("groin",LIMB_INTEGRITY_EFFECT_SERIOUS))
-				H.apply_damage(2, TOX)
+		SEND_SIGNAL(user, COMSIG_MOB_INGESTION, src)
 
 		M.visible_message(SPAN_NOTICE("[user] swallows [src]."),
 			SPAN_HELPFUL("You swallow [src]."))
@@ -73,7 +72,7 @@ var/global/list/randomized_pill_icons
 		if(!do_after(user, ingestion_time, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, M, INTERRUPT_MOVED, BUSY_ICON_MEDICAL)) return
 
 		user.drop_inv_item_on_ground(src) //icon update
-		
+
 		user.affected_message(M,
 			SPAN_HELPFUL("You [user == M ? "<b>swallowed</b>" : "<b>fed</b> [M]"] a pill."),
 			SPAN_HELPFUL("[user] <b>fed</b> you a pill."),
@@ -86,8 +85,7 @@ var/global/list/randomized_pill_icons
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [key_name(M)] Reagents: [rgt_list_text]</font>")
 		msg_admin_attack("[key_name(user)] fed [key_name(M)] with [src.name] (REAGENTS: [rgt_list_text]) (INTENT: [uppertext(intent_text(user.a_intent))]) in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
 
-		if(H.check_limb_integrity_effect("groin",LIMB_INTEGRITY_EFFECT_SERIOUS))
-			H.apply_damage(5, TOX)
+		SEND_SIGNAL(H, COMSIG_MOB_INGESTION, src)
 
 		if(reagents && reagents.total_volume)
 			reagents.set_source_mob(user)
