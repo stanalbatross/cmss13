@@ -39,7 +39,8 @@
 
 		var/obj/L = null
 
-		for(var/obj/effect/landmark/sloc in landmarks_list)
+		for(var/i in GLOB.teleporter_landmarks)
+			var/obj/effect/landmark/sloc = i
 			if(sloc.name != C.data) continue
 			if(locate(/mob/living) in sloc.loc) continue
 			L = sloc
@@ -87,11 +88,12 @@
 	var/list/L = list()
 	var/list/areaindex = list()
 
-	for(var/obj/item/device/radio/beacon/R in item_list)
+	for(var/i in GLOB.radio_beacon_list)
+		var/obj/item/device/radio/beacon/R = i
 		var/turf/T = get_turf(R)
 		if (!T)
 			continue
-		if(T.z == 2 || T.z > 7)
+		if(is_admin_level(T.z) || T.z > 7)
 			continue
 		var/tmpname = T.loc.name
 		if(areaindex[tmpname])
@@ -100,7 +102,8 @@
 			areaindex[tmpname] = 1
 		L[tmpname] = R
 
-	for (var/obj/item/implant/tracking/I in item_list)
+	for (var/j in GLOB.tracking_implant_list)
+		var/obj/item/implant/tracking/I = j
 		if (!I.implanted || !ismob(I.loc))
 			continue
 		else
@@ -110,7 +113,7 @@
 					continue
 			var/turf/T = get_turf(M)
 			if(T)	continue
-			if(T.z == 2)	continue
+			if(is_admin_level(T.z))	continue
 			var/tmpname = M.real_name
 			if(areaindex[tmpname])
 				tmpname = "[tmpname] ([++areaindex[tmpname]])"

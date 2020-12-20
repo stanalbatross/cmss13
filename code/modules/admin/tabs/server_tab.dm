@@ -6,7 +6,7 @@
 	if (!usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
 		return
 
-	if(!check_rights(R_DEBUG, FALSE) && ticker.current_state != GAME_STATE_COMPILE_FINISHED)
+	if(!check_rights(R_DEBUG, FALSE) && SSticker.current_state != GAME_STATE_COMPILE_FINISHED)
 		to_chat(usr, "You can't restart the world until compilation has finished!")
 		return
 
@@ -19,18 +19,6 @@
 
 		sleep(50)
 		world.Reboot()
-
-/datum/admins/proc/toggleguests()
-	set name = "T: Toggle Guest Joining"
-	set desc = "Guests can't enter"
-	set category = "Server"
-
-	guests_allowed = !guests_allowed
-	if(!guests_allowed)
-		to_world("<B>Guests may no longer enter the game.</B>")
-	else
-		to_world("<B>Guests may now enter the game.</B>")
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] toggled guests game entering [guests_allowed ? "":"dis"]allowed."), 1)
 
 /datum/admins/proc/togglejoin()
 	set name = "T: Toggle Marines Joining"

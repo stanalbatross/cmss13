@@ -20,12 +20,14 @@
 /datum/cm_objective/eliminate/check_completion()
 	. = ..()
 	var/mob_count = 0
-	for(var/mob/M in living_mob_list)
+	for(var/i in GLOB.alive_mob_list)
+		var/mob/M = i
 		if(!is_valid_mob(M))
 			continue
 		switch(elimination_type)
 			if(ELIMINATE_Z_LEVEL)
-				if((M.z in z_levels) || (include_vents && (M.loc.z in z_levels)))
+				var/list/zs = SSmapping.levels_by_any_trait(z_levels)
+				if((M.z in zs) || (include_vents && (M.loc.z in zs)))
 					mob_count++
 				else
 					continue
@@ -55,11 +57,11 @@
 
 /datum/cm_objective/eliminate/xenomorph/ship
 	elimination_type = ELIMINATE_Z_LEVEL
-	z_levels = list(MAIN_SHIP_Z_LEVEL)
+	z_levels = list(ZTRAIT_MARINE_MAIN_SHIP)
 
 /datum/cm_objective/eliminate/xenomorph/queen/ship
 	elimination_type = ELIMINATE_Z_LEVEL
-	z_levels = list(MAIN_SHIP_Z_LEVEL)
+	z_levels = list(ZTRAIT_MARINE_MAIN_SHIP)
 
 // --------------------------------------------
 // *** Get a mob to an area/level ***
@@ -292,9 +294,9 @@
 
 /datum/cm_objective/recover_corpses/colonists/post_round_start()
 	var/turf/T
-	for(var/mob/living/carbon/human/H in human_mob_list)
+	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		T = get_turf(H)
-		if(!(T.z in SURFACE_Z_LEVELS))
+		if(!is_ground_level(T.z))
 			continue
 		if(H.stat != DEAD)
 			continue
@@ -376,7 +378,7 @@
 
 /datum/cm_objective/contain/process()
 	contained_specimen_points = 0
-	for (var/mob/living/carbon/Xenomorph/X in living_xeno_list)
+	for (var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
 		if(istype(get_area(X),recovery_area))
 			switch(X.tier)
 				if(1)
@@ -395,7 +397,7 @@
 						contained_specimen_points += points_per_specimen_tier_0
 
 
-	for(var/mob/living/carbon/human/Y in yautja_mob_list)
+	for(var/mob/living/carbon/human/Y in GLOB.yautja_mob_list)
 		if(Y.stat == DEAD) continue
 		if(istype(get_area(Y),recovery_area))
 			contained_specimen_points += points_per_specimen_tier_4

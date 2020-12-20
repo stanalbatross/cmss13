@@ -150,8 +150,8 @@
 
 	// remove the character from the list of the dead
 	if(stat == DEAD)
-		dead_mob_list -= src
-		living_mob_list += src
+		GLOB.dead_mob_list -= src
+		GLOB.alive_mob_list += src
 		tod = null
 		timeofdeath = 0
 
@@ -168,6 +168,9 @@
 	setBrainLoss(0)
 	SetKnockedout(0)
 	SetStunned(0)
+	SetDazed(0)
+	SetSlowed(0)
+	SetSuperslowed(0)
 	SetKnockeddown(0)
 	ExtinguishMob()
 	fire_stacks = 0

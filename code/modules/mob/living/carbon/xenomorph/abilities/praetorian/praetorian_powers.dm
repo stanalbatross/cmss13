@@ -1,6 +1,5 @@
 /datum/action/xeno_action/activable/pierce/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner
-
 	if (!action_cooldown_check())
 		return
 
@@ -8,6 +7,9 @@
 		return
 
 	if(!A || A.layer >= FLY_LAYER || !isturf(X.loc))
+		return
+
+	if (!check_and_use_plasma_owner())
 		return
 
 	// Get list of target mobs
@@ -134,7 +136,6 @@
 
 /datum/action/xeno_action/activable/cleave/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner
-
 	if (!action_cooldown_check())
 		return
 
@@ -352,8 +353,15 @@
 
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/unroot_human, H), get_xeno_stun_duration(H, 12))
 		to_chat(H, SPAN_XENOHIGHDANGER("[X] has pinned you to the ground! You cannot move!"))
-	else
-		H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
+
+		var/datum/action/xeno_action/activable/prae_abduct/SFA = get_xeno_action_by_type(X, /datum/action/xeno_action/activable/prae_abduct)
+		var/datum/action/xeno_action/activable/tail_lash/SFB = get_xeno_action_by_type(X, /datum/action/xeno_action/activable/tail_lash)
+		if(SFA && SFA.action_cooldown_check())
+			SFA.reduce_cooldown(50)
+		if(SFB && SFB.action_cooldown_check())
+			SFB.reduce_cooldown(50)
+		else
+			H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
 		step_away(H, X, 2)
 
 
@@ -566,9 +574,17 @@
 	if (!check_and_use_plasma_owner())
 		return
 
+	if (X.mutation_type != PRAETORIAN_DANCER)
+		return
+
+	var/datum/behavior_delegate/praetorian_dancer/BD = X.behavior_delegate
+	if (!istype(BD))
+		return
+
+	BD.dodge_activated = TRUE
 	to_chat(X, SPAN_XENOHIGHDANGER("You can now dodge through mobs!"))
 	X.speed_modifier -= speed_buff_amount
-	X.flags_pass_temp |= PASS_MOB_THRU
+	X.add_temp_pass_flags(PASS_MOB_THRU)
 	X.recalculate_speed()
 
 	addtimer(CALLBACK(src, .proc/remove_effects), duration)
@@ -583,9 +599,17 @@
 	if (!istype(X))
 		return
 
-	if (X.flags_pass_temp & PASS_MOB_THRU)
+	if (X.mutation_type != PRAETORIAN_DANCER)
+		return
+
+	var/datum/behavior_delegate/praetorian_dancer/BD = X.behavior_delegate
+	if (!istype(BD))
+		return
+
+	if (BD.dodge_activated)
+		BD.dodge_activated = FALSE
 		X.speed_modifier += speed_buff_amount
-		X.flags_pass_temp &= ~PASS_MOB_THRU
+		X.remove_temp_pass_flags(PASS_MOB_THRU)
 		X.recalculate_speed()
 		to_chat(X, SPAN_XENOHIGHDANGER("You can no longer dodge through mobs!"))
 

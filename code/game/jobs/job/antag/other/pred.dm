@@ -20,7 +20,7 @@
 	)
 
 /datum/job/antag/predator/set_spawn_positions(var/count)
-	spawn_positions = max((count * PREDATOR_TO_MARINES_SPAWN_RATIO), 4)
+	spawn_positions = max((round(count * PREDATOR_TO_MARINES_SPAWN_RATIO)), 4)
 	total_positions = spawn_positions
 
 /datum/job/antag/predator/spawn_in_player(var/mob/new_player/NP)
@@ -86,5 +86,5 @@
 /datum/job/antag/predator/generate_entry_conditions(mob/living/M, var/whitelist_status)
 	. = ..()
 
-	if(ticker && ticker.mode)
-		ticker.mode.initialize_predator(M, whitelist_status == CLAN_RANK_ADMIN)
+	if(SSticker.mode)
+		SSticker.mode.initialize_predator(M, whitelist_status == CLAN_RANK_ADMIN)

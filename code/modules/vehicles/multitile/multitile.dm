@@ -5,7 +5,7 @@
 	This applies to for example interior entrances and hardpoint origins
 */
 
-var/global/list/all_multi_vehicles = list()
+GLOBAL_LIST_EMPTY(all_multi_vehicles)
 
 /obj/vehicle/multitile
 	name = "multitile vehicle"
@@ -20,6 +20,8 @@ var/global/list/all_multi_vehicles = list()
 	//How much to offset the hitbox of the vehicle from the bottom-left source, defined facing SOUTH, which is the byond default (i.e. a 3x3 vehicle should have x/y at -32/-32) ~Cakey
 	bound_x = 0
 	bound_y = 0
+
+	can_buckle = FALSE
 
 	//Yay! Working cameras in the vehicles at last!!
 	var/obj/structure/machinery/camera/vehicle/camera_int = null
@@ -65,6 +67,7 @@ var/global/list/all_multi_vehicles = list()
 	//List of all hardpoints you can attach to this vehicle
 	var/list/hardpoints_allowed = list()
 
+	var/mob_size_required_to_hit = MOB_SIZE_XENO_SMALL
 
 	var/vehicle_flags = NO_FLAGS		//variable for various flags
 
@@ -120,6 +123,8 @@ var/global/list/all_multi_vehicles = list()
 	icon = 'icons/obj/vehicles/vehicles.dmi'
 	icon_state = "cargo_engine"
 
+	var/move_on_turn = FALSE
+
 /obj/vehicle/multitile/Initialize()
 	. = ..()
 
@@ -149,7 +154,7 @@ var/global/list/all_multi_vehicles = list()
 
 	initialize_cameras()
 
-	all_multi_vehicles += src
+	GLOB.all_multi_vehicles += src
 
 /obj/vehicle/multitile/Destroy()
 	if(!QDELETED(interior))
@@ -157,7 +162,7 @@ var/global/list/all_multi_vehicles = list()
 
 	QDEL_NULL_LIST(hardpoints)
 
-	all_multi_vehicles -= src
+	GLOB.all_multi_vehicles -= src
 
 	. = ..()
 

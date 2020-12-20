@@ -2,15 +2,14 @@
 	caste_name = "Warrior"
 	tier = 2
 
-	melee_damage_lower = XENO_DAMAGE_TIER_4
-	melee_damage_upper = XENO_DAMAGE_TIER_6
+	melee_damage_lower = XENO_DAMAGE_TIER_3
+	melee_damage_upper = XENO_DAMAGE_TIER_5
 	max_health = XENO_HEALTH_TIER_5
 	plasma_gain = XENO_PLASMA_GAIN_TIER_9
-	plasma_max = XENO_PLASMA_TIER_1
+	plasma_max = XENO_NO_PLASMA
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
-	armor_deflection = XENO_ARMOR_TIER_1 + XENO_ARMOR_MOD_VERYSMALL
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_VERYHIGH
-	evasion = XENO_EVASION_LOW
+	armor_deflection = XENO_ARMOR_TIER_1
+	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_7
 
 	behavior_delegate_type = /datum/behavior_delegate/warrior_base
@@ -22,14 +21,15 @@
 
 	tackle_min = 2
 	tackle_max = 4
-	
+
 	agility_speed_increase = -0.9
+
+	heal_resting = 1.4
 
 /mob/living/carbon/Xenomorph/Warrior
 	caste_name = "Warrior"
 	name = "Warrior"
 	desc = "A beefy, alien with an armored carapace."
-	icon_source = "alien_warrior"
 	icon_size = 64
 	icon_state = "Warrior Walking"
 	plasma_types = list(PLASMA_CATECHOLAMINE)
@@ -46,9 +46,13 @@
 		/datum/action/xeno_action/activable/lunge,
 		/datum/action/xeno_action/activable/fling
 	)
-	
+
 	mutation_type = WARRIOR_NORMAL
 	claw_type = CLAW_TYPE_SHARP
+
+/mob/living/carbon/Xenomorph/Warrior/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_warrior))
 
 /mob/living/carbon/Xenomorph/Warrior/update_icons()
 	if (stat == DEAD)
@@ -113,7 +117,7 @@
 
 /datum/behavior_delegate/warrior_base
 	name = "Base Warrior Behavior Delegate"
-	
+
 	var/stored_shield_max = 160
 	var/stored_shield_per_slash = 40
 	var/stored_shield = 0
@@ -152,8 +156,8 @@
 
 /datum/behavior_delegate/boxer/New()
 	. = ..()
-	
-	if(ticker && ticker.mode && (ticker.mode.flags_round_type & MODE_XVX)) // this is pain to do, but how else? hopefully we can replace clarity with something better in the future
+
+	if(SSticker.mode && (SSticker.mode.flags_round_type & MODE_XVX)) // this is pain to do, but how else? hopefully we can replace clarity with something better in the future
 		clear_head = 0
 		max_clear_head = 0
 
@@ -182,13 +186,13 @@
 		ko_icon.layer = 20
 		if(bound_xeno.client && bound_xeno.client.prefs && !bound_xeno.client.prefs.lang_chat_disabled)
 			bound_xeno.client.images += ko_icon
-	
+
 	ko_counter += ko_boost
 	if(ko_counter > max_ko_counter)
 		ko_counter = max_ko_counter
 	var/to_display = round(ko_counter)
 	ko_icon.maptext = "<span class='center langchat'>[to_display]</span>"
-	
+
 	ko_reset_timer = addtimer(CALLBACK(src, .proc/remove_ko), ko_delay, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT|TIMER_STOPPABLE)
 
 /datum/behavior_delegate/boxer/proc/remove_ko()

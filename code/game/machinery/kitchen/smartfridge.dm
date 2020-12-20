@@ -258,6 +258,7 @@
 			if(!transfer_mode)
 				for(var/obj/O in source)
 					if(O.name == K)
+						source.Remove(O)
 						O.loc = loc
 						i--
 						if (i <= 0)
@@ -387,7 +388,7 @@
 	return 1
 
 /obj/structure/machinery/smartfridge/proc/is_in_network()
-	return networked && z == MAIN_SHIP_Z_LEVEL
+	return networked && is_mainship_level(z)
 
 
 

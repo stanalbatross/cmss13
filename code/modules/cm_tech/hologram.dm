@@ -1,14 +1,18 @@
+GLOBAL_LIST_EMPTY(hologram_list)
+
 /mob/hologram
     name = "Hologram"
     desc = "It seems to be a visual projection of someone" //jinkies!
     icon = 'icons/mob/mob.dmi'
     icon_state = "hologram"
-    canmove = TRUE 
+    canmove = TRUE
     blinded = FALSE
 
     invisibility = INVISIBILITY_OBSERVER
     sight = SEE_SELF
     layer = ABOVE_FLY_LAYER
+
+    var/action_icon_state = "hologram_exit"
 
     var/mob/linked_mob
     var/datum/action/leave_hologram/leave_button
@@ -22,20 +26,25 @@
 
     . = ..()
 
+    GLOB.hologram_list += src
     RegisterSignal(M, COMSIG_CLIENT_MOB_MOVE, .proc/handle_move)
     RegisterSignal(M, COMSIG_MOB_RESET_VIEW, .proc/handle_view)
-    RegisterSignal(M, COMSIG_MOB_TAKE_DAMAGE, .proc/take_damage)
-    RegisterSignal(M, COMSIG_HUMAN_TAKE_DAMAGE, .proc/take_damage)
-    RegisterSignal(M, COMSIG_XENO_TAKE_DAMAGE, .proc/take_damage)
-    RegisterSignal(M, COMSIG_BINOCULAR_ATTACK_SELF, .proc/handle_binoc)
-    RegisterSignal(M, COMSIG_BINOCULAR_HANDLE_CLICK, .proc/handle_binoc)
+    RegisterSignal(M, list(
+        COMSIG_MOB_TAKE_DAMAGE,
+        COMSIG_HUMAN_TAKE_DAMAGE,
+        COMSIG_XENO_TAKE_DAMAGE
+    ), .proc/take_damage)
+    RegisterSignal(M, list(
+        COMSIG_BINOCULAR_ATTACK_SELF,
+        COMSIG_BINOCULAR_HANDLE_CLICK
+    ), .proc/handle_binoc)
 
     linked_mob = M
     linked_mob.reset_view()
 
     name = "[initial(name)] ([M.name])"
 
-    leave_button = new()
+    leave_button = new(null, action_icon_state)
     leave_button.linked_hologram = src
     leave_button.give_action(M)
 
@@ -45,14 +54,14 @@
 
 /mob/hologram/proc/take_damage(var/mob/M, var/damage, var/damagetype)
     SIGNAL_HANDLER
-    
+
     if(damage > 5)
         qdel(src)
 
 /mob/hologram/proc/handle_move(var/mob/M, NewLoc, direct)
     SIGNAL_HANDLER
 
-    src.Move(get_step(src.loc, direct), direct)
+    Move(get_step(loc, direct), direct)
     return COMPONENT_OVERRIDE_MOVE
 
 /mob/hologram/proc/handle_view(var/mob/M, var/atom/target)
@@ -62,7 +71,7 @@
         M.client.perspective = EYE_PERSPECTIVE
         M.client.eye = src
         M.client.mouse_pointer_icon = mouse_icon
-    
+
     return COMPONENT_OVERRIDE_VIEW
 
 
@@ -77,11 +86,13 @@
     if(leave_button)
         QDEL_NULL(leave_button)
 
+    GLOB.hologram_list -= src
+
     return ..()
 
 /datum/action/leave_hologram
     name = "Leave"
-    action_icon_state = "techtree_exit"
+    action_icon_state = "hologram_exit"
 
     var/mob/hologram/linked_hologram
 

@@ -11,7 +11,11 @@
 
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/Initialize()
 	. = ..()
-	cm_vending_vendors.Add(src)
+	GLOB.cm_vending_vendors += src
+
+/obj/structure/machinery/cm_vending/sorted/cargo_guns/Destroy()
+	GLOB.cm_vending_vendors -= src
+	return ..()
 
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/vend_fail()
 	return
@@ -23,6 +27,7 @@
 		list("Shotgun Scabbard", round(scale * 10), /obj/item/storage/large_holster/m37, VENDOR_ITEM_REGULAR),
 		list("USCM Pyrotechnician G4-1 Fueltank", round(scale * 2), /obj/item/storage/backpack/marine/engineerpack/flamethrower/kit, VENDOR_ITEM_REGULAR),
 		list("USCM Technician Welderpack", round(scale * 2), /obj/item/storage/backpack/marine/engineerpack, VENDOR_ITEM_REGULAR),
+		list("USCM Mortar Shell Backpack", round(scale * 1), /obj/item/storage/backpack/marine/mortarpack, VENDOR_ITEM_REGULAR),
 
 		list("BELTS", -1, null, null),
 		list("G8-A General Utility Pouch", round(scale * 2), /obj/item/storage/sparepouch, VENDOR_ITEM_REGULAR),
@@ -32,6 +37,7 @@
 		list("M276 M39 Holster Rig", round(scale * 5), /obj/item/storage/large_holster/m39, VENDOR_ITEM_REGULAR),
 		list("M276 M44 Holster Rig", round(scale * 5), /obj/item/storage/belt/gun/m44, VENDOR_ITEM_REGULAR),
 		list("M276 Shotgun Shell Loading Rig", round(scale * 10), /obj/item/storage/belt/shotgun, VENDOR_ITEM_REGULAR),
+		list("M276 Mortar Operator Belt", round(scale * 2), /obj/item/storage/belt/gun/mortarbelt, VENDOR_ITEM_REGULAR),
 
 		list("WEBBINGS", -1, null, null),
 		list("Black Webbing Vest", round(scale * 2), /obj/item/clothing/accessory/storage/black_vest, VENDOR_ITEM_REGULAR),
@@ -72,6 +78,7 @@
 		list("Forward HPR Shield Kit", round(scale * 3), /obj/item/storage/box/kit/heavy_support, VENDOR_ITEM_REGULAR),
 		list("M240 Pyrotechnician Support Kit", round(scale * 2), /obj/item/storage/box/kit/mini_pyro, VENDOR_ITEM_REGULAR),
 		list("JTAC Radio Kit", round(scale * 4), /obj/item/storage/box/kit/mini_jtac, VENDOR_ITEM_REGULAR),
+		list("M2C Heavy Gunner Kit", 4, /obj/item/storage/box/kit/machinegunner, VENDOR_ITEM_REGULAR),
 		list("M39 Point Man Kit", round(scale * 4), /obj/item/storage/box/kit/pursuit, VENDOR_ITEM_REGULAR),
 		list("M-OU53 Field Test Kit", round(scale * 3), /obj/item/storage/box/kit/mou53_sapper, VENDOR_ITEM_REGULAR),
 
@@ -201,7 +208,11 @@
 
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/Initialize()
 	. = ..()
-	cm_vending_vendors.Add(src)						//this is needed for cm_initialize and needs changing
+	GLOB.cm_vending_vendors += src
+
+/obj/structure/machinery/cm_vending/sorted/cargo_ammo/Destroy()
+	GLOB.cm_vending_vendors -= src
+	return ..()
 
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/vend_fail()
 	return
@@ -352,7 +363,11 @@
 
 /obj/structure/machinery/cm_vending/sorted/attachments/Initialize()
 	. = ..()
-	cm_vending_vendors.Add(src)						//this is needed for cm_initialize and needs changing
+	GLOB.cm_vending_vendors += src
+
+/obj/structure/machinery/cm_vending/sorted/attachments/Destroy()
+	GLOB.cm_vending_vendors -= src
+	return ..()
 
 /obj/structure/machinery/cm_vending/sorted/attachments/vend_fail()
 	return

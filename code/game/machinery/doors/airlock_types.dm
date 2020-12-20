@@ -260,7 +260,7 @@
 
 /obj/structure/machinery/door/airlock/almayer/take_damage(var/dam, var/mob/M)
 	var/damage_check = max(0, damage + dam)
-	if(damage_check >= damage_cap && M && z == MAIN_SHIP_Z_LEVEL)
+	if(damage_check >= damage_cap && M && is_mainship_level(z))
 		SSclues.create_print(get_turf(M), M, "The fingerprint contains bits of wire and metal specks.")
 		if(M.detectable_by_ai())
 			ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
@@ -307,7 +307,7 @@
 	name = "\improper Maintenance Hatch"
 	icon = 'icons/obj/structures/doors/maintdoor.dmi'
 	req_access = list()
-	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_ENGINEERING)
+	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_MAINT)
 
 /obj/structure/machinery/door/airlock/almayer/maint/autoname
 	autoname = TRUE
@@ -331,6 +331,14 @@
 
 /obj/structure/machinery/door/airlock/almayer/medical/autoname
 	autoname = TRUE
+
+/obj/structure/machinery/door/airlock/almayer/engineering/OT
+	name = "\improper Ordnance Workshop"
+	icon = 'icons/obj/structures/doors/engidoor.dmi'
+	opacity = 0
+	glass = 1
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_OT)
 
 /obj/structure/machinery/door/airlock/almayer/medical/glass
 	name = "\improper Medical Airlock"
@@ -610,7 +618,7 @@
 		..()
 
 /obj/structure/machinery/door/airlock/dropship_hatch/unlock()
-	if(z == 4) // in flight
+	if(is_loworbit_level(z)) // in flight
 		return
 	..()
 

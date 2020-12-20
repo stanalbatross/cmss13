@@ -176,7 +176,9 @@ Defined in conflicts.dm of the #defines folder.
 	return
 
 /obj/item/attachable/proc/fire_attachment(atom/target,obj/item/weapon/gun/gun, mob/user) //For actually shooting those guns.
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN_ATTACHMENT, src) // Because of this, the . = ..() check should be called last, just before firing
+	return TRUE
 
 
 /////////// Muzzle Attachments /////////////////////////////////
@@ -281,6 +283,8 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/heavy_barrel/Attach(obj/item/weapon/gun/G)
 	if(istype(G, /obj/item/weapon/gun/shotgun))
 		damage_mod = BULLET_DAMAGE_MULT_TIER_1
+	else if(istype(G, /obj/item/weapon/gun/rifle/m41a))
+		damage_mod = BULLET_DAMAGE_MULT_TIER_3
 	else
 		damage_mod = BULLET_DAMAGE_MULT_TIER_6
 	..()
@@ -702,6 +706,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/scope/mini_iff/New()
 	..()
+	damage_mod = -BULLET_DAMAGE_MULT_TIER_4
 	movement_acc_penalty_mod = MOVEMENT_ACCURACY_PENALTY_MULT_TIER_6
 	accuracy_unwielded_mod = 0
 
@@ -764,7 +769,7 @@ Defined in conflicts.dm of the #defines folder.
 	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
 	//but at the same time you are slow when 2 handed
-	aim_speed_mod = config.slowdown_med
+	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
 
 	matter = list("wood" = 2000)
@@ -863,7 +868,7 @@ Defined in conflicts.dm of the #defines folder.
 	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
 	//but at the same time you are slow when 2 handed
-	aim_speed_mod = config.slowdown_med
+	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
 /obj/item/attachable/stock/carbine
 	name = "\improper L42 synthetic stock"
@@ -915,7 +920,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_mod = -SCATTER_AMOUNT_TIER_6
 	delay_mod = 0
 	movement_acc_penalty_mod = -MOVEMENT_ACCURACY_PENALTY_MULT_TIER_5
-	aim_speed_mod = config.slowdown_low
+	aim_speed_mod = CONFIG_GET(number/slowdown_low)
 
 
 /obj/item/attachable/stock/smg/collapsible
@@ -947,7 +952,7 @@ Defined in conflicts.dm of the #defines folder.
 	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_10
 	//but at the same time you are slowish when 2 handed
-	aim_speed_mod = config.slowdown_low
+	aim_speed_mod = CONFIG_GET(number/slowdown_low)
 
 
 /obj/item/attachable/stock/smg/collapsible/proc/apply_on_weapon(obj/item/weapon/gun/G)
@@ -1058,7 +1063,7 @@ Defined in conflicts.dm of the #defines folder.
 	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
 	//but at the same time you are slow when 2 handed
-	aim_speed_mod = config.slowdown_med
+	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
 
 /obj/item/attachable/stock/revolver/activate_attachment(obj/item/weapon/gun/G, mob/living/carbon/user, turn_off)
@@ -1239,7 +1244,7 @@ Defined in conflicts.dm of the #defines folder.
 		to_chat(user, SPAN_WARNING("Too far to fire the attachment!"))
 		return
 
-	if(current_rounds > 0)
+	if(current_rounds > 0 && ..())
 		prime_grenade(target,gun,user)
 
 /obj/item/attachable/attached_gun/grenade/proc/prime_grenade(atom/target,obj/item/weapon/gun/gun,mob/living/user)
@@ -1322,7 +1327,8 @@ Defined in conflicts.dm of the #defines folder.
 	if(get_dist(user,target) > max_range+4)
 		to_chat(user, SPAN_WARNING("Too far to fire the attachment!"))
 		return
-	if(current_rounds) unleash_flame(target, user)
+	if(current_rounds && ..())
+		unleash_flame(target, user)
 
 
 /obj/item/attachable/attached_gun/flamer/proc/unleash_flame(atom/target, mob/living/user)
@@ -1439,7 +1445,8 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/attached_gun/extinguisher/fire_attachment(atom/target, obj/item/weapon/gun/gun, mob/living/user)
 	if(!internal_extinguisher)
 		return
-	return internal_extinguisher.afterattack(target, user)
+	if(..())
+		return internal_extinguisher.afterattack(target, user)
 
 /obj/item/attachable/attached_gun/extinguisher/proc/initialize_internal_extinguisher()
 	internal_extinguisher = new /obj/item/tool/extinguisher/mini()

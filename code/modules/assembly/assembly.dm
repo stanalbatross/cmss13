@@ -9,7 +9,7 @@
 	throwforce = 2
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 10
-	
+
 
 	var/secured = 1
 	var/list/attached_overlays = null
@@ -22,6 +22,9 @@
 	var/const/WIRE_PULSE_SPECIAL = 4		//Allows Pulse(0) to act on the holders special assembly
 	var/const/WIRE_RADIO_RECEIVE = 8		//Allows Pulsed(1) to call Activate()
 	var/const/WIRE_RADIO_PULSE = 16			//Allows Pulse(1) to send a radio message
+
+/obj/item/device/assembly/ui_state()
+	return GLOB.deep_inventory_state
 
 /obj/item/device/assembly/Destroy()
 	if(holder)
@@ -85,7 +88,7 @@
 	..()
 
 /obj/item/device/assembly/process()
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 	return
 
 /obj/item/device/assembly/examine(mob/user)

@@ -58,14 +58,12 @@
 	)
 
 /obj/item/storage/large_holster/m37/Initialize()
+	. = ..()
 	select_gamemode_skin(/obj/item/storage/large_holster/m37)
 	base_icon = icon_state
-	..()
 
 
-/obj/item/storage/large_holster/m37/full/Initialize()
-	. = ..()
-	icon_state = "m37_holster_full"
+/obj/item/storage/large_holster/m37/full/fill_preset_inventory()
 	new /obj/item/weapon/gun/shotgun/pump(src)
 
 /obj/item/storage/large_holster/machete
@@ -77,10 +75,7 @@
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 	can_hold = list(/obj/item/weapon/melee/claymore/mercsword/machete)
 
-/obj/item/storage/large_holster/machete/full/Initialize()
-	. = ..()
-	icon_state = "machete_holster_full"
-	item_state = "machete_holster_full"
+/obj/item/storage/large_holster/machete/full/fill_preset_inventory()
 	new /obj/item/weapon/melee/claymore/mercsword/machete(src)
 
 /obj/item/storage/large_holster/katana
@@ -93,9 +88,7 @@
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 	can_hold = list(/obj/item/weapon/melee/katana)
 
-/obj/item/storage/large_holster/katana/full/Initialize()
-	. = ..()
-	icon_state = "katana_holster_full"
+/obj/item/storage/large_holster/katana/full/fill_preset_inventory()
 	new /obj/item/weapon/melee/katana(src)
 
 /obj/item/storage/large_holster/ceremonial_sword
@@ -107,9 +100,7 @@
 	flags_equip_slot = SLOT_WAIST
 	can_hold = list(/obj/item/weapon/melee/claymore/mercsword/ceremonial)
 
-/obj/item/storage/large_holster/ceremonial_sword/full/Initialize()
-	. = ..()
-	icon_state = "ceremonial_sword_holster_full"
+/obj/item/storage/large_holster/ceremonial_sword/full/fill_preset_inventory()
 	new /obj/item/weapon/melee/claymore/mercsword/ceremonial(src)
 
 /obj/item/storage/large_holster/m39
@@ -135,12 +126,8 @@
 		item_state = base_icon
 	if(istype(user)) user.update_inv_belt()
 
-/obj/item/storage/large_holster/m39/full/Initialize()
-	. = ..()
+/obj/item/storage/large_holster/m39/full/fill_preset_inventory()
 	new /obj/item/weapon/gun/smg/m39(src)
-	update_icon()
-
-
 
 
 
@@ -206,12 +193,12 @@
 // Get the right onmob icon when we have flamer holstered.
 /obj/item/storage/large_holster/fuelpack/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
+	if(slot == WEAR_BACK)
+		if(length(contents))
+			var/image/weapon_holstered = overlay_image('icons/mob/humans/onmob/back.dmi', "+m240t", color, RESET_COLOR)
+			ret.overlays += weapon_holstered
 
-	if(contents.len)
-		var/image/weapon_holstered = overlay_image('icons/mob/humans/onmob/back.dmi', "+m240t", color, RESET_COLOR)
-		ret.overlays += weapon_holstered
-
-	return ret
+		return ret
 
 
 /obj/item/storage/large_holster/fuelpack/attack_self(mob/user)

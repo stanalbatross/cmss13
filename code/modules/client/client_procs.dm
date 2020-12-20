@@ -22,6 +22,18 @@
 		- If so, is there any protection against somebody spam-clicking a link?
 	If you have any  questions about this stuff feel free to ask. ~Carn
 	*/
+
+// This can be replaced with a more sophisticated solution later
+GLOBAL_LIST_INIT(whitelisted_client_procs, list(
+	/client/proc/toggle_ignore_self,
+	/client/proc/toggle_help_intent_safety,
+	/client/proc/toggle_auto_eject,
+	/client/proc/toggle_auto_eject_to_hand,
+	/client/proc/toggle_eject_to_hand,
+	/client/proc/toggle_automatic_punctuation,
+	/client/proc/toggle_middle_mouse_click
+))
+
 /client/Topic(href, href_list, hsrc)
 	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
@@ -37,6 +49,10 @@
 		asset_cache_job = asset_cache_confirm_arrival(href_list["asset_cache_confirm_arrival"])
 		if (!asset_cache_job)
 			return
+
+	// Tgui Topic middleware
+	if(tgui_Topic(href_list))
+		return
 
 	//byond bug ID:2256651
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -79,7 +95,7 @@
 		show_browser(usr, "<body class='paper'>[info]</body>", "Fax Message", "Fax Message")
 
 	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
+	if(CONFIG_GET(flag/log_hrefs) && href_logfile)
 		href_logfile << "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>"
 
 	switch(href_list["_src_"])
@@ -108,7 +124,11 @@
 			src << link(href_list["link"])
 		if ("proccall")
 			var/proc_to_call = text2path(href_list["procpath"])
-			call(src, proc_to_call)()
+
+			if(proc_to_call in GLOB.whitelisted_client_procs)
+				call(src, proc_to_call)()
+			else
+				message_staff("[key_name_admin(src)] attempted to do a href exploit. (Inputted command: [proc_to_call])")
 
 	if(href_list[CLAN_ACTION])
 		clan_topic(href, href_list)
@@ -116,7 +136,7 @@
 	return ..()	//redirect to hsrc.Topic()
 
 /client/proc/handle_spam_prevention(var/message, var/mute_type)
-	if(config.automute_on && !admin_holder && src.last_message == message)
+	if(CONFIG_GET(flag/automute_on) && !admin_holder && src.last_message == message)
 		src.last_message_count++
 		if(src.last_message_count >= SPAM_TRIGGER_AUTOMUTE)
 			to_chat(src, SPAN_DANGER("You have exceeded the spam filter limit for identical messages. An auto-mute was applied."))
@@ -156,14 +176,17 @@
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
 
-	if(!guests_allowed && IsGuestKey(key))
+	if(IsGuestKey(key))
 		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
 		qdel(src)
 		return
 
 	// Change the way they should download resources.
-	if(config.resource_urls)
-		src.preload_rsc = pick(config.resource_urls)
+	var/static/next_external_rsc = 0
+	var/list/external_rsc_urls = CONFIG_GET(keyed_list/external_rsc_urls)
+	if(length(external_rsc_urls))
+		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
+		preload_rsc = external_rsc_urls[next_external_rsc]
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
 	to_chat_forced(src, SPAN_WARNING("If the title screen is black, resources are still downloading. Please be patient until the title screen appears."))
@@ -173,11 +196,17 @@
 	GLOB.directory[ckey] = src
 	player_entity = setup_player_entity(ckey)
 
+	if(!CONFIG_GET(flag/no_localhost_rank))
+		var/static/list/localhost_addresses = list("127.0.0.1", "::1")
+		if(isnull(address) || (address in localhost_addresses))
+			var/datum/admins/admin = new("!localhost!", R_EVERYTHING, ckey)
+			admin.associate(src)
+
 	//Admin Authorisation
 	admin_holder = admin_datums[ckey]
 	if(admin_holder)
-		GLOB.admins += src
-		admin_holder.owner = src
+		admin_holder.associate(src)
+
 	add_pref_verbs()
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = preferences_datums[ckey]
@@ -188,10 +217,10 @@
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	fps = prefs.fps
-	xeno_prefix = prefs.xeno_prefix	
+	xeno_prefix = prefs.xeno_prefix
 	xeno_postfix = prefs.xeno_postfix
 	xeno_name_ban = prefs.xeno_name_ban
-	if(!xeno_prefix || xeno_name_ban)	
+	if(!xeno_prefix || xeno_name_ban)
 		xeno_prefix = "XX"
 	if(!xeno_postfix || xeno_name_ban)
 		xeno_postfix = ""
@@ -216,19 +245,23 @@
 	if((byond_version < GOOD_BYOND_MAJOR) || ((byond_version == GOOD_BYOND_MAJOR) && (byond_build < GOOD_BYOND_MINOR)))
 		to_chat(src, FONT_SIZE_HUGE(SPAN_BOLDNOTICE("YOUR BYOND VERSION IS NOT WELL SUITED FOR THIS SERVER. Download latest BETA build or you may suffer random crashes or disconnects.")))
 
-	if(custom_event_msg && custom_event_msg != "")
-		to_chat(src, "<h1 class='alert'>Custom Event</h1>")
-		to_chat(src, "<h2 class='alert'>A custom event is taking place. OOC Info:</h2>")
-		to_chat(src, SPAN_ALERT("[html_encode(custom_event_msg)]"))
-		to_chat(src, "<br>")
+	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list["Global"]
+	CEI.show_player_event_info(src)
+
+	if(mob && !isobserver(mob) && !isnewplayer(mob))
+		if(isXeno(mob))
+			var/mob/living/carbon/Xenomorph/X = mob
+			if(X.hive && GLOB.custom_event_info_list[X.hive])
+				CEI = GLOB.custom_event_info_list[X.hive]
+				CEI.show_player_event_info(src)
+
+		else if(mob.faction && GLOB.custom_event_info_list[mob.faction])
+			CEI = GLOB.custom_event_info_list[mob.faction]
+			CEI.show_player_event_info(src)
 
 	if( (world.address == address || !address) && !host )
 		host = key
 		world.update_status()
-
-	if(admin_holder)
-		add_admin_verbs()
-		add_admin_whitelists()
 
 	send_assets()
 

@@ -51,8 +51,6 @@
 	user.set_interaction(src)
 	var/dat
 	var/title
-	if (!( ticker ))
-		return
 	if (mode) // accessing crew manifest
 
 		title = "Crew Manifest"
@@ -551,7 +549,7 @@
 			if(istype(C.loc, /mob/living/carbon/human))
 
 				var/mob/living/carbon/human/H = C.loc
-				if(H && H.faction == FACTION_SURVIVOR && H.loc.z == 1)
+				if(H && H.faction == FACTION_SURVIVOR && is_ground_level(H.loc.z))
 					continue // survivors
 				if(H.w_uniform != C)
 					continue
@@ -602,8 +600,7 @@
 
 
 /obj/structure/machinery/computer/crew/proc/scan()
-	for(var/mob/living/carbon/human/H in mob_list)
-		if(!H || !istype(H)) continue
+	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(isYautja(H)) continue
 		var/obj/item/clothing/under/C = H.w_uniform
 		if(!C || !istype(C)) continue

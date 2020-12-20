@@ -2,9 +2,16 @@
 	name = "Tracking Beacon"
 	desc = "A beacon used by a teleporter."
 	icon_state = "beacon"
-	item_state = "signaler"
+	item_state = "signaller"
 	var/code = "electronic"
-	
+
+/obj/item/device/radio/beacon/Initialize()
+	. = ..()
+	GLOB.radio_beacon_list += src
+
+/obj/item/device/radio/beacon/Destroy()
+	GLOB.radio_beacon_list -= src
+	return ..()
 
 /obj/item/device/radio/beacon/hear_talk()
 	return

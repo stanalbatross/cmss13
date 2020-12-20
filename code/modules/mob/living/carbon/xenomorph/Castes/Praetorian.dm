@@ -4,12 +4,11 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_5
 	melee_damage_upper = XENO_DAMAGE_TIER_5
-	max_health = XENO_HEALTH_TIER_8
-	plasma_gain = XENO_PLASMA_GAIN_TIER_7
-	plasma_max = XENO_PLASMA_TIER_10
+	max_health = XENO_HEALTH_TIER_10
+	plasma_gain = XENO_PLASMA_GAIN_TIER_5
+	plasma_max = XENO_PLASMA_TIER_8
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
 	armor_deflection = XENO_ARMOR_TIER_2
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_CRUSHER
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_6
 
@@ -32,7 +31,6 @@
 	caste_name = "Praetorian"
 	name = "Praetorian"
 	desc = "A huge, looming beast of an alien."
-	icon_source = "alien_praetorian"
 	icon_size = 64
 	icon_state = "Praetorian Walking"
 	plasma_types = list(PLASMA_PHEROMONE,PLASMA_NEUROTOXIN)
@@ -54,6 +52,10 @@
 		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
 	)
 
+/mob/living/carbon/Xenomorph/Praetorian/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_praetorian))
+
 /datum/behavior_delegate/praetorian_base
 	name = "Base Praetorian Behavior Delegate"
 
@@ -63,10 +65,10 @@
 
 	var/mob/living/carbon/human/H = A
 
-	var/datum/effects/prae_acid_stacks/PAS = null 
+	var/datum/effects/prae_acid_stacks/PAS = null
 	for (var/datum/effects/prae_acid_stacks/prae_acid_stacks in H.effects_list)
 		PAS = prae_acid_stacks
-		break 
+		break
 
 	if (PAS == null)
 		new /datum/effects/prae_acid_stacks(H)

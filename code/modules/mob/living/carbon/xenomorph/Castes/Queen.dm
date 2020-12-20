@@ -10,7 +10,6 @@
 	crystal_max = XENO_CRYSTAL_MEDIUM
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_10
 	armor_deflection = XENO_ARMOR_TIER_2
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_SUPER
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_QUEEN
 
@@ -42,22 +41,182 @@
 			if(hive.living_xeno_queen)
 				if(hive.living_xeno_queen.hivenumber == hive.hivenumber)
 					continue
-			for(var/mob/living/carbon/Xenomorph/Queen/Q in living_mob_list)
-				if(Q.hivenumber == hive.hivenumber && Q.z != ADMIN_Z_LEVEL)
+			for(var/mob/living/carbon/Xenomorph/Queen/Q in GLOB.living_xeno_list)
+				if(Q.hivenumber == hive.hivenumber && !is_admin_level(Q.z))
 					hive.living_xeno_queen = Q
 					xeno_message(SPAN_XENOANNOUNCE("A new Queen has risen to lead the Hive! Rejoice!"),3,hive.hivenumber)
 					continue outer_loop
 			hive.living_xeno_queen = null
 
+/mob/hologram/queen
+	name = "Queen Eye"
+	action_icon_state = "queen_eye"
+
+	color = "#a800a8"
+
+	hud_possible = list(XENO_STATUS_HUD)
+	var/mob/is_watching
+	var/next_point = 0
+
+	var/point_delay = 1 SECOND
+
+
+/mob/hologram/queen/Initialize(mapload, mob/M)
+	if(!isXenoQueen(M))
+		return INITIALIZE_HINT_QDEL
+
+	var/mob/living/carbon/Xenomorph/Queen/Q = M
+	if(!Q.ovipositor)
+		return INITIALIZE_HINT_QDEL
+
+	// Make sure to turn off any previous overwatches
+	Q.overwatch(stop_overwatch = TRUE)
+
+	. = ..(mapload, M)
+	RegisterSignal(Q, COMSIG_MOB_PRE_CLICK, .proc/handle_overwatch)
+	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/exit_hologram)
+	RegisterSignal(Q, COMSIG_XENOMORPH_OVERWATCH_XENO, .proc/start_watching)
+	RegisterSignal(Q, list(
+		COMSIG_XENOMORPH_STOP_OVERWATCH,
+		COMSIG_XENOMORPH_STOP_OVERWATCH_XENO
+	), .proc/stop_watching)
+	RegisterSignal(src, COMSIG_TURF_ENTER, .proc/turf_weed_only)
+
+
+	med_hud_set_status()
+	add_to_all_mob_huds()
+
+	M.sight |= SEE_TURFS|SEE_OBJS
+
+/mob/hologram/queen/proc/exit_hologram()
+	SIGNAL_HANDLER
+	qdel(src)
+
+/mob/hologram/queen/handle_move(mob/living/carbon/Xenomorph/X, NewLoc, direct)
+	if(is_watching && (turf_weed_only(src, is_watching.loc) & COMPONENT_TURF_DENY_MOVEMENT))
+		return COMPONENT_OVERRIDE_MOVE
+
+	X.overwatch(stop_overwatch = TRUE)
+
+	return ..()
+
+
+/mob/hologram/queen/proc/start_watching(var/mob/living/carbon/Xenomorph/X, var/mob/living/carbon/Xenomorph/target)
+	SIGNAL_HANDLER
+	loc = target
+	is_watching = target
+
+	RegisterSignal(target, COMSIG_PARENT_QDELETING, .proc/target_watching_qdeleted)
+	return
+
+// able to stop watching here before the loc is set to null
+/mob/hologram/queen/proc/target_watching_qdeleted(var/mob/living/carbon/Xenomorph/target)
+	SIGNAL_HANDLER
+	stop_watching(linked_mob, target)
+
+/mob/hologram/queen/proc/stop_watching(var/mob/living/carbon/Xenomorph/X, var/mob/living/carbon/Xenomorph/target)
+	SIGNAL_HANDLER
+	if(target)
+		if(loc == target)
+			var/turf/T = get_turf(target)
+
+			if(T)
+				loc = T
+		UnregisterSignal(target, COMSIG_PARENT_QDELETING)
+
+	if(!isturf(loc) || (turf_weed_only(src, loc) & COMPONENT_TURF_DENY_MOVEMENT))
+		loc = X.loc
+
+	is_watching = null
+	X.reset_view()
+	return
+
+/mob/hologram/queen/proc/turf_weed_only(var/mob/self, var/turf/T)
+	SIGNAL_HANDLER
+
+	if(!T)
+		return COMPONENT_TURF_DENY_MOVEMENT
+
+	if(istype(T, /turf/closed/wall))
+		var/turf/closed/wall/W = T
+		if(W.hull)
+			return COMPONENT_TURF_DENY_MOVEMENT
+
+	var/obj/effect/alien/weeds/W = locate() in T
+	if(W)
+		return COMPONENT_TURF_ALLOW_MOVEMENT
+
+	return COMPONENT_TURF_DENY_MOVEMENT
+
+/mob/hologram/queen/proc/handle_overwatch(var/mob/living/carbon/Xenomorph/Queen/Q, var/atom/A, var/mods)
+	SIGNAL_HANDLER
+
+	var/turf/T = get_turf(A)
+	if(!istype(T))
+		return
+
+	if(mods["shift"] && mods["middle"])
+		if(next_point > world.time)
+			return COMPONENT_INTERRUPT_CLICK
+
+		next_point = world.time + point_delay
+
+		var/message = SPAN_XENONOTICE("[Q] points at [A].")
+
+		to_chat(Q, message)
+		for(var/mob/living/carbon/Xenomorph/X in viewers(7, src))
+			if(X == Q) continue
+			to_chat(X, message)
+
+		new /obj/effect/overlay/temp/point/big/queen(T, src)
+		return COMPONENT_INTERRUPT_CLICK
+
+	if(!mods["ctrl"])
+		return
+
+	if(isXeno(A))
+		Q.overwatch(A)
+		return COMPONENT_INTERRUPT_CLICK
+
+	if(!(turf_weed_only(src, T) & COMPONENT_TURF_ALLOW_MOVEMENT))
+		return
+
+	loc = T
+	if(is_watching)
+		Q.overwatch(stop_overwatch = TRUE)
+
+	return COMPONENT_INTERRUPT_CLICK
+
+/mob/hologram/queen/handle_view(var/mob/M, var/atom/target)
+	if(M.client)
+		M.client.perspective = EYE_PERSPECTIVE
+
+		if(is_watching)
+			M.client.eye = is_watching
+		else
+			M.client.eye = src
+
+	return COMPONENT_OVERRIDE_VIEW
+
+
+/mob/hologram/queen/Destroy()
+	if(linked_mob)
+		var/mob/living/carbon/Xenomorph/Queen/Q = linked_mob
+		if(Q.ovipositor)
+			var/datum/action/xeno_action/onclick/eye/E = new()
+			E.give_action(linked_mob)
+
+		linked_mob.sight &= ~(SEE_TURFS|SEE_OBJS)
+
+	remove_from_all_mob_huds()
+
+	return ..()
 
 /mob/living/carbon/Xenomorph/Queen
 	caste_name = "Queen"
 	name = "Queen"
 	desc = "A huge, looming alien creature. The biggest and the baddest."
-	icon_source = "alien_queen_standing"
 	icon_size = 64
-	var/icon_body = "alien_queen_standing"
-	var/icon_ovi = "alien_queen_ovipositor"
 	icon_state = "Queen Walking"
 	plasma_types = list(PLASMA_ROYAL,PLASMA_CHITIN,PLASMA_PHEROMONE,PLASMA_NEUROTOXIN)
 	attacktext = "bites"
@@ -68,7 +227,7 @@
 	max_grown = 10
 	pixel_x = -16
 	old_x = -16
-	mob_size = MOB_SIZE_BIG
+	mob_size = MOB_SIZE_IMMOBILE
 	drag_delay = 6 //pulling a big dead xeno is hard
 	tier = 0 //Queen doesn't count towards population limit.
 	hive_pos = XENO_QUEEN
@@ -106,7 +265,7 @@
 		/datum/action/xeno_action/onclick/choose_resin/queen_macro, //third macro
 		/datum/action/xeno_action/activable/secrete_resin/queen_macro, //fourth macro
 		/datum/action/xeno_action/onclick/banish,
-		/datum/action/xeno_action/onclick/readmit,
+		/datum/action/xeno_action/onclick/readmit
 		)
 
 	inherent_verbs = list(
@@ -161,13 +320,14 @@
 
 /mob/living/carbon/Xenomorph/Queen/Initialize()
 	. = ..()
-	if(z != ADMIN_Z_LEVEL)//so admins can safely spawn Queens in Thunderdome for tests.
+	icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
+	if(!is_admin_level(z))//so admins can safely spawn Queens in Thunderdome for tests.
 		xeno_message(SPAN_XENOANNOUNCE("A new Queen has risen to lead the Hive! Rejoice!"),3,hivenumber)
 	playsound(loc, 'sound/voice/alien_queen_command.ogg', 75, 0)
 
 /mob/living/carbon/Xenomorph/Queen/Destroy()
 	if(observed_xeno)
-		set_queen_overwatch(observed_xeno, TRUE)
+		overwatch(observed_xeno, TRUE)
 	if(hive && hive.living_xeno_queen == src)
 		hive.set_living_xeno_queen(null)
 	return ..()
@@ -182,7 +342,7 @@
 
 		if(observed_xeno)
 			if(observed_xeno.stat == DEAD || QDELETED(observed_xeno))
-				set_queen_overwatch(observed_xeno, TRUE)
+				overwatch(observed_xeno, TRUE)
 
 		if(ovipositor && !is_mob_incapacitated(TRUE))
 			egg_amount += 0.07 * mutators.egg_laying_multiplier //one egg approximately every 30 seconds
@@ -408,18 +568,20 @@
 
 	for(var/mob/living/carbon/M in oview(7, src))
 		if((match_hivemind(M) || isXenoQueen(M)))
-			continue 
+			continue
 
 		M.scream_stun_timeout = SECONDS_20
 		var/dist = get_dist(src, M)
 		if(dist <= 4)
 			to_chat(M, SPAN_DANGER("An ear-splitting guttural roar shakes the ground beneath your feet!"))
-			M.stunned += 4 //Seems the effect lasts between 3-8 seconds.
+			M.AdjustStunned(4)
 			M.KnockDown(4)
 			if(!M.ear_deaf)
-				M.ear_deaf += 8 //Deafens them temporarily
+				M.ear_deaf += 5 //Deafens them temporarily
 		else if(dist >= 5 && dist < 7)
-			M.stunned += 3
+			M.AdjustStunned(3)
+			if(!M.ear_deaf)
+				M.ear_deaf += 2
 			to_chat(M, SPAN_DANGER("The roar shakes your body to the core, freezing you in place!"))
 
 /mob/living/carbon/Xenomorph/Queen/proc/screech_ready()
@@ -507,28 +669,32 @@
 	for(var/datum/action/A in actions)
 		qdel(A)
 
-	var/list/immobile_abilities = list(
+	var/list/immobile_abilities = list(\
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/onclick/remove_eggsac,
 		/datum/action/xeno_action/activable/screech,
 		/datum/action/xeno_action/onclick/emit_pheromones,
 		/datum/action/xeno_action/onclick/psychic_whisper,
 		/datum/action/xeno_action/watch_xeno,
-		/datum/action/xeno_action/onclick/toggle_queen_zoom,
-		/datum/action/xeno_action/onclick/set_xeno_lead,//first macro
-		/datum/action/xeno_action/onclick/queen_heal,//second macro 
-		/datum/action/xeno_action/onclick/queen_give_plasma,//third macro
+		/datum/action/xeno_action/onclick/set_xeno_lead,
+		/datum/action/xeno_action/activable/queen_heal,
+		/datum/action/xeno_action/activable/queen_give_plasma,
 		/datum/action/xeno_action/onclick/queen_order,
+		/datum/action/xeno_action/onclick/choose_resin, 
+		/datum/action/xeno_action/activable/expand_weeds,
+		/datum/action/xeno_action/activable/secrete_resin/ovipositor, 
 		/datum/action/xeno_action/activable/place_construction,
-		/datum/action/xeno_action/onclick/deevolve,//fourth macro
-		/datum/action/xeno_action/onclick/banish,
-		/datum/action/xeno_action/onclick/readmit,
+		/datum/action/xeno_action/onclick/deevolve, 
+		/datum/action/xeno_action/onclick/banish, 
+		/datum/action/xeno_action/onclick/readmit, 
+		/datum/action/xeno_action/onclick/eye
 		)
 
 	for(var/path in immobile_abilities)
 		var/datum/action/xeno_action/A = new path()
 		A.give_action(src)
 
+	extra_build_dist = IGNORE_BUILD_DISTANCE
 	anchored = TRUE
 	resting = FALSE
 	update_canmove()
@@ -543,7 +709,7 @@
 	set waitfor = 0
 	if(!instant_dismount)
 		if(observed_xeno)
-			set_queen_overwatch(observed_xeno, TRUE)
+			overwatch(observed_xeno, TRUE)
 		flick("ovipositor_dismount", src)
 		sleep(5)
 	else
@@ -560,7 +726,7 @@
 	new /obj/ovipositor(loc)
 
 	if(observed_xeno)
-		set_queen_overwatch(observed_xeno, TRUE)
+		overwatch(observed_xeno, TRUE)
 	zoom_out()
 
 	for(var/datum/action/A in actions)
@@ -572,6 +738,7 @@
 	recalculate_actions()
 
 	egg_amount = 0
+	extra_build_dist = initial(extra_build_dist)
 	ovipositor_cooldown = world.time + MINUTES_5 //5 minutes
 	anchored = FALSE
 	update_canmove()
@@ -582,6 +749,8 @@
 	if(!instant_dismount)
 		xeno_message(SPAN_XENOANNOUNCE("The Queen has shed her ovipositor, evolution progress paused."), 3, hivenumber)
 
+	SEND_SIGNAL(src, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, instant_dismount)
+
 /mob/living/carbon/Xenomorph/Queen/update_canmove()
 	. = ..()
 	if(ovipositor)
@@ -590,19 +759,12 @@
 		canmove = FALSE
 		return canmove
 
-
 /mob/living/carbon/Xenomorph/Queen/update_icons()
-	if(icon_body)
-		if(!icon_source_files[icon_body])
-			icon_source_files[icon_body] = file(icon_source_master[icon_body])
-		icon = icon_source_files[icon_body]
+	icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
 	if(stat == DEAD)
 		icon_state = "[mutation_type] Queen Dead"
 	else if(ovipositor)
-		if(icon_ovi)
-			if(!icon_source_files[icon_ovi])
-				icon_source_files[icon_ovi] = file(icon_source_master[icon_ovi])
-			icon = icon_source_files[icon_ovi]
+		icon = get_icon_from_source(CONFIG_GET(string/alien_queen_ovipositor))
 		icon_state = "[mutation_type] Queen Ovipositor"
 	else if(lying)
 		if((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
@@ -613,19 +775,6 @@
 		icon_state = "[mutation_type] Queen Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
-
-//proc to modify which xeno, if any, the queen is observing.
-/mob/living/carbon/Xenomorph/Queen/proc/set_queen_overwatch(mob/living/carbon/Xenomorph/target, stop_overwatch)
-	if(stop_overwatch)
-		observed_xeno = null
-	else
-		var/mob/living/carbon/Xenomorph/old_xeno = observed_xeno
-		observed_xeno = target
-		if(old_xeno)
-			old_xeno.hud_set_queen_overwatch()
-	if(!QDELETED(target)) //not qdel'd
-		target.hud_set_queen_overwatch()
-	reset_view()
 
 
 /mob/living/carbon/Xenomorph/Queen/gib(var/cause = "gibbing")

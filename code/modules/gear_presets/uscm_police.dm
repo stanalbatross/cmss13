@@ -7,7 +7,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_police/mp
 	name = "USCM Military Police (MP)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(
 		ACCESS_MARINE_BRIG,
@@ -21,7 +21,9 @@
 		ACCESS_MARINE_BRAVO,
 		ACCESS_MARINE_CHARLIE,
 		ACCESS_MARINE_DELTA,
-		ACCESS_MARINE_ENGINEERING
+		ACCESS_MARINE_ENGINEERING,
+		ACCESS_MARINE_MAINT,
+		ACCESS_MARINE_OT
 	)
 	assignment = JOB_POLICE
 	rank = JOB_POLICE
@@ -54,7 +56,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_police/warden
 	name = "USCM Military Warden (MW)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 	idtype = /obj/item/card/id/silver
 
 	access = list(
@@ -71,7 +73,9 @@
 		ACCESS_MARINE_BRAVO,
 		ACCESS_MARINE_CHARLIE,
 		ACCESS_MARINE_DELTA,
-		ACCESS_MARINE_ENGINEERING
+		ACCESS_MARINE_ENGINEERING,
+		ACCESS_MARINE_MAINT,
+		ACCESS_MARINE_OT
 	)
 	assignment = JOB_WARDEN
 	rank = JOB_WARDEN
@@ -104,7 +108,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_police/cmp
 	name = "USCM Chief MP (CMP)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 	idtype = /obj/item/card/id/silver
 
 	access = list(
@@ -121,7 +125,9 @@
 		ACCESS_MARINE_BRAVO,
 		ACCESS_MARINE_CHARLIE,
 		ACCESS_MARINE_DELTA,
-		ACCESS_MARINE_ENGINEERING
+		ACCESS_MARINE_ENGINEERING,
+		ACCESS_MARINE_MAINT,
+		ACCESS_MARINE_OT
 	)
 	assignment = JOB_CHIEF_POLICE
 	rank = JOB_CHIEF_POLICE
@@ -154,7 +160,7 @@
 
 /datum/equipment_preset/uscm_ship/uscm_police/riot_mp
 	name = "USCM Riot MP (RMP)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	access = list()

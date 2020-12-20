@@ -93,7 +93,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 		for(var/datum/mind/X in xenomorphs)
 			if(!istype(X))
 				continue
-			
+
 			M = X.current
 			if(!M || !M.loc)
 				M = X.original
@@ -146,7 +146,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 
 //Spawns a larva in an appropriate location
 /datum/game_mode/proc/spawn_latejoin_larva()
-	var/mob/living/carbon/Xenomorph/Larva/new_xeno = new /mob/living/carbon/Xenomorph/Larva(pick(xeno_spawn))
+	var/mob/living/carbon/Xenomorph/Larva/new_xeno = new /mob/living/carbon/Xenomorph/Larva(get_turf(pick(GLOB.xeno_spawns)))
 	new_xeno.visible_message(SPAN_XENODANGER("A larva suddenly burrows out of the ground!"),
 	SPAN_XENODANGER("You burrow out of the ground and awaken from your slumber. For the Hive!"))
 	new_xeno << sound('sound/effects/xeno_newlarva.ogg')
@@ -207,12 +207,12 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 		larva += hs.stored_larva
 
 	//Keeping track of peak numbers to determine when a side is "losing"
-	if (peakHumans < living_human_list.len)
-		peakHumans = living_human_list.len
-	if (peakXenos < living_xeno_list.len)
-		peakXenos = living_xeno_list.len
+	if (peakHumans < length(GLOB.alive_human_list))
+		peakHumans = length(GLOB.alive_human_list)
+	if (peakXenos < length(GLOB.living_xeno_list))
+		peakXenos = length(GLOB.living_xeno_list)
 
-	for(var/mob/M in living_xeno_list)
+	for(var/mob/M in GLOB.living_xeno_list)
 		var/area/A = get_area(M)
 		if(A && A.flags_atom & AREA_AVOID_BIOSCAN || (A.flags_atom & AREA_AVOID_BIOSCAN && A.flags_atom & AREA_NOTUNNEL))
 			numXenosShip++
@@ -220,26 +220,26 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 		var/atom/where = M
 		if (where == 0 && M.loc)
 			where = M.loc
-		switch(where.z)
-			if(MAIN_SHIP_Z_LEVEL)//On the ship
-				numXenosShip++
-				numXenosShipAres++
-				xenosShipLocations+=where
-			if(SURFACE_Z_LEVEL, LOW_ORBIT_Z_LEVEL) // Planet or transit
-				numXenosPlanet++
-				xenosPlanetLocations+=where
+		if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT)))
+			numXenosPlanet++
+			xenosPlanetLocations+=where
+		else if(is_mainship_level(where.z))
+			numXenosShip++
+			numXenosShipAres++
+			xenosShipLocations+=where
 
-	for (var/mob/M in living_human_list)
+
+	for (var/i in GLOB.alive_human_list)
+		var/mob/M = i
 		var/atom/where = M
 		if (where == 0 && M.loc)
 			where = M.loc
-		switch(where.z)
-			if(MAIN_SHIP_Z_LEVEL) //On the ship.
-				numHostsShip++
-				hostsShipLocations += where
-			if(SURFACE_Z_LEVEL, LOW_ORBIT_Z_LEVEL) // Planet or transit
-				numHostsPlanet++
-				hostsPlanetLocations += where
+		if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT)))
+			numHostsPlanet++
+			hostsPlanetLocations += where
+		else if(is_mainship_level(where.z))
+			numHostsShip++
+			hostsShipLocations += where
 
 	if (world.time > nextAdminBioscan)
 		nextAdminBioscan += MINUTES_30//every 30 minutes, straight
@@ -249,16 +249,16 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 	//Pick one random location to disclose
 	var/RandomHostsPlanetLocation = ""
 	if (hostsPlanetLocations.len>0)
-		RandomHostsPlanetLocation = get_area(pick(hostsPlanetLocations)).name
+		RandomHostsPlanetLocation = get_area_name(pick(hostsPlanetLocations))
 	var/RandomHostsShipLocation = ""
 	if (hostsShipLocations.len>0)
-		RandomHostsShipLocation = get_area(pick(hostsShipLocations)).name
+		RandomHostsShipLocation = get_area_name(pick(hostsShipLocations))
 	var/RandomXenosPlanetLocation = ""
 	if (xenosPlanetLocations.len>0)
-		RandomXenosPlanetLocation = get_area(pick(xenosPlanetLocations)).name
+		RandomXenosPlanetLocation = get_area_name(pick(xenosPlanetLocations))
 	var/RandomXenosShipLocation = ""
 	if (xenosShipLocations.len>0)
-		RandomXenosShipLocation = get_area(pick(xenosShipLocations)).name
+		RandomXenosShipLocation = get_area_name(pick(xenosShipLocations))
 
 	if(world.time > nextPredatorBioscan)
 		nextPredatorBioscan += MINUTES_5//5 minutes, straight
@@ -286,22 +286,22 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 	//So if you have peak 30 xenos, if you still have 30 xenos, humans will have to wait 30 minutes between bioscans
 	//But if you fall down to 15 xenos, humans will get them every 15 minutes
 	//But never more often than 5 minutes apart
-	var/nextXenoBioscan = lastXenoBioscan + max(MINUTES_30 * living_human_list.len / peakHumans, MINUTES_5)
-	var/nextHumanBioscan = lastHumanBioscan + max(MINUTES_30 * living_xeno_list.len / peakXenos, MINUTES_5)
+	var/nextXenoBioscan = lastXenoBioscan + max(MINUTES_30 * length(GLOB.alive_human_list) / peakHumans, MINUTES_5)
+	var/nextHumanBioscan = lastHumanBioscan + max(MINUTES_30 * length(GLOB.living_xeno_list) / peakXenos, MINUTES_5)
 
 	if(world.time > nextXenoBioscan)
 		lastXenoBioscan = world.time
 		// The announcement to all Xenos. Slightly off for the human ship, accurate otherwise.
-		for(var/mob/M in living_xeno_list)
-			if(isXeno(M))
-				M << sound(get_sfx("queen"), wait = 0, volume = 50)
-				to_chat(M, SPAN_XENOANNOUNCE("The Queen Mother reaches into your mind from worlds away."))
-				var/metalhive_hosts = "[numHostsShip ? "approximately [numHostsShip]":"no"]"
-				var/plural = "[!numHostsShip || numHostsShip > 1 ? "s":""]"
-				var/metalhive_location = "[numHostsShip&&RandomHostsShipLocation?", including one in [RandomHostsShipLocation],":""]"
-				var/planet_hosts = "[numHostsPlanet ? "[numHostsPlanet]":"none"]"
-				var/planet_location = "[numHostsPlanet&&RandomHostsPlanetLocation?", including one in [RandomHostsPlanetLocation]":""]"
-				to_chat(M, SPAN_XENOANNOUNCE("To my children and their Queen. I sense [metalhive_hosts] host[plural] in the metal hive [metalhive_location] and [planet_hosts] scattered elsewhere[planet_location]."))
+		for(var/i in GLOB.living_xeno_list)
+			var/mob/M = i
+			M << sound(get_sfx("queen"), wait = 0, volume = 50)
+			to_chat(M, SPAN_XENOANNOUNCE("The Queen Mother reaches into your mind from worlds away."))
+			var/metalhive_hosts = "[numHostsShip ? "approximately [numHostsShip]":"no"]"
+			var/plural = "[!numHostsShip || numHostsShip > 1 ? "s":""]"
+			var/metalhive_location = "[numHostsShip&&RandomHostsShipLocation?", including one in [RandomHostsShipLocation],":""]"
+			var/planet_hosts = "[numHostsPlanet ? "[numHostsPlanet]":"none"]"
+			var/planet_location = "[numHostsPlanet&&RandomHostsPlanetLocation?", including one in [RandomHostsPlanetLocation]":""]"
+			to_chat(M, SPAN_XENOANNOUNCE("To my children and their Queen. I sense [metalhive_hosts] host[plural] in the metal hive [metalhive_location] and [planet_hosts] scattered elsewhere[planet_location]."))
 
 
 	if(world.time > nextHumanBioscan)
@@ -317,14 +317,15 @@ Can't be in a locker, in space, in the thunderdome, or distress.
 Only checks living mobs with a client attached.
 */
 
-/datum/game_mode/proc/count_xenos(list/z_levels = GAME_PLAY_Z_LEVELS)
+/datum/game_mode/proc/count_xenos(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/num_xenos = 0
-	for(var/mob/M in living_xeno_list)
-		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
-			if(isXeno(M)) num_xenos++
+	for(var/i in GLOB.living_xeno_list)
+		var/mob/M = i
+		if(M.z && (M.z in z_levels) && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
+			num_xenos++
 	return num_xenos
 
-/datum/game_mode/proc/count_humans_and_xenos(list/z_levels = GAME_PLAY_Z_LEVELS)
+/datum/game_mode/proc/count_humans_and_xenos(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/num_humans = 0
 	var/num_xenos = 0
 
@@ -347,28 +348,28 @@ Only checks living mobs with a client attached.
 
 	return list(num_humans,num_xenos)
 
-/datum/game_mode/proc/count_marines_and_pmcs(list/z_levels = GAME_PLAY_Z_LEVELS)
+/datum/game_mode/proc/count_marines_and_pmcs(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/num_marines = 0
 	var/num_pmcs = 0
 
-	for(var/mob/M in living_human_list)
-		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space))
-			if(ishuman(M) && !isYautja(M))
-				if(M.faction in FACTION_LIST_WY) 	
-					num_pmcs++
-				else if(M.faction == FACTION_MARINE)		
-					num_marines++
+	for(var/i in GLOB.alive_human_list)
+		var/mob/M = i
+		if(M.z && (M.z in z_levels) && !istype(M.loc, /turf/open/space))
+			if(M.faction in FACTION_LIST_WY)
+				num_pmcs++
+			else if(M.faction == FACTION_MARINE)
+				num_marines++
 
 	return list(num_marines,num_pmcs)
 
-/datum/game_mode/proc/count_marines(list/z_levels = GAME_PLAY_Z_LEVELS)
+/datum/game_mode/proc/count_marines(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/num_marines = 0
 
-	for(var/mob/M in living_human_list)
-		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space))
-			if(ishuman(M) && !isYautja(M))
-				if(M.faction == FACTION_MARINE)	
-					num_marines++
+	for(var/i in GLOB.alive_human_list)
+		var/mob/M = i
+		if(M.z && (M.z in z_levels) && !istype(M.loc, /turf/open/space))
+			if(M.faction == FACTION_MARINE)
+				num_marines++
 
 	return num_marines
 

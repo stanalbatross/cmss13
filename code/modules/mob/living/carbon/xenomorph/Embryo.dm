@@ -3,7 +3,6 @@
 /obj/item/alien_embryo
 	name = "alien embryo"
 	desc = "All slimy and yucky."
-	icon_source = "alien_embryo"
 	icon_state = "Larva Dead"
 	var/mob/living/affected_mob
 	var/stage = 0
@@ -13,17 +12,18 @@
 	var/faction = FACTION_XENOMORPH
 	var/flags_embryo = FALSE // Used in /ciphering/predator property
 
-/obj/item/alien_embryo/New()
-	..()
+/obj/item/alien_embryo/Initialize(mapload, ...)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_embryo))
 	if(istype(loc, /mob/living))
 		affected_mob = loc
 		affected_mob.status_flags |= XENO_HOST
-		processing_objects.Add(src)
+		START_PROCESSING(SSobj, src)
 		if(iscarbon(affected_mob))
 			var/mob/living/carbon/C = affected_mob
 			C.med_hud_set_status()
 	else
-		qdel(src)
+		return INITIALIZE_HINT_QDEL
 
 /obj/item/alien_embryo/Destroy()
 	if(affected_mob)
@@ -31,19 +31,19 @@
 		if(iscarbon(affected_mob))
 			var/mob/living/carbon/C = affected_mob
 			C.med_hud_set_status()
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		affected_mob = null
 	. = ..()
 
 /obj/item/alien_embryo/process()
 	if(!affected_mob) //The mob we were gestating in is straight up gone, we shouldn't be here
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		qdel(src)
 		return FALSE
 
 	if(loc != affected_mob) //Our location is not the host
 		affected_mob.status_flags &= ~(XENO_HOST)
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		if(iscarbon(affected_mob))
 			var/mob/living/carbon/C = affected_mob
 			C.med_hud_set_status()
@@ -63,10 +63,10 @@
 			var/mob/living/carbon/Xenomorph/Larva/L = locate() in affected_mob
 			if(L)
 				L.chest_burst(affected_mob)
-			processing_objects.Remove(src)
+			STOP_PROCESSING(SSobj, src)
 			return FALSE
 
-	if(affected_mob.in_stasis == STASIS_IN_CRYO_CELL) 
+	if(affected_mob.in_stasis == STASIS_IN_CRYO_CELL)
 		return FALSE //If they are in cryo, the embryo won't grow.
 
 	process_growth()
@@ -134,7 +134,7 @@
 /obj/item/alien_embryo/proc/become_larva()
 	// We do not allow chest bursts on the Centcomm Z-level, to prevent
 	// stranded players from admin experiments and other issues
-	if(!affected_mob || affected_mob.z == 2)
+	if(!affected_mob || is_admin_level(affected_mob.z))
 		return
 
 	var/mob/picked
@@ -144,7 +144,7 @@
 			picked = affected_mob
 		else if(affected_mob.mind && affected_mob.mind.ghost_mob && affected_mob.client && affected_mob.client.prefs && (affected_mob.client.prefs.be_special & BE_ALIEN_AFTER_DEATH) && !jobban_isbanned(affected_mob, "Alien"))
 			picked = affected_mob.mind.ghost_mob
-	
+
 
 	if(!picked)
 		// Get a candidate from observers
@@ -155,14 +155,14 @@
 
 	// Spawn the larva
 	var/mob/living/carbon/Xenomorph/Larva/new_xeno
-	
+
 	if(isYautja(affected_mob) || (flags_embryo & FLAG_EMBRYO_PREDATOR))
 		new_xeno = new /mob/living/carbon/Xenomorph/Larva/predalien(affected_mob)
-		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nAn abomination has been detected at [get_area(new_xeno).name]. It is a stain upon our purity and is unfit for life. Exterminate it immediately"))
+		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!\n\nAn abomination has been detected at [get_area_name(new_xeno)]. It is a stain upon our purity and is unfit for life. Exterminate it immediately"))
 	else
 		new_xeno = new(affected_mob)
 
-	
+
 	var/datum/hive_status/hive = hive_datum[hivenumber]
 	if(hive)
 		hive.add_xeno(new_xeno)
@@ -188,7 +188,7 @@
 
 /mob/living/carbon/Xenomorph/Larva/proc/chest_burst(mob/living/carbon/victim)
 	set waitfor = 0
-	if(victim.chestburst || loc != victim) 
+	if(victim.chestburst || loc != victim)
 		return
 	victim.chestburst = TRUE
 	to_chat(src, SPAN_DANGER("You start bursting out of [victim]'s chest!"))
@@ -198,23 +198,23 @@
 								 SPAN_DANGER("You feel something ripping up your insides!"))
 	victim.make_jittery(300)
 	sleep(30)
-	if(!victim || !victim.loc) 
+	if(!victim || !victim.loc)
 		return//host could've been deleted, or we could've been removed from host.
 	if(loc != victim)
 		victim.chestburst = 0
 		return
 	victim.update_burst()
 	sleep(6) //Sprite delay
-	if(!victim || !victim.loc) 
+	if(!victim || !victim.loc)
 		return
 	if(loc != victim)
 		victim.chestburst = 0 //if a doc removes the larva during the sleep(6), we must remove the 'bursting' overlay on the human
 		victim.update_burst()
 		return
 
-	if(isYautja(victim)) 
+	if(isYautja(victim))
 		victim.emote("roar")
-	else 
+	else
 		victim.emote("scream")
 
 	var/burstcount = 0
@@ -231,7 +231,7 @@
 			round_statistics.total_larva_burst++
 		burstcount++
 
-		if(!L.ckey && loc && loc.z == 1 && (locate(/obj/structure/bed/nest) in loc) && hive.living_xeno_queen && hive.living_xeno_queen.z == loc.z)
+		if(!L.ckey && loc && is_ground_level(loc.z) && (locate(/obj/structure/bed/nest) in loc) && hive.living_xeno_queen && hive.living_xeno_queen.z == loc.z)
 			L.visible_message(SPAN_XENODANGER("[L] quickly burrows into the ground."))
 			if(round_statistics && !L.statistic_exempt)
 				round_statistics.track_new_participant(faction, -1) // keep stats sane

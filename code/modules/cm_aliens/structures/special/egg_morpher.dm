@@ -1,4 +1,4 @@
-#define EGGMORPG_RANGE 7
+#define EGGMORPG_RANGE 2
 
 //Eggmorpher - Basically a big reusable egg
 /obj/effect/alien/resin/special/eggmorph
@@ -57,6 +57,9 @@
 					to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
 					return
 			if(isXeno(M))
+				return
+			if(M == captured_mob)
+				to_chat(user, SPAN_XENOWARNING("[src] is already digesting [M]!"))
 				return
 			if(huggers_to_grow + stored_huggers >= huggers_to_grow_max)
 				to_chat(user, SPAN_XENOWARNING("\The [src] is already full! Using this one now would be a waste..."))
@@ -143,8 +146,8 @@
 		return
 
 	if (!linked_hive)
-		return 
-	
+		return
+
 	if(!CanHug(AM, linked_hive.hivenumber))
 		return
 

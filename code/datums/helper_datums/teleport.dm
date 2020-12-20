@@ -99,7 +99,7 @@
 		var/area/destarea = get_area(destination)
 		if(precision)
 			var/list/posturfs = circlerangeturfs(destination,precision)
-			destturf = safepick(posturfs)
+			destturf = SAFEPICK(posturfs)
 		else
 			destturf = get_turf(destination)
 
@@ -177,7 +177,7 @@
 				teleatom.visible_message(SPAN_DANGER("<B>The [teleatom] bounces off of the portal!</B>"))
 			return 0
 
-		if(destination.z == 2) //centcomm z-level
+		if(is_admin_level(destination.z)) //centcomm z-level
 			if(length(teleatom.search_contents_for(/obj/item/storage/backpack/holding)))
 				teleatom.visible_message(SPAN_DANGER("<B>The Bag of Holding bounces off of the portal!</B>"))
 				return 0

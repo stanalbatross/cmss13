@@ -1,23 +1,170 @@
-/* 21st Sept 2010
-Updated by Skie -- Still not perfect but better!
-Stuff you can't do:
-Call proc /mob/proc/make_dizzy() for some player
-Because if you select a player mob as owner it tries to do the proc for
-/mob/living/carbon/human/ instead. And that gives a run-time error.
-But you can call procs that are of type /mob/living/carbon/human/proc/ for that player.
-*/
+GLOBAL_VAR(AdminProcCaller)
+GLOBAL_PROTECT(AdminProcCaller)
+GLOBAL_VAR_INIT(AdminProcCallCount, FALSE)
+GLOBAL_PROTECT(AdminProcCallCount)
+GLOBAL_VAR(LastAdminCalledTargetRef)
+GLOBAL_PROTECT(LastAdminCalledTargetRef)
+GLOBAL_VAR(LastAdminCalledTarget)
+GLOBAL_PROTECT(LastAdminCalledTarget)
+GLOBAL_VAR(LastAdminCalledProc)
+GLOBAL_PROTECT(LastAdminCalledProc)
+GLOBAL_LIST_EMPTY(AdminProcCallSpamPrevention)
+GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
-// Wrapper verb for advanced proccall
-/client/proc/advproccall()
+/client/proc/proccall_atom(datum/A as null|area|mob|obj|turf)
+	set category = null
+	set name = "B: Atom ProcCall"
+	set waitfor = FALSE
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	/// Holds a reference to the client incase something happens to them
+	var/client/starting_client = usr.client
+
+	var/procname = input("Proc name, eg: attack_hand", "Proc:", null) as text|null
+	if(!procname)
+		return
+
+	if(!hascall(A, procname))
+		to_chat(starting_client, "<font color='red'>Error: callproc_datum(): type [A.type] has no proc named [procname].</font>")
+		return
+
+	var/list/lst = starting_client.admin_holder.get_callproc_args()
+	if(!lst)
+		return
+
+	if(!A || !IsValidSrc(A))
+		to_chat(starting_client, "<span class='warning'>Error: callproc_datum(): owner of proc no longer exists.</span>")
+		return
+
+	log_admin("[key_name(usr)] called [A]'s [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+	message_admins("[key_name_admin(usr)] called [A]'s [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+
+	var/returnval = WrapAdminProcCall(A, procname, lst) // Pass the lst as an argument list to the proc
+	. = starting_client.admin_holder.get_callproc_returnval(returnval, procname)
+	if(.)
+		to_chat(usr, .)
+
+
+/client/proc/proccall_advanced()
 	set category = "Debug"
 	set name = "A: Advanced ProcCall"
+	set waitfor = FALSE
 
-	callproc(null)
+	if(!check_rights(R_DEBUG))
+		return
+
+	var/datum/target = null
+	var/targetselected = 0
+	var/returnval = null
+
+	switch(alert("Proc owned by something?",, "Yes", "No"))
+		if("Yes")
+			targetselected = TRUE
+			var/list/value = usr.client.vv_get_value(default_class = VV_ATOM_REFERENCE, classes = list(VV_ATOM_REFERENCE, VV_DATUM_REFERENCE, VV_MOB_REFERENCE, VV_CLIENT))
+			if(!value["class"] || !value["value"])
+				return
+			target = value["value"]
+		if("No")
+			target = null
+			targetselected = FALSE
+
+	var/procname = input("Proc path, eg: /proc/attack_hand(mob/living/user)")
+	if(!procname)
+		return
+
+	//strip away everything but the proc name
+	var/list/proclist = splittext(procname, "/")
+	if(!length(proclist))
+		return
+
+	procname = proclist[length(proclist)]
+
+	var/proctype = "proc"
+	if("verb" in proclist)
+		proctype = "verb"
+
+
+	var/procpath
+	if(targetselected && !hascall(target, procname))
+		to_chat(usr, "<font color='red'>Error: callproc(): type [target.type] has no [proctype] named [procname].</font>")
+		return
+	else if(!targetselected)
+		procpath = text2path("/[proctype]/[procname]")
+		if(!procpath)
+			to_chat(usr, "<font color='red'>Error: callproc(): proc [procname] does not exist. (Did you forget the /proc/ part?)</font>")
+			return
+
+	var/list/lst = usr.client.admin_holder.get_callproc_args()
+	if(!lst)
+		return
+
+	if(targetselected)
+		if(!target)
+			to_chat(usr, "<font color='red'>Error: callproc(): owner of proc no longer exists.</font>")
+			return
+		log_admin("[key_name(usr)] called [target]'s [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+		message_admins("[key_name_admin(usr)] called [target]'s [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+		returnval = WrapAdminProcCall(target, procname, lst) // Pass the lst as an argument list to the proc
+	else
+		//this currently has no hascall protection. wasn't able to get it working.
+		log_admin("[key_name(usr)] called [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+		message_admins("[key_name_admin(usr)] called [procname]() with [length(lst) ? "the arguments [list2params(lst)]" : "no arguments"].")
+		returnval = WrapAdminProcCall(GLOBAL_PROC, procpath, lst) // Pass the lst as an argument list to the proc
+
+	. = usr.client.admin_holder.get_callproc_returnval(returnval, procname)
+	if(.)
+		to_chat(usr, .)
+
+/datum/admins/proc/get_callproc_returnval(returnval, procname)
+	. = ""
+	if(islist(returnval))
+		var/list/returnedlist = returnval
+		. = "<span class='notice'>"
+		if(length(returnedlist))
+			var/assoc_check = returnedlist[1]
+			if(istext(assoc_check) && (returnedlist[assoc_check] != null))
+				. += "[procname] returned an associative list:"
+				for(var/key in returnedlist)
+					. += "\n[key] = [returnedlist[key]]"
+
+			else
+				. += "[procname] returned a list:"
+				for(var/elem in returnedlist)
+					. += "\n[elem]"
+		else
+			. = "[procname] returned an empty list"
+		. += "</font>"
+
+	else
+		. = "<span class='notice'>[procname] returned: [!isnull(returnval) ? returnval : "null"]</font>"
+
+
+/datum/admins/proc/get_callproc_args()
+	var/argnum = input("Number of arguments", "Number:", 0) as num|null
+	if(isnull(argnum))
+		return
+
+	. = list()
+	var/list/named_args = list()
+	while(argnum--)
+		var/named_arg = input("Leave blank for positional argument. Positional arguments will be considered as if they were added first.", "Named argument") as text|null
+		var/value = usr.client.vv_get_value(restricted_classes = list(VV_RESTORE_DEFAULT))
+		if (!value["class"])
+			return
+		if(named_arg)
+			named_args[named_arg] = value["value"]
+		else
+			. += value["value"]
+	if(LAZYLEN(named_args))
+		. += named_args
+
 
 /client/proc/callproc(var/datum/target_datum=null)
 	set waitfor = 0
 
-	if(!check_rights(R_DEBUG) || (config.debugparanoid && !check_rights(R_ADMIN)))
+	if(!check_rights(R_DEBUG) || (CONFIG_GET(flag/debugparanoid) && !check_rights(R_ADMIN)))
 		return
 
 	var/datum/target = target_datum
@@ -38,9 +185,9 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			class = input("Proc owned by...","Owner",null) as null|anything in options
 			switch(class)
 				if("Obj")
-					target = input("Enter target:","Target",usr) as obj in object_list
+					target = input("Enter target:","Target",usr) as obj in GLOB.object_list
 				if("Mob")
-					target = input("Enter target:","Target",usr) as mob in mob_list
+					target = input("Enter target:","Target",usr) as mob in GLOB.mob_list
 				if("Area or Turf")
 					target = input("Enter target:","Target",usr.loc) as area|turf in world
 				if("Client")
@@ -56,16 +203,19 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				else
 					return
 
-	if(target.is_datum_protected())
-		to_chat(usr, SPAN_WARNING("This datum is protected. Access Denied"))
-		return
+	if (targetselected)
+		if(QDELETED(target))
+			return
+		if(istype(target) && target.is_datum_protected())
+			to_chat(usr, SPAN_WARNING("This datum is protected. Access Denied"))
+			return
 
 	var/procname = input("Proc path, eg: /proc/fake_blood","Path:", null) as text|null
-	if(!procname)	
+	if(!procname)
 		return
 
 	var/argnum = input("Number of arguments","Number:",0) as num|null
-	if(!argnum && (argnum!=0))	
+	if(!argnum && (argnum!=0))
 		return
 
 	lst.len = argnum // Expand to right length
@@ -95,7 +245,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				lst[i] = input("Select reference:","Reference",src) as mob|obj|turf|area in world
 
 			if("mob reference")
-				lst[i] = input("Select reference:","Reference",usr) as mob in mob_list
+				lst[i] = input("Select reference:","Reference",usr) as mob in GLOB.mob_list
 
 			if("file")
 				lst[i] = input("Pick file:","File") as file
@@ -110,7 +260,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				lst[i] = input("Please, select a player!", "Selection", null, null) as null|anything in keys
 
 			if("mob's area")
-				var/mob/temp = input("Select mob", "Selection", usr) as mob in mob_list
+				var/mob/temp = input("Select mob", "Selection", usr) as mob in GLOB.mob_list
 				lst[i] = temp.loc
 
 			if("marked datum")
@@ -147,86 +297,6 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 
 
-
-/client/proc/callatomproc(atom/A)
-	set category = "Debug"
-	set name = "B: Atom ProcCall"
-	set waitfor = 0
-
-	if(!check_rights(R_DEBUG) || (config.debugparanoid && !check_rights(R_ADMIN))) 
-		return
-
-	var/lst[] // List reference
-	lst = new/list() // Make the list
-	var/returnval = null
-	var/class = null
-
-	var/procname = input("Proc name, eg: attack_hand","Proc:", null) as text|null
-	if(!procname)
-		return
-
-	if(!hascall(A,procname))
-		to_chat(usr, "<font color='red'>Error: callatomproc(): type [A.type] has no proc named [procname].</font>")
-		return
-
-	var/argnum = input("Number of arguments","Number:",0) as num|null
-	if(!argnum && (argnum!=0))	
-		return
-
-	lst.len = argnum
-
-	var/i
-	for(i=1, i<argnum+1, i++) // Lists indexed from 1 forwards in byond
-
-		// Make a list with each index containing one variable, to be given to the proc
-		class = input("What kind of variable?","Variable Type") in list("text","num","type","reference","mob reference","icon","file","client","mob's area","marked datum","CANCEL")
-		switch(class)
-			if("CANCEL")
-				return
-
-			if("text")
-				lst[i] = input("Enter new text:","Text",null) as text
-
-			if("num")
-				lst[i] = input("Enter new number:","Num",0) as num
-
-			if("type")
-				lst[i] = input("Enter type:","Type") in typesof(/obj,/mob,/area,/turf)
-
-			if("reference")
-				lst[i] = input("Select reference:","Reference",src) as mob|obj|turf|area in world
-
-			if("mob reference")
-				lst[i] = input("Select reference:","Reference",usr) as mob in mob_list
-
-			if("file")
-				lst[i] = input("Pick file:","File") as file
-
-			if("icon")
-				lst[i] = input("Pick icon:","Icon") as icon
-
-			if("client")
-				var/list/keys = list()
-				for(var/mob/M in GLOB.player_list)
-					keys += M.client
-				lst[i] = input("Please, select a player!", "Selection", null, null) as null|anything in keys
-
-			if("mob's area")
-				var/mob/temp = input("Select mob", "Selection", usr) as mob in mob_list
-				lst[i] = temp.loc
-
-			if("marked datum")
-				var/datum/D = input_marked_datum(admin_holder.marked_datums)
-				lst[i] = D
-
-	message_staff(SPAN_NOTICE("[key_name_admin(src)] called [A]'s [procname]() with [lst.len ? "the arguments [list2params(lst)]":"no arguments"]."))
-	returnval = call(A,procname)(arglist(lst)) // Pass the lst as an argument list to the proc
-	to_chat(usr, SPAN_BLUE("[procname] returned: [returnval ? returnval : "null"]"))
-
-
-
-
-
 /client/proc/Cell()
 	set category = "Debug"
 	set name = "Cell"
@@ -247,11 +317,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	usr.show_message(t, 1)
 
 
-/client/proc/cmd_admin_robotize(var/mob/M in mob_list)
+/client/proc/cmd_admin_robotize(var/mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Make Robot"
 
-	if(!ticker)
+	if(!SSticker.mode)
 		alert("Wait until the game starts")
 		return
 	if(istype(M, /mob/living/carbon/human))
@@ -262,11 +332,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	else
 		alert("Invalid mob")
 
-/client/proc/cmd_admin_animalize(var/mob/M in mob_list)
+/client/proc/cmd_admin_animalize(var/mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Make Simple Animal"
 
-	if(!ticker)
+	if(!SSticker.mode)
 		alert("Wait until the game starts")
 		return
 
@@ -282,11 +352,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	spawn(10)
 		M.Animalize()
 
-/client/proc/cmd_admin_alienize(var/mob/M in mob_list)
+/client/proc/cmd_admin_alienize(var/mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Make Alien"
 
-	if(!ticker)
+	if(!SSticker.mode)
 		alert("Wait until the game starts")
 		return
 	if(ishuman(M))
@@ -302,7 +372,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	set category = "Debug"
 	set name = "E: Change Hivenumber"
 
-	var/mob/living/carbon/X = input(src,"Select a xeno.", null, null) in living_xeno_list
+	var/mob/living/carbon/X = input(src,"Select a xeno.", null, null) in GLOB.living_xeno_list
 	if(!istype(X))
 		to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 		return
@@ -313,7 +383,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	set category = "Debug"
 	set name = "H: Toggle Round End Checks"
 
-	if(!ticker || !ticker.mode)
+	if(!SSticker.mode)
 		to_chat(usr, "Mode not found?")
 	round_should_check_for_win = !round_should_check_for_win
 	if (round_should_check_for_win)
@@ -383,11 +453,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	message_staff("[key_name_admin(src)] has remade the powernets. makepowernets() called.", 0)
 
 
-/client/proc/cmd_admin_grantfullaccess(var/mob/M in mob_list)
+/client/proc/cmd_admin_grantfullaccess(var/mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Grant Full Access"
 
-	if (!ticker)
+	if (!SSticker.mode)
 		alert("Wait until the game starts")
 		return
 	if (istype(M, /mob/living/carbon/human))
@@ -410,11 +480,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 	message_staff(SPAN_NOTICE("[key_name_admin(usr)] has granted [M.key] full access."), 1)
 
-/client/proc/cmd_admin_grantallskills(var/mob/M in mob_list)
+/client/proc/cmd_admin_grantallskills(var/mob/M in GLOB.mob_list)
 	set category = null
 	set name = "Grant All Skills"
 
-	if(!ticker)
+	if(!SSticker.mode)
 		alert("Wait until the game starts")
 		return
 	if(M)
@@ -424,21 +494,21 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 	message_staff(SPAN_NOTICE("[key_name_admin(usr)] has granted [M.key] all skills."), 1)
 
-/client/proc/cmd_assume_direct_control(var/mob/M in mob_list)
+/client/proc/cmd_assume_direct_control(var/mob/M in GLOB.mob_list)
 	set name = "Control Mob"
 	set desc = "Assume control of the mob"
 	set category = null
 
-	if(!check_rights(R_DEBUG|R_ADMIN))	
+	if(!check_rights(R_DEBUG|R_ADMIN))
 		return
 
-	if(QDELETED(M)) 
+	if(QDELETED(M))
 		return //mob is garbage collected
 
 	if(M.ckey)
 		if(alert("This mob is being controlled by [M.ckey]. Are you sure you wish to assume control of it? [M.ckey] will be made a ghost.",,"Yes","No") != "Yes")
 			return
-		
+
 		M.ghostize()
 
 	if(M.mind)
@@ -450,54 +520,6 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	usr.mind.transfer_to(M, TRUE)
 
 	message_staff(SPAN_NOTICE("[key_name_admin(usr)] assumed direct control of [M]."), 1)
-
-/client/proc/cmd_debug_mob_lists()
-	set category = "Debug"
-	set name = "E: Debug Mob Lists"
-	set desc = "For when you just gotta know"
-
-	switch(input("Which list?") in list("Players","Admins","Clients","Mobs","Living Mobs","Dead Mobs","Human Mobs","Living Human Mobs","Xeno Mobs","Xeno Living Mobs","Yautja Mobs"))
-		if("Mobs")
-			if(mob_list.len)
-				to_chat(usr, jointext(mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Living Mobs")
-			if(living_mob_list.len)
-				to_chat(usr, jointext(living_mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Dead Mobs")
-			if(dead_mob_list.len)
-				to_chat(usr, jointext(dead_mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Human Mobs")
-			if(human_mob_list.len)
-				to_chat(usr, jointext(human_mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Living Human Mobs")
-			if(living_human_list.len)
-				to_chat(usr, jointext(living_human_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Xeno Mobs")
-			if(xeno_mob_list.len)
-				to_chat(usr, jointext(xeno_mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Xeno Living Mobs")
-			if(living_xeno_list.len)
-				to_chat(usr, jointext(living_xeno_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-		if("Yautja Mobs")
-			if(yautja_mob_list.len)
-				to_chat(usr, jointext(yautja_mob_list," | "))
-			else
-				to_chat(usr, SPAN_WARNING("No mobs in player list found."))
-
 
 /client/proc/cmd_debug_list_processing_items()
 	set category = "Debug"
@@ -521,7 +543,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		individual_counts["[M.type]"]++
 	for(var/datum/M in power_machines)
 		individual_counts["[M.type]"]++
-	for(var/mob/M in xeno_mob_list)
+	for(var/mob/M in GLOB.xeno_mob_list)
 		individual_counts["[M.type]"]++
 
 	var/str = ""

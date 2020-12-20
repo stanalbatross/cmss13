@@ -1,7 +1,7 @@
 /datum/equipment_preset/synth
 	name = "Synth"
 	uses_special_name = TRUE
-	languages = list("English", "Russian", "Tradeband", "Sainja", "Xenomorph")
+	languages = list("English", "Russian", "Japanese", "Sainja", "Xenomorph","Spacendeutchen","Spanish")
 	skills = /datum/skills/synthetic
 
 /datum/equipment_preset/synth/New()
@@ -33,12 +33,12 @@
 
 /datum/equipment_preset/synth/uscm
 	name = "USCM Synthetic"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 	faction = FACTION_MARINE
 	idtype = /obj/item/card/id/gold
 	assignment = "Synthetic"
 	rank = "Synthetic"
-	paygrade = "???"
+	paygrade = ""
 	role_comm_title = "Syn"
 
 /datum/equipment_preset/synth/uscm/load_gear(mob/living/carbon/human/H)
@@ -57,12 +57,12 @@
 
 /datum/equipment_preset/synth/uscm/councillor
 	name = "USCM Synthetic Councillor"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 	faction = FACTION_MARINE
 	idtype = /obj/item/card/id/gold
 	assignment = "Synthetic"
 	rank = "Synthetic"
-	paygrade = "???"
+	paygrade = ""
 	role_comm_title = "Syn"
 
 /datum/equipment_preset/synth/uscm/councillor/load_gear(mob/living/carbon/human/H)
@@ -233,7 +233,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/collectable/xenom(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton(H.back), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/dutch(H), WEAR_EAR)
-	
+
 
 /datum/equipment_preset/synth/survivor/midwife/load_name(mob/living/carbon/human/H, var/randomise)
 	var/final_name = "Midwife Joe"

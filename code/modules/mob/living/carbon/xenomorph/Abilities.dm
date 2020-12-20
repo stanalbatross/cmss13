@@ -13,7 +13,8 @@
 
 /datum/action/xeno_action/activable/xeno_spit/action_cooldown_check()
 	var/mob/living/carbon/Xenomorph/X = owner
-	if(X.has_spat < world.time) return TRUE
+	if(X.has_spat < world.time)
+		return TRUE
 
 
 
@@ -108,7 +109,7 @@
 		to_chat(X, SPAN_XENOWARNING("You can't do that from there."))
 		return
 
-	if(!T.can_dig_xeno_tunnel() || !(T.z in SURFACE_Z_LEVELS))
+	if(!T.can_dig_xeno_tunnel() || !is_ground_level(T.z))
 		to_chat(X, SPAN_XENOWARNING("You scrape around, but you can't seem to dig through that kind of floor."))
 		return
 
@@ -216,43 +217,52 @@
 		to_chat(M, SPAN_XENO("You hear a strange, alien voice in your head. \"[msg]\""))
 		to_chat(X, SPAN_XENONOTICE("You said: \"[msg]\" to [M]"))
 
-/datum/action/xeno_action/onclick/queen_give_plasma
-	name = "Give Plasma (600)"
+/datum/action/xeno_action/activable/queen_give_plasma
+	name = "Give Plasma (400)"
 	action_icon_state = "queen_give_plasma"
-	plasma_cost = 600
+	ability_name = "give plasma"
+	plasma_cost = 400
 	macro_path = /datum/action/xeno_action/verb/verb_plasma_xeno
 	action_type = XENO_ACTION_CLICK
-	ability_primacy = XENO_PRIMARY_ACTION_3
+	ability_primacy = XENO_PRIMARY_ACTION_2
+	xeno_cooldown = 12 SECONDS
 
-/datum/action/xeno_action/onclick/queen_give_plasma/use_ability(atom/A)
+/datum/action/xeno_action/activable/queen_give_plasma/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
 	if(!X.check_state())
 		return
-	if(X.queen_ability_cooldown > world.time)
-		to_chat(X, SPAN_XENOWARNING("You're still recovering from your last overwatch ability. Wait [round((X.queen_ability_cooldown-world.time)*0.1)] seconds."))
+
+	if(!action_cooldown_check())
 		return
-	if(X.observed_xeno)
-		var/mob/living/carbon/Xenomorph/target = X.observed_xeno
-		if(!target.caste.can_be_queen_healed)
-			to_chat(X, SPAN_XENOWARNING("This caste cannot be given plasma!"))
-			return
-		if(target.on_fire)
-			to_chat(X, SPAN_XENOWARNING("You cannot give plasma to xenos that are on fire!"))
-			return
-		if(target.stat != DEAD)
-			if(target.plasma_stored < target.plasma_max)
-				if(X.check_plasma(plasma_cost))
-					X.use_plasma(plasma_cost)
-					target.gain_plasma(400)
-					X.queen_ability_cooldown = world.time + 150 //15 seconds
-					to_chat(X, SPAN_XENONOTICE("You transfer some plasma to [target]."))
 
-			else
+	var/mob/living/carbon/Xenomorph/target = A
+	if(!istype(target) || target.stat == DEAD)
+		to_chat(X, SPAN_WARNING("You must target the xeno you want to give plasma to."))
+		return
 
-				to_chat(X, SPAN_WARNING("[target] is at full plasma."))
-	else
-		to_chat(X, SPAN_WARNING("You must overwatch the xeno you want to give plasma to."))
+	if(target == X)
+		to_chat(X, SPAN_XENOWARNING("You cannot give plasma to yourself!"))
+		return
 
+	if(!X.match_hivemind(target))
+		to_chat(X, SPAN_WARNING("You can only target xenos part of your hive!"))
+		return
+
+	if(!target.caste.can_be_queen_healed)
+		to_chat(X, SPAN_XENOWARNING("This caste cannot be given plasma!"))
+		return
+	
+	if(target.on_fire)
+		to_chat(X, SPAN_XENOWARNING("You cannot give plasma to xenos that are on fire!"))
+		return
+
+	if(!check_and_use_plasma_owner())
+		return
+
+	target.gain_plasma(target.plasma_max * 0.75)
+	target.flick_heal_overlay(SECONDS_3, COLOR_CYAN)
+	apply_cooldown()
+	to_chat(X, SPAN_XENONOTICE("You transfer some plasma to [target]."))
 /datum/action/xeno_action/onclick/queen_order
 	name = "Give Order (100)"
 	action_icon_state = "queen_order"
@@ -486,7 +496,7 @@
 		SPAN_XENODANGER("[X] makes you regress into your previous form."))
 
 		if(X.hive.living_xeno_queen && X.hive.living_xeno_queen.observed_xeno == T)
-			X.hive.living_xeno_queen.set_queen_overwatch(new_xeno)
+			X.hive.living_xeno_queen.overwatch(new_xeno)
 
 		message_staff("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
 

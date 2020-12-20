@@ -86,7 +86,7 @@
 	var/list/tier_1 = list()
 	var/list/tier_2 = list()
 	var/list/tier_3 = list()
-	for(var/mob/living/carbon/human/H in living_mob_list)
+	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		if(H.z != 1 && !istype(H.loc,/mob/living/carbon/Xenomorph))
 			continue
 		if(!H.has_helmet_camera())
@@ -124,8 +124,8 @@
 	if(selected)
 		for(var/mob/living/carbon/human/sel in marines_with_helmets[selected])
 			newoverlay.DrawBox(colors[selected],sel.loc.x-1,sel.loc.y-1,sel.loc.x+1,sel.loc.y+1)
-	for(var/obj/vehicle/multitile/MULT in all_multi_vehicles)
-		if(MULT.visible_in_tacmap && MULT.z == 1)	//don't need colony/hostile vehicle to show
+	for(var/obj/vehicle/multitile/MULT in GLOB.all_multi_vehicles)
+		if(MULT.visible_in_tacmap && is_ground_level(MULT.z))	//don't need colony/hostile vehicle to show
 			vehicles += MULT
 	if(vehicles.len)
 		for(var/obj/vehicle/multitile/V in vehicles)
@@ -134,8 +134,8 @@
 			newoverlay.DrawBox(rgb(128,255,128),V.x+1,V.y)
 			newoverlay.DrawBox(rgb(128,255,128),V.x,V.y-1)
 			newoverlay.DrawBox(rgb(128,255,128),V.x,V.y+1)
-	if(ticker.toweractive)
-		for(var/mob/living/carbon/Xenomorph/X in living_xeno_list)
+	if(SSticker.toweractive)
+		for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
 			if(X.loc.z != 1) continue
 			switch(X.tier)
 				if(0)

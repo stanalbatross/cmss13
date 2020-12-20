@@ -2,15 +2,14 @@
 	caste_name = "Lurker"
 	tier = 2
 
-	melee_damage_lower = XENO_DAMAGE_TIER_4
-	melee_damage_upper = XENO_DAMAGE_TIER_4
+	melee_damage_lower = XENO_DAMAGE_TIER_3
+	melee_damage_upper = XENO_DAMAGE_TIER_5
 	max_health = XENO_HEALTH_TIER_5
-	plasma_gain = XENO_PLASMA_GAIN_TIER_7
+	plasma_gain = XENO_PLASMA_GAIN_TIER_8
 	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_2
 	armor_deflection = XENO_NO_ARMOR
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_LOW
-	evasion = XENO_EVASION_MEDIUM
+	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_8
 
 	attack_delay = 2 // VERY high slash damage, but attacks relatively slowly
@@ -21,11 +20,12 @@
 	caste_desc = "A fast, powerful backline combatant."
 	evolves_to = list("Ravager")
 
+	heal_resting = 1.5
+
 /mob/living/carbon/Xenomorph/Lurker
 	caste_name = "Lurker"
 	name = "Lurker"
 	desc = "A beefy, fast alien with sharp claws."
-	icon_source = "alien_lurker"
 	icon_size = 48
 	icon_state = "Lurker Walking"
 	plasma_types = list(PLASMA_CATECHOLAMINE)
@@ -48,6 +48,10 @@
 
 	tackle_min = 2
 	tackle_max = 6
+
+/mob/living/carbon/Xenomorph/Lurker/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_lurker))
 
 /mob/living/carbon/Xenomorph/Lurker/update_icons()
 	if(!caste)
@@ -98,13 +102,13 @@
 
 /datum/behavior_delegate/lurker_base/melee_attack_additional_effects_target(atom/A)
 	if (!isXenoOrHuman(A))
-		return 
+		return
 
 	var/mob/living/carbon/H = A
 	if (H.knocked_down)
 		new /datum/effects/xeno_slow(H, bound_xeno, null, null, get_xeno_stun_duration(slash_slow_duration))
 
-	return 
+	return
 
 /datum/behavior_delegate/lurker_base/melee_attack_additional_effects_self()
 
@@ -129,7 +133,7 @@
 		LPA.knockdown = FALSE // pounce no longer knocks down
 		LPA.freeze_self = FALSE
 
-	// SLIGHTLY hacky because we need to maintain lots of other state on the lurker 
+	// SLIGHTLY hacky because we need to maintain lots of other state on the lurker
 	// whenever invisibility is on/off CD and when it's active.
 	addtimer(CALLBACK(src, .proc/regen_invisibility), invis_recharge_time)
 
@@ -144,7 +148,7 @@
 		var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/onclick/lurker_invisibility)
 		if(LIA && istype(LIA))
 			LIA.end_cooldown()
-	
+
 /datum/behavior_delegate/lurker_base/append_to_stat()
 	var/invis_message = (invis_start_time == -1) ? "N/A" : "[(invis_duration-(world.time - invis_start_time))/10] seconds."
 	stat("Invisibility Time Left:", invis_message)

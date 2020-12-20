@@ -36,8 +36,8 @@
 	var/combistick_cooldown = 0 //Let's add a cooldown for Yank Combistick so that it can't be spammed.
 	var/notification_sound = TRUE	// Whether the bracer pings when a message comes or not
 
-/obj/item/clothing/gloves/yautja/New()
-	..()
+/obj/item/clothing/gloves/yautja/Initialize(mapload, ...)
+	. = ..()
 	caster = new(src)
 
 /obj/item/clothing/gloves/yautja/emp_act(severity)
@@ -49,22 +49,34 @@
 			decloak(usr)
 
 /obj/item/clothing/gloves/yautja/equipped(mob/user, slot)
-	..()
-	if(slot == WEAR_HANDS)
-		flags_item ^= NODROP
-		processing_objects.Add(src)
-		if(isYautja(user))
-			to_chat(user, SPAN_WARNING("The bracer clamps securely around your forearm and beeps in a comfortable, familiar way."))
-		else
-			to_chat(user, SPAN_WARNING("The bracer clamps painfully around your forearm and beeps angrily. It won't come off!"))
+	. = ..()
+	if(slot != WEAR_HANDS)
+		return
+	flags_item ^= NODROP
+	START_PROCESSING(SSobj, src)
+	if(isYautja(user))
+		to_chat(user, SPAN_WARNING("The bracer clamps securely around your forearm and beeps in a comfortable, familiar way."))
+	else
+		to_chat(user, SPAN_WARNING("The bracer clamps painfully around your forearm and beeps angrily. It won't come off!"))
+
+//Any projectile can decloak a predator. It does defeat one free bullet though.
+/obj/item/clothing/gloves/yautja/proc/bullet_hit(mob/living/carbon/human/H, obj/item/projectile/P)
+	SIGNAL_HANDLER
+	var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
+	if( ammo_flags & (AMMO_ROCKET|AMMO_ENERGY|AMMO_XENO_ACID) ) //<--- These will auto uncloak.
+		decloak(H) //Continue on to damage.
+	else if(rand(0,100) < 20)
+		decloak(H)
+		return COMPONENT_BULLET_NO_HIT //Absorb one free bullet.
 
 /obj/item/clothing/gloves/yautja/Destroy()
-	processing_objects.Remove(src)
+	QDEL_NULL(caster)
+	STOP_PROCESSING(SSobj, src)
 	remove_from_missing_pred_gear(src)
 	..()
 
 /obj/item/clothing/gloves/yautja/dropped(mob/user)
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 	add_to_missing_pred_gear(src)
 	flags_item = initial(flags_item)
 	..()
@@ -76,7 +88,7 @@
 
 /obj/item/clothing/gloves/yautja/process()
 	if(!ishuman(loc))
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		return
 	var/mob/living/carbon/human/H = loc
 	if(cloak_timer)
@@ -161,7 +173,7 @@
 			. = call_combi(TRUE)
 		else
 			. = delimb_user()
-			
+
 	return
 
 //We use this to determine whether we should activate the given verb, or a random verb
@@ -309,28 +321,26 @@
 		if (isYautja(loc))
 			//it's actually yautja holding the item, ignore!
 			continue
-		switch(loc.z)
-			if(LOW_ORBIT_Z_LEVEL)
-				gear_low_orbit++
-			if(MAIN_SHIP_Z_LEVEL)
-				gear_on_almayer++
-			if(1)
-				gear_on_planet++
+		if(is_loworbit_level(loc.z))
+			gear_low_orbit++
+		else if(is_mainship_level(loc.z))
+			gear_on_almayer++
+		else if(is_ground_level(loc.z))
+			gear_on_planet++
 		if(M.z == loc.z)
 			var/dist = get_dist(M,loc)
 			if(dist < closest)
 				closest = dist
 				direction = get_dir(M,loc)
 				areaLoc = loc
-	for(var/mob/living/carbon/human/Y in yautja_mob_list)
+	for(var/mob/living/carbon/human/Y in GLOB.yautja_mob_list)
 		if(Y.stat != DEAD) continue
-		switch(Y.z)
-			if(LOW_ORBIT_Z_LEVEL)
-				dead_low_orbit++
-			if(MAIN_SHIP_Z_LEVEL)
-				dead_on_almayer++
-			if(1)
-				dead_on_planet++
+		if(is_loworbit_level(Y.z))
+			dead_low_orbit++
+		else if(is_mainship_level(Y.z))
+			dead_on_almayer++
+		else if(is_ground_level(Y.z))
+			dead_on_planet++
 		if(M.z == Y.z)
 			var/dist = get_dist(M,Y)
 			if(dist < closest)
@@ -346,7 +356,7 @@
 		output = 1
 		to_chat(M, SPAN_NOTICE("Your bracer shows a readout of Yautja technology signatures, [gear_on_planet] in the hunting grounds, [gear_on_almayer] in orbit, [gear_low_orbit] in low orbit."))
 	if(closest < 900)
-		var/areaName = get_area(areaLoc).name
+		var/areaName = get_area_name(areaLoc)
 		to_chat(M, SPAN_NOTICE("The closest signature is approximately [round(closest,10)] paces [dir2text(direction)] in [areaName]."))
 	if(!output)
 		to_chat(M, SPAN_NOTICE("There are no signatures that require your attention."))
@@ -389,7 +399,9 @@
 			return 0
 		if(!drain_power(M,50)) return
 		cloaked = 1
+		RegisterSignal(M, COMSIG_HUMAN_BULLET_ACT, .proc/bullet_hit)
 		to_chat(M, SPAN_NOTICE("You are now invisible to normal detection."))
+		log_game("[key_name_admin(usr)] has enabled their cloaking device.")
 		for(var/mob/O in oviewers(M))
 			O.show_message("[M] vanishes into thin air!",1)
 		playsound(M.loc,'sound/effects/pred_cloakon.ogg', 15, 1)
@@ -406,8 +418,10 @@
 
 /obj/item/clothing/gloves/yautja/proc/decloak(var/mob/user)
 	if(!user) return
+	UnregisterSignal(user, COMSIG_HUMAN_BULLET_ACT)
 	to_chat(user, "Your cloaking device deactivates.")
 	cloaked = 0
+	log_game("[key_name_admin(usr)] has disabled their cloaking device.")
 	for(var/mob/O in oviewers(user))
 		O.show_message("[user.name] shimmers into existence!",1)
 	playsound(user.loc,'sound/effects/pred_cloakoff.ogg', 15, 1)
@@ -501,7 +515,7 @@
 	if(istype(T) && exploding)
 		victim.apply_damage(50,BRUTE,"chest")
 		if(victim) victim.gib() //Let's make sure they actually gib.
-		if(explosion_type == 0 && (z in SURFACE_Z_LEVELS))
+		if(explosion_type == 0 && is_ground_level(z))
 			cell_explosion(T, 600, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "yautja self destruct", victim) //Dramatically BIG explosion.
 		else
 			cell_explosion(T, 800, 550, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "yautja self destruct", victim)
@@ -518,7 +532,10 @@
 	set category = "Yautja"
 	if(alert("Which explosion type do you want?","Explosive Bracers", "Small", "Big") == "Big")
 		explosion_type = 0
-	else explosion_type = 1
+		log_attack("[key_name_admin(usr)] has changed their Self Destruct to Large")
+	else
+		explosion_type = 1
+		log_attack("[key_name_admin(usr)] has changed their Self Destruct to Small")
 
 
 /obj/item/clothing/gloves/yautja/proc/activate_suicide_internal(var/forced = FALSE)
@@ -583,6 +600,7 @@
 				return
 			exploding = 0
 			to_chat(M, SPAN_NOTICE("Your bracers stop beeping."))
+			message_staff("[usr] ([usr.key]) has deactivated their Self Destruct.")
 		return
 	if((M.wear_mask && istype(M.wear_mask,/obj/item/clothing/mask/facehugger)) || M.status_flags & XENO_HOST)
 		to_chat(M, SPAN_WARNING("Strange...something seems to be interfering with your bracer functions..."))
@@ -720,7 +738,7 @@
 		untracked_yautja_gear += pickeditem
 		remove_from_missing_pred_gear(pickeditem)
 
-	
+
 /obj/item/clothing/gloves/yautja/verb/add_tracked_item()
 	set name = "Add item to tracker"
 	set category = "Yautja"
@@ -826,12 +844,12 @@
 	   //Preds now speak in bastardized 1337speak BECAUSE. -because abby is retarded -spookydonut
 
 	spawn(10)
-		if(!drain_power(usr,50)) 
+		if(!drain_power(usr,50))
 			return //At this point they've upgraded.
 
 		log_say("Yautja Translator/[usr.client.ckey] : [msg]")
 
 		for(var/mob/Q in hearers(usr))
-			if(Q.stat && !isobserver(Q)) 
+			if(Q.stat && !isobserver(Q))
 				continue //Unconscious
 			to_chat(Q, "[SPAN_INFO("A strange voice says")] <span class='prefix'>'[msg]'</span>.")

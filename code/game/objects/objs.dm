@@ -18,22 +18,22 @@
 
 /obj/New()
 	..()
-	object_list += src
+	GLOB.object_list += src
 	if(garbage)
 		add_to_garbage(src)
 
 /obj/Destroy()
-	if(buckled_mob) 
+	if(buckled_mob)
 		unbuckle()
 	. = ..()
 	remove_from_garbage(src)
-	object_list -= src
+	GLOB.object_list -= src
 
 
 /obj/item/proc/is_used_on(obj/O, mob/user)
 
 /obj/process()
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 	return 0
 
 /obj/proc/set_pixel_location()
@@ -183,7 +183,7 @@
 	else
 		if(M.loc != src.loc)
 			return
-	if (M.mob_size == MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
+	if (M.mob_size <= MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
 		do_buckle(M, user)
 		return
 	if (M.mob_size > MOB_SIZE_HUMAN)
@@ -240,6 +240,10 @@
 			last_move_dir = buckled_mob.last_move_dir
 			buckled_mob.inertia_dir = last_move_dir
 			return 0
+
+	// Even if the movement is entirely managed by the object, notify the buckled mob that it's moving for its handler.
+	//It won't be called otherwise because it's a function of client_move or pulled mob, neither of which accounts for this.
+	buckled_mob.on_movement()
 	return 1
 
 /obj/BlockedPassDirs(atom/movable/mover, target_dir)
@@ -250,7 +254,7 @@
 
 /obj/proc/wall_check() //used at roundstart to automatically detect and remove walls that overlap. Called by windows and airlocks
 	spawn(10)
-		if(ticker.current_state == GAME_STATE_PREGAME)
+		if(SSticker.current_state == GAME_STATE_PREGAME)
 			var/turf/T = get_turf(src)
 			if( istype( T,/turf/closed/wall ) )
 				message_admins("Overlap of [src] with [T] detected and fixed in area [T.loc.name] ([T.x],[T.y],[T.z]) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")

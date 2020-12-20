@@ -21,9 +21,10 @@
 
 	initialize_pain()
 	initialize_stamina()
-
+	GLOB.living_mob_list += src
 
 /mob/living/Destroy()
+	GLOB.living_mob_list -= src
 	pipes_shown = null
 
 	QDEL_NULL(attack_icon)
@@ -154,7 +155,7 @@
 	set category = "OOC"
 	set src in view()
 
-	if(config.allow_Metadata)
+	if(CONFIG_GET(flag/allow_Metadata))
 		if(client)
 			to_chat(usr, "[src]'s Metainfo:<br>[client.prefs.metadata]")
 		else
@@ -347,7 +348,7 @@
 
 	if(isXeno(L) && !isXenoLarva(L))
 		var/mob/living/carbon/Xenomorph/X = L
-		if(X.mob_size == MOB_SIZE_BIG || (ishuman(src) && !isYautja(src))) // Small xenos can be pushed by other xenos or preds
+		if(X.mob_size >= MOB_SIZE_BIG || (ishuman(src) && !isYautja(src))) // Small xenos can be pushed by other xenos or preds
 			now_pushing = FALSE
 			return
 
@@ -401,6 +402,10 @@
 	..()
 
 /mob/living/launch_towards(var/datum/launch_metadata/LM)
+	if(src && event_movement)
+		var/datum/event_args/mob_movement/ev_args = new /datum/event_args/mob_movement()
+		ev_args.moving = TRUE
+		event_movement.fire_event(src, ev_args)
 	if(!istype(LM) || !LM.target || !src || buckled)
 		return
 	if(pulling)
@@ -499,7 +504,7 @@
 		user.show_message(SPAN_NOTICE("Key: Suffocation/Toxin/Burns/Brute"), 1)
 		user.show_message(SPAN_NOTICE("Body Temperature: ???"), 1)
 		return
-	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if(!(istype(user, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(usr, SPAN_WARNING("You don't have the dexterity to do this!"))
 		return
 	if(!ignore_delay && !skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))

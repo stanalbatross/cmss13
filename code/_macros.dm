@@ -9,14 +9,7 @@
 #define send_rsc(target, rsc_content, rsc_name)             target << browse_rsc(rsc_content, rsc_name)
 #define open_link(target, url)                              target << link(url)
 
-#if DM_VERSION > 513
-#warn 513 is definitely stable now, remove this
-#endif
-#if DM_VERSION < 513
-#define any2ref(x) "\ref[x]"
-#else
 #define any2ref(x) ref(x)
-#endif
 
 #define CanInteract(user, state) (CanUseTopic(user, state) == STATUS_INTERACTIVE)
 
@@ -27,10 +20,6 @@
 #define CanPhysicallyInteractWith(user, target) CanInteractWith(user, target, GLOB.physical_state)
 
 #define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) }}; if(x) {x.Cut(); x = null } // Second x check to handle items that LAZYREMOVE on qdel.
-
-#define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
-
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel, item), time, TIMER_STOPPABLE)
 
 #define DROP_NULL(x) if(x) { x.dropInto(loc); x = null; }
 

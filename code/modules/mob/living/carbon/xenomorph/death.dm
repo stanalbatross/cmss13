@@ -6,7 +6,7 @@
 	if(!.)
 		return //If they're already dead, it will return.
 
-	living_xeno_list -= src
+	GLOB.living_xeno_list -= src
 
 	if(is_zoomed)
 		zoom_out()
@@ -26,12 +26,12 @@
 			hud_used.alien_plasma_display.icon_state = "power_display_empty"
 		update_icons()
 
-	if(z != ADMIN_Z_LEVEL) //so xeno players don't get death messages from admin tests
+	if(!is_admin_level(z)) //so xeno players don't get death messages from admin tests
 		if(isXenoQueen(src))
 			var/mob/living/carbon/Xenomorph/Queen/XQ = src
 			playsound(loc, 'sound/voice/alien_queen_died.ogg', 75, 0)
 			if(XQ.observed_xeno)
-				XQ.set_queen_overwatch(XQ.observed_xeno, TRUE)
+				XQ.overwatch(XQ.observed_xeno, TRUE)
 			if(XQ.ovipositor)
 				XQ.dismount_ovipositor(TRUE)
 
@@ -47,7 +47,7 @@
 						new_xeno.set_hive_and_update(hivenumber)
 
 						new_xeno.generate_name()
-						if(!ticker.mode.transfer_xeno(xeno_candidate, new_xeno))
+						if(!SSticker.mode.transfer_xeno(xeno_candidate, new_xeno))
 							qdel(new_xeno)
 							return
 						new_xeno.visible_message(SPAN_XENODANGER("A larva suddenly burrows out of the ground!"),
@@ -61,14 +61,14 @@
 				hive.slashing_allowed = XENO_SLASH_ALLOWED
 				hive.set_living_xeno_queen(null)
 				//on the off chance there was somehow two queen alive
-				for(var/mob/living/carbon/Xenomorph/Queen/Q in living_mob_list)
-					if(!QDELETED(Q) && Q != src && Q.stat != DEAD && Q.hivenumber == hivenumber)
+				for(var/mob/living/carbon/Xenomorph/Queen/Q in GLOB.living_xeno_list)
+					if(!QDELETED(Q) && Q != src && Q.hivenumber == hivenumber)
 						hive.set_living_xeno_queen(Q)
 						break
 				hive.handle_xeno_leader_pheromones()
-				if(ticker && ticker.mode)
-					ticker.mode.check_queen_status(hive.queen_time, hivenumber)
-					LAZYADD(ticker.mode.dead_queens, "<br>[!isnull(src.key) ? src.key : "?"] was [src] [SPAN_BOLDNOTICE("(DIED)")]")
+				if(SSticker.mode)
+					SSticker.mode.check_queen_status(hive.queen_time, hivenumber)
+					LAZYADD(SSticker.mode.dead_queens, "<br>[!isnull(src.key) ? src.key : "?"] was [src] [SPAN_BOLDNOTICE("(DIED)")]")
 
 		else
 			playsound(loc, prob(50) == 1 ? 'sound/voice/alien_death.ogg' : 'sound/voice/alien_death2.ogg', 25, 1)
@@ -139,9 +139,9 @@
 
 /mob/living/carbon/Xenomorph/gib_animation()
 	var/to_flick = "gibbed-a"
-	var/icon_path = get_icon_from_source("alien_gib_48x48")
-	if(mob_size == MOB_SIZE_BIG)
-		icon_path = get_icon_from_source("alien_gib_64x64")
+	var/icon_path = get_icon_from_source(CONFIG_GET(string/alien_gib_48x48))
+	if(mob_size >= MOB_SIZE_BIG)
+		icon_path = get_icon_from_source(CONFIG_GET(string/alien_gib_64x64))
 	switch(caste.caste_name)
 		if("Runner")
 			to_flick = "gibbed-a-runner"

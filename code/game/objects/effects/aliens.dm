@@ -6,9 +6,12 @@
 /obj/effect/xenomorph
 	name = "alien thing"
 	desc = "You shouldn't be seeing this."
-	icon_source = "alien_effects"
 	unacidable = TRUE
 	layer = FLY_LAYER
+
+/obj/effect/xenomorph/Initialize(mapload, ...)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_effects))
 
 /obj/effect/xenomorph/splatter
 	name = "splatter"
@@ -113,11 +116,11 @@
 
 			continue
 
-	processing_objects.Add(src)
+	START_PROCESSING(SSobj, src)
 	addtimer(CALLBACK(src, .proc/die), time_to_live)
 
 /obj/effect/xenomorph/spray/Destroy()
-	processing_objects -= src
+	STOP_PROCESSING(SSobj, src)
 	source_mob = null
 	return ..()
 
@@ -127,7 +130,7 @@
 		PF.flags_pass = PASS_FLAGS_ACID_SPRAY
 
 /obj/effect/xenomorph/spray/proc/die()
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 	qdel(src)
 
 /obj/effect/xenomorph/spray/Crossed(AM as mob|obj)

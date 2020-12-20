@@ -69,11 +69,11 @@
 */
 
 // Galactic common languages (systemwide accepted standards).
-/datum/language/trader
-	name = "Tradeband"
-	desc = "Maintained by the various trading cartels in major systems, this elegant, structured language is used for bartering and bargaining."
-	speech_verb = "enunciates"
-	colour = "say_quote"
+/datum/language/japanese
+	name = "Japanese"
+	desc = "A language boasting an extensive grammatical system, three writing systems, and a new smattering of English loanwords. This gained popularity due to high cultural contact in the RESS, and finds use outside due to immigration."
+	speech_verb = "vocalizes"
+	colour = "japanese"
 	key = "2"
 
 /datum/language/russian
@@ -82,6 +82,33 @@
 	speech_verb = "says"
 	colour = "soghun"
 	key = "3"
+
+/datum/language/german
+	name = "Spacendeutchen"
+	desc = "A common dialect consisting of a hybrid between American English and German developed due to the high immigration and subsequent enlistment of German-Americans into the USCM."
+	speech_verb = "proclaims"
+	ask_verb = "inquires"
+	exclaim_verb = "bellows loudly"
+	colour = "german"
+	key = "4"
+
+/datum/language/spanish
+	name = "Spanish"
+	desc = "The second most common language spoken in the UA, mostly concentrated and brought from marines from the Latin American territories and in the former southern USA."
+	speech_verb = "dice"
+	ask_verb = "cuestiona"
+	exclaim_verb = "grita"
+	colour = "spanish"
+	key = "5"
+
+/datum/language/commando
+	name = "Tactical Sign Language"
+	desc = "TSL is a modern technique with a combination of modified American sign language, tactical hand signals and discreet and esoteric code names for radios only known by elite commando groups."
+	speech_verb = "discreetly communicates"
+	ask_verb = "interrogates"
+	exclaim_verb = "orders"
+	colour = "commando"
+	key = "t"
 
 /datum/language/sainja //Yautja tongue
 	name = "Sainja"
@@ -155,11 +182,11 @@
 	var/message_body = "<span class='message'>[speaker.say_quote(message)], \"[message]\"</span></span></i>"
 	GLOB.STUI.game.Add("\[[time_stamp()]]<font color='#FFFF00'>BINARY: [key_name(speaker)] : [message]</font><br>")
 	GLOB.STUI.processing |= STUI_LOG_GAME_CHAT
-	for (var/mob/M in dead_mob_list)
+	for (var/mob/M in GLOB.dead_mob_list)
 		if(!istype(M,/mob/new_player) && !istype(M,/mob/living/brain)) //No meta-evesdropping
 			M.show_message("[message_start] [message_body]", 2)
 
-	for (var/mob/living/S in living_mob_list)
+	for (var/mob/living/S in GLOB.alive_mob_list)
 
 		if(drone_only && !ismaintdrone(S))
 			continue

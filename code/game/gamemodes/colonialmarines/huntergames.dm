@@ -100,11 +100,7 @@ var/waiting_for_drop_votes = 0
 	var/last_drop = 0
 	var/last_tally
 	var/contestants[]
-	var/primary_spawns[]
-	var/secondary_spawns[]
 	var/supply_votes[]
-	var/crap_spawns[]
-	var/good_spawns[]
 
 	var/ticks_passed = 0
 	var/drops_disabled = 0
@@ -115,39 +111,66 @@ var/waiting_for_drop_votes = 0
 /datum/game_mode/huntergames/announce()
 	return TRUE
 
+/obj/effect/landmark/hunter_primary
+	name = "hunter_primary"
+
+/obj/effect/landmark/hunter_primary/Initialize(mapload, ...)
+	. = ..()
+	GLOB.hunter_primaries += src
+
+/obj/effect/landmark/hunter_primary/Destroy()
+	GLOB.hunter_primaries -= src
+	return ..()
+
+/obj/effect/landmark/hunter_secondary
+	name = "hunter_secondary"
+
+/obj/effect/landmark/hunter_secondary/Initialize(mapload, ...)
+	. = ..()
+	GLOB.hunter_secondaries += src
+
+/obj/effect/landmark/hunter_secondary/Destroy()
+	GLOB.hunter_secondaries -= src
+	return ..()
+
+/obj/effect/landmark/crap_item
+	name = "crap_item"
+
+/obj/effect/landmark/crap_item/Initialize(mapload, ...)
+	. = ..()
+	GLOB.crap_items += src
+
+/obj/effect/landmark/crap_item/Destroy()
+	GLOB.crap_items -= src
+	return ..()
+
+/obj/effect/landmark/good_item
+	name = "good_item"
+
+/obj/effect/landmark/good_item/Initialize(mapload, ...)
+	. = ..()
+	GLOB.good_items += src
+
+/obj/effect/landmark/good_item/Destroy()
+	GLOB.good_items -= src
+	return ..()
+
 /datum/game_mode/huntergames/pre_setup()
-	primary_spawns = list()
-	secondary_spawns = list()
-	crap_spawns = list()
-	good_spawns = list()
 	supply_votes = list()
 
-	for(var/obj/effect/landmark/L in landmarks_list)
-		switch(L.name)
-			if("hunter_primary")
-				primary_spawns += L.loc
-				qdel(L)
-			if("hunter_secondary")
-				secondary_spawns += L.loc
-				qdel(L)
-			if("crap_item")
-				crap_spawns += L.loc
-				place_drop(L.loc, "crap")
-				qdel(L)
-			if("good_item")
-				good_spawns += L.loc
-				place_drop(L.loc, "good")
-				qdel(L)
-			if("block_hellhound")
-				new /obj/effect/step_trigger/hell_hound_blocker(L.loc)
-				qdel(L)
-			if("fog blocker")
-				qdel(L)
-			if("xeno tunnel")
-				qdel(L)
+	for(var/i in GLOB.crap_items)
+		place_drop(get_turf(i), "crap")
 
-	for(var/obj/item/weapon/gun/G in item_list) qdel(G) //No guns or ammo allowed.
-	for(var/obj/item/ammo_magazine/M in item_list) qdel(M)
+	for(var/i in GLOB.good_items)
+		place_drop(get_turf(i), "good")
+
+	QDEL_LIST(GLOB.fog_blockers)
+	QDEL_LIST(GLOB.xeno_tunnels)
+
+	for(var/G in GLOB.gun_list)
+		qdel(G) //No guns or ammo allowed.
+	for(var/M in GLOB.ammo_magazine_list)
+		qdel(M)
 
 	for(var/mob/new_player/player in GLOB.new_player_list)
 		if(player && player.ready)
@@ -161,13 +184,13 @@ var/waiting_for_drop_votes = 0
 
 /datum/game_mode/huntergames/post_setup()
 	contestants = list()
-	var/mob/M
-	for(M in mob_list)
-		if(M.client && istype(M,/mob/living/carbon/human))
+	for(var/i in GLOB.human_mob_list)
+		var/mob/M = i
+		if(M.client)
 			contestants += M
 			spawn_contestant(M)
 
-	if(config) config.remove_gun_restrictions = 1 //This will allow anyone to use cool guns.
+	CONFIG_SET(flag/remove_gun_restrictions, TRUE) //This will allow anyone to use cool guns.
 
 	spawn(10)
 		to_world("<B>The current game mode is - HUNTER GAMES!</B>")
@@ -187,12 +210,11 @@ var/waiting_for_drop_votes = 0
 	var/mob/living/carbon/human/H
 	var/turf/picked
 
-	if(primary_spawns.len)
-		picked = pick(primary_spawns)
-		primary_spawns -= picked
+	if(GLOB.hunter_primaries.len)
+		picked = get_turf(pick_n_take(GLOB.hunter_primaries))
 	else
-		if(secondary_spawns.len)
-			picked = pick(secondary_spawns)
+		if(GLOB.hunter_secondaries.len)
+			picked = get_turf(pick_n_take(GLOB.hunter_secondaries))
 		else
 			message_admins("There were no spawn points available for a contestant..")
 
@@ -283,7 +305,7 @@ var/waiting_for_drop_votes = 0
 		if(!drops_disabled)
 			to_world(SPAN_ROUNDBODY("Your Predator capturers have decided it is time to bestow a gift upon the scurrying humans."))
 			to_world(SPAN_ROUNDBODY("One lucky contestant should prepare for a supply drop in 60 seconds."))
-			for(var/mob/dead/D in dead_mob_list)
+			for(var/mob/dead/D in GLOB.dead_mob_list)
 				to_chat(D, SPAN_ROUNDBODY("Now is your chance to vote for a supply drop beneficiary! Go to Ghost tab, Spectator Vote!"))
 			world << sound('sound/effects/alert.ogg')
 			last_drop = world.time
@@ -347,7 +369,7 @@ var/waiting_for_drop_votes = 0
 /datum/game_mode/huntergames/proc/count_humans()
 	var/human_count = 0
 
-	for(var/mob/living/carbon/human/H in living_mob_list)
+	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		if(istype(H) && H.stat == 0 && !istype(get_area(H.loc),/area/centcom) && !istype(get_area(H.loc),/area/tdome))
 			if(H.species != "Yautja") // Preds don't count in round end.
 				human_count += 1 //Add them to the amount of people who're alive.
@@ -372,7 +394,7 @@ var/waiting_for_drop_votes = 0
 		round_statistics.track_round_end()
 	var/mob/living/carbon/winner = null
 
-	for(var/mob/living/carbon/human/Q in living_mob_list)
+	for(var/mob/living/carbon/human/Q in GLOB.alive_mob_list)
 		if(istype(Q) && Q.stat == 0 && !isYautja(Q) && !istype(get_area(Q.loc),/area/centcom) && !istype(get_area(Q.loc),/area/tdome))
 			winner = Q
 			break

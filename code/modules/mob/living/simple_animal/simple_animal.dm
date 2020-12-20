@@ -76,8 +76,8 @@
 	if(stat == DEAD)
 		if(health > 0)
 			icon_state = icon_living
-			dead_mob_list -= src
-			living_mob_list += src
+			GLOB.dead_mob_list -= src
+			GLOB.alive_mob_list += src
 			stat = CONSCIOUS
 			lying = 0
 			density = 1
@@ -306,7 +306,7 @@
 
 /mob/living/simple_animal/movement_delay()
 	. = ..()
-	. += config.animal_delay
+	. += CONFIG_GET(number/animal_delay)
 
 	move_delay = .
 

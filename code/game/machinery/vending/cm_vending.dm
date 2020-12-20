@@ -115,7 +115,7 @@ IN_USE						used for vending/denying
 	hacked = !hacked
 	if(hacked)
 		to_chat(user, SPAN_WARNING("You have succesfully removed access restrictions in [src]."))
-		if(user && z == MAIN_SHIP_Z_LEVEL)
+		if(user && is_mainship_level(z))
 			SSclues.create_print(get_turf(user), user, "A small piece of cut wire is found on the fingerprint.")
 			if(user.faction == FACTION_MARINE && user.detectable_by_ai())
 				ai_silent_announcement("DAMAGE REPORT: Unauthorized access change detected at [get_area(src)], requesting Military Police supervision.")
@@ -195,7 +195,7 @@ IN_USE						used for vending/denying
 	M.visible_message(SPAN_WARNING("[M] begins to lean against [src]."), \
 	SPAN_WARNING("You begin to lean against [src]."), null, 5, CHAT_TYPE_XENO_COMBAT)
 	var/shove_time = 80
-	if(M.mob_size == MOB_SIZE_BIG)
+	if(M.mob_size >= MOB_SIZE_BIG)
 		shove_time = 30
 	if(istype(M,/mob/living/carbon/Xenomorph/Crusher))
 		shove_time = 15

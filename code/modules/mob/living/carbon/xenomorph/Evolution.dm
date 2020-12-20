@@ -82,7 +82,7 @@
 				to_chat(src, SPAN_WARNING("You require more plasma! Currently at: [plasma_stored] / 500."))
 				return
 
-			if(ticker && ticker.mode && hive.xeno_queen_timer>world.time)
+			if(SSticker.mode && hive.xeno_queen_timer>world.time)
 				to_chat(src, SPAN_WARNING("You must wait about [round((hive.xeno_queen_timer-world.time) / (60 SECONDS))] minutes for the hive to recover from the previous Queen's death."))
 				return
 		else
@@ -90,7 +90,7 @@
 			return
 
 //Used for restricting benos to evolve to drone/queen when they're the only potential queen
-	for(var/mob/living/carbon/Xenomorph/M in living_xeno_list)
+	for(var/mob/living/carbon/Xenomorph/M in GLOB.living_xeno_list)
 		if(hivenumber == M.hivenumber)
 			switch(M.tier)
 				if(0)
@@ -205,6 +205,7 @@
 			if(new_xeno)
 				qdel(new_xeno)
 			return
+
 		switch(new_xeno.tier) //They have evolved, add them to the slot count
 			if(2)
 				hive.tier_2_xenos |= new_xeno
@@ -215,7 +216,7 @@
 			mind.transfer_to(new_xeno)
 		else
 			new_xeno.key = src.key
-			if(new_xeno.client) 
+			if(new_xeno.client)
 				new_xeno.client.change_view(world_view_size)
 
 		//Regenerate the new mob's name now that our player is inside
@@ -230,19 +231,23 @@
 			new_xeno.fireloss = src.fireloss //Transfers the damage over.
 			new_xeno.updatehealth()
 
-		new_xeno.plasma_stored = new_xeno.plasma_max*(plasma_stored/plasma_max) //preserve the ratio of plasma
+		if(plasma_max == 0)
+			new_xeno.plasma_stored = new_xeno.plasma_max
+		else
+			new_xeno.plasma_stored = new_xeno.plasma_max*(plasma_stored/plasma_max) //preserve the ratio of plasma
 
 		new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_name] emerges from the husk of \the [src]."), \
 		SPAN_XENODANGER("You emerge in a greater form from the husk of your old body. For the hive!"))
 
 		if(hive.living_xeno_queen && hive.living_xeno_queen.observed_xeno == src)
-			hive.living_xeno_queen.set_queen_overwatch(new_xeno)
+			hive.living_xeno_queen.overwatch(new_xeno)
+
 		qdel(src)
 		new_xeno.xeno_jitter(25)
 
 		if (new_xeno.client)
 			new_xeno.client.mouse_pointer_icon = initial(new_xeno.client.mouse_pointer_icon)
-		
+
 		if(new_xeno.mind && round_statistics)
 			round_statistics.track_new_participant(new_xeno.faction, -1) //so an evolved xeno doesn't count as two.
 		SSround_recording.recorder.track_player(new_xeno)
@@ -255,7 +260,7 @@
 	set name = "De-Evolve"
 	set desc = "De-evolve into a lesser form."
 	set category = "Alien"
-	
+
 	if(!check_state())
 		return
 

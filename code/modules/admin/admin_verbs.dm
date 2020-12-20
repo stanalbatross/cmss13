@@ -11,7 +11,6 @@ var/list/admin_verbs_default = list(
 
 var/list/admin_verbs_admin = list(
 	/datum/admins/proc/togglejoin,		/*toggles whether people can join the current game*/
-	/datum/admins/proc/toggleguests,	/*toggles whether guests can join the current game*/
 	/datum/admins/proc/announce,		/*priority announce something to all clients.*/
 	/datum/admins/proc/view_txt_log,	/*shows the server log (diary) for today*/
 	/client/proc/cmd_stickyban,
@@ -69,8 +68,7 @@ var/list/admin_verbs_fun = list(
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,
 	/client/proc/game_panel,
-	/client/proc/create_humans,
-	/client/proc/clear_mutineers
+	/client/proc/create_humans
 )
 var/list/admin_verbs_server = list(
 	/datum/admins/proc/startnow,
@@ -93,7 +91,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/debug_role_authority,
 	/client/proc/cmd_debug_make_powernets,
 	/client/proc/cmd_debug_fire_ob,
-	/client/proc/cmd_debug_mob_lists,
 	/client/proc/cmd_debug_list_processing_items,
 	/client/proc/cmd_admin_delete,
 	/client/proc/cmd_debug_del_all,
@@ -102,8 +99,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/restart_controller,
 	/client/proc/cmd_debug_toggle_should_check_for_win,
 	/client/proc/enable_debug_verbs,
-	/client/proc/advproccall,
-	/client/proc/callatomproc,
+	/client/proc/proccall_advanced,
+	/client/proc/proccall_atom,
 	/client/proc/toggledebuglogs,
 	/client/proc/togglenichelogs,
 	/client/proc/cmd_admin_change_hivenumber,
@@ -140,8 +137,8 @@ var/list/debug_verbs = list(
 )
 
 var/list/admin_verbs_paranoid_debug = list(
-	/client/proc/advproccall,
-	/client/proc/callatomproc,
+	/client/proc/proccall_advanced,
+	/client/proc/proccall_atom,
 )
 
 var/list/admin_verbs_possess = list(
@@ -244,7 +241,8 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_check_contents,
 	/datum/admins/proc/show_player_panel,
 	/client/proc/show_objectives_status,
-	/client/proc/hide_admin_mob_verbs
+	/client/proc/hide_admin_mob_verbs,
+	/client/proc/clear_mutineers
 )
 
 /client/proc/add_admin_verbs()
@@ -264,7 +262,7 @@ var/list/admin_verbs_mod = list(
 			verbs += admin_verbs_server
 		if(admin_holder.rights & R_DEBUG)
 			verbs += admin_verbs_debug
-			if(config.debugparanoid && !check_rights(R_ADMIN))
+			if(CONFIG_GET(flag/debugparanoid) && !check_rights(R_ADMIN))
 				verbs.Remove(admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
 		if(admin_holder.rights & R_POSSESS)
 			verbs += admin_verbs_possess
@@ -356,7 +354,7 @@ var/list/admin_verbs_mod = list(
 			to_chat_forced(P.owning_client, "<font color='red'><BIG><B>You have been autobanned due to a warning by [key_name_admin(P.owning_client)].</B></BIG><br>This is a temporary ban, it will be removed in [AUTOBANTIME] minutes.")
 		else
 			message_staff("[key_name_admin(src)] has warned [warned_ckey] resulting in a [AUTOBANTIME] minute ban.")
-		
+
 		P.add_timed_ban("Autobanning due to too many formal warnings", AUTOBANTIME)
 	else
 		if(P.owning_client)
@@ -365,7 +363,7 @@ var/list/admin_verbs_mod = list(
 		else
 			message_staff("[key_name_admin(src)] has warned [warned_ckey] (DC). They have [MAX_WARNS-P.warning_count] strikes remaining.")
 
-/client/proc/give_disease(mob/T as mob in mob_list) // -- Giacom
+/client/proc/give_disease(mob/T as mob in GLOB.mob_list) // -- Giacom
 	set category = "Fun"
 	set name = "Give Disease (old)"
 	set desc = "Gives a (tg-style) Disease to a mob."
@@ -396,15 +394,15 @@ var/list/admin_verbs_mod = list(
 	set category = "Server"
 	if(!admin_holder)	return
 	if(config)
-		if(config.log_hrefs)
-			config.log_hrefs = 0
+		if(CONFIG_GET(flag/log_hrefs))
+			CONFIG_SET(flag/log_hrefs, FALSE)
 			to_chat(src, "<b>Stopped logging hrefs</b>")
 		else
-			config.log_hrefs = 1
+			CONFIG_SET(flag/log_hrefs, TRUE)
 			to_chat(src, "<b>Started logging hrefs</b>")
 
 
-/client/proc/editappear(mob/living/carbon/human/M as mob in mob_list)
+/client/proc/editappear(mob/living/carbon/human/M as mob in GLOB.human_mob_list)
 	set name = "Edit Appearance"
 	set category = null
 
@@ -504,8 +502,7 @@ var/list/admin_verbs_mod = list(
 	set desc = "Tells everyone about a random statistic in the round."
 	set category = "OOC"
 
-	if(ticker && ticker.mode)
-		ticker.mode.declare_random_fact()
+	SSticker.mode?.declare_random_fact()
 
 
 #undef MAX_WARNS

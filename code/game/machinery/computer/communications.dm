@@ -142,7 +142,7 @@
 					to_chat(usr, SPAN_WARNING("Please allow at least [COOLDOWN_COMM_MESSAGE*0.1] second\s to pass between announcements."))
 					return FALSE
 				var/input = stripped_multiline_input(usr, "Please write a message to announce to the station crew.", "Priority Announcement", "")
-				if(!input || authenticated != 2 || world.time < cooldown_message + COOLDOWN_COMM_MESSAGE || !(usr in view(1,src))) 
+				if(!input || authenticated != 2 || world.time < cooldown_message + COOLDOWN_COMM_MESSAGE || !(usr in view(1,src)))
 					return FALSE
 
 				marine_announcement(input)
@@ -204,10 +204,10 @@
 					to_chat(usr, SPAN_WARNING("The distress beacon cannot be launched this early in the operation. Please wait another [round((DISTRESS_TIME_LOCK-world.time)/MINUTES_1)] minutes before trying again."))
 					return FALSE
 
-				if(!ticker || !ticker.mode) 
+				if(!SSticker.mode)
 					return FALSE //Not a game mode?
 
-				if(ticker.mode.force_end_at == 0)
+				if(SSticker.mode.force_end_at == 0)
 					to_chat(usr, SPAN_WARNING("ARES has denied your request for operational security reasons."))
 					return FALSE
 
@@ -239,10 +239,10 @@
 					to_chat(usr, SPAN_WARNING("The self destruct cannot be activated this early in the operation. Please wait another [round((DISTRESS_TIME_LOCK-world.time)/MINUTES_1)] minutes before trying again."))
 					return FALSE
 
-				if(!ticker || !ticker.mode) 
+				if(!SSticker.mode)
 					return FALSE //Not a game mode?
 
-				if(ticker.mode.force_end_at == 0)
+				if(SSticker.mode.force_end_at == 0)
 					to_chat(usr, SPAN_WARNING("ARES has denied your request for operational security reasons."))
 					return FALSE
 
@@ -323,14 +323,14 @@
 			state = STATE_ALERT_LEVEL
 
 		if("selectlz")
-			if(!ticker.mode.active_lz)
+			if(!SSticker.mode.active_lz)
 				var/lz_choices = list()
 				for(var/obj/structure/machinery/computer/shuttle_control/console in machines)
-					if(console.z == SURFACE_Z_LEVEL && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
+					if(is_ground_level(console.z) && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
 						lz_choices += console
 				var/new_lz = input(usr, "Choose the primary LZ for this operation", "Operation Staging")  as null|anything in lz_choices
 				if(new_lz)
-					ticker.mode.select_lz(new_lz)
+					SSticker.mode.select_lz(new_lz)
 
 		else return FALSE
 
@@ -370,8 +370,8 @@
 
 				if(authenticated == 2)
 					dat += "<BR>Primary LZ"
-					if(!isnull(ticker) && !isnull(ticker.mode) && !isnull(ticker.mode.active_lz) && !isnull(ticker.mode.active_lz.loc))
-						dat += "<BR>[ticker.mode.active_lz.loc.loc]"
+					if(!isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc))
+						dat += "<BR>[SSticker.mode.active_lz.loc.loc]"
 					else
 						dat += "<BR><A HREF='?src=\ref[src];operation=selectlz'>Select primary LZ</A>"
 					dat += "<BR><hr>"

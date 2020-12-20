@@ -10,12 +10,20 @@
 	secured = 0
 
 	var/timing = 0
-	var/time = 4
+	var/time = 4 SECONDS
+
+/obj/item/device/assembly/timer/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/item/device/assembly/timer/activate()
 	if(!..())	return 0//Cooldown check
 
 	timing = !timing
+	if(timing)
+		START_PROCESSING(SSobj, src)
+	else
+		STOP_PROCESSING(SSobj, src)
 
 	update_icon()
 	return 0
@@ -23,11 +31,11 @@
 
 /obj/item/device/assembly/timer/toggle_secure()
 	secured = !secured
-	if(secured)
-		processing_objects.Add(src)
-	else
+	if(secured && timing)
+		START_PROCESSING(SSobj, src)
+	else if(!secured)
 		timing = 0
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 	update_icon()
 	return secured
 
@@ -39,16 +47,17 @@
 		visible_message("[htmlicon(src, hearers(src))] *beep* *beep*", "*beep* *beep*")
 	cooldown = 2
 	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECONDS)
+	STOP_PROCESSING(SSobj, src)
 	return
 
 
-/obj/item/device/assembly/timer/process()
+/obj/item/device/assembly/timer/process(delta_time)
 	if(timing && (time > 0))
-		time--
+		time -= delta_time SECONDS
 	if(timing && time <= 0)
 		timing = 0
 		timer_end()
-		time = 10
+		time = 10 SECONDS
 	return
 
 
@@ -62,42 +71,57 @@
 		holder.update_icon()
 	return
 
-
-/obj/item/device/assembly/timer/interact(mob/user as mob)//TODO: Have this use the wires
+/obj/item/device/assembly/timer/interact(mob/user)
 	if(!secured)
-		user.show_message(SPAN_DANGER("The [name] is unsecured!"))
-		return 0
-	var/second = time % 60
-	var/minute = (time - second) / 60
-	var/dat = text("<TT>[] []:[]\n<A href='?src=\ref[];tp=-30'>-</A> <A href='?src=\ref[];tp=-1'>-</A> <A href='?src=\ref[];tp=1'>+</A> <A href='?src=\ref[];tp=30'>+</A>\n</TT>", (timing ? text("<A href='?src=\ref[];time=0'>Timing</A>", src) : text("<A href='?src=\ref[];time=1'>Not Timing</A>", src)), minute, second, src, src, src, src)
-	dat += "<BR><BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
-	dat += "<BR><BR><A href='?src=\ref[src];close=1'>Close</A>"
-	show_browser(user, dat, "Timing Unit", "timer")
-	return
+		to_chat(user, SPAN_WARNING("The [name] is unsecured!"))
+		return
+	
+	tgui_interact(user)
+	
 
+/obj/item/device/assembly/timer/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if (!ui)
+		ui = new(user, src, "Timer", "Timer Assembly")
+		ui.open()
+		ui.set_autoupdate(timing)
 
-/obj/item/device/assembly/timer/Topic(href, href_list)
-	..()
-	if(!usr.canmove || usr.stat || usr.is_mob_restrained() || !in_range(loc, usr))
-		close_browser(usr, "timer")
+#define TIMER_MINIMUM_TIME (2 SECONDS)
+#define TIMER_MAXIMUM_TIME (120 SECONDS)
+
+/obj/item/device/assembly/timer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+
+	if(.)
 		return
 
-	if(href_list["time"])
-		timing = text2num(href_list["time"])
-		if(!timing)
-			time = min(max(round(time), 2), 600)
-		update_icon()
-
-	if(href_list["tp"])
-		var/tp = text2num(href_list["tp"])
-		time += tp
-		time = min(max(round(time), 2), 600)
-
-	if(href_list["close"])
-		close_browser(usr, "timer")
+	if(!secured)
 		return
 
-	if(usr)
-		attack_self(usr)
+	switch(action)
+		if("set_timing")
+			timing = text2num(params["should_time"])
+			ui.set_autoupdate(timing)
 
-	return
+			if(!timing)
+				time = clamp(round(time), TIMER_MINIMUM_TIME, TIMER_MAXIMUM_TIME)
+				STOP_PROCESSING(SSobj, src)
+			else
+				START_PROCESSING(SSobj, src)
+
+			update_icon()
+			. = TRUE
+
+		if("set_time")
+			time = clamp(round(text2num(params["time"])) SECONDS, TIMER_MINIMUM_TIME, TIMER_MAXIMUM_TIME)
+			. = TRUE
+
+/obj/item/device/assembly/timer/ui_data(mob/user)
+	. = list()
+	.["current_time"] = time SECONDS_TO_DECISECONDS
+	.["is_timing"] = timing
+	
+/obj/item/device/assembly/timer/ui_static_data(mob/user)
+	. = list()
+	.["min_time"] = TIMER_MINIMUM_TIME SECONDS_TO_DECISECONDS
+	.["max_time"] = TIMER_MAXIMUM_TIME SECONDS_TO_DECISECONDS

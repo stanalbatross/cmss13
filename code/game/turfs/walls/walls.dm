@@ -90,7 +90,7 @@
 	..()
 
 /turf/closed/wall/attack_alien(mob/living/carbon/Xenomorph/user)
-	if(acided_hole && user.mob_size == MOB_SIZE_BIG)
+	if(acided_hole && user.mob_size >= MOB_SIZE_BIG)
 		acided_hole.expand_hole(user)
 		return
 
@@ -98,6 +98,24 @@
 		user.animation_attack_on(src)
 		playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 		if(damage >= (damage_cap - (damage_cap / XENO_HITS_TO_DESTROY_WALL)))
+			var/dir_to = get_dir(user, src)
+			switch(dir_to)
+				if(WEST, EAST, NORTH, SOUTH)
+					acided_hole_dir = dir_to
+				if(NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST)
+					var/turf/closed/wall/wall_north_turf = get_step(src, NORTH)
+					var/turf/closed/wall/wall_south_turf = get_step(src, SOUTH)
+					var/turf/closed/wall/wall_east_turf = get_step(src, EAST)
+					var/turf/closed/wall/wall_west_turf = get_step(src, WEST)
+					
+					if(!istype(wall_north_turf) && !istype(wall_south_turf) && !istype(wall_east_turf) && !istype(wall_west_turf))
+						acided_hole_dir = dir_to & (NORTH|SOUTH)
+					else if(!istype(wall_north_turf) && !istype(wall_south_turf))
+						acided_hole_dir = dir_to & (NORTH|SOUTH)
+					else if(!istype(wall_east_turf) && !istype(wall_west_turf))
+						acided_hole_dir = dir_to & (EAST|WEST)
+					else
+						acided_hole_dir = dir_to & (NORTH|SOUTH)
 			new /obj/effect/acid_hole(src)
 		else
 			take_damage(damage_cap / XENO_HITS_TO_DESTROY_WALL)
@@ -192,8 +210,9 @@
 	var/exp_damage = severity*EXPLOSION_DAMAGE_MULTIPLIER_WALL
 
 	if ( damage + exp_damage > damage_cap*2 )
+		if(source_mob)
+			SEND_SIGNAL(source_mob, COMSIG_MOB_EXPLODED_WALL, src)
 		dismantle_wall(FALSE, TRUE)
-		SEND_SIGNAL(source_mob, COMSIG_MOB_EXPLODED_WALL, src)
 		if(!istype(src, /turf/closed/wall/resin))
 			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/light)
 	else
@@ -253,7 +272,7 @@
 	if(O || !QDELETED(O))
 		qdel(O)
 
-	if(W)
+	if(istype(W))
 		W.melting = FALSE
 	
 

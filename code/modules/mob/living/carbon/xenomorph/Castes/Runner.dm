@@ -5,28 +5,28 @@
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
 	plasma_gain = XENO_PLASMA_GAIN_TIER_1
-	plasma_max = XENO_PLASMA_TIER_2
+	plasma_max = XENO_NO_PLASMA
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_1
 	armor_deflection = XENO_NO_ARMOR
 	max_health = XENO_HEALTH_RUNNER
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_LOW
-	evasion = XENO_EVASION_HIGH
+	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_RUNNER
 	attack_delay = -4
 	evolves_to = list("Lurker")
 	deevolves_to = "Larva"
 
-	tackle_min = 2
-	tackle_max = 6
+	tackle_min = 3
+	tackle_max = 4
 	tackle_chance = 40
 	tacklestrength_min = 3
 	tacklestrength_max = 4
+
+	heal_resting = 1.75
 
 /mob/living/carbon/Xenomorph/Runner
 	caste_name = "Runner"
 	name = "Runner"
 	desc = "A small red alien that looks like it could run fairly quickly..."
-	icon_source = "alien_runner"
 	icon_state = "Runner Walking"
 	icon_size = 64
 	layer = MOB_LAYER
@@ -36,6 +36,8 @@
 	old_x = -16
 	pull_speed = -0.5
 	viewsize = 9
+
+	mob_size = MOB_SIZE_XENO_SMALL
 
 	actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
@@ -50,6 +52,10 @@
 		/mob/living/carbon/Xenomorph/proc/vent_crawl,
 		)
 	mutation_type = RUNNER_NORMAL
+
+/mob/living/carbon/Xenomorph/Runner/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_runner))
 
 /mob/living/carbon/Xenomorph/Runner/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()

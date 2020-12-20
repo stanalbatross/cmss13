@@ -8,6 +8,7 @@
 
 /datum/equipment_preset/other/mutineer
 	name = "Mutineer"
+	flags = EQUIPMENT_PRESET_EXTRA
 
 	faction = FACTION_MUTINEER
 
@@ -18,6 +19,7 @@
 
 /datum/equipment_preset/other/mutineer/leader
 	name = "Mutineer Leader"
+	flags = EQUIPMENT_PRESET_EXTRA
 
 /datum/equipment_preset/other/mutineer/leader/load_status(mob/living/carbon/human/H)
 	for(var/datum/action/human_action/activable/mutineer/A in H.actions)
@@ -29,7 +31,7 @@
 	for(var/type in abilities)
 		var/datum/action/human_action/activable/mutineer/M = new type()
 		M.give_action(H)
-	
+
 
 /datum/equipment_preset/other/freelancer
 	name = "Freelancer"
@@ -123,7 +125,7 @@
 	name = "Freelancer (Leader)"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Freelancer Warlord"
-	languages = list("English", "Russian", "Tradeband", "Sainja")
+	languages = list("English", "Russian", "Japanese", "Sainja")
 
 	skills = /datum/skills/freelancer/SL
 
@@ -290,7 +292,7 @@
 	name = "Pizza"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	languages = list("English", "Russian", "Tradeband") //Just in case they are delivering to UPP or CLF...
+	languages = list("English", "Russian", "Japanese") //Just in case they are delivering to UPP or CLF...
 	idtype = /obj/item/card/id/pizza
 	assignment = "Pizza Deliverer"
 	rank = FACTION_PIZZA
@@ -334,7 +336,7 @@
 	name = "Souto Man"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	languages = list("English", "Russian", "Tradeband") //Just in case they are delivering to UPP or CLF...
+	languages = list("English", "Russian", "Japanese") //Just in case they are delivering to UPP or CLF...
 	idtype = /obj/item/card/id/souto
 	assignment = FACTION_SOUTO
 	rank = "Souto Man"
@@ -537,17 +539,23 @@
 
 /*****************************************************************************************************/
 /datum/equipment_preset/other/xeno_cultist/load_status(mob/living/carbon/human/H, var/hivenumber = XENO_HIVE_NORMAL)
-	if(ticker && ticker.mode && H.mind)
-		ticker.mode.xenomorphs += H.mind
-	
-	living_xeno_list += H
+	if(SSticker.mode && H.mind)
+		SSticker.mode.xenomorphs += H.mind
+
+	if(hive_datum[H.hivenumber])
+		var/datum/hive_status/hive = hive_datum[H.hivenumber]
+
+		if(hive.leading_cult_sl == H)
+			hive.leading_cult_sl = null
+
+	GLOB.xeno_cultists += H
 
 	var/list/huds_to_add = list(MOB_HUD_XENO_INFECTION, MOB_HUD_XENO_STATUS)
 
 	for(var/hud_to_add in huds_to_add)
 		var/datum/mob_hud/hud = huds[hud_to_add]
 		hud.add_hud_to(H)
-	
+
 	var/list/actions_to_add = subtypesof(/datum/action/human_action/activable/cult)
 
 	for(var/datum/action/human_action/activable/O in H.actions)
@@ -575,9 +583,7 @@
 
 	if(hive_datum[H.hivenumber])
 		var/datum/hive_status/hive = hive_datum[H.hivenumber]
-
-		if(!hive.leading_cult_sl || hive.leading_cult_sl.stat == DEAD)
-			hive.leading_cult_sl = H
+		hive.leading_cult_sl = H
 
 	var/list/types = subtypesof(/datum/action/human_action/activable/cult_leader/)
 

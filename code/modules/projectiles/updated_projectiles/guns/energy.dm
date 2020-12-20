@@ -19,9 +19,10 @@
 	var/obj/item/cell/high/cell //10000 power.
 	var/charge_cost = 625 // approx 16 shots shots.
 	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_CAN_POINTBLANK
+	gun_category = GUN_CATEGORY_HANDGUN
 
-/obj/item/weapon/gun/energy/taser/New()
-	..()
+/obj/item/weapon/gun/energy/taser/Initialize(mapload, spawn_empty)
+	. = ..()
 	cell = new /obj/item/cell/high(src)
 	update_icon()
 
@@ -43,7 +44,7 @@
 
 	if(!cell)
 		return
-	
+
 	switch(cell.percent())
 		if(75 to 100)
 			overlays += "+charge_100"
@@ -55,7 +56,7 @@
 			overlays += "+charge_25"
 		else
 			overlays += "+charge_0"
-	
+
 
 /obj/item/weapon/gun/energy/taser/emp_act(severity)
 	cell.use(round(cell.maxcharge / severity))
@@ -111,9 +112,9 @@
 	flags_gun_features = GUN_UNUSUAL_DESIGN
 	flags_item = ITEM_PREDATOR
 
-/obj/item/weapon/gun/energy/plasmarifle/New()
-	..()
-	processing_objects.Add(src)
+/obj/item/weapon/gun/energy/plasmarifle/Initialize(mapload, spawn_empty)
+	. = ..()
+	START_PROCESSING(SSobj, src)
 	last_regen = world.time
 	update_icon()
 	verbs -= /obj/item/weapon/gun/verb/field_strip
@@ -127,7 +128,7 @@
 /obj/item/weapon/gun/energy/plasmarifle/Destroy()
 	remove_from_missing_pred_gear(src)
 	. = ..()
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/energy/plasmarifle/process()
 	if(charge_time < 100)
@@ -225,7 +226,7 @@
 	var/charge_time = 40
 	flags_gun_features = GUN_UNUSUAL_DESIGN
 	flags_item = ITEM_PREDATOR
-	
+
 /obj/item/weapon/gun/energy/plasmapistol/Destroy()
 	remove_from_missing_pred_gear(src)
 	return ..()
@@ -239,9 +240,9 @@
 		remove_from_missing_pred_gear(src)
 	..()
 
-/obj/item/weapon/gun/energy/plasmapistol/New()
-	..()
-	processing_objects.Add(src)
+/obj/item/weapon/gun/energy/plasmapistol/Initialize(mapload, spawn_empty)
+	. = ..()
+	START_PROCESSING(SSobj, src)
 	verbs -= /obj/item/weapon/gun/verb/field_strip
 	verbs -= /obj/item/weapon/gun/verb/toggle_burst
 	verbs -= /obj/item/weapon/gun/verb/empty_mag
@@ -250,7 +251,7 @@
 
 /obj/item/weapon/gun/energy/plasmapistol/Destroy()
 	. = ..()
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 
 
 /obj/item/weapon/gun/energy/plasmapistol/process()
@@ -334,8 +335,8 @@
 	flags_gun_features = GUN_UNUSUAL_DESIGN
 	has_empty_icon = FALSE
 
-/obj/item/weapon/gun/energy/plasma_caster/New()
-	..()
+/obj/item/weapon/gun/energy/plasma_caster/Initialize(mapload, spawn_empty)
+	. = ..()
 	verbs -= /obj/item/weapon/gun/verb/field_strip
 	verbs -= /obj/item/weapon/gun/verb/toggle_burst
 	verbs -= /obj/item/weapon/gun/verb/empty_mag

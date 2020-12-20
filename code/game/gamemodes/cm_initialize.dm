@@ -40,7 +40,7 @@ Additional game mode variables.
 
 /datum/game_mode
 	var/list/datum/mind/xenomorphs[] = list() //These are our basic lists to keep track of who is in the game.
-	var/datum/mind/picked_queens[] = list()
+	var/list/datum/mind/picked_queens = list()
 	var/datum/mind/survivors[] = list()
 	var/datum/mind/synth_survivor = null
 	var/datum/mind/predators[] = list()
@@ -69,8 +69,8 @@ Additional game mode variables.
 	var/round_checkwin 		= 0
 	var/round_finished
 	var/round_started  		= 5 //This is a simple timer so we don't accidently check win conditions right in post-game
-	var/round_fog[]				//List of the fog locations.
-	var/round_toxic_river[]		//List of all toxic river locations
+	var/list/round_fog = list()				//List of the fog locations.
+	var/list/round_toxic_river = list()		//List of all toxic river locations
 	var/round_time_lobby 		//Base time for the lobby, for fog dispersal.
 	var/round_time_fog 			//Variance time for fog dispersal, done during pre-setup.
 	var/round_time_river
@@ -101,8 +101,8 @@ Additional game mode variables.
 //===================================================\\
 
 /datum/game_mode/proc/initialize_special_clamps()
-	xeno_starting_num = Clamp((readied_players/config.xeno_number_divider), xeno_required_num, INFINITY) //(n, minimum, maximum)
-	surv_starting_num = Clamp((readied_players/config.surv_number_divider), 0, 8)
+	xeno_starting_num = clamp((readied_players/CONFIG_GET(number/xeno_number_divider)), xeno_required_num, INFINITY) //(n, minimum, maximum)
+	surv_starting_num = clamp((readied_players/CONFIG_GET(number/surv_number_divider)), 0, 8)
 	marine_starting_num = GLOB.player_list.len - xeno_starting_num - surv_starting_num
 	for(var/datum/squad/sq in RoleAuthority.squads)
 		if(sq)
@@ -346,10 +346,10 @@ Additional game mode variables.
 	new_xeno.setup_xeno_stats()
 
 
-/datum/game_mode/proc/initialize_post_xenomorph_list(var/list/hive_spawns = xeno_spawn)
+/datum/game_mode/proc/initialize_post_xenomorph_list(list/hive_spawns = GLOB.xeno_spawns)
 	for(var/datum/hive_status/hive in xenomorphs) //Build and move the xenos.
 		for(var/datum/mind/ghost_mind in xenomorphs[hive])
-			transform_xeno(ghost_mind, pick(hive_spawns), hive.hivenumber)
+			transform_xeno(ghost_mind, get_turf(pick(hive_spawns)), hive.hivenumber)
 
 	// Have to spawn the queen last or the mind will be added to xenomorphs and double spawned
 	for(var/datum/hive_status/hive in picked_queens)
@@ -367,9 +367,9 @@ Additional game mode variables.
 	var/list/available_xenos_non_ssd = list()
 	var/list/obj/effect/alien/resin/special/pool/hives = list()
 
-	for(var/mob/living/carbon/Xenomorph/X in living_xeno_list)
+	for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
 		var/area/A = get_area(X)
-		if(X.z == ADMIN_Z_LEVEL && (!A || !(A.flags_atom & AREA_ALLOW_XENO_JOIN))) continue //xenos on admin z level don't count
+		if(is_admin_level(X.z) && (!A || !(A.flags_atom & AREA_ALLOW_XENO_JOIN))) continue //xenos on admin z level don't count
 		if(istype(X) && !X.client)
 			if(X.away_timer >= XENO_LEAVE_TIMER || (isXenoLarva(X) && X.away_timer >= XENO_LEAVE_TIMER_LARVA) ) available_xenos_non_ssd += X
 			available_xenos += X
@@ -413,7 +413,7 @@ Additional game mode variables.
 		if(!xeno_candidate) //
 			return 0
 
-		if(!(new_xeno in living_mob_list) || new_xeno.stat == DEAD)
+		if(!(new_xeno in GLOB.living_xeno_list) || new_xeno.stat == DEAD)
 			to_chat(xeno_candidate, SPAN_WARNING("You cannot join if the xenomorph is dead."))
 			return 0
 
@@ -441,7 +441,7 @@ Additional game mode variables.
 				return 0
 
 		if(alert(xeno_candidate, "Everything checks out. Are you sure you want to transfer yourself into [new_xeno]?", "Confirm Transfer", "Yes", "No") == "Yes")
-			if(new_xeno.client || !(new_xeno in living_mob_list) || new_xeno.stat == DEAD || !xeno_candidate) // Do it again, just in case
+			if(new_xeno.client || !(new_xeno in GLOB.living_xeno_list) || new_xeno.stat == DEAD || !xeno_candidate) // Do it again, just in case
 				to_chat(xeno_candidate, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
 				return 0
 		else return 0
@@ -502,13 +502,13 @@ Additional game mode variables.
 	if(hive.living_xeno_queen || !original || !original.client)
 		return
 
-	if(!length(queen_spawn_list))
-		transform_queen(ghost_mind, pick(xeno_spawn), hivenumber)
+	if(!length(GLOB.queen_spawns))
+		transform_queen(ghost_mind, get_turf(pick(GLOB.xeno_spawns)), hivenumber)
 		return
 
 	// Make the list pretty
 	var/spawn_list_names = list()
-	for(var/T in queen_spawn_list)
+	for(var/T in GLOB.queen_spawns)
 		spawn_list_names += get_area(T)
 
 	// Timed input, answer before the time us up
@@ -527,19 +527,18 @@ Additional game mode variables.
 			sleep(SECONDS_2)
 
 	var/turf/QS
-	for(var/T in queen_spawn_list)
+	for(var/T in GLOB.queen_spawns)
 		if(get_area(T) == spawn_name[1])
-			QS = T
+			QS = get_turf(T)
 
 	// Pick a random one if nothing was picked
 	if(isnull(QS))
-		QS = pick(queen_spawn_list)
+		QS = get_turf(pick(GLOB.queen_spawns))
 		// Support maps without queen spawns
 		if(isnull(QS))
-			QS = pick(xeno_spawn)
+			QS = get_turf(pick(GLOB.xeno_spawns))
 
-	if(QS in queen_spawn_list)
-		queen_spawn_list -= QS
+	QDEL_LIST(GLOB.queen_spawns)
 
 	transform_queen(ghost_mind, QS, hivenumber)
 
@@ -660,11 +659,9 @@ Additional game mode variables.
 	if(istype(ghost.current, /mob/living) && ghost.current.first_xeno)
 		picked_spawn = xeno_turf
 	else
-		picked_spawn = pick(surv_spawn)
-	var/obj/effect/landmark/survivor_spawner/surv_datum
-	surv_datum = picked_spawn;
-	if(istype(surv_datum))
-		return survivor_event_transform(ghost.current, surv_datum, is_synth)
+		picked_spawn = pick(GLOB.survivor_spawns)
+	if(istype(picked_spawn, /obj/effect/landmark/survivor_spawner))
+		return survivor_event_transform(ghost.current, picked_spawn, is_synth)
 	else
 		return survivor_non_event_transform(ghost.current, picked_spawn, is_synth)
 
@@ -744,7 +741,7 @@ Additional game mode variables.
 
 
 /datum/game_mode/proc/survivor_event_transform(var/mob/living/carbon/human/H, var/obj/effect/landmark/survivor_spawner/spawner, var/is_synth = FALSE)
-	H.loc = spawner.loc
+	H.forceMove(get_turf(spawner))
 	var/not_a_xenomorph = TRUE
 	if(H.first_xeno)
 		not_a_xenomorph = FALSE
@@ -791,8 +788,8 @@ Additional game mode variables.
 		if(spawner.make_objective)
 			new /datum/cm_objective/move_mob/almayer/survivor(H)
 
-/datum/game_mode/proc/survivor_non_event_transform(var/mob/living/carbon/human/H, var/loc, var/is_synth = FALSE)
-	H.loc = loc
+/datum/game_mode/proc/survivor_non_event_transform(mob/living/carbon/human/H, obj/effect/landmark/spawn_point, is_synth = FALSE)
+	H.forceMove(get_turf(spawn_point))
 	survivor_old_equipment(H, is_synth)
 	H.name = H.get_visible_name()
 
@@ -896,16 +893,13 @@ Additional game mode variables.
 
 	//We take the number of marine players, deduced from other lists, and then get a scale multiplier from it, to be used in arbitrary manners to distribute equipment
 	//This might count players who ready up but get kicked back to the lobby
-	var/marine_pop_size = 0
-
-	for(var/mob/living/carbon/human/H in human_mob_list)
-		if(H.stat != DEAD)
-			marine_pop_size++
+	var/marine_pop_size = length(GLOB.alive_human_list)
 
 	var/scale = max(marine_pop_size / MARINE_GEAR_SCALING_NORMAL, 1) //This gives a decimal value representing a scaling multiplier. Cannot go below 1
 
 	//Set up attachment vendor contents related to Marine count
-	for(var/obj/structure/machinery/cm_vending/sorted/CVS in cm_vending_vendors)
+	for(var/i in GLOB.cm_vending_vendors)
+		var/obj/structure/machinery/cm_vending/sorted/CVS = i
 		CVS.populate_product_list(scale)
 
 	//Scale the amount of cargo points through a direct multiplier

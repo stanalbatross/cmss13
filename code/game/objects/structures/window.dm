@@ -138,7 +138,7 @@
 
 	if(source_mob)
 		source_mob.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WINDOWS, 1)
-		SEND_SIGNAL(source_mob, COMSIG_MOB_DESTROY_WINDOW, src)
+		SEND_SIGNAL(source_mob, COMSIG_MOB_WINDOW_EXPLODED, src)
 
 	handle_debris(severity, explosion_direction)
 	qdel(src)
@@ -418,6 +418,14 @@
 	unslashable = TRUE
 	unacidable = TRUE
 
+/obj/structure/window/reinforced/ultra/Initialize()
+	. = ..()
+	GLOB.hijack_bustable_windows += src
+
+/obj/structure/window/reinforced/ultra/Destroy()
+	GLOB.hijack_bustable_windows -= src
+	return ..()
+
 /obj/structure/window/reinforced/full
 	flags_atom = FPRINT
 	icon_state = "rwindow0"
@@ -492,7 +500,7 @@
 
 	if(source_mob)
 		source_mob.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_WINDOWS, 1)
-		SEND_SIGNAL(source_mob, COMSIG_MOB_DESTROY_WINDOW, src)
+		SEND_SIGNAL(source_mob, COMSIG_MOB_EXPLODE_W_FRAME, src)
 
 	if(health >= -3000)
 		var/location = get_turf(src)
@@ -539,7 +547,7 @@
 
 /obj/structure/window/framed/almayer/healthcheck(make_hit_sound = 1, make_shatter_sound = 1, create_debris = 1, mob/user, atom/movable/AM)
 	if(health <= 0)
-		if(user && z == MAIN_SHIP_Z_LEVEL)
+		if(user && is_mainship_level(z))
 			SSclues.create_print(get_turf(user), user, "A small glass piece is found on the fingerprint.")
 			if(user.detectable_by_ai())
 				ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
@@ -558,6 +566,13 @@
 
 /obj/structure/window/framed/almayer/hull/hijack_bustable //I exist to explode after hijack, that is all.
 
+/obj/structure/window/framed/almayer/hull/hijack_bustable/Initialize()
+	. = ..()
+	GLOB.hijack_bustable_windows += src
+
+/obj/structure/window/framed/almayer/hull/hijack_bustable/Destroy()
+	GLOB.hijack_bustable_windows -= src
+	return ..()
 /obj/structure/window/framed/almayer/white
 	icon_state = "white_rwindow0"
 	basestate = "white_rwindow"

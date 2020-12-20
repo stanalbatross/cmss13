@@ -14,7 +14,7 @@
 
     var/sudden_death = FALSE
     var/time_until_sd = HOURS_1 + MINUTES_30
-    
+
     var/list/current_hives = list()
 
     var/hive_larva_interval_gain = MINUTES_5
@@ -27,45 +27,45 @@
 
 /datum/game_mode/xenovs/proc/setup_mapdata(map)
     switch(map)
-        if(MAP_LV_624) 
+        if(MAP_LV_624)
             monkey_types = list(/mob/living/carbon/human/farwa, /mob/living/carbon/human/monkey, /mob/living/carbon/human/neaera, /mob/living/carbon/human/stok)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO)
 
             if(readied_players > 70)
                 hives += XENO_HIVE_CHARLIE
-        
-        if(MAP_ICE_COLONY) 
+
+        if(MAP_ICE_COLONY)
             monkey_types = list(/mob/living/carbon/human/yiren)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE, XENO_HIVE_DELTA)
-       
-        if(MAP_BIG_RED) 
+
+        if(MAP_BIG_RED)
             monkey_types = list(/mob/living/carbon/human/neaera)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE)
             if(readied_players > 100)
                 hives += XENO_HIVE_DELTA
-        
-        if(MAP_PRISON_STATION) 
+
+        if(MAP_PRISON_STATION)
             monkey_types = list(/mob/living/carbon/human/monkey)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE)
             structures_to_delete += /obj/structure/machinery/defenses/sentry/premade
-        
-        if(MAP_DESERT_DAM) 
+
+        if(MAP_DESERT_DAM)
             monkey_types = list(/mob/living/carbon/human/stok)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE)
             if(readied_players > 100)
                 hives += XENO_HIVE_DELTA
-        
-        if(MAP_SOROKYNE_STRATA) 
+
+        if(MAP_SOROKYNE_STRATA)
             monkey_types = list(/mob/living/carbon/human/yiren)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO)
             if(readied_players > 70)
                 hives += XENO_HIVE_CHARLIE
-        
+
         if(MAP_CORSAT)
             monkey_types = list(/mob/living/carbon/human/yiren, /mob/living/carbon/human/farwa, /mob/living/carbon/human/monkey, /mob/living/carbon/human/neaera, /mob/living/carbon/human/stok)
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE, XENO_HIVE_DELTA)
-        
-        else 
+
+        else
             monkey_types = list(/mob/living/carbon/human/monkey) //make sure we always have a monkey type
             hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO)
 
@@ -83,21 +83,14 @@
 
 /* Pre-setup */
 /datum/game_mode/xenovs/pre_setup()
-    var/list/monkey_spawns = list()
-    for(var/obj/effect/landmark/L in landmarks_list)
-        if(L.name == "monkey_spawn")
-            monkey_spawns += L.loc
-            qdel(L)
-    
     if(monkey_amount)
         if(monkey_types.len)
-            for(var/i = min(round(monkey_amount*GLOB.clients.len), monkey_spawns.len), i > 0, i--)
-                
-                var/turf/T = pick(monkey_spawns)
-                monkey_spawns -= T
+            for(var/i = min(round(monkey_amount*GLOB.clients.len), GLOB.monkey_spawns.len), i > 0, i--)
+
+                var/turf/T = get_turf(pick_n_take(GLOB.monkey_spawns))
                 var/monkey_to_spawn = pick(monkey_types)
                 new monkey_to_spawn(T)
-  
+
 
     for(var/atom/A in world)
         for(var/type in structures_to_delete)
@@ -107,7 +100,7 @@
                     T.ScrapeAway()
                 else
                     qdel(A)
-    
+
     round_time_sd = (time_until_sd + world.time)
 
     update_controllers()
@@ -141,7 +134,7 @@
 //We move it later with transform_survivor but they might flicker at any start_loc spawn landmark effects then disappear.
 //Xenos and survivors should not spawn anywhere until we transform them.
 /datum/game_mode/xenovs/post_setup()
-    initialize_post_xenomorph_list(xeno_hive_spawn)
+    initialize_post_xenomorph_list(GLOB.xeno_hive_spawns)
 
     round_time_lobby = world.time
     for(var/area/A in all_areas)
@@ -152,10 +145,10 @@
 
     ..()
 
-/datum/game_mode/xenovs/initialize_post_xenomorph_list(var/list/hive_spawns = xeno_spawn)
+/datum/game_mode/xenovs/initialize_post_xenomorph_list(var/list/hive_spawns = GLOB.xeno_spawns)
     var/list/hive_spots = list()
     for(var/hive in hives)
-        var/turf/spot = pick(hive_spawns)
+        var/turf/spot = get_turf(pick(hive_spawns))
         hive_spots[hive_datum[hive]] = spot
         hive_spawns -= spot
 
@@ -169,7 +162,8 @@
     // Have to spawn the queen last or the mind will be added to xenomorphs and double spawned
     for(var/datum/hive_status/hive in picked_queens)
         transform_queen(picked_queens[hive], hive_spots[hive], hive.hivenumber)
-        picked_queens[hive].current.close_spawn_windows()
+        var/datum/mind/M = picked_queens[hive]
+        M.current.close_spawn_windows()
 
     for(var/datum/hive_status/hive in hive_spots)
         new/obj/effect/alien/resin/special/pool(hive_spots[hive], hive) // Spawn a hive pool so they all get fair xenos
@@ -190,7 +184,7 @@
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
 /datum/game_mode/xenovs/process()
     . = ..()
-    if(--round_started > 0) 
+    if(--round_started > 0)
         return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
 
 
@@ -201,7 +195,7 @@
                 for(var/hive in hives)
                     hive_datum[hive].stored_larva += 1
                     hive_datum[hive].hive_ui.update_pooled_larva()
-                
+
                 round_time_larva_interval = world.time + hive_larva_interval_gain
 
             if(!sudden_death && world.time > round_time_sd)
@@ -216,7 +210,7 @@
             round_checkwin = 0
 
 
-/datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = GAME_PLAY_Z_LEVELS)
+/datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBITT, ZTRAIT_MARINE_MAIN_SHIP)))
     var/list/list/hivenumbers = list()
     for(var/datum/hive_status/H in hive_datum)
         hivenumbers += list(H.name = list())
@@ -231,14 +225,14 @@
             if(istype(X) && is_hive_living(hive))
                 hivenumbers[hive.name].Add(X)
 
-    
+
     return hivenumbers
 
 ///////////////////////////
 //Checks to see who won///
 //////////////////////////
 /datum/game_mode/xenovs/check_win()
-    if(ticker.current_state != GAME_STATE_PLAYING)
+    if(SSticker.current_state != GAME_STATE_PLAYING)
         return
 
     var/list/living_player_list = get_xenos_hive()
@@ -265,7 +259,7 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/xenovs/check_finished()
-    if(round_finished) 
+    if(round_finished)
         return TRUE
 
 //////////////////////////////////////////////////////////////////////

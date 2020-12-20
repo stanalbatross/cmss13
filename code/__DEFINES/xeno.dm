@@ -45,6 +45,9 @@
 
 #define BUILD_TIME_MULT_XENO    1 // Multiplier for time taken for a xeno to place down a resin structure
 #define BUILD_TIME_MULT_HIVELORD     0.5
+
+#define IGNORE_BUILD_DISTANCE -1
+
 #define XENO_LEADER_HIVE_POS(X)          (X + 1)
 #define GET_XENO_LEADER_NUM(X)  (X.hive_pos - 1)
 #define IS_XENO_LEADER(X)       (X.hive_pos > 1)
@@ -82,6 +85,7 @@
 #define XENO_UNIVERSAL_HPMULT 1.0		// Use to unilaterally buff every caste's total HP.
 #define XENO_UNIVERSAL_PLASMAMULT 1.0	// Use to unilaterally buff every caste's total PLASMA.
 #define XENO_UNIVERSAL_DAMAGEMULT 1.0	// Use to unilaterally buff every caste's DAMAGE.
+#define XENO_UNIVERSAL_VEHICLE_DAMAGEMULT 1.5 // Used to unilaterally buff every caste's DAMAGE against vehicles.
 
 #define XVX_UNIVERSAL_DAMAGEMULT 1.5 // Use to unilaterally buff every caste's DAMAGE against other xenos.
 
@@ -96,6 +100,7 @@
 #define XVX_WARRIOR_HEALMULT 0.35
 
 // Weed defines
+#define WEED_LEVEL_WEAK 0
 #define WEED_LEVEL_STANDARD  1.5
 #define WEED_LEVEL_HIVE      4
 
@@ -159,6 +164,7 @@
 #define XENO_HEALTH_IMMORTAL	1200 * XENO_UNIVERSAL_HPMULT
 
 // Plasma bands
+#define XENO_NO_PLASMA		0
 #define XENO_PLASMA_TIER_1	100 * XENO_UNIVERSAL_PLASMAMULT
 #define XENO_PLASMA_TIER_2	200 * XENO_UNIVERSAL_PLASMAMULT
 #define XENO_PLASMA_TIER_3	300 * XENO_UNIVERSAL_PLASMAMULT
@@ -186,11 +192,16 @@
 #define XENO_PLASMA_GAIN_TIER_10 5.5
 
 // Armor factor
-#define XENO_ARMOR_FACTOR_LOW 25
-#define XENO_ARMOR_FACTOR_MEDIUM 30
-#define XENO_ARMOR_FACTOR_HIGH 35
-#define XENO_ARMOR_FACTOR_VERYHIGH 40
-#define XENO_ARMOR_FACTOR_SUPER 75
+#define XENO_ARMOR_FACTOR_TIER_1 25
+#define XENO_ARMOR_FACTOR_TIER_2 30
+#define XENO_ARMOR_FACTOR_TIER_3 35
+#define XENO_ARMOR_FACTOR_TIER_4 40
+#define XENO_ARMOR_FACTOR_TIER_5 45
+#define XENO_ARMOR_FACTOR_TIER_6 50
+#define XENO_ARMOR_FACTOR_TIER_7 55
+#define XENO_ARMOR_FACTOR_TIER_8 60
+#define XENO_ARMOR_FACTOR_TIER_9 65
+#define XENO_ARMOR_FACTOR_TIER_10 70
 #define XENO_ARMOR_FACTOR_CRUSHER 200
 
 // Evasion
@@ -285,13 +296,36 @@
 #define XENO_PLASMAGAIN_MOD_MED   0.2
 #define XENO_PLASMAGAIN_MOD_LARGE 0.3
 
-// Speed modifiers
-#define XENO_SPEED_MODIFIER_SLOW       	0.15
-#define XENO_SPEED_MODIFIER_SLOWER      0.25
-#define XENO_SPEED_MODIFIER_SLOWEST     0.5
-#define XENO_SPEED_MODIFIER_FAST  		-0.15
-#define XENO_SPEED_MODIFIER_FASTER		-0.25
-#define XENO_SPEED_MODIFIER_FASTEST	  	-0.5
+// Faster speed modifier (higher tiers mean greater increase in speed)
+#define XENO_SPEED_FASTMOD_TIER_1       -0.05
+#define XENO_SPEED_FASTMOD_TIER_2       -0.1
+#define XENO_SPEED_FASTMOD_TIER_3       -0.15
+#define XENO_SPEED_FASTMOD_TIER_4       -0.2
+#define XENO_SPEED_FASTMOD_TIER_5	    -0.25
+#define XENO_SPEED_FASTMOD_TIER_6	    -0.3
+#define XENO_SPEED_FASTMOD_TIER_7	    -0.35
+#define XENO_SPEED_FASTMOD_TIER_8	    -0.4
+#define XENO_SPEED_FASTMOD_TIER_9	    -0.45
+#define XENO_SPEED_FASTMOD_TIER_10	    -0.5
+
+// Slower speed modifier (higher tiers mean greater decrease in speed)
+#define XENO_SPEED_SLOWMOD_TIER_1       0.05
+#define XENO_SPEED_SLOWMOD_TIER_2       0.1
+#define XENO_SPEED_SLOWMOD_TIER_3       0.15
+#define XENO_SPEED_SLOWMOD_TIER_4       0.20
+#define XENO_SPEED_SLOWMOD_TIER_5       0.25
+#define XENO_SPEED_SLOWMOD_TIER_6       0.30
+#define XENO_SPEED_SLOWMOD_TIER_7       0.35
+#define XENO_SPEED_SLOWMOD_TIER_8       0.4
+#define XENO_SPEED_SLOWMOD_TIER_9       0.45
+#define XENO_SPEED_SLOWMOD_TIER_10      0.5
+
+// Neuro power
+#define XENO_NEURO_TIER_1   1
+#define XENO_NEURO_TIER_2   1.25
+#define XENO_NEURO_TIER_3   1.5 // Threshold for sleep and daze
+#define XENO_NEURO_TIER_4   1.75
+#define XENO_NEURO_TIER_5   2
 
 // Pheremone strength modifiers
 #define XENO_PHERO_MOD_VERYSMALL  0.25

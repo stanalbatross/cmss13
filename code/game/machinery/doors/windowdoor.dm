@@ -49,8 +49,6 @@
 				close()
 		return
 	var/mob/M = AM // we've returned by here if M is not a mob
-	if (!( ticker ))
-		return
 	if (src.operating)
 		return
 	if (src.density && M.mob_size > MOB_SIZE_SMALL && src.allowed(AM))
@@ -64,8 +62,6 @@
 
 /obj/structure/machinery/door/window/open()
 	if (src.operating == 1) //doors can still open when emag-disabled
-		return 0
-	if (!ticker)
 		return 0
 	if(!src.operating) //in case of emag
 		src.operating = 1
@@ -291,6 +287,14 @@
 /obj/structure/machinery/door/window/ultra
 	name = "Ultra-reinforced glass door"
 	desc = "A window, that is also a door. A windoor if you will. It is indestructible."
+
+/obj/structure/machinery/door/window/ultra/Initialize(mapload, ...)
+	. = ..()
+	GLOB.hijack_deletable_windows += src
+
+/obj/structure/machinery/door/window/ultra/Destroy()
+	GLOB.hijack_deletable_windows -= src
+	return ..()
 
 // No damage taken.
 /obj/structure/machinery/door/window/ultra/attackby(obj/item/I, mob/user)

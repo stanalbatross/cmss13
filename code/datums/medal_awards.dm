@@ -32,7 +32,7 @@ var/global/list/medal_awards = list()
 	var/citation = strip_html(input("What should the medal citation read?","Medal Citation", null) as text|null, MAX_PAPER_MESSAGE_LEN)
 	if(!citation) return
 	var/recipient_ckey
-	for(var/mob/M in mob_list)
+	for(var/mob/M in GLOB.mob_list)
 		if(M == usr)
 			M.count_niche_stat(STATISTICS_NICHE_MEDALS_GIVE)
 		if(M.real_name == chosen_recipient)
@@ -57,8 +57,8 @@ var/global/list/medal_awards = list()
 	if(medal_location)
 		var/obj/item/clothing/accessory/medal/MD
 		switch(medal_type)
-			if("distinguished conduct medal")	MD = new /obj/item/clothing/accessory/medal/conduct(medal_location)
-			if("bronze heart medal") 			MD = new /obj/item/clothing/accessory/medal/bronze_heart(medal_location)
+			if("distinguished conduct medal")	MD = new /obj/item/clothing/accessory/medal/bronze/conduct(medal_location)
+			if("bronze heart medal") 			MD = new /obj/item/clothing/accessory/medal/bronze/heart(medal_location)
 			if("medal of valor") 				MD = new /obj/item/clothing/accessory/medal/silver/valor(medal_location)
 			if("medal of exceptional heroism")	MD = new /obj/item/clothing/accessory/medal/gold/heroism(medal_location)
 			else return

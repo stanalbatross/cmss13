@@ -18,8 +18,8 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 
 
 	icon = base
-	var/datum/ethnicity/E = ethnicities_list[H.ethnicity]
-	var/datum/body_type/B = body_types_list[H.body_type]
+	var/datum/ethnicity/E = GLOB.ethnicities_list[H.ethnicity]
+	var/datum/body_type/B = GLOB.body_types_list[H.body_type]
 
 	var/e_icon
 	var/b_icon
@@ -110,6 +110,13 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 	if(braindeath_on_decap)
 		brainmob.stat = DEAD
 		brainmob.death(cause)
+
+	GLOB.head_limb_list += src
+
+/obj/item/limb/head/Destroy()
+	brainmob = null
+	GLOB.head_limb_list -= src
+	return ..()
 
 /obj/item/limb/head/proc/transfer_identity(var/mob/living/carbon/human/H)//Same deal as the regular brain proc. Used for human-->head
 	brainmob = new brain_mob_type(src)

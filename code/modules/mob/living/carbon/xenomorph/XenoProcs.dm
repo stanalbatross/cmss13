@@ -15,8 +15,8 @@
 		if(3)
 			fontsize_style = "large"
 
-	if(ticker && ticker.mode && ticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
-		for(var/datum/mind/L in ticker.mode.xenomorphs)
+	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
+		for(var/datum/mind/L in SSticker.mode.xenomorphs)
 			var/mob/living/carbon/M = L.current
 			if(M && istype(M) && !M.stat && M.client && M.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED)) //Only living and connected xenos
 				to_chat(M, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
@@ -246,7 +246,7 @@
 	var/datum/action/xeno_action/activable/pounce/pounceAction = get_xeno_action_by_type(src, /datum/action/xeno_action/activable/pounce)
 
 	// Unconscious or dead, or not throwing but used pounce.
-	if(!check_state() || (!throwing && !pounceAction.action_cooldown_check())) 
+	if(!check_state() || (!throwing && !pounceAction.action_cooldown_check()))
 		return
 
 	var/mob/living/carbon/M = L
@@ -305,7 +305,7 @@
 	var/datum/action/xeno_action/activable/pounce/pounceAction = get_xeno_action_by_type(src, /datum/action/xeno_action/activable/pounce)
 
 	// Unconscious or dead, or not throwing but used pounce
-	if(!check_state() || (!throwing && !pounceAction.action_cooldown_check())) 
+	if(!check_state() || (!throwing && !pounceAction.action_cooldown_check()))
 		obj_launch_collision(O)
 		return
 
@@ -316,7 +316,7 @@
 			S.destroy() //We want to continue moving, so we do not reset throwing.
 		else
 			O.hitby(src) //This resets throwing.
-	else 
+	else
 		if(!istype(O, /obj/structure/surface/table) && !istype(O, /obj/structure/surface/rack))
 			O.hitby(src) //This resets throwing.
 
@@ -324,7 +324,12 @@
 	pounced_obj(O)
 
 /mob/living/carbon/Xenomorph/proc/pounced_turf(var/turf/T)
-	turf_launch_collision(T)
+	if(!T.density)
+		for(var/mob/M in T)
+			pounced_mob(M)
+			break
+	else
+		turf_launch_collision(T)
 
 /mob/living/carbon/Xenomorph/proc/pounced_turf_wrapper(var/turf/T)
 	pounced_turf(T)

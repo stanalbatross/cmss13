@@ -243,8 +243,7 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 
 /obj/item/storage/backpack/satchel/withwallet
 
-/obj/item/storage/backpack/satchel/withwallet/Initialize()
-	. = ..()
+/obj/item/storage/backpack/satchel/withwallet/fill_preset_inventory()
 	new /obj/item/storage/wallet/random( src )
 
 /obj/item/storage/backpack/satchel/lockable
@@ -360,7 +359,7 @@ var/global/list/radio_packs = list()
 /obj/item/storage/backpack/marine/satchel/rto/Initialize()
 	. = ..()
 	internal_transmitter = new(src)
-	
+
 	if(isturf(loc))
 		internal_transmitter.set_external_object(src)
 	else
@@ -411,7 +410,7 @@ var/global/list/radio_packs = list()
 		. = ..()
 
 /obj/item/storage/backpack/marine/satchel/rto/proc/new_droppod_tech_unlocked(datum/tech/N)
-	playsound(get_turf(loc), 'sound/machines/techpod/techpod_rto_notif.ogg', 100, FALSE, 1, muffledin = 'sound/machines/techpod/techpod_rto_notif_muffled.ogg')
+	playsound(get_turf(loc), 'sound/machines/techpod/techpod_rto_notif.ogg', 100, FALSE, 1)
 
 	if(ismob(loc))
 		var/mob/M = loc
@@ -440,13 +439,21 @@ var/global/list/radio_packs = list()
 	storage_slots = 12
 	can_hold = list(/obj/item/explosive/grenade)
 	is_id_lockable = TRUE
-	has_gamemode_skin = FALSE 
+	has_gamemode_skin = FALSE
 
 /obj/item/storage/backpack/marine/grenadepack/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/storage/box/nade_box) || istype(W, /obj/item/storage/backpack/marine/grenadepack) || istype(W, /obj/item/storage/belt/grenade))
 		dump_into(W,user)
 	else
 		return ..()
+
+/obj/item/storage/backpack/marine/mortarpack
+	name = "\improper USCM mortar shell backpack"
+	desc = "A backpack specifically designed to hold ammunition for the M402 mortar."
+	icon_state = "mortarpack"
+	max_w_class = SIZE_HUGE
+	storage_slots = 8
+	can_hold = list(/obj/item/mortar_shell)
 
 // Scout Cloak
 /obj/item/storage/backpack/marine/satchel/scout_cloak
@@ -493,9 +500,12 @@ var/global/list/radio_packs = list()
 		deactivate_camouflage(H)
 		return
 
+	RegisterSignal(H, COMSIG_GRENADE_PRE_PRIME, .proc/cloak_grenade_callback)
+
 	camo_active = TRUE
 	H.visible_message(SPAN_DANGER("[H] vanishes into thin air!"), SPAN_NOTICE("You activate your cloak's camouflage."), max_distance = 4)
 	playsound(H.loc,'sound/effects/cloak_scout_on.ogg', 15, 1)
+	H.unset_interaction()
 
 	H.alpha = camo_alpha
 	H.FF_hit_evade = 1000
@@ -513,6 +523,8 @@ var/global/list/radio_packs = list()
 	if(!istype(H))
 		return FALSE
 
+	UnregisterSignal(H, COMSIG_GRENADE_PRE_PRIME)
+
 	camo_active = FALSE
 	H.visible_message(SPAN_DANGER("[H] shimmers into existence!"), SPAN_WARNING("Your cloak's camouflage has deactivated!"), max_distance = 4)
 	playsound(H.loc,'sound/effects/cloak_scout_off.ogg', 15, 1)
@@ -529,6 +541,14 @@ var/global/list/radio_packs = list()
 		anim(H.loc, H,'icons/mob/mob.dmi', null, "uncloak", null, H.dir)
 
 	addtimer(CALLBACK(src, .proc/allow_shooting, H), 5)
+
+// This proc is to cancel priming grenades in /obj/item/explosive/grenade/attack_self()
+/obj/item/storage/backpack/marine/satchel/scout_cloak/proc/cloak_grenade_callback(mob/user)
+	SIGNAL_HANDLER
+
+	to_chat(user, SPAN_WARNING("Your cloak prevents you from priming the grenade!"))
+
+	return COMPONENT_GRENADE_PRIME_CANCEL
 
 /obj/item/storage/backpack/marine/satchel/scout_cloak/proc/allow_shooting(var/mob/living/carbon/human/H)
 	if(camo_active && !allow_gun_usage)
@@ -669,6 +689,7 @@ var/global/list/radio_packs = list()
 	storage_slots = 3
 	worn_accessible = TRUE
 	can_hold = list(/obj/item/ammo_magazine/flamer_tank, /obj/item/tool/extinguisher)
+	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_ALLOW_DRAWING_METHOD_TOGGLE
 
 //----------OTHER FACTIONS AND ERTS----------
 

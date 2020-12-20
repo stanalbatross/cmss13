@@ -3,13 +3,12 @@
 	tier = 1
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
-	max_health = XENO_HEALTH_TIER_3
+	max_health = XENO_HEALTH_TIER_5
 	plasma_gain = XENO_PLASMA_GAIN_TIER_8
 	plasma_max = XENO_PLASMA_TIER_10
 	crystal_max = XENO_CRYSTAL_LOW
 	xeno_explosion_resistance = XENO_NO_EXPLOSIVE_ARMOR
-	armor_deflection = XENO_ARMOR_TIER_1
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_LOW
+	armor_deflection = XENO_NO_ARMOR
 	evasion = XENO_EVASION_MEDIUM
 	speed = XENO_SPEED_TIER_7
 
@@ -25,14 +24,13 @@
 	tackle_max = 4
 	tacklestrength_min = 3
 	tacklestrength_max = 4
-	
+
 	aura_strength = 2
 
 /mob/living/carbon/Xenomorph/Drone
 	caste_name = "Drone"
 	name = "Drone"
 	desc = "An Alien Drone"
-	icon_source = "alien_drone"
 	icon_size = 48
 	icon_state = "Drone Walking"
 	plasma_types = list(PLASMA_PURPLE)
@@ -56,3 +54,7 @@
 		/mob/living/carbon/Xenomorph/proc/rename_tunnel,
 		)
 	mutation_type = DRONE_NORMAL
+
+/mob/living/carbon/Xenomorph/Drone/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_drone))

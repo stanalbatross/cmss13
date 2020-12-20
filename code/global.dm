@@ -4,30 +4,28 @@
 //=================================================
 //Please don't edit these values without speaking to Errorage first	~Carn
 //Admin Permissions
-#define R_BUILDMODE		1
-#define R_ADMIN			2
-#define R_BAN			4
-#define R_FUN			8
-#define R_SERVER		16
-#define R_DEBUG			32
-#define R_POSSESS		64
-#define R_PERMISSIONS	128
-#define R_STEALTH		256
-#define R_REJUVINATE	512
-#define R_COLOR			1024
-#define R_VAREDIT		2048
-#define R_SOUNDS		4096
-#define R_SPAWN			8192
-#define R_MOD			16384
-#define R_MENTOR		32768
-#define R_HOST			65536
-#define R_PROFILER		131072
-#define R_NOLOCK		262144
+#define R_BUILDMODE		(1<<0)
+#define R_ADMIN			(1<<1)
+#define R_BAN			(1<<2)
+#define R_FUN			(1<<3)
+#define R_SERVER		(1<<4)
+#define R_DEBUG			(1<<5)
+#define R_POSSESS		(1<<6)
+#define R_PERMISSIONS	(1<<7)
+#define R_STEALTH		(1<<8)
+#define R_REJUVINATE	(1<<9)
+#define R_COLOR			(1<<10)
+#define R_VAREDIT		(1<<11)
+#define R_SOUNDS		(1<<13)
+#define R_SPAWN			(1<<14)
+#define R_MOD			(1<<15)
+#define R_MENTOR		(1<<16)
+#define R_HOST			(1<<17)
+#define R_PROFILER		(1<<18)
+#define R_NOLOCK		(1<<19)
+
+#define R_EVERYTHING	((1<<20)-1) //the sum of all other rank permissions
 // 512.1430 increases maximum bit flags from 16 to 24, so the following flags should be available for future changes:
-// #define R_PERMISSION	524288
-// #define R_PERMISSION	1048576
-// #define R_PERMISSION	2097152
-// #define R_PERMISSION	4194304
 //=================================================
 
 #define AHOLD_IS_MENTOR(ahold) (ahold && (ahold.rights & R_MENTOR))
@@ -37,18 +35,6 @@
 #define AHOLD_IS_ADMIN(ahold) (ahold && (ahold.rights & R_ADMIN))
 
 		//items that ask to be called every cycle
-
-var/global/list/global_map = null
-	//list/global_map = list(list(1,5),list(4,3))//an array of map Z levels.
-	//Resulting sector map looks like
-	//|_1_|_4_|
-	//|_5_|_3_|
-	//
-	//1 - SS13
-	//4 - Derelict
-	//3 - AI satellite
-	//5 - empty space
-
 
 //////////////
 var/list/paper_tag_whitelist = list("center","p","div","span","h1","h2","h3","h4","h5","h6","hr","pre",	\
@@ -80,7 +66,6 @@ var/dooc_allowed = 1
 var/dlooc_allowed = 0
 var/abandon_allowed = 1
 var/enter_allowed = 1
-var/guests_allowed = 1
 var/shuttle_frozen = 0
 var/shuttle_left = 0
 var/midi_playing = 0
@@ -100,33 +85,13 @@ var/VehicleElevatorConsole
 var/HangarUpperElevator
 var/HangarLowerElevator
 var/global/map_tag
-var/list/newplayer_start = list()
 
 //Spawnpoints.
-var/list/latejoin = list()
-var/list/latewhiskey = list()
-
-var/list/xeno_spawn = list()//Aliens spawn at these.
-var/list/xeno_hive_spawn = list()//Hives spawn at these. Useful only for XvX
-var/list/queen_spawn_list = list()
-var/list/surv_spawn = list()//Survivors spawn at these
-var/list/pred_spawn = list()//Predators spawn at these
-var/list/pred_elder_spawn = list() //For elder preds.
-var/list/yautja_teleport_loc = list() //Yautja teleporter target location.
-var/list/yautja_almayer_loc = list()
-var/list/yautja_teleport_desc = list() //Yautja teleporter target location.
-var/list/yautja_almayer_desc = list()
 var/list/fallen_list = list()
-var/list/tdome1 = list()
-var/list/tdome2 = list()
-var/list/tdomeobserve = list()
-var/list/tdomeadmin = list()
 var/list/cardinal = list(NORTH, SOUTH, EAST, WEST)
 var/list/diagonals = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 var/list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 var/list/reverse_dir = list(2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 32, 34, 33, 35, 40, 42, 41, 43, 36, 38, 37, 39, 44, 46, 45, 47, 16, 18, 17, 19, 24, 26, 25, 27, 20, 22, 21, 23, 28, 30, 29, 31, 48, 50, 49, 51, 56, 58, 57, 59, 52, 54, 53, 55, 60, 62, 61, 63)
-
-var/datum/configuration/config = null
 
 var/list/combatlog = list()
 var/list/IClog = list()
@@ -173,7 +138,6 @@ var/sqlpass = ""
 	// For FTP requests. (i.e. downloading runtime logs.)
 	// However it'd be ok to use for accessing attack logs and such too, which are even laggier.
 var/fileaccess_timer = 0
-var/custom_event_msg = null
 
 // Reference list for disposal sort junctions. Filled up by sorting junction's New()
 /var/list/tagger_locations = list()
@@ -186,7 +150,6 @@ var/list/greek_letters = list("Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zet
 var/list/nato_phonetic_alphabet = list("Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliett", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Yankee", "Zulu")
 
 //Used for autocall procs on ERT
-//var/global/list/unanswered_distress = list()
 var/distress_cancel = 0
 var/destroy_cancel = 0
 

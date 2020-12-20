@@ -32,7 +32,7 @@
 	dat += "<BR><A href='?src=\ref[src];operation=mapview'>Tactical Map</A>"
 	dat += "<BR><hr>"
 
-	if(ticker && ticker.mode && (isnull(ticker.mode.active_lz) || isnull(ticker.mode.active_lz.loc)))
+	if(SSticker.mode && (isnull(SSticker.mode.active_lz) || isnull(SSticker.mode.active_lz.loc)))
 		dat += "<BR>Primary LZ <BR><A HREF='?src=\ref[src];operation=selectlz'>Select primary LZ</A>"
 		dat += "<BR><hr>"
 
@@ -87,7 +87,7 @@
 		var/helmetless_count = 0
 
 		for(var/X in current_squad.marines_list)
-			if(!X) 
+			if(!X)
 				continue //just to be safe
 			var/mob_name = "unknown"
 			var/mob_state = ""
@@ -107,7 +107,7 @@
 					role = H.job
 				else if(istype(H.wear_id, /obj/item/card/id)) //decapitated marine is mindless,
 					var/obj/item/card/id/ID = H.wear_id		//we use their ID to get their role.
-					if(ID.rank) 
+					if(ID.rank)
 						role = ID.rank
 
 				switch(H.stat)
@@ -120,7 +120,7 @@
 					else
 						continue
 
-				if((SURFACE_Z_LEVEL != M_turf.z))
+				if(!is_ground_level(M_turf.z))
 					almayer_count++
 					continue
 
@@ -175,7 +175,7 @@
 	onclose(current_mapviewer, "marineminimap", src)
 
 /obj/structure/machinery/computer/groundside_operations/Topic(href, href_list)
-	if(..()) 
+	if(..())
 		return FALSE
 
 	usr.set_interaction(src)
@@ -199,7 +199,7 @@
 				to_chat(usr, SPAN_WARNING("Please allow at least [COOLDOWN_COMM_MESSAGE*0.1] second\s to pass between announcements."))
 				return FALSE
 			var/input = stripped_multiline_input(usr, "Please write a message to announce to the station crew.", "Priority Announcement", "")
-			if(!input || !is_announcement_active || !(usr in view(1,src))) 
+			if(!input || !is_announcement_active || !(usr in view(1,src)))
 				return FALSE
 
 			is_announcement_active = FALSE
@@ -226,16 +226,16 @@
 				visible_message(SPAN_NOTICE("[src] prints a medal."))
 
 		if("selectlz")
-			if(ticker.mode.active_lz)
+			if(SSticker.mode.active_lz)
 				return
 			var/lz_choices = list()
 			for(var/obj/structure/machinery/computer/shuttle_control/console in machines)
-				if(console.z == SURFACE_Z_LEVEL && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
+				if(is_ground_level(console.z) && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
 					lz_choices += console
 			var/new_lz = input(usr, "Choose the primary LZ for this operation", "Operation Staging")  as null|anything in lz_choices
 			if(new_lz)
-				ticker.mode.select_lz(new_lz)
-		
+				SSticker.mode.select_lz(new_lz)
+
 		if("pick_squad")
 			var/list/squad_list = list()
 			for(var/datum/squad/S in RoleAuthority.squads)

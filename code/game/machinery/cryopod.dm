@@ -7,8 +7,8 @@
  */
 
 //Used for logging people entering cryosleep and important items they are carrying.
-var/global/list/frozen_crew = list()
-var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list(), SQUAD_NAME_3 = list(), SQUAD_NAME_4 = list(), "MP" = list(), "REQ" = list(), "Eng" = list(), "Med" = list(), "Yautja" = list())
+GLOBAL_LIST_EMPTY(frozen_crew)
+GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list(), SQUAD_NAME_3 = list(), SQUAD_NAME_4 = list(), "MP" = list(), "REQ" = list(), "Eng" = list(), "Med" = list(), "Yautja" = list()))
 
 //Main cryopod console.
 
@@ -60,9 +60,6 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 	var/dat
 
-	if(!(ticker))
-		return
-
 	dat += "<i>Welcome, [user.real_name].</i><br/><br/><hr/>"
 	dat += "<a href='?src=\ref[src];log=1'>View storage log</a>.<br>"
 	dat += "<a href='?src=\ref[src];view=1'>View objects</a>.<br>"
@@ -73,18 +70,15 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 /obj/structure/machinery/computer/cryopod/Topic(href, href_list)
 
-	//if(..())
-	//	return
-
 	var/mob/user = usr
-	var/list/frozen_items_for_type = frozen_items[cryotype]
+	var/list/frozen_items_for_type = GLOB.frozen_items[cryotype]
 
 	src.add_fingerprint(user)
 
 	if(href_list["log"])
 
 		var/dat = "<b>Recently stored crewmembers</b><br/><hr/><br/>"
-		for(var/person in frozen_crew)
+		for(var/person in GLOB.frozen_crew)
 			dat += "[person]<br/>"
 		dat += "<hr/>"
 
@@ -217,18 +211,18 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	items -= occupant //Don't delete the occupant
 	items -= announce //or the autosay radio.
 
-	var/list/dept_console = frozen_items["REQ"]
+	var/list/dept_console = GLOB.frozen_items["REQ"]
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/H = occupant
 		switch(H.job)
 			if("Military Police","Chief MP")
-				dept_console = frozen_items["MP"]
+				dept_console = GLOB.frozen_items["MP"]
 			if("Doctor","Researcher","Chief Medical Officer")
-				dept_console = frozen_items["Med"]
+				dept_console = GLOB.frozen_items["Med"]
 			if("Ordnance Techician","Chief Engineer")
-				dept_console = frozen_items["Eng"]
+				dept_console = GLOB.frozen_items["Eng"]
 			if("Predator")
-				dept_console = frozen_items["Yautja"]
+				dept_console = GLOB.frozen_items["Yautja"]
 
 	var/list/deleteempty = list(/obj/item/storage/backpack/marine/satchel)
 
@@ -250,7 +244,7 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 	item_loop:
 		for(var/obj/item/W in items)
-			if(((W.flags_inventory & CANTSTRIP) || (W.flags_item & NODROP)) && !isYautja(occupant)) //We don't keep donor items and undroppable/unremovable items
+			if(((W.flags_inventory & CANTSTRIP) || (W.flags_item & NODROP) || (W.flags_item & NO_CRYO_STORE)) && !isYautja(occupant)) //We don't keep donor items, undroppable/unremovable items, and specifically filtered items
 				if(istype(W, /obj/item/clothing/suit/storage))
 					var/obj/item/clothing/suit/storage/SS = W
 					for(var/obj/item/I in SS.pockets) //But we keep stuff inside them
@@ -341,7 +335,7 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 						available_specialist_sets += set_name
 			S.forget_marine_in_squad(H)
 
-	ticker.mode.latejoin_tally-- //Cryoing someone out removes someone from the Marines, blocking further larva spawns until accounted for
+	SSticker.mode.latejoin_tally-- //Cryoing someone out removes someone from the Marines, blocking further larva spawns until accounted for
 
 	//Handle job slot/tater cleanup.
 	RoleAuthority.free_role(RoleAuthority.roles_for_mode[occupant.job], TRUE)
@@ -366,7 +360,7 @@ var/global/list/frozen_items = list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 		occupant.ghostize(0)
 
 	//Make an announcement and log the person entering storage.
-	frozen_crew += "[occupant.real_name]"
+	GLOB.frozen_crew += "[occupant.real_name]"
 	if(!isYautja(occupant))
 		ai_silent_announcement("[occupant.real_name] has entered long-term hypersleep storage. Belongings moved to hypersleep inventory.")
 	visible_message(SPAN_NOTICE("[src] hums and hisses as it moves [occupant.real_name] into hypersleep storage."))

@@ -4,7 +4,7 @@
 /mob/living/silicon/ai/proc/InvalidTurf(turf/T as turf)
 	if(!T)
 		return 1
-	if(T.z == 2)
+	if(is_admin_level(T.z))
 		return 1
 	if(T.z > 6)
 		return 1
@@ -114,7 +114,8 @@
 		return list()
 
 	var/datum/trackable/TB = new()
-	for(var/mob/living/M in mob_list)
+	for(var/i in GLOB.living_mob_list)
+		var/mob/living/M = i
 		// Easy checks first.
 		// Don't detect mobs on Centcom. Since the wizard den is on Centcomm, we only need this.
 		if(InvalidTurf(get_turf(M)))

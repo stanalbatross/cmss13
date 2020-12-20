@@ -183,7 +183,7 @@ FIRE ALARM
 		else if (href_list["time"])
 			src.timing = text2num(href_list["time"])
 			last_process = world.timeofday
-			//processing_objects.Add(src)
+			//START_PROCESSING(SSobj, src)
 		else if (href_list["tp"])
 			var/tp = text2num(href_list["tp"])
 			src.time += tp
@@ -235,7 +235,7 @@ FIRE ALARM
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
 
-	if(z == 1 || z == 5)
+	if(is_ground_level(z) || is_huntership_level(z))
 		if(security_level)
 			src.overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_[get_security_level()]")
 		else

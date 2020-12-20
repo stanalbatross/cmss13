@@ -27,7 +27,7 @@
 
 	var/datum/shuttle/ferry/shuttle = shuttle_controller.shuttles[shuttle_tag]
 
-	if(!isXeno(user) && (onboard || z == 1))
+	if(!isXeno(user) && (onboard || is_ground_level(z)))
 		if(shuttle.queen_locked)
 			if(onboard && (isSynth(user) || user.job == "Pilot Officer"))
 				user.visible_message(SPAN_NOTICE("[user] starts to type on the [src]."),
@@ -145,8 +145,8 @@
 			to_chat(usr, SPAN_WARNING("The monorail isn't responding to prompts, it looks like remote control was disabled."))
 			return
 
-		if(!skip_time_lock && world.time < ticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK && istype(shuttle, /datum/shuttle/ferry/marine))
-			to_chat(usr, SPAN_WARNING("The monorail is still charging and cannot depart yet. Please wait another [round((ticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK-world.time)/600)] minutes before trying again."))
+		if(!skip_time_lock && world.time < SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK && istype(shuttle, /datum/shuttle/ferry/marine))
+			to_chat(usr, SPAN_WARNING("The monorail is still charging and cannot depart yet. Please wait another [round((SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK-world.time)/600)] minutes before trying again."))
 			return
 
 		sleep(0)
@@ -163,7 +163,7 @@
 				if(shuttle.moving_status != SHUTTLE_IDLE || shuttle.locked || shuttle.location != 1 || !shuttle.alerts_allowed || !shuttle.queen_locked || shuttle.recharging)
 					return
 
-				if(istype(shuttle, /datum/shuttle/ferry/marine) && src.z == 1 && i == "Yes")
+				if(istype(shuttle, /datum/shuttle/ferry/marine) && is_ground_level(z) && i == "Yes")
 
 					var/datum/shuttle/ferry/marine/shuttle1 = shuttle
 					shuttle1.transit_gun_mission = 0

@@ -15,15 +15,11 @@
 	usr.visible_message(SPAN_NOTICE("[usr] opens the [src.name]. "))
 	initialize_map()
 
-// /obj/item/map/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/usr as mob) //Show someone the map by hitting them with it
-//     usr.visible_message(SPAN_NOTICE("You open up the [name] and show it to [M]. "), \ 
-//         SPAN_NOTICE("[usr] opens up the [name] and shows it to \the [M]. "))
-//     M << initialize_map()
 /obj/item/map/attack()
 	return
 
 /obj/item/map/proc/initialize_map()
-	var/wikiurl = config.wikiurl
+	var/wikiurl = CONFIG_GET(string/wikiurl)
 	if(wikiurl)
 		dat = {"
 
@@ -160,3 +156,11 @@
 // Landmark - Used for mapping. Will spawn the appropriate map for each gamemode (LV map items will spawn when LV is the gamemode, etc)
 /obj/effect/landmark/map_item
 	name = "map item"
+
+/obj/effect/landmark/map_item/Initialize(mapload, ...)
+	. = ..()
+	GLOB.map_items += src
+
+/obj/effect/landmark/map_item/Destroy()
+	GLOB.map_items -= src
+	return ..()

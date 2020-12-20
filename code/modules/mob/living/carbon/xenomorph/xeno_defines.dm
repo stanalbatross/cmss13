@@ -36,7 +36,6 @@
 	var/tacklestrength_max = 3
 
 	var/armor_deflection = 0 //Chance of deflecting projectiles.
-	var/armor_hardiness_mult = XENO_ARMOR_FACTOR_LOW //so our armor is stronger
 	var/fire_immune = FALSE //Boolean
 
 	var/spit_delay = 60 //Delay timer for spitting
@@ -52,7 +51,7 @@
 
 	var/agility_speed_increase = 0 // this opens up possibilities for balancing
 
-	// The type of mutator delegate to instantiate on the base caste. Will 
+	// The type of mutator delegate to instantiate on the base caste. Will
 	// be replaced when the Xeno chooses a strain.
 	var/behavior_delegate_type = /datum/behavior_delegate
 
@@ -76,7 +75,7 @@
 	var/can_be_queen_healed = 1
 
 	var/can_vent_crawl = 1
-	
+
 	var/caste_luminosity = 0
 
 	var/burrow_cooldown = SECONDS_5
@@ -118,7 +117,7 @@
 				evolution_threshold = 500
 			//Other tiers (T3, Queen, etc.) can't evolve anyway
 
-	resin_build_order = resin_build_order_default
+	resin_build_order = GLOB.resin_build_order_default
 
 /client/var/cached_xeno_playtime
 
@@ -144,14 +143,14 @@
 	return total_xeno_playtime
 
 /datum/caste_datum/proc/can_play_caste(var/client/client)
-	if(!config.use_timelocks)
+	if(!CONFIG_GET(flag/use_timelocks))
 		return TRUE
 
 	var/total_xeno_playtime = client.get_total_xeno_playtime()
 
 	if(minimum_xeno_playtime && total_xeno_playtime < minimum_xeno_playtime)
 		return FALSE
-	
+
 	return TRUE
 
 /datum/caste_datum/proc/get_caste_requirement(var/client/client)
@@ -247,13 +246,13 @@
 	// Can only have one queen.
 	if(isXenoQueen(X))
 
-		if(!living_xeno_queen && X.z != ADMIN_Z_LEVEL) // Don't consider xenos in the ADMIN_Z_LEVEL
+		if(!living_xeno_queen && !is_admin_level(X.z)) // Don't consider xenos in admin level
 			set_living_xeno_queen(X)
 
 	X.hivenumber = hivenumber
 	X.hive = src
 
-	if(X.z != ADMIN_Z_LEVEL)
+	if(!is_admin_level(X.z))
 		totalXenos += X
 		if(X.tier == 2)
 			tier_2_xenos += X
@@ -276,7 +275,7 @@
 		if(living_xeno_queen == X)
 			var/mob/living/carbon/Xenomorph/Queen/next_queen
 			for(var/mob/living/carbon/Xenomorph/Queen/Q in totalXenos)
-				if(Q.z != ADMIN_Z_LEVEL)
+				if(!is_admin_level(Q.z))
 					next_queen = Q
 					break
 
@@ -354,7 +353,7 @@
 /datum/hive_status/proc/remove_hive_leader(var/mob/living/carbon/Xenomorph/xeno)
 	if(!istype(xeno) || !IS_XENO_LEADER(xeno))
 		return FALSE
-	
+
 	var/leader_num = GET_XENO_LEADER_NUM(xeno)
 
 	xeno_leader_list[leader_num] = null
@@ -367,16 +366,16 @@
 		if (i > open_xeno_leader_positions.len || open_xeno_leader_positions[i] > leader_num)
 			open_xeno_leader_positions.Insert(i, leader_num)
 			break
-	
+
 	hive_ui.update_xeno_keys()
 	return TRUE
 
 /datum/hive_status/proc/replace_hive_leader(var/mob/living/carbon/Xenomorph/original, var/mob/living/carbon/Xenomorph/replacement)
 	if(!replacement || replacement.hive_pos != NORMAL_XENO)
 		return remove_hive_leader(original)
-	
+
 	var/leader_num = GET_XENO_LEADER_NUM(original)
-	
+
 	xeno_leader_list[leader_num] = replacement
 
 	original.hive_pos = NORMAL_XENO
@@ -411,7 +410,7 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
 		//don't show xenos in the thunderdome when admins test stuff.
-		if(X.z == ADMIN_Z_LEVEL)
+		if(is_admin_level(X.z))
 			continue
 		if(X.caste)
 			xeno_counts[X.caste.tier+1][X.caste.caste_name]++
@@ -427,7 +426,7 @@
 	var/index = 1
 	var/useless_slots = 0
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
-		if(X.z == ADMIN_Z_LEVEL)
+		if(is_admin_level(X.z))
 			useless_slots++
 			continue
 
@@ -501,7 +500,7 @@
 	var/list/xenos = list()
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
-		if(X.z == ADMIN_Z_LEVEL)
+		if(is_admin_level(X.z))
 			continue
 
 		var/xeno_name = X.name
@@ -531,10 +530,10 @@
 	var/list/xenos = list()
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
-		if(X.z == ADMIN_Z_LEVEL)
+		if(is_admin_level(X.z))
 			continue
 
-		if(!(X in living_xeno_list))
+		if(!(X in GLOB.living_xeno_list))
 			continue
 
 		var/area/A = get_area(X)
@@ -575,14 +574,14 @@
 	return FALSE
 
 // returns if that location can be used to plant eggs
-/datum/hive_status/proc/in_egg_plant_range(var/turf/T)	
+/datum/hive_status/proc/in_egg_plant_range(var/turf/T)
 	if(!istype(living_xeno_queen))
 		return TRUE // xenos already dicked without queen. Let them plant whereever
-		
+
 	if(!living_xeno_queen.ovipositor)
 		return FALSE // ovid queen only
 
-	return get_dist(living_xeno_queen, T) <= egg_planting_range	
+	return get_dist(living_xeno_queen, T) <= egg_planting_range
 
 /datum/hive_status/proc/can_build_structure(var/structure_name)
 	if(!structure_name || !hive_structures_limit[structure_name])
@@ -639,22 +638,36 @@
 	hive_structures[name_ref] -= S
 	return TRUE
 
-/datum/hive_status/proc/remove_all_special_structures(var/hijacking_queen)
-	for(var/name_ref in hive_structures)
-		for(var/obj/effect/alien/resin/special/S in hive_structures[name_ref])
-			// For hijack, we skip structures being in the same zone as the Queen.
-			if(hijacking_queen)
-				var/area/QA = get_area(hijacking_queen) // Need to be done here, unfortunately.
-				var/area/SA = get_area(S)
-				if(SA == QA)
-					continue
-			hive_structures[name_ref] -= S
-			qdel(S)
-
 /datum/hive_status/proc/has_special_structure(var/name_ref)
 	if(!name_ref || !hive_structures[name_ref] || !hive_structures[name_ref].len)
 		return 0
 	return hive_structures[name_ref].len
+
+/datum/hive_status/proc/abandon_on_hijack()
+	var/area/hijacked_dropship = get_area(living_xeno_queen)
+	for(var/name_ref in hive_structures)
+		for(var/obj/effect/alien/resin/special/S in hive_structures[name_ref])
+			if(get_area(S) == hijacked_dropship)
+				continue
+			hive_structures[name_ref] -= S
+			qdel(S)
+	for(var/i in totalXenos)
+		var/mob/living/carbon/Xenomorph/xeno = i
+		if(get_area(xeno) != hijacked_dropship && xeno.loc && is_ground_level(xeno.loc.z))
+			to_chat(xeno, SPAN_XENOANNOUNCE("The Queen has left without you, you quickly find a hiding place to enter hibernation as you lose touch with the hive mind."))
+			qdel(xeno)
+	for(var/i in GLOB.alive_mob_list)
+		var/mob/living/potential_host = i
+		if(!(potential_host.status_flags & XENO_HOST))
+			continue
+		if(!is_ground_level(potential_host.z) || get_area(potential_host) == hijacked_dropship)
+			continue
+		var/obj/item/alien_embryo/A = locate() in potential_host
+		if(A && A.hivenumber != hivenumber)
+			continue
+		for(var/obj/item/alien_embryo/embryo in potential_host)
+			qdel(embryo)
+		potential_host.death("larva suicide")
 
 /datum/hive_status/corrupted
 	name = "Corrupted Hive"
@@ -745,7 +758,7 @@
 	X.faction_group = list(X.faction)
 
 /datum/hive_status/corrupted/submissive/should_override_alliance(var/mob/living/carbon/human/H, var/limit)
-	if(!leader) 
+	if(!leader)
 		return ..()
 
 	if(leader.faction_group && (H.faction in leader.faction_group))

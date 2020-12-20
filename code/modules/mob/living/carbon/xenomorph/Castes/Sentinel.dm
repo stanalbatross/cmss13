@@ -4,13 +4,12 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
-	max_health = XENO_HEALTH_TIER_3
+	max_health = XENO_HEALTH_TIER_5
 	plasma_gain = XENO_PLASMA_GAIN_TIER_5
 	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_1
 	armor_deflection = XENO_NO_ARMOR
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_LOW
-	evasion = XENO_EVASION_MEDIUM
+	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_7
 
 	caste_desc = "A weak ranged combat alien."
@@ -24,14 +23,13 @@
 	tackle_chance = 50
 	tacklestrength_min = 4
 	tacklestrength_max = 5
-	
+
 	spit_delay = 20
 
 /mob/living/carbon/Xenomorph/Sentinel
 	caste_name = "Sentinel"
 	name = "Sentinel"
 	desc = "A slithery, spitting kind of alien."
-	icon_source = "alien_sentinel"
 	icon_size = 48
 	icon_state = "Sentinel Walking"
 	plasma_types = list(PLASMA_NEUROTOXIN)
@@ -50,3 +48,7 @@
 		/mob/living/carbon/Xenomorph/proc/vent_crawl,
 		)
 	mutation_type = SENTINEL_NORMAL
+
+/mob/living/carbon/Xenomorph/Sentinel/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_sentinel))

@@ -5,7 +5,6 @@
 /obj/structure/tunnel
 	name = "tunnel"
 	desc = "A tunnel entrance. Looks like it was dug by some kind of clawed beast."
-	icon_source = "alien_effects"
 	icon_state = "hole"
 
 	density = 0
@@ -25,6 +24,7 @@
 
 /obj/structure/tunnel/Initialize(mapload, var/h_number)
 	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_effects))
 	var/turf/L = get_turf(src)
 	tunnel_desc = L.loc.name + " ([loc.x], [loc.y]) [pick(greek_letters)]"//Default tunnel desc is the <area name> (x, y) <Greek letter>
 
@@ -55,7 +55,7 @@
 	var/mob/living/carbon/C = target
 	if(istype(C) && C.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))
 		return TRUE
-	
+
 	return FALSE
 
 /obj/structure/tunnel/examine(mob/user)
@@ -107,7 +107,7 @@
 		for(var/obj/structure/tunnel/T in hive.tunnels)
 			if(T == src)
 				continue
-			if(!(T.z in SURFACE_Z_LEVELS))
+			if(!is_ground_level(T.z))
 				continue
 
 			tunnels += list(T.tunnel_desc = T)
@@ -124,7 +124,7 @@
 
 		var/tunnel_time = TUNNEL_MOVEMENT_XENO_DELAY
 
-		if(X.mob_size == MOB_SIZE_BIG) //Big xenos take WAY longer
+		if(X.mob_size >= MOB_SIZE_BIG) //Big xenos take WAY longer
 			tunnel_time = TUNNEL_MOVEMENT_BIG_XENO_DELAY
 		else if(isXenoLarva(X)) //Larva can zip through near-instantly, they are wormlike after all
 			tunnel_time = TUNNEL_MOVEMENT_LARVA_DELAY
@@ -133,7 +133,7 @@
 			return FALSE
 
 		var/obj/structure/tunnel/T = tunnels[pick]
-		
+
 		if(T.contents.len > 2)// max 3 xenos in a tunnel
 			to_chat(X, SPAN_WARNING("The tunnel is too crowded, wait for others to exit!"))
 			return FALSE
@@ -202,12 +202,12 @@
 
 	var/tunnel_time = TUNNEL_ENTER_XENO_DELAY
 
-	if(M.mob_size == MOB_SIZE_BIG) //Big xenos take WAY longer
+	if(M.mob_size >= MOB_SIZE_BIG) //Big xenos take WAY longer
 		tunnel_time = TUNNEL_ENTER_BIG_XENO_DELAY
 	else if(isXenoLarva(M)) //Larva can zip through near-instantly, they are wormlike after all
 		tunnel_time = TUNNEL_ENTER_LARVA_DELAY
 
-	if(M.mob_size == MOB_SIZE_BIG)
+	if(M.mob_size >= MOB_SIZE_BIG)
 		M.visible_message(SPAN_XENONOTICE("[M] begins heaving their huge bulk down into \the [src]."), \
 		SPAN_XENONOTICE("You begin heaving your monstrous bulk into \the [src]</b>."))
 	else

@@ -15,10 +15,10 @@
 	set category = "Debug"
 	set desc = "Shows whether or not a mine is contained within the xenomorph list."
 
-	if(!ticker || ticker.current_state != GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished."))
 		return
-	if(mind in ticker.mode.xenomorphs)
+	if(mind in SSticker.mode.xenomorphs)
 		to_chat(src, SPAN_DEBUG("[src] mind is in the xenomorph list. Mind key is [mind.key]."))
 		to_chat(src, SPAN_DEBUG("Current mob is: [mind.current]. Original mob is: [mind.original]."))
 	else to_chat(src, SPAN_DEBUG("This xenomorph is not in the xenomorph list."))
@@ -234,7 +234,7 @@
 	var/datum/ammo/xeno/ammo = null //The ammo datum for our spit projectiles. We're born with this, it changes sometimes.
 	var/obj/structure/tunnel/start_dig = null
 	var/tunnel_delay = 0
-	var/spiked = FALSE
+	var/steelcrest = FALSE
 
 
 	//////////////////////////////////////////////////////////////////
@@ -318,8 +318,8 @@
 
 	create_reagents(100)
 
-	living_xeno_list += src
-	xeno_mob_list += src
+	GLOB.living_xeno_list += src
+	GLOB.xeno_mob_list += src
 
 	if(caste && caste.adjust_size_x != 1)
 		var/matrix/M = matrix()
@@ -378,8 +378,8 @@
 	stamina = new /datum/stamina/none(src)
 
 /mob/living/carbon/Xenomorph/proc/update_caste()
-	if(caste_name && xeno_datum_list[caste_name])
-		caste = xeno_datum_list[caste_name]
+	if(caste_name && GLOB.xeno_datum_list[caste_name])
+		caste = GLOB.xeno_datum_list[caste_name]
 	else
 		to_world("something went very wrong")
 		return
@@ -401,7 +401,7 @@
 	if(!nicknumber)
 		var/tempnumber = rand(1, 999)
 		var/list/numberlist = list()
-		for(var/mob/living/carbon/Xenomorph/X in mob_list)
+		for(var/mob/living/carbon/Xenomorph/X in GLOB.xeno_mob_list)
 			numberlist += X.nicknumber
 
 		while(tempnumber in numberlist)
@@ -483,8 +483,8 @@
 	if(is_zoomed)
 		zoom_out()
 
-	living_xeno_list -= src
-	xeno_mob_list -= src
+	GLOB.living_xeno_list -= src
+	GLOB.xeno_mob_list -= src
 
 	if(IS_XENO_LEADER(src)) //Strip them from the Xeno leader list, if they are indexed in here
 		hive.remove_hive_leader(src)
@@ -667,6 +667,9 @@
 		health = maxHealth
 
 /mob/living/carbon/Xenomorph/proc/recalculate_plasma()
+	if(!plasma_max)
+		return
+
 	var/new_plasma_max = plasmapool_modifier * caste.plasma_max
 	plasma_gain = plasmagain_modifier + caste.plasma_gain
 	if (new_plasma_max == plasma_max)
@@ -758,7 +761,7 @@
 
 /mob/living/carbon/Xenomorph/rejuvenate()
 	if(stat == DEAD && !QDELETED(src))
-		living_xeno_list += src
+		GLOB.living_xeno_list += src
 
 		if(hive)
 			hive.add_xeno(src)

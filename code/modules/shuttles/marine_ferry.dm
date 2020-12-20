@@ -262,7 +262,7 @@
 
 	in_transit_time_left = 0
 
-	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS) 
+	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
 		return FALSE //If a nuke is in progress, don't attempt a landing.
 
 	playsound_area(get_area(turfs_int[sound_target]), sound_landing, 100)
@@ -277,7 +277,7 @@
 
 	sleep(100) //Wait for it to finish.
 
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED) 
+	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED)
 		return FALSE //If a nuke finished, don't land.
 
 	target_turf = T_trg
@@ -319,7 +319,6 @@
 		location = !location
 
 	transit_optimized = 0 //De-optimize the flight plans
-	transit_gun_mission = 0 //no longer on a fire mission.
 
 	//Simple, cheap ticker
 	if(recharge_time)
@@ -414,40 +413,6 @@
 		if(F.id == shuttle_tag)
 			F.turn_off()
 
-	// sanity checking
-	// Check for all hives in case of HvH
-	for(var/datum/hive_status/hive in hive_datum)
-		if(!hive.living_xeno_queen || hive.living_xeno_queen.loc.z == ADMIN_Z_LEVEL)
-			//Ignore hives without queens (and on admin levels) to cut down on pointless checks
-			continue
-		var/list/left_behind = list()
-		var/list/with_queen = list()
-		for(var/mob/living/carbon/Xenomorph/xeno in living_xeno_list)
-			if(xeno.hivenumber != hive.hivenumber)
-				continue
-			if(xeno.loc && hive.living_xeno_queen && hive.living_xeno_queen.loc && xeno.loc.z == hive.living_xeno_queen.loc.z) // yes loc because of vent crawling
-				with_queen += xeno
-			else if(xeno.loc && xeno.loc.z == 1)
-				left_behind += xeno
-		if(with_queen.len > left_behind.len) // to stop solo-suiciding by queens
-			hive.stored_larva = 0
-			hive.hive_ui.update_pooled_larva()
-			for(var/mob/living/carbon/Xenomorph/about_to_die in left_behind)
-				to_chat(about_to_die, SPAN_XENOANNOUNCE("The Queen has left without you, you quickly find a hiding place to enter hibernation as you lose touch with the hive mind."))
-				qdel(about_to_die) // just delete them
-		for(var/mob/living/carbon/potential_host in living_mob_list)
-			if(potential_host.z != 1) continue // ground level
-			if(potential_host.status_flags & XENO_HOST) // a host
-				var/obj/item/alien_embryo/A = locate() in potential_host
-				if(A && A.hivenumber != hive.hivenumber)
-					continue //Wrong hive, ignore
-				for(var/obj/item/alien_embryo/embryo in potential_host)
-					qdel(embryo)
-				for(var/mob/living/carbon/Xenomorph/Larva/larva in potential_host)
-					qdel(larva)
-				potential_host.death("larva suicide")
-		qdel(hive.spawn_pool)
-
 	in_transit_time_left = travel_time
 	while(in_transit_time_left > 0)
 		// At halftime, we announce whether or not the AA forced the dropship to divert
@@ -472,7 +437,7 @@
 
 	in_transit_time_left = 0
 
-	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS) 
+	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS)
 		return FALSE //If a nuke is in progress, don't attempt a landing.
 
 	//This is where things change and shit gets real
@@ -484,7 +449,7 @@
 
 	sleep(85)
 
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED) 
+	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED)
 		return FALSE //If a nuke finished, don't land.
 
 	if(security_level < SEC_LEVEL_RED) //automatically set security level to red.
@@ -506,15 +471,13 @@
 		sleep(3)
 
 	// Break the ultra-reinforced windows.
-	for(var/obj/structure/window/framed/almayer/hull/hijack_bustable/H in structure_list)
+	// Break the briefing windows.
+	for(var/i in GLOB.hijack_bustable_windows)
+		var/obj/structure/window/H = i
 		H.shatter_window(1)
 
-	// Break the briefing windows.
-	for(var/obj/structure/window/reinforced/ultra/W in structure_list)
-		W.shatter_window(1)
-
 	// Delete the briefing door(s).
-	for(var/obj/structure/machinery/door/window/ultra/D in structure_list)
+	for(var/D in GLOB.hijack_deletable_windows)
 		qdel(D)
 
 	// Sleep while the explosions do their job
@@ -527,7 +490,8 @@
 				break
 		sleep(1)
 
-	for(var/mob/living/carbon/M in living_human_list) //knock down mobs
+	for(var/i in GLOB.alive_human_list) //knock down mobs
+		var/mob/living/carbon/human/M = i
 		if(M.z != T_trg.z) continue
 		if(M.buckled)
 			to_chat(M, SPAN_WARNING("You are jolted against [M.buckled]!"))
@@ -564,15 +528,15 @@
 
 
 	for (var/obj/structure/machinery/door_display/research_cell/d in machines)
-		if(d.z == MAIN_SHIP_Z_LEVEL || d.z == LOW_ORBIT_Z_LEVEL)
+		if(is_mainship_level(d.z) || is_loworbit_level(d.z))
 			d.ion_act() //Breaking xenos out of containment
 
 	//Stolen from events.dm. WARNING: This code is old as hell
 	for (var/obj/structure/machinery/power/apc/APC in machines)
-		if(APC.z == MAIN_SHIP_Z_LEVEL || APC.z == LOW_ORBIT_Z_LEVEL)
+		if(is_mainship_level(APC.z) || is_loworbit_level(APC.z))
 			APC.ion_act()
 	for (var/obj/structure/machinery/power/smes/SMES in machines)
-		if(SMES.z == MAIN_SHIP_Z_LEVEL || SMES.z == LOW_ORBIT_Z_LEVEL)
+		if(is_mainship_level(SMES.z) || is_loworbit_level(SMES.z))
 			SMES.ion_act()
 
 	//END: Heavy lifting backend
@@ -580,9 +544,9 @@
 	sleep(100)
 	moving_status = SHUTTLE_CRASHED
 
-	if(ticker && ticker.mode)
-		ticker.mode.is_in_endgame = TRUE
-		ticker.mode.force_end_at = world.time + 15000 // 25 mins
+	if(SSticker.mode)
+		SSticker.mode.is_in_endgame = TRUE
+		SSticker.mode.force_end_at = world.time + 15000 // 25 mins
 
 
 /datum/shuttle/ferry/marine/short_jump()

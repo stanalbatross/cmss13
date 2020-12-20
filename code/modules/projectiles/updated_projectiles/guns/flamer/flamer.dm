@@ -25,8 +25,9 @@
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/extinguisher)
 	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_WIELDED_FIRING_ONLY
+	gun_category = GUN_CATEGORY_HEAVY
 
-/obj/item/weapon/gun/flamer/New()
+/obj/item/weapon/gun/flamer/Initialize(mapload, spawn_empty)
 	. = ..()
 	update_icon()
 
@@ -207,6 +208,8 @@
 	var/obj/item/storage/large_holster/fuelpack/fuelpack
 	starting_attachment_types = list(/obj/item/attachable/attached_gun/extinguisher/pyro)
 
+	flags_item = TWOHANDED|NO_CRYO_STORE
+
 /obj/item/weapon/gun/flamer/M240T/Destroy()
 	if(fuelpack)
 		if(fuelpack.linked_flamer == src)
@@ -340,7 +343,7 @@
 	firelevel = R.durationfire
 	burnlevel = R.intensityfire
 
-	processing_objects.Add(src)
+	START_PROCESSING(SSobj, src)
 
 	to_call = C
 
@@ -353,7 +356,7 @@
 			return
 
 	if(fire_spread_amount > 0)
-		var/datum/flameshape/FS = flameshapes[flameshape]
+		var/datum/flameshape/FS = GLOB.flameshapes[flameshape]
 		if(!FS)
 			CRASH("Invalid flameshape passed to /obj/flamer_fire. (Expected /datum/flameshape, got [FS] (id: [flameshape]))")
 
@@ -391,7 +394,8 @@
 
 			if(weapon_source_mob)
 				var/mob/user = weapon_source_mob
-				if(user.faction == H.faction && !get_area(user)?.statistic_exempt)
+				var/area/thearea = get_area(user)
+				if(user.faction == H.faction && !thearea?.statistic_exempt)
 					H.attack_log += "\[[time_stamp()]\] <b>[key_name(user)]</b> shot <b>[key_name(H)]</b> with \a <b>[name]</b> in [get_area(user)]."
 					user.attack_log += "\[[time_stamp()]\] <b>[key_name(user)]</b> shot <b>[key_name(H)]</b> with \a <b>[name]</b> in [get_area(user)]."
 					if(weapon_source)
@@ -432,7 +436,7 @@
 
 /obj/flamer_fire/Destroy()
 	SetLuminosity(0)
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/flamer_fire/initialize_pass_flags(var/datum/pass_flags_container/PF)

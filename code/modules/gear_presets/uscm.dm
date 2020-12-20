@@ -29,7 +29,7 @@
 
 /datum/equipment_preset/uscm/pfc
 	name = "USCM (Cryo) Squad Marine (PFC)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP)
 	assignment = JOB_SQUAD_MARINE
@@ -55,7 +55,7 @@
 
 /datum/equipment_preset/uscm/pfc/full_plasma_rifle
 	name = "USCM PFC (Pulse Rifle)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 /datum/equipment_preset/uscm/pfc/full_plasma_rifle/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
@@ -83,7 +83,7 @@
 
 /datum/equipment_preset/uscm/sg
 	name = "USCM (Cryo) Smartgunner"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_SMARTPREP)
 	assignment = JOB_SQUAD_SMARTGUN
@@ -103,7 +103,7 @@
 
 /datum/equipment_preset/uscm/sg/full
 	name = "USCM Smartgunner"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 /datum/equipment_preset/uscm/sg/full/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
@@ -123,7 +123,7 @@
 
 /datum/equipment_preset/uscm/tank
 	name = "USCM Vehicle Crewman (CRMN) (Cryo)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(
 		ACCESS_MARINE_PREP,
@@ -158,7 +158,7 @@
 
 /datum/equipment_preset/uscm/tank/full
 	name = "USCM Vehicle Crewman (CRMN)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	utility_under = list(/obj/item/clothing/under/marine/officer/tanker)
 
@@ -180,10 +180,9 @@
 	H.hud_set_squad()
 
 /*****************************************************************************************************/
-
 /datum/equipment_preset/uscm/spec
 	name = "USCM (Cryo) Squad Specialist"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_SPECPREP)
 	assignment = JOB_SQUAD_SPECIALIST
@@ -204,7 +203,7 @@
 
 /datum/equipment_preset/uscm/spec/full_armor
 	name = "USCM Specialist (B18 Armor)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 /datum/equipment_preset/uscm/spec/full_armor/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
@@ -229,7 +228,7 @@
 
 /datum/equipment_preset/uscm/medic
 	name = "USCM (Cryo) Squad Medic"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_MEDPREP, ACCESS_MARINE_MEDBAY)
 	assignment = JOB_SQUAD_MEDIC
@@ -267,7 +266,7 @@
 
 /datum/equipment_preset/uscm/engineer
 	name = "USCM (Cryo) Squad Engineer"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_ENGPREP, ACCESS_CIVILIAN_ENGINEERING)
 	assignment = JOB_SQUAD_ENGI
@@ -289,7 +288,7 @@
 
 /datum/equipment_preset/uscm/leader
 	name = "USCM (Cryo) Squad Leader"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
 	assignment = JOB_SQUAD_LEADER
@@ -313,7 +312,7 @@
 
 /datum/equipment_preset/uscm/private_equipped
 	name = "USCM Cryo Private (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP)
 	assignment = JOB_SQUAD_MARINE
@@ -351,7 +350,7 @@
 
 /datum/equipment_preset/uscm/leader_equipped
 	name = "USCM Cryo Squad Leader (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
 	assignment = JOB_SQUAD_LEADER
@@ -383,7 +382,7 @@
 
 /datum/equipment_preset/uscm/smartgunner_equipped
 	name = "USCM Cryo Smartgunner (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_SMARTPREP)
 	assignment = JOB_SQUAD_SMARTGUN
@@ -414,7 +413,7 @@
 
 /datum/equipment_preset/uscm/engineer_equipped
 	name = "USCM Cryo Engineer (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_ENGPREP, ACCESS_CIVILIAN_ENGINEERING)
 	assignment = JOB_SQUAD_ENGI
@@ -453,7 +452,7 @@
 
 /datum/equipment_preset/uscm/medic_equipped
 	name = "USCM Cryo Medic (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_MEDPREP, ACCESS_MARINE_MEDBAY)
 	assignment = JOB_SQUAD_MEDIC
@@ -492,7 +491,7 @@
 
 /datum/equipment_preset/uscm/specialist_equipped
 	name = "USCM Cryo Specialist (Equipped)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_PREP, ACCESS_MARINE_SPECPREP)
 	assignment = JOB_SQUAD_SPECIALIST

@@ -27,7 +27,8 @@ var/list/datum/admins/admin_datums = list()
 	if(istype(C))
 		owner = C
 		owner.admin_holder = src
-		owner.add_admin_verbs()	//TODO
+		owner.add_admin_verbs()
+		owner.add_admin_whitelists()
 		GLOB.admins |= C
 		if(owner.admin_holder.rights & R_PROFILER)
 			if(!world.GetConfig("admin", C.ckey))
@@ -53,22 +54,29 @@ proc/admin_proc()
 NOTE: it checks usr! not src! So if you're checking somebody's rank in a proc which they did not call
 you will have to do something like if(client.admin_holder.rights & R_ADMIN) yourself.
 */
-/proc/check_rights(rights_required, show_msg=1)
-	if(usr && usr.client)
-		if(rights_required)
-			if(usr.client.admin_holder)
-				if(rights_required & usr.client.admin_holder.rights)
-					return 1
-				else
-					if(show_msg)
-						to_chat(usr, "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:[rights2text(rights_required,"")].</font>")
-		else
-			if(usr.client.admin_holder)
-				return 1
+/proc/check_client_rights(var/client/C, rights_required, show_msg = TRUE)
+	if(!C)
+		return FALSE
+
+	if(rights_required)
+		if(C.admin_holder)
+			if(rights_required & C.admin_holder.rights)
+				return TRUE
 			else
 				if(show_msg)
-					to_chat(usr, "<font color='red'>Error: You are not an admin.</font>")
-	return 0
+					to_chat(C, SPAN_DANGER("Error: You do not have sufficient rights to do that. You require one of the following flags:[rights2text(rights_required,"")]."))
+	else
+		if(C.admin_holder)
+			return TRUE
+		else
+			if(show_msg) 
+				to_chat(C, SPAN_DANGER("Error: You are not an admin."))
+	return FALSE
+
+/proc/check_rights(rights_required, show_msg=TRUE)
+	if(usr && usr.client)
+		return check_client_rights(usr.client, rights_required, show_msg)
+	return FALSE
 
 //probably a bit iffy - will hopefully figure out a better solution
 /proc/check_if_greater_rights_than(client/other)
@@ -93,3 +101,51 @@ you will have to do something like if(client.admin_holder.rights & R_ADMIN) your
 		admin_datums[ckey].associate(src)
 	return 1
 
+/proc/IsAdminAdvancedProcCall()
+	return usr?.client && GLOB.AdminProcCaller == usr.client.ckey
+
+/proc/WrapAdminProcCall(datum/target, procname, list/arguments)
+	if(target && procname == "Del")
+		to_chat(usr, "Calling Del() is not allowed")
+		return
+
+	if(target != GLOBAL_PROC && !target.CanProcCall(procname))
+		to_chat(usr, "Proccall on [target.type]/proc/[procname] is disallowed!")
+		return
+
+	var/current_caller = GLOB.AdminProcCaller
+	var/ckey = usr ? usr.client.ckey : GLOB.AdminProcCaller
+	if(!ckey)
+		CRASH("WrapAdminProcCall with no ckey: [target] [procname] [english_list(arguments)]")
+
+	if(current_caller && current_caller != ckey)
+		if(!GLOB.AdminProcCallSpamPrevention[ckey])
+			to_chat(usr, "<span class='adminnotice'>Another set of admin called procs are still running, your proc will be run after theirs finish.</span>")
+			GLOB.AdminProcCallSpamPrevention[ckey] = TRUE
+			UNTIL(!GLOB.AdminProcCaller)
+			to_chat(usr, "<span class='adminnotice'>Running your proc</span>")
+			GLOB.AdminProcCallSpamPrevention -= ckey
+		else
+			UNTIL(!GLOB.AdminProcCaller)
+
+	GLOB.LastAdminCalledProc = procname
+	if(target != GLOBAL_PROC)
+		GLOB.LastAdminCalledTargetRef = "[REF(target)]"
+
+	GLOB.AdminProcCaller = ckey	//if this runtimes, too bad for you
+	++GLOB.AdminProcCallCount
+	. = world.WrapAdminProcCall(target, procname, arguments)
+	if(--GLOB.AdminProcCallCount == 0)
+		GLOB.AdminProcCaller = null
+
+
+/world/proc/WrapAdminProcCall(datum/target, procname, list/arguments)
+	if(target == GLOBAL_PROC)
+		return call(procname)(arglist(arguments))
+	else if(target != world)
+		return call(target, procname)(arglist(arguments))
+	else
+		log_admin_private("[key_name(usr)] attempted to call world/proc/[procname] with arguments: [english_list(arguments)]")
+
+/datum/proc/CanProcCall(procname)
+	return TRUE

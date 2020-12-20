@@ -152,6 +152,8 @@
 	for(var/atom/A in in_turf)
 		if(A in exploded_atoms)
 			continue
+		if(A.gc_destroyed)
+			continue
 		INVOKE_ASYNC(A, /atom.proc/ex_act, power, direction, explosion_source, explosion_source_mob)
 		exploded_atoms += A
 		log_explosion(A, src)
@@ -235,7 +237,10 @@
 
 	// Note that we don't want to make it a directed ex_act because
 	// it could toss them back and make them get hit by the explosion again
-	A.ex_act(power, null, explosion_source, explosion_source_mob)
+	if(A.gc_destroyed)
+		return
+
+	INVOKE_ASYNC(A, /atom.proc/ex_act, power, null, explosion_source, explosion_source_mob)
 	log_explosion(A, src)
 
 // I'll admit most of the code from here on out is basically just copypasta from DOREC
@@ -296,25 +301,25 @@
 			// who cares about the explosion if it happened nowhere
 			if(!location_of_mob)
 				return
-
+			var/area/thearea = get_area(M)
 			if(M == firing_mob)
-				M.attack_log += "\[[time_stamp()]\] <b>[key_name(M)]</b> blew himself up with \a <b>[explosion_source]</b> in [get_area(M)]."
+				M.attack_log += "\[[time_stamp()]\] <b>[key_name(M)]</b> blew himself up with \a <b>[explosion_source]</b> in [get_area(T)]."
 			// One human blew up another, be worried about it but do everything basically the same
-			else if(ishuman(firing_mob) && ishuman(M) && M.faction == firing_mob.faction && !get_area(M)?.statistic_exempt)
-				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(firing_mob)]."
+			else if(ishuman(firing_mob) && ishuman(M) && M.faction == firing_mob.faction && !thearea?.statistic_exempt)
+				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
-				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(firing_mob)]."
-				msg_admin_ff("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(firing_mob)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP</a>) (<a href='?priv_msg=\ref[firing_mob.client]'>PM</a>)")
+				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
+				msg_admin_ff("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP LOC</a>) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP SRC</a>) (<a href='?priv_msg=\ref[firing_mob.client]'>PM</a>)")
 
 				if(ishuman(firing_mob))
 					var/mob/living/carbon/human/H = firing_mob
 					H.track_friendly_fire(explosion_source)
 			else
-				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(firing_mob)]."
+				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
-				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(firing_mob)]."
+				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
-				msg_admin_attack("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(firing_mob)] ([location_of_mob.x],[location_of_mob.y],[location_of_mob.z]).", location_of_mob.x, location_of_mob.y, location_of_mob.z)
+				msg_admin_attack("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] ([T.x],[T.y],[T.z]).", T.x, T.y, T.z)
 
 
 /obj/effect/particle_effect/shockwave

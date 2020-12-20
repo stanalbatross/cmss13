@@ -4,12 +4,11 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_3
-	max_health = XENO_HEALTH_TIER_4
+	max_health = XENO_HEALTH_TIER_6
 	plasma_gain = XENO_PLASMA_GAIN_TIER_7
-	plasma_max = XENO_PLASMA_TIER_10
+	plasma_max = XENO_PLASMA_TIER_6
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_2
-	armor_deflection = XENO_ARMOR_TIER_1
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_MEDIUM
+	armor_deflection = XENO_NO_ARMOR
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_5
 
@@ -33,7 +32,6 @@
 	caste_name = "Spitter"
 	name = "Spitter"
 	desc = "A gross, oozing alien of some kind."
-	icon_source = "alien_spitter"
 	icon_size = 48
 	icon_state = "Spitter Walking"
 	plasma_types = list(PLASMA_NEUROTOXIN)
@@ -55,6 +53,9 @@
 		)
 	mutation_type = SPITTER_NORMAL
 
+/mob/living/carbon/Xenomorph/Spitter/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_spitter))
 
 /datum/behavior_delegate/spitter_base
 	name = "Base Spitter Behavior Delegate"
@@ -75,7 +76,7 @@
 
 	dot_cooldown_atoms += A
 	addtimer(CALLBACK(src, .proc/dot_cooldown_up, A), dot_cooldown_duration)
-	
+
 	new /datum/effects/acid(A, bound_xeno, initial(bound_xeno.caste_name))
 
 	if (ismob(A))

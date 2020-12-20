@@ -47,12 +47,14 @@
 #define COMSIG_MOB_EXPLODED_WALL "mob_exploded_wall"
 /// From /obj/structure/girder/proc/do_wall
 #define COMSIG_MOB_CONSTRUCT_WALL "mob_construct_wall"
-/// Currently unused
-#define COMSIG_MOB_DESTROY_W_FRAME "mob_destroy_w_frame"
+/// From /obj/structure/window/framed/ex_act
+#define COMSIG_MOB_EXPLODE_W_FRAME "mob_destroy_w_frame"
 /// From /obj/structure/window_frame/attackby
 #define COMSIG_MOB_DISASSEMBLE_W_FRAME "mob_disassemble_w_frame"
 /// From /obj/structure/window/proc/healthcheck
 #define COMSIG_MOB_DESTROY_WINDOW "mob_destroy_window"
+/// From /obj/structure/window/ex_act
+#define COMSIG_MOB_WINDOW_EXPLODED "mob_window_exploded"
 /// From /obj/structure/window_frame/attackby
 #define COMSIG_MOB_CONSTRUCT_WINDOW "mob_construct_window"
 /// From /obj/structure/window/attackby
@@ -65,6 +67,16 @@
 #define COMSIG_MOB_APC_CUT_WIRE "mob_apc_cut_wire"
 /// From /obj/structure/machinery/power/apc/proc/pulse
 #define COMSIG_MOB_APC_POWER_PULSE "mob_apc_power_pulse"
+/// From /obj/structure/machinery/power/apc/proc/pulse
+#define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
+/// From /projectiles/updated_projectiles/guns/proc/fire
+#define COMSIG_MOB_FIRED_GUN_ATTACHMENT "mob_fired_gun_attachment"
+/// From /projectiles/updated_projectiles/guns/proc/fire_attachment
+#define COMSIG_MOB_DEATH "mob_death"
+/// From /mob/proc/death
+#define COMSIG_MOB_GETTING_UP "mob_getting_up"
+/// From /mob/proc/update_canmove()
+
 
 /// For when a mob is dragged
 #define COMSIG_MOB_DRAGGED "mob_dragged"
@@ -76,6 +88,10 @@
 #define COMSIG_MOB_DEVOURED "mob_devoured"
 	#define COMPONENT_CANCEL_DEVOUR	(1<<0)
 
+<<<<<<< HEAD
+=======
+// Reserved for tech trees
+>>>>>>> upstream/dev
 #define COMSIG_MOB_ENTER_TREE "mob_enter_tree"
 	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
 
@@ -87,12 +103,21 @@
 #define COMSIG_MOB_RESET_VIEW "mob_reset_view"
 	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
 
+<<<<<<< HEAD
 #define COMSIG_MOB_POST_CLICK "mob_post_click"
 
+=======
+>>>>>>> upstream/dev
 // Return a nonzero value to cancel these actions
 #define COMSIG_BINOCULAR_ATTACK_SELF "binocular_attack_self"
 #define COMSIG_BINOCULAR_HANDLE_CLICK "binocular_handle_click"
 
+<<<<<<< HEAD
+=======
+#define COMSIG_MOB_PRE_CLICK "mob_pre_click"
+	#define COMPONENT_INTERRUPT_CLICK (1<<0)
+
+>>>>>>> upstream/dev
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
 
@@ -101,6 +126,15 @@
 
 /// From /obj/item/device/defibrillator/attack
 #define COMSIG_HUMAN_REVIVED "human_revived"
+/// From /mob/living/carbon/human/bullet_act
+#define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
+	#define COMPONENT_BULLET_NO_HIT (1<<0)
+
+#define COMSIG_XENOMORPH_OVERWATCH_XENO "xenomorph_overwatch_xeno"
+#define COMSIG_XENOMORPH_STOP_OVERWATCH	"xenomorph_stop_overwatch"
+#define COMSIG_XENOMORPH_STOP_OVERWATCH_XENO "xenomorph_stop_overwatch_xeno"
+
+#define COMSIG_QUEEN_DISMOUNT_OVIPOSITOR "queen_dismount_ovipositor"
 
 #define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
 	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
@@ -140,3 +174,10 @@
 #define COMSIG_TURF_ENTER "turf_enter"
 	#define COMPONENT_TURF_ALLOW_MOVEMENT (1<<0)
 	#define COMPONENT_TURF_DENY_MOVEMENT  (1<<1)
+
+#define COMSIG_MOB_MOVE	"mob_move"
+
+#define COMSIG_MOB_POST_UPDATE_CANMOVE "mob_can_move"
+
+#define COMSIG_GRENADE_PRE_PRIME "grenade_pre_prime"
+	#define COMPONENT_GRENADE_PRIME_CANCEL	(1<<0)

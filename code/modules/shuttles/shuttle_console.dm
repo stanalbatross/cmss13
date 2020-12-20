@@ -48,8 +48,8 @@
 	if(!shuttle)
 		log_debug("Shuttle control computer failed to find shuttle with tag '[shuttle_tag]'!")
 		return
-	
-	if(!isXeno(user) && (onboard || z == 1) && !shuttle.iselevator)
+
+	if(!isXeno(user) && (onboard || is_ground_level(z)) && !shuttle.iselevator)
 		if(shuttle.queen_locked)
 			if(onboard && (isSynth(user) || user.job== "Pilot Officer"))
 				user.visible_message(SPAN_NOTICE("[user] starts to type on the [src]."),
@@ -201,10 +201,10 @@
 			to_chat(usr, SPAN_WARNING("The shuttle isn't responding to prompts, it looks like remote control was disabled."))
 			return
 		//Comment to test
-		if(!skip_time_lock && world.time < ticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK && istype(shuttle, /datum/shuttle/ferry/marine))
-			to_chat(usr, SPAN_WARNING("The shuttle is still undergoing pre-flight fuelling and cannot depart yet. Please wait another [round((ticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK-world.time)/600)] minutes before trying again."))
+		if(!skip_time_lock && world.time < SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK && istype(shuttle, /datum/shuttle/ferry/marine))
+			to_chat(usr, SPAN_WARNING("The shuttle is still undergoing pre-flight fuelling and cannot depart yet. Please wait another [round((SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK-world.time)/600)] minutes before trying again."))
 			return
-		if(ticker.mode.active_lz != src && !onboard && isXenoQueen(usr))
+		if(SSticker.mode.active_lz != src && !onboard && isXenoQueen(usr))
 			to_chat(usr, SPAN_WARNING("The shuttle isn't responding to prompts, it looks like this isn't the primary shuttle."))
 			return
 		if(istype(shuttle, /datum/shuttle/ferry/marine))
@@ -242,7 +242,7 @@
 					return
 
 				//Shit's about to kick off now
-				if(istype(shuttle, /datum/shuttle/ferry/marine) && src.z == 1)
+				if(istype(shuttle, /datum/shuttle/ferry/marine) && is_ground_level(z))
 					var/datum/shuttle/ferry/marine/shuttle1 = shuttle
 
 					shuttle1.true_crash_target_section = crash_target
@@ -273,7 +273,7 @@
 					Q.count_niche_stat(STATISTICS_NICHE_FLIGHT)
 
 					if(Q.hive)
-						Q.hive.remove_all_special_structures(Q)
+						Q.hive.abandon_on_hijack()
 
 					if(bomb_set)
 						for(var/obj/structure/machinery/nuclearbomb/bomb in world)
@@ -294,7 +294,7 @@
 				to_chat(M, SPAN_WARNING("Hrm, that didn't work. Maybe try the one on the ship?"))
 				return
 			else
-				if(z == 1) shuttle.transit_gun_mission = 0 //remote launch always do transport flight.
+				if(is_ground_level(z)) shuttle.transit_gun_mission = 0 //remote launch always do transport flight.
 				shuttle.launch(src)
 				if(onboard && !shuttle.iselevator)
 					M.count_niche_stat(STATISTICS_NICHE_FLIGHT)

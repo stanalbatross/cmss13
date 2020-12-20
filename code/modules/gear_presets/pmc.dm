@@ -155,7 +155,7 @@
 
 	assignment = "Weston-Yamada PMC (Medic)"
 	rank = "PMC Medic"
-	paygrade = "PMC2"
+	paygrade = "PMC2M" //Fixed from PMC2 to PMC2M to display properly.
 	skills = /datum/skills/pmc/medic
 
 /datum/equipment_preset/pmc/pmc_medic/load_gear(mob/living/carbon/human/H)
@@ -197,8 +197,8 @@
 
 	assignment = JOB_PMC_INVESTIGATOR
 	rank = JOB_PMC_INVESTIGATOR
-	paygrade = "PMC2"
-	skills = /datum/skills/pmc/medic
+	paygrade = "PMC2M" //Fixed from PMC2 to PMC2M to display properly.
+	skills = /datum/skills/pmc/medic/chem
 
 /datum/equipment_preset/pmc/pmc_med_investigator/load_gear(mob/living/carbon/human/H)
 
@@ -276,7 +276,7 @@
 	rank = JOB_PMC_LEAD_INVEST
 	paygrade = "PMC4"
 	role_comm_title = "SL"
-	skills = /datum/skills/pmc/SL
+	skills = /datum/skills/pmc/SL/chem
 
 /datum/equipment_preset/pmc/pmc_lead_investigator/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -307,8 +307,8 @@
 
 	assignment = JOB_PMC_GUNNER
 	rank = JOB_PMC_GUNNER
-	paygrade = "PMC3"
-	role_comm_title = "Spc"
+	paygrade = "PMC2S"
+	role_comm_title = "SG"
 	skills = /datum/skills/pmc/smartgunner
 
 /datum/equipment_preset/pmc/pmc_gunner/load_gear(mob/living/carbon/human/H)
@@ -404,6 +404,7 @@
 	uses_special_name = TRUE //We always use a codename!
 	faction = FACTION_DEATHSQUAD
 	assignment = "Deathsquad"
+	role_comm_title = "CC"
 	rank = FACTION_DEATHSQUAD
 	skills = /datum/skills/commando/deathsquad
 	idtype = /obj/item/card/id/pmc/ds
@@ -423,6 +424,9 @@
 		random_name = "[pick(greek_letters)]"
 	H.change_real_name(H, random_name)
 	H.age = rand(17,45)
+
+/datum/equipment_preset/pmc/deathsquad/load_languages(mob/living/carbon/human/H)
+	H.set_languages(list("English", "Japanese", "Tactical Sign Language"))
 
 /datum/equipment_preset/pmc/deathsquad/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -454,6 +458,7 @@
 	name = "Weston-Yamada Deathsquad Medic"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Deathsquad Medic"
+	role_comm_title = "CCM"
 
 /datum/equipment_preset/pmc/deathsquad/medic/load_gear(mob/living/carbon/human/H)
 	//TODO: add backpacks and satchels
@@ -491,6 +496,7 @@
 	name = "Weston-Yamada Deathsquad Terminator"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Deathsquad Terminator"
+	role_comm_title = "CCT"
 
 /datum/equipment_preset/pmc/deathsquad/terminator/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/commando, WEAR_EAR)
@@ -513,3 +519,4 @@
 	name = "Weston-Yamada Deathsquad Leader"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Deathsquad Leader"
+	role_comm_title = "LCC"

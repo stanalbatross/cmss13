@@ -348,7 +348,7 @@ var/datum/controller/supply/supply_controller = new()
 	var/datum/shuttle/ferry/supply/vehicle/vehicle_elevator
 
 	//dropship part fabricator's points, so we can reference them globally (mostly for DEFCON)
-	var/dropship_points = 5000 //gains roughly 18 points per minute
+	var/dropship_points = 10000 //gains roughly 18 points per minute | Original points of 5k doubled due to removal of prespawned ammo.
 	var/tank_points = 0
 
 	New()
@@ -385,7 +385,7 @@ var/datum/controller/supply/supply_controller = new()
 /datum/controller/supply/proc/calculate_crate_amount()
 
 	// Sqrt(NUM_XENOS/4)
-	var/crate_amount = Floor(max(0, sqrt(ticker.mode.count_xenos(SURFACE_Z_LEVELS)/3)))
+	var/crate_amount = Floor(max(0, sqrt(SSticker.mode.count_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))/3)))
 
 	if(crate_iteration <= 5)
 		crate_amount = 4
@@ -666,7 +666,7 @@ var/datum/controller/supply/supply_controller = new()
 	return
 
 /obj/structure/machinery/computer/supplycomp/attack_hand(var/mob/user as mob)
-	if(z != MAIN_SHIP_Z_LEVEL) return
+	if(!is_mainship_level(z)) return
 	if(!allowed(user))
 		to_chat(user, SPAN_DANGER("Access Denied."))
 		return
@@ -724,7 +724,7 @@ var/datum/controller/supply/supply_controller = new()
 	return
 
 /obj/structure/machinery/computer/supplycomp/Topic(href, href_list)
-	if(z != MAIN_SHIP_Z_LEVEL) return
+	if(!is_mainship_level(z)) return
 	if(!supply_controller)
 		world.log << "## ERROR: Eek. The supply_controller controller datum is missing somehow."
 		return
@@ -966,14 +966,13 @@ var/datum/controller/supply/supply_controller = new()
 	ordered_vehicle = /obj/vehicle/multitile/tank/decrepit
 
 /datum/vehicle_order/tank/has_vehicle_lock()
-	if(!ticker.mode || istype(ticker.mode, /datum/game_mode/extended))
+	if(!SSticker.mode || istype(SSticker.mode, /datum/game_mode/extended))
 		return FALSE
-	
-	var/datum/game_mode/GM = ticker.mode
+
+	var/datum/game_mode/GM = SSticker.mode
 
 	if(GM.marine_starting_num < TANK_POPLOCK)
 		return TRUE
-
 /datum/vehicle_order/apc
 	name = "M577 Armored Personnel Carrier"
 	ordered_vehicle = /obj/vehicle/multitile/apc/decrepit
@@ -1054,7 +1053,7 @@ var/datum/controller/supply/supply_controller = new()
 	show_browser(H, dat, "Automated Storage and Retrieval System", "computer", "size=575x450")
 
 /obj/structure/machinery/computer/supplycomp/vehicle/Topic(href, href_list)
-	if(z != MAIN_SHIP_Z_LEVEL)
+	if(!is_mainship_level(z))
 		return
 	if(spent)
 		return
@@ -1103,7 +1102,7 @@ var/datum/controller/supply/supply_controller = new()
 		var/turf/middle_turf = locate(min_x + Ceiling((max_x-min_x)/2) + 1, min_y + Ceiling((max_y-min_y)/2) + 1, SUPPLY_DOCKZ)
 
 		var/obj/vehicle/multitile/ordered_vehicle
-		
+
 		var/datum/vehicle_order/VO = locate(href_list["get_vehicle"])
 
 		if(!VO) return

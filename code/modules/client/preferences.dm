@@ -137,16 +137,19 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/xeno_postfix = ""
 	var/xeno_name_ban = FALSE
 
-	var/show_xeno_age = TRUE
+	var/playtime_perks = TRUE
 
 	var/stylesheet = "Modern"
 
 	var/lang_chat_disabled = FALSE
-	
+
 	var/swap_hand_default = "Ctrl+X"
 	var/swap_hand_hotkeymode = "X"
 	var/key_buf // A buffer for setting macro keybinds
 	var/list/key_mod_buf // A buffer for macro modifiers
+
+	var/tgui_fancy = TRUE
+	var/tgui_lock = FALSE
 
 /datum/preferences/New(client/C)
 	if(istype(C))
@@ -176,7 +179,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	CRASH("Preferences deleted unexpectedly: [client_status]; [client_mob_status]")
 
 /datum/preferences/proc/ShowChoices(mob/user)
-	if(!user || !user.client)	
+	if(!user || !user.client)
 		return
 	update_preview_icon()
 
@@ -227,7 +230,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Xeno prefix:</b> <a href='?_src_=prefs;preference=xeno_prefix;task=input'>[display_prefix]</a><br>"
 	dat += "<b>Xeno postfix:</b> <a href='?_src_=prefs;preference=xeno_postfix;task=input'>[display_postfix]</a><br>"
 
-	dat += "<b>Show Xeno Age:</b> <a href='?_src_=prefs;preference=xeno_show_age'><b>[show_xeno_age? "Yes" : "No"]</b></a><br>"
+	dat += "<b>Enable Playtime Perks:</b> <a href='?_src_=prefs;preference=playtime_perks'><b>[playtime_perks? "Yes" : "No"]</b></a><br>"
 
 	var/tempnumber = rand(1, 999)
 	var/postfix_text = xeno_postfix ? ("-"+xeno_postfix) : ""
@@ -236,7 +239,7 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	dat += "<b>Xeno sample name:</b> [xeno_text]<br>"
 	dat += "<br>"
-	
+
 	var/n = 0
 
 	var/list/special_roles = list(
@@ -264,7 +267,7 @@ var/const/MAX_SAVE_SLOTS = 10
 				dat += "\t[T.name] - [duration2text(missing_requirements[r])] Hours<br>"
 		else
 			dat += "<b>Be [role_name]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'><b>[be_special & (1<<n) ? "Yes" : "No"]</b></a><br>"
-	
+
 		n++
 
 	dat += "<br>"
@@ -323,7 +326,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Custom Loadout:</b> "
 	var/total_cost = 0
 
-	if(!islist(gear)) 
+	if(!islist(gear))
 		gear = list()
 
 	if(gear && gear.len)
@@ -346,6 +349,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	dat += "<div id='column3'>"
 	dat += "<h2><b><u>Game Settings:</u></b></h2>"
+	dat += "<b>tgui Window Mode:</b> <a href='?_src_=prefs;preference=tgui_fancy'>[(tgui_fancy) ? "Fancy (default)" : "Compatible (slower)"]</a><br>"
+	dat += "<b>tgui Window Placement:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(tgui_lock) ? "Primary monitor" : "Free (default)"]</a><br>"
 	dat += "<b>Play Admin Midis:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'><b>[(toggles_chat & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</b></a><br>"
@@ -371,7 +376,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Toggle Automatic Punctuation: \
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTOMATIC_PUNCTUATION]'><b>[toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION ? "On" : "Off"]</b></a><br>"
 
-	if(config.allow_Metadata)
+	if(CONFIG_GET(flag/allow_Metadata))
 		dat += "<b>OOC Notes:</b> <a href='?_src_=prefs;preference=metadata;task=input'> Edit </a><br>"
 	dat += "<br>"
 
@@ -421,7 +426,7 @@ var/const/MAX_SAVE_SLOTS = 10
 //width	 		- Screen' width. Defaults to 550 to make it look nice.
 //height 	 	- Screen's height. Defaults to 500 to make it look nice.
 /datum/preferences/proc/SetChoices(mob/user, limit = 18, list/splitJobs = list(), width = 800, height = 850)
-	if(!RoleAuthority) 
+	if(!RoleAuthority)
 		return
 
 	var/HTML = "<body>"
@@ -462,7 +467,7 @@ var/const/MAX_SAVE_SLOTS = 10
 				var/datum/timelock/T = r
 				HTML += "<tr class='[job.selection_class]'><td width='40%' align='right'>[T.name]</td><td>[duration2text(missing_requirements[r])] Hours</td></tr>"
 			continue
-		
+
 		HTML += "<b>[job.disp_title]</b>"
 
 		HTML += "</td><td width='60%'>"
@@ -474,7 +479,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		for (var/j in NEVER_PRIORITY to LOW_PRIORITY)
 			switch (j)
 				if(NEVER_PRIORITY)
-					b_color = "red" 
+					b_color = "red"
 					priority_text = "NEVER"
 				if(HIGH_PRIORITY)
 					b_color = "blue"
@@ -485,7 +490,7 @@ var/const/MAX_SAVE_SLOTS = 10
 				if(LOW_PRIORITY)
 					b_color = "orange"
 					priority_text = "LOW"
-				
+
 			HTML += "<a class='[j == cur_priority ? b_color : "inactive"]' href='?_src_=prefs;preference=job;task=input;text=[job.title];target_priority=[j];'>[priority_text]</a>"
 			if (j < 4)
 				HTML += "&nbsp"
@@ -574,7 +579,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		for(var/job in job_preference_list)
 			job_preference_list[job] = NEVER_PRIORITY
 		return
-	
+
 	if(!RoleAuthority)
 		return
 
@@ -584,7 +589,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		job_preference_list[J.title] = NEVER_PRIORITY
 
 /datum/preferences/proc/get_job_priority(var/J)
-	if(!J)	
+	if(!J)
 		return FALSE
 
 	if(!length(job_preference_list))
@@ -605,7 +610,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		for(var/job in job_preference_list)
 			if(job_preference_list[job] == HIGH_PRIORITY)
 				job_preference_list[job] = MED_PRIORITY
-	
+
 	job_preference_list[J.title] = priority
 	return TRUE
 
@@ -873,7 +878,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(xeno_name_ban)
 						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You are banned from xeno name picking.")))
 						xeno_prefix = ""
-						return					
+						return
 
 					var/new_xeno_prefix = input(user, "Choose your xenomorph prefix. One or two letters capitalized. Put empty text if you want to default it to 'XX'", "Xenomorph Prefix") as text|null
 					new_xeno_prefix = uppertext(new_xeno_prefix)
@@ -892,7 +897,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						if(xeno_postfix)
 							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use three letter prefix with any postfix.")))
 							return
-						
+
 					if(length(new_xeno_prefix)==0)
 						xeno_prefix = "XX"
 					else
@@ -987,13 +992,13 @@ var/const/MAX_SAVE_SLOTS = 10
 						h_style = new_h_style
 
 				if ("ethnicity")
-					var/new_ethnicity = input(user, "Choose your character's ethnicity:", "Character Preferences") as null|anything in ethnicities_list
+					var/new_ethnicity = input(user, "Choose your character's ethnicity:", "Character Preferences") as null|anything in GLOB.ethnicities_list
 
 					if (new_ethnicity)
 						ethnicity = new_ethnicity
 
 				if ("body_type")
-					var/new_body_type = input(user, "Choose your character's body type:", "Character Preferences") as null|anything in body_types_list
+					var/new_body_type = input(user, "Choose your character's body type:", "Character Preferences") as null|anything in GLOB.body_types_list
 
 					if (new_body_type)
 						body_type = new_body_type
@@ -1203,13 +1208,13 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("stylesheet")
 					var/stylesheet_new = input(user, "Select a stylesheet to use (affects non-NanoUI interfaces)") in stylesheets
 					stylesheet = stylesheet_new
-				
+
 				if("ViewMC")
 					if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
 						View_MC = !View_MC
 
-				if("xeno_show_age")
-					show_xeno_age = !show_xeno_age
+				if("playtime_perks")
+					playtime_perks = !playtime_perks
 
 				if("be_special")
 					var/num = text2num(href_list["num"])
@@ -1227,7 +1232,7 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("lobby_music")
 					toggles_sound ^= SOUND_LOBBY
 					if(toggles_sound & SOUND_LOBBY)
-						user << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
+						user << sound(SSticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
 					else
 						user << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)
 
@@ -1249,7 +1254,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					swap_hand_default = read_key()
 					if (!swap_hand_default)
 						swap_hand_default = "CTRL+X"
-					
+
 					owner.runtime_macro_insert(swap_hand_default, "default", ".SwapMobHand")
 
 				if("swap_hand_hotkeymode")
@@ -1258,7 +1263,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					swap_hand_hotkeymode = read_key()
 					if (!swap_hand_hotkeymode)
 						swap_hand_hotkeymode = "X"
-					
+
 					owner.runtime_macro_insert(swap_hand_hotkeymode, "hotkeymode", ".SwapMobHand")
 
 				if("toggle_prefs")
@@ -1292,6 +1297,10 @@ var/const/MAX_SAVE_SLOTS = 10
 					var/mob/new_player/np = user
 					if(istype(np))
 						np.new_player_panel_proc()
+				if("tgui_fancy")
+					tgui_fancy = !tgui_fancy
+				if("tgui_lock")
+					tgui_lock = !tgui_lock
 
 	ShowChoices(user)
 	return 1
@@ -1304,7 +1313,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	if(be_random_name)
 		real_name = random_name(gender)
 
-	if(config.humans_need_surnames)
+	if(CONFIG_GET(flag/humans_need_surnames))
 		var/firstspace = findtext(real_name, " ")
 		var/name_length = length(real_name)
 		if(!firstspace)	//we need a surname
@@ -1472,7 +1481,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	if(be_random_name)
 		real_name = random_name(gender)
 
-	if(config.humans_need_surnames)
+	if(CONFIG_GET(flag/humans_need_surnames))
 		var/firstspace = findtext(real_name, " ")
 		var/name_length = length(real_name)
 		if(!firstspace)	//we need a surname

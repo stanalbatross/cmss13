@@ -1,7 +1,7 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
-	mob_list -= src
-	dead_mob_list -= src
-	living_mob_list -= src
+	GLOB.mob_list -= src
+	GLOB.dead_mob_list -= src
+	GLOB.alive_mob_list -= src
 	GLOB.player_list -= src
 
 	if(mind)
@@ -23,6 +23,8 @@
 	last_damage_source = null
 	last_damage_mob = null
 
+	QDEL_NULL(mob_panel)
+
 	ghostize()
 	clear_fullscreens()
 	return ..()
@@ -34,11 +36,11 @@
 	last_mob_gid++
 	gid = last_mob_gid
 
-	mob_list += src
+	GLOB.mob_list += src
 	if(stat == DEAD)
-		dead_mob_list += src
+		GLOB.dead_mob_list += src
 	else
-		living_mob_list += src
+		GLOB.alive_mob_list += src
 		life_time_start = world.time
 	var/area/current_area = get_area(loc)
 	if(current_area)
@@ -46,7 +48,15 @@
 	if(!isnull(current_area) && current_area.statistic_exempt)
 		statistic_exempt = TRUE
 	prepare_huds()
+
+	create_player_panel()
+
 	return ..()
+
+/mob/proc/create_player_panel()
+	QDEL_NULL(mob_panel)
+
+	mob_panel = new(src)
 
 /mob/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
@@ -64,6 +74,7 @@
 				stat("Instances:", "[num2text(length(world.contents), 10)]")
 				stat("World Time:", "[world.time]")
 				GLOB.stat_entry()
+				config.stat_entry()
 				stat(null)
 				if(Master)
 					Master.stat_entry()
@@ -137,6 +148,8 @@
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 
 /mob/visible_message(message, self_message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER)
+	set waitfor = FALSE
+
 	var/view_dist = 7
 	var/flags = message_flags
 	if(max_distance) view_dist = max_distance
@@ -148,6 +161,7 @@
 				flags = CHAT_TYPE_BEING_HIT
 		M.show_message( msg, 1, blind_message, 2, flags)
 		CHECK_TICK
+
 	for(var/obj/vehicle/V in orange(max_distance))
 		for(var/mob/M in V.contents)
 			var/msg = message
@@ -157,6 +171,7 @@
 					flags = CHAT_TYPE_BEING_HIT
 			M.show_message( msg, 1, blind_message, 2, flags)
 		CHECK_TICK
+
 
 // Shows three different messages depending on who does it to who and how does it look like to outsiders
 // message_mob: "You do something to X!"
@@ -188,16 +203,16 @@
 
 
 /mob/proc/findname(msg)
-	for(var/mob/M in mob_list)
+	for(var/mob/M in GLOB.mob_list)
 		if (M.real_name == text("[]", msg))
 			return M
 	return 0
 
 /mob/proc/movement_delay()
 	if(!legcuffed)
-		. = 2 + config.run_speed
+		. = 2 + CONFIG_GET(number/run_speed)
 	else
-		. = 7 + config.walk_speed
+		. = 7 + CONFIG_GET(number/walk_speed)
 	. += speed
 	move_delay = .
 
@@ -659,6 +674,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			drop_r_hand()
 		else
 			density = TRUE
+			SEND_SIGNAL(src, COMSIG_MOB_GETTING_UP)
 			remove_temp_pass_flags(PASS_MOB_THRU)
 		update_transform()
 
@@ -673,8 +689,9 @@ note dizziness decrements automatically in the mob's Life() proc.
 	else if(layer == LYING_DEAD_MOB_LAYER || layer == LYING_LIVING_MOB_LAYER)
 		layer = initial(layer)
 
-	return canmove
+	SEND_SIGNAL(src, COMSIG_MOB_POST_UPDATE_CANMOVE, canmove, laid_down ,lying)
 
+	return canmove
 
 /mob/proc/facedir(var/ndir)
 	if(!canface())	return 0

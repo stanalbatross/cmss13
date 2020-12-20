@@ -70,7 +70,7 @@
 		var/total = 0
 		for(var/role_required in roles)
 			total += get_job_playtime(C, role_required)
-		
+
 		return total >= time_required
 	else
 		return get_job_playtime(C, roles) >= time_required
@@ -80,21 +80,21 @@
 		var/total = 0
 		for(var/role_required in roles)
 			total += get_job_playtime(C, role_required)
-		
+
 		return time_required - total
 	else
 		return time_required - get_job_playtime(C, roles)
 
 /datum/job/proc/can_play_role(var/client/client)
-	if(!config.use_timelocks)
+	if(!CONFIG_GET(flag/use_timelocks))
 		return TRUE
-	
+
 	if(client.admin_holder && (client.admin_holder.rights & (R_NOLOCK | R_ADMIN)))
 		return TRUE
 
 	if(get_job_playtime(client, title) > minimum_playtime_as_job)
 		return TRUE
-	
+
 	for(var/prereq in minimum_playtimes)
 		var/datum/timelock/T = prereq
 		if(!T.can_play(client))
@@ -187,12 +187,7 @@
 	var/mob/living/carbon/human/new_character = new(NP.loc)
 	new_character.lastarea = get_area(NP.loc)
 
-	if(ticker.random_players)
-		new_character.gender = pick(MALE, FEMALE)
-		NP.client.prefs.real_name = random_name(new_character.gender)
-		NP.client.prefs.randomize_appearance(new_character)
-	else
-		NP.client.prefs.copy_all_to(new_character)
+	NP.client.prefs.copy_all_to(new_character)
 
 	if (NP.client.prefs.be_random_body)
 		var/datum/preferences/TP = new()
@@ -211,7 +206,7 @@
 		NP.mind.setup_human_stats()
 
 	// Update the character icons
-	// This is done in set_species when the mob is created as well, but 
+	// This is done in set_species when the mob is created as well, but
 	INVOKE_ASYNC(new_character, /mob/living/carbon/human.proc/regenerate_icons)
 	INVOKE_ASYNC(new_character, /mob/living/carbon/human.proc/update_body, 1, 0)
 	INVOKE_ASYNC(new_character, /mob/living/carbon/human.proc/update_hair)
@@ -222,16 +217,19 @@
 	if(!istype(M))
 		return
 
-	var/obj/effect/landmark/S //Starting mark.
-	for(var/i in landmarks_list)
+	var/atom/start
+	for(var/i in GLOB.spawns_by_job[type])
 		var/obj/effect/landmark/L = i
-		if(L && L.name == title && !locate(/mob/living) in L.loc)
-			S = L
+		if(!locate(/mob/living) in L.loc)
+			start = L
 			break
-	if(!S)
-		S = locate("start*[title]") //Old type spawn.
-	if(istype(S) && istype(S.loc, /turf))
-		M.loc = S.loc
+	if(!start)
+		start = pick(GLOB.latejoin)
+
+	if(!start)
+		CRASH("Something went wrong and theres no unoccupied job spawns for [type] and somehow no latejoin landmarks")
+
+	M.forceMove(get_turf(start))
 
 	if(ishuman(M))
 		var/mob/living/carbon/H = M
@@ -272,7 +270,7 @@
 			RoleAuthority.randomize_squad(H)
 
 		if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
-			var/datum/game_mode/whiskey_outpost/WO = ticker.mode
+			var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
 			WO.self_set_headset(H)
 
 		H.sec_hud_set_ID()

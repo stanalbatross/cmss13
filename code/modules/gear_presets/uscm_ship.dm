@@ -27,6 +27,7 @@
 /datum/equipment_preset/uscm_ship/liaison
 	name = "USCM Corporate Liaison (CL)"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	languages = list("English", "Japanese")
 
 	idtype = /obj/item/card/id/silver/cl
 	access = list(
@@ -113,7 +114,9 @@
 		ACCESS_MARINE_BRIDGE,
 		ACCESS_CIVILIAN_ENGINEERING,
 		ACCESS_MARINE_COMMANDER,
-		ACCESS_MARINE_LOGISTICS
+		ACCESS_MARINE_LOGISTICS,
+		ACCESS_MARINE_MAINT,
+		ACCESS_MARINE_OT
 	)
 	assignment = JOB_CHIEF_ENGINEER
 	rank = JOB_CHIEF_ENGINEER
@@ -141,9 +144,13 @@
 
 /datum/equipment_preset/uscm_ship/maint
 	name = "USCM Maintenance Technician (MT)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
-	access = list(ACCESS_MARINE_ENGINEERING, ACCESS_CIVILIAN_ENGINEERING)
+	access = list(
+		ACCESS_MARINE_ENGINEERING,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_MARINE_MAINT
+	)
 	assignment = JOB_MAINT_TECH
 	rank = JOB_MAINT_TECH
 	paygrade = "E5"
@@ -172,9 +179,15 @@
 
 /datum/equipment_preset/uscm_ship/ordn
 	name = "USCM Ordnance Technician (OT)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
-	access = list(ACCESS_MARINE_ENGINEERING, ACCESS_CIVILIAN_ENGINEERING)
+	access = list(
+		ACCESS_MARINE_ENGINEERING,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_MARINE_MAINT,
+		ACCESS_MARINE_OT
+
+	)
 	assignment = JOB_ORDNANCE_TECH
 	rank = JOB_ORDNANCE_TECH
 	paygrade = "E5"
@@ -201,7 +214,7 @@
 
 /datum/equipment_preset/uscm_ship/ro
 	name = "USCM Requisitions Officer (RO)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	access = list(
@@ -245,7 +258,7 @@
 
 /datum/equipment_preset/uscm_ship/cargo
 	name = "USCM Cargo Technician (CT)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_CARGO, ACCESS_MARINE_PREP)
 	assignment = JOB_CARGO_TECH
@@ -274,7 +287,7 @@
 
 /datum/equipment_preset/uscm_ship/commander
 	name = "USCM Captain (CO)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/gold
 	assignment = JOB_CO
@@ -290,9 +303,11 @@
 
 	service_hat = list(/obj/item/clothing/head/beret/cm)
 	service_shoes = list(/obj/item/clothing/shoes/dress/commander)
+	service_extra = list(/obj/item/clothing/under/marine/officer/casual, /obj/item/clothing/suit/storage/jacket/marine/dress/officer/bomber)
 
+	dress_under = list(/obj/item/clothing/under/marine/officer/formal/white, /obj/item/clothing/under/marine/officer/formal/black, /obj/item/clothing/under/marine/officer/dining)
 	dress_extra = list(/obj/item/clothing/head/beret/marine/commander/dress, /obj/item/storage/large_holster/ceremonial_sword/full)
-	dress_hat = list(/obj/item/clothing/head/marine/peaked/captain)
+	dress_hat = list(/obj/item/clothing/head/marine/peaked/captain, /obj/item/clothing/head/cmcap/co/formal/white, /obj/item/clothing/head/cmcap/co/formal/black)
 	dress_shoes = list(/obj/item/clothing/shoes/dress/commander)
 
 /datum/equipment_preset/uscm_ship/commander/New()
@@ -320,7 +335,7 @@
 
 /datum/equipment_preset/uscm_ship/commander/commodore
 	name = "USCM Commodore (CO+)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/gold/commodore
 	rank = JOB_CO
@@ -343,7 +358,7 @@
 
 /datum/equipment_preset/uscm_ship/xo
 	name = "USCM Executive Officer (XO)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	assignment = JOB_XO
@@ -379,7 +394,7 @@
 
 /datum/equipment_preset/uscm_ship/so
 	name = "USCM Staff Officer (SO)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	access = list(ACCESS_MARINE_COMMANDER, ACCESS_MARINE_BRIDGE, ACCESS_MARINE_BRIG, ACCESS_MARINE_DROPSHIP, ACCESS_MARINE_LOGISTICS)
@@ -410,7 +425,7 @@
 
 /datum/equipment_preset/uscm_ship/sea
 	name = "USCM Senior Enlisted Advisor (SEA)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	access
@@ -453,7 +468,7 @@
 
 /datum/equipment_preset/uscm_ship/po
 	name = "USCM Pilot Officer (PO) (Cryo)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
 	access = list(ACCESS_MARINE_BRIDGE, ACCESS_MARINE_DROPSHIP, ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_PILOT)
@@ -476,7 +491,7 @@
 
 /datum/equipment_preset/uscm_ship/po/full
 	name = "USCM Pilot Officer (PO)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	utility_under = list(/obj/item/clothing/under/marine/officer/pilot)
 
@@ -502,7 +517,7 @@
 
 /datum/equipment_preset/uscm_ship/officer
 	name = "USCM Officer (USCM Command)"
-	flags = EQUIPMENT_PRESET_EXTRA
+	flags = EQUIPMENT_PRESET_EXTRA|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/admiral
 	access = list(ACCESS_MARINE_MEDBAY, ACCESS_MARINE_CHEMISTRY, ACCESS_MARINE_MORGUE)
@@ -549,8 +564,8 @@
 	access = list(ACCESS_MARINE_MEDBAY, ACCESS_MARINE_CHEMISTRY, ACCESS_MARINE_MORGUE)
 	assignment = "USCM Admiral"
 	rank = "USCM Admiral"
-	paygrade = "O8"
-	role_comm_title = "ADM"
+	paygrade = "O7"
+	role_comm_title = "RADM"
 	minimum_age = 50
 	skills = /datum/skills/admiral
 
@@ -586,6 +601,8 @@
 	H.equip_to_slot_or_del(new /obj/item/handcuffs(H.back), WEAR_IN_BACK)
 
 	H.equip_if_possible(new /obj/item/clothing/glasses/sunglasses(H), WEAR_EYES)
+
+	H.hud_set_squad()
 
 /*****************************************************************************************************/
 
@@ -623,45 +640,12 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/box/handcuffs(H.back), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
 
-/*****************************************************************************************************/
-
-/datum/equipment_preset/uscm_ship/fleet_admiral
-	name = "Fleet Admiral" //Renamed from Soviet Admiral
-	flags = EQUIPMENT_PRESET_EXTRA
-
-	idtype = /obj/item/card/id/admiral
-	access = list()
-	assignment = "Fleet Admiral"
-	rank = "Fleet Admiral"
-	paygrade = "O9E"
-	role_comm_title = "FADM"
-	minimum_age = 55
-	skills = /datum/skills/admiral
-
-	service_under = list(/obj/item/clothing/under/soviet)
-	service_over = list(/obj/item/clothing/suit/hgpirate)
-	service_hat = list(/obj/item/clothing/head/hgpiratecap)
-
-/datum/equipment_preset/uscm_ship/fleet_admiral/New()
-	. = ..()
-	access = get_all_accesses() + get_all_centcom_access()
-
-/datum/equipment_preset/uscm_ship/fleet_admiral/load_gear(mob/living/carbon/human/H)
-	//TODO: add backpacks and satchels
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/hgpiratecap(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(H), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom/cdrcom(H), WEAR_EAR)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/mateba/admiral(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/hgpirate(H), WEAR_JACKET)
-	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/soviet(H), WEAR_BODY)
 
 /*****************************************************************************************************/
 
 /datum/equipment_preset/uscm_ship/chef
 	name = "USCM Mess Sergeant (MS)"
-	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	access = list(ACCESS_MARINE_KITCHEN)
 	assignment = JOB_MESS_SERGEANT

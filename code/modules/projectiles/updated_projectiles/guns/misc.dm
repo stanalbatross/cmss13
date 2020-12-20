@@ -13,17 +13,18 @@
 	w_class = SIZE_HUGE
 	force = 20
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER|GUN_RECOIL_BUILDUP|GUN_HAS_FULL_AUTO
+	gun_category = GUN_CATEGORY_HEAVY
 
-/obj/item/weapon/gun/minigun/New(loc, spawn_empty)
-	..()
+/obj/item/weapon/gun/minigun/Initialize(mapload, spawn_empty)
+	. = ..()
 	if(current_mag && current_mag.current_rounds > 0) load_into_chamber()
 
 /obj/item/weapon/gun/minigun/set_gun_config_values()
 	..()
 	fire_delay = FIRE_DELAY_TIER_10
-	
+
 	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_3
-	
+
 	scatter = SCATTER_AMOUNT_TIER_9 // Most of the scatter should come from the recoil
 
 	damage_mult = BASE_BULLET_DAMAGE_MULT
@@ -78,14 +79,15 @@
 	w_class = SIZE_LARGE
 	force = 20
 	flags_gun_features = GUN_BURST_ON|GUN_WIELDED_FIRING_ONLY
+	gun_category = GUN_CATEGORY_HEAVY
 	attachable_allowed = list(/obj/item/attachable/m60barrel,
 							/obj/item/attachable/bipod/m60)
 	starting_attachment_types = list(/obj/item/attachable/m60barrel,
 									/obj/item/attachable/bipod/m60)
 
 
-/obj/item/weapon/gun/m60/New(loc, spawn_empty)
-	..()
+/obj/item/weapon/gun/m60/Initialize(mapload, spawn_empty)
+	. = ..()
 	if(current_mag && current_mag.current_rounds > 0)
 		load_into_chamber()
 
@@ -143,7 +145,7 @@
 /obj/item/weapon/gun/launcher/spike/Destroy()
 	. = ..()
 	remove_from_missing_pred_gear(src)
-	processing_objects.Remove(src)
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/launcher/spike/process()
 	if(spikes < max_spikes && world.time > last_regen + 100 && prob(70))
@@ -151,9 +153,9 @@
 		last_regen = world.time
 		update_icon()
 
-/obj/item/weapon/gun/launcher/spike/New()
-	..()
-	processing_objects.Add(src)
+/obj/item/weapon/gun/launcher/spike/Initialize(mapload, spawn_empty)
+	. = ..()
+	START_PROCESSING(SSobj, src)
 	last_regen = world.time
 	update_icon()
 	verbs -= /obj/item/weapon/gun/verb/field_strip //We don't want these to show since they're useless.

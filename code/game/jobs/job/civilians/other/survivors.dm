@@ -9,7 +9,7 @@
 	var/story_text
 
 /datum/job/civilian/survivor/set_spawn_positions(var/count)
-	spawn_positions = Clamp((count * SURVIVOR_TO_MARINES_SPAWN_RATIO), 0, 8)
+	spawn_positions = Clamp((round(count * SURVIVOR_TO_MARINES_SPAWN_RATIO)), 0, 8)
 	total_positions = spawn_positions
 
 /datum/job/civilian/survivor/equip_job(mob/living/M)
@@ -19,11 +19,8 @@
 	. = ..()
 	var/mob/living/carbon/human/H = .
 
-	var/obj/effect/landmark/survivor_spawner/spawner = pick(surv_spawn)
-	if(istype(spawner))
-		H.loc = spawner.loc
-	else
-		H.loc = spawner
+	var/obj/effect/landmark/survivor_spawner/spawner = pick(GLOB.survivor_spawns)
+	H.forceMove(get_turf(spawner))
 
 	if(istype(spawner) && spawner.equipment)
 		arm_equipment(H, spawner.equipment, FALSE, TRUE)

@@ -42,7 +42,6 @@
 		/obj/structure/machinery/reagent_analyzer,
 		/obj/structure/machinery/centrifuge,
 		/obj/structure/machinery/autodispenser,
-		/obj/item/reagent_container/hypospray,
 		/obj/structure/machinery/constructable_frame)
 
 /obj/item/reagent_container/glass/Initialize()
@@ -70,6 +69,9 @@
 	update_icon()
 
 /obj/item/reagent_container/glass/afterattack(obj/target, mob/user , flag)
+
+	if(!reagents)
+		create_reagents(volume)
 
 	if(!is_open_container() || !flag)
 		return

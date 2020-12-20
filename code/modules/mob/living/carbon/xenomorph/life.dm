@@ -42,10 +42,12 @@
 		return
 	var/progress_amount = 1
 
-	if(SSxevolution && (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor) || (ticker.game_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
+	var/no_queen_action = (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor)
+
+	if(SSxevolution && (no_queen_action || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
 		progress_amount = SSxevolution.get_evolution_boost_power(hive.hivenumber)
 
-	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor) || (ticker.game_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
+	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && (no_queen_action || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
 		evolution_stored = min(evolution_stored + progress_amount, evolution_threshold)
 		if(evolution_stored >= evolution_threshold - 1)
 			to_chat(src, SPAN_XENODANGER("Your carapace crackles and your tendons strengthen. You are ready to evolve!")) //Makes this bold so the Xeno doesn't miss it
@@ -57,7 +59,7 @@
 /mob/living/carbon/Xenomorph/proc/handle_xeno_fire()
 	if(!on_fire)
 		return
-	
+
 	var/obj/item/clothing/mask/facehugger/F = get_active_hand()
 	var/obj/item/clothing/mask/facehugger/G = get_inactive_hand()
 	if(istype(F))
@@ -67,7 +69,7 @@
 		G.Die()
 		drop_inv_item_on_ground(G)
 	if(!caste || !caste.fire_immune || fire_reagent.fire_penetrating)
-		var/dmg = armor_damage_reduction(config.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks))
+		var/dmg = armor_damage_reduction(GLOB.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks))
 		apply_damage(dmg, BURN)
 
 #undef PASSIVE_BURN_DAM_CALC
@@ -123,7 +125,7 @@
 					Z.warding_new = leader_aura_strength
 				if((leader_current_aura == "all" || leader_current_aura == "recovery") && leader_aura_strength > Z.recovery_new && hivenumber == Z.hivenumber)
 					Z.recovery_new = leader_aura_strength
-	
+
 	if(ignores_pheromones)
 		frenzy_aura = 0
 		warding_aura = 0
@@ -179,7 +181,6 @@
 		ear_deaf = 0 //All this stuff is prob unnecessary
 		ear_damage = 0
 		eye_blind = 0
-		eye_blurry = 0
 
 		if(knocked_out) //If they're down, make sure they are actually down.
 			blinded = 1
@@ -204,6 +205,13 @@
 					apply_damage(-1, HALLOSS)
 
 		if(regular_update)
+			if(eye_blurry)
+				overlay_fullscreen("eye_blurry", /obj/screen/fullscreen/impaired, 5)
+				src.eye_blurry--
+				src.eye_blurry = max(0, src.eye_blurry)
+			else
+				clear_fullscreen("eye_blurry")
+
 			handle_statuses()//natural decrease of stunned, knocked_down, etc...
 			handle_interference()
 
@@ -218,7 +226,7 @@
 					to_chat(usr, SPAN_WARNING("You're about to regurgitate [M]..."))
 					playsound(loc, 'sound/voice/alien_drool1.ogg', 50, 1)
 				var/mob/living/carbon/human/H = M
-				if(world.time > devour_timer || H.stat == DEAD)
+				if(world.time > devour_timer || (H.stat == DEAD && !H.chestburst))
 					regurgitate(H)
 
 			M.acid_damage++
@@ -275,12 +283,15 @@
 			hud_used.healths.icon_state = "health_critical"
 
 	if(hud_used.alien_plasma_display)
-		var/plasma_stacks = (get_plasma_percentage() * 0.01) * HUD_PLASMA_STATES_XENO
-		hud_used.alien_plasma_display.icon_state = "power_display_[Ceiling(plasma_stacks)]"
-		if(plasma_stacks >= HUD_PLASMA_STATES_XENO)
-			hud_used.alien_plasma_display.icon_state = "power_display_full"
-		else if(plasma_stacks <= 0)
+		if(plasma_max == 0)
 			hud_used.alien_plasma_display.icon_state = "power_display_empty"
+		else
+			var/plasma_stacks = (get_plasma_percentage() * 0.01) * HUD_PLASMA_STATES_XENO
+			hud_used.alien_plasma_display.icon_state = "power_display_[Ceiling(plasma_stacks)]"
+			if(plasma_stacks >= HUD_PLASMA_STATES_XENO)
+				hud_used.alien_plasma_display.icon_state = "power_display_full"
+			else if(plasma_stacks <= 0)
+				hud_used.alien_plasma_display.icon_state = "power_display_empty"
 
 	if(hud_used.alien_armor_display)
 		var/armor_stacks = min((get_armor_integrity_percentage() * 0.01) * HUD_ARMOR_STATES_XENO, HUD_ARMOR_STATES_XENO)
@@ -335,8 +346,8 @@ updatehealth()
 						XENO_HEAL_WOUNDS(caste.heal_knocked_out,recoveryActual) //Healing is much slower. Warding pheromones make up for the rest if you're curious
 					else
 						XENO_HEAL_WOUNDS(caste.heal_resting,recoveryActual)
-				else 
-					XENO_HEAL_WOUNDS(caste.heal_standing,recoveryActual)				
+				else
+					XENO_HEAL_WOUNDS(caste.heal_standing,recoveryActual)
 				updatehealth()
 
 			if(armor_integrity < armor_integrity_max && armor_deflection > 0 && world.time > armor_integrity_last_damage_time + XENO_ARMOR_REGEN_DELAY)
@@ -415,10 +426,10 @@ updatehealth()
 	recalculate_move_delay = TRUE
 
 	med_hud_set_health()
-	med_hud_set_armor()
 
 /mob/living/carbon/Xenomorph/proc/handle_luminosity()
 	var/new_luminosity = 0
+	luminosity_total = 0
 	if(caste)
 		new_luminosity += caste.caste_luminosity
 	if(on_fire)
@@ -479,7 +490,7 @@ updatehealth()
 		return TRUE //weeds, yes!
 	if(need_weeds)
 		return FALSE //needs weeds, doesn't have any
-	if(hive && hive.living_xeno_queen && hive.living_xeno_queen.loc.z != MAIN_SHIP_Z_LEVEL && loc.z == MAIN_SHIP_Z_LEVEL)
+	if(hive && hive.living_xeno_queen && !is_mainship_level(hive.living_xeno_queen.loc.z) && is_mainship_level(loc.z))
 		return FALSE //We are on the ship, but the Queen isn't
 	return TRUE //we have off-weed healing, and either we're on Almayer with the Queen, or we're on non-Almayer, or the Queen is dead, good enough!
 

@@ -14,6 +14,7 @@
 /mob/new_player/Initialize()
 	. = ..()
 	GLOB.new_player_list += src
+	GLOB.dead_mob_list -= src
 	if(client)
 		client.view = lobby_view_size
 
@@ -27,15 +28,18 @@
 	set src = usr
 	if(client && client.player_entity)
 		client.player_entity.update_panel_data(null)
-	new_player_panel_proc()
+		new_player_panel_proc()
 
 
 /mob/new_player/proc/new_player_panel_proc(var/refresh = FALSE)
+	if(!client)
+		return
+
 	var/tempnumber = rand(1, 999)
 	var/postfix_text = (client.prefs && client.prefs.xeno_postfix) ? ("-"+client.prefs.xeno_postfix) : ""
 	var/prefix_text = (client.prefs && client.prefs.xeno_prefix) ? client.prefs.xeno_prefix : "XX"
 	var/xeno_text = "[prefix_text]-[tempnumber][postfix_text]"
-	var/round_start = !ticker || !ticker.mode || ticker.current_state <= GAME_STATE_PREGAME
+	var/round_start = !SSticker || !SSticker.mode || SSticker.current_state <= GAME_STATE_PREGAME
 
 	var/output = "<div align='center'>Welcome,"
 	output +="<br><b>[(client.prefs && client.prefs.real_name) ? client.prefs.real_name : client.key]</b>"
@@ -52,8 +56,8 @@
 		output += "<a href='byond://?src=\ref[src];lobby_choice=manifest'>View the Crew Manifest</A><br><br>"
 		output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join'>Join the USCM!</A></p>"
 		output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join_xeno'>Join the Hive!</A></p>"
-		if(ticker.mode.flags_round_type & MODE_PREDATOR)
-			if(ticker.mode.check_predator_late_join(src,0)) output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join_pred'>Join the Hunt!</A></p>"
+		if(SSticker.mode.flags_round_type & MODE_PREDATOR)
+			if(SSticker.mode.check_predator_late_join(src,0)) output += "<p><a href='byond://?src=\ref[src];lobby_choice=late_join_pred'>Join the Hunt!</A></p>"
 
 	output += "<p><a href='byond://?src=\ref[src];lobby_choice=observe'>Observe</A></p>"
 
@@ -69,16 +73,11 @@
 
 	stat("Time:","[worldtime2text()]")
 	stat("Map:", "[map_tag]")
-	if(!ticker)
-		return
 
-	if(ticker.hide_mode)
-		stat("Game Mode:", "Colonial Marines")
-	else if(ticker.hide_mode == 0)
-		stat("Game Mode:", "[master_mode]") // Old setting for showing the game mode
+	stat("Game Mode:", "[GLOB.master_mode]") // Old setting for showing the game mode
 
-	if(ticker.current_state == GAME_STATE_PREGAME)
-		stat("Time To Start:", "[ticker.pregame_timeleft][going ? "" : " (DELAYED)"]")
+	if(SSticker.current_state == GAME_STATE_PREGAME)
+		stat("Time To Start:", "[SSticker.time_left > 0 ? SSticker.GetTimeLeft() : "(DELAYED)"]")
 		stat("Players: [length(GLOB.player_list)]", "Players Ready: [readied_players]")
 		for(var/mob/new_player/player in GLOB.new_player_list)
 			stat("[player.key]", player.ready ? "(Playing)" : "")
@@ -98,14 +97,14 @@
 			return 1
 
 		if("ready")
-			if( (!ticker || ticker.current_state <= GAME_STATE_PREGAME) && !ready) // Make sure we don't ready up after the round has started
+			if( (SSticker.current_state <= GAME_STATE_PREGAME) && !ready) // Make sure we don't ready up after the round has started
 				ready = TRUE
 				readied_players++
 
 			new_player_panel_proc()
 
 		if("unready")
-			if((!ticker || ticker.current_state <= GAME_STATE_PREGAME) && ready) // Make sure we don't ready up after the round has started
+			if((SSticker.current_state <= GAME_STATE_PREGAME) && ready) // Make sure we don't ready up after the round has started
 				ready = FALSE
 				readied_players--
 
@@ -151,16 +150,16 @@
 
 		if("late_join")
 
-			if(!ticker || ticker.current_state != GAME_STATE_PLAYING || !ticker.mode)
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
 				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
 				return
 
-			if(ticker.mode.flags_round_type	& MODE_NO_LATEJOIN)
-				to_chat(src, SPAN_WARNING("Sorry, you cannot late join during [ticker.mode.name]. You have to start at the beginning of the round. You may observe or try to join as an alien, if possible."))
+			if(SSticker.mode.flags_round_type	& MODE_NO_LATEJOIN)
+				to_chat(src, SPAN_WARNING("Sorry, you cannot late join during [SSticker.mode.name]. You have to start at the beginning of the round. You may observe or try to join as an alien, if possible."))
 				return
 
 			if(client.prefs.species != "Human")
-				if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
+				if(!is_alien_whitelisted(src, client.prefs.species) && CONFIG_GET(flag/usealienwhitelist))
 					to_chat(src, "You are currently not whitelisted to play [client.prefs.species].")
 					return
 
@@ -172,26 +171,26 @@
 			LateChoices()
 
 		if("late_join_xeno")
-			if(!ticker || ticker.current_state != GAME_STATE_PLAYING || !ticker.mode)
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
 				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
 				return
 
 			if(alert(src,"Are you sure you want to attempt joining as a xenomorph?","Confirmation","Yes","No") == "Yes" )
-				if(ticker.mode.check_xeno_late_join(src))
-					var/mob/new_xeno = ticker.mode.attempt_to_join_as_xeno(src, 0)
+				if(SSticker.mode.check_xeno_late_join(src))
+					var/mob/new_xeno = SSticker.mode.attempt_to_join_as_xeno(src, 0)
 					if(new_xeno && !istype(new_xeno, /mob/living/carbon/Xenomorph/Larva))
-						ticker.mode.transfer_xeno(src, new_xeno)
+						SSticker.mode.transfer_xeno(src, new_xeno)
 						close_spawn_windows()
 
 		if("late_join_pred")
-			if(!ticker || ticker.current_state != GAME_STATE_PLAYING || !ticker.mode)
+			if(SSticker.current_state != GAME_STATE_PLAYING || !SSticker.mode)
 				to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
 				return
 
 			if(alert(src,"Are you sure you want to attempt joining as a predator?","Confirmation","Yes","No") == "Yes" )
-				if(ticker.mode.check_predator_late_join(src,0))
+				if(SSticker.mode.check_predator_late_join(src,0))
 					close_spawn_windows()
-					ticker.mode.attempt_to_join_as_predator(src)
+					SSticker.mode.attempt_to_join_as_predator(src)
 				else
 					to_chat(src, SPAN_WARNING("You are no longer able to join as predator."))
 					new_player_panel()
@@ -206,7 +205,7 @@
 				return
 
 			if(client.prefs.species != "Human")
-				if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
+				if(!is_alien_whitelisted(src, client.prefs.species) && CONFIG_GET(flag/usealienwhitelist))
 					to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
 					return 0
 
@@ -226,7 +225,7 @@
 /mob/new_player/proc/AttemptLateSpawn(rank)
 	if (src != usr)
 		return
-	if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
+	if(SSticker.current_state != GAME_STATE_PLAYING)
 		to_chat(usr, SPAN_WARNING("The round is either not ready, or has already finished!"))
 		return
 	if(!enter_allowed)
@@ -241,9 +240,9 @@
 
 	var/turf/T
 	if(map_tag != MAP_WHISKEY_OUTPOST)
-		T = pick(latejoin)
+		T = get_turf(pick(GLOB.latejoin))
 	else if (map_tag == MAP_WHISKEY_OUTPOST)
-		T = pick(latewhiskey)
+		T = get_turf(pick(GLOB.latewhiskey))
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
 	RoleAuthority.equip_role(character, RoleAuthority.roles_for_mode[rank], T)
@@ -252,16 +251,16 @@
 	GLOB.data_core.manifest_inject(character)
 	if(map_tag == MAP_WHISKEY_OUTPOST)
 		call(/datum/game_mode/whiskey_outpost/proc/spawn_player)(character)
-	ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-	ticker.mode.latejoin_tally++
+	SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
+	SSticker.mode.latejoin_tally++
 
 	for(var/datum/squad/sq in RoleAuthority.squads)
 		if(sq)
 			sq.max_engineers = engi_slot_formula(GLOB.clients.len)
 			sq.max_medics = medic_slot_formula(GLOB.clients.len)
 
-	if(ticker.mode.latejoin_larva_drop && ticker.mode.latejoin_tally >= ticker.mode.latejoin_larva_drop)
-		ticker.mode.latejoin_tally -= ticker.mode.latejoin_larva_drop
+	if(SSticker.mode.latejoin_larva_drop && SSticker.mode.latejoin_tally >= SSticker.mode.latejoin_larva_drop)
+		SSticker.mode.latejoin_tally -= SSticker.mode.latejoin_larva_drop
 		for(var/datum/hive_status/hs in hive_datum)
 			if (hs.living_xeno_queen)
 				hs.stored_larva++
@@ -358,12 +357,7 @@
 
 	new_character.lastarea = get_area(loc)
 
-	if(ticker.random_players)
-		new_character.gender = pick(MALE, FEMALE)
-		client.prefs.real_name = random_name(new_character.gender)
-		client.prefs.randomize_appearance(new_character)
-	else
-		client.prefs.copy_all_to(new_character)
+	client.prefs.copy_all_to(new_character)
 
 	if (client.prefs.be_random_body)
 		var/datum/preferences/TP = new()
@@ -420,7 +414,7 @@
 
 /mob/new_player/proc/is_species_whitelisted(datum/species/S)
 	if(!S) return 1
-	return is_alien_whitelisted(src, S.name) || !config.usealienwhitelist || !(S.flags & IS_WHITELISTED)
+	return is_alien_whitelisted(src, S.name) || !CONFIG_GET(flag/usealienwhitelist) || !(S.flags & IS_WHITELISTED)
 
 /mob/new_player/get_species()
 	var/datum/species/chosen_species
@@ -445,5 +439,5 @@
 /mob/new_player/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null)
 	return
 
-/mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0, var/command, var/vname)
+/mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0)
 	return

@@ -21,7 +21,7 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 20
 	matter = list("metal" = 400)
-	
+
 
 /obj/item/device/locator/attack_self(mob/user as mob)
 	user.set_interaction(src)
@@ -47,7 +47,7 @@
 	if (usr.stat || usr.is_mob_restrained())
 		return
 	var/turf/current_location = get_turf(usr)//What turf is the user on?
-	if(!current_location||current_location.z==2)//If turf was not found or they're on z level 2.
+	if(!current_location || is_admin_level(current_location.z))//If turf was not found or they're on z level 2.
 		to_chat(usr, "The [src] is malfunctioning.")
 		return
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
@@ -59,7 +59,8 @@
 			if (sr)
 				src.temp += "<B>Located Beacons:</B><BR>"
 
-				for(var/obj/item/device/radio/beacon/W in item_list)
+				for(var/i in GLOB.radio_beacon_list)
+					var/obj/item/device/radio/beacon/W = i
 					if (W.frequency == src.frequency)
 						var/turf/tr = get_turf(W)
 						if (tr.z == sr.z && tr)
@@ -77,7 +78,8 @@
 							src.temp += "[W.code]-[dir2text(get_dir(sr, tr))]-[direct]<BR>"
 
 				src.temp += "<B>Extranneous Signals:</B><BR>"
-				for (var/obj/item/implant/tracking/W in item_list)
+				for (var/i in GLOB.tracking_implant_list)
+					var/obj/item/implant/tracking/W = i
 					if (!W.implanted || !(istype(W.loc,/obj/limb) || ismob(W.loc)))
 						continue
 					else
@@ -131,11 +133,11 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 5
 	matter = list("metal" = 10000)
-	
+
 
 /obj/item/device/hand_tele/attack_self(mob/user as mob)
 	var/turf/current_location = get_turf(user)//What turf is the user on?
-	if(!current_location||current_location.z==2||current_location.z>=7)//If turf was not found or they're on z level 2 or >7 which does not currently exist.
+	if(!current_location || is_admin_level(current_location.z))//If turf was not found or they're on z level 2
 		to_chat(user, SPAN_NOTICE("\The [src] is malfunctioning."))
 		return
 	var/list/L = list(  )
@@ -157,8 +159,10 @@
 	if ((user.get_active_hand() != src || user.stat || user.is_mob_restrained()))
 		return
 	var/count = 0	//num of portals from this teleport in the world
-	for(var/obj/effect/portal/PO in effect_list)
-		if(PO.creator == src)	count++
+	for(var/i in GLOB.portal_list)
+		var/obj/effect/portal/PO = i
+		if(PO.creator == src)
+			count++
 	if(count >= 3)
 		user.show_message(SPAN_NOTICE("\The [src] is recharging!"))
 		return

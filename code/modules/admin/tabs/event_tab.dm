@@ -1,28 +1,44 @@
 /client/proc/cmd_admin_change_custom_event()
-	set name = "A: Setup Event Text"
+	set name = "A: Setup Event Info"
 	set category = "Event"
 
 	if(!admin_holder)
-		to_chat(src, "Only administrators may use this command.")
+		to_chat(usr, "Only administrators may use this command.")
 		return
 
-	var/input = input(usr, "Enter the description of the custom event. Be descriptive. To cancel the event, make this blank or hit cancel.", "Custom Event", custom_event_msg) as message|null
-	if(!input)
+	if(!LAZYLEN(GLOB.custom_event_info_list))
+		to_chat(usr, "custom_event_info_list is not initialized, tell a dev.")
 		return
 
-	if(input == "")
-		custom_event_msg = null
-		message_staff("[key_name_admin(usr)] has cleared the custom event text.")
+	var/list/temp_list = list()
+
+	for(var/T in GLOB.custom_event_info_list)
+		var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[T]
+		temp_list["[CEI.msg ? "(x) [CEI.faction]" : CEI.faction]"] = CEI.faction
+
+	var/faction = input(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", "Global") as null|anything in temp_list
+	if(!faction)
 		return
 
-	message_staff("[key_name_admin(usr)] has changed the custom event text.")
+	faction = temp_list[faction]
 
-	custom_event_msg = input
+	if(!GLOB.custom_event_info_list[faction])
+		to_chat(usr, "Error has occured, [faction] category is not found.")
+		return
 
-	to_world("<h1 class='alert'>Custom Event</h1>")
-	to_world("<h2 class='alert'>A custom event is starting. OOC Info:</h2>")
-	to_world(SPAN_ALERT("[html_encode(custom_event_msg)]"))
-	to_world("<br>")
+	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[faction]
+
+	var/input = input(usr, "Enter the custom event message for \"[faction]\" category. Be descriptive. \nTo remove the event message, remove text and confirm.", "[faction] Event Message", CEI.msg) as message|null
+
+	if(input == "" || !input)
+		CEI.msg = ""
+		message_staff("[key_name_admin(usr)] has removed the event message for \"[faction]\" category.")
+		return
+
+	CEI.msg = html_encode(input)
+	message_staff("[key_name_admin(usr)] has changed the event message for \"[faction]\" category.")
+
+	CEI.handle_event_info_update(faction)
 
 /client/proc/change_security_level()
 	if(!check_rights(R_ADMIN))
@@ -36,13 +52,13 @@
 	if(!admin_holder || !config)
 		return
 
-	if(config.remove_gun_restrictions)
+	if(CONFIG_GET(flag/remove_gun_restrictions))
 		to_chat(src, "<b>Enabled gun restrictions.</b>")
 		message_staff("Admin [key_name_admin(usr)] has enabled WY gun restrictions.")
 	else
 		to_chat(src, "<b>Disabled gun restrictions.</b>")
 		message_staff("Admin [key_name_admin(usr)] has disabled WY gun restrictions.")
-	config.remove_gun_restrictions = !config.remove_gun_restrictions
+	CONFIG_SET(flag/remove_gun_restrictions, !CONFIG_GET(flag/remove_gun_restrictions))
 
 /client/proc/togglebuildmodeself()
 	set name = "B: Buildmode"
@@ -118,7 +134,7 @@
 	set desc = "Force Launch the ERT Shuttle."
 	set category = "Event"
 
-	if (!ticker  || !ticker.mode)
+	if (!SSticker.mode)
 		return
 	if(!check_rights(R_ADMIN))
 		return
@@ -170,7 +186,7 @@
 	set desc = "Call a distress beacon. This should not be done if the shuttle's already been called."
 	set category = "Event"
 
-	if (!ticker  || !ticker.mode)
+	if (!SSticker.mode)
 		return
 
 	if(!check_rights(R_FUN)) // Seems more like an event thing than an admin thing
@@ -179,7 +195,7 @@
 	var/list/list_of_calls = list()
 	var/list/assoc_list = list()
 
-	for(var/datum/emergency_call/L in ticker.mode.all_calls)
+	for(var/datum/emergency_call/L in SSticker.mode.all_calls)
 		if(L && L.name != "name")
 			list_of_calls += L.name
 			assoc_list += list(L.name = L)
@@ -194,7 +210,7 @@
 
 	var/datum/emergency_call/chosen_ert
 	if(choice == "Randomize")
-		chosen_ert = ticker.mode.get_random_call()
+		chosen_ert = SSticker.mode.get_random_call()
 	else
 		var/datum/emergency_call/em_call = assoc_list[choice]
 		chosen_ert = new em_call.type()
@@ -216,7 +232,7 @@
 	set desc = "Trigger self destruct countdown. This should not be done if the self destruct has already been called."
 	set category = "Event"
 
-	if(!ticker || !ticker.mode || !check_rights(R_ADMIN) || get_security_level() == "delta")
+	if(!SSticker.mode || !check_rights(R_ADMIN) || get_security_level() == "delta")
 		return
 
 	if(alert(src, "Are you sure you want to do this?", "Confirmation", "Yes", "No") == "No")
@@ -285,7 +301,7 @@
 		random_names = TRUE
 	if (alert(src, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") == "No")
 		return
-	for(var/mob/living/carbon/human/H in mob_list)
+	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(ismonkey(H))
 			continue
 		H.set_species(pick("Monkey", "Yiren", "Stok", "Farwa", "Neaera"))
@@ -536,7 +552,7 @@
 			for(var/mob/M in view())
 				heard_midi++
 		if("Individual")
-			var/mob/target = input("Select a mob to play sound to:", "List of All Mobs") as null|anything in mob_list
+			var/mob/target = input("Select a mob to play sound to:", "List of All Mobs") as null|anything in GLOB.mob_list
 			if(istype(target,/mob/))
 				if(!target.client)
 					return
@@ -713,13 +729,13 @@
 	return
 
 /datum/admins/proc/clear_mutineers()
-	if(!check_rights(R_SPAWN))
+	if(!check_rights(R_MOD))
 		return
 
 	if(alert(usr, "Are you sure you want to change all mutineers back to normal?", "Confirmation", "Yes", "No") == "No")
 		return
 
-	for(var/mob/living/carbon/human/H in human_mob_list)
+	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(H && H.faction == FACTION_MUTINEER)
 			H.faction = FACTION_MARINE
 			H.hud_set_squad()

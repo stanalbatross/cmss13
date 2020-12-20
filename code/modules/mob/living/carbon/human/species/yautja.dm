@@ -1,11 +1,10 @@
 /datum/species/yautja
 	name = "Yautja"
 	name_plural = "Yautja"
-	icobase_source = "species_hunter"
-	deform_source = "species_hunter"
 	brute_mod = 0.33 //Beefy!
 	burn_mod = 0.65
 	reagent_tag = IS_YAUTJA
+	mob_flags = KNOWS_TECHNOLOGY
 	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_SCAN|NO_POISON
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
@@ -63,6 +62,17 @@
 		WEAR_IN_BACK\
 	)
 
+/datum/species/yautja/New()
+	. = ..()
+	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/setup_yautja_icons)
+
+/datum/species/yautja/proc/setup_yautja_icons()
+	SIGNAL_HANDLER
+
+	icobase_source = CONFIG_GET(string/species_hunter)
+	deform_source = CONFIG_GET(string/species_hunter)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/setup_yautja_icons)
+
 /datum/species/yautja/larva_impregnated(var/obj/item/alien_embryo/embryo)
 	var/datum/hive_status/hive = hive_datum[embryo.hivenumber]
 
@@ -81,19 +91,19 @@
 
 /datum/species/yautja/handle_death(var/mob/living/carbon/human/H, gibbed)
 	if(gibbed)
-		yautja_mob_list -= H
+		GLOB.yautja_mob_list -= H
 
 	if(H.yautja_hunted_prey)
 		H.yautja_hunted_prey = null
 
 	// Notify all yautja so they start the gear recovery
-	message_all_yautja("[H] has died at \the [get_area(H).name].")
+	message_all_yautja("[H] has died at \the [get_area_name(H)].")
 
 /datum/species/yautja/post_species_loss(mob/living/carbon/human/H)
 	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
 	A.add_to_hud(H)
 	H.blood_type = pick("A+","A-","B+","B-","O-","O+","AB+","AB-")
-	yautja_mob_list -= H
+	GLOB.yautja_mob_list -= H
 	for(var/obj/limb/L in H.limbs)
 		switch(L.name)
 			if("groin","chest")
@@ -111,11 +121,11 @@
 		L.time_to_knit = -1
 
 /datum/species/yautja/handle_post_spawn(var/mob/living/carbon/human/H)
-	living_human_list -= H
+	GLOB.alive_human_list -= H
 	H.universal_understand = 1
 
 	H.blood_type = "Y*"
-	yautja_mob_list += H
+	GLOB.yautja_mob_list += H
 	for(var/obj/limb/L in H.limbs)
 		switch(L.name)
 			if("groin","chest")

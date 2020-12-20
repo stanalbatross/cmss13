@@ -39,11 +39,14 @@ var/global/list/ahelp_msgs = list()
 	if(selected_type == "MentorHelp")
 		if(current_mhelp && current_mhelp.open)
 			if(alert("You already have a mentorhelp thread open, would you like to close it?", "Mentor Help", "Yes", "No") == "Yes")
-				current_mhelp.close()
+				current_mhelp.close(src)
 			return
 		current_mhelp = new(src)
 		current_mhelp.input_message(src)
-
+		if(!current_mhelp.ready)
+			// ... no question when opening ? nevermind then. outta here.
+			qdel(current_mhelp)
+			current_mhelp = null
 		return
 
 	var/selected_upper = uppertext(selected_type)
@@ -67,7 +70,7 @@ var/global/list/ahelp_msgs = list()
 	var/list/surnames = list()
 	var/list/forenames = list()
 	var/list/ckeys = list()
-	for(var/mob/M in mob_list)
+	for(var/mob/M in GLOB.mob_list)
 		var/list/indexing = list(M.real_name, M.name)
 		if(M.mind)	indexing += M.mind.name
 

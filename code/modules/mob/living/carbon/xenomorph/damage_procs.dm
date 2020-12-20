@@ -15,7 +15,7 @@
 
 	var/damage = severity
 
-	var/cfg = armor_deflection==0 ? config.xeno_explosive_small : config.xeno_explosive
+	var/cfg = armor_deflection==0 ? GLOB.xeno_explosive_small : GLOB.xeno_explosive
 	var/total_explosive_resistance = caste != null ? caste.xeno_explosion_resistance + armor_explosive_buff : armor_explosive_buff
 	damage = armor_damage_reduction(cfg, damage, total_explosive_resistance, pierce, 1, 0.5, armor_integrity)
 	var/armor_punch = armor_break_calculation(cfg, damage, total_explosive_resistance, pierce, 1, 0.5, armor_integrity)
@@ -44,7 +44,7 @@
 		powerfactor_value = min(powerfactor_value,20)
 		if(powerfactor_value > 0 && small_explosives_stun)
 			KnockOut(powerfactor_value/5)
-			if(mob_size != MOB_SIZE_BIG)
+			if(mob_size < MOB_SIZE_BIG)
 				Slow(powerfactor_value)
 				Superslow(powerfactor_value/2)
 			else
@@ -53,7 +53,7 @@
 		else if(powerfactor_value > 10)
 			powerfactor_value /= 5
 			KnockOut(powerfactor_value/5)
-			if(mob_size != MOB_SIZE_BIG)
+			if(mob_size < MOB_SIZE_BIG)
 				Slow(powerfactor_value)
 				Superslow(powerfactor_value/2)
 			else
@@ -63,21 +63,25 @@
 	if(damage <= 0)
 		return ..(damage, armour_type, damage_type, def_zone)
 
-	var/armour_config = config.xeno_ranged
+	var/armour_config = GLOB.xeno_ranged
 	if(armour_type == ARMOR_MELEE)
-		armour_config = config.xeno_melee
+		armour_config = GLOB.xeno_melee
 
-	var/modified_damage = armor_damage_reduction(armour_config, damage, null, penetration, armour_break_pr_pen, armour_break_flat)
-	var/armor_punch = armor_break_calculation(armour_config, damage, null, penetration, armour_break_pr_pen, armour_break_flat, armor_integrity)
+	var/modified_damage = armor_damage_reduction(armour_config, damage, armor_deflection + armor_deflection_buff, penetration, armour_break_pr_pen, armour_break_flat)
+	var/armor_punch = armor_break_calculation(armour_config, damage, armor_deflection + armor_deflection_buff, penetration, armour_break_pr_pen, armour_break_flat, armor_integrity)
 	apply_armorbreak(armor_punch)
 
 	apply_damage(modified_damage, damage_type)
 
 /mob/living/carbon/Xenomorph/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, used_weapon = null, sharp = 0, edge = 0, force = FALSE)
-	if(!damage) return
+	if(!damage)
+		return
 
 	if(SEND_SIGNAL(src, COMSIG_XENO_TAKE_DAMAGE, damage, damagetype) & COMPONENT_BLOCK_DAMAGE) return
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/dev
 	//We still want to check for blood splash before we get to the damage application.
 	var/chancemod = 0
 	if(used_weapon && sharp)
@@ -90,7 +94,8 @@
 	if(damage > 12) //Light damage won't splash.
 		check_blood_splash(damage, damagetype, chancemod)
 
-	if(stat == DEAD) return
+	if(damage > 0 && stat == DEAD)
+		return
 
 	if(xeno_shields.len != 0 && damage > 0)
 		for(var/datum/xeno_shield/XS in xeno_shields)
@@ -115,7 +120,7 @@
 	updatehealth()
 
 	last_hit_time = world.time
-	
+
 	return 1
 
 #define XENO_ARMOR_BREAK_PASS_TIME SECONDS_1 / 2
@@ -123,11 +128,12 @@
 
 /mob/living/carbon/Xenomorph/var/armor_break_to_apply = 0
 /mob/living/carbon/Xenomorph/proc/apply_armorbreak(armorbreak = 0)
-	if(!armorbreak || !caste) return
+	if(GLOB.xeno_general.armor_ignore_integrity)
+		return FALSE
 
 	if(stat == DEAD) return
 
-	if(caste.armor_hardiness_mult <= 0 || armor_deflection<=0)
+	if(armor_deflection<=0)
 		return
 
 	//Immunity check
@@ -140,7 +146,7 @@
 		armor_break_to_apply = 0
 		post_apply_armorbreak()
 
-	var/delay = ((armor_integrity - armorbreak / caste.armor_hardiness_mult)/25)*XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME
+	var/delay = ((armor_integrity - armorbreak / 10)/25)*XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME
 	armor_break_to_apply += armorbreak
 	armor_integrity_immunity_time += delay
 
@@ -156,7 +162,7 @@
 	if(warding_aura && armor_break_to_apply > 0) //Damage to armor reduction
 		armor_break_to_apply = round(armor_break_to_apply * ((100 - (warding_aura * 15)) / 100))
 	if(caste)
-		armor_integrity -= armor_break_to_apply / caste.armor_hardiness_mult
+		armor_integrity -= armor_break_to_apply
 	if(armor_integrity < 0)
 		armor_integrity = 0
 	armor_break_to_apply = 0

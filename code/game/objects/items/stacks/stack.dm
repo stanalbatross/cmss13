@@ -111,9 +111,12 @@
 			recipes_list = srl.recipes
 		var/datum/stack_recipe/R = recipes_list[text2num(href_list["make"])]
 		var/multiplier = text2num(href_list["multiplier"])
-		if(!multiplier || (multiplier <= 0)) //href exploit protection
+		if(!isnum(multiplier))	
 			return
-		if(R.skill_req)
+		multiplier = round(multiplier)
+		if(multiplier < 1)
+			return  //href exploit protection
+		if(R.skill_req) 
 			if(ishuman(usr) && !skillcheck(usr, SKILL_CONSTRUCTION, R.skill_req))
 				to_chat(usr, SPAN_WARNING("You are not trained to build this..."))
 				return
@@ -129,8 +132,13 @@
 
 		if(R.on_floor && istype(usr.loc, /turf/open))
 			var/turf/open/OT = usr.loc
+			var/obj/structure/blocker/anti_cade/AC = locate(/obj/structure/blocker/anti_cade) in usr.loc // for M2C HMG, look at smartgun_mount.dm
 			if(!OT.allow_construction)
-				to_chat(usr, SPAN_WARNING("\The [R.title] must be constructed on a proper surface!"))
+				to_chat(usr, SPAN_WARNING("The [R.title] must be constructed on a proper surface!"))
+				return
+				
+			if(AC)
+				to_chat(usr, SPAN_WARNING("The [R.title] cannot be built here!"))  //might cause some friendly fire regarding other items like barbed wire, shouldn't be a problem?
 				return
 
 		if(R.time)

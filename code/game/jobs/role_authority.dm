@@ -97,9 +97,9 @@ var/global/marines_assigned = 0
 			continue
 
 		roles_by_path[J.type] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT) 
+		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
 			roles_by_name[J.title] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_MODE) 
+		if(J.flags_startup_parameters & ROLE_ADD_TO_MODE)
 			roles_for_mode[J.title] = J
 
 	//TODO Come up with some dynamic method of doing this.
@@ -183,10 +183,10 @@ var/global/marines_assigned = 0
 /datum/authority/branch/role/proc/setup_candidates_and_roles(var/list/overwritten_roles_for_mode)
 	//===============================================================\\
 	//PART I: Initializing starting lists and such.
-	if(!roles_for_mode && !overwritten_roles_for_mode || !length(roles_for_mode) && !length(overwritten_roles_for_mode)) 
+	if(!roles_for_mode && !overwritten_roles_for_mode || !length(roles_for_mode) && !length(overwritten_roles_for_mode))
 		return //Can't start if this doesn't exist.
 
-	var/datum/game_mode/G = ticker.mode
+	var/datum/game_mode/G = SSticker.mode
 	switch(G.role_instruction)
 		if(1) //Replacing the entire list.
 			roles_for_mode = new
@@ -249,14 +249,14 @@ var/global/marines_assigned = 0
 		SJ.set_spawn_positions(marines_assigned)
 
 	if(prob(CHANCE_OF_PRED_ROUND))
-		ticker?.mode?.flags_round_type |= MODE_PREDATOR
+		SSticker?.mode?.flags_round_type |= MODE_PREDATOR
 		// Set predators starting amount based on marines assigned
 		var/datum/job/PJ = temp_roles_for_mode[JOB_PREDATOR]
 		if(istype(PJ))
 			PJ.set_spawn_positions(marines_assigned)
 
 	var/list/roles_left = list()
-	for(var/priority in HIGH_PRIORITY to LOW_PRIORITY)		
+	for(var/priority in HIGH_PRIORITY to LOW_PRIORITY)
 		// Assigning xenos first.
 		assign_initial_roles(priority, temp_roles_for_mode & ROLES_XENO)
 		// Assigning special roles second. (survivor, predator)
@@ -269,13 +269,13 @@ var/global/marines_assigned = 0
 
 	for(var/mob/new_player/M in unassigned_players)
 		switch(M.client.prefs.alternate_option)
-			if(GET_RANDOM_JOB) 	
+			if(GET_RANDOM_JOB)
 				roles_left = assign_random_role(M, roles_left) //We want to keep the list between assignments.
-			if(BE_MARINE)	
+			if(BE_MARINE)
 				assign_role(M, temp_roles_for_mode[JOB_SQUAD_MARINE]) //Should always be available, in all game modes, as a candidate. Even if it may not be a marine.
 			if(BE_XENOMORPH)
 				assign_role(M, temp_roles_for_mode[JOB_XENOMORPH])
-			if(RETURN_TO_LOBBY) 
+			if(RETURN_TO_LOBBY)
 				M.ready = 0
 		unassigned_players -= M
 
@@ -287,14 +287,14 @@ var/global/marines_assigned = 0
 
 	// Now we take spare unfilled xeno slots and make them larva
 	var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
-	if(istype(hive))
+	if(istype(hive) && istype(XJ))
 		hive.stored_larva += max(0, (XJ.total_positions - XJ.current_positions))
 
 	/*===============================================================*/
 
 /datum/authority/branch/role/proc/assign_to_xenomorph(var/mob/M)
 	var/datum/mind/P = M.mind
-	var/datum/game_mode/G = ticker.mode
+	var/datum/game_mode/G = SSticker.mode
 	var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
 	// if we don't have at least one thing - abort
 	if(!P || !G || !hive)
@@ -348,19 +348,19 @@ var/global/marines_assigned = 0
 				J.fake_positions++
 				people_assigned++
 				fake_assigned_players -= NP
-					
+
 				if(J.fake_positions >= J.spawn_positions)
 					roles_to_iterate -= job //Remove the position, since we no longer need it.
 					break //Maximum position is reached?
 
-			if(!length(fake_assigned_players)) 
+			if(!length(fake_assigned_players))
 				break //No players left to assign? Break.
 
 	return people_assigned
 
 /datum/authority/branch/role/proc/assign_random_role(mob/new_player/M, list/roles_to_iterate) //In case we want to pass on a list.
 	. = roles_to_iterate
-	if(roles_to_iterate.len)
+	if(length(roles_to_iterate))
 		var/datum/job/J
 		var/i = 0
 		var/j
@@ -492,69 +492,63 @@ var/global/marines_assigned = 0
 	if(late_join)
 		M.loc = late_join //If they late joined, we passed on the location from the parent proc.
 	else //If they didn't, we need to find a suitable spawn location for them.
-		var/i
-		var/obj/effect/landmark/L //To iterate.
-		var/obj/effect/landmark/S //Starting mark.
-		for(i in landmarks_list)
-			L = i
-			if(L && L.name == J.title && !locate(/mob/living) in L.loc)
-				S = L
-				break
-		if(!S)
-			S = locate("start*[J.title]") //Old type spawn.
-		if(istype(S) && istype(S.loc, /turf))
-			M.loc = S.loc
+		if(!length(GLOB.spawns_by_job[J.type]))
+			log_debug("Failed to find a spawn for [J.type]")
+			return FALSE
+		M.forceMove(get_turf(pick(GLOB.spawns_by_job[J.type])))
 
-	if(ishuman(M))
-		var/mob/living/carbon/H = M
+	. = TRUE
 
-		H.job = J.title //TODO Why is this a mob variable at all?
+	if(!ishuman(M))
+		return
 
-		var/datum/money_account/A
+	var/mob/living/carbon/H = M
 
-		//Give them an account in the database.
-		if(!(J.flags_startup_parameters & ROLE_NO_ACCOUNT))
-			A = create_account(H.real_name, rand(50,500)*10, null)
-			if(H.mind)
-				var/remembered_info = ""
-				remembered_info += "<b>Your account number is:</b> #[A.account_number]<br>"
-				remembered_info += "<b>Your account pin is:</b> [A.remote_access_pin]<br>"
-				remembered_info += "<b>Your account funds are:</b> $[A.money]<br>"
+	H.job = J.title //TODO Why is this a mob variable at all?
 
-				if(A.transaction_log.len)
-					var/datum/transaction/T = A.transaction_log[1]
-					remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
-				H.mind.store_memory(remembered_info)
-				H.mind.initial_account = A
+	var/datum/money_account/A
 
-		var/job_whitelist = J.title
-		var/whitelist_status = J.get_whitelist_status(roles_whitelist, H.client)
+	//Give them an account in the database.
+	if(!(J.flags_startup_parameters & ROLE_NO_ACCOUNT))
+		A = create_account(H.real_name, rand(50,500)*10, null)
+		if(H.mind)
+			var/remembered_info = ""
+			remembered_info += "<b>Your account number is:</b> #[A.account_number]<br>"
+			remembered_info += "<b>Your account pin is:</b> [A.remote_access_pin]<br>"
+			remembered_info += "<b>Your account funds are:</b> $[A.money]<br>"
 
-		if(whitelist_status)
-			job_whitelist = "[J.title][whitelist_status]"
+			if(A.transaction_log.len)
+				var/datum/transaction/T = A.transaction_log[1]
+				remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
+			H.mind.store_memory(remembered_info)
+			H.mind.initial_account = A
 
-		if(J.gear_preset_whitelist[job_whitelist])
-			arm_equipment(H, J.gear_preset_whitelist[job_whitelist], FALSE, TRUE)
-			J.announce_entry_message(H, A, whitelist_status) //Tell them their spawn info.
-			J.generate_entry_conditions(H, whitelist_status) //Do any other thing that relates to their spawn.
-		else
-			arm_equipment(H, J.gear_preset, FALSE, TRUE) //After we move them, we want to equip anything else they should have.
-			J.announce_entry_message(H, A) //Tell them their spawn info.
-			J.generate_entry_conditions(H) //Do any other thing that relates to their spawn.
+	var/job_whitelist = J.title
+	var/whitelist_status = J.get_whitelist_status(roles_whitelist, H.client)
 
-		if(J.flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
-			randomize_squad(H)
+	if(whitelist_status)
+		job_whitelist = "[J.title][whitelist_status]"
 
-		if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
-			var/datum/game_mode/whiskey_outpost/WO = ticker.mode
-			WO.self_set_headset(H)
+	if(J.gear_preset_whitelist[job_whitelist])
+		arm_equipment(H, J.gear_preset_whitelist[job_whitelist], FALSE, TRUE)
+		J.announce_entry_message(H, A, whitelist_status) //Tell them their spawn info.
+		J.generate_entry_conditions(H, whitelist_status) //Do any other thing that relates to their spawn.
+	else
+		arm_equipment(H, J.gear_preset, FALSE, TRUE) //After we move them, we want to equip anything else they should have.
+		J.announce_entry_message(H, A) //Tell them their spawn info.
+		J.generate_entry_conditions(H) //Do any other thing that relates to their spawn.
 
-		H.sec_hud_set_ID()
-		H.hud_set_squad()
+	if(J.flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
+		randomize_squad(H)
 
-		SSround_recording.recorder.track_player(H)
+	if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
+		var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
+		WO.self_set_headset(H)
 
-	return 1
+	H.sec_hud_set_ID()
+	H.hud_set_squad()
+
+	SSround_recording.recorder.track_player(H)
 
 //Find which squad has the least population. If all 4 squads are equal it should just use a random one
 /datum/authority/branch/role/proc/get_lowest_squad(mob/living/carbon/human/H)
@@ -733,7 +727,7 @@ var/global/marines_assigned = 0
 /proc/get_desired_status(var/desired_status, var/status_limit)
 	var/found_desired = FALSE
 	var/found_limit = FALSE
-	
+
 	for(var/status in whitelist_hierarchy)
 		if(status == desired_status)
 			found_desired = TRUE

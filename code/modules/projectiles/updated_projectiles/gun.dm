@@ -112,6 +112,7 @@
 	var/list/starting_attachment_types = null //What attachments this gun starts with THAT CAN BE REMOVED. Important to avoid nuking the attachments on restocking! Added on New()
 
 	var/flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	var/gun_category //Only guns of the same category can be fired together while dualwielding.
 
 	var/base_gun_icon //the default gun icon_state. change to reskin the gun
 	var/has_empty_icon = TRUE // whether gun has icon state of (base_gun_icon)_e
@@ -132,8 +133,8 @@
 				//					\\
 //----------------------------------------------------------
 
-/obj/item/weapon/gun/New(loc, spawn_empty) //You can pass on spawn_empty to make the sure the gun has no bullets or mag or anything when created.
-	..()					//This only affects guns you can get from vendors for now. Special guns spawn with their own things regardless.
+/obj/item/weapon/gun/Initialize(mapload, spawn_empty) //You can pass on spawn_empty to make the sure the gun has no bullets or mag or anything when created.
+	. = ..()					//This only affects guns you can get from vendors for now. Special guns spawn with their own things regardless.
 	base_gun_icon = icon_state
 	attachable_overlays = list("muzzle" = null, "rail" = null, "under" = null, "stock" = null, "mag" = null, "special" = null)
 	item_state_slots = list("back" = item_state, "j_store" = item_state)
@@ -152,6 +153,7 @@
 	update_force_list() //This gives the gun some unique attack verbs for attacking.
 	handle_starting_attachment()
 	handle_random_attachments(random_spawn_chance)
+	GLOB.gun_list += src
 
 
 /obj/item/weapon/gun/proc/set_gun_attachment_offsets()
@@ -232,7 +234,7 @@
 	var/attachmentchoice
 
 	if(prob(randchance) && !attachments["rail"]) // Rail
-		attachmentchoice = safepick(random_spawn_rail)
+		attachmentchoice = SAFEPICK(random_spawn_rail)
 		if(attachmentchoice)
 			var/obj/item/attachable/R = new attachmentchoice(src)
 			R.Attach(src)
@@ -240,7 +242,7 @@
 			attachmentchoice = FALSE
 
 	if(prob(randchance) && !attachments["muzzle"]) // Muzzle
-		attachmentchoice = safepick(random_spawn_muzzle)
+		attachmentchoice = SAFEPICK(random_spawn_muzzle)
 		if(attachmentchoice)
 			var/obj/item/attachable/M = new attachmentchoice(src)
 			M.Attach(src)
@@ -248,7 +250,7 @@
 			attachmentchoice = FALSE
 
 	if(prob(randchance) && !attachments["under"]) // Underbarrel
-		attachmentchoice = safepick(random_spawn_underbarrel)
+		attachmentchoice = SAFEPICK(random_spawn_underbarrel)
 		if(attachmentchoice)
 			var/obj/item/attachable/U = new attachmentchoice(src)
 			U.Attach(src)
@@ -256,7 +258,7 @@
 			attachmentchoice = FALSE
 
 	if(prob(randchance) && !attachments["stock"]) // Stock
-		attachmentchoice = safepick(random_spawn_stock)
+		attachmentchoice = SAFEPICK(random_spawn_stock)
 		if(attachmentchoice)
 			var/obj/item/attachable/S = new attachmentchoice(src)
 			S.Attach(src)
@@ -289,6 +291,7 @@
 			SetLuminosity(0)
 	attachments = null
 	attachable_overlays = null
+	GLOB.gun_list -= src
 	. = ..()
 
 /obj/item/weapon/gun/emp_act(severity)
@@ -431,7 +434,7 @@
 		ammo_name = in_ammo.name
 
 		damage = in_ammo.damage * damage_mult
-		bonus_projectile_amount = in_ammo.bonus_projectiles_amount
+		bonus_projectile_amount = in_ammo.bonus_projectiles_amount ? in_ammo.bonus_projectiles_amount + 1 : 0
 		falloff = in_ammo.damage_falloff * damage_falloff_mult
 
 		penetration = in_ammo.penetration
@@ -446,15 +449,15 @@
 
 		for(var/i = 0; i<=CODEX_ARMOR_MAX; i+=CODEX_ARMOR_STEP)
 			damage_armor_profile_headers.Add(i)
-			damage_armor_profile_marine.Add(round(armor_damage_reduction(config.marine_ranged_stats, damage, i, penetration)))
-			damage_armor_profile_xeno.Add(round(armor_damage_reduction(config.xeno_ranged_stats, damage, i, penetration)))
+			damage_armor_profile_marine.Add(round(armor_damage_reduction(GLOB.marine_ranged_stats, damage, i, penetration)))
+			damage_armor_profile_xeno.Add(round(armor_damage_reduction(GLOB.xeno_ranged_stats, damage, i, penetration)))
 			if(i != 0)
-				damage_armor_profile_armorbreak.Add("[round(armor_break_calculation(config.xeno_ranged_stats, damage, i, penetration, in_ammo.pen_armor_punch, armor_punch)/i)]%")
+				damage_armor_profile_armorbreak.Add("[round(armor_break_calculation(GLOB.xeno_ranged_stats, damage, i, penetration, in_ammo.pen_armor_punch, armor_punch)/i)]%")
 			else
 				damage_armor_profile_armorbreak.Add("N/A")
 
 	var/rpm = max(fire_delay, 0.0001)
-	var/burst_rpm = max(((fire_delay + (burst_delay * burst_amount)) / max(burst_amount, 1)), 0.0001)
+	var/burst_rpm = max((fire_delay * 1.5 + (burst_amount - 1) * burst_delay)/max(burst_amount, 1), 0.0001)
 
 	var/list/data = list(
 		"name" = name,
@@ -780,7 +783,7 @@ and you're good to go.
 		var/mob/M = usr
 		weapon_source_mob = M
 	var/obj/item/projectile/P = new /obj/item/projectile(bullet_source, weapon_source_mob, src)
-	P.generate_bullet(chambered, 0, 0)
+	P.generate_bullet(chambered, 0, NO_FLAGS)
 
 	return P
 
@@ -897,7 +900,7 @@ and you're good to go.
 				var/obj/item/IH = user.get_inactive_hand()
 				if(istype(IH, /obj/item/weapon/gun))
 					var/obj/item/weapon/gun/OG = IH
-					if(!(OG.flags_gun_features & GUN_WIELDED_FIRING_ONLY))
+					if(!(OG.flags_gun_features & GUN_WIELDED_FIRING_ONLY) && OG.gun_category == gun_category)
 						OG.Fire(target,user,params, 0, TRUE)
 						dual_wield = TRUE
 						recoil_comp++
@@ -938,6 +941,7 @@ and you're good to go.
 			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE, iff_group_to_pass)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 			last_fired = world.time
+			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 			if(flags_gun_features & GUN_FULL_AUTO_ON)
 				fa_shots++
@@ -1038,6 +1042,7 @@ and you're good to go.
 			M.last_damage_mob = null
 			user.attack_log += t //Apply the attack log.
 			last_fired = world.time
+			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 			projectile_to_fire.play_damage_effect(user)
 			if(!delete_bullet(projectile_to_fire))
@@ -1089,7 +1094,7 @@ and you're good to go.
 		var/obj/item/projectile/BP
 		for(var/i in 0 to projectile_to_fire.ammo.bonus_projectiles_amount)
 			BP = new /obj/item/projectile(initial(name), user, M.loc)
-			BP.generate_bullet(ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0)
+			BP.generate_bullet(ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0, NO_FLAGS)
 			BP.damage *= damage_buff
 			BP.ammo.on_hit_mob(M, BP)
 			M.bullet_act(BP)
@@ -1099,6 +1104,7 @@ and you're good to go.
 	M.bullet_act(projectile_to_fire)
 
 	last_fired = world.time
+	SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 	if(EXECUTION_CHECK) //Continue execution if on the correct intent. Accounts for change via the earlier do_after
 		user.visible_message(SPAN_DANGER("[user] has executed [M] with [src]!"), SPAN_DANGER("You have executed [M] with [src]!"), message_flags = CHAT_TYPE_WEAPON_USE)
@@ -1328,9 +1334,12 @@ and you're good to go.
 			total_recoil += RECOIL_AMOUNT_TIER_5
 		else
 			total_recoil -= user.skills.get_skill_level(SKILL_FIREARMS)*RECOIL_AMOUNT_TIER_5
-	
+
 	if(total_recoil > 0 && ishuman(user))
-		shake_camera(user, total_recoil + 1, total_recoil)
+		if(total_recoil >= 4)
+			shake_camera(user, total_recoil/2, total_recoil)
+		else
+			shake_camera(user, 1, total_recoil)
 		return TRUE
 
 	return FALSE

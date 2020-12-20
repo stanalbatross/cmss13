@@ -2,7 +2,7 @@
 
 //Global proc for checking if the game is whiskey outpost so I dont need to type if(gamemode == whiskey outpost) 50000 times
 /proc/Check_WO()
-	if(ticker.mode == "Whiskey Outpost" || map_tag == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
+	if(SSticker.mode == "Whiskey Outpost" || map_tag == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
 		return 1
 	return 0
 
@@ -99,16 +99,12 @@
 	initialize_post_marine_gear_list()
 	lobby_time = world.time
 	randomovertime = pickovertime()
-	var/mob/M
-	for(var/obj/effect/landmark/start/S in world)
-		if(!istype(S, /obj/effect/landmark/start/whiskey))
-			qdel(S)
 
-	if(config) config.remove_gun_restrictions = 1
+	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 
-	for(M in mob_list)
-		if(M.client && istype(M,/mob/living/carbon/human))
-			var/mob/living/carbon/human/H = M
+	for(var/i in GLOB.human_mob_list)
+		var/mob/living/carbon/human/H = i
+		if(H.client)
 			players += H
 			if(H.job in ROLES_MARINES)
 				spawn_player(H)
@@ -195,11 +191,11 @@
 	if(wave_data.command_announcement.len > 0)
 		marine_announcement(wave_data.command_announcement[1], wave_data.command_announcement[2])
 	if(wave_data.sound_effect.len > 0)
-		playsound_z(SURFACE_Z_LEVEL, pick(wave_data.sound_effect))
+		playsound_z(SSmapping.levels_by_trait(ZTRAIT_GROUND), pick(wave_data.sound_effect))
 
 //CHECK WIN
 /datum/game_mode/whiskey_outpost/check_win()
-	var/C = count_humans_and_xenos(SURFACE_Z_LEVELS)
+	var/C = count_humans_and_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))
 
 	if(C[1] == 0)
 		finished = 1 //Alien win
@@ -214,10 +210,10 @@
 
 /datum/game_mode/whiskey_outpost/count_xenos()//Counts braindead too
 	var/xeno_count = 0
-	for(var/mob/living/carbon/Xenomorph/X in living_xeno_list)
-		if(X) //Prevent any runtime errors
-			if(X.z == 1 && !istype(X.loc,/turf/open/space)) // If they're connected/unghosted and alive and not debrained
-				xeno_count += 1 //Add them to the amount of people who're alive.
+	for(var/i in GLOB.living_xeno_list)
+		var/mob/living/carbon/Xenomorph/X = i
+		if(is_ground_level(X.z) && !istype(X.loc,/turf/open/space)) // If they're connected/unghosted and alive and not debrained
+			xeno_count += 1 //Add them to the amount of people who're alive.
 
 	return xeno_count
 
@@ -281,7 +277,7 @@
 		round_finished = 1
 
 	calculate_end_statistics()
-	
+
 	return 1
 
 /datum/game_mode/proc/auto_declare_completion_whiskey_outpost()

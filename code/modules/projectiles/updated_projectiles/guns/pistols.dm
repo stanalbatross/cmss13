@@ -26,8 +26,9 @@
 						/obj/item/attachable/burstfire_assembly)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_ONE_HAND_WIELDED //For easy reference.
+	gun_category = GUN_CATEGORY_HANDGUN
 
-/obj/item/weapon/gun/pistol/New()
+/obj/item/weapon/gun/pistol/Initialize(mapload, spawn_empty)
 	. = ..()
 	if(current_mag && current_mag.current_rounds > 0)
 		load_into_chamber()
@@ -168,12 +169,12 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/compensator)
 
-/obj/item/weapon/gun/pistol/heavy/New()
-		..() //Pick some variant sprites.
-		var/skin = pick("","g_","c_")
-		icon_state = skin + icon_state
-		item_state = skin + item_state
-		base_gun_icon = skin + base_gun_icon
+/obj/item/weapon/gun/pistol/heavy/Initialize(mapload, spawn_empty)
+	. = ..()
+	var/skin = pick("","g_","c_")
+	icon_state = skin + icon_state
+	item_state = skin + item_state
+	base_gun_icon = skin + base_gun_icon
 
 
 /obj/item/weapon/gun/pistol/heavy/set_gun_attachment_offsets()

@@ -2,7 +2,7 @@
 	set category = "Debug"
 	set name = "Z: Debug Verbs - Show"
 
-	if(!check_rights(R_DEBUG)) 
+	if(!check_rights(R_DEBUG))
 		return
 
 	verbs += debug_verbs
@@ -12,7 +12,7 @@
 	set category = "Debug"
 	set name = "Z: Debug Verbs - Hide"
 
-	if(!check_rights(R_DEBUG)) 
+	if(!check_rights(R_DEBUG))
 		return
 
 	verbs -= debug_verbs
@@ -70,7 +70,7 @@
 /client/proc/check_round_statistics()
 	set category = "Debug"
 	set name = "C: Round Statistics"
-	if(!check_rights(R_ADMIN|R_DEBUG))	
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	debug_variables(round_statistics)
@@ -103,11 +103,6 @@
 	if(newtick && newtick <= 2 && newtick > 0)
 		message_staff("[key_name(src)] has modified world.tick_lag to [newtick]")
 		world.tick_lag = newtick
-
-
-		switch(alert("Enable Tick Compensation?","Tick Comp is currently: [config.Tickcomp]","Yes","No"))
-			if("Yes")	config.Tickcomp = 1
-			else		config.Tickcomp = 0
 	else
 		to_chat(src, SPAN_DANGER("Error: ticklag(): Invalid world.ticklag value. No changes made."))
 
@@ -119,9 +114,7 @@
 	var/largest_click_time = 0
 	var/mob/largest_move_mob = null
 	var/mob/largest_click_mob = null
-	for(var/mob/M in mob_list)
-		if(!M.client)
-			continue
+	for(var/mob/M in GLOB.player_list)
 		if(M.next_move >= largest_move_time)
 			largest_move_mob = M
 			if(M.next_move > world.time)
@@ -168,7 +161,7 @@
 		admin_holder.bulk_fetcher_panel()
 
 /datum/admins/proc/bulk_fetcher_panel()
-	if(!check_rights(R_DEBUG,0))	
+	if(!check_rights(R_DEBUG,0))
 		return
 
 	var/dat = {"

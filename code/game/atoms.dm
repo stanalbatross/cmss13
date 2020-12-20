@@ -53,15 +53,7 @@
 	// Whether the atom is an obstacle that should be considered for passing
 	var/can_block_movement = FALSE
 
-	// what icon we use
-	var/icon_source
-
 /atom/New(loc, ...)
-	if(icon_source)
-		if(!icon_source_files[icon_source])
-			icon_source_files[icon_source] = file(icon_source_master[icon_source])
-		icon = icon_source_files[icon_source]
-
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)
 		args[1] = do_initialize == INITIALIZATION_INNEW_MAPLOAD
@@ -392,21 +384,6 @@ its easier to just keep the beam vertical.
 	if(toxvomit)
 		this.icon_state = "vomittox_[pick(1,4)]"
 
-
-/atom/proc/get_global_map_pos()
-	if(!islist(global_map) || !length(global_map)) return
-	var/cur_x = null
-	var/cur_y = null
-	var/list/y_arr = null
-	for(cur_x=1,cur_x<=global_map.len,cur_x++)
-		y_arr = global_map[cur_x]
-		cur_y = y_arr.Find(src.z)
-		if(cur_y)
-			break
-	if(cur_x && cur_y)
-		return list("x"=cur_x,"y"=cur_y)
-	else
-		return 0
 
 //Generalized Fire Proc.
 /atom/proc/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1)

@@ -68,7 +68,7 @@
 		return
 	if(shuttle.door_override)
 		return // its been locked down by the queen
-	if(z == 3) // on the almayer
+	if(is_mainship_level(z)) // on the almayer
 		return
 	for(var/obj/structure/machinery/door/airlock/dropship_hatch/M in machines)
 		if(M.id == ship_id)
@@ -244,8 +244,12 @@
 /obj/structure/machinery/door_control/timed_automatic/New()
 	..()
 	trigger_time = world.time + trigger_delay*600
-	processing_objects.Add(src)
+	START_PROCESSING(SSobj, src)
 	start_processing()  // should really be using this -spookydonut
+
+/obj/structure/machinery/door_control/timed_automatic/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/structure/machinery/door_control/timed_automatic/process()
 	if (!triggered && world.time >= trigger_time)
@@ -261,7 +265,7 @@
 
 		desiredstate = !desiredstate
 		triggered = 1
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		//stop_processing()
 		spawn(15)
 			if(!(stat & NOPOWER))

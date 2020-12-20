@@ -9,7 +9,7 @@
 
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/Xenomorph/M, dam_bonus)
-	if(M.fortify || M.burrow)
+	if(M.fortify && !M.steelcrest || M.burrow)
 		return FALSE
 
 	//Reviewing the four primary intents
@@ -72,7 +72,7 @@
 			var/datum/effects/prae_acid_stacks/PAS = null
 			for (var/datum/effects/prae_acid_stacks/found in effects_list)
 				PAS = found
-				break 
+				break
 
 			if (istype(PAS) && PAS.stack_count >= PAS.max_stacks)
 				PAS.on_proc()
@@ -149,6 +149,11 @@
 				M.attack_log += text("\[[time_stamp()]\] <font color='red'>slashed [key_name(src)]</font>")
 			log_attack("[key_name(M)] slashed [key_name(src)]")
 
+			var/n_damage = armor_damage_reduction(GLOB.marine_melee, damage, armor_block)
+
+			if(M.behavior_delegate)
+				n_damage = M.behavior_delegate.melee_attack_modify_damage(n_damage, src)
+
 			//nice messages so people know that armor works
 			if(n_damage <= 0.34*damage)
 				show_message(SPAN_WARNING("Your armor absorbs the blow!"), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
@@ -159,7 +164,7 @@
 			if(acid_damage)
 				playsound(loc, "acid_hit", 25, 1)
 				var/armor_block_acid = getarmor(affecting, ARMOR_BIO)
-				var/n_acid_damage = armor_damage_reduction(config.marine_melee, acid_damage, armor_block_acid)
+				var/n_acid_damage = armor_damage_reduction(GLOB.marine_melee, acid_damage, armor_block_acid)
 				//nice messages so people know that armor works
 				if(n_acid_damage <= 0.34*acid_damage)
 					show_message(SPAN_WARNING("Your armor protects your from acid!"), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
@@ -212,7 +217,7 @@
 
 //Every other type of nonhuman mob
 /mob/living/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(M.fortify || M.burrow)
+	if(M.fortify && !M.steelcrest || M.burrow)
 		return FALSE
 
 	switch(M.a_intent)
@@ -452,7 +457,7 @@
 	M.visible_message(SPAN_DANGER("[M] smashes against [src]!"), \
 	SPAN_DANGER("You smash against [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 	var/damage = 25
-	if(M.mob_size == MOB_SIZE_BIG)
+	if(M.mob_size >= MOB_SIZE_BIG)
 		damage = 40
 	take_damage(damage)
 
@@ -889,7 +894,7 @@
 	M.visible_message(SPAN_WARNING("[M] begins to lean against [src]."), \
 	SPAN_WARNING("You begin to lean against [src]."), null, 5, CHAT_TYPE_XENO_COMBAT)
 	var/shove_time = 100
-	if(M.mob_size == MOB_SIZE_BIG)
+	if(M.mob_size >= MOB_SIZE_BIG)
 		shove_time = 50
 	if(istype(M,/mob/living/carbon/Xenomorph/Crusher))
 		shove_time = 15

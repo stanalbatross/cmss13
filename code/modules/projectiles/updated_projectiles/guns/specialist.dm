@@ -36,6 +36,8 @@
 	iff_enabled = TRUE
 	iff_enabled_current = TRUE
 
+	flags_item = TWOHANDED|NO_CRYO_STORE
+
 /obj/item/weapon/gun/rifle/sniper/M42A/handle_starting_attachment()
 	..()
 	var/obj/item/attachable/scope/S = new(src)
@@ -170,7 +172,7 @@
 						/obj/item/attachable/bipod,
 						/obj/item/attachable/scope/slavic)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY
 
 
 /obj/item/weapon/gun/rifle/sniper/svd/handle_starting_attachment()
@@ -226,6 +228,8 @@
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
 	starting_attachment_types = list(/obj/item/attachable/stock/rifle/marksman)
+
+	flags_item = TWOHANDED|NO_CRYO_STORE
 
 /obj/item/weapon/gun/rifle/m4ra/handle_starting_attachment()
 	..()
@@ -313,6 +317,7 @@
 						/obj/item/attachable/flashlight)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO
+	gun_category = GUN_CATEGORY_HEAVY
 	starting_attachment_types = list(/obj/item/attachable/smartbarrel)
 
 
@@ -529,15 +534,15 @@
 	if(auto_fire)
 		src.drain += 150
 		if(!motion_detector)
-			processing_objects.Add(src)
+			START_PROCESSING(SSobj, src)
 	if(!auto_fire)
 		src.drain -= 150
 		if(!motion_detector)
-			processing_objects.Remove(src)
+			STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/smartgun/process()
 	if(!auto_fire && !motion_detector)
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 	if(auto_fire)
 		if(ishuman(loc) && (flags_item & WIELDED))
 			var/human_user = loc
@@ -567,7 +572,8 @@
 		human_user = loc
 
 	ping_count = 0
-	for(var/mob/M in living_mob_list)
+	for(var/i in GLOB.alive_mob_list)
+		var/mob/M = i
 
 		if(loc == null || M == null) continue
 		if(loc.z != M.z) continue
@@ -721,11 +727,11 @@
 	if(motion_detector)
 		src.drain += 15
 		if(!auto_fire)
-			processing_objects.Add(src)
+			START_PROCESSING(SSobj, src)
 	if(!motion_detector)
 		src.drain -= 15
 		if(!auto_fire)
-			processing_objects.Remove(src)
+			STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/smartgun/dirty
 	name = "\improper M56D 'Dirty' smartgun"
@@ -754,6 +760,7 @@
 //-------------------------------------------------------
 //GRENADE LAUNCHER
 /obj/item/weapon/gun/launcher
+	gun_category = GUN_CATEGORY_HEAVY
 	var/list/disallowed_grenade_types = list(/obj/item/explosive/grenade/spawnergrenade)
 
 /obj/item/weapon/gun/launcher/proc/allowed_ammo_type(obj/item/I)
@@ -784,11 +791,12 @@
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	attachable_allowed = list(/obj/item/attachable/magnetic_harness)
 
+	flags_item = TWOHANDED|NO_CRYO_STORE
 	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
 	map_specific_decoration = TRUE
 
-/obj/item/weapon/gun/launcher/m92/New()
-	..()
+/obj/item/weapon/gun/launcher/m92/Initialize(mapload, spawn_empty)
+	. = ..()
 	grenades += new /obj/item/explosive/grenade/HE(src)
 	grenades += new /obj/item/explosive/grenade/HE(src)
 	grenades += new /obj/item/explosive/grenade/HE(src)
@@ -920,8 +928,8 @@
 	var/grenade_type_allowed = /obj/item/explosive/grenade
 	var/riot_version
 
-/obj/item/weapon/gun/launcher/m81/New(loc, spawn_empty)
-	..()
+/obj/item/weapon/gun/launcher/m81/Initialize(mapload, spawn_empty)
+	. = ..()
 	if(!spawn_empty)
 		if(riot_version)
 			grenade = new /obj/item/explosive/grenade/custom/teargas(src)
@@ -1057,8 +1065,10 @@
 	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
 	var/datum/effect_system/smoke_spread/smoke
 
-/obj/item/weapon/gun/launcher/rocket/New()
-	..()
+	flags_item = TWOHANDED|NO_CRYO_STORE
+
+/obj/item/weapon/gun/launcher/rocket/Initialize(mapload, spawn_empty)
+	. = ..()
 	smoke = new()
 	smoke.attach(src)
 
@@ -1088,7 +1098,7 @@
 	. = ..()
 	if (. && istype(user)) //Let's check all that other stuff first.
 		/*var/turf/current_turf = get_turf(user)
-		if (current_turf.z == 3 || current_turf.z == 4) //Can't fire on the Almayer, bub.
+		if (is_mainship_level(current_turf.z) || is_loworbit_level(current_turf.z)) //Can't fire on the Almayer, bub.
 			click_empty(user)
 			to_chat(user, SPAN_WARNING("You can't fire that here!"))
 			return 0*/
@@ -1248,6 +1258,7 @@
 	reload_sound = 'sound/weapons/gun_shotgun_shell_insert.ogg'
 	fire_sound = 'sound/weapons/gun_flare.ogg'
 	flags_gun_features = GUN_INTERNAL_MAG
+	gun_category = GUN_CATEGORY_HANDGUN
 	attachable_allowed = list(/obj/item/attachable/scope/mini)
 	iff_enabled = TRUE
 	iff_enabled_current = TRUE

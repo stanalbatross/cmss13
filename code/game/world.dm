@@ -19,8 +19,12 @@ var/internal_tick_usage = 0
 	hub = "Exadv1.spacestation13"
 
 /world/New()
+	var/extools = world.GetConfig("env", "EXTOOLS_DLL") || "./byond-extools.dll"
+	if(fexists(extools))
+		call(extools, "maptick_initialize")()
+	enable_debugger()
 	internal_tick_usage = 0.2 * world.tick_lag
-	hub_password = "[config.hub_password]"
+	hub_password = "kMZy3U5jJHSiBQjr"
 
 	//logs
 	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
@@ -36,16 +40,11 @@ var/internal_tick_usage = 0
 	mutator_logs << "[log_end]\nStarting up - [time2text(world.realtime,"YYYY-MM-DD (hh:mm:ss)")][log_end]\n---------------------[log_end]"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
-	if(byond_version < DM_VERSION)
-		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
-
 	initialize_marine_armor()
 
-	if(config && config.server_name != null && config.server_suffix && world.port > 0)
-		// dumb and hardcoded but I don't care~
-		config.server_name += " #[(world.port % 1000) / 100]"
+	config.Load(params[OVERRIDE_CONFIG_DIRECTORY_PARAMETER])
 
-	if(config && config.log_runtime)
+	if(CONFIG_GET(flag/log_runtime))
 		log = file("data/logs/runtime/[time2text(world.realtime,"YYYY-MM-DD-(hh-mm-ss)")]-runtime.log")
 
 	load_admins()
@@ -56,7 +55,6 @@ var/internal_tick_usage = 0
 	setupGhostTeleportLocs()
 	loadShuttleInfoDatums()
 	populate_gear_list()
-	loadRuntimeConfig()
 
 	//Emergency Fix
 	//end-emergency fix
@@ -69,18 +67,13 @@ var/internal_tick_usage = 0
 	// Only do offline sleeping when the server isn't running unit tests or hosting a local dev test
 	sleep_offline = (!running_tests && !testing_locally)
 
-	// Set up roundstart seed list. This is here because vendors were
-	// bugging out and not populating with the correct packet names
-	// due to this list not being instantiated.
-	populate_seed_list()
-
 	if(!RoleAuthority)
 		RoleAuthority = new /datum/authority/branch/role()
 		to_world(SPAN_DANGER("\b Job setup complete"))
 
 	if(!EvacuationAuthority)		EvacuationAuthority = new
 
-	world.tick_lag = config.Ticklag
+	world.tick_lag = CONFIG_GET(number/ticklag)
 
 	Master.Initialize(10, FALSE, TRUE)
 
@@ -89,7 +82,7 @@ var/internal_tick_usage = 0
 	obfs_y = rand(-500, 500) //A number between -100 and 100
 
 	spawn(3000)		//so we aren't adding to the round-start lag
-		if(config.ToRban)
+		if(CONFIG_GET(flag/ToRban))
 			ToRban_autoupdate()
 
 	// Allow the test manager to run all unit tests if this is being hosted just to run unit tests
@@ -120,7 +113,7 @@ var/internal_tick_usage = 0
 			sleep(10)
 
 		// Start the game ASAP
-		ticker.current_state = GAME_STATE_SETTING_UP
+		SSticker.current_state = GAME_STATE_SETTING_UP
 
 	return
 
@@ -143,10 +136,10 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/list/s = list()
 		s["version"] = game_version
 		s["mode"] = master_mode
-		s["respawn"] = config ? abandon_allowed : 0
+		s["respawn"] = CONFIG_GET(flag/respawn)
 		s["enter"] = enter_allowed
-		s["vote"] = config.allow_vote_mode
-		s["ai"] = config.allow_ai
+		s["vote"] = CONFIG_GET(flag/allow_vote_mode)
+		s["ai"] = CONFIG_GET(flag/allow_ai)
 		s["host"] = host ? host : null
 		s["players"] = list()
 		s["stationtime"] = duration2text()
@@ -199,31 +192,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		return dat
 
 
-	/*
-	Comment out as we don't use IRC
-	else if(copytext(T,1,6) == "notes")
-		/*
-			We got a request for notes from the IRC Bot
-			expected output:
-				1. notes = ckey of person the notes lookup is for
-				2. validationkey = the key the bot has, it should match the gameservers commspassword in it's configuration.
-		*/
-		var/input[] = params2list(T)
-		if(input["key"] != config.comms_password)
-			if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
-
-				spawn(50)
-					world_topic_spam_protect_time = world.time
-					return "Bad Key (Throttled)"
-
-			world_topic_spam_protect_time = world.time
-			world_topic_spam_protect_ip = addr
-			return "Bad Key"
-
-		return player_notes_show_irc(input["notes"])
-		*/
-
-
 	//START: MAPDAEMON PROCESSING
 	if(addr == "127.0.0.1") //Verify that instructions are coming from the local machine
 
@@ -233,15 +201,15 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		if(command == "mapdaemon_get_round_status")
 
-			if(!ticker) return "ERROR" //Yeah yeah wrong data type, but MapDaemon.java can handle it
+			if(!SSticker) return "ERROR" //Yeah yeah wrong data type, but MapDaemon.java can handle it
 
 			if(MapDaemon_UID == -1) MapDaemon_UID = MD_UID //If we haven't seen an instance of MD yet, this is ours now
 
 			if(kill_map_daemon || MD_UID != MapDaemon_UID) return 2 //The super secret killing code that kills it until it's been killed.
 
-			else if(!ticker.mode) return 0 //Before round start
+			else if(!SSticker.mode) return 0 //Before round start
 
-			else if(ticker.mode.round_finished || force_mapdaemon_vote) return 1
+			else if(SSticker.mode.round_finished || force_mapdaemon_vote) return 1
 
 			else return 0 //IDK what would cause this but why not, don't really want runtimes
 
@@ -250,23 +218,23 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		else if(command == "mapdaemon_delay_round")
 
-			if(!ticker) return "ERROR"
+			if(!SSticker) return "ERROR"
 
 			addtimer(CALLBACK(src, .proc/announce_mapvote), 20 SECONDS)
 
-			ticker.automatic_delay_end = TRUE
+			SSticker.automatic_delay_end = TRUE
 			message_staff("World/Topic() call (likely MapDaemon.exe) has delayed the round end.", 1)
 			return "SUCCESS"
 
 		else if(command == "mapdaemon_restart_round")
 
-			if(!ticker) return "ERROR"
+			if(!SSticker) return "ERROR"
 
-			ticker.automatic_delay_end = FALSE
+			SSticker.automatic_delay_end = FALSE
 			message_staff("World/Topic() call (likely MapDaemon.exe) has resumed the round end.", 1)
 
 			//So admins have a chance to make EORG bans and do whatever
-			if(!ticker.delay_end)
+			if(!SSticker.delay_end)
 				message_staff(FONT_SIZE_LARGE(SPAN_BOLDANNOUNCE("NOTICE: Delay round within 30 seconds in order to prevent auto-restart!")), 1)
 
 			MapDaemonHandleRestart() //Doesn't hold
@@ -344,8 +312,8 @@ var/list/datum/entity/map_vote/all_votes
 			most_votes = L[i]
 			next_map = i
 
-	if(!enable_map_vote && ticker && ticker.mode)
-		next_map = ticker.mode.name
+	if(!enable_map_vote && SSticker.mode)
+		next_map = SSticker.mode.name
 	else if(enable_map_vote && forced)
 		next_map = force_result
 
@@ -395,16 +363,16 @@ var/list/datum/entity/map_vote/all_votes
 	Master.Shutdown()
 	var/round_extra_data = ""
 	// Notify helper daemon of reboot, regardless of reason.
-	if(ticker && ticker.mode)
-		round_extra_data = "&message=[ticker.mode.end_round_message()]"
+	if(SSticker.mode)
+		round_extra_data = "&message=[SSticker.mode.end_round_message()]"
 
 	world.Export("http://127.0.0.1:8888/?rebooting=1[round_extra_data]")
 	for(var/client/C in GLOB.clients)
 		var/datum/chatOutput/chat = C.chatOutput
 		if(chat)
 			chat.browser_send(C, "roundrestart")
-		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			C << link("byond://[config.server]")
+		if(CONFIG_GET(string/server))	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+			C << link("byond://[CONFIG_GET(string/server)]")
 
 	..(reason)
 
@@ -430,15 +398,15 @@ var/list/datum/entity/map_vote/all_votes
 	//Note: Hub content is limited to 254 characters, including HTML/CSS. Image width is limited to 450 pixels.
 	var/s = ""
 
-	if (config && config.server_name)
-		s += "<a href=\"[config.forumurl]\"><b>[config.server_name] &#8212; [MAIN_SHIP_NAME]</b>"
-		s += "<br><img src=\"[config.forumurl]/byond_hub_logo.jpg\"></a>"
+	if (CONFIG_GET(string/servername))
+		s += "<a href=\"[CONFIG_GET(string/forumurl)]\"><b>[CONFIG_GET(string/servername)] &#8212; [MAIN_SHIP_NAME]</b>"
+		s += "<br><img src=\"[CONFIG_GET(string/forumurl)]/byond_hub_logo.jpg\"></a>"
 		// s += "<a href=\"http://goo.gl/04C5lP\">Wiki</a>|<a href=\"http://goo.gl/hMmIKu\">Rules</a>"
-		if(ticker)
+		if(SSticker)
 			if(master_mode)
 				s += "<br>Map: <b>[map_tag]</b>"
-				if(ticker.mode)
-					s += "<br>Mode: <b>[ticker.mode.name]</b>"
+				if(SSticker.mode)
+					s += "<br>Mode: <b>[SSticker.mode.name]</b>"
 				s += "<br>Round time: <b>[duration2text()]</b>"
 		else
 			s += "<br>Map: <b>[map_tag]</b>"
@@ -476,11 +444,11 @@ proc/setup_database_connection()
 /proc/MapDaemonHandleRestart()
 	set waitfor = 0
 
-	ticker.current_state = GAME_STATE_COMPILE_FINISHED
+	SSticker.current_state = GAME_STATE_COMPILE_FINISHED
 
 	sleep(300)
 
-	if(ticker.delay_end || ticker.automatic_delay_end)
+	if(SSticker.delay_end || SSticker.automatic_delay_end)
 		return
 
 	to_world(SPAN_DANGER("<b>Restarting world!</b> \blue Initiated by MapDaemon.exe!"))

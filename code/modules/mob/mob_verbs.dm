@@ -114,22 +114,17 @@
 	if(client.admin_holder && (client.admin_holder.rights & R_ADMIN))
 		is_admin = 1
 
-	if (!abandon_allowed && !is_admin)
+	if (!CONFIG_GET(flag/respawn) && !is_admin)
 		to_chat(usr, SPAN_NOTICE(" Respawn is disabled."))
 		return
-	if (stat != 2 || !ticker)
+	if (stat != 2)
 		to_chat(usr, SPAN_NOTICE(" <B>You must be dead to use this!</B>"))
 		return
-	if (ticker && ticker.mode && (ticker.mode.name == "meteor" || ticker.mode.name == "epidemic")) //BS12 EDIT
+	if (SSticker.mode && (SSticker.mode.name == "meteor" || SSticker.mode.name == "epidemic")) //BS12 EDIT
 		to_chat(usr, SPAN_NOTICE(" Respawn is disabled for this roundtype."))
 		return
 	else
 		var/deathtime = world.time - src.timeofdeath
-//		if(istype(src,/mob/dead/observer))
-//			var/mob/dead/observer/G = src
-//			if(G.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
-//				to_chat(usr, SPAN_NOTICE(" <B>Upon using the antagHUD you forfeighted the ability to join the round.</B>"))
-//				return
 		var/deathtimeminutes = round(deathtime / 600)
 		var/pluralcheck = "minute"
 		if(deathtimeminutes == 0)
@@ -195,7 +190,7 @@
 	var/list/namecounts = list()
 	var/list/creatures = list()
 
-	for(var/obj/O in object_list)				//EWWWWWWWWWWWWWWWWWWWWWWWW ~needs to be optimised
+	for(var/obj/O in GLOB.object_list)				//EWWWWWWWWWWWWWWWWWWWWWWWW ~needs to be optimised
 		if(!O.loc)
 			continue
 		if(istype(O, /obj/item/disk/nuclear))
@@ -219,7 +214,7 @@
 			creatures[name] = O
 
 
-	for(var/mob/M in sortAtom(mob_list))
+	for(var/mob/M in sortAtom(GLOB.mob_list))
 		var/name = M.name
 		if (names.Find(name))
 			namecounts[name]++

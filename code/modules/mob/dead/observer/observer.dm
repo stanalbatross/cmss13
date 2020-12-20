@@ -52,7 +52,7 @@
 			icon_state = "anglo_example"
 			overlays += H.overlays
 		else if(isYautja(body))
-			icon = get_icon_from_source("species_hunter")
+			icon = get_icon_from_source(CONFIG_GET(string/species_hunter))
 			icon_state = "yautja_example"
 			overlays += body.overlays
 		else if(ismonkey(body))
@@ -77,15 +77,15 @@
 
 		mind = body.mind	//we don't transfer the mind but we keep a reference to it.
 
-	if(!T)	T = pick(latejoin)			//Safety in case we cannot find the body's position
-	loc = T
+	if(!T)	T = get_turf(pick(GLOB.latejoin))			//Safety in case we cannot find the body's position
+	forceMove(T)
 
 	if(!name)							//To prevent nameless ghosts
 		name = capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 	change_real_name(src, name)
 
 	..()
-	if(ticker && ticker.mode && ticker.mode.flags_round_type & MODE_PREDATOR)
+	if(SSticker.mode && SSticker.mode.flags_round_type & MODE_PREDATOR)
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, src, "<span style='color: red;'>This is a <B>PREDATOR ROUND</B>! If you are whitelisted, you may Join the Hunt!</span>"), 2 SECONDS)
 
 /mob/dead/observer/Login()
@@ -112,11 +112,11 @@
 			var/mob/dead/observer/A = usr
 			A.reenter_corpse()
 	if(href_list["track"])
-		var/mob/target = locate(href_list["track"]) in mob_list
+		var/mob/target = locate(href_list["track"]) in GLOB.mob_list
 		if(target)
 			ManualFollow(target)
 	if(href_list[XENO_OVERWATCH_TARGET_HREF])
-		var/mob/target = locate(href_list[XENO_OVERWATCH_TARGET_HREF]) in living_xeno_list
+		var/mob/target = locate(href_list[XENO_OVERWATCH_TARGET_HREF]) in GLOB.living_xeno_list
 		if(target)
 			ManualFollow(target)
 	if(href_list["jumptocoord"])
@@ -185,7 +185,7 @@ Works together with spawning an observer, noted above.
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.timeofdeath = timeofdeath //BS12 EDIT
 
-	if(z == ADMIN_Z_LEVEL)
+	if(is_admin_level(z))
 		ghost.timeofdeath = 0 // Bypass respawn limit if you die on the admin zlevel
 
 	ghost.key = key
@@ -244,7 +244,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			msg_admin_niche("[key_name_admin(usr)] has ghosted. (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
 		log_game("[key_name_admin(usr)] has ghosted.")
 		var/mob/dead/observer/ghost = ghostize(FALSE) //FALSE parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
-		if(ghost && z != ADMIN_Z_LEVEL)
+		if(ghost && !is_admin_level(z))
 			ghost.timeofdeath = world.time
 
 /mob/dead/observer/Move(NewLoc, direct)
@@ -351,7 +351,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 	set name = "Follow"
 
-	var/list/choices = list("Humans", "Xenomorphs", "Predators", "Synthetics", "ERT Members", "Survivors", "Any Mobs", "Mobs by Faction", "Xenos by Hive", "Vehicles")
+	var/list/choices = list("Humans", "Xenomorphs", "Holograms", "Predators", "Synthetics", "ERT Members", "Survivors", "Any Mobs", "Mobs by Faction", "Xenos by Hive", "Vehicles")
 	var/input = input("Please, select a category:", "Follow", null, null) as null|anything in choices
 	var/atom/movable/target
 	var/list/targets = list()
@@ -372,6 +372,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			targets = getmobs()
 		if("Vehicles")
 			targets = get_multi_vehicles()
+
+		if("Holograms")
+			targets = get_holograms()
 
 		if("Mobs by Faction")
 			choices = FACTION_LIST_HUMANOID
@@ -566,12 +569,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!client)
 		return
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-	if(ticker.mode.check_xeno_late_join(src))
-		ticker.mode.attempt_to_join_as_xeno(src)
+	if(SSticker.mode.check_xeno_late_join(src))
+		SSticker.mode.attempt_to_join_as_xeno(src)
 
 /mob/dead/verb/join_as_zombie() //Adapted from join as hellhoud
 	set category = "Ghost"
@@ -581,14 +584,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!client)
 		return
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
 	var/list/zombie_list = list()
 
-	for(var/mob/living/carbon/human/A in living_mob_list)
-		if(iszombie(A) && !A.client && A.stat != DEAD) // Only living zombies
+	for(var/mob/living/carbon/human/A in GLOB.zombie_list)
+		if(!A.client && A.stat != DEAD) // Only living zombies
 			zombie_list += list(A.real_name = A)
 
 
@@ -620,7 +623,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	mind.transfer_to(Z, TRUE)
-
 	msg_admin_niche("[key_name(usr)] has joined as a [Z].")
 
 
@@ -633,7 +635,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!M.stat || !M.mind)
 		return
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
@@ -670,7 +672,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	freed_mob_list -= L
 	M.mind.transfer_to(L, TRUE)
 
-
 /mob/dead/verb/join_as_hellhound()
 	set category = "Ghost"
 	set name = "Join as Hellhound"
@@ -678,7 +679,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/mob/L = src
 
-	if(ticker.current_state < GAME_STATE_PLAYING)
+	if(SSticker.current_state < GAME_STATE_PLAYING)
 		to_chat(usr, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
@@ -696,7 +697,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/list/hellhound_list = list()
 
-	for(var/mob/living/carbon/hellhound/A in living_mob_list)
+	for(var/mob/living/carbon/hellhound/A in GLOB.hellhound_list)
 		if(istype(A) && !A.client)
 			hellhound_list += A.real_name
 
@@ -708,7 +709,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (isnull(choice) || choice == "Cancel")
 		return
 
-	for(var/mob/living/carbon/hellhound/X in living_mob_list)
+	for(var/mob/living/carbon/hellhound/X in GLOB.hellhound_list)
 		if(choice == X.real_name)
 			L = X
 			break
@@ -751,23 +752,23 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!client)
 		return
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-	if(ticker.mode.check_predator_late_join(src))
-		ticker.mode.attempt_to_join_as_predator(src)
+	if(SSticker.mode.check_predator_late_join(src))
+		SSticker.mode.attempt_to_join_as_predator(src)
 
 /mob/dead/verb/drop_vote()
 	set category = "Ghost"
 	set name = "Spectator Vote"
 	set desc = "If it's on Hunter Games gamemode, vote on who gets a supply drop!"
 
-	if(!ticker || ticker.current_state < GAME_STATE_PLAYING || !ticker.mode)
+	if(SSticker.current_state < GAME_STATE_PLAYING || !SSticker.mode)
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-	if(!istype(ticker.mode,/datum/game_mode/huntergames))
+	if(!istype(SSticker.mode,/datum/game_mode/huntergames))
 		to_chat(src, SPAN_INFO("Wrong game mode. You have to be observing a Hunter Games round."))
 		return
 
@@ -779,7 +780,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN_INFO("You voted for this one already. Only one please!"))
 		return
 
-	var/list/mobs = living_mob_list
+	var/list/mobs = GLOB.alive_mob_list
 	var/target = null
 
 	for(var/mob/living/M in mobs)
@@ -792,7 +793,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	else
 		to_chat(src, SPAN_INFO("Your vote for [target] has been counted!"))
-		ticker.mode:supply_votes += target
+		SSticker.mode:supply_votes += target
 		voted_this_drop = 1
 		addtimer(VARSET_CALLBACK(src, voted_this_drop, FALSE), 20 SECONDS)
 

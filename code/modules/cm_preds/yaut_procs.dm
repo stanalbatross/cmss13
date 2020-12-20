@@ -1,6 +1,6 @@
 // Notify all preds with the bracer icon
 /proc/message_all_yautja(var/msg, var/soundeffect = TRUE)
-	for(var/mob/living/carbon/human/Y in yautja_mob_list)
+	for(var/mob/living/carbon/human/Y in GLOB.yautja_mob_list)
 		// Send message to the bracer; appear multiple times if we have more bracers
 		for(var/obj/item/clothing/gloves/yautja/G in Y.contents)
 			to_chat(Y, SPAN_YAUTJABOLD("[htmlicon(G)] \The <b>[G]</b> beeps: [msg]"))
@@ -347,7 +347,7 @@
 	to_chat(src, SPAN_YAUTJABOLD("You have chosen [yautja_hunted_prey] as your next prey."))
 
 	// Notify other preds
-	message_all_yautja("[real_name] has chosen [yautja_hunted_prey] ([max(yautja_hunted_prey.life_kills_total, 1)] honor) as their next target at \the [get_area(src).name].")
+	message_all_yautja("[real_name] has chosen [yautja_hunted_prey] ([max(yautja_hunted_prey.life_kills_total, 1)] honor) as their next target at \the [get_area_name(src)].")
 
 	// Notify the staff
 	message_staff(WRAP_STAFF_LOG(src, "has marked [key_name(yautja_hunted_prey)] for the Hunt in [get_area(src)] ([x],[y],[z])."), x, y, z)

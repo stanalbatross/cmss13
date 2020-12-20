@@ -102,7 +102,7 @@
 	SPAN_XENODANGER("[X] makes you regress into your previous form."))
 
 	if(X.hive.living_xeno_queen && X.hive.living_xeno_queen.observed_xeno == T)
-		X.hive.living_xeno_queen.set_queen_overwatch(new_xeno)
+		X.hive.living_xeno_queen.overwatch(new_xeno)
 
 	message_staff("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
 	log_admin("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
@@ -184,11 +184,11 @@
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
 	if(!X.check_state())
 		return
+
+	if(!action_cooldown_check())
+		return
 	var/datum/hive_status/hive = X.hive
 	if(X.observed_xeno)
-		if(X.queen_ability_cooldown > world.time)
-			to_chat(X, SPAN_XENOWARNING("You're still recovering from your last overwatch ability. Wait [round((X.queen_ability_cooldown-world.time)*0.1)] seconds."))
-			return
 		if(!hive.open_xeno_leader_positions.len && X.observed_xeno.hive_pos == NORMAL_XENO)
 			to_chat(X, SPAN_XENOWARNING("You currently have [hive.xeno_leader_list.len] promoted leaders. You may not maintain additional leaders until your power grows."))
 			return
@@ -196,7 +196,7 @@
 		if(T == X)
 			to_chat(X, SPAN_XENOWARNING("You cannot add yourself as a leader!"))
 			return
-		X.queen_ability_cooldown = world.time + 150 //15 seconds
+		apply_cooldown()
 		if(T.hive_pos == NORMAL_XENO)
 			if(!hive.add_hive_leader(T))
 				to_chat(X, SPAN_XENOWARNING("Unable to add the leader."))
@@ -216,57 +216,56 @@
 			var/mob/living/carbon/Xenomorph/selected_xeno = input(X, "Target", "Watch which xenomorph leader?") as null|anything in possible_xenos
 			if(!selected_xeno || selected_xeno.hive_pos == NORMAL_XENO || selected_xeno == X.observed_xeno || selected_xeno.stat == DEAD || selected_xeno.z != X.z || !X.check_state())
 				return
-			X.set_queen_overwatch(selected_xeno)
+			X.overwatch(selected_xeno)
 		else if(possible_xenos.len)
-			X.set_queen_overwatch(possible_xenos[1])
+			X.overwatch(possible_xenos[1])
 		else
 			to_chat(X, SPAN_XENOWARNING("There are no Xenomorph leaders. Overwatch a Xenomorph to make it a leader."))
 
 
-/datum/action/xeno_action/onclick/queen_heal/use_ability(atom/A)
+/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
 	if(!X.check_state())
 		return
-	if(X.queen_ability_cooldown > world.time)
-		to_chat(X, SPAN_XENOWARNING("You're still recovering from your last overwatch ability. Wait [round((X.queen_ability_cooldown-world.time)*0.1)] seconds."))
+
+	if(!action_cooldown_check())
 		return
-	if(X.observed_xeno)
-		var/mob/living/carbon/Xenomorph/target = X.observed_xeno
-		if(target.stat == DEAD || QDELETED(target))
-			return
-		if(X.loc.z != target.loc.z)
-			to_chat(X, SPAN_XENOWARNING("They are too far away to do this."))
-			return
-		if(!target.caste.can_be_queen_healed)
-			to_chat(X, SPAN_XENOWARNING("This caste cannot be healed!"))
-			return
-		if(target.on_fire)
-			to_chat(X, SPAN_XENOWARNING("You cannot heal xenos that are on fire!"))
-			return
-		if(target.stat != DEAD)
-			if(target.health < target.maxHealth)
-				if(X.check_plasma(plasma_cost))
-					X.use_plasma(plasma_cost)
-					target.gain_health(200)
-					X.queen_ability_cooldown = world.time + 150 //15 seconds
-					to_chat(X, SPAN_XENONOTICE("You channel your plasma to heal [target]'s wounds."))
-					target.visible_message(SPAN_BOLDNOTICE("You feel a presence surrounding [target] as its wounds quickly seal up!"))	//marines probably should know if a xeno gets healed
-					target.flick_heal_overlay(SECONDS_3, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
-			else
 
-				to_chat(X, SPAN_WARNING("[target] is at full health."))
-	else
-		to_chat(X, SPAN_WARNING("You must overwatch the xeno you want to give healing to."))
-
-/datum/action/xeno_action/onclick/toggle_queen_zoom/use_ability(atom/A)
-	var/mob/living/carbon/Xenomorph/Queen/X = owner
-	if(!X.check_state())
+	var/turf/T = get_turf(A)
+	if(!T)
+		to_chat(X, SPAN_WARNING("You must select a valid turf to heal around."))
 		return
-	if(X.is_zoomed)
-		X.zoom_out()
-	else
-		X.zoom_in()
 
+	if(X.loc.z != T.loc.z)
+		to_chat(X, SPAN_XENOWARNING("You are too far away to do this here."))
+		return
+
+	if(!check_and_use_plasma_owner())
+		return
+
+	for(var/mob/living/carbon/Xenomorph/Xa in range(4, T))
+		if(!X.match_hivemind(Xa))
+			continue
+
+		if(Xa.on_fire)
+			continue
+
+		if(Xa == X)
+			continue
+
+		if(Xa.stat == DEAD || QDELETED(Xa))
+			continue
+
+		if(!Xa.caste.can_be_queen_healed)
+			continue
+
+		if(Xa.health < Xa.maxHealth)
+			Xa.gain_health(75)
+		new /datum/effects/heal_over_time(Xa, Xa.maxHealth * 0.4, 2 SECONDS, 2)
+		Xa.flick_heal_overlay(SECONDS_3, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
+
+	apply_cooldown()
+	to_chat(X, SPAN_XENONOTICE("You channel your plasma to heal your sisters' wounds around this area."))
 
 /datum/action/xeno_action/onclick/banish/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
@@ -338,3 +337,122 @@
 		T.hud_update_banished()
 	else
 		to_chat(X, SPAN_WARNING("You must overwatch the xeno you want to readmit."))
+
+
+/datum/action/xeno_action/onclick/eye/use_ability(atom/A)
+	. = ..()
+	if(!owner)
+		return
+
+	new /mob/hologram/queen(owner.loc, owner)
+	qdel(src)
+
+/datum/action/xeno_action/activable/secrete_resin/ovipositor/action_cooldown_check()
+	var/mob/living/carbon/Xenomorph/X = owner
+	if(!X)
+		return FALSE
+
+	// Account for the do_after in the resin building proc when checking cooldown
+	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/total_build_time = RC.build_time*X.caste.build_time_mult
+	return (world.time >= last_use + (total_build_time + cooldown))
+
+/datum/action/xeno_action/activable/secrete_resin/ovipositor/use_ability(atom/A)
+	if(!action_cooldown_check())
+		return
+
+	var/mob/living/carbon/Xenomorph/X = owner
+	if(!X)
+		return
+
+	var/turf/T = get_turf(A)
+	if(!T)
+		return
+
+	if(!..())
+		return
+
+	last_use = world.time
+
+	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	T.visible_message(SPAN_XENONOTICE("The weeds begin pulsating wildly and secrete resin in the shape of \a [RC.construction_name]!"), null, 5)
+	to_chat(owner, SPAN_XENONOTICE("You focus your plasma into the weeds below you and force the weeds to secrete resin in the shape of \a [RC.construction_name]."))
+	playsound(T, "alien_resin_build", 25)
+
+/datum/action/xeno_action/activable/expand_weeds
+	var/list/recently_built_turfs
+
+/datum/action/xeno_action/activable/expand_weeds/New(Target, override_icon_state)
+	. = ..()
+	recently_built_turfs = list()
+
+/datum/action/xeno_action/activable/expand_weeds/Destroy()
+	recently_built_turfs = null
+	return ..()
+
+/datum/action/xeno_action/activable/expand_weeds/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/Queen/X = owner
+	if(!X.check_state())
+		return
+
+	if(!action_cooldown_check())
+		return
+
+	var/turf/T = get_turf(A)
+
+	if(!T || !T.is_weedable() || T.density)
+		to_chat(X, SPAN_XENOWARNING("You can't do that here."))
+		return
+
+	var/obj/effect/alien/weeds/located_weeds = locate() in T
+	if(located_weeds)
+		if(istype(located_weeds, /obj/effect/alien/weeds/node))
+			return
+
+		if(located_weeds.weed_strength > WEED_LEVEL_WEAK)
+			to_chat(X, SPAN_XENOWARNING("There's weeds here already!"))
+			return
+
+		if (!check_and_use_plasma_owner(node_plant_plasma_cost))
+			return
+
+		to_chat(X, SPAN_XENONOTICE("You plant a node at [T]."))
+		new /obj/effect/alien/weeds/node/weak(T, null, X)
+		playsound(T, "alien_resin_build", 35)
+		apply_cooldown_override(node_plant_cooldown)
+		return
+
+	var/area/AR = get_area(T)
+	if(!AR.is_resin_allowed)
+		to_chat(X, SPAN_XENOWARNING("It's too early to spread the hive this far."))
+		return
+
+	var/obj/effect/alien/weeds/node/node
+	for(var/direction in cardinal)
+		var/obj/effect/alien/weeds/W = locate() in get_step(T, direction)
+		if(W && W.hivenumber == X.hivenumber && W.parent && !W.hibernate && !LinkBlocked(W, get_turf(W), T))
+			node = W.parent
+			break
+
+	if(!node)
+		to_chat(X, SPAN_XENOWARNING("You can only plant weeds near weeds with a connected node!"))
+		return
+
+	if(T in recently_built_turfs)
+		to_chat(X, SPAN_XENOWARNING("You've recently built here already!"))
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+	
+	new /obj/effect/alien/weeds/weak(T, node)
+	playsound(T, "alien_resin_build", 35)
+
+	recently_built_turfs += T
+	addtimer(CALLBACK(src, .proc/reset_turf_cooldown, T), turf_build_cooldown)
+
+	to_chat(X, SPAN_XENONOTICE("You plant weeds at [T]."))
+	apply_cooldown()
+
+/datum/action/xeno_action/activable/expand_weeds/proc/reset_turf_cooldown(var/turf/T)
+	recently_built_turfs -= T

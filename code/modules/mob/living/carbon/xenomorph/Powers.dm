@@ -66,7 +66,7 @@
 
 	var/turf/current_turf = get_turf(A)
 
-	if(get_dist(src, A) > src.caste.max_build_dist + extra_build_dist) // Hivelords have max_build_dist of 1, drones and queens 0
+	if(extra_build_dist != IGNORE_BUILD_DISTANCE && get_dist(src, A) > src.caste.max_build_dist + extra_build_dist) // Hivelords have max_build_dist of 1, drones and queens 0
 		current_turf = get_turf(src)
 	else if(thick) //hivelords can thicken existing resin structures.
 		var/thickened = FALSE
@@ -118,7 +118,7 @@
 	alien_weeds.secreting = TRUE
 	alien_weeds.update_icon()
 
-	if(!do_after(src, wait_time, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+	if(!do_after(src, wait_time, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, alien_weeds))
 		alien_weeds.secreting = FALSE
 		alien_weeds.update_icon()
 

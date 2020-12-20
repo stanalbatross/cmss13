@@ -22,8 +22,8 @@
 /obj/proc/GetJobRealName()
 	if (!istype(src,/obj/item/card/id)) return
 	var/obj/item/card/id/I = src
-	if(I.rank in joblist) return I.rank
-	if(I.assignment in joblist) return I.assignment
+	if(I.rank in GLOB.joblist) return I.rank
+	if(I.assignment in GLOB.joblist) return I.assignment
 	return "Unknown"
 
 /proc/FindNameFromID(mob/living/carbon/human/H)
@@ -33,7 +33,7 @@
 	I = H.get_active_hand()
 	if(istype(I)) return I.registered_name
 
-/proc/get_all_job_icons() return joblist + list("Prisoner")//For all existing HUD icons
+/proc/get_all_job_icons() return GLOB.joblist + list("Prisoner")//For all existing HUD icons
 
 /obj/proc/GetJobName() //Used in secHUD icon generation
 	var/obj/item/card/id/I = src
@@ -50,7 +50,7 @@
 /proc/get_actual_job_name(var/mob/M)
 	if(!M)
 		return null
-		
+
 	var/job_name = M.job
 	return job_name
 
@@ -129,7 +129,7 @@ var/global/list/wy_ranks = list(
 		comm_title = c_title
 	else
 		comm_title = trim(get_paygrades(code, TRUE))
-	
+
 	var/obj/item/card/id/I = wear_id
 
 	if(istype(I))
@@ -179,6 +179,7 @@ var/global/list/wy_ranks = list(
 
 	switch(paygrade)
 		if("C") . = size ? "" : "Civilian"
+		if("CN") . = size ? "Nrs. " : "Nurse"
 		if("CD") . = size ? "Dr. " : "Doctor"
 		if("CCMO") . = size ? "Prof. " : "Professor"
 		if("PMC1") . = size ? "SCE " : "Security Expert"

@@ -76,9 +76,9 @@ var/global/datum/controller/defcon/defcon_controller
 	var/pick = input("Which asset would you like to enable?") as null|anything in rewards_for_purchase
 	if(!pick)
 		return
-	if(defcon_reward_list[pick].apply_reward(src))
+	if(GLOB.defcon_reward_list[pick].apply_reward(src))
 		to_chat(usr, "Asset granted!")
-		defcon_reward_list[pick].announce_reward()
+		GLOB.defcon_reward_list[pick].announce_reward()
 	else
 		to_chat(usr, "Asset granting failed!")
 	return
@@ -89,8 +89,8 @@ var/global/datum/controller/defcon/defcon_controller
 	if(!remaining_reward_points) //No points - can't buy anything
 		return can_purchase
 
-	for(var/str in defcon_reward_list)
-		if (can_purchase_reward(defcon_reward_list[str]))
+	for(var/str in GLOB.defcon_reward_list)
+		if (can_purchase_reward(GLOB.defcon_reward_list[str]))
 			can_purchase += str //can purchase!
 
 	return can_purchase
@@ -115,16 +115,18 @@ var/global/datum/controller/defcon/defcon_controller
 	// as this code can sometimes execute before world initialization.
 	//text2file("DEFCON lists began initialization","data/defcon_log.txt")
 	//text2file("Map tag: [map_tag]", "data/defcon_log.txt")
-	if (map_tag == MAP_PRISON_STATION || map_tag == MAP_SOROKYNE_STRATA || map_tag == MAP_KUTJEVO)
+	if (map_tag == MAP_PRISON_STATION || map_tag == MAP_SOROKYNE_STRATA)
 		defcon_level_triggers = list(3750, 2600, 1450, 875, 0.0)
 	else if (map_tag == MAP_ICE_COLONY || map_tag == MAP_DESERT_DAM || map_tag == MAP_CORSAT)
 		defcon_level_triggers = list(3300, 2100, 1450, 580, 0.0)
 	else if (map_tag == MAP_BIG_RED)
 		defcon_level_triggers = list(4750, 3500, 2000, 1000, 0.0)
+	else if (map_tag == MAP_KUTJEVO)
+		defcon_level_triggers = list(4250, 2950, 1650, 1000, 0.0)
 	else
 		// Defaults
 		// Currently just LV
-		defcon_level_triggers = list(5500, 4500, 3000, 1000, 0.0)
+		defcon_level_triggers = list(5150, 4225, 2800, 1000, 0.0)
 	//text2file("Listing level triggers:","data/defcon_log.txt")
 	//for (var/i in defcon_level_triggers)
 		//text2file("Defcon level trigger: [i]","data/defcon_log.txt")
@@ -244,14 +246,14 @@ var/global/datum/controller/defcon/defcon_controller
 	announcement_message = "Additional troops are being taken out of cryo."
 
 /datum/defcon_reward/cryo_squad/apply_reward(var/datum/controller/defcon/d)
-	if (!ticker  || !ticker.mode)
+	if (!SSticker.mode)
 		return
 
 	. = ..()
 	if(. == 0)
 		return
 
-	ticker.mode.get_specific_call("Marine Cryo Reinforcements (Squad)", FALSE, FALSE)
+	SSticker.mode.get_specific_call("Marine Cryo Reinforcements (Squad)", FALSE, FALSE)
 
 /datum/defcon_reward/tank_points
 	name = "Additional Vehicle Parts Delivery System Points"

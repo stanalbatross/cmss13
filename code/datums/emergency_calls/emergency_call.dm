@@ -22,7 +22,8 @@
 	var/hostility //For ERTs who are either hostile or friendly by random chance.
 	var/list/datum/mind/members = list() //Currently-joined members.
 	var/list/datum/mind/candidates = list() //Potential candidates for enlisting.
-	var/name_of_spawn = "Distress" //If we want to set up different spawn locations
+	var/name_of_spawn = /obj/effect/landmark/ert_spawns/distress //If we want to set up different spawn locations
+	var/item_spawn = /obj/effect/landmark/ert_spawns/distress/item
 	var/mob/living/carbon/leader = null //Who's leading these miscreants
 	var/medics = 0
 	var/heavies = 0
@@ -83,7 +84,7 @@
 	return
 
 /datum/emergency_call/proc/show_join_message()
-	if(!mob_max || !ticker || !ticker.mode) //Just a supply drop, don't bother.
+	if(!mob_max || !SSticker.mode) //Just a supply drop, don't bother.
 		return
 
 	for(var/mob/dead/observer/M in GLOB.observer_list)
@@ -106,19 +107,19 @@
 	if(jobban_isbanned(usr, "Syndicate") || jobban_isbanned(usr, "Emergency Response Team"))
 		to_chat(usr, SPAN_DANGER("You are jobbanned from the emergency response team!"))
 		return
-	if(!ticker || !ticker.mode || !ticker.mode.picked_calls.len)
+	if(!SSticker.mode || !SSticker.mode.picked_calls.len)
 		to_chat(usr, SPAN_WARNING("No distress beacons are active. You will be notified if this changes."))
 		return
 
 	var/list/beacons = list()
 
-	for(var/datum/emergency_call/em_call in ticker.mode.picked_calls)
+	for(var/datum/emergency_call/em_call in SSticker.mode.picked_calls)
 		var/name = em_call.name
 		var/iteration = 1
 		while(name in beacons)
 			name = "[em_call.name] [iteration]"
 			iteration++
-		
+
 		beacons += list("[name]" = em_call) // I hate byond
 
 	var/choice = input(usr, "Choose a distress beacon to join", "") in beacons
@@ -127,7 +128,7 @@
 		to_chat(usr, "Something seems to have gone wrong!")
 		return
 
-	if(!beacons[choice] || !(beacons[choice] in ticker.mode.picked_calls))
+	if(!beacons[choice] || !(beacons[choice] in SSticker.mode.picked_calls))
 		to_chat(usr, "That choice is no longer available!")
 		return
 
@@ -164,10 +165,10 @@
 
 /datum/emergency_call/proc/activate(announce = TRUE)
 	set waitfor = 0
-	if(!ticker || !ticker.mode) //Something horribly wrong with the gamemode ticker
+	if(!SSticker.mode) //Something horribly wrong with the gamemode ticker
 		return
 
-	ticker.mode.picked_calls += src
+	SSticker.mode.picked_calls += src
 
 	show_join_message() //Show our potential candidates the message to let them join.
 	message_staff("Distress beacon: '[name]' activated [src.hostility? "[SPAN_WARNING("(THEY ARE HOSTILE)")]":"(they are friendly)"]. Looking for candidates.")
@@ -178,8 +179,8 @@
 	addtimer(CALLBACK(src, /datum/emergency_call/proc/spawn_candidates, announce), SECONDS_60)
 
 /datum/emergency_call/proc/spawn_candidates(announce = TRUE)
-	if(ticker && ticker.mode)
-		ticker.mode.picked_calls -= src
+	if(SSticker.mode)
+		SSticker.mode.picked_calls -= src
 
 	if(candidates.len < mob_min && !spawn_max_amount)
 		message_staff("Aborting distress beacon, not enough candidates: found [candidates.len].")
@@ -201,7 +202,7 @@
 					continue //Lets try this again
 				if(M.current && M.current.stat != DEAD)
 					candidates.Remove(M) //Strip them from the list, they aren't dead anymore.
-					if(!candidates.len) 
+					if(!candidates.len)
 						break //NO picking from empty lists
 					continue
 				picked_candidates.Add(M)
@@ -261,23 +262,12 @@
 	return TRUE
 
 /datum/emergency_call/proc/get_spawn_point(is_for_items)
-	var/list/spawn_list = list()
-
-	for(var/obj/effect/landmark/L in landmarks_list)
-		if(is_for_items && L.name == "[name_of_spawn]Item")
-			spawn_list += L
-		else
-			if(L.name == name_of_spawn) //Default is "Distress"
-				spawn_list += L
-
-	if(!spawn_list.len) //Empty list somehow
-		return null
-
-	var/turf/spawn_loc	= get_turf(pick(spawn_list))
-	if(!istype(spawn_loc))
-		return null
-
-	return spawn_loc
+	var/landmark
+	if(is_for_items)
+		landmark = SAFEPICK(GLOB.ert_spawns[item_spawn])
+	else
+		landmark = SAFEPICK(GLOB.ert_spawns[name_of_spawn])
+	return landmark ? get_turf(landmark) : null
 
 /datum/emergency_call/proc/create_member(datum/mind/M) //This is the parent, each type spawns its own variety.
 	return

@@ -49,6 +49,8 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 		var/rank = t.fields["rank"]
 		var/real_rank = t.fields["real_rank"]
 		var/squad_name = t.fields["squad"]
+		if(isnull(name) || isnull(rank) || isnull(real_rank))
+			continue
 
 		if(OOC)
 			var/active = 0
@@ -83,6 +85,8 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 			dept_flags |= FLAG_SHOW_MEDICAL
 			LAZYSET(med[real_rank], name, rank)
 		else if(real_rank in ROLES_MARINES)
+			if(isnull(squad_name))
+				continue
 			dept_flags |= FLAG_SHOW_MARINES
 			squad_sublists[squad_name] = TRUE
 			LAZYSET(marines_by_squad[squad_name][real_rank], name, rank)
@@ -155,7 +159,7 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 			sleep(40)
 
 		var/list/jobs_to_check = ROLES_CIC + ROLES_AUXIL_SUPPORT + ROLES_MISC + ROLES_POLICE + ROLES_ENGINEERING + ROLES_REQUISITION + ROLES_MEDICAL + ROLES_MARINES
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			if(H.job in jobs_to_check)
 				manifest_inject(H)
 		return
@@ -273,8 +277,8 @@ proc/get_id_photo(var/mob/living/carbon/human/H)
 	var/icon/icobase = H.species.icobase
 	var/icon/temp
 
-	var/datum/ethnicity/ET = ethnicities_list[H.ethnicity]
-	var/datum/body_type/B = body_types_list[H.body_type]
+	var/datum/ethnicity/ET = GLOB.ethnicities_list[H.ethnicity]
+	var/datum/body_type/B = GLOB.body_types_list[H.body_type]
 
 	var/e_icon
 	var/b_icon

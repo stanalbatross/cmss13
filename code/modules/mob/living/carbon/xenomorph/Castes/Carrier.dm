@@ -5,13 +5,12 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_2
 	melee_damage_upper = XENO_DAMAGE_TIER_4
-	max_health = XENO_HEALTH_TIER_8
+	max_health = XENO_HEALTH_TIER_9
 	plasma_gain = XENO_PLASMA_GAIN_TIER_6
 	plasma_max = XENO_PLASMA_TIER_4
 	crystal_max = XENO_CRYSTAL_LOW
-	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_1
-	armor_deflection = XENO_ARMOR_TIER_1
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_MEDIUM
+	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_2
+	armor_deflection = XENO_NO_ARMOR
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_4
 
@@ -25,7 +24,7 @@
 	weed_level = WEED_LEVEL_STANDARD
 	huggers_max = 16
 	eggs_max = 7
-	
+
 	tackle_min = 2
 	tackle_max = 4
 	tackle_chance = 50
@@ -40,7 +39,6 @@
 	caste_name = "Carrier"
 	name = "Carrier"
 	desc = "A strange-looking alien creature. It carries a number of scuttling jointed crablike creatures."
-	icon_source = "alien_carrier"
 	icon_size = 64
 	icon_state = "Carrier Walking"
 	plasma_types = list(PLASMA_PURPLE)
@@ -65,6 +63,10 @@
 		)
 	mutation_type = CARRIER_NORMAL
 
+/mob/living/carbon/Xenomorph/Carrier/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_carrier))
+
 /mob/living/carbon/Xenomorph/Carrier/death(var/cause, var/gibbed)
 	. = ..(cause, gibbed)
 	if(.)
@@ -74,13 +76,6 @@
 			if(prob(chance))
 				new /obj/item/xeno_egg(loc, hivenumber)
 				eggs_cur--
-		if (huggers_cur)
-			visible_message(SPAN_XENOWARNING("The chittering mass of tiny aliens is trying to escape [src]!"))
-			for(var/i in 0 to huggers_cur)
-				if(prob(chance))
-					var/obj/item/clothing/mask/facehugger/F = new(loc, hivenumber)
-					step_away(F,src,1)
-					addtimer(CALLBACK(F, /obj/item/clothing/mask/facehugger/.proc/leap_at_nearest_target), SECONDS_3)
 
 
 /mob/living/carbon/Xenomorph/Carrier/Stat()

@@ -71,6 +71,11 @@
 	var/turf/T = src.loc			// hide if turf is not intact
 	if(level==1) hide(T.intact_tile)
 	update_icon()
+	GLOB.cable_list += src
+
+/obj/structure/cable/Destroy()
+	GLOB.cable_list -= src
+	return ..()
 
 /obj/structure/cable/hide(var/i)
 
@@ -151,7 +156,7 @@
 /obj/structure/cable/ex_act(severity)
 	if(Check_WO())
 		return
-	if(src.z == 1 && layer < 2) //ground map - no blowie. They are buried underground.
+	if(is_ground_level(z) && layer < 2) //ground map - no blowie. They are buried underground.
 		return
 
 	if(src.d1 == 11 || src.d2 == 11)

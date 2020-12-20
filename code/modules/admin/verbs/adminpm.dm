@@ -1,5 +1,5 @@
 //allows right clicking mobs to send an admin PM to their client, forwards the selected mob's client to cmd_admin_pm
-/client/proc/cmd_admin_pm_context(mob/M as mob in mob_list)
+/client/proc/cmd_admin_pm_context(mob/M as mob in GLOB.mob_list)
 	set category = null
 	set name = "Admin PM Mob"
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
@@ -71,7 +71,7 @@
 			C.adminhelped = 0
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-		if(config.popup_admin_pm)
+		if(CONFIG_GET(flag/popup_admin_pm))
 			spawn(0)	//so we don't hold the caller proc up
 				var/sender = src
 				var/sendername = key

@@ -83,15 +83,6 @@
 		hex = text("0[]", hex)
 	return hex
 
-//slower then list2text, but correctly processes associative lists.
-proc/tg_list2text(list/list, glue=",")
-	if(!istype(list) || !list.len)
-		return
-	var/output
-	for(var/i=1 to list.len)
-		output += (i!=1? glue : null)+(!isnull(list["[list[i]]"])?"[list["[list[i]]"]]":"[list[i]]")
-	return output
-
 //Splits the text of a file at seperator and returns them in a list.
 /proc/file2list(filename, seperator="\n", trim = TRUE)
 	if (trim)
@@ -203,10 +194,6 @@ proc/tg_list2text(list/list, glue=",")
 		if(SOUTHWEST)	return 225
 		else			return null
 
-//Returns the angle in english
-/proc/angle2text(var/degree)
-	return dir2text(angle2dir(degree))
-
 //Converts a blend_mode constant to one acceptable to icon.Blend()
 /proc/blendMode2iconMode(blend_mode)
 	switch(blend_mode)
@@ -236,19 +223,6 @@ proc/tg_list2text(list/list, glue=",")
 	if(rights & R_NOLOCK)		. += "[seperator]+NOLOCK"
 	return .
 
-//Shows all the direction represented by direction
-/proc/alldir2text_short(direction)
-	var/dirs = ""
-	if(direction & NORTH)
-		dirs += "N"
-	if(direction & SOUTH)
-		dirs += "S"
-	if(direction & EAST)
-		dirs += "E"
-	if(direction & WEST)
-		dirs += "W"
-	return dirs
-
 /// Return html to load a url.
 /// for use inside of browse() calls to html assets that might be loaded on a cdn.
 /proc/url2htmlloader(url)
@@ -268,3 +242,25 @@ proc/tg_list2text(list/list, glue=",")
 			else
 				return /datum
 	return text2path(copytext(string_type, 1, last_slash))
+
+//returns a string the last bit of a type, without the preceeding '/'
+/proc/type2top(the_type)
+	//handle the builtins manually
+	if(!ispath(the_type))
+		return
+	switch(the_type)
+		if(/datum)
+			return "datum"
+		if(/atom)
+			return "atom"
+		if(/obj)
+			return "obj"
+		if(/mob)
+			return "mob"
+		if(/area)
+			return "area"
+		if(/turf)
+			return "turf"
+		else //regex everything else (works for /proc too)
+			return lowertext(replacetext("[the_type]", "[type2parent(the_type)]/", ""))
+

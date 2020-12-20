@@ -266,7 +266,7 @@ var/list/advance_cures = 	list(
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
 /datum/disease/advance/proc/Evolve(var/level = 2)
-	var/s = safepick(GenerateSymptoms(level, 1))
+	var/s = SAFEPICK(GenerateSymptoms(level, 1))
 	if(s)
 		AddSymptom(s)
 		Refresh(1)
@@ -275,7 +275,7 @@ var/list/advance_cures = 	list(
 // Randomly remove a symptom.
 /datum/disease/advance/proc/Devolve()
 	if(symptoms.len > 1)
-		var/s = safepick(symptoms)
+		var/s = SAFEPICK(symptoms)
 		if(s)
 			RemoveSymptom(s)
 			Refresh(1)
@@ -394,7 +394,7 @@ var/list/advance_cures = 	list(
 		for(var/datum/disease/advance/AD in active_diseases)
 			AD.Refresh()
 
-		for(var/mob/living/carbon/human/H in shuffle(living_mob_list))
+		for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list.Copy()))
 			if(H.z != 1)
 				continue
 			if(!H.has_disease(D))

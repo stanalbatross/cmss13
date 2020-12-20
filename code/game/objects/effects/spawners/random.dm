@@ -12,10 +12,7 @@
 
 	if (!prob(spawn_nothing_percentage))
 		spawn_item()
-	
-	effect_list -= src
-	object_list -= src
-	
+
 	return INITIALIZE_HINT_QDEL
 
 
@@ -74,7 +71,7 @@
 	item_to_spawn()
 		return pick(/obj/item/device/assembly/igniter,\
 					/obj/item/device/assembly/prox_sensor,\
-					/obj/item/device/assembly/signaler,\
+					/obj/item/device/assembly/signaller,\
 					/obj/item/device/multitool)
 
 

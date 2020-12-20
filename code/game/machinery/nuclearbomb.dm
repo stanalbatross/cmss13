@@ -280,7 +280,7 @@ var/bomb_set = FALSE
 /obj/structure/machinery/nuclearbomb/proc/announce_to_players(var/timer_warning)
 	if(timer_warning)	//we check for timer warnings first
 		//humans part
-		var/list/humans_other = human_mob_list + dead_mob_list
+		var/list/humans_other = GLOB.human_mob_list + GLOB.dead_mob_list
 		var/list/humans_USCM = list()
 		for(var/mob/M in humans_other)
 			var/mob/living/carbon/human/H = M
@@ -311,7 +311,7 @@ var/bomb_set = FALSE
 		return
 
 	//deal with start/stop announcements for players
-	var/list/humans_other = human_mob_list + dead_mob_list
+	var/list/humans_other = GLOB.human_mob_list + GLOB.dead_mob_list
 	var/list/humans_USCM = list()
 	for(var/mob/M in humans_other)
 		var/mob/living/carbon/human/H = M
@@ -330,7 +330,7 @@ var/bomb_set = FALSE
 		for(var/datum/hive_status/hive in hive_datum)
 			if(!hive.totalXenos.len)
 				continue
-			xeno_announcement(SPAN_XENOANNOUNCE("The tallhosts have deployed a hive killer at [get_area(loc).name]! Stop it at all costs!"), hive.hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("The tallhosts have deployed a hive killer at [get_area_name(loc)]! Stop it at all costs!"), hive.hivenumber, XENO_GENERAL_ANNOUNCE)
 	else
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_USCM, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')

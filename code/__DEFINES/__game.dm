@@ -1,3 +1,9 @@
+#define RANGE_TURFS(RADIUS, CENTER) \
+  block( \
+    locate(max(CENTER.x-(RADIUS),1),          max(CENTER.y-(RADIUS),1),          CENTER.z), \
+    locate(min(CENTER.x+(RADIUS),world.maxx), min(CENTER.y+(RADIUS),world.maxy), CENTER.z) \
+  )
+
 //Admin perms are in global.dm.
 
 #define DEBUG 0
@@ -6,17 +12,8 @@
 #define GLOBAL_PROC		"magic BS"
 
 //Game defining directives.
-#define SURFACE_Z_LEVELS list(1)
-#define SURFACE_Z_LEVEL 1 // The planet/colony itself
-#define MAIN_SHIP_Z_LEVEL 3 // The main ship
-#define MAIN_SHIP_AND_DROPSHIPS_Z_LEVELS list(3,4) // The main ship and the z level where dropships transit
-#define ADMIN_Z_LEVEL 2
-#define LOW_ORBIT_Z_LEVEL 4 // Where the Almayer dropships stand when in transit.
-#define GAME_PLAY_Z_LEVELS list(1,3,4)
 #define MAIN_AI_SYSTEM "ARES v3.2"
 #define MAIN_SHIP_ESCAPE_POD_NUMBER 18
-
-#define OBJECTS_CAN_REACH(Oa, Ob) (!(Oa.z == ADMIN_Z_LEVEL || Ob.z == ADMIN_Z_LEVEL) || Oa.z == Ob.z)
 
 // Maploader bounds indices
 #define MAP_MINX 1
@@ -307,10 +304,6 @@ var/list/accessable_z_levels = list("1" = 10, "3" = 10, "4" = 10, "5" = 70)
 #define FIRE_MISSION_STATE_COOLDOWN 16
 
 //Defines for the ticker
-#define GAME_STATE_PREGAME		1
-#define GAME_STATE_SETTING_UP	2
-#define GAME_STATE_PLAYING		3
-#define GAME_STATE_FINISHED		4
 #define GAME_STATE_COMPILE_FINISHED	5
 
 // Misc client defines
@@ -400,4 +393,12 @@ var/list/accessable_z_levels = list("1" = 10, "3" = 10, "4" = 10, "5" = 70)
 		else		dist = (0.427*dx) + (0.934*dy)
 
 	return dist
-	
+
+//Update this whenever you need to take advantage of more recent byond features
+#define MIN_COMPILER_VERSION 513
+#define MIN_COMPILER_BUILD 1514
+#if DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD
+//Don't forget to update this part
+#error Your version of BYOND is too out-of-date to compile this project. Go to https://secure.byond.com/download and update.
+#error You need version 513.1514 or higher
+#endif

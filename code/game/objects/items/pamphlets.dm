@@ -50,9 +50,59 @@
 	skill_to_increment = SKILL_CONSTRUCTION
 	secondary_skill = SKILL_ENGINEER
 
+/obj/item/pamphlet/engineer/machinegunner
+	name = "heavy machinegunner instructional pamphlet"
+	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering and a machinegun insignia."
+	icon_state = "pamphlet_machinegunner"
+	skill_to_increment = SKILL_ENGINEER
+	bypass_pamphlet_limit = TRUE
+
 /obj/item/pamphlet/powerloader
 	name = "powerloader instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has a powerloader insignia. The title reads 'Moving freight and squishing heads - a practical guide to Caterpillar P-5000 Work Loader'."
 	skill_to_increment = SKILL_POWERLOADER
 	skill_increment = SKILL_POWERLOADER_TRAINED
 	bypass_pamphlet_limit = TRUE //it's really not necessary to stop people from learning powerloader skill
+
+/obj/item/pamphlet/language
+	name = "translation pamphlet"
+	desc = "A pamphlet used by lazy USCM interpreters to quickly learn new languages on the spot."
+	var/language_type = "English"
+	var/flavour_learning = "You go over the pamphlet, learning a new language."
+
+	bypass_pamphlet_limit = TRUE
+
+/obj/item/pamphlet/language/attack_self(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+
+	if(!user.add_language(language_type))
+		to_chat(user, SPAN_WARNING("You are already familiar with this language, no need to read this piece of literature here."))
+		return
+
+	to_chat(user, SPAN_NOTICE("[flavour_learning]"))
+	qdel(src)
+
+/obj/item/pamphlet/language/russian
+	name = "Printed Copy of Pari"
+	desc = "Pari, or The Bet in English, is a short story written by Anton Checkov about a bet between a lawyer and a banker; the banker wagers that the lawyer cannot remain in solitary confinement for 15 years. Must be a refined reader if you know this one; why are you even in the USCM if you know that?"
+	language_type = "Russian"
+	flavour_learning = "After reading the full version of the short story, you feel temporarily morally conflicted about the themes of greed and freedom in the story before snapping back to 2189 reality."
+
+/obj/item/pamphlet/language/japanese
+	name = "Pages of Koroniaru Yohei Adobencha Zohuken"
+	desc = "These are some torn pages from a famous isekai manga named 'Koroniaru Yohei Adobencha Zohuken' or Colonial Mercenary Adventure Sequel about a travelling band of Freelancers sent into a fantasy world."
+	language_type = "Japanese"
+	flavour_learning = "After reading the cluster of manga panels, you navigate your way past bad cliches and circular plots and refresh yourself on Japanese, but feel like a geek after finishing it."
+
+/obj/item/pamphlet/language/german
+	name = "Translated Lyrics to 99 Luftballons"
+	desc = "These hastily written Spacendeutchen translations of 99 Luftballons, an iconic German hit of the 80s were meant for the yearly Battalion's Karaoke Night, I guess you can get some better use out of this."
+	language_type = "Spacendeutchen"
+	flavour_learning = "You quickly read and memorize the lyrics, the new wave tunes and cynic themes flowing through your mind while doing so."
+
+/obj/item/pamphlet/language/spanish
+	name = "America Latina - A Quick Translation Guide for Southern UA states"
+	desc = "This pamphlet was designed for Intelligence Officers operating on Earth to interact with the local populaces of the Latin American states, but only for IOs who managed to sleep through Dialects and Mannerisms Class."
+	language_type = "Spanish"
+	flavour_learning = "You quickly read and memorize the pamphlet, hoping none of your instructors notice you... even though you never attended Dialects and Mannerisms at all."

@@ -11,7 +11,6 @@
 	crystal_max = XENO_CRYSTAL_LOW
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
 	armor_deflection = XENO_ARMOR_TIER_3
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_VERYHIGH
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_4
 
@@ -36,7 +35,6 @@
 	caste_name = "Burrower"
 	name = "Burrower"
 	desc = "A beefy, alien with sharp claws."
-	icon_source = "alien_burrower"
 	icon_size = 64
 	icon_state = "Burrower Walking"
 	layer = MOB_LAYER
@@ -63,8 +61,9 @@
 		)
 	mutation_type = BURROWER_NORMAL
 
-/mob/living/carbon/Xenomorph/Burrower/New()
+/mob/living/carbon/Xenomorph/Burrower/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_burrower))
 	sight |= SEE_TURFS
 
 /mob/living/carbon/Xenomorph/Burrower/update_canmove()

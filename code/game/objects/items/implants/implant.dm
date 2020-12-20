@@ -56,7 +56,15 @@
 	desc = "Track with this."
 	var/id = 1.0
 
+/obj/item/implant/tracking/Initialize(mapload, ...)
+	. = ..()
+	GLOB.tracking_implant_list += src
 
+/obj/item/implant/tracking/Destroy()
+	GLOB.tracking_implant_list -= src
+	return ..()
+
+/obj/item/implant/tracking
 	get_data()
 		var/dat = {"<b>Implant Specifications:</b><BR>
 <b>Name:</b> Tracking Beacon<BR>
@@ -254,6 +262,15 @@ Implant Specifics:<BR>"}
 	desc = "Injects things."
 	allow_reagents = 1
 
+/obj/item/implant/chem/Initialize()
+	. = ..()
+	GLOB.chem_implant_list += src
+
+/obj/item/implant/chem/Destroy()
+	GLOB.chem_implant_list -= src
+	return ..()
+
+/obj/item/implant/chem
 	get_data()
 		var/dat = {"
 <b>Implant Specifications:</b><BR>
@@ -385,7 +402,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 <b>Important Notes:</b> Alerts crew to crewmember death.<BR>
 <HR>
 <b>Implant Details:</b><BR>
-<b>Function:</b> Contains a compact radio signaler that triggers when the host's lifesigns cease.<BR>
+<b>Function:</b> Contains a compact radio signaller that triggers when the host's lifesigns cease.<BR>
 <b>Special Features:</b> Alerts crew to crewmember death.<BR>
 <b>Integrity:</b> Implant will occasionally be degraded by the body's immune system and thus will occasionally malfunction."}
 		return dat
@@ -404,7 +421,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		var/area/t = get_area(M)
 		switch (cause)
 			if("death")
-				processing_objects.Remove(src)
+				STOP_PROCESSING(SSobj, src)
 			if ("emp")
 				var/obj/item/device/radio/headset/a = new /obj/item/device/radio/headset(null)
 				var/name = t.name
@@ -414,7 +431,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 				var/obj/item/device/radio/headset/a = new /obj/item/device/radio/headset(null)
 				ai_silent_announcement("[mobname] has died-zzzzt in-in-in...", "[mobname]'s Death Alarm")
 				qdel(a)
-				processing_objects.Remove(src)
+				STOP_PROCESSING(SSobj, src)
 
 	emp_act(severity)			//for some reason alarms stop going off in case they are emp'd, even without this
 		if (malfunction)		//so I'm just going to add a meltdown chance here
@@ -427,14 +444,14 @@ the implant may become unstable and either pre-maturely inject the subject or si
 				meltdown()
 			else if (prob(60))	//but more likely it will just quietly die
 				malfunction = MALFUNCTION_PERMANENT
-			processing_objects.Remove(src)
+			STOP_PROCESSING(SSobj, src)
 
 		spawn(20)
 			malfunction--
 
 	implanted(mob/source as mob)
 		mobname = source.real_name
-		processing_objects.Add(src)
+		START_PROCESSING(SSobj, src)
 		return 1
 
 /obj/item/implant/compressed
@@ -452,7 +469,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 <b>Important Notes:</b> Alerts crew to crewmember death.<BR>
 <HR>
 <b>Implant Details:</b><BR>
-<b>Function:</b> Contains a compact radio signaler that triggers when the host's lifesigns cease.<BR>
+<b>Function:</b> Contains a compact radio signaller that triggers when the host's lifesigns cease.<BR>
 <b>Special Features:</b> Alerts crew to crewmember death.<BR>
 <b>Integrity:</b> Implant will occasionally be degraded by the body's immune system and thus will occasionally malfunction."}
 		return dat

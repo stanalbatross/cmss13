@@ -1,13 +1,6 @@
 //------------GEAR VENDOR---------------
 
-/obj/structure/machinery/cm_vending/gear/rto
-	name = "\improper ColMarTech Radio Telephone Operator Gear Rack"
-	desc = "An automated gear rack for RTOs."
-	icon_state = "intel_gear"
-	req_access = list(ACCESS_MARINE_RTOPREP)
-	vendor_role = list(JOB_SQUAD_RTO)
-
-	listed_products = list(
+GLOBAL_LIST_INIT(cm_vending_gear_rto, list(
 		list("SUPPLIES", 0, null, null, null),
 		list("Autoinjector Pouch (Full)", 15, /obj/item/storage/pouch/autoinjector/full, null, VENDOR_ITEM_RECOMMENDED),
 		list("Binoculars", 5, /obj/item/device/binoculars, null, VENDOR_ITEM_REGULAR),
@@ -42,17 +35,22 @@
 		list("Reflex Sight", 10, /obj/item/attachable/reflex, null, VENDOR_ITEM_REGULAR),
 		list("Suppressor", 10, /obj/item/attachable/suppressor, null, VENDOR_ITEM_REGULAR),
 		list("Vertical Grip", 10, /obj/item/attachable/verticalgrip, null, VENDOR_ITEM_REGULAR)
-	)
+	))
 
-//------------CLOTHING VENDOR---------------
-
-/obj/structure/machinery/cm_vending/clothing/rto
-	name = "\improper ColMarTech Radio Telephone Operator Equipment Rack"
-	desc = "An automated rack hooked up to a colossal storage of RTO standard-issue equipment."
+/obj/structure/machinery/cm_vending/gear/rto
+	name = "\improper ColMarTech Radio Telephone Operator Gear Rack"
+	desc = "An automated gear rack for RTOs."
+	icon_state = "intel_gear"
 	req_access = list(ACCESS_MARINE_RTOPREP)
 	vendor_role = list(JOB_SQUAD_RTO)
 
-	listed_products = list(
+/obj/structure/machinery/cm_vending/gear/intelligence_officer/Initialize(mapload, ...)
+	. = ..()
+	listed_products = GLOB.cm_vending_gear_rto
+
+//------------CLOTHING VENDOR---------------
+
+GLOBAL_LIST_INIT(cm_vending_clothing_rto, list(
 		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
 		list("Boots", 0, /obj/item/clothing/shoes/marine/knife, MARINE_CAN_BUY_SHOES, VENDOR_ITEM_MANDATORY),
 		list("Uniform", 0, /obj/item/clothing/under/marine/officer/rto, MARINE_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
@@ -104,4 +102,18 @@
 		list("MASK (CHOOSE 1)", 0, null, null, null),
 		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
 		list("Heat Absorbent Coif", 0, /obj/item/clothing/mask/rebreather/scarf, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR)
-	)
+	))
+
+//MARINE_CAN_BUY_SHOES MARINE_CAN_BUY_UNIFORM currently not used
+/obj/structure/machinery/cm_vending/clothing/rto
+	name = "\improper ColMarTech Radio Telephone Operator Equipment Rack"
+	desc = "An automated rack hooked up to a colossal storage of RTO standard-issue equipment."
+	req_access = list(ACCESS_MARINE_RTOPREP)
+	vendor_role = list(JOB_SQUAD_RTO)
+
+
+/obj/structure/machinery/cm_vending/clothing/intelligence_officer/Initialize(mapload, ...)
+	. = ..()
+	listed_products = GLOB.cm_vending_clothing_rto
+
+//------------ESSENTIAL SETS---------------

@@ -2,14 +2,13 @@
 	caste_name = "Crusher"
 	tier = 3
 
-	melee_damage_lower = XENO_DAMAGE_TIER_4
-	melee_damage_upper = XENO_DAMAGE_TIER_4
-	max_health = XENO_HEALTH_TIER_7
+	melee_damage_lower = XENO_DAMAGE_TIER_5
+	melee_damage_upper = XENO_DAMAGE_TIER_5
+	max_health = XENO_HEALTH_TIER_8
 	plasma_gain = XENO_PLASMA_GAIN_TIER_7
-	plasma_max = XENO_PLASMA_TIER_2
+	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_10
-	armor_deflection = XENO_ARMOR_TIER_4
-	armor_hardiness_mult = XENO_ARMOR_FACTOR_CRUSHER
+	armor_deflection = XENO_ARMOR_TIER_3
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_2
 	heal_standing = 0.66
@@ -28,16 +27,15 @@
 	caste_name = "Crusher"
 	name = "Crusher"
 	desc = "A huge alien with an enormous armored head crest."
-	icon_source = "alien_crusher"
 	icon_size = 64
 	icon_state = "Crusher Walking"
 	plasma_types = list(PLASMA_CHITIN)
 	tier = 3
 	drag_delay = 6 //pulling a big dead xeno is hard
-	
+
 	small_explosives_stun = FALSE
 
-	mob_size = MOB_SIZE_BIG
+	mob_size = MOB_SIZE_IMMOBILE
 
 	pixel_x = -16
 	pixel_y = -3
@@ -58,6 +56,10 @@
 	mutation_type = CRUSHER_NORMAL
 	claw_type = CLAW_TYPE_VERY_SHARP
 
+/mob/living/carbon/Xenomorph/Crusher/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	. = ..()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_crusher))
+
 // Refactored to handle all of crusher's interactions with object during charge.
 /mob/living/carbon/Xenomorph/proc/handle_collision(atom/target)
 	if(!target)
@@ -74,7 +76,7 @@
 	else if (istype(target, /obj/vehicle/multitile))
 		var/obj/vehicle/multitile/M = target
 		visible_message(SPAN_DANGER("[src] rams into [M] and skids to a halt!"), SPAN_XENOWARNING("You ram into [M] and skid to a halt!"))
-		
+
 		M.Collided(src)
 		. = FALSE
 
@@ -82,10 +84,10 @@
 		var/obj/structure/machinery/m56d_hmg/HMG = target
 		visible_message(SPAN_DANGER("[src] rams [HMG]!"), SPAN_XENODANGER("You ram [HMG]!"))
 		playsound(loc, "punch", 25, 1)
-		HMG.Collided()
+		HMG.CrusherImpact()
 		. =  FALSE
 
-	else if (istype(target, /obj/structure/window))	
+	else if (istype(target, /obj/structure/window))
 		var/obj/structure/window/W = target
 		if (W.unacidable)
 			. = FALSE
@@ -105,7 +107,7 @@
 		var/obj/structure/grille/G = target
 		if(G.unacidable)
 			. =  FALSE
-		else 
+		else
 			G.health -=  80 //Usually knocks it down.
 			G.healthcheck()
 			. = TRUE
@@ -118,13 +120,13 @@
 	else if (istype(target, /obj/structure/machinery/defenses))
 		var/obj/structure/machinery/defenses/DF = target
 		visible_message(SPAN_DANGER("[src] rams [DF]!"), SPAN_XENODANGER("You ram [DF]!"))
-		
+
 		if (!DF.unacidable)
 			playsound(loc, "punch", 25, 1)
 			DF.stat = 1
 			DF.update_icon()
 			DF.update_health(40)
-		
+
 		. =  FALSE
 
 	else if (istype(target, /obj/structure/machinery/vending))
@@ -163,7 +165,7 @@
 			. =  TRUE
 
 	// Anything else?
-	else 
+	else
 		if (isobj(target))
 			var/obj/O = target
 			if (O.unacidable)
@@ -173,16 +175,16 @@
 				if(O.contents.len) //Hopefully won't auto-delete things inside crushed stuff.
 					var/turf/T = get_turf(src)
 					for(var/atom/movable/S in T.contents) S.loc = T
-			
+
 				qdel(O)
-				. = TRUE 
-			
-			else 
+				. = TRUE
+
+			else
 				if(O.buckled_mob)
 					O.unbuckle()
 				visible_message(SPAN_WARNING("[src] knocks [O] aside!"), SPAN_XENOWARNING("You knock [O] aside.")) //Canisters, crates etc. go flying.
 				playsound(loc, "punch", 25, 1)
-			
+
 				var/impact_range = 2
 				var/turf/TA = get_diagonal_step(O, dir)
 				TA = get_step_away(TA, src)
@@ -214,7 +216,7 @@
 /datum/behavior_delegate/crusher_base
 	name = "Base Crusher Behavior Delegate"
 
-	var/aoe_slash_damage_reduction = 0.60
+	var/aoe_slash_damage_reduction = 0.40
 
 /datum/behavior_delegate/crusher_base/melee_attack_additional_effects_target(atom/A)
 
@@ -225,7 +227,7 @@
 
 	var/damage = bound_xeno.melee_damage_upper * aoe_slash_damage_reduction
 
-	var/cdr_amount = 10
+	var/cdr_amount = 15
 	for (var/mob/living/carbon/H in orange(1, A))
 		if (H.stat == DEAD)
 			continue
@@ -271,7 +273,7 @@
 /datum/behavior_delegate/crusher_base/append_to_stat()
 	var/shield_total = 0
 	for (var/datum/xeno_shield/XS in bound_xeno.xeno_shields)
-		if (XS.shield_source == XENO_SHIELD_SOURCE_CRUSHER) 
+		if (XS.shield_source == XENO_SHIELD_SOURCE_CRUSHER)
 			shield_total += XS.amount
 
 	stat("Shield:", "[shield_total]")
