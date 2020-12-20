@@ -61,7 +61,7 @@
 	for(var/mob/living/carbon/human/H in targets)
 		if(!(H.get_target_lock(faction_group)))
 			continue
-		
+
 		apply_buff_to_player(H)
 
 /obj/structure/machinery/defenses/planted_flag/proc/apply_buff_to_player(var/mob/living/carbon/human/H)
@@ -115,30 +115,30 @@
 /obj/item/device/jima/equipped(mob/user, slot)
 	. = ..()
 	if(slot == WEAR_BACK)
-		processing_objects.Add(src)
-	
+		START_PROCESSING(SSobj, src)
+
 
 /obj/item/device/jima/process()
 	if(!ismob(loc))
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		return
-	
+
 	var/mob/M = loc
-	
+
 	if(M.back != src)
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		return
-	
+
 	if(!M.x && !M.y && !M.z)
 		return
 
 	var/list/targets = SSquadtree.players_in_range(RECT(M.x, M.y, area_range, area_range), M.z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
 	targets |= M
-	
+
 	for(var/mob/living/carbon/human/H in targets)
 		if(!(H.get_target_lock(M.faction_group)))
 			continue
-		
+
 		H.activate_order_buff(COMMAND_ORDER_MOVE, buff_intensity, 3 SECONDS)
 		H.activate_order_buff(COMMAND_ORDER_FOCUS, buff_intensity, 3 SECONDS)
 

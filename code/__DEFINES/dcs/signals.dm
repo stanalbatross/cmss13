@@ -166,8 +166,6 @@
 	#define COMPONENT_TURF_ALLOW_MOVEMENT (1<<0)
 	#define COMPONENT_TURF_DENY_MOVEMENT  (1<<1)
 
-#define COMSIG_MOB_MOVE	"mob_move"
-
 #define COMSIG_MOB_POST_UPDATE_CANMOVE "mob_can_move"
 
 #define COMSIG_GRENADE_PRE_PRIME "grenade_pre_prime"

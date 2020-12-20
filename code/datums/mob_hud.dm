@@ -631,17 +631,11 @@ var/list/datum/mob_hud/huds = list(
 			if(JOB_SO)
 				marine_rk = "so"
 				border_rk = "command"
-<<<<<<< HEAD
-			if(JOB_PILOT) marine_rk = "po"
-			if(JOB_CREWMAN) marine_rk = "tc"
-=======
-			if("USCM Admiral")
+			if(JOB_ADMIRAL)
 				marine_rk = "admiral"
 				border_rk = "command"
-			if("Pilot Officer") marine_rk = "po"
-			if("Intelligence Officer") marine_rk = "io"
-			if("Crewman") marine_rk = "tc"
->>>>>>> upstream/dev
+			if(JOB_PILOT) marine_rk = "po"
+			if(JOB_CREWMAN) marine_rk = "tc"
 		if(marine_rk)
 			var/image/I = image('icons/mob/hud/hud.dmi',src, "hudmarinesquad")
 			I.color = "#5A934A"

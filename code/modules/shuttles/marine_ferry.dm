@@ -305,9 +305,9 @@
 
 	//END: Heavy lifting backend
 
-	if(ticker && ticker.mode && !(ticker.mode.flags_round_type & MODE_DS_LANDED))
-		ticker.mode.flags_round_type |= MODE_DS_LANDED
-		ticker.mode.ds_first_drop(src)
+	if(SSticker && SSticker.mode && !(SSticker.mode.flags_round_type & MODE_DS_LANDED))
+		SSticker.mode.flags_round_type |= MODE_DS_LANDED
+		SSticker.mode.ds_first_drop(src)
 
 	for(var/X in equipments)
 		var/obj/structure/dropship_equipment/E = X

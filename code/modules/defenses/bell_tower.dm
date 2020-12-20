@@ -95,7 +95,7 @@
 	var/mob/M = A
 	if(M.get_target_lock(faction))
 		return
-	
+
 	if(linked_bell.last_mob_activated == M)
 		return
 	linked_bell.last_mob_activated = M
@@ -144,7 +144,7 @@
 	if(md)
 		md.linked_tower = null
 		QDEL_NULL(md)
-	
+
 
 #undef BELL_TOWER_MD_ALPHA
 #define BELL_TOWER_CLOAKER_ALPHA 20
@@ -163,7 +163,7 @@
 /obj/structure/machinery/defenses/bell_tower/cloaker/mob_crossed(var/turf/location)
 	/// PLACEHOLDER
 	return
-	
+
 
 #undef BELL_TOWER_CLOAKER_ALPHA
 
@@ -181,27 +181,26 @@
 /obj/item/device/imp/equipped(mob/user, slot)
 	. = ..()
 	if(slot == WEAR_BACK)
-		processing_objects.Add(src)
-	
+		START_PROCESSING(SSobj, src)
 
 /obj/item/device/imp/process()
 	if(!ismob(loc))
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		return
-	
+
 	var/mob/M = loc
-	
+
 	if(M.back != src)
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		return
-	
+
 	if(!M.x && !M.y && !M.z)
 		return
 
 	var/list/targets = SSquadtree.players_in_range(RECT(M.x, M.y, area_range, area_range), M.z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
 	if(!targets)
 		return
-	
+
 	for(var/mob/living/carbon/Xenomorph/X in targets)
 		X.SetSuperslowed(BELL_TOWER_EFFECT)
 		playsound(X, 'sound/misc/bell.wav', 50, 0, 50)

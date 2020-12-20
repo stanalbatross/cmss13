@@ -42,7 +42,7 @@
 		return
 	var/progress_amount = 1
 
-	var/no_queen_action = (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor)
+	var/no_queen_action = (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor))
 
 	if(SSxevolution && (no_queen_action || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
 		progress_amount = SSxevolution.get_evolution_boost_power(hive.hivenumber)

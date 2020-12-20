@@ -38,13 +38,13 @@ GLOBAL_LIST_INIT(cm_vending_gear_rto, list(
 	))
 
 /obj/structure/machinery/cm_vending/gear/rto
-	name = "\improper ColMarTech Radio Telephone Operator Gear Rack"
+	name = "ColMarTech Radio Telephone Operator Gear Rack"
 	desc = "An automated gear rack for RTOs."
 	icon_state = "intel_gear"
 	req_access = list(ACCESS_MARINE_RTOPREP)
 	vendor_role = list(JOB_SQUAD_RTO)
 
-/obj/structure/machinery/cm_vending/gear/intelligence_officer/Initialize(mapload, ...)
+/obj/structure/machinery/cm_vending/gear/rto/Initialize(mapload, ...)
 	. = ..()
 	listed_products = GLOB.cm_vending_gear_rto
 
@@ -106,13 +106,13 @@ GLOBAL_LIST_INIT(cm_vending_clothing_rto, list(
 
 //MARINE_CAN_BUY_SHOES MARINE_CAN_BUY_UNIFORM currently not used
 /obj/structure/machinery/cm_vending/clothing/rto
-	name = "\improper ColMarTech Radio Telephone Operator Equipment Rack"
+	name = "ColMarTech Radio Telephone Operator Equipment Rack"
 	desc = "An automated rack hooked up to a colossal storage of RTO standard-issue equipment."
 	req_access = list(ACCESS_MARINE_RTOPREP)
 	vendor_role = list(JOB_SQUAD_RTO)
 
 
-/obj/structure/machinery/cm_vending/clothing/intelligence_officer/Initialize(mapload, ...)
+/obj/structure/machinery/cm_vending/clothing/rto/Initialize(mapload, ...)
 	. = ..()
 	listed_products = GLOB.cm_vending_clothing_rto
 

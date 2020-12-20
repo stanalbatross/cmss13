@@ -17,7 +17,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
     for(var/a in GLOB.railgun_computer_turf_position)
         var/datum/railgun_computer_location/RCL = a
         var/turf/T = RCL.coords.get_turf_from_coord()
-        if(!T) 
+        if(!T)
             continue
 
         var/obj/structure/machinery/computer/railgun/RG = new(T)
@@ -58,7 +58,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
     var/mob/hologram/railgun/eye
     var/turf/last_location
     var/turf/start_location
-    var/target_z = SURFACE_Z_LEVEL
+    var/target_z
 
     var/max_ammo = 10
     var/ammo = 10
@@ -67,11 +67,19 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
     var/fire_cooldown = 1.5 SECONDS
     var/next_fire = 0
 
+/obj/structure/machinery/computer/railgun/Initialize()
+    . = ..()
+    if(!GLOB.railgun_eye_location)
+        stack_trace("Railgun eye location is not initialised! There is no landmark for it on [map_tag]")
+        return INITIALIZE_HINT_QDEL
+
+    target_z = GLOB.railgun_eye_location.z_pos
+
 /obj/structure/machinery/computer/railgun/attackby(var/obj/I as obj, var/mob/user as mob)  //Can't break or disassemble.
-	return
+    return
 
 /obj/structure/machinery/computer/railgun/bullet_act(var/obj/item/projectile/Proj) //Can't shoot it
-	return FALSE
+    return FALSE
 
 /obj/structure/machinery/computer/railgun/proc/set_operator(var/mob/living/carbon/human/H)
     if(!istype(H))
@@ -88,7 +96,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
             last_location = GLOB.railgun_eye_location.get_turf_from_coord()
         else
             last_location = locate(1, 1, target_z)
-        
+
         start_location = last_location
 
     eye = new(last_location, operator)
@@ -114,7 +122,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
     if(protected_by_pylon(TURF_PROTECTION_OB, T))
         to_chat(H, SPAN_WARNING("[htmlicon(src)] This area is too reinforced to fire into."))
         return FALSE
-    
+
     if(next_fire > world.time)
         to_chat(H, SPAN_WARNING("[htmlicon(src)] The barrel is still hot! Wait [SPAN_BOLD((next_fire - world.time)/10)] more seconds before firing."))
         return FALSE
@@ -144,7 +152,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
         return
 
     var/turf/T = get_turf(A)
-    if(!istype(T))    
+    if(!istype(T))
         return
 
     if(!can_fire(H, T))
@@ -213,7 +221,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 
         if(!x_coord || !y_coord)
             return
-        
+
         last_location = locate(deobfuscate_x(x_coord), deobfuscate_y(y_coord), target_z)
 
     #undef INPUT_COORD
@@ -261,6 +269,6 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
         var/turf/closed/wall/W = to_enter
         if(W.hull)
             return COMPONENT_TURF_DENY_MOVEMENT
-    
+
     return COMPONENT_TURF_ALLOW_MOVEMENT
 

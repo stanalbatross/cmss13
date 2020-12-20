@@ -37,7 +37,7 @@ var/global/list/transmitters = list()
     if(attached_to)
         if(attached_to.external_object)
             attached_to.external_object.to_untether = TRUE
-        
+
         attached_to.external_object = A
         return TRUE
 
@@ -57,7 +57,7 @@ var/global/list/transmitters = list()
         while(id in phone_list)
             id = "[T.phone_id] [num_id]"
             num_id++
-        
+
         T.phone_id = id
         phone_list += list("[id]" = T)
 
@@ -87,7 +87,7 @@ var/global/list/transmitters = list()
 
         if(!to_call)
             return
-        
+
         var/obj/structure/transmitter/T = transmitters[to_call]
         if(!istype(T) || QDELETED(T))
             transmitters -= T
@@ -95,21 +95,21 @@ var/global/list/transmitters = list()
 
         if(TRANSMITTER_UNAVAILABLE(T))
             return
-        
+
         calling = T
         T.caller = src
 
         to_chat(user, SPAN_PURPLE("[htmlicon(src, user)] Dialing [to_call].."))
         playsound(get_turf(user), "rtb_handset")
 
-        processing_objects += T
+        START_PROCESSING(SSobj, src)
     else
         var/obj/structure/transmitter/T = get_calling_phone()
 
         if(T.attached_to && ismob(T.attached_to.loc))
             var/mob/M = T.attached_to.loc
             to_chat(M, SPAN_PURPLE("[htmlicon(src, M)] [phone_id] has picked up."))
-        
+
         to_chat(user, SPAN_PURPLE("[htmlicon(src, user)] Picked up a call from [T.phone_id]."))
         playsound(get_turf(user), "rtb_handset")
 
@@ -136,21 +136,21 @@ var/global/list/transmitters = list()
             to_chat(M, SPAN_PURPLE("[htmlicon(src, M)] You have hung up on [T.phone_id]."))
 
     if(calling)
-        processing_objects -= calling
+        STOP_PROCESSING(SSobj, src)
         calling.caller = null
         calling = null
-    
+
     if(caller)
-        processing_objects -= caller
+        STOP_PROCESSING(SSobj, src)
         caller.calling = null
         caller = null
 
-    processing_objects -= src
+    STOP_PROCESSING(SSobj, src)
 
 /obj/structure/transmitter/process()
     if(caller)
         if(!attached_to)
-            processing_objects -= src
+            STOP_PROCESSING(SSobj, src)
             return
 
         if(attached_to.loc == src)
@@ -161,17 +161,17 @@ var/global/list/transmitters = list()
     else if(calling)
         var/obj/structure/transmitter/T = get_calling_phone()
         if(!T)
-            processing_objects -= src
+            STOP_PROCESSING(SSobj, src)
             return
-        
+
         var/obj/item/phone/P = T.attached_to
 
         if(P && attached_to.loc == src && P.loc == T && next_ring < world.time)
             ring_channel = playsound(attached_to.loc, 'sound/machines/telephone/telephone_ring.ogg', 20) // placeholder for now, need a sound to tell that the phone is ringing
             next_ring = world.time + SECONDS_3
-        
+
     else
-        processing_objects -= src
+        STOP_PROCESSING(SSobj, src)
         return
 
 
@@ -180,7 +180,7 @@ var/global/list/transmitters = list()
         var/mob/M = attached_to.loc
         M.drop_held_item(attached_to)
         playsound(get_turf(M), "rtb_handset")
-    
+
     attached_to.forceMove(src)
     attached_to.setup_beam()
     update_icon()
@@ -206,7 +206,7 @@ var/global/list/transmitters = list()
 
     if(!P || !attached_to)
         return
-    
+
     P.handle_hear(message, L, speaking)
     attached_to.handle_hear(message, L, speaking)
 
@@ -224,7 +224,7 @@ var/global/list/transmitters = list()
         else
             attached_to.attached_to = null
             attached_to = null
-    
+
     transmitters -= src
 
     reset_call()
@@ -233,7 +233,7 @@ var/global/list/transmitters = list()
     name = "telephone"
     icon = 'icons/obj/items/misc.dmi'
     icon_state = "rpb_phone"
-    
+
     w_class = SIZE_LARGE
 
     var/obj/structure/transmitter/attached_to
@@ -246,7 +246,7 @@ var/global/list/transmitters = list()
     if(istype(loc, /obj/structure/transmitter))
         attach_to(loc)
         external_object = attached_to
-    
+
 /obj/item/phone/Destroy()
     . = ..()
     remove_attached()
@@ -278,7 +278,7 @@ var/global/list/transmitters = list()
 
     var/mob/M = loc
     var/vname = T.phone_id
-    
+
     if(M == speaking)
         vname = attached_to.phone_id
 
@@ -324,7 +324,7 @@ var/global/list/transmitters = list()
     else
         set_raised(TRUE, user)
         to_chat(user, SPAN_NOTICE("You raise [src] to your ear."))
-        
+
 
 /obj/item/phone/proc/set_raised(var/to_raise, var/mob/living/carbon/human/H)
     if(!istype(H))

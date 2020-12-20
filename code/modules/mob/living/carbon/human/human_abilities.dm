@@ -212,12 +212,12 @@ CULT
 	if(!(T in view(H)))
 		to_chat(H, SPAN_WARNING("This target can't be seen!"))
 		return
-	
+
 	if(get_dist(T, H) > 5)
 		to_chat(H, SPAN_WARNING("This target is too far away!"))
 		return
 
-	if(!(T.z in SURFACE_Z_LEVELS))
+	if(!(is_ground_level(T.z)))
 		to_chat(H, SPAN_WARNING("The droppod cannot land here!"))
 		return
 
@@ -230,7 +230,7 @@ CULT
 	for(var/datum/tech/tech_to_use in unlocked_droppod_techs)
 		if(tech_to_use in assigned_squad.dropped_techs)
 			continue
-		
+
 		list_of_techs = list("[tech_to_use.name]" = tech_to_use)
 
 	if(!list_of_techs.len)
@@ -241,7 +241,7 @@ CULT
 
 	if(!input)
 		return
-	
+
 	var/datum/tech/tech_to_deploy = list_of_techs[input]
 
 	if(!tech_to_deploy)

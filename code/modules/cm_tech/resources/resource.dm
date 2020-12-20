@@ -54,7 +54,7 @@
         var/area/A = get_area(src)
         if(!A)
             return
-        
+
         if(A.r_node)
             qdel(A.r_node)
 
@@ -73,7 +73,7 @@
     . = ..()
     if(PF)
         PF.flags_can_pass_all = list(PASS_OVER_THROW_ITEM)
-    
+
 
 /obj/structure/resource_node/update_icon()
     overlays.Cut()
@@ -124,7 +124,7 @@
 
     if(!active)
         return
-    
+
     if(!tree)
         return
 
@@ -133,7 +133,7 @@
 
 /obj/structure/resource_node/process()
     if(!active)
-        processing_objects.Remove(src)
+        STOP_PROCESSING(SSobj, src)
         return
 
     if(tree)
@@ -144,14 +144,14 @@
         last_looped = REALTIMEOFDAY + SECONDS_3
 
 /obj/structure/resource_node/proc/make_active()
-    processing_objects.Add(src)
+    START_PROCESSING(SSobj, src)
     playsound(loc, 'sound/machines/resource_node/node_turn_on_2.ogg', 75)
 
     active = TRUE
     update_icon()
 
 /obj/structure/resource_node/proc/make_inactive()
-    processing_objects.Remove(src)
+    STOP_PROCESSING(SSobj, src)
     playsound(loc, 'sound/machines/resource_node/node_turn_off.ogg', 75)
 
     active = FALSE
@@ -177,7 +177,7 @@
 
     if(tree)
         tree.on_node_lost(src)
-    
+
     health = max_health
 
     src.treeid = treeid
@@ -195,7 +195,7 @@
 
     to_chat(user, SPAN_BLUE("[src] belongs to the [tree.name]"))
     to_chat(user, SPAN_BLUE("Health: [health]/[max_health]"))
-        
+
 
 /obj/structure/resource_node/attackby(obj/item/W, mob/user)
     if(!ishuman(user))
@@ -237,7 +237,7 @@
 
         H.animation_attack_on(src)
         playsound(loc, tree.resource_break_sound, 40, 1)
-        
+
         take_damage(W.force)
     else
         var/to_heal = (max_health - health)
@@ -250,7 +250,7 @@
             if(!to_heal)
                 to_chat(H, SPAN_WARNING("[src] is already at full health!"))
                 return
-            
+
             var/obj/item/tool/weldingtool/WT = W
             if(WT.remove_fuel(0, H))
                 H.visible_message(SPAN_NOTICE("[H] starts repairing the damage to [src]."),\
@@ -319,7 +319,7 @@
 
         if(!M.plasma_stored)
             return
-        
+
         M.visible_message(SPAN_XENONOTICE("[M] begins secreting resin over [src]."),\
         SPAN_XENONOTICE("You start repairing the damage to [src]."), max_distance = 3)
 
