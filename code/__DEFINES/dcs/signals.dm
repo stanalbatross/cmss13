@@ -88,10 +88,7 @@
 #define COMSIG_MOB_DEVOURED "mob_devoured"
 	#define COMPONENT_CANCEL_DEVOUR	(1<<0)
 
-<<<<<<< HEAD
-=======
 // Reserved for tech trees
->>>>>>> upstream/dev
 #define COMSIG_MOB_ENTER_TREE "mob_enter_tree"
 	#define COMPONENT_CANCEL_TREE_ENTRY (1<<0)
 
@@ -103,21 +100,15 @@
 #define COMSIG_MOB_RESET_VIEW "mob_reset_view"
 	#define COMPONENT_OVERRIDE_VIEW	(1<<0)
 
-<<<<<<< HEAD
 #define COMSIG_MOB_POST_CLICK "mob_post_click"
 
-=======
->>>>>>> upstream/dev
 // Return a nonzero value to cancel these actions
 #define COMSIG_BINOCULAR_ATTACK_SELF "binocular_attack_self"
 #define COMSIG_BINOCULAR_HANDLE_CLICK "binocular_handle_click"
 
-<<<<<<< HEAD
-=======
 #define COMSIG_MOB_PRE_CLICK "mob_pre_click"
 	#define COMPONENT_INTERRUPT_CLICK (1<<0)
 
->>>>>>> upstream/dev
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
 
