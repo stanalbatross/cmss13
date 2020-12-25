@@ -176,8 +176,7 @@
 		if(X.steelcrest)
 			X.armor_deflection_buff += 15
 			X.armor_explosive_buff += 60
-			X.ability_speed_modifier += 3
-			X.damage_modifier -= XENO_DAMAGE_MOD_SMALL
+			X.ability_speed_modifier += 2.5
 		else
 			X.armor_deflection_buff += 35
 			X.armor_explosive_buff += 60
@@ -195,8 +194,7 @@
 		if(X.steelcrest)
 			X.armor_deflection_buff -= 15
 			X.armor_explosive_buff -= 60
-			X.ability_speed_modifier -= 3
-			X.damage_modifier += XENO_DAMAGE_MOD_SMALL
+			X.ability_speed_modifier -= 2.5
 		else
 			X.armor_deflection_buff -= 35
 			X.armor_explosive_buff -= 60
