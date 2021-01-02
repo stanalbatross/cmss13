@@ -76,7 +76,7 @@
 /datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P) //Special effects when hitting mobs.
 	return
 
-/datum/ammo/proc/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
+/datum/ammo/proc/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user, obj/item/weapon/gun/G) //Special effects when pointblanking mobs.
 	return
 
 /datum/ammo/proc/on_hit_obj(obj/O, obj/item/projectile/P) //Special effects when hitting objects.
@@ -378,7 +378,7 @@
 /datum/ammo/bullet/revolver/highimpact/on_hit_mob(mob/M, obj/item/projectile/P)
 	knockback(M, P, 4)
 
-/datum/ammo/bullet/revolver/highimpact/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
+/datum/ammo/bullet/revolver/highimpact/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user, obj/item/weapon/gun/G) //Special effects when pointblanking mobs.
 	if(!user || !isHumanStrict(M) || user.zone_selected != "head" || user.a_intent != INTENT_HARM)
 		return ..()
 	var/mob/living/carbon/human/H = M
@@ -386,7 +386,11 @@
 
 	if(!do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_HOSTILE) || !user.Adjacent(H))
 		return -1
-
+	var/gibbed_execution = FALSE //needs to be here for the logs and visible messages
+	if(istype(G,/obj/item/weapon/gun/revolver/mateba))
+		var/obj/item/weapon/gun/revolver/mateba/mateba = G
+		if(mateba.gib_execution)
+			gibbed_execution = TRUE
 	H.apply_damage(500, BRUTE, "head", no_limb_loss = TRUE, impact_name = impact_name, impact_limbs = impact_limbs, permanent_kill = TRUE) //not coming back
 	H.visible_message(SPAN_DANGER("[M] WAS EXECUTED!"), \
 		SPAN_HIGHDANGER("You were Executed!"))
@@ -397,6 +401,8 @@
 
 	msg_admin_attack(FONT_SIZE_HUGE("[key_name(usr)] has battlefield executed [key_name(H)] in [get_area(usr)] ([usr.loc.x],[usr.loc.y],[usr.loc.z])."), usr.loc.x, usr.loc.y, usr.loc.z)
 	log_attack("[key_name(usr)] battlefield executed [key_name(H)] at [A.name].")
+	if(gibbed_execution)
+		H.gib()
 
 /datum/ammo/bullet/revolver/highimpact/explosive
 	name = "explosive revolver bullet"

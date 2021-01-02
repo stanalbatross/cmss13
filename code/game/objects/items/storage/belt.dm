@@ -810,6 +810,20 @@
 	new /obj/item/ammo_magazine/revolver/mateba/explosive(src)
 	new_gun.on_enter_storage(src)
 
+/obj/item/storage/belt/gun/mateba/admiral/santa/fill_preset_inventory()
+	var/obj/item/weapon/gun/revolver/mateba/new_gun = new /obj/item/weapon/gun/revolver/mateba/admiral(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new_gun.on_enter_storage(src)
+	new_gun.gib_execution = TRUE
+	new_gun.name = "Festeba"
+	new_gun.desc = "The Mateba used by SANTA himself. Will gib on execution!"
+	new_gun.color = "#FF0000"
+	new_gun.fire_sound = 'sound/voice/alien_queen_xmas.ogg'
+
 /obj/item/storage/belt/gun/korovin
 	name = "\improper Type 41 pistol holster rig"
 	desc = "A modification of the standard UPP pouch rig to carry a single Korovin PK-9 pistol. It also contains side pouches that can store .22 magazines, either hollowpoints or tranquilizers."
