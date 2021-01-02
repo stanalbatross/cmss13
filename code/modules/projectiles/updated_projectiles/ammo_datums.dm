@@ -25,7 +25,6 @@
 	var/sound_armor //When it's blocked by human armor.
 	var/sound_miss //When it misses someone.
 	var/sound_bounce //When it bounces off something.
-	var/sound_shield_hit //When the bullet is absorbed by a xeno_shield
 
 	var/accurate_range_min 			= 0			// Snipers use this to simulate poor accuracy at close ranges
 	var/scatter  					= 0 		// How much the ammo scatters when burst fired, added to gun scatter, along with other mods
@@ -77,7 +76,7 @@
 /datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P) //Special effects when hitting mobs.
 	return
 
-/datum/ammo/proc/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user, obj/item/weapon/gun/G) //Special effects when pointblanking mobs.
+/datum/ammo/proc/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
 	return
 
 /datum/ammo/proc/on_hit_obj(obj/O, obj/item/projectile/P) //Special effects when hitting objects.
@@ -142,22 +141,15 @@
 			var/msg = "You are hit by backlash from \a </b>[P.name]</b>!"
 			M.visible_message(SPAN_DANGER("[M] is hit by backlash from \a [P.name]!"),isXeno(M) ? SPAN_XENODANGER("[msg]"):SPAN_HIGHDANGER("[msg]"))
 		var/damage = P.damage/damage_div
-
-		var/mob/living/carbon/Xenomorph/XNO = null
-
 		if(isXeno(M))
-			XNO = M
+			var/mob/living/carbon/Xenomorph/XNO = M
 			var/total_explosive_resistance = XNO.caste.xeno_explosion_resistance + XNO.armor_explosive_buff
 			damage = armor_damage_reduction(GLOB.xeno_explosive, damage, total_explosive_resistance , 60, 0, 0.5, XNO.armor_integrity)
 			var/armor_punch = armor_break_calculation(GLOB.xeno_explosive, damage, total_explosive_resistance, 60, 0, 0.5, XNO.armor_integrity)
 			XNO.apply_armorbreak(armor_punch)
 
 		M.apply_damage(damage,damage_type)
-
-		if(XNO && XNO.xeno_shields.len)
-			P.play_shielded_damage_effect(M)
-		else
-			P.play_damage_effect(M)
+		P.play_damage_effect(M)
 
 /datum/ammo/proc/fire_bonus_projectiles(obj/item/projectile/original_P)
 	set waitfor = 0
@@ -165,7 +157,8 @@
 	var/turf/curloc = get_turf(original_P.shot_from)
 	var/initial_angle = Get_Angle(curloc, original_P.target_turf)
 
-	for(var/i in 1 to bonus_projectiles_amount) //Want to run this for the number of bonus projectiles.
+	var/i
+	for(i = 0 to bonus_projectiles_amount) //Want to run this for the number of bonus projectiles.
 
 		var/final_angle = initial_angle
 
@@ -201,7 +194,6 @@
 	sound_armor  = "ballistic_armor"
 	sound_miss	 = "ballistic_miss"
 	sound_bounce = "ballistic_bounce"
-	sound_shield_hit = "ballistic_shield_hit"
 
 	accurate_range_min = 0
 	damage = BULLET_DAMAGE_TIER_2
@@ -386,7 +378,7 @@
 /datum/ammo/bullet/revolver/highimpact/on_hit_mob(mob/M, obj/item/projectile/P)
 	knockback(M, P, 4)
 
-/datum/ammo/bullet/revolver/highimpact/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user, obj/item/weapon/gun/G) //Special effects when pointblanking mobs.
+/datum/ammo/bullet/revolver/highimpact/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
 	if(!user || !isHumanStrict(M) || user.zone_selected != "head" || user.a_intent != INTENT_HARM)
 		return ..()
 	var/mob/living/carbon/human/H = M
@@ -394,11 +386,7 @@
 
 	if(!do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_HOSTILE) || !user.Adjacent(H))
 		return -1
-	var/gibbed_execution = FALSE //needs to be here for the logs and visible messages
-	if(istype(G,/obj/item/weapon/gun/revolver/mateba))
-		var/obj/item/weapon/gun/revolver/mateba/mateba = G
-		if(mateba.gib_execution)
-			gibbed_execution = TRUE
+
 	H.apply_damage(500, BRUTE, "head", no_limb_loss = TRUE, impact_name = impact_name, impact_limbs = impact_limbs, permanent_kill = TRUE) //not coming back
 	H.visible_message(SPAN_DANGER("[M] WAS EXECUTED!"), \
 		SPAN_HIGHDANGER("You were Executed!"))
@@ -409,8 +397,23 @@
 
 	msg_admin_attack(FONT_SIZE_HUGE("[key_name(usr)] has battlefield executed [key_name(H)] in [get_area(usr)] ([usr.loc.x],[usr.loc.y],[usr.loc.z])."), usr.loc.x, usr.loc.y, usr.loc.z)
 	log_attack("[key_name(usr)] battlefield executed [key_name(H)] at [A.name].")
-	if(gibbed_execution)
-		H.gib()
+
+/datum/ammo/bullet/revolver/highimpact/explosive
+	name = "explosive revolver bullet"
+
+/datum/ammo/bullet/revolver/highimpact/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
+	..()
+	M.gib()
+
+/datum/ammo/bullet/revolver/highimpact/explosive/on_hit_mob(mob/M, obj/item/projectile/P)
+	cell_explosion(get_turf(M), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+
+/datum/ammo/bullet/revolver/highimpact/explosive/on_hit_obj(obj/O, obj/item/projectile/P)
+	cell_explosion(get_turf(O), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+
+/datum/ammo/bullet/revolver/highimpact/explosive/on_hit_turf(turf/T, obj/item/projectile/P)
+	if(T.density)
+		cell_explosion(T, 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
 
 /*
 //================================================
@@ -658,7 +661,7 @@
 	damage_var_low = PROJECTILE_VARIANCE_TIER_8
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
 	penetration	= ARMOR_PENETRATION_TIER_7
-	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_2
 
 /datum/ammo/bullet/shotgun/flechette_spread
 	name = "additional flechette"
@@ -687,7 +690,7 @@
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
 	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	penetration	= 0
-	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_2
 	shell_speed = AMMO_SPEED_TIER_2
 	damage_armor_punch = 0
 	pen_armor_punch = 0
@@ -747,8 +750,7 @@
 /datum/ammo/bullet/sniper/on_hit_mob(mob/M,obj/item/projectile/P)
 	if(P.homing_target && M == P.homing_target)
 		var/mob/living/L = M
-		L.apply_armoured_damage(damage*2, ARMOR_BULLET, BRUTE, null, penetration)
-		to_chat(P.firer, SPAN_WARNING("Bullseye!"))
+		L.apply_armoured_damage(damage*2, ARMOR_BULLET, BRUTE)
 
 /datum/ammo/bullet/sniper/incendiary
 	name = "incendiary sniper bullet"
@@ -771,7 +773,6 @@
 				blind_duration = 2
 		L.AdjustEyeBlur(blind_duration)
 		L.adjust_fire_stacks(10)
-		to_chat(P.firer, SPAN_WARNING("Bullseye!"))
 
 /datum/ammo/bullet/sniper/flak
 	name = "flak sniper bullet"
@@ -793,8 +794,7 @@
 			if(target.mob_size >= MOB_SIZE_BIG)
 				slow_duration = 4
 		M.AdjustSuperslowed(slow_duration)
-		L.apply_armoured_damage(damage, ARMOR_BULLET, BRUTE, null, penetration)
-		to_chat(P.firer, SPAN_WARNING("Bullseye!"))
+		L.apply_armoured_damage(damage, ARMOR_BULLET, BRUTE)
 	else
 		burst(get_turf(M),P,damage_type, 2 , 2)
 		burst(get_turf(M),P,damage_type, 1 , 2 , 0)
@@ -1211,7 +1211,7 @@
 	var/obj/item/ammo_magazine/rocket/custom/rocket = launcher.current_mag
 	if(rocket.locked && rocket.warhead && rocket.warhead.detonator)
 		if(rocket.fuel && rocket.fuel.reagents.get_reagent_amount(rocket.fuel_type) >= rocket.fuel_requirement)
-			rocket.forceMove(P.loc)
+			rocket.loc = P.loc
 		rocket.warhead.prime()
 		qdel(rocket)
 	smoke.set_up(1, get_turf(A))
@@ -1299,7 +1299,7 @@
 	shell_speed = AMMO_SPEED_TIER_6
 
 /datum/ammo/energy/yautja/caster/sphere
-	name = "plasma immobilizer sphere"
+	name = "plasma eradication sphere"
 	icon_state = "bluespace"
 	damage_type = BURN
 	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_HITS_TARGET_TURF
@@ -1333,7 +1333,6 @@
 	playsound(P, 'sound/weapons/wave.ogg', 75, 1, 25)
 	for (var/mob/living/carbon/M in view(src.stun_range, get_turf(P)))
 		var/stun_time = src.stun_time
-		log_attack("[key_name(M)] was stunned by a plasma immobilizer from [key_name(P.firer)] at [get_area(P)]")
 		if (isYautja(M))
 			stun_time -= 2
 		else if (isXeno(M))
@@ -1559,7 +1558,7 @@
 	accurate_range = 5
 	max_range = 5
 	scatter = SCATTER_AMOUNT_NEURO
-	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_2
 
 /datum/ammo/xeno/toxin/shotgun/New()
 	..()
@@ -1808,7 +1807,7 @@
 	accuracy = HIT_ACCURACY_TIER_8
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
-	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_6
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_5
 	shrapnel_type = /obj/item/shard/shrapnel/bone_chips
 	shrapnel_chance = 60
 

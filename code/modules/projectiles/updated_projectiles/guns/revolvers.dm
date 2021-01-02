@@ -432,7 +432,6 @@
 						/obj/item/attachable/mateba/short)
 	starting_attachment_types = list(/obj/item/attachable/mateba)
 	unacidable = TRUE
-	var/gib_execution = FALSE
 
 /obj/item/weapon/gun/revolver/mateba/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/mateba_key))
@@ -498,6 +497,14 @@
 					/obj/item/attachable/mateba/long/dark,
 					/obj/item/attachable/mateba/short/dark)
 	starting_attachment_types = list(/obj/item/attachable/mateba/dark)
+
+/obj/item/weapon/gun/revolver/mateba/admiral/santa
+	name = "\improper festive Mateba autorevolver custom"
+	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. This version seems to be extremely well decorated and then painted over with a festive design. There's a sentence scratched on the barrel, it says 'Merry christmas!"
+	color = "#FF0000" //don't need a whole sprite for a christmas gun
+	starting_attachment_types = list(/obj/item/attachable/mateba/long/dark)
+	current_mag = /obj/item/ammo_magazine/internal/revolver/mateba/explosive
+	fire_sound = 'sound/voice/alien_queen_xmas.ogg'
 
 /obj/item/weapon/gun/revolver/mateba/engraved
 	name = "\improper engraved Mateba autorevolver"

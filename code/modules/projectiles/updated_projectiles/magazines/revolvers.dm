@@ -51,6 +51,13 @@
 	max_rounds = 6
 	gun_type = /obj/item/weapon/gun/revolver/mateba
 
+/obj/item/ammo_magazine/revolver/mateba/explosive
+	name = "\improper Mateba explosive speed loader (.454)"
+	default_ammo = /datum/ammo/bullet/revolver/highimpact/explosive
+	caliber = ".454"
+	icon_state = "explosive_mateba"
+	max_rounds = 6
+	gun_type = /obj/item/weapon/gun/revolver/mateba
 
 /obj/item/ammo_magazine/revolver/cmb
 	name = "\improper Spearhead speed loader (.357)"
@@ -107,6 +114,9 @@
 	default_ammo = /datum/ammo/bullet/revolver/highimpact
 	caliber = ".454"
 	gun_type = /obj/item/weapon/gun/revolver/mateba
+
+/obj/item/ammo_magazine/internal/revolver/mateba/explosive
+	default_ammo = /datum/ammo/bullet/revolver/highimpact/explosive
 
 //-------------------------------------------------------
 //MARSHALS REVOLVER //Spearhead exists in Alien cannon.
