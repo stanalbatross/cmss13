@@ -1071,7 +1071,7 @@ and you're good to go.
 		return ..()
 
 	//We actually have a projectile, let's move on. We're going to simulate the fire cycle.
-	if(projectile_to_fire.ammo.on_pointblank(M, projectile_to_fire, user)==-1)
+	if(projectile_to_fire.ammo.on_pointblank(M, projectile_to_fire, user, src)==-1)
 		return FALSE
 	var/damage_buff = BASE_BULLET_DAMAGE_MULT
 	//if target is lying or unconscious - add damage bonus
