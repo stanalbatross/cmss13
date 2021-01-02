@@ -352,13 +352,27 @@
 
 //Crazy Ivan's belt reskin
 /obj/item/storage/belt/marine/upp/ivan
-	name = "\improper Type 42 pattern load rig"
-	desc = "A modified variant of the standard-issue 41 pattern load rig."
+	name = "\improper The Rack"
+	desc = "From the formless void, there springs an entity - More primordial than the elements themselves. In it's wake, there will follow a storm."
 	icon_state = "korovin_holster"
 	item_state = "ivan_belt"
-	storage_slots = 15
-	max_storage_space = 40
+	storage_slots = 56
+	max_storage_space = 56
 	has_gamemode_skin = FALSE
+	max_w_class = SIZE_MASSIVE
+	can_hold = list(
+		/obj/item/ammo_magazine
+	)
+
+/obj/item/storage/belt/marine/upp/ivan/Initialize()
+	. = ..()
+	var/list/bad_mags = typesof(/obj/item/ammo_magazine/hardpoint) + /obj/item/ammo_magazine/handful + /obj/item/ammo_magazine/flamer_tank/empty + /obj/item/ammo_magazine/rocket/custom + /obj/item/ammo_magazine/smg
+	var/list/sentry_mags = typesof(/obj/item/ammo_magazine/sentry) + /obj/item/ammo_magazine/sentry_flamer
+	var/list/internal_mags = (typesof(/obj/item/ammo_magazine/internal) + /obj/item/ammo_magazine/handful)
+	var/random_mag = pick(subtypesof(/obj/item/ammo_magazine) - (internal_mags + bad_mags + sentry_mags))
+	for(var/total_storage_slots in 1 to storage_slots) //minus templates
+		new random_mag(src)
+		random_mag = pick(subtypesof(/obj/item/ammo_magazine) - (internal_mags + bad_mags + sentry_mags))
 
 // M56E HMG gunner belt
 /obj/item/storage/belt/marine/m2c
@@ -786,6 +800,20 @@
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/mateba/admiral/santa/fill_preset_inventory()
+	var/obj/item/weapon/gun/revolver/mateba/new_gun = new /obj/item/weapon/gun/revolver/mateba/admiral(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new_gun.on_enter_storage(src)
+	new_gun.gib_execution = TRUE
+	new_gun.name = "Festeba"
+	new_gun.desc = "The Mateba used by SANTA himself. Will gib on execution!"
+	new_gun.color = "#FF0000"
+	new_gun.fire_sound = 'sound/voice/alien_queen_xmas.ogg'
 
 /obj/item/storage/belt/gun/korovin
 	name = "\improper Type 41 pistol holster rig"
