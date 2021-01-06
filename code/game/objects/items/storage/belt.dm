@@ -398,6 +398,23 @@
 		var/obj/item/ammo_magazine/handful/H = new(src)
 		H.generate_handful(/datum/ammo/bullet/shotgun/slug, "12g", 5, 5, /obj/item/weapon/gun/shotgun)
 
+/obj/item/storage/belt/shotgun/full/buckshot/fill_preset_inventory()
+	for(var/i = 1 to storage_slots)
+		var/obj/item/ammo_magazine/handful/H = new(src)
+		H.generate_handful(/datum/ammo/bullet/shotgun/buckshot, "12g", 5, 5, /obj/item/weapon/gun/shotgun)
+
+/obj/item/storage/belt/shotgun/heavy
+	name = "shotgun shell loading rig"
+	desc = "An ammunition belt designed to hold shotgun shells."
+	icon_state = "shotgunbelt"
+	item_state = null
+	storage_slots = 6
+
+/obj/item/storage/belt/shotgun/heavy/fill_preset_inventory()
+	for(var/i = 1 to storage_slots)
+		var/obj/item/ammo_magazine/handful/H = new(src)
+		H.generate_handful(/datum/ammo/bullet/shotgun/heavy/buckshot, "8g", 4, 4, /obj/item/weapon/gun/shotgun)
+
 /obj/item/storage/belt/shotgun/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W

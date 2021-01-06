@@ -106,12 +106,18 @@
 /obj/effect/alien/weeds/Crossed(atom/movable/AM)
 	if (ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if (!isYautja(H) && !H.ally_of_hivenumber(linked_hive.hivenumber)) // predators are immune to weed slowdown effect
+		if(!slowdown_immune(H))
 			H.next_move_slowdown = H.next_move_slowdown + weed_strength
 	else if (isXeno(AM))
 		var/mob/living/carbon/Xenomorph/X = AM
 		if (!linked_hive.is_ally(X))
 			X.next_move_slowdown = X.next_move_slowdown + (weed_strength*WEED_XENO_SPEED_MULT)
+
+/obj/effect/alien/weeds/proc/slowdown_immune(var/mob/living/carbon/human/H)
+	if(H.allied_to_hivenumber(linked_hive.hivenumber, XENO_SLASH_RESTRICTED) || H.shoes.flags_inventory & NOWEEDSLOW) //if wearing shoes like pred shoes, immune to weed slowdown effect
+		return TRUE
+	else
+		return FALSE
 
 // Uh oh, we might be dying!
 // I know this is bad proc naming but it was too good to pass on and it's only used in this file anyways
