@@ -12,6 +12,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	cocked_sound = 'sound/weapons/gun_shotgun_reload.ogg'
 	var/break_sound = 'sound/weapons/handling/gun_mou_open.ogg'
 	var/seal_sound = 'sound/weapons/handling/gun_mou_close.ogg'
+	vary_sound = TRUE
 	accuracy_mult = 1.15
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
 	gun_category = GUN_CATEGORY_SHOTGUN
@@ -56,7 +57,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		update_icon()	//This is not needed for now. Maybe we'll have loaded sprites at some point, but I doubt it. Also doesn't play well with double barrel.
 		ready_in_chamber()
 		cock_gun(user)
-	if(user) playsound(user, reload_sound, 25, 1)
+	if(user) playsound(user, reload_sound, 25, vary_sound)
 	return 1
 
 /obj/item/weapon/gun/shotgun/proc/empty_chamber(mob/user)
@@ -65,8 +66,8 @@ can cause issues with ammo types getting mixed up during the burst.
 	if(current_mag.current_rounds <= 0)
 		if(in_chamber)
 			in_chamber = null
-			var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(ammo.type)
-			playsound(user, reload_sound, 25, 1)
+			var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(ammo.type, current_mag.caliber, current_mag.max_rounds)
+			playsound(user, reload_sound, 25, vary_sound)
 			new_handful.forceMove(get_turf(src))
 		else
 			if(user) to_chat(user, SPAN_WARNING("[src] is already empty."))
@@ -78,11 +79,11 @@ can cause issues with ammo types getting mixed up during the burst.
 /obj/item/weapon/gun/shotgun/proc/unload_shell(mob/user)
 	if(isnull(current_mag) || !length(current_mag.chamber_contents))
 		return
-	var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(current_mag.chamber_contents[current_mag.chamber_position])
+	var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(current_mag.chamber_contents[current_mag.chamber_position], current_mag.caliber, current_mag.max_rounds)
 
 	if(user)
 		user.put_in_hands(new_handful)
-		playsound(user, reload_sound, 25, 1)
+		playsound(user, reload_sound, 25, vary_sound)
 	else new_handful.forceMove(get_turf(src))
 
 	current_mag.current_rounds--
@@ -92,14 +93,23 @@ can cause issues with ammo types getting mixed up during the burst.
 
 		//While there is a much smaller way to do this,
 		//this is the most resource efficient way to do it.
-/obj/item/weapon/gun/shotgun/proc/retrieve_shell(selection)
+/obj/item/weapon/gun/shotgun/proc/retrieve_shell(selection, var/gauge, var/max_rounds)
 	var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-	new_handful.generate_handful(selection, "12g", 5, 1, /obj/item/weapon/gun/shotgun)
+	//add new shogun calibers here until some saint fixes gun code
+	switch(gauge)
+		if("12g")
+			max_rounds = 5
+		if("8g")
+			max_rounds = 4
+
+	new_handful.generate_handful(selection, gauge, max_rounds, 1, /obj/item/weapon/gun/shotgun)
 	return new_handful
 
 /obj/item/weapon/gun/shotgun/proc/check_chamber_position()
 	return 1
 
+/obj/item/weapon/gun/shotgun/proc/toggle_chamber(mob/user)
+	return //so it can be called here, for double shothguns.
 
 /obj/item/weapon/gun/shotgun/reload(mob/user, var/obj/item/ammo_magazine/magazine)
 	if(flags_gun_features & GUN_BURST_FIRING) return
@@ -109,7 +119,11 @@ can cause issues with ammo types getting mixed up during the burst.
 		return
 
 	if(!check_chamber_position()) //For the double barrel.
-		to_chat(user, SPAN_WARNING("[src] has to be open!"))
+		if(current_mag.current_rounds >= current_mag.max_rounds) //so you don't open it by accident when mashing reload
+			to_chat(user, SPAN_WARNING("[src] is full! If you want to open it, do so with an empty hand."))
+			return
+		to_chat(user, SPAN_WARNING("[src] has to be open! You open the chamber."))
+		toggle_chamber(user)
 		return
 
 	//From here we know they are using shotgun type ammo and reloading via handful.
@@ -118,6 +132,12 @@ can cause issues with ammo types getting mixed up during the burst.
 	var/mag_caliber = magazine.default_ammo //Handfuls can get deleted, so we need to keep this on hand for later.
 	if(current_mag.transfer_ammo(magazine,user,1))
 		add_to_tube(user,mag_caliber) //This will check the other conditions.
+
+	if(check_chamber_position())
+		if(current_mag.current_rounds >= current_mag.max_rounds) //you never know.
+			to_chat(user, SPAN_WARNING("You've finished loading and so close the chamber."))
+			toggle_chamber(user)
+			return
 
 /obj/item/weapon/gun/shotgun/unload(mob/user)
 	if(flags_gun_features & GUN_BURST_FIRING) return
@@ -303,13 +323,10 @@ can cause issues with ammo types getting mixed up during the burst.
 	..()
 	if(!current_mag)
 		return
-	if(current_mag.chamber_closed) to_chat(user, "It's closed.")
-	else to_chat(user, "It's open with [current_mag.current_rounds] shell\s loaded.")
+	to_chat(user, "Judging from the weight, it has [current_mag.current_rounds] shell\s loaded.")
 
 /obj/item/weapon/gun/shotgun/double/unique_action(mob/user)
-	if(flags_item & WIELDED)
-		unwield(user)
-	open_chamber(user)
+	toggle_chamber(user)
 
 /obj/item/weapon/gun/shotgun/double/check_chamber_position()
 	if(!current_mag)
@@ -322,7 +339,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		return
 	current_mag.chamber_position++
 	current_mag.chamber_contents[current_mag.chamber_position] = selection
-	playsound(user, reload_sound, 25, 1)
+	playsound(user, reload_sound, 25, vary_sound)
 	return 1
 
 /obj/item/weapon/gun/shotgun/double/able_to_fire(mob/user)
@@ -331,30 +348,34 @@ can cause issues with ammo types getting mixed up during the burst.
 		if(!current_mag)
 			return
 		if(!current_mag.chamber_closed)
-			to_chat(user, SPAN_DANGER("Close the chamber!"))
+			to_chat(user, SPAN_WARNING("The chamber was open!"))
+			toggle_chamber(user)
 			return 0
 
 /obj/item/weapon/gun/shotgun/double/empty_chamber(mob/user)
 	if(!current_mag)
 		return
 	if(current_mag.chamber_closed)
-		open_chamber(user)
+		toggle_chamber(user)
 	else
 		..()
 
-/obj/item/weapon/gun/shotgun/double/load_into_chamber()
+/obj/item/weapon/gun/shotgun/double/load_into_chamber(mob/user)
 	//Trimming down the unnecessary stuff.
 	//This doesn't chamber, creates a bullet on the go.
 
 	if(!current_mag)
-		return
+		to_chat(user, SPAN_NOTICE("You open the chamber."))
+		toggle_chamber(user)
+		load_into_chamber(user)
+		//return
+
 	if(current_mag.current_rounds > 0)
 		ammo = ammo_list[current_mag.chamber_contents[current_mag.chamber_position]]
 		in_chamber = create_bullet(ammo, initial(name))
 		current_mag.current_rounds--
 		return in_chamber
 	//We can't make a projectile without a mag or active attachable.
-
 
 /obj/item/weapon/gun/shotgun/double/delete_bullet(obj/item/projectile/projectile_to_fire, refund = 0)
 	qdel(projectile_to_fire)
@@ -371,16 +392,16 @@ can cause issues with ammo types getting mixed up during the burst.
 	current_mag.chamber_position--
 	return 1
 
-/obj/item/weapon/gun/shotgun/double/proc/open_chamber(mob/user)
+/obj/item/weapon/gun/shotgun/double/toggle_chamber(mob/user)
 	if(!current_mag)
 		return
 	current_mag.chamber_closed = !current_mag.chamber_closed
 	update_icon()
 
 	if (current_mag.chamber_closed)
-		playsound(user, break_sound, 25, 1)
+		playsound(user, break_sound, 25, vary_sound)
 	else
-		playsound(user, seal_sound, 25, 1)
+		playsound(user, seal_sound, 25, vary_sound)
 
 
 /obj/item/weapon/gun/shotgun/double/sawn
@@ -547,7 +568,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		return
 	if(in_chamber) //eject the chambered round
 		in_chamber = null
-		var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(ammo.type)
+		var/obj/item/ammo_magazine/handful/new_handful = retrieve_shell(ammo.type, current_mag.caliber, current_mag.max_rounds)
 		new_handful.forceMove(get_turf(src))
 
 	ready_shotgun_tube()

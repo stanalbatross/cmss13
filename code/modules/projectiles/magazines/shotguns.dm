@@ -81,6 +81,12 @@ also doesn't really matter. You can only reload them with handfuls.
 /obj/item/ammo_magazine/internal/shotgun/buckshot
 	default_ammo = /datum/ammo/bullet/shotgun/buckshot
 
+//-- 8G GAUGE DOUBLEBARREL --
+
+/obj/item/ammo_magazine/internal/shotgun/double/heavy //For a double barrel.
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/buckshot
+	caliber = "8g"
+
 //-------------------------------------------------------
 
 /*
@@ -118,3 +124,37 @@ Handfuls of shotgun rounds. For spawning directly on mobs in roundstart, ERTs, e
 	name = "handful of beanbag slugs (12g)"
 	icon_state = "beanbag slug"
 	default_ammo = /datum/ammo/bullet/shotgun/beanbag
+
+/* 8 GAUGE HANDFULS */
+
+/obj/item/ammo_magazine/handful/shotgun/heavy
+	caliber = "8g"
+
+/obj/item/ammo_magazine/handful/shotgun/heavy/buckshot
+	name = "handful of heavy shotgun buckshot shells (8g)"
+	icon_state = "heavy shotgun buckshot shell"
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/buckshot
+	max_rounds = 4
+	current_rounds = 4
+	dir = 7
+	//gun_type = /obj/item/weapon/gun/shotgun
+
+/obj/item/ammo_magazine/handful/shotgun/heavy/dragonsbreath
+	name = "handful of dragon's breath shells (8g)"
+	icon_state = "dragon's breath shell"
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath
+
+/obj/item/ammo_magazine/handful/shotgun/heavy/slug
+	name = "handful of heavy shotgun slugs (8g)"
+	icon_state = "heavy shotgun slug"
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/slug
+	
+/obj/item/ammo_magazine/handful/shotgun/heavy/flechette
+	name = "handful of shotgun flechette shells (8g)"
+	icon_state = "heavy flechette shell"
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/flechette
+
+/obj/item/ammo_magazine/handful/shotgun/heavy/beanbag
+	name = "handful of heavy beanbag slugs (8g)"
+	icon_state = "heavy beanbag slug"
+	default_ammo = /datum/ammo/bullet/shotgun/heavy/beanbag

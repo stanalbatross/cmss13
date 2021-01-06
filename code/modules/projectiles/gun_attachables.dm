@@ -249,7 +249,7 @@ Defined in conflicts.dm of the #defines folder.
 	if(!hasorgans(user))
 		return
 
-	dig_out_shrapnel(user)
+	dig_out_shrapnel(20, user)
 
 /obj/item/attachable/bayonet/upp
 	name = "\improper Type 80 bayonet"
@@ -364,6 +364,15 @@ Defined in conflicts.dm of the #defines folder.
 	slot = "muzzle"
 	flags_attach_features = NO_FLAGS
 	pixel_shift_x = 14
+
+/obj/item/attachable/plasmagunbarrel
+	name = "Plasma Rifle barrel"
+	icon_state = "plasmagun_barrel"
+	desc = "The barrel of the Plasma Rifle."
+	slot = "muzzle"
+	flags_attach_features = NO_FLAGS
+	pixel_shift_x = 0
+	pixel_shift_y = 0
 
 // Mateba barrels
 

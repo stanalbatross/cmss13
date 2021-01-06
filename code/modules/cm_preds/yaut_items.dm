@@ -194,7 +194,7 @@
 	desc = "A pair of armored, perfectly balanced boots. Perfect for running through the jungle."
 	unacidable = TRUE
 	permeability_coefficient = 0.01
-	flags_inventory = NOSLIPPING
+	flags_inventory = NOSLIPPING|NOWEEDSLOW
 	flags_armor_protection = BODY_FLAG_FEET|BODY_FLAG_LEGS|BODY_FLAG_GROIN
 	flags_item = ITEM_PREDATOR
 	armor_melee = CLOTHING_ARMOR_MEDIUMLOW

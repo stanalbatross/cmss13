@@ -1359,7 +1359,7 @@
 			if(do_after(HS, HUMAN_STRIP_DELAY * HS.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_ALL, BUSY_ICON_GENERIC, HT, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
 				var/can_reach_splints = TRUE
 				var/amount_removed = 0
-				if(wear_suit && istype(wear_suit,/obj/item/clothing/suit/space))
+				if(wear_suit && wear_suit.flags_inventory & SELF_SPLINT)
 					var/obj/item/clothing/suit/space/suit = HT.wear_suit
 					if(suit.supporting_limbs && suit.supporting_limbs.len)
 						msg = "[HS == HT ? "your":"\proper [HT]'s"]"

@@ -35,6 +35,7 @@
 	var/unload_sound 	= 'sound/weapons/flipblade.ogg'
 	var/empty_sound 	= 'sound/weapons/smg_empty_alarm.ogg'
 	var/reload_sound 	= null					//We don't want these for guns that don't have them.
+	var/vary_sound      = TRUE //does it randomly shift pitch in sounds
 	var/cocked_sound 	= null
 	var/cock_cooldown	= 0						//world.time value, to prevent COCK COCK COCK COCK
 	var/cock_delay		= 30					//Delay before we can cock again, in tenths of seconds
@@ -595,7 +596,7 @@
 	set waitfor = 0
 	if(cocked_sound)
 		sleep(3)
-		if(user && loc) playsound(user, cocked_sound, 25, 1)
+		if(user && loc) playsound(user, cocked_sound, 25, vary_sound)
 
 /*
 Reload a gun using a magazine.
@@ -654,7 +655,7 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 		cock_gun(user)
 	user.visible_message(SPAN_NOTICE("[user] loads [magazine] into [src]!"),
 	SPAN_NOTICE("You load [magazine] into [src]!"), null, 3, CHAT_TYPE_COMBAT_ACTION)
-	if(reload_sound) playsound(user, reload_sound, 25, 1, 5)
+	if(reload_sound) playsound(user, reload_sound, 25, vary_sound, 5)
 
 
 //Drop out the magazine. Keep the ammo type for next time so we don't need to replace it every time.
@@ -672,7 +673,7 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 	else
 		user.put_in_hands(current_mag)
 
-	playsound(user, unload_sound, 25, 1, 5)
+	playsound(user, unload_sound, 25, vary_sound, 5)
 	user.visible_message(SPAN_NOTICE("[user] unloads [current_mag] from [src]."),
 	SPAN_NOTICE("You unload [current_mag] from [src]."), null, 4, CHAT_TYPE_COMBAT_ACTION)
 	current_mag.update_icon()
@@ -764,7 +765,7 @@ and you're good to go.
 		else
 			to_chat(user, SPAN_WARNING("[active_attachable] is empty!"))
 			to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
-			playsound(user, active_attachable.activation_sound, 15, 1)
+			playsound(user, active_attachable.activation_sound, 15, vary_sound)
 			active_attachable.activate_attachment(src, null, TRUE)
 	else
 		return ready_in_chamber()//We're not using the active attachable, we must use the active mag if there is one.
@@ -832,7 +833,7 @@ and you're good to go.
 						unwield(user)
 						user.swap_hand()
 					unload(user, TRUE, drop_to_ground) // We want to quickly autoeject the magazine. This proc does the rest based on magazine type. User can be passed as null.
-					playsound(src, empty_sound, 25, 1)
+					playsound(src, empty_sound, 25, vary_sound)
 		else // Just fired a chambered bullet with no magazine in the gun
 			update_icon()
 
@@ -1037,7 +1038,7 @@ and you're good to go.
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger!"))
 			var/actual_sound = (active_attachable && active_attachable.fire_sound) ? active_attachable.fire_sound : fire_sound
 			var/sound_volume = (flags_gun_features & GUN_SILENCED && !active_attachable) ? 25 : 60
-			playsound(user, actual_sound, sound_volume, 1)
+			playsound(user, actual_sound, sound_volume, vary_sound)
 			simulate_recoil(2, user)
 			var/t = "\[[time_stamp()]\] <b>[key_name(user)]</b> committed suicide with <b>[src]</b>" //Log it.
 			if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
