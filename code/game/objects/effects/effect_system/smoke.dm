@@ -226,6 +226,23 @@
 	M.IgniteMob()
 	M.updatehealth()
 
+/obj/effect/particle_effect/smoke/cryo/affect(var/mob/living/carbon/M)
+	..()
+	if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
+		return
+
+	M.last_damage_source = source
+	M.last_damage_mob = source_mob
+	M.frozen = TRUE
+	new /datum/effects/xeno_freeze(M, source, , , 0.5 SECONDS)
+	if(M.superslowed <= 1) //so it doesn't stack to ridiculous levels.
+		M.AdjustSuperslowed(1) //a second is too much
+		//here so it doesn't get spammed
+		to_chat(M, SPAN_BOLDNOTICE("You feel incredibly cold, you can barely move!")) //notice because it's BLUE like the COLD. LIKE THE SMOKE.
+	if(M.slowed <= 1)
+		M.AdjustSlowed(5) //some extra effect
+	M.update_canmove()
+
 //////////////////////////////////////
 // FLASHBANG SMOKE
 ////////////////////////////////////
@@ -506,6 +523,11 @@
 
 /datum/effect_system/smoke_spread/phosphorus
 	smoke_type = /obj/effect/particle_effect/smoke/phosphorus
+
+/datum/effect_system/smoke_spread/cryo
+	smoke_type = /obj/effect/particle_effect/smoke/cryo
+	lifetime = 0.1 SECONDS //it's a quick burst not a long lasting effect
+
 
 // XENO SMOKES
 

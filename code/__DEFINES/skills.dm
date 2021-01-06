@@ -22,6 +22,7 @@
 #define SKILL_FIREARMS_UNTRAINED 0  //civilian
 #define SKILL_FIREARMS_DEFAULT   1   //marines (allow tactical reloads)
 #define SKILL_FIREARMS_TRAINED   2   //special training
+#define SKILL_FIREARMS_MAX       2   //special training
 
 
 //spec_weapons skill
@@ -34,7 +35,7 @@
 #define SKILL_SPEC_PYRO         5
 #define SKILL_SPEC_SMARTGUN		6 //for smartgunners
 #define SKILL_SPEC_UPP      	7 //for upp
-#define SKILL_SPEC_TRAINED      8 //can use all specialist gear
+#define SKILL_SPEC_ALL          8 //can use all specialist gear
 
 
 //construction skill
@@ -42,14 +43,14 @@
 #define SKILL_CONSTRUCTION_TRAINED		1   //metal barricade construction (CT, mini-engis)
 #define SKILL_CONSTRUCTION_ENGI			2   //plasteel barricade, windows and girder construction, building machine&computer frames, (Combat Engi, OT, etc.)
 #define SKILL_CONSTRUCTION_MASTER		3   //Synths
-
+#define SKILL_CONSTRUCTION_MAX		    3
 
 // engineer skill
 #define SKILL_ENGINEER_DEFAULT		0
 #define SKILL_ENGINEER_TRAINED		1   //barricade repair && c4 use (mini-engis, specs)
 #define SKILL_ENGINEER_ENGI			2   //plasteel barricade deconstruction, hacking&&planet engine fixing&&apc building, Telecomms fixing (Combat Engi, OT, etc.)
 #define SKILL_ENGINEER_MASTER       3   //Synths
-
+#define SKILL_ENGINEER_MAX          3
 
 //medical skill
 #define SKILL_MEDICAL_DEFAULT	0
@@ -57,27 +58,32 @@
 #define SKILL_MEDICAL_MEDIC     2 //syringe use & defib use (Combat Medic, doctors)
 #define SKILL_MEDICAL_DOCTOR    3 //Chemmaster use, 25% reduction in medical task (splints, defib, cpr)
 #define SKILL_MEDICAL_MASTER	4 //Synths
+#define SKILL_MEDICAL_MAX   	4
 
 //surgery skill
 #define SKILL_SURGERY_DEFAULT   0 //Can't do surgery
 #define SKILL_SURGERY_NOVICE    1 //Can use autodocs but can't do surgery (nurses)
 #define SKILL_SURGERY_TRAINED   2 //Can do surgery (Doctors)
 #define SKILL_SURGERY_EXPERT    3 //(Synths)
+#define SKILL_SURGERY_MAX       3
 //higher levels means faster surgery.
 
 
 //research skill
 #define SKILL_RESEARCH_DEFAULT  0
 #define SKILL_RESEARCH_TRAINED  1 //Allows use of research machines
+#define SKILL_RESEARCH_MAX      1
 
 //antag skill
 #define SKILL_ANTAG_DEFAULT 0
 #define SKILL_ANTAG_TRAINED 1
+#define SKILL_ANTAG_MAX     1
 
 //police skill, hidden
 #define SKILL_POLICE_DEFAULT    0
 #define SKILL_POLICE_FLASH      1 //flash use (CE, CMO, any officer starting with a flash)
 #define SKILL_POLICE_MP         2 //all police gear use, can strip someone's clothes simultaneously (MP)
+#define SKILL_POLICE_MAX        2
 
 
 //cqc skill
@@ -88,6 +94,7 @@
 #define SKILL_CQC_MP        2 //no risk of accidental weapon discharge upon disarming (MP)
 #define SKILL_CQC_EXPERT    3
 #define SKILL_CQC_MASTER    5
+#define SKILL_CQC_MAX       5
 
 
 //powerloader skill
@@ -96,6 +103,7 @@
 #define SKILL_POWERLOADER_DEFAULT   0
 #define SKILL_POWERLOADER_TRAINED	1 //
 #define SKILL_POWERLOADER_MASTER	2 //Pilot, CT, Req, OT, CE
+#define SKILL_POWERLOADER_MAX    	2
 
 
 //leadership skill
@@ -104,6 +112,7 @@
 #define SKILL_LEAD_TRAINED          2 //SL
 #define SKILL_LEAD_EXPERT           3 //SOs
 #define SKILL_LEAD_MASTER           4 //XO, CO
+#define SKILL_LEAD_MAX              4
 
 
 //melee_weapons skill
@@ -111,11 +120,13 @@
 #define SKILL_MELEE_DEFAULT     0
 #define SKILL_MELEE_TRAINED     1
 #define SKILL_MELEE_SUPER       2
+#define SKILL_MELEE_MAX         2
 
 
 //pilot skill, hidden
 #define SKILL_PILOT_DEFAULT     0
 #define SKILL_PILOT_TRAINED     1 //Pilot
+#define SKILL_PILOT_MAX         1
 
 
 //endurance skill
@@ -124,6 +135,7 @@
 #define SKILL_ENDURANCE_TRAINED     2
 #define SKILL_ENDURANCE_MASTER      3
 #define SKILL_ENDURANCE_SURVIVOR    5
+#define SKILL_ENDURANCE_MAX         5
 
 //multitile vehicle skills
 //Can't drive
@@ -134,3 +146,7 @@
 #define SKILL_VEHICLE_LARGE   2
 //Can drive all vehicles and man their guns
 #define SKILL_VEHICLE_CREWMAN 3
+
+#define SKILL_VEHICLE_MAX     3
+
+//Please update _MAX skills if a new skill level is added to any of the skills!
