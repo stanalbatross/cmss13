@@ -385,7 +385,7 @@
 	recoil = RECOIL_AMOUNT_TIER_2
 	recoil_unwielded = RECOIL_AMOUNT_TIER_2
 
-/obj/item/weapon/gun/shotgun/double/doomguy/reload(mob/user, obj/item/ammo_magazine/magazine)
+/obj/item/weapon/gun/shotgun/double/doomguy/colony/reload(mob/user, obj/item/ammo_magazine/magazine)
 	//SICKENING.
 	if(magazine.default_ammo == /datum/ammo/bullet/shotgun/slug)
 		to_chat(user, SPAN_WARNING("What the hell are you DOING!?"))
@@ -434,9 +434,19 @@
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
 	if(glory_killing) //cannot attack during a glory kill
 		return
+<<<<<<< HEAD
 	else
 		..()
 	var/mob/living/carbon/staggered_mob = target
+=======
+<<<<<<< HEAD
+	if(!isXeno(target))
+=======
+	if(!isHumanHero(user) || !isXeno(target))
+>>>>>>> DOOM
+		return
+	var/mob/living/carbon/Xenomorph/X = target
+>>>>>>> DOOM
 	var/mob/living/carbon/human/H = user
 
 	if(user == target)
