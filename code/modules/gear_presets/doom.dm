@@ -282,7 +282,10 @@
 	gun_category = GUN_CATEGORY_RIFLE
 	aim_slowdown = 0.5
 	wield_delay = 0 //literally instant.
+<<<<<<< HEAD
 	indestructible = TRUE
+=======
+>>>>>>> DOOM
 
 /obj/item/weapon/gun/rifle/plasmagun/examine(mob/user)
 	..()
@@ -364,7 +367,10 @@
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
 	attachable_allowed = list()
 	wield_delay = 0 //literally instant.
+<<<<<<< HEAD
 	indestructible = TRUE
+=======
+>>>>>>> DOOM
 	var/colony_gun = FALSE
 
 /obj/item/weapon/gun/shotgun/double/doomguy/examine(mob/user)
@@ -420,6 +426,7 @@
 	recoil = RECOIL_AMOUNT_TIER_2
 	recoil_unwielded = RECOIL_AMOUNT_TIER_2
 
+<<<<<<< HEAD
 /obj/item/weapon/gun/shotgun/double/doomguy/reload(mob/user, obj/item/ammo_magazine/magazine)
 	//SICKENING.
 	if(magazine.default_ammo == /datum/ammo/bullet/shotgun/slug)
@@ -427,6 +434,8 @@
 		return
 	..()
 
+=======
+>>>>>>> DOOM
 /obj/item/weapon/doomblade
 	name = "\improper Doomblade"
 	icon_state = "doomblade"
@@ -470,7 +479,11 @@
 		..()
 	else
 		return
+<<<<<<< HEAD
 	if(!isXeno(target))
+=======
+	if(!isHumanHero(user) || !isXeno(target))
+>>>>>>> DOOM
 		return
 	var/mob/living/carbon/Xenomorph/X = target
 	var/mob/living/carbon/human/H = user
