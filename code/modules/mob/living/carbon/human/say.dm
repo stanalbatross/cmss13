@@ -6,7 +6,7 @@
 	var/italics = 0
 
 	if(!able_to_speak)
-		to_chat(src, SPAN_DANGER("You try to speak, but nothing comes out!"))
+		to_chat(src, SPAN_WARNING("You cannot speak!"))
 		return
 
 	if(client)

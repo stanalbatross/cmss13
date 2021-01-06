@@ -158,22 +158,22 @@
 	if(!hasorgans(user))
 		return
 
-	dig_out_shrapnel(user)
+	dig_out_shrapnel(10, user)
 
 /obj/item/weapon/melee/yautja_knife/dropped(mob/living/user)
 	add_to_missing_pred_gear(src)
 	..()
 
 
-/obj/item/proc/dig_out_shrapnel_check(var/mob/living/target, var/mob/living/carbon/human/user) //for digging shrapnel out of OTHER people, not yourself
+/obj/item/proc/dig_out_shrapnel_check(var/duration, var/mob/living/target, var/mob/living/carbon/human/user) //for digging shrapnel out of OTHER people, not yourself
 	if(skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC) && ishuman(user) && ishuman(target) && user.a_intent == INTENT_HELP) //Squad medics and above
-		INVOKE_ASYNC(src, /obj/item.proc/dig_out_shrapnel, target, user)
+		INVOKE_ASYNC(src, /obj/item.proc/dig_out_shrapnel, duration, target, user)
 		return TRUE
 	return FALSE
 
 
 // If no user, it means that the embedded_human is removing it themselves
-/obj/item/proc/dig_out_shrapnel(var/mob/living/carbon/human/embedded_human, var/mob/living/carbon/human/user = null)
+/obj/item/proc/dig_out_shrapnel(var/duration, var/mob/living/carbon/human/embedded_human, var/mob/living/carbon/human/user = null)
 	if(!istype(embedded_human))
 		return
 
@@ -188,12 +188,12 @@
 
 	if(user)
 		to_chat(user, SPAN_NOTICE("You begin using [src] to rip shrapnel out of [embedded_human]."))
-		if(!do_after(user, 20, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+		if(!do_after(user, duration, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 			to_chat(H_user, SPAN_NOTICE("You were interrupted!"))
 			return
 	else
 		to_chat(H, SPAN_NOTICE("You begin using [src] to rip shrapnel out. Hold still. This will probably hurt..."))
-		if(!do_after(H, 20, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+		if(!do_after(H, duration, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 			to_chat(H_user, SPAN_NOTICE("You were interrupted!"))
 			return
 

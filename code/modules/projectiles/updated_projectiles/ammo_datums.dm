@@ -716,6 +716,131 @@
 /datum/ammo/bullet/shotgun/spread/masterkey
 	damage = BULLET_DAMAGE_TIER_4
 
+/*
+					8 GAUGE SHOTGUN AMMO
+*/
+
+/datum/ammo/bullet/shotgun/heavy/buckshot
+	name = "heavy shotgun buckshot shell"
+	icon_state = "buckshot"
+	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/spread
+	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
+	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
+	accurate_range = 3
+	max_range = 3
+	damage = BULLET_DAMAGE_TIER_18
+	damage_var_low = PROJECTILE_VARIANCE_TIER_9
+	damage_var_high = PROJECTILE_VARIANCE_TIER_9
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
+	penetration	= 0
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_2
+	shell_speed = AMMO_SPEED_TIER_2
+	damage_armor_punch = 0
+	pen_armor_punch = 0
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/on_hit_mob(mob/M,obj/item/projectile/P)
+	knockback(M,P)
+
+/datum/ammo/bullet/shotgun/heavy/spread
+	name = "additional heavy buckshot"
+	icon_state = "buckshot"
+	accuracy_var_low = PROJECTILE_VARIANCE_TIER_7
+	accuracy_var_high = PROJECTILE_VARIANCE_TIER_7
+	accurate_range = 3
+	max_range = 4
+	damage = BULLET_DAMAGE_TIER_18
+	damage_var_low = PROJECTILE_VARIANCE_TIER_9
+	damage_var_high = PROJECTILE_VARIANCE_TIER_9
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
+	penetration = 0
+	shell_speed = AMMO_SPEED_TIER_2
+	scatter = SCATTER_AMOUNT_TIER_1
+	damage_armor_punch = 0
+	pen_armor_punch = 0
+
+//basically the same
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath
+	name = "dragon's breath shell"
+	damage_type = BRUTE
+	accurate_range = 3
+	max_range = 4
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_INCENDIARY
+	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/spread
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/on_hit_mob(mob/M,obj/item/projectile/P)
+	burst(get_turf(M),P,damage_type)
+	knockback(M,P)
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/on_hit_obj(obj/O,obj/item/projectile/P)
+	burst(get_turf(P),P,damage_type)
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/on_hit_turf(turf/T,obj/item/projectile/P)
+	burst(get_turf(T),P,damage_type)
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/spread
+	name = "additional dragon's breath"
+	bonus_projectiles_amount = 0
+	accurate_range = 4
+	max_range = 5 //make use of the ablaze property
+
+
+/datum/ammo/bullet/shotgun/heavy/slug
+	name = "heavy shotgun slug"
+	impact_name = "slug"
+	impact_limbs = BODY_FLAG_HEAD
+
+	accurate_range = 7
+	max_range = 8
+	damage = BULLET_DAMAGE_TIER_15
+	penetration = ARMOR_PENETRATION_TIER_5
+	damage_armor_punch = 2
+
+/datum/ammo/bullet/shotgun/heavy/slug/on_hit_mob(mob/M,obj/item/projectile/P)
+	heavy_knockback(M, P, 5)
+
+/datum/ammo/bullet/shotgun/heavy/beanbag
+	name = "heavy beanbag slug"
+	icon_state = "beanbag"
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_RESIST
+
+	max_range = 7
+	shrapnel_chance = 0
+	damage = BULLET_DAMAGE_OFF
+	stamina_damage = BULLET_DAMAGE_TIER_20
+	accuracy = HIT_ACCURACY_TIER_2
+	shell_speed = AMMO_SPEED_TIER_2
+
+/datum/ammo/bullet/shotgun/heavy/beanbag/on_hit_mob(mob/M, obj/item/projectile/P)
+	if(!M || M == P.firer) return
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		shake_camera(H, 2, 1)
+
+/datum/ammo/bullet/shotgun/heavy/flechette
+	name = "heavy flechette shell"
+	icon_state = "flechette"
+	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/flechette_spread
+
+	accuracy_var_low = PROJECTILE_VARIANCE_TIER_3
+	accuracy_var_high = PROJECTILE_VARIANCE_TIER_3
+	max_range = 12
+	damage = BULLET_DAMAGE_TIER_10
+	damage_var_low = PROJECTILE_VARIANCE_TIER_8
+	damage_var_high = PROJECTILE_VARIANCE_TIER_8
+	penetration	= ARMOR_PENETRATION_TIER_10
+	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_2
+
+/datum/ammo/bullet/shotgun/heavy/flechette_spread
+	name = "additional heavy flechette"
+	icon_state = "flechette"
+	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
+	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
+	max_range = 12
+	damage = BULLET_DAMAGE_TIER_10
+	damage_var_low = PROJECTILE_VARIANCE_TIER_8
+	damage_var_high = PROJECTILE_VARIANCE_TIER_8
+	penetration	= ARMOR_PENETRATION_TIER_10
+	scatter = SCATTER_AMOUNT_TIER_4
 
 /*
 //================================================
@@ -2098,10 +2223,10 @@
 	var/nade_type = /obj/item/explosive/grenade/HE
 	icon_state = "grenade"
 	flags_ammo_behavior = AMMO_IGNORE_COVER|AMMO_SKIPS_ALIENS
-
 	damage = BULLET_DAMAGE_TIER_3
 	accuracy = HIT_ACCURACY_TIER_3
 	max_range = 6
+	var/det_time = 10
 
 /datum/ammo/grenade_container/on_hit_mob(mob/M,obj/item/projectile/P)
 	drop_nade(P)
@@ -2119,7 +2244,7 @@
 	var/turf/T = get_turf(P)
 	var/obj/item/explosive/grenade/G = new nade_type(T)
 	G.visible_message(SPAN_WARNING("\A [G] lands on [T]!"))
-	G.det_time = 10
+	G.det_time = det_time
 	G.source_mob = P.weapon_source_mob
 	G.activate()
 
@@ -2130,6 +2255,28 @@
 	name = "smoke grenade shell"
 	nade_type = /obj/item/explosive/grenade/smokebomb
 	icon_state = "smoke_shell"
+
+/datum/ammo/grenade_container/stickfrag
+	name = "fragmentation grenade"
+	nade_type = /obj/item/explosive/grenade/HE/stick
+	icon_state = "grenade_stick_active"
+	flags_ammo_behavior = AMMO_IGNORE_COVER
+	//to do, give it thunk hitting noise?
+	damage = BULLET_DAMAGE_TIER_12
+	accuracy = HIT_ACCURACY_TIER_8
+	max_range = 10
+
+/datum/ammo/grenade_container/cryogenic
+	name = "cryogenic grenade"
+	nade_type = /obj/item/explosive/grenade/cryogenic
+	icon_state = "cryogrenade_active"
+	flags_ammo_behavior = AMMO_IGNORE_COVER
+	//to do, give it thunk hitting noise?
+	damage = BULLET_DAMAGE_TIER_12
+	accuracy = HIT_ACCURACY_TIER_8
+	max_range = 10
+	det_time = 1
+
 
 /datum/ammo/hugger_container
 	name = "hugger shell"
