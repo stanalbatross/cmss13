@@ -703,7 +703,7 @@
 		return
 
 	var/new_plasma_max = plasmapool_modifier * caste.plasma_max
-	plasma_gain = plasmagain_modifier + caste.plasma_gain)
+	plasma_gain = plasmagain_modifier + caste.plasma_gain
 	if (new_plasma_max == plasma_max)
 		return
 	var/plasma_ratio = plasma_stored / plasma_max
