@@ -1,2 +1,2 @@
 /obj/effect/spawner
-	name = "object spawner"
+	name = "strange rune" //spooky
