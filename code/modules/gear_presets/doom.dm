@@ -435,15 +435,15 @@
 	if(glory_killing) //cannot attack during a glory kill
 		return
 <<<<<<< HEAD
+<<<<<<< HEAD
 	else
 		..()
 	var/mob/living/carbon/staggered_mob = target
 =======
 <<<<<<< HEAD
-	if(!isXeno(target))
 =======
-	if(!isHumanHero(user) || !isXeno(target))
->>>>>>> DOOM
+>>>>>>> Cleans things up and fixes rebase issues
+	if(!isXeno(target))
 		return
 	var/mob/living/carbon/Xenomorph/X = target
 >>>>>>> DOOM
