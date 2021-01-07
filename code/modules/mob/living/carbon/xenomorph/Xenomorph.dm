@@ -162,9 +162,9 @@
 	var/health_modifier = 0
 	var/armor_modifier = 0
 	var/explosivearmor_modifier = 0
-	var/plasmapool_modifier = 1
+	var/plasmapool_modifier = XENO_UNIVERSAL_REGENMULT
 	var/plasmagain_modifier = 0
-	var/regeneration_multiplier = 1
+	var/regeneration_multiplier = XENO_UNIVERSAL_REGENMULT
 	var/speed_modifier = 0
 	var/phero_modifier = 0
 	var/acid_modifier = 0
@@ -703,7 +703,7 @@
 		return
 
 	var/new_plasma_max = plasmapool_modifier * caste.plasma_max
-	plasma_gain = plasmagain_modifier + caste.plasma_gain
+	plasma_gain = plasmagain_modifier + caste.plasma_gain)
 	if (new_plasma_max == plasma_max)
 		return
 	var/plasma_ratio = plasma_stored / plasma_max
