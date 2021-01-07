@@ -114,7 +114,7 @@
 			X.next_move_slowdown = X.next_move_slowdown + (weed_strength*WEED_XENO_SPEED_MULT)
 
 /obj/effect/alien/weeds/proc/slowdown_immune(var/mob/living/carbon/human/H)
-	if(H.allied_to_hivenumber(linked_hive.hivenumber, XENO_SLASH_RESTRICTED) || H.shoes.flags_inventory & NOWEEDSLOW) //if wearing shoes like pred shoes, immune to weed slowdown effect
+	if(H.ally_of_hivenumber(linked_hive.hivenumber) || H.shoes.flags_inventory & NOWEEDSLOW) //if wearing shoes like pred shoes, immune to weed slowdown effect
 		return TRUE
 	else
 		return FALSE
