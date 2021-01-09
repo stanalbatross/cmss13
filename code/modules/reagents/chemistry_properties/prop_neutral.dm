@@ -148,7 +148,7 @@
 		var/mob/living/carbon/human/H = M
 		var/datum/internal_organ/liver/L = H.internal_organs_by_name["liver"]
 		if(L)
-			L.damage += 0.5*potency
+			H.apply_internal_damage(0.5*potency, L)
 
 /datum/chem_property/neutral/hallucinogenic
 	name = PROPERTY_HALLUCINOGENIC

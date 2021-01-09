@@ -106,7 +106,7 @@
 	return
 
 /datum/reagent/proc/on_mob_life(mob/living/M, alien)
-	if(alien == IS_HORROR || !holder)
+	if(alien == REAGENT_HORROR || !holder)
 		return
 	holder.remove_reagent(id, custom_metabolism) //By default it slowly disappears.
 
@@ -115,7 +115,7 @@
 	if(mods[REAGENT_CANCEL])
 		return
 
-	if((!isliving(M) || alien == IS_YAUTJA) && !mods[REAGENT_FORCE])
+	if((!isliving(M) || alien == REAGENT_YAUTJA) && !mods[REAGENT_FORCE])
 		return
 
 	handle_processing(M, mods)

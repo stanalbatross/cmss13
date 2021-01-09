@@ -155,8 +155,6 @@
 /obj/item/weapon/melee/yautja_knife/attack_self(mob/living/carbon/human/user)
 	if(!isYautja(user))
 		return
-	if(!hasorgans(user))
-		return
 
 	dig_out_shrapnel(10, user)
 

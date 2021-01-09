@@ -285,7 +285,7 @@
 	src.update_damages()
 
 	//If limb was damaged before and took enough damage, try to cut or tear it off
-	if(old_brute_dam > 0 && !is_ff && body_part != BODY_FLAG_CHEST && body_part != BODY_FLAG_GROIN && !no_limb_loss)
+	if(old_brute_dam > 0 && !is_ff && body_part != BODY_FLAG_CHEST && body_part != BODY_FLAG_GROIN && !no_limb_loss && !owner.status_flags & NO_PERMANENT_DAMAGE)
 		var/obj/item/clothing/head/helmet/H = owner.head
 		if(!(body_part == BODY_FLAG_HEAD && istype(H) && !isSynth(owner))\
 			&& CONFIG_GET(flag/limbs_can_break)\
@@ -898,11 +898,20 @@ This function completely restores a damaged organ to perfect condition.
 			knitting_time = -1
 			to_chat(owner, SPAN_WARNING("You feel your [display_name] stop knitting together as it absorbs damage!"))
 		return
+
+	if(owner.species.flags & NO_PERMANENT_DAMAGE)
+		owner.visible_message(\
+			SPAN_WARNING("[owner] withstands the blow!"),
+			SPAN_WARNING("Your [display_name] withstands the blow!"))
+		return
+
 	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE || owner.species.flags & SPECIAL_BONEBREAK || !owner.skills) //stops division by zero
 		bonebreak_probability = 100
+
 	//if the chance was not set by what called fracture(), the endurance check is done instead
 	if(!bonebreak_probability) //bone break chance is based on endurance, 25% for survivors, erts, 100% for most everyone else.
 		bonebreak_probability = 100 / Clamp(owner.skills.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
+
 	if(prob(bonebreak_probability))
 		owner.recalculate_move_delay = TRUE
 		owner.visible_message(\

@@ -36,8 +36,7 @@
 	if(species.has_organ["brain"])
 		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
 		if(sponge)
-			sponge.take_damage(amount)
-			sponge.damage = Clamp(sponge.damage, 0, maxHealth*2)
+			apply_internal_damage(Clamp(amount, 0, maxHealth*2), "brain")
 			brainloss = sponge.damage
 		else
 			brainloss = 200
@@ -52,7 +51,7 @@
 	if(species.has_organ["brain"])
 		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
 		if(sponge)
-			sponge.damage = Clamp(amount, 0, maxHealth*2)
+			apply_internal_damage(Clamp(amount, 0, maxHealth*2), "brain")
 			brainloss = sponge.damage
 		else
 			brainloss = 200
@@ -443,6 +442,9 @@ This function restores all limbs.
 // Organ has to be either a internal organ by string or a limb with internal organs in.
 /mob/living/carbon/human/apply_internal_damage(var/damage = 0, var/organ)
 	if(!damage)
+		return
+
+	if(status_flags & NO_PERMANENT_DAMAGE)
 		return
 
 	var/obj/limb/L = null
