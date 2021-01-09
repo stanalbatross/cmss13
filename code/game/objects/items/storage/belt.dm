@@ -406,8 +406,8 @@
 /obj/item/storage/belt/shotgun/heavy
 	name = "shotgun shell loading rig"
 	desc = "An ammunition belt designed to hold shotgun shells."
-	icon_state = "shotgunbelt"
-	item_state = null
+	icon_state = "doombelt"
+	item_state = "doombelt"
 	storage_slots = 6
 
 /obj/item/storage/belt/shotgun/heavy/fill_preset_inventory()
