@@ -19,7 +19,7 @@
 
 /datum/reagent/drink/on_mob_life(mob/living/M, alien)
 	//This is all way too snowflake to accurately transition to the property system so it stays here
-	if(alien == IS_YAUTJA || alien == IS_HORROR || !holder)
+	if(alien == REAGENT_YAUTJA || alien == REAGENT_HORROR || !holder)
 		return
 	M.nutrition += nutriment_factor
 	holder.remove_reagent(src.id, FOOD_METABOLISM)

@@ -121,7 +121,7 @@
 				var/affected_organ = pick("heart","lungs","liver","kidneys")
 				var/mob/living/carbon/human/H = affected_mob
 				var/datum/internal_organ/I =  H.internal_organs_by_name[affected_organ]
-				I.damage += 5
+				H.apply_internal_damage(5, I)
 
 	if(prob(2))
 		affected_mob.emote(pick("twitch","blink_r","shiver"))
