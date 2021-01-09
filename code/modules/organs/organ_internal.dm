@@ -52,6 +52,10 @@
 			E.internal_organs |= src
 
 /datum/internal_organ/proc/take_damage(amount, var/silent=0)
+
+	if(owner.status_flags & NO_PERMANENT_DAMAGE)
+		return
+
 	if(src.robotic == ORGAN_ROBOT)
 		src.damage += (amount * 0.8)
 	else
@@ -165,7 +169,7 @@
 			else
 				var/datum/internal_organ/O = pick(owner.internal_organs)
 				if(O)
-					O.damage += 0.2  * PROCESS_ACCURACY
+					owner.apply_internal_damage(0.2 * PROCESS_ACCURACY, O)
 
 		//Detox can heal small amounts of damage
 		if (src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))

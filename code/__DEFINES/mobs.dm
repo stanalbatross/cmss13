@@ -113,6 +113,7 @@
 #define PERMANENTLY_DEAD	(1<<17)
 #define CANDAZE				(1<<18)
 #define CANSLOW				(1<<19)
+#define NO_PERMANENT_DAMAGE	(1<<20) //no BBs, no blood loss, no delimbs, no organ damage, no hunger. intentionally not given to predators
 
 // =============================
 // hive types
@@ -186,12 +187,12 @@
 #define NO_NEURO 4096 //species cannot be neuroed
 #define SPECIAL_BONEBREAK 8192 //species do not get their bonebreak chance modified by endurance
 #define NO_SHRAPNEL 16384
+#define IS_YAUTJA 32768
 //=================================================
 
-//Some on_mob_life() procs check for alien races.
-#define IS_XENOS 5
-#define IS_YAUTJA 6
-#define IS_HORROR 7
+//For custom reagent checks
+#define REAGENT_YAUTJA 6
+#define REAGENT_HORROR 7
 //=================================================
 
 //Mob sizes

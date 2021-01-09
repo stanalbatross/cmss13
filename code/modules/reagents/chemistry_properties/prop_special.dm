@@ -131,7 +131,7 @@
 	if(!ishuman(M))
 		return
 	var/mob/living/carbon/human/H = M
-	if(H.species.reagent_tag == IS_YAUTJA)
+	if(H.species.reagent_tag == REAGENT_YAUTJA)
 		return list(REAGENT_FORCE = TRUE)
 	else if(level < 2)//needs level two to work on humans too
 		return list(REAGENT_CANCEL = TRUE)

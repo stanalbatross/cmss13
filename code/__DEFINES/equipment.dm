@@ -45,7 +45,6 @@
 #define MOB_LOCK_ON_EQUIP		(1<<8)	// Lock this item to the mob that equips it up until permadeath
 #define BLOCK_KNOCKDOWN			(1<<9)	// Wearing this will stop you from being pushed over
 #define NO_CRYO_STORE			(1<<10) // This item deletes itself when put in cryo storage
-#define SELF_SPLINT				(1<<11) // This item will prevent removal of splints, for items that splint by themselves
 
 //==========================================================================================
 

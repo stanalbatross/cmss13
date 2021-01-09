@@ -89,7 +89,7 @@
 			if(!safety)
 				to_chat(user, SPAN_DANGER("You stab [H] in the eyes with the [src]!"))
 				visible_message(SPAN_DANGER("[user] stabs [H] in the eyes with the [src]!"))
-				E.damage += rand(8,20)
+				H.apply_internal_damage(rand(8,20), "E")
 	return ..()
 
 /*
