@@ -989,7 +989,7 @@
 
 	if(L && !L.is_bruised())
 		src.custom_pain("You feel a stabbing pain in your chest!", 1)
-		apply_internal_damage(L.min_bruised_damage, "lungs")
+		L.damage = L.min_bruised_damage
 
 
 /mob/living/carbon/human/get_visible_implants(var/class = 0)
@@ -1359,6 +1359,12 @@
 			if(do_after(HS, HUMAN_STRIP_DELAY * HS.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_ALL, BUSY_ICON_GENERIC, HT, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
 				var/can_reach_splints = TRUE
 				var/amount_removed = 0
+				if(wear_suit && wear_suit.flags_inventory & SELF_SPLINT)
+					var/obj/item/clothing/suit/space/suit = HT.wear_suit
+					if(suit.supporting_limbs && suit.supporting_limbs.len)
+						msg = "[HS == HT ? "your":"\proper [HT]'s"]"
+						to_chat(HS, SPAN_WARNING("You cannot remove the splints, [msg] [suit] is supporting some of the breaks."))
+						can_reach_splints = FALSE
 				if(can_reach_splints)
 					var/obj/item/stack/W = new /obj/item/stack/medical/splint(HS.loc)
 					W.amount = 0 //we checked that we have at least one bodypart splinted, so we can create it no prob. Also we need amount to be 0

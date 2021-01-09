@@ -66,7 +66,6 @@
 	armor_rad = CLOTHING_ARMOR_NONE
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/doomguy)
-	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_ARMS|BODY_FLAG_FEET|BODY_FLAG_HANDS
 	flags_item = NODROP
 
 /obj/item/clothing/gloves/marine/veteran/doomguy
@@ -75,7 +74,7 @@
 	icon_state = "doomgloves"
 	item_state = "doomgloves"
 	siemens_coefficient = 0
-	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_VERYHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
@@ -94,7 +93,7 @@
 	desc = "These boots seem to be made out of studded leather, but they're extremely hard to the touch. The bottom seems to have a faint red tint..." //its blood
 	icon_state = "doomboots"
 	item_state = "doomboots"
-	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_VERYHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
@@ -117,7 +116,7 @@
 	desc = "A colossal, extremely durable-looking helmet. Features a Heads-Up-Display which displays vital data such as how many things you've slayed so far."
 	icon_state = "doomhelmet"
 	item_state = "doomhelmet"
-	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_VERYHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
@@ -155,6 +154,7 @@
 	..()
 	to_chat(user, SPAN_NOTICE("You have slayed [user.life_kills_total] enemies so far."))
 
+
 //remove this once someone fixes update_sight() fucking processing glasses to look for sight flags
 /obj/item/clothing/glasses/thermal/doomplaceholder
 	name = "Praetor HUD"
@@ -174,7 +174,7 @@
 	desc = "A colossal, extremely durable-looking piece of probably metal. Unrelated to actual Praetorians."
 	icon_state = "doomsuit"
 	item_state = "doomsuit"
-	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_VERYHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
@@ -184,7 +184,7 @@
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
 	storage_slots = 2
 	slowdown = SLOWDOWN_ARMOR_NONE
-	flags_inventory = BLOCK_KNOCKDOWN
+	flags_inventory = BLOCK_KNOCKDOWN|SELF_SPLINT
 	flags_item = NODROP
 	allowed = list(/obj/item/weapon/gun/shotgun/double/doomguy)
 	uniform_restricted = list(/obj/item/clothing/under/marine/veteran/doomguy)
@@ -196,18 +196,51 @@
 	actions_types = list(
 	 					 /datum/action/item_action/specialist/doomguy_extend_doomblade,
 						 /datum/action/item_action/specialist/doomguy_extend_equipment_launcher,
+						 /datum/action/item_action/quick_splint,
 						 /datum/action/item_action/quick_scan)
 
 /obj/item/clothing/suit/storage/marine/veteran/doomguy/examine(mob/user)
 	..()
-	to_chat(user, SPAN_NOTICE("You have three unique actions: Doomblade, Equipment Launcher, and Scan Health."))
-	to_chat(user, SPAN_NOTICE("Toggle Doomblade will give you a blade that deals good damage and will glory kill on low-health enemies, granting you health and ammo."))
-	to_chat(user, SPAN_NOTICE("Toggle Equipment Launcher will extend a launcher than you can press inhand to switch between throwing a cryogenic grenade that slows enemies down, or a fragmentation grenade. They both have separate 30-second cooldowns."))
+	to_chat(user, SPAN_NOTICE("You have four unique actions: Doomblade, Equipment Launcher, Quick Splint and Scan Health."))
+	to_chat(user, SPAN_NOTICE("Extend Doomblade will give you a blade that deals good damage and will glory kill on low-health enemies, granting you health and ammo."))
+	to_chat(user, SPAN_NOTICE("Equipment Launcher will extend a launcher than you can press inhand to switch between throwing a cryogenic grenade that slows enemies down, or a fragmentation grenade. They both have separate 30-second cooldowns."))
+	to_chat(user, SPAN_NOTICE("Quick Splint will inmediately splint any broken bones you have. Glory kill an enemy to truly heal them."))
 	to_chat(user, SPAN_NOTICE("Scan Health will instantly give you a readout of your current health."))
 
 /obj/item/clothing/suit/storage/marine/veteran/doomguy/proc/grenade_reloaded(mob/living/user, var/mode)
 	to_chat(user, SPAN_WARNING("Your suit informs you that your [mode] grenade has been recharged!"))
 	playsound(user, 'sound/effects/refill.ogg', 25, 1, 3)
+
+/datum/action/item_action/quick_splint/New(var/mob/living/user, var/obj/item/holder)
+	..()
+	name = "Splint Broken Bones"
+	button.name = name
+	button.overlays.Cut()
+	var/image/IMG = image('icons/mob/hud/actions.dmi', button, "splint_ability")
+	button.overlays += IMG
+
+/datum/action/item_action/quick_splint/update_button_icon()
+	button.overlays.Cut()
+	var/image/IMG = image('icons/mob/hud/actions.dmi', button, "splint_ability")
+	button.overlays += IMG
+
+/datum/action/item_action/quick_splint/can_use_action()
+	var/mob/living/carbon/human/H = owner
+	if(istype(H) && !H.is_mob_incapacitated() && !H.lying && holder_item == H.wear_suit)
+		return TRUE
+
+/datum/action/item_action/quick_splint/action_activate()
+	var/mob/living/carbon/human/H = owner
+
+	for(var/obj/limb/E in H)
+		if(E.status & LIMB_BROKEN)
+			if(E.status & LIMB_SPLINTED)
+				return
+			else
+				H.pain.apply_pain(-PAIN_BONE_BREAK_SPLINTED)
+				E.status |= LIMB_SPLINTED
+				to_chat(H, SPAN_BOLDNOTICE("Your Praetor suit whirrs and hisses as it stabilizes your fractures. Glory kill a Xenomorph to truly repair them."))
+				playsound(H, 'sound/handling/splint1.ogg', 25, 1, 2)
 
 /datum/action/item_action/quick_scan/New(var/mob/living/user, var/obj/item/holder)
 	..()
@@ -437,25 +470,17 @@
 		..()
 	else
 		return
-	var/mob/living/carbon/staggered_mob = target
+	if(!isXeno(target))
+		return
+	var/mob/living/carbon/Xenomorph/X = target
 	var/mob/living/carbon/human/H = user
-
-	if(user == target)
-		return //no
-
-	var/mob_threshold_increase = 0
-	var/is_xeno = FALSE
-	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
-		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
-		is_xeno = TRUE
-
-	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
+	if(X.health <= (X.maxHealth * 0.25) && X.stat != DEAD)
 		//if they are near crit, we begin a glory kill
-		user.visible_message(SPAN_DANGER("[user] quickly pummels the [staggered_mob.name] in the back of its head and staggers it!"), SPAN_DANGER("You quickly pummel the [staggered_mob.name] in the back of its head with the back of your blade and stagger it!"))
+		user.visible_message(SPAN_DANGER("[user] quickly pummels the [X.name] in the back of its head and staggers it!"), SPAN_DANGER("You quickly pummel the [X.name] in the back of its head with the back of your blade and stagger it!"))
 		//stun the xeno so they can't do anything
-		staggered_mob.apply_effect(4, WEAKEN)
-		user.visible_message(SPAN_DANGER("[user] impales the limp the [staggered_mob.name] and uses his blade to lift it from the ground..."), SPAN_DANGER("You impale the limp the [staggered_mob.name] and use your blade to lift it from the ground..."))
-		animate(staggered_mob, pixel_y = 5, time = 5, easing = SINE_EASING|EASE_OUT, loop = 0)
+		X.apply_effect(4, WEAKEN)
+		user.visible_message(SPAN_DANGER("[user] impales the limp the [X.name] and uses his blade to lift it from the ground..."), SPAN_DANGER("You impale the limp the [X.name] and use your blade to lift it from the ground..."))
+		animate(X, pixel_y = 5, time = 5, easing = SINE_EASING|EASE_OUT, loop = 0)
 		//freeze and immunify the doomguy
 		user.anchored = TRUE
 		user.frozen = TRUE
@@ -463,15 +488,15 @@
 		H.species.brute_mod = 0
 		H.species.burn_mod = 0
 		//freeze the xeno so they're not pulled away (not that it would do anything, as the do_after cannot be interrupted)
-		staggered_mob.anchored = TRUE
-		staggered_mob.frozen = TRUE
-		staggered_mob.update_canmove()
-		staggered_mob.updatehealth()
+		X.anchored = TRUE
+		X.frozen = TRUE
+		X.update_canmove()
+		X.updatehealth()
 		//set glory kill to true, stopping you from being able to attack with the doomblade while glory killing.
 		glory_killing = TRUE
 		//to do: animate the xeno slowly moving up from the ground being lifted up
 		//you buffoon, you dealt too much damage
-		if(!do_after(user, 20, INTERRUPT_NONE, BUSY_ICON_HOSTILE, target) || staggered_mob.stat == DEAD)
+		if(!do_after(user, 20, INTERRUPT_NONE, BUSY_ICON_HOSTILE, target) || X.stat == DEAD)
 			to_chat(user, SPAN_DANGER("They died already! Be more careful next time!"))
 			//fix their status
 			user.anchored = FALSE
@@ -481,126 +506,94 @@
 			H.species.burn_mod = initial(H.species.burn_mod)
 			glory_killing = FALSE
 			return
-		//ideally these wouldn't be size checks but you know how it is
-		if(is_xeno)
-			xeno_glorykill(user, staggered_mob)
 		else
-			humanoid_glorykill(user, staggered_mob)
-		//give the people a little time to take in what just happened and read the glory kill text
-		addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 3 SECONDS)
+			var/heal_amount = (X.tier * 40)
+			var/ammo_refill = (X.tier)
+			switch(X.caste_name) //caste and unique glory kill text
+				//this will never happen
+				if("Bloody Larva")
+					user.visible_message(SPAN_HIGHDANGER("[user] crushes the [X.name] into a fine green mist!"), SPAN_HIGHDANGER("You crush the [X.name] into a fine green mist!"))
+					heal_amount = 10 //they're t0
+				//T1
+				if("Drone")
+					user.visible_message(SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and sweeps it across its neck, decapitating it!"), SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and sweeps it across its neck, decapitating it!"))
 
-/obj/item/weapon/doomblade/proc/xeno_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
-	var/mob/living/carbon/Xenomorph/X = staggered_mob
-	var/heal_amount = (X.tier * 40)
-	var/ammo_refill = (X.tier)
-	switch(X.caste_name) //caste and unique glory kill text
-		//this will never happen
-		if("Bloody Larva")
-			user.visible_message(SPAN_HIGHDANGER("[user] crushes the [X.name] into a fine green mist!"), SPAN_HIGHDANGER("You crush the [X.name] into a fine green mist!"))
-			heal_amount = 10 //they're t0
-		//T1
-		if("Drone")
-			user.visible_message(SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and sweeps it across its neck, decapitating it!"), SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and sweeps it across its neck, decapitating it!"))
+				if("Runner")
+					user.visible_message(SPAN_HIGHDANGER("[user] grabs the [X.name]'s head and slowly tears it away from the body!"), SPAN_HIGHDANGER("You grab the [X.name]'s head and slowly tear it away from the body!"))
 
-		if("Runner")
-			user.visible_message(SPAN_HIGHDANGER("[user] grabs the [X.name]'s head and slowly tears it away from the body!"), SPAN_HIGHDANGER("You grab the [X.name]'s head and slowly tear it away from the body!"))
+				if("Sentinel")
+					user.visible_message(SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and smashes it through its body, tearing it in half!"), SPAN_HIGHDANGER("You pull out the blade from the [X.name]'s body and smash it through its body, tearing it in half!"))
 
-		if("Sentinel")
-			user.visible_message(SPAN_HIGHDANGER("[user] pulls out the blade from the [X.name]'s body and smashes it through its body, tearing it in half!"), SPAN_HIGHDANGER("You pull out the blade from the [X.name]'s body and smash it through its body, tearing it in half!"))
+				if("Defender")
+					user.visible_message(SPAN_HIGHDANGER("[user] grabs the [X.name]'s head by the crest and slams it down into his knee, pulverizing it!"), SPAN_HIGHDANGER("You grab the [X.name]'s head by the crest and slam it down into your knee, pulverizing it!"))
+				//T2
+				if("Hivelord")
+					user.visible_message(SPAN_HIGHDANGER("[user] rips the dorsal spines off the [X.name] and jabs them into its head!"), SPAN_HIGHDANGER("You rip the dorsal spines off the [X.name] and jab them into its head!"))
 
-		if("Defender")
-			user.visible_message(SPAN_HIGHDANGER("[user] grabs the [X.name]'s head by the crest and slams it down into his knee, pulverizing it!"), SPAN_HIGHDANGER("You grab the [X.name]'s head by the crest and slam it down into your knee, pulverizing it!"))
+				if("Burrower")
+					user.visible_message(SPAN_HIGHDANGER("[user] rapidly jabs the [X.name] several times in the chest, pressurized acid blood spurting out of the holes!"), SPAN_HIGHDANGER("You rapidly jab the [X.name] several times in the chest, pressurized acid blood spurting out of the holes!"))
 
-		//T2
-		if("Hivelord")
-			user.visible_message(SPAN_HIGHDANGER("[user] rips the dorsal spines off the [X.name] and jabs them into its head!"), SPAN_HIGHDANGER("You rip the dorsal spines off the [X.name] and jab them into its head!"))
+				if("Carrier")
+					user.visible_message(SPAN_HIGHDANGER("[user] slices into the abdomen of the [X.name], weird alien organs spilling out!"), SPAN_HIGHDANGER("You slice into the abdomen of the [X.name], weird alien organs spilling out!"))
 
-		if("Burrower")
-			user.visible_message(SPAN_HIGHDANGER("[user] rapidly jabs the [X.name] several times in the chest, pressurized acid blood spurting out of the holes!"), SPAN_HIGHDANGER("You rapidly jab the [X.name] several times in the chest, pressurized acid blood spurting out of the holes!"))
+				if("Lurker")
+					user.visible_message(SPAN_HIGHDANGER("[user] slices the tail off the [X.name] and caves in its head with the tip!"), SPAN_HIGHDANGER("[user] slices the tail off the [X.name] and caves in its head with the tip!"))
 
-		if("Carrier")
-			user.visible_message(SPAN_HIGHDANGER("[user] slices into the abdomen of the [X.name], weird alien organs spilling out!"), SPAN_HIGHDANGER("You slice into the abdomen of the [X.name], weird alien organs spilling out!"))
+				if("Spitter")
+					user.visible_message(SPAN_HIGHDANGER("[user] slashes the acid glands off the [X.name], acid and acid blood spurting out the holes, before impaling its head!"), SPAN_HIGHDANGER("You slash the acid glands off the [X.name], acid and acid blood spurting out the holes, before impaling its head!"))
 
-		if("Lurker")
-			user.visible_message(SPAN_HIGHDANGER("[user] slices the tail off the [X.name] and caves in its head with the tip!"), SPAN_HIGHDANGER("[user] slices the tail off the [X.name] and caves in its head with the tip!"))
+				if("Warrior")
+					user.visible_message(SPAN_HIGHDANGER("[user] directs a fist into the [X.name]'s face, it attempts to block [user]'s fist, but instead [user] extends the Doomblade, impaling it into its crest!"), SPAN_HIGHDANGER("[user] directs a fist into the [X.name]'s face, it attempts to block your fist, but instead you extend the Doomblade, impaling it into its crest!")) //https://youtu.be/NarIBADkVRU?t=28
 
-		if("Spitter")
-			user.visible_message(SPAN_HIGHDANGER("[user] slashes the acid glands off the [X.name], acid and acid blood spurting out the holes, before impaling its head!"), SPAN_HIGHDANGER("You slash the acid glands off the [X.name], acid and acid blood spurting out the holes, before impaling its head!"))
+				//T3
+				if("Boiler")
+					user.visible_message(SPAN_HIGHDANGER("[user] slices open the [X.name]'s crest gland, gas spilling out, before dealing a tremendous punch to its head!"), SPAN_HIGHDANGER("You slice open the [X.name]'s crest gland, gas spilling out, before dealing a tremendous punch to its head!"))
 
-		if("Warrior")
-			user.visible_message(SPAN_HIGHDANGER("[user] directs a fist into the [X.name]'s face, it attempts to block [user]'s fist, but instead [user] extends the Doomblade, impaling it into its crest!"), SPAN_HIGHDANGER("[user] directs a fist into the [X.name]'s face, it attempts to block your fist, but instead you extend the Doomblade, impaling it into its crest!")) //https://youtu.be/NarIBADkVRU?t=28
+				if("Ravager")
+					user.visible_message(SPAN_HIGHDANGER("[user] slices the claws off the [X.name] and impales them in its eyes!"), SPAN_HIGHDANGER("You slice the claws off the [X.name] and impale them in its eyes!"))
 
-		//T3
-		if("Boiler")
-			user.visible_message(SPAN_HIGHDANGER("[user] slices open the [X.name]'s crest gland, gas spilling out, before dealing a tremendous punch to its head!"), SPAN_HIGHDANGER("You slice open the [X.name]'s crest gland, gas spilling out, before dealing a tremendous punch to its head!"))
+				if("Praetorian")
+					user.visible_message(SPAN_HIGHDANGER("[user] consecutively slices the legs off the [X.name], then smashes the Doomblade down into its head!"), SPAN_HIGHDANGER("You consecutively slice the legs off the [X.name], then smash the Doomblade down into its head!"))
 
-		if("Ravager")
-			user.visible_message(SPAN_HIGHDANGER("[user] slices the claws off the [X.name] and impales them in its eyes!"), SPAN_HIGHDANGER("You slice the claws off the [X.name] and impale them in its eyes!"))
+				if("Crusher")
+					user.visible_message(SPAN_HIGHDANGER("[user] places his clenched fist on the [X.name]'s massive crest for a second, then suddenly extends the Doomblade, piercing through the exkoseleton!"), SPAN_HIGHDANGER("You place your clenched fist on the [X.name]'s massive crest for a second, then suddenly extend the Doomblade, piercing through the exkoseleton!"))
 
-		if("Praetorian")
-			user.visible_message(SPAN_HIGHDANGER("[user] consecutively slices the legs off the [X.name], then smashes the Doomblade down into its head!"), SPAN_HIGHDANGER("You consecutively slice the legs off the [X.name], then smash the Doomblade down into its head!"))
+				//Special
+				if("Predalien")
+					user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, then [user] cleanly slashes through the [X.name]'s neck, grabbing the dismembered head and crushing it!"), SPAN_HIGHDANGER("the [X.name] roars in your face, and you proceed to cleanly slash through the [X.name]'s neck, grabbing the dismembered head and crushing it!"))
+					X.emote("roar")
+					heal_amount = 160 //they're t1
+					ammo_refill = 2
 
-		if("Crusher")
-			user.visible_message(SPAN_HIGHDANGER("[user] places his clenched fist on the [X.name]'s massive crest for a second, then suddenly extends the Doomblade, piercing through the exkoseleton!"), SPAN_HIGHDANGER("You place your clenched fist on the [X.name]'s massive crest for a second, then suddenly extend the Doomblade, piercing through the exkoseleton!"))
+				if("Queen")
+					user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, and he quickly pulls out the equipment launcher and fires a fragmentation grenade right into the [X.name]'s mouth"), SPAN_HIGHDANGER("the [X.name] roars in your's face, and you quickly pull out the equipment launcher and fire a fragmentation grenade right into the [X.name]'s mouth!"))
+					X.emote("roar")
+					heal_amount = 200 //they're t0
+					ammo_refill = 3
 
-		//Special
-		if("Predalien")
-			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, then [user] cleanly slashes through the [X.name]'s neck, grabbing the dismembered head and crushing it!"), SPAN_HIGHDANGER("the [X.name] roars in your face, and you proceed to cleanly slash through the [X.name]'s neck, grabbing the dismembered head and crushing it!"))
-			X.emote("roar")
-			heal_amount = 160 //they're t1
-			ammo_refill = 3
+				//just in case
+				else
+					user.visible_message(SPAN_HIGHDANGER("[user] painfully forces the Doomblade through the [X.name]'s head!"), SPAN_HIGHDANGER("You painfully force the Doomblade through the [X.name]'s head!"))
+					heal_amount = 80
+					ammo_refill = 2
 
-		if("Queen")
-			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, and he quickly pulls out the equipment launcher and fires a fragmentation grenade right into the [X.name]'s mouth"), SPAN_HIGHDANGER("the [X.name] roars in your's face, and you quickly pull out the equipment launcher and fire a fragmentation grenade right into the [X.name]'s mouth!"))
-			X.emote("roar")
-			heal_amount = 200 //they're t0
-			ammo_refill = 3
-		//just in case
-		else
-			user.visible_message(SPAN_HIGHDANGER("[user] painfully forces the Doomblade through the [X.name]'s head!"), SPAN_HIGHDANGER("You painfully force the Doomblade through the [X.name]'s head!"))
-			heal_amount = 80
-			ammo_refill = 2
+			X.apply_damage(X.health, BRUTE)
+			addtimer(CALLBACK(X, /mob.proc/gib), 3 SECONDS)
+			//give the people a little time to take in what just happened and read the glory kill text
+			addtimer(CALLBACK(src, .proc/finish_glorykill, user, H, heal_amount, ammo_refill), 2.5 SECONDS)
 
-	X.apply_damage(X.health, BRUTE)
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
-
-/obj/item/weapon/doomblade/proc/humanoid_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
-
-	var/mob/living/carbon/human/H = staggered_mob
-	var/heal_amount = 40
-	var/ammo_refill = 1
-
-	if(H.species.flags & IS_SYNTHETIC)
-		user.visible_message(SPAN_HIGHDANGER("[user] slices his Doomblade out of [H.name] and cleanly amputates its head!"), SPAN_HIGHDANGER("You slice the Doomblade out of [H.name] and cleanly amputate its head!"))
-		//let's make use of the funny synth behead, why not?
-		heal_amount = 120
-		ammo_refill = 2
-		var/obj/limb/O = H.get_limb(check_zone("head"))
-		O.droplimb(TRUE, FALSE, "doom")
-
-	else if(H.species.flags & IS_YAUTJA)
-		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and You stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
-		H.emote("roar")
-		heal_amount = 200
-		ammo_refill = 3
-
-	else //we're assuming they're a human then
-		user.visible_message(SPAN_HIGHDANGER("[user] slams the Doomblade into [H.name]'s mouth and quickly slides it out!"), SPAN_HIGHDANGER("You slam the Doomblade into [H.name]'s mouth and quickly slide it out!"))
-
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
-
-/obj/item/weapon/doomblade/proc/finish_glorykill(mob/living/user, var/heal_amount, var/ammo_refill)
-
-	var/mob/living/carbon/human/H = user
+/obj/item/weapon/doomblade/proc/finish_glorykill(mob/living/user, mob/living/carbon/human/H, var/heal_amount, var/ammo_refill)
 	//heal as a reward for glory killing
 	user.heal_overall_damage(heal_amount, heal_amount/2, TRUE) //heals less burn
+	H.restore_all_organs()
+	//we don't want to deal with all that boring organ damage stuff
 	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves and bones repairing their integrity."))
 	//un-freeze them
 	user.anchored = FALSE
 	user.frozen = FALSE
 	user.update_canmove()
-	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
-	addtimer(CALLBACK(src, .proc/end_immunity, H), 2 SECONDS)
+	H.species.brute_mod = initial(H.species.brute_mod)
+	H.species.burn_mod = initial(H.species.burn_mod)
 	//allow attacking again
 	glory_killing = FALSE
 
@@ -611,13 +604,14 @@
 			handful.generate_handful(/datum/ammo/bullet/shotgun/heavy/buckshot, "8g", 4, 4, /obj/item/weapon/gun/shotgun)
 			H.equip_to_slot_or_del(handful, WEAR_IN_BELT)
 		H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/plasmagun(H), WEAR_IN_JACKET)
+		/*H.equip_to_slot_or_del(new /obj/item/ammo_magazine/handful/shotgun/heavy/buckshot(H), WEAR_IN_BELT)
+		H.equip_to_slot_or_del(new /obj/item/ammo_magazine/handful/shotgun/heavy/buckshot(H), WEAR_IN_BELT)*/
 
-/obj/item/weapon/doomblade/proc/end_immunity(mob/living/carbon/human/H)
-	H.species.brute_mod = initial(H.species.brute_mod)
-	H.species.burn_mod = initial(H.species.burn_mod)
 
 /obj/item/weapon/doomblade/attack_self(mob/living/carbon/human/user)
 	if(!ishuman(user))
+		return
+	if(!hasorgans(user))
 		return
 
 	dig_out_shrapnel(5, user)

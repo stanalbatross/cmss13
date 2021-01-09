@@ -14,8 +14,7 @@
 	brute_mod = 0.55
 	burn_mod = 0.55
 	unarmed_type = /datum/unarmed_attack/punch/strong
-	flags = HAS_SKIN_TONE|HAS_LIPS|HAS_UNDERWEAR
-	pain_type = /datum/pain/human_hero
+	pain_type = /datum/pain/yautja //why not
 	darksight = 5
 	cold_level_1 = 220
 	cold_level_2 = 180
@@ -27,9 +26,21 @@
 	stun_reduction = 1.5
 
 /datum/species/human/hero/handle_post_spawn(var/mob/living/carbon/human/H)
-	H.universal_understand = TRUE
-	H.status_flags |= NO_PERMANENT_DAMAGE //John Wick doesn't get internal bleeding from a grazing gunshot
-	H.status_flags &= ~CANKNOCKDOWN
+	H.universal_understand = 1
+	for(var/obj/limb/L in H.limbs)
+		switch(L.name)
+			if("groin","chest")
+				L.min_broken_damage = 70
+				L.max_damage = 200
+			if("head")
+				L.min_broken_damage = 70
+				L.max_damage = 90
+			if("l_hand","r_hand","r_foot","l_foot")
+				L.min_broken_damage = 60
+				L.max_damage = 60
+			if("r_leg","r_arm","l_leg","l_arm")
+				L.min_broken_damage = 60
+				L.max_damage = 80
 	return ..()
 
 //Various horrors that spawn in and haunt the living.
@@ -40,7 +51,7 @@
 	deform = 'icons/mob/humans/species/r_spooker.dmi'
 	brute_mod = 0.15
 	burn_mod = 1.50
-	reagent_tag = REAGENT_HORROR
+	reagent_tag = IS_HORROR
 	flags = HAS_SKIN_COLOR|NO_BREATHE|NO_POISON|HAS_LIPS|NO_SCAN|NO_POISON|NO_BLOOD|NO_SLIP|NO_CHEM_METABOLIZATION
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
