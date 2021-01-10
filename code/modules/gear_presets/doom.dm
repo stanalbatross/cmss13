@@ -47,7 +47,7 @@
 
 	H.set_species("Human Hero") //Doomguy is STRONG.
 
-	to_chat(H, SPAN_HIGHDANGER("You are *The* Doom Slayer. Rip and tear, until it is done. Unless an administrator tells you otherwise, you are to eviscerate the xenomorph menace and completely ignore the marine force."))
+	to_chat(H, SPAN_HIGHDANGER("You are *The* Doom Slayer. Rip and tear, until it is done. Unless an administrator tells you otherwise, you are to eviscerate the xenomorph menace, any Yautja and completely ignore the marine force."))
 	to_chat(H, SPAN_HIGHDANGER("Despite being the Slayer, you are not invincible. Kill Xenomorphs, and once you're low on health or ammo, glory kill them via stabbing them with the Doomblade below 25% health to regain health and ammunition."))
 	to_chat(H, SPAN_HIGHDANGER("Examine your gear to see what it does."))
 
@@ -413,7 +413,7 @@
 
 /obj/item/weapon/doomblade/examine(mob/user)
 	..()
-	to_chat(user, SPAN_NOTICE("This blade deals good damage and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph."))
+	to_chat(user, SPAN_NOTICE("This blade deals good damage and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph or the strength of the humanoid."))
 	to_chat(user, SPAN_NOTICE("ABILITY MACRO: 'Specialist-Activation-One'"))
 
 /obj/item/weapon/doomblade/dropped(mob/living/carbon/human/M)
@@ -432,6 +432,7 @@
 		if(do_after(user,7.5, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
 			D.open(1)
 
+//to future coders: i apologize
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
 	if(!glory_killing) //cannot attack during a glory kill
 		..()
@@ -444,17 +445,17 @@
 		return //no
 
 	var/mob_threshold_increase = 0
-	var/is_xeno = FALSE
+	var/is_xeno = TRUE
 	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
-		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
-		is_xeno = TRUE
+		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
+		is_xeno = FALSE
 
 	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
 		//if they are near crit, we begin a glory kill
-		user.visible_message(SPAN_DANGER("[user] quickly pummels the [staggered_mob.name] in the back of its head and staggers it!"), SPAN_DANGER("You quickly pummel the [staggered_mob.name] in the back of its head with the back of your blade and stagger it!"))
+		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of its head with the back of your blade and stagger them!"))
 		//stun the xeno so they can't do anything
-		staggered_mob.apply_effect(4, WEAKEN)
-		user.visible_message(SPAN_DANGER("[user] impales the limp the [staggered_mob.name] and uses his blade to lift it from the ground..."), SPAN_DANGER("You impale the limp the [staggered_mob.name] and use your blade to lift it from the ground..."))
+		staggered_mob.apply_effect(8, WEAKEN)
+		user.visible_message(SPAN_DANGER("[user] impales the limp [staggered_mob.name] and uses his blade to lift them from the ground..."), SPAN_DANGER("You impale the limp [staggered_mob.name] and use your blade to lift them from the ground..."))
 		animate(staggered_mob, pixel_y = 5, time = 5, easing = SINE_EASING|EASE_OUT, loop = 0)
 		//freeze and immunify the doomguy
 		user.anchored = TRUE
@@ -486,13 +487,11 @@
 			xeno_glorykill(user, staggered_mob)
 		else
 			humanoid_glorykill(user, staggered_mob)
-		//give the people a little time to take in what just happened and read the glory kill text
-		addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 3 SECONDS)
 
 /obj/item/weapon/doomblade/proc/xeno_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 	var/mob/living/carbon/Xenomorph/X = staggered_mob
 	var/heal_amount = (X.tier * 40)
-	var/ammo_refill = (X.tier)
+	var/xeno_tier = (X.tier) //turns into ammo refill, is used for time to finish glorykill, can't be direct as some xenos have dumb tiers
 	switch(X.caste_name) //caste and unique glory kill text
 		//this will never happen
 		if("Bloody Larva")
@@ -548,21 +547,24 @@
 			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, then [user] cleanly slashes through the [X.name]'s neck, grabbing the dismembered head and crushing it!"), SPAN_HIGHDANGER("the [X.name] roars in your face, and you proceed to cleanly slash through the [X.name]'s neck, grabbing the dismembered head and crushing it!"))
 			X.emote("roar")
 			heal_amount = 160 //they're t1
-			ammo_refill = 3
+			xeno_tier = 3
 
 		if("Queen")
 			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, and he quickly pulls out the equipment launcher and fires a fragmentation grenade right into the [X.name]'s mouth"), SPAN_HIGHDANGER("the [X.name] roars in your's face, and you quickly pull out the equipment launcher and fire a fragmentation grenade right into the [X.name]'s mouth!"))
 			X.emote("roar")
 			heal_amount = 200 //they're t0
-			ammo_refill = 3
+			xeno_tier = 3
 		//just in case
 		else
 			user.visible_message(SPAN_HIGHDANGER("[user] painfully forces the Doomblade through the [X.name]'s head!"), SPAN_HIGHDANGER("You painfully force the Doomblade through the [X.name]'s head!"))
 			heal_amount = 80
-			ammo_refill = 2
+			xeno_tier = 2
 
 	X.apply_damage(X.health, BRUTE)
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
+	//give the people a little time to take in what just happened and read the glory kill text
+	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), xeno_tier SECONDS)
+
+	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
 
 /obj/item/weapon/doomblade/proc/humanoid_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 
@@ -579,7 +581,7 @@
 		O.droplimb(TRUE, FALSE, "doom")
 
 	else if(H.species.flags & IS_YAUTJA)
-		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and You stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
+		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and you stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
 		H.emote("roar")
 		heal_amount = 200
 		ammo_refill = 3
@@ -587,7 +589,9 @@
 	else //we're assuming they're a human then
 		user.visible_message(SPAN_HIGHDANGER("[user] slams the Doomblade into [H.name]'s mouth and quickly slides it out!"), SPAN_HIGHDANGER("You slam the Doomblade into [H.name]'s mouth and quickly slide it out!"))
 
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
+	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 1.5 SECONDS)
+
+	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 3.5 SECONDS)
 
 /obj/item/weapon/doomblade/proc/finish_glorykill(mob/living/user, var/heal_amount, var/ammo_refill)
 
@@ -600,7 +604,7 @@
 	user.frozen = FALSE
 	user.update_canmove()
 	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
-	addtimer(CALLBACK(src, .proc/end_immunity, H), 2 SECONDS)
+	addtimer(CALLBACK(src, .proc/end_immunity, H), 3 SECONDS)
 	//allow attacking again
 	glory_killing = FALSE
 
@@ -615,6 +619,7 @@
 /obj/item/weapon/doomblade/proc/end_immunity(mob/living/carbon/human/H)
 	H.species.brute_mod = initial(H.species.brute_mod)
 	H.species.burn_mod = initial(H.species.burn_mod)
+	to_chat(H, SPAN_BOLDNOTICE("Your immunity to damage has expired."))
 
 /obj/item/weapon/doomblade/attack_self(mob/living/carbon/human/user)
 	if(!ishuman(user))
