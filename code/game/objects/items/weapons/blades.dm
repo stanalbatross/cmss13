@@ -156,7 +156,7 @@
 	if(!isYautja(user))
 		return
 
-	dig_out_shrapnel(10, user)
+	dig_out_shrapnel(1 SECONDS, user)
 
 /obj/item/weapon/melee/yautja_knife/dropped(mob/living/user)
 	add_to_missing_pred_gear(src)
