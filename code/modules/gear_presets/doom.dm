@@ -434,31 +434,15 @@
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
 	if(glory_killing) //cannot attack during a glory kill
 		return
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	else
 		..()
 	var/mob/living/carbon/staggered_mob = target
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Cleans things up and fixes rebase issues
-	if(!isXeno(target))
-		return
-	var/mob/living/carbon/Xenomorph/X = target
->>>>>>> DOOM
-=======
-	var/mob/living/carbon/staggered_mob = target
->>>>>>> Updates
 	var/mob/living/carbon/human/H = user
 
 	if(user == target)
 		return //no
 
 	var/mob_threshold_increase = 0
-<<<<<<< HEAD
-<<<<<<< HEAD
 	var/is_xeno = TRUE
 	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
 		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
@@ -466,31 +450,10 @@
 
 	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
 		//if they are near crit, we begin a glory kill
-		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of their head with the back of your blade and stagger them!"))
-		//stun the xeno so they can't do anything
-		staggered_mob.apply_effect(8, WEAKEN)
-		user.visible_message(SPAN_DANGER("[user] impales the limp [staggered_mob.name] and uses his blade to lift them from the ground..."), SPAN_DANGER("You impale the limp [staggered_mob.name] and use your blade to lift them from the ground..."))
-=======
-	var/is_xeno = FALSE
-=======
-	var/is_xeno = TRUE
->>>>>>> Fixes issues
-	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
-		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
-		is_xeno = FALSE
-
-	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
-		//if they are near crit, we begin a glory kill
 		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of its head with the back of your blade and stagger them!"))
 		//stun the xeno so they can't do anything
-<<<<<<< HEAD
-		staggered_mob.apply_effect(4, WEAKEN)
-		user.visible_message(SPAN_DANGER("[user] impales the limp the [staggered_mob.name] and uses his blade to lift it from the ground..."), SPAN_DANGER("You impale the limp the [staggered_mob.name] and use your blade to lift it from the ground..."))
->>>>>>> Updates
-=======
 		staggered_mob.apply_effect(8, WEAKEN)
 		user.visible_message(SPAN_DANGER("[user] impales the limp [staggered_mob.name] and uses his blade to lift them from the ground..."), SPAN_DANGER("You impale the limp [staggered_mob.name] and use your blade to lift them from the ground..."))
->>>>>>> Fixes issues
 		animate(staggered_mob, pixel_y = 5, time = 5, easing = SINE_EASING|EASE_OUT, loop = 0)
 		//freeze and immunify the doomguy
 		user.anchored = TRUE
@@ -522,27 +485,12 @@
 			xeno_glorykill(user, staggered_mob)
 		else
 			humanoid_glorykill(user, staggered_mob)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 		//give the people a little time to take in what just happened and read the glory kill text
 		addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 3 SECONDS)
->>>>>>> Updates
-=======
->>>>>>> Fixes issues
-
 /obj/item/weapon/doomblade/proc/xeno_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 	var/mob/living/carbon/Xenomorph/X = staggered_mob
 	var/heal_amount = (X.tier * 40)
-<<<<<<< HEAD
-<<<<<<< HEAD
 	var/xeno_tier = (X.tier) //turns into ammo refill, is used for time to finish glorykill, can't be direct as some xenos have dumb tiers
-=======
-	var/ammo_refill = (X.tier)
->>>>>>> Updates
-=======
-	var/xeno_tier = (X.tier) //turns into ammo refill, is used for time to finish glorykill, can't be direct as some xenos have dumb tiers
->>>>>>> Fixes issues
 	switch(X.caste_name) //caste and unique glory kill text
 		//this will never happen
 		if("Bloody Larva")
@@ -598,35 +546,16 @@
 			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, then [user] cleanly slashes through the [X.name]'s neck, grabbing the dismembered head and crushing it!"), SPAN_HIGHDANGER("the [X.name] roars in your face, and you proceed to cleanly slash through the [X.name]'s neck, grabbing the dismembered head and crushing it!"))
 			X.emote("roar")
 			heal_amount = 160 //they're t1
-<<<<<<< HEAD
-<<<<<<< HEAD
 			xeno_tier = 3
-=======
-			ammo_refill = 3
->>>>>>> Updates
-=======
-			xeno_tier = 3
->>>>>>> Fixes issues
-
 		if("Queen")
 			user.visible_message(SPAN_HIGHDANGER("the [X.name] roars in [user]'s face, and he quickly pulls out the equipment launcher and fires a fragmentation grenade right into the [X.name]'s mouth"), SPAN_HIGHDANGER("the [X.name] roars in your's face, and you quickly pull out the equipment launcher and fire a fragmentation grenade right into the [X.name]'s mouth!"))
 			X.emote("roar")
 			heal_amount = 200 //they're t0
-<<<<<<< HEAD
-<<<<<<< HEAD
 			xeno_tier = 3
-=======
-			ammo_refill = 3
->>>>>>> Updates
-=======
-			xeno_tier = 3
->>>>>>> Fixes issues
 		//just in case
 		else
 			user.visible_message(SPAN_HIGHDANGER("[user] painfully forces the Doomblade through the [X.name]'s head!"), SPAN_HIGHDANGER("You painfully force the Doomblade through the [X.name]'s head!"))
 			heal_amount = 80
-<<<<<<< HEAD
-<<<<<<< HEAD
 			xeno_tier = 2
 
 	X.apply_damage(X.health, BRUTE)
@@ -634,21 +563,12 @@
 	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), xeno_tier SECONDS)
 
 	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
-=======
-			ammo_refill = 2
-
-	X.apply_damage(X.health, BRUTE)
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
->>>>>>> Updates
-=======
-			xeno_tier = 2
 
 	X.apply_damage(X.health, BRUTE)
 	//give the people a little time to take in what just happened and read the glory kill text
 	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), xeno_tier SECONDS)
 
 	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
->>>>>>> Fixes issues
 
 /obj/item/weapon/doomblade/proc/humanoid_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 
@@ -665,60 +585,28 @@
 		O.droplimb(TRUE, FALSE, "doom")
 
 	else if(H.species.flags & IS_YAUTJA)
-<<<<<<< HEAD
-<<<<<<< HEAD
 		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and you stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
-=======
-		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and You stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
->>>>>>> Updates
-=======
-		user.visible_message(SPAN_HIGHDANGER("[H.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [H.name]'s forehead!"), SPAN_HIGHDANGER("[H.name] roars, and you stab him twice in the chest, then slam the Doomblade into [H.name]'s forehead!"))
->>>>>>> Fixes issues
 		H.emote("roar")
 		heal_amount = 200
 		ammo_refill = 3
 
 	else //we're assuming they're a human then
 		user.visible_message(SPAN_HIGHDANGER("[user] slams the Doomblade into [H.name]'s mouth and quickly slides it out!"), SPAN_HIGHDANGER("You slam the Doomblade into [H.name]'s mouth and quickly slide it out!"))
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 1.5 SECONDS)
-
 	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 3.5 SECONDS)
-=======
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 5.5 SECONDS)
->>>>>>> Updates
-=======
-	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 1.5 SECONDS)
-
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 3.5 SECONDS)
->>>>>>> Fixes issues
 
 /obj/item/weapon/doomblade/proc/finish_glorykill(mob/living/user, var/heal_amount, var/ammo_refill)
 
 	var/mob/living/carbon/human/H = user
 	//heal as a reward for glory killing
 	user.heal_overall_damage(heal_amount, heal_amount/2, TRUE) //heals less burn
-<<<<<<< HEAD
 	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves shut."))
-=======
-	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves and bones repairing their integrity."))
->>>>>>> Updates
 	//un-freeze them
 	user.anchored = FALSE
 	user.frozen = FALSE
 	user.update_canmove()
 	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
-<<<<<<< HEAD
-<<<<<<< HEAD
-	addtimer(CALLBACK(src, .proc/end_immunity, H), 3 SECONDS)
-=======
 	addtimer(CALLBACK(src, .proc/end_immunity, H), 2 SECONDS)
->>>>>>> Updates
-=======
-	addtimer(CALLBACK(src, .proc/end_immunity, H), 3 SECONDS)
->>>>>>> Fixes issues
 	//allow attacking again
 	glory_killing = FALSE
 
@@ -733,14 +621,7 @@
 /obj/item/weapon/doomblade/proc/end_immunity(mob/living/carbon/human/H)
 	H.species.brute_mod = initial(H.species.brute_mod)
 	H.species.burn_mod = initial(H.species.burn_mod)
-<<<<<<< HEAD
-<<<<<<< HEAD
 	to_chat(H, SPAN_BOLDNOTICE("Your immunity to damage has expired."))
-=======
->>>>>>> Updates
-=======
-	to_chat(H, SPAN_BOLDNOTICE("Your immunity to damage has expired."))
->>>>>>> Fixes issues
 
 /obj/item/weapon/doomblade/attack_self(mob/living/carbon/human/user)
 	if(!ishuman(user))
