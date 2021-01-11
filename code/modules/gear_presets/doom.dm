@@ -446,7 +446,7 @@
 
 	var/mob_threshold_increase = 0
 	var/is_xeno = TRUE
-	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
+	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
 		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
 		is_xeno = FALSE
 
