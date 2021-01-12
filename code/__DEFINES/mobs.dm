@@ -172,24 +172,23 @@
 //=================================================
 
 //Species flags.
-#define NO_BLOOD 1
-#define NO_BREATHE 2
-#define NO_SCAN 4
-#define NO_SLIP 8
-#define NO_POISON 16
-#define NO_CHEM_METABOLIZATION 32 //Prevents reagents from acting on_mob_life().
-#define HAS_SKIN_TONE 64
-#define HAS_SKIN_COLOR 128
-#define HAS_LIPS 256
-#define HAS_UNDERWEAR 512
-#define IS_WHITELISTED 1024
-#define NO_NEURO 2048 //species cannot be neuroed
-#define SPECIAL_BONEBREAK 4096 //species do not get their bonebreak chance modified by endurance
-#define NO_SHRAPNEL 8192
-
+#define NO_BLOOD               (1<<0)
+#define NO_BREATHE             (1<<1)
+#define NO_SCAN                (1<<2)
+#define NO_SLIP                (1<<3)
+#define NO_POISON              (1<<4)
+#define NO_CHEM_METABOLIZATION (1<<5) //Prevents reagents from acting on_mob_life().
+#define HAS_SKIN_TONE          (1<<6)
+#define HAS_SKIN_COLOR         (1<<7)
+#define HAS_LIPS               (1<<8)
+#define HAS_UNDERWEAR          (1<<9)
+#define IS_WHITELISTED         (1<<10)
+#define NO_NEURO               (1<<11) //species cannot be neuroed
+#define SPECIAL_BONEBREAK      (1<<12) //species do not get their bonebreak chance modified by endurance
+#define NO_SHRAPNEL            (1<<13)
 //SPECIFIC species flags
-#define IS_SYNTHETIC    (1<<0)
-#define IS_YAUTJA       (1<<1)
+#define IS_SYNTHETIC           (1<<14)
+#define IS_YAUTJA              (1<<15)
 //=================================================
 
 //For custom reagent checks
