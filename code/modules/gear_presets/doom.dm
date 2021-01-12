@@ -411,7 +411,7 @@
 
 /obj/item/weapon/doomblade/examine(mob/user)
 	..()
-	to_chat(user, SPAN_NOTICE("This blade deals good damage, pries open airlocks and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph or the strength of the humanoid."))
+	to_chat(user, SPAN_NOTICE("This blade deals decent damage, pries open airlocks and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph or the strength of the humanoid."))
 	to_chat(user, SPAN_NOTICE("ABILITY MACRO: 'Specialist-Activation-One'"))
 
 /obj/item/weapon/doomblade/dropped(mob/living/carbon/human/M)
@@ -427,7 +427,7 @@
 		if(D.operating || !D.density) return
 		to_chat(user, SPAN_NOTICE("You jam [src] into [D] and start ripping it open."))
 		playsound(user,'sound/weapons/wristblades_hit.ogg', 15, 1)
-		if(do_after(user,7.5, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+		if(D.density && do_after(user,7.5, INTERRUPT_ALL, BUSY_ICON_HOSTILE, D))
 			D.open(1)
 
 //to future coders: i apologize
@@ -444,7 +444,7 @@
 
 	var/mob_threshold_increase = 0
 	var/is_xeno = TRUE
-	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
+	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
 		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
 		is_xeno = FALSE
 
