@@ -444,13 +444,18 @@
 
 	var/mob_threshold_increase = 0
 	var/is_xeno = TRUE
+<<<<<<< HEAD
 	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
 		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
+=======
+	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
+		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
+>>>>>>> Fixes comments
 		is_xeno = FALSE
 
 	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
 		//if they are near crit, we begin a glory kill
-		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of its head with the back of your blade and stagger them!"))
+		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of their head with the back of your blade and stagger them!"))
 		//stun the xeno so they can't do anything
 		staggered_mob.apply_effect(8, WEAKEN)
 		user.visible_message(SPAN_DANGER("[user] impales the limp [staggered_mob.name] and uses his blade to lift them from the ground..."), SPAN_DANGER("You impale the limp [staggered_mob.name] and use your blade to lift them from the ground..."))
