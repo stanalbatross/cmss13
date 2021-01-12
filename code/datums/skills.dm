@@ -1093,7 +1093,7 @@ MISCELLANEOUS
 	)
 
 /datum/skills/everything //max it out. this is better than null, as null misses some things like firearms 2 accuracy buff
-	name = "Ultra"
+	name = "Everything"
 	skills = list(
 		SKILL_CQC = SKILL_CQC_MAX,
 		SKILL_MELEE_WEAPONS = SKILL_MELEE_MAX,

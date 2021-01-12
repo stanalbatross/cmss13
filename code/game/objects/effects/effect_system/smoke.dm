@@ -226,6 +226,21 @@
 	M.IgniteMob()
 	M.updatehealth()
 
+
+
+/obj/effect/particle_effect/smoke/cryo
+	time_to_live = 3
+	smokeranking = SMOKE_RANK_HIGH
+
+obj/effect/particle_effect/smoke/cryo/New()
+	..()
+	addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel), 0.3 SECOND) //ticks are unreliable
+
+/obj/effect/particle_effect/smoke/cryo/Move()
+	. = ..()
+	for(var/mob/living/carbon/M in get_turf(src))
+		affect(M)
+
 /obj/effect/particle_effect/smoke/cryo/affect(var/mob/living/carbon/M)
 	..()
 	if(M.internal != null && M.wear_mask && (M.wear_mask.flags_inventory & ALLOWINTERNALS))
@@ -233,15 +248,15 @@
 
 	M.last_damage_source = source
 	M.last_damage_mob = source_mob
-	M.frozen = TRUE
-	new /datum/effects/xeno_freeze(M, source, , , 0.5 SECONDS)
-	if(M.superslowed <= 1) //so it doesn't stack to ridiculous levels.
-		M.AdjustSuperslowed(1) //a second is too much
-		//here so it doesn't get spammed
+	if(!M.frozen)
+		M.frozen = TRUE
+		new /datum/effects/xeno_freeze(M, source, , , 1 SECOND)
+		M.SetSuperslowed(2)
+		M.SetSlowed(3)
 		to_chat(M, SPAN_BOLDNOTICE("You feel incredibly cold, you can barely move!")) //notice because it's BLUE like the COLD. LIKE THE SMOKE.
-	if(M.slowed <= 1)
-		M.AdjustSlowed(5) //some extra effect
 	M.update_canmove()
+	if(M.client)
+		M.client.recalculate_move_delay()
 
 //////////////////////////////////////
 // FLASHBANG SMOKE

@@ -83,7 +83,6 @@
 	armor_bio = CLOTHING_ARMOR_VERYHIGH
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
-	flags_item = NODROP
 
 /obj/item/clothing/gloves/marine/veteran/doomguy/examine(mob/user)
 	..()
@@ -105,7 +104,6 @@
 	flags_cold_protection = BODY_FLAG_FEET
 	flags_heat_protection = BODY_FLAG_FEET
 	flags_inventory = NOSLIPPING|NOWEEDSLOW
-	flags_item = NODROP
 	siemens_coefficient = 0
 
 /obj/item/clothing/shoes/veteran/doomguy/examine(mob/user)
@@ -201,7 +199,7 @@
 /obj/item/clothing/suit/storage/marine/veteran/doomguy/examine(mob/user)
 	..()
 	to_chat(user, SPAN_NOTICE("You have three unique actions: Doomblade, Equipment Launcher, and Scan Health."))
-	to_chat(user, SPAN_NOTICE("Toggle Doomblade will give you a blade that deals good damage and will glory kill on low-health enemies, granting you health and ammo."))
+	to_chat(user, SPAN_NOTICE("Toggle Doomblade will give you a blade that deals good damage and will glory kill on low-health enemies, granting you health and ammo. It can also force open airlocks."))
 	to_chat(user, SPAN_NOTICE("Toggle Equipment Launcher will extend a launcher than you can press inhand to switch between throwing a cryogenic grenade that slows enemies down, or a fragmentation grenade. They both have separate 30-second cooldowns."))
 	to_chat(user, SPAN_NOTICE("Scan Health will instantly give you a readout of your current health."))
 
@@ -413,7 +411,7 @@
 
 /obj/item/weapon/doomblade/examine(mob/user)
 	..()
-	to_chat(user, SPAN_NOTICE("This blade deals decent damage and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph or the strength of the humanoid. Use it as a finisher!"))
+	to_chat(user, SPAN_NOTICE("This blade deals decent damage, pries open airlocks and will glory kill on low-health enemies, granting you health and ammo, depending on the tier of the killed Xenomorph or the strength of the humanoid."))
 	to_chat(user, SPAN_NOTICE("ABILITY MACRO: 'Specialist-Activation-One'"))
 
 /obj/item/weapon/doomblade/dropped(mob/living/carbon/human/M)
@@ -434,10 +432,10 @@
 
 //to future coders: i apologize
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
-	if(!glory_killing) //cannot attack during a glory kill
-		..()
-	else
+	if(glory_killing) //cannot attack during a glory kill
 		return
+	else
+		..()
 	var/mob/living/carbon/staggered_mob = target
 	var/mob/living/carbon/human/H = user
 
@@ -452,7 +450,7 @@
 
 	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
 		//if they are near crit, we begin a glory kill
-		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of its head with the back of your blade and stagger them!"))
+		user.visible_message(SPAN_DANGER("[user] quickly pummels [staggered_mob.name] in the back of their head and staggers them!"), SPAN_DANGER("You quickly pummel [staggered_mob.name] in the back of their head with the back of your blade and stagger them!"))
 		//stun the xeno so they can't do anything
 		staggered_mob.apply_effect(8, WEAKEN)
 		user.visible_message(SPAN_DANGER("[user] impales the limp [staggered_mob.name] and uses his blade to lift them from the ground..."), SPAN_DANGER("You impale the limp [staggered_mob.name] and use your blade to lift them from the ground..."))
@@ -598,7 +596,7 @@
 	var/mob/living/carbon/human/H = user
 	//heal as a reward for glory killing
 	user.heal_overall_damage(heal_amount, heal_amount/2, TRUE) //heals less burn
-	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves and bones repairing their integrity."))
+	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves shut."))
 	//un-freeze them
 	user.anchored = FALSE
 	user.frozen = FALSE
