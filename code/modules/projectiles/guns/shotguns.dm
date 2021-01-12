@@ -367,8 +367,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	if(!current_mag)
 		to_chat(user, SPAN_NOTICE("You open the chamber."))
 		toggle_chamber(user)
-		load_into_chamber(user)
-		//return
+		//load_into_chamber(user)
 
 	if(current_mag.current_rounds > 0)
 		ammo = ammo_list[current_mag.chamber_contents[current_mag.chamber_position]]

@@ -1357,25 +1357,23 @@
 		var/msg = "" // Have to use this because there are issues with the to_chat macros and text macros and quotation marks
 		if(to_splint.len)
 			if(do_after(HS, HUMAN_STRIP_DELAY * HS.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_ALL, BUSY_ICON_GENERIC, HT, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
-				var/can_reach_splints = TRUE
 				var/amount_removed = 0
-				if(can_reach_splints)
-					var/obj/item/stack/W = new /obj/item/stack/medical/splint(HS.loc)
-					W.amount = 0 //we checked that we have at least one bodypart splinted, so we can create it no prob. Also we need amount to be 0
-					W.add_fingerprint(HS)
-					for(var/obj/limb/l in to_splint)
-						amount_removed += 1
-						l.status &= ~LIMB_SPLINTED
-						pain.recalculate_pain()
-						if(!W.add(1))
-							W = new /obj/item/stack/medical/splint(HS.loc)//old stack is dropped, time for new one
-							W.amount = 0
-							W.add_fingerprint(HS)
-							W.add(1)
-					msg = "[HS == HT ? "their own":"\proper [HT]'s"]"
-					HT.visible_message(SPAN_NOTICE("[HS] removes [msg] [amount_removed>1 ? "splints":"splint"]."), \
-						SPAN_NOTICE("Your [amount_removed>1 ? "splints are":"splint is"] removed."))
-					HT.update_med_icon()
+				var/obj/item/stack/W = new /obj/item/stack/medical/splint(HS.loc)
+				W.amount = 0 //we checked that we have at least one bodypart splinted, so we can create it no prob. Also we need amount to be 0
+				W.add_fingerprint(HS)
+				for(var/obj/limb/l in to_splint)
+					amount_removed += 1
+					l.status &= ~LIMB_SPLINTED
+					pain.recalculate_pain()
+					if(!W.add(1))
+						W = new /obj/item/stack/medical/splint(HS.loc)//old stack is dropped, time for new one
+						W.amount = 0
+						W.add_fingerprint(HS)
+						W.add(1)
+				msg = "[HS == HT ? "their own":"\proper [HT]'s"]"
+				HT.visible_message(SPAN_NOTICE("[HS] removes [msg] [amount_removed>1 ? "splints":"splint"]."), \
+					SPAN_NOTICE("Your [amount_removed>1 ? "splints are":"splint is"] removed."))
+				HT.update_med_icon()
 			else
 				msg = "[HS == HT ? "your":"\proper [HT]'s"]"
 				to_chat(HS, SPAN_NOTICE("You stop trying to remove [msg] splints."))
