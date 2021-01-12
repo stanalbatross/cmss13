@@ -871,8 +871,14 @@
 	damage_type = BRUTE
 	accurate_range = 3
 	max_range = 4
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_INCENDIARY
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/spread
+
+
+/datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/set_bullet_traits()
+	..()
+	LAZYADD(traits_to_give, list(
+		list(/datum/element/bullet_trait_incendiary)
+	))
 
 /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath/on_hit_mob(mob/M,obj/item/projectile/P)
 	burst(get_turf(M),P,damage_type)
