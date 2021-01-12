@@ -183,11 +183,13 @@
 #define HAS_LIPS 256
 #define HAS_UNDERWEAR 512
 #define IS_WHITELISTED 1024
-#define IS_SYNTHETIC 2048
-#define NO_NEURO 4096 //species cannot be neuroed
-#define SPECIAL_BONEBREAK 8192 //species do not get their bonebreak chance modified by endurance
-#define NO_SHRAPNEL 16384
-#define IS_YAUTJA 32768
+#define NO_NEURO 2048 //species cannot be neuroed
+#define SPECIAL_BONEBREAK 4096 //species do not get their bonebreak chance modified by endurance
+#define NO_SHRAPNEL 8192
+
+//SPECIFIC species flags
+#define IS_SYNTHETIC    (1<<0)
+#define IS_YAUTJA       (1<<1)
 //=================================================
 
 //For custom reagent checks
