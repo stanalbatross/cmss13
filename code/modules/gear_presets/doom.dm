@@ -444,18 +444,8 @@
 
 	var/mob_threshold_increase = 0
 	var/is_xeno = TRUE
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
-		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25%
-=======
-	if(staggered_mob.mob_size < MOB_SIZE_XENO_SMALL)
-		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
->>>>>>> Fixes comments
-=======
 	if(staggered_mob.mob_size <= MOB_SIZE_HUMAN)
 		mob_threshold_increase = 50 //if they are a human, glory kill hp is -125, not 25
->>>>>>> f685b6360972ae9204ddacbbc339d813e519f985
 		is_xeno = FALSE
 
 	if(staggered_mob.health <= (staggered_mob.maxHealth * 0.25 - mob_threshold_increase) && staggered_mob.stat != DEAD)
