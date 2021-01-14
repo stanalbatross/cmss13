@@ -434,8 +434,7 @@
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
 	if(glory_killing) //cannot attack during a glory kill
 		return
-	else
-		..()
+	..()
 	var/mob/living/carbon/staggered_mob = target
 	var/mob/living/carbon/human/H = user
 
@@ -468,7 +467,6 @@
 		staggered_mob.updatehealth()
 		//set glory kill to true, stopping you from being able to attack with the doomblade while glory killing.
 		glory_killing = TRUE
-		//to do: animate the xeno slowly moving up from the ground being lifted up
 		//you buffoon, you dealt too much damage
 		if(!do_after(user, 20, INTERRUPT_NONE, BUSY_ICON_HOSTILE, target) || staggered_mob.stat == DEAD)
 			to_chat(user, SPAN_DANGER("They died already! Be more careful next time!"))
@@ -487,6 +485,7 @@
 			humanoid_glorykill(user, staggered_mob)
 		//give the people a little time to take in what just happened and read the glory kill text
 		addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 3 SECONDS)
+
 /obj/item/weapon/doomblade/proc/xeno_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 	var/mob/living/carbon/Xenomorph/X = staggered_mob
 	var/heal_amount = (X.tier * 40)
@@ -564,12 +563,6 @@
 
 	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
 
-	X.apply_damage(X.health, BRUTE)
-	//give the people a little time to take in what just happened and read the glory kill text
-	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), xeno_tier SECONDS)
-
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
-
 /obj/item/weapon/doomblade/proc/humanoid_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 
 	var/mob/living/carbon/human/H = staggered_mob
@@ -592,7 +585,9 @@
 
 	else //we're assuming they're a human then
 		user.visible_message(SPAN_HIGHDANGER("[user] slams the Doomblade into [H.name]'s mouth and quickly slides it out!"), SPAN_HIGHDANGER("You slam the Doomblade into [H.name]'s mouth and quickly slide it out!"))
+
 	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), 1.5 SECONDS)
+
 	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, ammo_refill), 3.5 SECONDS)
 
 /obj/item/weapon/doomblade/proc/finish_glorykill(mob/living/user, var/heal_amount, var/ammo_refill)
