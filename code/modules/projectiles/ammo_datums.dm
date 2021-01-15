@@ -2379,7 +2379,7 @@
 	damage = BULLET_DAMAGE_TIER_3
 	accuracy = HIT_ACCURACY_TIER_3
 	max_range = 6
-	var/det_time = 10
+	var/det_time = 1 SECONDS
 
 /datum/ammo/grenade_container/on_hit_mob(mob/M,obj/item/projectile/P)
 	drop_nade(P)

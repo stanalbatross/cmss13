@@ -114,10 +114,11 @@
 			X.next_move_slowdown = X.next_move_slowdown + (weed_strength*WEED_XENO_SPEED_MULT)
 
 /obj/effect/alien/weeds/proc/slowdown_immune(var/mob/living/carbon/human/H)
-	if(H.ally_of_hivenumber(linked_hive.hivenumber) || H.shoes.flags_inventory & NOWEEDSLOW) //if wearing shoes like pred shoes, immune to weed slowdown effect
+	if(H.ally_of_hivenumber(linked_hive.hive_number)
 		return TRUE
-	else
-		return FALSE
+	if(H.shoes?.flags_inventory & NOWEEDSLOW)
+		return TRUE
+	return FALSE
 
 // Uh oh, we might be dying!
 // I know this is bad proc naming but it was too good to pass on and it's only used in this file anyways

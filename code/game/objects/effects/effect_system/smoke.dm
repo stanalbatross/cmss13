@@ -232,9 +232,9 @@
 	time_to_live = 3
 	smokeranking = SMOKE_RANK_HIGH
 
-obj/effect/particle_effect/smoke/cryo/New()
-	..()
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel), 0.3 SECOND) //ticks are unreliable
+/obj/effect/particle_effect/smoke/cryo/Initialize(mapload, ...)
+	. = ..()
+	QDEL_IN(src, 0.3 SECONDS)
 
 /obj/effect/particle_effect/smoke/cryo/Move()
 	. = ..()
