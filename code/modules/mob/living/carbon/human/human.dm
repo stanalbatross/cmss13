@@ -1364,12 +1364,13 @@
 				for(var/obj/limb/l in to_splint)
 					amount_removed += 1
 					l.status &= ~LIMB_SPLINTED
-					pain.recalculate_pain()
+					
 					if(!W.add(1))
 						W = new /obj/item/stack/medical/splint(HS.loc)//old stack is dropped, time for new one
 						W.amount = 0
 						W.add_fingerprint(HS)
 						W.add(1)
+				pain.recalculate_pain()
 				msg = "[HS == HT ? "their own":"\proper [HT]'s"]"
 				HT.visible_message(SPAN_NOTICE("[HS] removes [msg] [amount_removed>1 ? "splints":"splint"]."), \
 					SPAN_NOTICE("Your [amount_removed>1 ? "splints are":"splint is"] removed."))

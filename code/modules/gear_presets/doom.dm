@@ -58,7 +58,7 @@
 	icon_state = "syndicate"
 	worn_state = "syndicate"
 	armor_melee = CLOTHING_ARMOR_LOW
-	armor_bullet = CLOTHING_ARMOR_LOW
+	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
 	armor_laser = CLOTHING_ARMOR_NONE
 	armor_energy = CLOTHING_ARMOR_NONE
 	armor_bomb = CLOTHING_ARMOR_NONE
@@ -76,7 +76,7 @@
 	item_state = "doomgloves"
 	siemens_coefficient = 0
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_bullet = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_ULTRAHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
 	armor_bomb = CLOTHING_ARMOR_HARDCORE
@@ -94,7 +94,7 @@
 	icon_state = "doomboots"
 	item_state = "doomboots"
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_bullet = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_ULTRAHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
 	armor_bomb = CLOTHING_ARMOR_HARDCORE
@@ -116,7 +116,7 @@
 	icon_state = "doomhelmet"
 	item_state = "doomhelmet"
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_bullet = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_ULTRAHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
 	armor_bomb = CLOTHING_ARMOR_HARDCORE
@@ -173,7 +173,7 @@
 	icon_state = "doomsuit"
 	item_state = "doomsuit"
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_bullet = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_ULTRAHIGH
 	armor_laser = CLOTHING_ARMOR_HIGH
 	armor_energy = CLOTHING_ARMOR_HIGH
 	armor_bomb = CLOTHING_ARMOR_HARDCORE
@@ -436,7 +436,6 @@
 		return
 	..()
 	var/mob/living/carbon/staggered_mob = target
-	var/mob/living/carbon/human/H = user
 
 	if(user == target)
 		return //no
@@ -458,8 +457,7 @@
 		user.anchored = TRUE
 		user.frozen = TRUE
 		user.update_canmove()
-		H.species.brute_mod = 0
-		H.species.burn_mod = 0
+		RegisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE, .proc/handle_damage)
 		//freeze the xeno so they're not pulled away (not that it would do anything, as the do_after cannot be interrupted)
 		staggered_mob.anchored = TRUE
 		staggered_mob.frozen = TRUE
@@ -474,8 +472,7 @@
 			user.anchored = FALSE
 			user.frozen = FALSE
 			user.update_canmove()
-			H.species.brute_mod = initial(H.species.brute_mod)
-			H.species.burn_mod = initial(H.species.burn_mod)
+			UnregisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE)
 			glory_killing = FALSE
 			return
 		//ideally these wouldn't be size checks but you know how it is
@@ -601,7 +598,7 @@
 	user.frozen = FALSE
 	user.update_canmove()
 	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
-	addtimer(CALLBACK(src, .proc/end_immunity, H), 2 SECONDS)
+	addtimer(CALLBACK(src, .proc/end_immunity, user), 2 SECONDS)
 	//allow attacking again
 	glory_killing = FALSE
 
@@ -613,10 +610,13 @@
 			H.equip_to_slot_or_del(handful, WEAR_IN_BELT)
 		H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/plasmagun(H), WEAR_IN_JACKET)
 
-/obj/item/weapon/doomblade/proc/end_immunity(mob/living/carbon/human/H)
-	H.species.brute_mod = initial(H.species.brute_mod)
-	H.species.burn_mod = initial(H.species.burn_mod)
-	to_chat(H, SPAN_BOLDNOTICE("Your immunity to damage has expired."))
+/obj/item/weapon/doomblade/proc/end_immunity(mob/living/user)
+	UnregisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE)
+	to_chat(user, SPAN_BOLDNOTICE("Your immunity to damage has expired."))
+
+/obj/item/weapon/doomblade/proc/handle_damage(var/mob/user, var/datum/damage_value/dmg)
+	SIGNAL_HANDLER
+	return COMPONENT_BLOCK_DAMAGE
 
 /obj/item/weapon/doomblade/attack_self(mob/living/carbon/human/user)
 	if(!ishuman(user))

@@ -173,7 +173,7 @@
 
 /obj/item/storage/backpack/marine/smartpack/proc/protective_form_cooldown(var/mob/living/carbon/human/H)
 	activated_form = FALSE
-	H.species.melee_allowed = TRUE
+	H.species.melee_allowed = TRUE //FYI this changes the entire species' damage mods and melee_allowed
 	H.species.brute_mod = initial(H.species.brute_mod)
 	H.species.burn_mod = initial(H.species.burn_mod)
 	to_chat(H, SPAN_DANGER("[name] beeps, \"The protection wears off.\""))

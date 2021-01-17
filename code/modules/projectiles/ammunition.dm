@@ -175,6 +175,7 @@ bullets/shells. ~N
 /obj/item/ammo_magazine/handful
 	name = "generic handful"
 	desc = "A handful of rounds to reload on the go."
+	icon_state = "bullet"
 	matter = list("metal" = 50) //This changes based on the ammo ammount. 5k is the base of one shell/bullet.
 	flags_equip_slot = null // It only fits into pockets and such.
 
@@ -212,7 +213,7 @@ If it is the same and the other stack isn't full, transfer an amount (default 1)
 			transfer_ammo(transfer_from,user, transfer_from.current_rounds) // Transfer it from currently held to src
 		else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
 
-/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, maximum_rounds, new_rounds, new_gun_type)
+/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, new_max_rounds, new_current_rounds, new_gun_type)
 	var/datum/ammo/A = ammo_list[new_ammo]
 	var/ammo_name = A.name //Let's pull up the name.
 
@@ -221,13 +222,11 @@ If it is the same and the other stack isn't full, transfer an amount (default 1)
 	switch(new_caliber) //add new shogun calibers here until some saint fixes gun code
 		if("12g","8g")
 			icon_state = ammo_name
-		else
-			icon_state = "bullet"
 
 	default_ammo = new_ammo
 	caliber = new_caliber
-	max_rounds = maximum_rounds
-	current_rounds = new_rounds
+	max_rounds = new_max_rounds
+	current_rounds = new_current_rounds
 	gun_type = new_gun_type
 	update_icon()
 

@@ -2414,7 +2414,6 @@
 	nade_type = /obj/item/explosive/grenade/HE/stick
 	icon_state = "grenade_stick_active"
 	flags_ammo_behavior = AMMO_IGNORE_COVER
-	//to do, give it thunk hitting noise?
 	damage = BULLET_DAMAGE_TIER_12
 	accuracy = HIT_ACCURACY_TIER_8
 	max_range = 10
@@ -2424,7 +2423,6 @@
 	nade_type = /obj/item/explosive/grenade/cryogenic
 	icon_state = "cryogrenade_active"
 	flags_ammo_behavior = AMMO_IGNORE_COVER
-	//to do, give it thunk hitting noise?
 	damage = BULLET_DAMAGE_TIER_12
 	accuracy = HIT_ACCURACY_TIER_8
 	max_range = 10

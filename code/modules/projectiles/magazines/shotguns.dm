@@ -129,15 +129,15 @@ Handfuls of shotgun rounds. For spawning directly on mobs in roundstart, ERTs, e
 
 /obj/item/ammo_magazine/handful/shotgun/heavy
 	caliber = "8g"
+	max_rounds = 4
+	current_rounds = 4
+	dir = 7
 
 /obj/item/ammo_magazine/handful/shotgun/heavy/buckshot
 	name = "handful of heavy shotgun buckshot shells (8g)"
 	icon_state = "heavy shotgun buckshot shell"
 	default_ammo = /datum/ammo/bullet/shotgun/heavy/buckshot
-	max_rounds = 4
-	current_rounds = 4
-	dir = 7
-	//gun_type = /obj/item/weapon/gun/shotgun
+	gun_type = /obj/item/weapon/gun/shotgun
 
 /obj/item/ammo_magazine/handful/shotgun/heavy/dragonsbreath
 	name = "handful of dragon's breath shells (8g)"

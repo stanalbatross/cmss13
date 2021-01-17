@@ -6,8 +6,11 @@
 	return bruteloss
 
 /mob/living/proc/adjustBruteLoss(var/amount)
-	if(status_flags & GODMODE)	return 0	//godmode
-	bruteloss = min(max(bruteloss + amount, 0),(maxHealth*2))
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_MOB_PRE_BRUTE_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
+	bruteloss = min(max(bruteloss + damage_datum.damage, 0),(maxHealth*2))
 
 /mob/living/getOxyLoss()
 	return oxyloss
@@ -35,8 +38,12 @@
 	return fireloss
 
 /mob/living/proc/adjustFireLoss(var/amount)
-	if(status_flags & GODMODE)	return 0	//godmode
-	fireloss = min(max(fireloss + amount, 0),(maxHealth*2))
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_MOB_PRE_BRUTE_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
+
+	fireloss = min(max(fireloss + damage_datum.damage, 0),(maxHealth*2))
 
 /mob/living/getCloneLoss()
 	return cloneloss

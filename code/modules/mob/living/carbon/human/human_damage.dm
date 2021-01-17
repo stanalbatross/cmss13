@@ -36,7 +36,8 @@
 	if(species.has_organ["brain"])
 		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
 		if(sponge)
-			apply_internal_damage(Clamp(amount, 0, maxHealth*2), "brain")
+			sponge.take_damage(amount)
+			sponge.damage = Clamp(sponge.damage, 0, maxHealth*2)
 			brainloss = sponge.damage
 		else
 			brainloss = 200
@@ -51,7 +52,8 @@
 	if(species.has_organ["brain"])
 		var/datum/internal_organ/brain/sponge = internal_organs_by_name["brain"]
 		if(sponge)
-			apply_internal_damage(Clamp(amount, 0, maxHealth*2), "brain")
+			sponge.take_damage(amount)
+			sponge.damage = Clamp(sponge.damage, 0, maxHealth*2)
 			brainloss = sponge.damage
 		else
 			brainloss = 200
@@ -90,53 +92,73 @@
 
 
 /mob/living/carbon/human/adjustBruteLoss(var/amount)
-	if(species.brute_mod && amount > 0)
-		amount = amount*species.brute_mod
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BRUTE_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
 
-	if(amount > 0)
-		take_overall_damage(amount, 0)
+	if(species.brute_mod && damage_datum.damage > 0)
+		damage_datum.damage = damage_datum.damage*species.brute_mod
+
+	if(damage_datum.damage > 0)
+		take_overall_damage(damage_datum.damage, 0)
 	else
-		heal_overall_damage(-amount, 0)
+		heal_overall_damage(-damage_datum.damage, 0)
 
 
 /mob/living/carbon/human/adjustFireLoss(var/amount)
-	if(species && species.burn_mod && amount > 0)
-		amount = amount*species.burn_mod
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BURN_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
 
-	if(amount > 0)
-		take_overall_damage(0, amount)
+	if(species && species.burn_mod && damage_datum.damage > 0)
+		damage_datum.damage = damage_datum.damage*species.burn_mod
+
+	if(damage_datum.damage > 0)
+		take_overall_damage(0, damage_datum.damage)
 	else
-		heal_overall_damage(0, -amount)
+		heal_overall_damage(0, -damage_datum.damage)
 
 
 /mob/living/carbon/human/proc/adjustBruteLossByPart(var/amount, var/organ_name, var/obj/damage_source = null)
-	if(species && species.brute_mod && amount > 0)
-		amount = amount*species.brute_mod
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BRUTE_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
+
+	if(species && species.brute_mod && damage_datum.damage > 0)
+		damage_datum.damage = damage_datum.damage*species.brute_mod
 
 	for(var/X in limbs)
 		var/obj/limb/O = X
 		if(O.name == organ_name)
-			if(amount > 0)
-				O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+			if(damage_datum.damage > 0)
+				O.take_damage(damage_datum.damage, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(-amount, 0, internal=0, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(-damage_datum.damage, 0, internal=0, robo_repair=(O.status & LIMB_ROBOT))
 			break
 
 
 
 /mob/living/carbon/human/proc/adjustFireLossByPart(var/amount, var/organ_name, var/obj/damage_source = null)
-	if(species && species.burn_mod && amount > 0)
-		amount = amount*species.burn_mod
+	var/datum/damage_value/damage_datum = new()
+	damage_datum.damage = amount
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_PRE_BURN_LOSS, damage_datum) & COMPONENT_BLOCK_DAMAGE || status_flags & GODMODE)
+		return FALSE
+
+	if(species && species.burn_mod && damage_datum.damage > 0)
+		damage_datum.damage = damage_datum.damage*species.burn_mod
 
 	for(var/X in limbs)
 		var/obj/limb/O = X
 		if(O.name == organ_name)
-			if(amount > 0)
-				O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+			if(damage_datum.damage > 0)
+				O.take_damage(0, damage_datum.damage, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
-				O.heal_damage(0, -amount, internal=0, robo_repair=(O.status & LIMB_ROBOT))
+				O.heal_damage(0, -damage_datum.damage, internal=0, robo_repair=(O.status & LIMB_ROBOT))
 			break
 
 

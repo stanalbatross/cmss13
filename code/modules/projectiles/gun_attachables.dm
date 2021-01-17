@@ -240,7 +240,7 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_1
 
 /obj/item/attachable/bayonet/attack(mob/living/target, mob/living/carbon/human/user)
-	if(!dig_out_shrapnel_check(target,user))
+	if(!dig_out_shrapnel_check(20, target,user))
 		..()
 
 /obj/item/attachable/bayonet/attack_self(mob/living/carbon/human/user)

@@ -212,3 +212,10 @@
 #define COMSIG_BULLET_ACT_HUMAN "bullet_act_human"
 /// Called when a bullet hits a xenomorph
 #define COMSIG_BULLET_ACT_XENO "bullet_act_xeno"
+
+//called during AdjustBruteLoss() which is not actually used during most attacks for now
+#define COMSIG_HUMAN_PRE_BRUTE_LOSS "human_pre_brute_loss"
+#define COMSIG_MOB_PRE_BRUTE_LOSS "mob_pre_brute_loss"
+//called during AdjustBurnLoss()
+#define COMSIG_HUMAN_PRE_BURN_LOSS "human_pre_brute_loss"
+#define COMSIG_MOB_PRE_BURN_LOSS "mob_pre_brute_loss"

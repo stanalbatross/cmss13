@@ -20,8 +20,8 @@
 			alien = species.reagent_tag
 		reagents.metabolize(src,alien)
 
-	if(status_flags & GODMODE)
-		return 0 //Godmode
+	if(status_flags & (GODMODE|NO_PERMANENT_DAMAGE))
+		return FALSE
 
 	if(!(species.flags & IS_SYNTHETIC))
 		//Nutrition decrease
