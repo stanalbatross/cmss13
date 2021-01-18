@@ -902,7 +902,7 @@ This function completely restores a damaged organ to perfect condition.
 		bonebreak_probability = 100
 	//if the chance was not set by what called fracture(), the endurance check is done instead
 	if(!bonebreak_probability) //bone break chance is based on endurance, 25% for survivors, erts, 100% for most everyone else.
-		bonebreak_probability = 100 / Clamp(owner.skills.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
+		bonebreak_probability = 100 / Clamp(owner.skills?.get_skill_level(SKILL_ENDURANCE) -1 , 1, 100) //can't be zero
 	if(prob(bonebreak_probability))
 		owner.recalculate_move_delay = TRUE
 		owner.visible_message(\
