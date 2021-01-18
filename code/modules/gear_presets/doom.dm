@@ -427,8 +427,8 @@
 		if(D.operating || !D.density) return
 		to_chat(user, SPAN_NOTICE("You jam [src] into [D] and start ripping it open."))
 		playsound(user,'sound/weapons/wristblades_hit.ogg', 15, 1)
-		if(D.density && do_after(user,7.5, INTERRUPT_ALL, BUSY_ICON_HOSTILE, D))
-			D.open(1)
+		if(D.density && do_after(user, .75 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, D))
+			D.open(TRUE)
 
 //to future coders: i apologize
 /obj/item/weapon/doomblade/attack(mob/target, mob/living/user)
@@ -595,8 +595,7 @@
 	user.visible_message(SPAN_BOLDNOTICE("[user] strange suit's runes glow eerily as you notice his wounds knitting themselves shut."), SPAN_BOLDNOTICE("Your Praetor suit's runes glow eerily as you feel a soothing sensation cover your whole body, your wounds knitting themselves shut."))
 	//un-freeze them
 	user.anchored = FALSE
-	user.frozen = FALSE
-	user.update_canmove()
+	user.unfreeze()
 	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
 	addtimer(CALLBACK(src, .proc/end_immunity, user), 2 SECONDS)
 	//allow attacking again
@@ -622,7 +621,7 @@
 	if(!ishuman(user))
 		return
 
-	dig_out_shrapnel(5, user)
+	dig_out_shrapnel(0.5 SECONDS, user)
 
 /obj/item/weapon/doomblade/dropped(mob/living/carbon/human/user)
 	playsound(user.loc,'sound/weapons/wristblades_off.ogg', 15, 1)
@@ -791,10 +790,10 @@
 
 /datum/action/item_action/specialist/doomguy_extend_equipment_launcher/action_activate()
 	if(!usr.loc || !usr.canmove || usr.stat)
-		return
+		return FALSE
 	var/mob/living/carbon/human/M = usr
 	if(!istype(M))
-		return
+		return FALSE
 	var/obj/item/clothing/suit/storage/marine/veteran/doomguy/doom_armor = holder_item
 	var/obj/item/weapon/gun/equipment_launcher/R = usr.r_hand
 	var/obj/item/weapon/gun/equipment_launcher/L = usr.l_hand
@@ -823,7 +822,7 @@
 	else //Turn it on!
 		if(usr.get_active_hand())
 			to_chat(usr, SPAN_WARNING("Your hand must be free to activate your equipment launcher!"))
-			return
+			return FALSE
 
 		var/obj/item/weapon/gun/equipment_launcher/E
 		if(!istype(E))
@@ -832,4 +831,4 @@
 		E.doom_armor = holder_item
 		doom_armor.equipment_launcher_active = TRUE
 		to_chat(usr, SPAN_NOTICE("You activate your equipment launcher."))
-	return 1
+	return TRUE
