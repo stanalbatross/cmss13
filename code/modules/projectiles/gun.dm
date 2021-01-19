@@ -22,10 +22,6 @@
 	flags_atom = FPRINT|CONDUCT
 	flags_item = TWOHANDED
 
-	var/iff_enabled_current = FALSE
-	var/iff_enabled = FALSE
-	var/iff_group_cache
-
 	var/accepted_ammo = list()
 	var/muzzle_flash 	= "muzzle_flash"
 	var/muzzle_flash_lum = 3 //muzzle flash brightness
@@ -126,8 +122,9 @@
 
 	var/last_recoil_update = 0
 
-	/// A list in the format list(/datum/element/bullet_trait_to_give, ...args) that will be given to a projectile with the current ammo datum
-	var/list/traits_to_give
+	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
+	/// that will be given to a projectile with the current ammo datum
+	var/list/list/traits_to_give
 
 
 //----------------------------------------------------------
@@ -149,8 +146,8 @@
 			update_icon()
 		else
 			current_mag = new current_mag(src, spawn_empty? 1:0)
-			ammo = current_mag.default_ammo ? ammo_list[current_mag.default_ammo] : ammo_list[/datum/ammo/bullet] //Latter should never happen, adding as a precaution.
-	else ammo = ammo_list[ammo] //If they don't have a mag, they fire off their own thing.
+			ammo = current_mag.default_ammo ? GLOB.ammo_list[current_mag.default_ammo] : GLOB.ammo_list[/datum/ammo/bullet] //Latter should never happen, adding as a precaution.
+	else ammo = GLOB.ammo_list[ammo] //If they don't have a mag, they fire off their own thing.
 
 	set_gun_attachment_offsets()
 	set_gun_config_values()
@@ -198,6 +195,39 @@
 /// Populate traits_to_give in this proc
 /obj/item/weapon/gun/proc/set_bullet_traits()
 	return
+
+/// @bullet_trait_entries: A list of bullet trait entries
+/obj/item/weapon/gun/proc/add_bullet_traits(list/list/bullet_trait_entries)
+	LAZYADD(traits_to_give, bullet_trait_entries)
+	for(var/entry in bullet_trait_entries)
+		if(!in_chamber)
+			break
+		var/list/L
+		// Check if this is an ID'd bullet trait
+		if(istext(entry))
+			L = bullet_trait_entries[entry].Copy()
+		else
+			// Prepend the bullet trait to the list
+			L = list(entry) + bullet_trait_entries[entry]
+		// Apply bullet traits from gun to current projectile
+		// Need to use the proc instead of the wrapper because each entry is a list
+		in_chamber._AddElement(L)
+
+/// @bullet_traits: A list of bullet trait typepaths or ids
+/obj/item/weapon/gun/proc/remove_bullet_traits(list/bullet_traits)
+	for(var/entry in bullet_traits)
+		if(!LAZYISIN(traits_to_give, entry))
+			continue
+		var/list/L
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			L = list(entry) + traits_to_give[entry]
+		LAZYREMOVE(traits_to_give, entry)
+		if(in_chamber)
+			// Remove bullet traits of gun from current projectile
+			// Need to use the proc instead of the wrapper because each entry is a list
+			in_chamber._RemoveElement(L)
 
 /obj/item/weapon/gun/proc/recalculate_attachment_bonuses()
 	//Reset silencer mod
@@ -310,6 +340,7 @@
 		O.emp_act(severity)
 
 /obj/item/weapon/gun/equipped(mob/user, slot)
+	if(flags_item & NODROP)	return
 	if(slot != WEAR_L_HAND && slot != WEAR_R_HAND)
 		stop_aim()
 		if (user.client)
@@ -436,9 +467,9 @@
 		in_ammo = in_chamber.ammo
 	else if(current_mag && current_mag.current_rounds > 0)
 		if(istype(current_mag) && current_mag.chamber_contents[current_mag.chamber_position] != "empty")
-			in_ammo = ammo_list[current_mag.chamber_contents[current_mag.chamber_position]]
+			in_ammo = GLOB.ammo_list[current_mag.chamber_contents[current_mag.chamber_position]]
 			if(!istype(in_ammo))
-				in_ammo = ammo_list[current_mag.default_ammo]
+				in_ammo = GLOB.ammo_list[current_mag.default_ammo]
 		else if(!istype(current_mag) && ammo)
 			in_ammo = ammo
 
@@ -470,7 +501,7 @@
 			else
 				damage_armor_profile_armorbreak.Add("N/A")
 
-	var/rpm = max(fire_delay, 0.0001)
+	var/rpm = max(fire_delay, 1)
 	var/burst_rpm = max((fire_delay * 1.5 + (burst_amount - 1) * burst_delay)/max(burst_amount, 1), 0.0001)
 
 	var/list/data = list(
@@ -504,15 +535,15 @@
 
 		"burst_scatter" = src.burst_scatter_mult,
 		"burst_amount" = burst_amount,
-		"firerate" = round(MINUTES_1 / rpm), // 3 minutes so that the values look greater than they actually are
-		"burst_firerate" = round(MINUTES_1 / burst_rpm),
+		"firerate" = round(1 MINUTES / rpm), // 3 minutes so that the values look greater than they actually are
+		"burst_firerate" = round(1 MINUTES / burst_rpm),
 
-		"firerate_second" = round(SECONDS_1 / rpm, 0.01),
-		"burst_firerate_second" = round(SECONDS_1 / burst_rpm, 0.01),
+		"firerate_second" = round(1 SECONDS / rpm, 0.01),
+		"burst_firerate_second" = round(1 SECONDS / burst_rpm, 0.01),
 
 		"recoil_max" = RECOIL_AMOUNT_TIER_1,
 		"scatter_max" = SCATTER_AMOUNT_TIER_1,
-		"firerate_max" = MINUTES_1 / FIRE_DELAY_TIER_10,
+		"firerate_max" = 1 MINUTES / FIRE_DELAY_TIER_10,
 		"damage_max" = BULLET_DAMAGE_TIER_20,
 		"accuracy_max" = 32,
 		"range_max" = 32,
@@ -544,7 +575,8 @@
 
 	var/obj/item/I = user.get_inactive_hand()
 	if(I)
-		user.drop_inv_item_on_ground(I)
+		if(!user.drop_inv_item_on_ground(I))
+			return
 
 	if(ishuman(user))
 		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
@@ -584,12 +616,11 @@
 //----------------------------------------------------------
 
 /obj/item/weapon/gun/proc/replace_ammo(mob/user = null, var/obj/item/ammo_magazine/magazine)
-	reset_iff_group_cache()
 	if(!magazine.default_ammo)
 		to_chat(user, "Something went horribly wrong. Ahelp the following: ERROR CODE A1: null ammo while reloading.")
 		log_debug("ERROR CODE A1: null ammo while reloading. User: <b>[user]</b>")
-		ammo = ammo_list[/datum/ammo/bullet] //Looks like we're defaulting it.
-	else ammo = ammo_list[magazine.default_ammo]
+		ammo = GLOB.ammo_list[/datum/ammo/bullet] //Looks like we're defaulting it.
+	else ammo = GLOB.ammo_list[magazine.default_ammo]
 
 //Hardcoded and horrible
 /obj/item/weapon/gun/proc/cock_gun(mob/user)
@@ -777,9 +808,15 @@ and you're good to go.
 
 		// Apply bullet traits from gun
 		for(var/entry in traits_to_give)
-			var/list/L = entry
+			var/list/L
+			// Check if this is an ID'd bullet trait
+			if(istext(entry))
+				L = traits_to_give[entry].Copy()
+			else
+				// Prepend the bullet trait to the list
+				L = list(entry) + traits_to_give[entry]
 			// Need to use the proc instead of the wrapper because each entry is a list
-			in_chamber._AddElement(L.Copy())
+			in_chamber._AddElement(L)
 
 		// Apply bullet traits from attachments
 		for(var/slot in attachments)
@@ -788,9 +825,10 @@ and you're good to go.
 
 			var/obj/item/attachable/AT = attachments[slot]
 			for(var/entry in AT.traits_to_give)
-				var/list/L = entry
+				// Prepend the bullet trait to the list
+				var/list/L = list(entry) + AT.traits_to_give[entry]
 				// Need to use the proc instead of the wrapper because each entry is a list
-				in_chamber._AddComponent(L.Copy())
+				in_chamber._AddElement(L)
 
 		current_mag.current_rounds-- //Subtract the round from the mag.
 		return in_chamber
@@ -799,7 +837,7 @@ and you're good to go.
 	if(!chambered)
 		to_chat(usr, "Something has gone horribly wrong. Ahelp the following: ERROR CODE I2: null ammo while create_bullet()")
 		log_debug("ERROR CODE I2: null ammo while create_bullet(). User: <b>[usr]</b>")
-		chambered = ammo_list[/datum/ammo/bullet] //Slap on a default bullet if somehow ammo wasn't passed.
+		chambered = GLOB.ammo_list[/datum/ammo/bullet] //Slap on a default bullet if somehow ammo wasn't passed.
 
 	var/weapon_source_mob
 	if(isliving(usr))
@@ -929,6 +967,7 @@ and you're good to go.
 						recoil_comp++
 
 		apply_bullet_effects(projectile_to_fire, user, bullets_fired, reflex, dual_wield) //User can be passed as null.
+		SEND_SIGNAL(projectile_to_fire, COMSIG_BULLET_USER_EFFECTS, user)
 
 		var/scatter_mod = 0
 		var/burst_scatter_mod = 0
@@ -954,14 +993,9 @@ and you're good to go.
 		if(get_turf(target) != get_turf(user))
 			simulate_recoil(recoil_comp, user, target)
 
-			// Get IFF from our shooter if necessary,
-			var/iff_group_to_pass = null
-			if(iff_enabled_current)
-				iff_group_to_pass = get_user_iff_group(user)
-
 			//This is where the projectile leaves the barrel and deals with projectile code only.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE, iff_group_to_pass)
+			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 			last_fired = world.time
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
@@ -991,21 +1025,6 @@ and you're good to go.
 			sleep(burst_delay)
 
 	flags_gun_features &= ~GUN_BURST_FIRING // We always want to turn off bursting when we're done, mainly for when we break early mid-burstfire.
-
-// We have a "cache" to avoid getting ID card iff every shot,
-// The cache is reset upon new magazines or when necessary.
-/obj/item/weapon/gun/proc/get_user_iff_group(var/mob/living/user)
-	if(!ishuman(user))
-		return user.faction_group
-
-	if(isnull(iff_group_cache))
-		var/mob/living/carbon/human/H = user
-		iff_group_cache = H.get_id_faction_group()
-
-	return iff_group_cache
-
-/obj/item/weapon/gun/proc/reset_iff_group_cache()
-	iff_group_cache = null
 
 #define EXECUTION_CHECK M.stat == UNCONSCIOUS && ((user.a_intent == INTENT_GRAB)||(user.a_intent == INTENT_DISARM))
 
@@ -1082,7 +1101,7 @@ and you're good to go.
 
 	else if(EXECUTION_CHECK) //Execution
 		user.visible_message(SPAN_DANGER("[user] puts [src] up to [M], steadying their aim."), SPAN_WARNING("You put [src] up to [M], steadying your aim."),null, null, CHAT_TYPE_COMBAT_ACTION)
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL|INTERRUPT_DIFF_INTENT, BUSY_ICON_HOSTILE))
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL|INTERRUPT_DIFF_INTENT, BUSY_ICON_HOSTILE))
 			return FALSE
 	else if(user.a_intent != INTENT_HARM) //Thwack them
 		return ..()
@@ -1111,13 +1130,14 @@ and you're good to go.
 	user.visible_message(SPAN_DANGER("[user] fires [src] point blank at [M]!"), null, null, null, CHAT_TYPE_WEAPON_USE)
 	user.track_shot(initial(name))
 	apply_bullet_effects(projectile_to_fire, user) //We add any damage effects that we need.
+	SEND_SIGNAL(projectile_to_fire, COMSIG_BULLET_USER_EFFECTS, user)
 	simulate_recoil(1, user)
 
 	if(projectile_to_fire.ammo.bonus_projectiles_amount)
 		var/obj/item/projectile/BP
 		for(var/i in 1 to projectile_to_fire.ammo.bonus_projectiles_amount)
 			BP = new /obj/item/projectile(initial(name), user, M.loc)
-			BP.generate_bullet(ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0, NO_FLAGS)
+			BP.generate_bullet(GLOB.ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0, NO_FLAGS)
 			BP.damage *= damage_buff
 			BP.ammo.on_hit_mob(M, BP)
 			M.bullet_act(BP)

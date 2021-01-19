@@ -72,23 +72,23 @@
 	var/can_hold_facehuggers = 0
 	var/can_hold_eggs = CANNOT_HOLD_EGGS
 
-	var/can_be_queen_healed = 1
+	var/can_be_queen_healed = TRUE
 
 	var/can_vent_crawl = 1
 
 	var/caste_luminosity = 0
 
-	var/burrow_cooldown = SECONDS_5
+	var/burrow_cooldown = 5 SECONDS
 	var/tunnel_cooldown = 100
-	var/widen_cooldown = SECONDS_10
-	var/tremor_cooldown = SECONDS_30 //Big strong ability, big cooldown.
+	var/widen_cooldown = 10 SECONDS
+	var/tremor_cooldown = 30 SECONDS //Big strong ability, big cooldown.
 
 	var/innate_healing = FALSE //whether the xeno heals even outside weeds.
 
 	var/acid_level = 0
 	var/weed_level = WEED_LEVEL_STANDARD
 
-	var/acid_splash_cooldown = SECONDS_3 //Time it takes between acid splash retaliate procs. Variable per caste, for if we want future castes that are acid bombs
+	var/acid_splash_cooldown = 3 SECONDS //Time it takes between acid splash retaliate procs. Variable per caste, for if we want future castes that are acid bombs
 
 	// regen vars
 

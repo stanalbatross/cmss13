@@ -383,8 +383,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 		if("Xenos by Hive")
 			var/hives = list()
-
-			for(var/datum/hive_status/hive in GLOB.hive_datum)
+			var/datum/hive_status/hive
+			for(var/hivenumber in GLOB.hive_datum)
+				hive = GLOB.hive_datum[hivenumber]
 				hives += list("[hive.name]" = hive.hivenumber)
 
 			input = tgui_input_list(usr, "Please, select a Hive:", "Follow", hives)
@@ -540,15 +541,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/list/hives = list()
 	var/datum/hive_status/last_hive_checked
 
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		if(hive.totalXenos.len > 0)
 			hives += list("[hive.name]" = hive.hivenumber)
 			last_hive_checked = hive
 
-	if(!hives.len)
+	if(!length(hives))
 		to_chat(src, SPAN_ALERT("There seem to be no living hives at the moment"))
 		return
-	else if(hives.len == 1) // Only one hive, don't need an input menu for that
+	else if(length(hives) == 1) // Only one hive, don't need an input menu for that
 		last_hive_checked.hive_ui.open_hive_status(src)
 	else
 		faction = tgui_input_list(src, "Select which hive status menu to open up", "Hive Choice", hives)
@@ -636,7 +639,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-	var/choice = tgui_input_list(usr, "Pick a Freed Mob:", "Join as Freed Mob", freed_mob_list)
+	var/choice = tgui_input_list(usr, "Pick a Freed Mob:", "Join as Freed Mob", GLOB.freed_mob_list)
 	if(!choice || choice == "Cancel")
 		return
 
@@ -645,11 +648,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	if(QDELETED(L) || L.client)
-		freed_mob_list -= L
+		GLOB.freed_mob_list -= L
 		to_chat(src, SPAN_WARNING("Something went wrong."))
 		return
 
-	freed_mob_list -= L
+	GLOB.freed_mob_list -= L
 	M.mind.transfer_to(L, TRUE)
 
 /mob/dead/verb/join_as_hellhound()

@@ -243,7 +243,7 @@
 		if(SEND_SIGNAL(M, COMSIG_MOB_SCREECH_ACT, X) & COMPONENT_SCREECH_ACT_CANCEL)
 			continue
 
-		M.scream_stun_timeout = SECONDS_20
+		M.scream_stun_timeout = 20 SECONDS
 		var/dist = get_dist(X, M)
 		if(dist <= 4)
 			to_chat(M, SPAN_DANGER("An ear-splitting guttural roar shakes the ground beneath your feet!"))
@@ -334,15 +334,15 @@
 		to_chat(X, SPAN_XENOWARNING("This caste cannot be given plasma!"))
 		return
 
-	if(target.on_fire)
-		to_chat(X, SPAN_XENOWARNING("You cannot give plasma to xenos that are on fire!"))
+	if(SEND_SIGNAL(target, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+		to_chat(X, SPAN_XENOWARNING("This xeno cannot be given plasma!"))
 		return
 
 	if(!check_and_use_plasma_owner())
 		return
 
 	target.gain_plasma(target.plasma_max * 0.75)
-	target.flick_heal_overlay(SECONDS_3, COLOR_CYAN)
+	target.flick_heal_overlay(3 SECONDS, COLOR_CYAN)
 	apply_cooldown()
 	to_chat(X, SPAN_XENONOTICE("You transfer some plasma to [target]."))
 /datum/action/xeno_action/onclick/queen_order

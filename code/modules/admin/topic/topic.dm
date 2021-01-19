@@ -635,8 +635,6 @@
 	else if(href_list["c_mode"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
@@ -660,13 +658,11 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if (SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
-		master_mode = href_list["c_mode2"]
-		message_staff("[key_name_admin(usr)] set the mode as [master_mode].")
-		to_world(SPAN_NOTICE("<b><i>The mode is now: [master_mode]!</i></b>"))
+		GLOB.master_mode = href_list["c_mode2"]
+		message_staff("[key_name_admin(usr)] set the mode as [GLOB.master_mode].")
+		to_world(SPAN_NOTICE("<b><i>The mode is now: [GLOB.master_mode]!</i></b>"))
 		Game() // updates the main game menu
-		world.save_mode(master_mode)
+		SSticker.save_mode(GLOB.master_mode)
 		.(href, list("c_mode"=1))
 
 
@@ -748,7 +744,9 @@
 			return
 
 		var/list/hives = list()
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/datum/hive_status/hive
+		for(var/hivenumber in GLOB.hive_datum)
+			hive = GLOB.hive_datum[hivenumber]
 			hives += list("[hive.name]" = hive.hivenumber)
 
 		var/newhive = tgui_input_list(usr,"Select a hive.", "Infect Larva", hives)
@@ -790,8 +788,9 @@
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/list/hives = list();
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/list/hives = list()
+		for(var/hivenumber in GLOB.hive_datum)
+			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 			LAZYSET(hives, hive.name, hive)
 		LAZYSET(hives, "CANCEL", null)
 
@@ -1666,7 +1665,7 @@
 	if(href_list["distress"]) //Distress Beacon, sends a random distress beacon when pressed
 		distress_cancel = FALSE
 		message_staff("[key_name_admin(usr)] has opted to SEND the distress beacon! Launching in 10 seconds... (<A HREF='?_src_=admin_holder;distresscancel=\ref[usr]'>CANCEL</A>)")
-		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), SECONDS_10)
+		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), 10 SECONDS)
 		//unanswered_distress -= ref_person
 
 	if(href_list["destroyship"]) //Distress Beacon, sends a random distress beacon when pressed

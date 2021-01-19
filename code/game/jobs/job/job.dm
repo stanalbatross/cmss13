@@ -22,7 +22,7 @@
 	//If you have use_timelocks config option enabled, this option will add a requirement for players to have the prerequisite roles have at least x minimum playtime before unlocking.
 	var/list/minimum_playtimes
 
-	var/minimum_playtime_as_job = HOURS_3
+	var/minimum_playtime_as_job = 3 HOURS
 
 	var/gear_preset //Gear preset name used for this job
 	var/list/gear_preset_whitelist = list()//Gear preset name used for council snowflakes ;)
@@ -115,29 +115,29 @@
 /datum/job/proc/get_access()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].access
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].access
 	return null
 
 /datum/job/proc/get_skills()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].skills
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].skills
 	return null
 
 /datum/job/proc/get_paygrade()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].paygrade
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].paygrade
 	return ""
 
 /datum/job/proc/get_comm_title()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].role_comm_title
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].role_comm_title
 	return ""
 
 /datum/job/proc/set_spawn_positions(var/count)

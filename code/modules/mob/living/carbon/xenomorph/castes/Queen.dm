@@ -40,7 +40,9 @@
 
 /proc/update_living_queens() // needed to update when you change a queen to a different hive
 	outer_loop:
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/datum/hive_status/hive
+		for(var/hivenumber in GLOB.hive_datum)
+			hive = GLOB.hive_datum[hivenumber]
 			if(hive.living_xeno_queen)
 				if(hive.living_xeno_queen.hivenumber == hive.hivenumber)
 					continue
@@ -63,7 +65,7 @@
 	var/hivenumber = XENO_HIVE_NORMAL
 	var/next_point = 0
 
-	var/point_delay = 1 SECOND
+	var/point_delay = 1 SECONDS
 
 
 /mob/hologram/queen/Initialize(mapload, mob/living/carbon/Xenomorph/Queen/Q)
@@ -80,10 +82,10 @@
 	. = ..()
 	RegisterSignal(Q, COMSIG_MOB_PRE_CLICK, .proc/handle_overwatch)
 	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/exit_hologram)
-	RegisterSignal(Q, COMSIG_XENOMORPH_OVERWATCH_XENO, .proc/start_watching)
+	RegisterSignal(Q, COMSIG_XENO_OVERWATCH_XENO, .proc/start_watching)
 	RegisterSignal(Q, list(
-		COMSIG_XENOMORPH_STOP_OVERWATCH,
-		COMSIG_XENOMORPH_STOP_OVERWATCH_XENO
+		COMSIG_XENO_STOP_OVERWATCH,
+		COMSIG_XENO_STOP_OVERWATCH_XENO
 	), .proc/stop_watching)
 	RegisterSignal(src, COMSIG_TURF_ENTER, .proc/turf_weed_only)
 
@@ -527,7 +529,7 @@
 		return
 
 	pslash_delay = TRUE
-	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_claw_toggle_cooldown), SECONDS_30)
+	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_claw_toggle_cooldown), 30 SECONDS)
 
 	var/choice = tgui_input_list(usr, "Choose which level of slashing hosts to permit to your hive.","Harming", list("Allowed", "Restricted - Hosts of Interest", "Forbidden"))
 
@@ -676,7 +678,7 @@
 			return
 
 		use_plasma(200)
-		last_special = world.time + MINUTES_15
+		last_special = world.time + 15 MINUTES
 
 		visible_message(SPAN_XENODANGER("[src] viciously smashes and wrenches [victim] apart!"), \
 		SPAN_XENODANGER("You suddenly unleash pure anger on [victim], instantly wrenching \him apart!"))
@@ -770,7 +772,7 @@
 
 	egg_amount = 0
 	extra_build_dist = initial(extra_build_dist)
-	ovipositor_cooldown = world.time + MINUTES_5 //5 minutes
+	ovipositor_cooldown = world.time + 5 MINUTES //5 minutes
 	anchored = FALSE
 	update_canmove()
 

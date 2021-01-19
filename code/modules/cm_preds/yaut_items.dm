@@ -374,43 +374,48 @@
 		if(clan_info.permissions & CLAN_PERMISSION_ADMIN_VIEW)
 			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view/)
 			for(var/datum/view_record/clan_view/CV in CPV)
-				if(!("[CV.clan_id]" in pred_ships))
+				if(!SSpredships.is_clanship_loaded("[CV.clan_id]"))
 					continue
-
 				ship_to_tele += list("[CV.name]" = "[CV.clan_id]")
 		else if(clan_info.clan_id)
 			ship_to_tele += list("Your clan" = "[clan_info.clan_id]")
 
 	var/clan = ship_to_tele[tgui_input_list(H, "Select a ship to teleport to", "[src]", ship_to_tele)]
 
-	if((!clan || !(clan in pred_ships)) && clan != CLAN_SHIP_ALMAYER)
+	if(!SSpredships.is_clanship_loaded(clan))
+		return // Checking ship is valid
+
+	// Getting an arrival point
+	var/turf/target_turf
+	if(clan == CLAN_SHIP_ALMAYER)
+		var/obj/effect/landmark/yautja_teleport/pickedYT = pick(GLOB.mainship_yautja_teleports)
+		target_turf = get_turf(pickedYT)
+	else
+		var/list/turf/SP = SSpredships.get_clan_spawnpoints(clan)
+		if(SP) target_turf = pick(SP)
+	if(!istype(target_turf))
 		return
 
-	playsound(src,'sound/ambience/signal.ogg', 25, 1)
+	// Let's go
+	playsound(src,'sound/ambience/signal.ogg', 25, 1, sound_range = 6)
 	timer = 1
 	user.visible_message(SPAN_INFO("[user] starts becoming shimmery and indistinct..."))
 
-	if(do_after(user, SECONDS_10, INTERRUPT_ALL, BUSY_ICON_GENERIC))
-		// Teleport self.
+	if(do_after(user, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+		// Display fancy animation for you and the person you might be pulling (Legacy)
 		user.visible_message(SPAN_WARNING("[icon2html(user, viewers(src))][user] disappears!"))
 		var/tele_time = animation_teleport_quick_out(user)
-		// Also teleport whoever you're pulling.
 		var/mob/living/M = user.pulling
-		if(istype(M))
+		if(istype(M)) // Pulled person
 			M.visible_message(SPAN_WARNING("[icon2html(M, viewers(src))][M] disappears!"))
 			animation_teleport_quick_out(M)
-		sleep(tele_time)
 
-		var/turf/end_turf
-		if(clan != CLAN_SHIP_ALMAYER)
-			end_turf = pick(get_clan_spawnpoints(clan))
-		else
-			end_turf = get_turf(pick(GLOB.mainship_yautja_teleports))
+		sleep(tele_time) // Animation delay
+		user.trainteleport(target_turf) // Actually teleports everyone, not just you + pulled
 
-		user.forceMove(end_turf)
+		// Undo animations
 		animation_teleport_quick_in(user)
-		if(M && M.loc)
-			M.forceMove(end_turf)
+		if(istype(M) && !QDELETED(M))
 			animation_teleport_quick_in(M)
 		timer = 0
 	else
@@ -511,7 +516,7 @@
 		user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
 		SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
 		playsound(user,'sound/weapons/wristblades_hit.ogg', 15, TRUE)
-		if(do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
 			user.visible_message(SPAN_DANGER("[user] forces [D] open with the [name]."),
 			SPAN_DANGER("You force [D] open with the [name]."))
 			D.open(1)
@@ -523,7 +528,7 @@
 			user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
 			SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
 			playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, TRUE)
-			if(do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+			if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
 				user.visible_message(SPAN_DANGER("[user] forces [D] open using the [name]."),
 				SPAN_DANGER("You force [D] open with your [name]."))
 				D.Open()
@@ -531,7 +536,7 @@
 			user.visible_message(SPAN_DANGER("[user] pushes [D] with their [name] to force it closed."),
 			SPAN_DANGER("You push [D] with your [name] to force it closed."))
 			playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, TRUE)
-			if(do_after(user, SECONDS_2, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && !D.density)
+			if(do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && !D.density)
 				user.visible_message(SPAN_DANGER("[user] forces [D] closed using the [name]."),
 				SPAN_DANGER("You force [D] closed with your [name]."))
 				D.Close()
@@ -621,9 +626,9 @@
 	if(!on)
 		on = !on
 		timer = TRUE
-		addtimer(CALLBACK(src, .proc/stop_parry), SECONDS_3)
+		addtimer(CALLBACK(src, .proc/stop_parry), 3 SECONDS)
 		to_chat(user, SPAN_NOTICE("You get ready to parry with the [src]."))
-		addtimer(CALLBACK(src, .proc/parry_cooldown), SECONDS_8)
+		addtimer(CALLBACK(src, .proc/parry_cooldown), 8 SECONDS)
 
 	add_fingerprint(user)
 	return
@@ -934,3 +939,148 @@
 	..()
 	current = null
 	user.reset_view(null)
+
+
+// Hunting traps
+/obj/item/hunting_trap
+	name = "hunting trap"
+	throw_speed = SPEED_FAST
+	throw_range = 2
+	icon = 'icons/obj/items/weapons/predator.dmi'
+	icon_state = "yauttrap0"
+	desc = "A bizarre Yautja device used for trapping and killing prey."
+	var/armed = 0
+	var/datum/effects/tethering/tether_effect
+	var/tether_range = 5
+	var/mob/trapped_mob
+	layer = LOWER_ITEM_LAYER
+
+/obj/item/hunting_trap/Destroy()
+	cleanup_tether()
+	trapped_mob = null
+	. = ..()
+
+/obj/item/hunting_trap/dropped(var/mob/living/carbon/human/mob) //Changes to "camouflaged" icons based on where it was dropped.
+	if(armed && isturf(mob.loc))
+		var/turf/T = mob.loc
+		if(istype(T,/turf/open/gm/dirt))
+			icon_state = "yauttrapdirt"
+		else if (istype(T,/turf/open/gm/grass))
+			icon_state = "yauttrapgrass"
+		else
+			icon_state = "yauttrap1"
+	..()
+
+/obj/item/hunting_trap/attack_self(mob/user as mob)
+	..()
+	if(ishuman(user) && !user.stat && !user.is_mob_restrained())
+		var/mob/living/carbon/human/H = user
+		var/wait_time = 3 SECONDS
+		if(!isYautja(H))
+			wait_time = rand(5 SECONDS, 10 SECONDS)
+		if(!do_after(user, wait_time, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+			return
+		armed = TRUE
+		anchored = TRUE
+		icon_state = "yauttrap[armed]"
+		to_chat(user, SPAN_NOTICE("[src] is now armed."))
+		user.attack_log += text("\[[time_stamp()]\] <font color='orange'>[key_name(user)] has armed \the [src] at [get_location_in_text(user)].</font>")
+		log_attack("[key_name(user)] has armed \a [src] at [get_location_in_text(user)].")
+		user.drop_held_item()
+
+/obj/item/hunting_trap/attack_hand(mob/living/carbon/human/user)
+	if(isYautja(user))
+		disarm(user)
+	//Humans and synths don't know how to handle those traps!
+	if(isHumanSynthStrict(user) && armed)
+		to_chat(user, "You foolishly reach out for \the [src]...")
+		trapMob(user)
+		return
+	. = ..()
+
+/obj/item/hunting_trap/proc/trapMob(var/mob/living/carbon/C)
+	if(!armed)
+		return
+
+	armed = FALSE
+	anchored = TRUE
+
+	var/list/tether_effects = apply_tether(src, C, range = tether_range, resistable = TRUE)
+	tether_effect = tether_effects["tetherer_tether"]
+	RegisterSignal(tether_effect, COMSIG_PARENT_QDELETING, .proc/disarm)
+
+	trapped_mob = C
+
+	icon_state = "yauttrap0"
+	playsound(C,'sound/weapons/tablehit1.ogg', 25, 1)
+	to_chat(C, "[icon2html(src, C)] \red <B>You get caught in \the [src]!</B>")
+
+	C.attack_log += text("\[[time_stamp()]\] <font color='orange'>[key_name(C)] was caught in \a [src] at [get_location_in_text(C)].</font>")
+	log_attack("[key_name(C)] was caught in \a [src] at [get_location_in_text(C)].")
+
+	C.KnockDown(2)
+	if(ishuman(C))
+		C.emote("pain")
+	if(isXeno(C))
+		var/mob/living/carbon/Xenomorph/X = C
+		X.interference = 100 // Some base interference to give pred time to get some damage in, if it cannot land a single hit during this time pred is cheeks
+		RegisterSignal(X, COMSIG_XENO_PRE_HEAL, .proc/block_heal)
+
+/obj/item/hunting_trap/proc/block_heal(mob/living/carbon/Xenomorph/xeno)
+	SIGNAL_HANDLER
+	return COMPONENT_CANCEL_XENO_HEAL
+
+/obj/item/hunting_trap/Crossed(atom/movable/AM)
+	if(armed && ismob(AM))
+		var/mob/M = AM
+		if(!M.buckled)
+			if(iscarbon(AM) && isturf(src.loc))
+				var/mob/living/carbon/H = AM
+				if(isYautja(H))
+					to_chat(H, SPAN_NOTICE("You carefully avoid stepping on the trap."))
+					return
+				trapMob(H)
+				for(var/mob/O in viewers(H, null))
+					if(O == H)
+						continue
+					O.show_message(SPAN_WARNING("[icon2html(src, O)] <B>[H] gets caught in \the [src].</B>"), 1)
+			else if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot))
+				armed = FALSE
+				var/mob/living/simple_animal/SA = AM
+				SA.health -= 20
+	..()
+
+/obj/item/hunting_trap/proc/cleanup_tether()
+	if (tether_effect)
+		UnregisterSignal(tether_effect, COMSIG_PARENT_QDELETING)
+		qdel(tether_effect)
+		tether_effect = null
+
+/obj/item/hunting_trap/proc/disarm(var/mob/user)
+	armed = FALSE
+	anchored = FALSE
+	icon_state = "yauttrap[armed]"
+	if (user)
+		to_chat(user, SPAN_NOTICE("[src] is now disarmed."))
+		user.attack_log += text("\[[time_stamp()]\] <font color='orange'>[key_name(user)] has disarmed \the [src] at [get_location_in_text(user)].</font>")
+		log_attack("[key_name(user)] has disarmed \a [src] at [get_location_in_text(user)].")
+	if (trapped_mob)
+		if (isXeno(trapped_mob))
+			var/mob/living/carbon/Xenomorph/X = trapped_mob
+			UnregisterSignal(X, COMSIG_XENO_PRE_HEAL)
+		trapped_mob = null
+	cleanup_tether()
+
+/obj/item/hunting_trap/verb/configure_trap()
+	set name = "Configure Hunting Trap"
+	set category = "Object"
+
+	var/mob/living/carbon/human/H = usr
+	if(!isYautja(H))
+		to_chat(H, SPAN_WARNING("You do not know how to configure the trap."))
+		return
+	var/range = input(H, "Which range would you like to set the hunting trap to?") as null|anything in list(2, 3, 4, 5, 6, 7)
+	if(isnull(range))
+		return
+	tether_range = range
+	to_chat(H, SPAN_NOTICE("You set the hunting trap's tether range to [range]."))

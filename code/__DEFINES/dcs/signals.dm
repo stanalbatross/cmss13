@@ -20,6 +20,10 @@
 #define COMSIG_GLOB_XENO_DEATH "!xeno_death"
 #define COMSIG_GLOB_REMOVE_VOTE_BUTTON "!remove_vote_button"
 
+#define COMSIG_GLOB_ENTITY_ROUND_INIT "!entity_round_init"
+
+#define COMSIG_GLOB_CLIENT_LOGIN "!client_login"
+
 #define COMSIG_GLOB_MOB_LOGIN "!mob_login"
 
 //////////////////////////////////////////////////////////////////
@@ -84,24 +88,21 @@
 #define COMSIG_MOB_APC_CUT_WIRE "mob_apc_cut_wire"
 /// From /obj/structure/machinery/power/apc/proc/pulse
 #define COMSIG_MOB_APC_POWER_PULSE "mob_apc_power_pulse"
-/// From /obj/structure/machinery/power/apc/proc/pulse
-#define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
 /// From /projectiles/updated_projectiles/guns/proc/fire
-#define COMSIG_MOB_FIRED_GUN_ATTACHMENT "mob_fired_gun_attachment"
+#define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
 /// From /projectiles/updated_projectiles/guns/proc/fire_attachment
-#define COMSIG_MOB_DEATH "mob_death"
+#define COMSIG_MOB_FIRED_GUN_ATTACHMENT "mob_fired_gun_attachment"
 /// From /mob/proc/death
-#define COMSIG_MOB_GETTING_UP "mob_getting_up"
+#define COMSIG_MOB_DEATH "mob_death"
 /// From /mob/proc/update_canmove()
-
-#define COMSIG_HUMAN_ALIEN_ATTACK "human_alien_attack"
-/// from /mob/living/carbon/human/attack_alien()
-#define COMSIG_XENO_ALIEN_ATTACK "xeno_alien_attack"
-/// from /mob/living/carbon/Xenomorph/attack_alien()
-
-
+#define COMSIG_MOB_GETTING_UP "mob_getting_up"
 /// For when a mob is dragged
 #define COMSIG_MOB_DRAGGED "mob_dragged"
+/// From /mob/living/verb/resist()
+#define COMSIG_MOB_RESISTED "mob_resist"
+
+/// from /mob/living/carbon/human/attack_alien()
+#define COMSIG_HUMAN_ALIEN_ATTACK "human_alien_attack"
 
 /// For when a mob is devoured by a Xeno
 #define COMSIG_MOB_DEVOURED "mob_devoured"
@@ -152,9 +153,13 @@
 #define COMSIG_HUMAN_BLOOD_CROSSED "human_blood_crossed"
 #define COMSIG_HUMAN_CLEAR_BLOODY_FEET "human_clear_bloody_feet"
 
-#define COMSIG_XENOMORPH_OVERWATCH_XENO "xenomorph_overwatch_xeno"
-#define COMSIG_XENOMORPH_STOP_OVERWATCH	"xenomorph_stop_overwatch"
-#define COMSIG_XENOMORPH_STOP_OVERWATCH_XENO "xenomorph_stop_overwatch_xeno"
+/// from /mob/living/carbon/Xenomorph/attack_alien()
+#define COMSIG_XENO_ALIEN_ATTACK "xeno_alien_attack"
+#define COMSIG_XENO_OVERWATCH_XENO "xeno_overwatch_xeno"
+#define COMSIG_XENO_STOP_OVERWATCH	"xeno_stop_overwatch"
+#define COMSIG_XENO_STOP_OVERWATCH_XENO "xeno_stop_overwatch_xeno"
+#define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
+	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
 #define COMSIG_QUEEN_DISMOUNT_OVIPOSITOR "queen_dismount_ovipositor"
 
@@ -167,8 +172,11 @@
 /// From /atom/movable/proc/launch_towards
 #define COMSIG_MOVABLE_PRE_THROW "movable_pre_throw"
 	#define COMPONENT_CANCEL_THROW (1<<0)
-//from base of atom/movable/Moved(): (/atom, dir, forced)
+///from base of atom/movable/Moved(): (/atom, dir, forced)
 #define COMSIG_MOVABLE_MOVED "movable_moved"
+/// From /atom/movable/Move(): (atom/NewLoc)
+#define COMSIG_MOVABLE_PRE_MOVE "movable_pre_move"
+	#define COMPONENT_CANCEL_MOVE (1<<0)
 
 ///from /obj/item/device/agents/floppy_disk/proc/insert_drive
 #define COMSIG_AGENT_DISK_INSERTED "agent_disk_inserted"
@@ -212,6 +220,11 @@
 #define COMSIG_BULLET_ACT_HUMAN "bullet_act_human"
 /// Called when a bullet hits a xenomorph
 #define COMSIG_BULLET_ACT_XENO "bullet_act_xeno"
+/// Apply any effects to the bullet (primarily through bullet traits)
+/// based on the user
+#define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
+/// Called when checking IFF as bullet scans for targets
+#define COMSIG_BULLET_CHECK_IFF "bullet_check_iff"
 
 //called during AdjustBruteLoss() which is not actually used during most attacks for now
 #define COMSIG_HUMAN_PRE_BRUTE_LOSS "human_pre_brute_loss"

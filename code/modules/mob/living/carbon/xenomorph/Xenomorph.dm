@@ -184,7 +184,7 @@
 	var/xeno_hostile_hud = FALSE // 'Hostile' HUD - the verb Xenos use to see tags, etc on humans
 	var/list/plasma_types = list() //The types of plasma the caste contains
 	var/list/xeno_shields = list() // List of /datum/xeno_shield that holds all active shields on the Xeno.
-	var/acid_splash_cooldown = SECONDS_5 //Time it takes between acid splash retaliate procs
+	var/acid_splash_cooldown = 5 SECONDS //Time it takes between acid splash retaliate procs
 	var/acid_splash_last //Last recorded time that an acid splash procced
 	var/interference = 0 // Stagger for predator weapons. Prevents hivemind usage, queen overwatching, etc.
 	var/mob/living/carbon/Xenomorph/observed_xeno // Overwatched xeno for xeno hivemind vision
@@ -319,7 +319,7 @@
 	see_in_dark = 8
 
 	if(caste && caste.spit_types && caste.spit_types.len)
-		ammo = ammo_list[caste.spit_types[1]]
+		ammo = GLOB.ammo_list[caste.spit_types[1]]
 
 	create_reagents(100)
 
@@ -819,6 +819,7 @@
 			hive.hive_ui.update_all_xeno_data()
 
 	armor_integrity = 100
+	UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
 	..()
 	hud_update()
 	plasma_stored = plasma_max
@@ -862,3 +863,17 @@
 		O.show_message(SPAN_DANGER("<B>[src] manages to remove [legcuffed]!</B>"), 1)
 	to_chat(src, SPAN_NOTICE(" You successfully remove [legcuffed]."))
 	drop_inv_item_on_ground(legcuffed)
+
+/mob/living/carbon/Xenomorph/IgniteMob()
+	. = ..()
+	if (. & IGNITE_IGNITED)
+		RegisterSignal(src, COMSIG_XENO_PRE_HEAL, .proc/cancel_heal)
+
+/mob/living/carbon/Xenomorph/ExtinguishMob()
+	. = ..()
+	if (.)
+		UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
+
+/mob/living/carbon/Xenomorph/proc/cancel_heal()
+	SIGNAL_HANDLER
+	return COMPONENT_CANCEL_XENO_HEAL

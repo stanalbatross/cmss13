@@ -5,14 +5,16 @@
  */
 
 import { toFixed } from 'common/math';
+
+import { useLocalState } from 'tgui/backend';
 import { useDispatch, useSelector } from 'common/redux';
 import { Box, Button, ColorBox, Divider, Dropdown, Flex, Input, LabeledList, NumberInput, Section, Tabs, TextArea } from 'tgui/components';
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
 import { THEMES } from '../themes';
-import { changeSettingsTab, updateSettings } from './actions';
-import { SETTINGS_TABS, FONTS } from './constants';
-import { selectActiveTab, selectSettings } from './selectors';
+import { changeSettingsTab, updateSettings, addHighlightSetting, removeHighlightSetting, updateHighlightSetting } from './actions';
+import { SETTINGS_TABS, FONTS, MAX_HIGHLIGHT_SETTINGS } from './constants';
+import { selectActiveTab, selectSettings, selectHighlightSettings, selectHighlightSettingById } from './selectors';
 
 export const SettingsPanel = (props, context) => {
   const activeTab = useSelector(context, selectActiveTab);
@@ -39,6 +41,9 @@ export const SettingsPanel = (props, context) => {
         {activeTab === 'general' && (
           <SettingsGeneral />
         )}
+        {activeTab === 'textHighlight' && (
+          <TextHighlightSettings />
+        )}
         {activeTab === 'chatPage' && (
           <ChatPageSettings />
         )}
@@ -53,10 +58,9 @@ export const SettingsGeneral = (props, context) => {
     fontFamily,
     fontSize,
     lineHeight,
-    highlightText,
-    highlightColor,
   } = useSelector(context, selectSettings);
   const dispatch = useDispatch(context);
+  const [freeFont, setFreeFont] = useLocalState(context, "freeFont", false);
   return (
     <Section fill>
       <LabeledList>
@@ -69,13 +73,34 @@ export const SettingsGeneral = (props, context) => {
             }))} />
         </LabeledList.Item>
         <LabeledList.Item label="Font style">
-          <Dropdown
-            selected={fontFamily}
-            options={FONTS}
-            width="350px"
-            onSelected={value => dispatch(updateSettings({
-              fontFamily: value,
-            }))} />
+          <Flex>
+            {!freeFont && (
+              <Dropdown
+                selected={fontFamily}
+                options={FONTS}
+                width="350px"
+                onSelected={value => dispatch(updateSettings({
+                  fontFamily: value,
+                }))} />
+            ) || (
+              <Input
+                value={fontFamily}
+                onChange={(e, value) => dispatch(updateSettings({
+                  fontFamily: value,
+                }))}
+                width="350px"
+              />
+            )}
+            <Button
+              content="Custom font"
+              icon={freeFont? "lock-open" : "lock"}
+              color={freeFont? "good" : "bad"}
+              ml={1}
+              onClick={() => {
+                setFreeFont(!freeFont);
+              }}
+            />
+          </Flex>
         </LabeledList.Item>
         <LabeledList.Item label="Font size">
           <NumberInput
@@ -106,30 +131,42 @@ export const SettingsGeneral = (props, context) => {
         </LabeledList.Item>
       </LabeledList>
       <Divider />
-      <Box>
-        <Flex mb={1} color="label" align="baseline">
-          <Flex.Item grow={1}>
-            Highlight words (comma separated):
-          </Flex.Item>
-          <Flex.Item shrink={0}>
-            <ColorBox mr={1} color={highlightColor} />
-            <Input
-              width="5em"
-              monospace
-              placeholder="#ffffff"
-              value={highlightColor}
-              onInput={(e, value) => dispatch(updateSettings({
-                highlightColor: value,
-              }))} />
-          </Flex.Item>
+      <Button
+        icon="save"
+        onClick={() => dispatch(saveChatToDisk())}>
+        Save chat log
+      </Button>
+    </Section>
+  );
+};
+
+const TextHighlightSettings = (props, context) => {
+  const highlightSettings = useSelector(context, selectHighlightSettings);
+  const dispatch = useDispatch(context);
+  return (
+    <Section fill>
+      <Section fill scrollable maxHeight={"170px"} level={2} p={0}>
+        <Flex direction="column">
+          {highlightSettings.map((id, i) => (
+            <TextHighlightSetting
+              key={i}
+              id={id}
+              mb={i+1 === highlightSettings.length ? 0 : "10px"}
+            />
+          ))}
+          {highlightSettings.length < MAX_HIGHLIGHT_SETTINGS && (
+            <Flex.Item>
+              <Button
+                color="transparent"
+                icon="plus"
+                content="Add Highlight Setting"
+                onClick={() => {
+                  dispatch(addHighlightSetting());
+                }} />
+            </Flex.Item>
+          )}
         </Flex>
-        <TextArea
-          height="3em"
-          value={highlightText}
-          onChange={(e, value) => dispatch(updateSettings({
-            highlightText: value,
-          }))} />
-      </Box>
+      </Section>
       <Divider />
       <Box>
         <Button
@@ -141,12 +178,62 @@ export const SettingsGeneral = (props, context) => {
           Can freeze the chat for a while.
         </Box>
       </Box>
-      <Divider />
-      <Button
-        icon="save"
-        onClick={() => dispatch(saveChatToDisk())}>
-        Save chat log
-      </Button>
     </Section>
+  );
+};
+
+const TextHighlightSetting = (props, context) => {
+  const { id, ...rest } = props;
+  const highlightSettingById = useSelector(context, selectHighlightSettingById);
+  const dispatch = useDispatch(context);
+  const {
+    highlightColor,
+    highlightText,
+    highlightWholeMessage,
+  } = highlightSettingById[id];
+  return (
+    <Flex.Item {...rest}>
+      <Flex mb={1} color="label" align="baseline">
+        <Flex.Item grow={1}>
+          <Button
+            content="Highlight words (comma separated):"
+            color="transparent"
+            icon="times"
+            onClick={() => dispatch(removeHighlightSetting({
+              id: id,
+            }))}
+          />
+        </Flex.Item>
+        <Flex.Item shrink={0}>
+          <Button.Checkbox
+            checked={highlightWholeMessage}
+            content="Highlight Whole Message"
+            mr="5px"
+            onClick={() => dispatch(updateHighlightSetting({
+              id: id,
+              highlightWholeMessage: !highlightWholeMessage,
+            }))} />
+        </Flex.Item>
+        <Flex.Item shrink={0}>
+          <ColorBox mr={1} color={highlightColor} />
+          <Input
+            width="5em"
+            monospace
+            placeholder="#ffffff"
+            value={highlightColor}
+            onInput={(e, value) => dispatch(updateHighlightSetting({
+              id: id,
+              highlightColor: value,
+            }))} />
+        </Flex.Item>
+      </Flex>
+      <TextArea
+        height="3em"
+        value={highlightText}
+        onChange={(e, value) => dispatch(updateHighlightSetting({
+          id: id,
+          highlightText: value,
+        }))} />
+    </Flex.Item>
   );
 };

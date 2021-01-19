@@ -342,18 +342,6 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 			return TRUE
 	return FALSE
 
-/obj/item/weapon/gun/proc/check_iff()
-	iff_enabled_current = FALSE
-	for(var/slot in attachments)
-		var/obj/item/attachable/R = attachments[slot]
-		if(R && R.has_marine_iff)
-			iff_enabled_current = TRUE
-	if(iff_enabled)
-		iff_enabled_current = TRUE
-	if(in_chamber) //Hi, I'm an old bullet. I don't have a fucking IFF enabled yet.
-		qdel(in_chamber)
-		in_chamber = create_bullet(ammo, initial(name)) //OK
-
 /obj/item/weapon/gun/proc/can_attach_to_gun(mob/user, obj/item/attachable/attachment)
 	if(attachable_allowed && !(attachment.type in attachable_allowed) )
 		to_chat(user, SPAN_WARNING("[attachment] doesn't fit on [src]!"))
@@ -406,7 +394,7 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 /obj/item/weapon/gun/proc/update_overlays(obj/item/attachable/A, slot)
 	var/image/I = attachable_overlays[slot]
 	overlays -= I
-	qdel(I)
+	attachable_overlays[slot] = null
 	if(A && !A.hidden) //Only updates if the attachment exists for that slot.
 		var/item_icon = A.icon_state
 		if(A.attach_icon)
@@ -422,7 +410,7 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	var/image/I = attachable_overlays["mag"]
 	if(istype(I))
 		overlays -= I
-		qdel(I)
+		attachable_overlays["mag"] = null
 	if(current_mag && current_mag.bonus_overlay)
 		I = image(current_mag.icon,src,current_mag.bonus_overlay)
 		attachable_overlays["mag"] = I
@@ -433,7 +421,7 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 
 /obj/item/weapon/gun/proc/update_special_overlay(new_icon_state)
 	overlays -= attachable_overlays["special"]
-	qdel(attachable_overlays["special"])
+	attachable_overlays["special"] = null
 	var/image/I = image(icon,src,new_icon_state)
 	attachable_overlays["special"] = I
 	overlays += I

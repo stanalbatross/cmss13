@@ -72,17 +72,16 @@ Defined in conflicts.dm of the #defines folder.
 
 	var/flags_attach_features = ATTACH_REMOVABLE
 
-	var/bipod_deployed = FALSE //only used by bipod
 	var/current_rounds 	= 0 //How much it has.
 	var/max_rounds 		= 0 //How much ammo it can store
 
 	var/attachment_action_type
 
-	var/has_marine_iff = FALSE //adds IFF to bullets
 	var/hidden = FALSE //Render on gun?
 
-	/// A list in the format list(/datum/element/bullet_trait_to_give, ...args) that will be given to a projectile with the current ammo datum
-	var/list/traits_to_give
+	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
+	/// that will be given to a projectile with the current ammo datum
+	var/list/list/traits_to_give
 
 /obj/item/attachable/Initialize(mapload, ...)
 	. = ..()
@@ -100,8 +99,6 @@ Defined in conflicts.dm of the #defines folder.
 		return TRUE
 	else
 		. = ..()
-
-
 
 /obj/item/attachable/proc/Attach(var/obj/item/weapon/gun/G)
 	if(!istype(G)) return //Guns only
@@ -148,7 +145,19 @@ Defined in conflicts.dm of the #defines folder.
 	if(sharp)
 		G.sharp = sharp
 
-	G.check_iff()
+	for(var/entry in traits_to_give)
+		if(!G.in_chamber)
+			break
+		var/list/L
+		// Check if this is an ID'd bullet trait
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			// Prepend the bullet trait to the list
+			L = list(entry) + traits_to_give[entry]
+		// Apply bullet traits from attachment to gun's current projectile
+		// Need to use the proc instead of the wrapper because each entry is a list
+		G.in_chamber._AddElement(L)
 
 /obj/item/attachable/proc/Detach(var/obj/item/weapon/gun/G)
 	if(!istype(G)) return //Guns only
@@ -170,7 +179,16 @@ Defined in conflicts.dm of the #defines folder.
 	if(sharp)
 		G.sharp = 0
 
-	G.check_iff()
+	for(var/entry in traits_to_give)
+		if(!G.in_chamber)
+			break
+		var/list/L
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			L = list(entry) + traits_to_give[entry]
+		// Remove bullet traits of attachment from gun's current projectile
+		G.in_chamber._RemoveElement(L)
 
 /obj/item/attachable/ui_action_click(mob/living/user, obj/item/weapon/gun/G)
 	if(G == user.get_active_hand())
@@ -269,7 +287,6 @@ Defined in conflicts.dm of the #defines folder.
 	..()
 	accuracy_mod = HIT_ACCURACY_MULT_TIER_4
 	damage_mod = -BULLET_DAMAGE_MULT_TIER_1
-
 
 
 
@@ -688,7 +705,6 @@ Defined in conflicts.dm of the #defines folder.
 	zoom_offset = 6
 	zoom_viewsize = 7
 	pixel_shift_y = 15
-	has_marine_iff = TRUE
 	var/dynamic_aim_slowdown = SLOWDOWN_ADS_MINISCOPE_DYNAMIC
 
 /obj/item/attachable/scope/mini_iff/New()
@@ -700,6 +716,11 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_scoped_buff = HIT_ACCURACY_MULT_TIER_1
 	delay_scoped_nerf = 0
 	damage_falloff_scoped_buff = 0
+
+/obj/item/attachable/scope/mini_iff/set_bullet_traits()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
+	))
 
 /obj/item/attachable/scope/mini_iff/activate_attachment(obj/item/weapon/gun/G, mob/living/carbon/user, turn_off)
 	if(do_after(user, 8, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
@@ -924,6 +945,8 @@ Defined in conflicts.dm of the #defines folder.
 	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
 	attachment_action_type = /datum/action/item_action/toggle
 	var/activated = TRUE
+	var/collapse_delay = 0
+	var/list/deploy_message = list("collapse","extend")
 
 
 /obj/item/attachable/stock/smg/collapsible/New()
@@ -947,60 +970,57 @@ Defined in conflicts.dm of the #defines folder.
 	if(activated)
 		scatter_unwielded_mod = SCATTER_AMOUNT_TIER_10
 		size_mod = 1
-	else
-		scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_8 + SCATTER_AMOUNT_TIER_9
-		size_mod = 0
-
-	accuracy_mod *= -1
-	recoil_mod *= -1
-	scatter_mod *= -1
-	wield_delay_mod *= -1
-	movement_acc_penalty_mod *= -1
-	//it makes stuff much worse when one handed
-	accuracy_unwielded_mod *= -1
-	recoil_unwielded_mod *= -1
-	//but at the same time you are slow when 2 handed
-	aim_speed_mod *= 0 //setting it to -1 would increase movement speed beyond no-stock
-
-	G.recalculate_attachment_bonuses()
-
-	//additionally increases scatter when collapsed
-	if(activated)
+		aim_speed_mod = CONFIG_GET(number/slowdown_low)
+		wield_delay_mod = WIELD_DELAY_FAST
+		movement_acc_penalty_mod = -MOVEMENT_ACCURACY_PENALTY_MULT_TIER_5
+		accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_3
+		recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
 		icon_state = "smgstockc"
 		attach_icon = "smgstockc_a"
+
 	else
+
+		scatter_unwielded_mod = 0
+		size_mod = 0
+		aim_speed_mod = 0
+		wield_delay_mod = 0
+		movement_acc_penalty_mod = 0
+		accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_1
+		recoil_unwielded_mod = RECOIL_AMOUNT_TIER_5
 		icon_state = "smgstockcc"
 		attach_icon = "smgstockcc_a"
 
+	//don't *= -1 on debuffs, you'd actually be making than without stock when it's collapsed.
+	accuracy_mod *= -1
+	recoil_mod *= -1
+	scatter_mod *= -1
+
+	G.recalculate_attachment_bonuses()
 	G.update_overlays(src, "stock")
 
 /obj/item/attachable/stock/smg/collapsible/activate_attachment(obj/item/weapon/gun/G, mob/living/carbon/user, turn_off)
-	if(turn_off)
-		if(activated)
-			activated = FALSE
-			apply_on_weapon(G)
+	if(turn_off && activated)
+		activated = FALSE
+		apply_on_weapon(G)
 		return 1
-
-	if(G.flags_item & WIELDED)
-		if(activated)
-			to_chat(user, SPAN_NOTICE("You need a free hand to collapse [src]."))
-		else
-			to_chat(user, SPAN_NOTICE("You need a free hand to extend [src]."))
-		return 0
-	activated = !activated
-	apply_on_weapon(G)
 
 	if(!user)
 		return 1
 
+	if(G.flags_item & WIELDED)
+		to_chat(user, SPAN_NOTICE("You need a free hand to adjust [src]."))
+		return 0
+
+	if(!do_after(user, collapse_delay, INTERRUPT_INCAPACITATED|INTERRUPT_NEEDHAND, BUSY_ICON_GENERIC, G, INTERRUPT_DIFF_LOC))
+		return 0
+
+	activated = !activated
+	apply_on_weapon(G)
 	playsound(user, activation_sound, 15, 1)
+	var/message = deploy_message[1 + activated]
+	to_chat(user, SPAN_NOTICE("You [message] [src]."))
 
-	if(activated)
-		to_chat(user, SPAN_NOTICE("You extend [src]."))
-	else
-		to_chat(user, SPAN_NOTICE("You collapse [src]."))
-
-/obj/item/attachable/stock/smg/brace
+/obj/item/attachable/stock/smg/collapsible/brace
 	name = "\improper submachinegun arm brace"
 	desc = "A specialized stock for use on an M39 submachine gun. It makes one handing more accurate at the expense of fire rate. Wielding the weapon with this stock attached confers a major inaccuracy and recoil debuff."
 	size_mod = 1
@@ -1008,19 +1028,37 @@ Defined in conflicts.dm of the #defines folder.
 	attach_icon = "smg_brace_a"
 	pixel_shift_x = 43
 	pixel_shift_y = 11
-	flags_attach_features = ATTACH_REMOVABLE
+	collapse_delay = 15
+	activated = FALSE
+	deploy_message = list("unlock","lock")
 
-/obj/item/attachable/stock/smg/brace/New()
+/obj/item/attachable/stock/smg/collapsible/brace/New()
 	..()
 	//Makes stuff better when one handed by a LOT.
+	burst_scatter_mod = -SCATTER_AMOUNT_TIER_10
+	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
 	accuracy_unwielded_mod = HIT_ACCURACY_MULT_TIER_4
-	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_2
+	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_3
+	movement_acc_penalty_mod = -MOVEMENT_ACCURACY_PENALTY_MULT_TIER_4
+
 	delay_mod = FIRE_DELAY_TIER_9
-	burst_scatter_mod = -1 //Don't ghandi this, aka don't make the value push the stat bonus into the negative, which wraps around into a debuff.
-	//But... it makes wielding something really, really bad.
-	accuracy_mod = HIT_ACCURACY_MULT_TIER_3
+	accuracy_mod = -HIT_ACCURACY_MULT_TIER_3
+	scatter_mod = SCATTER_AMOUNT_TIER_8
 	recoil_mod = RECOIL_AMOUNT_TIER_2
-	scatter_unwielded_mod = -1
+	aim_speed_mod = 0
+	wield_delay_mod = WIELD_DELAY_NORMAL//you shouldn't be wielding it anyways
+
+/obj/item/attachable/stock/smg/collapsible/brace/apply_on_weapon(obj/item/weapon/gun/G)
+	if(activated)
+		G.flags_item |= NODROP
+		icon_state = "smg_brace_on"
+		attach_icon = "smg_brace_a_on"
+	else
+		G.flags_item &= ~NODROP
+		icon_state = "smg_brace"
+		attach_icon = "smg_brace_a"
+
+	G.update_overlays(src, "stock")
 
 /obj/item/attachable/stock/revolver
 	name = "\improper M44 magnum sharpshooter stock"
@@ -1072,7 +1110,7 @@ Defined in conflicts.dm of the #defines folder.
 			to_chat(user, SPAN_NOTICE("You need a free hand to fold [src]."))
 		return 0
 
-	if(!do_after(user, 15, INTERRUPT_INCAPACITATED|INTERRUPT_NEEDHAND, BUSY_ICON_GENERIC, src, INTERRUPT_NONE))
+	if(!do_after(user, 15, INTERRUPT_INCAPACITATED|INTERRUPT_NEEDHAND, BUSY_ICON_GENERIC, G, INTERRUPT_DIFF_LOC))
 		return
 
 	playsound(user, activation_sound, 15, 1)
@@ -1137,7 +1175,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/attached_gun/New() //Let's make sure if something needs an ammo type, it spawns with one.
 	..()
 	if(ammo)
-		ammo = ammo_list[ammo]
+		ammo = GLOB.ammo_list[ammo]
 
 
 /obj/item/attachable/attached_gun/Destroy()
@@ -1553,10 +1591,16 @@ Defined in conflicts.dm of the #defines folder.
 	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
 	attachment_action_type = /datum/action/item_action/toggle
 	var/datum/event_handler/bipod_movement/bipod_movement
+	var/bipod_deployed = FALSE
 
 /obj/item/attachable/bipod/New()
 	..()
+
 	delay_mod = FIRE_DELAY_TIER_9
+	wield_delay_mod = WIELD_DELAY_FAST
+	accuracy_mod = -HIT_ACCURACY_MULT_TIER_5
+	scatter_mod = SCATTER_AMOUNT_TIER_9
+	recoil_mod = RECOIL_AMOUNT_TIER_5
 
 /obj/item/attachable/bipod/Detach(obj/item/weapon/gun/G)
 	if(bipod_deployed)
@@ -1565,13 +1609,11 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/bipod/proc/undeploy_bipod(obj/item/weapon/gun/G)
 	bipod_deployed = FALSE
-	wield_delay_mod -= WIELD_DELAY_FAST
-	accuracy_mod -= HIT_ACCURACY_MULT_TIER_5
-	burst_scatter_mod += SCATTER_AMOUNT_TIER_8
-	if(istype(G,/obj/item/weapon/gun/rifle/sniper/M42A))
-		delay_mod += FIRE_DELAY_TIER_6 + FIRE_DELAY_TIER_10
-	else
-		delay_mod += FIRE_DELAY_TIER_10 + FIRE_DELAY_TIER_9
+	accuracy_mod = -HIT_ACCURACY_MULT_TIER_5
+	scatter_mod = SCATTER_AMOUNT_TIER_9
+	recoil_mod = RECOIL_AMOUNT_TIER_5
+	burst_scatter_mod = 0
+	delay_mod = FIRE_DELAY_TIER_10
 	G.recalculate_attachment_bonuses()
 
 /obj/item/attachable/bipod/activate_attachment(obj/item/weapon/gun/G,mob/living/user, turn_off)
@@ -1584,19 +1626,23 @@ Defined in conflicts.dm of the #defines folder.
 	else
 		var/obj/support = check_bipod_support(G, user)
 		if(!support&&!bipod_deployed)
-			to_chat(user, SPAN_NOTICE("You need a support to deploy bipod."))
-			return
+			to_chat(user, SPAN_NOTICE("You start deploying [src] on the ground."))
+			if(!do_after(user, 15, INTERRUPT_ALL, BUSY_ICON_HOSTILE, G,INTERRUPT_DIFF_LOC))
+				return FALSE
+
 		bipod_deployed = !bipod_deployed
 		if(user)
 			if(bipod_deployed)
-				to_chat(user, SPAN_NOTICE("You deploy [src][support ? " on [support]" : ""]."))
-				wield_delay_mod += WIELD_DELAY_FAST
-				accuracy_mod += HIT_ACCURACY_MULT_TIER_5
-				burst_scatter_mod -= SCATTER_AMOUNT_TIER_8
+				to_chat(user, SPAN_NOTICE("You deploy [src][support ? " on [support]" : "on the ground"]."))
+				playsound(user,'sound/items/m56dauto_rotate.ogg', 55, 1)
+				accuracy_mod = HIT_ACCURACY_MULT_TIER_5
+				scatter_mod = -SCATTER_AMOUNT_TIER_10
+				recoil_mod = -RECOIL_AMOUNT_TIER_4
+				burst_scatter_mod = -SCATTER_AMOUNT_TIER_8
 				if(istype(G,/obj/item/weapon/gun/rifle/sniper/M42A))
-					delay_mod -= FIRE_DELAY_TIER_6 + FIRE_DELAY_TIER_10
+					delay_mod = -FIRE_DELAY_TIER_7
 				else
-					delay_mod -= FIRE_DELAY_TIER_10 + FIRE_DELAY_TIER_9
+					delay_mod = -FIRE_DELAY_TIER_10
 				G.recalculate_attachment_bonuses()
 
 				if(!bipod_movement)
@@ -1608,6 +1654,9 @@ Defined in conflicts.dm of the #defines folder.
 			else
 				to_chat(user, SPAN_NOTICE("You retract [src]."))
 				undeploy_bipod(G,user)
+				user.apply_effect(1, SUPERSLOW)
+				user.apply_effect(2, SLOW)
+				playsound(user,'sound/items/m56dauto_rotate.ogg', 55, 1)
 				if(bipod_movement)
 					user.remove_movement_handler(bipod_movement)
 					bipod_movement = null
