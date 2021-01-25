@@ -24,6 +24,7 @@
 	unwield(user)
 
 /obj/item/weapon/melee/twohanded/pickup(mob/user)
+	. = ..()
 	unwield(user)
 
 /obj/item/proc/wield(var/mob/user)
@@ -48,13 +49,14 @@
 	return 1
 
 /obj/item/proc/unwield(mob/user)
-	if( (flags_item|TWOHANDED|WIELDED) != flags_item) return //Have to be actually a twohander and wielded.
+	if( (flags_item|TWOHANDED|WIELDED) != flags_item)
+		return FALSE//Have to be actually a twohander and wielded.
 	flags_item ^= WIELDED
-	on_unwield()
+	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
 	name 	    = copytext(name,1,-10)
 	item_state  = copytext(item_state,1,-2)
 	remove_offhand(user)
-	return 1
+	return TRUE
 
 /obj/item/proc/place_offhand(var/mob/user,item_name)
 	to_chat(user, SPAN_NOTICE("You grab [item_name] with both hands."))
@@ -121,12 +123,6 @@
 	var/obj/item/main_hand = user.get_active_hand()
 	if(main_hand) main_hand.unwield(user)
 
-	//mute both events. otherwise we are stuck in the loop
-/obj/item/weapon/melee/twohanded/offhand/on_unwield()
-	return 0
-
-/obj/item/weapon/melee/twohanded/offhand/on_dropped()
-	return 0
 /*
  * Fireaxe
  */
@@ -207,7 +203,7 @@
 	if((flags_item & WIELDED) && prob(50))
 		spawn(0)
 			for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2))
-				user.dir = i
+				user.setDir(i)
 				sleep(1)
 
 /obj/item/weapon/melee/twohanded/dualsaber/IsShield()

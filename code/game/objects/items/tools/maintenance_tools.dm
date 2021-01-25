@@ -245,8 +245,7 @@
 
 		if(isliving(O))
 			var/mob/living/L = O
-			if (raiseEventSync(L, EVENT_PREIGNITION_CHECK) != HALTED)
-				L.IgniteMob()
+			L.IgniteMob()
 	return
 
 
@@ -379,6 +378,7 @@
 
 
 /obj/item/tool/weldingtool/pickup(mob/user)
+	. = ..()
 	if(welding && loc != user)
 		SetLuminosity(0)
 		user.SetLuminosity(2)

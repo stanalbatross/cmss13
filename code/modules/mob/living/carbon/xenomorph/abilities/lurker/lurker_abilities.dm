@@ -22,12 +22,32 @@
 		var/found = FALSE
 		for (var/mob/living/carbon/human/H in get_turf(X))
 			found = TRUE
-			break 
+			break
 
 		if (found)
 			var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/lurker_invisibility)
 			if (istype(LIA))
 				LIA.invisibility_off()
+
+/datum/action/xeno_action/activable/pounce/lurker/additional_effects(mob/living/L)
+	var/mob/living/carbon/Xenomorph/X = owner
+	if (!istype(X))
+		return
+
+	if (X.mutation_type == LURKER_NORMAL)
+		RegisterSignal(X, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF, .proc/remove_freeze)
+
+/datum/action/xeno_action/activable/pounce/lurker/proc/remove_freeze(mob/living/carbon/Xenomorph/X)
+	SIGNAL_HANDLER
+
+	var/datum/behavior_delegate/lurker_base/BD = X.behavior_delegate
+	if (istype(BD))
+		UnregisterSignal(X, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF)
+		if (freeze_timer_id != TIMER_ID_NULL)
+			end_pounce_freeze()
+			deltimer(freeze_timer_id)
+			freeze_timer_id = TIMER_ID_NULL
+			to_chat(X, SPAN_XENONOTICE("Slashing frenzies you! You feel free to move immediately!"))
 
 /datum/action/xeno_action/onclick/lurker_invisibility
 	name = "Turn Invisible"
@@ -40,9 +60,9 @@
 								 // and reset by the behavior_delegate whenever the ability ends (because it can be ended by things like slashes, that we can't easily track here)
 	plasma_cost = 20
 
-	var/duration = 300 			// 30 seconds base
+	var/duration = 30 SECONDS 			// 30 seconds base
 	var/invis_timer_id = TIMER_ID_NULL
-	var/is_invisible = FALSE    // Are we currently invisible?
+	var/alpha_amount = 35
 	var/speed_buff = 0
 
 	var/speed_buff_mod_max = 0.25

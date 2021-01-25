@@ -21,27 +21,31 @@
 
 /obj/item/reagent_container/food/snacks/grown/Initialize()
 	. = ..()
+	GLOB.grown_snacks_list += src
+	addtimer(CALLBACK(src, .proc/update_from_seed), 1)
 
-	//Handle some post-spawn var stuff.
-	spawn(1)
-		// Fill the object up with the appropriate reagents.
-		if(!isnull(plantname))
-			var/datum/seed/S = seed_types[plantname]
-			if(!S || !S.chems)
-				return
+/obj/item/reagent_container/food/snacks/grown/Destroy()
+	GLOB.grown_snacks_list -= src
+	return ..()
 
-			potency = S.potency
+/obj/item/reagent_container/food/snacks/grown/proc/update_from_seed()// Fill the object up with the appropriate reagents.
+	if(!isnull(plantname))
+		var/datum/seed/S = seed_types[plantname]
+		if(!S || !S.chems)
+			return
 
-			for(var/rid in S.chems)
-				var/list/reagent_data = S.chems[rid]
-				var/rtotal = reagent_data[1]
-				if(reagent_data.len > 1 && potency > 0)
-					rtotal += round(potency/reagent_data[2])
-				if(reagents)
-					reagents.add_reagent(rid, max(1, rtotal))
+		potency = S.potency
 
-		if(reagents && reagents.total_volume > 0)
-			bitesize = 1+round(reagents.total_volume / 2, 1)
+		for(var/rid in S.chems)
+			var/list/reagent_data = S.chems[rid]
+			var/rtotal = reagent_data[1]
+			if(length(reagent_data) > 1 && potency > 0)
+				rtotal += round(potency/reagent_data[2])
+			if(reagents)
+				reagents.add_reagent(rid, max(1, rtotal))
+
+	if(reagents && reagents.total_volume > 0)
+		bitesize = 1+round(reagents.total_volume / 2, 1)
 
 /obj/item/reagent_container/food/snacks/grown/corn
 	name = "ear of corn"
@@ -190,12 +194,14 @@
 	. = ..()
 
 /obj/item/reagent_container/food/snacks/grown/glowberries/pickup(mob/user)
+	. = ..()
 	src.SetLuminosity(0)
 	user.SetLuminosity(round((potency/5),1))
 
 /obj/item/reagent_container/food/snacks/grown/glowberries/dropped(mob/user)
 	user.SetLuminosity(-(round((potency/5),1)))
 	src.SetLuminosity(round(potency/5,1))
+	..()
 
 /obj/item/reagent_container/food/snacks/grown/cocoapod
 	name = "cocoa pod"
@@ -555,12 +561,14 @@
 	. = ..()
 
 /obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/pickup(mob/user)
+	. = ..()
 	SetLuminosity(0)
 	user.SetLuminosity(round((potency/10),1))
 
 /obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/dropped(mob/user)
 	user.SetLuminosity(round(-(potency/10),1))
 	SetLuminosity(round(potency/10,1))
+	..()
 
 
 // *************************************
@@ -609,7 +617,7 @@
 			s.set_up(3, 1, M)
 			s.start()
 			new/obj/effect/decal/cleanable/molten_item(M.loc) //Leaves a pile of goo behind for dramatic effect.
-			M.loc = picked //
+			M.forceMove(picked )//
 			sleep(1)
 			s.set_up(3, 1, M)
 			s.start() //Two set of sparks, one before the teleport and one after.
@@ -618,7 +626,7 @@
 				s.set_up(3, 1, A)
 				s.start()
 				new/obj/effect/decal/cleanable/molten_item(A.loc) //Leave a pile of goo behind for dramatic effect...
-				A.loc = picked//And teleport them to the chosen location.
+				A.forceMove(picked)//And teleport them to the chosen location.
 				sleep(1)
 				s.set_up(3, 1, A)
 				s.start()

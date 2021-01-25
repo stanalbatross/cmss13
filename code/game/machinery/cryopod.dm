@@ -69,7 +69,9 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	show_browser(user, dat, "Cryogenic Oversight Control for [cryotype]", "cryopod_console")
 
 /obj/structure/machinery/computer/cryopod/Topic(href, href_list)
-
+	. = ..()
+	if(.)
+		return
 	var/mob/user = usr
 	var/list/frozen_items_for_type = GLOB.frozen_items[cryotype]
 
@@ -99,7 +101,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 			to_chat(user, SPAN_WARNING("There is nothing to recover from storage."))
 			return
 
-		var/obj/item/I = input(usr, "Please choose which object to retrieve.", "Object recovery",null) as null|anything in frozen_items_for_type
+		var/obj/item/I = tgui_input_list(usr, "Please choose which object to retrieve.", "Object recovery", frozen_items_for_type)
 		if(!I)
 			return
 
@@ -109,7 +111,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 		visible_message(SPAN_NOTICE("[src] beeps happily as it disgorges [I]."))
 
-		I.loc = get_turf(src)
+		I.forceMove(get_turf(src))
 		frozen_items_for_type -= I
 
 	else if(href_list["allitems"])
@@ -121,7 +123,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 		visible_message(SPAN_NOTICE("[src] beeps happily as it disgorges the desired objects."))
 
 		for(var/obj/item/I in frozen_items_for_type)
-			I.loc = get_turf(src)
+			I.forceMove(get_turf(src))
 			frozen_items_for_type -= I
 
 	src.updateUsrDialog()
@@ -144,13 +146,12 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	orient_right = 1
 	icon_state = "cryo_rear-r"
 
-/obj/structure/cryofeed/New()
-
+/obj/structure/cryofeed/Initialize()
+	. = ..()
 	if(orient_right)
 		icon_state = "cryo_rear-r"
 	else
 		icon_state = "cryo_rear"
-	..()
 
 
 
@@ -171,7 +172,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 	var/mob/living/occupant = null //Person waiting to be despawned.
 	var/orient_right = null // Flips the sprite.
-	var/time_till_despawn = MINUTES_10 //10 minutes-ish safe period before being despawned.
+	var/time_till_despawn = 10 MINUTES //10 minutes-ish safe period before being despawned.
 	var/time_entered = 0 //Used to keep track of the safe period.
 	var/obj/item/device/radio/intercom/announce //Intercom for cryo announcements
 
@@ -187,8 +188,8 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 /obj/structure/machinery/cryopod/process()
 	if(occupant)
 		//if occupant ghosted, time till despawn is severely shorter
-		if(!occupant.key && time_till_despawn == MINUTES_10)
-			time_till_despawn -= MINUTES_8
+		if(!occupant.key && time_till_despawn == 10 MINUTES)
+			time_till_despawn -= 8 MINUTES
 		//Allow a ten minute gap between entering the pod and actually despawning.
 		if(world.time - time_entered < time_till_despawn)
 			return
@@ -250,13 +251,13 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 					for(var/obj/item/I in SS.pockets) //But we keep stuff inside them
 						SS.pockets.remove_from_storage(I, loc)
 						strippeditems += I
-						I.loc = null
+						I.moveToNullspace()
 				if(isstorage(W))
 					var/obj/item/storage/S = W
 					for(var/obj/item/I in S)
 						S.remove_from_storage(I, loc)
 						strippeditems += I
-						I.loc = null
+						I.moveToNullspace()
 				qdel(W)
 				continue
 
@@ -268,20 +269,20 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 				for(var/obj/item/I in SS.pockets)
 					SS.pockets.remove_from_storage(I, loc)
 					strippeditems += I
-					I.loc = null
+					I.moveToNullspace()
 
 			if(istype(W, /obj/item/clothing/under))
 				var/obj/item/clothing/under/UN = W
 				for(var/obj/item/I in UN.accessories)
 					UN.remove_accessory(occupant, I)
 					strippeditems += I
-					I.loc = null
+					I.moveToNullspace()
 
 			if(istype(W, /obj/item/clothing/shoes/marine))
 				var/obj/item/clothing/shoes/marine/MS = W
 				if(MS.stored_item)
 					strippeditems += MS.stored_item
-					MS.stored_item.loc = null
+					MS.stored_item.moveToNullspace()
 					MS.stored_item = null
 
 
@@ -299,7 +300,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 					continue item_loop
 
 			dept_console += W
-			W.loc = null
+			W.moveToNullspace()
 
 	stripped_items:
 		for(var/obj/item/A in strippeditems)
@@ -309,7 +310,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 					continue stripped_items
 
 			dept_console += A
-			A.loc = null
+			A.moveToNullspace()
 
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/H = occupant
@@ -415,7 +416,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 			//Book keeping!
 			var/area/location = get_area(src)
-			message_staff(SPAN_NOTICE("[key_name_admin(user)] put [key_name_admin(M)], [M.job] into [src] at [location]."))
+			message_staff("[key_name_admin(user)] put [key_name_admin(M)], [M.job] into [src] at [location].")
 
 			//Despawning occurs when process() is called with an occupant without a client.
 			add_fingerprint(user)
@@ -440,7 +441,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	if(announce) items -= announce
 
 	for(var/obj/item/W in items)
-		W.loc = get_turf(src)
+		W.forceMove(get_turf(src))
 
 	go_out()
 	add_fingerprint(usr)
@@ -491,7 +492,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	start_processing()
 	var/area/location = get_area(src)
 	if(M.job != JOB_SQUAD_MARINE)
-		message_staff(SPAN_NOTICE("[key_name_admin(M)], [M.job], has entered a [src] at [location] after playing for [duration2text(world.time - M.life_time_start)]."))
+		message_staff("[key_name_admin(M)], [M.job], has entered a [src] at [location] after playing for [duration2text(world.time - M.life_time_start)].")
 
 	playsound(src, 'sound/machines/hydraulics_3.ogg', 30)
 

@@ -80,7 +80,7 @@
 	anchored = TRUE
 	playsound(loc, 'sound/weapons/mine_armed.ogg', 25, 1)
 	user.drop_inv_item_on_ground(src)
-	dir = user.dir //The direction it is planted in is the direction the user faces at that time
+	setDir(user.dir) //The direction it is planted in is the direction the user faces at that time
 	activate_sensors()
 	update_icon()
 
@@ -146,9 +146,10 @@
 	..()
 	if(isliving(A))
 		var/mob/living/L = A
-		if(!L.lying)//so dragged corpses don't trigger mines.
+		if(!L.stat == DEAD)//so dragged corpses don't trigger mines.
+			return
+		else
 			try_to_prime(A)
-
 
 /obj/item/explosive/mine/Collided(atom/movable/AM)
 	try_to_prime(AM)
@@ -159,16 +160,18 @@
 		return
 	if(!istype(H))
 		return
+	if(H.stat == DEAD)
+		return
 	if(H.get_target_lock(iff_signal) || isrobot(H))
 		return
-
-	H.visible_message(SPAN_DANGER("[htmlicon(src, viewers(src))] The [name] clicks as [H] moves in front of it."), \
-	SPAN_DANGER("[htmlicon(src, H)] The [name] clicks as you move in front of it."), \
+	H.visible_message(SPAN_DANGER("[icon2html(src, viewers(src))] The [name] clicks as [H] moves in front of it."), \
+	SPAN_DANGER("[icon2html(src, H)] The [name] clicks as you move in front of it."), \
 	SPAN_DANGER("You hear a click."))
 
 	triggered = TRUE
 	playsound(loc, 'sound/weapons/mine_tripped.ogg', 25, 1)
 	prime()
+
 
 
 //Note : May not be actual explosion depending on linked method

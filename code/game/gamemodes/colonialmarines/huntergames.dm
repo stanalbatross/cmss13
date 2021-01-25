@@ -4,7 +4,7 @@
 								50; list(/obj/item/weapon/melee/combistick, /obj/item/clothing/mask/gas/yautja, /obj/item/clothing/suit/armor/yautja/full,/obj/item/clothing/shoes/yautja), \
 								150; list(/obj/item/stack/medical/advanced/ointment, /obj/item/stack/medical/advanced/bruise_pack, /obj/item/storage/belt/medical/lifesaver/full), \
 								50; list(/obj/item/clothing/under/marine/veteran/PMC/commando, /obj/item/clothing/suit/storage/marine/veteran/PMC/commando, /obj/item/clothing/gloves/marine/veteran/PMC/commando, /obj/item/clothing/shoes/veteran/PMC/commando, /obj/item/clothing/head/helmet/marine/veteran/PMC/commando), \
-								125; list(/obj/item/weapon/yautja_chain, /obj/item/weapon/melee/yautja_knife, /obj/item/weapon/melee/yautja_scythe, /obj/item/legcuffs/yautja, /obj/item/legcuffs/yautja), \
+								125; list(/obj/item/weapon/yautja_chain, /obj/item/weapon/melee/yautja_knife, /obj/item/weapon/melee/yautja_scythe, /obj/item/hunting_trap, /obj/item/hunting_trap), \
 								75; list(/obj/item/weapon/gun/revolver/mateba/admiral, /obj/item/ammo_magazine/revolver/mateba, /obj/item/ammo_magazine/revolver/mateba, /obj/item/clothing/mask/balaclava/tactical), \
 								50; list(/obj/item/weapon/shield/energy, /obj/item/weapon/melee/energy/axe, /obj/item/clothing/under/gladiator, /obj/item/clothing/head/helmet/gladiator) \
 								)
@@ -22,7 +22,7 @@
 \
 								50; /obj/item/device/flash, \
 								25; /obj/item/explosive/grenade/flashbang, \
-								25; /obj/item/legcuffs/yautja, \
+								25; /obj/item/hunting_trap, \
 								50; /obj/item/explosive/plastic, \
 								100; /obj/item/explosive/grenade/HE, \
 								100; /obj/item/explosive/grenade/HE/frag, \
@@ -104,6 +104,8 @@ var/waiting_for_drop_votes = 0
 
 	var/ticks_passed = 0
 	var/drops_disabled = 0
+
+	votable = FALSE // borked
 
 /obj/effect/step_trigger/hell_hound_blocker/Trigger(mob/living/carbon/hellhound/H)
 	if(istype(H)) H.gib() //No mercy.
@@ -227,7 +229,7 @@ var/waiting_for_drop_votes = 0
 		if(H.contents.len)
 			for(var/I in H.contents)
 				qdel(I)
-		H.loc = picked
+		H.forceMove(picked)
 	else
 		H = new(picked)
 
@@ -447,18 +449,7 @@ var/waiting_for_drop_votes = 0
 		else
 			obj_type = HUNTER_OKAY_ITEM
 			new obj_type(location)
-/*
-/mob/verb/debug_item_spawn()
-	set name = "Debug Item Drops"
-	set category = "DEBUG"
 
-	var/i = input("Pick what to spawn in","Spawning","good") as null|anything in list("god","good","crap")
-	if(i)
-		switch(i)
-			if("god") ticker.mode:place_drop(loc, i, 1)
-			else ticker.mode:place_drop(loc, i)
-
-*/
 #undef HUNTER_BEST_ITEM
 #undef HUNTER_GOOD_ITEM
 #undef HUNTER_OKAY_ITEM

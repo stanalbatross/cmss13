@@ -27,17 +27,23 @@
 #define SPAN_ANNOUNCEMENT_HEADER_BLUE(X) "<span class='announce_header_blue'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_BODY(X) "<span class='announce_body'>[X]</span>"
 
-// Roundstart role text
+// Round and roles
+#define SPAN_ROUNDHEADER(X) "<span class='round_header'>[X]</span>"
+#define SPAN_ROUNDBODY(X) "<span class='round_body'>[X]</span>"
 #define SPAN_ROLE_HEADER(X) "<span class='role_header'>[X]</span>"
 #define SPAN_ROLE_BODY(X) "<span class='role_body'>[X]</span>"
-#define SPAN_ROUNDBODY(X) "<span class='round_body'>[X]</span>"
+
 
 // OOC
 #define SPAN_XOOC(X) "<span class='xooc'>[X]</span>"
 #define SPAN_MOOC(X) "<span class='mooc'>[X]</span>"
 #define SPAN_YOOC(X) "<span class='yooc'>[X]</span>"
 #define SPAN_DEBUG(X) "<span class='debuginfo'>[X]</span>"
+#define SPAN_COMBAT(X) "<span class='attacklog'>[X]</span>"
 #define SPAN_ADMINNOTICE(X) "<span class='adminnotice'>[X]</span>"
+#define SPAN_ADMIN(X) "<span class='admin'>[X]</span>"
+
+#define SPAN_PM(X) "<span class='pm'>[X]</span>"
 
 // Misc
 #define SPAN_BOLD(X) "<span class='bold'>[X]</span>"
@@ -60,6 +66,8 @@
 
 #define SPAN_HELPFUL(X) "<span class='helpful'>[X]</span>"
 
+#define SPAN_EMOTE(X) "<span class='emote'>[X]</span>"
+#define SPAN_LOCALSAY(X) "<span class='say'>[X]</span>"
 #define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
 
 #define SPAN_AVOIDHARM(X) "<span class='avoidharm'>[X]</span>"
@@ -71,4 +79,7 @@
 #define SPAN_GREEN(X) "<span class='green'>[X]</span>"
 #define SPAN_RED(X) "<span class='red'>[X]</span>"
 #define SPAN_ORANGE(X) "<span class='orange'>[X]</span>"
+<<<<<<< HEAD
 #define SPAN_PURPLE(X) "<span class='purple'>[X]</span>"
+=======
+>>>>>>> origin/dev

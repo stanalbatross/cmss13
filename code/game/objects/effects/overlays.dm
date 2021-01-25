@@ -77,17 +77,20 @@
 
 		pixel_x = dist_x * 32
 		pixel_y = dist_y * 32
-		
+
 		animate(src, pixel_x = 0, pixel_y = 0, time = glide_time, easing = QUAD_EASING)
-	
+
 	QDEL_IN(src, effect_duration + glide_time)
 
 /obj/effect/overlay/temp/point/big
 	icon_state = "big_arrow"
-	effect_duration = SECONDS_4
+	effect_duration = 4 SECONDS
+
+/obj/effect/overlay/temp/point/big/greyscale
+	icon_state = "big_arrow_grey"
 
 /obj/effect/overlay/temp/point/big/queen
-	icon_state = "big_arrow_queen"
+	icon_state = "big_arrow_grey"
 	invisibility = INVISIBILITY_MAXIMUM
 
 	var/list/client/clients
@@ -121,10 +124,10 @@
 	for(var/i in clients)
 		var/client/C = i
 		if(!C) continue
-		
+
 		C.images -= self_icon
 		LAZYREMOVE(clients, C)
-	
+
 	clients = null
 	self_icon = null
 
@@ -224,7 +227,7 @@
 	effect_duration = 10
 
 	New(loc)
-		dir = pick(cardinal)
+		setDir(pick(cardinal))
 		..()
 
 /obj/effect/overlay/temp/emp_pulse
@@ -284,7 +287,7 @@
 /obj/effect/overlay/temp/acid_pool_splash
 	name = "acid splash"
 	icon_state = "acidpoolsplash"
-	effect_duration = SECONDS_10
+	effect_duration = 10 SECONDS
 
 /obj/effect/overlay/temp/acid_pool_splash/Initialize(mapload, ...)
 	. = ..()

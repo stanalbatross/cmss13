@@ -115,21 +115,21 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	time_to_unequip = 20
 	time_to_equip = 20
 	equip_sounds = list('sound/handling/putting_on_armor1.ogg')
+	var/armor_variation = 0
 
-/obj/item/clothing/suit/storage/marine/New(loc)
+/obj/item/clothing/suit/storage/marine/Initialize()
+	. = ..()
 	if(!(flags_atom & UNIQUE_ITEM_TYPE))
 		name = "[specialty]"
-		if(map_tag in MAPS_COLD_TEMP)
+		if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 			name += " snow armor" //Leave marine out so that armors don't have to have "Marine" appended (see: admirals).
 		else
 			name += " armor"
-	if(type == /obj/item/clothing/suit/storage/marine)
-		var/armor_variation = rand(1,6)
-		icon_state = "[armor_variation]"
+	if(armor_variation)
+		icon_state = replacetext(icon_state,"1","[rand(1,armor_variation)]")
 
 	if(!(flags_atom & NO_SNOW_TYPE))
 		select_gamemode_skin(type)
-	..()
 	armor_overlays = list("lamp") //Just one for now, can add more later.
 	update_icon()
 	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
@@ -413,9 +413,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 					/obj/item/device/motiondetector,
 					/obj/item/device/walkman)
 
-/obj/item/clothing/suit/storage/marine/smartgunner/New(loc)
+/obj/item/clothing/suit/storage/marine/smartgunner/Initialize()
 	. = ..()
-	if(map_tag in MAPS_COLD_TEMP && name == "M56 combat harness")
+	if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD] && name == "M56 combat harness")
 		name = "M56 snow combat harness"
 	else
 		name = "M56 combat harness"
@@ -445,40 +445,15 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 //===========================//PFC ARMOR CLASSES\\================================\\
 //=================================================================================\\
-/obj/item/clothing/suit/storage/marine/class //We need a separate type to handle the special icon states.
-	name = "\improper M3 pattern classed armor"
-	desc = "You shouldn't be seeing this."
-	icon_state = "1" //This should be the default icon state.
+/obj/item/clothing/suit/storage/marine/medium
+	armor_variation = 6
 
-	var/class = "H" //This variable should be what comes before the variation number (H6 -> H).
-
-/obj/item/clothing/suit/storage/marine/class/New()
-	if(!(flags_atom & UNIQUE_ITEM_TYPE))
-		name = "[specialty]"
-		if(map_tag in MAPS_COLD_TEMP)
-			name += " snow armor" //Leave marine out so that armors don't have to have "Marine" appended (see: admirals).
-		else
-			name += " armor"
-	if(istype(src, /obj/item/clothing/suit/storage/marine/class))
-		var/armor_variation = rand(1,6)
-		icon_state = "[class]" + "[armor_variation]"
-	..()
-	armor_overlays = list("lamp") //Just one for now, can add more later.
-	update_icon()
-	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
-	pockets.bypass_w_limit = list(
-		/obj/item/ammo_magazine/rifle,
-		/obj/item/ammo_magazine/smg,
-		/obj/item/ammo_magazine/sniper,
-	)
-	pockets.max_storage_space = 8
-
-/obj/item/clothing/suit/storage/marine/class/light
+/obj/item/clothing/suit/storage/marine/light
 	name = "\improper M3-L pattern light armor"
 	desc = "A lighter, cut down version of the standard M3 pattern armor. It sacrifices durability for more speed."
 	specialty = "\improper M3-L pattern light"
 	icon_state = "L1"
-	class = "L"
+	armor_variation = 6
 	slowdown = SLOWDOWN_ARMOR_LIGHT
 	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
 	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
@@ -490,13 +465,13 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	storage_slots = 2
 	movement_compensation = SLOWDOWN_ARMOR_LIGHT
 
-/obj/item/clothing/suit/storage/marine/class/heavy
+/obj/item/clothing/suit/storage/marine/heavy
 	name = "\improper M3-H pattern heavy armor"
 	desc = "A heavier version of the standard M3 pattern armor, cladded with additional plates. It sacrifices speed for more durability."
 	specialty = "\improper M3-H pattern heavy"
 	icon_state = "H1"
+	armor_variation = 6
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
-	class = "H"
 	slowdown = SLOWDOWN_ARMOR_LOWHEAVY
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
 	armor_bullet = CLOTHING_ARMOR_HIGH
@@ -634,11 +609,16 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/M35/Initialize(mapload, ...)
 	. = ..()
 
+/obj/item/clothing/suit/storage/marine/M35/equipped(mob/user, slot)
+	if(slot == WEAR_JACKET)
+		RegisterSignal(user, COMSIG_LIVING_FLAMER_CROSSED, .proc/flamer_fire_callback)
+	..()
+
 /obj/item/clothing/suit/storage/marine/M35/verb/fire_shield()
 	set name = "Activate Fire Shield"
 	set desc = "Activate your armor's FIREWALK protocol for a short duration."
 	set category = "Pyro"
-
+	set src in usr
 	if(!usr || usr.is_mob_incapacitated(TRUE))
 		return
 	if(!ishuman(usr))
@@ -662,21 +642,25 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		return
 
 	to_chat(H, SPAN_NOTICE("FIREWALK protocol has been activated. You will now be immune to fire for 6 seconds!"))
-	registerListener(H, EVENT_PREIGNITION_CHECK, "fireshield_\ref[src]", CALLBACK(src, .proc/fire_shield_is_on))
-	registerListener(H, EVENT_PRE_FIRE_BURNED_CHECK, "fireshield_\ref[src]", CALLBACK(src, .proc/fire_shield_is_on))
+	RegisterSignal(H, COMSIG_LIVING_PREIGNITION, .proc/fire_shield_is_on)
+	RegisterSignal(H, list(
+		COMSIG_LIVING_FLAMER_FLAMED,
+	), .proc/flamer_fire_callback)
 	fire_shield_on = TRUE
 	can_activate = FALSE
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.update_button_icon()
-	addtimer(CALLBACK(src, .proc/end_fire_shield, H), SECONDS_6)
+	addtimer(CALLBACK(src, .proc/end_fire_shield, H), 6 SECONDS)
 
 /obj/item/clothing/suit/storage/marine/M35/proc/end_fire_shield(var/mob/living/carbon/human/user)
 	if(!istype(user))
 		return
 	to_chat(user, SPAN_NOTICE("FIREWALK protocol has finished."))
-	unregisterListener(user, EVENT_PREIGNITION_CHECK, "fireshield_\ref[src]")
-	unregisterListener(user, EVENT_PRE_FIRE_BURNED_CHECK, "fireshield_\ref[src]")
+	UnregisterSignal(user, list(
+		COMSIG_LIVING_PREIGNITION,
+		COMSIG_LIVING_FLAMER_FLAMED,
+	))
 	fire_shield_on = FALSE
 
 	addtimer(CALLBACK(src, .proc/enable_fire_shield, user), FIRE_SHIELD_CD)
@@ -691,15 +675,34 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		var/datum/action/A = X
 		A.update_button_icon()
 
-// This proc is solely so that raiseEventSync returns TRUE (i.e. fire shield is on)
-/obj/item/clothing/suit/storage/marine/M35/proc/fire_shield_is_on()
-	return TRUE
+/// This proc is solely so that IgniteMob() fails
+/obj/item/clothing/suit/storage/marine/M35/proc/fire_shield_is_on(mob/living/L)
+	SIGNAL_HANDLER
+
+	if(L.fire_reagent?.fire_penetrating)
+		return
+
+	return COMPONENT_CANCEL_IGNITION
+
+/obj/item/clothing/suit/storage/marine/M35/proc/flamer_fire_callback(mob/living/L, datum/reagent/R)
+	SIGNAL_HANDLER
+
+	if(R.fire_penetrating)
+		return
+
+	. = COMPONENT_NO_IGNITE
+	if(fire_shield_on)
+		. |= COMPONENT_NO_BURN
 
 /obj/item/clothing/suit/storage/marine/M35/dropped(var/mob/user)
 	if (!istype(user))
 		return
-	unregisterListener(user, EVENT_PREIGNITION_CHECK, "fireshield_\ref[src]")
-	unregisterListener(user, EVENT_PRE_FIRE_BURNED_CHECK, "fireshield_\ref[src]")
+	UnregisterSignal(user, list(
+		COMSIG_LIVING_PREIGNITION,
+		COMSIG_LIVING_FLAMER_CROSSED,
+		COMSIG_LIVING_FLAMER_FLAMED,
+	))
+	..()
 
 #undef FIRE_SHIELD_CD
 
@@ -778,7 +781,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	set name = "Prepare Position"
 	set desc = "Use the ghillie suit and the nearby environment to become near invisible."
 	set category = "Object"
-
+	set src in usr
 	if(!usr || usr.is_mob_incapacitated(TRUE))
 		return
 
@@ -959,7 +962,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		return
 
 	GS.aimed_shot_cooldown = world.time + GS.aimed_shot_cooldown_delay
-	var/I = image("icon" = 'icons/effects/Targeted.dmi', "icon_state" = "locking-sniper")
+	var/image/I = image(icon = 'icons/effects/Targeted.dmi', icon_state = "locking-sniper", dir = get_cardinal_dir(M, H))
 	M.overlays += I
 	if(H.client)
 		playsound_client(H.client, 'sound/weapons/TargetOn.ogg', H, 50)
@@ -1143,7 +1146,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	storage_slots = 2
 	unacidable = TRUE
 	uniform_restricted = list(/obj/item/clothing/under/marine/veteran/PMC/commando)
-	item_state_slots = list(WEAR_SUIT = "commando_armor")
+	item_state_slots = list(WEAR_JACKET = "commando_armor")
 
 /obj/item/clothing/suit/storage/marine/veteran/PMC/commando
 	name = "\improper M5X exoskeleton armor"
@@ -1365,8 +1368,8 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_FEET|BODY_FLAG_ARMS|BODY_FLAG_HANDS
 	min_cold_protection_temperature = SPACE_SUIT_min_cold_protection_temperature
 
-/obj/item/clothing/suit/storage/militia/New()
-	..()
+/obj/item/clothing/suit/storage/militia/Initialize()
+	. = ..()
 	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
 	pockets.bypass_w_limit = list(
 		/obj/item/ammo_magazine/rifle,
@@ -1407,6 +1410,29 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "CMB_jacket"
 	blood_overlay_type = "coat"
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_ARMS
+	allowed = list(/obj/item/weapon/gun,
+		/obj/item/tank/emergency_oxygen,
+		/obj/item/device/flashlight,
+		/obj/item/ammo_magazine,
+		/obj/item/explosive/grenade,
+		/obj/item/device/binoculars,
+		/obj/item/attachable/bayonet,
+		/obj/item/storage/sparepouch,
+		/obj/item/storage/large_holster/machete,
+		/obj/item/weapon/melee/baseballbat,
+		/obj/item/weapon/melee/baseballbat/metal,
+		/obj/item/device/motiondetector,
+		/obj/item/device/walkman)
+
+/obj/item/clothing/suit/storage/CMB/Initialize()
+	. = ..()
+	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
+	pockets.bypass_w_limit = list(
+		/obj/item/ammo_magazine/rifle,
+		/obj/item/ammo_magazine/smg,
+		/obj/item/ammo_magazine/sniper,
+	)
+	pockets.max_storage_space = 8
 
 /obj/item/clothing/suit/storage/RO
 	name = "\improper RO jacket"

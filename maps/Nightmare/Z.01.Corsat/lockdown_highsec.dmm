@@ -6,7 +6,7 @@
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable,
 /area/corsat/omega/checkpoint)
 "c" = (
-/obj/structure/machinery/door/poddoor/two_tile/four_tile/secure/open{
+/obj/structure/machinery/door/poddoor/two_tile/four_tile/secure/opened{
 	id = "delta_gamma2";
 	name = "Gamma Checkpoint";
 	use_power = 0
@@ -213,7 +213,7 @@
 /obj/structure/surface/table/reinforced,
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	name = "Identification Desk";
-	req_access = list(3)
+	req_access_txt = "3"
 	},
 /obj/structure/machinery/door/window/brigdoor/eastleft{
 	dir = 4;
@@ -251,7 +251,7 @@
 /obj/structure/surface/table/reinforced,
 /obj/structure/machinery/door/window/brigdoor/westleft{
 	name = "Identification Desk";
-	req_access = list(3)
+	req_access_txt = "3"
 	},
 /obj/structure/machinery/door/window/brigdoor/eastleft{
 	dir = 4;

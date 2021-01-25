@@ -383,7 +383,7 @@
 /area/prison/telecomms)
 "bLF" = (
 /obj/structure/machinery/computer/telecomms/monitor{
-	req_one_access = list(19,200)
+	req_one_access_txt = "19;200"
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkyellowfull2 (EAST)";
@@ -394,7 +394,7 @@
 "bLG" = (
 /obj/structure/machinery/computer/telecomms/server{
 	req_access = null;
-	req_one_access = list(19,200)
+	req_one_access_txt = "19;200"
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkyellowfull2 (EAST)";
@@ -405,7 +405,7 @@
 "bLH" = (
 /obj/structure/machinery/computer/telecomms/traffic{
 	req_access = null;
-	req_one_access = list(19,200)
+	req_one_access_txt = "19;200"
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkyellowfull2 (EAST)";
@@ -500,7 +500,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Security Department";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -512,7 +512,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Security Department";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -1065,7 +1065,7 @@
 	density = 0;
 	icon_state = "door_open";
 	name = "Security Restrooms";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-bright_clean2 (SOUTHWEST)";
@@ -1577,10 +1577,7 @@
 /turf/open/floor/plating,
 /area/prison/engineering/atmos)
 "bWo" = (
-/obj/structure/pipes/binary/pump/high_power{
-	on = 1;
-
-	},
+/obj/structure/pipes/binary/pump/high_power/on,
 /turf/open/floor/plating,
 /area/prison/engineering/atmos)
 "bWp" = (
@@ -1915,7 +1912,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Intake Processing";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -1927,7 +1924,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Intake Processing";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -2008,7 +2005,7 @@
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 2;
 	name = "Atmospherics";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/engineering/atmos)
@@ -2020,7 +2017,7 @@
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 2;
 	name = "Atmospherics";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/engineering/atmos)
@@ -2210,7 +2207,7 @@
 	},
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "Security Department";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/security)
@@ -2666,7 +2663,7 @@
 	},
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	name = "Engineering Hallway";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkbrownfull2";
@@ -2726,7 +2723,7 @@
 	},
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "Security Department";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/security)
@@ -2790,7 +2787,7 @@
 "cer" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	name = "Engineering Hallway";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkbrownfull2";
@@ -2924,7 +2921,7 @@
 	},
 /obj/structure/machinery/door/airlock/almayer/command{
 	name = "Head of Security's Office";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3046,7 +3043,7 @@
 /turf/closed/wall/r_wall/prison,
 /area/prison/execution)
 "cfE" = (
-/obj/structure/machinery/door/poddoor/two_tile/open{
+/obj/structure/machinery/door/poddoor/two_tile/opened{
 	id = "execution";
 	unacidable = 0
 	},
@@ -3179,7 +3176,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Execution";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/execution)
@@ -3191,7 +3188,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Execution";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/execution)
@@ -3214,7 +3211,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Briefing";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3232,7 +3229,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Briefing";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3248,7 +3245,7 @@
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 2;
 	name = "Briefing";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3273,7 +3270,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Riot Armory";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3327,7 +3324,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Lethal Armory";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -3344,7 +3341,7 @@
 /obj/structure/machinery/door/airlock/almayer/command{
 	dir = 2;
 	name = "Head of Security's Quarters";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/security/head)
@@ -3605,7 +3602,8 @@
 /area/prison/security/armory/riot)
 "cjl" = (
 /obj/structure/machinery/door/poddoor/two_tile/vertical/open{
-	id = "lethal_armory"unacidable = 0
+	id = "lethal_armory";
+	unacidable = 0
 	},
 /turf/open/floor/prison{
 	tag = "icon-darkredfull2 (SOUTHWEST)";
@@ -4078,7 +4076,7 @@
 "coi" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
 	name = "Disposals";
-	req_one_access = list()
+	req_one_access = null
 	},
 /turf/open/floor/plating,
 /area/prison/disposal)
@@ -4120,7 +4118,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Execution Chamber";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/execution)
@@ -4139,7 +4137,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
 	name = "Execution Chamber";
-	req_access = list()
+	req_access = null
 	},
 /turf/open/floor/prison,
 /area/prison/execution)

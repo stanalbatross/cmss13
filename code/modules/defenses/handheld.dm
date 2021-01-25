@@ -3,7 +3,7 @@
 	desc = "A compact version of the USCM defenses. Designed for quick deployment of the associated type in the field."
 	icon = 'icons/obj/structures/machinery/defenses/sentry.dmi'
 	icon_state = "uac_sentry_handheld"
-	
+
 	force = 5
 	throwforce = 5
 	throw_speed = SPEED_SLOW
@@ -12,7 +12,7 @@
 
 	indestructible = TRUE
 	var/defense_type = /obj/structure/machinery/defenses
-	var/deployment_time = SECONDS_3
+	var/deployment_time = 3 SECONDS
 
 	var/list/upgrade_list
 
@@ -28,7 +28,7 @@
 	deploy_handheld(user)
 
 /obj/item/defenses/handheld/proc/deploy_handheld(var/mob/living/carbon/human/user)
-	if(interior_manager && user.z == interior_manager.interior_z)
+	if(user.z == GLOB.interior_manager.interior_z)
 		to_chat(usr, SPAN_WARNING("It's too cramped in here to deploy \a [src]."))
 		return
 
@@ -58,8 +58,9 @@
 	var/factions = user.get_id_faction_group()
 	var/obj/structure/machinery/defenses/D = new defense_type(T, factions)
 	D.handheld_type = type
-	D.dir = direction
+	D.setDir(direction)
 	playsound(T, 'sound/mecha/mechmove01.ogg', 30, 1)
+	D.name = replacetext(src.name, "handheld ", "") //fixed
 	qdel(src)
 
 
@@ -116,13 +117,13 @@
 
 	if(!istype(target, /obj/item/ammo_magazine/sentry_flamer))
 		return .
-	
+
 	user.visible_message(SPAN_NOTICE("[user] begins to tweak the ammo of [target]."), SPAN_NOTICE("You begin to tweak the ammo of [target]."))
 
 	if(!do_after(user, 1 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, target))
 		to_chat(user, SPAN_WARNING("You stop tweaking [target]'s ammo."))
 		return
-	
+
 	var/obj/item/ammo_magazine/sentry_flamer/mag = new ammo_convert(get_turf(user))
 
 	user.visible_message(SPAN_NOTICE("[user] converts the ammo of [target] to [mag]"), SPAN_NOTICE("You convert the ammo of [target] to [mag]"))
@@ -205,7 +206,7 @@
 	icon = 'icons/obj/structures/machinery/defenses/planted_flag.dmi'
 	icon_state = "Normal planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag
-	deployment_time = SECONDS_1
+	deployment_time = 1 SECONDS
 
 /obj/item/defenses/handheld/planted_flag/Initialize(mapload, ...)
 	. = ..()
@@ -225,4 +226,4 @@
 	icon_state = "Range planted_flag_handheld"
 	defense_type = /obj/structure/machinery/defenses/planted_flag/range
 
-	
+

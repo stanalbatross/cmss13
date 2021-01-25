@@ -13,8 +13,8 @@
 	var/processing = FALSE //Set to true if computer needs to do /process()
 	var/exproof = 0
 
-/obj/structure/machinery/computer/New()
-	..()
+/obj/structure/machinery/computer/Initialize()
+	. = ..()
 	if(processing)
 		start_processing()
 
@@ -43,16 +43,14 @@
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if (prob(25))
-				for(var/x in verbs)
-					verbs -= x
+				verbs.Cut()
 				set_broken()
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if (prob(25))
 				qdel(src)
 				return
 			if (prob(50))
-				for(var/x in verbs)
-					verbs -= x
+				verbs.Cut()
 				set_broken()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			qdel(src)
@@ -111,7 +109,7 @@
 			A.circuit = M
 			A.anchored = 1
 			for (var/obj/C in src)
-				C.loc = src.loc
+				C.forceMove(loc)
 			if (src.stat & BROKEN)
 				to_chat(user, SPAN_NOTICE(" The broken glass falls out."))
 				new /obj/item/shard( src.loc )

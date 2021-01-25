@@ -77,23 +77,16 @@
 	// It is filtered into multiple lists within a list.
 	// For example:
 	// chemical_reaction_list["phoron"] is a list of all reactions relating to phoron
-	paths = typesof(/datum/chemical_reaction) - /datum/chemical_reaction - /datum/chemical_reaction/generated
+	var/list/regular_paths = subtypesof(/datum/chemical_reaction) - typesof(/datum/chemical_reaction/generated)
+	var/list/generated_paths = subtypesof(/datum/chemical_reaction/generated) //Generated chemicals should be initialized last
 	chemical_reactions_filtered_list = list()
 	chemical_reactions_list = list()
 
-	for(var/i=0;i<=1;i++)
+	for(paths in list(regular_paths, generated_paths))
 		for(var/path in paths)
-
 			var/datum/chemical_reaction/D = new path()
-
 			chemical_reactions_list[D.id] = D
-
-			var/filter_id = D.get_filter()
-			if(filter_id)
-				chemical_reactions_filtered_list[filter_id] += D  // We don't have to bother adding ourselves to other reagent ids, it is redundant.
-
-		if(i==0)
-			paths = typesof(/datum/chemical_reaction/generated) - /datum/chemical_reaction/generated //Generated chemicals should be initialized last
+			D.add_to_filtered_list()
 
 /datum/reagents/Destroy()
 	. = ..()
@@ -205,8 +198,8 @@
 			BR.del_reagent(RG.id)
 
 	addtimer(CALLBACK(BR, /datum/reagents/proc/reaction, target, INGEST), 95)
-	addtimer(CALLBACK(BR, /datum/reagents/proc/trans_to, target, BR.total_volume), SECONDS_10)
-	QDEL_IN(B, SECONDS_10)
+	addtimer(CALLBACK(BR, /datum/reagents/proc/trans_to, target, BR.total_volume), 10 SECONDS)
+	QDEL_IN(B, 10 SECONDS)
 	return amount
 
 /datum/reagents/proc/set_source_mob(var/new_source_mob)
@@ -348,7 +341,7 @@
 
 					var/list/seen = viewers(4, get_turf(my_atom))
 					for(var/mob/M in seen)
-						to_chat(M, SPAN_NOTICE("[htmlicon(my_atom, M)] The solution begins to bubble."))
+						to_chat(M, SPAN_NOTICE("[icon2html(my_atom, M)] The solution begins to bubble."))
 
 					playsound(get_turf(my_atom), 'sound/effects/bubbles.ogg', 15, 1)
 
@@ -637,7 +630,7 @@
 		combust(sourceturf, radius, intensity, duration, supplemented, firecolor, smokerad) // TODO: Implement directional flames
 	if(exploded && sourceturf)
 		sourceturf.chemexploded = TRUE // to prevent grenade stacking
-		addtimer(CALLBACK(sourceturf, /turf.proc/reset_chemexploded), SECONDS_2)
+		addtimer(CALLBACK(sourceturf, /turf.proc/reset_chemexploded), 2 SECONDS)
 	trigger_volatiles = FALSE
 	return exploded
 

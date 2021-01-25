@@ -102,7 +102,7 @@
 
 /datum/action/xeno_action/morph_resin/action_activate()
 	var/mob/living/carbon/Xenomorph/X = owner
-	var/choice = input(X, "Choose a pheromone") in X.caste.structures_allowed + "help" + "cancel"
+	var/choice = tgui_input_list(X, "Choose a pheromone", X.caste.structures_allowed + "help" + "cancel")
 	if(choice == "help")
 		var/message = "<br>Morphing into resin sacrifices your current body in order to create special structures that can benefit the hive, as follows:<br>"
 		for(var/structure_name in X.caste.structures_allowed)
@@ -199,6 +199,7 @@
 
 	var/freeze_self = TRUE				// Should we freeze ourselves after the lunge?
 	var/freeze_time = 5					// 5 for runners, 15 for lurkers
+	var/freeze_timer_id = TIMER_ID_NULL	// Timer to cancel the end freeze if it can be cancelled earlier
 
 	var/windup = FALSE					// Is there a do_after before we pounce?
 	var/windup_duration = 20			// How long to wind up, if applicable
@@ -232,6 +233,13 @@
 // Additional effects to apply even if we don't hit anything
 /datum/action/xeno_action/activable/pounce/proc/additional_effects_always()
 	return
+
+/datum/action/xeno_action/activable/pounce/proc/end_pounce_freeze()
+	var/mob/living/carbon/Xenomorph/X = owner
+	X.frozen = FALSE
+	X.update_canmove()
+	deltimer(freeze_timer_id)
+	freeze_timer_id = TIMER_ID_NULL
 
 /datum/action/xeno_action/onclick/toggle_long_range
 	name = "Toggle Long Range Sight"
@@ -294,6 +302,7 @@
 	var/max_range = 2
 	macro_path = /datum/action/xeno_action/verb/verb_transfer_plasma
 	action_type = XENO_ACTION_CLICK
+	ability_primacy = XENO_PRIMARY_ACTION_4
 
 /datum/action/xeno_action/activable/transfer_plasma/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner

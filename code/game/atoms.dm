@@ -53,6 +53,10 @@
 	// Whether the atom is an obstacle that should be considered for passing
 	var/can_block_movement = FALSE
 
+	// Beams
+	var/list/beams // An assoc list where the keys are ids and their values are TRUE (indicating beam should persist)
+	var/beam_id = 0
+
 /atom/New(loc, ...)
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)
@@ -60,16 +64,6 @@
 		if(SSatoms.InitAtom(src, args))
 			//we were deleted
 			return
-
-	pass_flags = pass_flags_cache[type]
-	if (isnull(pass_flags))
-		pass_flags = new()
-		initialize_pass_flags(pass_flags)
-		pass_flags_cache[type] = pass_flags
-	else
-		initialize_pass_flags()
-
-	Decorate()
 
 /*
 We actually care what this returns, since it can return different directives.
@@ -184,9 +178,6 @@ directive is properly returned.
 			found += A.search_contents_for(path,filter_path)
 	return found
 
-
-
-
 /*
 Beam code by Gunbuddy
 
@@ -196,84 +187,79 @@ Also, the icon used for the beam will have to be vertical and 32x32.
 The math involved assumes that the icon is vertical to begin with so unless you want to adjust the math,
 its easier to just keep the beam vertical.
 */
-/atom
-	var/tethered = FALSE
-	var/to_untether = FALSE
+/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi', time = 50, maxdistance = 10, var/datum/callback/on_removed)
+	set waitfor = FALSE
 
+	if (isnull(beams))
+		beams = list()
 
-#define SHOULD_BEAM (BeamTarget && (world.time<EndTime || time == -1) && get_dist(src, BeamTarget) < maxdistance && z==BeamTarget.z)
+	. = beam_id
+	var/str_id = "[beam_id++]"
+	beams[str_id] = TRUE
 
-/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi',time=50, maxdistance=10, face_direction=TRUE, var/datum/callback/on_removed)
 	//BeamTarget represents the target for the beam, basically just means the other end.
 	//Time is the duration to draw the beam
 	//Icon is obviously which icon to use for the beam, default is beam.dmi
 	//Icon_state is what icon state is used. Default is b_beam which is a blue beam.
 	//Maxdistance is the longest range the beam will persist before it gives up.
-	var/EndTime=world.time+time
-	if(tethered || !SHOULD_BEAM)
-		return FALSE
-	
-	tethered = TRUE
-	to_untether = FALSE
+	var/EndTime = world.time+time
 
-	while(tethered && SHOULD_BEAM)
+	while(BeamTarget && ((time == BEAM_INFINITE_DURATION && beams[str_id]) || world.time < EndTime) && get_dist(src,BeamTarget) < maxdistance && z == BeamTarget.z)
 	//If the BeamTarget gets deleted, the time expires, or the BeamTarget gets out
 	//of range or to another z-level, then the beam will stop.  Otherwise it will
 	//continue to draw.
-		if(face_direction)
-			dir=get_dir(src,BeamTarget)	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
+
+		setDir(get_dir(src,BeamTarget))	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
 
 		for(var/obj/effect/overlay/beam/O in orange(10,src))	//This section erases the previously drawn beam because I found it was easier to
-			if(O.BeamSource==src)				//just draw another instance of the beam instead of trying to manipulate all the
+			if(O.BeamSource == src)				//just draw another instance of the beam instead of trying to manipulate all the
 				qdel(O)							//pieces to a new orientation.
-		var/Angle=round(Get_Angle(src,BeamTarget))
-		var/icon/I=new(icon,icon_state)
+		var/Angle = round(Get_Angle(src,BeamTarget))
+		var/icon/I = new(icon,icon_state)
 		I.Turn(Angle)
-		var/DX=(32*BeamTarget.x+BeamTarget.pixel_x)-(32*x+pixel_x)
-		var/DY=(32*BeamTarget.y+BeamTarget.pixel_y)-(32*y+pixel_y)
-		var/N=0
-		var/length=round(sqrt((DX)**2+(DY)**2))
-		for(N,N<length,N+=32)
-			var/obj/effect/overlay/beam/X=new(loc)
-			X.BeamSource=src
-			if(N+32>length)
-				var/icon/II=new(icon,icon_state)
+		var/DX = (32*BeamTarget.x + BeamTarget.pixel_x) - (32*x + pixel_x)
+		var/DY = (32*BeamTarget.y + BeamTarget.pixel_y) - (32*y + pixel_y)
+		var/N = 0
+		var/length = round(sqrt((DX)**2 + (DY)**2))
+		for(N, N < length, N += 32)
+			var/obj/effect/overlay/beam/X = new(loc)
+			X.BeamSource = src
+			if(N + 32 > length)
+				var/icon/II = new(icon,icon_state)
 				II.DrawBox(null,1,(length-N),32,32)
 				II.Turn(Angle)
-				X.icon=II
-			else X.icon=I
-			var/Pixel_x=round(sin(Angle)+32*sin(Angle)*(N+16)/32)
-			var/Pixel_y=round(cos(Angle)+32*cos(Angle)*(N+16)/32)
-			if(DX==0) Pixel_x=0
-			if(DY==0) Pixel_y=0
-			if(Pixel_x>32)
-				for(var/a=0, a<=Pixel_x,a+=32)
+				X.icon = II
+			else
+				X.icon = I
+			var/Pixel_x = round(sin(Angle) + 32*sin(Angle)*(N+16)/32)
+			var/Pixel_y = round(cos(Angle) + 32*cos(Angle)*(N+16)/32)
+			if(DX == 0)
+				Pixel_x = 0
+			if(DY == 0)
+				Pixel_y = 0
+			if(Pixel_x > 32)
+				for(var/a = 0, a <= Pixel_x, a += 32)
 					X.x++
-					Pixel_x-=32
-			if(Pixel_x<-32)
-				for(var/a=0, a>=Pixel_x,a-=32)
+					Pixel_x -= 32
+			if(Pixel_x < -32)
+				for(var/a = 0, a >= Pixel_x, a -= 32)
 					X.x--
-					Pixel_x+=32
-			if(Pixel_y>32)
-				for(var/a=0, a<=Pixel_y,a+=32)
+					Pixel_x += 32
+			if(Pixel_y > 32)
+				for(var/a = 0, a <= Pixel_y, a += 32)
 					X.y++
-					Pixel_y-=32
-			if(Pixel_y<-32)
-				for(var/a=0, a>=Pixel_y,a-=32)
+					Pixel_y -= 32
+			if(Pixel_y < -32)
+				for(var/a = 0, a >= Pixel_y, a -= 32)
 					X.y--
-					Pixel_y+=32
-			X.pixel_x=Pixel_x
-			X.pixel_y=Pixel_y
+					Pixel_y += 32
+			X.pixel_x = Pixel_x
+			X.pixel_y = Pixel_y
+		stoplag()
 
-			
-		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
-					//I've found that 3 ticks provided a nice balance for my use.
-		if(to_untether)
-			break
-
-	to_untether = FALSE
-	tethered = FALSE
-	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
+	for(var/obj/effect/overlay/beam/O in orange(10,src))
+		if(O.BeamSource == src)
+			qdel(O)
 
 	on_removed.Invoke()
 
@@ -291,7 +277,7 @@ its easier to just keep the beam vertical.
 	examine(usr)
 
 /atom/proc/examine(mob/user)
-	to_chat(user, "[htmlicon(src, user)] That's \a [src].") //changed to "That's" from "This is" because "This is some metal sheets" sounds dumb compared to "That's some metal sheets" ~Carn
+	to_chat(user, "[icon2html(src, user)] That's \a [src].") //changed to "That's" from "This is" because "This is some metal sheets" sounds dumb compared to "That's some metal sheets" ~Carn
 	if(desc)
 		to_chat(user, desc)
 
@@ -411,6 +397,17 @@ Parameters are passed from New.
 		CRASH("Warning: [src]([type]) initialized multiple times!")
 	flags_atom |= INITIALIZED
 
+	pass_flags = pass_flags_cache[type]
+	if (isnull(pass_flags))
+		pass_flags = new()
+		initialize_pass_flags(pass_flags)
+		pass_flags_cache[type] = pass_flags
+	else
+		initialize_pass_flags()
+
+	if(!mapload)
+		Decorate()
+
 	return INITIALIZE_HINT_NORMAL
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD
@@ -419,9 +416,6 @@ Parameters are passed from New.
 
 
 /atom/process()
-	return
-
-/atom/proc/Decorate()
 	return
 
 ///---CLONE---///
@@ -435,7 +429,7 @@ Parameters are passed from New.
 	T = locate(src.x + shift_x, src.y + shift_y, src.z)
 
 	T.appearance = src.appearance
-	T.dir = src.dir
+	T.setDir(src.dir)
 
 	clones_t.Add(src)
 	src.clone = T
@@ -487,3 +481,31 @@ Parameters are passed from New.
 
 /atom/proc/disable_pixel_scaling()
 	appearance_flags &= ~PIXEL_SCALE
+
+///Passes Stat Browser Panel clicks to the game and calls client click on an atom
+/atom/Topic(href, list/href_list)
+	if(!usr?.client)
+		return
+	var/client/usr_client = usr.client
+	var/list/paramslist = list()
+	if(href_list["statpanel_item_shiftclick"])
+		paramslist["shift"] = "1"
+	if(href_list["statpanel_item_ctrlclick"])
+		paramslist["ctrl"] = "1"
+	if(href_list["statpanel_item_altclick"])
+		paramslist["alt"] = "1"
+	if(href_list["statpanel_item_click"])
+		// first of all make sure we valid
+		var/mouseparams = list2params(paramslist)
+		usr_client.Click(src, loc, TRUE, mouseparams)
+		return TRUE
+
+/**
+ * Hook for running code when a dir change occurs
+ *
+ * Not recommended to use, listen for the [COMSIG_ATOM_DIR_CHANGE] signal instead (sent by this proc)
+ */
+/atom/proc/setDir(newdir)
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_ATOM_DIR_CHANGE, dir, newdir)
+	dir = newdir

@@ -32,7 +32,7 @@
 
 /obj/item/clothing/mask/gas/yautja/New(location, mask_number = rand(1,11), elder_restricted = 0)
 	..()
-	loc = location
+	forceMove(location)
 
 	var/mask_input[] = list(1,2,3,4,5,6,7,8,9,10,11)
 	if(mask_number in mask_input)
@@ -57,7 +57,7 @@
 	set name = "Toggle Mask Zoom"
 	set desc = "Toggle your mask's zoom function."
 	set category = "Yautja"
-
+	set src in usr
 	if(!usr || usr.stat)
 		return
 
@@ -67,7 +67,7 @@
 	set name = "Toggle Mask Visors"
 	set desc = "Toggle your mask visor sights. You must only be wearing a type of Yautja visor for this to work."
 	set category = "Yautja"
-
+	set src in usr
 	if(!usr || usr.stat) return
 	var/mob/living/carbon/human/M = usr
 	if(!istype(M)) return

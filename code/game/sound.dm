@@ -68,14 +68,14 @@
 	S.y = turf_source.y
 	S.z = turf_source.z
 
-	if(!interior_manager)
+	if(!GLOB.interior_manager)
 		SSsound.queue(S)
 		return S.channel
 
 	var/list/datum/interior/extra_interiors = list()
 	// If we're in an interior, range the chunk, then adjust to do so from outside instead
-	if(turf_source.z == interior_manager.interior_z)
-		var/datum/interior/VI = interior_manager.get_interior_by_coords(turf_source.x, turf_source.y)
+	if(turf_source.z == GLOB.interior_manager.interior_z)
+		var/datum/interior/VI = GLOB.interior_manager.get_interior_by_coords(turf_source.x, turf_source.y)
 		if(VI?.ready)
 			extra_interiors |= VI
 			if(VI.exterior)
@@ -85,7 +85,7 @@
 				S.z = new_turf_source.z
 			else sound_range = 0
 	// Range for 'nearby interiors' aswell
-	for(var/datum/interior/VI in interior_manager.interiors)
+	for(var/datum/interior/VI in GLOB.interior_manager.interiors)
 		if(VI?.ready && VI.exterior?.z == turf_source.z && get_dist(VI.exterior, turf_source) <= sound_range)
 			extra_interiors |= VI
 
@@ -179,8 +179,6 @@
 				S = pick('sound/effects/match.ogg')
 			if("punch")
 				S = pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg')
-			if("clownstep")
-				S = pick('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg')
 			if("swing_hit")
 				S = pick('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg')
 			if("pageturn")
@@ -194,6 +192,10 @@
 				S = pick('sound/bullets/bullet_miss1.ogg','sound/bullets/bullet_miss2.ogg','sound/bullets/bullet_miss3.ogg','sound/bullets/bullet_miss3.ogg')
 			if("ballistic_bounce")
 				S = pick('sound/bullets/bullet_ricochet1.ogg','sound/bullets/bullet_ricochet2.ogg','sound/bullets/bullet_ricochet3.ogg','sound/bullets/bullet_ricochet4.ogg','sound/bullets/bullet_ricochet5.ogg','sound/bullets/bullet_ricochet6.ogg','sound/bullets/bullet_ricochet7.ogg','sound/bullets/bullet_ricochet8.ogg')
+			if("ballistic_shield_hit")
+				S = pick('sound/bullets/shield_impact_c1.ogg','sound/bullets/shield_impact_c2.ogg','sound/bullets/shield_impact_c3.ogg','sound/bullets/shield_impact_c4.ogg')
+			if("shield_shatter")
+				S = pick('sound/bullets/shield_break_c1.ogg')
 			if("rocket_bounce")
 				S = pick('sound/bullets/rocket_ricochet1.ogg','sound/bullets/rocket_ricochet2.ogg','sound/bullets/rocket_ricochet3.ogg')
 			if("energy_hit")
@@ -280,7 +282,7 @@
 	return S
 
 /client/proc/generate_sound_queues()
-	set name = "X: Queue sounds"
+	set name = "Queue sounds"
 	set desc = "stress test this bich"
 	set category = "Debug"
 
@@ -301,7 +303,7 @@
 		SSsound.queue(S)
 
 /client/proc/sound_debug_query()
-	set name = "X: Dump Playing Client Sounds"
+	set name = "Dump Playing Client Sounds"
 	set desc = "dumps info about locally, playing sounds"
 	set category = "Debug"
 

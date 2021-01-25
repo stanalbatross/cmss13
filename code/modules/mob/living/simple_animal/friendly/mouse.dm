@@ -53,8 +53,10 @@
 /mob/living/simple_animal/mouse/New()
 	..()
 
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	add_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
 	if(!name)
 		name = "[name] ([rand(1, 1000)])"
 	if(!body_color)
@@ -91,7 +93,7 @@
 			wander = 1
 		else if(!stat && prob(5))
 			var/mob/M = AM
-			to_chat(M, SPAN_NOTICE(" [htmlicon(src, M)] Squeek!"))
+			to_chat(M, SPAN_NOTICE(" [icon2html(src, M)] Squeek!"))
 			M << 'sound/effects/mousesqueek.ogg'
 	..()
 

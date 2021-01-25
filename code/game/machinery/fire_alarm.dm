@@ -98,7 +98,7 @@ FIRE ALARM
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 25, 1)
 					spawn(20)
 						var/obj/item/circuitboard/firealarm/circuit = new()
-						circuit.loc = user.loc
+						circuit.forceMove(user.loc)
 						buildstage = 0
 						update_icon()
 			if(0)
@@ -111,7 +111,7 @@ FIRE ALARM
 				else if(istype(W, /obj/item/tool/wrench))
 					to_chat(user, "You remove the fire alarm assembly from the wall!")
 					var/obj/item/frame/fire_alarm/frame = new /obj/item/frame/fire_alarm()
-					frame.loc = user.loc
+					frame.forceMove(user.loc)
 					playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 					qdel(src)
 		return
@@ -220,14 +220,11 @@ FIRE ALARM
 	//playsound(src.loc, 'sound/ambience/signal.ogg', 50, 0)
 	return
 
-/obj/structure/machinery/firealarm/New(loc, dir, building)
-	..()
-
-	if(loc)
-		src.loc = loc
+/obj/structure/machinery/firealarm/Initialize(mapload, dir, building)
+	. = ..()
 
 	if(dir)
-		src.dir = dir
+		src.setDir(dir)
 
 	if(building)
 		buildstage = 0
@@ -235,7 +232,7 @@ FIRE ALARM
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
 
-	if(is_ground_level(z) || is_huntership_level(z))
+	if(!is_mainship_level(z))
 		if(security_level)
 			src.overlays += image('icons/obj/structures/machinery/monitors.dmi', "overlay_[get_security_level()]")
 		else

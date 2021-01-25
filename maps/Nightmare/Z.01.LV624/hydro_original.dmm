@@ -57,8 +57,8 @@
 /obj/structure/machinery/door/airlock/almayer/medical/glass{
 	dir = 1;
 	name = "\improper Hydroponics Dome";
-	req_access = list(100);
-	req_one_access = list()
+	req_access_txt = "100";
+	req_one_access = null
 	},
 /turf/open/floor{
 	dir = 1;
@@ -85,7 +85,6 @@
 /area/lv624/lazarus/hydroponics)
 "of" = (
 /obj/structure/surface/table,
-/obj/item/clothing/suit/apron/overalls,
 /obj/item/clothing/under/colonist,
 /turf/open/floor{
 	dir = 5;
@@ -260,8 +259,8 @@
 /obj/structure/machinery/door/airlock/almayer/medical/glass{
 	dir = 4;
 	name = "\improper Hydroponics Dome";
-	req_access = list(100);
-	req_one_access = list()
+	req_access_txt = "100";
+	req_one_access = null
 	},
 /turf/open/floor{
 	dir = 1;
@@ -272,7 +271,7 @@
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
 	dir = 1;
 	name = "\improper Hydroponics Dome";
-	req_access = list(100)
+	req_access_txt = "100"
 	},
 /turf/open/floor{
 	dir = 1;

@@ -472,7 +472,7 @@
 	overdose_critical = REAGENTS_OVERDOSE_CRITICAL
 	chemfiresupp = TRUE
 	//------------------//
-	intensityfire = BURN_LEVEL_TIER_1 
+	intensityfire = BURN_LEVEL_TIER_1
 	durationfire = BURN_TIME_TIER_1
 	rangefire = 4
 	//------------------//
@@ -509,15 +509,15 @@
 	chemclass = CHEM_CLASS_UNCOMMON
 
 /datum/reagent/space_cleaner/reaction_obj(var/obj/O, var/volume)
-	if(istype(O,/obj/effect/decal/cleanable))
-		qdel(O)
-	else
-		if(O)
-			O.clean_blood()
+	if(istype(O, /obj/effect/decal/cleanable))
+		var/obj/effect/decal/cleanable/C = O
+		C.cleanup_cleanable()
+	else if(O)
+		O.clean_blood()
 
 /datum/reagent/space_cleaner/reaction_turf(var/turf/T, var/volume)
 	if(volume >= 1 && istype(T))
-		T.clean_dirt()
+		T.clean_cleanables()
 
 /datum/reagent/space_cleaner/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 	if(iscarbon(M))
@@ -687,6 +687,7 @@
 	burncolor = "#D05006"
 	properties = list(PROPERTY_OXIDIZING = 6, PROPERTY_FUELING = 7, PROPERTY_FLOWING = 1)
 
+// This is the regular flamer fuel and pyro regular flamer fuel.
 /datum/reagent/napalm/ut
 	name = "UT-Napthal Fuel"
 	id = "utnapthal"
@@ -698,14 +699,16 @@
 	properties = list(
 		PROPERTY_INTENSITY 	= BURN_LEVEL_TIER_5,
 		PROPERTY_DURATION 	= BURN_TIME_TIER_2,
-		PROPERTY_RADIUS 	= 6
+		PROPERTY_RADIUS 	= 5
 	)
 	. = ..()
 
+// This is gellie fuel. Green Flames.
 /datum/reagent/napalm/gel
 	name = "Napthal Gel"
 	id = "napalmgel"
 	description = "Unlike its liquid contemporaries, this stuff shoots far, and burns up fast, but it doesn't burn anywhere near as hot."
+	flameshape = FLAMESHAPE_LINE
 	color = "#00ff00"
 	burncolor = "#00ff00"
 	properties = list()
@@ -714,10 +717,11 @@
 	properties = list(
 		PROPERTY_INTENSITY 	= BURN_LEVEL_TIER_2,
 		PROPERTY_DURATION 	= BURN_TIME_INSTANT,
-		PROPERTY_RADIUS 	= 6
+		PROPERTY_RADIUS 	= 7
 	)
 	. = ..()
 
+// This is the blue flamer fuel for the pyro.
 /datum/reagent/napalm/blue
 	name = "Napalm X"
 	id = "napalmx"
@@ -734,6 +738,7 @@
 	)
 	. = ..()
 
+// This is the green flamer fuel for the pyro.
 /datum/reagent/napalm/green
 	name = "Napalm B"
 	id = "napalmb"
@@ -748,6 +753,23 @@
 		PROPERTY_INTENSITY 	= BURN_LEVEL_TIER_2,
 		PROPERTY_DURATION 	= BURN_TIME_TIER_5,
 		PROPERTY_RADIUS 	= 6
+	)
+	. = ..()
+
+/datum/reagent/napalm/penetrating
+	name = "Napalm EX"
+	id = "napalmex"
+	description = "A sticky combustable liquid chemical that penetrates the best fire retardants."
+	color = "#800080"
+	burncolor = "#800080"
+	properties = list()
+
+/datum/reagent/napalm/penetrating/New()
+	properties = list(
+		PROPERTY_INTENSITY 			= BURN_LEVEL_TIER_2,
+		PROPERTY_DURATION 			= BURN_TIME_TIER_5,
+		PROPERTY_RADIUS 			= 6,
+		PROPERTY_FIRE_PENETRATING	= 1
 	)
 	. = ..()
 
@@ -766,14 +788,14 @@
 /datum/reagent/chlorinetrifluoride/on_mob_life(var/mob/living/M) // Not a good idea, instantly messes you up from the inside out.
 	. = ..()
 	M.adjust_fire_stacks(max(M.fire_stacks, 15))
-	M.IgniteMob()
+	M.IgniteMob(TRUE)
 	to_chat(M, SPAN_DANGER("It burns! It burns worse than you could ever have imagined!"))
 
 /datum/reagent/chlorinetrifluoride/reaction_mob(var/mob/M, var/method = TOUCH, var/volume) // Spilled on you? Not good either, but not /as/ bad.
 	var/mob/living/L = M
 	if(istype(L))
 		L.adjust_fire_stacks(max(L.fire_stacks, 10))
-		L.IgniteMob()
+		L.IgniteMob(TRUE)
 
 /datum/reagent/methane
 	name = "Methane"

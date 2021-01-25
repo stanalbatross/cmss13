@@ -27,8 +27,7 @@
 		L.anchored = 1
 		L.icon_state = "lightstick_[L.s_color][L.anchored]"
 		user.drop_held_item()
-		L.x = x
-		L.y = y
+		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
 		L.SetLuminosity(2)
@@ -37,8 +36,8 @@
 
 
 //Update icon and sides on start, but skip nearby check for turfs.
-/turf/open/snow/New()
-	..()
+/turf/open/snow/Initialize(mapload, ...)
+	. = ..()
 	update_icon(1,1)
 
 /turf/open/snow/Entered(atom/movable/AM)
@@ -63,7 +62,7 @@
 //Update icon
 /turf/open/snow/update_icon(var/update_full, var/skip_sides)
 	icon_state = "snow_[bleed_layer]"
-	dir = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
 	switch(bleed_layer)
 		if(0)
 			name = "dirt floor"

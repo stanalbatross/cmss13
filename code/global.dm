@@ -1,4 +1,3 @@
-//#define TESTING
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 #define MAIN_SHIP_NAME "USS Almayer"
 //=================================================
@@ -79,12 +78,9 @@ var/CELLRATE = 0.002	// multiplier for watts per tick <> cell storage (eg: 0.02 
 						//It's a conversion constant. power_used*CELLRATE = charge_provided, or charge_used/CELLRATE = power_provided
 var/CHARGELEVEL = 0.0005 // Cap for how fast cells charge, as a percentage-per-tick (0.01 means cellcharge is capped to 1% per second)
 
-var/SupplyElevator
-var/VehicleElevator
 var/VehicleElevatorConsole
 var/HangarUpperElevator
 var/HangarLowerElevator
-var/global/map_tag
 
 //Spawnpoints.
 var/list/fallen_list = list()
@@ -123,8 +119,8 @@ var/list/AAlarmWireColorToIndex
 #define MAX_BOOK_MESSAGE_LEN 9216
 #define MAX_NAME_LEN 26
 
-#define shuttle_time_in_station MINUTES_3 // 3 minutes in the station
-#define shuttle_time_to_arrive MINUTES_10 // 10 minutes to arrive
+#define shuttle_time_in_station 3 MINUTES // 3 minutes in the station
+#define shuttle_time_to_arrive 10 MINUTES // 10 minutes to arrive
 
 	// MySQL configuration
 
@@ -161,24 +157,6 @@ var/global/obfs_y = 0 //A number between -500 and 500
 // Which lobby art is on display
 // This is updated by the lobby art turf when it initializes
 var/displayed_lobby_art = -1
-// Authors for the lobby art. In order.
-// You MUST credit the author here when adding new lobby art, or it will not show up in-game
-// If you legitimately don't know, write "Unknown" and it'll show up regardless
-var/list/lobby_art_authors = list(
-	"NicBoone",
-	"NicBoone",
-	"NicBoone",
-	"NicBoone",
-	"NicBoone",
-	"Triiodine",
-	"Triiodine",
-	"Triiodine",
-	"Unknown",
-	"LightCrabPress", // originally for TGMC, asked author if we could use it too
-	"Redsting", // originally drawing for discord banner
-	"Substance20", // commissioned by Neth
-	"Substance20", // commissioned by Neth
-)
 
 // Last global ID that was assigned to a mob (for round recording purposes)
 var/last_mob_gid = 0

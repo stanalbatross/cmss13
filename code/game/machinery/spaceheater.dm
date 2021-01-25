@@ -14,8 +14,8 @@
 	flags_atom = FPRINT
 
 
-/obj/structure/machinery/space_heater/New()
-	..()
+/obj/structure/machinery/space_heater/Initialize()
+	. = ..()
 	cell = new (src)
 	cell.charge += 500
 	update_icon()
@@ -110,6 +110,9 @@
 
 
 /obj/structure/machinery/space_heater/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if (usr.stat)
 		return
 	if ((in_range(src, usr) && istype(src.loc, /turf)) || (isRemoteControlling(usr)))

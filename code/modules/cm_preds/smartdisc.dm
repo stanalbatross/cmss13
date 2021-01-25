@@ -26,24 +26,24 @@
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/dropped(mob/user)
 	add_to_missing_pred_gear(src)
 	..()
-	
+
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/launch_towards(var/datum/launch_metadata/LM)
 	..()
 	var/mob/user = usr
 	if(!active && isYautja(user) && (icon_state == initial(icon_state)))
 		boomerang(user)
-		
+
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/proc/boomerang(mob/user)
 	var/mob/living/L = find_target(user)
 	icon_state = initial(icon_state) + "_active"
 	if(L)
 		throw_atom(L.loc, 4, SPEED_FAST, usr)
 	throw_atom(usr, 12, SPEED_SLOW, usr)
-	addtimer(CALLBACK(src, .proc/clear_boomerang), SECONDS_3)
+	addtimer(CALLBACK(src, .proc/clear_boomerang), 3 SECONDS)
 
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/proc/clear_boomerang()
 	icon_state = initial(icon_state)
-	
+
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/proc/find_target(mob/user)
 	var/atom/T = null
 	for(var/mob/living/A in listtargets(4))
@@ -105,7 +105,7 @@
 		// Make a quick flash
 		var/turf/T = get_turf(src)
 		var/atom/movable/x = new spawner_type
-		x.loc = T
+		x.forceMove(T)
 
 	qdel(src)
 	return
@@ -285,4 +285,6 @@
 		if(prob(5))
 			L.KnockDown(3)
 			L.visible_message(SPAN_DANGER("\The [src] viciously slashes at \the [L]!"))
+			log_attack("[key_name(L)] was knocked down by [src]")
+		log_attack("[key_name(L)] was attacked by [src]")
 		return L

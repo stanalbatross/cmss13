@@ -4,9 +4,10 @@
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
 	caste_whitelist = list("Hivelord")
-	mutator_actions_to_remove = list("Secrete Thick Resin", "Corrosive Acid (100)")
+	mutator_actions_to_remove = list("Secrete Thick Resin", "Corrosive Acid (100)", "Resin Walker (50)")
 	mutator_actions_to_add = list(
-		/datum/action/xeno_action/activable/secrete_resin/remote,
+		/datum/action/xeno_action/activable/secrete_resin/remote, //third macro
+		/datum/action/xeno_action/onclick/toggle_speed, //fourth macro
 		/datum/action/xeno_action/onclick/toggle_long_range,
 	)
 	keystone = TRUE
@@ -53,7 +54,7 @@
 		return FALSE
 
 	// Account for the do_after in the resin building proc when checking cooldown
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	var/total_build_time = RC.build_time*X.caste.build_time_mult
 	return (world.time >= last_use + (total_build_time + cooldown))
 
@@ -77,7 +78,7 @@
 
 	last_use = world.time
 
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	T.visible_message(SPAN_XENONOTICE("The weeds begin pulsating wildly and secrete resin in the shape of \a [RC.construction_name]!"), null, 5)
 	to_chat(owner, SPAN_XENONOTICE("You focus your plasma into the weeds below you and force the weeds to secrete resin in the shape of \a [RC.construction_name]."))
 	playsound(T, "alien_resin_build", 25)

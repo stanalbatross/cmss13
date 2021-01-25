@@ -21,7 +21,7 @@
 	if(carved)
 		if(store)
 			to_chat(user, SPAN_NOTICE("[store] falls out of [title]!"))
-			store.loc = get_turf(src.loc)
+			store.forceMove(get_turf(src.loc))
 			store = null
 			return
 		else
@@ -39,7 +39,7 @@
 		if(!store)
 			if(W.w_class < SIZE_MEDIUM)
 				user.drop_held_item()
-				W.loc = src
+				W.forceMove(src)
 				store = W
 				to_chat(user, SPAN_NOTICE("You put [W] in [title]."))
 				return
@@ -53,7 +53,7 @@
 		if(unique)
 			to_chat(user, "These pages don't seem to take the ink well. Looks like you can't modify it.")
 			return
-		var/choice = input("What would you like to change?") in list("Title", "Contents", "Author", "Cancel")
+		var/choice = tgui_input_list(usr, "What would you like to change?", "Change Book", list("Title", "Contents", "Author", "Cancel"))
 		switch(choice)
 			if("Title")
 				var/newtitle = reject_bad_text(stripped_input(usr, "Write a new title:"))

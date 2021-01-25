@@ -184,11 +184,11 @@
 	density = 0
 	update_icon() //Make it appear cut through!
 
-/obj/structure/fence/New(Loc, start_dir = null, constructed = 0)
-	..()
+/obj/structure/fence/Initialize(mapload, start_dir = null, constructed = 0)
+	. = ..()
 
 	if(start_dir)
-		dir = start_dir
+		setDir(start_dir)
 
 	update_nearby_icons()
 
@@ -200,7 +200,7 @@
 /obj/structure/fence/Move()
 	var/ini_dir = dir
 	. = ..()
-	dir = ini_dir
+	setDir(ini_dir)
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/fence/proc/update_nearby_icons()

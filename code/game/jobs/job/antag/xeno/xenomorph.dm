@@ -21,7 +21,7 @@
 /datum/job/antag/xenos/proc/transform_to_xeno(var/mob/living/carbon/human/H, var/hive_index)
 	var/datum/mind/new_xeno = H.mind
 	new_xeno.setup_xeno_stats()
-	var/datum/hive_status/hive = hive_datum[hive_index]
+	var/datum/hive_status/hive = GLOB.hive_datum[hive_index]
 
 	H.first_xeno = TRUE
 	H.stat = 1
@@ -42,7 +42,7 @@
 	var/obj/structure/bed/nest/start_nest = new /obj/structure/bed/nest(H.loc) //Create a new nest for the host
 	H.statistic_exempt = TRUE
 	H.buckled = start_nest
-	H.dir = start_nest.dir
+	H.setDir(start_nest.dir)
 	H.update_canmove()
 	start_nest.buckled_mob = H
 	start_nest.afterbuckle(H)

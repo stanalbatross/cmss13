@@ -23,8 +23,8 @@
 			WEAR_IN_J_STORE = 'icons/mob/humans/onmob/ears.dmi'
 			)
 
-/obj/item/device/walkman/New()
-	..()
+/obj/item/device/walkman/Initialize()
+	. = ..()
 	design = rand(1, 3)
 	update_icon()
 
@@ -444,7 +444,7 @@
 	songs = list("side1" = list("sound/music/walkman/surf/10-1-1.ogg",\
 								"sound/music/walkman/surf/10-1-2.ogg",\
 								"sound/music/walkman/surf/10-1-3.ogg",\
-								"sound/music/walkman/surf/10-1-4ogg"),\
+								"sound/music/walkman/surf/10-1-4.ogg"),\
 				 "side2" = list("sound/music/walkman/surf/10-2-1.ogg",\
 								"sound/music/walkman/surf/10-2-2.ogg",\
 								"sound/music/walkman/surf/10-2-3.ogg",\

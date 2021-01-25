@@ -4,9 +4,11 @@ SUBSYSTEM_DEF(mapview)
 	wait          = 2 SECONDS
 	flags         = SS_KEEP_TIMING | SS_DISABLE_FOR_TESTING
 	priority      = SS_PRIORITY_MAPVIEW
+	init_order = SS_INIT_MAPVIEW
 	var/list/map_machines
 
 /datum/controller/subsystem/mapview/Initialize(start_timeofday)
+	generate_marine_mapview()
 	create_map_machines()
 	return ..()
 
@@ -15,9 +17,6 @@ SUBSYSTEM_DEF(mapview)
 	for(var/obj/structure/machinery/C in machines)
 		if(istype(C, /obj/structure/machinery/computer/communications) || istype(C, /obj/structure/machinery/prop/almayer/CICmap) || istype(C, /obj/structure/machinery/computer/overwatch))
 			map_machines += C
-
-///datum/controller/subsystem/mob/stat_entry()
-//	..("P:[mob_list.len]")
 
 /datum/controller/subsystem/mapview/fire(resumed = FALSE)
 	if (MC_TICK_CHECK)

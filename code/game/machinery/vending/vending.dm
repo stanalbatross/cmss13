@@ -71,25 +71,21 @@
 	wrenchable = TRUE
 	var/vending_dir
 
-/obj/structure/machinery/vending/New()
-	..()
-	spawn(4)
-		src.slogan_list = splittext(src.product_slogans, ";")
+/obj/structure/machinery/vending/Initialize(mapload, ...)
+	. = ..()
+	src.slogan_list = splittext(src.product_slogans, ";")
 
-		// So not all machines speak at the exact same time.
-		// The first time this machine says something will be at slogantime + this random value,
-		// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
-		src.last_slogan = world.time + rand(0, slogan_delay)
+	// So not all machines speak at the exact same time.
+	// The first time this machine says something will be at slogantime + this random value,
+	// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
+	src.last_slogan = world.time + rand(0, slogan_delay)
 
-		src.build_inventory(products)
-		 //Add hidden inventory
-		src.build_inventory(contraband, 1)
-		src.build_inventory(premium, 0, 1)
-		power_change()
-		start_processing()
-		return
-
-	return
+	src.build_inventory(products)
+		//Add hidden inventory
+	src.build_inventory(contraband, 1)
+	src.build_inventory(premium, 0, 1)
+	power_change()
+	start_processing()
 
 /obj/structure/machinery/vending/update_icon()
 	overlays.Cut()
@@ -118,9 +114,6 @@
 
 /obj/structure/machinery/vending/proc/build_inventory(var/list/productlist,hidden=0,req_coin=0)
 
-	if(delay_product_spawn)
-		sleep(15) //Make ABSOLUTELY SURE the seed datum is properly populated.
-
 	for(var/typepath in productlist)
 		var/amount = productlist[typepath]
 		var/price = prices[typepath]
@@ -135,10 +128,6 @@
 
 		if(ispath(typepath,/obj/item/weapon/gun) || ispath(typepath,/obj/item/ammo_magazine) || ispath(typepath,/obj/item/explosive/grenade) || ispath(typepath,/obj/item/weapon/gun/flamer) || ispath(typepath,/obj/item/storage) )
 			R.display_color = "black"
-//		else if(ispath(typepath,/obj/item/clothing) || ispath(typepath,/obj/item/storage))
-//			R.display_color = "white"
-//		else if(ispath(typepath,/obj/item/reagent_container) || ispath(typepath,/obj/item/stack/medical))
-//			R.display_color = "blue"
 		else
 			R.display_color = "white"
 
@@ -152,11 +141,7 @@
 			R.category=CAT_NORMAL
 			product_records += R
 
-		if(delay_product_spawn)
-			sleep(5) //sleep(1) did not seem to cut it, so here we are.
-
 		R.product_name = initial(temp_path.name)
-	return
 
 /obj/structure/machinery/vending/get_repair_move_text(var/include_name = TRUE)
 	if(!stat)
@@ -328,14 +313,14 @@
 						var/datum/money_account/D = attempt_account_access(C.associated_account_number, attempt_pin, 2)
 						transfer_and_vend(D)
 					else
-						to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Unable to access account. Check security settings and try again.")]")
+						to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Unable to access account. Check security settings and try again.")]")
 				else
 					//Just Vend it.
 					transfer_and_vend(CH)
 			else
-				to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Connected account has been suspended.")]")
+				to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Connected account has been suspended.")]")
 		else
-			to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Error: Unable to access your account. Please contact technical support if problem persists.")]")
+			to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Error: Unable to access your account. Please contact technical support if problem persists.")]")
 
 /obj/structure/machinery/vending/proc/transfer_and_vend(var/datum/money_account/acc)
 	if(acc)
@@ -372,9 +357,9 @@
 			src.vend(src.currently_vending, usr)
 			currently_vending = null
 		else
-			to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("You don't have that much money!")]")
+			to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("You don't have that much money!")]")
 	else
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Error: Unable to access your account. Please contact technical support if problem persists.")]")
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Error: Unable to access your account. Please contact technical support if problem persists.")]")
 
 /obj/structure/machinery/vending/proc/GetProductIndex(var/datum/data/vending_product/P)
 	var/list/plist
@@ -468,6 +453,9 @@
 		ui.set_auto_update(0)
 
 /obj/structure/machinery/vending/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable())
 		return
 	if(usr.is_mob_incapacitated())
@@ -478,7 +466,7 @@
 			to_chat(usr, "There is no coin in this machine.")
 			return
 
-		coin.loc = src.loc
+		coin.forceMove(src.loc)
 		if(!usr.get_active_hand())
 			usr.put_in_hands(coin)
 		to_chat(usr, SPAN_NOTICE(" You remove the [coin] from the [src]"))
@@ -488,7 +476,7 @@
 		if (!ewallet)
 			to_chat(usr, "There is no charge card in this machine.")
 			return
-		ewallet.loc = src.loc
+		ewallet.forceMove(src.loc)
 		if(!usr.get_active_hand())
 			usr.put_in_hands(ewallet)
 		to_chat(usr, SPAN_NOTICE(" You remove the [ewallet] from the [src]"))
@@ -549,8 +537,6 @@
 			if(announce_hacked && is_mainship_level(z))
 				announce_hacked = FALSE
 				SSclues.create_print(get_turf(usr), usr, "The fingerprint contains oil and wire pieces.")
-				if(usr.detectable_by_ai())
-					ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
 
 		else if ((href_list["pulsewire"]) && (src.panel_open))
 			var/wire = text2num(href_list["pulsewire"])
@@ -709,7 +695,8 @@
 /obj/structure/machinery/vending/power_change()
 	..()
 	if(stat & NOPOWER)
-		sleep(rand(0, 15))
+		addtimer(CALLBACK(src, .proc/update_icon), rand(1, 15))
+		return
 	update_icon()
 
 //Oh no we're malfunctioning!  Dump out some product and break.

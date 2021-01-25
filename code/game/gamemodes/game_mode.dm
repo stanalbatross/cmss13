@@ -32,6 +32,8 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	var/datum/entity/round_stats/round_stats = null
 
 	var/list/roles_to_roll
+	
+	var/hardcore = FALSE
 
 /datum/game_mode/proc/announce() //to be calles when round starts
 	to_world("<B>Notice</B>: [src] did not define announce()")
@@ -98,12 +100,8 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	if(round_statistics)
 		round_statistics.track_round_end()
 	log_game("Round end result: [round_finished]")
-	to_world("<span class='round_header'>|Round Complete|</span>")
-
-	to_world(SPAN_ROUNDBODY("Thus ends the story of the brave men and women of the [MAIN_SHIP_NAME] and their struggle on [map_tag]."))
-	to_world(SPAN_ROUNDBODY("The game-mode was: [master_mode]!"))
-	to_world(SPAN_ROUNDBODY("End of Round Grief (EORG) is an IMMEDIATE 3 hour ban with no warnings, see rule #3 for more details."))
-
+	to_chat_spaced(world, margin_top = 2, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("|Round Complete|"))
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDBODY("Thus ends the story of the brave men and women of the [MAIN_SHIP_NAME] and their struggle on [SSmapping.configs[GROUND_MAP].map_name].\nThe game-mode was: [master_mode]!\nEnd of Round Grief (EORG) is an IMMEDIATE 3 hour ban with no warnings, see rule #3 for more details."))
 
 /datum/game_mode/proc/declare_completion()
 	if(round_statistics)
@@ -211,15 +209,11 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 			heads += player.mind
 	return heads
 
-/datum/game_mode/New()
-	if(!map_tag)
-		to_world("MT001: No mapping tag set, tell a coder. [map_tag]")
-
 //////////////////////////
 //Reports player logouts//
 //////////////////////////
 proc/display_roundstart_logout_report()
-	var/msg = SPAN_NOTICE("<b>Roundstart logout report\n\n")
+	var/msg = FONT_SIZE_LARGE("<b>Roundstart logout report\n\n")
 	for(var/i in GLOB.living_mob_list)
 		var/mob/living/L = i
 
@@ -234,7 +228,7 @@ proc/display_roundstart_logout_report()
 
 
 		if(L.ckey && L.client)
-			if(L.client.inactivity >= (ROUNDSTART_LOGOUT_REPORT_TIME / 2))	//Connected, but inactive (alt+tabbed or something)
+			if(L.client.inactivity >= (ROUNDSTART_LOGOUT_REPORT_TIME * 0.5))	//Connected, but inactive (alt+tabbed or something)
 				msg += "<b>[key_name(L)]</b>, the [L.job] (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n"
 				continue //AFK client
 			if(L.stat)
@@ -261,7 +255,7 @@ proc/display_roundstart_logout_report()
 
 	for(var/mob/M in GLOB.player_list)
 		if(M.client.admin_holder && (M.client.admin_holder.rights & R_MOD))
-			to_chat(M, msg)
+			to_chat_spaced(M, html = msg)
 
 //Announces objectives/generic antag text.
 /proc/show_generic_antag_text(var/datum/mind/player)
@@ -284,7 +278,7 @@ proc/display_roundstart_logout_report()
 		round_stats.name = operation_name
 		round_stats.real_time_start = world.realtime
 		var/datum/entity/map_stats/new_map = new()
-		new_map.name = map_tag
+		new_map.name = SSmapping.configs[GROUND_MAP].map_name
 		new_map.linked_round = round_stats
 		new_map.death_stats_list = round_stats.death_stats_list
 		round_stats.game_mode = name

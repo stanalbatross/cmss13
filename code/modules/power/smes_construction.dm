@@ -226,7 +226,7 @@
 				for(var/obj/I in component_parts)
 					if(I.reliability != 100 && crit_fail)
 						I.crit_fail = 1
-					I.loc = src.loc
+					I.forceMove(src.loc)
 				qdel(src)
 				return
 
@@ -250,4 +250,4 @@
 		else if(istype(W, /obj/item/device/multitool))
 			safeties_enabled = !safeties_enabled
 			to_chat(user, SPAN_WARNING("You [safeties_enabled ? "connected" : "disconnected"] the safety circuit."))
-			src.visible_message("[htmlicon(src, viewers(src))] <b>[src]</b> beeps: \"Caution. Safety circuit has been: [safeties_enabled ? "re-enabled" : "disabled. Please excercise caution."]\"")
+			src.visible_message("[icon2html(src, viewers(src))] <b>[src]</b> beeps: \"Caution. Safety circuit has been: [safeties_enabled ? "re-enabled" : "disabled. Please excercise caution."]\"")

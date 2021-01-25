@@ -143,11 +143,6 @@
 /datum/shuttle/ferry/hangar/proc/idle()
 	return (moving_status == SHUTTLE_IDLE)
 
-//returns the ETA in minutes
-/datum/shuttle/ferry/hangar/proc/eta_minutes()
-	var/ticksleft = arrive_time - world.time
-	return round(ticksleft/600,1)
-
 /datum/shuttle/ferry/hangar/proc/raise_railings()
 	var/effective = 0
 	for(var/obj/structure/machinery/door/poddoor/M in machines)
@@ -186,7 +181,7 @@
 		if(M.id == gear_id)
 			spawn()
 				M.icon_state = "gear_moving"
-				M.dir = direction
+				M.setDir(direction)
 
 /datum/shuttle/ferry/hangar/proc/stop_gears()
 	for(var/obj/structure/machinery/gear/M in machines)

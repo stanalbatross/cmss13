@@ -5,7 +5,7 @@
 	icon = 'icons/obj/structures/doors/rapid_pdoor.dmi'
 	icon_state = "pdoor"
 	id = 1.0
-	dir = 1
+	dir = NORTH
 	unslashable = TRUE
 	health = 0
 	layer = PODDOOR_CLOSED_LAYER
@@ -51,7 +51,7 @@
 		pry_open(X)
 
 
-/obj/structure/machinery/door/poddoor/proc/pry_open(var/mob/living/carbon/Xenomorph/X, var/time = SECONDS_4)
+/obj/structure/machinery/door/poddoor/proc/pry_open(var/mob/living/carbon/Xenomorph/X, var/time = 4 SECONDS)
 	X.visible_message(SPAN_DANGER("[X] begins prying [src] open."),\
 	SPAN_XENONOTICE("You start prying [src] open."), max_distance = 3)
 
@@ -63,7 +63,7 @@
 
 	X.visible_message(SPAN_DANGER("[X] pries open [src]."), \
 	SPAN_XENONOTICE("You pry open [src]."), max_distance = 3)
-	
+
 	open()
 
 
@@ -232,7 +232,7 @@
 	dir = NORTH
 	icon = 'icons/obj/structures/doors/1x4blast_vert.dmi'
 
-/obj/structure/machinery/door/poddoor/two_tile/four_tile/vertical/open
+/obj/structure/machinery/door/poddoor/two_tile/four_tile/vertical/opened
 	density = FALSE
 
 /obj/structure/machinery/door/poddoor/filler_object
@@ -246,6 +246,9 @@
 	openspeed = 17
 	unslashable = TRUE
 	unacidable = TRUE
+
+/obj/structure/machinery/door/poddoor/two_tile/four_tile/secure/opened
+	density = FALSE
 
 /obj/structure/machinery/door/poddoor/two_tile/four_tile/vertical/secure
 	icon = 'icons/obj/structures/doors/1x4blast_vert_secure.dmi'

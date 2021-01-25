@@ -122,7 +122,7 @@
 	else if(iswelder(W) && canDeconstruct())
 		if(weld(W, user))
 			if(assembly)
-				assembly.loc = src.loc
+				assembly.forceMove(loc)
 				assembly.state = 1
 			qdel(src)
 
@@ -226,15 +226,7 @@
 		T = get_ranged_target_turf(src, i, 1)
 		if(istype(T))
 			//If someone knows a better way to do this, let me know. -Giacom
-			switch(i)
-				if(NORTH)
-					src.dir = SOUTH
-				if(SOUTH)
-					src.dir = NORTH
-				if(WEST)
-					src.dir = EAST
-				if(EAST)
-					src.dir = WEST
+			setDir(turn(i, 180))
 			break
 
 //Return a working camera that can see a given mob

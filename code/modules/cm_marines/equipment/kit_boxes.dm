@@ -1,5 +1,5 @@
 
-/******************************************Spec Kits****************************************************************/
+//******************************************Spec Kits****************************************************************/
 
 /obj/item/storage/box/spec
 	icon = 'icons/obj/items/storage.dmi'
@@ -96,7 +96,7 @@
 		new /obj/item/explosive/plastic(src)
 		new /obj/item/explosive/plastic(src)
 		new /obj/item/device/encryptionkey/jtac(src)
-		if(Check_WO())
+		if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 			new /obj/item/device/binoculars/designator(src)
 		else
 			new /obj/item/device/binoculars/range/designator/scout(src)
@@ -132,7 +132,7 @@
 /obj/item/storage/box/spec/heavy_grenadier/New()
 	..()
 	spawn(1)
-		new /obj/item/weapon/gun/launcher/m92(src)
+		new /obj/item/weapon/gun/launcher/grenade/m92(src)
 		new /obj/item/storage/belt/grenade/large/full(src)
 		new /obj/item/storage/backpack/marine/grenadepack(src)
 		new /obj/item/storage/backpack/marine/grenadepack(src)
@@ -185,7 +185,7 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 		to_chat(user, SPAN_NOTICE("This box is not for you, give it to a squad marine!"))
 
 /obj/item/spec_kit/proc/select_and_spawn(mob/user)
-	var/selection = input(user, "Pick your equipment", "Specialist Kit Selection") as null|anything in kits
+	var/selection = tgui_input_list(user, "Pick your equipment", "Specialist Kit Selection", kits)
 	if(!selection)
 		return FALSE
 	if(!kits[selection] || kits[selection] <= 0)
@@ -212,16 +212,18 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 			new /obj/item/storage/box/spec/scout (T)
 			kits["Scout"] --
 			user.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_SCOUT)
+			user.skills.set_skill(SKILL_ENGINEER, SKILL_ENGINEER_TRAINED)
 			return TRUE
 		if("Demo")
 			new /obj/item/storage/box/spec/demolitionist (T)
 			kits["Demo"] --
 			user.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_ROCKET)
+			user.skills.set_skill(SKILL_ENGINEER, SKILL_ENGINEER_TRAINED)
 			return TRUE
 	return FALSE
 
 
-/******************************************PFC Kits****************************************************************/
+//******************************************PFC Kits****************************************************************/
 
 /obj/item/storage/box/kit
 	icon = 'icons/obj/items/pro_case.dmi'
@@ -331,7 +333,7 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 
 /obj/item/storage/box/kit/pursuit/fill_preset_inventory()
 	new /obj/item/weapon/gun/smg/m39(src)
-	new /obj/item/attachable/stock/smg/brace(src)
+	new /obj/item/attachable/stock/smg/collapsible/brace(src)
 	new /obj/item/attachable/magnetic_harness(src)
 	new /obj/item/storage/large_holster/machete/full(src)
 	new /obj/item/ammo_magazine/smg/m39/extended(src)

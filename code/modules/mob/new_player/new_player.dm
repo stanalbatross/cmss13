@@ -15,8 +15,6 @@
 	. = ..()
 	GLOB.new_player_list += src
 	GLOB.dead_mob_list -= src
-	if(client)
-		client.view = lobby_view_size
 
 /mob/new_player/Destroy()
 	if(ready)
@@ -67,31 +65,30 @@
 	show_browser(src, output, null, "playersetup", "size=240x[round_start ? 330 : 380];can_close=0;can_minimize=0")
 	return
 
-/mob/new_player/Stat()
-	if (!..())
-		return 0
-
-	stat("Time:","[worldtime2text()]")
-	stat("Map:", "[map_tag]")
-
-	stat("Game Mode:", "[GLOB.master_mode]") // Old setting for showing the game mode
-
-	if(SSticker.current_state == GAME_STATE_PREGAME)
-		stat("Time To Start:", "[SSticker.time_left > 0 ? SSticker.GetTimeLeft() : "(DELAYED)"]")
-		stat("Players: [length(GLOB.player_list)]", "Players Ready: [readied_players]")
-		for(var/mob/new_player/player in GLOB.new_player_list)
-			stat("[player.key]", player.ready ? "(Playing)" : "")
-
 /mob/new_player/Topic(href, href_list[])
+	. = ..()
+	if(.)
+		return
 	if(!client)
 		return
 
 	switch(href_list["lobby_choice"])
 		if("show_preferences")
+			// Otherwise the preview dummy will runtime
+			// because atoms aren't initialized yet
+			if(SSticker.current_state < GAME_STATE_PREGAME)
+				to_chat(src, "Game is still starting up, please wait")
+				return
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return
 			client.prefs.ShowChoices(src)
 			return 1
 
 		if("show_playtimes")
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return
 			if(client.player_data)
 				client.player_data.ui_interact(src)
 			return 1
@@ -114,6 +111,9 @@
 			new_player_panel_proc(TRUE)
 
 		if("observe")
+			if(!SSticker || SSticker.current_state == GAME_STATE_STARTUP)
+				to_chat(src, "<span class='warning'>The game is still setting up, please try again later.</span>")
+				return
 			if(alert(src,"Are you sure you wish to observe? When you observe, you will not be able to join as marine. It might also take some time to become a xeno or responder!","Player Setup","Yes","No") == "Yes")
 				if(!client)
 					return TRUE
@@ -126,7 +126,7 @@
 				var/obj/O = locate("landmark*Observer-Start")
 				if(istype(O))
 					to_chat(src, SPAN_NOTICE("Now teleporting."))
-					observer.loc = O.loc
+					observer.forceMove(O.loc)
 				else
 					to_chat(src, SPAN_DANGER("Could not locate an observer spawn point. Use the Teleport verb to jump to the station map."))
 				observer.icon = 'icons/mob/humans/species/r_human.dmi'
@@ -163,7 +163,7 @@
 					to_chat(src, "You are currently not whitelisted to play [client.prefs.species].")
 					return
 
-				var/datum/species/S = all_species[client.prefs.species]
+				var/datum/species/S = GLOB.all_species[client.prefs.species]
 				if(!(S.flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
 					return
@@ -209,7 +209,7 @@
 					to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
 					return 0
 
-				var/datum/species/S = all_species[client.prefs.species]
+				var/datum/species/S = GLOB.all_species[client.prefs.species]
 				if(!(S.flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
 					return 0
@@ -239,9 +239,9 @@
 	close_spawn_windows()
 
 	var/turf/T
-	if(map_tag != MAP_WHISKEY_OUTPOST)
+	if(SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST)
 		T = get_turf(pick(GLOB.latejoin))
-	else if (map_tag == MAP_WHISKEY_OUTPOST)
+	else if (SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		T = get_turf(pick(GLOB.latewhiskey))
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
@@ -249,7 +249,7 @@
 	EquipCustomItems(character)
 
 	GLOB.data_core.manifest_inject(character)
-	if(map_tag == MAP_WHISKEY_OUTPOST)
+	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
 		call(/datum/game_mode/whiskey_outpost/proc/spawn_player)(character)
 	SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 	SSticker.mode.latejoin_tally++
@@ -261,15 +261,19 @@
 
 	if(SSticker.mode.latejoin_larva_drop && SSticker.mode.latejoin_tally >= SSticker.mode.latejoin_larva_drop)
 		SSticker.mode.latejoin_tally -= SSticker.mode.latejoin_larva_drop
-		for(var/datum/hive_status/hs in hive_datum)
-			if (hs.living_xeno_queen)
-				hs.stored_larva++
-				hs.hive_ui.update_pooled_larva()
+		var/datum/hive_status/HS
+		for(var/hivenumber in GLOB.hive_datum)
+			HS = GLOB.hive_datum[hivenumber]
+			if(length(HS.totalXenos))
+				HS.stored_larva++
+				HS.hive_ui.update_pooled_larva()
 
 	if(character.mind && character.mind.player_entity)
 		var/datum/entity/player_entity/player = character.mind.player_entity
 		if(player.get_playtime(STATISTIC_HUMAN) == 0 && player.get_playtime(STATISTIC_XENO) == 0)
 			msg_admin_niche("NEW PLAYER: <b>[key_name(character, 1, 1, 0)] (<A HREF='?_src_=admin_holder;ahelp=adminmoreinfo;extra=\ref[character]'>?</A>)</b>. IP: [character.lastKnownIP], CID: [character.computer_id]")
+
+	character.client.init_verbs() // init verbs for the late join
 
 	qdel(src)
 
@@ -346,7 +350,7 @@
 
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 	if(chosen_species)
 		// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
 		if(is_species_whitelisted(chosen_species) || has_admin_rights())
@@ -384,8 +388,10 @@
 	INVOKE_ASYNC(new_character, /mob/living/carbon/human.proc/update_hair)
 
 	new_character.key = key		//Manually transfer the key to log them in
+
 	if(new_character.client)
 		new_character.client.change_view(world_view_size)
+		new_character.client.init_verbs()
 
 	return new_character
 
@@ -419,7 +425,7 @@
 /mob/new_player/get_species()
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 
 	if(!chosen_species)
 		return "Human"
@@ -441,3 +447,23 @@
 
 /mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0)
 	return
+
+/mob/new_player/get_status_tab_items()
+	. = ..()
+	. += ""
+	. += "Game Mode: [GLOB.master_mode]"
+
+	if(SSticker.HasRoundStarted())
+		return
+
+	var/time_remaining = SSticker.GetTimeLeft()
+	if(time_remaining > 0)
+		. += "Time To Start: [round(time_remaining)]s"
+	else if(time_remaining == -10)
+		. += "Time To Start: DELAYED"
+	else
+		. += "Time To Start: SOON"
+
+	. += "Players: [SSticker.totalPlayers]"
+	if(client.admin_holder)
+		. += "Players Ready: [SSticker.totalPlayersReady]"

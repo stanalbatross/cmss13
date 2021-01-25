@@ -15,17 +15,17 @@
 	var/obj/item/device/encryptionkey/keyslot3 = null
 	maxf = 1489
 
-/obj/item/device/radio/headset/New()
-	..()
+/obj/item/device/radio/headset/Initialize()
+	. = ..()
 	recalculateChannels()
 
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M as mob, message, channel)
 	if (channel == "special")
 		if (translate_binary)
-			var/datum/language/binary = all_languages["Robot Talk"]
+			var/datum/language/binary = GLOB.all_languages["Robot Talk"]
 			binary.broadcast(M, message)
 		if (translate_hive)
-			var/datum/language/hivemind = all_languages["Hivemind"]
+			var/datum/language/hivemind = GLOB.all_languages["Hivemind"]
 			hivemind.broadcast(M, message)
 		return null
 
@@ -88,7 +88,7 @@
 			if(keyslot1)
 				var/turf/T = get_turf(user)
 				if(T)
-					keyslot1.loc = T
+					keyslot1.forceMove(T)
 					keyslot1 = null
 
 
@@ -96,13 +96,13 @@
 			if(keyslot2)
 				var/turf/T = get_turf(user)
 				if(T)
-					keyslot2.loc = T
+					keyslot2.forceMove(T)
 					keyslot2 = null
 
 			if(keyslot3)
 				var/turf/T = get_turf(user)
 				if(T)
-					keyslot3.loc = T
+					keyslot3.forceMove(T)
 					keyslot3 = null
 
 			recalculateChannels()
@@ -196,6 +196,7 @@
 		secure_radio_connections[ch_name] = SSradio.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
 
 /obj/item/device/radio/headset/equipped(mob/living/carbon/human/user, slot)
+	. = ..()
 	if (slot == WEAR_EAR)
 		RegisterSignal(user, list(
 			COMSIG_LIVING_REJUVENATED,
@@ -207,6 +208,7 @@
 		COMSIG_LIVING_REJUVENATED,
 		COMSIG_HUMAN_REVIVED,
 	))
+	..()
 
 /obj/item/device/radio/headset/proc/turn_on()
 	SIGNAL_HANDLER
@@ -518,9 +520,9 @@
 	keyslot2 = new /obj/item/device/encryptionkey/med
 */
 
-/*************************************
------SELF SETTING MARINE HEADSET-----
-*************************************/
+//*************************************
+//-----SELF SETTING MARINE HEADSET-----
+//*************************************/
 //For events. Currently used for WO only. After equipping it, self_set() will adapt headset to marine.
 
 /obj/item/device/radio/headset/almayer/marine/self_setting/proc/self_set()

@@ -41,11 +41,9 @@
     if(linked_teleporter) // Maybe should debug log this because it's indicative of bad logic, but I'll leave it out for the sake of (potential) spam
         return 1
 
-    var/datum/controller/subsystem/teleporter/teleporterSS = teleporter_ss
+    if(SSteleporter)
 
-    if(teleporterSS)
-
-        var/datum/teleporter/found_teleporter = teleporterSS.teleporters_by_id[teleporter_id]
+        var/datum/teleporter/found_teleporter = SSteleporter.teleporters_by_id[teleporter_id]
         if(found_teleporter)
             linked_teleporter = found_teleporter
             linked_teleporter.linked_consoles += src
@@ -106,14 +104,14 @@
     add_fingerprint(usr)
 
     if(href_list["select_source"])
-        var/new_source = input("Select source location","Source Location") as null|anything in linked_teleporter.locations
+        var/new_source = tgui_input_list(usr, "Select source location","Source Location", linked_teleporter.locations)
         if (selected_source && !new_source)
             return
         else
             selected_source = new_source
 
     if(href_list["select_dest"])
-        var/new_dest = input("Select destination location","Destination Location") as null|anything in linked_teleporter.locations
+        var/new_dest = tgui_input_list(usr, "Select destination location","Destination Location", linked_teleporter.locations)
         if(selected_destination && !new_dest)
             return
         else
@@ -168,7 +166,7 @@
         for(var/turf_key in turf_keys)
             var/turf/T = turf_keys[turf_key]
             flick("corsat_teleporter_dynamic", T)
- 
+
         sleep(10)
 
         visible_message("<b>[src]</b> beeps, \"INITIATING TELEPORTATION....\"")

@@ -15,7 +15,7 @@
 
 /client/proc/debug_variables(datum/D in world)
 	set category = "Debug"
-	set name = "B: View Variables"
+	set name = "View Variables"
 
 	if(!usr.client || !usr.client.admin_holder || !(usr.client.admin_holder.rights & R_MOD))
 		to_chat(usr, SPAN_DANGER("You need to be a moderator or higher to access this."))
@@ -532,7 +532,7 @@ body
 				if(!i)
 					to_chat(usr, "No objects of this type exist")
 					return
-				message_staff(SPAN_NOTICE("[key_name(usr)] deleted all objects of type [O_type] ([i] objects deleted) "))
+				message_staff("[key_name(usr)] deleted all objects of type [O_type] ([i] objects deleted) ")
 			if("Type and subtypes")
 				var/i = 0
 				for(var/obj/Obj in GLOB.object_list)
@@ -542,7 +542,7 @@ body
 				if(!i)
 					to_chat(usr, "No objects of this type exist")
 					return
-				message_staff(SPAN_NOTICE("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) "))
+				message_staff("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) ")
 
 	else if(href_list["enablepixelscaling"])
 		if(!check_rights(R_DEBUG|R_VAREDIT))
@@ -616,8 +616,8 @@ body
 			return
 
 		switch(href_list["rotatedir"])
-			if("right")	A.dir = turn(A.dir, -45)
-			if("left")	A.dir = turn(A.dir, 45)
+			if("right")	A.setDir(turn(A.dir, -45))
+			if("left")	A.setDir(turn(A.dir, 45))
 		href_list["datumrefresh"] = href_list["rotatedatum"]
 
 	else if(href_list["makemonkey"])
@@ -711,7 +711,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/new_species = input("Please choose a new species.","Species",null) as null|anything in all_species
+		var/new_species = tgui_input_list(usr, "Please choose a new species.","Species",GLOB.all_species)
 
 		if(!new_species) return
 
@@ -736,7 +736,7 @@ body
 		if(!H.skills)
 			H.skills = new /datum/skills/pfc(H)
 
-		var/selected_skill = input("Please choose a skill to edit.","Skills",null) as null|anything in list("cqc","endurance","engineer", "construction","firearms", "pistols", "rifles", "smgs", "shotguns", "heavy_weapons","smartgun","spec_weapons","leadership","medical","surgery","research","melee_weapons","pilot","police","powerloader")
+		var/selected_skill = tgui_input_list(usr, "Please choose a skill to edit.","Skills", list("cqc","endurance","engineer", "construction","firearms", "pistols", "rifles", "smgs", "shotguns", "heavy_weapons","smartgun","spec_weapons","leadership","medical","surgery","research","melee_weapons","pilot","police","powerloader"))
 		if(!selected_skill)
 			return
 
@@ -764,8 +764,8 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/faction = input(src,"Select the agent faction", null, null) in list("Random") + FACTION_LIST_AGENT + list("Cancel")
-		if(faction == "Cancel")
+		var/faction = tgui_input_list(src,"Select the agent faction", "Create Agent", list("Random") + FACTION_LIST_AGENT)
+		if(!faction)
 			return
 
 		if(faction == "Random")
@@ -782,7 +782,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/objective = input(src,"Select an objective", null, null) in list("Random") + OBJECTIVES_TO_PICK_FROM + list("Cancel")
+		var/objective = tgui_input_list(src,"Select an objective", "Give Agent Objective", list("Random") + OBJECTIVES_TO_PICK_FROM)
 		if(objective == "Cancel")
 			return
 
@@ -800,7 +800,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob")
 			return
 
-		var/new_language = input("Please choose a language to add.","Language",null) as null|anything in all_languages
+		var/new_language = tgui_input_list(usr, "Please choose a language to add.","Language", GLOB.all_languages)
 
 		if(!new_language)
 			return
@@ -827,7 +827,7 @@ body
 			to_chat(usr, "This mob knows no languages.")
 			return
 
-		var/datum/language/rem_language = input("Please choose a language to remove.","Language",null) as null|anything in H.languages
+		var/datum/language/rem_language = tgui_input_list(usr, "Please choose a language to remove.","Language", H.languages)
 
 		if(!rem_language)
 			return
@@ -863,14 +863,14 @@ body
 		possibleverbs -= H.verbs
 		possibleverbs += "Cancel" 								// ...And one for the bottom
 
-		var/verb = input("Select a verb!", "Verbs",null) as anything in possibleverbs
+		var/verb = tgui_input_list(usr, "Select a verb!", "Verbs", possibleverbs)
 		if(!H)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
 		if(!verb || verb == "Cancel")
 			return
 		else
-			H.verbs += verb
+			add_verb(H, verb)
 
 	else if(href_list["remverb"])
 		if(!check_rights(R_DEBUG))
@@ -881,14 +881,14 @@ body
 		if(!istype(H))
 			to_chat(usr, "This can only be done to instances of type /mob")
 			return
-		var/verb = input("Please choose a verb to remove.","Verbs",null) as null|anything in H.verbs
+		var/verb = tgui_input_list(usr, "Please choose a verb to remove.","Verbs", H.verbs)
 		if(!H)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
 		if(!verb)
 			return
 		else
-			H.verbs -= verb
+			remove_verb(H, verb)
 
 	else if(href_list["addorgan"])
 		if(!check_rights(R_SPAWN))
@@ -899,7 +899,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 			return
 
-		var/new_organ = input("Please choose an organ to add.","Organ",null) as null|anything in typesof(/datum/internal_organ)-/datum/internal_organ
+		var/new_organ = tgui_input_list(usr, "Please choose an organ to add.","Organ",null, typesof(/datum/internal_organ)-/datum/internal_organ)
 
 		if(!new_organ)
 			return FALSE
@@ -951,7 +951,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 			return
 
-		var/rem_organ = input("Please choose an organ to remove.","Organ",null) as null|anything in M.internal_organs
+		var/rem_organ = tgui_input_list(usr, "Please choose an organ to remove.","Organ",null, M.internal_organs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -974,7 +974,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/new_limb = input("Please choose an organ to add.","Organ",null) as null|anything in typesof(/obj/limb)-/obj/limb
+		var/new_limb = tgui_input_list(usr, "Please choose an organ to add.","Organ", typesof(/obj/limb)-/obj/limb)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1003,7 +1003,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/rem_limb = input("Please choose a limb to remove.","Organ",null) as null|anything in M.limbs
+		var/rem_limb = tgui_input_list(usr, "Please choose a limb to remove.","Organ", M.limbs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1026,7 +1026,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/rem_limb = input("Please choose a limb to remove.","Organ",null) as null|anything in M.limbs
+		var/rem_limb = tgui_input_list(usr, "Please choose a limb to remove.","Organ", M.limbs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1085,7 +1085,7 @@ body
 		L.updatehealth()
 
 		if(amount != 0)
-			message_staff(SPAN_NOTICE("[key_name(usr)] dealt [amount] amount of [Text] damage to [L] "))
+			message_staff("[key_name(usr)] dealt [amount] amount of [Text] damage to [L] ")
 			href_list["datumrefresh"] = href_list["mobToDamage"]
 
 	else if(href_list["setmatrix"])
@@ -1101,7 +1101,7 @@ body
 			to_chat(usr, "You don't have any matrices stored!")
 			return
 
-		var/matrix_name = input("Choose a matrix", "Matrix") as null|anything in (stored_matrices + "Revert to Default" + "Cancel")
+		var/matrix_name = tgui_input_list(usr, "Choose a matrix", "Matrix", (stored_matrices + "Revert to Default" + "Cancel"))
 		if(!matrix_name || matrix_name == "Cancel")
 			return
 		else if (matrix_name == "Revert to Default")

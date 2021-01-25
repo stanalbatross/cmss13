@@ -226,9 +226,9 @@
 			icon_state = "[table_prefix]tabledir3"
 
 	if(dir_sum in CARDINAL_ALL_DIRS)
-		dir = dir_sum
+		setDir(dir_sum)
 	else
-		dir = SOUTH
+		setDir(SOUTH)
 
 /obj/structure/surface/table/BlockedPassDirs(atom/movable/mover, target_dir)
 	for(var/obj/structure/S in get_turf(mover))
@@ -396,8 +396,8 @@
 	if(!straight_table_check(turn(direction, 90)) || !straight_table_check(turn(direction, -90)))
 		return 0
 
-	verbs -=/obj/structure/surface/table/verb/do_flip
-	verbs +=/obj/structure/surface/table/proc/do_put
+	verbs -= /obj/structure/surface/table/verb/do_flip
+	verbs += /obj/structure/surface/table/proc/do_put
 
 	detach_all()
 
@@ -409,7 +409,7 @@
 
 	projectile_coverage = flipped_projectile_coverage
 
-	dir = direction
+	setDir(direction)
 	if(dir != NORTH)
 		layer = FLY_LAYER
 	flipped = 1
@@ -425,8 +425,8 @@
 	return 1
 
 /obj/structure/surface/table/proc/unflip()
-	verbs -=/obj/structure/surface/table/proc/do_put
-	verbs +=/obj/structure/surface/table/verb/do_flip
+	verbs -= /obj/structure/surface/table/proc/do_put
+	verbs += /obj/structure/surface/table/verb/do_flip
 
 	projectile_coverage = upright_projectile_coverage
 

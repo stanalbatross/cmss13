@@ -28,9 +28,9 @@
 		var/obj/item/grab/G = M.get_active_hand()
 		dragged_atom = G.grabbed_thing
 
-	var/exit_time = SECONDS_1
+	var/exit_time = 1 SECONDS
 	if(dragged_atom)
-		exit_time = SECONDS_2
+		exit_time = 2 SECONDS
 
 	to_chat(M, SPAN_NOTICE("You start climbing out of \the [interior.exterior]."))
 	if(!do_after(M, exit_time, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
@@ -51,7 +51,7 @@
 
 /obj/structure/interior_exit/attack_alien(var/mob/living/carbon/Xenomorph/M, var/dam_bonus)
 	to_chat(M, SPAN_NOTICE("You start climbing out of \the [interior.exterior]."))
-	if(!do_after(M, SECONDS_2, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
+	if(!do_after(M, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
 		to_chat(M, SPAN_WARNING("Something has interrupted you."))
 		return
 
@@ -73,10 +73,9 @@
 /obj/structure/interior_exit/vehicle
 	name = "vehicle door"
 
-/obj/structure/interior_exit/vehicle/New()
-	..()
-	// See interior wall code for an explanation
-	addtimer(CALLBACK(src, .proc/update_icon), 10)
+/obj/structure/interior_exit/vehicle/Initialize()
+	. = ..()
+	update_icon()
 
 /obj/structure/interior_exit/vehicle/update_icon()
 	switch(dir)
@@ -106,9 +105,9 @@
 		var/obj/item/grab/G = M.get_active_hand()
 		dragged_atom = G.grabbed_thing
 
-	var/exit_time = SECONDS_1
+	var/exit_time = 1 SECONDS
 	if(dragged_atom)
-		exit_time = SECONDS_2
+		exit_time = 2 SECONDS
 
 	to_chat(M, SPAN_NOTICE("You start climbing out of \the [interior.exterior]."))
 	if(!do_after(M, exit_time, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
@@ -131,7 +130,7 @@
 
 /obj/structure/interior_exit/vehicle/attack_alien(var/mob/living/carbon/Xenomorph/M, var/dam_bonus)
 	to_chat(M, SPAN_NOTICE("You start climbing out of \the [interior.exterior]."))
-	if(!do_after(M, SECONDS_2, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
+	if(!do_after(M, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
 		to_chat(M, SPAN_WARNING("Something has interrupted you."))
 		return
 

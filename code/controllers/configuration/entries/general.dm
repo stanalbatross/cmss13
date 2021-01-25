@@ -29,6 +29,10 @@ Basics, the most important.
 
 /datum/config_entry/string/dburl
 
+// Shutdown instead of restarting
+/datum/config_entry/flag/no_restarts
+	config_entry_value = FALSE
+
 /// URL for the CentCom Galactic Ban DB API
 /datum/config_entry/string/centcom_ban_db
 
@@ -208,6 +212,14 @@ Voting
 /datum/config_entry/flag/default_no_vote
 
 /datum/config_entry/flag/no_dead_vote
+
+// Gamemode to auto-switch to at the start of the round
+/datum/config_entry/string/gamemode_default
+	config_entry_value = "extended"
+
+// Rounds needed for gamemode vote
+/datum/config_entry/number/gamemode_rounds_needed
+	config_entry_value = 5
 
 /datum/config_entry/number/rounds_until_hard_restart
 	config_entry_value = -1 // -1 is disabled by default, 0 is every round, x is after so many rounds
@@ -432,3 +444,7 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/flag/report_runtimes
 
 /datum/config_entry/flag/record_rounds
+
+/datum/config_entry/str_list/lobby_art_images
+
+/datum/config_entry/str_list/lobby_art_authors

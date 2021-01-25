@@ -134,7 +134,7 @@
 /obj/item/storage/belt/medical/verb/toggle_mode() //A verb that can (should) only be used if in hand/equipped
 	set category = "Object"
 	set name = "Toggle Belt Mode"
-
+	set src in usr
 	if(src && ishuman(usr))
 		mode = !mode
 		to_chat(usr, SPAN_NOTICE("You will now [mode ? "take pills directly from bottles": "no longer take pills directly from bottles"]."))
@@ -411,25 +411,44 @@
 	icon_state = "knifebelt"
 	item_state = "marinebelt" // aslo temp, maybe somebody update these icons with better ones?
 	w_class = SIZE_LARGE
-	storage_slots = 6
+	storage_slots = 12
+	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	max_w_class = SIZE_SMALL
-	max_storage_space = 6
+	max_storage_space = 48
 	can_hold = list(
 		/obj/item/weapon/melee/throwing_knife,
 		/obj/item/attachable/bayonet
 	)
+	var/draw_cooldown = 0
+	var/draw_cooldown_interval = 1 SECONDS
 
-/obj/item/storage/belt/knifepouch/fill_preset_inventory()
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
-	new /obj/item/weapon/melee/throwing_knife(src)
+/obj/item/storage/belt/knifepouch/Initialize()
+	. = ..()
+	for(var/total_storage_slots in 1 to storage_slots)
+		new /obj/item/weapon/melee/throwing_knife(src)
+
+/obj/item/storage/belt/knifepouch/handle_item_insertion(obj/item/W, prevent_warning = 0)
+	. = ..()
+	if(.)
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+
+/obj/item/storage/belt/knifepouch/remove_from_storage(obj/item/W, atom/new_location)
+	. = ..()
+	if(.)
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+
+/obj/item/storage/belt/knifepouch/attack_hand(mob/user)
+	if(draw_cooldown < world.time)
+		..()
+		draw_cooldown = world.time + draw_cooldown_interval
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+	else
+		to_chat(user, SPAN_WARNING("You need to wait before drawing another knife!"))
+		return 0
 
 /obj/item/storage/belt/grenade
-	name="\improper M276 pattern M40 HEDP rig"
-	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is designed to carry bulk quantities of M40 HEDP Grenades."
+	name="\improper M276 pattern M40 Grenade rig"
+	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is designed to carry bulk quantities of M40 pattern and AGM pattern Grenades."
 	icon_state = "grenadebelt" // temp
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
@@ -456,8 +475,8 @@
 		return ..()
 
 /obj/item/storage/belt/grenade/large
-	name="\improper M276 pattern M40 HEDP rig Mk. II"
-	desc="The M276 Mk. II is is an upgraded version of the M276 HEDP rig, with more storage capacity. It consists of a modular belt with various clips."
+	name="\improper M276 pattern M40 Grenade rig Mk. II"
+	desc="The M276 Mk. II is is an upgraded version of the M276 Grenade rig, with more storage capacity. It consists of a modular belt with various clips."
 	storage_slots = 18
 	max_storage_space = 54
 
@@ -545,7 +564,7 @@
 		overlays += "+[icon_state_text]_full"
 
 /obj/item/storage/belt/gun/Destroy()
-	QDEL_NULL(gun_underlay)
+	gun_underlay = null
 	QDEL_NULL(current_gun)
 	. = ..()
 
@@ -579,7 +598,7 @@
 		underlays -= gun_underlay
 		icon_state = copytext(icon_state,1,-2)
 		item_state = icon_state
-		QDEL_NULL(gun_underlay)
+		gun_underlay = null
 	if(istype(user)) user.update_inv_belt()
 	if(istype(user)) user.update_inv_s_store()
 
@@ -618,7 +637,7 @@
 
 /obj/item/storage/belt/gun/m4a3
 	name = "\improper M276 pattern general pistol holster rig"
-	desc = "The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version has a holster assembly that allows one to carry the most common pistols. It also contains side pouches that can store 9mm or .45 magazines."
+	desc = "The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version has a holster assembly that allows one to carry the most common pistols. It also contains side pouches that can store most pistol magazines."
 	storage_slots = 7
 	item_state = "marinebelt"
 	can_hold = list(
@@ -910,6 +929,8 @@
 	icon_x = 6
 	icon_y = -2
 	can_hold = list(
+		/obj/item/device/flashlight/flare,
+		/obj/item/weapon/gun/flare,
 		/obj/item/weapon/gun/pistol,
 		/obj/item/weapon/gun/revolver/m44,
 		/obj/item/ammo_magazine/revolver,
@@ -946,6 +967,7 @@
 	can_hold = list(
 		/obj/item/weapon/gun/pistol,
 		/obj/item/weapon/gun/revolver/m44,
+		/obj/item/weapon/gun/flare,
 		/obj/item/mortar_shell
 	)
 	bypass_w_limit = list(/obj/item/mortar_shell)
@@ -956,11 +978,12 @@
 
 /obj/item/storage/belt/souto
 	name = "\improper Souto belt"
-	desc = "A belt with break away souto cans. They cannot be put back."
+	desc = "Souto Man's trusty utility belt with break away Souto cans. They cannot be put back."
+	icon_state = "souto_man"
+	item_state = "souto_man"
 	flags_equip_slot = SLOT_WAIST
 	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	storage_slots = 8
-	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP
 	max_w_class = 0 //this belt cannot hold anything
 

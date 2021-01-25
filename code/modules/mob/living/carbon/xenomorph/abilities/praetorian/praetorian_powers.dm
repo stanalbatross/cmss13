@@ -44,7 +44,7 @@
 
 	for(var/turf/target_turf in target_turfs)
 		for(var/mob/living/carbon/H in target_turf)
-			if (!isXenoOrHuman(H) || X.match_hivemind(H))
+			if (!isXenoOrHuman(H) || X.can_not_harm(H))
 				continue
 
 			if(!(H in target_mobs))
@@ -57,7 +57,7 @@
 
 	// Loop through our turfs, finding any humans there and dealing damage to them
 	for (var/mob/living/carbon/H in target_mobs)
-		if (!isXenoOrHuman(H) || X.match_hivemind(H))
+		if (!isXenoOrHuman(H) || X.can_not_harm(H))
 			continue
 
 		if (H.stat)
@@ -107,7 +107,7 @@
 	var/list/target_mobs = list()
 	var/list/L = orange(1, X)
 	for (var/mob/living/carbon/H in L)
-		if (!isXenoOrHuman(H) || X.match_hivemind(H))
+		if (!isXenoOrHuman(H) || X.can_not_harm(H))
 			continue
 
 		if (!(H in target_mobs))
@@ -120,7 +120,7 @@
 		if (H.stat)
 			continue
 
-		if (!isXenoOrHuman(H) || X.match_hivemind(H))
+		if (!isXenoOrHuman(H) || X.can_not_harm(H))
 			continue
 
 
@@ -145,7 +145,7 @@
 	if (!check_and_use_plasma_owner())
 		return
 
-	if (!isXenoOrHuman(A) || X.match_hivemind(A))
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
 		to_chat(X, SPAN_XENODANGER("You must target a hostile!"))
 		return
 
@@ -265,7 +265,7 @@
 	var/list/targets = list()
 	for (var/turf/target_turf in turflist)
 		for (var/mob/living/carbon/H in target_turf)
-			if(!isXenoOrHuman(H) || X.match_hivemind(H) || H.is_dead())
+			if(!isXenoOrHuman(H) || X.can_not_harm(H) || H.is_dead() || H.is_mob_incapacitated(TRUE))
 				continue
 
 			targets += H
@@ -313,7 +313,7 @@
 	if (!action_cooldown_check())
 		return
 
-	if (!isXenoOrHuman(A) || X.match_hivemind(A))
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
 		return
 
 	if (!X.check_state() || X.agility)
@@ -468,7 +468,7 @@
 			if (H.stat == DEAD)
 				continue
 
-			if(!isXenoOrHuman(H) || X.match_hivemind(H))
+			if(!isXenoOrHuman(H) || X.can_not_harm(H))
 				continue
 
 			if(H.mob_size >= MOB_SIZE_BIG)
@@ -493,7 +493,7 @@
 	if (!X.check_state())
 		return
 
-	if (!isXenoOrHuman(A) || X.match_hivemind(A))
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
 		to_chat(X, SPAN_XENODANGER("You must target a hostile!"))
 		apply_cooldown_override(click_miss_cooldown)
 		return
@@ -622,7 +622,7 @@
 	if (!istype(X) || !X.check_state())
 		return
 
-	if (!isXenoOrHuman(A) || X.match_hivemind(A))
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
 		to_chat(X, SPAN_XENODANGER("You must target a hostile!"))
 		apply_cooldown_override(click_miss_cooldown)
 		return
@@ -733,7 +733,7 @@
 
 	var/obj/item/explosive/grenade/xeno_acid_grenade/grenade = new /obj/item/explosive/grenade/xeno_acid_grenade
 	grenade.source_mob = X
-	grenade.loc = get_turf(X)
+	grenade.forceMove(get_turf(X))
 	grenade.throw_atom(A, 5, SPEED_SLOW, X, TRUE)
 	addtimer(CALLBACK(grenade, /obj/item/explosive/proc/prime), prime_delay)
 
@@ -751,7 +751,7 @@
 	if(!A || A.layer >= FLY_LAYER || !isturf(X.loc) || !X.check_state())
 		return
 
-	if (!isXeno(A) || !X.match_hivemind(A))
+	if (!isXeno(A) || !X.can_not_harm(A))
 		to_chat(X, SPAN_XENODANGER("You must target one of your sisters!"))
 		return
 
@@ -771,6 +771,10 @@
 	var/use_plasma = FALSE
 
 	if (curr_effect_type == WARDEN_HEAL_SHIELD)
+		if (SEND_SIGNAL(targetXeno, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			to_chat(X, SPAN_XENOWARNING("You cannot heal bolster the defenses of this xeno!"))
+			return
+
 		var/bonus_shield = 0
 
 		if (X.mutation_type == PRAETORIAN_WARDEN)
@@ -795,17 +799,18 @@
 			targetXeno.visible_message(SPAN_BOLDNOTICE("[X] points at [targetXeno], and it shudders as its exoskeleton shimmers for a second!")) //this one is a bit less important than healing and rejuvenating
 		to_chat(X, SPAN_XENODANGER("You bolster the defenses of [targetXeno]!"))	//but i imagine it'll be useful for predators, survivors and for battle flavor
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You feel your defenses bolstered by [X]!"))
-		targetXeno.add_xeno_shield(total_shield_amount, XENO_SHIELD_SOURCE_WARDEN_PRAE)
-		targetXeno.xeno_jitter(SECONDS_1)
-		targetXeno.flick_heal_overlay(SECONDS_3, "#FFA800") //D9F500
+
+		targetXeno.add_xeno_shield(total_shield_amount, XENO_SHIELD_SOURCE_WARDEN_PRAE, duration = shield_duration, decay_amount_per_second = shield_decay)
+		targetXeno.xeno_jitter(1 SECONDS)
+		targetXeno.flick_heal_overlay(3 SECONDS, "#FFA800") //D9F500
 		use_plasma = TRUE
 
 	else if (curr_effect_type == WARDEN_HEAL_HP)
 		if (!X.Adjacent(A))
 			to_chat(X, SPAN_XENODANGER("You must be within touching distance of [targetXeno]!"))
 			return
-		if (targetXeno.on_fire)
-			to_chat(X, SPAN_XENOWARNING("You cannot heal sisters that are on fire!"))
+		if (SEND_SIGNAL(targetXeno, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			to_chat(X, SPAN_XENOWARNING("You cannot heal this xeno!"))
 			return
 
 		var/bonus_heal = 0
@@ -827,7 +832,7 @@
 		targetXeno.gain_health(heal_amount + bonus_heal)
 		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] places its claws on [targetXeno], and its wounds are quickly sealed!"))	//marines probably should know if a xeno gets healed
 		use_plasma = TRUE	//it's already hard enough to gauge health without hp showing on the mob
-		targetXeno.flick_heal_overlay(SECONDS_3, "#00B800")//so the visible_message and recovery overlay will warn marines and possibly predators that the xenomorph has been healed!
+		targetXeno.flick_heal_overlay(3 SECONDS, "#00B800")//so the visible_message and recovery overlay will warn marines and possibly predators that the xenomorph has been healed!
 
 	else if (curr_effect_type == WARDEN_HEAL_DEBUFFS)
 		if (X.observed_xeno != null)
@@ -845,8 +850,8 @@
 		to_chat(X, SPAN_XENODANGER("You rejuvenate [targetXeno]!"))
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You are rejuvenated by [X]!"))
 		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] points at [targetXeno], and it spasms as it recuperates unnaturally quickly!"))	//marines probably should know if a xeno gets rejuvenated
-		targetXeno.xeno_jitter(SECONDS_1) //it might confuse them as to why the queen got up half a second after being AT rocketed, and give them feedback on the Praetorian rejuvenating
-		targetXeno.flick_heal_overlay(SECONDS_3, "#F5007A") //therefore making the Praetorian a priority target
+		targetXeno.xeno_jitter(1 SECONDS) //it might confuse them as to why the queen got up half a second after being AT rocketed, and give them feedback on the Praetorian rejuvenating
+		targetXeno.flick_heal_overlay(3 SECONDS, "#F5007A") //therefore making the Praetorian a priority target
 		targetXeno.SetKnockedout(0)
 		targetXeno.SetStunned(0)
 		targetXeno.SetKnockeddown(0)

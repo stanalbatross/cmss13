@@ -204,7 +204,7 @@
 		return
 	playsound(src, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	if(!ammo_equipped.ammo_count)
-		ammo_equipped.loc = null
+		ammo_equipped.moveToNullspace()
 		to_chat(user, SPAN_NOTICE("You discard the empty [ammo_equipped.name] in [src]."))
 		qdel(ammo_equipped)
 	else
@@ -318,10 +318,10 @@
 
 /obj/structure/dropship_equipment/sentry_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "sentry_system_installed"
 		if(deployed_turret)
-			deployed_turret.dir = dir
+			deployed_turret.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(SOUTH)
@@ -340,13 +340,13 @@
 				deployed_turret.pixel_x = 0
 				deployed_turret.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_turret)
 			icon_state = "sentry_system"
 			deployed_turret.pixel_y = 0
 			deployed_turret.pixel_x = 0
-			deployed_turret.loc = src
-			deployed_turret.dir = dir
+			deployed_turret.forceMove(src)
+			deployed_turret.setDir(dir)
 			deployed_turret.turned_on = 0
 		else
 			icon_state = "sentry_system_destroyed"
@@ -360,9 +360,9 @@
 	deployed_turret.turned_on = TRUE
 
 	if(ship_base.base_category == DROPSHIP_WEAPON)
-		deployed_turret.loc = get_step(src, dir)
+		deployed_turret.forceMove(get_step(src, dir))
 	else
-		deployed_turret.loc = src.loc
+		deployed_turret.forceMove(src.loc)
 
 	icon_state = "sentry_system_deployed"
 
@@ -381,7 +381,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
-	deployed_turret.loc = src
+	deployed_turret.forceMove(src)
 	deployed_turret.turned_on = FALSE
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()
@@ -439,10 +439,10 @@
 
 /obj/structure/dropship_equipment/mg_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "mg_system_installed"
 		if(deployed_mg)
-			deployed_mg.dir = dir
+			deployed_mg.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(NORTH)
@@ -458,13 +458,13 @@
 				deployed_mg.pixel_x = 0
 				deployed_mg.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_mg)
 			icon_state = "mg_system"
 			deployed_mg.pixel_y = 0
 			deployed_mg.pixel_x = 0
-			deployed_mg.loc = src
-			deployed_mg.dir = dir
+			deployed_mg.forceMove(src)
+			deployed_mg.setDir(dir)
 		else
 			icon_state = "mg_system_destroyed"
 
@@ -476,17 +476,17 @@
 			switch(dir)
 				if(NORTH)
 					if( istype(get_step(src, WEST), /turf/open) )
-						deployed_mg.loc = get_step(src, WEST)
+						deployed_mg.forceMove(get_step(src, WEST))
 					else if ( istype(get_step(src, EAST), /turf/open) )
-						deployed_mg.loc = get_step(src, EAST)
+						deployed_mg.forceMove(get_step(src, EAST))
 					else
-						deployed_mg.loc = get_step(src, NORTH)
+						deployed_mg.forceMove(get_step(src, NORTH))
 				if(EAST)
-					deployed_mg.loc = get_step(src, SOUTH)
+					deployed_mg.forceMove(get_step(src, SOUTH))
 				if(WEST)
-					deployed_mg.loc = get_step(src, SOUTH)
+					deployed_mg.forceMove(get_step(src, SOUTH))
 		else
-			deployed_mg.loc = src.loc
+			deployed_mg.forceMove(src.loc)
 		icon_state = "mg_system_deployed"
 
 		for(var/mob/M in deployed_mg.loc)
@@ -501,7 +501,7 @@
 			deployed_mg.operator.unset_interaction()
 		playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 		deployment_cooldown = world.time + 10
-		deployed_mg.loc = src
+		deployed_mg.forceMove(src)
 		icon_state = "mg_system_installed"
 
 
@@ -641,9 +641,13 @@
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector/on_launch()
 	linked_cam_console.network.Add("landing zones") //only accessible while in the air.
+	for(var/ref in linked_cam_console.concurrent_users)
+		linked_cam_console.update_static_data(locate(ref))
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector/on_arrival()
 	linked_cam_console.network.Remove("landing zones")
+	for(var/ref in linked_cam_console.concurrent_users)
+		linked_cam_console.update_static_data(locate(ref))
 
 
 /////////////////////////////////// COMPUTERS //////////////////////////////////////
@@ -685,11 +689,11 @@
 
 /obj/structure/dropship_equipment/weapon/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		bound_width = 32
 		bound_height = 32
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		bound_width = initial(bound_width)
 		bound_height = initial(bound_height)
 	update_icon()
@@ -963,7 +967,7 @@
 		to_chat(user, SPAN_WARNING("No active medevac stretcher detected."))
 		return
 
-	var/stretcher_choice = input("Which emitting stretcher would you like to link with?", "Available stretchers") as null|anything in possible_stretchers
+	var/stretcher_choice = tgui_input_list(usr, "Which emitting stretcher would you like to link with?", "Available stretchers", possible_stretchers)
 	if(!stretcher_choice)
 		return
 
@@ -977,7 +981,7 @@
 	if(!selected_stretcher.stretcher_activated)//stretcher beacon was deactivated midway
 		return
 
-	if(selected_stretcher.z != 1) //in case the stretcher was on a groundside dropship that flew away during our input()
+	if(!is_ground_level(selected_stretcher.z)) //in case the stretcher was on a groundside dropship that flew away during our input()
 		return
 
 	if(!selected_stretcher.buckled_mob && !selected_stretcher.buckled_bodybag)
@@ -1062,7 +1066,7 @@
 		to_chat(user, SPAN_WARNING("There seems to be no medevac stretcher connected to [src]."))
 		return
 
-	if(linked_stretcher.z != 1)
+	if(!is_ground_level(linked_stretcher.z))
 		linked_stretcher.linked_medevac = null
 		linked_stretcher = null
 		to_chat(user, SPAN_WARNING(" There seems to be no medevac stretcher connected to [src]."))
@@ -1087,7 +1091,7 @@
 
 	busy_winch = FALSE
 	var/fail
-	if(!linked_stretcher || linked_stretcher != old_stretcher || linked_stretcher.z != 1)
+	if(!linked_stretcher || linked_stretcher != old_stretcher || !is_ground_level(linked_stretcher.z))
 		fail = TRUE
 
 	else if(!ship_base) //uninstalled midway
@@ -1174,7 +1178,7 @@
 		to_chat(user, SPAN_WARNING("No active balloons detected."))
 		return
 
-	var/fulton_choice = input("Which balloon would you like to link with?", "Available balloons") as null|anything in possible_fultons
+	var/fulton_choice = tgui_input_list(usr, "Which balloon would you like to link with?", "Available balloons", possible_fultons)
 	if(!fulton_choice)
 		return
 

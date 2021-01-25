@@ -1,7 +1,7 @@
-
-
-
-
+/obj/effect/landmark/supply_elevator/Initialize(mapload, ...)
+	. = ..()
+	GLOB.supply_elevator = get_turf(src)
+	return INITIALIZE_HINT_QDEL
 
 /datum/shuttle/ferry/supply
 	iselevator = 1
@@ -20,15 +20,14 @@
 	var/elevator_loc
 
 /datum/shuttle/ferry/supply/proc/pick_loc()
-	elevator_loc = SupplyElevator
+	RETURN_TYPE(/turf)
+	return GLOB.supply_elevator
 
 /datum/shuttle/ferry/supply/New()
 	..()
-	pick_loc()
-	var/turf/SupplyElevatorLoc = get_turf(elevator_loc)
-	Elevator_x = SupplyElevatorLoc.x
-	Elevator_y = SupplyElevatorLoc.y
-	Elevator_z = SupplyElevatorLoc.z
+	Elevator_x = pick_loc().x
+	Elevator_y = pick_loc().y
+	Elevator_z = pick_loc().z
 	SW = new /obj/effect/elevator/supply(locate(Elevator_x-2,Elevator_y-2,Elevator_z))
 	SE = new /obj/effect/elevator/supply(locate(Elevator_x+2,Elevator_y-2,Elevator_z))
 	SE.pixel_x = -128
@@ -87,10 +86,10 @@
 			sleep(70)
 			raise_elevator_effect()
 			sleep(21)
-			SW.loc = null
-			SE.loc = null
-			NW.loc = null
-			NE.loc = null
+			SW.moveToNullspace()
+			SE.moveToNullspace()
+			NW.moveToNullspace()
+			NE.moveToNullspace()
 			move(away_area, destination)
 
 		moving_status = SHUTTLE_IDLE
@@ -121,11 +120,6 @@
 /datum/shuttle/ferry/supply/proc/idle()
 	return (moving_status == SHUTTLE_IDLE)
 
-//returns the ETA in minutes
-/datum/shuttle/ferry/supply/proc/eta_minutes()
-	var/ticksleft = arrive_time - world.time
-	return round(ticksleft/MINUTES_1,1)
-
 /datum/shuttle/ferry/supply/proc/raise_railings()
 	var/effective = 0
 	for(var/obj/structure/machinery/door/poddoor/M in machines)
@@ -146,10 +140,10 @@
 		playsound(locate(Elevator_x,Elevator_y,Elevator_z), 'sound/machines/elevator_openclose.ogg', 50, 0)
 
 /datum/shuttle/ferry/supply/proc/lower_elevator_effect()
-	SW.loc = locate(Elevator_x-2,Elevator_y-2,Elevator_z)
-	SE.loc = locate(Elevator_x+2,Elevator_y-2,Elevator_z)
-	NW.loc = locate(Elevator_x-2,Elevator_y+2,Elevator_z)
-	NE.loc = locate(Elevator_x+2,Elevator_y+2,Elevator_z)
+	SW.forceMove(locate(Elevator_x-2,Elevator_y-2,Elevator_z))
+	SE.forceMove(locate(Elevator_x+2,Elevator_y-2,Elevator_z))
+	NW.forceMove(locate(Elevator_x-2,Elevator_y+2,Elevator_z))
+	NE.forceMove(locate(Elevator_x+2,Elevator_y+2,Elevator_z))
 	flick("supply_elevator_lowering", SW)
 	flick("supply_elevator_lowering", SE)
 	flick("supply_elevator_lowering", NW)
@@ -174,7 +168,7 @@
 		if(M.id == gear_id)
 			spawn()
 				M.icon_state = "gear_moving"
-				M.dir = direction
+				M.setDir(direction)
 
 /datum/shuttle/ferry/supply/proc/stop_gears()
 	for(var/obj/structure/machinery/gear/M in machines)
@@ -182,11 +176,17 @@
 			spawn()
 				M.icon_state = "gear"
 
+/obj/effect/landmark/vehicleelevator/Initialize(mapload, ...)
+	. = ..()
+	GLOB.vehicle_elevator = get_turf(src)
+	return INITIALIZE_HINT_QDEL
+
 /datum/shuttle/ferry/supply/vehicle
 	railing_id = "vehicle_elevator_railing"
 	gear_id = "vehicle_elevator_gears"
 
 /datum/shuttle/ferry/supply/vehicle/pick_loc()
+<<<<<<< HEAD
 	elevator_loc = VehicleElevator
 
 /datum/shuttle/ferry/supply/vehicle/handle_sell()
@@ -197,3 +197,6 @@
 
 	for(var/atom/movable/MA in area_shuttle)
 		qdel(MA)
+=======
+	return GLOB.vehicle_elevator
+>>>>>>> origin/dev

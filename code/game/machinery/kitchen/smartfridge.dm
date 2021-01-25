@@ -55,9 +55,9 @@
 			if(!isbroken)
 				icon_state = icon_off
 
-/*******************
-*   Item Adding
-********************/
+//*******************
+//*   Item Adding
+//********************/
 
 /obj/structure/machinery/smartfridge/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(iswrench(O))
@@ -147,9 +147,9 @@
 		return TRUE
 	return FALSE
 
-/*******************
-*   SmartFridge Menu
-********************/
+//*******************
+//*   SmartFridge Menu
+//********************/
 
 /obj/structure/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	user.set_interaction(src)
@@ -259,7 +259,7 @@
 				for(var/obj/O in source)
 					if(O.name == K)
 						source.Remove(O)
-						O.loc = loc
+						O.forceMove(loc)
 						i--
 						if (i <= 0)
 							return TRUE
@@ -308,9 +308,9 @@
 
 	return FALSE
 
-/*************
-*	Hacking
-**************/
+//*************
+//*	Hacking
+//**************/
 
 /obj/structure/machinery/smartfridge/proc/get_wire_descriptions()
 	return list(
@@ -377,7 +377,7 @@
 		item_quants[O]--
 		for(var/obj/T in contents)
 			if(T.name == O)
-				T.loc = src.loc
+				T.forceMove(src.loc)
 				throw_item = T
 				break
 		break
@@ -392,9 +392,9 @@
 
 
 
-/********************
-*	Smartfridge types
-*********************/
+//********************
+//*	Smartfridge types
+//*********************/
 
 /obj/structure/machinery/smartfridge/seeds
 	name = "\improper MegaSeed Servitor"
@@ -447,7 +447,7 @@
 	name = "\improper Smart Chemical Storage"
 	desc = "A refrigerated storage unit for medicine and chemical storage."
 	is_secure_fridge = TRUE
-	req_one_access = list(ACCESS_MARINE_CMO, ACCESS_MARINE_CHEMISTRY)
+	req_one_access = list(ACCESS_MARINE_CMO, ACCESS_MARINE_CHEMISTRY, ACCESS_MARINE_MEDPREP)
 	networked = TRUE
 
 /obj/structure/machinery/smartfridge/chemistry/accept_check(var/obj/item/O as obj)

@@ -1,10 +1,3 @@
-GLOBAL_DATUM_INIT(init, /datum/global_init, new)
-
-/*
-	Pre-map initialization stuff should go here.
-*/
-/datum/global_init/New()
-	makeDatumRefLists()
 
 var/world_view_size = 7
 var/lobby_view_size = 16
@@ -12,17 +5,17 @@ var/lobby_view_size = 16
 var/internal_tick_usage = 0
 /world
 	mob = /mob/new_player
-	turf = /turf/open/space
+	turf = /turf/open/space/basic
 	area = /area/space
 	view = "15x15"
 	cache_lifespan = 0	//stops player uploaded stuff from being kept in the rsc past the current session
 	hub = "Exadv1.spacestation13"
 
 /world/New()
-	var/extools = world.GetConfig("env", "EXTOOLS_DLL") || "./byond-extools.dll"
-	if(fexists(extools))
-		call(extools, "maptick_initialize")()
-	enable_debugger()
+	var/debug_server = world.GetConfig("env", "AUXTOOLS_DEBUG_DLL")
+	if (debug_server)
+		call(debug_server, "auxtools_init")()
+		enable_debugging()
 	internal_tick_usage = 0.2 * world.tick_lag
 	hub_password = "kMZy3U5jJHSiBQjr"
 
@@ -52,7 +45,6 @@ var/internal_tick_usage = 0
 	LoadBans()
 	load_motd()
 	load_mode()
-	setupGhostTeleportLocs()
 	loadShuttleInfoDatums()
 	populate_gear_list()
 
@@ -73,7 +65,8 @@ var/internal_tick_usage = 0
 
 	if(!EvacuationAuthority)		EvacuationAuthority = new
 
-	world.tick_lag = CONFIG_GET(number/ticklag)
+	change_tick_lag(CONFIG_GET(number/ticklag))
+	GLOB.timezoneOffset = text2num(time2text(0,"hh")) * 36000
 
 	Master.Initialize(10, FALSE, TRUE)
 
@@ -114,15 +107,12 @@ var/internal_tick_usage = 0
 
 		// Start the game ASAP
 		SSticker.current_state = GAME_STATE_SETTING_UP
-
 	return
 
 var/world_topic_spam_protect_ip = "0.0.0.0"
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	if(findtext(T, "mapdaemon") == 0) diary << "TOPIC: \"[T]\", from:[addr], master:[master], key:[key][log_end]"
-
 	if (T == "ping")
 		var/x = 1
 		for (var/client/C)
@@ -191,188 +181,27 @@ var/world_topic_spam_protect_time = world.timeofday
 			dat += "[ban_text][N.text]<br/>by [admin_name] ([N.admin_rank])[confidential_text] on [N.date]<br/><br/>"
 		return dat
 
-
-	//START: MAPDAEMON PROCESSING
-	if(addr == "127.0.0.1") //Verify that instructions are coming from the local machine
-
-		var/list/md_args = splittext(T,"&")
-		var/command = md_args[1]
-		var/MD_UID = md_args[2]
-
-		if(command == "mapdaemon_get_round_status")
-
-			if(!SSticker) return "ERROR" //Yeah yeah wrong data type, but MapDaemon.java can handle it
-
-			if(MapDaemon_UID == -1) MapDaemon_UID = MD_UID //If we haven't seen an instance of MD yet, this is ours now
-
-			if(kill_map_daemon || MD_UID != MapDaemon_UID) return 2 //The super secret killing code that kills it until it's been killed.
-
-			else if(!SSticker.mode) return 0 //Before round start
-
-			else if(SSticker.mode.round_finished || force_mapdaemon_vote) return 1
-
-			else return 0 //IDK what would cause this but why not, don't really want runtimes
-
-		else if(MD_UID != MapDaemon_UID)
-			return 2 //kill the imposter, kill it with fire
-
-		else if(command == "mapdaemon_delay_round")
-
-			if(!SSticker) return "ERROR"
-
-			addtimer(CALLBACK(src, .proc/announce_mapvote), 20 SECONDS)
-
-			SSticker.automatic_delay_end = TRUE
-			message_staff("World/Topic() call (likely MapDaemon.exe) has delayed the round end.", 1)
-			return "SUCCESS"
-
-		else if(command == "mapdaemon_restart_round")
-
-			if(!SSticker) return "ERROR"
-
-			SSticker.automatic_delay_end = FALSE
-			message_staff("World/Topic() call (likely MapDaemon.exe) has resumed the round end.", 1)
-
-			//So admins have a chance to make EORG bans and do whatever
-			if(!SSticker.delay_end)
-				message_staff(FONT_SIZE_LARGE(SPAN_BOLDANNOUNCE("NOTICE: Delay round within 30 seconds in order to prevent auto-restart!")), 1)
-
-			MapDaemonHandleRestart() //Doesn't hold
-
-			return "WILL DO" //Yessir!
-
-		else if(command == "mapdaemon_receive_votes")
-			return count_votes()
-
-var/list/datum/entity/map_vote/all_votes
-
-/world/proc/announce_mapvote()
-	var/text = ""
-	text += "<hr><br>"
-	text += SPAN_CENTERBOLD("<font color='#00CC00'>You have 30 seconds to vote for the next map! Use the \"Map Vote\" verb in the OOC tab or click <a href='?src=\ref[src];vote_for_map=1'>here</a> to select an option, or open voting window again to change your choice.</font>")
-	text += "<hr><br>"
-
-	to_world(text)
-	world << 'sound/voice/start_your_voting.ogg'
-
-	for(var/client/C in GLOB.clients)
-		C.mapVote()
-
-	load_maps_for_vote()
-
-/world/proc/load_maps_for_vote()
-	SSentity_manager.filter_then(/datum/entity/map_vote, null, CALLBACK(world, /world.proc/load_maps_for_vote_callback))
-
-/world/proc/load_maps_for_vote_callback(var/list/datum/entity/map_vote/votes)
-	all_votes = list()
-	for(var/i in DEFAULT_NEXT_MAP_CANDIDATES)
-		var/found = FALSE
-		var/datum/entity/map_vote/vote
-		for(var/datum/entity/map_vote/in_vote in votes)
-			if(in_vote.map_name == i)
-				found = TRUE
-				vote = in_vote
-				break
-
-		if(!found)
-			vote = SSentity_manager.select(/datum/entity/map_vote)
-			vote.map_name = i
-			vote.total_votes = 0
-			vote.save()
-
-		all_votes[i] = vote
-
-/world/proc/count_votes()
-	var/list/L = list()
-
-	var/i
-	for(i in NEXT_MAP_CANDIDATES)
-		if(all_votes && all_votes[i]) // safety check
-			L[i] = all_votes[i].total_votes
-		else
-			L[i] = 0 //Initialize it
-
-	var/forced = 0
-	var/force_result = ""
-	i = null //Sanitize for safety
-	var/j
-	for(i in player_votes)
-		j = player_votes[i]
-		if(i == "}}}") //Special invalid ckey for forcing the next map
-			forced = 1
-			force_result = j
-			continue
-		L[j] = L[j] + 1 //Just number of votes indexed by map name
-
-	i = null
-	var/most_votes = -1
-	var/next_map = ""
-	for(i in L)
-		if(L[i] > most_votes && (!all_votes || !all_votes[i] || L[i] != all_votes[i].total_votes)) // so if it didn't get any new votes (due to being out of rotation or shit or broken) it is not picked
-			most_votes = L[i]
-			next_map = i
-
-	if(!enable_map_vote && SSticker.mode)
-		next_map = SSticker.mode.name
-	else if(enable_map_vote && forced)
-		next_map = force_result
-
-	var/text = ""
-	text += "<font color='#00CC00'>"
-
-	var/log_text = ""
-	log_text += "\[[time2text(world.realtime, "DD Month YYYY")]\] Winner: [next_map] ("
-
-	text += "The voting results were:<br>"
-	for(var/name in L)
-		var/item_text = "[name] - [L[name]]"
-		if(!forced && all_votes && all_votes[name])
-			var/new_votes = L[name] - all_votes[name].total_votes
-			if(!new_votes)
-				continue
-			item_text += " ([new_votes] new)"
-			if(next_map != name)
-				all_votes[name].total_votes = L[name]
-			else
-				all_votes[name].total_votes = 0
-			all_votes[name].save()
-
-		text += item_text + "<br>"
-		log_text += item_text + ","
-
-	log_text += ")\n"
-
-	if(forced)
-		text += "<b>An admin has forced the next map.</b><br>"
-	else
-		text2file(log_text, "data/map_votes.txt")
-
-	text += "<b>The next map will be on [forced ? force_result : next_map].</b>"
-
-	text += "</font>"
-
-	to_world(text)
-
-	return next_map
-
 /world/Reboot(var/reason)
-	/*spawn(0)
-		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')) // random end sounds!! - LastyBatsy
-		*/
-
 	Master.Shutdown()
+
+	var/server = CONFIG_GET(string/server)
+	for(var/thing in GLOB.clients)
+		if(!thing)
+			continue
+		var/client/C = thing
+		C?.tgui_panel?.send_roundrestart()
+		if(server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+			C << link("byond://[server]")
+
 	var/round_extra_data = ""
 	// Notify helper daemon of reboot, regardless of reason.
 	if(SSticker.mode)
 		round_extra_data = "&message=[SSticker.mode.end_round_message()]"
-
 	world.Export("http://127.0.0.1:8888/?rebooting=1[round_extra_data]")
-	for(var/client/C in GLOB.clients)
-		var/datum/chatOutput/chat = C.chatOutput
-		if(chat)
-			chat.browser_send(C, "roundrestart")
-		if(CONFIG_GET(string/server))	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			C << link("byond://[CONFIG_GET(string/server)]")
+	
+	if(CONFIG_GET(flag/no_restarts))
+		shutdown()
+		return 
 
 	..(reason)
 
@@ -404,12 +233,12 @@ var/list/datum/entity/map_vote/all_votes
 		// s += "<a href=\"http://goo.gl/04C5lP\">Wiki</a>|<a href=\"http://goo.gl/hMmIKu\">Rules</a>"
 		if(SSticker)
 			if(master_mode)
-				s += "<br>Map: <b>[map_tag]</b>"
+				s += "<br>Map: <b>[SSmapping.configs[GROUND_MAP].map_name]</b>"
 				if(SSticker.mode)
 					s += "<br>Mode: <b>[SSticker.mode.name]</b>"
 				s += "<br>Round time: <b>[duration2text()]</b>"
 		else
-			s += "<br>Map: <b>[map_tag]</b>"
+			s += "<br>Map: <b>[SSmapping.configs[GROUND_MAP].map_name]</b>"
 		// s += enter_allowed ? "<br>Entering: <b>Enabled</b>" : "<br>Entering: <b>Disabled</b>"
 
 		status = s
@@ -433,29 +262,6 @@ proc/setup_database_connection()
 
 
 	return .
-
-// /hook/startup/proc/connectOldDB()
-// 	if(!setup_old_database_connection())
-// 		world.log << "Your server failed to establish a connection with the SQL database."
-// 	else
-// 		world.log << "SQL database connection established."
-// 	return 1
-
-/proc/MapDaemonHandleRestart()
-	set waitfor = 0
-
-	SSticker.current_state = GAME_STATE_COMPILE_FINISHED
-
-	sleep(300)
-
-	if(SSticker.delay_end || SSticker.automatic_delay_end)
-		return
-
-	to_world(SPAN_DANGER("<b>Restarting world!</b> \blue Initiated by MapDaemon.exe!"))
-	log_admin("World/Topic() call (likely MapDaemon.exe) initiated a reboot.")
-
-	sleep(30)
-	world.Reboot() //Whatever this is the important part
 
 /proc/set_global_view(view_size)
 	world_view_size = view_size
@@ -481,5 +287,18 @@ proc/setup_database_connection()
 	fps = new_value
 	on_tickrate_change()
 
+/world/proc/change_tick_lag(new_value = 0.5)
+	if(new_value <= 0)
+		CRASH("change_tick_lag() called with [new_value] new_value.")
+	if(tick_lag == new_value)
+		return //No change required.
+
+	tick_lag = new_value
+	on_tickrate_change()
+
 /world/proc/on_tickrate_change()
-	SStimer?.reset_buckets()
+	SStimer.reset_buckets()
+
+/world/proc/incrementMaxZ()
+	maxz++
+	//SSmobs.MaxZChanged()

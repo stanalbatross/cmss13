@@ -13,7 +13,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 /client/proc/proccall_atom(datum/A as null|area|mob|obj|turf)
 	set category = null
-	set name = "B: Atom ProcCall"
+	set name = "Atom ProcCall"
 	set waitfor = FALSE
 
 	if(!check_rights(R_DEBUG))
@@ -49,7 +49,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 /client/proc/proccall_advanced()
 	set category = "Debug"
-	set name = "A: Advanced ProcCall"
+	set name = "Advanced ProcCall"
 	set waitfor = FALSE
 
 	if(!check_rights(R_DEBUG))
@@ -182,7 +182,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 			if(admin_holder && admin_holder.marked_datums.len)
 				options += "Marked datum"
 
-			class = input("Proc owned by...","Owner",null) as null|anything in options
+			class = tgui_input_list(usr, "Proc owned by...","Owner", options)
 			switch(class)
 				if("Obj")
 					target = input("Enter target:","Target",usr) as obj in GLOB.object_list
@@ -194,7 +194,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 					var/list/keys = list()
 					for(var/client/C)
 						keys += C
-					target = input("Please, select a player!", "Selection", null, null) as null|anything in keys
+					target = tgui_input_list(usr, "Please, select a player!", "Selection", keys)
 				if("Marked datum")
 					var/datum/D = input_marked_datum(admin_holder.marked_datums)
 					target = D
@@ -227,7 +227,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	for(i=1, i<argnum+1, i++) // Lists indexed from 1 forwards in byond
 
 		// Make a list with each index containing one variable, to be given to the proc
-		class = input("What kind of variable?","Variable Type") in list("text","num","type","reference","mob reference","icon","file","client","mob's area","marked datum","CANCEL")
+		class = tgui_input_list(usr, "What kind of variable?","Variable Type", list("text","num","type","reference","mob reference","icon","file","client","mob's area","marked datum","CANCEL"))
 		switch(class)
 			if("CANCEL")
 				return
@@ -239,7 +239,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 				lst[i] = input("Enter new number:","Num",0) as num
 
 			if("type")
-				lst[i] = input("Enter type:","Type") in typesof(/obj,/mob,/area,/turf)
+				lst[i] = tgui_input_list(usr, "Enter type:","Type", typesof(/obj,/mob,/area,/turf))
 
 			if("reference")
 				lst[i] = input("Select reference:","Reference",src) as mob|obj|turf|area in world
@@ -257,7 +257,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 				var/list/keys = list()
 				for(var/mob/M in GLOB.player_list)
 					keys += M.client
-				lst[i] = input("Please, select a player!", "Selection", null, null) as null|anything in keys
+				lst[i] = tgui_input_list(usr, "Please, select a player!", "Selection", keys)
 
 			if("mob's area")
 				var/mob/temp = input("Select mob", "Selection", usr) as mob in GLOB.mob_list
@@ -364,15 +364,15 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 		spawn(10)
 			M:Alienize()
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] made [key_name(M)] into an alien."), 1)
+		message_staff("[key_name_admin(usr)] made [key_name(M)] into an alien.")
 	else
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_change_hivenumber()
 	set category = "Debug"
-	set name = "E: Change Hivenumber"
+	set name = "Change Hivenumber"
 
-	var/mob/living/carbon/X = input(src,"Select a xeno.", null, null) in GLOB.living_xeno_list
+	var/mob/living/carbon/X = tgui_input_list(src,"Select a xeno.", "Change Hivenumber", GLOB.living_xeno_list)
 	if(!istype(X))
 		to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 		return
@@ -381,22 +381,22 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 /client/proc/cmd_debug_toggle_should_check_for_win()
 	set category = "Debug"
-	set name = "H: Toggle Round End Checks"
+	set name = "Toggle Round End Checks"
 
 	if(!SSticker.mode)
 		to_chat(usr, "Mode not found?")
 	round_should_check_for_win = !round_should_check_for_win
 	if (round_should_check_for_win)
-		message_staff(SPAN_NOTICE("[key_name(src)] enabled checking for round-end."), 1)
+		message_staff("[key_name(src)] enabled checking for round-end.")
 	else
-		message_staff(SPAN_NOTICE("[key_name(src)] disabled checking for round-end."), 1)
+		message_staff("[key_name(src)] disabled checking for round-end.")
 
 
 
 //TODO: merge the vievars version into this or something maybe mayhaps
 /client/proc/cmd_debug_del_all()
 	set category = "Debug"
-	set name = "E: Delete Instance"
+	set name = "Delete Instance"
 
 	// to prevent REALLY stupid deletions
 	var/blocked = list(/obj, /obj/item, /obj/effect, /obj/structure/machinery, /mob, /mob/living, /mob/living/carbon, /mob/living/carbon/Xenomorph, /mob/living/carbon/human, /mob/dead, /mob/dead/observer, /mob/living/silicon, /mob/living/silicon/robot, /mob/living/silicon/ai)
@@ -404,7 +404,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	if(chosen_deletion)
 		chosen_deletion = text2path(chosen_deletion)
 		if(ispath(chosen_deletion))
-			var/hsbitem = input(usr, "Choose an object to delete.", "Delete:") as null|anything in typesof(chosen_deletion)
+			var/hsbitem = tgui_input_list(usr, "Choose an object to delete.", "Delete:", typesof(chosen_deletion))
 			if(hsbitem)
 				var/do_delete = 1
 				if(hsbitem in blocked)
@@ -428,7 +428,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 /client/proc/cmd_debug_fire_ob()
 	set category = "Debug"
 	set desc = "Fire an OB warhead at your current location."
-	set name = "E: Fire OB"
+	set name = "Fire OB"
 
 	if(!check_rights(R_DEBUG))
 		return
@@ -437,7 +437,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 	// Select the warhead.
 	var/list/warheads = subtypesof(/obj/structure/ob_ammo/warhead/)
-	var/choice = input("Select the warhead:") as null|anything in warheads
+	var/choice = tgui_input_list(usr, "Select the warhead:", "Warhead to use", warheads)
 	var/obj/structure/ob_ammo/warhead/warhead = new choice
 	var/turf/target = get_turf(usr.loc)
 	target.ceiling_debris_check(5)
@@ -447,7 +447,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 /client/proc/cmd_debug_make_powernets()
 	set category = "Debug"
-	set name = "X: Generate Powernets"
+	set name = "Generate Powernets"
 	if(alert("Are you sure you want to do this?",, "Yes", "No") == "No") return
 	makepowernets()
 	message_staff("[key_name_admin(src)] has remade the powernets. makepowernets() called.", 0)
@@ -478,7 +478,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	else
 		alert("Invalid mob")
 
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] has granted [M.key] full access."), 1)
+	message_staff("[key_name_admin(usr)] has granted [M.key] full access.")
 
 /client/proc/cmd_admin_grantallskills(var/mob/M in GLOB.mob_list)
 	set category = null
@@ -492,7 +492,7 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 	else
 		alert("Invalid mob")
 
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] has granted [M.key] all skills."), 1)
+	message_staff("[key_name_admin(usr)] has granted [M.key] all skills.")
 
 /client/proc/cmd_assume_direct_control(var/mob/M in GLOB.mob_list)
 	set name = "Control Mob"
@@ -519,23 +519,23 @@ GLOBAL_PROTECT(AdminProcCallSpamPrevention)
 
 	usr.mind.transfer_to(M, TRUE)
 
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] assumed direct control of [M]."), 1)
+	message_staff("[key_name_admin(usr)] assumed direct control of [M].")
 
 /client/proc/cmd_debug_list_processing_items()
-	set category = "Debug"
-	set name = "C: List Processing Items"
+	set category = "Debug.Controllers"
+	set name = "List Processing Items"
 	set desc = "For scheduler debugging"
 
 	var/list/individual_counts = list()
 	for(var/datum/disease/M in active_diseases)
 		individual_counts["[M.type]"]++
-	for(var/mob/M in processable_human_list)
+	for(var/mob/M in SShuman.processable_human_list)
 		individual_counts["[M.type]"]++
 	for(var/obj/structure/machinery/M in processing_machines)
 		individual_counts["[M.type]"]++
 	for(var/datum/powernet/M in powernets)
 		individual_counts["[M.type]"]++
-	for(var/mob/M in living_misc_mobs)
+	for(var/mob/M in SSmob.living_misc_mobs)
 		individual_counts["[M.type]"]++
 	for(var/datum/nanoui/M in nanomanager.processing_uis)
 		individual_counts["[M.type]"]++

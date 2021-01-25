@@ -15,8 +15,8 @@
 	anchored = 1
 	throwpass = 1
 
-/obj/structure/morgue/New()
-	..()
+/obj/structure/morgue/Initialize()
+	. = ..()
 	connected = new tray_path(src)
 
 /obj/structure/morgue/Destroy()
@@ -55,7 +55,7 @@
 		for(var/atom/movable/A in connected.loc)
 			if(!A.anchored)
 				A.forceMove(src)
-		connected.loc = src
+		connected.forceMove(src)
 		name = "morgue"
 		var/mob/living/L = locate(/mob/living) in contents
 		if(L)
@@ -69,13 +69,13 @@
 
 	else
 		name = "morgue"
-		connected.loc = loc
+		connected.forceMove(loc)
 		if(step(connected, dir))
-			connected.dir = dir
+			connected.setDir(dir)
 			for(var/atom/movable/A in src)
 				A.forceMove(connected.loc)
 		else
-			connected.loc = src
+			connected.forceMove(src)
 			return
 	morgue_open = !morgue_open
 	playsound(loc, 'sound/items/Deconstruct.ogg', 25, 1)

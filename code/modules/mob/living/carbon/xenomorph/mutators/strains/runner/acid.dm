@@ -16,8 +16,9 @@
 		return
 
 	var/mob/living/carbon/Xenomorph/Runner/R = MS.xeno
-	R.mutation_type = RUNNER_ACIDER	
+	R.mutation_type = RUNNER_ACIDER
 	R.speed_modifier += XENO_SPEED_SLOWMOD_TIER_5
+	R.armor_modifier += XENO_ARMOR_MOD_MED
 	apply_behavior_holder(R)
 	mutator_update_actions(R)
 	R.recalculate_everything()
@@ -25,7 +26,7 @@
 
 /datum/behavior_delegate/runner_acider
 	var/acid_amount = 0
-	
+
 	var/caboom_left = 20
 	var/caboom_trigger
 	var/caboom_last_proc
@@ -53,11 +54,12 @@
 		acid_amount = 0
 
 /datum/behavior_delegate/runner_acider/append_to_stat()
-	stat("Acid:", "[acid_amount]")
+	. = list()
+	. += "Acid: [acid_amount]"
 	if(caboom_trigger)
-		stat("FOR THE HIVE!:", "in [caboom_left] seconds")
-	
-/datum/behavior_delegate/runner_acider/melee_attack_additional_effects_target(atom/A)	
+		. += "FOR THE HIVE!: in [caboom_left] seconds"
+
+/datum/behavior_delegate/runner_acider/melee_attack_additional_effects_target(atom/A)
 	if (ishuman(A))
 		var/mob/living/carbon/human/H = A
 		if (H.stat == DEAD)
@@ -76,7 +78,7 @@
 	if(!bound_xeno)
 		return
 	if(bound_xeno.stat == DEAD)
-		return		
+		return
 	if(caboom_trigger)
 		var/wt = world.time
 		if(caboom_last_proc)
@@ -109,7 +111,7 @@
 	var/x = bound_xeno.x
 	var/y = bound_xeno.y
 	for(var/mob/living/M in view(bound_xeno, burn_range))
-		if (!isXenoOrHuman(M) || bound_xeno.match_hivemind(M))
+		if (!isXenoOrHuman(M) || bound_xeno.can_not_harm(M))
 			continue
 		var/dist = 0
 		// such cheap, much fast
@@ -126,7 +128,7 @@
 		M.apply_damage(damage, BURN)
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
 	if(bound_xeno.client && bound_xeno.hive)
-		addtimer(CALLBACK(src, /datum/behavior_delegate/runner_acider.proc/do_respawn, bound_xeno.client, bound_xeno.hive), SECONDS_5)
+		addtimer(CALLBACK(src, /datum/behavior_delegate/runner_acider.proc/do_respawn, bound_xeno.client, bound_xeno.hive), 5 SECONDS)
 	bound_xeno.gib()
 
 
@@ -134,6 +136,8 @@
 	hive.stored_larva++
 	if(!hive.spawn_pool || !hive.spawn_pool.spawn_pooled_larva(C.mob))
 		hive.stored_larva--
+	else
+		hive.hive_ui.update_pooled_larva()
 
 /mob/living/carbon/Xenomorph/Runner/can_ventcrawl()
 	var/datum/behavior_delegate/runner_acider/BD = behavior_delegate

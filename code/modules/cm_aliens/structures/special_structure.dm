@@ -51,13 +51,12 @@
 	if(hive_ref)
 		linked_hive = hive_ref
 	else
-		linked_hive = hive_datum[XENO_HIVE_NORMAL]
+		linked_hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
 
 	set_hive_data(src, linked_hive.hivenumber)
 
 	if(!linked_hive.add_special_structure(src))
-		qdel(src)
-		return
+		return INITIALIZE_HINT_QDEL
 
 	fast_objects.Add(src)
 	update_icon()

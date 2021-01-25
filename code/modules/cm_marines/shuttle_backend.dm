@@ -1,4 +1,4 @@
-/*************************************
+/*
 shuttle_backend.dm
 by MadSnailDisease, 12/29/16
 **************************************
@@ -398,7 +398,6 @@ qdel(src)
 /obj/effect/landmark/shuttle_loc/marine_src/evacuation
 
 /obj/effect/landmark/shuttle_loc/marine_src/evacuation/link_loc()
-	sleep(50)
 	..()
 	var/datum/shuttle/ferry/marine/evacuation_pod/S = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [name]"]
 	if(!S)
@@ -419,7 +418,6 @@ qdel(src)
 /obj/effect/landmark/shuttle_loc/marine_crs/dropship
 
 /obj/effect/landmark/shuttle_loc/marine_crs/dropship/link_loc()
-	sleep(50)
 	..()
 
 	// Sort the crash location into the ship section it belongs to
@@ -455,7 +453,6 @@ var/targetTurf = get_turf(src);\
 var/datum/shuttle/ferry/marine/S = shuttle_controller.shuttles["Ground [T] [name]"]; \
 if(!S) {log_debug("ERROR CODE SO1: unable to find shuttle with the tag of: ["Ground [T] [name]"].")};\
 L[targetTurf] = rotation; \
-
 qdel(src)
 
 // Stripped-down variant of the dropship effects. Here, we don't need crashes
@@ -581,7 +578,7 @@ qdel(src)
 		var/old_icon = T.icon
 
 		target.ChangeTurf(T.type)
-		target.dir = old_dir
+		target.setDir(old_dir)
 		target.icon_state = old_icon_state
 		target.icon = old_icon
 
@@ -591,10 +588,10 @@ qdel(src)
 				continue
 
 			if (isobj(A))
-				A.loc = target
+				A.forceMove(target)
 
 			if (ismob(A))
-				A.loc = target
+				A.forceMove(target)
 				if(iscarbon(A))
 					var/mob/living/carbon/M = A
 					if(M.client)

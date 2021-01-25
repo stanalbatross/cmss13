@@ -22,11 +22,12 @@ SUBSYSTEM_DEF(tracking)
 	return ..()
 
 
-/datum/controller/subsystem/tracking/stat_entry()
+/datum/controller/subsystem/tracking/stat_entry(msg)
 	var/mobs = 0
 	for(var/tracked_group in tracked_mobs)
 		mobs += length(tracked_mobs[tracked_group])
-	..("P:[mobs]")
+	msg = "P:[mobs]"
+	return ..()
 
 
 /datum/controller/subsystem/tracking/fire(resumed = FALSE)
@@ -69,7 +70,7 @@ SUBSYSTEM_DEF(tracking)
 
 	if(tracking_id != tracked_group)
 		tracked_mobs[tracked_group] -= mob
-		
+
 	if(tracked_mobs[tracking_id])
 		tracked_mobs[tracking_id] -= mob
 
@@ -93,5 +94,7 @@ SUBSYSTEM_DEF(tracking)
 
 /datum/controller/subsystem/tracking/proc/initialize_trackers()
 	setup_trackers(null, "marine_sl")
-	for(var/datum/hive_status/hive in hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		setup_trackers(null, "hive_[hive.hivenumber]")

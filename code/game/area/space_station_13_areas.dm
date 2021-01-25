@@ -13,23 +13,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 */
 
-var/list/ghostteleportlocs = list()
-
-/proc/setupGhostTeleportLocs()
-	for(var/area/AR in all_areas)
-		if(ghostteleportlocs.Find(AR.name)) continue
-		if(istype(AR, /area/tdome) || istype(AR, /area/adminlevel/bunker01/mainroom) || istype(AR, /area/adminlevel/ert_station))
-			ghostteleportlocs += AR.name
-			ghostteleportlocs[AR.name] = AR
-		var/turf/picked = pick(get_area_turfs(AR.type))
-		if (is_ground_level(picked.z) || is_mainship_level(picked.z) || is_loworbit_level(picked.z) || is_huntership_level(picked.z))
-			ghostteleportlocs += AR.name
-			ghostteleportlocs[AR.name] = AR
-
-	ghostteleportlocs = sortAssoc(ghostteleportlocs)
-
-	return 1
-
 /*-----------------------------------------------------------------------------*/
 /area/space
 	name = "\improper Space"
@@ -39,7 +22,6 @@ var/list/ghostteleportlocs = list()
 	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
-	ambience = list('sound/ambience/ambispace.ogg')
 	temperature = TCMB
 	pressure = 0
 	flags_atom = AREA_NOTUNNEL

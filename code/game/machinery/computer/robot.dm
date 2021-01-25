@@ -113,7 +113,7 @@
 			if (istype(I))
 				if(src.check_access(I))
 					if (!status)
-						message_staff(SPAN_NOTICE("[key_name_admin(usr)] has initiated the global cyborg killswitch!"))
+						message_staff("[key_name_admin(usr)] has initiated the global cyborg killswitch!")
 						log_game(SPAN_NOTICE("[key_name(usr)] has initiated the global cyborg killswitch!"))
 						src.status = 1
 						src.start_sequence()
@@ -150,10 +150,10 @@
 			if(src.allowed(usr))
 				var/mob/living/silicon/robot/R = locate(href_list["killbot"])
 				if(R)
-					var/choice = input("Are you certain you wish to detonate [R.name]?") in list("Confirm", "Abort")
+					var/choice = tgui_input_list(usr, "Are you certain you wish to detonate [R.name]?", "Hack machine", list("Confirm", "Abort"))
 					if(choice == "Confirm")
 						if(R && istype(R))
-							message_staff(SPAN_NOTICE("[key_name_admin(usr)] detonated [R.name]!"))
+							message_staff("[key_name_admin(usr)] detonated [R.name]!")
 							log_game(SPAN_NOTICE("[key_name_admin(usr)] detonated [R.name]!"))
 							R.self_destruct()
 			else
@@ -163,10 +163,10 @@
 			if(src.allowed(usr))
 				var/mob/living/silicon/robot/R = locate(href_list["stopbot"])
 				if(R && istype(R)) // Extra sancheck because of input var references
-					var/choice = input("Are you certain you wish to [R.canmove ? "lock down" : "release"] [R.name]?") in list("Confirm", "Abort")
+					var/choice = tgui_input_list(usr, "Are you certain you wish to [R.canmove ? "lock down" : "release"] [R.name]?", "Hack machine", list("Confirm", "Abort"))
 					if(choice == "Confirm")
 						if(R && istype(R))
-							message_staff(SPAN_NOTICE("[key_name_admin(usr)] [R.canmove ? "locked down" : "released"] [R.name]!"))
+							message_staff("[key_name_admin(usr)] [R.canmove ? "locked down" : "released"] [R.name]!")
 							log_game("[key_name(usr)] [R.canmove ? "locked down" : "released"] [R.name]!")
 							R.canmove = !R.canmove
 							if (R.lockcharge)
@@ -188,11 +188,11 @@
 				// whatever weirdness this is supposed to be, but that is how the href gets added, so here it is again
 				if(istype(R) && isRemoteControlling(usr) && (usr.mind.original == usr))
 
-					var/choice = input("Are you certain you wish to hack [R.name]?") in list("Confirm", "Abort")
+					var/choice = tgui_input_list(usr, "Are you certain you wish to hack [R.name]?", "Hack machine", list("Confirm", "Abort"))
 					if(choice == "Confirm")
 						if(R && istype(R))
 							log_game("[key_name(usr)] emagged [R.name] using robotic console!")
-							R.verbs += /mob/living/silicon/robot/proc/ResetSecurityCodes
+							add_verb(R, /mob/living/silicon/robot/proc/ResetSecurityCodes)
 
 		src.add_fingerprint(usr)
 	src.updateUsrDialog()

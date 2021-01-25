@@ -1,5 +1,3 @@
-var/global/datum/controller/subsystem/teleporter/teleporter_ss
-
 // Master teleporter controller.
 SUBSYSTEM_DEF(teleporter)
     name = "Teleporter"
@@ -15,11 +13,8 @@ SUBSYSTEM_DEF(teleporter)
 //Corsat_Teleporter
 
 /datum/controller/subsystem/teleporter/Initialize()
-    if (map_tag != MAP_CORSAT) // Bad style, but I'm leaving it here for now until someone wants to add a teleporter to another map
-        return 
-    
-    if (!teleporter_ss)
-        teleporter_ss = src
+    if (SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) // Bad style, but I'm leaving it here for now until someone wants to add a teleporter to another map
+        return
 
     teleporters_by_id = list()
     teleporters = list()

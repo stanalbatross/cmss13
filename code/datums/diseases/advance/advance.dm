@@ -375,7 +375,7 @@ var/list/advance_cures = 	list(
 	symptoms += "Done"
 	symptoms += list_symptoms.Copy()
 	do
-		var/symptom = input(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom") in symptoms
+		var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", symptoms)
 		if(istext(symptom))
 			i = 0
 		else if(ispath(symptom))
@@ -395,7 +395,7 @@ var/list/advance_cures = 	list(
 			AD.Refresh()
 
 		for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list.Copy()))
-			if(H.z != 1)
+			if(!is_ground_level(H.z))
 				continue
 			if(!H.has_disease(D))
 				H.contract_disease(D, 1)

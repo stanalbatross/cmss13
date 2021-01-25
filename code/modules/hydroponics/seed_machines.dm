@@ -68,15 +68,15 @@
 	active = 0
 	if(failed_task)
 		failed_task = 0
-		visible_message("[htmlicon(src, viewers(src))] [src] pings unhappily, flashing a red warning light.")
+		visible_message("[icon2html(src, viewers(src))] [src] pings unhappily, flashing a red warning light.")
 	else
-		visible_message("[htmlicon(src, viewers(src))] [src] pings happily.")
+		visible_message("[icon2html(src, viewers(src))] [src] pings happily.")
 
 	if(eject_disk)
 		eject_disk = 0
 		if(loaded_disk)
-			loaded_disk.loc = get_turf(src)
-			visible_message("[htmlicon(src, viewers(src))] [src] beeps and spits out [loaded_disk].")
+			loaded_disk.forceMove(get_turf(src))
+			visible_message("[icon2html(src, viewers(src))] [src] beeps and spits out [loaded_disk].")
 			loaded_disk = null
 	stop_processing()
 
@@ -90,7 +90,7 @@
 			to_chat(user, "That seed is not compatible with our genetics technology.")
 		else
 			user.drop_held_item()
-			W.loc = src
+			W.forceMove(src)
 			seed = W
 			to_chat(user, "You load [W] into [src].")
 		return
@@ -122,7 +122,7 @@
 					return
 
 			user.drop_held_item()
-			W.loc = src
+			W.forceMove(src)
 			loaded_disk = W
 			to_chat(user, "You load [W] into [src].")
 
@@ -185,7 +185,7 @@
 
 	if(href_list["eject_packet"])
 		if(!seed) return
-		seed.loc = get_turf(src)
+		seed.forceMove(get_turf(src))
 
 		if(seed.seed.name == "new line" || isnull(seed_types[seed.seed.name]))
 			seed.seed.uid = seed_types.len + 1
@@ -193,14 +193,14 @@
 			seed_types[seed.seed.name] = seed.seed
 
 		seed.update_seed()
-		visible_message("[htmlicon(src, viewers(src))] [src] beeps and spits out [seed].")
+		visible_message("[icon2html(src, viewers(src))] [src] beeps and spits out [seed].")
 
 		seed = null
 
 	if(href_list["eject_disk"])
 		if(!loaded_disk) return
-		loaded_disk.loc = get_turf(src)
-		visible_message("[htmlicon(src, viewers(src))] [src] beeps and spits out [loaded_disk].")
+		loaded_disk.forceMove(get_turf(src))
+		visible_message("[icon2html(src, viewers(src))] [src] beeps and spits out [loaded_disk].")
 		loaded_disk = null
 
 	usr.set_interaction(src)

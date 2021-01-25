@@ -53,10 +53,10 @@
 	targets = SSquadtree.players_in_range(range_bounds, z, QTREE_SCAN_MOBS | QTREE_EXCLUDE_OBSERVER)
 	if(!targets)
 		return FALSE
-	
+
 	if(!target && targets.len)
 		target = pick(targets)
-	
+
 	get_target(target)
 	return TRUE
 
@@ -108,18 +108,18 @@
 	target = null
 	SetLuminosity(7)
 
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_NOTICE("The [name] hums to life and emits several beeps.")]")
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_NOTICE("The [name] buzzes in a monotone voice: 'Default systems initiated'")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] hums to life and emits several beeps.")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] buzzes in a monotone voice: 'Default systems initiated'")]")
 	start_processing()
 	set_range()
 
 /obj/structure/machinery/defenses/sentry/power_off_action()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_NOTICE("The [name] powers down and goes silent.")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] powers down and goes silent.")]")
 	stop_processing()
 	unset_range()
 
 /obj/structure/machinery/defenses/sentry/attackby(var/obj/item/O, var/mob/user)
-	if(QDELETED(O) || QDELETED(user)) 
+	if(QDELETED(O) || QDELETED(user))
 		return
 
 	//Securing/Unsecuring
@@ -143,14 +143,7 @@
 
 		playsound(loc, 'sound/items/Screwdriver.ogg', 25, 1)
 		user.visible_message(SPAN_NOTICE("[user] rotates [src]."), SPAN_NOTICE("You rotate [src]."))
-		if(dir == NORTH)
-			dir = EAST
-		else if(dir == EAST)
-			dir = SOUTH
-		else if(dir == SOUTH)
-			dir = WEST
-		else if(dir == WEST)
-			dir = NORTH
+		setDir(turn(dir, -90))
 		return
 
 	if(istype(O, ammo))
@@ -173,7 +166,7 @@
 
 		ammo = O
 		user.drop_held_item(O)
-		O.loc = src
+		O.forceMove(src)
 		update_icon()
 		return
 
@@ -182,10 +175,10 @@
 	return ..()
 
 /obj/structure/machinery/defenses/sentry/destroyed_action()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 	for(var/i = 1 to 6)
-		dir = pick(NORTH, EAST, SOUTH, WEST)
+		setDir(pick(NORTH, EAST, SOUTH, WEST))
 		sleep(2)
 
 	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "sentry explosion")
@@ -219,23 +212,24 @@
 
 	if(targets.len)
 		addtimer(CALLBACK(src, .proc/get_target), fire_delay)
-	
+
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
 	P.generate_bullet(new ammo.default_ammo)
 	P.damage *= damage_mult
 	P.accuracy *= accuracy_mult
-	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE, faction_group)
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
+	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	ammo.current_rounds--
 	if(ammo.current_rounds == 0)
-		visible_message("[htmlicon(src, viewers(src))] <span class='warning'>The [name] beeps steadily and its ammo light blinks red.</span>")
+		visible_message("[icon2html(src, viewers(src))] <span class='warning'>The [name] beeps steadily and its ammo light blinks red.</span>")
 		playsound(loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
 		update_icon()
 
 //Mostly taken from gun code.
 /obj/structure/machinery/defenses/sentry/proc/muzzle_flash(var/angle)
-	if(isnull(angle)) 
+	if(isnull(angle))
 		return
 
 	SetLuminosity(SENTRY_MUZZLELUM)
@@ -301,7 +295,7 @@
 				adj = x-A.x
 
 		var/r = 9999
-		if(adj != 0) 
+		if(adj != 0)
 			r = abs(opp/adj)
 		var/angledegree = arcsin(r/sqrt(1+(r*r)))
 		if(adj < 0 || (angledegree*2) > SENTRY_FIREANGLE)
@@ -353,7 +347,7 @@
 	if(!target) //No targets, don't bother firing
 		return
 
-	fire(target.loc)
+	fire(target)
 
 /obj/structure/machinery/defenses/sentry/premade
 	name = "UA-577 Gauss Turret"

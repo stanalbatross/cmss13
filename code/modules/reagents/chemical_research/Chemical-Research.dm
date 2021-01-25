@@ -89,8 +89,7 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data/
 //Called after all the default chems have been initialized
 /datum/chemical_data/proc/initialize_saved_chem_data()
 	set waitfor = 0
-	while(!SSentity_manager.ready)
-		stoplag()
+	WAIT_DB_READY
 	DB_FILTER(/datum/entity/chemical_information, DB_COMP("spent_chemical", DB_EQUALS, 0), CALLBACK(GLOBAL_PROC, /proc/initialize_saved_chem_data_callback), TRUE)
 
 /proc/initialize_saved_chem_data_callback(var/list/datum/entity/chemical_information/chemicals)
@@ -104,6 +103,21 @@ var/global/datum/chemical_data/chemical_data = new /datum/chemical_data/
 				R.vars[V] = data.vars[V]
 		R.properties = data.properties
 		R.properties = R.properties_to_datums()
+		//I hate doing this, but until the DB converts stuff into proper types we have to do this ourselves
+		for(var/datum/chem_property/P in R.properties)
+			P.level = text2num(P.level)
+		R.nutriment_factor = text2num(R.nutriment_factor) || initial(R.nutriment_factor)
+		R.custom_metabolism = text2num(R.custom_metabolism) || initial(R.custom_metabolism)
+		R.overdose = text2num(R.overdose) || initial(R.overdose)
+		R.overdose_critical = text2num(R.overdose_critical) || initial(R.overdose_critical)
+		R.explosive = text2num(R.explosive) || initial(R.explosive)
+		R.power = text2num(R.power) || initial(R.power)
+		R.falloff_modifier = text2num(R.falloff_modifier) || initial(R.falloff_modifier)
+		R.chemfiresupp = text2num(R.chemfiresupp) || initial(R.chemfiresupp)
+		R.intensitymod = text2num(R.intensitymod) || initial(R.intensitymod)
+		R.durationmod = text2num(R.durationmod) || initial(R.durationmod)
+		R.radiusmod = text2num(R.radiusmod) || initial(R.radiusmod)
+		R.burncolormod = text2num(R.burncolormod) || initial(R.burncolormod)
 		//And the final generation part
 		R.generate_name()
 		R.id = "omega-[i]"

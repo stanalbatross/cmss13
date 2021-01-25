@@ -31,8 +31,6 @@
 	var/damage_check = max(0, damage + dam)
 	if(damage_check >= damage_cap && M && is_mainship_level(z))
 		SSclues.create_print(get_turf(M), M, "The fingerprint contains specks of metal and dirt.")
-		if(M.detectable_by_ai())
-			ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
 
 	..()
 
@@ -49,6 +47,9 @@
 	walltype = WALL_HULL
 	hull = 1 //Impossible to destroy or even damage. Used for outer walls that would breach into space, potentially some special walls
 
+/turf/closed/wall/almayer/no_door_tile
+	tiles_with = list(/turf/closed/wall,/obj/structure/window/framed,/obj/structure/window_frame,/obj/structure/girder)
+
 /turf/closed/wall/almayer/outer/take_damage(dam, var/mob/M)
 	return
 
@@ -56,6 +57,9 @@
 	walltype = WALL_WHITE
 	icon = 'icons/turf/walls/almayer_white.dmi'
 	icon_state = "wwall"
+
+/turf/closed/wall/almayer/white/outer_tile
+	tiles_with = list(/turf/closed/wall/almayer/white,/turf/closed/wall/almayer/outer)
 
 /turf/closed/wall/almayer/white/hull
 	name = "research hull"
@@ -223,7 +227,7 @@
 /turf/closed/wall/indestructible/splashscreen
 	name = "Lobby Art"
 	desc = "Assorted artworks."
-	icon_state = "lobbyart1"
+	icon_state = ""
 //	icon_state = "title_holiday"
 	layer = FLY_LAYER
 	special_icon = 1
@@ -232,21 +236,17 @@
 	. = ..()
 	icon = get_icon_from_source(CONFIG_GET(string/lobby_art))
 	tag = "LOBBYART"
-	if(icon_state == "lobbyart1") // default
-		// Only pick lobby art that credits the author
-		displayed_lobby_art = rand(1,length(lobby_art_authors))
-		icon_state = "lobbyart[displayed_lobby_art]"
-
-		desc = "Artwork by [lobby_art_authors[displayed_lobby_art]]"
 
 /proc/force_lobby_art(art_id)
 	displayed_lobby_art = art_id
 	var/turf/closed/wall/indestructible/splashscreen/SS = locate("LOBBYART")
-	SS.icon_state = "lobbyart[displayed_lobby_art]"
-	SS.desc = "Artwork by [lobby_art_authors[displayed_lobby_art]]"
+	var/list/lobby_arts = CONFIG_GET(str_list/lobby_art_images)
+	var/list/lobby_authors = CONFIG_GET(str_list/lobby_art_authors)
+	SS.icon_state = lobby_arts[displayed_lobby_art]
+	SS.desc = "Artwork by [lobby_authors[displayed_lobby_art]]"
 	for(var/client/C in GLOB.clients)
 		if(displayed_lobby_art != -1)
-			var/author = "[lobby_art_authors[displayed_lobby_art]]"
+			var/author = lobby_authors[displayed_lobby_art]
 			if(author != "Unknown")
 				to_chat_forced(C, SPAN_ROUNDBODY("<hr>This round's lobby art is brought to you by [author]<hr>"))
 
@@ -570,6 +570,7 @@
 	layer = RESIN_STRUCTURE_LAYER
 	blend_turfs = list(/turf/closed/wall/resin)
 	blend_objects = list(/obj/structure/mineral_door/resin)
+	repair_materials = list()
 	var/hivenumber = XENO_HIVE_NORMAL
 
 /turf/closed/wall/resin/Initialize(mapload, ...)
@@ -609,7 +610,9 @@
 	if(!istype(X))
 		return FALSE
 
-	return X.hivenumber == hivenumber
+	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
+
+	return hive.is_ally(X)
 
 /turf/closed/wall/resin/membrane/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
@@ -699,7 +702,16 @@
 			W.hivenumber = hive
 			set_hive_data(W, W.hivenumber)
 
+/turf/closed/wall/resin/weak
+	name = "weak resin wall"
+	desc = "Weird slime solidified into a wall. It already looks on the verge of collapsing..."
+	damage_cap = HEALTH_WALL_XENO_WEAK
+	var/duration = 5 SECONDS
 
+
+/turf/closed/wall/resin/weak/Initialize(...)
+	. = ..()
+	addtimer(CALLBACK(src, .proc/ScrapeAway), duration)
 
 
 /turf/closed/wall/resin/can_be_dissolved()

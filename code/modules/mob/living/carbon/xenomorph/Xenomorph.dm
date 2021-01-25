@@ -76,6 +76,7 @@
 	var/plasma_stored = 10
 	var/plasma_max = 10
 	var/plasma_gain = 5
+	var/cooldown_reduction_percentage = 0 // By what % cooldown are reduced by. 1 => No cooldown. Should normally be clamped at 50%
 
 	var/small_explosives_stun = TRUE // Have to put this here, otherwise it can't be strain specific
 
@@ -163,6 +164,7 @@
 	var/explosivearmor_modifier = 0
 	var/plasmapool_modifier = 1
 	var/plasmagain_modifier = 0
+	var/regeneration_multiplier = 1
 	var/speed_modifier = 0
 	var/phero_modifier = 0
 	var/acid_modifier = 0
@@ -182,7 +184,7 @@
 	var/xeno_hostile_hud = FALSE // 'Hostile' HUD - the verb Xenos use to see tags, etc on humans
 	var/list/plasma_types = list() //The types of plasma the caste contains
 	var/list/xeno_shields = list() // List of /datum/xeno_shield that holds all active shields on the Xeno.
-	var/acid_splash_cooldown = SECONDS_5 //Time it takes between acid splash retaliate procs
+	var/acid_splash_cooldown = 5 SECONDS //Time it takes between acid splash retaliate procs
 	var/acid_splash_last //Last recorded time that an acid splash procced
 	var/interference = 0 // Stagger for predator weapons. Prevents hivemind usage, queen overwatching, etc.
 	var/mob/living/carbon/Xenomorph/observed_xeno // Overwatched xeno for xeno hivemind vision
@@ -203,6 +205,7 @@
 	var/viewsize = 0
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
 	var/list/tackle_counter = list()
+	var/evolving = FALSE // Whether the xeno is in the process of evolving
 
 
 	//////////////////////////////////////////////////////////////////
@@ -235,6 +238,10 @@
 	var/obj/structure/tunnel/start_dig = null
 	var/tunnel_delay = 0
 	var/steelcrest = FALSE
+	var/list/available_placeable = list() // List of placeable the xenomorph has access to.
+	var/list/current_placeable = list() // If we have current_placeable that are limited, e.g. fruits
+	var/max_placeable = 0 // Limit to that amount
+	var/selected_placeable_index = 1 //In the available build list, what is the index of what we're building next
 
 
 	//////////////////////////////////////////////////////////////////
@@ -245,9 +252,6 @@
 	var/burrow_timer = 200
 	var/tunnel_timer = 20
 
-	///// BELOW HERE LIE COOLDOWN VARS
-	var/has_spat = 0
-	var/has_screeched = 0
 	//Burrower Vars
 	var/used_tremor = 0
 	// Defender vars
@@ -272,6 +276,7 @@
 	var/area/A = get_area(src)
 	if(A && A.statistic_exempt)
 		statistic_exempt = TRUE
+
 	if(oldXeno)
 		hivenumber = oldXeno.hivenumber
 		nicknumber = oldXeno.nicknumber
@@ -279,7 +284,7 @@
 		hivenumber = h_number
 
 	// Well, not yet, technically
-	var/datum/hive_status/in_hive = hive_datum[hivenumber]
+	var/datum/hive_status/in_hive = GLOB.hive_datum[hivenumber]
 	if(in_hive)
 		in_hive.add_xeno(src)
 		// But now we are!
@@ -296,7 +301,7 @@
 
 	. = ..()
 	//WO GAMEMODE
-	if(map_tag == MAP_WHISKEY_OUTPOST)
+	if(SSticker?.mode?.hardcore)
 		hardcore = 1 //Prevents healing and queen evolution
 	time_of_birth = world.time
 
@@ -314,7 +319,7 @@
 	see_in_dark = 8
 
 	if(caste && caste.spit_types && caste.spit_types.len)
-		ammo = ammo_list[caste.spit_types[1]]
+		ammo = GLOB.ammo_list[caste.spit_types[1]]
 
 	create_reagents(100)
 
@@ -354,6 +359,14 @@
 	else
 		CRASH("Xenomorph [src] has no caste datum! Tell the devs!")
 
+	// Only handle free slots if the xeno is not in tdome
+	if(!is_admin_level(z))
+		var/selected_caste = GLOB.xeno_datum_list[caste_name]?.type
+		var/free_slots = LAZYACCESS(hive.free_slots, selected_caste)
+		if(free_slots)
+			hive.free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(hive.used_free_slots, selected_caste) + 1
+			LAZYSET(hive.used_free_slots, selected_caste, new_val)
 
 	if(round_statistics && !statistic_exempt)
 		round_statistics.track_new_participant(faction, 1)
@@ -364,6 +377,15 @@
 		hive.hive_ui.update_all_xeno_data()
 
 	job = caste.caste_name // Used for tracking the caste playtime
+
+	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
+
+/mob/living/carbon/Xenomorph/proc/handle_screech_act(var/mob/self, var/mob/living/carbon/Xenomorph/Queen/queen)
+	SIGNAL_HANDLER
+	if(queen.can_not_harm(src))
+		return COMPONENT_SCREECH_ACT_CANCEL
+
+
 
 /mob/living/carbon/Xenomorph/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
@@ -386,12 +408,43 @@
 
 	acid_splash_cooldown = caste.acid_splash_cooldown
 
-	if (caste.fire_immune)
-		registerListener(src, EVENT_PREIGNITION_CHECK, "xeno_fire_immune", TRUE_CALLBACK)
-		registerListener(src, EVENT_PRE_FIRE_BURNED_CHECK, "xeno_fire_immune", TRUE_CALLBACK)
+	if (caste.fire_immunity != FIRE_IMMUNITY_NONE)
+		if(caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE)
+			RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
+		RegisterSignal(src, list(
+			COMSIG_LIVING_FLAMER_CROSSED,
+			COMSIG_LIVING_FLAMER_FLAMED,
+		), .proc/flamer_crossed_immune)
+	else
+		UnregisterSignal(src, list(
+			COMSIG_LIVING_PREIGNITION,
+			COMSIG_LIVING_FLAMER_CROSSED,
+			COMSIG_LIVING_FLAMER_FLAMED,
+		))
 
 	recalculate_everything()
 
+	if(mob_size < MOB_SIZE_BIG)
+		mob_flags |= SQUEEZE_UNDER_VEHICLES
+
+/mob/living/carbon/Xenomorph/proc/fire_immune(mob/living/L)
+	SIGNAL_HANDLER
+
+	if(L.fire_reagent?.fire_penetrating)
+		return
+
+	return COMPONENT_CANCEL_IGNITION
+
+/mob/living/carbon/Xenomorph/proc/flamer_crossed_immune(mob/living/L, datum/reagent/R)
+	SIGNAL_HANDLER
+
+	if(R.fire_penetrating)
+		return
+
+	. = COMPONENT_NO_BURN
+	// Burrowed xenos also cannot be ignited
+	if((caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || burrow)
+		. |= COMPONENT_NO_IGNITE
 
 //Off-load this proc so it can be called freely
 //Since Xenos change names like they change shoes, we need somewhere to hammer in all those legos
@@ -412,7 +465,7 @@
 	// Even if we don't have the hive datum we usually still have the hive number
 	var/datum/hive_status/in_hive = hive
 	if(!in_hive)
-		in_hive = hive_datum[hivenumber]
+		in_hive = GLOB.hive_datum[hivenumber]
 
 	//Larvas have their own, very weird naming conventions, let's not kick a beehive, not yet
 	if(isXenoLarva(src))
@@ -429,15 +482,10 @@
 	color = in_hive.color
 
 	//Queens have weird, hardcoded naming conventions based on age levels. They also never get nicknumbers
-	if(isXenoQueen(src))
-		switch(age)
-			if(XENO_NORMAL) name = "[name_prefix]Queen"			 //Young
-			if(XENO_MATURE) name = "[name_prefix]Elder Queen"	 //Mature
-			if(XENO_ELDER) name = "[name_prefix]Elder Empress"	 //Elite
-			if(XENO_ANCIENT) name = "[name_prefix]Ancient Empress" //Ancient
-			if(XENO_PRIME) name = "[name_prefix]Prime Empress" //Primordial
-	else if(isXenoPredalien(src)) name = "[name_prefix][caste.display_name] ([name_client_prefix][nicknumber][name_client_postfix])"
-	else if(caste) name = "[name_prefix][age_prefix][caste.caste_name] ([name_client_prefix][nicknumber][name_client_postfix])"
+	if(isXenoPredalien(src))
+		name = "[name_prefix][caste.display_name] ([name_client_prefix][nicknumber][name_client_postfix])"
+	else if(caste)
+		name = "[name_prefix][age_prefix][caste.caste_name] ([name_client_prefix][nicknumber][name_client_postfix])"
 
 	//Update linked data so they show up properly
 	change_real_name(src, name)
@@ -491,8 +539,16 @@
 
 	SStracking.stop_tracking("hive_[hivenumber]", src)
 
-	if(hive)
-		hive.remove_xeno(src)
+	// Only handle free slots if the xeno is not in tdome
+	if(!is_admin_level(z))
+		var/selected_caste = GLOB.xeno_datum_list[caste_name]?.type
+		var/used_slots = LAZYACCESS(hive.used_free_slots, selected_caste)
+		if(used_slots)
+			hive.used_free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(hive.free_slots, selected_caste) + 1
+			LAZYSET(hive.free_slots, selected_caste, new_val)
+
+	hive.remove_xeno(src)
 
 	remove_from_all_mob_huds()
 
@@ -602,14 +658,12 @@
 
 //Call this function to set the hive and do other cleanup
 /mob/living/carbon/Xenomorph/proc/set_hive_and_update(var/new_hivenumber = XENO_HIVE_NORMAL)
-	var/datum/hive_status/new_hive = hive_datum[new_hivenumber]
+	var/datum/hive_status/new_hive = GLOB.hive_datum[new_hivenumber]
 	if(!new_hive)
 		return
 
 
 	new_hive.add_xeno(src)
-
-	set_faction(hive.name)
 
 	if(istype(src, /mob/living/carbon/Xenomorph/Larva))
 		var/mob/living/carbon/Xenomorph/Larva/L = src
@@ -618,6 +672,7 @@
 		generate_name()
 	if(istype(src, /mob/living/carbon/Xenomorph/Queen))
 		update_living_queens()
+
 	recalculate_everything()
 
 	// Update the hive status UI
@@ -768,9 +823,12 @@
 			hive.hive_ui.update_all_xeno_data()
 
 	armor_integrity = 100
+	UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
 	..()
 	hud_update()
 	plasma_stored = plasma_max
+	for(var/datum/action/xeno_action/XA in actions)
+		XA.end_cooldown()
 
 /mob/living/carbon/Xenomorph/proc/remove_action(var/action as text)
 	for(var/X in actions)
@@ -811,3 +869,17 @@
 		O.show_message(SPAN_DANGER("<B>[src] manages to remove [legcuffed]!</B>"), 1)
 	to_chat(src, SPAN_NOTICE(" You successfully remove [legcuffed]."))
 	drop_inv_item_on_ground(legcuffed)
+
+/mob/living/carbon/Xenomorph/IgniteMob()
+	. = ..()
+	if (. & IGNITE_IGNITED)
+		RegisterSignal(src, COMSIG_XENO_PRE_HEAL, .proc/cancel_heal)
+
+/mob/living/carbon/Xenomorph/ExtinguishMob()
+	. = ..()
+	if (.)
+		UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
+
+/mob/living/carbon/Xenomorph/proc/cancel_heal()
+	SIGNAL_HANDLER
+	return COMPONENT_CANCEL_XENO_HEAL

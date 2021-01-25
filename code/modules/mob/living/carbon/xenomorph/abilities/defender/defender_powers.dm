@@ -38,7 +38,7 @@
 	if (!istype(X))
 		return
 
-	if(!isXenoOrHuman(A) || X.match_hivemind(A))
+	if(!isXenoOrHuman(A) || X.can_not_harm(A))
 		return
 
 	if(!X.check_state())
@@ -65,7 +65,7 @@
 	if(distance > max_distance)
 		return
 
-	if(X.crest_defense || X.steelcrest && !X.fortify)
+	if(X.crest_defense)
 		X.throw_atom(get_step_towards(H, X), 3, SPEED_SLOW, X)
 
 	if(!X.Adjacent(H))
@@ -79,12 +79,11 @@
 	SPAN_XENOWARNING("You ram [H] with your armored crest!"))
 
 	if(H.stat != DEAD && (!(H.status_flags & XENO_HOST) || !istype(H.buckled, /obj/structure/bed/nest)) )
-		var/h_damage = 20 + (X.crest_defense * 10) + (X.steelcrest * 5) //20 or 30, plus 5
+		var/h_damage = 20 + (X.crest_defense * 10) + (X.steelcrest * 7.5) //20 or 30, plus 7.5
 		H.apply_armoured_damage(get_xeno_damage_slash(H, h_damage), ARMOR_MELEE, BRUTE, "chest", 5)
-		shake_camera(H, 2, 1)
 
 	var/facing = get_dir(X, H)
-	var/headbutt_distance = 3 - (X.crest_defense * 2) + (X.steelcrest) - (X.fortify * 3)
+	var/headbutt_distance = 3 - (X.crest_defense * 2) - (X.fortify * 2)
 	var/turf/T = get_turf(X)
 	var/turf/temp = get_turf(X)
 
@@ -131,7 +130,7 @@
 
 	var/sweep_range = 1
 	for(var/mob/living/carbon/H in orange(sweep_range, get_turf(X)))
-		if (!isXenoOrHuman(H) || X.match_hivemind(H)) continue
+		if (!isXenoOrHuman(H) || X.can_not_harm(H)) continue
 		if(H.stat == DEAD) continue
 		if(istype(H.buckled, /obj/structure/bed/nest)) continue
 		step_away(H, X, sweep_range, 2)
@@ -175,18 +174,19 @@
 	if(!X.fortify)
 		to_chat(X, SPAN_XENOWARNING("You tuck yourself into a defensive stance."))
 		if(X.steelcrest)
-			X.armor_deflection_buff += 25
+			X.armor_deflection_buff += 10
 			X.armor_explosive_buff += 60
 			X.ability_speed_modifier += 3
 			X.damage_modifier -= XENO_DAMAGE_MOD_SMALL
 		else
-			X.armor_deflection_buff += 35
+			X.armor_deflection_buff += 30
 			X.armor_explosive_buff += 60
 			X.frozen = TRUE
 			X.anchored = TRUE
 			X.small_explosives_stun = FALSE
 			X.update_canmove()
-		X.mob_size = MOB_SIZE_BIG //knockback immune
+		X.mob_size = MOB_SIZE_IMMOBILE //knockback immune
+		X.mob_flags &= ~SQUEEZE_UNDER_VEHICLES
 		X.update_icons()
 		X.fortify = TRUE
 	else
@@ -194,15 +194,16 @@
 		X.frozen = FALSE
 		X.anchored = FALSE
 		if(X.steelcrest)
-			X.armor_deflection_buff -= 25
+			X.armor_deflection_buff -= 10
 			X.armor_explosive_buff -= 60
 			X.ability_speed_modifier -= 3
 			X.damage_modifier += XENO_DAMAGE_MOD_SMALL
 		else
-			X.armor_deflection_buff -= 35
+			X.armor_deflection_buff -= 30
 			X.armor_explosive_buff -= 60
 			X.small_explosives_stun = TRUE
 		X.mob_size = MOB_SIZE_XENO //no longer knockback immune
+		X.mob_flags |= SQUEEZE_UNDER_VEHICLES
 		X.update_canmove()
 		X.update_icons()
 		X.fortify = FALSE

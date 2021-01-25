@@ -32,7 +32,15 @@
 	var/list/linked_pylons = list()
 
 	var/list/datum/automata_cell/autocells = list()
-	var/list/dirt_overlays = list()
+	/**
+	 * Associative list of cleanable types (strings) mapped to
+	 * cleanable objects
+	 *
+	 * The cleanable object does not necessarily need to be
+	 * on the turf, it can simply be for handling how the
+	 * overlays or placing new cleanables of the same type work
+	 */
+	var/list/cleanables
 
 	var/list/baseturfs = /turf/baseturf_bottom
 	var/changing_turf = FALSE
@@ -56,10 +64,21 @@
 
 	visibilityChanged()
 
+	pass_flags = pass_flags_cache[type]
+	if (isnull(pass_flags))
+		pass_flags = new()
+		initialize_pass_flags(pass_flags)
+		pass_flags_cache[type] = pass_flags
+	else
+		initialize_pass_flags()
+
 	for(var/atom/movable/AM in src)
 		Entered(AM)
 
-	Decorate()
+	if(luminosity)
+		if(light)	WARNING("[type] - Don't set lights up manually during New(), We do it automatically.")
+		trueLuminosity = luminosity * luminosity
+		light = new(src)
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -68,6 +87,9 @@
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
+	for(var/cleanable_type in cleanables)
+		var/obj/effect/decal/cleanable/C = cleanables[cleanable_type]
+		C.cleanup_cleanable()
 	if(force)
 		..()
 		//this will completely wipe turf state
@@ -86,6 +108,12 @@
 
 /turf/proc/update_icon() //Base parent. - Abby
 	return
+
+/turf/proc/add_cleanable_overlays()
+	for(var/cleanable_type in cleanables)
+		var/obj/effect/decal/cleanable/C = cleanables[cleanable_type]
+		if(C.overlayed_image)
+			overlays += C.overlayed_image
 
 /turf/proc/loc_to_string()
 	var/text
@@ -227,6 +255,8 @@
 	return 0
 
 /turf/proc/inertial_drift(atom/movable/A as mob|obj)
+	if(A.anchored)
+		return
 	if(!(A.last_move_dir))	return
 	if((istype(A, /mob/) && src.x > 2 && src.x < (world.maxx - 1) && src.y > 2 && src.y < (world.maxy-1)))
 		var/mob/M = A
@@ -410,14 +440,14 @@
 				for(var/i=1, i<=amount, i++)
 					new /obj/item/shard(pick(turfs))
 					new /obj/item/shard(pick(turfs))
-		if(CEILING_METAL,CEILING_REINFORCED_METAL)
+		if(CEILING_METAL, CEILING_REINFORCED_METAL)
 			playsound(src, "sound/effects/metal_crash.ogg", 60, 1)
 			spawn(8)
 				if(amount >1)
 					visible_message(SPAN_BOLDNOTICE("Pieces of metal crash down from above!"))
 				for(var/i=1, i<=amount, i++)
 					new /obj/item/stack/sheet/metal(pick(turfs))
-		if(CEILING_UNDERGROUND, CEILING_DEEP_UNDERGROUND)
+		if(CEILING_UNDERGROUND_ALLOW_CAS, CEILING_UNDERGROUND_BLOCK_CAS, CEILING_DEEP_UNDERGROUND)
 			playsound(src, "sound/effects/meteorimpact.ogg", 60, 1)
 			spawn(8)
 				if(amount >1)
@@ -425,7 +455,7 @@
 				for(var/i=1, i<=amount, i++)
 					new /obj/item/ore(pick(turfs))
 					new /obj/item/ore(pick(turfs))
-		if(CEILING_UNDERGROUND_METAL, CEILING_DEEP_UNDERGROUND_METAL)
+		if(CEILING_UNDERGROUND_METAL_ALLOW_CAS, CEILING_UNDERGROUND_METAL_BLOCK_CAS, CEILING_DEEP_UNDERGROUND_METAL)
 			playsound(src, "sound/effects/metal_crash.ogg", 60, 1)
 			spawn(8)
 				for(var/i=1, i<=amount, i++)
@@ -452,9 +482,9 @@
 			to_chat(user, "The ceiling above is glass.")
 		if(CEILING_METAL)
 			to_chat(user, "The ceiling above is metal.")
-		if(CEILING_UNDERGROUND)
+		if(CEILING_UNDERGROUND_ALLOW_CAS, CEILING_UNDERGROUND_BLOCK_CAS)
 			to_chat(user, "It is underground. The cavern roof lies above.")
-		if(CEILING_UNDERGROUND_METAL)
+		if(CEILING_UNDERGROUND_METAL_ALLOW_CAS, CEILING_UNDERGROUND_METAL_BLOCK_CAS)
 			to_chat(user, "It is underground. The ceiling above is metal.")
 		if(CEILING_DEEP_UNDERGROUND)
 			to_chat(user, "It is deep underground. The cavern roof lies above.")
@@ -600,3 +630,69 @@
 			linked_pylons -= pylon
 
 	return protection_level
+
+GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
+	/turf/open/space,
+	/turf/baseturf_bottom,
+	)))
+
+// Make a new turf and put it on top
+// The args behave identical to PlaceOnBottom except they go on top
+// Things placed on top of closed turfs will ignore the topmost closed turf
+// Returns the new turf
+/turf/proc/PlaceOnTop(list/new_baseturfs, turf/fake_turf_type, flags)
+	var/area/turf_area = loc
+	if(new_baseturfs && !length(new_baseturfs))
+		new_baseturfs = list(new_baseturfs)
+	flags = turf_area.PlaceOnTopReact(new_baseturfs, fake_turf_type, flags) // A hook so areas can modify the incoming args
+
+	var/turf/newT
+	if(flags & CHANGETURF_SKIP) // We haven't been initialized
+		if(flags_atom & INITIALIZED)
+			stack_trace("CHANGETURF_SKIP was used in a PlaceOnTop call for a turf that's initialized. This is a mistake. [src]([type])")
+		assemble_baseturfs()
+	if(fake_turf_type)
+		if(!new_baseturfs) // If no baseturfs list then we want to create one from the turf type
+			if(!length(baseturfs))
+				baseturfs = list(baseturfs)
+			var/list/old_baseturfs = baseturfs.Copy()
+			if(!istype(src, /turf/closed))
+				old_baseturfs += type
+			newT = ChangeTurf(fake_turf_type, null, flags)
+			newT.assemble_baseturfs(initial(fake_turf_type.baseturfs)) // The baseturfs list is created like roundstart
+			if(!length(newT.baseturfs))
+				newT.baseturfs = list(baseturfs)
+			newT.baseturfs -= GLOB.blacklisted_automated_baseturfs
+			newT.baseturfs.Insert(1, old_baseturfs) // The old baseturfs are put underneath
+			return newT
+		if(!length(baseturfs))
+			baseturfs = list(baseturfs)
+		if(!istype(src, /turf/closed))
+			baseturfs += type
+		baseturfs += new_baseturfs
+		return ChangeTurf(fake_turf_type, null, flags)
+	if(!length(baseturfs))
+		baseturfs = list(baseturfs)
+	if(!istype(src, /turf/closed))
+		baseturfs += type
+	var/turf/change_type
+	if(length(new_baseturfs))
+		change_type = new_baseturfs[new_baseturfs.len]
+		new_baseturfs.len--
+		if(new_baseturfs.len)
+			baseturfs += new_baseturfs
+	else
+		change_type = new_baseturfs
+	return ChangeTurf(change_type, null, flags)
+
+/turf/proc/empty(turf_type=/turf/open/space, baseturf_type, list/ignore_typecache, flags)
+	// Remove all atoms except observers, landmarks, docking ports
+	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark)) // shuttle TODO:
+	var/list/allowed_contents = typecache_filter_list_reverse(GetAllContentsIgnoring(ignore_typecache), ignored_atoms)
+	allowed_contents -= src
+	for(var/i in 1 to allowed_contents.len)
+		var/thing = allowed_contents[i]
+		qdel(thing, force=TRUE)
+
+	if(turf_type)
+		ChangeTurf(turf_type, baseturf_type, flags)

@@ -55,12 +55,12 @@
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
-	living_misc_mobs += src
-	verbs -= /mob/verb/observe
+	SSmob.living_misc_mobs += src
+	remove_verb(src, /mob/verb/observe)
 
 /mob/living/simple_animal/Destroy()
 	..()
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 
 /mob/living/simple_animal/Login()
 	if(src && src.client)
@@ -198,7 +198,7 @@
 	if(isturf(src.loc))
 		if(ismob(AM))
 			var/newamloc = src.loc
-			src.loc = AM:loc
+			src.forceMove(AM:loc)
 			AM:loc = newamloc
 		else
 			..()
@@ -207,12 +207,12 @@
 /mob/living/simple_animal/death()
 	. = ..()
 	if(!.)	return //was already dead
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 	icon_state = icon_dead
 
 
 /mob/living/simple_animal/gib(var/cause = "gibbing")
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 	if(meat_amount && meat_type)
 		for(var/i = 0; i < meat_amount; i++)
 			new meat_type(src.loc)
@@ -309,13 +309,6 @@
 	. += CONFIG_GET(number/animal_delay)
 
 	move_delay = .
-
-/mob/living/simple_animal/Stat()
-	if (!..())
-		return 0
-
-	stat(null, "Health: [round((health / maxHealth) * 100)]%")
-	return 1
 
 
 /mob/living/simple_animal/ex_act(severity, direction)

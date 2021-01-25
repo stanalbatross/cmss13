@@ -44,7 +44,7 @@
 	if(!secured)	return 0
 	pulse(0)
 	if(!holder)
-		visible_message("[htmlicon(src, hearers(src))] *beep* *beep*", "*beep* *beep*")
+		visible_message("[icon2html(src, hearers(src))] *beep* *beep*", "*beep* *beep*")
 	cooldown = 2
 	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECONDS)
 	STOP_PROCESSING(SSobj, src)
@@ -75,9 +75,9 @@
 	if(!secured)
 		to_chat(user, SPAN_WARNING("The [name] is unsecured!"))
 		return
-	
+
 	tgui_interact(user)
-	
+
 
 /obj/item/device/assembly/timer/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -118,10 +118,10 @@
 
 /obj/item/device/assembly/timer/ui_data(mob/user)
 	. = list()
-	.["current_time"] = time SECONDS_TO_DECISECONDS
+	.["current_time"] = time *0.1
 	.["is_timing"] = timing
-	
+
 /obj/item/device/assembly/timer/ui_static_data(mob/user)
 	. = list()
-	.["min_time"] = TIMER_MINIMUM_TIME SECONDS_TO_DECISECONDS
-	.["max_time"] = TIMER_MAXIMUM_TIME SECONDS_TO_DECISECONDS
+	.["min_time"] = TIMER_MINIMUM_TIME * 0.1
+	.["max_time"] = TIMER_MAXIMUM_TIME * 0.1

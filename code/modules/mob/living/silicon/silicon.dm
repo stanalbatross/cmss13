@@ -19,12 +19,12 @@
 
 /mob/living/silicon/Initialize()
 	. = ..()
-	living_misc_mobs += src
+	SSmob.living_misc_mobs += src
 	add_language("English")
 
 /mob/living/silicon/Destroy()
 	..()
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 
 /mob/living/silicon/proc/show_laws()
 	return
@@ -89,16 +89,6 @@
 			stat(null, eta_status)
 
 
-// This adds the basic clock, shuttle recall timer, and malf_ai info to all silicon lifeforms
-/mob/living/silicon/Stat()
-	if (!..())
-		return 0
-
-	show_station_time()
-	show_emergency_shuttle_eta()
-	show_system_integrity()
-	return 1
-
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()
 	var/dat
@@ -122,7 +112,7 @@
 
 /mob/living/silicon/add_language(var/language, var/can_speak=1)
 	if (..(language) && can_speak)
-		speech_synthesizer_langs.Add(all_languages[language])
+		speech_synthesizer_langs.Add(GLOB.all_languages[language])
 		return 1
 
 /mob/living/silicon/remove_language(var/rem_language)
@@ -151,7 +141,7 @@
 	if(!client)
 		return
 	var/list/listed_huds = list("Medical HUD", "Security HUD", "Squad HUD")
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD", null) as null|anything in listed_huds
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD", listed_huds)
 	if(!client)
 		return
 	var/datum/mob_hud/H
@@ -196,7 +186,7 @@
 
 /mob/living/silicon/rejuvenate()
 	..()
-	living_misc_mobs += src
+	SSmob.living_misc_mobs += src
 
 /mob/living/silicon/ex_act(severity)
 	flash_eyes()

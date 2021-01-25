@@ -106,11 +106,11 @@
 			if(hud_used.pulse_line)
 				var/pain_percentage = pain.get_pain_percentage()
 				switch(pain_percentage)
-					if(70 to INFINITY)			
+					if(70 to INFINITY)
 						hud_used.pulse_line.icon_state = "pulse_dying"
-					if(20 to 70)				
+					if(20 to 70)
 						hud_used.pulse_line.icon_state = "pulse_hurt"
-					else					
+					else
 						hud_used.pulse_line.icon_state = "pulse_good"
 
 			if(hud_used.bodytemp_icon)
@@ -198,3 +198,23 @@
 	else
 		hud_used.shrapnel_icon.name = ""
 		hud_used.shrapnel_icon.icon_state = "status_0"
+
+	var/is_tethering = is_tethering()
+	if(is_tethering)
+		hud_used.tethering_icon.name = "tethering"
+		hud_used.tethering_icon.icon_state = "status_tethering"
+		hud_used.tethering_icon.screen_loc = ui_datum.get_status_loc(status_effect_placement)
+		status_effect_placement++
+	else
+		hud_used.tethering_icon.name = ""
+		hud_used.tethering_icon.icon_state = "status_0"
+
+	var/is_tethered = is_tethered()
+	if(is_tethered)
+		hud_used.tethered_icon.name = "tethered"
+		hud_used.tethered_icon.icon_state = "status_tethered"
+		hud_used.tethered_icon.screen_loc = ui_datum.get_status_loc(status_effect_placement)
+		status_effect_placement++
+	else
+		hud_used.tethered_icon.name = ""
+		hud_used.tethered_icon.icon_state = "status_0"

@@ -213,6 +213,8 @@
 	if(!has_limb_for_slot(slot)) return
 
 	if(W == l_hand)
+		if(W.flags_item & NODROP)
+			return
 		l_hand = null
 		update_inv_l_hand()
 		//removes item's actions, may be readded once re-equipped to the new slot
@@ -221,6 +223,8 @@
 			A.remove_action(src)
 
 	else if(W == r_hand)
+		if(W.flags_item & NODROP)
+			return
 		r_hand = null
 		update_inv_r_hand()
 		//removes item's actions, may be readded once re-equipped to the new slot
@@ -229,7 +233,7 @@
 			A.remove_action(src)
 
 	W.screen_loc = null
-	W.loc = src
+	W.forceMove(src)
 	W.layer = ABOVE_HUD_LAYER
 
 	switch(slot)

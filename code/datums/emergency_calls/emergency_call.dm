@@ -101,7 +101,7 @@
 
 /mob/dead/observer/verb/JoinResponseTeam()
 	set name = "Join Response Team"
-	set category = "Ghost"
+	set category = "Ghost.Join"
 	set desc = "Join an ongoing distress call response. You must be ghosted to do this."
 
 	if(jobban_isbanned(usr, "Syndicate") || jobban_isbanned(usr, "Emergency Response Team"))
@@ -122,7 +122,7 @@
 
 		beacons += list("[name]" = em_call) // I hate byond
 
-	var/choice = input(usr, "Choose a distress beacon to join", "") in beacons
+	var/choice = tgui_input_list(usr, "Choose a distress beacon to join", "", beacons)
 
 	if(!choice)
 		to_chat(usr, "Something seems to have gone wrong!")
@@ -139,8 +139,8 @@
 		return
 	var/deathtime = world.time - usr.timeofdeath
 
-	if(deathtime < SECONDS_60) //Nice try, ghosting right after the announcement
-		if(map_tag != MAP_WHISKEY_OUTPOST) // people ghost so often on whiskey outpost.
+	if(deathtime < 1 MINUTES) //Nice try, ghosting right after the announcement
+		if(SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST) // people ghost so often on whiskey outpost.
 			to_chat(usr, SPAN_WARNING("You ghosted too recently."))
 			return
 
@@ -176,7 +176,7 @@
 	if(announce)
 		marine_announcement("A distress beacon has been launched from the [MAIN_SHIP_NAME].", "Priority Alert", 'sound/AI/distressbeacon.ogg')
 
-	addtimer(CALLBACK(src, /datum/emergency_call/proc/spawn_candidates, announce), SECONDS_60)
+	addtimer(CALLBACK(src, /datum/emergency_call/proc/spawn_candidates, announce), 1 MINUTES)
 
 /datum/emergency_call/proc/spawn_candidates(announce = TRUE)
 	if(SSticker.mode)

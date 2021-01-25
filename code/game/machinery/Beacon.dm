@@ -11,12 +11,12 @@
 	idle_power_usage = 0
 	var/obj/item/device/radio/beacon/Beacon
 
-/obj/structure/machinery/bluespace_beacon/New()
-	..()
+/obj/structure/machinery/bluespace_beacon/Initialize(mapload, ...)
+	. = ..()
 	var/turf/T = loc
 	Beacon = new /obj/item/device/radio/beacon
 	Beacon.invisibility = INVISIBILITY_MAXIMUM
-	Beacon.loc = T
+	Beacon.forceMove(T)
 
 	hide(T.intact_tile)
 
@@ -45,10 +45,10 @@
 			var/turf/T = loc
 			Beacon = new /obj/item/device/radio/beacon
 			Beacon.invisibility = INVISIBILITY_MAXIMUM
-			Beacon.loc = T
+			Beacon.forceMove(T)
 		if(Beacon)
 			if(Beacon.loc != loc)
-				Beacon.loc = loc
+				Beacon.forceMove(loc)
 
 		updateicon()
 

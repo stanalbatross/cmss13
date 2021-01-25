@@ -11,10 +11,6 @@
 	if(SSticker)
 		cameranet.updateVisibility(src)
 
-/turf/New()
-	..()
-	visibilityChanged()
-
 /obj/structure/machinery/door/poddoor/shutters/open()
 	if(SSticker)
 		cameranet.updateVisibility(src)
@@ -38,8 +34,8 @@
 		cameranet.updateVisibility(src)
 	. = ..()
 
-/obj/structure/New()
-	..()
+/obj/structure/Initialize()
+	. = ..()
 	if(SSticker)
 		cameranet.updateVisibility(src)
 
@@ -79,15 +75,17 @@
 /mob/living/carbon/human/Move(NewLoc, direction)
 	var/oldLoc = src.loc
 	. = ..()
-	if(.)
-		for(var/obj/item/clothing/head/helmet/marine/H in src.contents)
-			if(H.camera && H.camera.network.len)
-				if(!updating)
-					updating = 1
-					spawn(BORG_CAMERA_BUFFER)
-						if(oldLoc != src.loc)
-							cameranet.updatePortableCamera(H.camera)
-						updating = 0
+	if (.)
+		for (var/obj/item/clothing/head/helmet/marine/H in src)
+			if (!H.camera || !H.camera.network.len)
+				continue
+			if (updating)
+				continue
+			updating = TRUE
+			spawn(BORG_CAMERA_BUFFER)
+				if (oldLoc != loc)
+					cameranet.updatePortableCamera(H.camera)
+				updating = FALSE
 
 // CAMERA
 
@@ -101,8 +99,8 @@
 		SetLuminosity(0)
 		cameranet.removeCamera(src)
 
-/obj/structure/machinery/camera/New()
-	..()
+/obj/structure/machinery/camera/Initialize()
+	. = ..()
 	cameranet.cameras += src //Camera must be added to global list of all cameras no matter what...
 	var/list/open_networks = difflist(network,RESTRICTED_CAMERA_NETWORKS) //...but if all of camera's networks are restricted, it only works for specific camera consoles.
 	if(open_networks.len) //If there is at least one open network, chunk is available for AI usage.

@@ -23,7 +23,7 @@
 		icon_state = "[icon_prefix]_[bleed_layer]_[variant]"
 	else
 		icon_state = "[icon_prefix]_[bleed_layer]"
-	dir = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
 
 	var/name_to_set
 	switch(bleed_layer)
@@ -130,8 +130,7 @@
 		L.anchored = 1
 		L.icon_state = "lightstick_[L.s_color][L.anchored]"
 		user.drop_held_item()
-		L.x = x
-		L.y = y
+		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
 		L.SetLuminosity(2)
@@ -160,7 +159,7 @@
 
 	var/new_layer = bleed_layer - 1
 	changing_layer(new_layer)
-	
+
 /turf/open/auto_turf/snow/Entered(atom/movable/AM)
 	if(bleed_layer > 0)
 		if(iscarbon(AM))

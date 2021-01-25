@@ -125,8 +125,8 @@
 		return
 	if (!beaker)
 		return
-	src.verbs -= /obj/structure/machinery/juicer/verb/detach
-	beaker.loc = src.loc
+	verbs -= /obj/structure/machinery/juicer/verb/detach
+	beaker.forceMove(src.loc)
 	beaker = null
 	update_icon()
 

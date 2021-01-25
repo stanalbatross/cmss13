@@ -51,7 +51,7 @@
 	if(istype(I, /obj/item/tank/oxygen) || istype(I, /obj/item/tank/air) || istype(I, /obj/item/tank/anesthetic))
 		if(oxygentanks < 10)
 			user.drop_held_item()
-			I.loc = src
+			I.forceMove(src)
 			oxytanks.Add(I)
 			oxygentanks++
 			to_chat(user, SPAN_NOTICE("You put [I] in [src]."))
@@ -64,7 +64,7 @@
 	if(istype(I, /obj/item/tank/phoron))
 		if(phorontanks < 10)
 			user.drop_held_item()
-			I.loc = src
+			I.forceMove(src)
 			platanks.Add(I)
 			phorontanks++
 			to_chat(user, SPAN_NOTICE("You put [I] in [src]."))
@@ -85,6 +85,9 @@
 		return
 */
 /obj/structure/dispenser/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(usr.stat || usr.is_mob_restrained())
 		return
 	if(Adjacent(usr))
@@ -97,7 +100,7 @@
 					oxytanks.Remove(O)
 				else
 					O = new /obj/item/tank/oxygen(loc)
-				O.loc = loc
+				O.forceMove(loc)
 				to_chat(usr, SPAN_NOTICE("You take [O] out of [src]."))
 				oxygentanks--
 				update_icon()
@@ -109,7 +112,7 @@
 					platanks.Remove(P)
 				else
 					P = new /obj/item/tank/phoron(loc)
-				P.loc = loc
+				P.forceMove(loc)
 				to_chat(usr, SPAN_NOTICE("You take [P] out of [src]."))
 				phorontanks--
 				update_icon()

@@ -11,13 +11,6 @@
 	invisibility = 101
 
 	switch(name)			//some of these are probably obsolete
-		if("SupplyElevator")
-			SupplyElevator = loc
-			qdel(src)
-
-		if("VehicleElevator")
-			VehicleElevator = loc
-			qdel(src)
 		if("HangarUpperElevator")
 			HangarUpperElevator = loc
 			qdel(src)
@@ -182,10 +175,10 @@
 	var/turf/T = get_turf(src)
 	if(is_mainship_level(z))
 		GLOB.mainship_yautja_teleports += src
-		GLOB.mainship_yautja_desc += T.loc.name + T.loc_to_string()
+		GLOB.mainship_yautja_desc[T.loc.name + T.loc_to_string()] = src
 	else
 		GLOB.yautja_teleports += src
-		GLOB.yautja_teleport_descs += T.loc.name + T.loc_to_string()
+		GLOB.yautja_teleport_descs[T.loc.name + T.loc_to_string()] = src
 
 /obj/effect/landmark/yautja_teleport/Destroy()
 	var/turf/T = get_turf(src)
@@ -239,11 +232,3 @@
 /obj/effect/landmark/late_join/Destroy()
 	GLOB.latejoin -= src
 	return ..()
-
-/obj/effect/landmark/map_tag
-	name = "mapping tag"
-
-/obj/effect/landmark/map_tag/New()
-	map_tag = name
-	qdel(src)
-	return

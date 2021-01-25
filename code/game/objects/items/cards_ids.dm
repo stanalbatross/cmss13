@@ -86,19 +86,17 @@
 	. = ..()
 	screen_loc = null
 
-/obj/item/card/id/New()
-	..()
-
-	spawn(30)
-		var/mob/living/carbon/human/H = loc
-		if(istype(H))
-			blood_type = H.blood_type
-		if(istype(H) && isnull(faction_group))
-			faction_group = H.faction_group
+/obj/item/card/id/Initialize()
+	. = ..()
+	var/mob/living/carbon/human/H = loc
+	if(istype(H))
+		blood_type = H.blood_type
+	if(istype(H) && isnull(faction_group))
+		faction_group = H.faction_group
 
 
 /obj/item/card/id/attack_self(mob/user as mob)
-	user.visible_message("[user] shows you: [htmlicon(src, viewers(user))] [name]: assignment: [assignment]")
+	user.visible_message("[user] shows you: [icon2html(src, viewers(user))] [name]: assignment: [assignment]")
 
 	src.add_fingerprint(user)
 	return
@@ -128,7 +126,7 @@
 	set category = "Object"
 	set src in usr
 
-	to_chat(usr, "[htmlicon(src, usr)] [name]: The current assignment on the card is [assignment]")
+	to_chat(usr, "[icon2html(src, usr)] [name]: The current assignment on the card is [assignment]")
 	to_chat(usr, "The blood type on the card is [blood_type].")
 
 

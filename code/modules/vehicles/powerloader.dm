@@ -26,7 +26,7 @@
 	if(world.time > l_move_time + move_delay)
 		if(dir != direction)
 			l_move_time = world.time
-			dir = direction
+			setDir(direction)
 			handle_rotation()
 			pick(playsound(src.loc, 'sound/mecha/powerloader_turn.ogg', 25, 1), playsound(src.loc, 'sound/mecha/powerloader_turn2.ogg', 25, 1))
 			. = TRUE
@@ -95,7 +95,7 @@
 
 /obj/vehicle/powerloader/handle_rotation()
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 		switch(dir)
 			if(EAST) buckled_mob.pixel_x = 7
 			if(WEST) buckled_mob.pixel_x = -7
@@ -117,11 +117,12 @@
 	var/obj/loaded
 
 /obj/item/powerloader_clamp/dropped(mob/user)
-	if(linked_powerloader)
-		forceMove(linked_powerloader)
-		if(linked_powerloader.buckled_mob && linked_powerloader.buckled_mob == user)
-			linked_powerloader.unbuckle() //drop a clamp, you auto unbuckle from the powerloader.
-	else qdel(src)
+	if(!linked_powerloader)
+		qdel(src)
+	..()
+	forceMove(linked_powerloader)
+	if(linked_powerloader.buckled_mob && linked_powerloader.buckled_mob == user)
+		linked_powerloader.unbuckle() //drop a clamp, you auto unbuckle from the powerloader.
 
 
 /obj/item/powerloader_clamp/attack(mob/living/M, mob/living/user, def_zone)

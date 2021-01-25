@@ -4,6 +4,8 @@
 	GLOB.alive_mob_list -= src
 	GLOB.player_list -= src
 
+	item_verbs = null
+
 	if(mind)
 		if(mind.current == src)
 			mind.current = null
@@ -64,56 +66,13 @@
 		PF.flags_pass = PASS_MOB_IS_OTHER
 		PF.flags_can_pass_all = PASS_MOB_THRU_OTHER|PASS_AROUND|PASS_HIGH_OVER_ONLY
 
-/mob/Stat()
-	if(!client)
-		return FALSE
-	if(client.admin_holder && client.inactivity < 1200)
-		if(client.admin_holder && client.admin_holder.rights & R_DEBUG && client.prefs.View_MC) //Skip admins, and check for our pref.
-			if(statpanel("MC"))
-				stat("CPU:", "[world.cpu]")
-				stat("Instances:", "[num2text(length(world.contents), 10)]")
-				stat("World Time:", "[world.time]")
-				GLOB.stat_entry()
-				config.stat_entry()
-				stat(null)
-				if(Master)
-					Master.stat_entry()
-				else
-					stat("Master Controller:", "ERROR")
-				if(Failsafe)
-					Failsafe.stat_entry()
-				else
-					stat("Failsafe Controller:", "ERROR")
-				if(Master)
-					stat(null)
-					for(var/datum/controller/subsystem/SS in Master.subsystems)
-						SS.stat_entry()
-
-	// Looking at contents of a tile
-	if (tile_contents_change)
-		tile_contents_change = 0
-		statpanel("Tile Contents")
-		client.statpanel = "Tile Contents"
-		stat(tile_contents)
-		client.stat_force_fast_update = 1
-		return 0
-
-	if (client.statpanel == "Tile Contents")
-		if (tile_contents.len && statpanel("Tile Contents"))
-			stat(tile_contents)
-			return 0
-
-	if (statpanel("Stats"))
-		return 1
-
-	sleep(world.tick_lag * 2)
-
-	return 0
-
 /mob/proc/prepare_huds()
 	hud_list = new
 	for(var/hud in hud_possible)
-		hud_list[hud] = image('icons/mob/hud/hud.dmi', src, "")
+		var/image/I = image('icons/mob/hud/hud.dmi', src, "")
+		I.appearance_flags |= RESET_COLOR
+		hud_list[hud] = I
+
 
 /mob/proc/show_message(msg, type, alt, alt_type, message_flags = CHAT_TYPE_OTHER)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 
@@ -137,6 +96,8 @@
 	if(message_flags == CHAT_TYPE_OTHER || client.prefs && (message_flags & client.prefs.chat_display_preferences) > 0) // or logic between types
 		if(stat == UNCONSCIOUS)
 			to_chat(src, "<I>... You can almost hear someone talking ...</I>")
+		else if(message_flags & CHAT_TYPE_ALL_COMBAT) // Pre-tag combat messages for tgchat
+			to_chat(src, html = msg, type = MESSAGE_TYPE_COMBAT)
 		else
 			to_chat(src, msg)
 
@@ -404,9 +365,12 @@
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		prefs.save_preferences()
-		winset(src, "rpane.changelog", "background-color=none;font-style=;")
+		winset(src, "infowindow.changelog", "background-color=none;font-style=;")
 
 /mob/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(href_list["mach_close"])
 		var/t1 = href_list["mach_close"]
 		unset_interaction()
@@ -698,10 +662,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/newdir = FALSE
 	if(dir != ndir)
 		flags_atom &= ~DIRLOCK
-		dir = ndir
+		setDir(ndir)
 		newdir = TRUE
 	if(buckled && !buckled.anchored)
-		buckled.dir = ndir
+		buckled.setDir(ndir)
 		buckled.handle_rotation()
 	var/mob/living/mliv = src
 	if(istype(mliv))
@@ -727,6 +691,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/get_species()
 	return ""
+
+/mob/proc/unfreeze()
+	frozen = FALSE
+	update_canmove()
 
 /mob/proc/flash_weak_pain()
 	overlay_fullscreen("pain", /obj/screen/fullscreen/pain, 1)
@@ -769,10 +737,10 @@ mob/proc/yank_out_object()
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(usr, "[src] has nothing stuck in their wounds that is large enough to remove.")
-		src.verbs -= /mob/proc/yank_out_object
+		remove_verb(src, /mob/proc/yank_out_object)
 		return
 
-	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = tgui_input_list(usr, "What do you want to yank out?", "Embedded objects", valid_objects)
 	if(self)
 		if(get_active_hand())
 			to_chat(src, SPAN_WARNING("You need an empty hand for this!"))
@@ -795,7 +763,7 @@ mob/proc/yank_out_object()
 		visible_message(SPAN_WARNING("<b>[usr] rips [selection] out of [src]'s body.</b>"),SPAN_WARNING("<b>[usr] rips [selection] out of your body.</b>"), null, 5)
 
 	if(valid_objects.len == 1) //Yanking out last object - removing verb.
-		src.verbs -= /mob/proc/yank_out_object
+		remove_verb(src, /mob/proc/yank_out_object)
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -822,7 +790,7 @@ mob/proc/yank_out_object()
 			affected.wounds += I
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 1)
 
-	selection.loc = get_turf(src)
+	selection.forceMove(get_turf(src))
 	return TRUE
 
 /mob/living/proc/handle_statuses()
@@ -925,3 +893,75 @@ mob/proc/yank_out_object()
 
 		if(istype(img))
 			img.appearance_flags &= ~PIXEL_SCALE
+
+/mob/proc/trainteleport(atom/destination)
+	if(!destination || anchored)
+		return FALSE //Gotta go somewhere and be able to move
+	if(!pulling)
+		return forceMove(destination) //No need for a special proc if there's nothing being pulled.
+	pulledby?.stop_pulling() //The leader of the choo-choo train breaks the pull
+	var/list/conga_line = list()
+	var/end_of_conga = FALSE
+	var/mob/S = src
+	conga_line += S
+	if(S.buckled)
+		if(S.buckled.anchored)
+			S.buckled.unbuckle() //Unbuckle the first of the line if anchored.
+		else
+			conga_line += S.buckled
+	while(!end_of_conga)
+		var/atom/movable/A = S.pulling
+		if(A in conga_line || A.anchored) //No loops, nor moving anchored things.
+			end_of_conga = TRUE
+			break
+		conga_line += A
+		var/mob/M = A
+		if(istype(M)) //Is a mob
+			if(M.buckled && !(M.buckled in conga_line))
+				if(M.buckled.anchored)
+					conga_line -= A //Remove from the conga line if on anchored buckles.
+					end_of_conga = TRUE //Party is over, they won't be dragging anyone themselves.
+					break
+				else
+					conga_line += M.buckled //Or bring the buckles along.
+			if(M.pulling)
+				S = M
+			else
+				end_of_conga = TRUE
+		else if(isobj(A)) //Not a mob.
+			var/obj/O = A
+			if(O.buckled_mob)
+				conga_line += O.buckled_mob
+				var/mob/buckled_mob = O.buckled_mob
+				if(!buckled_mob.pulling)
+					continue
+				buckled_mob.stop_pulling() //No support for wheelchair trains yet.
+			var/obj/structure/bed/B = O
+			if(istype(B) && B.buckled_bodybag)
+				conga_line += B.buckled_bodybag
+			end_of_conga = TRUE //Only mobs can continue the cycle.
+	var/area/new_area = get_area(destination)
+	for(var/atom/movable/AM in conga_line)
+		var/oldLoc
+		if(AM.loc)
+			oldLoc = AM.loc
+			AM.loc.Exited(AM,destination)
+		AM.loc = destination
+		AM.loc.Entered(AM,oldLoc)
+		var/area/old_area
+		if(oldLoc)
+			old_area = get_area(oldLoc)
+		if(new_area && old_area != new_area)
+			new_area.Entered(AM,oldLoc)
+		for(var/atom/movable/CR in destination)
+			if(CR in conga_line)
+				continue
+			CR.Crossed(AM)
+		if(oldLoc)
+			AM.Moved(oldLoc)
+
+	return TRUE
+
+/// Adds this list to the output to the stat browser
+/mob/proc/get_status_tab_items()
+	. = list()

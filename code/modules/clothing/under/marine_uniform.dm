@@ -20,12 +20,11 @@
 	var/specialty = "USCM" //Makes it so that we can see the right name in the vendor.
 	layer = UPPER_ITEM_LAYER
 
-/obj/item/clothing/under/marine/New(loc,
-	new_protection[] = list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature), override_icon_state[] 	= null)
-	..()
+/obj/item/clothing/under/marine/Initialize(mapload, new_protection[] = list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature), override_icon_state[] 	= null)
+	. = ..()
 	if(!(flags_atom & UNIQUE_ITEM_TYPE))
 		name = "[specialty]"
-		if(map_tag in MAPS_COLD_TEMP)
+		if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 			name += " snow uniform"
 		else
 			name += " uniform"
@@ -439,8 +438,8 @@
 	has_sensor = 0
 
 /obj/item/clothing/under/souto
-	name = "\improper Souto Man shorts"
-	desc = "The white shorts worn by the one and only Souto man. These must be worth a lot to collectors and fans!"
+	name = "\improper Souto Man's cargo pants"
+	desc = "The white cargo pants worn by the one and only Souto man. As cool as an ice cold can of Souto Grape!"
 	icon_state = "souto_man"
 	worn_state = "souto_man"
 	has_sensor = 0

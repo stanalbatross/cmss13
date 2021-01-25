@@ -117,16 +117,13 @@
 // =============================
 // hive types
 
-#define XENO_HIVE_NORMAL 1
-#define XENO_HIVE_CORRUPTED 2
-#define XENO_HIVE_ALPHA 3
-#define XENO_HIVE_BRAVO 4
-#define XENO_HIVE_CHARLIE 5
-#define XENO_HIVE_DELTA 6
-#define XENO_HIVE_SUBMISSIVE 7
-
-#define XENO_HIVE_ALLIED 1
-#define XENO_HIVE_NOT_ALLIED 2
+#define XENO_HIVE_NORMAL "xeno_hive_normal"
+#define XENO_HIVE_CORRUPTED "xeno_hive_corrupted"
+#define XENO_HIVE_ALPHA "xeno_hive_alpha"
+#define XENO_HIVE_BRAVO "xeno_hive_bravo"
+#define XENO_HIVE_CHARLIE "xeno_hive_charlie"
+#define XENO_HIVE_DELTA "xeno_hive_delta"
+#define XENO_HIVE_SUBMISSIVE "xeno_hive_submissive"
 
 //=================================================
 
@@ -161,7 +158,8 @@
 //=================================================
 
 // Mob flags.
-#define KNOWS_TECHNOLOGY	1	// This mob understands technology
+#define KNOWS_TECHNOLOGY		(1<<0)	// This mob understands technology
+#define SQUEEZE_UNDER_VEHICLES 	(1<<1)  // Only the van is supported as of now.
 
 //=================================================
 
@@ -186,7 +184,9 @@
 #define HAS_UNDERWEAR 512
 #define IS_WHITELISTED 1024
 #define IS_SYNTHETIC 2048
-
+#define NO_NEURO 4096 //species cannot be neuroed
+#define SPECIAL_BONEBREAK 8192 //species do not get their bonebreak chance modified by endurance
+#define NO_SHRAPNEL 16384
 //=================================================
 
 //Some on_mob_life() procs check for alien races.
@@ -263,8 +263,8 @@
 #define EXTREMELY_PAINFUL 3
 
 // Xeno hivemind HREFs
-#define XENO_OVERWATCH_TARGET_HREF "xeno_overwatch_href"
-#define XENO_OVERWATCH_SRC_HREF "xeno_overwatch_src_href"
+#define XENO_OVERWATCH_TARGET_HREF "target_ref"
+#define XENO_OVERWATCH_SRC_HREF "user_ref"
 
 // xeno abilities cooldown
 
@@ -282,6 +282,7 @@
 // Drone strain flags
 #define DRONE_NORMAL		"Normal"
 #define DRONE_HEALER		"Healer"
+#define DRONE_GARDENER		"Gardener"
 
 // Hivelord strain flags
 #define HIVELORD_NORMAL		"Normal"

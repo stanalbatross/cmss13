@@ -1,6 +1,6 @@
-/****************************************************
-				EXTERNAL ORGANS
-****************************************************/
+//****************************************************
+//				EXTERNAL ORGANS
+//****************************************************/
 /obj/limb
 	name = "limb"
 	appearance_flags = KEEP_TOGETHER | TILE_BOUND
@@ -68,7 +68,8 @@
 	var/list/bleeding_effects_list = list()
 
 
-/obj/limb/New(obj/limb/P, mob/mob_owner)
+/obj/limb/Initialize(mapload, obj/limb/P, mob/mob_owner)
+	. = ..()
 	if(P)
 		parent = P
 		if(!parent.children)
@@ -77,7 +78,7 @@
 	if(mob_owner)
 		owner = mob_owner
 
-	loc = mob_owner
+	forceMove(mob_owner)
 
 
 
@@ -151,9 +152,9 @@
 
 
 
-/****************************************************
-			   DAMAGE PROCS
-****************************************************/
+/*
+			DAMAGE PROCS
+*/
 
 /obj/limb/emp_act(severity)
 	if(!(status & LIMB_ROBOT))	//meatbags do not care about EMP
@@ -277,15 +278,18 @@
 				var/obj/limb/target = pick(possible_points)
 				target.take_damage(remain_brute, remain_burn, sharp, edge, used_weapon, forbidden_limbs + src, TRUE, attack_source = attack_source)
 
+	// Check what the damage was before
+	var/old_brute_dam = brute_dam
 
 	//Sync the organ's damage with its wounds
 	src.update_damages()
 
-	//If limb took enough damage, try to cut or tear it off
-	if(!is_ff && body_part != BODY_FLAG_CHEST && body_part != BODY_FLAG_GROIN && !no_limb_loss)
+	//If limb was damaged before and took enough damage, try to cut or tear it off
+	if(old_brute_dam > 0 && !is_ff && body_part != BODY_FLAG_CHEST && body_part != BODY_FLAG_GROIN && !no_limb_loss)
 		var/obj/item/clothing/head/helmet/H = owner.head
-		if(!(body_part == BODY_FLAG_HEAD && istype(H) && !isSynth(owner)) \
-			&& CONFIG_GET(flag/limbs_can_break) && brute_dam >= max_damage * CONFIG_GET(number/organ_health_multiplier)
+		if(!(body_part == BODY_FLAG_HEAD && istype(H) && !isSynth(owner))\
+			&& CONFIG_GET(flag/limbs_can_break)\
+			&& brute_dam >= max_damage * CONFIG_GET(number/organ_health_multiplier)\
 		)
 			var/cut_prob = brute/max_damage * 5
 			if(prob(cut_prob))
@@ -351,7 +355,7 @@ This function completely restores a damaged organ to perfect condition.
 	// remove embedded objects and drop them on the floor
 	for(var/obj/implanted_object in implants)
 		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
-			implanted_object.loc = owner.loc
+			implanted_object.forceMove(owner.loc)
 			implants -= implanted_object
 			if(is_sharp(implanted_object) || istype(implanted_object, /obj/item/shard/shrapnel))
 				owner.embedded_items -= implanted_object
@@ -467,9 +471,9 @@ This function completely restores a damaged organ to perfect condition.
 			qdel(I)
 
 
-/****************************************************
-			   PROCESSING & UPDATING
-****************************************************/
+/*
+			PROCESSING & UPDATING
+*/
 
 //Determines if we even need to process this organ.
 
@@ -531,7 +535,7 @@ This function completely restores a damaged organ to perfect condition.
 		// Internal wounds get worse over time. Low temperatures (cryo) stop them.
 		if(W.internal)
 			if(owner.bodytemperature < T0C && (owner.reagents.get_reagent_amount("cryoxadone") || owner.reagents.get_reagent_amount("clonexadone"))) // IB is healed in cryotubes
-				if(W.created + MINUTES_2 <= world.time)	// sped up healing due to cryo magics
+				if(W.created + 2 MINUTES <= world.time)	// sped up healing due to cryo magics
 					remove_all_bleeding(FALSE, TRUE)
 					wounds -= W
 					wound_disappeared = TRUE
@@ -658,9 +662,9 @@ This function completely restores a damaged organ to perfect condition.
 		tbrute = 3
 	return "[tbrute][tburn]"
 
-/****************************************************
-			   DISMEMBERMENT
-****************************************************/
+/*
+			DISMEMBERMENT
+*/
 
 //Recursive setting of all child organs to amputated
 /obj/limb/proc/setAmputatedTree()
@@ -823,9 +827,9 @@ This function completely restores a damaged organ to perfect condition.
 
 		if(vital) owner.death(cause)
 
-/****************************************************
-			   HELPERS
-****************************************************/
+/*
+			HELPERS
+*/
 
 /obj/limb/proc/release_restraints()
 	if(!owner)
@@ -888,31 +892,35 @@ This function completely restores a damaged organ to perfect condition.
 		not_salved |= !W.salved
 	return !not_salved
 
-/obj/limb/proc/fracture()
+/obj/limb/proc/fracture(var/bonebreak_probability)
 	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOT))
 		if (knitting_time != -1)
 			knitting_time = -1
 			to_chat(owner, SPAN_WARNING("You feel your [display_name] stop knitting together as it absorbs damage!"))
 		return
-	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE)
-		return
-	owner.recalculate_move_delay = TRUE
-	owner.visible_message(\
-		SPAN_WARNING("You hear a loud cracking sound coming from [owner]!"),
-		SPAN_HIGHDANGER("Something feels like it shattered in your [display_name]!"),
-		SPAN_HIGHDANGER("You hear a sickening crack!"))
-	var/F = pick('sound/effects/bone_break1.ogg','sound/effects/bone_break2.ogg','sound/effects/bone_break3.ogg','sound/effects/bone_break4.ogg','sound/effects/bone_break5.ogg','sound/effects/bone_break6.ogg','sound/effects/bone_break7.ogg')
-	playsound(owner,F, 45, 1)
-	if(owner.pain.feels_pain)
-		owner.emote("scream")
+	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE || owner.species.flags & SPECIAL_BONEBREAK || !owner.skills) //stops division by zero
+		bonebreak_probability = 100
+	//if the chance was not set by what called fracture(), the endurance check is done instead
+	if(!bonebreak_probability) //bone break chance is based on endurance, 25% for survivors, erts, 100% for most everyone else.
+		bonebreak_probability = 100 / Clamp(owner.skills.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
+	if(prob(bonebreak_probability))
+		owner.recalculate_move_delay = TRUE
+		owner.visible_message(\
+			SPAN_WARNING("You hear a loud cracking sound coming from [owner]!"),
+			SPAN_HIGHDANGER("Something feels like it shattered in your [display_name]!"),
+			SPAN_HIGHDANGER("You hear a sickening crack!"))
+		playsound(owner,"bone_break", 45, 1)
+		start_processing()
 
-	start_processing()
-
-	status |= LIMB_BROKEN
-	status &= ~LIMB_REPAIRED
-	owner.pain.apply_pain(PAIN_BONE_BREAK)
-	broken_description = pick("broken","fracture","hairline fracture")
-	perma_injury = brute_dam
+		status |= LIMB_BROKEN
+		status &= ~LIMB_REPAIRED
+		owner.pain.apply_pain(PAIN_BONE_BREAK)
+		broken_description = pick("broken","fracture","hairline fracture")
+		perma_injury = brute_dam
+	else
+		owner.visible_message(\
+			SPAN_WARNING("[owner] seems to withstand the blow!"),
+			SPAN_WARNING("Your [display_name] manages to withstand the blow!"))
 
 /obj/limb/proc/robotize()
 	status &= ~LIMB_BROKEN
@@ -985,7 +993,7 @@ This function completely restores a damaged organ to perfect condition.
 		W.embedded_organ = src
 		owner.embedded_items += W
 		if(is_sharp(W)) // Only add the verb if its not a shrapnel
-			owner.verbs += /mob/proc/yank_out_object
+			add_verb(owner, /mob/proc/yank_out_object)
 	W.add_mob_blood(owner)
 
 	if(ismob(W.loc))
@@ -1055,9 +1063,9 @@ This function completely restores a damaged organ to perfect condition.
 
 
 
-/****************************************************
-			   LIMB TYPES
-****************************************************/
+/*
+			LIMB TYPES
+*/
 
 /obj/limb/chest
 	name = "chest"

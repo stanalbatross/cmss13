@@ -12,7 +12,7 @@
 
 	if(T.hivenumber != X.hivenumber)
 		to_chat(X, SPAN_XENOWARNING("[T] doesn't belong to your hive!"))
-		return 
+		return
 
 	if(T.is_ventcrawling)
 		to_chat(X, SPAN_XENOWARNING("[T] can't be deevolved here."))
@@ -96,7 +96,7 @@
 
 	// If the player has self-deevolved before, don't allow them to do it again
 	if(!(/mob/living/carbon/Xenomorph/verb/Deevolve in T.verbs))
-		new_xeno.verbs -= /mob/living/carbon/Xenomorph/verb/Deevolve
+		remove_verb(new_xeno, /mob/living/carbon/Xenomorph/verb/Deevolve)
 
 	new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_name] emerges from the husk of \the [T]."), \
 	SPAN_XENODANGER("[X] makes you regress into your previous form."))
@@ -152,13 +152,13 @@
 		to_chat(X, SPAN_XENOWARNING("You need to be on resin to grow an ovipositor."))
 		return
 
-	if(interior_manager && interior_manager.interior_z == X.z)
+	if(GLOB.interior_manager.interior_z == X.z)
 		to_chat(X, SPAN_XENOWARNING("It's too tight in here to grow an ovipositor."))
 		return
 
 	if(alien_weeds.linked_hive.hivenumber != X.hivenumber)
 		to_chat(X, SPAN_XENOWARNING("These weeds don't belong to your hive! You can't grow an ovipositor here."))
-		return 
+		return
 
 	if(!X.check_alien_construction(current_turf))
 		return
@@ -166,18 +166,20 @@
 	if(X.action_busy)
 		return
 
-	if(X.check_plasma(plasma_cost))
-		X.visible_message(SPAN_XENOWARNING("\The [X] starts to grow an ovipositor."), \
-		SPAN_XENOWARNING("You start to grow an ovipositor...(takes 20 seconds, hold still)"))
-		if(!do_after(X, 200, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, numticks = 20) && X.check_plasma(plasma_cost))
-			return
-		if(!X.check_state()) return
-		if(!locate(/obj/effect/alien/weeds) in current_turf)
-			return
-		X.use_plasma(plasma_cost)
-		X.visible_message(SPAN_XENOWARNING("\The [X] has grown an ovipositor!"), \
-		SPAN_XENOWARNING("You have grown an ovipositor!"))
-		X.mount_ovipositor()
+	if(!X.check_plasma(plasma_cost))
+		return
+
+	X.visible_message(SPAN_XENOWARNING("\The [X] starts to grow an ovipositor."), \
+	SPAN_XENOWARNING("You start to grow an ovipositor...(takes 20 seconds, hold still)"))
+	if(!do_after(X, 200, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, numticks = 20) && X.check_plasma(plasma_cost))
+		return
+	if(!X.check_state()) return
+	if(!locate(/obj/effect/alien/weeds) in current_turf)
+		return
+	X.use_plasma(plasma_cost)
+	X.visible_message(SPAN_XENOWARNING("\The [X] has grown an ovipositor!"), \
+	SPAN_XENOWARNING("You have grown an ovipositor!"))
+	X.mount_ovipositor()
 
 
 /datum/action/xeno_action/onclick/set_xeno_lead/use_ability(atom/A)
@@ -213,7 +215,7 @@
 			possible_xenos += T
 
 		if(possible_xenos.len > 1)
-			var/mob/living/carbon/Xenomorph/selected_xeno = input(X, "Target", "Watch which xenomorph leader?") as null|anything in possible_xenos
+			var/mob/living/carbon/Xenomorph/selected_xeno = tgui_input_list(X, "Target", "Watch which xenomorph leader?", possible_xenos)
 			if(!selected_xeno || selected_xeno.hive_pos == NORMAL_XENO || selected_xeno == X.observed_xeno || selected_xeno.stat == DEAD || selected_xeno.z != X.z || !X.check_state())
 				return
 			X.overwatch(selected_xeno)
@@ -223,7 +225,7 @@
 			to_chat(X, SPAN_XENOWARNING("There are no Xenomorph leaders. Overwatch a Xenomorph to make it a leader."))
 
 
-/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A)
+/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A, verbose)
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
 	if(!X.check_state())
 		return
@@ -244,10 +246,12 @@
 		return
 
 	for(var/mob/living/carbon/Xenomorph/Xa in range(4, T))
-		if(!X.match_hivemind(Xa))
+		if(!X.can_not_harm(Xa))
 			continue
 
-		if(Xa.on_fire)
+		if(SEND_SIGNAL(Xa, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			if(verbose)
+				to_chat(X, SPAN_XENOMINORWARNING("You cannot heal [Xa]!"))
 			continue
 
 		if(Xa == X)
@@ -259,10 +263,8 @@
 		if(!Xa.caste.can_be_queen_healed)
 			continue
 
-		if(Xa.health < Xa.maxHealth)
-			Xa.gain_health(75)
-		new /datum/effects/heal_over_time(Xa, Xa.maxHealth * 0.4, 2 SECONDS, 2)
-		Xa.flick_heal_overlay(SECONDS_3, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
+		new /datum/effects/heal_over_time(Xa, Xa.maxHealth * 0.3, 2 SECONDS, 2)
+		Xa.flick_heal_overlay(3 SECONDS, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
 
 	apply_cooldown()
 	to_chat(X, SPAN_XENONOTICE("You channel your plasma to heal your sisters' wounds around this area."))
@@ -353,7 +355,7 @@
 		return FALSE
 
 	// Account for the do_after in the resin building proc when checking cooldown
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	var/total_build_time = RC.build_time*X.caste.build_time_mult
 	return (world.time >= last_use + (total_build_time + cooldown))
 
@@ -374,7 +376,7 @@
 
 	last_use = world.time
 
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	T.visible_message(SPAN_XENONOTICE("The weeds begin pulsating wildly and secrete resin in the shape of \a [RC.construction_name]!"), null, 5)
 	to_chat(owner, SPAN_XENONOTICE("You focus your plasma into the weeds below you and force the weeds to secrete resin in the shape of \a [RC.construction_name]."))
 	playsound(T, "alien_resin_build", 25)
@@ -404,27 +406,27 @@
 		to_chat(X, SPAN_XENOWARNING("You can't do that here."))
 		return
 
+	var/area/AR = get_area(T)
+	if(!AR.is_resin_allowed)
+		to_chat(X, SPAN_XENOWARNING("It's too early to spread the hive this far."))
+		return
+
 	var/obj/effect/alien/weeds/located_weeds = locate() in T
 	if(located_weeds)
 		if(istype(located_weeds, /obj/effect/alien/weeds/node))
 			return
 
-		if(located_weeds.weed_strength > WEED_LEVEL_WEAK)
-			to_chat(X, SPAN_XENOWARNING("There's weeds here already!"))
+		if(located_weeds.weed_strength > X.weed_level)
+			to_chat(X, SPAN_XENOWARNING("There's stronger weeds here already!"))
 			return
 
 		if (!check_and_use_plasma_owner(node_plant_plasma_cost))
 			return
 
 		to_chat(X, SPAN_XENONOTICE("You plant a node at [T]."))
-		new /obj/effect/alien/weeds/node/weak(T, null, X)
+		new /obj/effect/alien/weeds/node(T, null, X)
 		playsound(T, "alien_resin_build", 35)
 		apply_cooldown_override(node_plant_cooldown)
-		return
-
-	var/area/AR = get_area(T)
-	if(!AR.is_resin_allowed)
-		to_chat(X, SPAN_XENOWARNING("It's too early to spread the hive this far."))
 		return
 
 	var/obj/effect/alien/weeds/node/node
@@ -444,8 +446,8 @@
 
 	if (!check_and_use_plasma_owner())
 		return
-	
-	new /obj/effect/alien/weeds/weak(T, node)
+
+	new /obj/effect/alien/weeds(T, node)
 	playsound(T, "alien_resin_build", 35)
 
 	recently_built_turfs += T

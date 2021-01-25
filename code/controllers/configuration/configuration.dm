@@ -47,10 +47,70 @@
 				for(var/J in legacy_configs)
 					LoadEntries(J)
 				break
+	loadmaplist(CONFIG_GROUND_MAPS_FILE, GROUND_MAP)
+	loadmaplist(CONFIG_SHIP_MAPS_FILE, SHIP_MAP)
 	LoadChatFilter()
 
 	if(Master)
 		Master.OnConfigLoad()
+
+
+/datum/controller/configuration/proc/loadmaplist(filename, maptype)
+	log_config("Loading config file [filename]...")
+	filename = "[directory]/[filename]"
+	var/list/Lines = file2list(filename)
+
+	var/datum/map_config/currentmap
+	for(var/t in Lines)
+		if(!t)
+			continue
+
+		t = trim(t)
+		if(length(t) == 0)
+			continue
+		else if(copytext(t, 1, 2) == "#")
+			continue
+
+		var/pos = findtext(t, " ")
+		var/command = null
+		var/data = null
+
+		if(pos)
+			command = lowertext(copytext(t, 1, pos))
+			data = copytext(t, pos + 1)
+		else
+			command = lowertext(t)
+
+		if(!command)
+			continue
+
+		if(!currentmap && command != "map")
+			continue
+
+		switch(command)
+			if("map")
+				currentmap = load_map_config("maps/[data].json")
+				if(currentmap.defaulted)
+					log_config("Failed to load map config for [data]!")
+					currentmap = null
+			if("minplayers", "minplayer")
+				currentmap.config_min_users = text2num(data)
+			if("maxplayers", "maxplayer")
+				currentmap.config_max_users = text2num(data)
+			if("weight", "voteweight")
+				currentmap.voteweight = text2num(data)
+			if("default", "defaultmap")
+				LAZYINITLIST(defaultmaps)
+				defaultmaps[maptype] = currentmap
+			if("endmap")
+				LAZYINITLIST(maplist)
+				LAZYINITLIST(maplist[maptype])
+				maplist[maptype][currentmap.map_name] = currentmap
+				currentmap = null
+			if("disabled")
+				currentmap = null
+			else
+				log_config("Unknown command in map vote config: '[command]'")
 
 
 /datum/controller/configuration/proc/full_wipe()
@@ -187,10 +247,9 @@
 	return (var_name != NAMEOF(src, entries_by_type) || !hiding_entries_by_type) && ..()
 
 
-/datum/controller/configuration/stat_entry()
-	if(!statclick)
-		statclick = new/obj/effect/statclick/debug(null, "Debug", src)
-	stat("[name]:", statclick)
+/datum/controller/configuration/stat_entry(msg)
+	msg = "Edit"
+	return msg
 
 
 /datum/controller/configuration/proc/Get(entry_type)

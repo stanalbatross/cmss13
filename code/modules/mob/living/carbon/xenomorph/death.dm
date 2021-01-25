@@ -11,7 +11,7 @@
 	if(is_zoomed)
 		zoom_out()
 
-	if(map_tag == MAP_WHISKEY_OUTPOST)
+	if(SSticker?.mode?.hardcore)
 		ghostize()
 
 	SetLuminosity(0)
@@ -35,12 +35,12 @@
 			if(XQ.ovipositor)
 				XQ.dismount_ovipositor(TRUE)
 
-			if(hive_datum[hivenumber].stored_larva)
-				hive_datum[hivenumber].stored_larva = round(hive_datum[hivenumber].stored_larva * 0.5) //Lose half on dead queen
+			if(GLOB.hive_datum[hivenumber].stored_larva)
+				GLOB.hive_datum[hivenumber].stored_larva = round(GLOB.hive_datum[hivenumber].stored_larva * 0.5) //Lose half on dead queen
 				var/turf/larva_spawn
 				var/list/players_with_xeno_pref = get_alien_candidates()
-				while(hive_datum[hivenumber].stored_larva > 0 && istype(hive_datum[hivenumber].spawn_pool, /obj/effect/alien/resin/special/pool)) // stil some left
-					larva_spawn = get_turf(hive_datum[hivenumber].spawn_pool)
+				while(GLOB.hive_datum[hivenumber].stored_larva > 0 && istype(GLOB.hive_datum[hivenumber].spawn_pool, /obj/effect/alien/resin/special/pool)) // stil some left
+					larva_spawn = get_turf(GLOB.hive_datum[hivenumber].spawn_pool)
 					if(players_with_xeno_pref && players_with_xeno_pref.len)
 						var/mob/xeno_candidate = pick(players_with_xeno_pref)
 						var/mob/living/carbon/Xenomorph/Larva/new_xeno = new /mob/living/carbon/Xenomorph/Larva(larva_spawn)
@@ -53,8 +53,8 @@
 						new_xeno.visible_message(SPAN_XENODANGER("A larva suddenly burrows out of the ground!"),
 						SPAN_XENODANGER("You burrow out of the ground after feeling an immense tremor through the hive, which quickly fades into complete silence..."))
 
-					hive_datum[hivenumber].stored_larva--
-					hive_datum[hivenumber].hive_ui.update_pooled_larva()
+					GLOB.hive_datum[hivenumber].stored_larva--
+					GLOB.hive_datum[hivenumber].hive_ui.update_pooled_larva()
 
 			if(hive && hive.living_xeno_queen == src)
 				xeno_message(SPAN_XENOANNOUNCE("A sudden tremor ripples through the hive... the Queen has been slain! Vengeance!"),3, hivenumber)
@@ -67,7 +67,7 @@
 						break
 				hive.handle_xeno_leader_pheromones()
 				if(SSticker.mode)
-					SSticker.mode.check_queen_status(hive.queen_time, hivenumber)
+					SSticker.mode.check_queen_status(hivenumber)
 					LAZYADD(SSticker.mode.dead_queens, "<br>[!isnull(src.key) ? src.key : "?"] was [src] [SPAN_BOLDNOTICE("(DIED)")]")
 
 		else
@@ -90,8 +90,8 @@
 
 	// Banished xeno provide a pooled larva on death to compensate
 	if(banished)
-		hive_datum[hivenumber].stored_larva++
-		hive_datum[hivenumber].hive_ui.update_pooled_larva()
+		GLOB.hive_datum[hivenumber].stored_larva++
+		GLOB.hive_datum[hivenumber].hive_ui.update_pooled_larva()
 
 	if(hive)
 		hive.remove_xeno(src)

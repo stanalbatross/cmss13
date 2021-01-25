@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(shuttle_controls)
+
 /obj/structure/machinery/computer/shuttle_control
 	name = "shuttle control console"
 	icon = 'icons/obj/structures/machinery/computer.dmi'
@@ -21,7 +23,11 @@
 
 /obj/structure/machinery/computer/shuttle_control/Initialize()
 	. = ..()
-	shuttle_datum = shuttle_controller.shuttles[shuttle_tag]
+	GLOB.shuttle_controls += src
+
+/obj/structure/machinery/computer/shuttle_control/Destroy()
+	GLOB.shuttle_controls -= src
+	return ..()
 
 /obj/structure/machinery/computer/shuttle_control/proc/get_shuttle()
 	var/datum/shuttle/ferry/shuttle = shuttle_controller.shuttles[shuttle_tag]
@@ -54,7 +60,7 @@
 			if(onboard && (isSynth(user) || user.job== "Pilot Officer"))
 				user.visible_message(SPAN_NOTICE("[user] starts to type on the [src]."),
 				SPAN_NOTICE("You try to take back the control over the shuttle. It will take around 3 minutes."))
-				if(do_after(user, MINUTES_3, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+				if(do_after(user, 3 MINUTES, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 					if(user.lying)
 						return 0
 					shuttle.last_locked = world.time
@@ -67,14 +73,14 @@
 				return
 			else
 				if(world.time < shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN)
-					to_chat(user, SPAN_WARNING("You can't seem to re-enable remote control, some sort of safety cooldown is in place. Please wait another [round((shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN - world.time)/MINUTES_1)] minutes before trying again."))
+					to_chat(user, SPAN_WARNING("You can't seem to re-enable remote control, some sort of safety cooldown is in place. Please wait another [time_left_until(shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN, world.time, 1 MINUTES)] minutes before trying again."))
 				else
 					to_chat(user, SPAN_NOTICE("You interact with the pilot's console and re-enable remote control."))
 					shuttle.last_locked = world.time
 					shuttle.queen_locked = 0
 		if(shuttle.door_override)
 			if(world.time < shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN)
-				to_chat(user, SPAN_WARNING("You can't seem to reverse the door override. Please wait another [round((shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN - world.time)/MINUTES_1)] minutes before trying again."))
+				to_chat(user, SPAN_WARNING("You can't seem to reverse the door override. Please wait another [time_left_until(shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN, world.time, 1 MINUTES)] minutes before trying again."))
 			else
 				to_chat(user, SPAN_NOTICE("You reverse the door override."))
 				shuttle.last_door_override = world.time
@@ -230,7 +236,7 @@
 					return
 
 				// Allow the queen to choose the ship section to crash into
-				var/crash_target = input("Choose a ship section to target","Hijack",null) as null|anything in almayer_ship_sections + list("Cancel")
+				var/crash_target = tgui_input_list(usr, "Choose a ship section to target","Hijack", almayer_ship_sections + list("Cancel"))
 				if(crash_target == "Cancel")
 					return
 
@@ -265,6 +271,7 @@
 
 					to_chat(Q, SPAN_DANGER("A loud alarm erupts from [src]! The fleshy hosts must know that you can access it!"))
 					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"),3,Q.hivenumber)
+					xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."),2,Q.hivenumber)
 
 					// Notify the yautja too so they stop the hunt
 					message_all_yautja("The serpent Queen has commanded the landing shuttle to depart.")
@@ -274,6 +281,7 @@
 
 					if(Q.hive)
 						Q.hive.abandon_on_hijack()
+						Q.hive.hijack_pooled_surge = TRUE
 
 					if(bomb_set)
 						for(var/obj/structure/machinery/nuclearbomb/bomb in world)
@@ -281,7 +289,7 @@
 
 					if(almayer_orbital_cannon)
 						almayer_orbital_cannon.is_disabled = TRUE
-						addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), MINUTES_10, TIMER_UNIQUE)
+						addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), 10 MINUTES, TIMER_UNIQUE)
 
 					if(almayer_aa_cannon)
 						almayer_aa_cannon.is_disabled = TRUE
@@ -373,7 +381,7 @@
 
 		for(var/obj/structure/machinery/door/airlock/dropship_hatch/M in machines)
 			if(M.id == ship_id)
-				if(M.z != 4)
+				if(!is_loworbit_level(M.z))
 					M.unlock()
 
 		var/obj/structure/machinery/door/airlock/multi_tile/almayer/reardoor
@@ -384,7 +392,7 @@
 			if("sh_dropship2")
 				for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2/D in machines)
 					reardoor = D
-		if(reardoor.z != 4)
+		if(!is_loworbit_level(reardoor.z))
 			reardoor.unlock()
 
 	if(href_list["side door"])
@@ -476,11 +484,9 @@
 	exproof = 1
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_CORPORATE)
 
-/obj/structure/machinery/computer/shuttle_control/dropship1/New()
-	..()
+/obj/structure/machinery/computer/shuttle_control/dropship1/Initialize()
+	. = ..()
 	shuttle_tag = "[MAIN_SHIP_NAME] Dropship 1"
-	if(shuttle_controller)
-		shuttle_datum = shuttle_controller.shuttles[shuttle_tag]
 
 /obj/structure/machinery/computer/shuttle_control/dropship1/onboard
 	name = "\improper 'Alamo' flight controls"
@@ -502,11 +508,9 @@
 	exproof = 1
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP, ACCESS_WY_CORPORATE)
 
-/obj/structure/machinery/computer/shuttle_control/dropship2/New()
-	..()
+/obj/structure/machinery/computer/shuttle_control/dropship2/Initialize()
+	. = ..()
 	shuttle_tag = "[MAIN_SHIP_NAME] Dropship 2"
-	if(shuttle_controller)
-		shuttle_datum = shuttle_controller.shuttles[shuttle_tag]
 
 /obj/structure/machinery/computer/shuttle_control/dropship2/onboard
 	name = "\improper 'Normandy' flight controls"

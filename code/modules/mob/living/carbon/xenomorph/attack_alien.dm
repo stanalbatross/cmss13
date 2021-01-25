@@ -26,6 +26,9 @@
 			if(M == src || anchored || buckled)
 				return FALSE
 
+			if(M.fortify)
+				return FALSE
+
 			if(check_shields(0, M.name)) // Blocking check
 				M.visible_message(SPAN_DANGER("[M]'s grab is blocked by [src]'s shield!"), \
 				SPAN_DANGER("Your grab was blocked by [src]'s shield!"), null, 5, CHAT_TYPE_XENO_COMBAT)
@@ -36,7 +39,7 @@
 				M.start_pulling(src)
 
 		if(INTENT_HARM)
-			if(match_hivemind(M))
+			if(M.can_not_harm(src))
 				M.animation_attack_on(src)
 				M.visible_message(SPAN_NOTICE("[M] nibbles [src]"), \
 				SPAN_XENONOTICE("You nibble [src]"))
@@ -67,16 +70,6 @@
 			var/acid_damage = 0
 			if(M.burn_damage_lower)
 				acid_damage = rand(M.burn_damage_lower, M.burn_damage_upper)
-
-			// Bonus damage for base praetorian acid
-			var/datum/effects/prae_acid_stacks/PAS = null
-			for (var/datum/effects/prae_acid_stacks/found in effects_list)
-				PAS = found
-				break
-
-			if (istype(PAS) && PAS.stack_count >= PAS.max_stacks)
-				PAS.on_proc()
-
 
 			//Frenzy auras stack in a way, then the raw value is multipled by two to get the additive modifier
 			if(M.frenzy_aura > 0)
@@ -172,12 +165,19 @@
 				MD.melee_attack_additional_effects_target(src)
 				MD.melee_attack_additional_effects_self()
 
+			SEND_SIGNAL(M, COMSIG_HUMAN_ALIEN_ATTACK, src)
+
 			updatehealth()
 
 		if(INTENT_DISARM)
+
 			if(M.legcuffed && isYautja(src))
 				to_chat(M, SPAN_XENODANGER("You don't have the dexterity to tackle the headhunter with that thing on your leg!"))
 				return FALSE
+
+			if(M.fortify)
+				return FALSE
+
 			M.animation_attack_on(src)
 			if(check_shields(0, M.name)) // Blocking check
 				M.visible_message(SPAN_DANGER("[M]'s tackle is blocked by [src]'s shield!"), \
@@ -225,6 +225,9 @@
 			if(M == src || anchored || buckled)
 				return FALSE
 
+			if(M.fortify)
+				return FALSE
+
 			if(Adjacent(M)) //Logic!
 				M.start_pulling(src)
 
@@ -239,7 +242,7 @@
 			if(M.caste && !M.caste.is_intelligent)
 				if(istype(buckled, /obj/structure/bed/nest) && (status_flags & XENO_HOST))
 					for(var/obj/item/alien_embryo/embryo in src)
-						if(embryo.hivenumber == M.hivenumber)
+						if(HIVE_ALLIED_TO_HIVE(M.hivenumber, embryo.hivenumber))
 							to_chat(M, SPAN_WARNING("You should not harm this host! It has a sister inside."))
 							return FALSE
 
@@ -279,6 +282,10 @@
 			apply_damage(damage, BRUTE)
 
 		if(INTENT_DISARM)
+
+			if(M.fortify)
+				return FALSE
+
 			playsound(loc, 'sound/weapons/alien_knockdown.ogg', 25, 1)
 			M.visible_message(SPAN_WARNING("[M] shoves [src]!"), \
 			SPAN_WARNING("You shove [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
@@ -539,10 +546,10 @@
 	var/delay
 
 	if(!arePowerSystemsOn())
-		delay = SECONDS_1
+		delay = 1 SECONDS
 		playsound(loc, 'sound/effects/metal_creaking.ogg', 25, SOUND_FREQ_HIGH * 1.8)
 	else
-		delay = SECONDS_4
+		delay = 4 SECONDS
 		playsound(loc, 'sound/effects/metal_creaking.ogg', 25, TRUE)
 
 	M.visible_message(SPAN_WARNING("[M] digs into [src] and begins to pry it open."), \
@@ -660,7 +667,7 @@
 /datum/shuttle/ferry/marine/proc/hijack(mob/living/carbon/Xenomorph/M, shuttle_tag)
 	if(!queen_locked) //we have not hijacked it yet
 		if(world.time < SHUTTLE_LOCK_TIME_LOCK)
-			to_chat(M, SPAN_XENODANGER("You can't mobilize the strength to hijack the shuttle yet. Please wait another [round((SHUTTLE_LOCK_TIME_LOCK-world.time)/MINUTES_1)] minutes before trying again."))
+			to_chat(M, SPAN_XENODANGER("You can't mobilize the strength to hijack the shuttle yet. Please wait another [time_left_until(SHUTTLE_LOCK_TIME_LOCK, world.time, 1 MINUTES)] minutes before trying again."))
 			return
 
 		var/message
@@ -674,7 +681,7 @@
 		last_locked = world.time
 		if(almayer_orbital_cannon)
 			almayer_orbital_cannon.is_disabled = TRUE
-			addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), MINUTES_10, TIMER_UNIQUE)
+			addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), 10 MINUTES, TIMER_UNIQUE)
 		queen_locked = 1
 
 /datum/shuttle/ferry/marine/proc/door_override(mob/living/carbon/Xenomorph/M, shuttle_tag)
@@ -831,7 +838,7 @@
 	new /obj/item/stack/sheet/wood(src)
 	var/turf/T = get_turf(src)
 	for(var/obj/O in contents)
-		O.loc = T
+		O.forceMove(T)
 	M.visible_message(SPAN_DANGER("[M] smashes [src] apart!"), \
 	SPAN_DANGER("You smash [src] apart!"), \
 	SPAN_DANGER("You hear splitting wood!"), 5, CHAT_TYPE_XENO_COMBAT)

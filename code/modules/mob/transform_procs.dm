@@ -29,7 +29,7 @@
 
 	O = new species.primitive(loc)
 
-	O.loc = loc
+	O.forceMove(loc)
 	O.viruses = viruses
 	O.a_intent = INTENT_HARM
 
@@ -110,7 +110,7 @@
 		O.key = key
 		if(O.client) O.client.change_view(world_view_size)
 
-	O.loc = loc
+	O.forceMove(loc)
 	O.job = "Cyborg"
 	if(O.job == "Cyborg")
 		O.mmi = new /obj/item/device/mmi(O)
@@ -209,7 +209,7 @@
 /mob/living/carbon/human/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", mobtypes)
 
 	if(!safe_animal(mobpath))
 		to_chat(usr, SPAN_DANGER("Sorry but this mob type is currently unavailable."))
@@ -243,7 +243,7 @@
 /mob/proc/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", mobtypes)
 
 	if(!safe_animal(mobpath))
 		to_chat(usr, SPAN_DANGER("Sorry but this mob type is currently unavailable."))

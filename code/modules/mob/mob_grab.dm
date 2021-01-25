@@ -1,4 +1,4 @@
-#define UPGRADE_COOLDOWN	SECONDS_2
+#define UPGRADE_COOLDOWN	2 SECONDS
 
 /obj/item/grab
 	name = "grab"
@@ -13,8 +13,8 @@
 	var/last_upgrade = 0 //used for cooldown between grab upgrades.
 
 
-/obj/item/grab/New()
-	..()
+/obj/item/grab/Initialize()
+	. = ..()
 	last_upgrade = world.time
 
 /obj/item/grab/dropped(mob/user)
@@ -55,8 +55,8 @@
 			var/mob/living/carbon/Xenomorph/X = user
 			X.pull_power(grabbed_thing)
 		return
-	
-	
+
+
 	var/mob/victim = grabbed_thing
 	if(victim.mob_size > MOB_SIZE_HUMAN || !(victim.status_flags & CANPUSH))
 		return //can't tighten your grip on big mobs and mobs you can't push.
@@ -122,17 +122,14 @@
 			if(X.pulling == pulled && !pulled.buckled && (pulled.stat != DEAD || pulled.chestburst) && !X.stomach_contents.len) //make sure you've still got them in your claws, and alive
 				if(SEND_SIGNAL(pulled, COMSIG_MOB_DEVOURED, X) & COMPONENT_CANCEL_DEVOUR)
 					return FALSE
-				
+
 				X.visible_message(SPAN_WARNING("[X] devours [pulled]!"), \
 					SPAN_WARNING("You devour [pulled]!"), null, 5)
-				
+
 				//IMPORTANT CODER NOTE: Due to us using the old lighting engine, we need to hacky hack hard to get this working properly
 				//So we're just going to get the lights out of here by forceMoving them to a far-away place
 				//They will be recovered when regurgitating, since this also calls forceMove
-				pulled.x = 1
-				pulled.y = 1
-				pulled.z = 2 //Centcomm
-				pulled.forceMove(pulled.loc)
+				pulled.moveToNullspace()
 
 				//Then, we place the mob where it ought to be
 				X.stomach_contents.Add(pulled)

@@ -161,18 +161,18 @@
 			return
 		if(a_left)
 			a_left.holder = null
-			a_left.loc = T
+			a_left.forceMove(T)
 			a_left = null
 		if(a_right)
 			a_right.holder = null
-			a_right.loc = T
+			a_right.forceMove(T)
 			a_right = null
 		qdel(src)
 
 /obj/item/device/assembly_holder/process_activation(var/obj/D, var/normal = 1, var/special = 1)
 	if(!D)	return 0
 	if(!secured)
-		visible_message("[htmlicon(src, hearers(src))] *beep* *beep*", "*beep* *beep*")
+		visible_message("[icon2html(src, hearers(src))] *beep* *beep*", "*beep* *beep*")
 	if((normal) && (a_right) && (a_left))
 		if(a_right != D)
 			a_right.pulsed(0)
@@ -191,8 +191,8 @@
 /obj/item/device/assembly_holder/timer_igniter
 	name = "timer-igniter assembly"
 
-/obj/item/device/assembly_holder/timer_igniter/New(location, timer_time)
-	..()
+/obj/item/device/assembly_holder/timer_igniter/Initialize(mapload, timer_time)
+	. = ..()
 
 	var/obj/item/device/assembly/igniter/ign = new(src)
 	ign.secured = 1

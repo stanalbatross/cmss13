@@ -18,49 +18,47 @@
 	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
 		for(var/datum/mind/L in SSticker.mode.xenomorphs)
 			var/mob/living/carbon/M = L.current
-			if(M && istype(M) && !M.stat && M.client && M.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED)) //Only living and connected xenos
+			if(M && istype(M) && !M.stat && M.client && M.ally_of_hivenumber(hivenumber)) //Only living and connected xenos
 				to_chat(M, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
 
 //Adds stuff to your "Status" pane -- Specific castes can have their own, like carrier hugger count
 //Those are dealt with in their caste files.
-/mob/living/carbon/Xenomorph/Stat()
-	if(!..())
-		return FALSE
+/mob/living/carbon/Xenomorph/get_status_tab_items()
+	. = ..()
 
-	stat("Name:", "[name]")
-	stat("Time:","[worldtime2text()]")
+	. += "Name: [name]"
 
-	stat("")
+	. += ""
 
-	stat("Health:", "[round(health)]/[round(maxHealth)]")
-	stat("Armor:", "[round(0.01*armor_integrity*armor_deflection)]/[round(armor_deflection)]")
-	stat("Plasma:", "[round(plasma_stored)]/[round(plasma_max)]")
-	stat("Slash Damage:", "[round((melee_damage_lower+melee_damage_upper)/2)]")
+	. += "Health: [round(health)]/[round(maxHealth)]"
+	. += "Armor: [round(0.01*armor_integrity*armor_deflection)]/[round(armor_deflection)]"
+	. += "Plasma: [round(plasma_stored)]/[round(plasma_max)]"
+	. += "Slash Damage: [round((melee_damage_lower+melee_damage_upper)/2)]"
 
 	var/shieldtotal = 0
 	for (var/datum/xeno_shield/XS in xeno_shields)
 		shieldtotal += XS.amount
-	
-	stat("Shield:", "[shieldtotal]")
 
-	stat("")
+	. += "Shield: [shieldtotal]"
+
+	. += ""
 
 	if(caste_name == "Bloody Larva" || caste_name == "Predalien Larva")
-		stat("Evolve Progress:", "[round(amount_grown)]/[max_grown]")
+		. += "Evolve Progress: [round(amount_grown)]/[max_grown]"
 	else if(hive && !hive.living_xeno_queen)
-		stat("Evolve Progress:", "NO QUEEN")
+		. += "Evolve Progress: NO QUEEN"
 	else if(hive && !hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
-		stat("Evolve Progress:", "NO OVIPOSITOR")
+		. += "Evolve Progress: NO OVIPOSITOR"
 	else if(caste && caste.evolution_allowed)
-		stat("Evolve Progress:", "[round(evolution_stored)]/[evolution_threshold]")
+		. += "Evolve Progress: [round(evolution_stored)]/[evolution_threshold]"
 
-	stat("")
+	. += ""
 
 	if (behavior_delegate)
 		var/datum/behavior_delegate/MD = behavior_delegate
-		MD.append_to_stat()
+		. += MD.append_to_stat()
 
-	stat("")
+	. += ""
 	//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
 	var/msg_holder = "-"
 
@@ -71,7 +69,7 @@
 			if(2.0 to 2.9) msg_holder = "Moderate"
 			if(3.0 to 3.9) msg_holder = "Strong"
 			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	stat("Frenzy:", "[msg_holder]")
+	. += "Frenzy: [msg_holder]"
 	msg_holder = "-"
 
 	if(warding_aura)
@@ -81,7 +79,7 @@
 			if(2.0 to 2.9) msg_holder = "Moderate"
 			if(3.0 to 3.9) msg_holder = "Strong"
 			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	stat("Warding:", "[msg_holder]")
+	. += "Warding: [msg_holder]"
 	msg_holder = "-"
 
 	if(recovery_aura)
@@ -91,44 +89,41 @@
 			if(2.0 to 2.9) msg_holder = "Moderate"
 			if(3.0 to 3.9) msg_holder = "Strong"
 			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	stat("Recovery:", "[msg_holder]")
+	. += "Recovery: [msg_holder]"
 
-	stat(null,"")
+	. += ""
 
 	if(hive)
 		if(!hive.living_xeno_queen)
-			stat("Queen's Location:", "NO QUEEN")
+			. += "Queen's Location: NO QUEEN"
 		else if(!(caste_name == "Queen"))
-			stat("Queen's Location:", "[hive.living_xeno_queen.loc.loc.name]")
+			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
 
 		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
-			stat("Slashing:", "PERMITTED")
-		else if(hive.slashing_allowed == XENO_SLASH_RESTRICTED)
-			stat("Slashing:", "LIMITED")
+			. += "Slashing: PERMITTED"
 		else
-			stat("Slashing:", "FORBIDDEN")
+			. += "Slashing: FORBIDDEN"
 
 		if(hive.construction_allowed == XENO_LEADER)
-			stat("Construction Placement:", "LEADERS")
+			. += "Construction Placement: LEADERS"
 		else if(hive.construction_allowed == NORMAL_XENO)
-			stat("Construction Placement:", "ANYONE")
+			. += "Construction Placement: ANYONE"
 		else
-			stat("Construction Placement:", "QUEEN")
+			. += "Construction Placement: QUEEN"
 
 		if(hive.destruction_allowed == XENO_LEADER)
-			stat("Special Structure Destruction:", "LEADERS")
+			. += "Special Structure Destruction: LEADERS"
 		else if(hive.destruction_allowed == NORMAL_XENO)
-			stat("Special Structure Destruction:", "BUILDERS and LEADERS")
+			. += "Special Structure Destruction: BUILDERS and LEADERS"
 		else
-			stat("Special Structure Destruction:", "QUEEN")
+			. += "Special Structure Destruction: QUEEN"
 
 		if(hive.hive_orders)
-			stat("Hive Orders:", "[hive.hive_orders]")
+			. += "Hive Orders: [hive.hive_orders]"
 		else
-			stat("Hive Orders:", "-")
+			. += "Hive Orders: -"
 
-	stat("")
-	return TRUE
+	. += ""
 
 //A simple handler for checking your state. Used in pretty much all the procs.
 /mob/living/carbon/Xenomorph/proc/check_state(var/permissive = 0)
@@ -195,14 +190,12 @@
 //Strip all inherent xeno verbs from your caste. Used in evolution.
 /mob/living/carbon/Xenomorph/proc/remove_inherent_verbs()
 	if(inherent_verbs)
-		for(var/verb_path in inherent_verbs)
-			verbs -= verb_path
+		remove_verb(src, inherent_verbs)
 
 //Add all your inherent caste verbs and procs. Used in evolution.
 /mob/living/carbon/Xenomorph/proc/add_inherent_verbs()
 	if(inherent_verbs)
-		for(var/verb_path in inherent_verbs)
-			verbs |= verb_path
+		add_verb(src, inherent_verbs)
 
 
 //Adds or removes a delay to movement based on your caste. If speed = 0 then it shouldn't do much.
@@ -250,7 +243,7 @@
 		return
 
 	var/mob/living/carbon/M = L
-	if(M.stat || M.mob_size >= MOB_SIZE_BIG || match_hivemind(L, src))
+	if(M.stat || M.mob_size >= MOB_SIZE_BIG || can_not_harm(L))
 		throwing = FALSE
 		return
 
@@ -274,6 +267,13 @@
 					KnockDown(4)
 					throwing = FALSE
 					return
+			if(isEarlySynthetic(H) && prob(60))
+				visible_message(SPAN_DANGER("[H] withstands being pounced and slams down [src]!"),
+					SPAN_XENODANGER("[H] throws you down after withstanding the pounce!"), null, 5)
+				KnockDown(1.5)
+				throwing = FALSE
+				return
+
 
 	visible_message(SPAN_DANGER("[src] [pounceAction.ability_name] onto [M]!"), SPAN_XENODANGER("You [pounceAction.ability_name] onto [M]!"), null, 5)
 
@@ -285,7 +285,7 @@
 		playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
 		canmove = FALSE
 		frozen = TRUE
-		addtimer(CALLBACK(src, .proc/end_pounce_freeze), pounceAction.freeze_time)
+		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, .proc/unfreeze), pounceAction.freeze_time, TIMER_STOPPABLE)
 
 	if(pounceAction.slash)
 		M.attack_alien(src, pounceAction.slash_bonus_damage)
@@ -296,10 +296,6 @@
 
 /mob/living/carbon/Xenomorph/proc/pounced_mob_wrapper(var/mob/living/L)
 	pounced_mob(L)
-
-/mob/living/carbon/Xenomorph/proc/charge_unfreeze()
-	frozen = FALSE
-	update_canmove()
 
 /mob/living/carbon/Xenomorph/proc/pounced_obj(var/obj/O)
 	var/datum/action/xeno_action/activable/pounce/pounceAction = get_xeno_action_by_type(src, /datum/action/xeno_action/activable/pounce)
@@ -464,7 +460,7 @@
 	hud_set_pheromone()
 
 /mob/living/carbon/Xenomorph/proc/nocrit(var/wowave)
-	if(map_tag == MAP_WHISKEY_OUTPOST)
+	if(SSticker?.mode?.hardcore)
 		if(wowave < 15)
 			maxHealth = ((maxHealth+abs(crit_health))*(wowave/15)*(3/4))+((maxHealth)*1/4) //if it's wo we give xeno's less hp in lower rounds. This makes help the marines feel good.
 			health	= ((health+abs(crit_health))*(wowave/15)*(3/4))+((health)*1/4) //if it's wo we give xeno's less hp in lower rounds. This makes help the marines feel good.
@@ -510,7 +506,7 @@
 	var/mob/living/carbon/human/H = M
 	var/obj/limb/L = H.get_limb(check_zone(zone_selected))
 
-	if(match_hivemind(H))
+	if(can_not_harm(H))
 		to_chat(src, SPAN_XENOWARNING("You can't harm this host!"))
 		return
 
@@ -540,7 +536,7 @@
 		visible_message(SPAN_XENOWARNING("You hear the bones in [M]'s [L.display_name] snap with a sickening crunch!"), \
 		SPAN_XENOWARNING("[M]'s [L.display_name] bones snap with a satisfying crunch!"))
 		L.take_damage(rand(15,25), 0, 0)
-		L.fracture()
+		L.fracture(100)
 	M.last_damage_source = initial(name)
 	M.last_damage_mob = src
 	src.attack_log += text("\[[time_stamp()]\] <font color='red'>ripped the [L.display_name] off of [M.name] ([M.ckey]) 1/2 progress</font>")
@@ -575,10 +571,6 @@
 	if(pipe)
 		handle_ventcrawl(pipe)
 
-/mob/living/carbon/Xenomorph/proc/end_pounce_freeze()
-	frozen = FALSE
-	update_canmove()
-
 /mob/living/carbon/Xenomorph/proc/attempt_tackle(var/mob/M, var/tackle_mult = 1, var/tackle_min_offset = 0, var/tackle_max_offset = 0, var/tackle_bonus = 0)
 	var/datum/tackle_counter/TC
 	if (M in tackle_counter)
@@ -586,14 +578,14 @@
 	else
 		TC = new(tackle_min + tackle_min_offset, tackle_max + tackle_max_offset, tackle_chance*tackle_mult)
 		tackle_counter[M] = TC
-	
+
 	if (TC.tackle_reset_id)
 		deltimer(TC.tackle_reset_id)
 		TC.tackle_reset_id = null
 
 	. = TC.attempt_tackle(tackle_bonus)
 	if (!.)
-		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), SECONDS_4, TIMER_UNIQUE | TIMER_STOPPABLE)
+		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), 4 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 	else
 		qdel(TC)
 		tackle_counter[M] = null

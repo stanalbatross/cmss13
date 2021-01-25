@@ -28,16 +28,16 @@
 	var/turf/L = get_turf(src)
 	tunnel_desc = L.loc.name + " ([loc.x], [loc.y]) [pick(greek_letters)]"//Default tunnel desc is the <area name> (x, y) <Greek letter>
 
-	if(h_number && hive_datum[h_number])
+	if(h_number && GLOB.hive_datum[h_number])
 		hivenumber = h_number
-		hive = hive_datum[h_number]
+		hive = GLOB.hive_datum[h_number]
 
 		set_hive_data(src, h_number)
 
 		hive.tunnels += src
 
 	if(!hive)
-		hive = hive_datum[hivenumber]
+		hive = GLOB.hive_datum[hivenumber]
 
 		hive.tunnels += src
 
@@ -53,7 +53,7 @@
 
 /obj/structure/tunnel/proc/isfriendly(var/mob/target)
 	var/mob/living/carbon/C = target
-	if(istype(C) && C.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))
+	if(istype(C) && C.ally_of_hivenumber(hivenumber))
 		return TRUE
 
 	return FALSE
@@ -111,7 +111,7 @@
 				continue
 
 			tunnels += list(T.tunnel_desc = T)
-		var/pick = input("Which tunnel would you like to move to?") as null|anything in tunnels
+		var/pick = tgui_input_list(usr, "Which tunnel would you like to move to?", "Tunnel", tunnels)
 		if(!pick)
 			return FALSE
 
@@ -179,7 +179,7 @@
 		M.visible_message(SPAN_XENODANGER("[M] begins to fill [src] with dirt."),\
 		SPAN_XENONOTICE("You begin to fill [src] with dirt using your massive claws."), max_distance = 3)
 
-		if(!do_after(M, SECONDS_10, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_ALL_OUT_OF_RANGE, max_dist = 1))
+		if(!do_after(M, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_ALL_OUT_OF_RANGE, max_dist = 1))
 			to_chat(M, SPAN_XENOWARNING("You decide not to cave the tunnel in."))
 			return
 

@@ -15,7 +15,6 @@
         list("<h2>ONE-USE TOOLS</h2>", -1, null, null, null),
         list("Experimental Stimulant Pills", 20, /obj/item/storage/pill_bottle/ultrazine/antag, "white", "Useful stimulants that allow you to resist stamina damage. Lasts for approximately 2 minutes. Take only 1 pill. Use with care."),
         list("Decoy", 14, /obj/item/explosive/grenade/decoy, "white", "A decoy grenade. Emits a loud explosion that can be heard from very far away, keep away from ears. Can be used 3 times."),
-        list("Concealing Gloves", 20, /obj/item/clothing/gloves/antag, "white", "Gloves able to conceal your actions from the AI's detection. Fingerprints will still be left behind."),
 
         list("<h2>UTILITY</h2>", -1, null, null, null),
         list("Security Access Tuner v2", 25, /obj/item/device/multitool/antag, "white", "An upgraded access tuner, able to rapidly hack various machinery. Disguised as a regular multitool"),
@@ -71,7 +70,7 @@
         to_chat(H, SPAN_NOTICE("You start converting [target_mag] into a rubber magazine."))
         playsound(user.loc, "sound/machines/fax.ogg", 5)
 
-        if(!do_after(H, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE, target_mag, INTERRUPT_ALL))
+        if(!do_after(H, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, target_mag, INTERRUPT_ALL))
             return .
 
         to_chat(H, SPAN_NOTICE("You convert [target] into a rubber magazine."))

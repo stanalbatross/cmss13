@@ -1,7 +1,7 @@
 #define FALLOFF_SOUNDS		1
 
-#define FREE_CHAN_END 1017
-#define INITIAL_SOUNDSCAPE_COOLDOWN 20 
+#define FREE_CHAN_END 1016
+#define INITIAL_SOUNDSCAPE_COOLDOWN 20
 
 #define EAR_DEAF_MUTE 			1
 
@@ -9,17 +9,19 @@
 #define VOLUME_AMB 2
 #define VOLUME_ADM 3
 #define VOLUME_LOBBY 4
+#define VOLUME_ANNOUNCEMENT 5
 
 #define MUFFLE_LOW -500
 #define MUFFLE_MEDIUM -2000
 #define MUFFLE_HIGH -10000
 
-#define SOUND_FREQ_HIGH 55000 
-#define SOUND_FREQ_LOW 32000 
+#define SOUND_FREQ_HIGH 55000
+#define SOUND_FREQ_LOW 32000
 
 #define ITEM_EQUIP_VOLUME 50
 //Reserved channels
 
+#define SOUND_CHANNEL_VOX           1017
 #define SOUND_CHANNEL_MUSIC 		1018
 #define SOUND_CHANNEL_AMBIENCE 		1019
 #define SOUND_CHANNEL_WALKMAN 		1020
@@ -40,7 +42,6 @@
 #define AMBIENCE_ALMAYER 'sound/ambience/shipambience1.ogg'
 #define AMBIENCE_LV624 'sound/ambience/ambienceLV624.ogg'
 #define AMBIENCE_BIGRED 'sound/ambience/desert.ogg'
-#define AMBIENCE_ICE 'sound/ambience/snowstorm.ogg'
 #define AMBIENCE_PRISON 'sound/ambience/shipambience.ogg'
 #define AMBIENCE_TRIJENT 'sound/ambience/desert.ogg'
 

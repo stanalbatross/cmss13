@@ -286,7 +286,7 @@ var/global/marines_assigned = 0
 	unassigned_players = null
 
 	// Now we take spare unfilled xeno slots and make them larva
-	var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
+	var/datum/hive_status/hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
 	if(istype(hive) && istype(XJ))
 		hive.stored_larva += max(0, (XJ.total_positions - XJ.current_positions))
 
@@ -295,7 +295,7 @@ var/global/marines_assigned = 0
 /datum/authority/branch/role/proc/assign_to_xenomorph(var/mob/M)
 	var/datum/mind/P = M.mind
 	var/datum/game_mode/G = SSticker.mode
-	var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
+	var/datum/hive_status/hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
 	// if we don't have at least one thing - abort
 	if(!P || !G || !hive)
 		return
@@ -465,7 +465,7 @@ var/global/marines_assigned = 0
 					to_chat(user, "There are no [J.title] slots occupied in [sq.name] Squad.")
 					return
 	J.current_positions--
-	message_staff(SPAN_NOTICE("[key_name(user)] freed the [J.title] job slot[sq ? " in [sq.name] Squad" : ""]."))
+	message_staff("[key_name(user)] freed the [J.title] job slot[sq ? " in [sq.name] Squad" : ""].")
 	return 1
 
 /datum/authority/branch/role/proc/modify_role(datum/job/J, amount)
@@ -490,7 +490,7 @@ var/global/marines_assigned = 0
 		return
 	//If they didn't join late, we want to move them to the start position for their role.
 	if(late_join)
-		M.loc = late_join //If they late joined, we passed on the location from the parent proc.
+		M.forceMove(late_join) //If they late joined, we passed on the location from the parent proc.
 	else //If they didn't, we need to find a suitable spawn location for them.
 		if(!length(GLOB.spawns_by_job[J.type]))
 			log_debug("Failed to find a spawn for [J.type]")

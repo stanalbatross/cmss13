@@ -140,7 +140,9 @@
 			"}
 
 /obj/item/device/radio/Topic(href, href_list)
-	//..()
+	. = ..()
+	if(.)
+		return
 	if (usr.stat || !on)
 		return
 
@@ -309,8 +311,8 @@
 
 	var/transmit_z = position.z
 	// If the mob is inside a vehicle interior, send the message from the vehicle's z, not the interior z
-	if(interior_manager && transmit_z == interior_manager.interior_z)
-		var/datum/interior/I = interior_manager.get_interior_by_coords(position.x, position.y)
+	if(transmit_z == GLOB.interior_manager.interior_z)
+		var/datum/interior/I = GLOB.interior_manager.get_interior_by_coords(position.x, position.y)
 		if(I && I.exterior)
 			transmit_z = I.exterior.z
 
@@ -345,8 +347,8 @@
 
 	var/transmit_z = position.z
 	// If the mob is inside a vehicle interior, send the message from the vehicle's z, not the interior z
-	if(interior_manager && transmit_z == interior_manager.interior_z)
-		var/datum/interior/I = interior_manager.get_interior_by_coords(position.x, position.y)
+	if(transmit_z == GLOB.interior_manager.interior_z)
+		var/datum/interior/I = GLOB.interior_manager.get_interior_by_coords(position.x, position.y)
 		if(I && I.exterior)
 			transmit_z = I.exterior.z
 
@@ -397,8 +399,8 @@
 			return FALSE
 		var/receive_z = position.z
 		// Use vehicle's z if we're inside a vehicle interior
-		if(interior_manager && position.z == interior_manager.interior_z)
-			var/datum/interior/I = interior_manager.get_interior_by_coords(position.x, position.y)
+		if(position.z == GLOB.interior_manager.interior_z)
+			var/datum/interior/I = GLOB.interior_manager.get_interior_by_coords(position.x, position.y)
 			if(I && I.exterior)
 				receive_z = I.exterior.z
 		if(src.ignore_z == TRUE)
@@ -503,7 +505,7 @@
 			if(keyslot)
 				var/turf/T = get_turf(user)
 				if(T)
-					keyslot.loc = T
+					keyslot.forceMove(T)
 					keyslot = null
 
 			recalculateChannels()

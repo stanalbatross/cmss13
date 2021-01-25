@@ -2,8 +2,8 @@
 	var/obj/item/storage/internal/pockets
 	var/storage_slots = 2
 
-/obj/item/clothing/suit/storage/New()
-	..()
+/obj/item/clothing/suit/storage/Initialize()
+	. = ..()
 	pockets = new/obj/item/storage/internal(src)
 	pockets.storage_slots = storage_slots
 	pockets.max_w_class = SIZE_SMALL		//fit only small items
@@ -36,7 +36,7 @@
 /obj/item/clothing/suit/storage/verb/toggle_draw_mode()
 	set name = "Switch Storage Drawing Method"
 	set category = "Object"
-
+	set src in usr
 	var/toggled = FALSE // Only for the message
 
 	if(!istype(src, /obj/item/clothing/suit/storage)) // This will trigger on uniforms, for webbings etc

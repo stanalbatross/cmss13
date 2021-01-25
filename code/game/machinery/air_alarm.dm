@@ -108,15 +108,15 @@
 
 
 
-/obj/structure/machinery/alarm/New(var/loc, var/direction, var/building = 0)
-	..()
+/obj/structure/machinery/alarm/Initialize(mapload, var/direction, var/building = 0)
+	. = ..()
 
 	if(building)
 		if(loc)
-			src.loc = loc
+			forceMove(loc)
 
 		if(direction)
-			src.dir = direction
+			src.setDir(direction)
 
 		buildstage = 0
 		wiresexposed = 1
@@ -447,7 +447,7 @@
 	switch(wireIndex)
 		if(AALARM_WIRE_IDSCAN)			//unlocks for 30 seconds, if you have a better way to hack I'm all ears
 			locked = 0
-			spawn(SECONDS_30)
+			spawn(30 SECONDS)
 				locked = 1
 
 		if (AALARM_WIRE_POWER)
@@ -992,7 +992,7 @@ table tr:first-child th:first-child { border: none;}
 					user.visible_message(SPAN_NOTICE("[user] pries out [src]'s circuits."),
 					SPAN_NOTICE("You pry out [src]'s circuits."))
 					var/obj/item/circuitboard/airalarm/circuit = new()
-					circuit.loc = user.loc
+					circuit.forceMove(user.loc)
 					buildstage = 0
 					update_icon()
 				return
@@ -1007,7 +1007,7 @@ table tr:first-child th:first-child { border: none;}
 			else if(iswrench(W))
 				to_chat(user, "You remove the fire alarm assembly from the wall!")
 				var/obj/item/frame/air_alarm/frame = new /obj/item/frame/air_alarm()
-				frame.loc = user.loc
+				frame.forceMove(user.loc)
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 				qdel(src)
 
@@ -1032,8 +1032,8 @@ table tr:first-child th:first-child { border: none;}
 	breach_detection = 0
 	post_alert = 0
 
-/obj/structure/machinery/alarm/server/New()
-	..()
+/obj/structure/machinery/alarm/server/Initialize()
+	. = ..()
 	req_one_access = list(ACCESS_CIVILIAN_ENGINEERING)
 	TLV["oxygen"] =			list(-1.0, -1.0,-1.0,-1.0) // Partial pressure, kpa
 	TLV["carbon dioxide"] = list(-1.0, -1.0,   5,  10) // Partial pressure, kpa

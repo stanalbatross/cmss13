@@ -49,7 +49,9 @@ var/list/admin_verbs_ban = list(
 	// /client/proc/jobbans // Disabled temporarily due to 15-30 second lag spikes. Don't forget the comma in the line above when uncommenting this!
 )
 var/list/admin_verbs_sounds = list(
-	/client/proc/admin_play_sound
+	/client/proc/play_web_sound,
+	/client/proc/play_sound,
+	/client/proc/cmd_admin_vox_panel,
 )
 var/list/admin_verbs_fun = list(
 	/client/proc/enable_event_mob_verbs,
@@ -58,12 +60,12 @@ var/list/admin_verbs_fun = list(
 	/client/proc/drop_bomb,
 	/client/proc/set_ooc_color_global,
 	/client/proc/announce_random_fact,
-	/client/proc/construct_env,
-	/client/proc/construct_env_dmm,
 	/client/proc/set_autoreplacer,
 	/client/proc/deactivate_autoreplacer,
 	/client/proc/rerun_decorators,
-	/client/proc/toogle_door_control
+	/client/proc/toogle_door_control,
+	/client/proc/map_template_load,
+	/client/proc/map_template_upload
 )
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,
@@ -76,15 +78,10 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
 	/datum/admins/proc/end_round,
+	/datum/admins/proc/change_ground_map,
+	/datum/admins/proc/vote_ground_map,
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all,
-	/client/proc/forceNextMap,
-	/client/proc/cancelMapVote,
-	/client/proc/killMapDaemon,
-	/client/proc/editVotableMaps,
-	/client/proc/showVotableMaps,
-	/client/proc/forceMDMapVote,
-	/client/proc/reviveMapDaemon
 )
 var/list/admin_verbs_debug = list(
     /client/proc/getruntimelog,                     /*allows us to access runtime logs to somebody*/
@@ -248,44 +245,45 @@ var/list/admin_verbs_mod = list(
 /client/proc/add_admin_verbs()
 	// mentors don't have access to admin verbs
 	if(admin_holder && !AHOLD_IS_ONLY_MENTOR(admin_holder))
-		verbs += admin_verbs_default
+		add_verb(src, admin_verbs_default)
 		if(admin_holder.rights & R_BUILDMODE)
-			verbs += /client/proc/togglebuildmodeself
+			add_verb(src, /client/proc/togglebuildmodeself)
 		if(admin_holder.rights & R_ADMIN)
-			verbs += admin_verbs_admin
+			add_verb(src, admin_verbs_admin)
 		if(admin_holder.rights & R_BAN)
-			verbs += admin_verbs_ban
-			verbs += admin_verbs_teleport
+			add_verb(src, admin_verbs_ban+admin_verbs_teleport)
 		if(admin_holder.rights & R_FUN)
-			verbs += admin_verbs_fun
+			add_verb(src, admin_verbs_fun)
 		if(admin_holder.rights & R_SERVER)
-			verbs += admin_verbs_server
+			add_verb(src, admin_verbs_server)
 		if(admin_holder.rights & R_DEBUG)
-			verbs += admin_verbs_debug
+			add_verb(src, admin_verbs_debug)
 			if(CONFIG_GET(flag/debugparanoid) && !check_rights(R_ADMIN))
-				verbs.Remove(admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
+				remove_verb(src, admin_verbs_paranoid_debug) //Right now it's just callproc but we can easily add others later on.
 		if(admin_holder.rights & R_POSSESS)
-			verbs += admin_verbs_possess
+			add_verb(src, admin_verbs_possess)
 		if(admin_holder.rights & R_PERMISSIONS)
-			verbs += admin_verbs_permissions
+			add_verb(src, admin_verbs_permissions)
 		if(admin_holder.rights & R_COLOR)
-			verbs += admin_verbs_color
+			add_verb(src, admin_verbs_color)
 		if(admin_holder.rights & R_SOUNDS)
-			verbs += admin_verbs_sounds
+			add_verb(src, admin_verbs_sounds)
 		if(admin_holder.rights & R_SPAWN)
-			verbs += admin_verbs_spawn
+			add_verb(src, admin_verbs_spawn)
 		if(admin_holder.rights & R_MOD)
-			verbs += admin_verbs_mod
+			add_verb(src, admin_verbs_mod)
 
 		if(RoleAuthority && (RoleAuthority.roles_whitelist[ckey] & WHITELIST_YAUTJA_LEADER))
-			verbs += clan_verbs
+			add_verb(src, clan_verbs)
+	if(admin_holder && admin_holder.rights & R_MENTOR)
+		add_verb(src, /client/proc/cmd_mentor_say)
 
 /client/proc/add_admin_whitelists()
 	if(is_mentor(src) || AHOLD_IS_MOD(admin_holder))
 		RoleAuthority.roles_whitelist[ckey] |= WHITELIST_MENTOR
 
 /client/proc/remove_admin_verbs()
-	verbs.Remove(
+	remove_verb(src, list(
 		admin_verbs_default,
 		/client/proc/togglebuildmodeself,
 		admin_verbs_admin,
@@ -302,8 +300,8 @@ var/list/admin_verbs_mod = list(
 		admin_verbs_teleport,
 		admin_mob_event_verbs_hideable,
 		admin_mob_verbs_hideable,
-		debug_verbs
-		)
+		debug_verbs,
+	))
 
 /client/proc/jobbans()
 	set name = "Display Job Bans"
@@ -313,14 +311,14 @@ var/list/admin_verbs_mod = list(
 	return
 
 /client/proc/game_panel()
-	set name = "C: Game Panel"
-	set category = "Admin"
+	set name = "Game Panel"
+	set category = "Admin.Game"
 	if(admin_holder)
 		admin_holder.Game()
 	return
 
 /client/proc/set_ooc_color_self()
-	set category = "OOC"
+	set category = "OOC.OOC"
 	set name = "OOC Text Color - Self"
 	if(!admin_holder && !donator)	return
 	var/new_ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color|null
@@ -364,22 +362,22 @@ var/list/admin_verbs_mod = list(
 			message_staff("[key_name_admin(src)] has warned [warned_ckey] (DC). They have [MAX_WARNS-P.warning_count] strikes remaining.")
 
 /client/proc/give_disease(mob/T as mob in GLOB.mob_list) // -- Giacom
-	set category = "Fun"
+	set category = "Admin.Fun"
 	set name = "Give Disease (old)"
 	set desc = "Gives a (tg-style) Disease to a mob."
 	var/list/disease_names = list()
 	for(var/v in diseases)
 		disease_names.Add(copytext("[v]", 16, 0))
-	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in disease_names
+	var/datum/disease/D = tgui_input_list(usr, "Choose the disease to give to that guy", "ACHOO", disease_names)
 	if(!D) return
 	var/path = text2path("/datum/disease/[D]")
 	T.contract_disease(new path, 1)
 
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] gave [key_name(T)] the disease [D]."), 1)
+	message_staff("[key_name_admin(usr)] gave [key_name(T)] the disease [D].")
 
 
 /client/proc/object_talk(var/msg as text) // -- TLE
-	set category = "Special Verbs"
+	set category = "Admin.Events"
 	set name = "Object Say"
 	set desc = "Display a message to everyone who can hear the target"
 	if(mob.control_object)
@@ -390,7 +388,7 @@ var/list/admin_verbs_mod = list(
 
 
 /client/proc/toggle_log_hrefs()
-	set name = "X: Toggle href Logging"
+	set name = "Toggle href Logging"
 	set category = "Server"
 	if(!admin_holder)	return
 	if(config)
@@ -434,12 +432,12 @@ var/list/admin_verbs_mod = list(
 
 
 	// hair
-	var/new_hstyle = input(usr, "Select a hair style", "Grooming")  as null|anything in hair_styles_list
+	var/new_hstyle = input(usr, "Select a hair style", "Grooming")  as null|anything in GLOB.hair_styles_list
 	if(new_hstyle)
 		M.h_style = new_hstyle
 
 	// facial hair
-	var/new_fstyle = input(usr, "Select a facial hair style", "Grooming")  as null|anything in facial_hair_styles_list
+	var/new_fstyle = input(usr, "Select a facial hair style", "Grooming")  as null|anything in GLOB.facial_hair_styles_list
 	if(new_fstyle)
 		M.f_style = new_fstyle
 
@@ -455,7 +453,7 @@ var/list/admin_verbs_mod = list(
 
 /client/proc/toggleattacklogs()
 	set name = "Toggle Attack Log Messages"
-	set category = "Preferences"
+	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_ATTACKLOGS
 	if (prefs.toggles_chat & CHAT_ATTACKLOGS)
@@ -466,7 +464,7 @@ var/list/admin_verbs_mod = list(
 
 /client/proc/toggleffattacklogs()
 	set name = "Toggle FF Attack Log Messages"
-	set category = "Preferences"
+	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_FFATTACKLOGS
 	if (prefs.toggles_chat & CHAT_FFATTACKLOGS)
@@ -477,7 +475,7 @@ var/list/admin_verbs_mod = list(
 
 /client/proc/toggledebuglogs()
 	set name = "Toggle Debug Log Messages"
-	set category = "Preferences"
+	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_DEBUGLOGS
 	if(prefs.toggles_chat & CHAT_DEBUGLOGS)
@@ -488,7 +486,7 @@ var/list/admin_verbs_mod = list(
 
 /client/proc/togglenichelogs()
 	set name = "Toggle Niche Log Messages"
-	set category = "Preferences"
+	set category = "Preferences.Logs"
 
 	prefs.toggles_chat ^= CHAT_NICHELOGS
 	if(prefs.toggles_chat & CHAT_NICHELOGS)

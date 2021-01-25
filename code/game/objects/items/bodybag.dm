@@ -197,8 +197,8 @@
 	var/last_use = 0 //remembers the value of used, to delay crostasis start.
 	var/max_uses = 1800 //15 mins of usable cryostasis
 
-/obj/structure/closet/bodybag/cryobag/New(loc, obj/item/bodybag/cryobag/CB)
-	..()
+/obj/structure/closet/bodybag/cryobag/Initialize(mapload, obj/item/bodybag/cryobag/CB)
+	. = ..()
 	if(CB)
 		used = CB.used
 
@@ -293,6 +293,9 @@
 		if(1201 to 1800) to_chat(user, "It looks really used.")
 
 /obj/structure/closet/bodybag/cryobag/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if (href_list["scanreport"])
 		if(hasHUD(usr,"medical"))
 			if(!skillcheck(usr, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))

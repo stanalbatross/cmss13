@@ -28,11 +28,14 @@
 		.+= ". <a href='?src=\ref[src];list_acc=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(href_list["list_acc"])
 		if(LAZYLEN(accessories))
 			var/list/ties = list()
 			for(var/accessory in accessories)
-				ties += "[htmlicon(accessory)] \a [accessory]"
+				ties += "[icon2html(accessory)] \a [accessory]"
 			to_chat(usr, "Attached to \the [src] are [english_list(ties)].")
 		return
 
@@ -84,8 +87,7 @@
 		return ret
 
 	if(blood_color && blood_overlay_type)
-		var/image/bloodsies = overlay_image('icons/effects/blood.dmi', "[blood_overlay_type]_blood", blood_color, RESET_COLOR)
-		bloodsies.appearance_flags |= NO_CLIENT_COLOR
+		var/image/bloodsies = overlay_image('icons/effects/blood.dmi', "[blood_overlay_type]_blood", blood_color, RESET_COLOR|NO_CLIENT_COLOR)
 		ret.overlays += bloodsies
 
 	if(LAZYLEN(accessories))
@@ -216,8 +218,7 @@
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/hands_monkey.dmi')
 	blood_overlay_type = "hands"
 	var/gloves_blood_amt = 0 //taken from blood.dm
-
-	var/hide_prints = FALSE
+	var/hide_prints = FALSE 
 
 /obj/item/clothing/gloves/update_clothing_icon()
 	if (ismob(src.loc))
@@ -372,7 +373,7 @@
 				if(stored_item)	return
 				M.drop_held_item()
 				stored_item = I
-				I.loc = src
+				I.forceMove(src)
 				to_chat(M, "<div class='notice'>You slide the [I] into [src].</div>")
 				playsound(M, 'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
 				update_icon()

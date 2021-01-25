@@ -7,7 +7,7 @@
 	icon_state = "eggmorph"
 	health = 300
 	var/last_spawned = 0
-	var/spawn_cooldown = SECONDS_20
+	var/spawn_cooldown = 20 SECONDS
 	var/stored_huggers = 0
 	var/huggers_to_grow = 0
 	var/huggers_per_corpse = 6
@@ -72,8 +72,8 @@
 				//Get rid of what we have there, we're overwriting it
 				qdel(captured_mob)
 			captured_mob = M
-			captured_mob.dir = SOUTH
-			captured_mob.loc = null
+			captured_mob.setDir(SOUTH)
+			captured_mob.moveToNullspace()
 			var/matrix/MX = matrix()
 			captured_mob.apply_transform(MX)
 			captured_mob.pixel_x = 16

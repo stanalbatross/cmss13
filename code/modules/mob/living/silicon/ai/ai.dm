@@ -82,10 +82,10 @@ var/list/ai_verbs_default = list(
 	var/datum/announcement/priority/announcement
 
 /mob/living/silicon/ai/proc/add_ai_verbs()
-	src.verbs |= ai_verbs_default
+	add_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/proc/remove_ai_verbs()
-	src.verbs -= ai_verbs_default
+	remove_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/New(loc, var/obj/item/device/mmi/B, var/safety = 0)
 	var/list/possibleNames = ai_names
@@ -103,7 +103,7 @@ var/list/ai_verbs_default = list(
 	anchored = 1
 	canmove = 0
 	density = 1
-	loc = loc
+	forceMove(loc)
 
 	holo_icon = getHologramIcon(icon('icons/mob/AI.dmi',"holo1"))
 
@@ -183,7 +183,7 @@ var/list/ai_verbs_default = list(
 	if(isnull(powered_ai))
 		qdel(src)
 		return
-	loc = powered_ai.loc
+	forceMove(powered_ai.loc)
 	use_power(1) // Just incase we need to wake up the power system.
 	//start_processing()
 	//..()
@@ -193,7 +193,7 @@ var/list/ai_verbs_default = list(
 		qdel(src)
 		return
 	if(!powered_ai.anchored)
-		loc = powered_ai.loc
+		forceMove(powered_ai.loc)
 		update_use_power(0)
 	if(powered_ai.anchored)
 		update_use_power(2)
@@ -205,7 +205,7 @@ var/list/ai_verbs_default = list(
 		return
 
 		//if(icon_state == initial(icon_state))
-	var/icontype = input("Select an icon!", "AI", null, null) in list("Monochrome", "Rainbow", "Blue", "Inverted", "Text", "Smiley", "Angry", "Dorf", "Matrix", "Bliss", "Firewall", "Green", "Red", "Static", "Triumvirate", "Triumvirate Static", "Soviet", "Trapped", "Heartline", "Chatterbox")
+	var/icontype = tgui_input_list(usr, "Select an icon!", "AI", list("Monochrome", "Rainbow", "Blue", "Inverted", "Text", "Smiley", "Angry", "Dorf", "Matrix", "Bliss", "Firewall", "Green", "Red", "Static", "Triumvirate", "Triumvirate Static", "Soviet", "Trapped", "Heartline", "Chatterbox"))
 	switch(icontype)
 		if("Rainbow") icon_state = "ai-clown"
 		if("Monochrome") icon_state = "ai-mono"
@@ -284,7 +284,7 @@ var/list/ai_verbs_default = list(
 
 	ai_announcement(input)
 	message_cooldown = 1
-	spawn(MINUTES_1)//One minute cooldown
+	spawn(1 MINUTES)//One minute cooldown
 		message_cooldown = 0
 
 /mob/living/silicon/ai/check_eye(mob/user)
@@ -428,7 +428,7 @@ var/list/ai_verbs_default = list(
 			for(var/i in tempnetwork)
 				cameralist[i] = i
 	var/old_network = network
-	network = input(U, "Which network would you like to view?") as null|anything in cameralist
+	network = tgui_input_list(U, "Which network would you like to view?", "View network", cameralist)
 
 	if(!U.eyeobj)
 		U.view_core()
@@ -454,7 +454,7 @@ var/list/ai_verbs_default = list(
 		return
 
 	var/list/ai_emotions = list("Very Happy", "Happy", "Neutral", "Unsure", "Confused", "Surprised", "Sad", "Upset", "Angry", "Awesome", "BSOD", "Blank", "Problems?", "Facepalm", "Friend Computer")
-	var/emote = input("Please, select a status!", "AI Status", null, null) in ai_emotions
+	var/emote = tgui_input_list(usr, "Please, select a status!", "AI Status", ai_emotions)
 	for (var/obj/structure/machinery/M in machines) //change status
 		if(istype(M, /obj/structure/machinery/ai_status_display))
 			var/obj/structure/machinery/ai_status_display/AISD = M
@@ -487,7 +487,7 @@ var/list/ai_verbs_default = list(
 			personnel_list["[t.fields["name"]]: [t.fields["rank"]]"] = t.fields["image"]//Pull names, rank, and image.
 
 		if(personnel_list.len)
-			input = input("Select a crew member:") as null|anything in personnel_list
+			input = tgui_input_list(usr, "Select a crew member:", "Change hologram",  personnel_list)
 			var/icon/character_icon = personnel_list[input]
 			if(character_icon)
 				qdel(holo_icon)//Clear old icon so we're not storing it in memory.
@@ -501,7 +501,7 @@ var/list/ai_verbs_default = list(
 		"floating face",
 		"carp"
 		)
-		input = input("Please select a hologram:") as null|anything in icon_list
+		input = tgui_input_list(usr, "Please select a hologram:", "Select hologram", icon_list)
 		if(input)
 			QDEL_NULL(holo_icon)
 			switch(input)

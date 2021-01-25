@@ -10,16 +10,16 @@ This one currently doesn't work. Will rework adn readd it during interior update
 		message_staff("[src] forcibly removed all players from [R]")
 */
 /client/proc/cmd_admin_remove_clamp()
-	set name = "V - Vehicle Remove Clamp"
+	set name = "Vehicle Remove Clamp"
 	set desc = "Forcibly removes vehicle clamp from selected vehicle. dropping it under the vehicle."
-	set category = "Event"
+	set category = "Admin.Events"
 	set popup_menu = FALSE
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/obj/vehicle/multitile/Vehicle = input("Select a vehicle.", "Remove Clamp", null, null) as null|anything in GLOB.all_multi_vehicles
+	var/obj/vehicle/multitile/Vehicle = tgui_input_list(usr, "Select a vehicle.", "Remove Clamp", GLOB.all_multi_vehicles)
 
 	if(!istype(Vehicle))
 		alert("Not a vehicle.")
@@ -30,16 +30,16 @@ This one currently doesn't work. Will rework adn readd it during interior update
 	message_staff(WRAP_STAFF_LOG(usr, "forcibly removed vehicle clamp from [Vehicle] in [get_area(Vehicle)] ([Vehicle.x],[Vehicle.y],[Vehicle.z])."), Vehicle.x, Vehicle.y, Vehicle.z)
 
 /client/proc/cmd_admin_repair_multitile()
-	set name = "V - Vehicle Rejuvenate"
+	set name = "Vehicle Rejuvenate"
 	set desc = "Fully restores vehicle modules and hull."
-	set category = "Event"
+	set category = "Admin.Events"
 	set popup_menu = FALSE
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/obj/vehicle/multitile/Vehicle = input("Select a vehicle.", "Rejuvenate", null, null) as null|anything in GLOB.all_multi_vehicles
+	var/obj/vehicle/multitile/Vehicle = tgui_input_list(usr, "Select a vehicle.", "Rejuvenate", GLOB.all_multi_vehicles)
 
 	if(!istype(Vehicle))
 		alert("Not a vehicle.")

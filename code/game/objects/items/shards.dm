@@ -24,7 +24,8 @@
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1, 6)
 
 
-/obj/item/shard/New()
+/obj/item/shard/Initialize()
+	. = ..()
 	shardsize = pick("large", "medium", "small")
 	switch(shardsize)
 		if("small")
@@ -37,7 +38,6 @@
 			pixel_x = rand(-5, 5)
 			pixel_y = rand(-5, 5)
 	icon_state += shardsize
-	..()
 
 
 /obj/item/shard/attackby(obj/item/W, mob/user)
@@ -68,7 +68,7 @@
 	source_sheet_type = /obj/item/stack/sheet/glass/phoronglass
 
 
-// Shrapnel. 
+// Shrapnel.
 // on_embed is called from projectile.dm, bullet_act(obj/item/projectile/P).
 // on_embedded_movement is called from human.dm, handle_embedded_objects().
 
@@ -81,16 +81,24 @@
 	var/damage_on_move = 0.5
 
 /obj/item/shard/shrapnel/proc/on_embed(var/mob/embedded_mob, var/obj/limb/target_organ)
-	if(ishuman(embedded_mob) && !isYautja(embedded_mob))
-		if(istype(target_organ))
-			target_organ.embed(src)
+	if(!ishuman(embedded_mob))
+		return
+	var/mob/living/carbon/human/H = embedded_mob
+	if(H.species.flags & NO_SHRAPNEL)
+		return
+	if(istype(target_organ))
+		target_organ.embed(src)
 
 /obj/item/shard/shrapnel/proc/on_embedded_movement(var/mob/living/embedded_mob)
-	if(ishuman(embedded_mob) && !isYautja(embedded_mob))
-		var/obj/limb/organ = embedded_organ
-		if(istype(organ))
-			organ.take_damage(damage_on_move * count, 0, 0)
-			embedded_mob.pain.apply_pain(damage_on_move * count)
+	if(!ishuman(embedded_mob))
+		return
+	var/mob/living/carbon/human/H = embedded_mob
+	if(H.species.flags & NO_SHRAPNEL)
+		return
+	var/obj/limb/organ = embedded_organ
+	if(istype(organ))
+		organ.take_damage(damage_on_move * count, 0, 0)
+		embedded_mob.pain.apply_pain(damage_on_move * count)
 
 
 /obj/item/shard/shrapnel/bone_chips

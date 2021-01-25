@@ -1,6 +1,6 @@
-#define	CLIMB_DELAY_SHORT		SECONDS_1
-#define	CLIMB_DELAY_MEDIUM		SECONDS_2
-#define	CLIMB_DELAY_LONG		SECONDS_3
+#define	CLIMB_DELAY_SHORT		1 SECONDS
+#define	CLIMB_DELAY_MEDIUM		2 SECONDS
+#define	CLIMB_DELAY_LONG		3 SECONDS
 
 /obj/structure
 	icon = 'icons/obj/structures/structures.dmi'
@@ -16,8 +16,8 @@
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	can_block_movement = TRUE
 
-/obj/structure/New()
-	..()
+/obj/structure/Initialize()
+	. = ..()
 	if(climbable)
 		verbs += /obj/structure/proc/climb_on
 

@@ -50,7 +50,7 @@
 		return
 
 	src.visible_message(SPAN_DANGER("[src] has been hit by [O]."), null, null, 5)
-	apply_damage(impact_damage, dtype, null, is_sharp(O), has_edge(O), O)
+	apply_armoured_damage(impact_damage, ARMOR_MELEE, dtype, null, , is_sharp(O), has_edge(O), null)
 
 	O.throwing = 0		//it hit, so stop moving
 
@@ -67,9 +67,8 @@
 	L.Move(get_step_away(L, src))
 
 /mob/living/obj_launch_collision(var/obj/O)
-	if ((!thrower || thrower != src) && \
-		!rebounding
-	)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [O]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -77,9 +76,10 @@
 		playsound(O,S, 50, 1)
 	..()
 
-//This is called when the mob or human is thrown into a dense turf or wall 
+//This is called when the mob or human is thrown into a dense turf or wall
 /mob/living/turf_launch_collision(var/turf/T)
-	if (!rebounding)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [T]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -105,36 +105,46 @@
 
 
 //Mobs on Fire
-/mob/living/proc/IgniteMob()	
-	if(fire_stacks > 0 && !on_fire)
+/mob/living/proc/IgniteMob(force)
+	if(!force && SEND_SIGNAL(src, COMSIG_LIVING_PREIGNITION) & COMPONENT_CANCEL_IGNITION)
+		return IGNITE_FAILED
+	if(fire_stacks > 0)
+		if(on_fire)
+			return IGNITE_ON_FIRE
 		on_fire = TRUE
 		to_chat(src, SPAN_DANGER("You are on fire! Use Resist to put yourself out!"))
+		update_fire()
+		return IGNITE_IGNITED
+	return IGNITE_FAILED
+
+/mob/living/carbon/human/IgniteMob()
+	. = ..()
+	if(. && !stat && pain.feels_pain)
+		INVOKE_ASYNC(src, /mob.proc/emote, "scream")
+
+/mob/living/proc/ExtinguishMob()
+	if(on_fire)
+		on_fire = FALSE
+		fire_stacks = 0
 		update_fire()
 		return TRUE
 	return FALSE
 
-/mob/living/carbon/human/IgniteMob()
-	. = ..()
-	if(.)
-		if(!stat && pain.feels_pain)
-			emote("scream")
-
-/mob/living/proc/ExtinguishMob()
-	if(on_fire)
-		on_fire = 0
-		fire_stacks = 0
-		update_fire()
-
 /mob/living/proc/update_fire()
 	return
 
-/mob/living/proc/adjust_fire_stacks(add_fire_stacks, var/datum/reagent/R, var/min_stacks = MIN_FIRE_STACKS) //Adjusting the amount of fire_stacks we have on person	
-	if (R)
-		if (!fire_reagent || R.durationfire > fire_stacks || fire_reagent.intensityfire < R.intensityfire || !on_fire)
+/mob/living/proc/adjust_fire_stacks(add_fire_stacks, var/datum/reagent/R, var/min_stacks = MIN_FIRE_STACKS) //Adjusting the amount of fire_stacks we have on person
+	if(R)
+		if( \
+			!on_fire || !fire_reagent || \
+			R.durationfire > fire_stacks || \
+			fire_reagent.intensityfire < R.intensityfire || \
+			(!fire_reagent.fire_penetrating && R.fire_penetrating) \
+		)
 			fire_reagent = R
-	else if (!fire_reagent)
+	else if(!fire_reagent)
 		fire_reagent = new /datum/reagent/napalm/ut()
-	
+
 	var/max_stacks = min(fire_reagent.durationfire, MAX_FIRE_STACKS) // Fire stacks should not exceed MAX_FIRE_STACKS for reasonable resist amounts
 	fire_stacks = Clamp(fire_stacks + add_fire_stacks, min_stacks, max_stacks)
 
@@ -151,9 +161,14 @@
 		adjust_fire_stacks(-0.5, min_stacks = 0) //the fire is consumed slowly
 
 /mob/living/fire_act()
-	if (raiseEventSync(src, EVENT_PREIGNITION_CHECK) != HALTED)
-		adjust_fire_stacks(2)
-		IgniteMob()
+	TryIgniteMob(2)
+
+/mob/living/proc/TryIgniteMob(fire_stacks, datum/reagent/R)
+	adjust_fire_stacks(fire_stacks, R)
+	if (!IgniteMob())
+		adjust_fire_stacks(-fire_stacks)
+		return FALSE
+	return TRUE
 
 //Mobs on Fire end
 
@@ -161,13 +176,13 @@
 	// Only player mobs are affected by weather.
 	if(!src.client)
 		return
-	
+
 	if(!SSweather)
 		return
 
 	// Do this always
 	clear_fullscreen("weather")
-	remove_weather_effects()	
+	remove_weather_effects()
 
 	// Check if we're supposed to be something affected by weather
 	if(SSweather.is_weather_event && SSweather.weather_event_instance && SSweather.weather_affects_check(src))
@@ -182,4 +197,3 @@
 		// Effects
 		if(SSweather.weather_event_instance.effect_type)
 			new SSweather.weather_event_instance.effect_type(src)
-		

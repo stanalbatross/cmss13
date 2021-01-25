@@ -108,7 +108,7 @@
 			eject_brain()
 
 			if(held_item)
-				held_item.loc = src.loc
+				held_item.forceMove(src.loc)
 				held_item = null
 
 			return 1
@@ -159,7 +159,7 @@
 	if(mmi)
 		var/turf/T = get_turf(loc)
 		if(T)
-			mmi.loc = T
+			mmi.forceMove(T)
 		if(mind)	mind.transfer_to(mmi.brainmob)
 		mmi = null
 		src.name = "Spider-bot"
@@ -186,7 +186,7 @@
 	if(camera)
 		camera.status = 0
 
-	held_item.loc = src.loc
+	held_item.forceMove(src.loc)
 	held_item = null
 
 	robogibs(src.loc, viruses)
@@ -237,13 +237,13 @@
 		if(I.loc != src && I.w_class <= SIZE_SMALL && I.Adjacent(src) )
 			items.Add(I)
 
-	var/obj/selection = input("Select an item.", "Pickup") in items
+	var/obj/selection = tgui_input_list(usr, "Select an item.", "Pickup", items)
 
 	if(selection)
 		for(var/obj/item/I in view(1, src))
 			if(selection == I)
 				held_item = selection
-				selection.loc = src
+				selection.forceMove(src)
 				visible_message(SPAN_NOTICE("[src] scoops up \the [held_item]!"), SPAN_NOTICE("You grab \the [held_item]!"), "You hear a skittering noise and a clink.")
 				return held_item
 		to_chat(src, SPAN_DANGER("\The [selection] is too far away."))
@@ -255,4 +255,4 @@
 /mob/living/simple_animal/spiderbot/examine(mob/user)
 	..()
 	if(held_item)
-		to_chat(user, "It is carrying \a [held_item] [htmlicon(held_item, user)].")
+		to_chat(user, "It is carrying \a [held_item] [icon2html(held_item, user)].")

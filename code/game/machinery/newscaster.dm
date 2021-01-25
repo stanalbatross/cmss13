@@ -481,7 +481,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 			for(var/datum/feed_channel/F in news_network.network_channels)
 				if( (!F.locked || F.author == scanned_user) && !F.censored)
 					available_channels += F.channel_name
-			src.channel_name = strip_html(input(usr, "Choose receiving Feed Channel", "Network Channel Handler") in available_channels )
+			src.channel_name = strip_html(tgui_input_list(usr, "Choose receiving Feed Channel", "Network Channel Handler", available_channels ))
 			src.updateUsrDialog()
 
 		else if(href_list["set_new_message"])
@@ -728,7 +728,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 /obj/structure/machinery/newscaster/proc/AttachPhoto(mob/user as mob)
 	if(photo)
 		if(!isRemoteControlling(user))
-			photo.loc = src.loc
+			photo.forceMove(loc)
 			user.put_in_inactive_hand(photo)
 		photo = null
 	var/obj/item/photo/PH = user.get_active_hand()
@@ -919,7 +919,7 @@ obj/item/newspaper/attackby(obj/item/W as obj, mob/user as mob)
 		NEWSPAPER.news_content += FC
 	if(news_network.wanted_issue)
 		NEWSPAPER.important_message = news_network.wanted_issue
-	NEWSPAPER.loc = get_turf(src)
+	NEWSPAPER.forceMove(get_turf(src))
 	src.paper_remaining--
 	return
 
@@ -934,7 +934,7 @@ obj/item/newspaper/attackby(obj/item/W as obj, mob/user as mob)
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"Breaking news from [channel]!\"</span>",2)
 		src.alert = 1
 		src.update_icon()
-		spawn(SECONDS_30)
+		spawn(30 SECONDS)
 			src.alert = 0
 			src.update_icon()
 		playsound(src.loc, 'sound/machines/twobeep.ogg', 25, 1)

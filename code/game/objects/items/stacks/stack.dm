@@ -19,8 +19,8 @@
 	var/stack_id //used to determine if two stacks are of the same kind.
 	attack_speed = 3	//makes collect stacks off the floor and such less of a pain
 
-/obj/item/stack/New(var/loc, var/amount = null)
-	..()
+/obj/item/stack/Initialize(mapload, var/amount = null)
+	. = ..()
 	if(amount)
 		src.amount = amount
 
@@ -136,7 +136,7 @@
 			if(!OT.allow_construction)
 				to_chat(usr, SPAN_WARNING("The [R.title] must be constructed on a proper surface!"))
 				return
-				
+
 			if(AC)
 				to_chat(usr, SPAN_WARNING("The [R.title] cannot be built here!"))  //might cause some friendly fire regarding other items like barbed wire, shouldn't be a problem?
 				return
@@ -158,7 +158,7 @@
 		var/atom/O = new R.result_type(usr.loc, usr)
 		usr.visible_message(SPAN_NOTICE("[usr] assembles \a [O]."),
 		SPAN_NOTICE("You assemble \a [O]."))
-		O.dir = usr.dir
+		O.setDir(usr.dir)
 		if(R.max_res_amount > 1)
 			var/obj/item/stack/new_item = O
 			new_item.amount = R.res_amount * multiplier

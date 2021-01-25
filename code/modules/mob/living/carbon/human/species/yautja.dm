@@ -5,7 +5,7 @@
 	burn_mod = 0.65
 	reagent_tag = IS_YAUTJA
 	mob_flags = KNOWS_TECHNOLOGY
-	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_SCAN|NO_POISON
+	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_SCAN|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	pain_type = /datum/pain/yautja
@@ -74,7 +74,7 @@
 	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/setup_yautja_icons)
 
 /datum/species/yautja/larva_impregnated(var/obj/item/alien_embryo/embryo)
-	var/datum/hive_status/hive = hive_datum[embryo.hivenumber]
+	var/datum/hive_status/hive = GLOB.hive_datum[embryo.hivenumber]
 
 	if(!istype(hive))
 		return

@@ -40,9 +40,9 @@
 		else if(task == "rank")
 			var/new_rank
 			if(admin_ranks.len)
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (admin_ranks|"*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", (admin_ranks|"*New Rank*"))
 			else
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*"))
 
 			var/rights = 0
 			if(D)
@@ -84,7 +84,7 @@
 			var/list/permissionlist = list()
 			for(var/i=1, i<=R_HOST, i<<=1)		//that <<= is shorthand for i = i << 1. Which is a left bitshift
 				permissionlist[rights2text(i)] = i
-			var/new_permission = input("Select a permission to turn on/off", "Permission toggle", null, null) as null|anything in permissionlist
+			var/new_permission = tgui_input_list(usr, "Select a permission to turn on/off", "Permission toggle", permissionlist)
 			if(!new_permission)	return
 			D.rights ^= permissionlist[new_permission]
 
@@ -100,13 +100,13 @@
 				if(!EvacuationAuthority.initiate_evacuation())
 					to_chat(usr, SPAN_WARNING("You are unable to initiate an evacuation right now!"))
 				else
-					message_staff(SPAN_NOTICE("[key_name_admin(usr)] called an evacuation."), 1)
+					message_staff("[key_name_admin(usr)] called an evacuation.")
 
 			if("cancel_evac")
 				if(!EvacuationAuthority.cancel_evacuation())
 					to_chat(usr, SPAN_WARNING("You are unable to cancel an evacuation right now!"))
 				else
-					message_staff(SPAN_NOTICE("[key_name_admin(usr)] canceled an evacuation."), 1)
+					message_staff("[key_name_admin(usr)] canceled an evacuation.")
 
 			if("toggle_evac")
 				EvacuationAuthority.flags_scuttle ^= FLAGS_EVACUATION_DENY
@@ -116,19 +116,19 @@
 				if(!EvacuationAuthority.begin_launch())
 					to_chat(usr, SPAN_WARNING("You are unable to launch the pods directly right now!"))
 				else
-					message_staff(SPAN_NOTICE("[key_name_admin(usr)] force-launched the escape pods."), 1)
+					message_staff("[key_name_admin(usr)] force-launched the escape pods.")
 
 			if("init_dest")
 				if(!EvacuationAuthority.enable_self_destruct())
 					to_chat(usr, SPAN_WARNING("You are unable to authorize the self-destruct right now!"))
 				else
-					message_staff(SPAN_NOTICE("[key_name_admin(usr)] force-enabled the self-destruct system."), 1)
+					message_staff("[key_name_admin(usr)] force-enabled the self-destruct system.")
 
 			if("cancel_dest")
 				if(!EvacuationAuthority.cancel_self_destruct(1))
 					to_chat(usr, SPAN_WARNING("You are unable to cancel the self-destruct right now!"))
 				else
-					message_staff(SPAN_NOTICE("[key_name_admin(usr)] canceled the self-destruct system."), 1)
+					message_staff("[key_name_admin(usr)] canceled the self-destruct system.")
 
 			if("use_dest")
 
@@ -141,7 +141,7 @@
 					return
 				if(alert("Are you sure you want to destroy the Almayer right now?",, "Yes", "Cancel") == "Cancel") return
 
-				message_staff(SPAN_NOTICE("[key_name_admin(usr)] forced the self-destrust system, destroying the [MAIN_SHIP_NAME]."), 1)
+				message_staff("[key_name_admin(usr)] forced the self-destrust system, destroying the [MAIN_SHIP_NAME].")
 
 			if("toggle_dest")
 				EvacuationAuthority.flags_scuttle ^= FLAGS_SELF_DESTRUCT_DENY
@@ -154,7 +154,7 @@
 		if(!check_rights(R_SERVER))	return
 
 		SSticker.delay_end = !SSticker.delay_end
-		message_staff(SPAN_NOTICE("[key_name(usr)] [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"]."), 1)
+		message_staff("[key_name(usr)] [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"].")
 
 	else if(href_list["simplemake"])
 
@@ -170,7 +170,7 @@
 			if("Cancel")	return
 			if("Yes")		delmob = 1
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [href_list["simplemake"]]; deletemob=[delmob]"), 1)
+		message_staff("[key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [href_list["simplemake"]]; deletemob=[delmob]")
 
 		var/mob/transformed
 		var/hivenumber = XENO_HIVE_NORMAL
@@ -256,7 +256,7 @@
 		if(!reason)	return
 
 		ban_unban_log_save("[key_name(usr)] upgraded [banned_key]'s ban to a permaban. Reason: [sanitize(reason)]")
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] upgraded [banned_key]'s ban to a permaban. Reason: [sanitize(reason)]"), 1)
+		message_staff("[key_name_admin(usr)] upgraded [banned_key]'s ban to a permaban. Reason: [sanitize(reason)]")
 		Banlist.cd = "/base/[banfolder]"
 		Banlist["reason"] << sanitize(reason)
 		Banlist["temp"] << 0
@@ -295,7 +295,7 @@
 		if(!reason)	return
 
 		ban_unban_log_save("[key_name(usr)] edited [banned_key]'s ban. Reason: [sanitize(reason)] Duration: [duration]")
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] edited [banned_key]'s ban. Reason: [sanitize(reason)] Duration: [duration]"), 1)
+		message_staff("[key_name_admin(usr)] edited [banned_key]'s ban. Reason: [sanitize(reason)] Duration: [duration]")
 		Banlist.cd = "/base/[banfolder]"
 		Banlist["reason"] << sanitize(reason)
 		Banlist["temp"] << temp
@@ -475,7 +475,7 @@
 				to_chat_forced(M, SPAN_WARNING("You have been kicked from the server"))
 			else
 				to_chat_forced(M, SPAN_WARNING("You have been kicked from the server: [reason]"))
-			message_staff(SPAN_NOTICE("[key_name_admin(usr)] booted [key_name_admin(M)]."), 1)
+			message_staff("[key_name_admin(usr)] booted [key_name_admin(M)].")
 			qdel(M.client)
 
 	else if(href_list["removejobban"])
@@ -484,7 +484,7 @@
 		var/t = href_list["removejobban"]
 		if(t)
 			if((alert("Do you want to unjobban [t]?","Unjobban confirmation", "Yes", "No") == "Yes") && t) //No more misclicks! Unless you do it twice.
-				message_staff(SPAN_NOTICE("[key_name_admin(usr)] removed [t]"), 1)
+				message_staff("[key_name_admin(usr)] removed [t]")
 				jobban_remove(t)
 				jobban_savebanfile()
 				href_list["ban"] = 1 // lets it fall through and refresh
@@ -635,8 +635,6 @@
 	else if(href_list["c_mode"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
@@ -660,14 +658,13 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if (SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
-		master_mode = href_list["c_mode2"]
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] set the mode as [master_mode]."), 1)
-		to_world(SPAN_NOTICE("<b><i>The mode is now: [master_mode]!</i></b>"))
+		GLOB.master_mode = href_list["c_mode2"]
+		message_staff("[key_name_admin(usr)] set the mode as [GLOB.master_mode].")
+		to_world(SPAN_NOTICE("<b><i>The mode is now: [GLOB.master_mode]!</i></b>"))
 		Game() // updates the main game menu
-		world.save_mode(master_mode)
+		SSticker.save_mode(GLOB.master_mode)
 		.(href, list("c_mode"=1))
+
 
 	else if(href_list["f_secret2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
@@ -677,7 +674,7 @@
 		if(master_mode != "secret")
 			return alert(usr, "The game mode has to be secret!", null, null, null, null)
 		secret_force_mode = href_list["f_secret2"]
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] set the forced secret mode as [secret_force_mode]."), 1)
+		message_staff("[key_name_admin(usr)] set the forced secret mode as [secret_force_mode].")
 		Game() // updates the main game menu
 		.(href, list("f_secret"=1))
 
@@ -689,7 +686,7 @@
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] attempting to monkeyize [key_name_admin(H)]"), 1)
+		message_staff("[key_name_admin(usr)] attempting to monkeyize [key_name_admin(H)]")
 		H.monkeyize()
 
 	else if(href_list["corgione"])
@@ -700,7 +697,7 @@
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] attempting to corgize [key_name_admin(H)]"), 1)
+		message_staff("[key_name_admin(usr)] attempting to corgize [key_name_admin(H)]")
 		H.corgize()
 
 	else if(href_list["forcespeech"])
@@ -715,7 +712,7 @@
 		if(!speech)	return
 		M.say(speech)
 		speech = sanitize(speech) // Nah, we don't trust them
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] forced [key_name_admin(M)] to say: [speech]"))
+		message_staff("[key_name_admin(usr)] forced [key_name_admin(M)] to say: [speech]")
 
 	else if(href_list["zombieinfect"])
 		if(!check_rights(R_ADMIN))	return
@@ -735,7 +732,7 @@
 
 		H.AddDisease(bg, FALSE)
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] infected [key_name_admin(H)] with a ZOMBIE VIRUS"))
+		message_staff("[key_name_admin(usr)] infected [key_name_admin(H)] with a ZOMBIE VIRUS")
 	else if(href_list["larvainfect"])
 		if(!check_rights(R_ADMIN))	return
 		var/mob/living/carbon/human/H = locate(href_list["larvainfect"])
@@ -747,10 +744,12 @@
 			return
 
 		var/list/hives = list()
-		for(var/datum/hive_status/hive in hive_datum)
+		var/datum/hive_status/hive
+		for(var/hivenumber in GLOB.hive_datum)
+			hive = GLOB.hive_datum[hivenumber]
 			hives += list("[hive.name]" = hive.hivenumber)
 
-		var/newhive = input(usr,"Select a hive.", null, null) in hives
+		var/newhive = tgui_input_list(usr,"Select a hive.", "Infect Larva", hives)
 
 		if(!H)
 			to_chat(usr, "This mob no longer exists")
@@ -760,7 +759,7 @@
 		embryo.hivenumber = hives[newhive]
 		embryo.faction = newhive
 
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] infected [key_name_admin(H)] with a xeno ([newhive]) larva."))
+		message_staff("[key_name_admin(usr)] infected [key_name_admin(H)] with a xeno ([newhive]) larva.")
 
 	else if(href_list["makemutineer"])
 		if(!check_rights(R_DEBUG|R_SPAWN))
@@ -789,16 +788,17 @@
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/list/hives = list();
-		for(var/datum/hive_status/hive in hive_datum)
+		var/list/hives = list()
+		for(var/hivenumber in GLOB.hive_datum)
+			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 			LAZYSET(hives, hive.name, hive)
 		LAZYSET(hives, "CANCEL", null)
 
-		var/hive_name = input("Which Hive will he belongs to") in hives
+		var/hive_name = tgui_input_list(usr, "Which Hive will he belongs to", "Make Cultist", hives)
 		if(!hive_name || hive_name == "CANCEL")
 			to_chat(usr, SPAN_ALERT("Hive choice error. Aborting."))
 
-		var/datum/hive_status/hive = LAZYACCESS(hives, hive_name);
+		var/datum/hive_status/hive = hives[hive_name]
 
 		if(href_list["makecultist"])
 			var/datum/equipment_preset/other/xeno_cultist/XC = new()
@@ -812,7 +812,7 @@
 			XC.load_status(H)
 			message_staff("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist leader for [hive.name].")
 
-		H.faction = hive.name
+		H.faction = hive.internal_faction
 
 	else if(href_list["forceemote"])
 		if(!check_rights(R_FUN))	return
@@ -825,7 +825,7 @@
 		if(!speech)	return
 		M.custom_emote(1, speech, TRUE)
 		speech = sanitize(speech) // Nah, we don't trust them
-		message_staff(SPAN_NOTICE("[key_name_admin(usr)] forced [key_name_admin(M)] to emote: [speech]"))
+		message_staff("[key_name_admin(usr)] forced [key_name_admin(M)] to emote: [speech]")
 
 	else if(href_list["sendbacktolobby"])
 		if(!check_rights(R_MOD))
@@ -1064,11 +1064,7 @@
 
 		usr.client.cmd_admin_animalize(M)
 
-/***************** BEFORE**************
 
-
-
-*****************AFTER******************/
 
 // Now isn't that much better? IT IS NOW A PROC, i.e. kinda like a big panel like unstable
 	else if(href_list["playerpanelextended"])
@@ -1205,7 +1201,7 @@
 		var/mob/living/carbon/human/H = locate(href_list["USCMFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use which template or roll your own?") in list("USCM High Command", "USCM Provost General", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use which template or roll your own?", "Fax Templates", list("USCM High Command", "USCM Provost General", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
@@ -1218,7 +1214,7 @@
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
@@ -1239,7 +1235,7 @@
 
 				fax_message = generate_templated_fax(0, "USCM CENTRAL COMMAND", subject,addressed_to, message_body,sent_by, sent_title, "United States Colonial Marine Corps")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "uscmfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Template", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1287,7 +1283,7 @@
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use the template or roll your own?") in list("Template", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use the template or roll your own?", "Fax Template", list("Template", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
@@ -1300,7 +1296,7 @@
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
@@ -1317,7 +1313,7 @@
 					return
 				fax_message = generate_templated_fax(1, "WESTON-YAMADA CORPORATE AFFAIRS - USS ALMAYER", subject, addressed_to, message_body, sent_by, "Corporate Affairs Director", "Weston-Yamada")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "clfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Confirmation", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1524,7 +1520,7 @@
 					else
 						var/atom/O = new path(target)
 						if(O)
-							O.dir = obj_dir
+							O.setDir(obj_dir)
 							if(obj_name)
 								O.name = obj_name
 								if(istype(O,/mob))
@@ -1669,7 +1665,7 @@
 	if(href_list["distress"]) //Distress Beacon, sends a random distress beacon when pressed
 		distress_cancel = FALSE
 		message_staff("[key_name_admin(usr)] has opted to SEND the distress beacon! Launching in 10 seconds... (<A HREF='?_src_=admin_holder;distresscancel=\ref[usr]'>CANCEL</A>)")
-		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), SECONDS_10)
+		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), 10 SECONDS)
 		//unanswered_distress -= ref_person
 
 	if(href_list["destroyship"]) //Distress Beacon, sends a random distress beacon when pressed
@@ -1678,7 +1674,7 @@
 		spawn(100)
 			if(distress_cancel)
 				return
-			var/mob/ref_person = locate(href_list["destroy"])
+			var/mob/ref_person = locate(href_list["destroyship"])
 			set_security_level(SEC_LEVEL_DELTA)
 			log_game("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]")
 			message_staff("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]", 1)

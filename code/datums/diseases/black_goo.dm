@@ -110,18 +110,18 @@
 /obj/item/weapon/zombie_claws/attack(mob/living/M, mob/living/carbon/human/user, def_zone)
 	if(iszombie(M))
 		return FALSE
-	
+
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1, 5)
-	
+
 	if(isHumanStrict(M))
 		var/mob/living/carbon/human/H = M
 
 		for(var/datum/disease/black_goo/BG in H.viruses)
 			user.show_message(text(SPAN_XENOWARNING(" <B>You sense your target is infected</B>")))
 			return .
-		
+
 		var/bio_protected = max(CLOTHING_ARMOR_HARDCORE - H.getarmor(def_zone, ARMOR_BIO), 0)
 
 		if(prob(bio_protected))
@@ -131,24 +131,39 @@
 	M.SetSuperslowed(max(2, M.superslowed)) // Make them slower
 
 /obj/item/weapon/zombie_claws/afterattack(obj/O as obj, mob/user as mob, proximity)
-	if (istype(O, /obj/structure/machinery/door/airlock) && get_dist(src, O) <= 1)
+	if(get_dist(src, O) > 1)
+		return
+	if(istype(O, /obj/structure/machinery/door/airlock))
 		var/obj/structure/machinery/door/airlock/D = O
 		if(!D.density)
 			return
 
-		if(user.action_busy)
+		if(user.action_busy || user.a_intent == INTENT_HARM)
 			return
 
-		user.visible_message(SPAN_DANGER("[user] jams \his [name] into [O] and strains to rip it open."),
+		user.visible_message(SPAN_DANGER("[user] jams their [name] into [O] and strains to rip it open."),
 		SPAN_DANGER("You jam your [name] into [O] and strain to rip it open."))
 		playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, 1)
-		if(do_after(user, 30, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			if(!D.density)
 				return
 
-			user.visible_message(SPAN_DANGER("[user] forces [O] open with \his [name]."),
+			user.visible_message(SPAN_DANGER("[user] forces [O] open with their [name]."),
 			SPAN_DANGER("You force [O] open with your [name]."))
 			D.open(1)
+
+	else if(istype(O, /obj/structure/mineral_door/resin))
+		var/obj/structure/mineral_door/resin/D = O
+		if(D.isSwitchingStates) return
+		if(!D.density || user.action_busy || user.a_intent == INTENT_HARM)
+			return
+		user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
+		SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
+		playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, TRUE)
+		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+			user.visible_message(SPAN_DANGER("[user] forces [D] open with their [name]."),
+			SPAN_DANGER("You force [D] open with your [name]."))
+			D.Open()
 
 /obj/item/reagent_container/food/drinks/bottle/black_goo
 	name = "strange bottle"

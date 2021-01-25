@@ -3,15 +3,15 @@
 	desc = "Used to control a linked teleportation Hub and Station."
 	icon_state = "teleport"
 	circuit = /obj/item/circuitboard/computer/teleporter
-	dir = 4
+	dir = EAST
 	var/obj/item/locked = null
 	var/id = null
 	var/one_time_use = 0 //Used for one-time-use teleport cards (such as clown planet coordinates.)
 						 //Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
 
-/obj/structure/machinery/computer/teleporter/New()
+/obj/structure/machinery/computer/teleporter/Initialize()
+	. = ..()
 	src.id = "[rand(1000, 9999)]"
-	..()
 	underlays.Cut()
 	underlays += image('icons/obj/structures/props/stationobjs.dmi', icon_state = "telecomp-wires")
 	return
@@ -25,11 +25,11 @@
 
 	if(istype(station))
 		station.com = hub
-		station.dir = dir
+		station.setDir(dir)
 
 	if(istype(hub))
 		hub.com = src
-		hub.dir = dir
+		hub.setDir(dir)
 
 /obj/structure/machinery/computer/teleporter/attackby(I as obj, mob/living/user as mob)
 	if(istype(I, /obj/item/card/data/))
@@ -93,7 +93,7 @@
 		var/turf/T = get_turf(R)
 		if (!T)
 			continue
-		if(is_admin_level(T.z) || T.z > 7)
+		if(is_admin_level(T.z))
 			continue
 		var/tmpname = T.loc.name
 		if(areaindex[tmpname])
@@ -121,7 +121,7 @@
 				areaindex[tmpname] = 1
 			L[tmpname] = I
 
-	var/desc = input("Please select a location to lock in.", "Locking Computer") in L|null
+	var/desc = tgui_input_list(usr, "Please select a location to lock in.", "Locking Computer", L)
 	if(!desc)
 		return
 	if(get_dist(src, usr) > 1 && !isRemoteControlling(usr))
@@ -165,15 +165,15 @@
 	name = "teleporter hub"
 	desc = "It's the hub of a teleporting machine."
 	icon_state = "tele0"
-	dir = 4
+	dir = EAST
 	var/accurate = 0
 	use_power = 1
 	idle_power_usage = 10
 	active_power_usage = 2000
 	var/obj/structure/machinery/computer/teleporter/com
 
-/obj/structure/machinery/teleport/hub/New()
-	..()
+/obj/structure/machinery/teleport/hub/Initialize(mapload, ...)
+	. = ..()
 	underlays.Cut()
 	underlays += image('icons/obj/structures/props/stationobjs.dmi', icon_state = "tele-wires")
 
@@ -205,7 +205,7 @@
 		s.set_up(5, 1, src)
 		s.start()
 		accurate = 1
-		spawn(MINUTES_5)	accurate = 0 //Accurate teleporting for 5 minutes
+		spawn(5 MINUTES)	accurate = 0 //Accurate teleporting for 5 minutes
 		for(var/mob/B in hearers(src, null))
 			B.show_message(SPAN_NOTICE("Test fire completed."))
 	return
@@ -287,7 +287,7 @@
 	if(tmploc==null)
 		return
 
-	M.loc = tmploc
+	M.forceMove(tmploc)
 	sleep(2)
 
 	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
@@ -300,7 +300,7 @@
 	name = "station"
 	desc = "It's the station thingy of a teleport thingy." //seriously, wtf.
 	icon_state = "controller"
-	dir = 4
+	dir = EAST
 	var/active = 0
 	var/engaged = 0
 	use_power = 1
@@ -308,8 +308,8 @@
 	active_power_usage = 2000
 	var/obj/structure/machinery/teleport/hub/com
 
-/obj/structure/machinery/teleport/station/New()
-	..()
+/obj/structure/machinery/teleport/station/Initialize(mapload, ...)
+	. = ..()
 	overlays.Cut()
 	overlays += image('icons/obj/structures/props/stationobjs.dmi', icon_state = "controller-wires")
 

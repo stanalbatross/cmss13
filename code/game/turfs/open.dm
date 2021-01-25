@@ -8,11 +8,13 @@
 
 /turf/open/Initialize(mapload, ...)
 	. = ..()
-	
+
 	update_icon()
 
 /turf/open/update_icon()
 	overlays.Cut()
+
+	add_cleanable_overlays()
 
 	for(var/direction in alldirs)
 		var/turf/open/auto_turf/T = get_step(src, direction)
@@ -114,6 +116,16 @@
 	name = "Beach"
 	icon = 'icons/turf/floors/beach.dmi'
 
+/turf/open/beach/Entered(atom/movable/AM)
+	..()
+
+	if(AM.throwing || !ishuman(AM))
+		return
+
+	var/mob/living/carbon/human/H = AM
+	if(H.bloody_footsteps)
+		SEND_SIGNAL(H, COMSIG_HUMAN_CLEAR_BLOODY_FEET)
+
 
 /turf/open/beach/sand
 	name = "Sand"
@@ -129,8 +141,8 @@
 	icon_state = "water"
 	can_bloody = FALSE
 
-/turf/open/beach/water/New()
-	..()
+/turf/open/beach/water/Initialize(mapload, ...)
+	. = ..()
 	overlays += image("icon"='icons/turf/floors/beach.dmi',"icon_state"="water2","layer"=MOB_LAYER+0.1)
 
 /turf/open/beach/water2
@@ -138,8 +150,8 @@
 	icon_state = "water"
 	can_bloody = FALSE
 
-/turf/open/beach/water2/New()
-	..()
+/turf/open/beach/water2/Initialize(mapload, ...)
+	. = ..()
 	overlays += image("icon"='icons/turf/floors/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
 
@@ -171,8 +183,7 @@
 		L.anchored = 1
 		L.icon_state = "lightstick_[L.s_color][L.anchored]"
 		user.drop_held_item()
-		L.x = x
-		L.y = y
+		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
 		L.SetLuminosity(2)
@@ -190,8 +201,8 @@
 	icon_state = "desert"
 	baseturfs = /turf/open/gm/dirt
 
-/turf/open/gm/dirt/New()
-	..()
+/turf/open/gm/dirt/Initialize(mapload, ...)
+	. = ..()
 	if(rand(0,15) == 0)
 		icon_state = "desert[pick("0","1","2","3")]"
 
@@ -229,8 +240,8 @@
 	var/default_name = "river"
 	baseturfs = /turf/open/gm/river
 
-/turf/open/gm/river/New()
-	..()
+/turf/open/gm/river/Initialize(mapload, ...)
+	. = ..()
 	update_icon()
 
 /turf/open/gm/river/update_icon()
@@ -261,7 +272,11 @@
 
 /turf/open/gm/river/Entered(atom/movable/AM)
 	..()
-	if(!covered && iscarbon(AM) && !AM.throwing)
+
+	if(!iscarbon(AM) || AM.throwing)
+		return
+
+	if(!covered)
 		var/mob/living/carbon/C = AM
 		var/river_slowdown = 1.75
 
@@ -282,6 +297,12 @@
 
 		var/new_slowdown = C.next_move_slowdown + river_slowdown
 		C.next_move_slowdown = new_slowdown
+
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		if(H.bloody_footsteps)
+			SEND_SIGNAL(H, COMSIG_HUMAN_CLEAR_BLOODY_FEET)
+
 
 /turf/open/gm/river/proc/cleanup(var/mob/living/carbon/human/M)
 	if(!M || !istype(M)) return
@@ -308,8 +329,8 @@
 	return !covered
 
 
-/turf/open/gm/river/poison/New()
-	..()
+/turf/open/gm/river/poison/Initialize(mapload, ...)
+	. = ..()
 	overlays += image("icon"='icons/effects/effects.dmi',"icon_state"="greenglow","layer"=MOB_LAYER+0.1)
 
 /turf/open/gm/river/poison/Entered(mob/living/M)
@@ -329,8 +350,8 @@
 	can_bloody = FALSE
 	baseturfs = /turf/open/gm/riverdeep
 
-/turf/open/gm/riverdeep/New()
-	..()
+/turf/open/gm/riverdeep/Initialize(mapload, ...)
+	. = ..()
 	overlays += image("icon"='icons/turf/ground_map.dmi',"icon_state"="water","layer"=MOB_LAYER+0.1)
 
 
@@ -368,9 +389,9 @@
 
 
 //Randomize ice floor sprite
-/turf/open/ice/New()
-	..()
-	dir = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+/turf/open/ice/Initialize(mapload, ...)
+	. = ..()
+	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
 
 
 
@@ -405,9 +426,9 @@
 	var/icon_spawn_state = "grass1"
 	baseturfs = /turf/open/jungle
 
-/turf/open/jungle/New()
-	..()
-	
+/turf/open/jungle/Initialize(mapload, ...)
+	. = ..()
+
 	icon_state = icon_spawn_state
 
 	if(plants_spawn && prob(40))
@@ -468,8 +489,7 @@
 		L.anchored = 1
 		L.icon_state = "lightstick_[L.s_color][L.anchored]"
 		user.drop_held_item()
-		L.x = x
-		L.y = y
+		L.forceMove(src)
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
 		L.SetLuminosity(2)
@@ -490,8 +510,8 @@
 	icon_state = "grass_path"
 	icon_spawn_state = "dirt"
 
-/turf/open/jungle/path/New()
-	..()
+/turf/open/jungle/path/Initialize(mapload, ...)
+	. = ..()
 	for(var/obj/structure/flora/jungle/thickbush/B in src)
 		qdel(B)
 
@@ -499,10 +519,11 @@
 	bushes_spawn = 0
 	icon_state = "grass_impenetrable"
 	icon_spawn_state = "grass1"
-	New()
-		..()
-		var/obj/structure/flora/jungle/thickbush/B = new(src)
-		B.indestructable = 1
+
+/turf/open/jungle/impenetrable/Initialize(mapload, ...)
+	. = ..()
+	var/obj/structure/flora/jungle/thickbush/B = new(src)
+	B.indestructable = 1
 
 
 /turf/open/jungle/water
@@ -515,8 +536,8 @@
 	can_bloody = FALSE
 
 
-/turf/open/jungle/water/New()
-	..()
+/turf/open/jungle/water/Initialize(mapload, ...)
+	. = ..()
 	for(var/obj/structure/flora/jungle/thickbush/B in src)
 		qdel(B)
 

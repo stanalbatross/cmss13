@@ -11,9 +11,9 @@
  * Metal
  */
 var/global/list/datum/stack_recipe/metal_recipes = list ( \
-	new/datum/stack_recipe("barbed wire", /obj/item/stack/barbed_wire, 2, 1, 20, time = SECONDS_1, skill_req = SKILL_CONSTRUCTION_TRAINED), \
-	new/datum/stack_recipe("metal barricade", /obj/structure/barricade/metal, 5, time = SECONDS_2, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED, min_time = SECONDS_1), \
-	new/datum/stack_recipe("handrail", /obj/structure/barricade/handrail, 2, time = SECONDS_2, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED, min_time = SECONDS_1), \
+	new/datum/stack_recipe("barbed wire", /obj/item/stack/barbed_wire, 2, 1, 20, time = 1 SECONDS, skill_req = SKILL_CONSTRUCTION_TRAINED), \
+	new/datum/stack_recipe("metal barricade", /obj/structure/barricade/metal, 5, time = 2 SECONDS, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED, min_time = 1 SECONDS), \
+	new/datum/stack_recipe("handrail", /obj/structure/barricade/handrail, 2, time = 2 SECONDS, one_per_turf = ONE_TYPE_PER_BORDER, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED, min_time = 1 SECONDS), \
 	null, \
 	new/datum/stack_recipe("apc frame", /obj/item/frame/apc, 2), \
 	new/datum/stack_recipe("fire alarm frame", /obj/item/frame/fire_alarm, 2), \
@@ -57,7 +57,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	matter = list("metal" = 3750)
 	throwforce = 14.0
 	flags_atom = FPRINT|CONDUCT
-	
+	sheettype = "metal"
 	stack_id = "metal"
 
 /obj/item/stack/sheet/metal/small_stack
@@ -71,7 +71,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 
 /obj/item/stack/sheet/metal/cyborg
 
-/obj/item/stack/sheet/metal/New(var/loc, var/amount=null)
+/obj/item/stack/sheet/metal/Initialize(mapload, amount)
 	recipes = metal_recipes
 	return ..()
 
@@ -79,7 +79,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
  * Plasteel
  */
 var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
-	new/datum/stack_recipe("plasteel barricade", /obj/structure/barricade/plasteel, 10, time = SECONDS_4, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION_ENGI, min_time = SECONDS_2),
+	new/datum/stack_recipe("plasteel barricade", /obj/structure/barricade/plasteel, 10, time = 4 SECONDS, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION_ENGI, min_time = 2 SECONDS),
 	null, \
 	new/datum/stack_recipe("reinforced window frame", /obj/structure/window_frame/colony/reinforced, 5, time = 40, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION_ENGI),
 	null, \
@@ -96,7 +96,7 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 	matter = list("metal" = 3750)
 	throwforce = 15.0
 	flags_atom = FPRINT|CONDUCT
-	
+	sheettype = "plasteel"
 	stack_id = "plasteel"
 
 /obj/item/stack/sheet/plasteel/New(var/loc, var/amount=null)
@@ -133,8 +133,17 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	singular_name = "wood plank"
 	icon_state = "sheet-wood"
 	item_state = "sheet-wood"
-	
+	sheettype = "wood"
 	stack_id = "wood plank"
+
+/obj/item/stack/sheet/wood/small_stack
+	amount = STACK_10
+
+/obj/item/stack/sheet/wood/medium_stack
+	amount = STACK_25
+
+/obj/item/stack/sheet/wood/large_stack
+	amount = STACK_50
 
 /obj/item/stack/sheet/wood/cyborg
 	name = "wooden plank"
@@ -154,7 +163,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	desc = "This roll of cloth is made from only the finest chemicals and bunny rabbits."
 	singular_name = "cloth roll"
 	icon_state = "sheet-cloth"
-	
+
 	stack_id = "cloth"
 
 /*
@@ -247,7 +256,7 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 	desc = "Large sheets of card, like boxes folded flat."
 	singular_name = "cardboard sheet"
 	icon_state = "sheet-card"
-	
+	sheettype = "cardboard"
 	stack_id = "cardboard"
 
 /obj/item/stack/sheet/cardboard/New(var/loc, var/amount=null)
@@ -275,6 +284,7 @@ var/global/list/datum/stack_recipe/aluminum_recipes = list ( \
 	desc = "A silvery-white soft metal of the boron group. Because of its low density it is often uses as a structural material in aircrafts."
 	singular_name = "aluminum sheet"
 	icon_state = "sheet-aluminum"
+	sheettype = "aluminum"
 
 /*
  * Copper
@@ -285,7 +295,8 @@ var/global/list/datum/stack_recipe/copper_recipes = list ( \
 
 /obj/item/stack/sheet/copper
 	name = "copper"
-	desc = "A solfe malleable red metal with high thermal and electrical conductivity."
+	desc = "A soft and malleable red metal with high thermal and electrical conductivity."
 	singular_name = "copper sheet"
 	icon_state = "sheet-copper"
+	sheettype = "copper"
 

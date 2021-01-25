@@ -4,27 +4,23 @@
 	req_access = list(ACCESS_CIVILIAN_PUBLIC)
 	var/registered_name = null
 
-/obj/structure/closet/secure_closet/personal/New()
-	..()
-	spawn(2)
-		if(prob(50))
-			new /obj/item/storage/backpack(src)
-		else
-			new /obj/item/storage/backpack/satchel/norm(src)
-		new /obj/item/device/radio/headset( src )
-	return
+/obj/structure/closet/secure_closet/personal/Initialize()
+	. = ..()
+	if(prob(50))
+		new /obj/item/storage/backpack(src)
+	else
+		new /obj/item/storage/backpack/satchel/norm(src)
+	new /obj/item/device/radio/headset( src )
 
 
 /obj/structure/closet/secure_closet/personal/patient
 	name = "patient's closet"
 
-/obj/structure/closet/secure_closet/personal/patient/New()
-	..()
-	spawn(4)
-		contents = list()
-		new /obj/item/clothing/under/color/white( src )
-		new /obj/item/clothing/shoes/white( src )
-	return
+/obj/structure/closet/secure_closet/personal/patient/Initialize()
+	. = ..()
+	contents = list()
+	new /obj/item/clothing/under/color/white( src )
+	new /obj/item/clothing/shoes/white( src )
 
 
 
@@ -48,13 +44,11 @@
 		else
 			icon_state = icon_opened
 
-/obj/structure/closet/secure_closet/personal/cabinet/New()
-	..()
-	spawn(4)
-		contents = list()
-		new /obj/item/storage/backpack/satchel( src )
-		new /obj/item/device/radio/headset( src )
-	return
+/obj/structure/closet/secure_closet/personal/cabinet/Initialize()
+	. = ..()
+	contents = list()
+	new /obj/item/storage/backpack/satchel( src )
+	new /obj/item/device/radio/headset( src )
 
 /obj/structure/closet/secure_closet/personal/attackby(obj/item/W as obj, mob/user as mob)
 	if (src.opened)
@@ -64,7 +58,7 @@
 				src.MouseDrop_T(G.grabbed_thing, user)      //act like they were dragged onto the closet
 			return
 		user.drop_held_item()
-		if (W) W.loc = src.loc
+		if (W) W.forceMove(src.loc)
 	else if(istype(W, /obj/item/card/id))
 		if(src.broken)
 			to_chat(user, SPAN_DANGER("It appears to be broken."))

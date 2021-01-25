@@ -117,8 +117,6 @@ IN_USE						used for vending/denying
 		to_chat(user, SPAN_WARNING("You have succesfully removed access restrictions in [src]."))
 		if(user && is_mainship_level(z))
 			SSclues.create_print(get_turf(user), user, "A small piece of cut wire is found on the fingerprint.")
-			if(user.faction == FACTION_MARINE && user.detectable_by_ai())
-				ai_silent_announcement("DAMAGE REPORT: Unauthorized access change detected at [get_area(src)], requesting Military Police supervision.")
 	else
 		to_chat(user, SPAN_WARNING("You have restored access restrictions in [src]."))
 	return
@@ -416,6 +414,9 @@ IN_USE						used for vending/denying
 
 
 /obj/structure/machinery/cm_vending/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable())
 		return
 	if(usr.is_mob_incapacitated())
@@ -452,6 +453,9 @@ IN_USE						used for vending/denying
 	vendor_theme = VENDOR_THEME_USCM
 
 /obj/structure/machinery/cm_vending/gear/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(usr.is_mob_incapacitated())
@@ -578,7 +582,8 @@ IN_USE						used for vending/denying
 				playsound(loc, vend_sound, 25, 1, 2)	//heard only near vendor
 			sleep(vend_delay)
 		var/prod_type = L[3]
-		new prod_type(T)
+		var/obj/our_item = new prod_type(T)
+		H.put_in_any_hand_if_possible(our_item, disable_warning = TRUE)
 		vending_stat_bump(prod_type, src.type)
 	else
 		to_chat(H, SPAN_WARNING("ERROR: L is missing. Please report this to admins."))
@@ -600,6 +605,9 @@ IN_USE						used for vending/denying
 	show_points = FALSE
 
 /obj/structure/machinery/cm_vending/clothing/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(usr.is_mob_incapacitated())
@@ -795,6 +803,9 @@ IN_USE						used for vending/denying
 		ui.set_auto_update(0)		//here we need autoupdate because items can be vended by others and are limited
 
 /obj/structure/machinery/cm_vending/sorted/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable())
 		return
 	if(usr.is_mob_incapacitated())
@@ -928,6 +939,9 @@ IN_USE						used for vending/denying
 	avaliable_points_to_display = MARINE_TOTAL_BUY_POINTS
 
 /obj/structure/machinery/cm_vending/own_points/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(usr.is_mob_incapacitated())

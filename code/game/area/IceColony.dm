@@ -31,7 +31,6 @@
 	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
-	ambience = list('sound/ambience/ambispace.ogg')
 	temperature = ICE_COLONY_TEMPERATURE
 
 /*
@@ -47,7 +46,6 @@
 /area/ice_colony/exterior/surface
 	name = "\improper Ice Colony - Exterior Surface"
 	fake_zlevel = 1 // above ground
-	ambience_exterior = AMBIENCE_ICE
 	soundscape_playlist = SCAPE_PL_WIND
 
 //Equivalent of space. None of this area should be accessible. If these are valleys, make separate areas
@@ -111,7 +109,7 @@
 /area/ice_colony/exterior/surface/valley/south/excavation
 	name = "\improper Southern Valleys - Excavation Site"
 	icon_state = "valley_south_excv"
-	ceiling = CEILING_UNDERGROUND
+	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 
 /area/ice_colony/exterior/surface/valley/southeast
 	name = "\improper Eastern Valleys"
@@ -164,7 +162,7 @@
 	icon_state = "cave"
 	sound_environment = 6
 	soundscape_playlist = SCAPE_PL_CAVE
-	soundscape_interval = 25 
+	soundscape_interval = 25
 	ambience_exterior = AMBIENCE_CAVE
 
 /area/ice_colony/exterior/underground/caves/open
@@ -186,7 +184,6 @@
 	icon_state = "clear"
 	ceiling = CEILING_METAL
 	fake_zlevel = 1 // above ground
-	ambience_exterior = AMBIENCE_ICE
 
 /*
  * Surface - Bar
@@ -212,7 +209,7 @@
 	name = "\improper Aurora Medical Clinic"
 	icon_state = "medbay"
 	soundscape_playlist = SCAPE_PL_ELEVATOR_MUSIC
-	soundscape_interval = 60 
+	soundscape_interval = 60
 
 /area/ice_colony/surface/clinic/lobby
 	name = "\improper Aurora Medical Clinic Lobby"

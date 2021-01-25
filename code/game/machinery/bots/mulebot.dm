@@ -402,15 +402,15 @@
 				if(istype(usr.get_active_hand(), /obj/item/device/multitool))
 					switch(href_list["wire"])
 						if("1","2")
-							to_chat(usr, SPAN_NOTICE(" [htmlicon(src, usr)] The charge light flickers."))
+							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] The charge light flickers."))
 						if("4")
-							to_chat(usr, SPAN_NOTICE(" [htmlicon(src, usr)] The external warning lights flash briefly."))
+							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] The external warning lights flash briefly."))
 						if("8")
-							to_chat(usr, SPAN_NOTICE(" [htmlicon(src, usr)] The load platform clunks."))
+							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] The load platform clunks."))
 						if("16", "32")
-							to_chat(usr, SPAN_NOTICE(" [htmlicon(src, usr)] The drive motor whines briefly."))
+							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] The drive motor whines briefly."))
 						else
-							to_chat(usr, SPAN_NOTICE(" [htmlicon(src, usr)] You hear a radio crackle."))
+							to_chat(usr, SPAN_NOTICE(" [icon2html(src, usr)] You hear a radio crackle."))
 				else
 					to_chat(usr, SPAN_NOTICE(" You need a multitool!"))
 
@@ -469,11 +469,11 @@
 	if(istype(crate))
 		crate.close()
 
-	C.loc = src.loc
+	C.forceMove(loc)
 	sleep(2)
 	if(C.loc != src.loc) //To prevent you from going onto more thano ne bot.
 		return
-	C.loc = src
+	C.forceMove(src)
 	load = C
 
 	C.pixel_y += 9
@@ -500,7 +500,7 @@
 	mode = 1
 	overlays.Cut()
 
-	load.loc = src.loc
+	load.forceMove(loc)
 	load.pixel_y -= 9
 	load.layer = initial(load.layer)
 	if(ismob(load))
@@ -514,7 +514,7 @@
 		if(!BlockedPassDirs(load, dirn))//Can't get off onto anything that wouldn't let you pass normally
 			step(load, dirn)
 		else
-			load.loc = src.loc//Drops you right there, so you shouldn't be able to get yourself stuck
+			load.forceMove(loc)//Drops you right there, so you shouldn't be able to get yourself stuck
 
 	load = null
 
@@ -525,7 +525,7 @@
 	for(var/atom/movable/AM in src)
 		if(AM == cell || AM == botcard) continue
 
-		AM.loc = src.loc
+		AM.forceMove(loc)
 		AM.layer = initial(AM.layer)
 		AM.pixel_y = initial(AM.pixel_y)
 		if(ismob(AM))
@@ -593,14 +593,14 @@
 						var/obj/effect/decal/cleanable/blood/tracks/B = new(loc)
 						var/newdir = get_dir(next, loc)
 						if(newdir == dir)
-							B.dir = newdir
+							B.setDir(newdir)
 						else
 							newdir = newdir|dir
 							if(newdir == 3)
 								newdir = 1
 							else if(newdir == 12)
 								newdir = 4
-							B.dir = newdir
+							B.setDir(newdir)
 						bloodiness--
 
 
@@ -925,7 +925,7 @@
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/stack/cable_coil/cut(Tsec)
 	if (cell)
-		cell.loc = Tsec
+		cell.forceMove(Tsec)
 		cell.update_icon()
 		cell = null
 

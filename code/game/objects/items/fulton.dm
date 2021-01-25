@@ -72,12 +72,12 @@ var/global/list/deployed_fultons = list()
 		to_chat(user, SPAN_WARNING("You can't attach [src] to something that far away."))
 		return
 
-	if(target_atom.z != 1)
+	if(!is_ground_level(target_atom.z))
 		to_chat(user, SPAN_WARNING("You can't attach [src] to something here."))
 		return
 
 	var/area/A = get_area(target_atom)
-	if(A && A.ceiling >= CEILING_UNDERGROUND)
+	if(A && CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_2))
 		to_chat(usr, SPAN_WARNING("You can't attach [src] to something when underground!"))
 		return
 
@@ -146,13 +146,10 @@ var/global/list/deployed_fultons = list()
 
 	icon_state = ""
 
-	attached_atom.z = space_tile.z
-	attached_atom.x = space_tile.x
-	attached_atom.y = space_tile.y
+	attached_atom.anchored = TRUE
+	attached_atom.forceMove(space_tile)
 
-	src.z = attached_atom.z
-	src.x = attached_atom.x
-	src.y = attached_atom.y
+	forceMove(attached_atom)
 	deployed_fultons += src
 	attached_atom.overlays -= I
 
@@ -162,9 +159,8 @@ var/global/list/deployed_fultons = list()
 	if(!istype(get_area(attached_atom), /area/space/highalt))
 		return
 	if(return_turf)
-		attached_atom.z = return_turf.z
-		attached_atom.x = return_turf.x
-		attached_atom.y = return_turf.y
+		attached_atom.forceMove(return_turf)
+		attached_atom.anchored = FALSE
 		playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
 
 	if(intel_system)

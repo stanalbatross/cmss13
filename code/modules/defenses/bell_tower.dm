@@ -31,11 +31,11 @@
 /obj/structure/machinery/defenses/bell_tower/power_on_action()
 	clear_tripwires()
 	setup_tripwires()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_NOTICE("The [name] gives a short ring, as it comes alive.")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a short ring, as it comes alive.")]")
 
 /obj/structure/machinery/defenses/bell_tower/power_off_action()
 	clear_tripwires()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_NOTICE("The [name] gives a beep and powers down.")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] gives a beep and powers down.")]")
 
 /obj/structure/machinery/defenses/bell_tower/proc/clear_tripwires()
 	for(var/obj/effect/bell_tripwire/FE in tripwires_placed)
@@ -52,7 +52,7 @@
 		tripwires_placed += FE
 
 /obj/structure/machinery/defenses/bell_tower/proc/mob_crossed(var/mob/M)
-	playsound(loc, 'sound/misc/bell.wav', 50, 0, 50)
+	playsound(loc, 'sound/misc/bell.ogg', 50, 0, 50)
 
 /obj/structure/machinery/defenses/bell_tower/Destroy()
 	. = ..()
@@ -203,7 +203,7 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in targets)
 		X.SetSuperslowed(BELL_TOWER_EFFECT)
-		playsound(X, 'sound/misc/bell.wav', 50, 0, 50)
+		playsound(X, 'sound/misc/bell.ogg', 50, 0, 50)
 
 #undef IMP_SLOWDOWN_TIME
 #undef BELL_TOWER_RANGE

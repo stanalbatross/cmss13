@@ -79,13 +79,13 @@
 		syringestab(target, user)
 		return
 
-	var/injection_time = 30
+	var/injection_time = 2 SECONDS
 	if(user.skills)
 		if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
 			to_chat(user, SPAN_WARNING("You aren't trained to use syringes..."))
 			return
 		else
-			injection_time = max(5, 50 - 10*user.skills.get_skill_level(SKILL_MEDICAL))
+			injection_time = (injection_time*user.get_skill_duration_multiplier(SKILL_MEDICAL))
 
 
 	switch(mode)
@@ -198,6 +198,14 @@
 				var/mob/living/carbon/C = target
 				C.inject_blood(src, amount_per_transfer_from_this)
 			else
+
+				var/list/reagents_in_syringe = list()
+				for(var/datum/reagent/R in reagents.reagent_list)
+					reagents_in_syringe += R.name
+				var/contained = english_list(reagents_in_syringe)
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>[key_name(user)] injected [target] with a syringe (REAGENTS: [contained]) (INTENT: [uppertext(intent_text(user.a_intent))])</font>")
+				msg_admin_niche("[key_name(user)] injected [target] with a syringe (REAGENTS: [contained]) (INTENT: [uppertext(intent_text(user.a_intent))]) in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
+
 				trans = reagents.trans_to(target, amount_per_transfer_from_this)
 
 			to_chat(user, SPAN_NOTICE(" You inject [trans] units of the solution. The syringe now contains [src.reagents.total_volume] units."))

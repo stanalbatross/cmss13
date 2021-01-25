@@ -33,7 +33,7 @@
 	H.g_hair = 25
 	H.b_hair = 35
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/pmc_survivor
 	name = "Survivor - PMC"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -59,7 +59,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88, WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full, WEAR_R_STORE)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/pmc_standard
 	name = "Weston-Yamada PMC (Standard)"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -111,7 +111,7 @@
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap, WEAR_IN_BACK)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap, WEAR_IN_BACK)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/pmc_detainer
 	name = "Weston-Yamada PMC (Detainer)"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -148,7 +148,7 @@
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank, WEAR_IN_BACK)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/pmc_medic
 	name = "Weston-Yamada PMC (Medic)"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -190,7 +190,7 @@
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_BACK)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/pmc_med_investigator
 	name = "Weston-Yamada PMC (Medical Investigator)"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -233,7 +233,7 @@
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_JACKET)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 
 /datum/equipment_preset/pmc/pmc_leader
 	name = "Weston-Yamada PMC (Leader)"
@@ -266,7 +266,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large/pmc_p90, WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full, WEAR_R_STORE)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 
 /datum/equipment_preset/pmc/pmc_lead_investigator
 	name = "Weston-Yamada PMC (Lead Investigator)"
@@ -299,7 +299,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large/pmc_p90, WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/document, WEAR_R_STORE)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 
 /datum/equipment_preset/pmc/pmc_gunner
 	name = "Weston-Yamada PMC (Gunner)"
@@ -327,7 +327,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/smartgunner/pmc/full, WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/m56_goggles, WEAR_EYES)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 
 /datum/equipment_preset/pmc/pmc_sniper
 	name = "Weston-Yamada PMC (Sniper)"
@@ -452,7 +452,7 @@
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/HE/PMC, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a/elite, WEAR_J_STORE)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 
 /datum/equipment_preset/pmc/deathsquad/medic
 	name = "Weston-Yamada Deathsquad Medic"
@@ -491,7 +491,7 @@
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39/ap, WEAR_IN_BACK)
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/deathsquad/terminator
 	name = "Weston-Yamada Deathsquad Terminator"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -514,7 +514,7 @@
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/smartgun/dirty/elite, WEAR_J_STORE)
 
 
-/*****************************************************************************************************/
+//*****************************************************************************************************/
 /datum/equipment_preset/pmc/deathsquad/leader
 	name = "Weston-Yamada Deathsquad Leader"
 	flags = EQUIPMENT_PRESET_EXTRA

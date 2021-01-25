@@ -2,7 +2,7 @@
 /mob/dead/observer/verb/toggle_inquisition() // warning: unexpected inquisition
 	set name = "Toggle Inquisitiveness"
 	set desc = "Sets whether your ghost examines everything on click by default"
-	set category = "Ghost"
+	set category = "Ghost.Settings"
 	if(!client) return
 	client.inquisitive_ghost = !client.inquisitive_ghost
 	if(client.inquisitive_ghost)
@@ -31,10 +31,8 @@
 						return
 					if(!SSticker.mode.xeno_bypass_timer)
 						var/deathtime = world.time - timeofdeath
-						var/deathtimeminutes = round(deathtime / MINUTES_1)
-						var/deathtimeseconds = round((deathtime - deathtimeminutes * MINUTES_1) / 10,1)
-						if(deathtime < MINUTES_5)
-							var/message = "You have been dead for [deathtimeminutes >= 1 ? "[deathtimeminutes] minute\s and " : ""][deathtimeseconds] second\s."
+						if(deathtime < 5 MINUTES)
+							var/message = "You have been dead for [DisplayTimeText(deathtime)]."
 							message = SPAN_WARNING("[message]")
 							to_chat(src, message)
 							to_chat(src, SPAN_WARNING("You must wait 5 minutes before rejoining the game!"))
@@ -56,7 +54,7 @@
 			return 1
 
 		following = null
-		loc = get_turf(A)
+		forceMove(get_turf(A))
 		return 1
 
 	if(world.time <= next_move)
@@ -82,27 +80,27 @@
 	var/atom/l = loc
 	var/obj/structure/machinery/computer/teleporter/com = locate(/obj/structure/machinery/computer/teleporter, locate(l.x - 2, l.y, l.z))
 	if(com && com.locked)
-		user.loc = get_turf(com.locked)
+		user.forceMove(get_turf(com.locked))
 
 /obj/effect/portal/attack_ghost(mob/user as mob)
 	if(target)
-		user.loc = get_turf(target)
+		user.forceMove(get_turf(target))
 
 /obj/structure/ladder/attack_ghost(mob/user as mob)
 	if(up && down)
 		switch( alert("Go up or down the ladder?", "Ladder", "Up", "Down", "Cancel") )
 			if("Up")
-				user.loc = get_turf(up)
+				user.forceMove(get_turf(up))
 			if("Down")
-				user.loc = get_turf(down)
+				user.forceMove(get_turf(down))
 			if("Cancel")
 				return
 
 	else if(up)
-		user.loc = get_turf(up)
+		user.forceMove(get_turf(up))
 
 	else if(down)
-		user.loc = get_turf(down)
+		user.forceMove(get_turf(down))
 
 // -------------------------------------------
 // This was supposed to be used by adminghosts

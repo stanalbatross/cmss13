@@ -37,7 +37,8 @@
 	equip_sounds = list('sound/handling/clothing_on.ogg')
 	unequip_sounds = list('sound/handling/clothing_off.ogg')
 
-/obj/item/clothing/under/New()
+/obj/item/clothing/under/Initialize()
+	. = ..()
 	if(worn_state)
 		if(!item_state_slots)
 			item_state_slots = list()
@@ -49,8 +50,7 @@
 	if((worn_state + "_d") in icon_states(default_onmob_icons[WEAR_BODY]))
 		rollable_sleeves = TRUE
 	if((worn_state + "_df") in icon_states(default_onmob_icons[WEAR_BODY]))
-		cuttable_sleeves = TRUE	
-	..()
+		cuttable_sleeves = TRUE
 
 /obj/item/clothing/Destroy()
 	QDEL_NULL_LIST(accessories)
@@ -118,7 +118,7 @@
 		return 0
 
 	var/list/modes = list("Off", "Binary sensors", "Vitals tracker", "Tracking beacon")
-	var/switchMode = input("Select a sensor mode:", "Suit Sensor Mode", modes[sensor_mode + 1]) in modes
+	var/switchMode = tgui_input_list(usr, "Select a sensor mode:", "Suit Sensor Mode", modes)
 	if(get_dist(user, src) > 1)
 		to_chat(user, "You have moved too far away.")
 		return
@@ -207,7 +207,7 @@
 			to_chat(user, SPAN_NOTICE("You can't cut up [src]."))
 		if(rolled_sleeves == TRUE)
 			to_chat(user, SPAN_NOTICE("You can't dice up [src] while its rolled."))
-		else 
+		else
 			rollable_sleeves = FALSE
 			cuttable_sleeves = FALSE
 			item_state_slots[WEAR_BODY] = "[worn_state]_df"

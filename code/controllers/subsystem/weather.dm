@@ -34,9 +34,9 @@ SUBSYSTEM_DEF(weather)
 	// Set up our map delegate datum for supported maps
 	// The ONLY place where things should depend on map_tag
 	// in the weather subsystem
-	switch(map_tag)
-		if (MAP_SOROKYNE_STRATA)
-			map_holder = new /datum/weather_ss_map_holder/sorokyne()
+	if(SSmapping.configs[GROUND_MAP].weather_holder)
+		var/weathertype = SSmapping.configs[GROUND_MAP].weather_holder
+		map_holder = new weathertype
 
 	// Disable the weather subsystem on maps that don't currently implement it
 	if (!map_holder)
@@ -64,13 +64,14 @@ SUBSYSTEM_DEF(weather)
 
 	. = ..()
 
-/datum/controller/subsystem/weather/stat_entry(var/msg)
+/datum/controller/subsystem/weather/stat_entry(msg)
 	if (is_weather_event && weather_event_instance.display_name)
-		..("P: Current event: [weather_event_instance.display_name]")
+		msg = "P: Current event: [weather_event_instance.display_name]"
 	else if (is_weather_event)
-		..("P: Current event of unknown type ([weather_event_type])")
+		msg = "P: Current event of unknown type ([weather_event_type])"
 	else
-		..("P: No event")
+		msg = "P: No event"
+	return ..()
 
 /datum/controller/subsystem/weather/fire()
 	if (controller_state_lock)

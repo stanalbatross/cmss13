@@ -25,61 +25,21 @@
 
 #define isXenoBuilder(A) (isXenoDrone(A) || isXenoHivelord(A) || isXenoCarrier(A) || isXenoBurrower(A) || isXenoQueen(A))
 
-/mob/living/carbon/proc/allied_to_hivenumber(var/h_number, var/limit = XENO_SLASH_FORBIDDEN)
-	if(hivenumber == h_number)
-		return TRUE
+/mob/living/carbon/Xenomorph/proc/can_not_harm(var/mob/living/carbon/C)
+	if(!istype(C))
+		return FALSE
 
-/mob/living/carbon/human/allied_to_hivenumber(var/h_number, var/limit = XENO_SLASH_FORBIDDEN)
-	var/datum/hive_status/hive = hive_datum[h_number]
+	if(!hive)
+		hive = GLOB.hive_datum[hivenumber]
 
 	if(!hive)
 		return FALSE
 
-	var/should_override = hive.should_override_alliance(src)
-	if(should_override)
-		return should_override == XENO_HIVE_ALLIED
-	
-	switch(hive.slashing_allowed)
-		if(XENO_SLASH_ALLOWED)
-			return FALSE
-		if(XENO_SLASH_RESTRICTED, XENO_SLASH_FORBIDDEN)
-			if(hivenumber == h_number)
-				return limit >= XENO_SLASH_RESTRICTED
-			else if(hive.slashing_allowed == XENO_SLASH_FORBIDDEN)
-				return limit >= XENO_SLASH_FORBIDDEN
-	
-	return FALSE
-
-/mob/living/carbon/proc/match_hivemind(var/mob/living/carbon/C)
-	if(!istype(C))
-		return FALSE
-
-	var/override_source
-	var/override_target
-
-	var/datum/hive_status/hive
-	if(hivenumber)
-		hive = hive_datum[hivenumber]
-		override_source = hive.should_override_alliance(C)
-		if(!C.hivenumber && override_source)
-			return override_source == XENO_HIVE_ALLIED
-
-	if(C.hivenumber)
-		hive = hive_datum[C.hivenumber]
-		override_target = hive.should_override_alliance(src)
-		if(!hivenumber && override_target)
-			return override_target == XENO_HIVE_ALLIED
-		
-	if(override_source && override_target && override_source == override_target)
-		return override_source == XENO_HIVE_ALLIED
-
-
-
-	return C.allied_to_hivenumber(hivenumber) && allied_to_hivenumber(C.hivenumber)
+	return hive.is_ally(C)
 
 // need this to set the data for walls/eggs/huggers when they are initialized
 /proc/set_hive_data(var/atom/A, hivenumber)
-	var/datum/hive_status/hive = hive_datum[hivenumber]
+	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 	if (hive.color)
 		A.color = hive.color
 	A.name = "[lowertext(hive.prefix)][A.name]"

@@ -38,7 +38,7 @@
 	//Emotes
 	var/recent_audio_emote = FALSE
 
-	var/on_fire = 0 //The "Are we on fire?" var
+	var/on_fire = FALSE //The "Are we on fire?" var
 	var/fire_stacks = 0 //Tracks how many stacks of fire we have on, max is
 	var/datum/reagent/fire_reagent
 
@@ -60,7 +60,6 @@
 
 	var/reagent_move_delay_modifier = 0 //negative values increase movement speed
 
-	var/datum/event/event_zoomout = null
 	var/datum/event/event_movement = null
 	var/blood_type = "X*"
 

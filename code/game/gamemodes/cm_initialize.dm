@@ -51,7 +51,6 @@ Additional game mode variables.
 	var/xeno_required_num 	= 0 //We need at least one. You can turn this off in case we don't care if we spawn or don't spawn xenos.
 	var/xeno_starting_num 	= 0 //To clamp starting xenos.
 	var/xeno_bypass_timer 	= 0 //Bypass the five minute timer before respawning.
-	//var/xeno_queen_timer  	= list(0, 0, 0, 0, 0) //How long ago did the queen die?
 	var/xeno_queen_deaths 	= 0 //How many times the alien queen died.
 	var/surv_starting_num 	= 0 //To clamp starting survivors.
 	var/merc_starting_num 	= 0 //PMC clamp.
@@ -72,7 +71,6 @@ Additional game mode variables.
 	var/list/round_fog = list()				//List of the fog locations.
 	var/list/round_toxic_river = list()		//List of all toxic river locations
 	var/round_time_lobby 		//Base time for the lobby, for fog dispersal.
-	var/round_time_fog 			//Variance time for fog dispersal, done during pre-setup.
 	var/round_time_river
 	var/monkey_amount		= 0 //How many monkeys do we spawn on this map ?
 	var/list/monkey_types	= list() //What type of monkeys do we spawn
@@ -84,12 +82,12 @@ Additional game mode variables.
 	var/roles_for_mode[] //Won't have a list if the instruction is set to 0.
 
 	//Bioscan related.
-	var/bioscan_current_interval = MINUTES_5//5 minutes in
-	var/bioscan_ongoing_interval = MINUTES_1//every 1 minute
+	var/bioscan_current_interval = 5 MINUTES//5 minutes in
+	var/bioscan_ongoing_interval = 1 MINUTES//every 1 minute
 
-	var/lz_selection_timer = MINUTES_25 //25 minutes in
-	var/round_time_resin = MINUTES_40	//Time for when resin placing is allowed close to LZs
-	var/round_time_pooled_cutoff = MINUTES_25	//Time for when free pooled larvae stop spawning.
+	var/lz_selection_timer = 25 MINUTES //25 minutes in
+	var/round_time_resin = 40 MINUTES	//Time for when resin placing is allowed close to LZs
+	var/round_time_pooled_cutoff = 25 MINUTES	//Time for when free pooled larvae stop spawning.
 	var/resin_allow_finished
 
 	var/flags_round_type = NO_FLAGS
@@ -102,7 +100,7 @@ Additional game mode variables.
 
 /datum/game_mode/proc/initialize_special_clamps()
 	xeno_starting_num = clamp((readied_players/CONFIG_GET(number/xeno_number_divider)), xeno_required_num, INFINITY) //(n, minimum, maximum)
-	surv_starting_num = clamp((readied_players/CONFIG_GET(number/surv_number_divider)), 0, 8)
+	surv_starting_num = clamp((xeno_starting_num/CONFIG_GET(number/surv_number_divider)), 2, 8)
 	marine_starting_num = GLOB.player_list.len - xeno_starting_num - surv_starting_num
 	for(var/datum/squad/sq in RoleAuthority.squads)
 		if(sq)
@@ -191,7 +189,7 @@ Additional game mode variables.
 
 	msg_admin_niche("([new_predator.key]) joined as Yautja, [new_predator.real_name].")
 
-	if(pred_candidate) pred_candidate.loc = null //Nullspace it for garbage collection later.
+	if(pred_candidate) pred_candidate.moveToNullspace() //Nullspace it for garbage collection later.
 
 /datum/game_mode/proc/check_predator_late_join(mob/pred_candidate, show_warning = 1)
 
@@ -230,19 +228,21 @@ Additional game mode variables.
 #undef calculate_pred_max
 
 /datum/game_mode/proc/transform_predator(mob/pred_candidate)
+	set waitfor = FALSE
+
 	if(!pred_candidate.client) //Something went wrong.
 		message_admins(SPAN_WARNING("<b>Warning</b>: null client in transform_predator."))
 		log_debug("Null client in transform_predator.")
 		return
 
-	var/datum/entity/clan_player/clan_info = pred_candidate.client.clan_info
-	var/list/spawn_points = get_clan_spawnpoints(CLAN_SHIP_PUBLIC)
-	if(clan_info)
-		clan_info.sync()
-		if(clan_info.clan_id)
-			spawn_points = get_clan_spawnpoints(clan_info.clan_id)
-
-	if(!pred_candidate.mind)
+	var/clan_id = CLAN_SHIP_PUBLIC
+	var/datum/entity/clan_player/clan_info = pred_candidate?.client?.clan_info
+	clan_info?.sync()
+	if(clan_info?.clan_id)
+		clan_id = clan_info.clan_id
+	SSpredships.load_new(clan_id)
+	var/list/turf/spawn_points = SSpredships.get_clan_spawnpoints(clan_id)
+	if(!pred_candidate?.mind)
 		return
 
 	var/mob/living/carbon/human/yautja/new_predator = new(pick(spawn_points))
@@ -287,7 +287,7 @@ Additional game mode variables.
 			var/new_queen = pick(possible_queens)
 			if(new_queen)
 				setup_new_xeno(new_queen)
-				picked_queens += list(hive_datum[hive] = new_queen)
+				picked_queens += list(GLOB.hive_datum[hive] = new_queen)
 				LAZYREMOVE(possible_xenomorphs, new_queen)
 
 	for(var/datum/mind/A in possible_xenomorphs)
@@ -295,7 +295,7 @@ Additional game mode variables.
 			LAZYREMOVE(possible_xenomorphs, A)
 
 	for(var/hive in hives)
-		xenomorphs[hive_datum[hive]] = list()
+		xenomorphs[GLOB.hive_datum[hive]] = list()
 
 	var/datum/mind/new_xeno
 	var/current_index = 1
@@ -304,7 +304,7 @@ Additional game mode variables.
 		if(current_index > LAZYLEN(hives))
 			current_index = 1
 
-		var/datum/hive_status/hive = hive_datum[LAZYACCESS(hives, current_index)]
+		var/datum/hive_status/hive = GLOB.hive_datum[hives[current_index]]
 		if(LAZYLEN(possible_xenomorphs)) //We still have candidates
 			new_xeno = pick(possible_xenomorphs)
 			LAZYREMOVE(possible_xenomorphs, new_xeno)
@@ -327,7 +327,7 @@ Additional game mode variables.
 	if(remaining_slots)
 		var/larva_per_hive = round(remaining_slots / LAZYLEN(hives))
 		for(var/hivenumb in hives)
-			var/datum/hive_status/hive = hive_datum[hivenumb]
+			var/datum/hive_status/hive = GLOB.hive_datum[hivenumb]
 			hive.stored_larva = larva_per_hive
 
 	/*
@@ -355,7 +355,6 @@ Additional game mode variables.
 	for(var/datum/hive_status/hive in picked_queens)
 		INVOKE_ASYNC(src, .proc/pick_queen_spawn, picked_queens[hive], hive.hivenumber)
 
-
 /datum/game_mode/proc/check_xeno_late_join(mob/xeno_candidate)
 	if(jobban_isbanned(xeno_candidate, "Alien")) // User is jobbanned
 		to_chat(xeno_candidate, SPAN_WARNING("You are banned from playing aliens and cannot spawn as a xenomorph."))
@@ -365,7 +364,6 @@ Additional game mode variables.
 /datum/game_mode/proc/attempt_to_join_as_xeno(mob/xeno_candidate, instant_join = 0)
 	var/list/available_xenos = list()
 	var/list/available_xenos_non_ssd = list()
-	var/list/obj/effect/alien/resin/special/pool/hives = list()
 
 	for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
 		var/area/A = get_area(X)
@@ -374,15 +372,18 @@ Additional game mode variables.
 			if(X.away_timer >= XENO_LEAVE_TIMER || (isXenoLarva(X) && X.away_timer >= XENO_LEAVE_TIMER_LARVA) ) available_xenos_non_ssd += X
 			available_xenos += X
 
-	var/pooled_larva = "pooled larva"
-
-	for(var/datum/hive_status/hive in hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		var/obj/effect/alien/resin/special/pool/SP = hive.spawn_pool
 		if(!isnull(SP) && SP.can_spawn_larva())
-			hives += hive
-
-	if(length(hives))
-		available_xenos += pooled_larva
+			if(SSticker.mode && (SSticker.mode.flags_round_type & MODE_RANDOM_HIVE))
+				available_xenos |= "pooled larva"
+				LAZYADD(available_xenos["pooled larva"], hive)
+			else
+				var/larva_option = "pooled larva ([hive])"
+				available_xenos += larva_option
+				available_xenos[larva_option] = list(hive)
 
 	if(!available_xenos.len || (instant_join && !available_xenos_non_ssd.len))
 		to_chat(xeno_candidate, SPAN_WARNING("There aren't any available xenomorphs or pooled larvae. You can try getting spawned as a chestburster larva by toggling your Xenomorph candidacy in Preferences -> Toggle SpecialRole Candidacy."))
@@ -390,13 +391,12 @@ Additional game mode variables.
 
 	var/mob/living/carbon/Xenomorph/new_xeno
 	if(!instant_join)
-		var/userInput = input("Available Xenomorphs") as null|anything in available_xenos
+		var/userInput = tgui_input_list(usr, "Available Xenomorphs", "Join as Xeno", available_xenos)
 
-		// isnull() is checked here, in case the spawn pool gets destroyed while the menu is open.
-		if(userInput == pooled_larva)
-			var/datum/hive_status/H = pick(hives)
+		if(available_xenos[userInput]) //Free xeno mobs have no associated value and skip this. "Pooled larva" strings have a list of hives.
+			var/datum/hive_status/H = pick(available_xenos[userInput]) //The list contains all available hives if we are to choose at random, only one element if we already chose a hive by its name.
 			var/obj/effect/alien/resin/special/pool/SP = H.spawn_pool
-			if(!isnull(SP) && SP.can_spawn_larva())
+			if(!isnull(SP) && SP.can_spawn_larva()) //isnull() is checked here, in case the spawn pool gets destroyed while the menu is open.
 				if(isnewplayer(xeno_candidate))
 					var/mob/new_player/N = xeno_candidate
 					N.close_spawn_windows()
@@ -424,11 +424,9 @@ Additional game mode variables.
 		if(!xeno_bypass_timer)
 			var/deathtime = world.time - xeno_candidate.timeofdeath
 			if(istype(xeno_candidate, /mob/new_player))
-				deathtime = MINUTES_5 //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
-			var/deathtimeminutes = round(deathtime / MINUTES_1)
-			var/deathtimeseconds = round((deathtime - deathtimeminutes * MINUTES_1) / 10,1)
-			if(deathtime < MINUTES_5 && ( !xeno_candidate.client.admin_holder || !(xeno_candidate.client.admin_holder.rights & R_ADMIN)) )
-				var/message = "You have been dead for [deathtimeminutes >= 1 ? "[deathtimeminutes] minute\s and " : ""][deathtimeseconds] second\s."
+				deathtime = 5 MINUTES //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
+			if(deathtime < 5 MINUTES && ( !xeno_candidate.client.admin_holder || !(xeno_candidate.client.admin_holder.rights & R_ADMIN)) )
+				var/message = "You have been dead for [DisplayTimeText(deathtime)]."
 				message = SPAN_WARNING("[message]")
 				to_chat(xeno_candidate, message)
 				to_chat(xeno_candidate, SPAN_WARNING("You must wait 5 minutes before rejoining the game!"))
@@ -498,7 +496,7 @@ Additional game mode variables.
 
 /datum/game_mode/proc/pick_queen_spawn(datum/mind/ghost_mind, var/hivenumber = XENO_HIVE_NORMAL)
 	var/mob/living/original = ghost_mind.current
-	var/datum/hive_status/hive = hive_datum[hivenumber]
+	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 	if(hive.living_xeno_queen || !original || !original.client)
 		return
 
@@ -507,44 +505,37 @@ Additional game mode variables.
 		return
 
 	// Make the list pretty
-	var/spawn_list_names = list()
+	var/list/spawn_list_names = list()
+	var/list/spawn_list_map = list()
 	for(var/T in GLOB.queen_spawns)
-		spawn_list_names += get_area(T)
+		var/area/A = get_area(T)
+		spawn_list_names += A.name
+		spawn_list_map[A.name] = T
 
-	// Timed input, answer before the time us up
-	// H'yup, that's how you do it, ugly as fuck
-	var/list/spawn_name = list("temp")
-	var/datum/temp = new()
-	var/expiration = world.time + MINUTES_2
-	spawn()
-		src = temp
-		spawn_name[1] = input(original, "Where do you want to spawn?") as null|anything in spawn_list_names
-	while(spawn_name[1] == "temp")
-		if(world.time > expiration)
-			del(temp)
-			break
-		else
-			sleep(SECONDS_2)
+	var/spawn_name = tgui_input_list(original, "Where do you want to spawn?", "Queen Spawn", spawn_list_names, QUEEN_SPAWN_TIMEOUT)
 
 	var/turf/QS
-	for(var/T in GLOB.queen_spawns)
-		if(get_area(T) == spawn_name[1])
-			QS = get_turf(T)
+	if(spawn_name)
+		. = spawn_list_map[spawn_name]
+		QS = get_turf(.)
 
 	// Pick a random one if nothing was picked
 	if(isnull(QS))
-		QS = get_turf(pick(GLOB.queen_spawns))
+		. = pick(GLOB.queen_spawns)
+		QS = get_turf(.)
 		// Support maps without queen spawns
 		if(isnull(QS))
 			QS = get_turf(pick(GLOB.xeno_spawns))
 
-	QDEL_LIST(GLOB.queen_spawns)
+	for(var/obj/effect/landmark/structure_spawner/xenos/X in get_area(QS))
+		new X.path_to_spawn(X.loc)
+		qdel(X)
 
 	transform_queen(ghost_mind, QS, hivenumber)
 
 /datum/game_mode/proc/transform_queen(datum/mind/ghost_mind, var/turf/xeno_turf, var/hivenumber = XENO_HIVE_NORMAL)
 	var/mob/living/original = ghost_mind.current
-	var/datum/hive_status/hive = hive_datum[hivenumber]
+	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 	if(hive.living_xeno_queen || !original || !original.client)
 		return
 
@@ -578,7 +569,7 @@ Additional game mode variables.
 		var/obj/structure/bed/nest/start_nest = new /obj/structure/bed/nest(original.loc) //Create a new nest for the host
 		original.statistic_exempt = TRUE
 		original.buckled = start_nest
-		original.dir = start_nest.dir
+		original.setDir(start_nest.dir)
 		original.update_canmove()
 		start_nest.buckled_mob = original
 		start_nest.afterbuckle(original)
@@ -666,71 +657,12 @@ Additional game mode variables.
 		return survivor_non_event_transform(ghost.current, picked_spawn, is_synth)
 
 /datum/game_mode/proc/survivor_old_equipment(var/mob/living/carbon/human/H, var/is_synth = FALSE)
-	var/list/survivor_types
+	var/list/survivor_types = SSmapping.configs[GROUND_MAP].survivor_types
 
 	if(is_synth)
 		survivor_types = list(
 				"Survivor - Synthetic", //to be expanded later
 			)
-	else
-		switch(map_tag)
-			if(MAP_PRISON_STATION)
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Corporate Liaison",
-					"Survivor - Security",
-					"Survivor - Prisoner",
-					"Survivor - Prisoner",
-					"Survivor - Gang Leader",
-					"Survivor - Engineer"
-				)
-			if(MAP_LV_624,MAP_BIG_RED,MAP_DESERT_DAM,MAP_KUTJEVO)
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Chef",
-					"Survivor - Chaplain",
-					"Survivor - Miner",
-					"Survivor - Engineer",
-					"Survivor - Trucker",
-					"Survivor - Colonial Marshall",
-				)
-			if(MAP_ICE_COLONY)
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Security",
-					"Survivor - Trucker",
-					"Survivor - Engineer"
-				)
-			if (MAP_SOROKYNE_STRATA)
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Security",
-					"Survivor - Engineer"
-				)
-			if(MAP_CORSAT)
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Scientist",
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Security",
-					"Survivor - Corporate Liaison",
-					"Survivor - Engineer"
-				)
-			else
-				survivor_types = list(
-					"Survivor - Scientist",
-					"Survivor - Doctor",
-					"Survivor - Chef",
-					"Survivor - Chaplain",
-					"Survivor - Miner",
-					"Survivor - Colonial Marshall",
-					"Survivor - Engineer"
-				)
 
 	//Give them proper jobs and stuff here later
 	var/randjob = pick(survivor_types)
@@ -765,15 +697,7 @@ Additional game mode variables.
 		else
 			spawn(4)
 				to_chat(H, "<h2>You are a survivor!</h2>")
-				switch(map_tag)
-					if(MAP_PRISON_STATION)
-						to_chat(H, SPAN_NOTICE(" You are a survivor of the attack on Fiorina Orbital Penitentiary. You worked or lived on the prison station, and managed to avoid the alien attacks... until now."))
-					if(MAP_CORSAT)
-						to_chat(H, SPAN_NOTICE("You are a survivor of the containment breach on the Corporate Orbital Research Station for Advanced Technology (CORSAT). You worked or lived on the station, and managed to avoid the alien attacks... until now."))
-					if(MAP_ICE_COLONY)
-						to_chat(H, SPAN_NOTICE("You are a survivor of the attack on the ice habitat. You worked or lived on the colony, and managed to avoid the alien attacks... until now."))
-					else
-						to_chat(H, SPAN_NOTICE("You are a survivor of the attack on the colony. You worked or lived in the archaeology colony, and managed to avoid the alien attacks... until now."))
+				to_chat(H, SPAN_NOTICE(SSmapping.configs[GROUND_MAP].survivor_message))
 				to_chat(H, SPAN_NOTICE("You are fully aware of the xenomorph threat and are able to use this knowledge as you see fit."))
 				to_chat(H, SPAN_NOTICE("You are NOT aware of the marines or their intentions. "))
 		if(spawner.story_text)
@@ -798,15 +722,7 @@ Additional game mode variables.
 		new /datum/cm_objective/move_mob/almayer/survivor(H)
 		spawn(4)
 			to_chat(H, "<h2>You are a survivor!</h2>")
-			switch(map_tag)
-				if(MAP_PRISON_STATION)
-					to_chat(H, SPAN_NOTICE("You are a survivor of the attack on Fiorina Orbital Penitentiary. You worked or lived on the prison station, and managed to avoid the alien attacks.. until now."))
-				if(MAP_CORSAT)
-					to_chat(H, SPAN_NOTICE("You are a survivor of the containment breach on the Corporate Orbital Research Station for Advanced Technology (CORSAT). You worked or lived on the station, and managed to avoid the alien attacks... until now."))
-				if(MAP_ICE_COLONY)
-					to_chat(H, SPAN_NOTICE("You are a survivor of the attack on the ice habitat. You worked or lived on the colony, and managed to avoid the alien attacks.. until now."))
-				else
-					to_chat(H, SPAN_NOTICE("You are a survivor of the attack on the colony. You worked or lived in the archaeology colony, and managed to avoid the alien attacks...until now."))
+			to_chat(H, SPAN_NOTICE(SSmapping.configs[GROUND_MAP].survivor_message))
 			to_chat(H, SPAN_NOTICE("You are fully aware of the xenomorph threat and are able to use this knowledge as you see fit."))
 			to_chat(H, SPAN_NOTICE("You are NOT aware of the marines or their intentions."))
 		return 1

@@ -21,7 +21,7 @@
 	. = ..()
 	create_reagents(reagent_amount)
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
+		verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 	if(chemical)
 		reagents.add_reagent(chemical, reagent_amount)
 
@@ -51,7 +51,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -94,7 +94,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -162,7 +162,7 @@
 		usr.visible_message("[usr] begins to detach [rig] from \the [src].", "You begin to detach [rig] from \the [src]")
 		if(do_after(usr, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			usr.visible_message(SPAN_NOTICE("[usr] detaches [rig] from \the [src]."), SPAN_NOTICE(" You detach [rig] from \the [src]"))
-			rig.loc = get_turf(usr)
+			rig.forceMove(get_turf(usr))
 			rig = null
 			update_icon()
 	else
@@ -184,16 +184,16 @@
 			log_game("[key_name(user)] opened fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]), leaking fuel.")
 			leak_fuel(amount_per_transfer_from_this)*/
 	if(istype(W,/obj/item/device/assembly_holder))
-	
+
 		if(rig)
 			to_chat(user, SPAN_DANGER("There is another device in the way."))
 			return ..()
 
 		user.visible_message("[user] begins rigging [W] to \the [src].", "You begin rigging [W] to \the [src]")
-		
+
 		if(!do_after(user, 20, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_ALL))
 			return
-	
+
 		if(rig)
 			to_chat(user, SPAN_DANGER("There is another device in the way."))
 			return ..()
@@ -219,7 +219,7 @@
 		user.visible_message(SPAN_NOTICE("[user] begins reinforcing the exterior of [src] with [M]."),\
 		SPAN_NOTICE("You begin reinforcing [src] with [M]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
 			return
 
 		if(!M.use(STACK_10))
@@ -237,7 +237,7 @@
 		user.visible_message(SPAN_DANGER("[user] begins to remove the shielding from [src]."),\
 		SPAN_NOTICE("You begin to remove the shielding from [src]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
 			return
 
 		user.visible_message(SPAN_DANGER("[user] removes the shielding from [src]."),\
@@ -262,7 +262,7 @@
 		if(Proj.firer)
 			message_staff("[key_name_admin(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>).")
 			log_game("[key_name(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
-	
+
 	return TRUE
 
 /obj/structure/reagent_dispensers/fueltank/ex_act(severity)
@@ -279,7 +279,7 @@
 		return ..()
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode(var/force)
-	if(reagents.handle_volatiles() || force) 
+	if(reagents.handle_volatiles() || force)
 		qdel(src)
 		return
 

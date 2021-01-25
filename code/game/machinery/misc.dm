@@ -70,8 +70,8 @@ var/list/alldepartments = list()
 
 	var/dpt = "Weston-Yamada" // the department we're sending to
 
-/obj/structure/machinery/faxmachine/New()
-	..()
+/obj/structure/machinery/faxmachine/Initialize(mapload, ...)
+	. = ..()
 	allfaxes += src
 
 	if( !("[department]" in alldepartments) ) //Initialize departments. This will work with multiple fax machines.
@@ -147,6 +147,9 @@ var/list/alldepartments = list()
 	return
 
 /obj/structure/machinery/faxmachine/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(href_list["send"])
 		if(tofax)
 
@@ -171,7 +174,7 @@ var/list/alldepartments = list()
 			if(!ishuman(usr))
 				to_chat(usr, SPAN_WARNING("You can't do it."))
 			else
-				tofax.loc = usr.loc
+				tofax.forceMove(usr.loc)
 				usr.put_in_hands(tofax)
 				to_chat(usr, SPAN_NOTICE("You take the paper out of \the [src]."))
 				tofax = null
@@ -179,12 +182,12 @@ var/list/alldepartments = list()
 	if(href_list["scan"])
 		if (scan)
 			if(ishuman(usr))
-				scan.loc = usr.loc
+				scan.forceMove(usr.loc)
 				if(!usr.get_active_hand())
 					usr.put_in_hands(scan)
 				scan = null
 			else
-				scan.loc = src.loc
+				scan.forceMove(src.loc)
 				scan = null
 		else
 			var/obj/item/I = usr.get_active_hand()
@@ -195,7 +198,7 @@ var/list/alldepartments = list()
 
 	if(href_list["dept"])
 		var/lastdpt = dpt
-		dpt = input(usr, "Which department?", "Choose a department", "") as null|anything in alldepartments
+		dpt = tgui_input_list(usr, "Which department?", "Choose a department", alldepartments)
 		if(!dpt) dpt = lastdpt
 
 	if(href_list["auth"])

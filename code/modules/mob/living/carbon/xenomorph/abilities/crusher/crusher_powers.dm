@@ -5,7 +5,7 @@
 		return
 
 	for (var/mob/living/carbon/H in orange(1, get_turf(X)))
-		if(X.match_hivemind(H))
+		if(X.can_not_harm(H))
 			continue
 
 		new /datum/effects/xeno_slow(H, X, null, null, 35)
@@ -18,7 +18,7 @@
 	var/mob/living/carbon/H = L
 	if (H.stat == DEAD)
 		return
-	
+
 	var/mob/living/carbon/Xenomorph/X = owner
 	if (!istype(X))
 		return
@@ -56,21 +56,21 @@
 
 	if (!action_cooldown_check())
 		return
-	
+
 	if (!X.check_state())
 		return
 
 	if (!check_and_use_plasma_owner())
 		return
-	
+
 	playsound(get_turf(X), 'sound/effects/bang.ogg', 25, 0)
 	X.visible_message(SPAN_XENODANGER("[X] smashes into the ground!"), SPAN_XENODANGER("You smash into the ground!"))
 	X.create_stomp()
 
 	for (var/mob/living/carbon/H in get_turf(X))
-		if (H.stat == DEAD || X.match_hivemind(H))
+		if (H.stat == DEAD || X.can_not_harm(H))
 			continue
-		
+
 		new effect_type_base(H, X, , , get_xeno_stun_duration(H, effect_duration))
 		to_chat(H, SPAN_XENOHIGHDANGER("You are slowed as [X] knocks you off balance!"))
 
@@ -82,7 +82,7 @@
 		H.last_damage_source = initial(X.caste_name)
 
 	for (var/mob/living/carbon/H in orange(distance, get_turf(X)))
-		if (H.stat == DEAD || X.match_hivemind(H))
+		if (H.stat == DEAD || X.can_not_harm(H))
 			continue
 
 		new effect_type_base(H, X, , , get_xeno_stun_duration(H, effect_duration))
@@ -118,9 +118,9 @@
 
 	X.explosivearmor_modifier += 1000
 	X.recalculate_armor()
-	
+
 	addtimer(CALLBACK(src, .proc/remove_explosion_immunity), 25, TIMER_UNIQUE)
-	addtimer(CALLBACK(src, .proc/remove_shield), 100, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, .proc/remove_shield), 70, TIMER_UNIQUE)
 
 	apply_cooldown()
 	..()
@@ -148,7 +148,6 @@
 
 	if (istype(found))
 		found.on_removal()
-		X.xeno_shields -= found
 		qdel(found)
 		to_chat(X, SPAN_XENOHIGHDANGER("You feel your enhanced shield end!"))
 

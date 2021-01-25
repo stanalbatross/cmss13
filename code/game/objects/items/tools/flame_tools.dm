@@ -92,6 +92,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 
 /obj/item/tool/candle/pickup(mob/user)
+	. = ..()
 	if(heat_source && src.loc != user)
 		SetLuminosity(0)
 		user.SetLuminosity(CANDLE_LUM)
@@ -168,12 +169,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		user.SetLuminosity(-2)
 		SetLuminosity(2)
 	return ..()
+
 //////////////////
 //FINE SMOKABLES//
 //////////////////
 /obj/item/clothing/mask/cigarette
 	name = "cigarette"
-	desc = "A roll of tobacco and nicotine."
+	desc = "A roll of tobacco and fillers, wrapped in paper with a filter at the end. Apparently, inhaling the smoke makes you feel happier."
 	icon_state = "cigoff"
 	throw_speed = SPEED_AVERAGE
 	item_state = "cigoff"
@@ -235,7 +237,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	else if(istype(W, /obj/item/weapon/gun/flamer))
 		var/obj/item/weapon/gun/flamer/F = W
-		if(F.lit)
+		if(!(F.flags_gun_features & GUN_TRIGGER_SAFETY))
 			light(SPAN_NOTICE("[user] lights their [src] with the pilot light of the [F]."))
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
@@ -246,7 +248,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
 				light(SPAN_NOTICE("[user] lights their [src] with [G.attachments[slot]]."))
 				break
-
 
 	else if(istype(W, /obj/item/tool/surgery/cautery))
 		light(SPAN_NOTICE("[user] lights their [src] with the [W]."))
@@ -332,7 +333,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/cigarette/process(delta_time)
 	var/mob/living/M = loc
-	if(isliving(loc) && raiseEventSync(M, EVENT_PREIGNITION_CHECK) != HALTED)
+	if(isliving(loc))
 		M.IgniteMob()
 	smoketime -= delta_time SECONDS
 	if(smoketime < 1)
@@ -361,7 +362,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		die()
 	return ..()
 
-
 /obj/item/clothing/mask/cigarette/proc/die()
 	var/turf/T = get_turf(src)
 	var/obj/item/butt = new type_butt(T)
@@ -379,7 +379,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_off = "ucigoff"
 	type_butt = /obj/item/trash/ucigbutt
 	name = "cigarette"
-	desc = "An unfiltered roll of tobacco and nicotine."
+	desc = "An unfiltered roll of tobacco and nicotine. Smoking this releases even more tar and soot into your mouth."
 	item_state = "cigoff"
 	icon_state = "ucigoff"
 
@@ -388,7 +388,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_off = "bcigoff"
 	type_butt = /obj/item/trash/bcigbutt
 	name = "cigarette"
-	desc = "A roll of tobacco and nicotine in a fancy black package."
+	desc = "A roll of tobacco, nicotine, and some phosphor, in a fancy black package. The phosphor makes the tip glow blue when lit."
 	item_state = "bcigoff"
 	icon_state = "bcigoff"
 
@@ -411,8 +411,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 // CIGARS //
 ////////////
 /obj/item/clothing/mask/cigarette/cigar
-	name = "premium cigar"
-	desc = "A brown roll of tobacco and... well, you're not quite sure. This thing's huge!"
+	name = "\improper premium cigar"
+	desc = "A huge, brown roll of tobacco and some other stuff that you're meant to smoke. Makes you feel like a true USCM sergeant."
 	icon_state = "cigar_off"
 	icon_on = "cigar_on"
 	icon_off = "cigar_off"
@@ -421,6 +421,16 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "cigar_off"
 	smoketime = 50 MINUTES
 	chem_volume = 20
+
+/obj/item/clothing/mask/cigarette/cigar/tarbacks
+	name = "\improper Tarback cigar"
+	desc = "Tarbacks by Reisland Tobacco. The Surgeon General has declared that smoking Tarbacks can be hazardous to one’s health. Reisland Tobacco has declared that the Surgeon General is a bitch. Rolled in Columbia."
+	icon_state = "tarback_off"
+	icon_on = "tarback_on"
+	icon_off = "tarback_off"
+	type_butt = /obj/item/trash/cigbutt/cigarbutt
+	item_state = "tarback_off"
+	smoketime = 30 MINUTES
 
 /obj/item/clothing/mask/cigarette/cigar/Initialize()
 	. = ..()
@@ -435,7 +445,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	desc = "A cigar fit for only the best of the best."
 	smoketime = 7200
 	chem_volume = 30
-
 
 /obj/item/clothing/mask/cigarette/cigar/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/tool/weldingtool))
@@ -476,7 +485,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	else if(istype(W, /obj/item/weapon/gun/flamer))
 		var/obj/item/weapon/gun/flamer/F = W
-		if(F.lit)
+		if(!(F.flags_gun_features & GUN_TRIGGER_SAFETY))
 			light(SPAN_NOTICE("[user] lights their [src] with the pilot light of the [F], the glint of pyromania in their eye."))
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
@@ -672,8 +681,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/tool/lighter/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!isliving(M))
 		return
-	if(raiseEventSync(M, EVENT_PREIGNITION_CHECK) != HALTED)
-		M.IgniteMob()
+	M.IgniteMob()
 	if(!istype(M, /mob))
 		return
 
@@ -693,10 +701,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 
 /obj/item/tool/lighter/pickup(mob/user)
+	. = ..()
 	if(heat_source && src.loc != user)
 		SetLuminosity(0)
 		user.SetLuminosity(2)
-	return
 
 
 /obj/item/tool/lighter/dropped(mob/user)

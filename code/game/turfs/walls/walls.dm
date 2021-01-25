@@ -29,6 +29,7 @@
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/neighbors_list = 0
 	var/max_temperature = 1800 //K, walls will take damage if they're next to a fire hotter than this
+	var/repair_materials = list("wood"= 0.05, "metal" = 0.1, "plasteel" = 0.2) //Max health % recovered on a nailgun repair
 
 	var/d_state = 0 //Normal walls are now as difficult to remove as reinforced walls
 
@@ -41,20 +42,22 @@
 	var/list/blend_objects = list(/obj/structure/machinery/door, /obj/structure/window_frame, /obj/structure/window/framed) // Objects which to blend with
 	var/list/noblend_objects = list(/obj/structure/machinery/door/window) //Objects to avoid blending with (such as children of listed blend objects.
 
-/turf/closed/wall/New()
-	. = ..()
-	
-	update_connections(TRUE)
-
-	update_icon()
-
 /turf/closed/wall/Initialize(mapload, ...)
 	. = ..()
-	
-	if(mapload)
-		update_connections()
-
+	// Defer updating based on neighbors while we're still loading map
+	if(mapload && . != INITIALIZE_HINT_QDEL)
+		return INITIALIZE_HINT_LATELOAD
+	// Otherwise do it now, but defer icon update to late if it's going to happen
+	update_connections(TRUE)
+	if(. != INITIALIZE_HINT_LATELOAD)
 		update_icon()
+
+/turf/closed/wall/LateInitialize()
+	. = ..()
+	// By default this assumes being used for map late init
+	// We update without cascading changes as each wall will be updated individually
+	update_connections(FALSE)
+	update_icon()
 
 
 /turf/closed/wall/ChangeTurf(newtype)
@@ -62,7 +65,6 @@
 
 	. = ..()
 	if(.) //successful turf change
-
 		var/turf/T
 		for(var/i in cardinal)
 			T = get_step(src, i)
@@ -107,7 +109,7 @@
 					var/turf/closed/wall/wall_south_turf = get_step(src, SOUTH)
 					var/turf/closed/wall/wall_east_turf = get_step(src, EAST)
 					var/turf/closed/wall/wall_west_turf = get_step(src, WEST)
-					
+
 					if(!istype(wall_north_turf) && !istype(wall_south_turf) && !istype(wall_east_turf) && !istype(wall_west_turf))
 						acided_hole_dir = dir_to & (NORTH|SOUTH)
 					else if(!istype(wall_north_turf) && !istype(wall_south_turf))
@@ -120,7 +122,7 @@
 		else
 			take_damage(damage_cap / XENO_HITS_TO_DESTROY_WALL)
 		return
-	
+
 	. = ..()
 
 //Appearance
@@ -220,6 +222,8 @@
 			if(prob(50)) // prevents spam in close corridors etc
 				src.visible_message(SPAN_WARNING("The explosion causes shards to spall off of [src]!"))
 			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/spall)
+		else
+			exp_damage *= RESIN_EXPLOSIVE_MULTIPLIER
 		take_damage(exp_damage, source_mob)
 
 	return
@@ -259,13 +263,13 @@
 
 		if(!istype(src, /turf/closed/wall) || QDELETED(src))
 			break
-		
+
 		if(thermite > (damage_cap - damage)/100) // Thermite gains a speed buff when the amount is overkill
 			var/timereduction = round((thermite - (damage_cap - damage)/100)/5) // Every 5 units over the required amount reduces the sleep by 0.1s
 			sleep(max(2, 20 - timereduction))
 		else
 			sleep(20)
-			
+
 		if(!istype(src, /turf/closed/wall) || QDELETED(src))
 			break
 
@@ -274,7 +278,7 @@
 
 	if(istype(W))
 		W.melting = FALSE
-	
+
 
 //Interactions
 /turf/closed/wall/attack_animal(mob/living/M as mob)
@@ -347,22 +351,10 @@
 		to_chat(user, SPAN_WARNING("[src] is much too tough for you to do anything to it with [W]."))
 		return
 
-	if(damage && istype(W, /obj/item/tool/weldingtool))
-		var/obj/item/tool/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			user.visible_message(SPAN_NOTICE("[user] starts repairing the damage to [src]."),
-			SPAN_NOTICE("You start repairing the damage to [src]."))
-			playsound(src, 'sound/items/Welder.ogg', 25, 1)
-			if(do_after(user, max(5, round(damage / 5) * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION)), INTERRUPT_ALL, BUSY_ICON_FRIENDLY) && istype(src, /turf/closed/wall) && WT && WT.isOn())
-				user.visible_message(SPAN_NOTICE("[user] finishes repairing the damage to [src]."),
-				SPAN_NOTICE("You finish repairing the damage to [src]."))
-				take_damage(-damage)
-			return
-		else
-			to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
-			return
+	if(try_weldingtool_usage(W, user) || try_nailgun_usage(W, user))
+		return
 
-	if(!istype(src, /turf/closed/wall)) 
+	if(!istype(src, /turf/closed/wall))
 		return
 
 	//DECONSTRUCTION
@@ -373,7 +365,7 @@
 				playsound(src, 'sound/items/Welder.ogg', 25, 1)
 				user.visible_message(SPAN_NOTICE("[user] begins slicing through the outer plating."),
 				SPAN_NOTICE("You begin slicing through the outer plating."))
-				if(!WT || !WT.isOn())	
+				if(!WT || !WT.isOn())
 					return
 				if(!do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 					return
@@ -427,6 +419,94 @@
 				return
 
 	return attack_hand(user)
+
+/turf/closed/wall/proc/try_weldingtool_usage(obj/item/W, mob/user)
+	if(!damage || !istype(W, /obj/item/tool/weldingtool))
+		return FALSE
+
+	var/obj/item/tool/weldingtool/WT = W
+	if(WT.remove_fuel(0, user))
+		user.visible_message(SPAN_NOTICE("[user] starts repairing the damage to [src]."),
+		SPAN_NOTICE("You start repairing the damage to [src]."))
+		playsound(src, 'sound/items/Welder.ogg', 25, 1)
+		if(do_after(user, max(5, round(damage / 5) * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION)), INTERRUPT_ALL, BUSY_ICON_FRIENDLY) && istype(src, /turf/closed/wall) && WT && WT.isOn())
+			user.visible_message(SPAN_NOTICE("[user] finishes repairing the damage to [src]."),
+			SPAN_NOTICE("You finish repairing the damage to [src]."))
+			take_damage(-damage)
+	else
+		to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
+
+	return TRUE
+
+/turf/closed/wall/proc/try_nailgun_usage(obj/item/W, mob/user)
+	if((!damage && !acided_hole) || !istype(W, /obj/item/weapon/gun/smg/nailgun))
+		return FALSE
+
+	var/obj/item/weapon/gun/smg/nailgun/NG = W
+	var/amount_needed = acided_hole ? 3 : 1
+
+	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < (4*amount_needed-1))
+		to_chat(user, SPAN_WARNING("You require at least [4*amount_needed] nails to complete this task!"))
+		return FALSE
+
+	// Check if either hand has a metal stack by checking the weapon offhand
+	// Presume the material is a sheet until proven otherwise.
+	var/obj/item/stack/sheet/material = null
+	if(user.l_hand == NG)
+		material = user.r_hand
+	else
+		material = user.l_hand
+
+	if(!istype(material, /obj/item/stack/sheet/))
+		to_chat(user, SPAN_WARNING("You'll need some adequate repair material in your other hand to patch up [src]!"))
+		return FALSE
+
+	var/repair_value = 0
+	for(var/validSheetType in repair_materials)
+		if(validSheetType == material.sheettype)
+			repair_value = repair_materials[validSheetType]
+			break
+
+	if(repair_value == 0)
+		to_chat(user, SPAN_WARNING("You'll need some adequate repair material in your other hand to patch up [src]!"))
+		return FALSE
+
+	if(!material || material.amount < amount_needed)
+		to_chat(user, SPAN_WARNING("You need [amount_needed] sheets of material to fix this!"))
+		return FALSE
+
+	for(var/i = 1 to amount_needed)
+		var/soundchannel = playsound(src, NG.repair_sound, 25, 1)
+		if(!do_after(user, NG.nailing_speed, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
+			playsound(src, null, channel = soundchannel)
+			return FALSE
+
+
+	// Check again for presence of objects
+	if(!material || (material != user.l_hand && material != user.r_hand) || material.amount <= 0)
+		to_chat(user, SPAN_WARNING("You seems to have misplaced the repair material!"))
+		return FALSE
+
+	if(!NG.in_chamber || !NG.current_mag || NG.current_mag.current_rounds < (4*amount_needed-1))
+		to_chat(user, SPAN_WARNING("You require at least [4*amount_needed] nails to complete this task!"))
+		return FALSE
+
+	if(acided_hole)
+		qdel(acided_hole)
+		acided_hole = null
+		take_damage(-0.05*damage_cap)
+		to_chat(user, SPAN_WARNING("You barricade the hole with [material], slightly raising the integrity of [src], and blocking the hole!"))
+	else
+		take_damage(-repair_value*damage_cap)
+		to_chat(user, SPAN_WARNING("You reinforce the fissures in [src], raising its integrity!"))
+
+	material.use(amount_needed)
+	NG.current_mag.current_rounds -= (4*amount_needed-1)
+	NG.in_chamber = null
+	NG.load_into_chamber()
+	update_icon()
+
+	return TRUE
 
 /turf/closed/wall/can_be_dissolved()
 	return !hull

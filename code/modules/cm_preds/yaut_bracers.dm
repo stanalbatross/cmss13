@@ -229,7 +229,7 @@
 	set name = "Toggle Bracer Sound"
 	set desc = "Toggle your bracer's notification sound."
 	set category = "Yautja"
-
+	set src in usr
 	notification_sound = !notification_sound
 	to_chat(usr, SPAN_NOTICE("The bracer's sound is now turned [notification_sound ? "on" : "off"]."))
 
@@ -238,6 +238,7 @@
 	set name = "Use Wrist Blades"
 	set desc = "Extend your wrist blades. They cannot be dropped, but can be retracted."
 	set category = "Yautja"
+	set src in usr
 	. = wristblades_internal(FALSE)
 
 
@@ -292,6 +293,7 @@
 	set name = "Track Yautja Gear"
 	set desc = "Find Yauja Gear."
 	set category = "Yautja"
+	set src in usr
 	. = track_gear_internal(FALSE)
 
 
@@ -367,6 +369,7 @@
 	set name = "Toggle Cloaking Device"
 	set desc = "Activate your suit's cloaking device. It will malfunction if the suit takes damage or gets excessively wet."
 	set category = "Yautja"
+	set src in usr
 	. = cloaker_internal(FALSE)
 
 /obj/item/clothing/gloves/yautja/proc/cloaker_internal(var/forced = FALSE)
@@ -399,7 +402,7 @@
 			return 0
 		if(!drain_power(M,50)) return
 		cloaked = 1
-		RegisterSignal(M, COMSIG_HUMAN_BULLET_ACT, .proc/bullet_hit)
+		RegisterSignal(M, COMSIG_HUMAN_PRE_BULLET_ACT, .proc/bullet_hit)
 		to_chat(M, SPAN_NOTICE("You are now invisible to normal detection."))
 		log_game("[key_name_admin(usr)] has enabled their cloaking device.")
 		for(var/mob/O in oviewers(M))
@@ -418,7 +421,7 @@
 
 /obj/item/clothing/gloves/yautja/proc/decloak(var/mob/user)
 	if(!user) return
-	UnregisterSignal(user, COMSIG_HUMAN_BULLET_ACT)
+	UnregisterSignal(user, COMSIG_HUMAN_PRE_BULLET_ACT)
 	to_chat(user, "Your cloaking device deactivates.")
 	cloaked = 0
 	log_game("[key_name_admin(usr)] has disabled their cloaking device.")
@@ -442,6 +445,7 @@
 	set name = "Use Plasma Caster"
 	set desc = "Activate your plasma caster. If it is dropped it will retract back into your armor."
 	set category = "Yautja"
+	set src in usr
 	. = caster_internal(FALSE)
 
 
@@ -524,12 +528,14 @@
 	set name = "Final Countdown (!)"
 	set desc = "Activate the explosive device implanted into your bracers. You have failed! Show some honor!"
 	set category = "Yautja"
+	set src in usr
 	. = activate_suicide_internal(FALSE)
 
 /obj/item/clothing/gloves/yautja/verb/change_explosion_type()
 	set name = "Change Explosion Type"
 	set desc = "Changes your bracer explosion to either only gib you or be a big explosion."
 	set category = "Yautja"
+	set src in usr
 	if(alert("Which explosion type do you want?","Explosive Bracers", "Small", "Big") == "Big")
 		explosion_type = 0
 		log_attack("[key_name_admin(usr)] has changed their Self Destruct to Large")
@@ -631,6 +637,7 @@
 	set name = "Create Self-Heal Crystal"
 	set category = "Yautja"
 	set desc = "Create a focus crystal to energize your natural healing processes."
+	set src in usr
 	. = injectors_internal(FALSE)
 
 
@@ -675,6 +682,7 @@
 	set name = "Call Smart-Disc"
 	set category = "Yautja"
 	set desc = "Call back your smart-disc, if it's in range. If not you'll have to go retrieve it."
+	set src in usr
 	. = call_disk_internal(FALSE)
 
 
@@ -717,6 +725,7 @@
 	set name = "Remove item from tracker"
 	set category = "Yautja"
 	set desc = "Removes an item from all yautja tracking."
+	set src in usr
 	. = remove_tracked_item_internal(FALSE)
 
 /obj/item/clothing/gloves/yautja/proc/remove_tracked_item_internal(var/forced = FALSE)
@@ -733,7 +742,7 @@
 			return
 	if(!yautja_gear.len)
 		return
-	var/obj/item/pickeditem = input("item to remove") as null|anything in yautja_gear
+	var/obj/item/pickeditem = tgui_input_list(usr, "item to remove", "Remove item", yautja_gear)
 	if(pickeditem && !(pickeditem in untracked_yautja_gear))
 		untracked_yautja_gear += pickeditem
 		remove_from_missing_pred_gear(pickeditem)
@@ -743,6 +752,7 @@
 	set name = "Add item to tracker"
 	set category = "Yautja"
 	set desc = "Adds an item to all yautja tracking."
+	set src in usr
 	. = add_tracked_item_internal(FALSE)
 
 /obj/item/clothing/gloves/yautja/proc/add_tracked_item_internal(var/forced = FALSE)
@@ -759,7 +769,7 @@
 			return
 	if(!untracked_yautja_gear.len)
 		return
-	var/obj/item/pickeditem = input("item to add") as null|anything in untracked_yautja_gear
+	var/obj/item/pickeditem = tgui_input_list(usr, "item to add", "Add item", untracked_yautja_gear)
 	if(pickeditem && !(pickeditem in yautja_gear))
 		untracked_yautja_gear -= pickeditem
 		add_to_missing_pred_gear(pickeditem)
@@ -768,6 +778,7 @@
 	set name = "Yank Combi-stick"
 	set category = "Yautja"
 	set desc = "Yank on your combi-stick's chain, if it's in range. Otherwise... recover it yourself."
+	set src in usr
 	. = call_combi_internal(FALSE)
 
 /obj/item/clothing/gloves/yautja/proc/call_combi_internal(var/forced = FALSE)

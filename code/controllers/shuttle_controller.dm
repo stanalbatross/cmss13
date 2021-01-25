@@ -68,7 +68,7 @@
 	//ALMAYER DROPSHIP 1
 	shuttle1 = new
 	shuttle1.location = 0
-	shuttle1.warmup_time = SECONDS_10
+	shuttle1.warmup_time = 10 SECONDS
 	shuttle1.move_time = DROPSHIP_TRANSIT_DURATION
 	shuttle1.shuttle_tag = "[MAIN_SHIP_NAME] Dropship 1"
 	shuttle1.info_tag = "Almayer Dropship"
@@ -81,7 +81,7 @@
 	//ALMAYER DROPSHIP 2
 	shuttle1 = new
 	shuttle1.location = 0
-	shuttle1.warmup_time = SECONDS_10
+	shuttle1.warmup_time = 10 SECONDS
 	shuttle1.move_time = DROPSHIP_TRANSIT_DURATION
 	shuttle1.shuttle_tag = "[MAIN_SHIP_NAME] Dropship 2"
 	shuttle1.info_tag = "Almayer Dropship"
@@ -95,10 +95,10 @@
 
 	// START: CORSAT shuttle(s).. i mean monorails, what
 	// Added by Fourkhan, 5/31/2019 - 6/7/19
-	if (map_tag == MAP_CORSAT)
+	if (SSmapping.configs[GROUND_MAP].map_name)
 		shuttle1 = new
 		shuttle1.location = 0
-		shuttle1.warmup_time = SECONDS_10
+		shuttle1.warmup_time = 10 SECONDS
 		shuttle1.move_time = DROPSHIP_CORSAT_DURATION // 30s
 		shuttle1.shuttle_tag = "Ground Transport 1"
 		shuttle1.info_tag = "CORSAT Monorail"
@@ -231,7 +231,7 @@
 	// Elevator I
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 
 	for(var/area/A in all_areas)
@@ -257,7 +257,7 @@
 	// Elevator II
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 
 	for(var/area/A in all_areas)
@@ -284,7 +284,7 @@
 	// Elevator III
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/elevator3/underground)
@@ -309,7 +309,7 @@
 	// Elevator IV
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/elevator4/underground)
@@ -334,7 +334,7 @@
 	// Trijent Transit I
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/tri_trans1/omega)
@@ -360,7 +360,7 @@
 	// Trijent Transit II
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/tri_trans2/omega)
@@ -382,6 +382,9 @@
 	shuttle.require_link = 1
 	shuttles["Transit 2"] = shuttle
 	process_shuttles += shuttle
+
+	for(var/obj/structure/machinery/computer/shuttle_control/S in GLOB.shuttle_controls)
+		S.shuttle_datum = shuttles[S.shuttle_tag]
 
 
 //This is called by gameticker after all the machines and radio frequencies have been properly initialized

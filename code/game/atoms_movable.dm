@@ -5,7 +5,6 @@
 	var/drag_delay = 3 //delay (in deciseconds) added to mob's move_delay when pulling it.
 	var/l_move_time = 1
 	var/throwing = 0
-	var/atom/thrower = null
 	var/throw_speed = SPEED_FAST // Speed that an atom will go when thrown by a carbon mob
 	var/throw_range = 7
 	var/cur_speed = MIN_SPEED // Current speed of an atom (account for speed when launched/thrown as well)
@@ -20,12 +19,11 @@
 	var/move_intentionally = FALSE // this is for some deep stuff optimization. This means that it is regular movement that can only be NSWE and you don't need to perform checks on diagonals. ALWAYS reset it back to FALSE when done
 
 
-
 //===========================================================================
 /atom/movable/Destroy()
-	for(var/atom/movable/I in contents) 
+	for(var/atom/movable/I in contents)
 		qdel(I)
-	if(pulledby) 
+	if(pulledby)
 		pulledby.stop_pulling()
 	QDEL_NULL(launch_metadata)
 
@@ -33,7 +31,7 @@
 		loc.on_stored_atom_del(src) //things that container need to do when a movable atom inside it is deleted
 	vis_contents.Cut()
 	. = ..()
-	loc = null //so we move into null space. Must be after ..() b/c atom's Dispose handles deleting our lighting stuff
+	moveToNullspace() //so we move into null space. Must be after ..() b/c atom's Dispose handles deleting our lighting stuff
 
 //===========================================================================
 
@@ -44,8 +42,7 @@
 
 /atom/movable/overlay/New()
 	..()
-	for(var/x in src.verbs)
-		src.verbs -= x
+	verbs.Cut()
 	return
 
 /atom/movable/overlay/attackby(a, b)
@@ -120,7 +117,7 @@
 
 	while (duration > turn_delay)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 		duration -= turn_delay
 
 /atom/movable/proc/spin_circle(var/num_circles = 1, var/turn_delay = 1, var/clockwise = 0, var/cardinal_only = 1)
@@ -141,7 +138,7 @@
 
 	for (var/x in 0 to num_circles -1)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 
 
 //called when a mob tries to breathe while inside us.
@@ -193,8 +190,9 @@
 
 /atom/movable/proc/update_clone()
 	///---Var-Copy---////
-	clone.x = x + clone.proj_x //Translate clone position by projection factor
-	clone.y = y + clone.proj_y //This is done first to reduce movement latency
+	clone.forceMove(locate(x + clone.proj_x, y + clone.proj_y, z))
+	//Translate clone position by projection factor
+	//This is done first to reduce movement latency
 
 	clone.anchored 		= anchored //Some of these may be suitable for Init
 	clone.appearance 	= appearance

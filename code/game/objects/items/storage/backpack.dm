@@ -16,6 +16,7 @@
 	var/obj/item/card/id/locking_id = null
 	var/is_id_lockable = FALSE
 	var/lock_overridable = TRUE
+	var/opening_stage = FALSE 
 
 /obj/item/storage/backpack/attack_hand(mob/user)
 	if(!is_accessible_by(user))
@@ -83,13 +84,26 @@
 		return
 	..()
 
+/obj/item/storage/backpack/close(mob/user)
+	UnregisterSignal(user, COMSIG_MOB_MOVE)
+	..()
+
 /obj/item/storage/backpack/proc/is_accessible_by(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(!worn_accessible)
-			if(H.back == src)
-				to_chat(H, SPAN_NOTICE("You can't look in [src] while it's on your back."))
-				return FALSE
+			if(H.back == src && !opening_stage)
+				to_chat(H, SPAN_NOTICE("You begin to open [src], so you can check its contents."))
+				opening_stage = TRUE 
+				if(!do_after(user, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
+					to_chat(H, SPAN_WARNING("You were interrupted!"))
+					opening_stage = FALSE 
+					return FALSE
+				RegisterSignal(user, COMSIG_MOB_MOVE, .proc/close)
+				opening_stage = FALSE 
+				return TRUE
+			else if(H.back == src && opening_stage)
+				return FALSE 
 
 		if(!QDELETED(locking_id))
 			var/obj/item/card/id/card = H.wear_id
@@ -481,7 +495,7 @@ var/global/list/radio_packs = list()
 	set name = "Activate Cloak"
 	set desc = "Activate your cloak's camouflage."
 	set category = "Scout"
-
+	set src in usr
 	if(!usr || usr.is_mob_incapacitated(TRUE))
 		return
 
@@ -728,12 +742,11 @@ var/global/list/radio_packs = list()
 	max_storage_space = 30
 
 /obj/item/storage/backpack/souto
-	name = "\improper back mounted Suoto vending machine"
+	name = "\improper back mounted Souto vending machine"
 	max_storage_space = 30
-	desc = "The loading mechanism for the Souto Slinger Supremo. And a portable souto vendor."
+	desc = "The loading mechanism for the Souto Slinger Supremo and a portable Souto vendor!"
 	icon_state = "supremo_pack"
 	storage_slots = null
-	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP
 	unacidable = TRUE
 	var/internal_mag = new /obj/item/ammo_magazine/internal/souto

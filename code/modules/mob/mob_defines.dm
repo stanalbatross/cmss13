@@ -3,7 +3,7 @@
 	layer = MOB_LAYER
 	animate_movement = 2
 	rebounds = TRUE
-	var/mob_flags
+	var/mob_flags = NO_FLAGS
 	var/datum/mind/mind
 
 	// An ID that uniquely identifies this mob through the full round
@@ -206,3 +206,8 @@
 	var/mouse_icon = null
 
 	var/datum/player_panel/mob_panel
+
+	///the current turf being examined in the stat panel
+	var/turf/listed_turf = null
+
+	var/list/list/item_verbs = list()

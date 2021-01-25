@@ -39,7 +39,7 @@
 			for(var/category in chemical_data.research_documents)
 				pool += category
 			pool = sortAssoc(pool)
-			response = input(usr,"Select a category:") as null|anything in pool
+			response = tgui_input_list(usr,"Select a category:", "Categories", pool)
 		else if(response == "New")
 			response = input(usr,"Please enter the category of the paper:")
 		if(!response)
@@ -79,8 +79,8 @@
 		else
 			clearance_allowance = C.clearance_access
 
-		
-	var/setting = input(usr,"How do you want to change the clearance settings?","[src]") in options
+
+	var/setting = tgui_input_list(usr,"How do you want to change the clearance settings?","[src]", options)
 	if(!setting)
 		return
 
@@ -96,7 +96,7 @@
 			if(!can_give_x)
 				to_chat(usr, SPAN_WARNING("Access denied."))
 				return
-			
+
 			chemical_data.clearance_x_access = TRUE
 			chemical_data.reached_x_access = TRUE
 
@@ -137,6 +137,9 @@
 		ui.open()
 
 /obj/structure/machinery/computer/research/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable() || !ishuman(usr))
 		return
 	var/mob/living/carbon/human/user = usr
@@ -197,6 +200,8 @@
 			to_chat(usr, SPAN_WARNING("Higher authorization is required to increase the clearance level further."))
 	else if(href_list["purchase_document"])
 		var/purchase_tier = text2num(href_list["purchase_document"])
+		if(purchase_tier < 0 || purchase_tier > 5)
+			return
 		var/purchase_cost = base_purchase_cost + purchase_tier * purchase_tier
 		if(purchase_cost <= chemical_data.rsc_credits)
 			if(alert(usr,"Are you sure you wish to purchase a new level [purchase_tier] chemical report for [purchase_cost] credits?","Warning","Yes","No") != "Yes")

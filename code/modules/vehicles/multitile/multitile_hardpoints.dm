@@ -141,7 +141,7 @@
 			continue
 		hps += H
 
-	var/chosen_hp = input("Select a hardpoint to remove") in (hps + "Cancel")
+	var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Hardpoint Removal", (hps + "Cancel"))
 	if(chosen_hp == "Cancel")
 		return
 	var/obj/item/hardpoint/old = chosen_hp
@@ -197,7 +197,7 @@
 //ALWAYS CALL THIS WHEN ATTACHING HARDPOINTS
 /obj/vehicle/multitile/proc/add_hardpoint(var/obj/item/hardpoint/HP, var/mob/user)
 	HP.owner = src
-	HP.loc = src
+	HP.forceMove(src)
 	hardpoints += HP
 
 	HP.on_install(src)
@@ -212,9 +212,9 @@
 		return
 
 	if(user)
-		old.loc = get_turf(user)
+		old.forceMove(get_turf(user))
 	else
-		old.loc = get_turf(src)
+		old.forceMove(get_turf(src))
 
 	old.on_uninstall(src)
 	old.reset_rotation()

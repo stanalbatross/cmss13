@@ -15,8 +15,8 @@
 	var/icon_update_tick = 0				// Used to update icon only once every 10 ticks
 	can_buckle = TRUE
 
-/obj/structure/machinery/recharge_station/New()
-	..()
+/obj/structure/machinery/recharge_station/Initialize(mapload, ...)
+	. = ..()
 	build_icon()
 	update_icon()
 
@@ -171,11 +171,11 @@
 	if(!( src.occupant ))
 		return
 	//for(var/obj/O in src)
-	//	O.loc = src.loc
+	//	O.forceMove(src.loc)
 	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
-	src.occupant.loc = src.loc
+	src.occupant.forceMove(loc)
 	src.occupant = null
 	stop_processing()
 	build_icon()
@@ -210,7 +210,7 @@
 	if(M && M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
-	M.loc = src
+	M.forceMove(src)
 	src.occupant = M
 	start_processing()
 	src.add_fingerprint(usr)

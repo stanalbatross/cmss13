@@ -89,17 +89,18 @@
 		/obj/structure/window/framed/almayer,
 		/obj/structure/machinery/door/airlock)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/New()
-	INVOKE_ASYNC(src, /atom.proc/relativewall_neighbours)
-	..()
+/obj/structure/machinery/door/airlock/multi_tile/almayer/Initialize()
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/door/airlock/multi_tile/almayer/LateInitialize()
+	. = ..()
+	relativewall_neighbours()
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/take_damage(var/dam, var/mob/M)
 	var/damage_check = max(0, damage + dam)
 	if(damage_check >= damage_cap && M && is_mainship_level(z))
 		SSclues.create_print(get_turf(M), M, "The fingerprint contains bits of wire and metal specks.")
-		if(M.detectable_by_ai())
-			ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
-
 	..()
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic

@@ -321,7 +321,7 @@
 	new_protection[]	= list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature))
 	if(!(flags_atom & UNIQUE_ITEM_TYPE))
 		name = "[specialty]"
-		if(map_tag in MAPS_COLD_TEMP)
+		if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 			name += " snow helmet"
 		else
 			name += " helmet"
@@ -368,7 +368,7 @@
 		if(M.current_rounds == 0)
 			ammo_level = "empty. Uh oh."
 		user.visible_message("[user] bashes [M] against their helmet", "You bash [M] against your helmet. It is [ammo_level]")
-		helmet_bash_cooldown = world.time + SECONDS_20
+		helmet_bash_cooldown = world.time + 20 SECONDS
 	else
 		..()
 		return pockets.attackby(W, user)

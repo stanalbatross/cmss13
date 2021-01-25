@@ -97,6 +97,9 @@
 				source.reagents.trans_id_to(dest, reagent_id, amount)
 
 /obj/structure/machinery/chem_master/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable())
 		return
 	if(!ishuman(usr))
@@ -213,6 +216,8 @@
 
 			if(reagents.total_volume/count < 1) //Sanity checking.
 				return
+			var/was_logged = FALSE
+
 			while (count--)
 				var/obj/item/reagent_container/pill/P = new/obj/item/reagent_container/pill(loc)
 				if(!name) name = reagents.get_master_reagent_name()
@@ -225,6 +230,14 @@
 					if(loaded_pill_bottle.contents.len < loaded_pill_bottle.max_storage_space)
 						loaded_pill_bottle.handle_item_insertion(P, TRUE)
 						updateUsrDialog()
+
+				if(!was_logged)
+					var/list/reagents_in_pill = list()
+					for(var/datum/reagent/R in reagents.reagent_list)
+						reagents_in_pill += R.name
+					var/contained = english_list(reagents_in_pill)
+					msg_admin_niche("[key_name(usr)] created one or more pills named [name ? name : "pill"] (total pills to synthesize: [count]) (REAGENTS: [contained]) in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
+					was_logged = TRUE
 
 		else if(href_list["createglass"])
 			if(!condi)
@@ -242,7 +255,7 @@
 					P = new/obj/item/reagent_container/glass/beaker/vial()
 					P.name = "[name] vial"
 					reagents.trans_to(P, 30)
-				
+
 				P.pixel_x = rand(-7, 7) //random position
 				P.pixel_y = rand(-7, 7)
 				P.update_icon()
@@ -286,7 +299,7 @@
 		if(QDELETED(connected))
 			to_chat(user, SPAN_WARNING("Connect a smartfridge first."))
 			return
-		
+
 		if(src.z != connected.z || get_dist(src, connected) > tether_range)
 			to_chat(user, SPAN_WARNING("Smartfridge is out of range. Connection severed."))
 			cleanup()

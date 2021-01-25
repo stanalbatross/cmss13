@@ -65,7 +65,7 @@
 		return
 
 	var/list/listed_huds = list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD")
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD", null) as null|anything in listed_huds
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD", listed_huds)
 	var/datum/mob_hud/H
 	switch(hud_choice)
 		if("Medical HUD")
@@ -83,7 +83,7 @@
 	message_staff(SPAN_INFO("[key_name(usr)] has given a [hud_choice] to [M]."))
 
 /client/proc/cmd_admin_gib(mob/M as mob in GLOB.mob_list)
-	set category = "Special Verbs"
+	set category = "Admin.Fun"
 	set name = "Gib"
 
 	if(!check_rights(R_ADMIN|R_FUN))	return
@@ -129,7 +129,7 @@
 
 	var/list/subtle_message_options = list("Voice in head", "Weston-Yamada", "USCM High Command", "Faction-specific")
 
-	var/message_option = input("Choose the method of subtle messaging", "") in subtle_message_options
+	var/message_option = tgui_input_list(usr, "Choose the method of subtle messaging", "", subtle_message_options)
 
 	if(message_option == "Faction-specific")
 		message_option = input("Choose which faction", "")
@@ -168,7 +168,7 @@
 		return
 
 	if(!M)
-		M = input("Direct narrate to who?", "Active Players") as null|anything in GLOB.player_list
+		M = tgui_input_list(usr, "Direct narrate to who?", "Active Players", GLOB.player_list)
 
 	if(!M)
 		return
@@ -179,7 +179,7 @@
 		return
 
 	to_chat(M, SPAN_ANNOUNCEMENT_HEADER_BLUE(msg))
-	message_staff(SPAN_NOTICE("\bold DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]"), 1)
+	message_staff("\bold DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]")
 
 /client/proc/cmd_admin_attack_log(mob/M as mob in GLOB.mob_list)
 	set name = "Attack Log"
@@ -203,7 +203,7 @@
 	if(!usr.control_object) //If you're not already possessing something...
 		usr.name_archive = usr.real_name
 
-	usr.loc = O
+	usr.forceMove(O)
 	usr.real_name = O.name
 	usr.name = O.name
 	usr.client.eye = O
@@ -221,7 +221,7 @@
 			H.name = H.get_visible_name()
 			H.change_real_name(H, usr.name_archive)
 
-	usr.loc = O.loc // Appear where the object you were controlling is -- TLE
+	usr.forceMove(O.loc )// Appear where the object you were controlling is -- TLE
 	usr.client.eye = usr
 	usr.control_object = null
 
@@ -251,10 +251,11 @@
 		return
 
 	var/list/hives = list()
-	for(var/datum/hive_status/hive in hive_datum)
+	for(var/hivenumber in GLOB.hive_datum)
+		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 		hives += list("[hive.name]" = hive.hivenumber)
 
-	var/newhive = input(src,"Select a hive.", null, null) in hives
+	var/newhive = tgui_input_list(src,"Select a hive.", "Change Hivenumber", hives)
 
 	if(!H)
 		to_chat(usr, "This mob no longer exists")
@@ -266,20 +267,20 @@
 	else
 		var/was_leader = FALSE
 		if(H.hivenumber)
-			var/datum/hive_status/hive = hive_datum[H.hivenumber]
+			var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
 			if(H == hive.leading_cult_sl)
 				was_leader = TRUE
 			hive.leading_cult_sl = null
 
 		H.hivenumber = hives[newhive]
 
-		var/datum/hive_status/hive = hive_datum[H.hivenumber]
-		H.faction = hive.name
+		var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
+		H.faction = hive.internal_faction
 
 		if(was_leader && (!hive.leading_cult_sl || hive.leading_cult_sl.stat == DEAD))
 			hive.leading_cult_sl = H
 
-	message_staff(SPAN_NOTICE("[key_name(src)] changed hivenumber of [H] to [H.hivenumber]."))
+	message_staff("[key_name(src)] changed hivenumber of [H] to [H.hivenumber].")
 
 
 /client/proc/cmd_admin_change_their_name(var/mob/living/carbon/X)
@@ -304,7 +305,7 @@
 			if(H.wear_id.assignment)
 				H.wear_id.name += " ([H.wear_id.assignment])"
 
-	message_staff(SPAN_NOTICE("[key_name(src)] changed name of [old_name] to [newname]."))
+	message_staff("[key_name(src)] changed name of [old_name] to [newname].")
 
 /datum/admins/proc/togglesleep(var/mob/living/M as mob in GLOB.mob_list)
 	set name = "Toggle Sleeping"

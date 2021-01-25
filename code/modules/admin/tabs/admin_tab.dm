@@ -1,5 +1,5 @@
 /client/proc/deadmin_self()
-	set name = "A: De-Admin"
+	set name = "De-Admin"
 	set category = "Admin"
 
 	if(!admin_holder)
@@ -9,23 +9,23 @@
 		return
 
 	message_staff("[src] de-admined themselves.")
-	verbs += /client/proc/readmin_self
+	add_verb(src, /client/proc/readmin_self)
 	deadmin()
 	to_chat(src, "<br><br><span class='centerbold'><big>You are now a normal player. You can ascend back to adminhood at any time using the 'Re-admin Self' verb in your Admin panel.</big></span><br>")
 
 /client/proc/readmin_self()
-	set name = "A: Re-Admin"
+	set name = "Re-Admin"
 	set category = "Admin"
 
-	verbs -= /client/proc/readmin_self
+	remove_verb(src, /client/proc/readmin_self)
 	readmin()
 	to_chat(src, "<br><br><span class='centerbold'><big>You have ascended back to adminhood. All your verbs should be back where you left them.</big></span><br>")
 	message_staff("[src] re-admined themselves.")
 
 /client/proc/becomelarva()
-	set name = "X: Lose Larva Protection"
+	set name = "Lose Larva Protection"
 	set desc = "Remove your protection from becoming a larva."
-	set category = "Admin"
+	set category = "Admin.Game"
 
 	if(!admin_holder)
 		return
@@ -46,24 +46,24 @@
 		to_chat(src, "<font color='red'>Error: Lose larva Protection: You must be a ghost to use this.</font>")
 
 /client/proc/unban_panel()
-	set name = "C: Unban Panel"
-	set category = "Admin"
+	set name = "Unban Panel"
+	set category = "Admin.Panels"
 
 	if(admin_holder)
 		admin_holder.unbanpanel()
 	return
 
 /client/proc/player_panel_new()
-	set name = "C: Player Panel"
-	set category = "Admin"
+	set name = "Player Panel"
+	set category = "Admin.Panels"
 
 	if(admin_holder)
 		admin_holder.player_panel_new()
 	return
 
 /client/proc/admin_ghost()
-	set name = "A: Aghost"
-	set category = "Admin"
+	set name = "Aghost"
+	set category = "Admin.Game"
 
 	if(!check_rights(R_MOD))
 		return
@@ -104,8 +104,8 @@
 		GLOB.STUI.ui_interact(mob)
 
 /client/proc/invismin()
-	set name = "I: Invismin"
-	set category = "Admin"
+	set name = "Invismin"
+	set category = "Admin.Game"
 
 	if(!check_rights(R_MOD))
 		return
@@ -127,9 +127,9 @@
 	log_admin("[key_name_admin(usr)] has turned invismin [admin_holder.fakekey ? "ON" : "OFF"]")
 
 /datum/admins/proc/announce()
-	set name = "X: Admin Announcement"
+	set name = "Admin Announcement"
 	set desc = "Announce your desires to the world"
-	set category = "Admin"
+	set category = "Admin.Game"
 
 	if(!check_rights(0))
 		return
@@ -137,11 +137,11 @@
 	if(message)
 		if(!check_rights(R_SERVER,0))
 			message = adminscrub(message,500)
-		to_world(SPAN_ANNOUNCEMENT_HEADER_BLUE(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
+		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ANNOUNCEMENT_HEADER_BLUE(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
 		log_admin("Announce: [key_name(usr)] : [message]")
 
 /datum/admins/proc/player_notes_show(var/key as text)
-	set name = "D: Player Notes Show"
+	set name = "Player Notes Show"
 	set category = "Admin"
 	if (!istype(src,/datum/admins))
 		src = usr.client.admin_holder
@@ -181,8 +181,8 @@
 	show_browser(usr, dat, "Info on [key]", "adminplayerinfo", "size=480x480")
 
 /datum/admins/proc/sleepall()
-	set name = "In View Sleep All"
-	set category = "Admin"
+	set name = "Sleep All"
+	set category = "Admin.InView"
 	set hidden = 1
 
 	if(!check_rights(0))
@@ -202,7 +202,7 @@
 	return
 
 /datum/admins/proc/viewUnheardAhelps()
-	set name = "X: View Unheard Ahelps"
+	set name = "View Unheard Ahelps"
 	set desc = "View any Ahelps that went unanswered"
 	set category = "Admin"
 
@@ -228,9 +228,7 @@
 	if(!msg)
 		return
 
-	log_admin("ADMIN : [key_name(src)] : [msg]")
-	GLOB.STUI.staff.Add("\[[time_stamp()]] <font color='#800080'>ADMIN: [key_name(src)] : [msg]</font><br>")
-	GLOB.STUI.processing |= STUI_LOG_STAFF_CHAT
+	log_adminpm("ADMIN : [key_name(src)] : [msg]")
 
 	var/color = "adminsay"
 	if(ishost(usr))
@@ -251,12 +249,12 @@
 		return
 
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
-	log_admin("MOD: [key_name(src)] : [msg]")
-	GLOB.STUI.staff.Add("\[[time_stamp()]] <font color='#b82e00'>MOD: [key_name(src)] : [msg]</font><br>")
-	GLOB.STUI.processing |= STUI_LOG_STAFF_CHAT
 
 	if (!msg)
 		return
+
+	log_adminpm("MOD: [key_name(src)] : [msg]")
+
 	var/color = "mod"
 	if (check_rights(R_ADMIN,0))
 		color = "adminmod"
@@ -267,23 +265,49 @@
 		if((R_ADMIN|R_MOD) & C.admin_holder.rights)
 			to_chat(C, "<span class='[color]'><span class='prefix'>[channel]</span> <EM>[key_name(src,1)]</EM> (<A HREF='?src=\ref[C.admin_holder];adminplayerobservejump=\ref[mob]'>JMP</A>): <span class='message'>[msg]</span></span>")
 
+/client/proc/cmd_mentor_say(msg as text)
+	set name = "MentorSay"
+	set category = "OOC"
+	set hidden = 0
+
+	if(!check_rights(R_MENTOR|R_MOD|R_ADMIN))
+		return
+
+	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
+
+	if (!msg)
+		return
+
+	log_adminpm("MENTOR: [key_name(src)] : [msg]")
+
+	var/color = "mentorsay"
+	var/channel = "Mentor:"
+	channel = "[admin_holder.rank]:"
+	if(check_rights(R_MOD|R_ADMIN,0))
+		color = "staffsay"
+
+	for(var/client/C in GLOB.admins)
+		if((R_ADMIN|R_MOD|R_MENTOR) & C.admin_holder.rights)
+			to_chat(C, "<span class='[color]'><span class='prefix'>[channel]</span> <EM>([usr.key])</EM>: <span class='message'>[msg]</span></span>")
+
+
 /client/proc/enable_admin_mob_verbs()
-	set name = "Z: Mob Admin Verbs - Show"
+	set name = "Mob Admin Verbs - Show"
 	set category = "Admin"
 
-	verbs += admin_mob_verbs_hideable
-	verbs -= /client/proc/enable_admin_mob_verbs
+	add_verb(src, admin_mob_verbs_hideable)
+	remove_verb(src, /client/proc/enable_admin_mob_verbs)
 
 /client/proc/hide_admin_mob_verbs()
-	set name = "Z: Mob Admin Verbs - Hide"
+	set name = "Mob Admin Verbs - Hide"
 	set category = "Admin"
 
-	verbs -= admin_mob_verbs_hideable
-	verbs += /client/proc/enable_admin_mob_verbs
+	remove_verb(src, admin_mob_verbs_hideable)
+	add_verb(src, /client/proc/enable_admin_mob_verbs)
 
 /client/proc/rejuvenate_all_in_view()
-	set name = "In View Rejuvenate All"
-	set category = "Admin"
+	set name = "Rejuvenate All"
+	set category = "Admin.InView"
 	set hidden = 1
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
@@ -300,8 +324,8 @@
 
 
 /client/proc/rejuvenate_all_humans_in_view()
-	set name = "In View Rejuvenate All Humans"
-	set category = "Admin"
+	set name = "Rejuvenate All Humans"
+	set category = "Admin.InView"
 	set hidden = 1
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
@@ -317,8 +341,8 @@
 	message_staff(WRAP_STAFF_LOG(usr, "ahealed all humans in [get_area(usr)] ([usr.x],[usr.y],[usr.z])"), usr.x, usr.y, usr.z)
 
 /client/proc/rejuvenate_all_revivable_humans_in_view()
-	set name = "In View Rejuvenate Revivable Human"
-	set category = "Admin"
+	set name = "Rejuvenate Revivable Human"
+	set category = "Admin.InView"
 	set hidden = 1
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
@@ -343,8 +367,8 @@
 	message_staff(WRAP_STAFF_LOG(usr, "ahealed all revivable humans in [get_area(usr)] ([usr.x],[usr.y],[usr.z])"), usr.x, usr.y, usr.z)
 
 /client/proc/rejuvenate_all_xenos_in_view()
-	set name = "In View Rejuvenate Xenos"
-	set category = "Admin"
+	set name = "Rejuvenate Xenos"
+	set category = "Admin.InView"
 	set hidden = 1
 
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
@@ -385,8 +409,8 @@
 	return
 
 /client/proc/teleport_panel()
-	set name = "C: Teleport Panel"
-	set category = "Admin"
+	set name = "Teleport Panel"
+	set category = "Admin.Panels"
 
 	if(!admin_holder || !check_rights(R_MOD, FALSE))
 		return
@@ -407,8 +431,8 @@
 	return
 
 /client/proc/vehicle_panel()
-	set name = "C: Vehicle Panel"
-	set category = "Admin"
+	set name = "Vehicle Panel"
+	set category = "Admin.Panels"
 
 	if(!admin_holder || !check_rights(R_MOD, FALSE))
 		return
@@ -432,8 +456,8 @@
 	return
 
 /client/proc/in_view_panel()
-	set name = "C: In View Panel"
-	set category = "Admin"
+	set name = "In View Panel"
+	set category = "Admin.InView"
 
 	if(!admin_holder || !check_rights(R_MOD, FALSE))
 		return

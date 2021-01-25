@@ -13,9 +13,9 @@
 	var/obj/item/circuitboard/airlock/electronics = null
 	air_properties_vary_with_direction = 1
 
-/obj/structure/machinery/door/window/New()
+/obj/structure/machinery/door/window/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/update_icon), 0)
+	addtimer(CALLBACK(src, .proc/update_icon), 1)
 	if (src.req_access && src.req_access.len)
 		src.icon_state = "[src.icon_state]"
 		src.base_state = src.icon_state
@@ -33,7 +33,7 @@
 //Enforces perspective layering like it's contemporary; windows.
 /obj/structure/machinery/door/window/update_icon(loc, direction)
 	if(direction)
-		dir = direction
+		setDir(direction)
 	switch(dir)
 		if(NORTH) layer = ABOVE_TABLE_LAYER
 		if(SOUTH) layer = ABOVE_MOB_LAYER
@@ -110,7 +110,7 @@
 		else
 			ae = electronics
 			electronics = null
-			ae.loc = src.loc
+			ae.forceMove(src.loc)
 		if(operating == -1)
 			ae.icon_state = "door_electronics_smoked"
 			operating = 0
@@ -176,7 +176,7 @@
 				wa.name = "Wired Windoor Assembly"
 			if (src.base_state == "right" || src.base_state == "rightsecure")
 				wa.facing = "r"
-			wa.dir = src.dir
+			wa.setDir(src.dir)
 			wa.state = "02"
 			wa.update_icon()
 
@@ -193,7 +193,7 @@
 			else
 				ae = electronics
 				electronics = null
-				ae.loc = src.loc
+				ae.forceMove(src.loc)
 			ae.icon_state = "door_electronics_smoked"
 
 			operating = 0

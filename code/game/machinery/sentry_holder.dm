@@ -68,7 +68,7 @@
 	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
 	deployed_turret.turned_on = TRUE
-	deployed_turret.loc = loc
+	deployed_turret.forceMove(loc)
 	icon_state = "sentry_system_deployed"
 
 	for(var/mob/M in deployed_turret.loc)
@@ -77,7 +77,7 @@
 		else
 			step(M, get_dir(src,deployed_turret))
 
-	deployed_turret.dir = dir
+	deployed_turret.setDir(dir)
 	deployed_turret.pixel_x = 0
 	deployed_turret.pixel_y = 0
 
@@ -90,7 +90,7 @@
 
 	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
 	deployment_cooldown = world.time + 50
-	deployed_turret.loc = src
+	deployed_turret.forceMove(src)
 	deployed_turret.turned_on = FALSE
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()

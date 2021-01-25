@@ -11,7 +11,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_1
 	xeno_cooldown = 30
-	plasma_cost = 80
+	plasma_cost = 50
 
 	// Config
 	var/damage = 45
@@ -26,7 +26,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
 	xeno_cooldown = 110
-	plasma_cost = 80
+	plasma_cost = 50
 
 	// Config options
 	distance = 5
@@ -217,11 +217,11 @@
 	macro_path = /datum/action/xeno_action/verb/verb_dash
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
-	xeno_cooldown = 50
+	xeno_cooldown = 100
 	plasma_cost = 40
 
 	// Config options
-	distance = 4
+	distance = 6
 	knockdown = FALSE
 	slash = FALSE
 	freeze_self = FALSE
@@ -293,6 +293,8 @@
 
 	var/shield_cost = 100
 	var/shield_amount = 125
+	var/shield_duration = 1 MINUTES
+	var/shield_decay = 25
 
 	var/debuff_cost = 100
 

@@ -14,7 +14,6 @@
 
 	fire_reagent = new /datum/reagent/napalm/ut()
 
-	event_zoomout = new /datum/event()
 	event_movement = new /datum/event()
 
 	attack_icon = image("icon" = 'icons/effects/attacks.dmi',"icon_state" = "", "layer" = 0)
@@ -27,8 +26,7 @@
 	GLOB.living_mob_list -= src
 	pipes_shown = null
 
-	QDEL_NULL(attack_icon)
-	QDEL_NULL(event_zoomout)
+	attack_icon = null
 	QDEL_NULL(event_movement)
 	QDEL_NULL(pain)
 	QDEL_NULL(stamina)
@@ -170,7 +168,7 @@
 		if (!buckled.anchored)
 			return buckled.Move(NewLoc, direct)
 		else
-			return 0
+			return FALSE
 
 	var/atom/movable/pullee = pulling
 	if(pullee && get_dist(src, pullee) > 1) //Is the pullee adjacent?
@@ -212,7 +210,7 @@
 				if(istype(pmob))
 					pmob.on_movement()
 				if(!(flags_atom & DIRLOCK))
-					dir = turn(direct, 180) //face the pullee
+					setDir(turn(direct, 180)) //face the pullee
 
 	if(pulledby && get_dist(src, pulledby) > 1)//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()
@@ -305,7 +303,7 @@
 	stop_pulling()
 	if(pulledby)
 		pulledby.stop_pulling()
-	if(buckled)
+	if(buckled && destination != buckled.loc)
 		buckled.unbuckle()
 	. = ..()
 	on_movement()
@@ -335,7 +333,7 @@
 
 	//Leaping mobs just land on the tile, no pushing, no anything.
 	if(status_flags & LEAPING)
-		loc = L.loc
+		forceMove(L.loc)
 		status_flags &= ~LEAPING
 		now_pushing = FALSE
 		return
@@ -459,20 +457,6 @@
 		spawn(40)
 			clear_fullscreen("flash", 20)
 		return 1
-
-
-/mob/living/proc/on_zoomout()
-	var/datum/event_args/ev_args = new /datum/event_args()
-	event_zoomout.fire_event(src, ev_args)
-
-/mob/living/proc/add_zoomout_handler(datum/event_handler/handler)
-	if(isnull(event_zoomout))
-		event_zoomout = new /datum/event()
-	event_zoomout.add_handler(handler)
-
-/mob/living/proc/remove_zoomout_handler(datum/event_handler/handler)
-	event_zoomout.remove_handler(handler)
-
 
 /datum/event_args/mob_movement
 	var/continue_movement = 1

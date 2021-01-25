@@ -296,7 +296,7 @@ CULT
 	if(!input)
 		return
 
-	var/datum/hive_status/hive = hive_datum[H.hivenumber]
+	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
 
 	if(!istype(hive))
 		return
@@ -323,7 +323,7 @@ CULT
 	H.visible_message(SPAN_DANGER("[H] gets onto their knees and begins praying."), \
 	SPAN_WARNING("You get onto your knees to pray."))
 
-	if(!do_after(H, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+	if(!do_after(H, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 		to_chat(H, SPAN_WARNING("You decide not to retrieve your equipment."))
 		return
 
@@ -368,7 +368,7 @@ CULT
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
-	var/datum/hive_status/hive = LAZYACCESS(hive_datum, H.hivenumber)
+	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
 	if(!hive)
 		return
 
@@ -402,7 +402,7 @@ CULT
 		to_chat(H, SPAN_XENOMINORWARNING("[chosen] must be conscious for the conversion to work!"))
 		return
 
-	if(!do_after(H, SECONDS_10, INTERRUPT_ALL, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+	if(!do_after(H, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 		to_chat(H, SPAN_XENOMINORWARNING("You decide not to convert [chosen]."))
 		return
 
@@ -410,8 +410,6 @@ CULT
 
 	XC.load_race(chosen, H.hivenumber)
 	XC.load_status(chosen)
-
-	chosen.faction = hive.name
 
 	to_chat(chosen, SPAN_HIGHDANGER("<hr>You are now a Xeno Cultist!"))
 	to_chat(chosen, SPAN_DANGER("Worship the Xenomorphs and listen to the Cult Leader for orders. The Cult Leader is typically the person who transformed you. Do not kill anyone unless you are wearing your black robes, you may defend yourself.<hr>"))
@@ -428,7 +426,7 @@ CULT
 	name = "Psychic Stun"
 	action_icon_state = "cultist_channel_stun"
 
-	cooldown = MINUTES_1
+	cooldown = 1 MINUTES
 
 /datum/action/human_action/activable/cult_leader/stun/use_ability(var/mob/M)
 	if(!action_cooldown_check())
@@ -457,11 +455,11 @@ CULT
 
 	chosen.update_xeno_hostile_hud()
 
-	if(!do_after(H, SECONDS_2, INTERRUPT_ALL | BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+	if(!do_after(H, 2 SECONDS, INTERRUPT_ALL | BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, chosen, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 		to_chat(H, SPAN_XENOMINORWARNING("You decide not to stun [chosen]."))
 		unroot_human(chosen)
 
-		enter_cooldown(SECONDS_5)
+		enter_cooldown(5 SECONDS)
 		return
 
 	enter_cooldown()

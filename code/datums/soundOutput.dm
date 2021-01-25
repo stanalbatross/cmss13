@@ -28,8 +28,8 @@
 
 		if(owner_turf)
 			// We're in an interior and sound came from outside
-			if(owner_turf.z == interior_manager.interior_z && owner_turf.z != T.z)
-				var/datum/interior/VI = interior_manager.get_interior_by_coords(owner_turf.x, owner_turf.y)
+			if(owner_turf.z == GLOB.interior_manager.interior_z && owner_turf.z != T.z)
+				var/datum/interior/VI = GLOB.interior_manager.get_interior_by_coords(owner_turf.x, owner_turf.y)
 				if(VI && VI.exterior)
 					var/turf/candidate = get_turf(VI.exterior)
 					if(!(candidate.z == T.z))
@@ -124,22 +124,22 @@
 		sound_to(src, S)
 
 /client/verb/adjust_volume_sfx()
-	set name = "S : Adjust Volume SFX"
-	set category = "Preferences"
+	set name = "Adjust Volume SFX"
+	set category = "Preferences.Sound"
 	adjust_volume_prefs(VOLUME_SFX, "Set the volume for sound effects", 0)
 
 /client/verb/adjust_volume_ambience()
-	set name = "S : Adjust Volume Ambience"
-	set category = "Preferences"
+	set name = "Adjust Volume Ambience"
+	set category = "Preferences.Sound"
 	adjust_volume_prefs(VOLUME_AMB, "Set the volume for ambience and soundscapes", 0)
 	soundOutput.update_ambience()
 
 /client/verb/adjust_volume_admin_music()
-	set name = "S : Adjust Volume Admin MIDIs"
-	set category = "Preferences"
+	set name = "Adjust Volume Admin MIDIs"
+	set category = "Preferences.Sound"
 	adjust_volume_prefs(VOLUME_ADM, "Set the volume for admin MIDIs", SOUND_CHANNEL_ADMIN_MIDI)
 
 /client/verb/adjust_volume_lobby_music()
-	set name = "S : Adjust Volume LobbyMusic"
-	set category = "Preferences"
+	set name = "Adjust Volume LobbyMusic"
+	set category = "Preferences.Sound"
 	adjust_volume_prefs(VOLUME_LOBBY, "Set the volume for Lobby Music", SOUND_CHANNEL_LOBBY)

@@ -22,7 +22,7 @@
 	//If you have use_timelocks config option enabled, this option will add a requirement for players to have the prerequisite roles have at least x minimum playtime before unlocking.
 	var/list/minimum_playtimes
 
-	var/minimum_playtime_as_job = HOURS_3
+	var/minimum_playtime_as_job = 3 HOURS
 
 	var/gear_preset //Gear preset name used for this job
 	var/list/gear_preset_whitelist = list()//Gear preset name used for council snowflakes ;)
@@ -115,29 +115,29 @@
 /datum/job/proc/get_access()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].access
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].access
 	return null
 
 /datum/job/proc/get_skills()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].skills
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].skills
 	return null
 
 /datum/job/proc/get_paygrade()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].paygrade
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].paygrade
 	return ""
 
 /datum/job/proc/get_comm_title()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].role_comm_title
+	if(GLOB.gear_presets_list[gear_preset])
+		return GLOB.gear_presets_list[gear_preset].role_comm_title
 	return ""
 
 /datum/job/proc/set_spawn_positions(var/count)
@@ -158,13 +158,14 @@
 		title_given = lowertext(disp_title)
 
 		//Document syntax cannot have tabs for proper formatting.
-		var/t = {"
-<span class='role_body'>|______________________|</span>
-<span class='role_header'>You are \a [title_given]![flags_startup_parameters & ROLE_ADMIN_NOTIFY? "\nYou are playing a job that is important for game progression. If you have to disconnect, please notify the admins via adminhelp." : ""]</span>
-<span class='role_body'>[generate_entry_message(H)].[M ? "\nYour account number is: <b>[M.account_number]</b>. Your account pin is: <b>[M.remote_access_pin]</b>." : ""]</span>
-<span class='role_body'>|______________________|</span>
-		"}
-		to_chat(H, t)
+		var/entrydisplay = " \
+			[SPAN_ROLE_BODY("|______________________|")] \n\
+			[SPAN_ROLE_HEADER("You are \a [title_given]")] \n\
+			[flags_startup_parameters & ROLE_ADMIN_NOTIFY ? SPAN_ROLE_HEADER("You are playing a job that is important for game progression. If you have to disconnect, please notify the admins via adminhelp.") : ""] \n\
+			[SPAN_ROLE_BODY("[generate_entry_message(H)].[M ? "Your account number is: <b>[M.account_number]</b>. Your account pin is: <b>[M.remote_access_pin]</b>." : ""]")] \n\
+			[SPAN_ROLE_BODY("|______________________|")] \
+		"
+		to_chat_spaced(H, html = entrydisplay)
 
 /datum/job/proc/generate_entry_conditions(mob/living/M, var/whitelist_status)
 	if (istype(M) && M.client)

@@ -32,9 +32,9 @@ obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 		anchored = 0
 	switch(start_dir)
 		if(NORTH, SOUTH, EAST, WEST)
-			dir = start_dir
+			setDir(start_dir)
 		else //If the user is facing northeast. northwest, southeast, southwest or north, default to north
-			dir = NORTH
+			setDir(NORTH)
 
 
 obj/structure/windoor_assembly/Destroy()
@@ -153,12 +153,12 @@ obj/structure/windoor_assembly/Destroy()
 					if(!src) return
 
 					user.drop_held_item()
-					W.loc = src
+					W.forceMove(src)
 					to_chat(user, SPAN_NOTICE(" You've installed the airlock electronics!"))
 					src.name = "Near finished Windoor Assembly"
 					src.electronics = W
 				else
-					W.loc = src.loc
+					W.forceMove(src.loc)
 
 			//Screwdriver to remove airlock electronics. Step 6 undone.
 			else if(istype(W, /obj/item/tool/screwdriver) && src.electronics)
@@ -174,7 +174,7 @@ obj/structure/windoor_assembly/Destroy()
 						src.name = "Wired Windoor Assembly"
 					var/obj/item/circuitboard/airlock/ae = electronics
 					electronics = null
-					ae.loc = src.loc
+					ae.forceMove(src.loc)
 
 			//Crowbar to complete the assembly, Step 7 complete.
 			else if(istype(W, /obj/item/tool/crowbar))
@@ -200,7 +200,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.icon_state = "rightsecureopen"
 							windoor.base_state = "rightsecure"
-						windoor.dir = src.dir
+						windoor.setDir(src.dir)
 						windoor.density = 0
 
 						if(src.electronics.one_access)
@@ -209,7 +209,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.req_access = src.electronics.conf_access
 						windoor.electronics = src.electronics
-						src.electronics.loc = windoor
+						src.electronics.forceMove(windoor)
 					else
 						var/obj/structure/machinery/door/window/windoor = new /obj/structure/machinery/door/window(src.loc)
 						if(src.facing == "l")
@@ -218,7 +218,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.icon_state = "rightopen"
 							windoor.base_state = "right"
-						windoor.dir = src.dir
+						windoor.setDir(src.dir)
 						windoor.density = 0
 
 						if(src.electronics.one_access)
@@ -227,7 +227,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.req_access = src.electronics.conf_access
 						windoor.electronics = src.electronics
-						src.electronics.loc = windoor
+						src.electronics.forceMove(windoor)
 
 
 					qdel(src)
@@ -249,7 +249,7 @@ obj/structure/windoor_assembly/Destroy()
 	if (src.anchored)
 		to_chat(usr, "It is fastened to the floor; therefore, you can't rotate it!")
 		return 0
-	src.dir = turn(src.dir, 270)
+	src.setDir(turn(src.dir, 270))
 	update_icon()
 	return
 

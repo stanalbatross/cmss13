@@ -14,21 +14,21 @@
 /obj/item/reagent_container/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
 	set category = "Object"
-
+	set src in usr
 	if(!ishuman(usr))
 		return
 	var/mob/living/carbon/human/user = usr
 	var/obj/item/reagent_container/R = user.get_active_hand()
 	if(!istype(R))
 		return
-	var/N = input("Amount per transfer from this:","[R]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[R]", possible_transfer_amounts)
 	if (N)
 		R.amount_per_transfer_from_this = N
 
 /obj/item/reagent_container/Initialize()
 	. = ..()
 	if (!possible_transfer_amounts)
-		src.verbs -= /obj/item/reagent_container/verb/set_APTFT //which objects actually uses it?
+		verbs -= /obj/item/reagent_container/verb/set_APTFT //which objects actually uses it?
 	create_reagents(volume)
 
 /obj/item/reagent_container/proc/display_contents(mob/user) // Used on examine for properly skilled people to see contents.

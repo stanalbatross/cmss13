@@ -2,7 +2,7 @@
 
 //Global proc for checking if the game is whiskey outpost so I dont need to type if(gamemode == whiskey outpost) 50000 times
 /proc/Check_WO()
-	if(SSticker.mode == "Whiskey Outpost" || map_tag == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
+	if(SSticker.mode == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
 		return 1
 	return 0
 
@@ -45,7 +45,7 @@
 	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
-	var/spawn_next_wave = MINUTES_10 / SECONDS_2 //Spawn first batch at ~10 minutes (we divide it by the game ticker time of 2 seconds)
+	var/spawn_next_wave = 10 MINUTES //Spawn first batch at ~10 minutes (we divide it by the game ticker time of 2 seconds)
 	var/xeno_wave = 1 //Which wave is it
 
 	var/wave_ticks_passed = 0 //Timer for xeno waves
@@ -60,7 +60,7 @@
 			//This will get populated with spawn_xenos() proc
 	var/list/spawnxeno = list()
 
-	var/next_supply = MINUTES_1 //At which wave does the next supply drop come?
+	var/next_supply = 1 MINUTES //At which wave does the next supply drop come?
 
 	var/ticks_passed = 0
 	var/lobby_time = 0 //Lobby time does not count for marine 1h win condition
@@ -70,6 +70,9 @@
 	var/spawn_next_wo_wave = FALSE
 
 	var/list/whiskey_outpost_waves = list()
+
+	hardcore = TRUE
+	votable = FALSE // not fun
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1
@@ -112,15 +115,15 @@
 	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
 	to_world(SPAN_ROUNDBODY("It is the year [game_year - 5] on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
-	to_world(SPAN_ROUNDBODY("[map_tag], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
-	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [map_tag] must survive for an hour to alert the rest of their battalion in the sector"))
+	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
+	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [SSmapping.configs[GROUND_MAP].map_name] must survive for an hour to alert the rest of their battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("Hold out for as long as you can."))
 	world << sound('sound/effects/siren.ogg')
 
 	sleep(10)
 	switch(map_locale) //Switching it up.
 		if(0)
-			marine_announcement("This is Captain Hans Naiche, commander of the 3rd Battalion 'Dust Raiders' forces here on LV-624. In our attempts to establish a base on this planet, several of our patrols were wiped out by hostile creatures.  We're setting up a distress call, but we need you to hold [map_tag] in order for our engineers to set up the relay. We're prepping several M402 mortar units to provide fire support. If they overrun your positon, we will be wiped out with no way to call for help. Hold the line or we all die.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+			marine_announcement("This is Captain Hans Naiche, commander of the 3rd Battalion 'Dust Raiders' forces here on LV-624. In our attempts to establish a base on this planet, several of our patrols were wiped out by hostile creatures.  We're setting up a distress call, but we need you to hold [SSmapping.configs[GROUND_MAP].map_name] in order for our engineers to set up the relay. We're prepping several M402 mortar units to provide fire support. If they overrun your positon, we will be wiped out with no way to call for help. Hold the line or we all die.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
 
 	return ..()
 
@@ -130,27 +133,27 @@
 		//Cleaning stuff more aggresively
 		SSitem_cleanup.start_processing_time = 0
 		SSitem_cleanup.percentage_of_garbage_to_delete = 1.0
-		SSitem_cleanup.wait = MINUTES_1
-		SSitem_cleanup.next_fire = MINUTES_1
+		SSitem_cleanup.wait = 1 MINUTES
+		SSitem_cleanup.next_fire = 1 MINUTES
 		spawn(0)
 			//Deleting Almayer, for performance!
 			SSitem_cleanup.delete_almayer()
 	if(SSdefcon)
 		//Don't need DEFCON
-		SSdefcon.wait = MINUTES_30
+		SSdefcon.wait = 30 MINUTES
 	if(SSxenocon)
 		//Don't need XENOCON
-		SSxenocon.wait = MINUTES_30
+		SSxenocon.wait = 30 MINUTES
 
 
 //PROCCESS
-/datum/game_mode/whiskey_outpost/process()
+/datum/game_mode/whiskey_outpost/process(delta_time)
 	. = ..()
 	checkwin_counter++
 	ticks_passed++
 	wave_ticks_passed++
 
-	if(wave_ticks_passed >= spawn_next_wave)
+	if(wave_ticks_passed >= (spawn_next_wave/(delta_time SECONDS)))
 		if(count_xenos() < 50)//Checks braindead too, so we don't overpopulate! Also make sure its less than twice us in the world, so we advance waves/get more xenos the more marines survive.
 			wave_ticks_passed = 0
 			spawn_next_wo_wave = TRUE
@@ -166,7 +169,7 @@
 
 	if(world.time > next_supply)
 		place_whiskey_outpost_drop()
-		next_supply += MINUTES_2
+		next_supply += 2 MINUTES
 
 	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
 		if(!finished && round_should_check_for_win)
@@ -199,7 +202,7 @@
 
 	if(C[1] == 0)
 		finished = 1 //Alien win
-	else if(world.time > HOURS_1 + MINUTES_20 + lobby_time + initial(spawn_next_wave) + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
+	else if(world.time > 1 HOURS + 20 MINUTES + lobby_time + initial(spawn_next_wave) + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
 		finished = 2 //Marine win
 
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
@@ -218,8 +221,8 @@
 	return xeno_count
 
 /datum/game_mode/whiskey_outpost/proc/pickovertime()
-	var/randomtime = ((rand(0,6)+rand(0,6)+rand(0,6)+rand(0,6))*SECONDS_50)
-	var/maxovertime = MINUTES_20
+	var/randomtime = ((rand(0,6)+rand(0,6)+rand(0,6)+rand(0,6))*50 SECONDS)
+	var/maxovertime = 20 MINUTES
 	if (randomtime >= maxovertime)
 		return maxovertime
 	return randomtime
@@ -303,9 +306,9 @@
 				randomitems = list(/obj/item/clothing/head/helmet/marine,
 								/obj/item/clothing/head/helmet/marine,
 								/obj/item/clothing/head/helmet/marine,
-								/obj/item/clothing/suit/storage/marine,
-								/obj/item/clothing/suit/storage/marine,
-								/obj/item/clothing/suit/storage/marine,
+								/obj/item/clothing/suit/storage/marine/medium,
+								/obj/item/clothing/suit/storage/marine/medium,
+								/obj/item/clothing/suit/storage/marine/medium,
 								/obj/item/clothing/head/helmet/marine/tech,
 								/obj/item/clothing/head/helmet/marine/medic,
 								/obj/item/clothing/under/marine/medic,
@@ -458,16 +461,16 @@
 							to_chat(user, SPAN_DANGER("[O] must be emptied before it can be recycled"))
 							continue
 						new /obj/item/stack/sheet/metal(get_step(src,dir))
-						O.loc = get_turf(locate(84,237,2)) //z.2
-//						O.loc = get_turf(locate(30,70,1)) //z.1
+						O.forceMove(get_turf(locate(84,237,2))) //z.2
+//						O.forceMove(get_turf(locate(30,70,1)) )//z.1
 						removed++
 						break
 					else if(istype(O,/obj/item))
 						var/obj/item/I = O
 						if(I.anchored)
 							continue
-						O.loc = get_turf(locate(84,237,2)) //z.2
-//						O.loc = get_turf(locate(30,70,1)) //z.1
+						O.forceMove(get_turf(locate(84,237,2))) //z.2
+//						O.forceMove(get_turf(locate(30,70,1)) )//z.1
 						removed++
 						break
 				for(var/mob/M in T)
@@ -475,8 +478,8 @@
 						var/mob/living/carbon/Xenomorph/X = M
 						if(!X.stat == DEAD)
 							continue
-						X.loc = get_turf(locate(84,237,2)) //z.2
-//						X.loc = get_turf(locate(30,70,1)) //z.1
+						X.forceMove(get_turf(locate(84,237,2))) //z.2
+//						X.forceMove(get_turf(locate(30,70,1)) )//z.1
 						removed++
 						break
 				if(removed && !working)
@@ -534,7 +537,7 @@
 		"Smartgun ammo",
 	)
 
-	var/supply_drop_choice = input(user, "Which supplies to call down?") as null|anything in supplies
+	var/supply_drop_choice = tgui_input_list(user, "Which supplies to call down?", "Supply Drop", supplies)
 
 	switch(supply_drop_choice)
 		if("10x24mm, slugs, buckshot, and 10x20mm rounds")
@@ -565,7 +568,7 @@
 		to_chat(user, "Toss it to get supplies!")
 		return
 
-	if(user.z != 1)
+	if(!is_ground_level(user.z))
 		to_chat(user, "You have to be on the ground to use this or it won't transmit.")
 		return
 
@@ -668,17 +671,13 @@
 								/obj/item/attachable/quickfire, /obj/item/attachable/heavy_barrel, /obj/item/attachable/scope, /obj/item/attachable/quickfire,
 								/obj/item/attachable/scope/mini)
 
-/obj/item/storage/box/attachments/New()
-	..()
-	Pick_Contents()
-
-/obj/item/storage/box/attachments/proc/Pick_Contents()
+/obj/item/storage/box/attachments/fill_preset_inventory()
 	var/a1 = pick(common)
 	var/a2 = pick(attachment_1)
 	var/a3 = pick(attachment_2)
-	if(a1) new a1 (src)
-	if(a2) new a2 (src)
-	if(a3) new a3 (src)
+	if(a1) new a1(src)
+	if(a2) new a2(src)
+	if(a3) new a3(src)
 	return
 
 /obj/item/storage/box/attachments/update_icon()
@@ -687,4 +686,3 @@
 		if(T)
 			new /obj/item/paper/crumpled(T)
 		qdel(src)
-

@@ -26,18 +26,6 @@
 			to_chat(user, SPAN_WARNING("You stare at [src] cluelessly..."))
 			return 0
 
-	// REPAIRING: Use Nanopaste to repair 10-20 integrity points.
-	if(istype(P, /obj/item/stack/nanopaste))
-		var/obj/item/stack/nanopaste/T = P
-		if (integrity < 100)               								//Damaged, let's repair!
-			if (T.use(1))
-				integrity = between(0, integrity + rand(10,20), 100)
-				to_chat(usr, "You apply the Nanopaste to [src], repairing some of the damage.")
-		else
-			to_chat(usr, "This machine is already in perfect condition.")
-		return
-
-
 	switch(construct_op)
 		if(0)
 			if(istype(P, /obj/item/tool/screwdriver) && deconstructable)
@@ -83,7 +71,7 @@
 					// Drop all the component stuff
 					if(contents.len > 0)
 						for(var/obj/x in src)
-							x.loc = user.loc
+							x.forceMove(user.loc)
 					else
 
 						// If the machine wasn't made during runtime, probably doesn't have components:
@@ -94,17 +82,17 @@
 							for(var/i = 1, i <= C.req_components[I], i++)
 								newpath = I
 								var/obj/item/s = new newpath
-								s.loc = user.loc
+								s.forceMove(user.loc)
 								if(istype(P, /obj/item/stack/cable_coil))
 									var/obj/item/stack/cable_coil/A = P
 									A.amount = 1
 
 						// Drop a circuit board too
-						C.loc = user.loc
+						C.forceMove(user.loc)
 
 					// Create a machine frame and delete the current machine
 					var/obj/structure/machinery/constructable_frame/F = new
-					F.loc = src.loc
+					F.forceMove(src.loc)
 					qdel(src)
 
 
@@ -285,7 +273,9 @@
 
 
 /obj/structure/machinery/telecomms/Topic(href, href_list)
-
+	. = ..()
+	if(.)
+		return
 	if(!ishighersilicon(usr))
 		if(!istype(usr.get_active_hand(), /obj/item/device/multitool))
 			return
@@ -299,7 +289,7 @@
 			if("toggle")
 				src.toggled = !src.toggled
 				temp = "<font color = #666633>-% [src] has been [src.toggled ? "activated" : "deactivated"].</font color>"
-				update_power()
+				toggle_state(usr)
 
 			/*
 			if("hide")

@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(ticker)
 	var/list/login_music = null						//Music played in pregame lobby
 
 	var/delay_end = FALSE					//If set true, the round will not restart on it's own
+	var/delay_start = FALSE
 	var/admin_delay_notice = ""				//A message to display to anyone who tries to restart the world after a delay
 
 	var/time_left							//Pre-game timer
@@ -42,6 +43,9 @@ SUBSYSTEM_DEF(ticker)
 
 	var/automatic_delay_end = FALSE
 
+	var/totalPlayers = 0					//used for pregame stats on statpanel
+	var/totalPlayersReady = 0				//used for pregame stats on statpanel
+
 /datum/controller/subsystem/ticker/Initialize(timeofday)
 	load_mode()
 
@@ -51,7 +55,21 @@ SUBSYSTEM_DEF(ticker)
 		var/music_options = splittext(all_music[key], " ")
 		login_music = list(music_options[1], music_options[2], music_options[3])
 
+	if(!SSperf_logging || !SSperf_logging.round)
+		RegisterSignal(SSdcs, COMSIG_GLOB_ENTITY_ROUND_INIT, .proc/try_do_round_vote)
+	else
+		try_do_round_vote(SSdcs, SSperf_logging.round)
+
 	return ..()
+
+/datum/controller/subsystem/ticker/proc/try_do_round_vote(var/dcs, var/datum/entity/mc_round/round)
+	SIGNAL_HANDLER
+
+	if(CONFIG_GET(number/gamemode_rounds_needed) == -1)
+		return
+
+	if(text2num(round.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0)
+		INVOKE_ASYNC(SSvote, /datum/controller/subsystem/vote/proc/initiate_vote, "gamemode", "SERVER")
 
 
 /datum/controller/subsystem/ticker/fire()
@@ -61,20 +79,32 @@ SUBSYSTEM_DEF(ticker)
 				return
 			if(isnull(start_at))
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-			to_chat(world, SPAN_ROUNDBODY("Welcome to the pre-game lobby of [CONFIG_GET(string/servername)]!"))
-			to_chat(world, SPAN_ROLE_BODY("Please, setup your character and select ready. Game will start in [round(time_left / 10) || CONFIG_GET(number/lobby_countdown)] seconds."))
+			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0, html = SPAN_ROUNDHEADER("Welcome to the pre-game lobby of [CONFIG_GET(string/servername)]!"))
+			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 0, html = SPAN_ROUNDBODY("Please, setup your character and select ready. Game will start in [round(time_left / 10) || CONFIG_GET(number/lobby_countdown)] seconds."))
 			current_state = GAME_STATE_PREGAME
 			fire()
 
 		if(GAME_STATE_PREGAME)
 			if(isnull(time_left))
 				time_left = max(0, start_at - world.time)
+
+			totalPlayers = LAZYLEN(GLOB.new_player_list)
+			totalPlayersReady = 0
+			for(var/i in GLOB.new_player_list)
+				var/mob/new_player/player = i
+				if(player.ready) // TODO: port this     == PLAYER_READY_TO_PLAY)
+					++totalPlayersReady
+
 			if(start_immediately)
 				time_left = 0
 
 			//countdown
 			if(time_left < 0)
 				return
+
+			if(delay_start)
+				return
+
 			time_left -= wait
 
 			if(time_left <= 0)
@@ -99,6 +129,7 @@ SUBSYSTEM_DEF(ticker)
 				current_state = GAME_STATE_FINISHED
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
+				addtimer(CALLBACK(SSvote, /datum/controller/subsystem/vote.proc/initiate_vote, "groundmap", "SERVER"), 3 SECONDS)
 				addtimer(CALLBACK(src, .proc/Reboot), 63 SECONDS)
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
@@ -162,7 +193,6 @@ SUBSYSTEM_DEF(ticker)
 	for(var/mob/new_player/np in GLOB.new_player_list)
 		np.new_player_panel_proc(TRUE)
 
-	run_mapdaemon_batch()
 	begin_game_recording()
 
 	if((master_mode == "Distress Signal") && SSevents)
@@ -181,8 +211,11 @@ SUBSYSTEM_DEF(ticker)
 	mode.initialize_emergency_calls()
 	mode.post_setup()
 
+	// Switch back to default automatically
+	save_mode(CONFIG_GET(string/gamemode_default))
+
 	if(round_statistics)
-		to_world(SPAN_BLUE("<B>Welcome to [round_statistics.name]</B>"))
+		to_chat_spaced(world, html = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>Welcome to [round_statistics.name]</B>")))
 
 	supply_controller.process() 		//Start the supply shuttle regenerating points -- TLE
 
@@ -226,6 +259,10 @@ SUBSYSTEM_DEF(ticker)
 	login_music = SSticker.login_music
 
 	delay_end = SSticker.delay_end
+	delay_start = SSticker.delay_start
+
+	totalPlayers = SSticker.totalPlayers
+	totalPlayersReady = SSticker.totalPlayersReady
 
 	time_left = SSticker.time_left
 

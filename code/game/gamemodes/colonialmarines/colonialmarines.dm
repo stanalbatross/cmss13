@@ -19,7 +19,7 @@
 	return TRUE
 
 /datum/game_mode/colonialmarines/announce()
-	to_world("<span class='round_header'>The current map is - [map_tag]!</span>")
+	to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ROUNDHEADER("The current map is - [SSmapping.configs[GROUND_MAP].map_name]!"))
 
 ////////////////////////////////////////////////////////////////////////////////////////
 //Temporary, until we sort this out properly.
@@ -36,19 +36,6 @@
 
 /obj/effect/landmark/lv624/fog_blocker/Destroy()
 	GLOB.fog_blockers -= src
-	return ..()
-
-/obj/effect/landmark/lv624/fog_time_extender
-	name = "fog time extender"
-	icon_state = "spawn_event"
-	var/time_to_extend = 9000
-
-/obj/effect/landmark/lv624/fog_time_extender/Initialize(mapload, ...)
-	. = ..()
-	GLOB.fog_time_extenders += src
-
-/obj/effect/landmark/lv624/fog_time_extender/Destroy()
-	GLOB.fog_time_extenders -= src
 	return ..()
 
 /obj/effect/landmark/lv624/xeno_tunnel
@@ -68,15 +55,10 @@
 /* Pre-setup */
 /datum/game_mode/colonialmarines/pre_setup()
 	setup_round_stats()
-	var/fog_timer = 0
 	for(var/i in GLOB.fog_blockers)
 		var/obj/effect/landmark/lv624/fog_blocker/FB = i
 		round_fog += new /obj/structure/blocker/fog(FB.loc)
 		qdel(FB)
-	for(var/i in GLOB.fog_time_extenders)
-		var/obj/effect/landmark/lv624/fog_time_extender/fte = i
-		fog_timer += fte.time_to_extend
-		qdel(fte)
 
 	QDEL_LIST(GLOB.hunter_primaries)
 	QDEL_LIST(GLOB.hunter_secondaries)
@@ -84,27 +66,21 @@
 	QDEL_LIST(GLOB.good_items)
 
 	// Spawn gamemode-specific map items
-	for(var/i in GLOB.map_items)
-		var/turf/T = get_turf(i)
-		qdel(i)
-		switch(map_tag)
-			if(MAP_LV_624) new /obj/item/map/lazarus_landing_map(T)
-			if(MAP_ICE_COLONY) new /obj/item/map/ice_colony_map(T)
-			if(MAP_BIG_RED) new /obj/item/map/big_red_map(T)
-			if(MAP_PRISON_STATION) new /obj/item/map/FOP_map(T)
-			if(MAP_DESERT_DAM) new /obj/item/map/desert_dam(T)
-			if(MAP_WHISKEY_OUTPOST) new /obj/item/map/whiskey_outpost_map(T)
-			if(MAP_SOROKYNE_STRATA) new /obj/item/map/sorokyne_map(T)
-			if(MAP_CORSAT) new /obj/item/map/corsat(T)
-			if(MAP_KUTJEVO) new /obj/item/map/kutjevo_map(T)
+	if(SSmapping.configs[GROUND_MAP].map_item_type)
+		var/type_to_spawn = SSmapping.configs[GROUND_MAP].map_item_type
+		for(var/i in GLOB.map_items)
+			var/turf/T = get_turf(i)
+			qdel(i)
+			new type_to_spawn(T)
 
-	if(!round_fog.len) round_fog = null //No blockers?
+	if(!round_fog.len)
+		round_fog = null //No blockers?
 	else
-		round_time_fog = fog_timer + rand(-2500,2500)
 		flags_round_type |= MODE_FOG_ACTIVATED
 
 	//desert river test
-	if(!round_toxic_river.len) round_toxic_river = null //No tiles?
+	if(!round_toxic_river.len)
+		round_toxic_river = null //No tiles?
 	else
 		round_time_river = rand(-100,100)
 		flags_round_type |= MODE_FOG_ACTIVATED
@@ -136,8 +112,8 @@
 
 	round_time_lobby = world.time
 
-	addtimer(CALLBACK(src, .proc/ares_online), SECONDS_5)
-	addtimer(CALLBACK(src, .proc/map_announcement), SECONDS_20)
+	addtimer(CALLBACK(src, .proc/ares_online), 5 SECONDS)
+	addtimer(CALLBACK(src, .proc/map_announcement), 20 SECONDS)
 
 	return ..()
 
@@ -147,25 +123,7 @@
 	if(!marines_assigned)
 		return
 
-	switch(map_tag)
-		if(MAP_LV_624)
-			monkey_types = list(/mob/living/carbon/human/farwa, /mob/living/carbon/human/monkey, /mob/living/carbon/human/neaera, /mob/living/carbon/human/stok)
-		if(MAP_ICE_COLONY)
-			monkey_types = list(/mob/living/carbon/human/yiren)
-		if(MAP_BIG_RED)
-			monkey_types = list(/mob/living/carbon/human/neaera)
-		if(MAP_KUTJEVO)
-			monkey_types = list(/mob/living/carbon/human/neaera, /mob/living/carbon/human/stok)
-		if(MAP_PRISON_STATION)
-			monkey_types = list(/mob/living/carbon/human/monkey)
-		if(MAP_DESERT_DAM)
-			monkey_types = list(/mob/living/carbon/human/stok)
-		if(MAP_SOROKYNE_STRATA)
-			monkey_types = list(/mob/living/carbon/human/yiren)
-		if(MAP_CORSAT)
-			monkey_types = list(/mob/living/carbon/human/yiren, /mob/living/carbon/human/farwa, /mob/living/carbon/human/monkey, /mob/living/carbon/human/neaera, /mob/living/carbon/human/stok)
-		else
-			monkey_types = list(/mob/living/carbon/human/monkey) //make sure we always have a monkey type
+	monkey_types = SSmapping.configs[GROUND_MAP].monkey_types
 
 	if(!length(monkey_types))
 		return
@@ -183,29 +141,14 @@
 	shipwide_ai_announcement(input, name, 'sound/AI/ares_online.ogg')
 
 /datum/game_mode/colonialmarines/proc/map_announcement()
-	switch(map_tag)
-		if(MAP_LV_624)
-			marine_announcement("An automated distress signal has been received from archaeology site Lazarus Landing, on border world LV-624. A response team from the [MAIN_SHIP_NAME] will be dispatched shortly to investigate.", "[MAIN_SHIP_NAME]")
-		if(MAP_ICE_COLONY)
-			marine_announcement("An automated distress signal has been received from archaeology site \"Shiva's Snowball\", on border ice world \"Ifrit\". A response team from the [MAIN_SHIP_NAME] will be dispatched shortly to investigate.", "[MAIN_SHIP_NAME]")
-		if(MAP_BIG_RED)
-			marine_announcement("We've lost contact with the Weston-Yamada's research facility, [map_tag]. The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
-		if(MAP_PRISON_STATION)
-			marine_announcement("An automated distress signal has been received from maximum-security prison \"Fiorina Orbital Penitentiary\". A response team from the [MAIN_SHIP_NAME] will be dispatched shortly to investigate.", "[MAIN_SHIP_NAME]")
-		if(MAP_DESERT_DAM)
-			marine_announcement("We've lost contact with Weston-Yamada's extra-solar colony, \"[map_tag]\", on the planet \"Navarone.\" The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
-		if (MAP_SOROKYNE_STRATA)
-			marine_announcement("An automated distress signal has been recieved from a mining colony on border world LV-976, \"Sorokyne Outpost\". A response team from the [MAIN_SHIP_NAME] will be dispatched shortly to investigate.", "[MAIN_SHIP_NAME]")
-		if (MAP_CORSAT)
-			marine_announcement("An automated distress signal has been received from Weston-Yamada's Corporate Orbital Research Station for Advanced Technology, or CORSAT. The [MAIN_SHIP_NAME] has been dispatched to investigate.", "[MAIN_SHIP_NAME]")
-		if (MAP_KUTJEVO)
-			marine_announcement("An automated distress signal has been received from Weston-Yamada colony Kutjevo Refinery, known for botanical research, export, and raw materials processing and refinement. The [MAIN_SHIP_NAME] has been dispatched to investigate.", "[MAIN_SHIP_NAME]")
+	if(SSmapping.configs[GROUND_MAP].announce_text)
+		marine_announcement(SSmapping.configs[GROUND_MAP].announce_text, "[MAIN_SHIP_NAME]")
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#define FOG_DELAY_INTERVAL		MINUTES_30 // 30 minutes
-#define PODLOCKS_OPEN_WAIT		MINUTES_45 // CORSAT pod doors drop at 12:45
+#define FOG_DELAY_INTERVAL		(35 MINUTES)
+#define PODLOCKS_OPEN_WAIT		(45 MINUTES) // CORSAT pod doors drop at 12:45
 
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
 /datum/game_mode/colonialmarines/process()
@@ -222,9 +165,6 @@
 		next_passive_increase = world.time + passive_increase_interval
 
 	if(!round_finished)
-		for(var/datum/hive_status/hive in hive_datum)
-			if(!hive.living_xeno_queen && hive.xeno_queen_timer && world.time>hive.xeno_queen_timer) xeno_message("The Hive is ready for a new Queen to evolve.", 3, hive.hivenumber)
-
 		if(!active_lz && world.time > lz_selection_timer)
 			for(var/obj/structure/machinery/computer/shuttle_control/dropship1/default_console in machines)
 				if(is_ground_level(default_console.z) && !default_console.onboard)
@@ -237,9 +177,9 @@
 			bioscan_current_interval += bioscan_ongoing_interval //Add to the interval based on our set interval time.
 
 		if(++round_checkwin >= 5) //Only check win conditions every 5 ticks.
-			if(flags_round_type & MODE_FOG_ACTIVATED && map_tag == MAP_LV_624  && world.time >= (FOG_DELAY_INTERVAL + round_time_lobby + round_time_fog))
+			if(flags_round_type & MODE_FOG_ACTIVATED && SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_FOG] && world.time >= (FOG_DELAY_INTERVAL + SSticker.round_start_time))
 				disperse_fog() //Some RNG thrown in.
-			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN) && (map_tag == MAP_CORSAT || map_tag == MAP_PRISON_STATION) && world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))
+			if(!(round_status_flags & ROUNDSTATUS_PODDOORS_OPEN) && SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_LOCKDOWN] && world.time >= (PODLOCKS_OPEN_WAIT + round_time_lobby))
 				round_status_flags |= ROUNDSTATUS_PODDOORS_OPEN
 
 				var/input = "Security lockdown will be lifting in 30 seconds per automated lockdown protocol."
@@ -301,10 +241,8 @@
 		else if(!num_humans && !num_xenos)
 			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
 
-/datum/game_mode/colonialmarines/check_queen_status(var/queen_time, var/hivenumber)
+/datum/game_mode/colonialmarines/check_queen_status(var/hivenumber)
 	set waitfor = 0
-	var/datum/hive_status/hive = hive_datum[hivenumber]
-	hive.xeno_queen_timer = world.time + queen_time SECONDS
 	if(!(flags_round_type & MODE_INFESTATION)) return
 	xeno_queen_deaths += 1
 	var/num_last_deaths = xeno_queen_deaths
@@ -312,8 +250,10 @@
 	//We want to make sure that another queen didn't die in the interim.
 
 	if(xeno_queen_deaths == num_last_deaths && !round_finished)
-		for(var/datum/hive_status/hs in hive_datum)
-			if(hs.living_xeno_queen && !is_admin_level(hs.living_xeno_queen.loc.z))
+		var/datum/hive_status/HS
+		for(var/HN in GLOB.hive_datum)
+			HS = GLOB.hive_datum[HN]
+			if(HS.living_xeno_queen && !is_admin_level(HS.living_xeno_queen.loc.z))
 				//Some Queen is alive, we shouldn't end the game yet
 				return
 		round_finished = MODE_INFESTATION_M_MINOR

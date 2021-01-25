@@ -1,6 +1,3 @@
-/obj/var/list/req_access = null
-/obj/var/list/req_one_access = null
-
 //returns 1 if this mob has sufficient access to use this object
 /obj/proc/allowed(mob/M)
 	//check if it doesn't require any access at all
@@ -19,33 +16,59 @@
 
 /obj/item/proc/GetID() return
 
-/obj/proc/check_access(obj/item/I)
-	//These generations have been moved out of /obj/New() because they were slowing down the creation of objects that never even used the access system.
-	var/i
+/obj/proc/text2access(access_text)
+	. = list()
+	if(!access_text)
+		return
+	var/list/split = splittext(access_text,";")
+	for(var/x in split)
+		var/n = text2num(x)
+		if(n)
+			. += n
+
+/obj/proc/gen_access()
+	if(req_access_txt)
+		req_access = list()
+		for(var/a in text2access(req_access_txt))
+			req_access += a
+		req_access_txt = null
 	if(!req_access)
 		req_access = list()
 
+	if(req_one_access_txt)
+		req_one_access = list()
+		for(var/a in text2access(req_one_access_txt))
+			req_one_access += a
+		req_one_access_txt = null
 	if(!req_one_access)
 		req_one_access = list()
 
+/obj/proc/check_access(obj/item/I)
+	//These generations have been moved out of /obj/New() because they were slowing down the creation of objects that never even used the access system.
+	gen_access()
 	if(!islist(req_access)) return 1//something's very wrong
 	var/L[] = req_access
 	if(!L.len && (!req_one_access || !req_one_access.len)) return 1//no requirements
 	if(!I) return
 
-	var/A[] = I.GetAccess()
-	for(i in req_access)
-		if(!(i in A)) return//doesn't have this access
+	var/list/A = I.GetAccess()
+	for(var/i in req_access)
+		if(!(i in A))
+			return FALSE//doesn't have this access
 
 	if(req_one_access && req_one_access.len)
-		for(i in req_one_access)
-			if(i in A) return 1//has an access from the single access list
-		return
-	return 1
+		for(var/i in req_one_access)
+			if(i in A)
+				return TRUE//has an access from the single access list
+		return FALSE
+	return TRUE
 
 /obj/proc/check_access_list(L[])
+	gen_access()
 	if(!req_access  && !req_one_access)	return 1
 	if(!islist(req_access)) return 1
+	if(!req_access.len && !islist(req_one_access))
+		return TRUE
 	if(!req_access.len && (!req_one_access || !req_one_access.len))	return 1
 	if(!islist(L))	return
 	var/i

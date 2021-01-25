@@ -121,11 +121,11 @@
 /obj/effect/alien/resin/sticky/Crossed(atom/movable/AM)
 	. = ..()
 	var/mob/living/carbon/human/H = AM
-	if(istype(H) && !H.lying && !H.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))
+	if(istype(H) && !H.lying && !H.ally_of_hivenumber(hivenumber))
 		H.next_move_slowdown = H.next_move_slowdown + slow_amt
 		return .
 	var/mob/living/carbon/Xenomorph/X = AM
-	if(istype(X) && X.hivenumber != hivenumber)
+	if(istype(X) && !X.ally_of_hivenumber(hivenumber))
 		X.next_move_slowdown = X.next_move_slowdown + (slow_amt * WEED_XENO_SPEED_MULT)
 		return .
 
@@ -135,6 +135,16 @@
 	desc = "A thin layer of disgusting sticky slime."
 	health = 7
 	slow_amt = 4
+
+// Gardener drone uses this.
+/obj/effect/alien/resin/sticky/thin/weak
+	name = "Weak sticky resin"
+	desc = "A thin and weak layer of disgusting sticky slime. It looks like it's already melting..."
+	var/duration = 20 SECONDS
+
+/obj/effect/alien/resin/sticky/thin/weak/Initialize(...)
+	. = ..()
+	QDEL_IN(src, duration)
 
 /obj/effect/alien/resin/sticky/fast
 	name = "fast resin"
@@ -183,6 +193,8 @@
 	return 1
 
 /obj/structure/mineral_door/resin/attackby(obj/item/W, mob/living/user)
+	if(W.pry_capable == IS_PRY_CAPABLE_FORCE && user.a_intent != INTENT_HARM)
+		return // defer to item afterattack
 	if(!(W.flags_item & NOBLUDGEON) && W.force)
 		user.animation_attack_on(src)
 		health -= W.force*RESIN_MELEE_DAMAGE_MULTIPLIER
@@ -200,7 +212,7 @@
 		return
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		if (C.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))
+		if (C.ally_of_hivenumber(hivenumber))
 			return ..()
 
 /obj/structure/mineral_door/resin/Open()
@@ -269,7 +281,7 @@
 	if(!density)
 		severity *= EXPLOSION_DAMAGE_MODIFIER_DOOR_OPEN
 
-	health -= (severity * RESIN_EXPLOSIVE_MULTIPLIER)
+	health -= (severity * RESIN_EXPLOSIVE_MULTIPLIER * EXPLOSION_DAMAGE_MULTIPLIER_DOOR)
 	healthcheck()
 
 	if(src)

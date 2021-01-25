@@ -30,11 +30,11 @@
 	desc = "A black folder. It is decorated with stripes."
 	icon_state = "folder_black_green"
 
-/obj/item/folder/black_random/New()
+/obj/item/folder/black_random/Initialize()
 	. = ..()
 	icon_state = "folder_black[pick("_red", "_green", "_blue", "_yellow", "_white")]"
 
-/obj/item/folder/New()
+/obj/item/folder/Initialize()
 	. = ..()
 	if(updateicon)
 		update_icon()
@@ -79,7 +79,7 @@
 		if(href_list["remove"])
 			var/obj/item/P = locate(href_list["remove"])
 			if(P && (P.loc == src) && istype(P))
-				P.loc = usr.loc
+				P.forceMove(usr.loc)
 				usr.put_in_hands(P)
 
 		else if(href_list["read"])

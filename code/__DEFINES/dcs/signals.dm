@@ -7,6 +7,8 @@
 // start global signals with "!", this used to be necessary but now it's just a formatting choice
 
 ///from base of datum/controller/subsystem/mapping/proc/add_new_zlevel(): (list/args)
+#define COMSIG_GLOB_NEW_Z "!new_z"
+///from base of datum/controller/subsystem/mapping/proc/add_new_zlevel(): (list/args)
 #define COMSIG_GLOB_VEHICLE_ORDERED "!vehicle_ordered"
 ///from /datum/game_mode/proc/pre_setup
 #define COMSIG_GLOB_MODE_PRESETUP "!mode_presetup"
@@ -16,8 +18,22 @@
 #define COMSIG_GLOB_MARINE_DEATH "!marine_death"
 ///from /mob/living/carbon/Xenomorph/death
 #define COMSIG_GLOB_XENO_DEATH "!xeno_death"
+#define COMSIG_GLOB_REMOVE_VOTE_BUTTON "!remove_vote_button"
+
+#define COMSIG_GLOB_ENTITY_ROUND_INIT "!entity_round_init"
+
+#define COMSIG_GLOB_CLIENT_LOGIN "!client_login"
+
+#define COMSIG_GLOB_MOB_LOGIN "!mob_login"
 
 //////////////////////////////////////////////////////////////////
+
+#define COMSIG_CLIENT_LMB_DOWN "client_lmb_down"
+#define COMSIG_CLIENT_LMB_UP "client_lmb_up"
+#define COMSIG_CLIENT_LMB_DRAG "client_lmb_drag"
+
+#define COMSIG_CLIENT_KEY_DOWN "client_key_down"
+#define COMSIG_CLIENT_KEY_UP "client_key_up"
 
 // /datum signals
 /// when a component is added to a datum: (/datum/component)
@@ -35,6 +51,11 @@
 #define COMSIG_ELEMENT_ATTACH "element_attach"
 /// fires on the target datum when an element is attached to it  (/datum/element)
 #define COMSIG_ELEMENT_DETACH "element_detach"
+/// From /atom/proc/Decorate
+#define COMSIG_ATOM_DECORATED "atom_decorated"
+
+///from base of atom/setDir(): (old_dir, new_dir). Called before the direction changes.
+#define COMSIG_ATOM_DIR_CHANGE "atom_dir_change"
 
 // /mob signals
 /// From /obj/structure/machinery/door/airlock/proc/take_damage
@@ -67,19 +88,21 @@
 #define COMSIG_MOB_APC_CUT_WIRE "mob_apc_cut_wire"
 /// From /obj/structure/machinery/power/apc/proc/pulse
 #define COMSIG_MOB_APC_POWER_PULSE "mob_apc_power_pulse"
-/// From /obj/structure/machinery/power/apc/proc/pulse
-#define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
 /// From /projectiles/updated_projectiles/guns/proc/fire
-#define COMSIG_MOB_FIRED_GUN_ATTACHMENT "mob_fired_gun_attachment"
+#define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
 /// From /projectiles/updated_projectiles/guns/proc/fire_attachment
-#define COMSIG_MOB_DEATH "mob_death"
+#define COMSIG_MOB_FIRED_GUN_ATTACHMENT "mob_fired_gun_attachment"
 /// From /mob/proc/death
-#define COMSIG_MOB_GETTING_UP "mob_getting_up"
+#define COMSIG_MOB_DEATH "mob_death"
 /// From /mob/proc/update_canmove()
-
-
+#define COMSIG_MOB_GETTING_UP "mob_getting_up"
 /// For when a mob is dragged
 #define COMSIG_MOB_DRAGGED "mob_dragged"
+/// From /mob/living/verb/resist()
+#define COMSIG_MOB_RESISTED "mob_resist"
+
+/// from /mob/living/carbon/human/attack_alien()
+#define COMSIG_HUMAN_ALIEN_ATTACK "human_alien_attack"
 
 /// For when /mob/Move() is called
 #define COMSIG_MOB_MOVE "mob_move"
@@ -109,8 +132,22 @@
 #define COMSIG_MOB_PRE_CLICK "mob_pre_click"
 	#define COMPONENT_INTERRUPT_CLICK (1<<0)
 
+#define COMSIG_MOB_LOGIN "mob_login"
+
 /// From /mob/living/rejuvenate
 #define COMSIG_LIVING_REJUVENATED "living_rejuvenated"
+/// From /mob/living/proc/IgniteMob
+#define COMSIG_LIVING_PREIGNITION "living_preignition"
+	#define COMPONENT_CANCEL_IGNITION (1<<0)
+
+/// From /obj/flamer_fire/Crossed
+#define COMSIG_LIVING_FLAMER_CROSSED "living_flamer_crossed"
+/// From /obj/flamer_fire/Initialize
+#define COMSIG_LIVING_FLAMER_FLAMED "living_flamer_flamed"
+	#define COMPONENT_NO_BURN	(1<<0)
+	#define COMPONENT_NO_IGNITE	(1<<1)
+/// From /obj/item/proc/unzoom
+#define COMSIG_LIVING_ZOOM_OUT "living_zoom_out"
 
 #define COMSIG_LIVING_SPEAK "living_speak"
 	#define COMPONENT_OVERRIDE_SPEAK (1<<0)
@@ -118,12 +155,19 @@
 /// From /obj/item/device/defibrillator/attack
 #define COMSIG_HUMAN_REVIVED "human_revived"
 /// From /mob/living/carbon/human/bullet_act
-#define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
+#define COMSIG_HUMAN_PRE_BULLET_ACT "human_pre_bullet_act"
 	#define COMPONENT_BULLET_NO_HIT (1<<0)
+/// From /obj/effect/decal/cleanable/blood/Crossed(): (amount, bcolor, dry_time_left)
+#define COMSIG_HUMAN_BLOOD_CROSSED "human_blood_crossed"
+#define COMSIG_HUMAN_CLEAR_BLOODY_FEET "human_clear_bloody_feet"
 
-#define COMSIG_XENOMORPH_OVERWATCH_XENO "xenomorph_overwatch_xeno"
-#define COMSIG_XENOMORPH_STOP_OVERWATCH	"xenomorph_stop_overwatch"
-#define COMSIG_XENOMORPH_STOP_OVERWATCH_XENO "xenomorph_stop_overwatch_xeno"
+/// from /mob/living/carbon/Xenomorph/attack_alien()
+#define COMSIG_XENO_ALIEN_ATTACK "xeno_alien_attack"
+#define COMSIG_XENO_OVERWATCH_XENO "xeno_overwatch_xeno"
+#define COMSIG_XENO_STOP_OVERWATCH	"xeno_stop_overwatch"
+#define COMSIG_XENO_STOP_OVERWATCH_XENO "xeno_stop_overwatch_xeno"
+#define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
+	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
 #define COMSIG_QUEEN_DISMOUNT_OVIPOSITOR "queen_dismount_ovipositor"
 
@@ -143,10 +187,17 @@
 #define COMSIG_ITEM_EQUIPPED "item_equipped"
 
 #define COMSIG_ITEM_UNEQUIPPED "item_unequipped"
+///from /obj/item/proc/unwield
+#define COMSIG_ITEM_UNWIELD "item_unwield"
 
 /// From /atom/movable/proc/launch_towards
 #define COMSIG_MOVABLE_PRE_THROW "movable_pre_throw"
 	#define COMPONENT_CANCEL_THROW (1<<0)
+///from base of atom/movable/Moved(): (/atom, dir, forced)
+#define COMSIG_MOVABLE_MOVED "movable_moved"
+/// From /atom/movable/Move(): (atom/NewLoc)
+#define COMSIG_MOVABLE_PRE_MOVE "movable_pre_move"
+	#define COMPONENT_CANCEL_MOVE (1<<0)
 
 ///from /obj/item/device/agents/floppy_disk/proc/insert_drive
 #define COMSIG_AGENT_DISK_INSERTED "agent_disk_inserted"
@@ -166,7 +217,35 @@
 	#define COMPONENT_TURF_ALLOW_MOVEMENT (1<<0)
 	#define COMPONENT_TURF_DENY_MOVEMENT  (1<<1)
 
+#define COMSIG_MOB_MOVE	"mob_move"
+#define COMSIG_MOB_POST_MOVE "mob_post_move"
+
 #define COMSIG_MOB_POST_UPDATE_CANMOVE "mob_can_move"
 
 #define COMSIG_GRENADE_PRE_PRIME "grenade_pre_prime"
 	#define COMPONENT_GRENADE_PRIME_CANCEL	(1<<0)
+
+#define COMSIG_ITEM_PICKUP "item_pickup"
+
+#define COMSIG_MOVABLE_PRE_LAUNCH "movable_pre_launch"
+	#define COMPONENT_LAUNCH_CANCEL (1<<0)
+
+// Return non-zero value to override original behaviour
+#define COMSIG_MOB_SCREECH_ACT "mob_screech_act"
+	#define COMPONENT_SCREECH_ACT_CANCEL (1<<0)
+
+// Bullet trait signals
+/// Called when a bullet hits a living mob
+#define COMSIG_BULLET_ACT_LIVING "bullet_act_living"
+/// Called when a bullet hits a human
+#define COMSIG_BULLET_ACT_HUMAN "bullet_act_human"
+/// Called when a bullet hits a xenomorph
+#define COMSIG_BULLET_ACT_XENO "bullet_act_xeno"
+/// Apply any effects to the bullet (primarily through bullet traits)
+/// based on the user
+#define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
+/// Called when checking IFF as bullet scans for targets
+#define COMSIG_BULLET_CHECK_IFF "bullet_check_iff"
+
+/// For any additional things that should happen when a xeno's melee_attack_additional_effects_self() proc is called
+#define COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF "xeno_slash_additional_effects_self"

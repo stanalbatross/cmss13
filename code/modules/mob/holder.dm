@@ -5,8 +5,8 @@
 	icon = 'icons/obj/objects.dmi'
 	flags_equip_slot = SLOT_HEAD
 
-/obj/item/holder/New()
-	..()
+/obj/item/holder/Initialize()
+	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/holder/Destroy()
@@ -41,7 +41,7 @@
 	if(!holder_type)
 		return
 	var/obj/item/holder/H = new holder_type(loc)
-	src.loc = H
+	src.forceMove(H)
 	H.name = loc.name
 	H.attack_hand(grabber)
 
@@ -79,3 +79,9 @@
 /obj/item/holder/mouse/Doc
 	name = "Doc"
 	desc = "Senior researcher of the Almayer. Likes: cheese, experiments, explosions."
+
+/obj/item/holder/George
+	name = "George"
+	desc = "A caracal with very floppy ears. Its mere presence inspires fear."
+	icon_state = "floppa"
+	flags_equip_slot = null

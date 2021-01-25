@@ -20,8 +20,8 @@
 	var/width = 3
 	health = 50
 
-/obj/structure/grille/fence/New()
-	..()
+/obj/structure/grille/fence/Initialize()
+	. = ..()
 
 	if(width > 1)
 		if(dir in list(EAST, WEST))
@@ -37,7 +37,7 @@
 	//height=42
 	icon='icons/obj/structures/props/fence_ew.dmi'
 	icon_state = "fence-ew"
-	dir = 4
+	dir = EAST
 
 /obj/structure/grille/fence/north_south
 	//width=80

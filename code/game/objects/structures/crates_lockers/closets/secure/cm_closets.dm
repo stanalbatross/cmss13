@@ -1,6 +1,6 @@
 GLOBAL_LIST_EMPTY(co_secure_boxes)
 
-/**********************Marine Gear**************************/
+//**********************Marine Gear**************************/
 
 //MARINE COMMAND CLOSET
 /obj/structure/closet/secure_closet/commander
@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(co_secure_boxes)
 	icon_off = "secure_closed_commander"
 
 /obj/structure/closet/secure_closet/commander/Initialize()
-	..()
+	. = ..()
 	new /obj/item/storage/mateba_case/captain(src)
 	new /obj/item/storage/backpack/mcommander(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
@@ -100,7 +100,7 @@ GLOBAL_LIST_EMPTY(co_secure_boxes)
 	new /obj/item/storage/belt/shotgun(src)
 
 /obj/structure/closet/secure_closet/staff_officer/intel/select_gamemode_equipment(gamemode)
-	if (map_tag in MAPS_COLD_TEMP)
+	if (SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 /obj/structure/closet/secure_closet/pilot_officer
@@ -126,11 +126,11 @@ GLOBAL_LIST_EMPTY(co_secure_boxes)
 	new /obj/item/clothing/glasses/sunglasses(src)
 
 /obj/structure/closet/secure_closet/pilot_officer/select_gamemode_equipment(gamemode)
-	if (map_tag in MAPS_COLD_TEMP)
+	if (SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 		new /obj/item/clothing/mask/rebreather/scarf(src)
 		new /obj/item/clothing/mask/rebreather/scarf(src)
 
-/**********************Military Police Gear**************************/
+//**********************Military Police Gear**************************/
 /obj/structure/closet/secure_closet/military_police
 	name = "military police's locker"
 	req_access = list(ACCESS_MARINE_BRIG)
@@ -233,7 +233,8 @@ GLOBAL_LIST_EMPTY(co_secure_boxes)
 /obj/structure/closet/secure_closet/medical_doctor/Initialize()
 	. = ..()
 	new /obj/item/storage/backpack/marine/satchel(src)
-	if(z != 1) new /obj/item/device/radio/headset/almayer/doc(src)
+	if(!is_ground_level(z))
+		new /obj/item/device/radio/headset/almayer/doc(src)
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/storage/belt/medical/full(src)
@@ -247,7 +248,7 @@ GLOBAL_LIST_EMPTY(co_secure_boxes)
 	new /obj/item/clothing/glasses/hud/health(src)
 
 /obj/structure/closet/secure_closet/medical_doctor/select_gamemode_equipment(gamemode)
-	if (map_tag in MAPS_COLD_TEMP)
+	if (SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 		new /obj/item/clothing/suit/storage/snow_suit/doctor(src)
 		new /obj/item/clothing/mask/rebreather/scarf(src)
 

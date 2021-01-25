@@ -99,8 +99,8 @@ Class Procs:
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	var/power_machine = FALSE //Whether the machine should process on power, or normal processor
 
-/obj/structure/machinery/New()
-	..()
+/obj/structure/machinery/Initialize(mapload, ...)
+	. = ..()
 	machines += src
 	var/area/A = get_area(src)
 	if(A)
@@ -252,7 +252,7 @@ Class Procs:
 
 /obj/structure/machinery/proc/state(var/msg)
   for(var/mob/O in hearers(src, null))
-    O.show_message("[htmlicon(src, O)] [SPAN_NOTICE("[msg]")]", 2)
+    O.show_message("[icon2html(src, O)] [SPAN_NOTICE("[msg]")]", 2)
 
 /obj/structure/machinery/proc/ping(text=null)
   if (!text)
@@ -282,7 +282,7 @@ Class Procs:
 	for(var/obj/I in component_parts)
 		if(I.reliability != 100 && crit_fail)
 			I.crit_fail = 1
-		I.loc = loc
+		I.forceMove(loc)
 	qdel(src)
 	return 1
 

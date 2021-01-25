@@ -4,8 +4,14 @@
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
 	caste_whitelist = list("Carrier")
-	mutator_actions_to_remove = list("Use/Throw Facehugger","Emit Pheromones (30)","Plant Weeds (75)","Place resin hole (200)")
-	mutator_actions_to_add = list(/datum/action/xeno_action/activable/sacrifice_egg/radius_remember, /datum/action/xeno_action/activable/sacrifice_egg/radius_heal, /datum/action/xeno_action/activable/sacrifice_egg/radius_scream, /datum/action/xeno_action/activable/sacrifice_egg/radius_pheromones)
+	mutator_actions_to_remove = list("Use/Throw Facehugger","Emit Pheromones (30)","Plant Weeds (75)","Place resin hole (200)", "Retrieve Egg")
+	mutator_actions_to_add = list(
+		/datum/action/xeno_action/activable/sacrifice_egg/radius_remember,
+		/datum/action/xeno_action/activable/sacrifice_egg/radius_heal, //first macro
+		/datum/action/xeno_action/activable/sacrifice_egg/radius_scream, //second macro
+		/datum/action/xeno_action/activable/sacrifice_egg/radius_pheromones, //third macro
+		/datum/action/xeno_action/activable/retrieve_egg //fourth macro
+		)
 	behavior_delegate_type = /datum/behavior_delegate/carrier_shaman
 	keystone = TRUE
 
@@ -14,7 +20,8 @@
 	var/remembered_count = 0
 
 /datum/behavior_delegate/carrier_shaman/append_to_stat()
-    stat("Remembered:", "[remembered_count]")
+	. = list()
+	. += "Remembered: [remembered_count]"
 
 /datum/behavior_delegate/carrier_shaman/proc/reset_shaman_ability()
 	used_shaman_ability = FALSE
@@ -50,7 +57,7 @@
 	return !BD.used_shaman_ability
 
 /datum/action/xeno_action/activable/sacrifice_egg/proc/get_cooldown()
-	return SECONDS_10
+	return 10 SECONDS
 
 /datum/action/xeno_action/activable/sacrifice_egg/proc/get_gather_range()
 	return 4
@@ -77,6 +84,7 @@
 	ability_name = "adrenal healing"
 	macro_path = /datum/action/xeno_action/verb/verb_egg_sacr_heal
 	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_1
 	var/windup_delay = 25
 
 	var/heal_strength_base = 10 // in percent
@@ -193,12 +201,13 @@
 	ability_name = "frenzied scream"
 	macro_path = /datum/action/xeno_action/verb/verb_egg_sacr_scream
 	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_2
 	var/windup_delay = 30
 	var/initial_range = 3
 	var/maximum_range = 7
 	var/gain_per_xeno = 0.5
 	var/stun_timer = 2
-	var/stun_timeout = SECONDS_20
+	var/stun_timeout = 20 SECONDS
 
 /datum/action/xeno_action/verb/verb_egg_sacr_scream()
 	set category = "Alien"
@@ -313,6 +322,7 @@
 	ability_name = "adrenal pheromones"
 	macro_path = /datum/action/xeno_action/verb/verb_egg_sacr_scream
 	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_3
 	var/pheromone_strength_per_xeno = 0.5
 	var/pheromone_strength_base = 1
 	var/gather_range = 3
@@ -397,7 +407,7 @@
 	visible_message(SPAN_XENOWARNING("\The [src] begins to emit madness-inducing pheromones."), \
 		SPAN_XENOWARNING("You begin to emit all pheromones."), null, 5)
 
-	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/Carrier.proc/egg_sacr_pheromones_disable), SECONDS_30)
+	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/Carrier.proc/egg_sacr_pheromones_disable), 30 SECONDS)
 
 	return TRUE
 

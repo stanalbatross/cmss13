@@ -1,7 +1,7 @@
 // At minimum every mob has a hear_say proc.
 
 /mob/proc/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
-	
+
 	if(!client && !(mind && mind.current != src))
 		return
 
@@ -15,7 +15,7 @@
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
 	if (language && (language.flags & NONVERBAL))
 		if (!speaker || (src.sdisabilities & DISABILITY_BLIND || src.blinded) || !(speaker.z == z && get_dist(speaker, src) <= world_view_size))
-			message = stars(message)
+			message = language.scramble(message)
 
 	if(!say_understands(speaker,language))
 		if(istype(speaker,/mob/living/simple_animal))
@@ -24,6 +24,8 @@
 				message = pick(S.speak)
 			else
 				message = stars(message)
+		else if(language)
+			message = language.scramble(message)
 		else
 			message = stars(message)
 
@@ -39,18 +41,15 @@
 	if(italics)
 		message = "<i>[message]</i>"
 
-	var/mob/to_receive = src
-	if(mind && mind.current != src)
-		to_receive = mind.current
 
 	if(sdisabilities & DISABILITY_DEAF || ear_deaf)
 		if(speaker == src)
-			to_chat(to_receive, SPAN_WARNING("You cannot hear yourself speak!"))
+			to_chat(src, SPAN_WARNING("You cannot hear yourself speak!"))
 		else
-			to_chat(to_receive, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] talks but you cannot hear \him.")
+			to_chat(src, SPAN_LOCALSAY("<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] talks but you cannot hear them."))
 	else
-		to_chat(to_receive, "<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] [verb], <span class='[style]'>\"[message]\"</span>")
-		if (speech_sound && (get_dist(speaker, src) <= world_view_size && src.z == speaker.z) && client)
+		to_chat(src, SPAN_LOCALSAY("<span class='prefix'>[comm_paygrade][speaker_name]</span>[alt_name] [verb], <span class='[style]'>\"[message]\"</span>"))
+		if (speech_sound && (get_dist(speaker, src) <= world_view_size && src.z == speaker.z))
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
 			playsound_client(src.client, speech_sound, source, sound_vol, GET_RANDOM_FREQ)
 
@@ -78,6 +77,8 @@
 		if(istype(speaker,/mob/living/simple_animal))
 			var/mob/living/simple_animal/S = speaker
 			message = pick(S.speak)
+		else if(language)
+			message = language.scramble(message)
 		else
 			message = stars(message)
 
@@ -98,7 +99,7 @@
 		if(H.voice)
 			speaker_name = H.voice
 
-	
+
 	if(hard_to_hear)
 		speaker_name = "unknown"
 		comm_paygrade = ""
@@ -163,23 +164,19 @@
 		if(3)
 			fontsize_style = "large"
 
-	var/mob/to_receive = src
-	if(mind && mind.current != src)
-		to_receive = mind.current
-
 	if(sdisabilities & DISABILITY_DEAF || ear_deaf)
 		if(prob(20))
-			to_chat(to_receive, SPAN_WARNING("You feel your headset vibrate but can hear nothing from it!"))
+			to_chat(src, SPAN_WARNING("You feel your headset vibrate but can hear nothing from it!"), type = MESSAGE_TYPE_RADIO)
 	else if(track)
 		if(!command)
-			to_chat(to_receive, "[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
+			to_chat(src, "[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>", type = MESSAGE_TYPE_RADIO)
 		else
-			to_chat(to_receive, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
+			to_chat(src, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][track][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>", type = MESSAGE_TYPE_RADIO)
 	else
 		if(!command)
-			to_chat(to_receive, "[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>")
+			to_chat(src, "[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span>", type = MESSAGE_TYPE_RADIO)
 		else
-			to_chat(to_receive, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>")
+			to_chat(src, "<span class=\"[fontsize_style]\">[part_a][comm_paygrade][speaker_name][part_b][verb], <span class=\"[style]\">\"[message]\"</span></span></span></span>", type = MESSAGE_TYPE_RADIO)
 
 /mob/proc/hear_signlang(var/message, var/verb = "gestures", var/datum/language/language, var/mob/speaker = null)
 	var/comm_paygrade = ""
@@ -190,9 +187,9 @@
 		comm_paygrade = H.get_paygrade()
 
 	if(say_understands(speaker, language))
-		message = "<B>[comm_paygrade][src]</B> [verb], \"[message]\""
+		message = SPAN_EMOTE("<B>[comm_paygrade][src]</B> [verb], \"[message]\"")
 	else
-		message = "<B>[comm_paygrade][src]</B> [verb]."
+		message = SPAN_EMOTE("<B>[comm_paygrade][src]</B> [verb].")
 
 	if(src.status_flags & PASSEMOTES)
 		for(var/obj/item/holder/H in src.contents)
@@ -212,9 +209,9 @@
 			heardword = copytext(heardword,2)
 		if(copytext(heardword,-1) in punctuation)
 			heardword = copytext(heardword,1,length(heardword))
-		heard = "<span class = 'game_say'>...You hear something about...[heardword]</span>"
+		heard = SPAN_LOCALSAY("<span class = 'game_say'>...You hear something about...[heardword]</span>")
 
 	else
-		heard = "<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>"
+		heard = SPAN_LOCALSAY("<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>")
 
 	to_chat(src, heard)

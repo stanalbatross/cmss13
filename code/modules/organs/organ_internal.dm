@@ -1,8 +1,8 @@
 #define PROCESS_ACCURACY 10
 
-/****************************************************
+/*
 				INTERNAL ORGANS
-****************************************************/
+*/
 
 
 /datum/internal_organ
@@ -25,7 +25,7 @@
 /datum/internal_organ/process()
 	if(!owner && !organ_holder)
 		qdel(src)
-	
+
 	return 0
 
 /datum/internal_organ/proc/rejuvenate()
@@ -105,9 +105,9 @@
 	min_bruised_damage = 15
 	min_broken_damage = 35
 
-/****************************************************
+/*
 				INTERNAL ORGANS TYPES
-****************************************************/
+*/
 
 /datum/internal_organ/heart // This is not set to vital because death immediately occurs in blood.dm if it is removed.
 	name = "heart"
@@ -127,8 +127,7 @@
 
 /datum/internal_organ/lungs/process()
 	..()
-
-	if(is_bruised() && !owner.reagents.has_reagent("peridaxon"))
+	if(is_bruised() && !owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
 		if(prob(2))
 			spawn owner.emote("me", 1, "coughs up blood!")
 			owner.drip(10)
@@ -176,7 +175,7 @@
 
 		// Get the effectiveness of the liver.
 		var/filter_effect = 3
-		if(!owner.reagents.has_reagent("peridaxon"))
+		if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
 			if(is_bruised())
 				filter_effect -= 1
 			if(is_broken())
@@ -193,7 +192,7 @@
 				owner.reagents.remove_reagent(R.id, R.custom_metabolism*filter_effect)
 
 		//Deal toxin damage if damaged
-		if(!owner.reagents.has_reagent("peridaxon"))
+		if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
 			if(is_bruised() && prob(25))
 				owner.apply_damage(0.1 * (damage/2), TOX)
 			else if(is_broken() && prob(50))
@@ -212,7 +211,7 @@
 /datum/internal_organ/kidneys/process()
 	..()
 	//Deal toxin damage if damaged
-	if(!owner.reagents.has_reagent("peridaxon"))
+	if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
 		if(is_bruised() && prob(25))
 			owner.apply_damage(0.1 * (damage/3), TOX)
 		else if(is_broken() && prob(50))
@@ -247,7 +246,7 @@
 
 /datum/internal_organ/eyes/process() //Eye damage replaces the old eye_stat var.
 	..()
-	if(!owner.reagents.has_reagent("peridaxon"))
+	if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
 		if(is_bruised())
 			owner.eye_blurry = 20
 		if(is_broken())
@@ -258,7 +257,7 @@
 	removed_type = /obj/item/organ/eyes/prosthetic
 
 /datum/internal_organ/proc/remove(var/mob/user)
-	if(!removed_type) 
+	if(!removed_type)
 		return 0
 
 	var/obj/item/organ/removed_organ = new removed_type(get_turf(user), src)

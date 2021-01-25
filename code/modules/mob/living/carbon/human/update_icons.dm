@@ -7,10 +7,12 @@
 var/global/list/human_icon_cache = list()
 var/global/list/tail_icon_cache = list()
 
-/proc/overlay_image(icon,icon_state,color,flags)
+/proc/overlay_image(icon, icon_state, color, flags)
 	var/image/ret = image(icon,icon_state)
-	ret.color = color
-	ret.appearance_flags = flags
+	var/mutable_appearance/MA = new(ret)
+	MA.color = color
+	MA.appearance_flags = flags
+	ret.appearance = MA
 	return ret
 
 /*
@@ -76,6 +78,7 @@ There are several things that need to be remembered:
 /mob/living/carbon/human/apply_overlay(cache_index)
 	var/image/I = overlays_standing[cache_index]
 	if(I)
+		I.appearance_flags |= RESET_COLOR
 		overlays += I
 
 /mob/living/carbon/human/remove_overlay(cache_index)
@@ -164,7 +167,7 @@ There are several things that need to be remembered:
 		return
 
 	if(f_style && !(wear_mask && (wear_mask.flags_inv_hide & HIDELOWHAIR)))
-		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[f_style]
+		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[f_style]
 		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
 			var/image/facial_s = new/image("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			facial_s.layer = -FACIAL_LAYER
@@ -174,7 +177,7 @@ There are several things that need to be remembered:
 			apply_overlay(FACIAL_LAYER)
 
 	if(h_style && !(head && head.flags_inv_hide & HIDETOPHAIR))
-		var/datum/sprite_accessory/hair_style = hair_styles_list[h_style]
+		var/datum/sprite_accessory/hair_style = GLOB.hair_styles_list[h_style]
 		if(hair_style && (species.name in hair_style.species_allowed))
 			var/image/hair_s = new/image("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			hair_s.layer = -HAIR_LAYER
@@ -656,12 +659,12 @@ There are several things that need to be remembered:
 	switch(fire_stacks)
 		if(1 to 14)
 			I = image("icon"='icons/mob/humans/onmob/OnFire.dmi', "icon_state"="Standing_weak", "layer"= -FIRE_LAYER)
-			I.color = fire_reagent.burncolor
 		if(15 to INFINITY)
 			I = image("icon"='icons/mob/humans/onmob/OnFire.dmi', "icon_state"="Standing_medium", "layer"= -FIRE_LAYER)
-			I.color = fire_reagent.burncolor
 		else
 			return
+	I.appearance_flags |= RESET_COLOR|RESET_ALPHA
+	I.color = fire_reagent.burncolor
 	overlays_standing[FIRE_LAYER] = I
 	apply_overlay(FIRE_LAYER)
 

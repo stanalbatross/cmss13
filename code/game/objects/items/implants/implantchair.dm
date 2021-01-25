@@ -54,6 +54,9 @@
 
 
 	Topic(href, href_list)
+		. = ..()
+		if(.)
+			return
 		if((get_dist(src, usr) <= 1) || isRemoteControlling(usr))
 			if(href_list["implant"])
 				if(src.occupant)
@@ -92,7 +95,7 @@
 		if (src.occupant.client)
 			src.occupant.client.eye = src.occupant.client.mob
 			src.occupant.client.perspective = MOB_PERSPECTIVE
-		src.occupant.loc = src.loc
+		src.occupant.forceMove(src.loc)
 		if(injecting)
 			implant(src.occupant)
 			injecting = 0
@@ -126,7 +129,7 @@
 					O.show_message(SPAN_DANGER("[M] has been implanted by the [src.name]."), 1)
 
 				if(imp.implanted(M))
-					imp.loc = M
+					imp.forceMove(M)
 					imp.imp_in = M
 					imp.implanted = 1
 				implant_list -= imp

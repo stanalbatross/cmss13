@@ -8,7 +8,7 @@
 
 	free_for_ghosts(M)
 
-	message_staff(SPAN_NOTICE("[key_name_admin(usr)] freed [key_name(M)] for ghosts to take."))
+	message_staff("[key_name_admin(usr)] freed [key_name(M)] for ghosts to take.")
 
 /client/proc/free_for_ghosts(var/mob/living/M in GLOB.living_mob_list)
 	if(!ismob(M))
@@ -20,11 +20,11 @@
 	if(mind || client)
 		ghostize(FALSE)
 
-	freed_mob_list += src
+	GLOB.freed_mob_list += M
 
 /client/proc/free_all_mobs_in_view()
-	set name = "F: Free All Mobs - In View"
-	set category = "Event"
+	set name = "Free All Mobs"
+	set category = "Admin.InView"
 
 	if(!admin_holder || !(admin_holder.rights & R_ADMIN))
 		to_chat(src, "Only administrators may use this command.")

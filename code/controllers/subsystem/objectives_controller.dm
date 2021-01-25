@@ -14,7 +14,7 @@ SUBSYSTEM_DEF(objectives)
 	var/datum/cm_objective/analyze_chems/chems
 	var/bonus_admin_points = 0 //bonus points given by admins, doesn't increase the point cap, but does increase points for easier rewards
 
-	var/nextDChatAnnouncement = MINUTES_5 //5 minutes in
+	var/nextDChatAnnouncement = 5 MINUTES //5 minutes in
 
 	var/corpses = 15
 
@@ -57,11 +57,10 @@ SUBSYSTEM_DEF(objectives)
 	var/vial_boxes = 20
 
 	//A stub of tweaking item spawns based on map
-	switch(map_tag)
-		if(MAP_CORSAT)
-			vial_boxes = 30
-			research_papers = 30
-			experimental_devices = 20
+	if(SSmapping.configs[GROUND_MAP].map_name == MAP_CORSAT)
+		vial_boxes = 30
+		research_papers = 30
+		experimental_devices = 20
 
 	//Calculating document ratios so we don't end up with filing cabinets holding 10 documents because there are few filing cabinets
 	var/relative_document_ratio_close = objective_spawn_close_documents.len / objective_spawn_close.len
@@ -111,15 +110,16 @@ SUBSYSTEM_DEF(objectives)
 
 	var/obj/effect/landmark/corpsespawner/spawnpoint
 	for(var/i = 0 to corpses)
-		spawnpoint = pick(objective_spawn_corpse)
+		spawnpoint = pick_n_take(objective_spawn_corpse)
 
 		//Creates a mob and checks for gear in each slot before attempting to equip it.
 		var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint.loc)
 		M.create_hud() //Need to generate hud before we can equip anything apparently...
 		arm_equipment(M, "Corpse - [spawnpoint.name]", TRUE, FALSE)
 
-		LAZYREMOVE(objective_spawn_corpse, spawnpoint)
 		qdel(spawnpoint)
+		if(!length(objective_spawn_corpse))
+			break
 
 	for(var/obj/effect/landmark/corpsespawner/C in objective_spawn_corpse)
 		qdel(C)
@@ -189,7 +189,7 @@ SUBSYSTEM_DEF(objectives)
 
 
 /datum/controller/subsystem/objectives/proc/connect_objectives()
-	for(var/datum/cm_objective/C in cm_objectives)
+	for(var/datum/cm_objective/C in objectives)
 		if(!(C in objectives))
 			objectives += C
 		if(C.objective_flags & OBJ_PROCESS_ON_DEMAND)
@@ -422,7 +422,7 @@ SUBSYSTEM_DEF(objectives)
 	answer["total_points"] = total_points
 
 	if(world.time > nextDChatAnnouncement)
-		nextDChatAnnouncement += MINUTES_5 //5 minutes
+		nextDChatAnnouncement += 5 MINUTES //5 minutes
 
 		for(var/i in GLOB.observer_list)
 			var/mob/M = i

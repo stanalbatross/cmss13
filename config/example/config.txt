@@ -185,3 +185,51 @@ AUTOOOCMUTE
 # LOBBY_MUSIC 3 path/to/sound.ogg
 # LOBBY_MUSIC 4 path/to/sound.ogg
 # LOBBY_MUSIC 5 path/to/sound.ogg
+
+## LOBBY ART IMAGES
+## LOBBY_ART_IMAGES <icon_state>
+## LOBBY_ART_AUTHORS <author>
+#LOBBY_ART_IMAGES lobbyart1
+#LOBBY_ART_AUTHORS NicBoone
+#LOBBY_ART_IMAGES lobbyart2
+#LOBBY_ART_AUTHORS NicBoone
+#LOBBY_ART_IMAGES lobbyart3
+#LOBBY_ART_AUTHORS NicBoone
+#LOBBY_ART_IMAGES lobbyart4
+#LOBBY_ART_AUTHORS NicBoone
+#LOBBY_ART_IMAGES lobbyart5
+#LOBBY_ART_AUTHORS NicBoone
+#LOBBY_ART_IMAGES lobbyart6
+#LOBBY_ART_AUTHORS Triiodine
+#LOBBY_ART_IMAGES lobbyart7
+#LOBBY_ART_AUTHORS Triiodine
+#LOBBY_ART_IMAGES lobbyart8
+#LOBBY_ART_AUTHORS Triiodine
+#LOBBY_ART_IMAGES lobbyart9
+#LOBBY_ART_AUTHORS Unknown
+# originally for TGMC, asked author if we could use it too
+#LOBBY_ART_IMAGES lobbyart10
+#LOBBY_ART_AUTHORS LightCrabPress
+# originally drawing for discord banner
+#LOBBY_ART_IMAGES lobbyart11
+#LOBBY_ART_AUTHORS Redsting
+# commissioned by Neth
+#LOBBY_ART_IMAGES lobbyart12
+#LOBBY_ART_AUTHORS Substance20
+# commissioned by Neth
+#LOBBY_ART_IMAGES lobbyart13
+#LOBBY_ART_AUTHORS Substance20
+
+## System command that invokes youtube-dl, used by Play Internet Sound.
+## You can install youtube-dl with
+## "pip install youtube-dl" if you have pip installed
+## from https://github.com/rg3/youtube-dl/releases
+## or your package manager
+## The default value assumes youtube-dl is in your system PATH
+# INVOKE_YOUTUBEDL youtube-dl
+
+## Rounds needed before a gamemode vote is casted. Set to -1 to disable
+GAMEMODE_ROUNDS_NEEDED 5
+
+## Default gamemode to auto-switch back to after a round has concluded
+GAMEMODE_DEFAULT extended

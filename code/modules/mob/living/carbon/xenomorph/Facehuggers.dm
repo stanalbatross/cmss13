@@ -25,7 +25,7 @@
 	var/sterile = 0
 	var/strength = 5
 	var/attached = 0
-	var/lifecycle = SECONDS_10 //How long the hugger will survive outside of the egg, or carrier.
+	var/lifecycle = 10 SECONDS //How long the hugger will survive outside of the egg, or carrier.
 	var/leaping = 0 //Is actually attacking someone?
 	var/hivenumber = XENO_HIVE_NORMAL
 	var/flags_embryo = NO_FLAGS
@@ -49,8 +49,10 @@
 	Die()
 
 /obj/item/clothing/mask/facehugger/dropped()
-	set waitfor = 0
-	sleep(2)
+	addtimer(CALLBACK(src, .proc/do_drop), 2)
+	return ..()
+
+/obj/item/clothing/mask/facehugger/proc/do_drop()
 	var/obj/item/clothing/mask/facehugger/F
 	var/count = 0
 	for(F in get_turf(src))
@@ -140,6 +142,7 @@
 		Die()
 
 /obj/item/clothing/mask/facehugger/equipped(mob/M)
+	SHOULD_CALL_PARENT(FALSE) // ugh equip sounds
 	return
 
 /obj/item/clothing/mask/facehugger/Crossed(atom/target)
@@ -236,7 +239,7 @@
 		X.update_icons()
 
 	if(isturf(M.loc))
-		loc = M.loc //Just checkin
+		forceMove(M.loc )//Just checkin
 
 	var/cannot_infect //To determine if the hugger just rips off the protection or can infect.
 	if(ishuman(M))
@@ -258,7 +261,7 @@
 			if(!H.stat && H.dir != dir && prob(catch_chance)) //Not facing away
 				H.visible_message(SPAN_NOTICE("[H] snatches [src] out of the air and squashes it!"))
 				Die()
-				loc = H.loc
+				forceMove(H.loc)
 				return
 
 		if(H.head && !(H.head.flags_item & NODROP))
@@ -306,7 +309,7 @@
 				W.anti_hug = max(0, --W.anti_hug)
 
 		if(!cannot_infect)
-			loc = target
+			forceMove(target)
 			icon_state = initial(icon_state)
 			target.equip_to_slot(src, WEAR_FACE)
 			target.contents += src //Monkey sanity check - Snapshot
@@ -364,7 +367,7 @@
 	if(round_statistics && ishuman(target))
 		round_statistics.total_huggers_applied++
 
-/obj/item/clothing/mask/facehugger/proc/check_lifecycle(var/delay = SECONDS_5)
+/obj/item/clothing/mask/facehugger/proc/check_lifecycle(var/delay = 5 SECONDS)
 	if(lifecycle - delay <= 0)
 		if(isturf(loc))
 			var/obj/effect/alien/egg/E = locate() in loc
@@ -393,7 +396,7 @@
 		lifecycle -= delay
 		return TRUE
 
-/obj/item/clothing/mask/facehugger/proc/GoActive(var/delay = SECONDS_5)
+/obj/item/clothing/mask/facehugger/proc/GoActive(var/delay = 5 SECONDS)
 	set waitfor = 0
 
 	if(stat == DEAD)
@@ -406,7 +409,7 @@
 	sleep(delay)
 	if(stat != CONSCIOUS || isnull(loc)) //Make sure we're conscious and not idle or dead.
 		return
-	
+
 	if(check_lifecycle(delay))
 		leap_at_nearest_target()
 		.()
@@ -430,7 +433,7 @@
 	icon_state = "[initial(icon_state)]_dead"
 	stat = DEAD
 
-	visible_message("[htmlicon(src, viewers(src))] <span class='danger'>\The [src] curls up into a ball!</span>")
+	visible_message("[icon2html(src, viewers(src))] <span class='danger'>\The [src] curls up into a ball!</span>")
 	playsound(src.loc, 'sound/voice/alien_facehugger_dies.ogg', 25, 1)
 
 	if(ismob(loc)) //Make it fall off the person so we can update their icons. Won't update if they're in containers thou
@@ -442,7 +445,7 @@
 	addtimer(CALLBACK(src, .proc/do_die), 3 MINUTES)
 
 /obj/item/clothing/mask/facehugger/proc/do_die()
-	visible_message("[htmlicon(src, viewers(src))] <span class='danger'>\The [src] decays into a mass of acid and chitin.</span>")
+	visible_message("[icon2html(src, viewers(src))] <span class='danger'>\The [src] decays into a mass of acid and chitin.</span>")
 	qdel(src)
 
 /proc/CanHug(mob/living/carbon/M, var/hivenumber)
@@ -455,7 +458,7 @@
 			if(embryo.hivenumber == hivenumber)
 				return
 
-	if(M.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))
+	if(M.ally_of_hivenumber(hivenumber))
 		return
 
 	//Already have a hugger? NOPE

@@ -59,7 +59,7 @@
 			else
 				Slow(powerfactor_value/3)
 
-/mob/living/carbon/Xenomorph/apply_armoured_damage(var/damage = 0, var/armour_type = ARMOR_MELEE, var/damage_type = BRUTE, var/def_zone = null, var/penetration = 0, var/armour_break_pr_pen = 0, var/armour_break_flat = 0)
+/mob/living/carbon/Xenomorph/apply_armoured_damage(var/damage = 0, var/armour_type = ARMOR_MELEE, var/damage_type = BRUTE, var/def_zone = null, var/penetration = 0, var/armour_break_pr_pen = 0, var/armour_break_flat = 0, var/effectiveness_mult = 1)
 	if(damage <= 0)
 		return ..(damage, armour_type, damage_type, def_zone)
 
@@ -67,8 +67,8 @@
 	if(armour_type == ARMOR_MELEE)
 		armour_config = GLOB.xeno_melee
 
-	var/modified_damage = armor_damage_reduction(armour_config, damage, armor_deflection + armor_deflection_buff, penetration, armour_break_pr_pen, armour_break_flat)
-	var/armor_punch = armor_break_calculation(armour_config, damage, armor_deflection + armor_deflection_buff, penetration, armour_break_pr_pen, armour_break_flat, armor_integrity)
+	var/modified_damage = armor_damage_reduction(armour_config, damage, (armor_deflection + armor_deflection_buff) * effectiveness_mult, penetration, armour_break_pr_pen, armour_break_flat)
+	var/armor_punch = armor_break_calculation(armour_config, damage, (armor_deflection + armor_deflection_buff) * effectiveness_mult, penetration, armour_break_pr_pen, armour_break_flat, armor_integrity)
 	apply_armorbreak(armor_punch)
 
 	apply_damage(modified_damage, damage_type)
@@ -93,19 +93,23 @@
 	if(damage > 0 && stat == DEAD)
 		return
 
+	var/shielded = FALSE
 	if(xeno_shields.len != 0 && damage > 0)
+		shielded = TRUE
 		for(var/datum/xeno_shield/XS in xeno_shields)
 			damage = XS.on_hit(damage)
 
 			if(damage > 0)
 				XS.on_removal()
-				xeno_shields -= XS
 				QDEL_NULL(XS)
 
 			if(damage == 0)
 				return
 
 		overlay_shields()
+
+	if(shielded) // We were shielded, but damage went through.
+		playsound(src, "shield_shatter", 50, 1)
 
 	switch(damagetype)
 		if(BRUTE)
@@ -119,8 +123,8 @@
 
 	return 1
 
-#define XENO_ARMOR_BREAK_PASS_TIME SECONDS_1 / 2
-#define XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME SECONDS_2
+#define XENO_ARMOR_BREAK_PASS_TIME 0.5 SECONDS
+#define XENO_ARMOR_BREAK_25PERCENT_IMMUNITY_TIME 2 SECONDS
 
 /mob/living/carbon/Xenomorph/var/armor_break_to_apply = 0
 /mob/living/carbon/Xenomorph/proc/apply_armorbreak(armorbreak = 0)
@@ -165,7 +169,7 @@
 	updatehealth()
 
 /mob/living/carbon/Xenomorph/proc/check_blood_splash(damage = 0, damtype = BRUTE, chancemod = 0, radius = 1)
-	if(!damage || world.time < acid_splash_last + acid_splash_cooldown ||map_tag == MAP_WHISKEY_OUTPOST)
+	if(!damage || world.time < acid_splash_last + acid_splash_cooldown || SSticker?.mode?.hardcore)
 		return FALSE
 	var/chance = 20 //base chance
 	if(damtype == BRUTE) chance += 5
@@ -204,4 +208,5 @@
 				if(prob(60) && !victim.stat && pain.feels_pain)
 					victim.emote("scream") //Topkek
 				victim.take_limb_damage(0, rand(8, 12)) //Sizzledam! This automagically burns a random existing body part.
+				victim.add_blood(get_blood_color(), BLOOD_BODY)
 				acid_splash_last = world.time

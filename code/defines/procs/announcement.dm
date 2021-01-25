@@ -20,7 +20,7 @@
 			if(isobserver(M))
 				continue
 			var/mob/living/carbon/X = M
-			if(!istype(X) || !X.allied_to_hivenumber(hivenumber, XENO_SLASH_RESTRICTED))	//additionally filter out those of wrong hive
+			if(!istype(X) || !X.ally_of_hivenumber(hivenumber))	//additionally filter out those of wrong hive
 				targets.Remove(X)
 
 		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
@@ -94,7 +94,7 @@
 		if(AI.silent_announcement_cooldown >= world.time)
 			continue
 
-		AI.silent_announcement_cooldown = world.time + SECONDS_10
+		AI.silent_announcement_cooldown = world.time + 10 SECONDS
 		if(channel_prefix)
 			message = "[channel_prefix] [message]"
 		INVOKE_ASYNC(AI, /mob/living/silicon/decoy/ship_ai.proc/say, message)
@@ -130,5 +130,5 @@
 		if(istype(T, /mob/new_player))
 			continue
 
-		to_chat(T, "<br>[SPAN_ANNOUNCEMENT_HEADER(title)]<br><br>[SPAN_ANNOUNCEMENT_BODY(message)]<br>")
+		to_chat_spaced(T, html = "[SPAN_ANNOUNCEMENT_HEADER(title)]<br><br>[SPAN_ANNOUNCEMENT_BODY(message)]")
 		playsound_client(T.client, sound_to_play, T, vol = 45)

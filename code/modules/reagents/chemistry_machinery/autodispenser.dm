@@ -137,6 +137,9 @@
 		ui.open()
 
 /obj/structure/machinery/autodispenser/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(inoperable() || !ishuman(usr))
 		return
 	var/mob/living/carbon/human/user = usr
@@ -169,7 +172,7 @@
 		output_container.reagents.clear_reagents()
 	else if(href_list["setmulti"])
 		var/list/multipliers = list(0.5,1,2,3,4,5,6,10)
-		var/M = input("Set multiplier:","[src]") as null|anything in multipliers
+		var/M = tgui_input_list(usr, "Set multiplier:","[src]", multipliers)
 		if(M)
 			multiplier = M
 	else if(href_list["setcycle"])

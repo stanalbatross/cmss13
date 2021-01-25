@@ -61,7 +61,7 @@
 		var/obj/effect/beam/i_beam/I = new /obj/effect/beam/i_beam((holder ? holder.loc : loc) )
 		I.master = src
 		I.density = 1
-		I.dir = dir
+		I.setDir(dir)
 		step(I, I.dir)
 		if(I)
 			I.density = 0
@@ -85,7 +85,7 @@
 /obj/item/device/assembly/infra/Move()
 	var/t = dir
 	. = ..()
-	dir = t
+	setDir(t)
 	QDEL_NULL(first)
 	return
 
@@ -101,7 +101,7 @@
 	if((!secured)||(!on)||(cooldown > 0))	return 0
 	pulse(0)
 	if(!holder)
-		visible_message("[htmlicon(src, hearers(src))] *beep* *beep*")
+		visible_message("[icon2html(src, hearers(src))] *beep* *beep*")
 	cooldown = 2
 	spawn(10)
 		process_cooldown()
@@ -166,12 +166,12 @@
 	set category = "Object"
 	set src in usr
 
-	dir = turn(dir, 90)
+	setDir(turn(dir, 90))
 	return
 
 
 
-/***************************IBeam*********************************/
+//***************************IBeam*********************************/
 
 /obj/effect/beam/i_beam
 	name = "i beam"
@@ -223,7 +223,7 @@
 	var/obj/effect/beam/i_beam/I = new /obj/effect/beam/i_beam(loc)
 	I.master = master
 	I.density = 1
-	I.dir = dir
+	I.setDir(dir)
 	step(I, I.dir)
 
 	if(I)

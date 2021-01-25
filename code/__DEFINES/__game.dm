@@ -37,7 +37,7 @@
 
 #define PLAYERCOUNT_LOWPOP_MAP_LIMIT 130 // number of players before we switch to lowpop maps only (LV, BR, Prison)
 
-#define PREROUND_TIME 240 // time before the round starts
+#define PREROUND_TIME 360 // time before the round starts
 
 //A set of constants used to determine which type of mute an admin wishes to apply:
 //Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO etc = (MUTE_IC << 1)
@@ -126,15 +126,15 @@
 // and the time before it leaves again
 // note that this is multiplied by 10 in the shuttle controller. Hence, this is not defined in deciseconds but in real seconds
 
-#define DOCK_ATTEMPT_TIMEOUT 			SECONDS_20	//how long in ticks we wait before assuming the docking controller is broken or blown up.
-#define DROPSHIP_TRANSIT_DURATION		SECONDS_100	// 100 seconds
-#define DROPSHIP_CORSAT_DURATION		SECONDS_30  // 30 seconds
-#define ELEVATOR_TRANSIT_DURATION		SECONDS_5	// 5 seconds
-#define TRANSIT_POD_TRANSIT_DURATION	SECONDS_30 	// 30 seconds
-#define DROPSHIP_CRASH_TRANSIT_DURATION	MINUTES_3	// 180 seconds. 3 minutes
+#define DOCK_ATTEMPT_TIMEOUT 			20 SECONDS	//how long in ticks we wait before assuming the docking controller is broken or blown up.
+#define DROPSHIP_TRANSIT_DURATION		100 SECONDS	// 100 seconds
+#define DROPSHIP_CORSAT_DURATION		30 SECONDS  // 30 seconds
+#define ELEVATOR_TRANSIT_DURATION		5 SECONDS	// 5 seconds
+#define TRANSIT_POD_TRANSIT_DURATION	30 SECONDS 	// 30 seconds
+#define DROPSHIP_CRASH_TRANSIT_DURATION	3 MINUTES	// 180 seconds. 3 minutes
 
-#define SHUTTLE_RECHARGE  MINUTES_2 // 2 minutes
-#define ELEVATOR_RECHARGE SECONDS_15  // 15 seconds
+#define SHUTTLE_RECHARGE  2 MINUTES // 2 minutes
+#define ELEVATOR_RECHARGE 15 SECONDS  // 15 seconds
 
 //Shuttle moving status
 #define SHUTTLE_IDLE		0
@@ -174,30 +174,53 @@
 #define HOSTILE_STANCE_TIRED 5
 //=================================================
 
-#define ROUNDSTART_LOGOUT_REPORT_TIME MINUTES_10 //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
+#define ROUNDSTART_LOGOUT_REPORT_TIME 10 MINUTES //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
 
 //=================================================
 //Game mode related defines.
-
-var/list/accessable_z_levels = list("1" = 10, "3" = 10, "4" = 10, "5" = 70)
-//This list contains the z-level numbers which can be accessed via space travel and the percentile chances to get there.
 
 #define TRANSITIONEDGE	3 //Distance from edge to move to another z-level
 
 //Flags for zone sleeping
 #define GET_RANDOM_FREQ rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.
 
-//ceiling types
-#define CEILING_NONE 0
-#define CEILING_GLASS 1
-#define CEILING_METAL 2
-#define CEILING_UNDERGROUND 3
-#define CEILING_UNDERGROUND_METAL 4
-#define CEILING_DEEP_UNDERGROUND 5
-#define CEILING_DEEP_UNDERGROUND_METAL 5
-#define CEILING_REINFORCED_METAL 6
-#define CEILING_RESIN 7
-#define CEILING_MAX 7
+
+// Ceilings
+// Ceiling types
+// CEILING_PROTECTION_TIER_X are thresholds for blocking shit, everything else is
+// for handling ceiling behaviors (eg debris)
+
+/// Do not block any ordnance
+#define CEILING_NO_PROTECTION 0
+#define CEILING_NONE 0.1
+#define CEILING_GLASS 0.2
+
+/// Blocks mortar placement, lasing, and medevac
+#define CEILING_PROTECTION_TIER_1 1
+#define CEILING_METAL 1.1
+
+/// Blocks CAS signals, supply drops, fultoning, and mortar fire
+#define CEILING_PROTECTION_TIER_2 2
+#define CEILING_UNDERGROUND_ALLOW_CAS 2.1
+#define CEILING_UNDERGROUND_METAL_ALLOW_CAS 2.2
+
+/// Blocks CAS fire
+#define CEILING_PROTECTION_TIER_3 3
+#define CEILING_UNDERGROUND_BLOCK_CAS 3.1
+#define CEILING_UNDERGROUND_METAL_BLOCK_CAS 3.2
+
+/// Blocks OB fire
+#define CEILING_PROTECTION_TIER_4 4
+#define CEILING_DEEP_UNDERGROUND 4.1
+#define CEILING_DEEP_UNDERGROUND_METAL 4.2
+#define CEILING_REINFORCED_METAL 4.3
+#define CEILING_RESIN 4.4
+#define CEILING_MAX 4.5
+
+// Helpers
+/// Only use the CEILING_PROTECTION_TIER_X defines for `protection_level`
+#define CEILING_IS_PROTECTED(ceiling, protection_level) (ceiling >= protection_level)
+
 
 // Default font settings
 #define FONT_SIZE "5pt"
@@ -347,6 +370,9 @@ var/list/accessable_z_levels = list("1" = 10, "3" = 10, "4" = 10, "5" = 70)
 #define CHAT_TYPE_ALL ((1<<16) - 1) // this is so if we have newer flags, we still have ALL working. This will work for 16 first flags
 #define CHAT_TYPE_TARGETS_ME CHAT_TYPE_TAKING_HIT
 
+// Used for pre-setting tgchat message type as combat messages
+#define CHAT_TYPE_ALL_COMBAT (CHAT_TYPE_BEING_HIT|CHAT_TYPE_WEAPON_USE|CHAT_TYPE_ARMOR_DAMAGE|CHAT_TYPE_MELEE_HIT|CHAT_TYPE_COMBAT_ACTION|CHAT_TYPE_XENO_COMBAT|CHAT_TYPE_TAKING_HIT)
+
 // Window skin types
 #define TOGGLE_WINDOW_SKIN 1
 
@@ -394,11 +420,6 @@ var/list/accessable_z_levels = list("1" = 10, "3" = 10, "4" = 10, "5" = 70)
 
 	return dist
 
-//Update this whenever you need to take advantage of more recent byond features
-#define MIN_COMPILER_VERSION 513
-#define MIN_COMPILER_BUILD 1514
-#if DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD
-//Don't forget to update this part
-#error Your version of BYOND is too out-of-date to compile this project. Go to https://secure.byond.com/download and update.
-#error You need version 513.1514 or higher
-#endif
+// Beams
+/// For beams with an infinite duration (deletion is handled separately)
+#define BEAM_INFINITE_DURATION -1

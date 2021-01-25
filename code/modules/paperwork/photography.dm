@@ -6,7 +6,7 @@
  *		Photo Albums
  */
 
-/*******
+/*
 * film *
 *******/
 /obj/item/device/camera_film
@@ -18,7 +18,7 @@
 	w_class = SIZE_TINY
 
 
-/********
+/*
 * photo *
 ********/
 /obj/item/photo
@@ -75,7 +75,7 @@
 	return
 
 
-/**************
+/*
 * photo album *
 **************/
 /obj/item/storage/photo_album
@@ -109,7 +109,7 @@
 			return
 	return
 
-/*********
+/*
 * camera *
 *********/
 /obj/item/device/camera
@@ -131,8 +131,9 @@
 
 /obj/item/device/camera/verb/change_size()
 	set name = "Set Photo Focus"
+	set src in usr
 	set category = "Object"
-	var/nsize = input("Photo Size","Pick a size of resulting photo.") as null|anything in list(1,3,5,7)
+	var/nsize = tgui_input_list(usr, "Photo Size","Pick a size of resulting photo.", list(1,3,5,7))
 	if(nsize)
 		size = nsize
 		to_chat(usr, SPAN_NOTICE("Camera will now take [size]x[size] photos."))
@@ -255,7 +256,7 @@
 		viewer = user.client.eye
 	var/can_see = (dummy in viewers(world_view_size, viewer)) != null
 
-	dummy.loc = null
+	dummy.moveToNullspace()
 	dummy = null	//Alas, nameless creature	//garbage collect it instead
 	return can_see
 
@@ -304,7 +305,7 @@
 
 /obj/item/device/camera/proc/printpicture(mob/user, var/datum/picture/P)
 	var/obj/item/photo/Photo = new/obj/item/photo()
-	Photo.loc = user.loc
+	Photo.forceMove(user.loc)
 	if(!user.get_inactive_hand())
 		user.put_in_inactive_hand(Photo)
 	Photo.construct(P)

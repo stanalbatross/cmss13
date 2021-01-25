@@ -49,13 +49,12 @@
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/brown
 	icon_state = "vest_acid_brown"
 
-/obj/item/clothing/accessory/storage/black_vest/acid_harness/New()
+/obj/item/clothing/accessory/storage/black_vest/acid_harness/Initialize()
+	. = ..()
 	acid_core = new /obj/structure/machinery/acid_core(src)
 	acid_core.acid_harness = src
 	if(loc && loc.loc && ishuman(loc.loc))
 		acid_core.user = loc.loc
-	acid_core.start_processing()
-	. = ..()
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/attackby(obj/item/B, mob/living/user)
 	if(ismultitool(B))
@@ -129,13 +128,13 @@
 
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(!ishuman(usr))
 		return
 	var/mob/living/carbon/human/user = usr
 	if(user.stat || user.is_mob_restrained())
-		return
-	if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
-		to_chat(user, "You do not know how to configure these settings.")
 		return
 	if(href_list["inject_amount"])
 		acid_core.inject_amount = input("Set inject amount:","[src]") as num
@@ -166,7 +165,7 @@
 					acid_core.inject_vitals &= ~flag_value
 				else
 					acid_core.inject_vitals |= flag_value
-		
+
 
 	nanomanager.update_uis(src) // update all UIs attached to src
 	add_fingerprint(user)
@@ -194,6 +193,14 @@
 	var/boot_status = FALSE
 	var/battery_level = FALSE
 	var/rechecking = FALSE
+
+/obj/structure/machinery/acid_core/Initialize(mapload, ...)
+	..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/acid_core/LateInitialize()
+	. = ..()
+	start_processing()
 
 /obj/structure/machinery/acid_core/proc/boot_sequence()
 	if(!user || !acid_harness.battery)
@@ -266,7 +273,7 @@
 		return
 	check_battery(acid_harness.battery)
 	if(boot_status < 6)
-		addtimer(CALLBACK(src, .proc/boot_sequence, boot_status), SECONDS_2)
+		addtimer(CALLBACK(src, .proc/boot_sequence, boot_status), 2 SECONDS)
 		return
 	scan()
 
@@ -310,7 +317,7 @@
 	var/damage_toxin = user.getToxLoss()
 	var/damage_oxygen = user.getOxyLoss()
 	var/damage_clone = user.getCloneLoss()
-	
+
 	if(inject_damage_types & ACID_SCAN_DAMAGE_BRUTE && damage_brute > inject_damage_threshold)
 		damage_scan |= ACID_SCAN_DAMAGE_BRUTE
 	if(inject_damage_types & ACID_SCAN_DAMAGE_BURN && damage_burn > inject_damage_threshold)
@@ -321,7 +328,7 @@
 		damage_scan |= ACID_SCAN_DAMAGE_OXYGEN
 	if(inject_damage_types & ACID_SCAN_DAMAGE_CLONE && damage_clone > inject_damage_threshold)
 		damage_scan |= ACID_SCAN_DAMAGE_CLONE
-	
+
 	var/health = user.maxHealth - damage_brute - damage_burn - damage_toxin - damage_oxygen - damage_clone
 
 	//Organ damage
@@ -405,18 +412,18 @@
 			if(!(last_condition_scan & ACID_SCAN_CONDITION_ORGAN_FAILURE))
 				voice(ACID_SCAN_CONDITION_ORGAN_FAILURE)
 			break
-	
+
 	if(inject_conditions & ACID_SCAN_CONDITION_DEATH && vitals_scan & ACID_VITALS_DEAD)
 		condition_scan |= ACID_SCAN_CONDITION_DEATH
 	else if(inject_conditions & ACID_SCAN_CONDITION_DEFIB && vitals_scan < ACID_VITALS_DEAD && last_vitals_scan & ACID_SCAN_CONDITION_DEATH)
 		condition_scan |= ACID_SCAN_CONDITION_DEFIB //If we were previously dead and are now alive, we assume we got defibbed
-	
+
 	if(inject_conditions & ACID_SCAN_CONDITION_CONCUSSION && (user.knocked_down || user.knocked_out))
 		condition_scan |= ACID_SCAN_CONDITION_CONCUSSION
 
 	if(inject_conditions & ACID_SCAN_CONDITION_INTOXICATION && (user.dazed || user.slowed || user.confused || user.drowsyness || user.dizziness || user.druggy))
 		condition_scan |= ACID_SCAN_CONDITION_INTOXICATION
-	
+
 	//Compare
 	if(vitals_scan != last_vitals_scan)
 		voice(vitals_scan, TRUE)
@@ -444,11 +451,11 @@
 	for(var/datum/reagent/R in acid_harness.vial.reagents.reagent_list)
 		if(user.reagents.get_reagent_amount(R.id) + inject_amount > R.overdose) //Don't overdose our boi
 			voice("Notice: Injection trigger cancelled to avoid overdose.")
-			addtimer(CALLBACK(src, .proc/recheck_conditions), SECONDS_20 * inject_amount)
+			addtimer(CALLBACK(src, .proc/recheck_conditions), 20 SECONDS * inject_amount)
 			return
 	if(acid_harness.vial.reagents.trans_to(user, inject_amount))
 		playsound_client(user.client, 'sound/items/hypospray.ogg', null, ITEM_EQUIP_VOLUME)
 		voice("Medicine administered. [acid_harness.vial.reagents.total_volume] units remaining.")
-		addtimer(CALLBACK(src, .proc/recheck_conditions), SECONDS_20 * inject_amount)
+		addtimer(CALLBACK(src, .proc/recheck_conditions), 20 SECONDS * inject_amount)
 	if(!acid_harness.vial.reagents.total_volume)
 		voice("Warning: Medicinal capsule is empty, resupply required.")

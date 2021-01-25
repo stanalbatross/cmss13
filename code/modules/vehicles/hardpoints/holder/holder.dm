@@ -95,7 +95,7 @@
 			to_chat(user, SPAN_WARNING("You don't know what to do with \the [O] on \the [src]."))
 			return
 
-		var/chosen_hp = input("Select a hardpoint to remove") in (hardpoints + "Cancel")
+		var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Vehicle Hardpoint Removal", (hardpoints + "Cancel"))
 		if(chosen_hp == "Cancel")
 			return
 		var/obj/item/hardpoint/old = chosen_hp
@@ -120,7 +120,7 @@
 
 /obj/item/hardpoint/holder/proc/add_hardpoint(var/obj/item/hardpoint/H)
 	H.owner = owner
-	H.loc = src
+	H.forceMove(src)
 	LAZYADD(hardpoints, H)
 
 	H.rotate(turning_angle(H.dir, dir))
@@ -129,7 +129,7 @@
 	if(!hardpoints)
 		return
 	hardpoints -= H
-	H.loc = uninstall_to ? uninstall_to : get_turf(src)
+	H.forceMove(uninstall_to ? uninstall_to : get_turf(src))
 
 	H.reset_rotation()
 

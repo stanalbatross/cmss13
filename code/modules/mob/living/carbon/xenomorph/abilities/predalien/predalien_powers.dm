@@ -6,10 +6,10 @@
 
     if (!X.check_state())
         return
-    
+
     if(!check_and_use_plasma_owner())
         return
-    
+
     playsound(X.loc, screech_sound_effect, 75, 0, status = 0)
     X.visible_message(SPAN_XENOHIGHDANGER("[X] emits a guttural roar!"))
     X.create_shriekwave(color = "#FF0000")
@@ -25,17 +25,17 @@
                     YG.decloak(H)
 
                 YG.cloak_timer = xeno_cooldown * 0.1
-        else if(isXeno(C) && X.match_hivemind(C))
+        else if(isXeno(C) && X.can_not_harm(C))
             var/datum/behavior_delegate/predalien_base/P = X.behavior_delegate
             if(!istype(P))
                 continue
-            new /datum/effects/xeno_buff(C, X, ttl = (0.25 SECONDS * P.kills + SECONDS_3), bonus_damage = bonus_damage_scale * P.kills, bonus_speed = (bonus_speed_scale * P.kills))
+            new /datum/effects/xeno_buff(C, X, ttl = (0.25 SECONDS * P.kills + 3 SECONDS), bonus_damage = bonus_damage_scale * P.kills, bonus_speed = (bonus_speed_scale * P.kills))
 
 
     for(var/mob/M in view(X))
         if(M && M.client)
             shake_camera(M, 10, 1)
-    
+
     apply_cooldown()
 
     . = ..()
@@ -62,7 +62,7 @@
 
         var/real_cooldown = xeno_cooldown
 
-        xeno_cooldown = SECONDS_3
+        xeno_cooldown = 3 SECONDS
         apply_cooldown()
         xeno_cooldown = real_cooldown
         return
@@ -76,7 +76,7 @@
     X.create_stomp()
 
     for(var/mob/living/carbon/C in oview(round(P.kills * 0.5 + 2), X))
-        if(!X.match_hivemind(C) && C.stat != DEAD)
+        if(!X.can_not_harm(C) && C.stat != DEAD)
             C.frozen = 1
             C.update_canmove()
 
@@ -90,7 +90,7 @@
     for(var/mob/M in view(X))
         if(M && M.client)
             shake_camera(M, 0.2 SECONDS, 1)
-    
+
     apply_cooldown()
 
     . = ..()
@@ -104,8 +104,8 @@
 
     if (!X.check_state())
         return
-    
-    if (!isXenoOrHuman(A) || X.match_hivemind(A))
+
+    if (!isXenoOrHuman(A) || X.can_not_harm(A))
         to_chat(X, SPAN_XENOWARNING("You must target a hostile!"))
         return
 
@@ -146,7 +146,7 @@
         playsound(get_turf(H), 'sound/effects/gibbed.ogg', 30, 1)
         H.KnockDown(get_xeno_stun_duration(H, 0.5))
         H.apply_armoured_damage(get_xeno_damage_slash(H, base_damage + damage_scale * P.kills), ARMOR_MELEE, BRUTE, "chest", 20)
-        
+
         X.animation_attack_on(H)
         X.flick_attack_overlay(H, "slash")
 

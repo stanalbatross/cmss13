@@ -42,7 +42,7 @@
 
 /obj/structure/machinery/defenses/examine(mob/user)
 	. = ..()
-	
+
 	if(ishuman(user))
 		var/message = ""
 		message += SPAN_INFO("Multitool is used to disassemble it.")
@@ -77,7 +77,7 @@
 
 
 /obj/structure/machinery/defenses/attackby(var/obj/item/O as obj, mob/user as mob)
-	if(QDELETED(O)) 
+	if(QDELETED(O))
 		return
 
 	if(ismultitool(O))
@@ -97,11 +97,13 @@
 
 		if(!do_after(user, disassemble_time * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
 			return
-		
+
 		user.visible_message(SPAN_NOTICE("[user] disassembles [src]."), SPAN_NOTICE("You disassemble [src]."))
 
-		new handheld_type(loc)
+		var/obj/item/defenses/handheld/H = new handheld_type(loc)
 		playsound(loc, 'sound/mecha/mechmove04.ogg', 30, 1)
+		H.name = "handheld [src.name]" //fixed
+
 		qdel(src)
 		return
 
@@ -161,7 +163,7 @@
 	if(isYautja(user))
 		to_chat(user, SPAN_WARNING("You punch [src] but nothing happens."))
 		return
-		
+
 	add_fingerprint(user)
 
 	if(!anchored)
@@ -211,7 +213,7 @@
 	update_icon()
 
 /obj/structure/machinery/defenses/proc/destroyed_action()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_WARNING("The [name] starts to blink rapidly!")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts to blink rapidly!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 
 	sleep(5)
@@ -222,17 +224,17 @@
 
 /obj/structure/machinery/defenses/proc/damaged_action(var/damage)
 	if(health < health_max * 0.15)
-		visible_message(SPAN_DANGER("[htmlicon(src, viewers(src))] The [name] cracks and breaks apart!"))
+		visible_message(SPAN_DANGER("[icon2html(src, viewers(src))] The [name] cracks and breaks apart!"))
 		stat |= DEFENSE_DAMAGED
 		turned_on = FALSE
 
 /obj/structure/machinery/defenses/emp_act(var/severity)
 	if(turned_on)
 		if(prob(50))
-			visible_message("[htmlicon(src, viewers(src))] <span class='danger'>[src] beeps and buzzes wildly, flashing odd symbols on its screen before shutting down!</span>")
+			visible_message("[icon2html(src, viewers(src))] <span class='danger'>[src] beeps and buzzes wildly, flashing odd symbols on its screen before shutting down!</span>")
 			playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 			for(var/i = 1 to 6)
-				dir = pick(1, 2, 3, 4)
+				setDir(pick(1, 2, 3, 4))
 				sleep(2)
 			turned_on = FALSE
 	if(health > 0)

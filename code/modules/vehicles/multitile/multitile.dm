@@ -181,7 +181,7 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 	overlays.Cut()
 
 	if(health <= initial(health))
-		var/image/damage_overlay = image(icon, icon_state = "damaged_frame")
+		var/image/damage_overlay = image(icon, icon_state = "damaged_frame", layer = layer+0.1)
 		damage_overlay.alpha = 255 * (1 - (health / initial(health)))
 		overlays += damage_overlay
 
@@ -202,10 +202,14 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 			C[H.hdpt_layer] -= 1
 
 		for(var/i = 1 to amt_hardpoints)
-			overlays += hardpoint_images[i]
+			var/image/I = hardpoint_images[i]
+			// get_hardpoint_image() can return a list of images
+			if(istype(I))
+				I.layer = layer + (i*0.1)
+			overlays += I
 
 	if(clamped)
-		var/image/J = image(icon, icon_state = "vehicle_clamp")
+		var/image/J = image(icon, icon_state = "vehicle_clamp", layer = layer+0.1)
 		overlays += J
 
 //Normal examine() but tells the player what is installed and if it's broken
@@ -259,7 +263,7 @@ GLOBAL_LIST_EMPTY(all_multi_vehicles)
 		log_attack("[src] took [damage] [type] damage from [attacker].")
 
 /obj/vehicle/multitile/Entered(var/atom/movable/A)
-	if(istype(A, /obj) && !istype(A, /obj/item/ammo_magazine/hardpoint))
+	if(istype(A, /obj) && !istype(A, /obj/item/ammo_magazine/hardpoint) && !istype(A, /obj/item/hardpoint))
 		A.forceMove(src.loc)
 		return
 	return ..()

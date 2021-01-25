@@ -159,7 +159,7 @@
 		return FALSE
 
 	//vehicle interior stuff checks
-	if(interior_manager && target.z == interior_manager.interior_z)
+	if(target.z == GLOB.interior_manager.interior_z)
 		if(istype(target, /obj/structure/interior_exit) || istype(target, /obj/structure/bed/chair/comfy/vehicle) || istype(target, /obj/structure/interior_viewport) || istype(target, /obj/structure/weapons_loader) || istype(target, /obj/structure/bed/chair/dropship/passenger/shuttle_chair))
 			return FALSE
 
@@ -240,7 +240,7 @@
 		else if(issignaller(detonator.a_right) || issignaller(detonator.a_left))
 			overlays += new /obj/effect/overlay/danger
 			layer = INTERIOR_DOOR_LAYER
-			addtimer(CALLBACK(src, .proc/delayed_prime, target_turf), SECONDS_3)
+			addtimer(CALLBACK(src, .proc/delayed_prime, target_turf), 3 SECONDS)
 			return
 		else
 			. = ..()

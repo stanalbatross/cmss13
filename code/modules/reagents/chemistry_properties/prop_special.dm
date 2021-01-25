@@ -67,7 +67,7 @@
 /datum/chem_property/special/DNA_Disintegrating/trigger()
 	SSticker.mode.get_specific_call("Weston-Yamada PMC (Chemical Investigation Squad)", TRUE, FALSE, holder.name)
 	chemical_data.update_credits(10)
-	message_staff(SPAN_NOTICE("The research department has discovered DNA_Disintegrating in [holder.name] adding [OBJECTIVE_ABSOLUTE_VALUE * 2] bonus DEFCON points."), 1)
+	message_staff("The research department has discovered DNA_Disintegrating in [holder.name] adding [OBJECTIVE_ABSOLUTE_VALUE * 2] bonus DEFCON points.")
 	SSobjectives.add_admin_points(OBJECTIVE_ABSOLUTE_VALUE * 2)
 	defcon_controller.add_rewards_points(2);
 	ai_announcement("NOTICE: $20000 received from USCSS Royce and sent to DEFCON assets. Shuttle inbound.")
@@ -82,15 +82,18 @@
 	max_level = 6
 
 /datum/chem_property/special/ciphering/process(mob/living/M, var/potency = 1)
-	if(!hive_datum[level]) // This should probably always be valid
+	if(!GLOB.hive_datum[level]) // This should probably always be valid
 		return
 
 	for(var/content in M.contents)
 		if(!istype(content, /obj/item/alien_embryo))
 			continue
+		// level is a number rather than a hivenumber, which are strings
+		var/hivenumber = GLOB.hive_datum[level]
+		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 		var/obj/item/alien_embryo/A = content
-		A.hivenumber = level
-		A.faction = hive_datum[level].name
+		A.hivenumber = hivenumber
+		A.faction = hive.internal_faction
 
 /datum/chem_property/special/ciphering/predator
 	name = PROPERTY_CIPHERING_PREDATOR
@@ -193,7 +196,7 @@
 	max_level = 4
 
 /datum/chem_property/special/curing/process(mob/living/M, var/potency = 1)
-	var/datum/species/zombie/zs = all_species["Zombie"]
+	var/datum/species/zombie/zs = GLOB.all_species["Zombie"]
 
 	if(!ishuman(M))
 		return

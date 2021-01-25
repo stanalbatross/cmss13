@@ -15,9 +15,13 @@
 
 	var/projectile_coverage = 0 //an object's "projectile_coverage" var indicates the maximum probability of blocking a projectile, assuming density and throwpass. Used by barricades, tables and window frames
 	var/garbage = FALSE //set to true if the item is garbage and should be deleted after awhile
+	var/list/req_access = null
+	var/list/req_one_access = null
+	var/req_access_txt = null
+	var/req_one_access_txt = null
 
-/obj/New()
-	..()
+/obj/Initialize(mapload, ...)
+	. = ..()
 	GLOB.object_list += src
 	if(garbage)
 		add_to_garbage(src)
@@ -41,9 +45,9 @@
 
 /obj/item/proc/get_examine_line()
 	if(blood_color)
-		. = SPAN_WARNING("[htmlicon(src)] [gender==PLURAL?"some":"a"] <font color='[blood_color]'>stained</font> [src]")
+		. = SPAN_WARNING("[icon2html(src)] [gender==PLURAL?"some":"a"] <font color='[blood_color]'>stained</font> [src]")
 	else
-		. = "[htmlicon(src)] \a [src]"
+		. = "[icon2html(src)] \a [src]"
 
 /obj/proc/updateUsrDialog()
 	if(in_use)
@@ -197,8 +201,8 @@
 	send_buckling_message(target, user)
 	if (src && src.loc)
 		target.buckled = src
-		target.loc = src.loc
-		target.dir = src.dir
+		target.forceMove(src.loc)
+		target.setDir(dir)
 		target.update_canmove()
 		src.buckled_mob = target
 		src.add_fingerprint(user)
@@ -225,43 +229,32 @@
 	. = ..()
 	handle_rotation()
 	if(. && buckled_mob && !handle_buckled_mob_movement(loc,direct)) //movement fails if buckled mob's move fails.
-		. = 0
+		. = FALSE
 
 /obj/forceMove(atom/dest)
-	..(dest)
+	. = ..()
 
-	if(buckled_mob)
-		handle_buckled_mob_movement(loc,0)
+	// Bring the buckled_mob with us. No Move(), on_move callbacks, or any of this bullshit, we just got teleported
+	if(buckled_mob && loc == dest)
+		buckled_mob.forceMove(dest)
 
 /obj/proc/handle_buckled_mob_movement(NewLoc, direct)
-	if(!(direct & (direct - 1))) //not diagonal move. the obj's diagonal move is split into two cardinal moves and those moves will handle the buckled mob's movement.
-		if(!buckled_mob.Move(NewLoc, direct))
-			loc = buckled_mob.loc
-			last_move_dir = buckled_mob.last_move_dir
-			buckled_mob.inertia_dir = last_move_dir
-			return 0
+	if(!buckled_mob.Move(NewLoc, direct))
+		forceMove(buckled_mob.loc)
+		last_move_dir = buckled_mob.last_move_dir
+		buckled_mob.inertia_dir = last_move_dir
+		return FALSE
 
 	// Even if the movement is entirely managed by the object, notify the buckled mob that it's moving for its handler.
 	//It won't be called otherwise because it's a function of client_move or pulled mob, neither of which accounts for this.
 	buckled_mob.on_movement()
-	return 1
+	return TRUE
 
 /obj/BlockedPassDirs(atom/movable/mover, target_dir)
 	if(mover == buckled_mob) //can't collide with the thing you're buckled to
 		return NO_BLOCKED_MOVEMENT
 
 	return ..()
-
-/obj/proc/wall_check() //used at roundstart to automatically detect and remove walls that overlap. Called by windows and airlocks
-	spawn(10)
-		if(SSticker.current_state == GAME_STATE_PREGAME)
-			var/turf/T = get_turf(src)
-			if( istype( T,/turf/closed/wall ) )
-				message_admins("Overlap of [src] with [T] detected and fixed in area [T.loc.name] ([T.x],[T.y],[T.z]) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
-				log_game("Overlap of [src] with [T] detected and fixed in area [T.loc.name] ([T.x],[T.y],[T.z])")
-				var/turf/closed/wall/W = T
-				if(!W.hull)
-					W.ChangeTurf(/turf/open/floor/plating, TRUE)
 
 /obj/bullet_act(obj/item/projectile/P)
 	//Tasers and the like should not damage objects.

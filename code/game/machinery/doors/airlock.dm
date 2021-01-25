@@ -489,8 +489,6 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 				if(announce_hacked && is_mainship_level(z))
 					announce_hacked = FALSE
 					SSclues.create_print(get_turf(usr), usr, "The fingerprint contains oil and wire pieces.")
-					if(usr.detectable_by_ai())
-						ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
 				. = TRUE
 			if("pulse")
 				if(!ismultitool(usr.get_active_hand()))
@@ -642,7 +640,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 
 				var/obj/structure/airlock_assembly/da = new assembly_type(loc)
 				if(istype(da, /obj/structure/airlock_assembly/multi_tile))
-					da.dir = dir
+					da.setDir(dir)
 
 				da.anchored = 1
 				if(mineral)
@@ -667,7 +665,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 				else
 					ae = electronics
 					electronics = null
-					ae.loc = loc
+					ae.forceMove(loc)
 				if(operating == -1)
 					ae.icon_state = "door_electronics_smoked"
 					operating = 0
@@ -778,21 +776,22 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 		return TRUE
 	return FALSE
 
-/obj/structure/machinery/door/airlock/New()
-	..()
-
-	wall_check()
+/obj/structure/machinery/door/airlock/Initialize()
+	. = ..()
 
 	if(autoname)
 		var/area/A = get_area(loc)
 		name = A.name
 
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/machinery/door/airlock/LateInitialize()
+	. = ..()
 	if(closeOtherId != null)
-		spawn (5)
-			for(var/obj/structure/machinery/door/airlock/A in machines)
-				if(A.closeOtherId == closeOtherId && A != src)
-					closeOther = A
-					break
+		for(var/obj/structure/machinery/door/airlock/A in machines)
+			if(A.closeOtherId == closeOtherId && A != src)
+				closeOther = A
+				break
 	// fix smoothing
 	for(var/turf/closed/wall/W in orange(1))
 		W.update_connections()

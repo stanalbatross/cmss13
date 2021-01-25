@@ -54,7 +54,7 @@
 	var/hivenumber = XENO_HIVE_NORMAL
 
 	var/stun_duration = 1
-	var/damage_amount = 25
+	var/damage_amount = 20
 	var/fire_level_to_extinguish = 13
 
 	var/time_to_live = 10
@@ -108,7 +108,7 @@
 			M.ExtinguishMob()
 			if (iscarbon(M))
 				var/mob/living/carbon/C = M
-				if (C.allied_to_hivenumber(hivenumber))
+				if (C.ally_of_hivenumber(hivenumber))
 					continue
 
 				apply_spray(M)
@@ -137,7 +137,7 @@
 	..()
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if(H.allied_to_hivenumber(hivenumber))
+		if(H.ally_of_hivenumber(hivenumber))
 			return
 		apply_spray(AM)
 	else if (isXeno(AM))
@@ -200,7 +200,7 @@
 	stun_duration = 2
 	damage_amount = 30
 	fire_level_to_extinguish = 18
-	time_to_live = SECONDS_3
+	time_to_live = 3 SECONDS
 	// Stuns for 2 seconds, lives for 3 seconds. Seems to stun longer than it lives for at 2 seconds
 
 /obj/effect/xenomorph/spray/weak/apply_spray(mob/living/carbon/M)
@@ -410,11 +410,11 @@
 				continue
 
 			var/mob/living/carbon/Xenomorph/X = H
-			if (X.hivenumber == source_xeno.hivenumber)
+			if (source_xeno.can_not_harm(X))
 				continue
 
 		if (!H.stat)
-			if(H.match_hivemind(source_xeno))
+			if(source_xeno.can_not_harm(H))
 				continue
 			H.apply_armoured_damage(damage, ARMOR_BIO, BURN)
 			animation_flash_color(H)
@@ -481,7 +481,7 @@
 		if (H.stat == DEAD)
 			continue
 
-		if(H.allied_to_hivenumber(hivenumber))
+		if(H.ally_of_hivenumber(hivenumber))
 			continue
 
 		animation_flash_color(H)
@@ -521,7 +521,7 @@
 		if (H.stat == DEAD)
 			continue
 
-		if(H.allied_to_hivenumber(hivenumber))
+		if(H.ally_of_hivenumber(hivenumber))
 			continue
 
 		total_hits++

@@ -151,7 +151,7 @@ var/list/robot_verbs_default = list(
 /mob/living/silicon/robot/Destroy()
 	if(mmi)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
 		var/turf/T = get_turf(loc)//To hopefully prevent run time errors.
-		if(T)	mmi.loc = T
+		if(T)	mmi.forceMove(T)
 		if(mind)	mind.transfer_to(mmi.brainmob)
 		mmi = null
 	. = ..()
@@ -160,7 +160,7 @@ var/list/robot_verbs_default = list(
 	if(module)
 		return
 	var/list/modules = list("Standard", "Engineering", "Surgeon", "Medic", "Janitor", "Service", "Security")
-	modtype = input("Please, select a module!", "Robot", null, null) in modules
+	modtype = tgui_input_list(usr, "Please, select a module!", "Robot", modules)
 
 	var/module_sprites[0] //Used to store the associations between sprite names and sprite index.
 
@@ -249,7 +249,7 @@ var/list/robot_verbs_default = list(
 		changed_name = custom_name
 	else
 		changed_name = "[modtype] [braintype]-[num2text(ident)]"
-	
+
 	change_real_name(src, changed_name)
 
 	// if we've changed our name, we also need to update the display name for our PDA
@@ -355,7 +355,7 @@ var/list/robot_verbs_default = list(
 		if(C.installed)
 			installed_components += V
 
-	var/toggle = input(src, "Which component do you want to toggle?", "Toggle Component") as null|anything in installed_components
+	var/toggle = tgui_input_list(src, "Which component do you want to toggle?", "Toggle Component", installed_components)
 	if(!toggle)
 		return
 
@@ -392,16 +392,6 @@ var/list/robot_verbs_default = list(
 	else
 		stat(null, text("No Cell Inserted!"))
 
-
-// update the status screen display
-/mob/living/silicon/robot/Stat()
-	if (!..())
-		return 0
-
-	show_cell_power()
-	show_jetpack_pressure()
-	stat(null, text("Lights: [lights_on ? "ON" : "OFF"]"))
-	return 1
 
 /mob/living/silicon/robot/is_mob_restrained()
 	return 0
@@ -449,7 +439,7 @@ var/list/robot_verbs_default = list(
 				C.wrapped = W
 				C.install()
 				if(user.drop_held_item())
-					W.loc = null
+					W.moveToNullspace()
 					var/obj/item/robot_parts/robot_component/WC = W
 					if(istype(WC))
 						C.brute_damage = WC.brute
@@ -521,7 +511,7 @@ var/list/robot_verbs_default = list(
 					if(C.installed == 1 || C.installed == -1)
 						removable_components += V
 
-				var/remove = input(user, "Which component do you want to pry out?", "Remove Component") as null|anything in removable_components
+				var/remove = tgui_input_list(user, "Which component do you want to pry out?", "Remove Component", removable_components)
 				if(!remove)
 					return
 				var/datum/robot_component/C = components[remove]
@@ -531,7 +521,7 @@ var/list/robot_verbs_default = list(
 					I.brute = C.brute_damage
 					I.burn = C.electronics_damage
 
-				I.loc = src.loc
+				I.forceMove(src.loc)
 
 				if(C.installed == 1)
 					C.uninstall()
@@ -885,7 +875,7 @@ var/list/robot_verbs_default = list(
 	if(R)
 		R.UnlinkSelf()
 		to_chat(R, "Buffers flushed and reset. Camera system shutdown.  All systems operational.")
-		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
+		remove_verb(src, /mob/living/silicon/robot/proc/ResetSecurityCodes)
 
 /mob/living/silicon/robot/mode()
 	set name = "Activate Held Object"
@@ -905,7 +895,7 @@ var/list/robot_verbs_default = list(
 	else
 		triesleft--
 
-	var/icontype = input("Select an icon! [triesleft ? "You have [triesleft] more chances." : "This is your last try."]", "Robot", null, null) in module_sprites
+	var/icontype = tgui_input_list(usr, "Select an icon! [triesleft ? "You have [triesleft] more chances." : "This is your last try."]", "Robot", module_sprites)
 
 	if(icontype)
 		icon_state = module_sprites[icontype]
@@ -918,7 +908,7 @@ var/list/robot_verbs_default = list(
 	update_icons()
 
 	if (triesleft >= 1)
-		var/choice = input("Look at your icon - is this what you want?") in list("Yes","No")
+		var/choice = tgui_input_list(usr, "Look at your icon - is this what you want?", "Icon", list("Yes","No"))
 		if(choice=="No")
 			choose_icon(triesleft, module_sprites)
 		else
@@ -934,10 +924,10 @@ var/list/robot_verbs_default = list(
 	toggle_sensor_mode()
 
 /mob/living/silicon/robot/proc/add_robot_verbs()
-	src.verbs |= robot_verbs_default
+	add_verb(src, robot_verbs_default)
 
 /mob/living/silicon/robot/proc/remove_robot_verbs()
-	src.verbs -= robot_verbs_default
+	remove_verb(src, robot_verbs_default)
 
 // Uses power from cyborg's cell. Returns 1 on success or 0 on failure.
 // Properly converts using CELLRATE now! Amount is in Joules.

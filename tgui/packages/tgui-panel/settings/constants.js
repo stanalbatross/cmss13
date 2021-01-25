@@ -10,7 +10,29 @@ export const SETTINGS_TABS = [
     name: 'General',
   },
   {
+    id: 'textHighlight',
+    name: 'Text Highlights',
+  },
+  {
     id: 'chatPage',
     name: 'Chat Tabs',
   },
 ];
+
+export const FONTS_DISABLED = "Use CSS";
+
+export const FONTS = [
+  FONTS_DISABLED,
+  'Verdana',
+  'Arial',
+  'Arial Black',
+  'Comic Sans MS',
+  'Impact',
+  'Lucida Sans Unicode',
+  'Tahoma',
+  'Trebuchet MS',
+  'Courier New',
+  'Lucida Console',
+];
+
+export const MAX_HIGHLIGHT_SETTINGS = 10;

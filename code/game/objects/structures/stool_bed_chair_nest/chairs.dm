@@ -9,13 +9,11 @@
 	buckle_lying = FALSE
 	var/propelled = 0 //Check for fire-extinguisher-driven chairs
 
-/obj/structure/bed/chair/New()
+/obj/structure/bed/chair/Initialize()
+	. = ..()
 	if(anchored)
-		src.verbs -= /atom/movable/verb/pull
-	..()
-	spawn(3) //Sorry. i don't think there's a better way to do this.
-		handle_rotation()
-	return
+		verbs -= /atom/movable/verb/pull
+	handle_rotation()
 
 /obj/structure/bed/chair/handle_rotation() //Making this into a seperate proc so office chairs can call it on Move()
 	if(src.dir == NORTH)
@@ -23,7 +21,7 @@
 	else
 		src.layer = OBJ_LAYER
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 
 /obj/structure/bed/chair/verb/rotate()
 	set name = "Rotate Chair"
@@ -31,7 +29,7 @@
 	set src in oview(1)
 
 	if(CONFIG_GET(flag/ghost_interaction))
-		src.dir = turn(src.dir, 90)
+		src.setDir(turn(src.dir, 90))
 		handle_rotation()
 		return
 	else
@@ -42,7 +40,7 @@
 		if(usr.stat || usr.is_mob_restrained())
 			return
 
-		dir = turn(src.dir, 90)
+		setDir(turn(src.dir, 90))
 		handle_rotation()
 		return
 
@@ -64,7 +62,7 @@
 
 /obj/structure/bed/chair/comfy
 	name = "comfy chair"
-	desc = "It looks comfy."
+	desc = "A chair with leather padding and adjustable headrest. You could probably sit in one of these for ages."
 	icon_state = "comfychair"
 	color = rgb(255,255,255)
 	hit_bed_sound = 'sound/weapons/bladeslice.ogg'
@@ -132,7 +130,7 @@
 
 /obj/structure/bed/chair/dropship/passenger
 	name = "passenger seat"
-	desc = "Holds you in place during high altitude drops."
+	desc = "A sturdy metal chair with a brace that lowers over your body. Holds you in place during high altitude drops."
 	icon_state = "hotseat"
 	var/image/chairbar = null
 	var/chair_state = DROPSHIP_CHAIR_UNFOLDED
@@ -155,15 +153,13 @@
 /obj/structure/bed/chair/dropship/passenger/ex_act(severity)
 	return
 
-/obj/structure/bed/chair/dropship/passenger/New()
+/obj/structure/bed/chair/dropship/passenger/Initialize()
+	. = ..()
 	chairbar = image("icons/obj/objects.dmi", "hotseat_bars")
 	chairbar.layer = ABOVE_MOB_LAYER
 
-	return ..()
-
-/obj/structure/bed/chair/dropship/passenger/shuttle_chair/New()
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair/Initialize()
 	. = ..()
-
 	chairbar = image("icons/obj/objects.dmi", "hotseat_bars")
 	chairbar.layer = ABOVE_MOB_LAYER
 
@@ -192,8 +188,7 @@
 			chair_state = DROPSHIP_CHAIR_BROKEN
 		else
 			chair_state = DROPSHIP_CHAIR_FOLDED
-		sleep(5) // animation length
-		icon_state = "hotseat_new_folded"
+		addtimer(VARSET_CALLBACK(src, icon_state, "hotseat_new_folded"), 5) // animation length
 
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair/fold_down(var/break_it = 1)
 	if(chair_state == DROPSHIP_CHAIR_UNFOLDED)
@@ -208,8 +203,7 @@
 	flick("hotseat_new_unfolding", src)
 	is_animating = 0
 	chair_state = DROPSHIP_CHAIR_UNFOLDED
-	sleep(5)
-	icon_state = "hotseat"
+	addtimer(VARSET_CALLBACK(src, icon_state, "hotseat"), 5) // animation length
 
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair/unfold_up()
 	if(chair_state == DROPSHIP_CHAIR_BROKEN)

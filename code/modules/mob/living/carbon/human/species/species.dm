@@ -98,12 +98,12 @@
 
 	var/melee_allowed = TRUE
 
-	var/mob_flags // The mob flags to give their mob
+	var/mob_flags = NO_FLAGS // The mob flags to give their mob
 
 /datum/species/New()
-	if(unarmed_type) 
+	if(unarmed_type)
 		unarmed = new unarmed_type()
-	if(secondary_unarmed_type) 
+	if(secondary_unarmed_type)
 		secondary_unarmed = new secondary_unarmed_type()
 
 /datum/species/proc/larva_impregnated(var/obj/item/alien_embryo/embryo)
@@ -118,23 +118,23 @@
 	H.internal_organs_by_name = list()
 
 	//This is a basic humanoid limb setup.
-	var/obj/limb/chest/C = new(null, H)
+	var/obj/limb/chest/C = new(H, null, H)
 	H.limbs += C
-	var/obj/limb/groin/G = new(C, H)
+	var/obj/limb/groin/G = new(H, C, H)
 	H.limbs += G
-	H.limbs += new/obj/limb/head(C, H)
-	var/obj/limb/arm/l_arm/LA = new(C, H)
+	H.limbs += new /obj/limb/head(H, C, H)
+	var/obj/limb/arm/l_arm/LA = new(H, C, H)
 	H.limbs += LA
-	var/obj/limb/arm/r_arm/RA = new(C, H)
+	var/obj/limb/arm/r_arm/RA = new(H, C, H)
 	H.limbs += RA
-	var/obj/limb/leg/l_leg/LL = new(G, H)
+	var/obj/limb/leg/l_leg/LL = new(H, G, H)
 	H.limbs += LL
-	var/obj/limb/leg/r_leg/RL = new(G, H)
+	var/obj/limb/leg/r_leg/RL = new(H, G, H)
 	H.limbs += RL
-	H.limbs +=  new/obj/limb/hand/l_hand(LA, H)
-	H.limbs +=  new/obj/limb/hand/r_hand(RA, H)
-	H.limbs +=  new/obj/limb/foot/l_foot(LL, H)
-	H.limbs +=  new/obj/limb/foot/r_foot(RL, H)
+	H.limbs +=  new /obj/limb/hand/l_hand(H, LA, H)
+	H.limbs +=  new /obj/limb/hand/r_hand(H, RA, H)
+	H.limbs +=  new /obj/limb/foot/l_foot(H, LL, H)
+	H.limbs +=  new /obj/limb/foot/r_foot(H, RL, H)
 
 	for(var/organ in has_organ)
 		var/organ_type = has_organ[organ]
@@ -207,7 +207,7 @@
 		H.start_audio_emote_cooldown()
 		target.start_audio_emote_cooldown()
 		return
-	
+
 	//Initiate high five
 	if(H.recent_audio_emote)
 		to_chat(H, "You just did an audible emote. Wait a while.")
@@ -250,7 +250,7 @@
 		H.start_audio_emote_cooldown()
 		target.start_audio_emote_cooldown()
 		return
-	
+
 	//Initiate fistbump
 	if(H.recent_audio_emote)
 		to_chat(H, "You just did an audible emote. Wait a while.")
@@ -275,19 +275,15 @@
 
 /datum/species/proc/remove_inherent_verbs(var/mob/living/carbon/human/H)
 	if(inherent_verbs)
-		for(var/verb_path in inherent_verbs)
-			H.verbs -= verb_path
-	return
+		remove_verb(H, inherent_verbs)
 
 /datum/species/proc/add_inherent_verbs(var/mob/living/carbon/human/H)
 	if(inherent_verbs)
-		for(var/verb_path in inherent_verbs)
-			H.verbs |= verb_path
-	return
+		add_verb(H, inherent_verbs)
 
 /datum/species/proc/handle_post_spawn(var/mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
 	add_inherent_verbs(H)
-	
+
 	if(icobase_source)
 		icobase = get_icon_from_source(icobase_source)
 	if(deform_source)

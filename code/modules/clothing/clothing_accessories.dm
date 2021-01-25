@@ -81,7 +81,7 @@
 /obj/item/clothing/examine(var/mob/user)
 	. = ..(user)
 	for(var/obj/item/clothing/accessory/A in accessories)
-		to_chat(user, "[htmlicon(A, user)] \A [A] is attached to it.")
+		to_chat(user, "[icon2html(A, user)] \A [A] is attached to it.")
 
 /**
  *  Attach accessory A to src
@@ -90,10 +90,13 @@
  *  items on spawn
  */
 /obj/item/clothing/proc/attach_accessory(mob/user, obj/item/clothing/accessory/A)
+	if(!A.can_attach_to(user, src))
+		return
+
 	LAZYADD(accessories, A)
 	A.on_attached(src, user)
 	if(A.removable)
-		src.verbs |= /obj/item/clothing/proc/removetie_verb
+		verbs += /obj/item/clothing/proc/removetie_verb
 	update_clothing_icon()
 
 /obj/item/clothing/proc/remove_accessory(mob/user, obj/item/clothing/accessory/A)
@@ -118,13 +121,13 @@
 		if(ass.removable)
 			removables |= ass
 	if(LAZYLEN(accessories) > 1)
-		A = input("Select an accessory to remove from [src]") as null|anything in removables
+		A = tgui_input_list(usr, "Select an accessory to remove from [src]", "Remove accessory", removables)
 	else
 		A = LAZYACCESS(accessories, 1)
 	src.remove_accessory(usr,A)
 	removables -= A
 	if(!removables.len)
-		src.verbs -= /obj/item/clothing/proc/removetie_verb
+		verbs -= /obj/item/clothing/proc/removetie_verb
 
 /obj/item/clothing/emp_act(severity)
 	if(LAZYLEN(accessories))

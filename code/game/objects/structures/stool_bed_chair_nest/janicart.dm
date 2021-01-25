@@ -22,7 +22,7 @@
 
 
 /obj/structure/bed/chair/janicart/examine(mob/user)
-	to_chat(user, "[htmlicon(src, usr)] This [callme] contains [reagents.total_volume] unit\s of water!")
+	to_chat(user, "[icon2html(src, usr)] This [callme] contains [reagents.total_volume] unit\s of water!")
 	if(mybag)
 		to_chat(user, "\A [mybag] is hanging on the [callme].")
 
@@ -40,7 +40,7 @@
 	else if(istype(I, /obj/item/storage/bag/trash))
 		to_chat(user, SPAN_NOTICE("You hook the trashbag onto the [callme]."))
 		user.drop_held_item()
-		I.loc = src
+		I.forceMove(src)
 		mybag = I
 	else
 		. = ..()
@@ -48,7 +48,7 @@
 
 /obj/structure/bed/chair/janicart/attack_hand(mob/user)
 	if(mybag)
-		mybag.loc = get_turf(user)
+		mybag.forceMove(get_turf(user))
 		user.put_in_hands(mybag)
 		mybag = null
 	else
@@ -83,7 +83,7 @@
 
 /obj/structure/bed/chair/janicart/proc/update_mob()
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 		switch(dir)
 			if(SOUTH)
 				buckled_mob.pixel_x = 0

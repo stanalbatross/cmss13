@@ -97,20 +97,45 @@
 
 /obj/item/storage/pouch/bayonet
 	name = "bayonet sheath"
-	desc = "A pouch for your knives."
+	desc = "Knife to meet you!"
 	can_hold = list(
 		/obj/item/weapon/melee/throwing_knife,
 		/obj/item/attachable/bayonet
 	)
 	icon_state = "bayonet"
-	storage_slots = 3
+	storage_slots = 5
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
+	var/draw_cooldown = 0
+	var/draw_cooldown_interval = 1 SECONDS
 
-/obj/item/storage/pouch/bayonet/full/fill_preset_inventory()
-	new /obj/item/attachable/bayonet(src)
+/obj/item/storage/pouch/bayonet/Initialize()
+	. = ..()
+	for(var/total_storage_slots in 1 to storage_slots)
+		new /obj/item/weapon/melee/throwing_knife(src)
 
-/obj/item/storage/pouch/bayonet/upp/fill_preset_inventory()
-	new /obj/item/attachable/bayonet/upp(src)
+/obj/item/storage/pouch/bayonet/upp/Initialize()
+	. = ..()
+	for(var/total_storage_slots in 1 to storage_slots)
+		new /obj/item/attachable/bayonet/upp(src)
+
+/obj/item/storage/pouch/bayonet/handle_item_insertion(obj/item/W, prevent_warning = 0)
+	. = ..()
+	if(.)
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+
+/obj/item/storage/pouch/bayonet/remove_from_storage(obj/item/W, atom/new_location)
+	. = ..()
+	if(.)
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+
+/obj/item/storage/pouch/bayonet/attack_hand(mob/user)
+	if(draw_cooldown < world.time)
+		..()
+		draw_cooldown = world.time + draw_cooldown_interval
+		playsound(src,'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
+	else
+		to_chat(user, SPAN_WARNING("You need to wait before drawing another knife!"))
+		return 0
 
 /obj/item/storage/pouch/survival
 	name = "survival pouch"
@@ -160,7 +185,7 @@
 	desc = "It can contain a pistol. Useful for emergencies."
 	icon_state = "pistol"
 	max_w_class = SIZE_MEDIUM
-	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver/m44)
+	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver/m44,/obj/item/weapon/gun/flare)
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 
 
@@ -195,6 +220,7 @@
 
 /obj/item/storage/pouch/magazine/large
 	name = "large magazine pouch"
+	desc = "It can contain many ammo magazines."
 	icon_state = "large_ammo_mag"
 	storage_slots = 4
 
@@ -208,7 +234,7 @@
 
 /obj/item/storage/pouch/magazine/pistol
 	name = "pistol magazine pouch"
-	desc = "It can contain pistol and revolver ammo magazines."
+	desc = "It can contain pistol ammo magazines and revolver speedloaders."
 	max_w_class = SIZE_SMALL
 	icon_state = "pistol_mag"
 	storage_slots = 3
@@ -220,6 +246,7 @@
 
 /obj/item/storage/pouch/magazine/pistol/large
 	name = "large pistol magazine pouch"
+	desc = "It can contain many pistol ammo magazines and revolver speedloaders."
 	storage_slots = 6
 	icon_state = "large_pistol_mag"
 
@@ -293,7 +320,7 @@
 
 /obj/item/storage/pouch/explosive
 	name = "explosive pouch"
-	desc = "It can contain grenades, plastics, mine boxes, and other explosives."
+	desc = "It can contain grenades, plastic explosives, mine boxes, and other explosives."
 	icon_state = "large_explosive"
 	storage_slots = 3
 	max_w_class = SIZE_MEDIUM
@@ -517,7 +544,7 @@
 		var/obj/structure/machinery/chem_dispenser/cd = target
 		if(!cd.beaker)
 			to_chat(user, SPAN_NOTICE("You unhook the inner container and connect it to [target]."))
-			inner.loc = cd
+			inner.forceMove(cd)
 			cd.beaker = inner
 			inner = null
 			update_icon()
@@ -594,7 +621,7 @@
 	set category = "Weapons"
 	set name = "Flush Container"
 	set desc = "Forces the container to empty its reagents."
-
+	set src in usr
 	if(!inner)
 		to_chat(usr, SPAN_WARNING("There is no container inside this pouch!"))
 		return
@@ -608,7 +635,7 @@
 
 /obj/item/storage/pouch/document
 	name = "large document pouch"
-	desc = "It can contain papers and clipboards."
+	desc = "It can contain papers, folders, disks, technical manuals, and clipboards."
 	icon_state = "document"
 	storage_slots = 21
 	max_w_class = SIZE_MEDIUM

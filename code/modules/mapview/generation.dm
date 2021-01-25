@@ -10,16 +10,17 @@
 /var/global/squad3updated = FALSE
 /var/global/squad4updated = FALSE
 /var/global/squad0updated = FALSE // echo squad go away, none of this old spooky code handles you anyway
-/var/global/refreshfrequency = MINUTES_1 // How often the map may update for each squad and the Queen. Anti-lag.
+/var/global/refreshfrequency = 1 MINUTES // How often the map may update for each squad and the Queen. Anti-lag.
 /var/global/list/map_sizes = list(list(),list(),list())
 
 /proc/generate_marine_mapview()
-	var/icon/minimap = icon('icons/minimap.dmi',map_tag)
+	var/icon/minimap = icon('icons/minimap.dmi',SSmapping.configs[GROUND_MAP].map_name)
 	var/min_x = 1000
 	var/max_x = 0
 	var/min_y = 1000
 	var/max_y = 0
-	for(var/turf/T in z1turfs)
+	for(var/z1 in z1turfs)
+		var/turf/T = z1
 		if(T.x < min_x && !istype(T,/turf/open/space))
 			min_x = T.x
 		if(T.x > max_x && !istype(T,/turf/open/space))
@@ -29,13 +30,16 @@
 		if(T.y > max_y && !istype(T,/turf/open/space))
 			max_y = T.y
 		var/area/A = get_area(T)
-		if((map_tag != MAP_PRISON_STATION || map_tag != MAP_CORSAT) && istype(T,/turf/open/space))
+		if((SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION || SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) && istype(T,/turf/open/space))
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
 			continue
-		if(A.ceiling > CEILING_METAL && A.ceiling != CEILING_REINFORCED_METAL)
+		if(plasma && plasma.growth_level)
+			minimap.DrawBox(rgb(196,48,201),T.x-1,T.y-1,T.x+1,T.y+1)
+			continue
+		if(A.ceiling >= CEILING_PROTECTION_TIER_2 && A.ceiling != CEILING_REINFORCED_METAL)
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
 			continue
-		if(A.ceiling > CEILING_METAL)
+		if(A.ceiling >= CEILING_PROTECTION_TIER_2)
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
 			continue
 		if(locate(/obj/structure/window_frame) in T || locate(/obj/structure/window/framed) in T || locate(/obj/structure/machinery/door) in T)
@@ -87,7 +91,7 @@
 	var/list/tier_2 = list()
 	var/list/tier_3 = list()
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		if(H.z != 1 && !istype(H.loc,/mob/living/carbon/Xenomorph))
+		if(!is_ground_level(H.z))
 			continue
 		if(!H.has_helmet_camera())
 			continue
@@ -136,7 +140,7 @@
 			newoverlay.DrawBox(rgb(128,255,128),V.x,V.y+1)
 	if(SSticker.toweractive)
 		for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
-			if(X.loc.z != 1) continue
+			if(!is_ground_level(X.loc.z)) continue
 			switch(X.tier)
 				if(0)
 					tier_0 += X

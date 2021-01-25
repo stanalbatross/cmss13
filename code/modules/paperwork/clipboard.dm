@@ -11,7 +11,7 @@
 	var/obj/item/toppaper	//The topmost piece of paper.
 	flags_equip_slot = SLOT_WAIST
 
-/obj/item/clipboard/New()
+/obj/item/clipboard/Initialize()
 	. = ..()
 	update_icon()
 
@@ -92,7 +92,7 @@
 
 		if(href_list["pen"])
 			if(istype(haspen) && (haspen.loc == src))
-				haspen.loc = usr.loc
+				haspen.forceMove(usr.loc)
 				usr.put_in_hands(haspen)
 				haspen = null
 
@@ -121,7 +121,7 @@
 
 			if(P && (P.loc == src) && (istype(P, /obj/item/paper) || istype(P, /obj/item/photo)) )
 
-				P.loc = usr.loc
+				P.forceMove(usr.loc)
 				usr.put_in_hands(P)
 				if(P == toppaper)
 					toppaper = null

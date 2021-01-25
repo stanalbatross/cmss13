@@ -41,7 +41,7 @@
 			if(response == "Select from list")
 				var/list/pool = chemical_reagents_list
 				pool = sortAssoc(pool)
-				target = input(usr,"Select the ID of the chemical reagent you wish to view:") as null|anything in pool
+				target = tgui_input_list(usr,"Select the ID of the chemical reagent you wish to view:", "View reagent", pool)
 			else if(response == "Enter ID")
 				target = input(usr,"Enter the ID of the chemical reagent you wish to view:")
 			if(!target)
@@ -69,8 +69,7 @@
 				return
 			var/datum/chemical_reaction/R = chemical_reactions_list[target]
 			if(R)
-				chemical_reactions_filtered_list[R.get_filter()] -= R
-				chemical_reactions_filtered_list[R.get_filter()] += R //I know this is ugly but blame byond for not making this easier
+				R.add_to_filtered_list(TRUE)
 				log_debug("[key_name(usr)] resyncronized [R.id]")
 				to_chat(usr,SPAN_WARNING("Resyncronized [R.id]."))
 			else
@@ -92,9 +91,9 @@
 			if(!chemical_reagents_list[target])
 				to_chat(usr, SPAN_WARNING("No reagent with this ID could be found."))
 				return
-			
+
 			var/datum/reagent/R = chemical_reagents_list[target]
-			R.print_report(loc = usr.loc, admin_spawned = TRUE)	
+			R.print_report(loc = usr.loc, admin_spawned = TRUE)
 		//For quickly generating a new chemical
 		if("create_random_reagent")
 			var/target = input(usr,"Enter the ID of the chemical reagent you wish to make:")
@@ -106,13 +105,13 @@
 			var/tier = input(usr,"Enter the generation tier you wish. This will affect the number of properties (tier + 1), rarity of components and potential for good properties. Ought to be 1-4, max 10.") as num
 			if(tier <= 0)
 				return
-			if(tier > 10) 
+			if(tier > 10)
 				tier = 10
 			var/datum/reagent/generated/R = new /datum/reagent/generated
 			R.id = target
 			R.gen_tier = tier
 			R.chemclass = CHEM_CLASS_ULTRA
-			R.save_chemclass() 
+			R.save_chemclass()
 			R.properties = list()
 			R.generate_name()
 			R.generate_stats()
@@ -138,7 +137,7 @@
 							usr.client.debug_variables(R)
 							log_admin("[key_name(usr)] is viewing the chemical reaction for [R].")
 						else
-							to_chat(usr,SPAN_WARNING("No reaction with this ID could been found. Wait what? But I just... Contact a debugger."))
+							to_chat(usr,SPAN_WARNING("No reagent with this ID could been found. Wait what? But I just... Contact a debugger."))
 							chemical_reagents_list.Remove(target)
 							chemical_reactions_list.Remove("[target]")
 							chemical_reactions_filtered_list.Remove("[target]")
@@ -202,7 +201,7 @@
 					if("Select")
 						var/list/pool = chemical_properties_list
 						pool = sortAssoc(pool)
-						var/P = input(usr,"Which property do you want?") as null|anything in pool
+						var/P = tgui_input_list(usr,"Which property do you want?", "Property selection", pool)
 						var/level = input(usr,"Choose the level (this is a strength modifier, ought to be between 1-8)") as num
 						R.insert_property(P,level)
 						response = alert(usr,"Done. Add more?","Custom reagent [target]","Specific property","Specific number","No more properties")
@@ -231,7 +230,7 @@
 					var/volume = input(usr,"How much? An appropriate container will be selected.") as num
 					if(volume <= 0)
 						return
-					
+
 					spawn_reagent(target, volume)
 				if("No, show me the reagent")
 					usr.client.debug_variables(chemical_reagents_list[target])
@@ -265,7 +264,7 @@
 					if("Select from list")
 						var/list/pool = chemical_reagents_list
 						pool = sortAssoc(pool)
-						component = input(usr,"Select:") as null|anything in pool
+						component = tgui_input_list(usr,"Select:", "Create custom reaction", pool)
 						if(!component)
 							response = "Select type"
 							continue
@@ -292,9 +291,7 @@
 				return
 			//Save our reaction
 			chemical_reactions_list[target] = R
-			var/filter_id = R.get_filter()
-			if(filter_id)
-				chemical_reactions_filtered_list[filter_id] += R
+			R.add_to_filtered_list()
 			if(!chemical_reactions_list[target])
 				to_chat(usr,SPAN_WARNING("Something went wrong when saving the reaction."))
 				return

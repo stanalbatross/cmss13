@@ -1,6 +1,4 @@
 //Config stuff
-#define SUPPLY_DOCKZ 2          //Z-level of the Dock.
-#define SUPPLY_STATIONZ 1       //Z-level of the Station.
 #define SUPPLY_STATION_AREATYPE /area/supply/station //Type of the supply shuttle area for station
 #define SUPPLY_STATION_AREATYPE_VEHICLE /area/supply/station/vehicle
 #define SUPPLY_DOCK_AREATYPE /area/supply/dock	//Type of the supply shuttle area for dock
@@ -71,11 +69,11 @@ var/datum/controller/supply/supply_controller = new()
 	if(collide_message_busy > world.time)
 		return
 
-	collide_message_busy = world.time + SECONDS_3
+	collide_message_busy = world.time + 3 SECONDS
 	C.visible_message(SPAN_NOTICE("[C] tries to go through \the [src]."), \
 	SPAN_NOTICE("You try to go through \the [src]."))
 
-	if(do_after(C, SECONDS_2, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+	if(do_after(C, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		C.forceMove(get_turf(src))
 
 /obj/structure/plasticflaps/ex_act(severity)
@@ -186,62 +184,67 @@ var/datum/controller/supply/supply_controller = new()
 					if(S.usable)
 						squad_list += S.name
 
-				var/name_sel = input("Which squad would you like to claim for Overwatch?") as null|anything in squad_list
+				var/name_sel = tgui_input_list(usr, "Which squad would you like to claim for Overwatch?", "Overwatch", squad_list)
 				if(!name_sel) return
 				var/datum/squad/selected = get_squad_by_name(name_sel)
 				if(selected)
 					current_squad = selected
 					attack_hand(usr)
 				else
-					to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Invalid input. Aborting.")]")
+					to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Invalid input. Aborting.")]")
 		if("supply_x")
 			var/input = input(usr,"What longitude should be targetted? (Increments towards the east)", "X Coordinate", 0) as num
-			to_chat(usr, "[htmlicon(src, usr)] [SPAN_NOTICE("Longitude is now [input].")]")
+			to_chat(usr, "[icon2html(src, usr)] [SPAN_NOTICE("Longitude is now [input].")]")
 			x_supply = input
 		if("supply_y")
 			var/input = input(usr,"What latitude should be targetted? (Increments towards the north)", "Y Coordinate", 0) as num
-			to_chat(usr, "[htmlicon(src, usr)] [SPAN_NOTICE("Latitude is now [input].")]")
+			to_chat(usr, "[icon2html(src, usr)] [SPAN_NOTICE("Latitude is now [input].")]")
 			y_supply = input
 		if("refresh")
 			src.attack_hand(usr)
 		if("dropsupply")
 			if(current_squad)
 				if((current_squad.supply_cooldown + drop_cooldown) > world.time)
-					to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Supply drop not yet available!")]")
+					to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Supply drop not yet available!")]")
 				else
 					handle_supplydrop()
 	src.attack_hand(usr) //Refresh
 
 /obj/structure/machinery/computer/supply_drop_console/proc/handle_supplydrop()
 	if(busy)
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("The [name] is busy processing another action!")]")
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The [name] is busy processing another action!")]")
 		return
 
 	var/obj/structure/closet/crate/C = locate() in current_squad.drop_pad.loc //This thing should ALWAYS exist.
 	if(!istype(C))
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("No crate was detected on the drop pad. Get Requisitions on the line!")]")
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("No crate was detected on the drop pad. Get Requisitions on the line!")]")
 		return
 
 	var/x_coord = deobfuscate_x(x_supply)
 	var/y_coord = deobfuscate_y(y_supply)
+	var/z_coord = SSmapping.levels_by_trait(ZTRAIT_GROUND)
+	if(length(z_coord))
+		z_coord = z_coord[1]
+	else
+		z_coord = 1 // fuck it
 
-	var/turf/T = locate(x_coord, y_coord, 1)
+	var/turf/T = locate(x_coord, y_coord, z_coord)
 	if(!T)
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Error, invalid coordinates.")]")
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Error, invalid coordinates.")]")
 		return
 
 	var/area/A = get_area(T)
-	if(A && A.ceiling >= CEILING_UNDERGROUND)
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("The landing zone is underground. The supply drop cannot reach here.")]")
+	if(A && CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_2))
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The landing zone is underground. The supply drop cannot reach here.")]")
 		return
 
 	if(istype(T, /turf/open/space) || T.density)
-		to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("The landing zone appears to be obstructed or out of bounds. Package would be lost on drop.")]")
+		to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("The landing zone appears to be obstructed or out of bounds. Package would be lost on drop.")]")
 		return
 
 	busy = 1
 
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_BOLDNOTICE("'[C.name]' supply drop is now loading into the launch tube! Stand by!")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("'[C.name]' supply drop is now loading into the launch tube! Stand by!")]")
 	C.visible_message(SPAN_WARNING("\The [C] begins to load into a launch tube. Stand clear!"))
 	C.anchored = TRUE //To avoid accidental pushes
 	send_to_squad("'[C.name]' supply drop incoming. Heads up!")
@@ -249,7 +252,7 @@ var/datum/controller/supply/supply_controller = new()
 	spawn(100)
 		if(!C || C.loc != S.drop_pad.loc) //Crate no longer on pad somehow, abort.
 			if(C) C.anchored = FALSE
-			to_chat(usr, "[htmlicon(src, usr)] [SPAN_WARNING("Launch aborted! No crate detected on the drop pad.")]")
+			to_chat(usr, "[icon2html(src, usr)] [SPAN_WARNING("Launch aborted! No crate detected on the drop pad.")]")
 			return
 		S.supply_cooldown = world.time
 		if(ismob(usr))
@@ -258,14 +261,12 @@ var/datum/controller/supply/supply_controller = new()
 
 		playsound(C.loc,'sound/effects/bamf.ogg', 50, 1)  //Ehh
 		C.anchored = FALSE
-		C.z = T.z
-		C.x = T.x
-		C.y = T.y
+		C.forceMove(T)
 		var/turf/TC = get_turf(C)
 		TC.ceiling_debris_check(3)
 		playsound(C.loc,'sound/effects/bamf.ogg', 50, 1)  //Ehhhhhhhhh.
-		C.visible_message("[htmlicon(C, viewers(src))] [SPAN_BOLDNOTICE("The '[C.name]' supply drop falls from the sky!")]")
-		visible_message("[htmlicon(src, viewers(src))] [SPAN_BOLDNOTICE("'[C.name]' supply drop launched! Another launch will be available in five minutes.")]")
+		C.visible_message("[icon2html(C, viewers(src))] [SPAN_BOLDNOTICE("The '[C.name]' supply drop falls from the sky!")]")
+		visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("'[C.name]' supply drop launched! Another launch will be available in five minutes.")]")
 		busy = 0
 
 
@@ -284,12 +285,12 @@ var/datum/controller/supply/supply_controller = new()
 			if(!only_leader)
 				if(plus_name)
 					M << sound('sound/effects/radiostatic.ogg')
-				to_chat(M, "[htmlicon(src, M)] [SPAN_BLUE("<B>\[Overwatch\]:</b> [nametext][text]")]")
+				to_chat(M, "[icon2html(src, M)] [SPAN_BLUE("<B>\[Overwatch\]:</b> [nametext][text]")]")
 			else
 				if(current_squad.squad_leader == M)
 					if(plus_name)
 						M << sound('sound/effects/radiostatic.ogg')
-					to_chat(M, "[htmlicon(src, M)] [SPAN_BLUE("<B>\[SL Overwatch\]:</b> [nametext][text]</font>")]")
+					to_chat(M, "[icon2html(src, M)] [SPAN_BLUE("<B>\[SL Overwatch\]:</b> [nametext][text]</font>")]")
 					return
 
 //A limited version of the above console
@@ -475,69 +476,121 @@ var/datum/controller/supply/supply_controller = new()
 
 //Buyin
 /datum/controller/supply/proc/buy()
-	if(!shoppinglist.len) return
+	var/area/area_shuttle = shuttle?.get_location_area()
+	if(!area_shuttle || !shoppinglist.len)	
+		return
 
-	var/area/area_shuttle = shuttle.get_location_area()
-	if(!area_shuttle)	return
-
-	var/list/clear_turfs = list()
-
+	// Try to find an available turf to place our package
+	var/list/turf/clear_turfs = list()
 	for(var/turf/T in area_shuttle)
-		if(T.density || T.contents.len)	continue
+		if(T.density || T.contents?.len)	
+			continue
 		clear_turfs += T
 
-	for(var/S in shoppinglist)
-		if(!clear_turfs.len)	break
-		var/i = rand(1,clear_turfs.len)
-		var/turf/pickedloc = clear_turfs[i]
-		clear_turfs.Cut(i,i+1)
+	for(var/datum/supply_order/order in shoppinglist)
+		// No space! Forget buying, it's no use.
+		if(!clear_turfs.len)
+			shoppinglist.Cut()
+			return
 
-		var/datum/supply_order/SO = S
-		var/datum/supply_packs/SP = SO.object
+		// Container generation
+		var/turf/target_turf = pick(clear_turfs)
+		clear_turfs.Remove(target_turf)
+		var/atom/container = target_turf
+		var/datum/supply_packs/package = order.object
+		if(package.containertype)
+			container = new package.containertype(target_turf)
+			if(package.containername)
+				container.name = package.containername
 
-		var/atom/A = new SP.containertype(pickedloc)
-		if(istype(A, /obj/structure/closet))
-			A.name = "[SP.containername]"
+		// Lock it up if it's something that can be
+		if(isobj(container) && package.access)
+			var/obj/lockable = container
+			lockable.req_access = list(package.access)
+		
+		// Contents generation
+		var/list/content_names = list()
+		var/list/content_types = package.contains
+		if(package.randomised_num_contained)
+			content_types = list()
+			for(var/i in 1 to package.randomised_num_contained)
+				content_types += pick(package.contains)
+		for(var/typepath in content_types)
+			var/atom/item = new typepath(container)
+			content_names += item.name
 
-			//supply manifest generation begin
-
-			var/obj/item/paper/manifest/slip = new /obj/item/paper/manifest(A)
-			slip.info = "<h3>Automatic Storage Retrieval Manifest</h3><hr><br>"
-			slip.info +="Order #[SO.ordernum]<br>"
-			slip.info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
-			slip.info +="CONTENTS:<br><ul>"
-
-			//spawn the stuff, finish generating the manifest while you're at it
-			if(SP.access)
-				A:req_access = list()
-				A:req_access += text2num(SP.access)
-
-			var/list/contains
-			if(SP.randomised_num_contained)
-				contains = list()
-				if(SP.contains.len)
-					for(var/j=1,j<=SP.randomised_num_contained,j++)
-						contains += pick(SP.contains)
-			else
-				contains = SP.contains
-
-			for(var/typepath in contains)
-				if(!typepath)	continue
-				var/atom/B2 = new typepath(A)
-				if(SP.amount && B2:amount) B2:amount = SP.amount
-				slip.info += "<li>[B2.name]</li>" //add the item to the manifest
-
-			//manifest finalisation
-			slip.info += "</ul><br>"
-			slip.info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
-			if (SP.contraband) slip.loc = null	//we are out of blanks for Form #44-D Ordering Illicit Drugs.
-
+		// Manifest generation
+		var/obj/item/paper/manifest/slip
+		if(!package.contraband) // I'm sorry boss i misplaced it...
+			slip = new /obj/item/paper/manifest(container)
+			slip.ordername = package.name
+			slip.ordernum = order.ordernum
+			slip.orderedby = order.orderedby
+			slip.approvedby = order.approvedby
+			slip.packages = content_names
+			slip.generate_contents()
 	shoppinglist.Cut()
-	return
 
 /obj/item/paper/manifest
 	name = "Supply Manifest"
+	var/ordername
+	var/ordernum
+	var/orderedby
+	var/approvedby
+	var/list/packages
 
+
+/obj/item/paper/manifest/read_paper(mob/user)
+	// Tossing ref in widow id as this allows us to read multiple manifests at same time
+	show_browser(user, "<BODY class='paper'>[info][stamps]</BODY>", null, "manifest\ref[src]", "size=550x650")
+	onclose(user, "manifest\ref[src]")
+
+/obj/item/paper/manifest/proc/generate_contents()
+	// You don't tell anyone this is inspired from player-made fax layouts, 
+	// or else, capiche ? Yes this is long, it's 80 col standard
+	info = "                                                                  \
+        <style>                                                               \
+            #container { width: 500px; min-height: 500px; margin: 25px auto;  \
+                    font-family: monospace; padding: 0; font-size: 130% }     \
+            #title { font-size: 250%; letter-spacing: 8px;                    \
+                    font-weight: bolder; margin: 20px auto }                  \
+            .header { font-size: 130%; text-align: center; }                  \
+            .important { font-variant: small-caps; font-size = 130%;          \
+                         font-weight: bolder; }                               \
+            .tablelabel { width: 150px; }                                     \
+            .field { font-style: italic; }                                    \
+            li { list-style-type: disc; list-style-position: inside; }        \
+            table { table-layout: fixed }                                     \
+        </style><div id='container'>                                          \
+        <div class='header'>                                                  \
+            <p id='title' class='important'>A.S.R.S.</p>                      \
+            <p class='important'>Automatic Storage Retrieval System</p>       \
+            <p class='field'>Order #[ordernum]</p>                            \
+        </div><hr><table>                                                     \
+        <colgroup>                                                            \
+            <col class='tablelabel important'>                                \
+            <col class='field'>                                               \
+        </colgroup>                                                           \
+        <tr><td>Shipment:</td>                                                \
+        <td>[ordername]</td></tr>                                             \
+        <tr><td>Ordered by:</td>                                              \
+        <td>[orderedby]</td></tr>                                             \
+        <tr><td>Approved by:</td>                                             \
+        <td>[approvedby]</td></tr>                                            \
+        <tr><td># packages:</td>                                              \
+        <td class='field'>[packages.len]</td></tr>                            \
+        </table><hr><p class='header important'>Contents</p>                  \
+        <ul class='field'>"
+
+	for(var/packagename in packages)
+		info += "<li>[packagename]</li>"
+
+	info += "                                                                 \
+        </ul><br/><hr><br/><p class='important header'>                       \
+            Please stamp below and return to confirm receipt of shipment      \
+        </p></div>"
+
+	name = "[name] - [ordername]"
 
 /obj/structure/machinery/computer/ordercomp/attack_remote(var/mob/user as mob)
 	return attack_hand(user)
@@ -1053,6 +1106,9 @@ var/datum/controller/supply/supply_controller = new()
 	show_browser(H, dat, "Automated Storage and Retrieval System", "computer", "size=575x450")
 
 /obj/structure/machinery/computer/supplycomp/vehicle/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(!is_mainship_level(z))
 		return
 	if(spent)
@@ -1098,8 +1154,14 @@ var/datum/controller/supply/supply_controller = new()
 			if(T.y > max_y)
 				max_y = T.y
 
+		var/z_coord = SSmapping.levels_by_trait(ZTRAIT_ADMIN)
+		if(length(z_coord))
+			z_coord = z_coord[1]
+		else
+			z_coord = 1 //fuck it
+
 		// dunno why the +1 is needed but the vehicles spawn off-center
-		var/turf/middle_turf = locate(min_x + Ceiling((max_x-min_x)/2) + 1, min_y + Ceiling((max_y-min_y)/2) + 1, SUPPLY_DOCKZ)
+		var/turf/middle_turf = locate(min_x + Ceiling((max_x-min_x)/2) + 1, min_y + Ceiling((max_y-min_y)/2) + 1, z_coord)
 
 		var/obj/vehicle/multitile/ordered_vehicle
 

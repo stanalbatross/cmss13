@@ -30,8 +30,10 @@
 
 /obj/item/device/chameleon/dropped(mob/user)
 	disrupt(user)
+	..()
 
 /obj/item/device/chameleon/equipped(mob/user, slot)
+	. = ..()
 	disrupt(user)
 
 /obj/item/device/chameleon/attack_self(mob/user)
