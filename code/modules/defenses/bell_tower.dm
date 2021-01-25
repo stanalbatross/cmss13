@@ -89,10 +89,10 @@
 		qdel(src)
 		return
 
-	if(!isXeno(A) && !ishuman(A))
+	if(!iscarbon(A))
 		return
 
-	var/mob/M = A
+	var/mob/living/carbon/M = A
 	if(M.get_target_lock(faction))
 		return
 
@@ -129,7 +129,7 @@
 
 /obj/structure/machinery/defenses/bell_tower/md/Initialize()
 	. = ..()
-	animate(src, alpha = cloak_alpha, time = SECONDS_2, easing = LINEAR_EASING)
+	animate(src, alpha = cloak_alpha, time = 2 SECONDS, easing = LINEAR_EASING)
 
 /obj/structure/machinery/defenses/bell_tower/md/setup_tripwires()
 	md = new(src)
@@ -158,7 +158,7 @@
 
 /obj/structure/machinery/defenses/bell_tower/cloaker/Initialize()
 	. = ..()
-	animate(src, alpha = cloak_alpha, time = SECONDS_2, easing = LINEAR_EASING)
+	animate(src, alpha = cloak_alpha, time = 2 SECONDS, easing = LINEAR_EASING)
 
 /obj/structure/machinery/defenses/bell_tower/cloaker/mob_crossed(var/turf/location)
 	/// PLACEHOLDER

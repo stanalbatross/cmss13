@@ -99,17 +99,6 @@ var/global/list/synth_types = list("Synthetic","Second Generation Synthetic")
 GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_mutator_list, /datum/xeno_mutator, name)
 
 //Xeno hives
-<<<<<<< HEAD
-var/global/list/datum/hive_status/hive_datum = list(
-	new /datum/hive_status(),
-	new /datum/hive_status/corrupted(),
-	new /datum/hive_status/alpha(),
-	new /datum/hive_status/bravo(),
-	new /datum/hive_status/charlie(),
-	new /datum/hive_status/delta(),
-	new /datum/hive_status/corrupted/submissive()
-)
-=======
 GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_NORMAL = new /datum/hive_status(),
 	XENO_HIVE_CORRUPTED = new /datum/hive_status/corrupted(),
@@ -117,10 +106,10 @@ GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_BRAVO = new /datum/hive_status/bravo(),
 	XENO_HIVE_CHARLIE = new /datum/hive_status/charlie(),
 	XENO_HIVE_DELTA = new /datum/hive_status/delta(),
+	XENO_HIVE_SUBMISSIVE = new /datum/hive_status/corrupted/submissive()
 ))
 
 GLOBAL_LIST_INIT(custom_event_info_list, setup_custom_event_info())
->>>>>>> origin/dev
 
 //DEFCON rewards / assets
 GLOBAL_REFERENCE_LIST_INDEXED_SORTED(defcon_reward_list, /datum/defcon_reward, name)

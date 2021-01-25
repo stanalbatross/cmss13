@@ -5,9 +5,6 @@
 	allow_additional = 1
 	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_MODE|ROLE_ADD_TO_SQUAD
 	gear_preset = "USCM (Cryo) Squad RT Operator"
-	minimum_playtimes = list(
-		JOB_SQUAD_ROLES = HOURS_6
-	)
 /datum/job/marine/rto/equipped
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = "USCM Cryo RTO (Equipped)"
@@ -15,3 +12,8 @@
 AddTimelock(/datum/job/marine/rto, list(
 	JOB_SQUAD_ROLES = 8 HOURS
 ))
+
+/obj/effect/landmark/start/marine/medic
+	name = JOB_SQUAD_RTO
+	icon_state = "rto_spawn"
+	job = /datum/job/marine/rto

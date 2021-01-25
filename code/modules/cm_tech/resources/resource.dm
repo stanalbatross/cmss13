@@ -1,339 +1,343 @@
 #define enter_cooldown(ttc) next_cycle_at = ttc + world.time
 
 /area
-    var/obj/structure/resource_node/r_node
+	var/obj/structure/resource_node/r_node
 
 /obj/structure/resource_node
-    name = "\improper power node"
-    desc = "Generates vast amounts of energy."
-    icon = 'icons/obj/structures/resources_64x64.dmi'
-    icon_state = "node_off"
+	name = "\improper power node"
+	desc = "Generates vast amounts of energy."
+	icon = 'icons/obj/structures/resources_64x64.dmi'
+	icon_state = "node_off"
 
-    var/last_looped = 0
+	var/last_looped = 0
 
-    var/sound/ambient_noise = 'sound/machines/resource_node/node_idle.ogg'
+	var/sound/ambient_noise = 'sound/machines/resource_node/node_idle.ogg'
 
-    var/treeid = TREE_NONE
-    var/datum/techtree/tree
+	var/treeid = TREE_NONE
+	var/datum/techtree/tree
 
-    var/ticks_to_cycle = RESOURCE_TICKS_TO_CYCLE
-    var/next_cycle_at = 0
+	var/ticks_to_cycle = RESOURCE_TICKS_TO_CYCLE
+	var/next_cycle_at = 0
 
-    var/resource_to_give = RESOURCE_PER_CYCLE
+	var/resource_to_give = RESOURCE_PER_CYCLE
 
-    var/active = FALSE
+	var/active = FALSE
 
-    var/width = 2
-    var/height = 2
+	var/width = 2
+	var/height = 2
 
-    var/max_health = RESOURCE_HEALTH
-    health = RESOURCE_HEALTH // Xenos/marines will have to slash the opposing faction's things off of the resource_node
+	var/time_to_repair = 10 SECONDS
+	var/time_to_build = 15 SECONDS
 
-    unslashable = TRUE
-    unacidable = TRUE
+	var/max_health = RESOURCE_HEALTH
+	health = RESOURCE_HEALTH // Xenos/marines will have to slash the opposing faction's things off of the resource_node
 
-    indestructible = TRUE
-    anchored = TRUE
+	unslashable = TRUE
+	unacidable = TRUE
 
-    density = TRUE
+	indestructible = TRUE
+	anchored = TRUE
 
-    var/play_ambient_noise = TRUE
-    var/area/controlled_area
+	density = TRUE
+
+	var/play_ambient_noise = TRUE
+	var/area/controlled_area
 
 // Weird things happen here when you use Initialize. Need to use New() here
 /obj/structure/resource_node/New(loc, var/play_ambient_noise = TRUE, var/is_area_controller = TRUE)
-    . = ..(loc)
-    bound_width = width * world.icon_size
-    bound_height = height * world.icon_size
+	. = ..(loc)
+	bound_width = width * world.icon_size
+	bound_height = height * world.icon_size
 
-    SStechtree.resources.Add(src)
+	SStechtree.resources.Add(src)
 
-    src.play_ambient_noise = play_ambient_noise
+	src.play_ambient_noise = play_ambient_noise
 
-    if(is_area_controller)
-        var/area/A = get_area(src)
-        if(!A)
-            return
+	if(is_area_controller)
+		var/area/A = get_area(src)
+		if(!A)
+			return
 
-        if(A.r_node)
-            qdel(A.r_node)
+		if(A.r_node)
+			qdel(A.r_node)
 
-        controlled_area = A
-        A.r_node = src
+		controlled_area = A
+		A.r_node = src
 
 /obj/structure/resource_node/Destroy()
-    . = ..()
+	. = ..()
 
-    if(tree)
-        tree.on_node_lost(src)
+	if(tree)
+		tree.on_node_lost(src)
 
-    SStechtree.resources.Remove(src)
+	SStechtree.resources.Remove(src)
 
 /obj/structure/resource_node/initialize_pass_flags(datum/pass_flags_container/PF)
-    . = ..()
-    if(PF)
-        PF.flags_can_pass_all = list(PASS_OVER_THROW_ITEM)
+	. = ..()
+	if(PF)
+		PF.flags_can_pass_all = list(PASS_OVER_THROW_ITEM)
 
 
 /obj/structure/resource_node/update_icon()
-    overlays.Cut()
+	overlays.Cut()
 
-    if(active)
-        icon_state = "node_on"
-    else
-        icon_state = "node_off"
+	if(active)
+		icon_state = "node_on"
+	else
+		icon_state = "node_off"
 
-    if(!tree)
-        return
+	if(!tree)
+		return
 
-    overlays += image(icon, icon_state = tree.resource_icon_state)
+	overlays += image(icon, icon_state = tree.resource_icon_state)
 
 /obj/structure/resource_node/proc/healthcheck()
-    if(health > 0 || treeid == TREE_NONE)
-        return
+	if(health > 0 || treeid == TREE_NONE)
+		return
 
-    GLOB.processing_resources.Remove(src)
+	STOP_PROCESSING(SSprocessing, src)
 
-    if(!tree)
-        return
+	if(!tree)
+		return
 
-    playsound(loc, tree.resource_destroy_sound, 50, TRUE)
+	playsound(loc, tree.resource_destroy_sound, 50, TRUE)
 
-    set_tree(TREE_NONE)
-    update_icon()
+	set_tree(TREE_NONE)
+	update_icon()
 
 /obj/structure/resource_node/proc/take_damage(var/damage)
-    if(!tree)
-        return
-    playsound(loc, tree.resource_break_sound, 50, TRUE)
+	if(!tree)
+		return
+	playsound(loc, tree.resource_break_sound, 50, TRUE)
 
-    health = Clamp(health - damage, 0, max_health)
-    healthcheck()
+	health = Clamp(health - damage, 0, max_health)
+	healthcheck()
 
 /obj/structure/resource_node/bullet_act(obj/item/projectile/P)
-    take_damage(P.damage)
+	take_damage(P.damage)
 
 /obj/structure/resource_node/ex_act(severity, direction)
-    take_damage(severity*0.1) // Reduced damage from explosives
+	take_damage(severity*0.1) // Reduced damage from explosives
 
 /obj/structure/resource_node/flamer_fire_act(dam)
-    take_damage(dam)
+	take_damage(dam)
 
 /obj/structure/resource_node/proc/cycle()
-    enter_cooldown(ticks_to_cycle)
+	enter_cooldown(ticks_to_cycle)
 
-    if(!active)
-        return
+	if(!active)
+		return
 
-    if(!tree)
-        return
+	if(!tree)
+		return
 
-    tree.on_cycle_completed(src)
-    tree.points += resource_to_give
+	tree.on_cycle_completed(src)
+	tree.points += resource_to_give
 
 /obj/structure/resource_node/process()
-    if(!active)
-        STOP_PROCESSING(SSobj, src)
-        return
+	if(!active)
+		STOP_PROCESSING(SSobj, src)
+		return
 
-    if(tree)
-        tree.on_process(src)
+	if(tree)
+		tree.on_process(src)
 
-    if(last_looped < REALTIMEOFDAY && play_ambient_noise)
-        playsound(loc, ambient_noise, 50)
-        last_looped = REALTIMEOFDAY + SECONDS_3
+	if(last_looped < world.time && play_ambient_noise)
+		playsound(loc, ambient_noise, 50)
+		last_looped = world.time + 3 SECONDS
 
 /obj/structure/resource_node/proc/make_active()
-    START_PROCESSING(SSobj, src)
-    playsound(loc, 'sound/machines/resource_node/node_turn_on_2.ogg', 75)
+	START_PROCESSING(SSobj, src)
+	playsound(loc, 'sound/machines/resource_node/node_turn_on_2.ogg', 75)
 
-    active = TRUE
-    update_icon()
+	active = TRUE
+	update_icon()
 
 /obj/structure/resource_node/proc/make_inactive()
-    STOP_PROCESSING(SSobj, src)
-    playsound(loc, 'sound/machines/resource_node/node_turn_off.ogg', 75)
+	STOP_PROCESSING(SSobj, src)
+	playsound(loc, 'sound/machines/resource_node/node_turn_off.ogg', 75)
 
-    active = FALSE
-    update_icon()
+	active = FALSE
+	update_icon()
 
 /obj/structure/resource_node/get_projectile_hit_boolean()
-    return !isnull(tree)
+	return !isnull(tree)
 
 /obj/structure/resource_node/proc/set_tree(var/treeid)
-    if(treeid == TREE_NONE || !treeid)
-        if(tree)
-            tree.on_node_lost(src)
+	if(treeid == TREE_NONE || !treeid)
+		if(tree)
+			tree.on_node_lost(src)
 
-        src.treeid = TREE_NONE
-        tree = null
+		src.treeid = TREE_NONE
+		tree = null
 
-    var/datum/techtree/T = SStechtree.trees[treeid]
-    if(!T)
-        return
+	var/datum/techtree/T = SStechtree.trees[treeid]
+	if(!T)
+		return
 
-    if(!(src in GLOB.processing_resources))
-        GLOB.processing_resources.Add(src)
+	START_PROCESSING(SSprocessing, src)
 
-    if(tree)
-        tree.on_node_lost(src)
+	if(tree)
+		tree.on_node_lost(src)
 
-    health = max_health
+	health = max_health
 
-    src.treeid = treeid
-    tree = T
+	src.treeid = treeid
+	tree = T
 
-    playsound(loc, tree.resource_make_sound, 50, TRUE)
-    tree.on_node_gained(src)
+	playsound(loc, tree.resource_make_sound, 50, TRUE)
+	tree.on_node_gained(src)
 
-    update_icon()
+	update_icon()
 
 /obj/structure/resource_node/examine(mob/user)
-    . = ..()
-    if(!tree)
-        return
+	. = ..()
+	if(!tree)
+		return
 
-    to_chat(user, SPAN_BLUE("[src] belongs to the [tree.name]"))
-    to_chat(user, SPAN_BLUE("Health: [health]/[max_health]"))
+	to_chat(user, SPAN_BLUE("[src] belongs to the [tree.name]"))
+	to_chat(user, SPAN_BLUE("Health: [health]/[max_health]"))
 
 
 /obj/structure/resource_node/attackby(obj/item/W, mob/user)
-    if(!ishuman(user))
-        return
+	if(!ishuman(user))
+		return
 
-    var/mob/living/carbon/human/H = user
+	var/mob/living/carbon/human/H = user
 
-    if(!tree)
-        if(!istype(W, /obj/item/tool/wrench))
-            return
+	if(!tree)
+		if(!iswrench(W))
+			return
 
-        if(!active)
-            to_chat(H, SPAN_WARNING("[src] isn't active right now!"))
-            return
+		if(!active)
+			to_chat(H, SPAN_WARNING("[src] isn't active right now!"))
+			return
 
-        if(H.action_busy)
-            to_chat(H, SPAN_WARNING("You're already performing an action!"))
-            return
+		if(H.action_busy)
+			to_chat(H, SPAN_WARNING("You're already performing an action!"))
+			return
 
-        H.visible_message(SPAN_DANGER("[H] starts to set up [src]."),\
-        SPAN_NOTICE("You begin to set up [src]."), max_distance = 3)
-        playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
+		H.visible_message(SPAN_DANGER("[H] starts to set up [src]."),\
+		SPAN_NOTICE("You begin to set up [src]."), max_distance = 3)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 
-        if(!do_after(H, SECONDS_15 * H.get_skill_duration_multiplier(SKILL_ENGINEER), BEHAVIOR_IMMOBILE|INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL))
-            to_chat(H, SPAN_NOTICE("You decide not to apply [W] onto [src]."))
-            return
+		if(!do_after(H, time_to_build * H.get_skill_duration_multiplier(SKILL_ENGINEER), BEHAVIOR_IMMOBILE|INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL))
+			to_chat(H, SPAN_NOTICE("You decide not to apply [W] onto [src]."))
+			return
 
-        if(tree)
-            return
+		if(tree)
+			return
 
-        playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
-        H.visible_message(SPAN_DANGER("[H] sets up [src]."),\
-        SPAN_NOTICE("You set up [src]."), max_distance = 3)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
+		H.visible_message(SPAN_DANGER("[H] sets up [src]."),\
+		SPAN_NOTICE("You set up [src]."), max_distance = 3)
 
-        set_tree(TREE_MARINE)
+		set_tree(TREE_MARINE)
 
-    else if(tree.can_attack(H))
-        H.visible_message(SPAN_DANGER("[H] attacks [src] with [W]!"))
+	else if(tree.can_attack(H))
+		H.visible_message(SPAN_DANGER("[H] attacks [src] with [W]!"))
 
-        H.animation_attack_on(src)
-        playsound(loc, tree.resource_break_sound, 40, 1)
+		H.animation_attack_on(src)
+		playsound(loc, tree.resource_break_sound, 40, 1)
 
-        take_damage(W.force)
-    else
-        var/to_heal = (max_health - health)
+		take_damage(W.force)
+	else
+		var/to_heal = (max_health - health)
 
-        if(H.action_busy)
-            to_chat(H, SPAN_WARNING("You're already performing an action!"))
-            return
+		if(H.action_busy)
+			to_chat(H, SPAN_WARNING("You're already performing an action!"))
+			return
 
-        if(istype(W, /obj/item/tool/weldingtool))
-            if(!to_heal)
-                to_chat(H, SPAN_WARNING("[src] is already at full health!"))
-                return
+		if(!iswelder(W))
+			return
 
-            var/obj/item/tool/weldingtool/WT = W
-            if(WT.remove_fuel(0, H))
-                H.visible_message(SPAN_NOTICE("[H] starts repairing the damage to [src]."),\
-                SPAN_NOTICE("You start repairing the damage to [src]."), max_distance = 3)
-                playsound(src, 'sound/items/Welder.ogg', 25, 1)
-                if(do_after(H, SECONDS_10 * H.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, src, INTERRUPT_ALL) && H.get_active_hand() == WT && WT.isOn())
-                    H.visible_message(SPAN_NOTICE("[H] finishes repairing the damage to [src]."),\
-                    SPAN_NOTICE("You finish repairing the damage to [src]."), max_distance = 3)
-                    take_damage(-to_heal)
+		if(!to_heal)
+			to_chat(H, SPAN_WARNING("[src] is already at full health!"))
+			return
 
-                    WT.remove_fuel(Floor(RESOURCE_FUEL_TO_REPAIR*(to_heal / max_health)), H)
-                    playsound(loc, 'sound/items/Welder2.ogg', 25, 1)
-            else
-                to_chat(H, SPAN_WARNING("You need more welding fuel to complete this task."))
+		var/obj/item/tool/weldingtool/WT = W
+		if(WT.remove_fuel(0, H))
+			H.visible_message(SPAN_NOTICE("[H] starts repairing the damage to [src]."),\
+			SPAN_NOTICE("You start repairing the damage to [src]."), max_distance = 3)
+			playsound(src, 'sound/items/Welder.ogg', 25, 1)
+			if(do_after(H, time_to_repair * H.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, src, INTERRUPT_ALL) && H.get_active_hand() == WT && WT.isOn())
+				H.visible_message(SPAN_NOTICE("[H] finishes repairing the damage to [src]."),\
+				SPAN_NOTICE("You finish repairing the damage to [src]."), max_distance = 3)
+				take_damage(-to_heal)
+
+				WT.remove_fuel(Floor(RESOURCE_FUEL_TO_REPAIR*(to_heal / max_health)), H)
+				playsound(loc, 'sound/items/Welder2.ogg', 25, 1)
+		else
+			to_chat(H, SPAN_WARNING("You need more welding fuel to complete this task."))
 
 /obj/structure/resource_node/attack_alien(mob/living/carbon/Xenomorph/M)
-    if(!tree)
-        if(!isXenoBuilder(M))
-            to_chat(M, SPAN_XENOWARNING("You can't build onto [src]."))
-            return
+	if(!tree)
+		if(!isXenoBuilder(M))
+			to_chat(M, SPAN_XENOWARNING("You can't build onto [src]."))
+			return
 
-        if(!active)
-            to_chat(M, SPAN_XENOWARNING("[src] isn't active right now!"))
-            return
+		if(!active)
+			to_chat(M, SPAN_XENOWARNING("[src] isn't active right now!"))
+			return
 
-        if(M.action_busy)
-            to_chat(M, SPAN_WARNING("You're already performing an action!"))
-            return
+		if(M.action_busy)
+			to_chat(M, SPAN_WARNING("You're already performing an action!"))
+			return
 
-        M.visible_message(SPAN_DANGER("[M] starts secreting resin over [src]."),\
-        SPAN_XENONOTICE("You begin to connect [src] to the hive."), max_distance = 3)
+		M.visible_message(SPAN_DANGER("[M] starts secreting resin over [src]."),\
+		SPAN_XENONOTICE("You begin to connect [src] to the hive."), max_distance = 3)
 
-        if(!do_after(M, SECONDS_10, BEHAVIOR_IMMOBILE|INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL))
-            to_chat(M, SPAN_XENOWARNING("You decide not to connect [src] to the hive."))
-            return
+		if(!do_after(M, time_to_build, BEHAVIOR_IMMOBILE|INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL))
+			to_chat(M, SPAN_XENOWARNING("You decide not to connect [src] to the hive."))
+			return
 
-        if(tree)
-            return
+		if(tree)
+			return
 
-        M.visible_message(SPAN_DANGER("[M] secretes resin over [src]."),\
-        SPAN_XENONOTICE("You connect [src] to the hive."), max_distance = 3)
+		M.visible_message(SPAN_DANGER("[M] secretes resin over [src]."),\
+		SPAN_XENONOTICE("You connect [src] to the hive."), max_distance = 3)
 
-        set_tree(TREE_XENO)
+		set_tree(TREE_XENO)
 
-    else if(tree.can_attack(M))
-        M.visible_message(SPAN_DANGER("[M] slashes [src]."))
+	else if(tree.can_attack(M))
+		M.visible_message(SPAN_DANGER("[M] slashes [src]."))
 
-        M.animation_attack_on(src)
-        take_damage(rand(M.melee_damage_lower, M.melee_damage_upper))
-    else
-        if(M.action_busy)
-            to_chat(M, SPAN_WARNING("You're already performing an action!"))
-            return
+		M.animation_attack_on(src)
+		take_damage(rand(M.melee_damage_lower, M.melee_damage_upper))
+	else
+		if(M.action_busy)
+			to_chat(M, SPAN_WARNING("You're already performing an action!"))
+			return
 
-        var/to_heal = (max_health - health)
+		var/to_heal = (max_health - health)
 
-        if(!to_heal)
-            to_chat(M, SPAN_WARNING("[src] is already at full health!"))
-            return
+		if(!to_heal)
+			to_chat(M, SPAN_WARNING("[src] is already at full health!"))
+			return
 
-        var/plasma_to_use = RESOURCE_PLASMA_PER_REPAIR * to_heal
+		var/plasma_to_use = RESOURCE_PLASMA_PER_REPAIR * to_heal
 
-        if(!isXenoBuilder(M)) // Uses 2x the amount of plasma
-            plasma_to_use *= 2
-            to_chat(M, SPAN_XENOWARNING("Your repairs on [src] will require significantly more work."))
+		if(!isXenoBuilder(M)) // Uses 2x the amount of plasma
+			plasma_to_use *= 2
+			to_chat(M, SPAN_XENOWARNING("Your repairs on [src] will require significantly more work."))
 
-        if(!M.plasma_stored)
-            return
+		if(!M.plasma_stored)
+			return
 
-        M.visible_message(SPAN_XENONOTICE("[M] begins secreting resin over [src]."),\
-        SPAN_XENONOTICE("You start repairing the damage to [src]."), max_distance = 3)
+		M.visible_message(SPAN_XENONOTICE("[M] begins secreting resin over [src]."),\
+		SPAN_XENONOTICE("You start repairing the damage to [src]."), max_distance = 3)
 
-        if(do_after(M, SECONDS_10, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src, INTERRUPT_ALL) && M.plasma_stored)
-            M.visible_message(SPAN_XENONOTICE("[M] finishes secreting resin over [src]."),\
-            SPAN_XENONOTICE("You finish repairing the damage to [src]."), max_distance = 3)
+		if(do_after(M, time_to_repair, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src, INTERRUPT_ALL) && M.plasma_stored)
+			M.visible_message(SPAN_XENONOTICE("[M] finishes secreting resin over [src]."),\
+			SPAN_XENONOTICE("You finish repairing the damage to [src]."), max_distance = 3)
 
-            var/heal_frac = min(M.plasma_stored / plasma_to_use, 1)
-            take_damage(-(to_heal*heal_frac))
+			var/heal_frac = min(M.plasma_stored / plasma_to_use, 1)
+			take_damage(-(to_heal*heal_frac))
 
-            playsound(loc, "alien_resin_build", 25, 1)
-            M.use_plasma(plasma_to_use)
-        else
-            to_chat(M, SPAN_NOTICE("You fail to repair [src]."))
-            return
+			playsound(loc, "alien_resin_build", 25, 1)
+			M.use_plasma(plasma_to_use)
+		else
+			to_chat(M, SPAN_NOTICE("You fail to repair [src]."))
+			return
 
 #undef enter_cooldown

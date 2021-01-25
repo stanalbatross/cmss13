@@ -54,7 +54,13 @@
 			playsound_client(src.client, speech_sound, source, sound_vol, GET_RANDOM_FREQ)
 
 
-/mob/proc/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0, var/vname ="", var/command = 0)
+/mob/proc/hear_radio(
+	var/message, var/verb="says",
+	var/datum/language/language=null,
+	var/part_a, var/part_b,
+	var/mob/speaker = null,
+	var/hard_to_hear = 0, var/vname ="",
+	var/command = 0)
 
 	if(!client && !(mind && mind.current != src))
 		return

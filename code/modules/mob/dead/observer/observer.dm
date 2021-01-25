@@ -639,30 +639,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-<<<<<<< HEAD
-	var/list/fixed_list = list()
-	for(var/a in freed_mob_list)
-		var/mob/freed_mob = a
-
-		var/name_to_use = freed_mob.name
-		var/attempts = 1
-		while(name_to_use in fixed_list)
-			name_to_use = "[freed_mob.name] [attempts]"
-			attempts++
-
-		fixed_list.Add(name_to_use)
-		fixed_list[name_to_use] = freed_mob
-
-	var/choice = input("Pick a Freed Mob:") as null|anything in fixed_list
-=======
-	var/choice = tgui_input_list(usr, "Pick a Freed Mob:", "Join as Freed Mob", GLOB.freed_mob_list)
->>>>>>> origin/dev
-	if(!choice || choice == "Cancel")
+	var/mob/living/L = tgui_input_list(usr, "Pick a Freed Mob:", "Join as Freed Mob", GLOB.freed_mob_list)
+	if(!L)
 		return
 
-	var/mob/living/L = fixed_list[choice]
-
-	if(!(L in freed_mob_list))
+	if(!(L in GLOB.freed_mob_list))
 		return
 
 	if(!istype(L))

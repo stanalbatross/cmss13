@@ -1004,10 +1004,10 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/proc/apply_splints(obj/item/stack/medical/splint/S, mob/living/user, mob/living/carbon/human/target, var/indestructible_splints = FALSE)
 	if(!(status & LIMB_DESTROYED) && !(status & LIMB_SPLINTED))
-		var/time_to_take = SECONDS_5
+		var/time_to_take = 5 SECONDS
 		if (target == user)
 			user.visible_message(SPAN_WARNING("[user] fumbles with the [S]"), SPAN_WARNING("You fumble with the [S]..."))
-			time_to_take = SECONDS_15
+			time_to_take = 15 SECONDS
 
 		if(do_after(user, time_to_take * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY, target, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 			var/possessive = "[user == target ? "your" : "[target]'s"]"

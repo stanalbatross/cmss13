@@ -195,7 +195,9 @@ CULT
 		return
 
 	if(assigned_droppod && !(assigned_droppod.droppod_flags & DROPPOD_DROPPED))
-		if(alert(H, "Do you want to prevent the drop of the current pod", "Cancel Droppod", "No", "Yes") == "Yes")
+		if(tgui_alert(H, "Do you want to prevent the drop of the current pod",\
+			"Cancel Droppod", list("No", "Yes")) == "Yes")
+
 			if(!(assigned_droppod.droppod_flags & (DROPPOD_DROPPING|DROPPOD_DROPPED)))
 				var/datum/tech/tech_to_use = assigned_droppod.attached_tech
 				if(tech_to_use)
@@ -231,13 +233,13 @@ CULT
 		if(tech_to_use in assigned_squad.dropped_techs)
 			continue
 
-		list_of_techs = list("[tech_to_use.name]" = tech_to_use)
+		list_of_techs += list("[tech_to_use.name]" = tech_to_use)
 
 	if(!list_of_techs.len)
 		to_chat(H, SPAN_WARNING("No droppods currently available."))
 		return
 
-	var/input = input(H, "Choose a tech to deploy at this location", "Tech deployment") as null|anything in list_of_techs
+	var/input = tgui_input_list(H, "Choose a tech to deploy at this location", "Tech deployment", list_of_techs)
 
 	if(!input)
 		return
@@ -255,7 +257,7 @@ CULT
 	if(!turf_area)
 		return
 
-	var/land_time = max(turf_area.ceiling, 1) * SECONDS_20
+	var/land_time = max(turf_area.ceiling, 1) * (20 SECONDS)
 
 	playsound(T, 'sound/effects/alert.ogg', 75)
 	assigned_droppod = new(T, land_time, tech_to_deploy)

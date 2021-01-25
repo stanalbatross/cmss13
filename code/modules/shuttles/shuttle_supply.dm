@@ -102,7 +102,7 @@
 
 		spawn(0)
 			recharging = 0
-		
+
 /datum/shuttle/ferry/supply/proc/handle_sell()
 	supply_controller.sell()
 
@@ -186,17 +186,4 @@
 	gear_id = "vehicle_elevator_gears"
 
 /datum/shuttle/ferry/supply/vehicle/pick_loc()
-<<<<<<< HEAD
-	elevator_loc = VehicleElevator
-
-/datum/shuttle/ferry/supply/vehicle/handle_sell()
-	var/area/area_shuttle = get_location_area()
-
-	if(!area_shuttle)
-		return
-
-	for(var/atom/movable/MA in area_shuttle)
-		qdel(MA)
-=======
 	return GLOB.vehicle_elevator
->>>>>>> origin/dev

@@ -16,7 +16,7 @@
 	var/obj/item/card/id/locking_id = null
 	var/is_id_lockable = FALSE
 	var/lock_overridable = TRUE
-	var/opening_stage = FALSE 
+	var/opening_stage = FALSE
 
 /obj/item/storage/backpack/attack_hand(mob/user)
 	if(!is_accessible_by(user))
@@ -94,16 +94,16 @@
 		if(!worn_accessible)
 			if(H.back == src && !opening_stage)
 				to_chat(H, SPAN_NOTICE("You begin to open [src], so you can check its contents."))
-				opening_stage = TRUE 
+				opening_stage = TRUE
 				if(!do_after(user, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
 					to_chat(H, SPAN_WARNING("You were interrupted!"))
-					opening_stage = FALSE 
+					opening_stage = FALSE
 					return FALSE
 				RegisterSignal(user, COMSIG_MOB_MOVE, .proc/close)
-				opening_stage = FALSE 
+				opening_stage = FALSE
 				return TRUE
 			else if(H.back == src && opening_stage)
-				return FALSE 
+				return FALSE
 
 		if(!QDELETED(locking_id))
 			var/obj/item/card/id/card = H.wear_id
@@ -357,7 +357,7 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	desc = "A heavy-duty chestrig used by some USCM technicians."
 	icon_state = "marinesatch_techi"
 
-var/global/list/radio_packs = list()
+GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/rto)
 
 /obj/item/storage/backpack/marine/satchel/rto
 	name = "\improper USCM Radio Telephone Pack"
@@ -374,22 +374,28 @@ var/global/list/radio_packs = list()
 	. = ..()
 	internal_transmitter = new(src)
 
-	if(isturf(loc))
-		internal_transmitter.set_external_object(src)
+	LAZYADD(actions, new /datum/action/human_action/activable/droppod())
+
+	GLOB.radio_packs += src
+
+/obj/item/storage/backpack/marine/satchel/rto/item_action_slot_check(mob/user, slot)
+	if(slot == WEAR_BACK)
+		return TRUE
+	return FALSE
+
+/obj/item/storage/backpack/marine/satchel/rto/forceMove(atom/dest)
+	. = ..()
+	if(isturf(dest))
+		internal_transmitter.set_tether_holder(src)
 	else
-		internal_transmitter.set_external_object(loc)
-
-	actions += new/datum/action/human_action/activable/droppod()
-
-	radio_packs += src
+		internal_transmitter.set_tether_holder(loc)
 
 /obj/item/storage/backpack/marine/satchel/rto/Destroy()
 	. = ..()
-	radio_packs -= src
+	GLOB.radio_packs -= src
 
 /obj/item/storage/backpack/marine/satchel/rto/pickup(mob/user)
 	. = ..()
-	internal_transmitter.set_external_object(user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.comm_title)
@@ -403,12 +409,10 @@ var/global/list/radio_packs = list()
 
 /obj/item/storage/backpack/marine/satchel/rto/dropped(mob/user)
 	. = ..()
-	internal_transmitter.set_external_object(src)
 	internal_transmitter.phone_id = "[src]"
 
 /obj/item/storage/backpack/marine/satchel/rto/attack_hand(mob/user)
 	if(user.back == src)
-		internal_transmitter.set_external_object(user)
 		internal_transmitter.attack_hand(user)
 	else if(internal_transmitter.get_calling_phone())
 		if(internal_transmitter.attached_to && internal_transmitter.attached_to.loc != internal_transmitter)
@@ -428,7 +432,7 @@ var/global/list/radio_packs = list()
 
 	if(ismob(loc))
 		var/mob/M = loc
-		to_chat(M, SPAN_PURPLE("[htmlicon(src, M)] New droppod available ([N.name])."))
+		to_chat(M, SPAN_PURPLE("[icon2html(src, M)] New droppod available ([N.name])."))
 
 /obj/item/storage/backpack/marine/smock
 	name = "\improper M3 sniper's smock"

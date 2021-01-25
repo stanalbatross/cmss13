@@ -139,6 +139,9 @@
 	if(ishuman(A.loc))
 		return A.loc
 
+/obj/item/device/motiondetector/proc/apply_debuff(var/mob/M)
+	return
+
 /obj/item/device/motiondetector/proc/scan()
 	set waitfor = 0
 	if(scanning)
@@ -162,7 +165,7 @@
 	var/list/ping_candidates = SSquadtree.players_in_range(range_bounds, cur_turf.z, QTREE_EXCLUDE_OBSERVER | QTREE_SCAN_MOBS)
 
 	for(var/A in ping_candidates)
-		var/mob/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
+		var/mob/living/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
 		if(M == loc) continue //device user isn't detected
 		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
 		if(isrobot(M)) continue

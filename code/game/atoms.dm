@@ -187,7 +187,7 @@ Also, the icon used for the beam will have to be vertical and 32x32.
 The math involved assumes that the icon is vertical to begin with so unless you want to adjust the math,
 its easier to just keep the beam vertical.
 */
-/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi', time = 50, maxdistance = 10, var/datum/callback/on_removed)
+/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi', time = 50, maxdistance = 10, always_turn = TRUE)
 	set waitfor = FALSE
 
 	if (isnull(beams))
@@ -209,7 +209,8 @@ its easier to just keep the beam vertical.
 	//of range or to another z-level, then the beam will stop.  Otherwise it will
 	//continue to draw.
 
-		setDir(get_dir(src,BeamTarget))	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
+		if(always_turn)
+			setDir(get_dir(src,BeamTarget))	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
 
 		for(var/obj/effect/overlay/beam/O in orange(10,src))	//This section erases the previously drawn beam because I found it was easier to
 			if(O.BeamSource == src)				//just draw another instance of the beam instead of trying to manipulate all the
@@ -261,11 +262,7 @@ its easier to just keep the beam vertical.
 		if(O.BeamSource == src)
 			qdel(O)
 
-	on_removed.Invoke()
-
 	return TRUE
-
-#undef SHOULD_BEAM
 
 //All atoms
 /atom/verb/atom_examine()

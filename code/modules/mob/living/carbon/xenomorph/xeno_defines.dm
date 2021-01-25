@@ -600,9 +600,6 @@
 
 	return slots
 
-/datum/hive_status/proc/should_override_alliance(var/mob/living/carbon/human/H, var/limit)
-	return FALSE
-
 // returns if that location can be used to plant eggs
 /datum/hive_status/proc/in_egg_plant_range(var/turf/T)
 	if(!istype(living_xeno_queen))
@@ -815,13 +812,13 @@
 	. = ..()
 	X.faction_group = list(X.faction)
 
-/datum/hive_status/corrupted/submissive/should_override_alliance(var/mob/living/carbon/human/H, var/limit)
+/datum/hive_status/corrupted/submissive/is_ally(mob/living/carbon/C)
 	if(!leader)
 		return ..()
 
-	if(leader.faction_group && (H.faction in leader.faction_group))
-		return XENO_HIVE_ALLIED
-	else if(H.faction == leader.faction)
-		return XENO_HIVE_ALLIED
+	if(leader.faction_group && (C.faction in leader.faction_group))
+		return TRUE
+	else if(C.faction == leader.faction)
+		return TRUE
 
 	return ..()

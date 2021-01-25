@@ -7,7 +7,7 @@
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED|MODE_NEW_SPAWN
 	var/round_status_flags
 
-	var/passive_increase_interval = MINUTES_20
+	var/passive_increase_interval = 20 MINUTES
 	var/next_passive_increase = 0
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@
 	initialize_post_marine_gear_list()
 	spawn_smallhosts()
 
-	if(map_tag in MAPS_BASIC_RT)
+	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_BASIC_RT])
 		flags_round_type |= MODE_BASIC_RT
 
 	round_time_lobby = world.time
@@ -159,7 +159,7 @@
 	if((flags_round_type & MODE_BASIC_RT) && next_passive_increase < world.time)
 		for(var/T in SStechtree.trees)
 			var/datum/techtree/tree = SStechtree.trees[T]
-			
+
 			tree.passive_node.resource_to_give += 0.5
 
 		next_passive_increase = world.time + passive_increase_interval
@@ -202,7 +202,7 @@
 					A.is_resin_allowed = TRUE
 			resin_allow_finished = 1
 			msg_admin_niche("Areas close to landing zones are now weedable.")
-	
+
 
 #undef FOG_DELAY_INTERVAL
 #undef PODLOCKS_OPEN_WAIT
@@ -211,7 +211,7 @@
 
 /datum/game_mode/colonialmarines/ds_first_drop(var/datum/shuttle/ferry/marine/m_shuttle)
 	SStechtree.activate_passive_nodes()
-	addtimer(CALLBACK(SStechtree, /datum/controller/subsystem/techtree/.proc/activate_all_nodes), SECONDS_20)
+	addtimer(CALLBACK(SStechtree, /datum/controller/subsystem/techtree/proc/activate_all_nodes), 20 SECONDS)
 
 ///////////////////////////
 //Checks to see who won///

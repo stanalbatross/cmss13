@@ -41,10 +41,10 @@
 	fire_delay = 10
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/mini
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer/mini
-	
+
 
 /obj/structure/machinery/defenses/sentry/flamer/mini/destroyed_action()
-	visible_message("[htmlicon(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
+	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 
 	cell_explosion(loc, 10, 10, null, "sentry explosion")

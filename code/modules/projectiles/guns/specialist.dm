@@ -600,10 +600,9 @@
 	var/list/unconscious_targets = list()
 	var/list/turf/path = list()
 	var/turf/T
-	var/mob/M
 
-	for(M in orange(range, user)) // orange allows sentry to fire through gas and darkness
-		if(!isliving(M) || M.stat & DEAD || isrobot(M)) continue // No dead or non living.
+	for(var/mob/living/M in orange(range, user)) // orange allows sentry to fire through gas and darkness
+		if((M.stat & DEAD)) continue // No dead or non living.
 
 		if(M.get_target_lock(user.faction_group)) continue
 		if(angle > 0)
