@@ -67,9 +67,8 @@
 	L.Move(get_step_away(L, src))
 
 /mob/living/obj_launch_collision(var/obj/O)
-	if ((!thrower || thrower != src) && \
-		!rebounding
-	)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [O]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -79,7 +78,8 @@
 
 //This is called when the mob or human is thrown into a dense turf or wall
 /mob/living/turf_launch_collision(var/turf/T)
-	if (!rebounding)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [T]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -107,27 +107,28 @@
 //Mobs on Fire
 /mob/living/proc/IgniteMob(force)
 	if(!force && SEND_SIGNAL(src, COMSIG_LIVING_PREIGNITION) & COMPONENT_CANCEL_IGNITION)
-		return FALSE
+		return IGNITE_FAILED
 	if(fire_stacks > 0)
 		if(on_fire)
-			return TRUE
+			return IGNITE_ON_FIRE
 		on_fire = TRUE
 		to_chat(src, SPAN_DANGER("You are on fire! Use Resist to put yourself out!"))
 		update_fire()
-		return TRUE
-	return FALSE
+		return IGNITE_IGNITED
+	return IGNITE_FAILED
 
 /mob/living/carbon/human/IgniteMob()
 	. = ..()
-	if(.)
-		if(!stat && pain.feels_pain)
-			emote("scream")
+	if(. && !stat && pain.feels_pain)
+		INVOKE_ASYNC(src, /mob.proc/emote, "scream")
 
 /mob/living/proc/ExtinguishMob()
 	if(on_fire)
-		on_fire = 0
+		on_fire = FALSE
 		fire_stacks = 0
 		update_fire()
+		return TRUE
+	return FALSE
 
 /mob/living/proc/update_fire()
 	return

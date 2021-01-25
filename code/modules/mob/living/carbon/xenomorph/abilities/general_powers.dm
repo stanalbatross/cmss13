@@ -90,11 +90,11 @@
 	if(!X.check_state(1))
 		return
 	for(var/i in 1 to X.caste.spit_types.len)
-		if(X.ammo == ammo_list[X.caste.spit_types[i]])
+		if(X.ammo == GLOB.ammo_list[X.caste.spit_types[i]])
 			if(i == X.caste.spit_types.len)
-				X.ammo = ammo_list[X.caste.spit_types[1]]
+				X.ammo = GLOB.ammo_list[X.caste.spit_types[1]]
 			else
-				X.ammo = ammo_list[X.caste.spit_types[i+1]]
+				X.ammo = GLOB.ammo_list[X.caste.spit_types[i+1]]
 			break
 	to_chat(X, SPAN_NOTICE("You will now spit [X.ammo.name] ([X.ammo.spit_cost] plasma)."))
 	button.overlays.Cut()
@@ -128,7 +128,7 @@
 	if (X.selected_resin > length(X.resin_build_order))
 		X.selected_resin = 1
 
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	to_chat(X, SPAN_NOTICE("You will now build <b>[RC.construction_name]\s</b> when secreting resin."))
 	//update the button's overlay with new choice
 	button.overlays.Cut()
@@ -164,11 +164,11 @@
 		SPAN_XENOWARNING("You stop emitting pheromones."), null, 5)
 	else
 
-		var/choice = input(X, "Choose a pheromone") in X.caste.aura_allowed + "help" + "cancel"
+		var/choice = tgui_input_list(X, "Choose a pheromone", "Pheromone Menu", X.caste.aura_allowed + "help" + "cancel")
 		if(choice == "help")
 			to_chat(X, SPAN_NOTICE("<br>Pheromones provide a buff to all Xenos in range at the cost of some stored plasma every second, as follows:<br><B>Frenzy</B> - Increased run speed, damage and tackle chance.<br><B>Warding</B> - Increased armor, reduced incoming damage and critical bleedout.<br><B>Recovery</B> - Increased plasma and health regeneration.<br>"))
 			return
-		if(choice == "cancel" || X.current_aura || !X.check_state(1)) //If they are stacking windows, disable all input
+		if(!choice || choice == "cancel" || X.current_aura || !X.check_state(1)) //If they are stacking windows, disable all input
 			return
 		if (!check_and_use_plasma_owner())
 			return

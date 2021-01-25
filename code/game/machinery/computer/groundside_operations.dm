@@ -1,4 +1,4 @@
-#define COOLDOWN_COMM_MESSAGE SECONDS_30
+#define COOLDOWN_COMM_MESSAGE 30 SECONDS
 
 /obj/structure/machinery/computer/groundside_operations
 	name = "groundside operations console"
@@ -242,7 +242,7 @@
 				if(S.usable)
 					squad_list += S.name
 
-			var/name_sel = input("Which squad would you like to look at?") as null|anything in squad_list
+			var/name_sel = tgui_input_list(usr, "Which squad would you like to look at?", "Pick Squad", squad_list)
 			if(!name_sel)
 				return
 

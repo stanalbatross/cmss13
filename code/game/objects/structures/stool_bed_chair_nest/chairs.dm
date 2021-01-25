@@ -21,7 +21,7 @@
 	else
 		src.layer = OBJ_LAYER
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 
 /obj/structure/bed/chair/verb/rotate()
 	set name = "Rotate Chair"
@@ -29,7 +29,7 @@
 	set src in oview(1)
 
 	if(CONFIG_GET(flag/ghost_interaction))
-		src.dir = turn(src.dir, 90)
+		src.setDir(turn(src.dir, 90))
 		handle_rotation()
 		return
 	else
@@ -40,7 +40,7 @@
 		if(usr.stat || usr.is_mob_restrained())
 			return
 
-		dir = turn(src.dir, 90)
+		setDir(turn(src.dir, 90))
 		handle_rotation()
 		return
 
@@ -188,8 +188,7 @@
 			chair_state = DROPSHIP_CHAIR_BROKEN
 		else
 			chair_state = DROPSHIP_CHAIR_FOLDED
-		sleep(5) // animation length
-		icon_state = "hotseat_new_folded"
+		addtimer(VARSET_CALLBACK(src, icon_state, "hotseat_new_folded"), 5) // animation length
 
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair/fold_down(var/break_it = 1)
 	if(chair_state == DROPSHIP_CHAIR_UNFOLDED)
@@ -204,8 +203,7 @@
 	flick("hotseat_new_unfolding", src)
 	is_animating = 0
 	chair_state = DROPSHIP_CHAIR_UNFOLDED
-	sleep(5)
-	icon_state = "hotseat"
+	addtimer(VARSET_CALLBACK(src, icon_state, "hotseat"), 5) // animation length
 
 /obj/structure/bed/chair/dropship/passenger/shuttle_chair/unfold_up()
 	if(chair_state == DROPSHIP_CHAIR_BROKEN)

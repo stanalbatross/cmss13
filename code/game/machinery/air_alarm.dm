@@ -116,7 +116,7 @@
 			forceMove(loc)
 
 		if(direction)
-			src.dir = direction
+			src.setDir(direction)
 
 		buildstage = 0
 		wiresexposed = 1
@@ -447,7 +447,7 @@
 	switch(wireIndex)
 		if(AALARM_WIRE_IDSCAN)			//unlocks for 30 seconds, if you have a better way to hack I'm all ears
 			locked = 0
-			spawn(SECONDS_30)
+			spawn(30 SECONDS)
 				locked = 1
 
 		if (AALARM_WIRE_POWER)
@@ -1032,8 +1032,8 @@ table tr:first-child th:first-child { border: none;}
 	breach_detection = 0
 	post_alert = 0
 
-/obj/structure/machinery/alarm/server/New()
-	..()
+/obj/structure/machinery/alarm/server/Initialize()
+	. = ..()
 	req_one_access = list(ACCESS_CIVILIAN_ENGINEERING)
 	TLV["oxygen"] =			list(-1.0, -1.0,-1.0,-1.0) // Partial pressure, kpa
 	TLV["carbon dioxide"] = list(-1.0, -1.0,   5,  10) // Partial pressure, kpa

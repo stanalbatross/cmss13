@@ -11,12 +11,12 @@
 	throw_speed = SPEED_SLOW
 	throw_range = 5
 	matter = list("metal" = 500)
-	
+
 	var/dispenser = 0
-	var/breakouttime = MINUTES_1 // 1 minute
+	var/breakouttime = 1 MINUTES // 1 minute
 	var/single_use = 0 //determines if handcuffs will be deleted on removal
 	var/cuff_sound = 'sound/weapons/handcuffs.ogg'
-	var/cuff_delay = SECONDS_4 //how many deciseconds it takes to cuff someone
+	var/cuff_delay = 4 SECONDS //how many deciseconds it takes to cuff someone
 
 /obj/item/handcuffs/attack(mob/living/carbon/C, mob/user)
 	if(!istype(C))
@@ -26,6 +26,20 @@
 		return
 	if(!C.handcuffed)
 		place_handcuffs(C, user)
+
+/obj/item/handcuffs/obj/structure/MouseDrop(var/mob/living/carbon/human/H)
+	var/mob/living/carbon/human/user = usr
+	if (!istype(user))
+		return
+	if (user.stat || get_dist(user, src) > 1 || get_dist(user, H) > 1 || H.lying)
+		return
+	if (!istype(H))
+		return
+
+	if(!do_after(user, cuff_delay, INTERRUPT_ALL, BUSY_ICON_HOSTILE, H, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
+		return
+
+	// TODO: apply handcuffs
 
 /obj/item/handcuffs/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
@@ -170,9 +184,9 @@
 	throw_speed = SPEED_SLOW
 	throw_range = 5
 	matter = list("metal" = 500)
-	
+
 	var/dispenser = 0
-	var/breakouttime = MINUTES_2 //2 minutes
+	var/breakouttime = 2 MINUTES //2 minutes
 
 /obj/item/restraints/attack(mob/living/carbon/C as mob, mob/user as mob)
 	if(!istype(C, /mob/living/carbon/Xenomorph))

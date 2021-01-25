@@ -184,7 +184,7 @@
 	var/xeno_hostile_hud = FALSE // 'Hostile' HUD - the verb Xenos use to see tags, etc on humans
 	var/list/plasma_types = list() //The types of plasma the caste contains
 	var/list/xeno_shields = list() // List of /datum/xeno_shield that holds all active shields on the Xeno.
-	var/acid_splash_cooldown = SECONDS_5 //Time it takes between acid splash retaliate procs
+	var/acid_splash_cooldown = 5 SECONDS //Time it takes between acid splash retaliate procs
 	var/acid_splash_last //Last recorded time that an acid splash procced
 	var/interference = 0 // Stagger for predator weapons. Prevents hivemind usage, queen overwatching, etc.
 	var/mob/living/carbon/Xenomorph/observed_xeno // Overwatched xeno for xeno hivemind vision
@@ -319,7 +319,7 @@
 	see_in_dark = 8
 
 	if(caste && caste.spit_types && caste.spit_types.len)
-		ammo = ammo_list[caste.spit_types[1]]
+		ammo = GLOB.ammo_list[caste.spit_types[1]]
 
 	create_reagents(100)
 
@@ -408,8 +408,9 @@
 
 	acid_splash_cooldown = caste.acid_splash_cooldown
 
-	if (caste.fire_immune)
-		RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
+	if (caste.fire_immunity != FIRE_IMMUNITY_NONE)
+		if(caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE)
+			RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
 		RegisterSignal(src, list(
 			COMSIG_LIVING_FLAMER_CROSSED,
 			COMSIG_LIVING_FLAMER_FLAMED,
@@ -440,7 +441,10 @@
 	if(R.fire_penetrating)
 		return
 
-	return COMPONENT_NO_BURN|COMPONENT_NO_IGNITE
+	. = COMPONENT_NO_BURN
+	// Burrowed xenos also cannot be ignited
+	if((caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || burrow)
+		. |= COMPONENT_NO_IGNITE
 
 //Off-load this proc so it can be called freely
 //Since Xenos change names like they change shoes, we need somewhere to hammer in all those legos
@@ -819,9 +823,12 @@
 			hive.hive_ui.update_all_xeno_data()
 
 	armor_integrity = 100
+	UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
 	..()
 	hud_update()
 	plasma_stored = plasma_max
+	for(var/datum/action/xeno_action/XA in actions)
+		XA.end_cooldown()
 
 /mob/living/carbon/Xenomorph/proc/remove_action(var/action as text)
 	for(var/X in actions)
@@ -862,3 +869,17 @@
 		O.show_message(SPAN_DANGER("<B>[src] manages to remove [legcuffed]!</B>"), 1)
 	to_chat(src, SPAN_NOTICE(" You successfully remove [legcuffed]."))
 	drop_inv_item_on_ground(legcuffed)
+
+/mob/living/carbon/Xenomorph/IgniteMob()
+	. = ..()
+	if (. & IGNITE_IGNITED)
+		RegisterSignal(src, COMSIG_XENO_PRE_HEAL, .proc/cancel_heal)
+
+/mob/living/carbon/Xenomorph/ExtinguishMob()
+	. = ..()
+	if (.)
+		UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)
+
+/mob/living/carbon/Xenomorph/proc/cancel_heal()
+	SIGNAL_HANDLER
+	return COMPONENT_CANCEL_XENO_HEAL

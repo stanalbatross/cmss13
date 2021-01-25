@@ -9,7 +9,8 @@
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
 	P.generate_bullet(new ammo.default_ammo)
-	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE, faction_group)
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
+	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	ammo.current_rounds--
 	if(ammo.current_rounds == 0)
 		visible_message("[icon2html(src, viewers(src))] <span class='warning'>The [name] beeps steadily and its ammo light blinks red.</span>")
@@ -19,7 +20,7 @@
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 	for(var/i = 1 to 6)
-		dir = pick(NORTH, EAST, SOUTH, WEST)
+		setDir(pick(NORTH, EAST, SOUTH, WEST))
 		sleep(2)
 
 	if(ammo.current_rounds != 0)

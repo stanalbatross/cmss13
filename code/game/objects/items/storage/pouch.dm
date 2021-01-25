@@ -102,7 +102,7 @@
 	storage_slots = 5
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 	var/draw_cooldown = 0
-	var/draw_cooldown_interval = 1 SECOND
+	var/draw_cooldown_interval = 1 SECONDS
 
 /obj/item/storage/pouch/bayonet/Initialize()
 	. = ..()
@@ -181,7 +181,7 @@
 	desc = "It can contain a pistol. Useful for emergencies."
 	icon_state = "pistol"
 	max_w_class = SIZE_MEDIUM
-	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver/m44)
+	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver/m44,/obj/item/weapon/gun/flare)
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 
 
@@ -216,6 +216,7 @@
 
 /obj/item/storage/pouch/magazine/large
 	name = "large magazine pouch"
+	desc = "It can contain many ammo magazines."
 	icon_state = "large_ammo_mag"
 	storage_slots = 4
 
@@ -226,7 +227,7 @@
 
 /obj/item/storage/pouch/magazine/pistol
 	name = "pistol magazine pouch"
-	desc = "It can contain pistol and revolver ammo magazines."
+	desc = "It can contain pistol ammo magazines and revolver speedloaders."
 	max_w_class = SIZE_SMALL
 	icon_state = "pistol_mag"
 	storage_slots = 3
@@ -238,6 +239,7 @@
 
 /obj/item/storage/pouch/magazine/pistol/large
 	name = "large pistol magazine pouch"
+	desc = "It can contain many pistol ammo magazines and revolver speedloaders."
 	storage_slots = 6
 	icon_state = "large_pistol_mag"
 
@@ -311,7 +313,7 @@
 
 /obj/item/storage/pouch/explosive
 	name = "explosive pouch"
-	desc = "It can contain grenades, plastics, mine boxes, and other explosives."
+	desc = "It can contain grenades, plastic explosives, mine boxes, and other explosives."
 	icon_state = "large_explosive"
 	storage_slots = 3
 	max_w_class = SIZE_MEDIUM
@@ -626,7 +628,7 @@
 
 /obj/item/storage/pouch/document
 	name = "large document pouch"
-	desc = "It can contain papers and clipboards."
+	desc = "It can contain papers, folders, disks, technical manuals, and clipboards."
 	icon_state = "document"
 	storage_slots = 21
 	max_w_class = SIZE_MEDIUM

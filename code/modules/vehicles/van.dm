@@ -39,7 +39,7 @@
 	movement_sound = 'sound/vehicles/tank_driving.ogg'
 	honk_sound = 'sound/vehicles/honk_2_truck.ogg'
 
-	luminosity = 4
+	luminosity = 8
 
 	max_momentum = 3
 
@@ -218,6 +218,9 @@
 
 
 /obj/vehicle/multitile/van/attackby(obj/item/O, mob/user)
+	if(user.z != z)
+		return ..()
+
 	if(iswelder(O) && health >= initial(health))
 		var/obj/item/hardpoint/H
 		for(var/obj/item/hardpoint/potential_hardpoint in hardpoints)

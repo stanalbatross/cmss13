@@ -1,3 +1,21 @@
+/* Copyright 2020 bobbahbrown (https://github.com/bobbahbrown), watermelon914 (https://github.com/watermelon914)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 /**
  * Creates a TGUI input list window and returns the user's response.
  *
@@ -12,6 +30,8 @@
 /proc/tgui_input_list(mob/user, message, title, list/buttons, timeout = 0)
 	if (!user)
 		user = usr
+	if(!length(buttons))
+		return
 	if (!istype(user))
 		if (istype(user, /client))
 			var/client/client = user
@@ -40,6 +60,8 @@
 /proc/tgui_input_list_async(mob/user, message, title, list/buttons, datum/callback/callback, timeout = 60 SECONDS)
 	if (!user)
 		user = usr
+	if(!length(buttons))
+		return
 	if (!istype(user))
 		if (istype(user, /client))
 			var/client/client = user
@@ -60,8 +82,10 @@
 	var/title
 	/// The textual body of the TGUI window
 	var/message
-	/// The list of buttons (responses) provided on the TGUI window
+	/// The list of buttons (responses) provided on the TGUI window. These will automatically all be strings
 	var/list/buttons
+	/// Buttons (strings specifically) mapped to the actual value (e.g. a mob or a verb)
+	var/list/buttons_map
 	/// The button that the user has pressed, null if no selection has been made
 	var/choice
 	/// The time at which the tgui_modal was created, for displaying timeout progress.
@@ -75,13 +99,16 @@
 	src.title = title
 	src.message = message
 	src.buttons = list()
+	src.buttons_map = list()
+
+	// Gets rid of illegal characters
+	var/static/regex/whitelistedWords = regex(@{"([^\u0020-\u8000]+)"})
 
 	for(var/i in buttons)
-		src.buttons += i
+		var/string_key = whitelistedWords.Replace("[i]", "")
 
-	// need to do this because byond macros are removed on json_encode
-	// the value of the buttons need to match the parameters in ui_act
-	src.buttons = json_decode(json_encode(src.buttons))
+		src.buttons += string_key
+		src.buttons_map[string_key] = i
 
 	if (timeout)
 		src.timeout = timeout
@@ -134,7 +161,7 @@
 		if("choose")
 			if (!(params["choice"] in buttons))
 				return
-			choice = params["choice"]
+			choice = buttons_map[params["choice"]]
 			SStgui.close_uis(src)
 			return TRUE
 		if("cancel")

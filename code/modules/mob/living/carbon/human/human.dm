@@ -2,7 +2,7 @@
 	blood_type = pick(7;"O-", 38;"O+", 6;"A-", 34;"A+", 2;"B-", 9;"B+", 1;"AB-", 3;"AB+")
 	GLOB.human_mob_list += src
 	GLOB.alive_human_list += src
-	processable_human_list += src
+	SShuman.processable_human_list += src
 
 	if(!species)
 		if(new_species)
@@ -79,13 +79,13 @@
 	remove_from_all_mob_huds()
 	GLOB.human_mob_list -= src
 	GLOB.alive_human_list -= src
-	processable_human_list -= src
+	SShuman.processable_human_list -= src
 
 	. = ..()
 
 	if(agent_holder)
 		agent_holder.source_human = null
-		human_agent_list -= src
+		GLOB.human_agent_list -= src
 
 /mob/living/carbon/human/get_status_tab_items()
 	. = ..()
@@ -473,7 +473,7 @@
 					return FALSE
 				var/obj/item/clothing/accessory/A = LAZYACCESS(U.accessories, 1)
 				if(LAZYLEN(U.accessories) > 1)
-					A = input("Select an accessory to remove from [U]") as null|anything in U.accessories
+					A = tgui_input_list(usr, "Select an accessory to remove from [U]", "Remove accessory", U.accessories)
 				if(!istype(A))
 					return
 				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their accessory ([A]) removed by [key_name(usr)]</font>")
@@ -571,7 +571,7 @@
 						for(var/datum/data/record/R in GLOB.data_core.security)
 							if(R.fields["id"] == E.fields["id"])
 
-								var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Released", "Cancel")
+								var/setcriminal = tgui_input_list(usr, "Specify a new criminal status for this person.", "Security HUD", list("None", "*Arrest*", "Incarcerated", "Released", "Cancel"))
 
 								if(hasHUD(usr, "security"))
 									if(setcriminal != "Cancel")
@@ -687,7 +687,7 @@
 					for(var/datum/data/record/R in GLOB.data_core.general)
 						if(R.fields["id"] == E.fields["id"])
 
-							var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", R.fields["p_stat"]) in list("*SSD*", "*Deceased*", "Physically Unfit", "Active", "Disabled", "Cancel")
+							var/setmedical = tgui_input_list(usr, "Specify a new medical status for this person.", "Medical HUD", R.fields["p_stat"], list("*SSD*", "*Deceased*", "Physically Unfit", "Active", "Disabled", "Cancel"))
 
 							if(hasHUD(usr,"medical"))
 								if(setmedical != "Cancel")
@@ -792,7 +792,7 @@
 		if(!has_species(src, "Human"))
 			to_chat(usr, SPAN_WARNING("Triage holocards only works on humans."))
 			return
-		var/newcolor = input("Choose a triage holo card to add to the patient:", "Triage holo card", null, null) in list("black", "red", "orange", "none")
+		var/newcolor = tgui_input_list(usr, "Choose a triage holo card to add to the patient:", "Triage holo card", list("black", "red", "orange", "none"))
 		if(!newcolor) return
 		if(get_dist(usr, src) > 7)
 			to_chat(usr, SPAN_WARNING("[src] is too far away."))
@@ -1079,11 +1079,11 @@
 
 	var/datum/species/oldspecies = species
 
-	species = all_species[new_species]
+	species = GLOB.all_species[new_species]
 
 	// If an invalid new_species value is passed, just default to human
 	if (!istype(species))
-		species = all_species["Human"]
+		species = GLOB.all_species["Human"]
 
 	if(oldspecies)
 		//additional things to change when we're no longer that species
@@ -1198,7 +1198,7 @@
 	if(H.z != src.z || get_dist(src,H) < 1 || src == H)
 		hud_used.locate_leader.icon_state = "trackondirect[tl_prefix]"
 	else
-		hud_used.locate_leader.dir = get_dir(src,H)
+		hud_used.locate_leader.setDir(get_dir(src,H))
 		hud_used.locate_leader.icon_state = "trackon[tl_prefix]"
 	return
 
@@ -1219,7 +1219,7 @@
 	if(get_dist(src,N) < 1)
 		hud_used.locate_nuke.icon_state = "nuke_trackondirect"
 	else
-		hud_used.locate_nuke.dir = get_dir(src,N)
+		hud_used.locate_nuke.setDir(get_dir(src,N))
 		hud_used.locate_nuke.icon_state = "nuke_trackon"
 
 

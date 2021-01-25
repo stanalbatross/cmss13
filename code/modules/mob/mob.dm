@@ -653,10 +653,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/newdir = FALSE
 	if(dir != ndir)
 		flags_atom &= ~DIRLOCK
-		dir = ndir
+		setDir(ndir)
 		newdir = TRUE
 	if(buckled && !buckled.anchored)
-		buckled.dir = ndir
+		buckled.setDir(ndir)
 		buckled.handle_rotation()
 	var/mob/living/mliv = src
 	if(istype(mliv))
@@ -678,6 +678,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/get_species()
 	return ""
+
+/mob/proc/unfreeze()
+	frozen = FALSE
+	update_canmove()
 
 /mob/proc/flash_weak_pain()
 	overlay_fullscreen("pain", /obj/screen/fullscreen/pain, 1)
@@ -723,7 +727,7 @@ mob/proc/yank_out_object()
 		remove_verb(src, /mob/proc/yank_out_object)
 		return
 
-	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = tgui_input_list(usr, "What do you want to yank out?", "Embedded objects", valid_objects)
 	if(self)
 		if(get_active_hand())
 			to_chat(src, SPAN_WARNING("You need an empty hand for this!"))

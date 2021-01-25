@@ -7,7 +7,8 @@
 	var/last_larva_time = 0
 	var/last_surge_time = 0
 	var/spawn_cooldown = 30 SECONDS
-	var/surge_cooldown = 1 MINUTE
+	var/surge_cooldown = 90 SECONDS
+	var/surge_incremental_reduction = 3 SECONDS
 	var/mob/melting_body
 
 	luminosity = 3
@@ -83,7 +84,7 @@
 		return
 	visible_message(SPAN_DANGER("\The [src] splashes loudly as \the [M] is tossed in, bubbling uncontrollably!"))
 	melting_body = M
-	melting_body.dir = SOUTH
+	melting_body.setDir(SOUTH)
 	melting_body.moveToNullspace()
 	melting_body.pixel_x = 16
 	melting_body.pixel_y = 19
@@ -120,6 +121,8 @@
 		linked_hive.stored_larva++
 		for(var/mob/dead/observer/ghost in GLOB.observer_list)
 			to_chat(ghost, SPAN_DEADSAY("The hive has gained another pooled larva! Use the Join As Xeno verb to take it."))
+			if(surge_cooldown > 30 SECONDS) //mostly for sanity purposes
+				surge_cooldown = surge_cooldown - surge_incremental_reduction //ramps up over time
 
 /obj/effect/alien/resin/special/pool/proc/melt_body(var/iterations = 3)
 	if(!melting_body)
@@ -132,7 +135,7 @@
 		vis_contents.Cut()
 		QDEL_NULL(melting_body)
 	else
-		addtimer(CALLBACK(src, /obj/effect/alien/resin/special/pool/proc/melt_body, iterations), SECONDS_2)
+		addtimer(CALLBACK(src, /obj/effect/alien/resin/special/pool/proc/melt_body, iterations), 2 SECONDS)
 
 /obj/effect/alien/resin/special/pool/proc/can_spawn_larva()
 	if(linked_hive.hardcore)
@@ -165,5 +168,8 @@
 	linked_hive.spawn_pool = null
 	vis_contents.Cut()
 	QDEL_NULL(melting_body)
-
+	if(linked_hive.hijack_pooled_surge)
+		visible_message(SPAN_XENODANGER("You hear something resembling a scream from [src] as it's destroyed!"))
+		xeno_message(SPAN_XENOANNOUNCE("Psychic pain storms throughout the hive as the spawn pool is destroyed! You will no longer gain pooled larva over time."), 3, linked_hive.hivenumber)
+		linked_hive.hijack_pooled_surge = FALSE
 	. = ..()

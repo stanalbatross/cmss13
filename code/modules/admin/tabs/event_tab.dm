@@ -16,7 +16,7 @@
 		var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[T]
 		temp_list["[CEI.msg ? "(x) [CEI.faction]" : CEI.faction]"] = CEI.faction
 
-	var/faction = input(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", "Global") as null|anything in temp_list
+	var/faction = tgui_input_list(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", temp_list)
 	if(!faction)
 		return
 
@@ -94,7 +94,7 @@
 			if(!falloff)
 				return
 
-			var/shape_choice = input(src, "Select falloff shape?", "Select falloff shape") in falloff_shape_choices
+			var/shape_choice = tgui_input_list(src, "Select falloff shape?", "Select falloff shape", falloff_shape_choices)
 			var/explosion_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR
 			switch(shape_choice)
 				if("CANCEL")
@@ -139,7 +139,7 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/tag = input("Which ERT shuttle should be force launched?", "Select an ERT Shuttle:") as null|anything in list("Distress", "Distress_PMC", "Distress_UPP", "Distress_Big")
+	var/tag = tgui_input_list(usr, "Which ERT shuttle should be force launched?", "Select an ERT Shuttle:", list("Distress", "Distress_PMC", "Distress_UPP", "Distress_Big"))
 	if(!tag) return
 
 	var/datum/shuttle/ferry/ert/shuttle = shuttle_controller.shuttles[tag]
@@ -152,7 +152,7 @@
 		var/dock_list = list("Port", "Starboard", "Aft")
 		if(shuttle.use_umbilical)
 			dock_list = list("Port Hangar", "Starboard Hangar")
-		var/dock_name = input("Where on the [MAIN_SHIP_NAME] should the shuttle dock?", "Select a docking zone:") as null|anything in dock_list
+		var/dock_name = tgui_input_list(usr, "Where on the [MAIN_SHIP_NAME] should the shuttle dock?", "Select a docking zone:", dock_list)
 		switch(dock_name)
 			if("Port") dock_id = /area/shuttle/distress/arrive_2
 			if("Starboard") dock_id = /area/shuttle/distress/arrive_1
@@ -203,7 +203,7 @@
 
 	list_of_calls += "Randomize"
 
-	var/choice = input("Which distress call?") in list_of_calls
+	var/choice = tgui_input_list(usr, "Which distress call?", "Distress Signal", list_of_calls)
 
 	if(!choice)
 		return
@@ -285,7 +285,9 @@
 	to_chat(src, SSobjectives.get_objectives_progress())
 	to_chat(src, "<b>DEFCON:</b> [SSobjectives.get_scored_points()] / [SSobjectives.get_total_points()] points")
 
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		if(hive.xenocon_points)
 			to_chat(src, "<b>XENOCON [hive.hivenumber]:</b> [hive.xenocon_points] / [XENOCON_THRESHOLD] points")
 
@@ -321,7 +323,7 @@
 	set desc = "Force a dropship to launch"
 	set category = "Admin.Shuttles"
 
-	var/tag = input("Which dropship should be force launched?", "Select a dropship:") as null|anything in list("Dropship 1", "Dropship 2")
+	var/tag = tgui_input_list(usr, "Which dropship should be force launched?", "Select a dropship:", list("Dropship 1", "Dropship 2"))
 	if(!tag) return
 	var/crash = 0
 	switch(alert("Would you like to force a crash?", , "Yes", "No", "Cancel"))
@@ -353,7 +355,7 @@
 	set desc = "Force a ground transport vehicle to launch"
 	set category = "Admin.Shuttles"
 
-	var/tag = input("Which vehicle should be force launched?", "Select a dropship:") as null|anything in list("Transport 1")
+	var/tag = tgui_input_list(usr, "Which vehicle should be force launched?", "Select a dropship:", list("Transport 1"))
 	if(!tag)
 		return
 
@@ -373,7 +375,7 @@
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/faction = input(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", "") as null|anything in (FACTION_LIST_HUMANOID - list(FACTION_YAUTJA) + list("Everyone (-Yautja)"))
+	var/faction = tgui_input_list(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", (FACTION_LIST_HUMANOID - list(FACTION_YAUTJA) + list("Everyone (-Yautja)")))
 	if(!faction)
 		return
 	var/input = input(usr, "Please enter announcement text. Be advised, this announcement will be heard both on Almayer and planetside by conscious humans of selected faction.", "What?", "") as message|null
@@ -412,11 +414,12 @@
 		return
 
 	var/list/hives = list()
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	for(var/hivenumber in GLOB.hive_datum)
+		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 		hives += list("[hive.name]" = hive.hivenumber)
 
 	hives += list("All Hives" = "everything")
-	var/hive_choice = input(usr, "Please choose the hive you want to see your announcement. Selecting \"All hives\" option will change title to \"Unknown Higher Force\"", "Hive Selection", "") as null|anything in hives
+	var/hive_choice = tgui_input_list(usr, "Please choose the hive you want to see your announcement. Selecting \"All hives\" option will change title to \"Unknown Higher Force\"", "Hive Selection", hives)
 	if(!hive_choice)
 		return FALSE
 
@@ -628,11 +631,11 @@
 
 /datum/admins/var/create_humans_html = null
 /datum/admins/proc/create_humans(var/mob/user)
-	if(!gear_presets_list)
+	if(!GLOB.gear_presets_list)
 		return
 
 	if(!create_humans_html)
-		var/equipment_presets = jointext(gear_presets_list, ";")
+		var/equipment_presets = jointext(GLOB.gear_presets_list, ";")
 		create_humans_html = file2text('html/create_humans.html')
 		create_humans_html = replacetext(create_humans_html, "null /* object types */", "\"[equipment_presets]\"")
 

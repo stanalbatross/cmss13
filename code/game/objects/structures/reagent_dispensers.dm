@@ -51,7 +51,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -94,7 +94,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -219,7 +219,7 @@
 		user.visible_message(SPAN_NOTICE("[user] begins reinforcing the exterior of [src] with [M]."),\
 		SPAN_NOTICE("You begin reinforcing [src] with [M]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
 			return
 
 		if(!M.use(STACK_10))
@@ -237,7 +237,7 @@
 		user.visible_message(SPAN_DANGER("[user] begins to remove the shielding from [src]."),\
 		SPAN_NOTICE("You begin to remove the shielding from [src]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
 			return
 
 		user.visible_message(SPAN_DANGER("[user] removes the shielding from [src]."),\

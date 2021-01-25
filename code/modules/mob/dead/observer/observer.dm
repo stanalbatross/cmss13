@@ -253,7 +253,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/Move(NewLoc, direct)
 	following = null
-	dir = direct
+	setDir(direct)
 	var/area/last_area = get_area(loc)
 	if(NewLoc)
 		for(var/obj/effect/step_trigger/S in NewLoc)
@@ -318,7 +318,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, "<span style='color: red;'>Not when you're not dead!</span>")
 		return
 
-	var/area/thearea = input("Area to jump to", "BOOYEA") as null|anything in GLOB.sorted_areas
+	var/area/thearea = tgui_input_list(usr, "Area to jump to", "BOOYEA", GLOB.sorted_areas)
 	if(!thearea)	return
 
 	var/list/L = list()
@@ -345,7 +345,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Follow"
 
 	var/list/choices = list("Humans", "Xenomorphs", "Holograms", "Predators", "Synthetics", "ERT Members", "Survivors", "Any Mobs", "Mobs by Faction", "Xenos by Hive", "Vehicles")
-	var/input = input("Please, select a category:", "Follow", null, null) as null|anything in choices
+	var/input = tgui_input_list(usr, "Please, select a category:", "Follow", choices)
+	if(!input)
+		return
 	var/atom/movable/target
 	var/list/targets = list()
 	switch(input)
@@ -371,7 +373,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 		if("Mobs by Faction")
 			choices = FACTION_LIST_HUMANOID
-			input = input("Please, select a Faction:", "Follow", null, null) as null|anything in choices
+			input = tgui_input_list(usr, "Please, select a Faction:", "Follow", choices)
 
 			targets = gethumans()
 			for(var/name in targets)
@@ -381,11 +383,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 		if("Xenos by Hive")
 			var/hives = list()
-
-			for(var/datum/hive_status/hive in GLOB.hive_datum)
+			var/datum/hive_status/hive
+			for(var/hivenumber in GLOB.hive_datum)
+				hive = GLOB.hive_datum[hivenumber]
 				hives += list("[hive.name]" = hive.hivenumber)
 
-			input = input("Please, select a Hive:", "Follow", null, null) as null|anything in hives
+			input = tgui_input_list(usr, "Please, select a Hive:", "Follow", hives)
+			if(!input)
+				return
 
 			targets = getxenos()
 			for(var/name in targets)
@@ -396,7 +401,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!LAZYLEN(targets))
 		to_chat(usr, SPAN_WARNING("There aren't any targets in [input] category to follow."))
 		return
-	input = input("Please select a target among [input] to follow", "Follow", null, null) as null|anything in targets
+	input = tgui_input_list(usr, "Please select a target among [input] to follow", "Follow", targets)
 	target = targets[input]
 
 	ManualFollow(target)
@@ -442,7 +447,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		var/target = null	   //Chosen target.
 
 		dest += getmobs() //Fill list, prompt user with list
-		target = input("Please, select a player!", "Jump to Mob", null, null) as null|anything in dest
+		target = tgui_input_list(usr, "Please, select a player!", "Jump to Mob", dest)
 
 		if (!target)//Make sure we actually have a target
 			return
@@ -536,18 +541,20 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/list/hives = list()
 	var/datum/hive_status/last_hive_checked
 
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		if(hive.totalXenos.len > 0)
 			hives += list("[hive.name]" = hive.hivenumber)
 			last_hive_checked = hive
 
-	if(!hives.len)
+	if(!length(hives))
 		to_chat(src, SPAN_ALERT("There seem to be no living hives at the moment"))
 		return
-	else if(hives.len == 1) // Only one hive, don't need an input menu for that
+	else if(length(hives) == 1) // Only one hive, don't need an input menu for that
 		last_hive_checked.hive_ui.open_hive_status(src)
 	else
-		faction = input(src, "Select which hive status menu to open up", "Hive Choice", "") as null|anything in hives
+		faction = tgui_input_list(src, "Select which hive status menu to open up", "Hive Choice", hives)
 		if(!faction)
 			to_chat(src, SPAN_ALERT("Hive choice error. Aborting."))
 			return
@@ -592,7 +599,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN_DANGER("There are no available zombies."))
 		return
 
-	var/choice = input("Pick a Zombie:") as null|anything in zombie_list
+	var/choice = tgui_input_list(usr, "Pick a Zombie:", "Join as Zombie", zombie_list)
 	if(!choice)
 		return
 
@@ -632,7 +639,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN_WARNING("The game hasn't started yet!"))
 		return
 
-	var/choice = input("Pick a Freed Mob:") as null|anything in freed_mob_list
+	var/choice = tgui_input_list(usr, "Pick a Freed Mob:", "Join as Freed Mob", GLOB.freed_mob_list)
 	if(!choice || choice == "Cancel")
 		return
 
@@ -641,11 +648,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	if(QDELETED(L) || L.client)
-		freed_mob_list -= L
+		GLOB.freed_mob_list -= L
 		to_chat(src, SPAN_WARNING("Something went wrong."))
 		return
 
-	freed_mob_list -= L
+	GLOB.freed_mob_list -= L
 	M.mind.transfer_to(L, TRUE)
 
 /mob/dead/verb/join_as_hellhound()
@@ -681,7 +688,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(usr, "<span style='color: red;'>There aren't any available Hellhounds.</span>")
 		return
 
-	var/choice = input("Pick a Hellhound:") as null|anything in hellhound_list
+	var/choice = tgui_input_list(usr, "Pick a Hellhound:", "Join as Hellhound", hellhound_list)
 	if (isnull(choice) || choice == "Cancel")
 		return
 
@@ -763,7 +770,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(!istype(M,/mob/living/carbon/human) || M.stat || isYautja(M)) mobs -= M
 
 
-	target = input("Please, select a contestant!", "Cake Time", null, null) as null|anything in mobs
+	target = tgui_input_list(usr, "Please, select a contestant!", "Cake Time", mobs)
 
 	if (!target)//Make sure we actually have a target
 		return

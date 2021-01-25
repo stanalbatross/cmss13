@@ -288,7 +288,7 @@
 		playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
 		canmove = FALSE
 		frozen = TRUE
-		addtimer(CALLBACK(src, .proc/end_pounce_freeze), pounceAction.freeze_time)
+		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, .proc/unfreeze), pounceAction.freeze_time, TIMER_STOPPABLE)
 
 	if(pounceAction.slash)
 		M.attack_alien(src, pounceAction.slash_bonus_damage)
@@ -299,10 +299,6 @@
 
 /mob/living/carbon/Xenomorph/proc/pounced_mob_wrapper(var/mob/living/L)
 	pounced_mob(L)
-
-/mob/living/carbon/Xenomorph/proc/charge_unfreeze()
-	frozen = FALSE
-	update_canmove()
 
 /mob/living/carbon/Xenomorph/proc/pounced_obj(var/obj/O)
 	var/datum/action/xeno_action/activable/pounce/pounceAction = get_xeno_action_by_type(src, /datum/action/xeno_action/activable/pounce)
@@ -578,10 +574,6 @@
 	if(pipe)
 		handle_ventcrawl(pipe)
 
-/mob/living/carbon/Xenomorph/proc/end_pounce_freeze()
-	frozen = FALSE
-	update_canmove()
-
 /mob/living/carbon/Xenomorph/proc/attempt_tackle(var/mob/M, var/tackle_mult = 1, var/tackle_min_offset = 0, var/tackle_max_offset = 0, var/tackle_bonus = 0)
 	var/datum/tackle_counter/TC
 	if (M in tackle_counter)
@@ -596,7 +588,7 @@
 
 	. = TC.attempt_tackle(tackle_bonus)
 	if (!.)
-		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), SECONDS_4, TIMER_UNIQUE | TIMER_STOPPABLE)
+		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), 4 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 	else
 		qdel(TC)
 		tackle_counter[M] = null

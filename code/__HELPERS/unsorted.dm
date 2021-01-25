@@ -336,7 +336,7 @@
 /proc/select_active_ai(var/mob/user)
 	var/list/ais = active_ais()
 	if(ais.len)
-		if(user)	. = input(usr,"AI signals detected:", "AI selection") in ais
+		if(user)	. = tgui_input_list(usr,"AI signals detected:", "AI selection", ais)
 		else		. = pick(ais)
 	return .
 
@@ -815,12 +815,12 @@
 	var/y = min(world.maxy, max(1, A.y + dy))
 	return locate(x,y,A.z)
 
-proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as text,sleeptime = 0,direction as num)
+/proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as text,sleeptime = 0,direction as num)
 //This proc throws up either an icon or an animation for a specified amount of time.
 //The variables should be apparent enough.
 	var/atom/movable/overlay/animation = new(location)
 	if(direction)
-		animation.dir = direction
+		animation.setDir(direction)
 	animation.icon = a_icon
 	animation.layer = target.layer+0.1
 	if(a_icon_state)
@@ -1232,7 +1232,7 @@ var/global/image/action_blue_power_up
 
 					var/turf/X = B.ChangeTurf(T.type)
 					if (X)
-						X.dir = old_dir1
+						X.setDir(old_dir1)
 						X.icon_state = old_icon_state1
 						X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
 
@@ -1546,7 +1546,7 @@ var/list/WALLITEMS = list(
 	var/list/options = list()
 	for(var/datum/D in marked_datums)
 		options += "Marked datum ([D] - \ref[D])"
-	var/choice = input("Select marked datum", "Marked datums") as null|anything in options
+	var/choice = tgui_input_list(usr, "Select marked datum", "Marked datums", options)
 
 	if(!choice)
 		return null

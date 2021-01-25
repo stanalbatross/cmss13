@@ -333,9 +333,10 @@
 	dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
 	dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
 
-	if(LAZYLEN(human_agent_list))
+	if(length(GLOB.human_agent_list))
 		dat += "<br><table cellspacing=5><tr><td><B>Agents</B></td><td></td><td></td></tr>"
-		for(var/mob/living/carbon/human/H in human_agent_list)
+		for(var/i in GLOB.human_agent_list)
+			var/mob/living/carbon/human/H = i
 			var/location = get_area(H.loc)
 			if(H)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=\ref[H]'>[H.real_name]</a>[H.client ? "" : " <i>(logged out)</i>"][H.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
@@ -346,9 +347,10 @@
 				dat += "<td><a href='?src=\ref[src];agent=showobjectives;extra=\ref[H]'>Show Objective</a></td></tr>"
 		dat += "</table>"
 
-	if(LAZYLEN(other_factions_human_list))
+	if(length(GLOB.other_factions_human_list))
 		dat += "<br><table cellspacing=5><tr><td><B>Other human factions</B></td><td></td><td></td></tr>"
-		for(var/mob/living/carbon/human/H in other_factions_human_list)
+		for(var/i in GLOB.other_factions_human_list)
+			var/mob/living/carbon/human/H = i
 			var/location = get_area(H.loc)
 			if(H)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=\ref[H]'>[H.real_name]</a>[H.client ? "" : " <i>(logged out)</i>"][H.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
@@ -560,8 +562,8 @@ GLOBAL_LIST_INIT(pp_hives, pp_generate_hives())
 
 /proc/pp_generate_hives()
 	. = list()
-	for(var/I in GLOB.hive_datum)
-		var/datum/hive_status/H = I
+	for(var/hivenumber in GLOB.hive_datum)
+		var/datum/hive_status/H = GLOB.hive_datum[hivenumber]
 		.[H.name] = H.hivenumber
 
 GLOBAL_LIST_INIT(pp_limbs, list(

@@ -18,6 +18,7 @@
 	var/mob/living/carbon/Xenomorph/Runner/R = MS.xeno
 	R.mutation_type = RUNNER_ACIDER
 	R.speed_modifier += XENO_SPEED_SLOWMOD_TIER_5
+	R.armor_modifier += XENO_ARMOR_MOD_MED
 	apply_behavior_holder(R)
 	mutator_update_actions(R)
 	R.recalculate_everything()
@@ -127,7 +128,7 @@
 		M.apply_damage(damage, BURN)
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
 	if(bound_xeno.client && bound_xeno.hive)
-		addtimer(CALLBACK(src, /datum/behavior_delegate/runner_acider.proc/do_respawn, bound_xeno.client, bound_xeno.hive), SECONDS_5)
+		addtimer(CALLBACK(src, /datum/behavior_delegate/runner_acider.proc/do_respawn, bound_xeno.client, bound_xeno.hive), 5 SECONDS)
 	bound_xeno.gib()
 
 

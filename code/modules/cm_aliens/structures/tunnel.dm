@@ -111,7 +111,7 @@
 				continue
 
 			tunnels += list(T.tunnel_desc = T)
-		var/pick = input("Which tunnel would you like to move to?") as null|anything in tunnels
+		var/pick = tgui_input_list(usr, "Which tunnel would you like to move to?", "Tunnel", tunnels)
 		if(!pick)
 			return FALSE
 
@@ -179,7 +179,7 @@
 		M.visible_message(SPAN_XENODANGER("[M] begins to fill [src] with dirt."),\
 		SPAN_XENONOTICE("You begin to fill [src] with dirt using your massive claws."), max_distance = 3)
 
-		if(!do_after(M, SECONDS_10, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_ALL_OUT_OF_RANGE, max_dist = 1))
+		if(!do_after(M, 10 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_ALL_OUT_OF_RANGE, max_dist = 1))
 			to_chat(M, SPAN_XENOWARNING("You decide not to cave the tunnel in."))
 			return
 

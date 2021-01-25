@@ -215,7 +215,7 @@
 			possible_xenos += T
 
 		if(possible_xenos.len > 1)
-			var/mob/living/carbon/Xenomorph/selected_xeno = input(X, "Target", "Watch which xenomorph leader?") as null|anything in possible_xenos
+			var/mob/living/carbon/Xenomorph/selected_xeno = tgui_input_list(X, "Target", "Watch which xenomorph leader?", possible_xenos)
 			if(!selected_xeno || selected_xeno.hive_pos == NORMAL_XENO || selected_xeno == X.observed_xeno || selected_xeno.stat == DEAD || selected_xeno.z != X.z || !X.check_state())
 				return
 			X.overwatch(selected_xeno)
@@ -225,7 +225,7 @@
 			to_chat(X, SPAN_XENOWARNING("There are no Xenomorph leaders. Overwatch a Xenomorph to make it a leader."))
 
 
-/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A)
+/datum/action/xeno_action/activable/queen_heal/use_ability(atom/A, verbose)
 	var/mob/living/carbon/Xenomorph/Queen/X = owner
 	if(!X.check_state())
 		return
@@ -249,7 +249,9 @@
 		if(!X.can_not_harm(Xa))
 			continue
 
-		if(Xa.on_fire)
+		if(SEND_SIGNAL(Xa, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			if(verbose)
+				to_chat(X, SPAN_XENOMINORWARNING("You cannot heal [Xa]!"))
 			continue
 
 		if(Xa == X)
@@ -261,10 +263,8 @@
 		if(!Xa.caste.can_be_queen_healed)
 			continue
 
-		if(Xa.health < Xa.maxHealth)
-			Xa.gain_health(75)
-		new /datum/effects/heal_over_time(Xa, Xa.maxHealth * 0.4, 2 SECONDS, 2)
-		Xa.flick_heal_overlay(SECONDS_3, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
+		new /datum/effects/heal_over_time(Xa, Xa.maxHealth * 0.3, 2 SECONDS, 2)
+		Xa.flick_heal_overlay(3 SECONDS, "#D9F500")	//it's already hard enough to gauge health without hp overlays!
 
 	apply_cooldown()
 	to_chat(X, SPAN_XENONOTICE("You channel your plasma to heal your sisters' wounds around this area."))
@@ -355,7 +355,7 @@
 		return FALSE
 
 	// Account for the do_after in the resin building proc when checking cooldown
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	var/total_build_time = RC.build_time*X.caste.build_time_mult
 	return (world.time >= last_use + (total_build_time + cooldown))
 
@@ -376,7 +376,7 @@
 
 	last_use = world.time
 
-	var/datum/resin_construction/RC = X.resin_build_order[X.selected_resin]
+	var/datum/resin_construction/RC = GLOB.resin_constructions_list[X.resin_build_order[X.selected_resin]]
 	T.visible_message(SPAN_XENONOTICE("The weeds begin pulsating wildly and secrete resin in the shape of \a [RC.construction_name]!"), null, 5)
 	to_chat(owner, SPAN_XENONOTICE("You focus your plasma into the weeds below you and force the weeds to secrete resin in the shape of \a [RC.construction_name]."))
 	playsound(T, "alien_resin_build", 25)

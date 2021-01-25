@@ -40,9 +40,9 @@
 		else if(task == "rank")
 			var/new_rank
 			if(admin_ranks.len)
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (admin_ranks|"*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", (admin_ranks|"*New Rank*"))
 			else
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*"))
 
 			var/rights = 0
 			if(D)
@@ -84,7 +84,7 @@
 			var/list/permissionlist = list()
 			for(var/i=1, i<=R_HOST, i<<=1)		//that <<= is shorthand for i = i << 1. Which is a left bitshift
 				permissionlist[rights2text(i)] = i
-			var/new_permission = input("Select a permission to turn on/off", "Permission toggle", null, null) as null|anything in permissionlist
+			var/new_permission = tgui_input_list(usr, "Select a permission to turn on/off", "Permission toggle", permissionlist)
 			if(!new_permission)	return
 			D.rights ^= permissionlist[new_permission]
 
@@ -635,8 +635,6 @@
 	else if(href_list["c_mode"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
@@ -660,13 +658,11 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if (SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
-		master_mode = href_list["c_mode2"]
-		message_staff("[key_name_admin(usr)] set the mode as [master_mode].")
-		to_world(SPAN_NOTICE("<b><i>The mode is now: [master_mode]!</i></b>"))
+		GLOB.master_mode = href_list["c_mode2"]
+		message_staff("[key_name_admin(usr)] set the mode as [GLOB.master_mode].")
+		to_world(SPAN_NOTICE("<b><i>The mode is now: [GLOB.master_mode]!</i></b>"))
 		Game() // updates the main game menu
-		world.save_mode(master_mode)
+		SSticker.save_mode(GLOB.master_mode)
 		.(href, list("c_mode"=1))
 
 
@@ -748,10 +744,12 @@
 			return
 
 		var/list/hives = list()
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/datum/hive_status/hive
+		for(var/hivenumber in GLOB.hive_datum)
+			hive = GLOB.hive_datum[hivenumber]
 			hives += list("[hive.name]" = hive.hivenumber)
 
-		var/newhive = input(usr,"Select a hive.", null, null) in hives
+		var/newhive = tgui_input_list(usr,"Select a hive.", "Infect Larva", hives)
 
 		if(!H)
 			to_chat(usr, "This mob no longer exists")
@@ -790,12 +788,13 @@
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/list/hives = list();
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/list/hives = list()
+		for(var/hivenumber in GLOB.hive_datum)
+			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 			LAZYSET(hives, hive.name, hive)
 		LAZYSET(hives, "CANCEL", null)
 
-		var/hive_name = input("Which Hive will he belongs to") in hives
+		var/hive_name = tgui_input_list(usr, "Which Hive will he belongs to", "Make Cultist", hives)
 		if(!hive_name || hive_name == "CANCEL")
 			to_chat(usr, SPAN_ALERT("Hive choice error. Aborting."))
 
@@ -1202,7 +1201,7 @@
 		var/mob/living/carbon/human/H = locate(href_list["USCMFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use which template or roll your own?") in list("USCM High Command", "USCM Provost General", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use which template or roll your own?", "Fax Templates", list("USCM High Command", "USCM Provost General", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
@@ -1215,7 +1214,7 @@
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
@@ -1236,7 +1235,7 @@
 
 				fax_message = generate_templated_fax(0, "USCM CENTRAL COMMAND", subject,addressed_to, message_body,sent_by, sent_title, "United States Colonial Marine Corps")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "uscmfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Template", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1284,7 +1283,7 @@
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use the template or roll your own?") in list("Template", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use the template or roll your own?", "Fax Template", list("Template", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
@@ -1297,7 +1296,7 @@
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
@@ -1314,7 +1313,7 @@
 					return
 				fax_message = generate_templated_fax(1, "WESTON-YAMADA CORPORATE AFFAIRS - USS ALMAYER", subject, addressed_to, message_body, sent_by, "Corporate Affairs Director", "Weston-Yamada")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "clfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Confirmation", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1521,7 +1520,7 @@
 					else
 						var/atom/O = new path(target)
 						if(O)
-							O.dir = obj_dir
+							O.setDir(obj_dir)
 							if(obj_name)
 								O.name = obj_name
 								if(istype(O,/mob))
@@ -1666,7 +1665,7 @@
 	if(href_list["distress"]) //Distress Beacon, sends a random distress beacon when pressed
 		distress_cancel = FALSE
 		message_staff("[key_name_admin(usr)] has opted to SEND the distress beacon! Launching in 10 seconds... (<A HREF='?_src_=admin_holder;distresscancel=\ref[usr]'>CANCEL</A>)")
-		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), SECONDS_10)
+		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), 10 SECONDS)
 		//unanswered_distress -= ref_person
 
 	if(href_list["destroyship"]) //Distress Beacon, sends a random distress beacon when pressed
@@ -1675,7 +1674,7 @@
 		spawn(100)
 			if(distress_cancel)
 				return
-			var/mob/ref_person = locate(href_list["destroy"])
+			var/mob/ref_person = locate(href_list["destroyship"])
 			set_security_level(SEC_LEVEL_DELTA)
 			log_game("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]")
 			message_staff("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]", 1)

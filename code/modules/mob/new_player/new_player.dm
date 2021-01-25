@@ -15,8 +15,6 @@
 	. = ..()
 	GLOB.new_player_list += src
 	GLOB.dead_mob_list -= src
-	if(client)
-		client.view = lobby_view_size
 
 /mob/new_player/Destroy()
 	if(ready)
@@ -76,10 +74,21 @@
 
 	switch(href_list["lobby_choice"])
 		if("show_preferences")
+			// Otherwise the preview dummy will runtime
+			// because atoms aren't initialized yet
+			if(SSticker.current_state < GAME_STATE_PREGAME)
+				to_chat(src, "Game is still starting up, please wait")
+				return
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return
 			client.prefs.ShowChoices(src)
 			return 1
 
 		if("show_playtimes")
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB is still starting up, please wait")
+				return
 			if(client.player_data)
 				client.player_data.ui_interact(src)
 			return 1
@@ -154,7 +163,7 @@
 					to_chat(src, "You are currently not whitelisted to play [client.prefs.species].")
 					return
 
-				var/datum/species/S = all_species[client.prefs.species]
+				var/datum/species/S = GLOB.all_species[client.prefs.species]
 				if(!(S.flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
 					return
@@ -200,7 +209,7 @@
 					to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
 					return 0
 
-				var/datum/species/S = all_species[client.prefs.species]
+				var/datum/species/S = GLOB.all_species[client.prefs.species]
 				if(!(S.flags & IS_WHITELISTED))
 					to_chat(src, alert("Your current species,[client.prefs.species], is not available for play on the station."))
 					return 0
@@ -252,10 +261,12 @@
 
 	if(SSticker.mode.latejoin_larva_drop && SSticker.mode.latejoin_tally >= SSticker.mode.latejoin_larva_drop)
 		SSticker.mode.latejoin_tally -= SSticker.mode.latejoin_larva_drop
-		for(var/datum/hive_status/hs in GLOB.hive_datum)
-			if (hs.living_xeno_queen)
-				hs.stored_larva++
-				hs.hive_ui.update_pooled_larva()
+		var/datum/hive_status/HS
+		for(var/hivenumber in GLOB.hive_datum)
+			HS = GLOB.hive_datum[hivenumber]
+			if(length(HS.totalXenos))
+				HS.stored_larva++
+				HS.hive_ui.update_pooled_larva()
 
 	if(character.mind && character.mind.player_entity)
 		var/datum/entity/player_entity/player = character.mind.player_entity
@@ -339,7 +350,7 @@
 
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 	if(chosen_species)
 		// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
 		if(is_species_whitelisted(chosen_species) || has_admin_rights())
@@ -414,7 +425,7 @@
 /mob/new_player/get_species()
 	var/datum/species/chosen_species
 	if(client.prefs.species)
-		chosen_species = all_species[client.prefs.species]
+		chosen_species = GLOB.all_species[client.prefs.species]
 
 	if(!chosen_species)
 		return "Human"

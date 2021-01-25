@@ -21,23 +21,23 @@
 
     if(!isHumanStrict(M) || !(user.a_intent & INTENT_DISARM) || M == user)
         return . = ..()
-    
+
     if(M.stat != CONSCIOUS)
         return . = ..()
 
     if(M.dir != user.dir || M.loc != get_step(user, user.dir))
         to_chat(user, SPAN_WARNING("You must be behind your target!"))
         return
-    
+
     user.visible_message(SPAN_DANGER("[user] grabs [M] and smothers their face with [src]."), SPAN_DANGER("You cover [M]'s face with [src]."))
     to_chat(M, SPAN_HIGHDANGER("[user] grabs you and smothers [src] onto your face."))
 
     grab_stun(M, user)
 
-    if(!do_after(user, SECONDS_4, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, M, INTERRUPT_OUT_OF_RANGE, BUSY_ICON_HOSTILE))
+    if(!do_after(user, 4 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, M, INTERRUPT_OUT_OF_RANGE, BUSY_ICON_HOSTILE))
         remove_stun(M)
         return
-    
+
     to_chat(M, SPAN_HIGHDANGER("[user] knocks you out!"))
     M.KnockOut(knockout_strength)
 
@@ -79,11 +79,10 @@
 /obj/item/weapon/melee/chloroform/proc/remove_stun(var/mob/living/M)
     animate(M, pixel_x = 0, pixel_y = 0, time = 0.2 SECONDS, easing = QUAD_EASING)
     M.anchored = FALSE
-    M.frozen = FALSE
     M.density = TRUE
     M.able_to_speak = TRUE
     M.layer = MOB_LAYER
-    M.update_canmove()
+    M.unfreeze()
 
     QDEL_NULL(mask_item)
 

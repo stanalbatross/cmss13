@@ -325,6 +325,7 @@ var/list/datum/mob_hud/huds = list(
 /mob/hologram/queen/med_hud_set_status()
 	var/image/holder = hud_list[XENO_STATUS_HUD]
 	holder.icon_state = "hudeye"
+	holder.color = color
 
 /mob/living/carbon/human/med_hud_set_status()
 	var/image/holder = hud_list[STATUS_HUD]
@@ -377,7 +378,7 @@ var/list/datum/mob_hud/huds = list(
 			if(revive_enabled)
 				var/mob/dead/observer/G = get_ghost()
 				if(client || istype(G))
-					if(world.time > timeofdeath + revive_grace_period - SECONDS_60)
+					if(world.time > timeofdeath + revive_grace_period - 1 MINUTES)
 						holder.icon_state = "huddeadalmost"
 						if(!holder2_set)
 							holder2.icon_state = "huddeadalmost"
@@ -490,7 +491,7 @@ var/list/datum/mob_hud/huds = list(
 	var/image/holder = hud_list[QUEEN_OVERWATCH_HUD]
 	holder.overlays.Cut()
 	holder.icon_state = "hudblank"
-	if (stat != DEAD && hivenumber && hivenumber <= GLOB.hive_datum.len)
+	if (stat != DEAD && hivenumber && hivenumber <= GLOB.hive_datum)
 		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 		var/mob/living/carbon/Xenomorph/Queen/Q = hive.living_xeno_queen
 		if (Q && Q.observed_xeno == src)

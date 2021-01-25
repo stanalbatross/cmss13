@@ -26,7 +26,7 @@
 	GLOB.living_mob_list -= src
 	pipes_shown = null
 
-	QDEL_NULL(attack_icon)
+	attack_icon = null
 	QDEL_NULL(event_movement)
 	QDEL_NULL(pain)
 	QDEL_NULL(stamina)
@@ -169,7 +169,7 @@
 		if (!buckled.anchored)
 			return buckled.Move(NewLoc, direct)
 		else
-			return 0
+			return FALSE
 
 	var/atom/movable/pullee = pulling
 	if(pullee && get_dist(src, pullee) > 1) //Is the pullee adjacent?
@@ -211,7 +211,7 @@
 				if(istype(pmob))
 					pmob.on_movement()
 				if(!(flags_atom & DIRLOCK))
-					dir = turn(direct, 180) //face the pullee
+					setDir(turn(direct, 180)) //face the pullee
 
 	if(pulledby && get_dist(src, pulledby) > 1)//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()

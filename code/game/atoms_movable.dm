@@ -5,7 +5,6 @@
 	var/drag_delay = 3 //delay (in deciseconds) added to mob's move_delay when pulling it.
 	var/l_move_time = 1
 	var/throwing = 0
-	var/atom/thrower = null
 	var/throw_speed = SPEED_FAST // Speed that an atom will go when thrown by a carbon mob
 	var/throw_range = 7
 	var/cur_speed = MIN_SPEED // Current speed of an atom (account for speed when launched/thrown as well)
@@ -18,7 +17,6 @@
 	var/acid_damage = 0 //Counter for stomach acid damage. At ~60 ticks, dissolved
 
 	var/move_intentionally = FALSE // this is for some deep stuff optimization. This means that it is regular movement that can only be NSWE and you don't need to perform checks on diagonals. ALWAYS reset it back to FALSE when done
-
 
 
 //===========================================================================
@@ -119,7 +117,7 @@
 
 	while (duration > turn_delay)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 		duration -= turn_delay
 
 /atom/movable/proc/spin_circle(var/num_circles = 1, var/turn_delay = 1, var/clockwise = 0, var/cardinal_only = 1)
@@ -140,7 +138,7 @@
 
 	for (var/x in 0 to num_circles -1)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 
 
 //called when a mob tries to breathe while inside us.

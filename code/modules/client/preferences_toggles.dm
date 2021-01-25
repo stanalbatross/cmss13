@@ -55,7 +55,7 @@
 			total_silenced++
 			message_staff("A player has silenced the currently playing midi. Total: [total_silenced] player(s).", 1)
 			src.mob.client.midi_silenced = 1
-			spawn(SECONDS_30) // Prevents message_admins() spam. Should match with the midi_playing_timer spawn() in playsound.dm
+			spawn(30 SECONDS) // Prevents message_admins() spam. Should match with the midi_playing_timer spawn() in playsound.dm
 				src.mob.client.midi_silenced = 0
 	else
 		to_chat(src, "You have 'Play Admin Midis' disabled in your Character Setup, so this verb is useless to you.")
@@ -268,7 +268,7 @@
 	set category = "Preferences.Ghost"
 	set desc = "Use to change which HUDs you want to have by default when you become an observer."
 
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD prefs", null) as null|anything in list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD", "Faction UPP HUD", "Faction W-Y HUD", "Faction RESS HUD", "Faction CLF HUD")
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD prefs", list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD", "Faction UPP HUD", "Faction W-Y HUD", "Faction RESS HUD", "Faction CLF HUD"))
 	if(!hud_choice)
 		return
 	prefs.observer_huds[hud_choice] = !prefs.observer_huds[hud_choice]

@@ -61,7 +61,7 @@
 	if(!mods["shift"] && mods["middle"] && CAN_PICKUP(user, src))
 		open(user)
 		return
-	..()
+	. = ..()
 
 /obj/item/storage/proc/return_inv()
 	RETURN_TYPE(/list)
@@ -556,7 +556,7 @@ var/list/global/item_storage_box_cache = list()
 	if (!(storage_flags & STORAGE_QUICK_EMPTY))
 		user.visible_message(SPAN_NOTICE("[user] starts to empty \the [src]..."),
 			SPAN_NOTICE("You start to empty \the [src]..."))
-		if (!do_after(user, SECONDS_2, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+		if (!do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 			return
 
 	hide_from(user)

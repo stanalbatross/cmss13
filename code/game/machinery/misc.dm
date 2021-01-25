@@ -70,8 +70,8 @@ var/list/alldepartments = list()
 
 	var/dpt = "Weston-Yamada" // the department we're sending to
 
-/obj/structure/machinery/faxmachine/New()
-	..()
+/obj/structure/machinery/faxmachine/Initialize(mapload, ...)
+	. = ..()
 	allfaxes += src
 
 	if( !("[department]" in alldepartments) ) //Initialize departments. This will work with multiple fax machines.
@@ -198,7 +198,7 @@ var/list/alldepartments = list()
 
 	if(href_list["dept"])
 		var/lastdpt = dpt
-		dpt = input(usr, "Which department?", "Choose a department", "") as null|anything in alldepartments
+		dpt = tgui_input_list(usr, "Which department?", "Choose a department", alldepartments)
 		if(!dpt) dpt = lastdpt
 
 	if(href_list["auth"])

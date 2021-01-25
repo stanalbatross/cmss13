@@ -402,7 +402,7 @@
 			return 0
 		if(!drain_power(M,50)) return
 		cloaked = 1
-		RegisterSignal(M, COMSIG_HUMAN_BULLET_ACT, .proc/bullet_hit)
+		RegisterSignal(M, COMSIG_HUMAN_PRE_BULLET_ACT, .proc/bullet_hit)
 		to_chat(M, SPAN_NOTICE("You are now invisible to normal detection."))
 		log_game("[key_name_admin(usr)] has enabled their cloaking device.")
 		for(var/mob/O in oviewers(M))
@@ -421,7 +421,7 @@
 
 /obj/item/clothing/gloves/yautja/proc/decloak(var/mob/user)
 	if(!user) return
-	UnregisterSignal(user, COMSIG_HUMAN_BULLET_ACT)
+	UnregisterSignal(user, COMSIG_HUMAN_PRE_BULLET_ACT)
 	to_chat(user, "Your cloaking device deactivates.")
 	cloaked = 0
 	log_game("[key_name_admin(usr)] has disabled their cloaking device.")
@@ -742,7 +742,7 @@
 			return
 	if(!yautja_gear.len)
 		return
-	var/obj/item/pickeditem = input("item to remove") as null|anything in yautja_gear
+	var/obj/item/pickeditem = tgui_input_list(usr, "item to remove", "Remove item", yautja_gear)
 	if(pickeditem && !(pickeditem in untracked_yautja_gear))
 		untracked_yautja_gear += pickeditem
 		remove_from_missing_pred_gear(pickeditem)
@@ -769,7 +769,7 @@
 			return
 	if(!untracked_yautja_gear.len)
 		return
-	var/obj/item/pickeditem = input("item to add") as null|anything in untracked_yautja_gear
+	var/obj/item/pickeditem = tgui_input_list(usr, "item to add", "Add item", untracked_yautja_gear)
 	if(pickeditem && !(pickeditem in yautja_gear))
 		untracked_yautja_gear -= pickeditem
 		add_to_missing_pred_gear(pickeditem)

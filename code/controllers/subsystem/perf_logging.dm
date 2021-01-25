@@ -6,7 +6,7 @@ SUBSYSTEM_DEF(perf_logging)
 	flags = SS_BACKGROUND | SS_DISABLE_FOR_TESTING
 	priority = SS_PRIORITY_PERFLOGGING
 	runlevels = RUNLEVELS_DEFAULT|RUNLEVEL_LOBBY
-	var/wait_for_start = MINUTES_5
+	var/wait_for_start = 5 MINUTES
 	var/current_timer = 0
 	var/is_initialized = FALSE
 	var/datum/entity/mc_round/round
@@ -20,12 +20,12 @@ SUBSYSTEM_DEF(perf_logging)
 
 
 /datum/controller/subsystem/perf_logging/proc/true_initialize()
-	while(!SSentity_manager.ready)
-		stoplag()
+	WAIT_DB_READY
 	round = SSentity_manager.select(/datum/entity/mc_round)
 	round.map_name = SSmapping.configs[GROUND_MAP].map_name
 	round.save()
 	round.sync()
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_ENTITY_ROUND_INIT, round)
 	if(!Master)
 		return // UH OH
 	controller_assoc = list()
@@ -65,7 +65,7 @@ SUBSYSTEM_DEF(perf_logging)
 	timing_info.round_id = round.id
 	timing_info.round_time = current_timer
 	timing_info.client_count = length(GLOB.clients)
-	timing_info.human_count = length(processable_human_list)
+	timing_info.human_count = length(SShuman.processable_human_list)
 	timing_info.xeno_count = length(GLOB.xeno_mob_list)
 	timing_info.save()
 	timing_info.detach()

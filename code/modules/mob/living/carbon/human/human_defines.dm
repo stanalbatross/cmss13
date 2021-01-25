@@ -75,7 +75,7 @@
 	var/oxygen_alert = 0
 	var/fire_alert = 0
 	var/prev_gender = null // Debug for plural genders
-	var/revive_grace_period = MINUTES_5 //5 minutes
+	var/revive_grace_period = 5 MINUTES //5 minutes
 	var/undefibbable = FALSE //whether the human is dead and past the defibbrillation period.
 
 	var/holo_card_color = "" //which color type of holocard is printed on us
@@ -117,7 +117,8 @@
 	var/hands_blood_amt = 0
 	var/feet_blood_color = "" //color of the blood on our feet if there's any
 	var/feet_blood_amt = 0
-	var/datum/component/bloody_feet
+	/// The number of bloody foot steps left to make
+	var/bloody_footsteps = 0
 
 	//taken from random files
 	var/last_chew = 0

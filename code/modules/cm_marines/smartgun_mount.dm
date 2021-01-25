@@ -111,13 +111,14 @@
 	if(user.z == GLOB.interior_manager.interior_z)
 		to_chat(usr, SPAN_WARNING("It's too cramped in here to deploy \a [src]."))
 		return
-	if(do_after(user, 1 SECOND, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+	if(do_after(user, 1 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		var/obj/structure/machinery/m56d_post/M = new /obj/structure/machinery/m56d_post(user.loc)
-		M.dir = user.dir // Make sure we face the right direction
+		M.setDir(user.dir) // Make sure we face the right direction
 		M.gun_rounds = src.rounds //Inherit the amount of ammo we had.
 		M.gun_mounted = TRUE
 		M.anchored = TRUE
 		M.update_icon()
+		M.name = src.name
 		to_chat(user, SPAN_NOTICE("You deploy [src]."))
 		qdel(src)
 
@@ -161,7 +162,8 @@
 		to_chat(usr, SPAN_WARNING("It's too cramped in here to deploy \a [src]."))
 		return
 	to_chat(user, SPAN_NOTICE("You deploy [src]."))
-	new /obj/structure/machinery/m56d_post(user.loc)
+	var/obj/structure/machinery/m56d_post/M = new /obj/structure/machinery/m56d_post(user.loc)
+	M.name = src.name
 	qdel(src)
 
 
@@ -244,15 +246,7 @@
 	if(istype(O,/obj/item/tool/wrench)) //rotate the mount
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 		user.visible_message(SPAN_NOTICE("[user] rotates [src]."),SPAN_NOTICE("You rotate [src]."))
-		switch(dir)
-			if(NORTH)
-				dir = EAST
-			if(EAST)
-				dir = SOUTH
-			if(SOUTH)
-				dir = WEST
-			if(WEST)
-				dir = NORTH
+		setDir(turn(dir, -90))
 		return
 
 	if(istype(O,/obj/item/device/m56d_gun)) //lets mount the MG onto the mount.
@@ -299,8 +293,9 @@
 				playsound(src.loc, 'sound/items/Deconstruct.ogg', 25, 1)
 				user.visible_message(SPAN_NOTICE("[user] screws the M56D into the mount."),SPAN_NOTICE("You finalize the M56D heavy machine gun."))
 				var/obj/structure/machinery/m56d_hmg/G = new(src.loc) //Here comes our new turret.
+				G.name = src.name
 				G.visible_message("[icon2html(G)] <B>[G] is now complete!</B>") //finished it for everyone to
-				G.dir = src.dir //make sure we face the right direction
+				G.setDir(dir) //make sure we face the right direction
 				G.rounds = src.gun_rounds //Inherent the amount of ammo we had.
 				G.update_icon()
 				qdel(src)
@@ -389,7 +384,7 @@
 /obj/structure/machinery/m56d_hmg/New()
 	..()
 
-	ammo = ammo_list[ammo] //dunno how this works but just sliding this in from sentry-code.
+	ammo = GLOB.ammo_list[ammo] //dunno how this works but just sliding this in from sentry-code.
 	burst_scatter_mult = SCATTER_AMOUNT_TIER_7
 	update_icon()
 
@@ -434,15 +429,7 @@
 		else
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			user.visible_message("[user] rotates the [src].","You rotate the [src].")
-			switch(dir)
-				if(NORTH)
-					dir = EAST
-				if(EAST)
-					dir = SOUTH
-				if(SOUTH)
-					dir = WEST
-				if(WEST)
-					dir = NORTH
+			setDir(turn(dir, -90))
 		return
 
 	if(isscrewdriver(O)) // Lets take it apart.
@@ -459,6 +446,7 @@
 				user.visible_message(SPAN_NOTICE(" [user] disassembles [src]! "),SPAN_NOTICE(" You disassemble [src]!"))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 				var/obj/item/device/m56d_gun/HMG = new(src.loc) //Here we generate our disassembled mg.
+				HMG.name = src.name
 				HMG.rounds = src.rounds //Inherent the amount of ammo we had.
 				HMG.has_mount = TRUE
 				HMG.update_icon()
@@ -499,7 +487,7 @@
 			user.visible_message(SPAN_NOTICE("[user] begins repairing damage to [src]."), \
 				SPAN_NOTICE("You begin repairing the damage to [src]."))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 25, 1)
-			if(do_after(user, SECONDS_5 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
+			if(do_after(user, 5 SECONDS * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
 				user.visible_message(SPAN_NOTICE("[user] repairs some damage on [src]."), \
 					SPAN_NOTICE("You repair [src]."))
 				update_health(-round(health_max*0.2))
@@ -620,7 +608,7 @@
 				target = get_angle_target_turf(T, final_angle, 30)
 
 			in_chamber.weapon_source_mob = user
-			in_chamber.dir = src.dir
+			in_chamber.setDir(dir)
 			in_chamber.def_zone = pick("chest","chest","chest","head")
 			playsound(loc,gun_noise, 50, 1)
 			in_chamber.fire_at(target,user,src,ammo.max_range,ammo.shell_speed)
@@ -899,8 +887,9 @@
 
 	if(!do_after(user, M2C_SETUP_TIME , INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
 		return
-	var/obj/structure/machinery/m56d_hmg/auto/M = new /obj/structure/machinery/m56d_hmg/auto(user.loc)
-	M.dir = user.dir // Make sure we face the right direction
+	var/obj/structure/machinery/m56d_hmg/auto/M =  new /obj/structure/machinery/m56d_hmg/auto(user.loc)
+	M.name = src.name
+	M.setDir(user.dir) // Make sure we face the right direction
 	M.anchored = TRUE
 	playsound(M, 'sound/items/m56dauto_setup.ogg', 75, 1)
 	to_chat(user, SPAN_NOTICE("You deploy [M]."))
@@ -1121,65 +1110,41 @@
 		return
 	return
 
-// HANDLING THE CLICK
-
-/obj/structure/machinery/m56d_hmg/auto/handle_click(mob/living/carbon/human/user, atom/A, var/list/mods)
-	if(!operator) return HANDLE_CLICK_UNHANDLED
-	if(operator != user) return HANDLE_CLICK_UNHANDLED
-	if(istype(A,/obj/screen)) return HANDLE_CLICK_UNHANDLED
-	if(user.lying || get_dist(user,src) > 0 || user.is_mob_incapacitated() || user.frozen)
-		user.unset_interaction()
-		return HANDLE_CLICK_UNHANDLED
-	if(user.get_active_hand() || user.get_inactive_hand())
-		return HANDLE_CLICK_UNHANDLED
-
-	target = A
-	if(!istype(target))
-		return HANDLE_CLICK_UNHANDLED
-
-	if(target.z != src.z || target.z == 0 || src.z == 0 || isnull(operator.loc) || isnull(src.loc))
-		return HANDLE_CLICK_UNHANDLED
-
-	if(get_dist(target,src.loc) > 15)
-		return HANDLE_CLICK_UNHANDLED
-
-	if(mods["middle"] || mods["shift"] || mods["alt"] || mods["ctrl"])
-		return HANDLE_CLICK_PASS_THRU
-
-	var/angle = get_dir(src,target)
-	//we can only fire in a 90 degree cone
-	if((dir & angle) && target.loc != src.loc && target.loc != operator.loc)
-
-		if(!rounds)
-			to_chat(user, SPAN_WARNING("<b>*click*</b>"))
-			playsound(src, 'sound/weapons/gun_empty.ogg', 30, 1, 5)
-		else
-			process_shot(user)
-		return HANDLE_CLICK_HANDLED
-
-	else
-		if(world.time > rotate_timer)
-			rotate_timer = world.time + 5
-			rotate_to(user, A)
-
-	return HANDLE_CLICK_UNHANDLED
-
-
 // AUTOMATIC FIRING
 
-/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_start(var/atom/A)
-	if(!ismob(operator))
+/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_start(client/source, atom/A, params)
+	SIGNAL_HANDLER
+	if(!(source.mob == operator) || !A)
 		return
 	var/mob/user = operator
 	target = A
 
-	auto_fire_repeat(user)
+	if(params["shift"] || params["ctrl"] || params["alt"])
+		return
 
-/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_stop(var/atom/A)
+	if(istype(A, /obj/screen))
+		return
+
+	if(user.get_active_hand() || user.get_inactive_hand())
+		return
+
+	if(!rounds)
+		to_chat(user, SPAN_WARNING("<b>*click*</b>"))
+		playsound(src, 'sound/weapons/gun_empty.ogg', 30, 1, 5)
+		return
+
+	params = params
+	target = A
+
+	INVOKE_ASYNC(src, .proc/auto_fire_repeat, user)
+
+/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_stop(client/source, atom/A, params)
+	SIGNAL_HANDLER
 	target = null
 
-/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_new_target(var/atom/start, var/atom/hovered)
-	if(!ismob(operator))
+/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_new_target(client/source, atom/start, atom/hovered, params)
+	SIGNAL_HANDLER
+	if(!(source.mob == operator))
 		return
 	var/mob/user = operator
 
@@ -1190,6 +1155,11 @@
 		return
 
 	target = hovered
+
+	var/angle = get_dir(src,target)
+	if((world.time > rotate_timer) && !((dir & angle) && target.loc != src.loc && target.loc != operator.loc))
+		rotate_timer = world.time + 5
+		rotate_to(user, target)
 
 /obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_repeat(var/mob/user, var/atom/A)
 	if(!target) return
@@ -1218,13 +1188,8 @@
 			if(rounds)
 				overheat_value = overheat_value + 1
 				START_PROCESSING(SSobj, src)
-	else
-		rotate_to(user, A)
-		return
 
 	addtimer(CALLBACK(src, .proc/auto_fire_repeat, user), fire_delay)
-
-// SCATTER WAS SUPERBUGGED, REVISED M56E FIRING CODE TO AVOID FUTURE INCIDENTS
 
 /obj/structure/machinery/m56d_hmg/auto/handle_ammo_out(mob/user)
 	visible_message(SPAN_NOTICE(" [icon2html(src, viewers(src))] [src]'s ammo box drops onto the ground, now completely empty."))
@@ -1320,6 +1285,7 @@
 			user.visible_message(SPAN_NOTICE("[user] disassembles [src]."),SPAN_NOTICE("You fold up the tripod for [src], disassembling it."))
 			playsound(src.loc, 'sound/items/m56dauto_setup.ogg', 75, 1)
 			var/obj/item/device/m2c_gun/HMG = new(src.loc)
+			HMG.name = src.name
 			HMG.rounds = src.rounds
 			HMG.overheat_value = round(0.5 * src.overheat_value)
 			if (HMG.overheat_value <= 10)
@@ -1339,7 +1305,7 @@
 	user.visible_message(SPAN_NOTICE("[user] handles [src]."),SPAN_NOTICE("You handle [src], locked and loaded!"))
 	user.update_canmove()
 	user.forceMove(src.loc)
-	user.dir = src.dir
+	user.setDir(dir)
 	user_old_x = user.pixel_x
 	user_old_y = user.pixel_y
 	update_pixels(user)
@@ -1355,7 +1321,7 @@
 	RegisterSignal(user, COMSIG_MOB_POST_UPDATE_CANMOVE, .proc/disable_canmove_interaction)
 	operator = user
 
-	user.frozen = FALSE
+	user.unfreeze()
 
 // DISMOUNT THE MG
 
@@ -1373,7 +1339,7 @@
 	step(user, grip_dir)
 	user_old_x = 0
 	user_old_y = 0
-	user.dir = old_dir
+	user.setDir(old_dir)
 
 	if(user.client)
 		user.client.change_view(world_view_size)
@@ -1444,8 +1410,8 @@
 		to_chat(user, "You can't rotate it that way.")
 		return
 
-	src.dir = direction
-	user.dir = direction
+	src.setDir(direction)
+	user.setDir(direction)
 	update_pixels(user)
 	playsound(src.loc, 'sound/items/m56dauto_rotate.ogg', 25, 1)
 	to_chat(user, "You rotate [src], using the tripod to support your pivoting movement.")

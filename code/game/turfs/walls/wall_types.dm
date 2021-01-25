@@ -31,8 +31,6 @@
 	var/damage_check = max(0, damage + dam)
 	if(damage_check >= damage_cap && M && is_mainship_level(z))
 		SSclues.create_print(get_turf(M), M, "The fingerprint contains specks of metal and dirt.")
-		if(M.detectable_by_ai())
-			ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
 
 	..()
 
@@ -572,6 +570,7 @@
 	layer = RESIN_STRUCTURE_LAYER
 	blend_turfs = list(/turf/closed/wall/resin)
 	blend_objects = list(/obj/structure/mineral_door/resin)
+	repair_materials = list()
 	var/hivenumber = XENO_HIVE_NORMAL
 
 /turf/closed/wall/resin/Initialize(mapload, ...)

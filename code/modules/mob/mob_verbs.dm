@@ -136,7 +136,7 @@
 		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
 		to_chat(usr, "You have been dead for[pluralcheck] [deathtimeseconds] seconds.")
 
-		if (deathtime < MINUTES_30 && !is_admin)
+		if (deathtime < 30 MINUTES && !is_admin)
 			to_chat(usr, "You must wait 30 minutes to respawn!")
 			return
 		else
@@ -228,7 +228,7 @@
 	var/eye_name = null
 
 	var/ok = "[is_admin ? "Admin Observe" : "Observe"]"
-	eye_name = input("Please, select a player!", ok, null, null) as null|anything in creatures
+	eye_name = tgui_input_list(usr, "Please, select a player!", ok, creatures)
 
 	if (!eye_name)
 		return

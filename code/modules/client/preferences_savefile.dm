@@ -87,6 +87,7 @@
 	S["synth_status"]		>> synth_status
 
 	S["lang_chat_disabled"]	>> lang_chat_disabled
+	S["hear_vox"] >> hear_vox
 
 	S["swap_hand_default"]	>> swap_hand_default
 	S["swap_hand_hotkeymode"] >> swap_hand_hotkeymode
@@ -105,6 +106,7 @@
 	UI_style_alpha	= sanitize_integer(UI_style_alpha, 0, 255, initial(UI_style_alpha))
 	window_skin		= sanitize_integer(window_skin, 0, 65535, initial(window_skin))
 	playtime_perks   = sanitize_integer(playtime_perks, 0, 1, 1)
+	hear_vox  		= sanitize_integer(hear_vox, FALSE, TRUE, TRUE)
 
 	synthetic_name 		= synthetic_name ? sanitize_text(synthetic_name, initial(synthetic_name)) : initial(synthetic_name)
 	synthetic_type		= sanitize_text(synthetic_type, initial(synthetic_type))
@@ -178,6 +180,7 @@
 
 	S["swap_hand_default"]	<< swap_hand_default
 	S["swap_hand_hotkeymode"] << swap_hand_hotkeymode
+	S["hear_vox"] << hear_vox
 
 	return TRUE
 
@@ -253,6 +256,7 @@
 	S["citizenship"] 		>> citizenship
 	S["faction"] 			>> faction
 	S["religion"] 			>> religion
+	S["traits"]				>> traits
 
 	S["preferred_squad"]		>> preferred_squad
 	S["nanotrasen_relation"] 	>> nanotrasen_relation
@@ -287,13 +291,13 @@
 	r_skin			= sanitize_integer(r_skin, 0, 255, initial(r_skin))
 	g_skin			= sanitize_integer(g_skin, 0, 255, initial(g_skin))
 	b_skin			= sanitize_integer(b_skin, 0, 255, initial(b_skin))
-	h_style			= sanitize_inlist(h_style, hair_styles_list, initial(h_style))
-	var/datum/sprite_accessory/HS = hair_styles_list[h_style]
+	h_style			= sanitize_inlist(h_style, GLOB.hair_styles_list, initial(h_style))
+	var/datum/sprite_accessory/HS = GLOB.hair_styles_list[h_style]
 	if(!HS.selectable)	// delete this
 		h_style = random_hair_style(gender, species)
 		save_character()
-	f_style			= sanitize_inlist(f_style, facial_hair_styles_list, initial(f_style))
-	var/datum/sprite_accessory/FS = facial_hair_styles_list[f_style]
+	f_style			= sanitize_inlist(f_style, GLOB.facial_hair_styles_list, initial(f_style))
+	var/datum/sprite_accessory/FS = GLOB.facial_hair_styles_list[f_style]
 	if(!FS.selectable)	// delete this
 		f_style = random_facial_hair_style(gender, species)
 		save_character()
@@ -308,15 +312,15 @@
 	alternate_option = sanitize_integer(alternate_option, 0, 2, initial(alternate_option))
 	if(!job_preference_list)
 		ResetJobs()
-	else	
+	else
 		for(var/job in job_preference_list)
 			job_preference_list[job] = sanitize_integer(job_preference_list[job], 0, 3, initial(job_preference_list[job]))
 
-	if(isnull(disabilities)) 
+	if(isnull(disabilities))
 		disabilities = 0
-	if(!organ_data) 
+	if(!organ_data)
 		organ_data = list()
-	if(!gear) 
+	if(!gear)
 		gear = list()
 
 	//if(!skin_style) skin_style = "Default"
@@ -392,6 +396,7 @@
 	S["citizenship"] 		<< citizenship
 	S["faction"] 			<< faction
 	S["religion"] 			<< religion
+	S["traits"]				<< traits
 
 	S["nanotrasen_relation"] 	<< nanotrasen_relation
 	S["preferred_squad"]		<< preferred_squad

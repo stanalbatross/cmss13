@@ -318,10 +318,10 @@
 
 /obj/structure/dropship_equipment/sentry_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "sentry_system_installed"
 		if(deployed_turret)
-			deployed_turret.dir = dir
+			deployed_turret.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(SOUTH)
@@ -340,13 +340,13 @@
 				deployed_turret.pixel_x = 0
 				deployed_turret.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_turret)
 			icon_state = "sentry_system"
 			deployed_turret.pixel_y = 0
 			deployed_turret.pixel_x = 0
 			deployed_turret.forceMove(src)
-			deployed_turret.dir = dir
+			deployed_turret.setDir(dir)
 			deployed_turret.turned_on = 0
 		else
 			icon_state = "sentry_system_destroyed"
@@ -439,10 +439,10 @@
 
 /obj/structure/dropship_equipment/mg_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "mg_system_installed"
 		if(deployed_mg)
-			deployed_mg.dir = dir
+			deployed_mg.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(NORTH)
@@ -458,13 +458,13 @@
 				deployed_mg.pixel_x = 0
 				deployed_mg.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_mg)
 			icon_state = "mg_system"
 			deployed_mg.pixel_y = 0
 			deployed_mg.pixel_x = 0
 			deployed_mg.forceMove(src)
-			deployed_mg.dir = dir
+			deployed_mg.setDir(dir)
 		else
 			icon_state = "mg_system_destroyed"
 
@@ -689,11 +689,11 @@
 
 /obj/structure/dropship_equipment/weapon/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		bound_width = 32
 		bound_height = 32
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		bound_width = initial(bound_width)
 		bound_height = initial(bound_height)
 	update_icon()
@@ -967,7 +967,7 @@
 		to_chat(user, SPAN_WARNING("No active medevac stretcher detected."))
 		return
 
-	var/stretcher_choice = input("Which emitting stretcher would you like to link with?", "Available stretchers") as null|anything in possible_stretchers
+	var/stretcher_choice = tgui_input_list(usr, "Which emitting stretcher would you like to link with?", "Available stretchers", possible_stretchers)
 	if(!stretcher_choice)
 		return
 
@@ -1178,7 +1178,7 @@
 		to_chat(user, SPAN_WARNING("No active balloons detected."))
 		return
 
-	var/fulton_choice = input("Which balloon would you like to link with?", "Available balloons") as null|anything in possible_fultons
+	var/fulton_choice = tgui_input_list(usr, "Which balloon would you like to link with?", "Available balloons", possible_fultons)
 	if(!fulton_choice)
 		return
 

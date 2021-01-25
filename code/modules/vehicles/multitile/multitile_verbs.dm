@@ -26,7 +26,7 @@
 		to_chat(M, SPAN_WARNING("None of the hardpoints can be activated or they are all broken."))
 		return
 
-	var/obj/item/hardpoint/HP = input("Select a hardpoint.") in usable_hps
+	var/obj/item/hardpoint/HP = tgui_input_list(usr, "Select a hardpoint.", "Switch Hardpoint", usable_hps)
 	if(!HP)
 		return
 
@@ -304,7 +304,7 @@
 		to_chat(user, SPAN_WARNING("You need to wait [(V.next_honk - world.time) / 10] seconds."))
 		return
 
-	V.next_honk = world.time + SECONDS_10
+	V.next_honk = world.time + 10 SECONDS
 	to_chat(user, SPAN_NOTICE("You activate vehicle's horn."))
 	V.perform_honk()
 

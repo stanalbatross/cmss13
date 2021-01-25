@@ -7,7 +7,7 @@
 
 	var/rank_list = list("Custom", "Weston-Yamada") + RoleAuthority.roles_by_name
 
-	var/newrank = input("Select new rank for [H]", "Change the mob's rank and skills") as null|anything in rank_list
+	var/newrank = tgui_input_list(usr, "Select new rank for [H]", "Change the mob's rank and skills", rank_list)
 	if (!newrank)
 		return
 	if(!H)
@@ -33,7 +33,7 @@
 				if(rankpath)
 					var/obj/item/clothing/accessory/ranks/R = new rankpath()
 					C.attach_accessory(H, R)
-		var/new_faction = input("Select faction.", "Faction Choice", "Neutral") as null|anything in FACTION_LIST_HUMANOID
+		var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
 		if(!new_faction)
 			new_faction = FACTION_NEUTRAL
 		H.faction = new_faction
@@ -43,14 +43,14 @@
 				var/code = "WY-"
 
 				var/divisions = get_named_wy_ranks("division_code")
-				var/div = input("Select the Division at which they belong to.", "Division") in divisions
+				var/div = tgui_input_list(usr, "Select the Division at which they belong to.", "Division", divisions)
 
 				if(!div)
 					return
 				code += divisions[div]
 
 				var/ranks = get_named_wy_ranks("job_code")
-				var/rank = input("Select the Rank at which they are at.", "Rank") in ranks
+				var/rank = tgui_input_list(usr, "Select the Rank at which they are at.", "Rank", ranks)
 
 				if(!rank)
 					return
@@ -61,7 +61,7 @@
 				H.faction = FACTION_WY
 				H.faction_group = FACTION_LIST_WY
 
-				var/newskillset = input("Select a skillset", "Skill Set") as null|anything in (list("Keep Skillset") +RoleAuthority.roles_by_name)
+				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", (list("Keep Skillset") +RoleAuthority.roles_by_name))
 				if(!newskillset || newskillset == "Keep Skillset")
 					return
 
@@ -100,12 +100,12 @@
 					I.assignment = IDtitle
 					I.name = "[I.registered_name]'s ID Card ([I.assignment])"
 
-				var/new_faction = input("Select faction.", "Faction Choice", "Neutral") as null|anything in FACTION_LIST_HUMANOID
+				var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
 				if(!new_faction)
 					new_faction = FACTION_NEUTRAL
 				H.faction = new_faction
 
-				var/newskillset = input("Select a skillset", "Skill Set") as null|anything in RoleAuthority.roles_by_name
+				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", RoleAuthority.roles_by_name)
 				if(!newskillset)
 					return
 
@@ -115,7 +115,7 @@
 				var/datum/job/J = RoleAuthority.roles_by_name[newskillset]
 				H.set_skills(J.get_skills())
 
-/client/proc/cmd_admin_dress(var/mob/living/carbon/human/M in GLOB.human_mob_list)
+/client/proc/cmd_admin_dress(var/mob/M)
 	set category = null
 	set name = "Select Equipment"
 
@@ -123,7 +123,7 @@
 
 /client/proc/cmd_admin_dress_human(var/mob/living/carbon/human/M in GLOB.human_mob_list, var/datum/equipment_preset/dresscode, var/no_logs = 0, var/count_participant = FALSE)
 	if (!no_logs)
-		dresscode = tgui_input_list(usr, "Select dress for [M]", "Robust quick dress shop", gear_presets_list)
+		dresscode = tgui_input_list(usr, "Select dress for [M]", "Robust quick dress shop", GLOB.gear_presets_list)
 
 	if(isnull(dresscode))
 		return
@@ -155,7 +155,7 @@
 	set name = "Select Equipment - All Humans"
 	set desc = "Applies an equipment preset to all humans in the world."
 
-	var/datum/equipment_preset/dresscode = input("Select dress for ALL HUMANS", "Robust quick dress shop") as null|anything in gear_presets_list
+	var/datum/equipment_preset/dresscode = tgui_input_list(usr, "Select dress for ALL HUMANS", "Robust quick dress shop", GLOB.gear_presets_list)
 	if (isnull(dresscode))
 		return
 
@@ -169,11 +169,11 @@
 //note: when adding new dresscodes, on top of adding a proper skills_list, make sure the ID given has
 //a rank that matches a job title unless you want the human to bypass the skill system.
 /proc/arm_equipment(var/mob/living/carbon/human/M, var/dresscode, var/randomise = FALSE, var/count_participant = FALSE)
-	if(!gear_presets_list)
+	if(!GLOB.gear_presets_list)
 		CRASH("arm_equipment !gear_presets_list")
-	if(!gear_presets_list[dresscode])
+	if(!GLOB.gear_presets_list[dresscode])
 		CRASH("arm_equipment !gear_presets_list[dresscode]")
-	gear_presets_list[dresscode].load_preset(M, randomise, count_participant)
+	GLOB.gear_presets_list[dresscode].load_preset(M, randomise, count_participant)
 
 	if(M.faction)
 		M.check_event_info(M.faction)

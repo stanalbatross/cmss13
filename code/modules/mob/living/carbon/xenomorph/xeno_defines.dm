@@ -36,7 +36,7 @@
 	var/tacklestrength_max = 3
 
 	var/armor_deflection = 0 //Chance of deflecting projectiles.
-	var/fire_immune = FALSE //Boolean
+	var/fire_immunity = FIRE_IMMUNITY_NONE
 
 	var/spit_delay = 60 //Delay timer for spitting
 
@@ -72,23 +72,23 @@
 	var/can_hold_facehuggers = 0
 	var/can_hold_eggs = CANNOT_HOLD_EGGS
 
-	var/can_be_queen_healed = 1
+	var/can_be_queen_healed = TRUE
 
 	var/can_vent_crawl = 1
 
 	var/caste_luminosity = 0
 
-	var/burrow_cooldown = SECONDS_5
+	var/burrow_cooldown = 5 SECONDS
 	var/tunnel_cooldown = 100
-	var/widen_cooldown = SECONDS_10
-	var/tremor_cooldown = SECONDS_30 //Big strong ability, big cooldown.
+	var/widen_cooldown = 10 SECONDS
+	var/tremor_cooldown = 30 SECONDS //Big strong ability, big cooldown.
 
 	var/innate_healing = FALSE //whether the xeno heals even outside weeds.
 
 	var/acid_level = 0
 	var/weed_level = WEED_LEVEL_STANDARD
 
-	var/acid_splash_cooldown = SECONDS_3 //Time it takes between acid splash retaliate procs. Variable per caste, for if we want future castes that are acid bombs
+	var/acid_splash_cooldown = 3 SECONDS //Time it takes between acid splash retaliate procs. Variable per caste, for if we want future castes that are acid bombs
 
 	// regen vars
 
@@ -169,8 +169,6 @@
 	var/construction_allowed = XENO_QUEEN //Who can place construction nodes for special structures
 	var/destruction_allowed = XENO_LEADER //Who can destroy special structures
 	var/unnesting_allowed = FALSE
-	var/queen_time = 300 //5 minutes between queen deaths
-	var/xeno_queen_timer
 	var/hive_orders = "" //What orders should the hive have
 	var/color = null
 	var/ui_color = null // Color for hive status collapsible buttons and xeno count list
@@ -351,9 +349,10 @@
 
 
 	tier_slot_multiplier = mutators.tier_slot_multiplier
-
 	larva_gestation_multiplier = mutators.larva_gestation_multiplier
 	bonus_larva_spawn_chance = mutators.bonus_larva_spawn_chance
+
+	hive_ui.update_all_data()
 
 /datum/hive_status/proc/add_hive_leader(var/mob/living/carbon/Xenomorph/xeno)
 	if(!xeno)

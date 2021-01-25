@@ -1,6 +1,6 @@
 //Xenomorph Life - Colonial Marines - Apophis775 - Last Edit: 03JAN2015
 
-#define XENO_ARMOR_REGEN_DELAY SECONDS_30
+#define XENO_ARMOR_REGEN_DELAY 30 SECONDS
 /mob/living/carbon/Xenomorph/Life()
 	set invisibility = 0
 	set background = 1
@@ -66,7 +66,7 @@
 	if(istype(G))
 		G.Die()
 		drop_inv_item_on_ground(G)
-	if(!caste || !caste.fire_immune || fire_reagent.fire_penetrating)
+	if(!caste || !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE) || fire_reagent.fire_penetrating)
 		var/dmg = armor_damage_reduction(GLOB.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks))
 		apply_damage(dmg, BURN)
 
@@ -143,7 +143,7 @@
 	recovery_new = 0
 
 /mob/living/carbon/Xenomorph/handle_regular_status_updates(regular_update = TRUE)
-	if(regular_update && health <= 0 && (!caste || caste.fire_immune || !on_fire)) //Sleeping Xenos are also unconscious, but all crit Xenos are under 0 HP. Go figure
+	if(regular_update && health <= 0 && (!caste || (caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || !on_fire)) //Sleeping Xenos are also unconscious, but all crit Xenos are under 0 HP. Go figure
 		var/turf/T = loc
 		if(istype(T))
 			if(!check_weeds_for_healing()) //In crit, damage is maximal if you're caught off weeds
@@ -315,9 +315,9 @@ updatehealth()
 
 /mob/living/carbon/Xenomorph/proc/handle_environment()
 	var/turf/T = loc
-	var/recoveryActual = (!caste || caste.fire_immune || fire_stacks == 0) ? recovery_aura : 0
+	var/recoveryActual = (!caste || (caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || fire_stacks == 0) ? recovery_aura : 0
 	var/env_temperature = loc.return_temperature()
-	if(caste && !caste.fire_immune)
+	if(caste && !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE))
 		if(env_temperature > (T0C + 66))
 			apply_damage((env_temperature - (T0C + 66)) / 5, BURN) //Might be too high, check in testing.
 			updatehealth() //Make sure their actual health updates immediately
@@ -356,7 +356,7 @@ updatehealth()
 				if(armor_integrity/armor_integrity_max < 0.3)
 					curve_factor /= 2
 
-				var/factor = ((armor_deflection / 60) * MINUTES_6 / SECONDS_2) // 60 armor is restored in 10 minutes in 2 seconds intervals
+				var/factor = ((armor_deflection / 60) * 3 MINUTES) // 60 armor is restored in 10 minutes in 2 seconds intervals
 				armor_integrity += 100*curve_factor/factor
 
 			if(armor_integrity > armor_integrity_max)
@@ -406,7 +406,7 @@ updatehealth()
 		var/area/A = get_area(loc)
 		var/area/QA = get_area(hive.living_xeno_queen.loc)
 		if(A.fake_zlevel == QA.fake_zlevel)
-			hud_used.locate_leader.dir = get_dir(src,hive.living_xeno_queen)
+			hud_used.locate_leader.setDir(get_dir(src,hive.living_xeno_queen))
 			hud_used.locate_leader.icon_state = "trackon"
 		else
 			hud_used.locate_leader.icon_state = "trackondirect"

@@ -14,6 +14,7 @@
 	barricade_type = "metal"
 	can_wire = TRUE
 	bullet_divider = 5
+	repair_materials = list("metal" = 0.2, "plasteel" = 0.25)
 	var/build_state = BARRICADE_BSTATE_SECURED //Look at __game.dm for barricade defines
 	var/upgrade = null
 
@@ -65,6 +66,9 @@
 				WT.remove_fuel(-1)
 		return
 
+	if(try_nailgun_usage(W, user))
+		return
+
 	for(var/obj/effect/xenomorph/acid/A in src.loc)
 		if(A.acid_t == src)
 			to_chat(user, "You can't get near that, it's melting!")
@@ -94,7 +98,7 @@
 					to_chat(user, SPAN_NOTICE("This barricade is already upgraded."))
 					return
 				var/obj/item/stack/sheet/metal/M = W
-				upgrade = input(user, "Choose an upgrade to apply to the barricade") in list(BARRICADE_UPGRADE_BURN, BARRICADE_UPGRADE_BRUTE, BARRICADE_UPGRADE_EXPLOSIVE, "cancel")
+				upgrade = tgui_input_list(user, "Choose an upgrade to apply to the barricade", "Apply Upgrade", list(BARRICADE_UPGRADE_BURN, BARRICADE_UPGRADE_BRUTE, BARRICADE_UPGRADE_EXPLOSIVE, "cancel"))
 				if(!user.Adjacent(src))
 					to_chat(user, SPAN_NOTICE("You are too far away!"))
 					return

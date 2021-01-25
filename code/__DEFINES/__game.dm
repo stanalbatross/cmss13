@@ -126,15 +126,16 @@
 // and the time before it leaves again
 // note that this is multiplied by 10 in the shuttle controller. Hence, this is not defined in deciseconds but in real seconds
 
-#define DOCK_ATTEMPT_TIMEOUT 			SECONDS_20	//how long in ticks we wait before assuming the docking controller is broken or blown up.
-#define DROPSHIP_TRANSIT_DURATION		SECONDS_100	// 100 seconds
-#define DROPSHIP_CORSAT_DURATION		SECONDS_30  // 30 seconds
-#define ELEVATOR_TRANSIT_DURATION		SECONDS_5	// 5 seconds
-#define TRANSIT_POD_TRANSIT_DURATION	SECONDS_30 	// 30 seconds
-#define DROPSHIP_CRASH_TRANSIT_DURATION	MINUTES_3	// 180 seconds. 3 minutes
+#define DOCK_ATTEMPT_TIMEOUT 			20 SECONDS	//how long in ticks we wait before assuming the docking controller is broken or blown up.
+#define DROPSHIP_TRANSIT_DURATION		100 SECONDS	// 100 seconds
+#define DROPSHIP_CORSAT_DURATION		30 SECONDS  // 30 seconds
+#define ELEVATOR_TRANSIT_DURATION		5 SECONDS	// 5 seconds
+#define TRANSIT_POD_TRANSIT_DURATION	30 SECONDS 	// 30 seconds
+#define DROPSHIP_CRASH_TRANSIT_DURATION	3 MINUTES	// 180 seconds. 3 minutes
+#define ERT_SHUTTLE_TRANSIT_DURATION    30 SECONDS	// what are these comments for
 
-#define SHUTTLE_RECHARGE  MINUTES_2 // 2 minutes
-#define ELEVATOR_RECHARGE SECONDS_15  // 15 seconds
+#define SHUTTLE_RECHARGE  2 MINUTES // 2 minutes
+#define ELEVATOR_RECHARGE 15 SECONDS  // 15 seconds
 
 //Shuttle moving status
 #define SHUTTLE_IDLE		0
@@ -174,7 +175,7 @@
 #define HOSTILE_STANCE_TIRED 5
 //=================================================
 
-#define ROUNDSTART_LOGOUT_REPORT_TIME MINUTES_10 //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
+#define ROUNDSTART_LOGOUT_REPORT_TIME 10 MINUTES //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
 
 //=================================================
 //Game mode related defines.
@@ -420,11 +421,6 @@
 
 	return dist
 
-//Update this whenever you need to take advantage of more recent byond features
-#define MIN_COMPILER_VERSION 513
-#define MIN_COMPILER_BUILD 1514
-#if DM_VERSION < MIN_COMPILER_VERSION || DM_BUILD < MIN_COMPILER_BUILD
-//Don't forget to update this part
-#error Your version of BYOND is too out-of-date to compile this project. Go to https://secure.byond.com/download and update.
-#error You need version 513.1514 or higher
-#endif
+// Beams
+/// For beams with an infinite duration (deletion is handled separately)
+#define BEAM_INFINITE_DURATION -1

@@ -64,7 +64,421 @@
 	</tr>
 </table>
 
+			<h2 class="date">25 January 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Breaking the spawn pool on hijack disables hijack surge.</li>
+				<li class="tweak">Hijack surge's pooled larva cooldown is now a minute and a half, reduced linearly over time up to a minimum of 30 seconds after 20 minutes.</li>
+				<li class="tweak">The reason behind this is because while the spawn pool currently punishes hell-holds, it also punishes basically everything: Either your push needs to instantly break the xenos or you get overwhelmed. Making it incremental, and break surge on destruction will give a incentive to pushing without punishing it.</li>
+				<li class="tweak">ERT shuttles' transit period and distress signal calling delay are now 30 seconds.</li>
+			</ul>
+
+			<h2 class="date">23 January 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">ASRS manifests are now cooler and hold extra information</li>
+				<li class="tweak">ASRS spawning reimplemented to be less quirky and more generic</li>
+				<li class="bugfix">reimplement causes the fueltank order crate to finally actually contain a fueltank</li>
+				<li class="tweak">Added option to shutdown game world rather than reboot it</li>
+			</ul>
+
+			<h2 class="date">22 January 2021</h2>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Predators' visor once again can properly toggle modes.</li>
+				<li class="bugfix">Toggling HUDs for ghosts once again works.</li>
+			</ul>
+			<h3 class="author">Waltermeldron updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Admins now have vox tools to send announcements to players.</li>
+				<li class="tweak">Compressed audio files down to get a lower rsc size to compensate for adding in these vox sound files.</li>
+				<li class="tweak">Re-enabled rsc preloading because it is currently disabled and we don't have CDN enabled (this means we're having to dynamically send resources over to clients after they've joined, which also means everything they see will be black when they first join prior to this change)</li>
+			</ul>
+
+			<h2 class="date">21 January 2021</h2>
+			<h3 class="author">Lumdor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">MK1 has had a damage increase so that it can compete with the regular pulse rifle when it uses AP rounds.</li>
+				<li class="tweak">MK1 has had its firing rate increased.</li>
+				<li class="rscadd">MK1 can now load regular pulse rifle AP mags and regular pulse rifle mags.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Xenos who fail to be ignited by incendiary bullets (ie queen) will now properly send them a message when they are shot by one.</li>
+				<li class="tweak">Ravager can be set on fire now. They will not receive any damage but it will block heals and recovery pheromones.</li>
+				<li class="tweak">Removed some snowflake code.</li>
+				<li class="bugfix">Xenos will receive damage from being on fire again.</li>
+				<li class="bugfix">Xenos will receive damage from being in very hot rooms again.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Specialist grenade launchers (and the MP's riot launchers) now use an internal inventory, accessed by holding them with one hand and clicking them with the other. This allows convenient reshuffling of contents and fire order.</li>
+				<li class="rscadd">They also have an inventory toggle that will withdraw the last-added grenade, behaving the same way they did before. This is enabled by default on single-shot GLs.</li>
+				<li class="tweak">GLs now have recoil and muzzle flash, instead of being the wimpiest heavy weapons.</li>
+				<li class="tweak">GL empty icons now functioning.</li>
+				<li class="tweak">Adjusted GL load/unload SFX.</li>
+				<li class="tweak">HEFA knights had too long a lifespan. A higher rate of fire will accelerate them on their way to HEFAn.</li>
+			</ul>
+
+			<h2 class="date">20 January 2021</h2>
+			<h3 class="author">Unknownity updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed the LV armory nightmare inserts not having the garage shutters button.</li>
+			</ul>
+
+			<h2 class="date">19 January 2021</h2>
+			<h3 class="author">BIgboyyo updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">LV Caves has been reworked to (hopefully) be more enjoyable to fight in.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed accidental AP SMG nerf. Damage 25 -> 35.</li>
+			</ul>
+			<h3 class="author">Lumdor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Medics can now withdraw pill bottles from the smart-fridge in medical.</li>
+				<li class="rscadd">Examining yourself on help intent will now tell you if your bone is broken.</li>
+				<li class="tweak">Squad medics now only have to wait 2 seconds to inject someone.</li>
+				<li class="tweak">Changed regular flamer fuel and pyro regular flamer fuel from 6 tiles to 5 tiles.</li>
+				<li class="tweak">Changed gellie regular flamer fuel from 6 tiles to 7 tiles.</li>
+				<li class="rscadd">Categorized the fuel code so they'll be easier to find and edit for the future.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="experiment">Slashing negates pounce freeze as lurker.</li>
+				<li class="tweak">Lurker slash variance changes reverted. It now has a consistent 35 slash damage.</li>
+				<li class="tweak">Staff "Rejuvenate" verb on xenos resets all cooldowns.</li>
+				<li class="tweak">There is no longer a delay to evolve for queen.</li>
+			</ul>
+			<h3 class="author">senjx updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscdel">Removed the permanently-fixed S8 scope from the M4RA battle rifle.</li>
+				<li class="rscadd">The M4RA battle rifle now has a modular top attachment slot. It can mount red-dot sights, reflex sights, S4 mini-scopes and S8 telescopic scopes. It does not support the B8 Smart-Scope.</li>
+				<li class="rscadd">The M4RA battle rifle can now fit the ARMAT U7 under-barrel shotgun and the under-barrel flashlight grip on its bottom attachment slot.</li>
+				<li class="rscadd">The M4RA battle rifle can now mount a bayonet on its barrel attachment slot.</li>
+				<li class="tweak">The M4RA battle rifle magazines now have a capacity of 18 each, and bullet speed has been increased from tier 3 to tier 6.</li>
+			</ul>
+
+			<h2 class="date">18 January 2021</h2>
+			<h3 class="author">Fourkhan updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Decreased the total percentage health healed by Queen Heal from 40% to 30%.</li>
+				<li class="tweak">Removed the 75 instant HP granted by Queen heal.</li>
+				<li class="tweak">Increased the CD of Empower by 4 seconds.</li>
+				<li class="tweak">Crusher HP decreased by 50.</li>
+				<li class="tweak">Duration of Crusher's shield (Master of Defense) decreased by 3 seconds.</li>
+				<li class="tweak">Carrier HP decreased by 50.</li>
+				<li class="tweak">Toggle Crest gives 5 less armor.</li>
+				<li class="tweak">Fortify gives 5 less armor.</li>
+				<li class="tweak">Resin Fruit shield now expires after 1 minute.</li>
+				<li class="tweak">Warden shield now expires after 1 minute.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Flamer sentry has IFF again.</li>
+				<li class="bugfix">Queen heal should work after someone tries to set you on fire while you're on fire.</li>
+				<li class="bugfix">Queen heal should work after Rejuvenating a xeno on fire.</li>
+			</ul>
+
+			<h2 class="date">17 January 2021</h2>
+			<h3 class="author">ghostsheet updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed light and heavy armor not getting the correct skin variation.</li>
+			</ul>
+			<h3 class="author">monkeysfist updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Backend sprite junk.</li>
+				<li class="bugfix">Fixed Souto Man (Kind of...)</li>
+			</ul>
+			<h3 class="author">optimisticdude updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Backpacks can now be accessed after a 2-second wind-up from the user's back. The backpack, if opened like this, will close upon movement.</li>
+				<li class="rscdel">ACID Harness can now be modified by the user independently of skill limits.</li>
+			</ul>
+
+			<h2 class="date">16 January 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Reimplement Hunter Ships dynamic loading with map_templates</li>
+				<li class="tweak">Relay Beacon now uses trainteleport so you can bring even more friends along</li>
+			</ul>
+			<h3 class="author">John_Rico updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="soundadd">A sound effect when ripping a label off of a object, if it has it</li>
+				<li class="soundadd">Sound effect plays when labeling</li>
+				<li class="bugfix">No longer can refill labeler at max labels</li>
+				<li class="bugfix">Disallowed labeling structures on walls, as it was resetting it to the original name</li>
+				<li class="rscadd">Can now remove labels from objects. If it has it.</li>
+				<li class="rscadd">Can examine the labeler to check how many labels are left</li>
+				<li class="rscadd">Setting no text allows the user to remove labels, if present</li>
+			</ul>
+			<h3 class="author">Lumdor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">VP78 accuracy increased by 1 tier.</li>
+				<li class="tweak">VP78 bullet damage increased by 1 tier.</li>
+				<li class="tweak">VP78 armor penetration increased by 1 tier.</li>
+				<li class="tweak">VP78 burst amount increased from 2 to 3.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Toggle HUDs command for synthetics once again works.</li>
+			</ul>
+			<h3 class="author">Snakebittenn updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Languages you don't know on the radio use the new scrambling instead of asterisks.</li>
+			</ul>
+			<h3 class="author">Stan_albatross updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Added five items to the snowflake vendor.</li>
+				<li class="rscadd">Added external webbing, functions like any other exosuit/coat. Two storage slots, uses a pre-existing sprite.</li>
+				<li class="rscadd">Added a version of the Augmented Sunglasses without a Sechud or thermals. Found only in the snowflake vendor.</li>
+				<li class="rscdel">Removed a replica item in the snowflake vendor</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Predator traps do not prevent ability usage or slow any more. Instead, they tether mobs to a certain range (5 by default, but can be modified by predators).</li>
+				<li class="tweak">Predators will always set traps down in 3 seconds. Non predators will set down traps randomly between 5 and 10 seconds.</li>
+				<li class="bugfix">Sentry has IFF again.</li>
+				<li class="bugfix">Sentry will shoot unconscious targets again.</li>
+				<li class="bugfix">Fixed a bug with highlight text parsing where it would not properly read every other word.</li>
+				<li class="rscadd">Can now add highlight settings with customizable color and the ability to toggle off whole message highlighting.</li>
+				<li class="rscadd">Can now use regex for text highlighting. The syntax is /[regex expression]/, eg /dog[0-9]/. There are no quantifiers, but you can use capture groups. The regex must read a minimum of two characters.</li>
+				<li class="bugfix">Xenos are not broken any more.</li>
+				<li class="bugfix">Who verb works for staff again.</li>
+				<li class="bugfix">Xenos get latejoin larva again.</li>
+				<li class="bugfix">Fixes a runtime for some mobs that prevented their health from updating immediately after receiving damage.</li>
+				<li class="bugfix">Xeno evolution speed should properly calculate again.</li>
+				<li class="bugfix">Fixed an annoying runtime related to bullet traits.</li>
+			</ul>
+			<h3 class="author">TheFlyingFlail updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added safety feature to prevent medibots from OD a player</li>
+				<li class="bugfix">Medibot now heals damage appropriately</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Shift-clicking storage items (satchel, box, belt, pouch, first aid kit, pill bottle etc.) nearby or in your inventory now only examines them, instead of simultaneously examining and also clicking them normally.</li>
+			</ul>
+			<h3 class="author">alardun updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">fixed consumption of material when fixing a hole with nailgun.</li>
+				<li class="tweak">Nailgun repair no longer interrupted when multi-clicking.</li>
+			</ul>
+			<h3 class="author">ghostsheet updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Bipods can now be deployed onto the ground after 1.5 second delay or instantly against any support surface.</li>
+				<li class="rscadd">Bipods undeploying will now slow the user down for roughly half a second.</li>
+				<li class="rscadd">SMG armbrace resprited by Vanagandr.</li>
+				<li class="rscadd">SMG armbrace can now be locked to the user's arm after 1.5 seconds, preventing it from being dropped until dismembered.</li>
+				<li class="tweak">SMG armbrace has slightly better stats.</li>
+				<li class="tweak">SMG armbrace: extremely increased wield delay (1.5 x Majorly of wiki).</li>
+				<li class="tweak">SMG armbrace: Moderately reduces of the accuracy and scatter penalty when moving.</li>
+				<li class="tweak">SMG armbrace: Moderately reduces unwielded recoil.</li>
+				<li class="bugfix">Collapsible SMG stock now no longers buffs one handing the smg.</li>
+				<li class="bugfix">Resin walls now respects resin explosive damage multiplier and is 15% tankier against explosions.</li>
+				<li class="tweak">All other resin structures besides walls now have less explosives resistances, down from 50% to 15% reduction.</li>
+			</ul>
+			<h3 class="author">optimisticdude updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">The M2C now fires in full auto once again and overheats.</li>
+				<li class="tweak">The M2C's AP has been increased from 20 to 35.</li>
+				<li class="tweak">The M2C's range has been increased from 11 to 14 tiles.</li>
+				<li class="rscadd">The M2C rotates when firing.</li>
+				<li class="tweak">The M2C only rotates when firing.</li>
+				<li class="tweak">Crusher stuns on the M2C Gunner is reduced from 6 to 3 seconds.</li>
+				<li class="tweak">Gives Acider Runner strain 15 armour.</li>
+				<li class="rscdel">Removes Concealing Gloves for Agents.</li>
+			</ul>
+			<h3 class="author">spookydonut updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Removed makedatumreflists()</li>
+				<li class="tweak">standardised time defines</li>
+			</ul>
+
+			<h2 class="date">15 January 2021</h2>
+			<h3 class="author">Fourkhan updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="experiment">Changed Base Prae into a full ranged caster.</li>
+				<li class="experiment">Prae acid stacks now proc on their own upon reaching max stacks.</li>
+				<li class="experiment">Increased the number of stacks required to proc from 3 to 4</li>
+				<li class="experiment">Prae acid stacks proc now does true damage</li>
+				<li class="experiment">Doubled the cooldown of Base Prae dash</li>
+				<li class="experiment">Increased the range of Base Prae dash from 4 to 6 tiles.</li>
+				<li class="experiment">Decreased the amount of damage done by Base Prae acid spray by 10.</li>
+			</ul>
+			<h3 class="author">Lumdor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Spitter now has 15 armor again.</li>
+				<li class="tweak">Spitter vomit plasma cost was changed from 80 to 50. 1/12th of spitter plasma pool.</li>
+				<li class="tweak">Spitter acid spit has gone up one tier in damage.</li>
+				<li class="tweak">Spitter acid spit has gone from a 3.5-second cooldown to a 5-second cooldown.</li>
+			</ul>
+			<h3 class="author">Paulrpg updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Xeno evolve rules are now applied before and after selection.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Added a bullet traits parent element to make adding more bullet traits less of a headache.</li>
+				<li class="tweak">IFF has been moved to a bullet trait.</li>
+				<li class="tweak">Refactors how bullet traits are applied for more flexibility.</li>
+				<li class="tweak">Vehicle hardpoints now use bullet traits.</li>
+			</ul>
+			<h3 class="author">Waltermeldron updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Updates the license on the tgui_list_input.dm file.</li>
+				<li class="rscadd">You can now set custom fonts.</li>
+				<li class="rscadd">Added a new dropdown option called "Use CSS" to use the default CSS.</li>
+			</ul>
+
+			<h2 class="date">14 January 2021</h2>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Added some more documenting comments to character traits so its easier for contributors to make their own.</li>
+			</ul>
+			<h3 class="author">Waltermeldron updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">This fixes the formatting of the code in the ListInput.js file to be more readable.</li>
+				<li class="rscadd">Gamemode votes will now happen every 5 rounds. The only current available options are XvX and Distress Signal. It will play 1 game of the winning vote and then revert back to the default gamemode (which in this case would be Distress Signal).</li>
+				<li class="rscadd">Converted voting panel into TGUI.</li>
+				<li class="bugfix">Fixed switching gamemodes and round delay.</li>
+			</ul>
+			<h3 class="author">alardun updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Character edit should now show a scrollbar when it cannot fit entirely on screen.</li>
+				<li class="tweak">Weston-Yamada removed their ruling about using high beams in their colony. The truck luminosity radius has been restored from an unintended 4 to 8.</li>
+			</ul>
+
+			<h2 class="date">13 January 2021</h2>
+			<h3 class="author">Anclandor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">When a PFC uses a Spec kit to pick demo or scout spec, they get trained in engineering.</li>
+				<li class="bugfix">PFC's who use the Spec kit to become Scout or Demo spec can now use the c4 included in the kit.</li>
+			</ul>
+			<h3 class="author">BIgboyyo updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Big Floppas sprites now work properly.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Hives spawned/created during the game no longer start with a reserve of pooled larvas.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added character traits. These are traits applied to your character upon spawn. You can choose your traits via the "Character Traits" button in character preferences.</li>
+				<li class="rscadd">Moved the ability to speak languages into traits.</li>
+				<li class="tweak">Xenos will now get pooled larva even if there is no queen.</li>
+				<li class="tweak">Makes bloody feet into a bespoke element to lower memory usage.</li>
+			</ul>
+			<h3 class="author">alardun updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added the nailgun, a hybrid tool/weapon found in most colonies in the engineering department (or similar location). Ammo are scarce and located with the nailgun. It is pistol-sized and fit in a backpack. Thanks to Thwomper and monkeyfist101 for the sprites and audio!</li>
+				<li class="rscadd">The nailgun fires armor-piercing nails with stats similar to the M39 AP rounds, with a similar ROF, though with no burst. It has slightly higher falloff and has poor accuracy further than 4 tiles out, but can be used as a weapon in a pinch. It slows target on hit for one second (The duration stacks!)</li>
+				<li class="rscadd">Hitting a enemy that is directly perpendicular to a wall (Projectile -> Target -> Wall) or an obstacle that would've blocked it with the nailgun does bonus damage (50%) and cause a larger slow for a short duration. To clarify, obstacle here refers to object (doors, barricade, windows, etc).</li>
+				<li class="rscadd">Hitting a T1 xeno or a human with a point-blank hit with the nailgun while there's a wall or an obstacle that would've blocked it behind them immobilize the target for 3 seconds. You cannot have your frozen duration reset while already immobilized.</li>
+				<li class="rscadd">Using the nailgun on a wall or reinforced wall sporting a hole will fix it after 6 seconds at the cost of three sheet of wood/metal/plasteel, and 12 nails and a 6s channel. It also restores 5% integrity.</li>
+				<li class="rscadd">Using the nailgun on a damaged wall or reinforced wall will repair integrity at the cost of 1 sheet of material and 4 nails, 2 second channel. Wood repairs 5%, metal repairs 10% and plasteel repairs 20%.</li>
+				<li class="rscadd">The above applies to wooden barricade, folding barricade, barricade and plasteel barricade. This can be used to fix barricade below the welder threshold. Wood on wood : 100%, Metal on folding, metal barricade: 20%, plasteel on folding, metal barricade: 25%. Plasteel on plasteel barricade: 20%. This consumes 4 nails and 1 unit of material and takes 2 seconds.</li>
+				<li class="tweak">Using wood on a wood barricade repairs the barricade by 50%, down from 100%.</li>
+			</ul>
+			<h3 class="author">forest2001 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Select-Equipment will now work on ghosts and non-humans again.</li>
+			</ul>
+			<h3 class="author">ghostsheet updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Lobby art is now working again.</li>
+			</ul>
+			<h3 class="author">optimisticdude updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscdel">ARES no longer announces damages or modifications to the ship, although suspicious prints still remain near areas of damage. MPs or other figures can still investigate prints and surrounding damage.</li>
+			</ul>
+			<h3 class="author">spookydonut updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Make everything use setDir()</li>
+			</ul>
+
+			<h2 class="date">12 January 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">fix typo issue with SD logs</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Diagonal movement while buckled no longer causes the object to move without the buckled mob.</li>
+			</ul>
+			<h3 class="author">Waltermeldron updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed Quick Create Object UI.</li>
+			</ul>
+
+			<h2 class="date">11 January 2021</h2>
+			<h3 class="author">BIgboyyo updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added a certain type of Cat with floppy ears, spawnable by admins.</li>
+				<li class="rscadd">Big thanks to Thwompa for the Caracal sprites.</li>
+			</ul>
+			<h3 class="author">Paulrpg updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">M46c will now properly apply IFF settings on toggle.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fultoned corpses no longer appear floating after being recovered (or falling down).</li>
+				<li class="bugfix">Fultoned corpses now stay waiting for recovery (or falling down) and no longer disappear.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Footprints are now overlays. Should help with long-term round lag.</li>
+				<li class="tweak">Blood no longer darkens when it's dry.</li>
+				<li class="rscadd">Adds bullet traits and converts the incendiary ammo flag into a bullet trait.</li>
+				<li class="tweak">When receiving brute damage, you no longer lose a limb if it did not have brute damage before.</li>
+				<li class="bugfix">Pouncing at a structure does not hurt you any more.</li>
+				<li class="bugfix">Pouncing at a turf and rebounding does not hurt you any more.</li>
+			</ul>
+			<h3 class="author">Waltermeldron updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Converted a lot of list inputs into TGUI list inputs.</li>
+				<li class="bugfix">Trucks can no longer self repair whilst inside the vehicle.</li>
+				<li class="bugfix">Manually fixed the bad regexes with some of the tgui inputs.</li>
+				<li class="bugfix">Fixed CAS tgui</li>
+				<li class="bugfix">Fixed queen colours for the queen eye. Also fixed Queen eye ignoring other hives.</li>
+				<li class="rscadd">Gave a different colour when queens point.</li>
+				<li class="tweak">The TGUI Input List will now autofocus on the first element.</li>
+			</ul>
+			<h3 class="author">monkeysfist101 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added new brand of cigars to vendors on both Almayer and groundside.</li>
+				<li class="imageadd">Added new cigar brand, added new cigar box, and tweaked existing cigar butt.</li>
+				<li class="bugfix">Applied Vanagandr's inventory fix to cigarettes and cigars.</li>
+				<li class="tweak">Cleaned up fancy.dm and flame_tools.dm.</li>
+			</ul>
+
 			<h2 class="date">10 January 2021</h2>
+			<h3 class="author">Anclandor updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Flare gun fits in mortar belt, SG belt, and pistol holster pouch.</li>
+				<li class="tweak">Sg belt can now hold flares for the flare gun.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Game panel's Create Mob now lets you spawn in predaliens and larva.</li>
+				<li class="bugfix">Fixed the bug where selecting spitter in Player Panel transformed the target into a burrower.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Mutated plants once again correctly get randomised reagents in their fruits.</li>
+			</ul>
+			<h3 class="author">Stan_Albatross updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Updated the peridaxon bottle description to fit the current mechanics of the chemical preventing organ damage rather than fixing it</li>
+				<li class="tweak">Changed the name of the m40 HEDP rig to m40 grenade rig as it holds more types of grenade now</li>
+				<li class="tweak">Updated pouch.dm with different descriptions for large ammo pouches. Also changed "revolver magazines"</li>
+				<li class="tweak">Updated firstaid.dm with description changes and modernisations</li>
+				<li class="tweak">Updated pill.dm with description changes and modernisations</li>
+				<li class="tweak">Updated manual.dm with modernisations, including the many changes of NT to WY. Changed the "corporate regulations" book to "Standard operating procedure", as it linked to the SOP wiki page.</li>
+			</ul>
 			<h3 class="author">TheDonkified updated:</h3>
 			<ul class="changes bgimages16">
 				<li class="tweak">Blood and gibs dry after 30 seconds.</li>
@@ -1400,117 +1814,6 @@
 			<h3 class="author">alardun updated:</h3>
 			<ul class="changes bgimages16">
 				<li class="bugfix">Fixed a small runtime with container-less pressurized pouch being flushed</li>
-			</ul>
-
-			<h2 class="date">23 November 2020</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">CLF have default firearms skill now, instead of civilian skill.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed xenomorphs being able to slash dead xenomorphs to buff themselves.</li>
-				<li class="tweak">Tweaked access restrictions on the nuke</li>
-			</ul>
-
-			<h2 class="date">22 November 2020</h2>
-			<h3 class="author">alardun updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added several new custom injectors for research to play with. Variants includes specialized medic injector with 6 doses, and EZ injector that can be used instantly by anyone, as well as different volume capacity. They may be found in their dedicated section of the medilathe. Thanks Dismas for the sprites.</li>
-				<li class="tweak">Autolathe queue limit raised from 5 to 6.</li>
-				<li class="rscadd">The reagent grinder can bottle and send its content to the smartfridge with the push of a button.</li>
-				<li class="tweak">The Research Souto vendor no longer requires swiping, but lost a couple (useless) choices.</li>
-				<li class="rscadd">The smartfridges aboard the Almayer are now networked together. You can transfer contents to and from the shared storage.</li>
-				<li class="rscadd">The turing dispenser can now be toggled to send its production directly to the smartfridge network as bottles.</li>
-				<li class="rscadd">The turing dispenser can now be toggled to send its production directly to the centrifuge for refilling vials or injectors.</li>
-				<li class="rscadd">The centrifuge can now be toggled to receive the turing production, autolabels injectors, and can switch between splitting (current behaviour) and distribute (Fill each container sequentially with the mixture).</li>
-				<li class="rscadd">Added a reagent tank to Medbay Chemistry and two in Research containment.</li>
-				<li class="rscadd">Added a new type of pouch, available in medic vendor, as well as a few in medical lockers, or produced at the medilathe. It is a reagent container with a capacity of 480 that can be refilled at reagents storage tanks and machinery and can refill custom autoinjectors (and only them). It also has space for one injector. The medic pouch is prefilled and also comes with one custom 15x6 injector. Thanks Dismas for the sprites.</li>
-				<li class="rscadd">Vial boxes can now tile-pickup vials and injectors from the floor.</li>
-				<li class="rscadd">Storages items will attempt to empty their contents into the disposal chute if they are not already empty. Clicking the chute with an empty storage will throw the object in the disposal chute.</li>
-				<li class="bugfix">Trying to offer a drink to the synthetic now properly notify you that it won't work.</li>
-				<li class="bugfix">Reagent grinder can no longer be operated from across the room.</li>
-				<li class="bugfix">Transmitted chem should no longer break upon being loaded in the next round.</li>
-				<li class="bugfix">The reagent grinder no longer consumes more metal sheets than necessary to fill the beaker.</li>
-				<li class="bugfix">The Defcon message no longer mentions "ornaments" when buying Orbital Bombardment Ordnance.</li>
-				<li class="bugfix">You no longer try to "diffuse" the Nuclear Bomb when defusing it.</li>
-			</ul>
-
-			<h2 class="date">21 November 2020</h2>
-			<h3 class="author">BIgboyyo updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Adds another nightmare insert to LV.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Windows being exploded now count as destroyed for purpose of statistics and signal callbacks.</li>
-				<li class="bugfix">Fix typo with agent objective 'destroy windows' only firing on window frame destroy signal.</li>
-				<li class="bugfix">Added and switched over 'destroy window frame' signal to 'disassemble window frame' as that's what it did.</li>
-				<li class="bugfix">Fixed Sorokyne, Solaris and Kutjevo 'Reinforced Walls' being 3x more fragile instead of 3x stronger.</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Rangefinders and laser designators can now be switched between displaying coordinates in a popup window (current behaviour) or in chat (as it used to be). Defaults to popup window.</li>
-				<li class="rscadd">Examining rangefinders/designators now shows the last coordinates taken by rangefinder functionality.</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Dead queens are now listed at round end. Issues with living queens not being listed still need to be looked into.</li>
-			</ul>
-			<h3 class="author">TobiNerd updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">When using the Synthesis Simulator in AMPLIFY, SUPPRESS or RELATE mode, you now get 3 options for the new recipe component. The chosen component will either replace one of the existing recipe components or be added as an additional component. If you choose to add a rare component in this way you get 1 credit refunded.</li>
-				<li class="tweak">Tweaked the value of some of the neutral properties.</li>
-				<li class="tweak">The Synthesis Simulator will now display the expected new OD threshold of a chemical before running the simulation.</li>
-				<li class="experiment">Added a new mode to the Synthesis Simulator, CREATE mode. This mode allows researchers to create a new chemical from scratch.</li>
-				<li class="rscadd">When creating a new chemical, researchers get to choose the properties, OD, name, and the rarity of recipe components.</li>
-				<li class="rscadd">The cost of creating a new chemical is based on all of the following. The level of each property, the number of property slots used, the OD level and the rarity of each component. Basic, common, uncommon and rare components add a +7, +4, +1 and -5 modifier to the cost respectively. Negative properties and most neutral, depending on the value of the property, decrease the cost rather than increase it. A penalty cost is added for each property above level 5 (+1 at 6, +2 at 7, +4 at 8, +5 at 9, +7 at 10). The minimum cost of creating a chemical is 5 credits.</li>
-				<li class="rscadd">The properties ATX, ACR, NGN, HPX, TXC and CRS are available for creation mode at round start. Scan chemicals in the XRF analyzer to make more properties available. Anomalous properties can not be added via create mode.</li>
-				<li class="wip">CREATE mode does not take into consideration whether the properties you enabled might conflict and cancel each other out. So don't try this, you'll just waste your credits.</li>
-				<li class="bugfix">Fixed an old bug with how we check if a recipe already exists. This was why researchers more often that they were supposed to, ended up with recipes of 4 or more components and why the simulator seemed biased towards adding more rare components.</li>
-			</ul>
-			<h3 class="author">Unknownity updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Synthetic survivors are now able to access the USCM Synthetic vendors again.</li>
-			</ul>
-			<h3 class="author">ghostsheet updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed med vendor not allowing health scan while hacked.</li>
-			</ul>
-			<h3 class="author">spookydonut updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Objectives no longer hold references preventing soft dels.</li>
-				<li class="tweak">Removes trailing slashes from typepaths</li>
-			</ul>
-
-			<h2 class="date">18 November 2020</h2>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Examining ammo boxes will now show instructions to them.</li>
-				<li class="bugfix">CTRL-clicking a xeno to join it, will now properly cancel upon clicking No.</li>
-			</ul>
-
-			<h2 class="date">13 November 2020</h2>
-			<h3 class="author">Vampmare updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Greatly reduced the amount of areas in Sorokyne.</li>
-			</ul>
-
-			<h2 class="date">12 November 2020</h2>
-			<h3 class="author">TobiNerd updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Removed holoracks from Corsat.</li>
-			</ul>
-
-			<h2 class="date">10 November 2020</h2>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Auxiliary Combat Support roles (Vehicle Crewman, Intelligence Officer, Pilot Officer) now spawn in their respective uniform and marine boots with a knife.</li>
-				<li class="rscdel">Removed uniforms and boots from ACS roles equipment vendors.</li>
-				<li class="bugfix">Fixed Squad Requisition Munition Vendor vending M41A AP instead of M4A3 HP magazines.</li>
-				<li class="tweak">USCM VC geared loadout now has pistol belt with M4A3 Custom instead of vehicle ammo belt, M39 SMG and 3 extended magazines.</li>
-				<li class="rscadd">Added Event VC loadout, identical to USCM, belongs to Neutral faction and has antag access. Added UPP VC loadout Tankist.</li>
-				<li class="tweak">Regular UPP soldiers now use dogtags.</li>
 			</ul>
 </div>
 </body>

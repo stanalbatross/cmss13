@@ -1,10 +1,3 @@
-GLOBAL_DATUM_INIT(init, /datum/global_init, new)
-
-/*
-	Pre-map initialization stuff should go here.
-*/
-/datum/global_init/New()
-	makeDatumRefLists()
 
 var/world_view_size = 7
 var/lobby_view_size = 16
@@ -73,6 +66,7 @@ var/internal_tick_usage = 0
 	if(!EvacuationAuthority)		EvacuationAuthority = new
 
 	change_tick_lag(CONFIG_GET(number/ticklag))
+	GLOB.timezoneOffset = text2num(time2text(0,"hh")) * 36000
 
 	Master.Initialize(10, FALSE, TRUE)
 
@@ -205,6 +199,10 @@ var/world_topic_spam_protect_time = world.timeofday
 		round_extra_data = "&message=[SSticker.mode.end_round_message()]"
 	world.Export("http://127.0.0.1:8888/?rebooting=1[round_extra_data]")
 	
+	if(CONFIG_GET(flag/no_restarts))
+		shutdown()
+		return 
+
 	..(reason)
 
 

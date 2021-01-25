@@ -243,7 +243,7 @@
 		if(SEND_SIGNAL(M, COMSIG_MOB_SCREECH_ACT, X) & COMPONENT_SCREECH_ACT_CANCEL)
 			continue
 
-		M.scream_stun_timeout = SECONDS_20
+		M.scream_stun_timeout = 20 SECONDS
 		var/dist = get_dist(X, M)
 		if(dist <= 4)
 			to_chat(M, SPAN_DANGER("An ear-splitting guttural roar shakes the ground beneath your feet!"))
@@ -287,7 +287,7 @@
 		if(possible_target == X || !possible_target.client) continue
 		target_list += possible_target
 
-	var/mob/living/M = input("Target", "Send a Psychic Whisper to whom?") as null|anything in target_list
+	var/mob/living/M = tgui_input_list(usr, "Target", "Send a Psychic Whisper to whom?", target_list)
 	if(!M) return
 
 	if(!X.check_state())
@@ -334,15 +334,15 @@
 		to_chat(X, SPAN_XENOWARNING("This caste cannot be given plasma!"))
 		return
 
-	if(target.on_fire)
-		to_chat(X, SPAN_XENOWARNING("You cannot give plasma to xenos that are on fire!"))
+	if(SEND_SIGNAL(target, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+		to_chat(X, SPAN_XENOWARNING("This xeno cannot be given plasma!"))
 		return
 
 	if(!check_and_use_plasma_owner())
 		return
 
 	target.gain_plasma(target.plasma_max * 0.75)
-	target.flick_heal_overlay(SECONDS_3, COLOR_CYAN)
+	target.flick_heal_overlay(3 SECONDS, COLOR_CYAN)
 	apply_cooldown()
 	to_chat(X, SPAN_XENONOTICE("You transfer some plasma to [target]."))
 /datum/action/xeno_action/onclick/queen_order
@@ -402,7 +402,7 @@
 
 	var/choice = XENO_STRUCTURE_CORE
 	if(X.hive.has_structure(XENO_STRUCTURE_CORE) || !X.hive.can_build_structure(XENO_STRUCTURE_CORE))
-		choice = input(X, "Choose a structure to build") in X.hive.hive_structure_types + "help" + "cancel"
+		choice = tgui_input_list(X, "Choose a structure to build", "Build structure", X.hive.hive_structure_types + "help" + "cancel")
 	if(choice == "help")
 		var/message = "<br>Placing a construction node creates a template for special structures that can benefit the hive, which require the insertion of [MATERIAL_CRYSTAL] to construct the following:<br>"
 		for(var/structure_name in X.hive.hive_structure_types)

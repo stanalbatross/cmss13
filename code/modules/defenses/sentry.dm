@@ -138,14 +138,7 @@
 
 		playsound(loc, 'sound/items/Screwdriver.ogg', 25, 1)
 		user.visible_message(SPAN_NOTICE("[user] rotates [src]."), SPAN_NOTICE("You rotate [src]."))
-		if(dir == NORTH)
-			dir = EAST
-		else if(dir == EAST)
-			dir = SOUTH
-		else if(dir == SOUTH)
-			dir = WEST
-		else if(dir == WEST)
-			dir = NORTH
+		setDir(turn(dir, -90))
 		return
 
 	if(istype(O, ammo))
@@ -180,7 +173,7 @@
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 	for(var/i = 1 to 6)
-		dir = pick(NORTH, EAST, SOUTH, WEST)
+		setDir(pick(NORTH, EAST, SOUTH, WEST))
 		sleep(2)
 
 	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "sentry explosion")
@@ -218,7 +211,8 @@
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(initial(name), owner_mob)
 	P.generate_bullet(new ammo.default_ammo)
-	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE, faction_group)
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
+	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	ammo.current_rounds--
 	if(ammo.current_rounds == 0)
@@ -348,7 +342,7 @@
 	if(!target) //No targets, don't bother firing
 		return
 
-	fire(target.loc)
+	fire(target)
 
 /obj/structure/machinery/defenses/sentry/premade
 	name = "UA-577 Gauss Turret"

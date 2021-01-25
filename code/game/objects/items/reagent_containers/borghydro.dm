@@ -11,7 +11,7 @@
 	var/mode = 1
 	var/charge_cost = 50
 	var/charge_tick = 0
-	var/recharge_time = SECONDS_2 //Time it takes for shots to recharge
+	var/recharge_time = 2 SECONDS //Time it takes for shots to recharge
 
 	var/list/reagent_ids = list("tricordrazine", "bicaridine", "kelotane", "dexalinp", "anti_toxin", "inaprovaline", "tramadol", "imidazoline", "spaceacillin", "quickclot")
 	var/list/reagent_volumes = list()
@@ -68,7 +68,7 @@
 	return
 
 /obj/item/reagent_container/borghypo/attack_self(mob/user as mob)
-	var/selection = input("Please select a reagent:", "Reagent", null) as null|anything in reagent_ids
+	var/selection = tgui_input_list(usr, "Please select a reagent:", "Reagent", reagent_ids)
 	if(!selection) return
 	var/datum/reagent/R = chemical_reagents_list[selection]
 	to_chat(user, SPAN_NOTICE(" Synthesizer is now producing '[R.name]'."))

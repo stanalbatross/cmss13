@@ -35,7 +35,7 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 		b_icon = B.icon_name
 
 	icon_state = "[get_limb_icon_name(H.species, b_icon, H.gender, name, e_icon)]"
-	dir = SOUTH
+	setDir(SOUTH)
 	apply_transform(turn(transform, rand(70,130)))
 
 
@@ -81,7 +81,7 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 	..()
 	//Add (facial) hair.
 	if(H.f_style)
-		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[H.f_style]
+		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[H.f_style]
 		if(facial_hair_style)
 			var/icon/facial = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
@@ -90,7 +90,7 @@ obj/item/limb/New(loc, mob/living/carbon/human/H)
 			overlays.Add(facial) // icon.Blend(facial, ICON_OVERLAY)
 
 	if(H.h_style && !(H.head && (H.head.flags_inv_hide & HIDETOPHAIR)))
-		var/datum/sprite_accessory/hair_style = hair_styles_list[H.h_style]
+		var/datum/sprite_accessory/hair_style = GLOB.hair_styles_list[H.h_style]
 		if(hair_style)
 			var/icon/hair = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			if(hair_style.do_colouration)

@@ -50,7 +50,8 @@ var/list/admin_verbs_ban = list(
 )
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_web_sound,
-	/client/proc/play_sound
+	/client/proc/play_sound,
+	/client/proc/cmd_admin_vox_panel,
 )
 var/list/admin_verbs_fun = list(
 	/client/proc/enable_event_mob_verbs,
@@ -59,12 +60,12 @@ var/list/admin_verbs_fun = list(
 	/client/proc/drop_bomb,
 	/client/proc/set_ooc_color_global,
 	/client/proc/announce_random_fact,
-	/client/proc/construct_env,
-	/client/proc/construct_env_dmm,
 	/client/proc/set_autoreplacer,
 	/client/proc/deactivate_autoreplacer,
 	/client/proc/rerun_decorators,
-	/client/proc/toogle_door_control
+	/client/proc/toogle_door_control,
+	/client/proc/map_template_load,
+	/client/proc/map_template_upload
 )
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,
@@ -365,7 +366,7 @@ var/list/admin_verbs_mod = list(
 	var/list/disease_names = list()
 	for(var/v in diseases)
 		disease_names.Add(copytext("[v]", 16, 0))
-	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in disease_names
+	var/datum/disease/D = tgui_input_list(usr, "Choose the disease to give to that guy", "ACHOO", disease_names)
 	if(!D) return
 	var/path = text2path("/datum/disease/[D]")
 	T.contract_disease(new path, 1)
@@ -429,12 +430,12 @@ var/list/admin_verbs_mod = list(
 
 
 	// hair
-	var/new_hstyle = input(usr, "Select a hair style", "Grooming")  as null|anything in hair_styles_list
+	var/new_hstyle = input(usr, "Select a hair style", "Grooming")  as null|anything in GLOB.hair_styles_list
 	if(new_hstyle)
 		M.h_style = new_hstyle
 
 	// facial hair
-	var/new_fstyle = input(usr, "Select a facial hair style", "Grooming")  as null|anything in facial_hair_styles_list
+	var/new_fstyle = input(usr, "Select a facial hair style", "Grooming")  as null|anything in GLOB.facial_hair_styles_list
 	if(new_fstyle)
 		M.f_style = new_fstyle
 

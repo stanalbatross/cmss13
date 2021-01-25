@@ -1,6 +1,6 @@
 #define BOOST_POWER_MAX 20
 #define BOOST_POWER_MIN 1
-#define EVOLUTION_INCREMENT_TIME MINUTES_30 // Evolution increases by 1 every 25 minutes.
+#define EVOLUTION_INCREMENT_TIME (30 MINUTES) // Evolution increases by 1 every 25 minutes.
 
 SUBSYSTEM_DEF(xevolution)
 	name = "Evilution"
@@ -14,13 +14,16 @@ SUBSYSTEM_DEF(xevolution)
 	var/force_boost_power = FALSE // Debugging only
 
 /datum/controller/subsystem/xevolution/Initialize(start_timeofday)
-	for(var/datum/hive_status/HS in GLOB.hive_datum)
-		boost_power += HS.hivenumber
+	var/datum/hive_status/HS
+	for(var/hivenumber in GLOB.hive_datum)
+		HS = GLOB.hive_datum[hivenumber]
 		boost_power[HS.hivenumber] = 1
 	return ..()
 
 /datum/controller/subsystem/xevolution/fire(resumed = FALSE)
-	for(var/datum/hive_status/HS in GLOB.hive_datum)
+	var/datum/hive_status/HS
+	for(var/hivenumber in GLOB.hive_datum)
+		HS = GLOB.hive_datum[hivenumber]
 		if(!HS)
 			continue
 
