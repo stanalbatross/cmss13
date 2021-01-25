@@ -129,6 +129,7 @@
 	starting = get_turf(src)
 	if(starting != loc)
 		forceMove(starting) //Put us on the turf, if we're not.
+
 	target_turf = get_turf(target)
 	if(!target_turf || !starting || target_turf == starting) //This shouldn't happen, but it can.
 		qdel(src)
@@ -169,6 +170,8 @@
 
 	var/angle = round(Get_Angle(starting,target_turf))
 
+	if(ismob(target))
+		SEND_SIGNAL(firer, COMSIG_DIRECT_BULLET_HIT)
 	var/matrix/rotate = matrix() //Change the bullet angle.
 	rotate.Turn(angle)
 	apply_transform(rotate)
@@ -416,6 +419,8 @@
 
 		if(original != L || hit_roll > hit_chance-base_miss_chance[def_zone]-20)	// If hit roll is high or the firer wasn't aiming at this mob, we still hit but now we might hit the wrong body part
 			def_zone = ran_zone()
+		else
+			SEND_SIGNAL(firer, COMSIG_DIRECT_BULLET_HIT)
 		hit_chance -= base_miss_chance[def_zone] // Reduce accuracy based on spot.
 
 		if(hit_chance > hit_roll)

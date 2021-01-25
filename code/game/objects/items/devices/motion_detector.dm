@@ -8,6 +8,9 @@
 	icon_state = "detector_blip"
 	layer = BELOW_FULLSCREEN_LAYER
 
+/obj/effect/detector_blip/m717
+	icon_state = "tracker_blip"
+
 /obj/item/device/motiondetector
 	name = "motion detector"
 	desc = "A device that detects movement, but ignores marines. The screen will show the amount of unidentified movement detected (up to 9). You can switch modes with Alt+Click."
@@ -29,6 +32,7 @@
 	actions_types = list(/datum/action/item_action)
 	var/scanning = FALSE // controls if MD is in process of scan
 	var/datum/shape/rectangle/range_bounds
+	var/long_range_locked = FALSE //only long-range MD
 
 /obj/item/device/motiondetector/New()
 	range_bounds = new //Just creating a rectangle datum
@@ -36,21 +40,24 @@
 
 /obj/item/device/motiondetector/update_icon()
 	if(ping_count > 8)
-		icon_state = "detector_on_9_b"
+		icon_state = "[initial(icon_state)]_on_9_b"
 		spawn(10)
 			if(active)
-				icon_state = "detector_on_9"
+				icon_state = "[initial(icon_state)]_on_9" 
 	else
-		icon_state = "detector_on_[ping_count]_b"
+		icon_state = "[initial(icon_state)]_on_[ping_count]_b"
 		spawn(10)
 			if(active)
-				icon_state = "detector_on_[ping_count]"
+				icon_state = "[initial(icon_state)]_on_[ping_count]"
 
 /obj/item/device/motiondetector/verb/toggle_range_mode()
 	set name = "Toggle Range Mode"
 	set category = "Object"
 	set src in usr
-	toggle_mode(usr)
+	if(!long_range_locked)
+		toggle_mode(usr)
+	else
+		to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
 
 /obj/item/device/motiondetector/proc/toggle_mode(mob/user)
 	if(isobserver(user) || isXeno(user) || !Adjacent(user))
@@ -70,8 +77,11 @@
 	if (isobserver(user) || isXeno(user)) return
 
 	if (mods["alt"])
-		toggle_mode(user)
-		return 1
+		if(!long_range_locked)
+			toggle_mode(usr)
+		else
+			to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
+		return TRUE
 
 	return ..()
 
@@ -315,3 +325,20 @@
 		playsound(loc, 'sound/items/detector.ogg', 50, 0, 7, 2)
 
 	scanning = FALSE
+
+/obj/item/device/motiondetector/m717
+	name = "M717 prototype motion detector"
+	desc = "This prototype motion detector sacrifices versatility, having only the long-range mode, for size, being so small it can even fit in pockets."
+	icon_state = "m717-detector"
+	item_state = "motion_detector"
+	flags_atom = FPRINT| CONDUCT
+	flags_equip_slot = SLOT_WAIST
+	w_class = SIZE_SMALL
+	blip_type = "tracker"
+	long_range_locked = TRUE
+
+/obj/item/device/motiondetector/m717/update_icon()
+	if(active)
+		icon_state = "[initial(icon_state)]_on"
+	else
+		icon_state = "[initial(icon_state)]"

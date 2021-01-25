@@ -100,7 +100,6 @@ can cause issues with ammo types getting mixed up during the burst.
 /obj/item/weapon/gun/shotgun/proc/check_chamber_position()
 	return 1
 
-
 /obj/item/weapon/gun/shotgun/reload(mob/user, var/obj/item/ammo_magazine/magazine)
 	if(flags_gun_features & GUN_BURST_FIRING) return
 

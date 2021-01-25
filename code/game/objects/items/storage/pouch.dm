@@ -53,13 +53,9 @@
 /obj/item/storage/pouch/general/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_into(M,user)
-	else if(istype(W, /obj/item/storage/box/nade_box))
-		var/obj/item/storage/box/nade_box/M = W
-		dump_into(M,user)
-	else if(istype(W, /obj/item/storage/box/m94))
-		var/obj/item/storage/box/m94/M = W
-		dump_into(M,user)
+		dump_ammo_to(M,user)
+	else if(istype(W, /obj/item/storage/box/nade_box) || istype(W, /obj/item/storage/box/m94))
+		dump_into(W, user)
 	else
 		return ..()
 
@@ -214,7 +210,7 @@
 /obj/item/storage/pouch/magazine/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_into(M,user)
+		dump_ammo_to(M,user)
 	else
 		return ..()
 
@@ -223,12 +219,9 @@
 	icon_state = "large_ammo_mag"
 	storage_slots = 4
 
-/obj/item/storage/pouch/magazine/large/with_beanbags
-
 /obj/item/storage/pouch/magazine/large/with_beanbags/fill_preset_inventory()
 	for(var/i = 1 to storage_slots)
-		var/obj/item/ammo_magazine/handful/H = new(src)
-		H.generate_handful(/datum/ammo/bullet/shotgun/beanbag, "12g", 5, 5, /obj/item/weapon/gun/shotgun)
+		new /obj/item/ammo_magazine/handful/shotgun/beanbag(src)
 
 
 /obj/item/storage/pouch/magazine/pistol

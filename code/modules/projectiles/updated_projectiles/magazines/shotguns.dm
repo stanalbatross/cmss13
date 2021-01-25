@@ -17,6 +17,7 @@ one type of shotgun ammo, but I think it helps in referencing it. ~N
 	gun_type = /obj/item/weapon/gun/shotgun
 	max_rounds = 25 // Real shotgun boxes are usually 5 or 25 rounds. This works with the new system, five handfuls.
 	w_class = SIZE_LARGE // Can't throw it in your pocket, friend.
+	flags_magazine = AMMUNITION_REFILLABLE|AMMUNITION_HANDFUL_BOX
 
 /obj/item/ammo_magazine/shotgun/slugs//for distinction on weapons that can't take child objects but still take slugs.
 
@@ -89,32 +90,31 @@ Handfuls of shotgun rounds. For spawning directly on mobs in roundstart, ERTs, e
 
 /obj/item/ammo_magazine/handful/shotgun
 	name = "handful of shotgun slugs (12g)"
-	icon_state = "shotgun slug"
+	icon_state = "slug_shell"
 	default_ammo = /datum/ammo/bullet/shotgun/slug
 	caliber = "12g"
 	max_rounds = 5
 	current_rounds = 5
-	dir = 6
 	gun_type = /obj/item/weapon/gun/shotgun
 
 /obj/item/ammo_magazine/handful/shotgun/slug
 
 /obj/item/ammo_magazine/handful/shotgun/incendiary
 	name = "handful of incendiary slugs (12g)"
-	icon_state = "incendiary slug"
+	icon_state = "incendiary_slug"
 	default_ammo = /datum/ammo/bullet/shotgun/incendiary
 
 /obj/item/ammo_magazine/handful/shotgun/buckshot
 	name = "handful of shotgun buckshot shells (12g)"
-	icon_state = "shotgun buckshot shell"
+	icon_state = "buckshot_shell"
 	default_ammo = /datum/ammo/bullet/shotgun/buckshot
 
 /obj/item/ammo_magazine/handful/shotgun/flechette
 	name = "handful of shotgun flechette shells (12g)"
-	icon_state = "shotgun flechette shell"
+	icon_state = "flechette_shell"
 	default_ammo = /datum/ammo/bullet/shotgun/flechette
 
 /obj/item/ammo_magazine/handful/shotgun/beanbag
 	name = "handful of beanbag slugs (12g)"
-	icon_state = "beanbag slug"
+	icon_state = "beanbag_slug"
 	default_ammo = /datum/ammo/bullet/shotgun/beanbag

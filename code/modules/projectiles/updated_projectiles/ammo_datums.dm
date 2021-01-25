@@ -715,6 +715,60 @@
 /datum/ammo/bullet/shotgun/spread/masterkey
 	damage = BULLET_DAMAGE_TIER_4
 
+/*
+//================================================
+					Lever-action ammo
+//================================================
+*/
+
+/datum/ammo/bullet/lever_action
+	name = "lever-action bullet"
+	debilitate = list(1,0,0,0,0,0,0,0)
+
+	damage = BULLET_DAMAGE_TIER_15
+	penetration = ARMOR_PENETRATION_TIER_3
+	accuracy = HIT_ACCURACY_TIER_1
+	shell_speed = AMMO_SPEED_TIER_5
+
+/datum/ammo/bullet/lever_action/base
+
+/datum/ammo/bullet/lever_action/heavy
+	name = "heavy lever-action bullet"
+
+	damage = BULLET_DAMAGE_TIER_16
+	penetration = 0
+	accuracy = HIT_ACCURACY_TIER_4
+	shell_speed = AMMO_SPEED_TIER_3
+
+/datum/ammo/bullet/lever_action/heavy/on_hit_mob(mob/M, obj/item/projectile/P)
+	knockback(M, P, 5)
+
+/datum/ammo/bullet/lever_action/tracker
+	name = "tracking lever-action bullet"
+
+	damage = BULLET_DAMAGE_TIER_15
+	penetration = ARMOR_PENETRATION_TIER_3
+	accuracy = HIT_ACCURACY_TIER_1
+
+//datum/ammo/bullet/lever_action/tracker/proc?
+
+/datum/ammo/bullet/lever_action/training
+	name = "lever-action blank"
+
+	damage = BULLET_DAMAGE_TIER_15 //blanks CAN hurt you if shot very close
+	penetration = 0
+	accuracy = HIT_ACCURACY_TIER_1
+	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
+
+/datum/ammo/bullet/lever_action/marksman
+	name = "marksman lever-action bullet"
+
+	shrapnel_chance = 0
+	damage_falloff = 0
+	accurate_range = 12
+	damage = BULLET_DAMAGE_TIER_12
+	penetration = ARMOR_PENETRATION_TIER_6
+	shell_speed = AMMO_SPEED_TIER_6
 
 /*
 //================================================

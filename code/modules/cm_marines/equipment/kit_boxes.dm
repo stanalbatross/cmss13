@@ -238,6 +238,9 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
 
+/obj/item/storage/box/kit/update_icon()
+	if(!contents.len)
+		qdel(src)
 /obj/item/storage/box/kit/mou53_sapper
 	name = "\improper M-OU53 Field Test Kit"
 
@@ -252,9 +255,24 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/ammo_magazine/shotgun/flechette(src)
 	new /obj/item/storage/belt/shotgun(src)
 
-/obj/item/storage/box/kit/update_icon()
-	if(!contents.len)
-		qdel(src)
+/obj/item/storage/box/kit/m717_scout
+	name = "\improper M717 Environment Scouting Kit"
+
+/obj/item/storage/box/kit/m717_scout/New()
+	..()
+	overlays += image('icons/obj/items/pro_case.dmi', "+m717")
+
+/obj/item/storage/box/kit/m717_scout/fill_preset_inventory()
+	new /obj/item/weapon/gun/lever_action/m717(src)
+	new /obj/item/attachable/stock/m717(src)
+	new /obj/item/attachable/m717_sling(src)
+	new /obj/item/ammo_magazine/lever_action(src)
+	new /obj/item/ammo_magazine/lever_action/heavy(src)
+	new /obj/item/ammo_magazine/lever_action/marksman(src)
+	new /obj/item/storage/belt/lever_action(src)
+	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
+	new /obj/item/ammo_magazine/lever_action/tracker(src)
+	new /obj/item/device/motiondetector/m717(src)
 
 /obj/item/storage/box/kit/machinegunner
 	name = "\improper M2C Heavy Gunner Kit"

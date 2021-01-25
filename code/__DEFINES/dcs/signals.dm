@@ -198,3 +198,5 @@
 // Return non-zero value to override original behaviour
 #define COMSIG_MOB_SCREECH_ACT "mob_screech_act"
 	#define COMPONENT_SCREECH_ACT_CANCEL (1<<0)
+
+#define COMSIG_DIRECT_BULLET_HIT "direct_bullet_hit"

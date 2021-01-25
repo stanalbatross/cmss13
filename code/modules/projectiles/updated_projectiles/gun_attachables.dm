@@ -560,6 +560,26 @@ Defined in conflicts.dm of the #defines folder.
 	. = ..()
 	G.RemoveElement(/datum/element/magharness)
 
+/obj/item/attachable/m717_sling
+	name = "M717 magnetic sling"
+	desc = "A custom sling designed for comfortable holstering of the M717 lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
+	icon_state = "m717-sling"
+	attach_icon = "m717-sling_a"
+	slot = "under"
+
+/obj/item/attachable/m717_sling/New()
+	..()
+	wield_delay_mod = WIELD_DELAY_VERY_FAST
+	select_gamemode_skin(type)
+
+/obj/item/attachable/m717_sling/Attach(var/obj/item/weapon/gun/G)
+	. = ..()
+	G.AddElement(/datum/element/magnetic_sling)
+
+/obj/item/attachable/m717_sling/Detach(var/obj/item/weapon/gun/G)
+	. = ..()
+	G.RemoveElement(/datum/element/magnetic_sling)
+
 /obj/item/attachable/scope
 	name = "S8 4x telescopic scope"
 	icon_state = "sniperscope"
@@ -742,7 +762,6 @@ Defined in conflicts.dm of the #defines folder.
 	//but at the same time you are slow when 2 handed
 	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
-
 	matter = list("wood" = 2000)
 
 	select_gamemode_skin(type)
@@ -760,6 +779,16 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_unwielded_mod = HIT_ACCURACY_MULT_TIER_1
 	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
+
+/obj/item/attachable/stock/m717
+	name = "\improper M717 scouting stock"
+	desc = "A wooden stock designed for the M717 lever-action rifle, designed to withstand harsh environments."
+	icon_state = "m717-stock"
+	attach_icon = "m717-stock"
+
+/obj/item/attachable/stock/m717/New()
+	..()
+	select_gamemode_skin(type)
 
 /obj/item/attachable/stock/tactical
 	name = "\improper MK221 tactical stock"

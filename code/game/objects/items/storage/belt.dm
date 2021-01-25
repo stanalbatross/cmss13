@@ -331,7 +331,7 @@
 /obj/item/storage/belt/marine/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_into(M,user)
+		dump_ammo_to(M,user)
 	else
 		return ..()
 
@@ -395,13 +395,45 @@
 
 /obj/item/storage/belt/shotgun/full/fill_preset_inventory()
 	for(var/i = 1 to storage_slots)
-		var/obj/item/ammo_magazine/handful/H = new(src)
-		H.generate_handful(/datum/ammo/bullet/shotgun/slug, "12g", 5, 5, /obj/item/weapon/gun/shotgun)
+		new /obj/item/ammo_magazine/handful/shotgun/slug(src)
 
 /obj/item/storage/belt/shotgun/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_into(M,user)
+		dump_ammo_to(M,user)
+	else
+		return ..()
+
+/obj/item/storage/belt/lever_action
+	name = "\improper M276 pattern 45-70 loading rig"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the M717 lever-action rifle."
+	icon_state = "m717-ammobelt"
+	item_state = "marinebelt"
+	w_class = SIZE_LARGE
+	storage_slots = 21
+	max_w_class = SIZE_SMALL
+	max_storage_space = 28
+	can_hold = list(/obj/item/ammo_magazine/handful)
+
+/obj/item/storage/belt/lever_action/Initialize()
+	. = ..()
+	select_gamemode_skin(type)
+
+/obj/item/storage/belt/lever_action/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/ammo_magazine/lever_action))
+		var/obj/item/ammo_magazine/lever_action/M = W
+		dump_ammo_to(M,user)
+
+	if(istype(W, /obj/item/storage/belt/gun/m44/lever_action/attach_holster))
+		if(length(contents) || length(W.contents))
+			to_chat(user, SPAN_WARNING("Both holster and belt need to be empty to attach the holster!"))
+			return
+		to_chat(user, SPAN_NOTICE("You attach the holster to the belt, reducing total storage capacity but allowing it to fit the M44 revolver and its speedloaders."))
+		var/obj/item/storage/belt/gun/m44/lever_action/new_belt = new /obj/item/storage/belt/gun/m44/lever_action
+		qdel(W)
+		qdel(src)
+		user.put_in_hands(new_belt)
+		update_icon(user)
 	else
 		return ..()
 
@@ -728,6 +760,44 @@
 	new /obj/item/ammo_magazine/revolver/marksman(src)
 	new /obj/item/ammo_magazine/revolver/marksman(src)
 	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/m44/lever_action
+	name = "\improper M276 pattern 45-70 revolver rig"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the M717 lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
+	icon_state = "m717-cowboybelt"
+	item_state = "marinebelt"
+	w_class = SIZE_LARGE
+	storage_slots = 14
+	max_storage_space = 28
+	can_hold = list(
+		/obj/item/ammo_magazine/handful,
+		/obj/item/weapon/gun/revolver,
+		/obj/item/ammo_magazine/revolver
+		)
+
+/obj/item/storage/belt/gun/m44/lever_action/Initialize()
+	. = ..()
+	select_gamemode_skin(type)
+
+/obj/item/storage/belt/gun/m44/lever_action/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/ammo_magazine/lever_action))
+		var/obj/item/ammo_magazine/lever_action/M = W
+		dump_ammo_to(M,user)
+	else
+		return ..()
+
+/obj/item/storage/belt/gun/m44/lever_action/attach_holster
+	name = "\improper M276 prototype revolver holster attachment"
+	desc = "This prototype holster can be instantly attached to an empty M276 45-70 rig, giving up some storage space in exchange for holding a sidearm."
+	icon_state = "m717-attach-holster"
+	item_state = "m717-attach-holster"
+	w_class = SIZE_LARGE
+	storage_slots = 1
+	max_w_class = SIZE_SMALL
+	max_storage_space = 1
+	can_hold = list(
+		/obj/item/weapon/gun/revolver
+	)
 
 /obj/item/storage/belt/gun/mateba
 	name = "\improper M276 pattern Mateba holster rig"

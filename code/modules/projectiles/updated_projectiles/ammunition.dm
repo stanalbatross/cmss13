@@ -175,13 +175,14 @@ bullets/shells. ~N
 /obj/item/ammo_magazine/handful
 	name = "generic handful"
 	desc = "A handful of rounds to reload on the go."
+	icon = 'icons/obj/items/weapons/guns/handful.dmi'
+	icon_state = "bullet"
 	matter = list("metal" = 50) //This changes based on the ammo ammount. 5k is the base of one shell/bullet.
 	flags_equip_slot = null // It only fits into pockets and such.
-
 	w_class = SIZE_SMALL
 	current_rounds = 1 // So it doesn't get autofilled for no reason.
 	max_rounds = 5 // For shotguns, though this will be determined by the handful type when generated.
-	flags_atom = FPRINT|CONDUCT|DIRLOCK
+	flags_atom = FPRINT|CONDUCT
 	flags_magazine = AMMUNITION_HANDFUL
 	attack_speed = 3 // should make reloading less painful
 
@@ -189,7 +190,7 @@ bullets/shells. ~N
 	if(max_rounds >= current_rounds)
 		var/I = current_rounds*50 // For the metal.
 		matter = list("metal" = I)
-		dir = current_rounds + round(current_rounds/3)
+		icon_state = icon_state + "_[current_rounds]"
 
 /obj/item/ammo_magazine/handful/pickup(mob/user)
 	var/olddir = dir
@@ -217,8 +218,7 @@ If it is the same and the other stack isn't full, transfer an amount (default 1)
 	var/ammo_name = A.name //Let's pull up the name.
 
 	name = "handful of [ammo_name + (ammo_name == "shotgun buckshot"? " ":"s ") + "([new_caliber])"]"
-	icon_state = new_caliber == "12g" ? ammo_name : "bullet"
-	item_state = new_caliber == "12g" ? ammo_name : "bullet"
+
 	default_ammo = new_ammo
 	caliber = new_caliber
 	max_rounds = maximum_rounds
@@ -627,6 +627,47 @@ Turn() or Shift() as there is virtually no overhead. ~N
 
 /obj/item/ammo_box/magazine/M16/ap/empty
 	empty = TRUE
+
+//-----------------------M717 Lever-action rifle handfuls box-----------------------
+
+/obj/item/ammo_box/magazine/lever_action
+	name = "45-70 bullets box (45-70 x 100)"
+	icon_state = "base_4570"
+	overlay_ammo_type = "_reg"
+	overlay_gun_type = "_4570"
+	overlay_content = "_4570"
+	magazine_type = /obj/item/ammo_magazine/lever_action/base
+	num_of_magazines = 100
+	handfuls = TRUE
+
+/obj/item/ammo_box/magazine/lever_action/heavy
+	name = "45-70 heavy bullets box (45-70 x 50)"
+	icon_state = "base_4570"
+	overlay_ammo_type = "_heavy"
+	overlay_gun_type = "_4570"
+	overlay_content = "_45_heavy"
+	magazine_type = /obj/item/ammo_magazine/lever_action/base
+	handfuls = TRUE
+
+/obj/item/ammo_box/magazine/lever_action/marksman
+	name = "45-70 marksman bullets box (45-70 x 50)"
+	icon_state = "base_4570"
+	overlay_ammo_type = "_marksman"
+	overlay_gun_type = "_4570"
+	overlay_content = "_45_marksman"
+	magazine_type = /obj/item/ammo_magazine/lever_action/marksman
+	handfuls = TRUE
+
+/obj/item/ammo_box/magazine/lever_action/tracker
+	name = "45-70 tracker bullets box (45-70 x 50)"
+	icon_state = "base_4570"
+	overlay_ammo_type = "_tracker"
+	overlay_gun_type = "_4570"
+	overlay_content = "_45_tracker"
+	magazine_type = /obj/item/ammo_magazine/lever_action/tracker
+	handfuls = TRUE
+
+
 
 //-----------------------M4A3 Pistol Mag Box-----------------------
 
