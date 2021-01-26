@@ -4,7 +4,7 @@
 	flavor_description = "In the midst of the Chaos of the battlefield, there is also opportunity."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Ravager")  	// Only Ravager.
+	caste_whitelist = list(XENO_CASTE_RAVAGER)  	// Only Ravager.
 	mutator_actions_to_remove = list("Empower", "Charge", "Scissor Cut")
 	mutator_actions_to_add = list(/datum/action/xeno_action/activable/spike_shield, /datum/action/xeno_action/activable/rav_spikes, /datum/action/xeno_action/activable/spike_shed)
 	behavior_delegate_type = /datum/behavior_delegate/ravager_hedgehog

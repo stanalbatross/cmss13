@@ -1,5 +1,5 @@
 /datum/caste_datum/predalien
-	caste_name = "Predalien"
+	caste_name = XENO_CASTE_PREDALIEN
 	display_name = "Abomination"
 
 	melee_damage_lower = XENO_DAMAGE_TIER_4
@@ -27,7 +27,7 @@
 	behavior_delegate_type = /datum/behavior_delegate/predalien_base
 
 /mob/living/carbon/Xenomorph/Predalien
-	caste_name = "Predalien"
+	caste_name = XENO_CASTE_PREDALIEN
 	name = "Abomination"
 	desc = "A strange looking creature with fleshy strands on its head. It appears like a mixture of armor and flesh, smooth, but well carapaced."
 	icon_state = "Predalien Walking"

@@ -3,7 +3,7 @@
 	description = "You trade most of your abilities aside from pheromones and planting weeds to gain the abilities to plant potent resin fruits for your sisters."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Drone") //Only drone.
+	caste_whitelist = list(XENO_CASTE_DRONE) //Only drone.
 	mutator_actions_to_remove = list("Secrete Resin","Choose Resin Structure", "Corrosive Acid (75)", "Transfer Plasma", "Order Construction (400)")
 	mutator_actions_to_add = list(
 		/datum/action/xeno_action/activable/resin_surge, //second macro

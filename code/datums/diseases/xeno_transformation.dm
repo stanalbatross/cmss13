@@ -47,6 +47,6 @@
 			if(prob(40))
 				var/turf/T = find_loc(affected_mob)
 				gibs(T)
-				affected_mob:Alienize(list("Runner","Drone","Sentinel","Defender"))
+				affected_mob:Alienize(list(XENO_CASTE_RUNNER,XENO_CASTE_DRONE,XENO_CASTE_SENTINEL,XENO_CASTE_DEFENDER))
 				src.cure()
 

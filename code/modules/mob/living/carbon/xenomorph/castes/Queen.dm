@@ -2,7 +2,7 @@
 #define YOUNG_QUEEN_HEALTH_MULTIPLIER 0.5
 
 /datum/caste_datum/queen
-	caste_name = "Queen"
+	caste_name = XENO_CASTE_QUEEN
 	tier = 0
 
 	melee_damage_lower = XENO_DAMAGE_TIER_4
@@ -228,8 +228,8 @@
 	return ..()
 
 /mob/living/carbon/Xenomorph/Queen
-	caste_name = "Queen"
-	name = "Queen"
+	caste_name = XENO_CASTE_QUEEN
+	name = XENO_CASTE_QUEEN
 	desc = "A huge, looming alien creature. The biggest and the baddest."
 	icon_size = 64
 	icon_state = "Queen Walking"
@@ -554,7 +554,7 @@
 		to_chat(src, SPAN_WARNING("You can't do that now."))
 		return
 
-	var/choice = tgui_input_list(usr, "Choose which level of construction placement freedom to permit to your hive.","Harming", list("Queen", "Leaders", "Anyone"))
+	var/choice = tgui_input_list(usr, "Choose which level of construction placement freedom to permit to your hive.","Harming", list(XENO_CASTE_QUEEN, "Leaders", "Anyone"))
 
 	if(choice == "Anyone")
 		to_chat(src, SPAN_XENONOTICE("You allow construction placement to all builder castes."))
@@ -564,7 +564,7 @@
 		to_chat(src, SPAN_XENONOTICE("You restrict construction placement to leaders only."))
 		xeno_message("The Queen has <b>restricted</b> the placement of construction nodes to leading builder castes only.")
 		hive.construction_allowed = XENO_LEADER
-	else if(choice == "Queen")
+	else if(choice == XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_XENONOTICE("You forbid construction placement entirely."))
 		xeno_message("The Queen has <b>forbidden</b> the placement of construction nodes to herself.")
 		hive.construction_allowed = XENO_QUEEN

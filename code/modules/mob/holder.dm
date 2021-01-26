@@ -55,7 +55,7 @@
 /obj/item/holder/drone
 	name = "maintenance drone"
 	desc = "It's a small maintenance robot."
-	icon_state = "drone"
+	icon_state = XENO_CASTE_DRONE
 
 
 /obj/item/holder/cat

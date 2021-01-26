@@ -234,7 +234,7 @@
 
 /obj/effect/particle_effect/smoke/cryo/Initialize(mapload, ...)
 	. = ..()
-	QDEL_IN(src, 1 SECOND)
+	QDEL_IN(src, 1 SECONDS)
 
 /obj/effect/particle_effect/smoke/cryo/Move()
 	. = ..()
@@ -250,7 +250,7 @@
 	M.last_damage_mob = source_mob
 	if(!M.frozen)
 		M.frozen = TRUE
-		addtimer(CALLBACK(M, /mob.proc/unfreeze), 1 SECOND)
+		addtimer(CALLBACK(M, /mob.proc/unfreeze), 1 SECONDS)
 		M.SetSuperslowed(2)
 		M.SetSlowed(3)
 		to_chat(M, SPAN_BOLDNOTICE("You feel incredibly cold, you can barely move!")) //notice because it's BLUE like the COLD. LIKE THE SMOKE.

@@ -2,7 +2,7 @@
 
 //Recoded and consolidated by Abby -- ALL evolutions come from here now. It should work with any caste, anywhere
 //All castes need an evolves_to() list in their defines
-//Such as evolves_to = list("Warrior", "Sentinel", "Runner", "Badass") etc
+//Such as evolves_to = list(XENO_CASTE_WARRIOR, XENO_CASTE_SENTINEL, XENO_CASTE_RUNNER, "Badass") etc
 
 /mob/living/carbon/Xenomorph/verb/Evolve()
 	set name = "Evolve"
@@ -25,7 +25,7 @@
 	if (!evolve_checks())
 		return
 
-	if((!hive.living_xeno_queen) && castepick != "Queen" && !isXenoLarva(src))
+	if((!hive.living_xeno_queen) && castepick != XENO_CASTE_QUEEN && !isXenoLarva(src))
 		to_chat(src, SPAN_WARNING("The Hive is shaken by the death of the last Queen. You can't find the strength to evolve."))
 		return
 
@@ -33,7 +33,7 @@
 		to_chat(src, SPAN_WARNING("The restraints are too restricting to allow you to evolve."))
 		return
 
-	if(castepick == "Queen") //Special case for dealing with queenae
+	if(castepick == XENO_CASTE_QUEEN) //Special case for dealing with queenae
 		if(!hardcore)
 			if(plasma_stored >= 500)
 				if(hive.living_xeno_queen)
@@ -49,7 +49,7 @@
 		else
 			to_chat(src, SPAN_WARNING("Nuh-uhh."))
 			return
-	if(evolution_threshold && castepick != "Queen") //Does the caste have an evolution timer? Then check it
+	if(evolution_threshold && castepick != XENO_CASTE_QUEEN) //Does the caste have an evolution timer? Then check it
 		if(evolution_stored < evolution_threshold)
 			to_chat(src, SPAN_WARNING("You must wait before evolving. Currently at: [evolution_stored] / [evolution_threshold]."))
 			return
@@ -74,39 +74,39 @@
 
 	//Better to use a get_caste_by_text proc but ehhhhhhhh. Lazy.
 	switch(castepick) //ADD NEW CASTES HERE!
-		if("Larva" || "Bloody Larva") //Not actually possible, but put here for insanity's sake
+		if(XENO_CASTE_LARVA) //Not actually possible, but put here for insanity's sake
 			M = /mob/living/carbon/Xenomorph/Larva
-		if("Runner")
+		if(XENO_CASTE_RUNNER)
 			M = /mob/living/carbon/Xenomorph/Runner
-		if("Drone")
+		if(XENO_CASTE_DRONE)
 			M = /mob/living/carbon/Xenomorph/Drone
-		if("Carrier")
+		if(XENO_CASTE_CARRIER)
 			M = /mob/living/carbon/Xenomorph/Carrier
-		if("Hivelord")
+		if(XENO_CASTE_HIVELORD)
 			M = /mob/living/carbon/Xenomorph/Hivelord
-		if("Burrower")
+		if(XENO_CASTE_BURROWER)
 			M = /mob/living/carbon/Xenomorph/Burrower
-		if("Praetorian")
+		if(XENO_CASTE_PRAETORIAN)
 			M = /mob/living/carbon/Xenomorph/Praetorian
-		if("Ravager")
+		if(XENO_CASTE_RAVAGER)
 			M = /mob/living/carbon/Xenomorph/Ravager
-		if("Sentinel")
+		if(XENO_CASTE_SENTINEL)
 			M = /mob/living/carbon/Xenomorph/Sentinel
-		if("Spitter")
+		if(XENO_CASTE_SPITTER)
 			M = /mob/living/carbon/Xenomorph/Spitter
-		if("Lurker")
+		if(XENO_CASTE_LURKER)
 			M = /mob/living/carbon/Xenomorph/Lurker
-		if ("Warrior")
+		if (XENO_CASTE_WARRIOR)
 			M = /mob/living/carbon/Xenomorph/Warrior
-		if ("Defender")
+		if (XENO_CASTE_DEFENDER)
 			M = /mob/living/carbon/Xenomorph/Defender
-		if("Queen")
+		if(XENO_CASTE_QUEEN)
 			M = /mob/living/carbon/Xenomorph/Queen
-		if("Crusher")
+		if(XENO_CASTE_CRUSHER)
 			M = /mob/living/carbon/Xenomorph/Crusher
-		if("Boiler")
+		if(XENO_CASTE_BOILER)
 			M = /mob/living/carbon/Xenomorph/Boiler
-		if("Predalien")
+		if(XENO_CASTE_PREDALIEN)
 			M = /mob/living/carbon/Xenomorph/Predalien
 
 	if(isnull(M))
@@ -131,8 +131,8 @@
 
 	if(!isturf(loc)) //qdel'd or moved into something
 		return
-	if(castepick == "Queen") //Do another check after the tick.
-		if(jobban_isbanned(src, "Queen"))
+	if(castepick == XENO_CASTE_QUEEN) //Do another check after the tick.
+		if(jobban_isbanned(src, XENO_CASTE_QUEEN))
 			to_chat(src, SPAN_WARNING("You are jobbanned from the Queen role."))
 			return
 		if(hive.living_xeno_queen)
@@ -298,23 +298,23 @@
 	var/xeno_type
 
 	switch(newcaste)
-		if("Larva")
+		if(XENO_CASTE_LARVA)
 			xeno_type = /mob/living/carbon/Xenomorph/Larva
-		if("Runner")
+		if(XENO_CASTE_RUNNER)
 			xeno_type = /mob/living/carbon/Xenomorph/Runner
-		if("Drone")
+		if(XENO_CASTE_DRONE)
 			xeno_type = /mob/living/carbon/Xenomorph/Drone
-		if("Sentinel")
+		if(XENO_CASTE_SENTINEL)
 			xeno_type = /mob/living/carbon/Xenomorph/Sentinel
-		if("Spitter")
+		if(XENO_CASTE_SPITTER)
 			xeno_type = /mob/living/carbon/Xenomorph/Spitter
-		if("Lurker")
+		if(XENO_CASTE_LURKER)
 			xeno_type = /mob/living/carbon/Xenomorph/Lurker
-		if("Warrior")
+		if(XENO_CASTE_WARRIOR)
 			xeno_type = /mob/living/carbon/Xenomorph/Warrior
-		if("Defender")
+		if(XENO_CASTE_DEFENDER)
 			xeno_type = /mob/living/carbon/Xenomorph/Defender
-		if("Burrower")
+		if(XENO_CASTE_BURROWER)
 			xeno_type = /mob/living/carbon/Xenomorph/Burrower
 
 	var/mob/living/carbon/Xenomorph/new_xeno = new xeno_type(get_turf(src), src)
@@ -367,13 +367,13 @@
 
 	var/totalXenos = length(hive.totalXenos) + pooled_factor
 
-	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * hive.tier_slot_multiplier) >= 0.5 && castepick != "Queen")
+	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * hive.tier_slot_multiplier) >= 0.5 && castepick != XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 2, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(tier == 2 && ((used_tier_3_slots / length(hive.totalXenos)) * hive.tier_slot_multiplier) >= 0.25 && castepick != "Queen")
+	else if(tier == 2 && ((used_tier_3_slots / length(hive.totalXenos)) * hive.tier_slot_multiplier) >= 0.25 && castepick != XENO_CASTE_QUEEN)
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 3, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(!hive.living_xeno_queen && potential_queens == 1 && isXenoLarva(src) && castepick != "Drone")
+	else if(!hive.living_xeno_queen && potential_queens == 1 && isXenoLarva(src) && castepick != XENO_CASTE_DRONE)
 		to_chat(src, SPAN_XENONOTICE("The hive currently has no sister able to become Queen! The survival of the hive requires you to be a Drone!"))
 		return FALSE
 

@@ -3,7 +3,7 @@
 	description = "In exchange for your ability to build, you gain better pheromones, lesser resin fruits, and the ability to transfer life to other Xenomorphs. Be wary, this is a dangerous process, overexert yourself and you might die..."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Drone") //Only drone.
+	caste_whitelist = list(XENO_CASTE_DRONE) //Only drone.
 	mutator_actions_to_remove = list("Secrete Resin","Choose Resin Structure", "Transfer Plasma")
 	mutator_actions_to_add = list(
 		/datum/action/xeno_action/onclick/plant_resin_fruit, // Second macro. Resin fruits belong to Gardener, but Healer has a minor variant

@@ -1,5 +1,5 @@
 /datum/caste_datum/defender
-	caste_name = "Defender"
+	caste_name = XENO_CASTE_DEFENDER
 	caste_desc = "A sturdy front line combatant."
 	tier = 1
 
@@ -13,16 +13,16 @@
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_6
 
-	evolves_to = list("Warrior")
-	deevolves_to = "Larva"
+	evolves_to = list(XENO_CASTE_WARRIOR)
+	deevolves_to = XENO_CASTE_LARVA
 	can_vent_crawl = 0
 
 	tackle_min = 2
 	tackle_max = 4
 
 /mob/living/carbon/Xenomorph/Defender
-	caste_name = "Defender"
-	name = "Defender"
+	caste_name = XENO_CASTE_DEFENDER
+	name = XENO_CASTE_DEFENDER
 	desc = "A alien with an armored head crest."
 	icon_size = 64
 	icon_state = "Defender Walking"

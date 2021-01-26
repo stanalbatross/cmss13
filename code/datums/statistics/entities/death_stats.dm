@@ -2,10 +2,10 @@
 	var/datum/entity/player_entity/player = null // "vampmare"
 	var/datum/entity/round_stats/linked_round = null // reference to current round entity
 	var/mob_name = null // "bob mcbobber" or "ravager (RA-42-T)"
-	var/job_name = null // "captain" or "ravager"
+	var/job_name = null // "captain" or "ravager
 	var/area_name = null // simple area name storage
-	var/cause_name = null // "ravager" or "grenade" or "M41A"
-	var/total_kills = null // "ravager" or "grenade" or "M41A"
+	var/cause_name = null // "ravager or "grenade" or "M41A"
+	var/total_kills = null // "ravager or "grenade" or "M41A"
 	var/list/total_damage = list() // list of types /datum/entity/statistic, name = "brute", value = 300
 	var/time_of_death = null // time passed after round-start
 	var/steps_walked = 0

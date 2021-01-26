@@ -164,7 +164,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 		if(JOB_XENOMORPH)
 			ban_check = "Alien"
 		if(JOB_XENOMORPH_QUEEN)
-			ban_check = "Queen"
+			ban_check = XENO_CASTE_QUEEN
 
 	//Assemble a list of active players without jobbans.
 	for(var/mob/new_player/player in GLOB.player_list)

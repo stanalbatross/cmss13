@@ -4,7 +4,7 @@
 	flavor_description = "Burn their walls, maim their face!"
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Runner")
+	caste_whitelist = list(XENO_CASTE_RUNNER)
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/runner_acider
 	mutator_actions_to_remove = list("Pounce","Bone Spur","Toggle Long Range Sight")

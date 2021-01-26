@@ -1,6 +1,8 @@
 
 //procs directly related to mob health
 
+/datum/damage_value
+	var/damage = 0
 
 /mob/living/getBruteLoss()
 	return bruteloss

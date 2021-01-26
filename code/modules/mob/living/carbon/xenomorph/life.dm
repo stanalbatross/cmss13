@@ -80,7 +80,7 @@
 
 	if(aura_strength > 0) //Ignoring pheromone underflow
 		if(current_aura && !stat && plasma_stored > 5)
-			if(caste_name == "Queen" && anchored) //stationary queen's pheromone apply around the observed xeno.
+			if(caste_name == XENO_CASTE_QUEEN && anchored) //stationary queen's pheromone apply around the observed xeno.
 				var/mob/living/carbon/Xenomorph/Queen/Q = src
 				var/atom/phero_center = Q
 				if(Q.observed_xeno)

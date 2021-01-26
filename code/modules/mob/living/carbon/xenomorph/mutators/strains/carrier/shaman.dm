@@ -3,7 +3,7 @@
 	description = "In exchange for your ability to store huggers, you can cheat adrenaline mechanism of nearby xenos by violently killing little ones while they are still in small egg form."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Carrier")
+	caste_whitelist = list(XENO_CASTE_CARRIER)
 	mutator_actions_to_remove = list("Use/Throw Facehugger","Emit Pheromones (30)","Plant Weeds (75)","Place resin hole (200)", "Retrieve Egg")
 	mutator_actions_to_add = list(
 		/datum/action/xeno_action/activable/sacrifice_egg/radius_remember,

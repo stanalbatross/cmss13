@@ -1,5 +1,5 @@
 /datum/caste_datum/drone
-	caste_name = "Drone"
+	caste_name = XENO_CASTE_DRONE
 	tier = 1
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
@@ -13,8 +13,8 @@
 	speed = XENO_SPEED_TIER_7
 
 	caste_desc = "A builder of hives. Only drones may evolve into Queens."
-	evolves_to = list("Queen", "Burrower", "Carrier", "Hivelord") //Add more here seperated by commas
-	deevolves_to = "Larva"
+	evolves_to = list(XENO_CASTE_QUEEN, XENO_CASTE_BURROWER, XENO_CASTE_CARRIER, XENO_CASTE_HIVELORD) //Add more here seperated by commas
+	deevolves_to = XENO_CASTE_LARVA
 	can_hold_facehuggers = 1
 	can_hold_eggs = CAN_HOLD_TWO_HANDS
 	acid_level = 1
@@ -28,8 +28,8 @@
 	aura_strength = 2
 
 /mob/living/carbon/Xenomorph/Drone
-	caste_name = "Drone"
-	name = "Drone"
+	caste_name = XENO_CASTE_DRONE
+	name = XENO_CASTE_DRONE
 	desc = "An Alien Drone"
 	icon_size = 48
 	icon_state = "Drone Walking"

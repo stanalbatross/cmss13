@@ -28,7 +28,7 @@
 
 /mob/living/carbon/Xenomorph
 	//// ALL OLD SS13 VARS
-	name = "Drone"
+	name = XENO_CASTE_DRONE
 	desc = "What the hell is THAT?"
 	layer = BIG_XENO_LAYER
 	voice_name = "xenomorph"
@@ -135,7 +135,7 @@
 	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents healing and queen evolution
 
 	//Naming variables
-	var/caste_name = "Drone"
+	var/caste_name = XENO_CASTE_DRONE
 	var/nicknumber = 0 //The number after the name. Saved right here so it transfers between castes.
 
 	//This list of inherent verbs lets us take any proc basically anywhere and add them.

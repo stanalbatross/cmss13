@@ -1,5 +1,5 @@
 /datum/caste_datum/runner
-	caste_name = "Runner"
+	caste_name = XENO_CASTE_RUNNER
 	caste_desc = "A fast, four-legged terror, but weak in sustained combat."
 	tier = 1
 	melee_damage_lower = XENO_DAMAGE_TIER_1
@@ -12,8 +12,8 @@
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_RUNNER
 	attack_delay = -4
-	evolves_to = list("Lurker")
-	deevolves_to = "Larva"
+	evolves_to = list(XENO_CASTE_LURKER)
+	deevolves_to = XENO_CASTE_LARVA
 
 	tackle_min = 3
 	tackle_max = 4
@@ -24,8 +24,8 @@
 	heal_resting = 1.75
 
 /mob/living/carbon/Xenomorph/Runner
-	caste_name = "Runner"
-	name = "Runner"
+	caste_name = XENO_CASTE_RUNNER
+	name = XENO_CASTE_RUNNER
 	desc = "A small red alien that looks like it could run fairly quickly..."
 	icon_state = "Runner Walking"
 	icon_size = 64

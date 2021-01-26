@@ -1,6 +1,6 @@
 /datum/job/antag/xenos/queen
 	title = JOB_XENOMORPH_QUEEN
-	role_ban_alternative = "Queen"
+	role_ban_alternative = XENO_CASTE_QUEEN
 	supervisors = "Queen Mother"
 	selection_class = "job_xeno_queen"
 	total_positions = 1

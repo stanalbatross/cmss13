@@ -1,3 +1,28 @@
+
+//XENO CASTES
+//search icon_state ? XENO_CASTE
+        //t1
+#define XENO_CASTE_LARVA    "Larva"
+#define XENO_CASTE_DRONE    "Drone"
+#define XENO_CASTE_RUNNER   "Runner"
+#define XENO_CASTE_SENTINEL "Sentinel"
+#define XENO_CASTE_DEFENDER "Defender"
+        //t2
+#define XENO_CASTE_BURROWER   "Burrower"
+#define XENO_CASTE_CARRIER    "Carrier"
+#define XENO_CASTE_HIVELORD   "Hivelord"
+#define XENO_CASTE_LURKER     "Lurker"
+#define XENO_CASTE_WARRIOR    "Warrior"
+#define XENO_CASTE_SPITTER    "Spitter"
+        //t3
+#define XENO_CASTE_BOILER       "Boiler"
+#define XENO_CASTE_PRAETORIAN   "Praetorian"
+#define XENO_CASTE_CRUSHER      "Crusher"
+#define XENO_CASTE_RAVAGER      "Ravager"
+        //special
+#define XENO_CASTE_QUEEN          "Queen"
+#define XENO_CASTE_PREDALIEN      "Predalien"
+
 #define XENOCON_THRESHOLD 6000
 
 #define XENO_HIVE_EVOLUTION_FREETIME 3000 // 5 minutes of free evolution
@@ -507,29 +532,6 @@
 #define XENO_SHIELD_SOURCE_WARDEN_PRAE 5
 #define XENO_SHIELD_SOURCE_SHAMAN 6
 #define XENO_SHIELD_SOURCE_GARDENER 7
-
-// Caste name defines
-#define CASTE_LARVA "Larva"
-
-#define CASTE_RUNNER "Runner"
-#define CASTE_LURKER "Lurker"
-#define CASTE_RAVAGER "Ravager"
-
-#define CASTE_SENTINEL "Sentinel"
-#define CASTE_SPITTER "Spitter"
-#define CASTE_BOILER "Boiler"
-
-#define CASTE_DEFENDER "Defender"
-#define CASTE_WARRIOR "Warrior"
-#define CASTE_CRUSHER "Crusher"
-#define CASTE_PRAETORIAN "Praetorian"
-
-#define CASTE_DRONE "Drone"
-#define CASTE_HIVELORD "Hivelord"
-#define CASTE_CARRIER "Carrier"
-#define CASTE_BURROWER "Burrower"
-
-#define CASTE_QUEEN "Queen"
 
 // Checks if two hives are allied to each other.
 // PARAMETERS:

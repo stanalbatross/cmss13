@@ -183,7 +183,7 @@
 	SPAN_DANGER("You slash [src]!"))
 	playsound(M.loc, pick('sound/effects/metalhit.ogg', 'sound/weapons/alien_claw_metal1.ogg', 'sound/weapons/alien_claw_metal2.ogg', 'sound/weapons/alien_claw_metal3.ogg'), 25, 1)
 
-	take_damage_type(damage * ( (M.caste == "Ravager") ? 2 : 1 ), "slash", M) //Ravs do a bitchin double damage
+	take_damage_type(damage * ( (M.caste == XENO_CASTE_RAVAGER) ? 2 : 1 ), "slash", M) //Ravs do a bitchin double damage
 
 	healthcheck()
 

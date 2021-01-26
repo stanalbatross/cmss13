@@ -31,7 +31,7 @@
 		return
 
 	var/newcaste = T.caste.deevolves_to
-	if(newcaste == "Larva")
+	if(newcaste == XENO_CASTE_LARVA)
 		to_chat(X, SPAN_XENOWARNING("You cannot deevolve xenomorphs to larva."))
 		return
 
@@ -55,21 +55,21 @@
 	var/xeno_type
 
 	switch(newcaste)
-		if("Runner")
+		if(XENO_CASTE_RUNNER)
 			xeno_type = /mob/living/carbon/Xenomorph/Runner
-		if("Drone")
+		if(XENO_CASTE_DRONE)
 			xeno_type = /mob/living/carbon/Xenomorph/Drone
-		if("Sentinel")
+		if(XENO_CASTE_SENTINEL)
 			xeno_type = /mob/living/carbon/Xenomorph/Sentinel
-		if("Spitter")
+		if(XENO_CASTE_SPITTER)
 			xeno_type = /mob/living/carbon/Xenomorph/Spitter
-		if("Lurker")
+		if(XENO_CASTE_LURKER)
 			xeno_type = /mob/living/carbon/Xenomorph/Lurker
-		if("Warrior")
+		if(XENO_CASTE_WARRIOR)
 			xeno_type = /mob/living/carbon/Xenomorph/Warrior
-		if("Defender")
+		if(XENO_CASTE_DEFENDER)
 			xeno_type = /mob/living/carbon/Xenomorph/Defender
-		if("Burrower")
+		if(XENO_CASTE_BURROWER)
 			xeno_type = /mob/living/carbon/Xenomorph/Burrower
 
 	//From there, the new xeno exists, hopefully

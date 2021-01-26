@@ -37,7 +37,7 @@
     if(send_update)
         SStgui.update_uis(src)
 
-    xeno_counts[1] -= "Queen" // don't show queen in the amount of xenos
+    xeno_counts[1] -= XENO_CASTE_QUEEN // don't show queen in the amount of xenos
 
     // Also update the amount of T2/T3 slots
     tier_slots = assoc_hive.get_tier_slots()
@@ -213,7 +213,7 @@
             if(!xenoSrc.check_state(TRUE))
                 return
 
-            var/isQueen = (xenoSrc.caste_name == "Queen")
+            var/isQueen = (xenoSrc.caste_name == XENO_CASTE_QUEEN)
             if (isQueen)
                 xenoSrc.overwatch(xenoTarget, movement_event_handler = /datum/event_handler/xeno_overwatch_onmovement/queen)
             else

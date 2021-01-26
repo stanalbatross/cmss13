@@ -6,7 +6,7 @@
 	var/total_rounds_played = 0
 	var/steps_walked = 0
 	var/round_played = FALSE
-	var/datum/entity/statistic/nemesis = null // "runner" = 3
+	var/datum/entity/statistic/nemesis = null // XENO_CASTE_RUNNER = 3
 	var/list/niche_stats = list() // list of type /datum/entity/statistic, "Total Executions" = number
 	var/list/humans_killed = list() // list of type /datum/entity/statistic, "jobname2" = number
 	var/list/xenos_killed = list() // list of type /datum/entity/statistic, "caste" = number

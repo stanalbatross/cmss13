@@ -1,6 +1,6 @@
 /mob/living/silicon/robot/drone
-	name = "drone"
-	real_name = "drone"
+	name = "Drone"
+	real_name = "Drone"
 	icon = 'icons/mob/robots.dmi'
 	icon_state = "repairbot"
 	maxHealth = 35
