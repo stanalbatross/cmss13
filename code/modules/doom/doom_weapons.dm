@@ -212,6 +212,8 @@
 	to_chat(user, SPAN_NOTICE("ABILITY MACRO: 'Specialist-Activation-One'"))
 
 /obj/item/weapon/doomblade/dropped(mob/living/carbon/human/M)
+	if(glory_killing)
+		return
 	playsound(M,'sound/weapons/wristblades_off.ogg', 15, 1)
 	..()
 
@@ -295,11 +297,13 @@
 		heal_amount = 200
 		xeno_tier = 3
 
+	var/list/resupply = list(heal_amount, xeno_tier)
+
 	X.apply_damage(X.health, BRUTE)
 	//give the people a little time to take in what just happened and read the glory kill text
-	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), xeno_tier SECONDS)
+	addtimer(CALLBACK(staggered_mob, /mob.proc/gib), (1 * xeno_tier) SECONDS)
 
-	addtimer(CALLBACK(src, .proc/finish_glorykill, user, heal_amount, xeno_tier), (xeno_tier*2) SECONDS)
+	addtimer(CALLBACK(src, .proc/finish_glorykill, user, resupply), (2 * xeno_tier) SECONDS)
 
 /obj/item/weapon/doomblade/proc/humanoid_glorykill(mob/living/user, mob/living/carbon/staggered_mob)
 
@@ -457,24 +461,24 @@
 /obj/item/weapon/gun/equipment_launcher/able_to_fire(mob/living/user)
 	. = ..()
 	var/obj/item/clothing/suit/storage/marine/veteran/doomguy/holder_item = doom_armor
-	if(. && istype(user)) //Let's check all that other stuff first.
-		if(mode == "cryogenic")
-			if(holder_item.last_cryo_nade + holder_item.nade_cooldown > world.time)
-				to_chat(user, SPAN_WARNING("You can't fire another cryogenic grenade so soon!"))
-				return FALSE
-			else
-				holder_item.last_cryo_nade = world.time
-				addtimer(CALLBACK(holder_item, /obj/item/clothing/suit/storage/marine/veteran/doomguy/proc/grenade_reloaded, user, mode), holder_item.nade_cooldown)
-				return TRUE
-
-		else if(mode == "fragmentation")
-			if(holder_item.last_frag_nade + holder_item.nade_cooldown > world.time)
-				to_chat(user, SPAN_WARNING("You can't fire another fragmentation grenade so soon!"))
-				return FALSE
-			else
-				holder_item.last_frag_nade = world.time
-				addtimer(CALLBACK(holder_item, /obj/item/clothing/suit/storage/marine/veteran/doomguy/proc/grenade_reloaded, user, mode), holder_item.nade_cooldown)
-				return TRUE
+	if(!.)
+		return FALSE
+	if(mode == "cryogenic")
+		if(holder_item.last_cryo_nade + holder_item.nade_cooldown > world.time)
+			to_chat(user, SPAN_WARNING("You can't fire another cryogenic grenade so soon!"))
+			return FALSE
+		else
+			holder_item.last_cryo_nade = world.time
+			addtimer(CALLBACK(holder_item, /obj/item/clothing/suit/storage/marine/veteran/doomguy/proc/grenade_reloaded, user, mode), holder_item.nade_cooldown)
+			return TRUE
+	else if(mode == "fragmentation")
+		if(holder_item.last_frag_nade + holder_item.nade_cooldown > world.time)
+			to_chat(user, SPAN_WARNING("You can't fire another fragmentation grenade so soon!"))
+			return FALSE
+		else
+			holder_item.last_frag_nade = world.time
+			addtimer(CALLBACK(holder_item, /obj/item/clothing/suit/storage/marine/veteran/doomguy/proc/grenade_reloaded, user, mode), holder_item.nade_cooldown)
+			return TRUE
 
 /obj/item/weapon/gun/equipment_launcher/load_into_chamber()
 	in_chamber = create_bullet(ammo, initial(name))
