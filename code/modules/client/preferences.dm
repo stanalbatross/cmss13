@@ -151,6 +151,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/tgui_fancy = TRUE
 	var/tgui_lock = FALSE
 
+	var/hear_vox = TRUE
+
 /datum/preferences/New(client/C)
 	if(istype(C))
 		owner = C
@@ -298,8 +300,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "</a>"
 	dat += "<br><br>"
 	dat += "<h2><b><u>Background Information:</u></b></h2>"
-	dat += "<b>Citizenship</b>: <a href='byond://?src=\ref[user];preference=citizenship;task=input'>[citizenship]</a><br/>"
-	dat += "<b>Religion</b>: <a href='byond://?src=\ref[user];preference=religion;task=input'>[religion]</a><br/>"
+	dat += "<b>Citizenship</b>: <a href='?_src_=prefs;preference=citizenship;task=input'>[citizenship]</a><br/>"
+	dat += "<b>Religion</b>: <a href='?_src_=prefs;preference=religion;task=input'>[religion]</a><br/>"
 
 	dat += "<b>Corporate Relation:</b> <a href ='?_src_=prefs;preference=nt_relation;task=input'><b>[nanotrasen_relation]</b></a><br>"
 	dat += "<b>Preferred Squad:</b> <a href ='?_src_=prefs;preference=prefsquad;task=input'><b>[preferred_squad]</b></a><br>"
@@ -355,6 +357,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>tgui Window Placement:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(tgui_lock) ? "Primary monitor" : "Free (default)"]</a><br>"
 	dat += "<b>Play Admin Midis:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? "Yes" : "No"]</b></a><br>"
+	dat += "<b>Play VOX Announcements:</b> <a href='?_src_=prefs;preference=sound_vox'><b>[(hear_vox) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'><b>[(toggles_chat & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</b></a><br>"
 	dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'><b>[(toggles_chat & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</b></a><br>"
 	dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'><b>[(toggles_chat & CHAT_GHOSTRADIO) ? "All Chatter" : "Nearest Speakers"]</b></a><br>"
@@ -1181,12 +1184,12 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(!skin_style_name) return
 
 				if("citizenship")
-					var/choice = tgui_input_list(user, "Please choose your current citizenship.", citizenship_choices)
+					var/choice = tgui_input_list(user, "Please choose your current citizenship.", "Citizenship selection", citizenship_choices)
 					if(choice)
 						citizenship = choice
 
 				if("religion")
-					var/choice = tgui_input_list(user, "Please choose a religion.", religion_choices + list("None","Other"))
+					var/choice = tgui_input_list(user, "Please choose a religion.", "Religion choice", religion_choices + list("None","Other"))
 					if(!choice)
 						return
 					if(choice == "Other")
@@ -1263,6 +1266,9 @@ var/const/MAX_SAVE_SLOTS = 10
 						user << sound(SSticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
 					else
 						user << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)
+
+				if("sound_vox")
+					hear_vox = !hear_vox
 
 				if("ghost_ears")
 					toggles_chat ^= CHAT_GHOSTEARS

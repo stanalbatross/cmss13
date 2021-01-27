@@ -22,7 +22,7 @@
 	evolution_allowed = FALSE
 	deevolves_to = XENO_CASTE_LURKER
 	caste_desc = "A brutal, devastating front-line attacker."
-	fire_immune = TRUE
+	fire_immunity = FIRE_IMMUNITY_NO_DAMAGE
 	attack_delay = -1
 
 	behavior_delegate_type = /datum/behavior_delegate/ravager_base
@@ -74,6 +74,8 @@
 	return original_damage + damage_per_shield_hp*shield_total
 
 /datum/behavior_delegate/ravager_base/melee_attack_additional_effects_self()
+	..()
+
 	var/datum/action/xeno_action/activable/pounce/charge/cAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pounce/charge)
 	if (!cAction.action_cooldown_check())
 		cAction.reduce_cooldown(slash_charge_cdr)

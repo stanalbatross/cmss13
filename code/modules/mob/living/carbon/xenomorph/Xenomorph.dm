@@ -408,8 +408,9 @@
 
 	acid_splash_cooldown = caste.acid_splash_cooldown
 
-	if (caste.fire_immune)
-		RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
+	if (caste.fire_immunity != FIRE_IMMUNITY_NONE)
+		if(caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE)
+			RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
 		RegisterSignal(src, list(
 			COMSIG_LIVING_FLAMER_CROSSED,
 			COMSIG_LIVING_FLAMER_FLAMED,
@@ -440,7 +441,10 @@
 	if(R.fire_penetrating)
 		return
 
-	return COMPONENT_NO_BURN|COMPONENT_NO_IGNITE
+	. = COMPONENT_NO_BURN
+	// Burrowed xenos also cannot be ignited
+	if((caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || burrow)
+		. |= COMPONENT_NO_IGNITE
 
 //Off-load this proc so it can be called freely
 //Since Xenos change names like they change shoes, we need somewhere to hammer in all those legos
@@ -823,6 +827,8 @@
 	..()
 	hud_update()
 	plasma_stored = plasma_max
+	for(var/datum/action/xeno_action/XA in actions)
+		XA.end_cooldown()
 
 /mob/living/carbon/Xenomorph/proc/remove_action(var/action as text)
 	for(var/X in actions)

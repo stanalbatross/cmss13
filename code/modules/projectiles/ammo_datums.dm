@@ -442,8 +442,8 @@
 /datum/ammo/bullet/smg/ap
 	name = "armor-piercing submachinegun bullet"
 
-	damage = BULLET_DAMAGE_TIER_5
-	penetration = ARMOR_PENETRATION_TIER_8
+	damage = BULLET_DAMAGE_TIER_7
+	penetration = ARMOR_PENETRATION_TIER_6
 	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	shell_speed = AMMO_SPEED_TIER_4
 
@@ -642,7 +642,7 @@
 	damage = BULLET_DAMAGE_TIER_11
 	scatter = -SCATTER_AMOUNT_TIER_8
 	penetration= ARMOR_PENETRATION_TIER_7
-	shell_speed = AMMO_SPEED_TIER_3
+	shell_speed = AMMO_SPEED_TIER_6
 
 /datum/ammo/bullet/rifle/m4ra/incendiary
 	name = "A19 high velocity incendiary bullet"
@@ -652,7 +652,7 @@
 	accuracy = HIT_ACCURACY_TIER_4
 	scatter = -SCATTER_AMOUNT_TIER_8
 	penetration= ARMOR_PENETRATION_TIER_5
-	shell_speed = AMMO_SPEED_TIER_3
+	shell_speed = AMMO_SPEED_TIER_6
 
 /datum/ammo/bullet/rifle/m4ra/incendiary/set_bullet_traits()
 	. = ..()

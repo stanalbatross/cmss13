@@ -160,6 +160,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 				call(src, proc_to_call)()
 			else
 				message_staff("[key_name_admin(src)] attempted to do a href exploit. (Inputted command: [proc_to_call])")
+			return // Don't call hsrc in this case since it's ourselves
 
 	if(href_list[CLAN_ACTION])
 		clan_topic(href, href_list)
@@ -223,7 +224,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	if(length(external_rsc_urls))
 		next_external_rsc = WRAP(next_external_rsc+1, 1, external_rsc_urls.len+1)
 		preload_rsc = external_rsc_urls[next_external_rsc]
-	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
 	player_entity = setup_player_entity(ckey)
 

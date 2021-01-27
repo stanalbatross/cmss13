@@ -232,3 +232,5 @@
 //called during AdjustBurnLoss()
 #define COMSIG_HUMAN_PRE_BURN_LOSS "human_pre_brute_loss"
 #define COMSIG_MOB_PRE_BURN_LOSS "mob_pre_brute_loss"
+/// For any additional things that should happen when a xeno's melee_attack_additional_effects_self() proc is called
+#define COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF "xeno_slash_additional_effects_self"
