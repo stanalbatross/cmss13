@@ -326,6 +326,8 @@ can cause issues with ammo types getting mixed up during the burst.
 	to_chat(user, "Judging from the weight, it has [current_mag.current_rounds] shell\s loaded.")
 
 /obj/item/weapon/gun/shotgun/double/unique_action(mob/user)
+	if(flags_item & WIELDED)
+		unwield(user)
 	toggle_chamber(user)
 
 /obj/item/weapon/gun/shotgun/double/check_chamber_position()

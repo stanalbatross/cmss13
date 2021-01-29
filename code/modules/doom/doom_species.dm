@@ -17,6 +17,7 @@
 
 /datum/species/yautja/glory_kill(mob/living/user, mob/living/carbon/staggered_mob)
 	staggered_mob.visible_message(SPAN_HIGHDANGER("[staggered_mob.name] roars, and [user] stabs him twice in the chest, then slams the Doomblade into [staggered_mob.name]'s forehead!"))
+	staggered_mob.emote("roar")
 	var/heal_amount = 200
 	var/ammo_refill = 3
 	return list(heal_amount, ammo_refill)

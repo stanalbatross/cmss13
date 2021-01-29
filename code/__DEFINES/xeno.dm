@@ -1,6 +1,5 @@
 
 //XENO CASTES
-//search icon_state ? XENO_CASTE
         //t1
 #define XENO_CASTE_LARVA    "Larva"
 #define XENO_CASTE_DRONE    "Drone"
