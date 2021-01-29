@@ -256,6 +256,7 @@
 		user.anchored = TRUE
 		user.frozen = TRUE
 		user.update_canmove()
+		//so he doesn't die if he tries to glory kill, end_immunity() unregisters it, is called 2 seconds after glory kill is over
 		RegisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE, .proc/handle_damage)
 		//freeze the xeno so they're not pulled away (not that it would do anything, as the do_after cannot be interrupted)
 		staggered_mob.anchored = TRUE
@@ -328,7 +329,7 @@
 	//un-freeze them
 	user.anchored = FALSE
 	user.unfreeze()
-	//so he doesn't inmediately die if he glory kills and gets ganged on inmediately
+
 	addtimer(CALLBACK(src, .proc/end_immunity, user), 2 SECONDS)
 	//allow attacking again
 	glory_killing = FALSE
@@ -495,7 +496,7 @@
 			icon_state = "doomlauncher_frag"
 			fire_sound = 'sound/weapons/armbomb.ogg'
 			to_chat(user, SPAN_NOTICE("[src] is now set to fire fragmentation grenades."))
-			ammo = GLOB.ammo_list[/datum/ammo/grenade_container/stickfrag] //why are these brackets
+			ammo = GLOB.ammo_list[/datum/ammo/grenade_container/stickfrag]
 			playsound(user,'sound/machines/click.ogg', 15, 1)
 
 		if("fragmentation")
@@ -519,6 +520,7 @@
 	button.overlays += IMG
 
 /datum/action/item_action/specialist/doomguy_extend_equipment_launcher/action_activate()
+	var/is_launcher_active = TRUE
 	if(!usr.loc || !usr.canmove || usr.stat)
 		return FALSE
 	var/mob/living/carbon/human/M = usr
@@ -528,8 +530,8 @@
 	var/obj/item/weapon/gun/equipment_launcher/R = usr.r_hand
 	var/obj/item/weapon/gun/equipment_launcher/L = usr.l_hand
 	if(!istype(R) && !istype(L))
-		doom_armor.equipment_launcher_active = FALSE
-	if(doom_armor.equipment_launcher_active) //Turn it off.
+		is_launcher_active = FALSE
+	if(is_launcher_active) //Turn it off.
 		var/found = FALSE
 		if(R && istype(R))
 			found = TRUE
@@ -547,7 +549,7 @@
 			M.update_inv_l_hand()
 		if(found)
 			to_chat(usr, SPAN_NOTICE("You deactivate your equipment launcher."))
-			doom_armor.equipment_launcher_active = FALSE
+			is_launcher_active = FALSE
 		return
 	else //Turn it on!
 		if(usr.get_active_hand())
@@ -559,6 +561,6 @@
 			E = new(usr)
 		usr.put_in_active_hand(E)
 		E.doom_armor = holder_item
-		doom_armor.equipment_launcher_active = TRUE
+		is_launcher_active = TRUE
 		to_chat(usr, SPAN_NOTICE("You activate your equipment launcher."))
 	return TRUE

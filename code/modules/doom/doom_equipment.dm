@@ -13,7 +13,7 @@
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/doomguy)
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_ARMS|BODY_FLAG_FEET|BODY_FLAG_HANDS
-	flags_item = 0//NODROP
+	flags_item = NODROP
 
 /obj/item/clothing/gloves/marine/veteran/doomguy
 	name = "reinforced gloves"
@@ -70,7 +70,7 @@
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
 	flags_inventory = BLOCKSHARPOBJ
-	flags_item = 0//NODROP
+	flags_item = NODROP
 	flags_inv_hide = NO_FLAGS
 	flags_marine_helmet = NO_FLAGS
 	anti_hug = 616
@@ -108,7 +108,7 @@
 	toggleable = FALSE
 	eye_protection = 2
 	fullscreen_vision = null
-	flags_item = 0//NODROP|DELONDROP
+	flags_item = NODROP|DELONDROP
 
 /obj/item/clothing/glasses/thermal/doomplaceholder/emp_act(severity)
 	return
@@ -129,7 +129,7 @@
 	storage_slots = 2
 	slowdown = SLOWDOWN_ARMOR_NONE
 	flags_inventory = BLOCK_KNOCKDOWN
-	flags_item = 0//NODROP
+	flags_item = NODROP
 	allowed = list(/obj/item/weapon/gun/shotgun/double/doomguy)
 	uniform_restricted = list(/obj/item/clothing/under/marine/veteran/doomguy)
 	time_to_unequip = 0 //stops it from being unequipped, we do not want doomguy to take off his suit
