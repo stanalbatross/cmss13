@@ -639,7 +639,7 @@
 							/obj/item/ammo_magazine/sniper/flak)
 		if(4) // Give them explosives + Grenades for the Grenade spec. Might be too many grenades, but we'll find out.
 			spawnitems = list(/obj/item/storage/box/explosive_mines,
-							/obj/item/storage/belt/grenade/full)
+							/obj/item/storage/belt/grenade/large/full)
 		if(5) // Pyrotech
 			var/fuel = pick(/obj/item/ammo_magazine/flamer_tank/large/B, /obj/item/ammo_magazine/flamer_tank/large/X)
 			spawnitems = list(/obj/item/ammo_magazine/flamer_tank/large,

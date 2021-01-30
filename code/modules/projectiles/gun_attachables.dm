@@ -1151,6 +1151,23 @@ Defined in conflicts.dm of the #defines folder.
 		R.flags_equip_slot |= SLOT_WAIST
 
 
+/obj/item/attachable/stock/m79
+	name = "\improper M79 wooden stock"
+	desc = "A 'wooden' stock, probably made from plastic, that is only intended to be removed for storage. Absorbs the strong kick of the M79 launcher."
+	slot = "stock"
+	melee_mod = 5
+	size_mod = 1
+	pixel_shift_x = 21
+	pixel_shift_y = 15
+	icon_state = "m79stock"
+	wield_delay_mod = WIELD_DELAY_FAST
+
+/obj/item/attachable/stock/m79/New()
+	..()
+	//less recoil but youre slow
+	recoil_mod = -RECOIL_AMOUNT_TIER_4
+	aim_speed_mod = SLOWDOWN_ADS_VERSATILE
+
 ////////////// Underbarrel Attachments ////////////////////////////////////
 
 

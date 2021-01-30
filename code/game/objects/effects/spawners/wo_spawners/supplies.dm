@@ -136,7 +136,7 @@
 /obj/effect/landmark/wo_supplies/storage/belts/grenade
 	icon_state = "grenadebelt"
 	amount = list(0,1)
-	stuff = list(/obj/item/storage/belt/grenade/full)
+	stuff = list(/obj/item/storage/belt/grenade/large/full)
 
 /obj/effect/landmark/wo_supplies/storage/belts/medical
 	icon_state = "medicalbelt"

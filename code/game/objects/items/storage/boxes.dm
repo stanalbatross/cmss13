@@ -579,6 +579,13 @@
 	can_hold = list(/obj/item/explosive/grenade/HE/airburst)
 	grenade_type = /obj/item/explosive/grenade/HE/airburst
 
+/obj/item/storage/box/nade_box/airburst/basic
+	name = "\improper M74 AGM-B grenade box"
+	desc = "A secure box holding 25 M74 AGM-B Fragmentation grenades. Trades strength for availability."
+	icon_state = "airburst_nade_basic"
+	can_hold = list(/obj/item/explosive/grenade/HE/airburst/basic)
+	grenade_type = /obj/item/explosive/grenade/HE/airburst/basic
+
 /obj/item/storage/box/nade_box/training
 	name = "\improper M07 training grenade box"
 	desc = "A secure box holding 25 M07 training grenades. Harmless and reusable."

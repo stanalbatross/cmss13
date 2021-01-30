@@ -70,7 +70,8 @@
 #define SLOWDOWN_ARMOR_VERY_HEAVY	1.15
 
 #define SLOWDOWN_ADS_SMG				0.35
-#define SLOWDOWN_ADS_SHOTGUN			0.75 //anything below that doesn't change anything.
+#define SLOWDOWN_ADS_VERSATILE			0.50
+#define SLOWDOWN_ADS_SHOTGUN			0.75
 #define SLOWDOWN_ADS_RIFLE				1
 #define SLOWDOWN_ADS_SCOPE				1.20
 #define SLOWDOWN_ADS_LMG				1.75

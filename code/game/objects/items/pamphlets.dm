@@ -50,6 +50,14 @@
 	skill_to_increment = SKILL_CONSTRUCTION
 	secondary_skill = SKILL_ENGINEER
 
+/obj/item/pamphlet/explosives
+	name = "explosives handling instructional pamphlet"
+	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering insignia."
+	icon_state = "pamphlet_machinegunner"
+	skill_to_increment = SKILL_ENGINEER
+	skill_increment = SKILL_ENGINEER_TRAINED
+	bypass_pamphlet_limit = TRUE
+
 /obj/item/pamphlet/engineer/machinegunner
 	name = "heavy machinegunner instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering and a machinegun insignia."
