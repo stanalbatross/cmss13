@@ -4,7 +4,7 @@
 /datum/equipment_preset/fun/doomguy
 	name = "Fun - Doomguy"
 	paygrade = "???"
-	flags = (1<<1)
+	flags = EQUIPMENT_PRESET_EXTRA
 
 	skills = /datum/skills/everything //as the doomguy, and also as an event role, he can do anything. leadership is fine too
 	idtype = null //none
