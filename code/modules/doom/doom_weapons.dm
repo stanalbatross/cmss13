@@ -526,7 +526,6 @@
 	var/mob/living/carbon/human/M = usr
 	if(!istype(M))
 		return FALSE
-	var/obj/item/clothing/suit/storage/marine/veteran/doomguy/doom_armor = holder_item
 	var/obj/item/weapon/gun/equipment_launcher/R = usr.r_hand
 	var/obj/item/weapon/gun/equipment_launcher/L = usr.l_hand
 	if(!istype(R) && !istype(L))
