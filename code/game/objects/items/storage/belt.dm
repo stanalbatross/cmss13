@@ -659,7 +659,8 @@
 	item_state = "marinebelt"
 	can_hold = list(
 		/obj/item/weapon/gun/pistol,
-		/obj/item/ammo_magazine/pistol
+		/obj/item/ammo_magazine/pistol,
+		/obj/item/ammo_magazine/execution/heavy
 	)
 	cant_hold = list(
 		/obj/item/weapon/gun/pistol/smart,
@@ -710,6 +711,36 @@
 	new /obj/item/ammo_magazine/pistol/vp78(src)
 	new_gun.on_enter_storage(src)
 
+/obj/item/storage/belt/gun/m4a3/m1911/fill_preset_inventory()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new /obj/item/ammo_magazine/pistol/m1911(src)
+	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/m4a3/heavy/fill_preset_inventory()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/m4a3/heavy/co/fill_preset_inventory()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/heavy/co(src)
+	new /obj/item/ammo_magazine/execution/heavy(src)
+	new /obj/item/ammo_magazine/execution/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new_gun.on_enter_storage(src)
+
 /obj/item/storage/belt/gun/m44
 	name = "\improper M276 pattern M44 holster rig"
 	desc = "The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is for the M44 magnum revolver, along with three pouches for speedloaders. It faintly smells of hay."
@@ -755,13 +786,14 @@
 	max_w_class = SIZE_MEDIUM
 	can_hold = list(
 		/obj/item/weapon/gun/revolver/mateba,
+		/obj/item/ammo_magazine/execution/mateba,
 		/obj/item/ammo_magazine/revolver/mateba
 	)
 
 /obj/item/storage/belt/gun/mateba/full/fill_preset_inventory()
 	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/revolver/mateba(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
@@ -779,8 +811,8 @@
 
 /obj/item/storage/belt/gun/mateba/cmateba/full/fill_preset_inventory()
 	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/revolver/mateba/cmateba(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
@@ -797,8 +829,8 @@
 
 /obj/item/storage/belt/gun/mateba/admiral/fill_preset_inventory()
 	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/revolver/mateba/admiral(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
-	new /obj/item/ammo_magazine/revolver/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
+	new /obj/item/ammo_magazine/execution/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new /obj/item/ammo_magazine/revolver/mateba(src)

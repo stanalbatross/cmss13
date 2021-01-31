@@ -45,6 +45,7 @@
 	if(ismob(body))
 		T = get_turf(body)				//Where is the body located?
 		attack_log = body.attack_log	//preserve our attack logs by copying them to our ghost
+		life_kills_total = body.life_kills_total //kills also copy over
 
 		if(isHumanSynthStrict(body))
 			var/mob/living/carbon/human/H = body
@@ -211,7 +212,7 @@ Works together with spawning an observer, noted above.
 	mind = null
 
 	if(ghost.client)
-		ghost.client.init_verbs()
+		ghost.client.init_statbrowser()
 		ghost.client.change_view(world_view_size) //reset view range to default
 		ghost.client.pixel_x = 0 //recenters our view
 		ghost.client.pixel_y = 0
@@ -787,6 +788,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(alert("Do you want to go DNR?", "Choose to go DNR", "Yes", "No") == "Yes")
 		can_reenter_corpse = FALSE
+		GLOB.data_core.manifest_modify(name, null, null, "*Deceased*")
 
 /mob/dead/observer/verb/edit_characters()
 	set category = "Ghost"
@@ -829,6 +831,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	. = ..()
 	. += ""
 	. += "Game Mode: [GLOB.master_mode]"
+	. += "DEFCON Level: [defcon_controller.current_defcon_level]"
 
 	if(SSticker.HasRoundStarted())
 		return

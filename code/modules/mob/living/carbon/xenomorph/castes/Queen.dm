@@ -356,8 +356,6 @@
 	else
 		make_combat_effective()
 
-	STOP_PROCESSING(SShive_status, hive.hive_ui)
-
 /mob/living/carbon/Xenomorph/Queen/generate_name()
 	. = ..()
 
@@ -508,7 +506,7 @@
 	xeno_announcement(input, hivenumber, "The words of the [name] reverberate in your head...")
 
 	log_and_message_staff("[key_name_admin(src)] has created a Word of the Queen report:")
-	log_and_message_staff("[input]")
+	log_admin("[key_name_admin(src)] Word of the Queen: [input]")
 
 
 /mob/living/carbon/Xenomorph/proc/claw_toggle()
@@ -693,9 +691,6 @@
 /mob/living/carbon/Xenomorph/Queen/death(var/cause, var/gibbed)
 	. = ..()
 
-	// So observers get updated information
-	START_PROCESSING(SShive_status, hive.hive_ui)
-
 /mob/living/carbon/Xenomorph/Queen/proc/mount_ovipositor()
 	if(ovipositor)
 		return //sanity check
@@ -740,8 +735,6 @@
 
 	xeno_message(SPAN_XENOANNOUNCE("The Queen has grown an ovipositor, evolution progress resumed."), 3, hivenumber)
 
-	START_PROCESSING(SShive_status, hive.hive_ui)
-
 /mob/living/carbon/Xenomorph/Queen/proc/dismount_ovipositor(instant_dismount)
 	set waitfor = 0
 	if(!instant_dismount)
@@ -784,8 +777,6 @@
 
 	SEND_SIGNAL(src, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, instant_dismount)
 
-	STOP_PROCESSING(SShive_status, hive.hive_ui)
-
 /mob/living/carbon/Xenomorph/Queen/update_canmove()
 	. = ..()
 	if(ovipositor)
@@ -815,3 +806,7 @@
 	if(!ovipositor)
 		return FALSE // can't range plant while not in ovi... but who the fuck cares, we can't plant anyways
 	return get_dist(src, T) <= egg_planting_range
+
+/mob/living/carbon/Xenomorph/Queen/gib(var/cause = "gibbing")
+	death(cause, 1)
+
