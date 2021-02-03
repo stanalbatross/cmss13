@@ -123,8 +123,12 @@
 		set_tripwire()
 		return;
 
+	if(!detonator)
+		active = TRUE
+		return
+
 	if(customizable && assembly_stage == ASSEMBLY_LOCKED)
-		if(!detonator || (isigniter(detonator.a_right) && isigniter(detonator.a_left)))
+		if(isigniter(detonator.a_right) && isigniter(detonator.a_left))
 			set_tripwire()
 			return
 		else
@@ -156,7 +160,7 @@
 
 
 /obj/item/explosive/mine/proc/try_to_prime(mob/living/carbon/human/H)
-	if(!active || triggered)
+	if(!active || triggered || (customizable && !detonator))
 		return
 	if(!isliving(H))
 		return

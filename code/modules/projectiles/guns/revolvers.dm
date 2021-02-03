@@ -159,6 +159,7 @@
 			if(current_mag.chamber_contents[current_mag.chamber_position] == "bullet")
 				current_mag.current_rounds-- //Subtract the round from the mag.
 				in_chamber = create_bullet(ammo, initial(name))
+				apply_traits_to_in_chamber()
 				return in_chamber
 		else if(current_mag.chamber_closed)
 			unload(null)
@@ -211,7 +212,7 @@
 	for(var/mob/M in viewers(user))
 		M << trick
 	sleep(5)
-	qdel(trick)
+	trick = null
 	if(loc && user)
 		invisibility = 0
 		playsound(user, thud_sound, 25, 1)

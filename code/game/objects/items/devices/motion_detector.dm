@@ -112,7 +112,7 @@
 		qdel(blip_pool[to_delete])
 		blip_pool.Remove(to_delete)
 	blip_pool = null
-	..()
+	return ..()
 
 /obj/item/device/motiondetector/process()
 	if(isturf(loc))

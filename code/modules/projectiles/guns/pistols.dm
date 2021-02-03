@@ -149,13 +149,12 @@
 //-------------------------------------------------------
 //DEAGLE //This one is obvious.
 
-//Captain's vintage pistol.
 /obj/item/weapon/gun/pistol/heavy
 	name = "vintage Desert Eagle"
 	desc = "A bulky 50 caliber pistol with a serious kick, probably taken from some museum somewhere. This one is engraved, 'Peace through superior firepower.'"
 	icon_state = "deagle"
 	item_state = "deagle"
-	fire_sound = 'sound/weapons/gun_44mag.ogg'
+	fire_sound = 'sound/weapons/gun_DE50.ogg'
 	current_mag = /obj/item/ammo_magazine/pistol/heavy
 	force = 13
 
@@ -169,12 +168,12 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/compensator)
 
-/obj/item/weapon/gun/pistol/heavy/Initialize(mapload, spawn_empty)
-	. = ..()
-	var/skin = pick("","g_","c_")
-	icon_state = skin + icon_state
-	item_state = skin + item_state
-	base_gun_icon = skin + base_gun_icon
+// /obj/item/weapon/gun/pistol/heavy/Initialize(mapload, spawn_empty)
+//	. = ..()
+//	var/skin = pick("","c_","g_")
+//	icon_state = skin + icon_state
+//	item_state = skin + item_state
+//	base_gun_icon = skin + base_gun_icon
 
 
 /obj/item/weapon/gun/pistol/heavy/set_gun_attachment_offsets()
@@ -184,17 +183,21 @@
 /obj/item/weapon/gun/pistol/heavy/set_gun_config_values()
 	..()
 	fire_delay = FIRE_DELAY_TIER_4
-	accuracy_mult = BASE_ACCURACY_MULT
-	accuracy_mult_unwielded = BASE_ACCURACY_MULT
-	scatter = SCATTER_AMOUNT_TIER_6
+	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_4
+	accuracy_mult_unwielded = BASE_ACCURACY_MULT - HIT_ACCURACY_MULT_TIER_7
+	scatter = SCATTER_AMOUNT_TIER_7
 	burst_scatter_mult = SCATTER_AMOUNT_TIER_4
-	scatter_unwielded = SCATTER_AMOUNT_TIER_4
-	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_4
-	recoil = RECOIL_AMOUNT_TIER_4
+	scatter_unwielded = SCATTER_AMOUNT_TIER_3
+	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_10
+	recoil = RECOIL_AMOUNT_TIER_3
 	recoil_unwielded = RECOIL_AMOUNT_TIER_2
 
-
-
+/obj/item/weapon/gun/pistol/heavy/co
+	name = "polished vintage Desert Eagle"
+	desc = "A bulky 50 caliber pistol with a serious kick, probably taken from some museum somewhere. This one is engraved, 'Peace through superior firepower.'"
+	icon_state = "c_deagle"
+	item_state = "c_deagle"
+	base_gun_icon = "c_deagle"
 
 //-------------------------------------------------------
 //MAUSER MERC PISTOL //Inspired by the Makarov.
@@ -319,6 +322,36 @@
 	burst_scatter_mult = SCATTER_AMOUNT_TIER_6
 	scatter_unwielded = SCATTER_AMOUNT_TIER_6
 	damage_mult = BASE_BULLET_DAMAGE_MULT
+
+//-------------------------------------------------------
+//CLF HOLDOUT PISTOL
+/obj/item/weapon/gun/pistol/m43pistol
+	name = "M43 Hummingbird Pistol"
+	desc = "The M43 Hummingbird Pistol was produced in the mid-2170s as a cheap and concealable firearm for CLF Sleeper Cell agents for assassinations and ambushes, and is able to be concealed in shoes and workboots."
+	icon_state = "m43"
+	item_state = "m43"
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_ONE_HAND_WIELDED
+	fire_sound = 'sound/weapons/gun_m43.ogg'
+	current_mag = /obj/item/ammo_magazine/pistol/m43pistol
+	w_class = SIZE_TINY
+	force = 5
+	attachable_allowed = list(
+						/obj/item/attachable/suppressor,
+						/obj/item/attachable/flashlight)
+
+/obj/item/weapon/gun/pistol/m43pistol/set_gun_attachment_offsets()
+	attachable_offset = list("muzzle_x" = 28, "muzzle_y" = 20,"rail_x" = 10, "rail_y" = 21, "under_x" = 21, "under_y" = 17, "stock_x" = 21, "stock_y" = 17)
+
+/obj/item/weapon/gun/pistol/m43pistol/set_gun_config_values()
+	..()
+	fire_delay = FIRE_DELAY_TIER_10
+	accuracy_mult = BASE_ACCURACY_MULT
+	accuracy_mult_unwielded = BASE_ACCURACY_MULT
+	scatter = SCATTER_AMOUNT_TIER_6
+	burst_scatter_mult = SCATTER_AMOUNT_TIER_5
+	scatter_unwielded = SCATTER_AMOUNT_TIER_8
+	scatter = SCATTER_AMOUNT_TIER_9
+	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_4
 
 //-------------------------------------------------------
 //.45 MARSHALS PISTOL //Inspired by the Browning Hipower
