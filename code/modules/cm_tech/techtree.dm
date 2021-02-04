@@ -29,6 +29,8 @@
 
 	var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
 
+	var/ui_theme
+
 /datum/techtree/New()
 	. = ..()
 
@@ -81,6 +83,15 @@
 		y_offset += 3
 
 	entrance = locate(Ceiling((longest_tier*2 + 1)*0.5), 2, zlevel.z_value)
+
+/datum/techtree/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+
+	if(has_access(user, TREE_ACCESS_MODIFY))
+		return UI_INTERACTIVE
+
+	if(has_access(user, TREE_ACCESS_VIEW))
+		. = max(., UI_UPDATE)
 
 /datum/techtree/proc/can_use_points(var/datum/tech/T)
 	if(!istype(T))

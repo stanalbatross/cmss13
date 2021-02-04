@@ -21,7 +21,12 @@
 
 	var/bonus_wall_health = 100
 
+	ui_theme = "xeno"
+
 	resource_receive_process = TRUE
+
+/datum/techtree/xenomorph/ui_state(mob/user)
+	return GLOB.hive_state[hivenumber]
 
 /datum/techtree/xenomorph/has_access(var/mob/M, var/access_required)
 	if(!isXeno(M))
