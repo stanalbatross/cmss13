@@ -5,6 +5,7 @@
 	var/icon_state = "red"
 
 	var/flags = NO_FLAGS
+	var/tech_flags = NO_FLAGS
 
 	var/required_points = 0
 	var/datum/tier/tier = /datum/tier/one
@@ -16,7 +17,19 @@
 /datum/tech/proc/fire()
 	return
 
+/**
+ * Any additional arguments you want to pass to the `can_unlock` and `on_unlock` procs
+ * They will be placed at the end of the argument lists in the order returned by this proc
+ *
+ * Note that if you want to pass multiple arguments, you will need to return a list
+ * Additionally, list arguments need to be nested in lists, otherwise each of their
+ * elements will be processed as an individual argument
+ */
+/datum/tech/proc/get_additional_args(var/mob/M)
+	return
+
 /datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree)
+	SHOULD_CALL_PARENT(TRUE)
 	if(!tree.has_access(M, TREE_ACCESS_MODIFY))
 		to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
 		return
