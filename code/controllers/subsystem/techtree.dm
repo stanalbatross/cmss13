@@ -53,12 +53,12 @@ SUBSYSTEM_DEF(techtree)
 			tree.all_techs[tier] = list()
 
 		for(var/N in tech_nodes)
-			var/datum/tech/node = new N()
-			var/tier = node.tier
-
-			if(node.flags == NO_FLAGS || !(tier in tree.all_techs))
-				qdel(node)
+			var/datum/tech/node = N
+			if(initial(node.flags) == NO_FLAGS || !(initial(node.tier) in tree.all_techs))
 				continue
+
+			node = new N()
+			var/tier = node.tier
 
 			if(tree.flags & node.flags)
 				tree.all_techs[tier] += list(node.type = node)
@@ -66,6 +66,7 @@ SUBSYSTEM_DEF(techtree)
 
 				node.tier = tree.tree_tiers[node.tier]
 				node.holder = tree
+				node.on_tree_insertion(tree)
 
 		tree.generate_tree()
 		var/msg = "Loaded [tree.name] Techtree!"

@@ -12,6 +12,8 @@
 	evasion = XENO_EVASION_MEDIUM
 	speed = XENO_SPEED_TIER_7
 
+	build_time_mult = BUILD_TIME_MULT_BUILDER
+
 	caste_desc = "A builder of hives. Only drones may evolve into Queens."
 	evolves_to = list("Queen", "Burrower", "Carrier", "Hivelord") //Add more here seperated by commas
 	deevolves_to = "Larva"

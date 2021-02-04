@@ -379,6 +379,7 @@
 	job = caste.caste_name // Used for tracking the caste playtime
 
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
 
 /mob/living/carbon/Xenomorph/proc/handle_screech_act(var/mob/self, var/mob/living/carbon/Xenomorph/Queen/queen)
 	SIGNAL_HANDLER
