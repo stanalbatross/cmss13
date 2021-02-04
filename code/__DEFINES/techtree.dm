@@ -5,7 +5,7 @@
 #define TREE_ACCESS_MODIFY 1
 #define TREE_ACCESS_VIEW 2
 
-// Flags
+// Tree Flags
 #define TREE_FLAG_MARINE (1<<0)
 #define TREE_FLAG_XENO  (1<<1)
 
@@ -14,6 +14,10 @@
 #define TREE_NONE ""
 #define TREE_MARINE "Marine Tech Tree"
 #define TREE_XENO "Xenomorph Tech Tree"
+
+// Tech Flags
+/// The tech can be purchased multiple times
+#define TECH_FLAG_MULTIUSE	(1<<0)
 
 // Resource
 #define RESOURCE_HEALTH 200
@@ -25,11 +29,18 @@
 #define RESOURCE_FUEL_TO_REPAIR 5 // Calculated like this: RESOURCE_FUEL_TO_REPAIR * (damage_to_repair / max_health)
 
 // Droppods
-
 #define DROPPOD_DROPPED (1<<0)
 #define DROPPOD_DROPPING (1<<1)
 #define DROPPOD_OPEN (1<<2)
 #define DROPPOD_STRIPPED (1<<3)
+
+// Powerups
+/// Powerup for a specifically picked xeno
+#define POWERUP_PICKED		1
+/// Powerup for the whole hive
+#define POWERUP_HIVEWIDE	2
+/// Powerup for the queen
+#define POWERUP_QUEEN		3
 
 #define GET_TREE(treeid) SStechtree? SStechtree.trees[treeid] : null
 #define GET_NODE(treeid, nodeid) SStechtree? SStechtree.trees[treeid].get

@@ -15,7 +15,7 @@
 
 /obj/effect/node/clicked(mob/user, list/mods)
 	. = ..()
-	
+
 	ui_interact(user)
 	return TRUE
 
@@ -46,12 +46,12 @@
 
 	if(isobserver(usr))
 		return
-		
+
 	if(!info.holder)
 		return
 
 	if(href_list["purchase_node"])
 		info.holder.purchase_node(usr, info)
-	
+
 	ui_interact(usr)
 	return TRUE

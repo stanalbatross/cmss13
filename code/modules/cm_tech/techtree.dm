@@ -8,7 +8,7 @@
 	var/datum/space_level/zlevel = 0
 
 	var/list/cached_unlocked_techs = list()
-	var/list/unlocked_techs = list() // Unlocked techs
+	var/list/unlocked_techs = list() // Unlocked techs (single use)
 	var/list/all_techs = list() // All techs that can be unlocked. Each sorted into tiers
 
 	var/points = 0
@@ -109,21 +109,36 @@
 		M.show_message(SPAN_WARNING("This node is already unlocked!"))
 		return
 
-	if(!T.can_unlock(M, src))
+	// Get the other arguments that will be passed to `can_unlock` and `on_unlock`
+	var/list/additional_args = T.get_additional_args(M)
+
+	var/list/can_unlock_args = list(M, src)
+	if(additional_args)
+		can_unlock_args += additional_args
+	if(!T.can_unlock(arglist(can_unlock_args)))
 		return
 
-	unlock_node(T)
+	var/list/unlock_args = list(T)
+	if(additional_args)
+		unlock_args += additional_args
+	unlock_node(arglist(unlock_args))
 
 	to_chat(M, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
 
-/datum/techtree/proc/unlock_node(var/datum/tech/T)
+/datum/techtree/proc/unlock_node(var/datum/tech/T, ...)
 	if((T.type in unlocked_techs[T.tier.type]) || !(T.type in all_techs[T.tier.type]))
 		return
 
-	T.unlocked = TRUE
-	T.on_unlock(src)
+	// If single use, mark it as so to update the UI
+	// and prevent further purchase
+	if(!(T.tech_flags & TECH_FLAG_MULTIUSE))
+		T.unlocked = TRUE
+		unlocked_techs[T.tier.type] += list(T.type = T)
 
-	unlocked_techs[T.tier.type] += list(T.type = T)
+	var/list/on_unlock_args = list(src)
+	if(length(args) > 1)
+		on_unlock_args += args.Copy(2)
+	T.on_unlock(arglist(on_unlock_args))
 	cached_unlocked_techs += list(T.type = T)
 
 /datum/techtree/proc/enter_mob(var/mob/M, var/force)
@@ -140,11 +155,13 @@
 
 	return TRUE
 
-/datum/techtree/proc/is_node_unlocked(var/name as text)
-	return name in cached_unlocked_techs
+/// `tech`: a typepath to a tech
+/datum/techtree/proc/is_node_unlocked(var/tech)
+	return cached_unlocked_techs[tech]
 
-/datum/techtree/proc/get_unlocked_node(var/name as text)
-	return cached_unlocked_techs[name]
+/// `tech`: a typepath to a tech
+/datum/techtree/proc/get_unlocked_node(var/tech)
+	return cached_unlocked_techs[tech]
 
 /datum/techtree/proc/on_node_gained(var/obj/structure/resource_node/RN)
 	return
