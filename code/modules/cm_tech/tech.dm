@@ -64,3 +64,6 @@
 	)
 
 	return data
+
+/datum/tech/proc/on_tree_insertion(var/datum/techtree/tree)
+	return

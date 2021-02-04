@@ -95,7 +95,7 @@
 	var/plasma_to_check = plasma_cost
 	if(plasma_to_use)
 		plasma_to_check = plasma_to_use
-	
+
 	var/mob/living/carbon/Xenomorph/X = owner
 	X.use_plasma(plasma_to_check)
 

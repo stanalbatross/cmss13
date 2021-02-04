@@ -16,6 +16,8 @@
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_QUEEN
 
+	build_time_mult = BUILD_TIME_MULT_BUILDER
+
 	is_intelligent = 1
 	evolution_allowed = FALSE
 	fire_immunity = FIRE_IMMUNITY_NO_DAMAGE|FIRE_IMMUNITY_NO_IGNITE
