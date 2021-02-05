@@ -6,14 +6,9 @@ var/global/list/unlocked_droppod_techs = list()
 
 	var/list/already_accessed = list()
 
-/datum/tech/droppod/show_info(var/mob/M)
+/datum/tech/droppod/ui_static_data(mob/user)
 	. = ..()
-
-	var/list/data = .
-
-	data["desc"] += SPAN_BOLDNOTICE("\nRequires an RTO; deployed via droppod.")
-
-	return data
+	.["desc"] += "\nRequires an RTO; deployed via droppod."
 
 /datum/tech/droppod/on_unlock()
 	. = ..()
