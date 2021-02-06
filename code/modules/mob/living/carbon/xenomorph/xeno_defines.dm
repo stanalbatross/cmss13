@@ -201,6 +201,7 @@
 	var/bonus_larva_spawn_chance = 1.0
 	var/hijack_pooled_surge = FALSE //at hijack, start spawning lots of pooled
 
+	var/ignore_slots = FALSE
 	var/dynamic_evolution = TRUE
 	var/evolution_rate = 3 // Only has use if dynamic_evolution is false
 
@@ -272,7 +273,8 @@
 	if(X.hud_list)
 		X.hud_update()
 
-	if(!is_admin_level(X.z))
+	var/area/A = get_area(X)
+	if(!is_admin_level(X.z) || (A.flags_atom & AREA_ALLOW_XENO_JOIN))
 		totalXenos += X
 		if(X.tier == 2)
 			tier_2_xenos += X
@@ -432,7 +434,10 @@
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
 		//don't show xenos in the thunderdome when admins test stuff.
 		if(is_admin_level(X.z))
-			continue
+			var/area/A = get_area(X)
+			if(!(A.flags_atom & AREA_ALLOW_XENO_JOIN))
+				continue
+
 		if(X.caste)
 			xeno_counts[X.caste.tier+1][X.caste.caste_name]++
 
@@ -448,8 +453,10 @@
 	var/useless_slots = 0
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
 		if(is_admin_level(X.z))
-			useless_slots++
-			continue
+			var/area/A = get_area(X)
+			if(!(A.flags_atom & AREA_ALLOW_XENO_JOIN))
+				useless_slots++
+				continue
 
 		// Insert without doing list merging
 		xenos[index++] = list(
@@ -522,7 +529,9 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
 		if(is_admin_level(X.z))
-			continue
+			var/area/A = get_area(X)
+			if(!(A.flags_atom & AREA_ALLOW_XENO_JOIN))
+				continue
 
 		var/xeno_name = X.name
 		// goddamn fucking larvas with their weird ass maturing system
@@ -551,7 +560,9 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
 		if(is_admin_level(X.z))
-			continue
+			var/area/A = get_area(X)
+			if(!(A.flags_atom & AREA_ALLOW_XENO_JOIN))
+				continue
 
 		if(!(X in GLOB.living_xeno_list))
 			continue
@@ -779,6 +790,7 @@
 	dynamic_evolution = FALSE
 	allow_no_queen_actions = TRUE
 	allow_queen_evolve = FALSE
+	ignore_slots = TRUE
 
 	var/mob/living/carbon/human/leader
 
