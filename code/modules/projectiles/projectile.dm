@@ -173,8 +173,6 @@
 
 	var/angle = round(Get_Angle(starting,target_turf))
 
-	if(ismob(target))
-		SEND_SIGNAL(firer, COMSIG_DIRECT_BULLET_HIT)
 	var/matrix/rotate = matrix() //Change the bullet angle.
 	rotate.Turn(angle)
 	apply_transform(rotate)

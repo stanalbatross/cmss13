@@ -39,6 +39,7 @@
 	var/effective_range_min	= EFFECTIVE_RANGE_OFF	//What minimum range the ammo deals full damage, builds up the closer you get. 0 for no minimum. Added onto gun range as a modifier.
 	var/effective_range_max	= EFFECTIVE_RANGE_OFF	//What maximum range the ammo deals full damage, tapers off using damage_falloff after hitting this value. 0 for no maximum. Added onto gun range as a modifier.
 	var/shell_speed 		= AMMO_SPEED_TIER_1 	// How fast the projectile moves.
+	var/handful_type								//what kind of handful will it remove from magazines with
 
 	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
 	/// that will be given to a projectile with the current ammo datum
@@ -674,6 +675,7 @@
 	damage = BULLET_DAMAGE_TIER_11
 	penetration = ARMOR_PENETRATION_TIER_2
 	damage_armor_punch = 2
+	handful_type = /obj/item/ammo_magazine/handful/shotgun/slug
 
 /datum/ammo/bullet/shotgun/slug/on_hit_mob(mob/M,obj/item/projectile/P)
 	heavy_knockback(M, P, 5)
@@ -690,6 +692,7 @@
 	stamina_damage = BULLET_DAMAGE_TIER_9
 	accuracy = HIT_ACCURACY_TIER_3
 	shell_speed = AMMO_SPEED_TIER_3
+	handful_type = /obj/item/ammo_magazine/handful/shotgun/beanbag
 
 /datum/ammo/bullet/shotgun/beanbag/on_hit_mob(mob/M, obj/item/projectile/P)
 	if(!M || M == P.firer) return
@@ -707,6 +710,7 @@
 	max_range = 12
 	damage = BULLET_DAMAGE_TIER_11
 	penetration= ARMOR_PENETRATION_TIER_1
+	handful_type = /obj/item/ammo_magazine/handful/shotgun/incendiary
 
 /datum/ammo/bullet/shotgun/incendiary/set_bullet_traits()
 	. = ..()
@@ -738,6 +742,7 @@
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
 	penetration	= ARMOR_PENETRATION_TIER_7
 	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
+	handful_type = /obj/item/ammo_magazine/handful/shotgun/flechette
 
 /datum/ammo/bullet/shotgun/flechette_spread
 	name = "additional flechette"
@@ -770,6 +775,7 @@
 	shell_speed = AMMO_SPEED_TIER_2
 	damage_armor_punch = 0
 	pen_armor_punch = 0
+	handful_type = /obj/item/ammo_magazine/handful/shotgun/buckshot
 
 /datum/ammo/bullet/shotgun/buckshot/on_hit_mob(mob/M,obj/item/projectile/P)
 	knockback(M,P)
@@ -808,23 +814,25 @@
 */
 
 /datum/ammo/bullet/lever_action
+
+/datum/ammo/bullet/lever_action/base
 	name = "lever-action bullet"
 	debilitate = list(1,0,0,0,0,0,0,0)
 
-	damage = BULLET_DAMAGE_TIER_15
+	damage = BULLET_DAMAGE_TIER_17
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
 	shell_speed = AMMO_SPEED_TIER_5
-
-/datum/ammo/bullet/lever_action/base
+	handful_type = /obj/item/ammo_magazine/handful/lever_action/base
 
 /datum/ammo/bullet/lever_action/heavy
 	name = "heavy lever-action bullet"
 
-	damage = BULLET_DAMAGE_TIER_16
+	damage = BULLET_DAMAGE_TIER_12
 	penetration = 0
 	accuracy = HIT_ACCURACY_TIER_4
 	shell_speed = AMMO_SPEED_TIER_3
+	handful_type = /obj/item/ammo_magazine/handful/lever_action/heavy
 
 /datum/ammo/bullet/lever_action/heavy/on_hit_mob(mob/M, obj/item/projectile/P)
 	knockback(M, P, 5)
@@ -835,6 +843,7 @@
 	damage = BULLET_DAMAGE_TIER_15
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
+	handful_type = /obj/item/ammo_magazine/handful/lever_action/tracker
 
 //datum/ammo/bullet/lever_action/tracker/proc?
 
@@ -845,6 +854,7 @@
 	penetration = 0
 	accuracy = HIT_ACCURACY_TIER_1
 	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
+	handful_type = /obj/item/ammo_magazine/handful/lever_action/training
 
 /datum/ammo/bullet/lever_action/marksman
 	name = "marksman lever-action bullet"
@@ -855,6 +865,7 @@
 	damage = BULLET_DAMAGE_TIER_12
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_6
+	handful_type = /obj/item/ammo_magazine/handful/lever_action/marksman
 
 /*
 //================================================

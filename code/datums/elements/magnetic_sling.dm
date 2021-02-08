@@ -19,9 +19,9 @@
 /datum/element/magnetic_sling/proc/cancel_throw(datum/source, mob/thrower)
 	SIGNAL_HANDLER
 	if(thrower)
-		to_chat(thrower, SPAN_WARNING("\The sling yanks your [source] and clings it to your back."))
+		to_chat(thrower, SPAN_WARNING("The magnetic sling yanks your [source] and clings it to your back."))
 	return COMPONENT_CANCEL_THROW
 
 /datum/element/magnetic_sling/proc/dropped(obj/item/weapon/gun/G, mob/user)
 	SIGNAL_HANDLER
-	G.sling_return(user)
+	G.handle_sling(user)
