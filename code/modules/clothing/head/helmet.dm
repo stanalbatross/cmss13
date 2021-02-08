@@ -302,6 +302,7 @@
 						/obj/item/clothing/accessory/patch = "uscmpatch",
 						/obj/item/clothing/accessory/patch/falcon = "falconspatch",
 						/obj/item/ammo_magazine/handful = "bullet",
+						/obj/item/prop/helmetgarb/riot_shield = "helmet_riot_shield",
 
 						///// MEDICAL
 						/obj/item/stack/medical/bruise_pack ="brutepack",
@@ -426,8 +427,14 @@
 	icon_state = "tech_helmet"
 	specialty = "M10 technician"
 	var/protection_on = FALSE
+	///To remember the helmet's map variant-adjusted icon state
+	var/base_icon_state
 
 	actions_types = list(/datum/action/item_action/toggle)
+
+/obj/item/clothing/head/helmet/marine/tech/Initialize()
+	. = ..()
+	base_icon_state = icon_state
 
 /obj/item/clothing/head/helmet/marine/tech/attack_self()
 	toggle()
@@ -441,13 +448,13 @@
 		if(protection_on)
 			flags_inventory &= ~(COVEREYES|COVERMOUTH)
 			flags_inv_hide &= ~(HIDEEYES|HIDEFACE)
-			icon_state = initial(icon_state)
+			icon_state = base_icon_state
 			eye_protection = 0
 			to_chat(usr, "You <b>deactivate</b> the [src]'s welding screen.")
 		else
 			flags_inventory |= COVEREYES|COVERMOUTH
 			flags_inv_hide |= HIDEEYES|HIDEFACE
-			icon_state = "[initial(icon_state)]_on"
+			icon_state = "[base_icon_state]_on"
 			eye_protection = 2
 			to_chat(usr, "You <b>activate</b> the [src]'s welding screen.")
 
@@ -731,6 +738,23 @@
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEFACE|HIDEMASK|HIDEALLHAIR
 	flags_marine_helmet = HELMET_DAMAGE_OVERLAY
 	unacidable = TRUE
+
+//FIORINA / UA RIOT CONTROL HELMET//
+
+/obj/item/clothing/head/helmet/marine/veteran/ua_riot
+	name = "\improper RC6 helmet"
+	desc = "The standard UA Riot Control 6 helmet is of odd design, lacking a face shield by default (mounting points are available). The distinct white pattern and red emblem are synonymous with oppression throughout the rim."
+	icon_state = "ua_riot"
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_energy = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_LOW
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_LOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	specialty = "RC6 helmet"
+	flags_atom = NO_SNOW_TYPE
 
 //==========================//DISTRESS\\=================================\\
 //=======================================================================\\
