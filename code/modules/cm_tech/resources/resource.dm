@@ -1,5 +1,3 @@
-#define enter_cooldown(ttc) next_cycle_at = ttc + world.time
-
 /area
 	var/obj/structure/resource_node/r_node
 
@@ -16,10 +14,7 @@
 	var/treeid = TREE_NONE
 	var/datum/techtree/tree
 
-	var/ticks_to_cycle = RESOURCE_TICKS_TO_CYCLE
-	var/next_cycle_at = 0
-
-	var/resource_to_give = RESOURCE_PER_CYCLE
+	var/resources_per_second = RESOURCE_PER_SECOND
 
 	var/active = FALSE
 
@@ -44,8 +39,8 @@
 	var/area/controlled_area
 
 // Weird things happen here when you use Initialize. Need to use New() here
-/obj/structure/resource_node/New(loc, var/play_ambient_noise = TRUE, var/is_area_controller = TRUE)
-	. = ..(loc)
+/obj/structure/resource_node/Initialize(mapload, var/play_ambient_noise = TRUE, var/is_area_controller = TRUE)
+	. = ..()
 	bound_width = width * world.icon_size
 	bound_height = height * world.icon_size
 
@@ -95,7 +90,7 @@
 	if(health > 0 || treeid == TREE_NONE)
 		return
 
-	STOP_PROCESSING(SSprocessing, src)
+	STOP_PROCESSING(SSobj, src)
 
 	if(!tree)
 		return
@@ -122,25 +117,15 @@
 /obj/structure/resource_node/flamer_fire_act(dam)
 	take_damage(dam)
 
-/obj/structure/resource_node/proc/cycle()
-	enter_cooldown(ticks_to_cycle)
-
-	if(!active)
-		return
-
-	if(!tree)
-		return
-
-	tree.on_cycle_completed(src)
-	tree.points += resource_to_give
-
-/obj/structure/resource_node/process()
+/obj/structure/resource_node/process(delta_time)
 	if(!active)
 		STOP_PROCESSING(SSobj, src)
 		return
 
 	if(tree)
-		tree.on_process(src)
+		tree.on_process(src, delta_time)
+		tree.add_points(resources_per_second * delta_time)
+
 
 	if(last_looped < world.time && play_ambient_noise)
 		playsound(loc, ambient_noise, 50)
@@ -175,7 +160,7 @@
 	if(!T)
 		return
 
-	START_PROCESSING(SSprocessing, src)
+	START_PROCESSING(SSobj, src)
 
 	if(tree)
 		tree.on_node_lost(src)
@@ -339,5 +324,3 @@
 		else
 			to_chat(M, SPAN_NOTICE("You fail to repair [src]."))
 			return
-
-#undef enter_cooldown

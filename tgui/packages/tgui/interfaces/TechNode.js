@@ -6,7 +6,7 @@ export const TechNode = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     total_points, unlocked, theme,
-    cost, name, desc,
+    cost, name, desc, extra_buttons,
   } = data;
 
   return (
@@ -34,8 +34,27 @@ export const TechNode = (props, context) => {
           </Flex.Item>
           <Flex.Item mt={1}>
             <Section>
-              <Label label="Current Points" content={cost} />
-              <Flex mt={1}>
+              <Flex>
+                <Flex.Item grow={1}>
+                  <Label label="Current Points" content={Math.round(total_points*10)/10} />
+                </Flex.Item>
+                {!!extra_buttons && (
+                  <Flex.Item>
+                    <Flex>
+                      {extra_buttons.map(val => (
+                        <Flex.Item key={val}>
+                          <Button.Checkbox
+                            checked={val.enabled}
+                            content={val.name}
+                            onClick={() => act(val.action, val)}
+                          />
+                        </Flex.Item>
+                      ))}
+                    </Flex>
+                  </Flex.Item>
+                )}
+              </Flex>
+              <Flex mt={1} direction="column">
                 <Flex.Item grow={1}>
                   {!!unlocked && (
                     <Box

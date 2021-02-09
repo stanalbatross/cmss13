@@ -8,6 +8,7 @@
 	var/datum/space_level/zlevel = 0
 
 	var/list/cached_unlocked_techs = list()
+	var/list/techs_by_type = list()
 	var/list/unlocked_techs = list() // Unlocked techs (single use)
 	var/list/all_techs = list() // All techs that can be unlocked. Each sorted into tiers
 
@@ -93,20 +94,23 @@
 	if(has_access(user, TREE_ACCESS_VIEW))
 		. = max(., UI_UPDATE)
 
-/datum/techtree/proc/can_use_points(var/datum/tech/T)
-	if(!istype(T))
-		return FALSE
+/datum/techtree/proc/set_points(var/number)
+	points = max(number, 0)
 
-	if(T.required_points <= points)
+/datum/techtree/proc/add_points(var/number)
+	set_points(points + number)
+
+/datum/techtree/proc/can_use_points(var/number)
+	if(number <= points)
 		return TRUE
 	else
 		return FALSE
 
-/datum/techtree/proc/check_and_use_points(var/datum/tech/T)
-	if(!can_use_points(T))
+/datum/techtree/proc/check_and_use_points(var/number)
+	if(!can_use_points(number))
 		return FALSE
 
-	points -= T.required_points
+	add_points(-number)
 	return TRUE
 
 /datum/techtree/proc/has_access(var/mob/M, var/access_required)
@@ -167,12 +171,12 @@
 	return TRUE
 
 /// `tech`: a typepath to a tech
-/datum/techtree/proc/is_node_unlocked(var/tech)
+/datum/techtree/proc/get_unlocked_node(var/tech)
 	return cached_unlocked_techs[tech]
 
 /// `tech`: a typepath to a tech
-/datum/techtree/proc/get_unlocked_node(var/tech)
-	return cached_unlocked_techs[tech]
+/datum/techtree/proc/get_node(var/tech)
+	return techs_by_type[tech]
 
 /datum/techtree/proc/on_node_gained(var/obj/structure/resource_node/RN)
 	return
@@ -180,11 +184,7 @@
 /datum/techtree/proc/on_node_lost(var/obj/structure/resource_node/RN)
 	return
 
-/datum/techtree/proc/on_cycle_completed(var/obj/structure/resource_node/RN)
-	playsound(RN.loc, resource_harvest_sound, 50)
-	return
-
-/datum/techtree/proc/on_process(var/obj/structure/resource_node/RN)
+/datum/techtree/proc/on_process(var/obj/structure/resource_node/RN, delta_time)
 	return
 
 /datum/techtree/proc/can_attack(var/mob/living/carbon/H)

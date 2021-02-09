@@ -77,7 +77,11 @@
 	if(!damage)
 		return
 
-	if(SEND_SIGNAL(src, COMSIG_XENO_TAKE_DAMAGE, damage, damagetype) & COMPONENT_BLOCK_DAMAGE) return
+
+	var/list/damagedata = list("damage" = damage)
+	if(SEND_SIGNAL(src, COMSIG_XENO_TAKE_DAMAGE, damagedata, damagetype) & COMPONENT_BLOCK_DAMAGE) return
+	damage = damagedata["damage"]
+
 	//We still want to check for blood splash before we get to the damage application.
 	var/chancemod = 0
 	if(used_weapon && sharp)

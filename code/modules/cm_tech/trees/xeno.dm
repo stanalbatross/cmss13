@@ -14,7 +14,7 @@
 	resource_harvest_sound = 'sound/machines/resource_node/node_xeno_harvest.ogg'
 
 	var/hivenumber = XENO_HIVE_NORMAL
-	var/heal_per_cycle = 30
+	var/heal_per_second = 5
 
 	var/xeno_heal_amount = 30
 	var/last_heal = 0
@@ -42,9 +42,6 @@
 
 	return isXenoQueenLeadingHive(X)
 
-/datum/techtree/xenomorph/on_cycle_completed(var/obj/structure/resource_node/RN)
-	RN.take_damage(-heal_per_cycle)
-	return
 
 /datum/techtree/xenomorph/can_attack(var/mob/living/carbon/H)
 	return !(H.hivenumber == hivenumber)
@@ -90,13 +87,15 @@
 /datum/techtree/xenomorph/proc/remove_heal_overlay(var/mob/living/carbon/Xenomorph/X, var/image/I)
 	X.overlays -= I
 
-/datum/techtree/xenomorph/on_process(var/obj/structure/resource_node/RN)
+/datum/techtree/xenomorph/on_process(var/obj/structure/resource_node/RN, delta_time)
+	RN.take_damage(-heal_per_second * delta_time)
+
 	if(last_heal > world.time)
 		return
 
 	var/area/A = RN.controlled_area
 	if(!A)
-		log_debug("[RN] passed as argument for on_node_gained. (Tech Tree: [name])")
+		log_debug("[RN] passed as argument for on_process. (Tech Tree: [name])")
 		return
 
 	for(var/mob/living/carbon/Xenomorph/X in A)

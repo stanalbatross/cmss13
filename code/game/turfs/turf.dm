@@ -30,6 +30,7 @@
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 	var/can_bloody = TRUE //Can blood spawn on this turf?
 	var/list/linked_pylons = list()
+	var/obj/effect/alien/weeds/weeds
 
 	var/list/datum/automata_cell/autocells = list()
 	/**
@@ -233,6 +234,8 @@
 	if(!istype(A))
 		return
 
+	SEND_SIGNAL(A, COMSIG_ATOM_TURF_CHANGE, src)
+
 	// Let explosions know that the atom entered
 	for(var/datum/automata_cell/explosion/E in autocells)
 		E.on_turf_entered(A)
@@ -347,6 +350,10 @@
 	changing_turf = TRUE
 	qdel(src)	//Just get the side effects and call Destroy
 	var/turf/W = new path(src)
+
+	for(var/i in W.contents)
+		var/datum/A = i
+		SEND_SIGNAL(A, COMSIG_ATOM_TURF_CHANGE, src)
 
 	if(new_baseturfs)
 		W.baseturfs = new_baseturfs
