@@ -22,8 +22,15 @@
 // Resource
 #define RESOURCE_HEALTH 200
 
-#define RESOURCE_TICKS_TO_CYCLE 30 SECONDS
-#define RESOURCE_PER_CYCLE 1
+/// Used for calculations with delta_time when figuring how much "amount" to give per "time"
+/// `amount` - The number to get per time
+/// `time` - The time period in which to gain this amount
+#define AMOUNT_PER_TIME(amount, time) (amount / (time))
+
+#define RESOURCE_PER_SECOND AMOUNT_PER_TIME(1, 60 SECONDS) // 1 per 60 seconds
+
+/// Controls the passive increase amount.
+#define PASSIVE_INCREASE_AMOUNT RESOURCE_PER_SECOND // Increases by RESOURCE_PER_SECOND every second.
 
 #define RESOURCE_PLASMA_PER_REPAIR 3 // Calculated like this: RESOURCE_PLASMA_PER_REPAIR * damage_to_repair
 #define RESOURCE_FUEL_TO_REPAIR 5 // Calculated like this: RESOURCE_FUEL_TO_REPAIR * (damage_to_repair / max_health)
@@ -42,8 +49,8 @@
 /// Powerup for the queen
 #define POWERUP_QUEEN		3
 
-#define GET_TREE(treeid) SStechtree? SStechtree.trees[treeid] : null
-#define GET_NODE(treeid, nodeid) SStechtree? SStechtree.trees[treeid].get
+#define GET_TREE(treeid) (SStechtree? SStechtree.trees[treeid] : null)
+#define GET_NODE(treeid, nodeid) (SStechtree? SStechtree.trees[treeid].get_node(nodeid) : null)
 
 // For tiers
 #define INFINITE_TECHS -1

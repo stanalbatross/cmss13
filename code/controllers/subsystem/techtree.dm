@@ -62,6 +62,7 @@ SUBSYSTEM_DEF(techtree)
 
 			if(tree.flags & node.flags)
 				tree.all_techs[tier] += list(node.type = node)
+				tree.techs_by_type[node.type] = node
 				techs += node
 
 				node.tier = tree.tree_tiers[node.tier]

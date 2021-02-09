@@ -221,6 +221,9 @@
 	#define COMPONENT_TURF_ALLOW_MOVEMENT (1<<0)
 	#define COMPONENT_TURF_DENY_MOVEMENT  (1<<1)
 
+///from /turf/ChangeTurf
+#define COMSIG_ATOM_TURF_CHANGE "atom_turf_change"
+
 #define COMSIG_MOB_POST_MOVE "mob_post_move"
 
 #define COMSIG_MOB_POST_UPDATE_CANMOVE "mob_can_move"

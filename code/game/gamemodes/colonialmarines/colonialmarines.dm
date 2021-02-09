@@ -160,7 +160,7 @@
 		for(var/T in SStechtree.trees)
 			var/datum/techtree/tree = SStechtree.trees[T]
 
-			tree.passive_node.resource_to_give += 0.5
+			tree.passive_node.resources_per_second += PASSIVE_INCREASE_AMOUNT
 
 		next_passive_increase = world.time + passive_increase_interval
 

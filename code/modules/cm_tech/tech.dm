@@ -41,7 +41,7 @@
 		to_chat(M, SPAN_WARNING("You cannot purchase this node!"))
 		return
 
-	if(!tree.check_and_use_points(src))
+	if(!tree.check_and_use_points(required_points))
 		to_chat(M, SPAN_WARNING("Not enough points to purchase this node."))
 		return
 

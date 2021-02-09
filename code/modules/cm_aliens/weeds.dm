@@ -1,6 +1,7 @@
 #define WEED_BASE_GROW_SPEED (10 SECONDS)
 #define WEED_BASE_DECAY_SPEED (20 SECONDS)
 
+
 /obj/effect/alien/weeds
 	name = "weeds"
 	desc = "Weird black weeds..."
@@ -19,6 +20,7 @@
 
 	var/datum/hive_status/linked_hive = null
 	var/hivenumber = XENO_HIVE_NORMAL
+	var/turf/weeded_turf
 
 	// Which node is responsible for keeping this weed patch alive?
 	var/obj/effect/alien/weeds/node/parent = null
@@ -44,6 +46,19 @@
 	update_neighbours()
 	if(node && node.loc && (get_dist(node, src) < node.node_range) && !hibernate)
 		addtimer(CALLBACK(src, .proc/weed_expand), WEED_BASE_GROW_SPEED / max(weed_strength, 1))
+
+	var/turf/T = get_turf(src)
+	T.weeds = src
+	weeded_turf = T
+
+	RegisterSignal(src, COMSIG_ATOM_TURF_CHANGE, .proc/set_turf_weeded)
+
+/obj/effect/alien/weeds/proc/set_turf_weeded(var/datum/source, var/turf/T)
+	SIGNAL_HANDLER
+	if(weeded_turf)
+		weeded_turf.weeds = null
+
+	T.weeds = src
 
 /obj/effect/alien/weeds/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	. = ..()
@@ -93,6 +108,9 @@
 
 	var/oldloc = loc
 	parent = null
+
+	weeded_turf.weeds = null
+	weeded_turf = null
 	. = ..()
 	update_neighbours(oldloc)
 

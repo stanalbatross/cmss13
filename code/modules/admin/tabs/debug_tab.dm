@@ -65,7 +65,7 @@
 
 	var/number_to_set = input(src, "How many points should this tech tree be at?", "", tree.points) as null|num
 
-	tree.points = number_to_set
+	tree.set_points(number_to_set)
 
 /client/proc/check_round_statistics()
 	set category = "Debug"
