@@ -43,14 +43,21 @@
 
 	. += ""
 
+	var/evolve_progress
+
 	if(caste_name == "Bloody Larva" || caste_name == "Predalien Larva")
-		. += "Evolve Progress: [round(amount_grown)]/[max_grown]"
-	else if(hive && !hive.living_xeno_queen)
-		. += "Evolve Progress: NO QUEEN"
-	else if(hive && !hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
-		. += "Evolve Progress: NO OVIPOSITOR"
-	else if(caste && caste.evolution_allowed)
-		. += "Evolve Progress: [round(evolution_stored)]/[evolution_threshold]"
+		evolve_progress = "[round(amount_grown)]/[max_grown]"
+	else if(hive && !hive.allow_no_queen_actions)
+		if(!hive.living_xeno_queen)
+			evolve_progress = "NO QUEEN"
+		else if(!hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
+			evolve_progress = "NO OVIPOSITOR"
+
+	if(!evolve_progress)
+		evolve_progress = "[round(evolution_stored)]/[evolution_threshold]"
+
+	if(caste && caste.evolution_allowed)
+		. += "Evolve Progress: [evolve_progress]"
 
 	. += ""
 
