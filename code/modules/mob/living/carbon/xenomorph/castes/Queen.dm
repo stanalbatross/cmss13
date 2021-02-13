@@ -220,8 +220,7 @@
 	if(linked_mob)
 		var/mob/living/carbon/Xenomorph/Queen/Q = linked_mob
 		if(Q.ovipositor)
-			var/datum/action/xeno_action/onclick/eye/E = new()
-			E.give_action(linked_mob)
+			give_action(linked_mob, /datum/action/xeno_action/onclick/eye)
 
 		linked_mob.sight &= ~(SEE_TURFS|SEE_OBJS)
 
@@ -267,7 +266,7 @@
 	tileoffset = 0
 	viewsize = 12
 
-	actions = list(
+	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno,
@@ -282,7 +281,7 @@
 		/datum/action/xeno_action/activable/secrete_resin/queen_macro, //fourth macro
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit
-		)
+	)
 
 	inherent_verbs = list(
 		/mob/living/carbon/Xenomorph/proc/claw_toggle,
@@ -292,7 +291,7 @@
 		/mob/living/carbon/Xenomorph/Queen/proc/set_orders,
 		/mob/living/carbon/Xenomorph/Queen/proc/hive_Message,
 		/mob/living/carbon/Xenomorph/proc/rename_tunnel,
-		)
+	)
 
 	var/list/mobile_abilities = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
@@ -312,7 +311,7 @@
 		/datum/action/xeno_action/activable/secrete_resin/queen_macro, //fourth macro
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit,
-			)
+	)
 
 	// Abilities they get when they've successfully aged.
 	var/mobile_aged_abilities = list(
@@ -394,7 +393,8 @@
 	if(ovipositor)
 		return
 
-	QDEL_LIST(actions)
+	for(var/datum/action/xeno_action/A in actions)
+		A.hide_from(src)
 
 	var/list/abilities_to_give = mobile_abilities.Copy()
 
@@ -402,8 +402,7 @@
 		abilities_to_give -= mobile_aged_abilities
 
 	for(var/path in abilities_to_give)
-		var/datum/action/xeno_action/A = new path()
-		A.give_action(src)
+		give_action(src, path)
 
 
 /mob/living/carbon/Xenomorph/Queen/recalculate_health()
@@ -703,10 +702,10 @@
 		return //sanity check
 	ovipositor = TRUE
 
-	for(var/datum/action/A in actions)
-		qdel(A)
+	for(var/datum/action/xeno_action/A in actions)
+		A.hide_from(src)
 
-	var/list/immobile_abilities = list(\
+	var/list/immobile_abilities = list(
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/onclick/remove_eggsac,
 		/datum/action/xeno_action/activable/screech,
@@ -725,11 +724,10 @@
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit,
 		/datum/action/xeno_action/onclick/eye
-		)
+	)
 
 	for(var/path in immobile_abilities)
-		var/datum/action/xeno_action/A = new path()
-		A.give_action(src)
+		give_action(src, path)
 
 	extra_build_dist = IGNORE_BUILD_DISTANCE
 	anchored = TRUE
@@ -744,6 +742,8 @@
 
 	START_PROCESSING(SShive_status, hive.hive_ui)
 
+	SEND_SIGNAL(src, COMSIG_QUEEN_MOUNT_OVIPOSITOR)
+
 /mob/living/carbon/Xenomorph/Queen/proc/dismount_ovipositor(instant_dismount)
 	set waitfor = 0
 	if(!instant_dismount)
@@ -757,7 +757,6 @@
 
 	if(!ovipositor)
 		return
-
 	ovipositor = FALSE
 	map_view = 0
 	close_browser(src, "queenminimap")

@@ -29,6 +29,8 @@
 #define XENO_PRIMARY_ACTION_3 2          // Tertiary primary action
 #define XENO_PRIMARY_ACTION_4 3          // 4th primary action (rarely used)
 
+#define NO_ACTION_CHARGES -1	// This ability does not have a limit to how many times it can be used
+
 #define ACID_SPRAY_LINE 0
 #define ACID_SPRAY_CONE 1
 

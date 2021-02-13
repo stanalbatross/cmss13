@@ -173,6 +173,9 @@
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
 	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
+/// From /mob/living/carbon/Xenomorph/Queen/proc/mount_ovipositor
+#define COMSIG_QUEEN_MOUNT_OVIPOSITOR "queen_mount_ovipositor"
+/// From /mob/living/carbon/Xenomorph/Queen/proc/dismount_ovipositor(): (instant_dismount)
 #define COMSIG_QUEEN_DISMOUNT_OVIPOSITOR "queen_dismount_ovipositor"
 
 #define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
@@ -255,3 +258,20 @@
 
 /// For any additional things that should happen when a xeno's melee_attack_additional_effects_self() proc is called
 #define COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF "xeno_slash_additional_effects_self"
+
+/// From /datum/action/proc/give_to(): (mob/owner)
+#define COMSIG_ACTION_GIVEN "action_given"
+/// From base of /datum/action/proc/remove_from(): (mob/owner)
+#define COMSIG_ACTION_REMOVED "action_removed"
+/// From base of /datum/action/proc/hide_from(): (mob/owner)
+#define COMSIG_ACTION_HIDDEN "action_hidden"
+/// From base of /datum/action/proc/unhide_from(): (mob/owner)
+#define COMSIG_ACTION_UNHIDDEN "action_unhidden"
+
+/// From /datum/action/xeno_action/proc/use_ability_wrapper(): (mob/owner)
+#define COMSIG_XENO_ACTION_USED "xeno_action_used"
+
+// Techs
+#define COMPONENT_CANNOT_UNLOCK (1<<0)
+/// From /datum/tech/xeno/powerup/can_unlock(): (mob/M)
+#define COMSIG_POWERUP_PRE_UNLOCK "powerup_pre_unlock"

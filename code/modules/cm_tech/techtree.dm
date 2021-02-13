@@ -132,7 +132,6 @@
 		can_unlock_args += additional_args
 	if(!T.can_unlock(arglist(can_unlock_args)))
 		return
-
 	var/list/unlock_args = list(T)
 	if(additional_args)
 		unlock_args += additional_args
@@ -149,7 +148,6 @@
 	if(!(T.tech_flags & TECH_FLAG_MULTIUSE))
 		T.unlocked = TRUE
 		unlocked_techs[T.tier.type] += list(T.type = T)
-
 	var/list/on_unlock_args = list(src)
 	if(length(args) > 1)
 		on_unlock_args += args.Copy(2)

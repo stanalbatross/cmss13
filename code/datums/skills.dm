@@ -62,12 +62,10 @@
 		for(var/action_type in subtypesof(/datum/action/human_action/issue_order))
 			if(locate(action_type) in M.actions)
 				continue
-
-			var/datum/action/human_action/issue_order/O = new action_type()
-			O.give_action(M)
+			give_action(M, action_type)
 	else
 		for(var/datum/action/human_action/issue_order/O in M.actions)
-			O.remove_action(M)
+			O.remove_from(M)
 
 /datum/skill/medical
 	skill_name = SKILL_MEDICAL

@@ -13,17 +13,15 @@
 	return TRUE
 
 /datum/tech/transitory/on_unlock(var/datum/techtree/tree)
-	if(!next) return
-
+	if(!next)
+		return
+	..()
 	var/datum/tier/next_tier = LAZYACCESS(tree.tree_tiers, next)
-
 	if(next_tier)
 		tree.tier = next_tier
 		for(var/a in next_tier.tier_turfs)
 			var/turf/T = a
 			T.color = next_tier.color
-
-	return
 
 /datum/tech/transitory/tier1
 	name = "Unlock tier 1"

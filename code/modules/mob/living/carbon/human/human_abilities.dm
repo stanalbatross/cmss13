@@ -13,7 +13,7 @@
 	action_icon_state = "order"
 	var/order_type = "help"
 
-/datum/action/human_action/issue_order/give_action(var/mob/living/L)
+/datum/action/human_action/issue_order/give_to(var/mob/living/L)
 	..()
 	if(!ishuman(L))
 		return
@@ -65,7 +65,7 @@
 		var/obj/item/storage/backpack/marine/smartpack/S = H.back
 		form_call(S, H)
 
-/datum/action/human_action/smartpack/give_action(var/mob/living/L)
+/datum/action/human_action/smartpack/give_to(var/mob/living/L)
 	..()
 	if(!ishuman(L))
 		return
@@ -146,7 +146,7 @@ CULT
 		button.icon_state = "template_on"
 		H.selected_ability = src
 
-/datum/action/human_action/activable/remove_action(mob/living/carbon/human/H)
+/datum/action/human_action/activable/remove_from(mob/living/carbon/human/H)
 	..()
 	if(H.selected_ability == src)
 		H.selected_ability = null
@@ -266,7 +266,7 @@ CULT
 
 	assigned_squad.dropped_techs += tech_to_deploy
 
-/datum/action/human_action/activable/droppod/give_action(user)
+/datum/action/human_action/activable/droppod/give_to(user)
 	if(!ishuman(user))
 		return
 
@@ -346,7 +346,7 @@ CULT
 
 	H.visible_message(SPAN_HIGHDANGER("[H] puts on their robes."), SPAN_WARNING("You put on your robes."))
 	for(var/datum/action/human_action/activable/cult/obtain_equipment/O in H.actions)
-		O.remove_action(H)
+		O.remove_from(H)
 
 /datum/action/human_action/activable/cult_leader
 	name = "Activable Leader Ability"
@@ -534,7 +534,7 @@ CULT
 			to_chat(chosen, SPAN_HIGHDANGER("<hr>You are now a Mutineer!"))
 			to_chat(chosen, SPAN_DANGER("Please check the rules to see what you can and can't do as a mutineer.<hr>"))
 
-		converted.remove_action(H)
+		converted.remove_from(H)
 
 	message_staff("[key_name_admin(H)] has begun the mutiny.")
-	src.remove_action(H)
+	remove_from(H)

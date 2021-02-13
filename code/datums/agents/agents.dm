@@ -41,8 +41,7 @@ Giving objectives to an agent:
 
 	GLOB.human_agent_list += source_human
 
-	var/datum/action/human_action/activable/check_objectives/O = new()
-	O.give_action(source_human)
+	give_action(source_human, /datum/action/human_action/activable/check_objectives)
 
 	if(source_human.skills)
 		source_human.skills.set_skill(SKILL_ANTAG, SKILL_ANTAG_TRAINED)
@@ -117,10 +116,8 @@ Giving objectives to an agent:
 	if(ispath(objective_type, /datum/agent_objective))
 		typepath = objective_type
 
-	var/datum/action/human_action/activable/receive_objective/transmission = new()
+	var/datum/action/human_action/activable/receive_objective/transmission = give_action(source_human, /datum/action/human_action/activable/receive_objective)
 	transmission.objective_to_receive = typepath
-
-	transmission.give_action(source_human)
 
 /datum/agent/Destroy()
 	. = ..()
@@ -168,7 +165,7 @@ Giving objectives to an agent:
 
 	LAZYADD(H.agent_holder.objectives_list, new objective_to_receive(H.agent_holder))
 
-	remove_action(H)
+	remove_from(H)
 
 
 /datum/action/human_action/activable/check_objectives

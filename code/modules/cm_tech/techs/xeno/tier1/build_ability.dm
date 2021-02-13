@@ -35,8 +35,7 @@
 
 	for(var/typepath in actions_to_give)
 		if(!get_xeno_action_by_type(X, typepath))
-			var/datum/action/xeno_action/XA = new typepath()
-			XA.give_action(X)
+			var/datum/action/xeno_action/XA = give_action(X, typepath)
 
 			// No need to give this ability a macro as it is an additional ability
 			XA.ability_primacy = null

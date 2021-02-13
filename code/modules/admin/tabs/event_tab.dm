@@ -668,4 +668,4 @@
 			H.hud_set_squad()
 
 			for(var/datum/action/human_action/activable/mutineer/A in H.actions)
-				A.remove_action(H)
+				A.remove_from(H)

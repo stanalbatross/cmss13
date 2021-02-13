@@ -32,7 +32,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	var/datum/entity/round_stats/round_stats = null
 
 	var/list/roles_to_roll
-	
+
 	var/hardcore = FALSE
 
 /datum/game_mode/proc/announce() //to be calles when round starts
@@ -151,8 +151,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	round_statistics.update_panel_data()
 	for(var/mob/M in GLOB.player_list)
 		if(M.client)
-			var/datum/action/show_round_statistics/Sability = new(null, icon_state)
-			Sability.give_action(M)
+			give_action(M, /datum/action/show_round_statistics, null, icon_state)
 
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0

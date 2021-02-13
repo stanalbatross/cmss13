@@ -74,3 +74,36 @@
 	name = "Enter Eye Form"
 	action_icon_state = "queen_eye"
 	plasma_cost = 0
+
+/datum/action/xeno_action/activable/bombard/queen
+	// Range and other config
+	interrupt_flags = NO_FLAGS
+
+	charges = 5
+
+/datum/action/xeno_action/activable/bombard/queen/give_to(mob/living/L)
+	. = ..()
+	var/mob/living/carbon/Xenomorph/Queen/Q = L
+	if(!Q.ovipositor)
+		hide_from(Q)
+	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
+	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/handle_dismount_ovipositor)
+
+/datum/action/xeno_action/activable/bombard/queen/remove_from(mob/living/carbon/Xenomorph/X)
+	. = ..()
+	UnregisterSignal(X, list(
+		COMSIG_QUEEN_MOUNT_OVIPOSITOR,
+		COMSIG_QUEEN_DISMOUNT_OVIPOSITOR,
+	))
+
+/datum/action/xeno_action/activable/bombard/queen/proc/handle_mount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	unhide_from(Q)
+
+/datum/action/xeno_action/activable/bombard/queen/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	hide_from(Q)
+
+/datum/action/xeno_action/activable/bombard/queen/get_bombard_source()
+	var/mob/hologram/queen/H = owner?.client?.eye
+	if(istype(H))
+		return H
+	return owner
