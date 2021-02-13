@@ -280,7 +280,7 @@ cases. Override_icon_state should be a list.*/
 
 	for(var/X in actions)
 		var/datum/action/A = X
-		A.remove_action(user)
+		A.remove_from(user)
 
 	if(flags_item & DELONDROP)
 		qdel(src)
@@ -341,7 +341,7 @@ cases. Override_icon_state should be a list.*/
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(user, slot)) //some items only give their actions buttons when in a specific slot.
-			A.give_action(user)
+			A.give_to(user)
 
 //sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(mob/user, slot)

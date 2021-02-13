@@ -147,6 +147,10 @@
 	var/leader_aura_strength = 0 //Pheromone strength inherited from Queen
 	var/leader_current_aura = "" //Pheromone type inherited from Queen
 
+	/// List of actions (typepaths) that a
+	/// xenomorph type is given upon spawn
+	var/base_actions
+
 	//////////////////////////////////////////////////////////////////
 	//
 	//		Modifiers
@@ -830,12 +834,6 @@
 	plasma_stored = plasma_max
 	for(var/datum/action/xeno_action/XA in actions)
 		XA.end_cooldown()
-
-/mob/living/carbon/Xenomorph/proc/remove_action(var/action as text)
-	for(var/X in actions)
-		var/datum/action/A = X
-		if(A.name == action)
-			A.remove_action(src)
 
 /mob/living/carbon/Xenomorph/resist_fire()
 	adjust_fire_stacks(XENO_FIRE_RESIST_AMOUNT, min_stacks = 0)

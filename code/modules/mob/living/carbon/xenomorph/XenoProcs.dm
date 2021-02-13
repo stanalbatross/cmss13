@@ -483,7 +483,7 @@
 		return
 
 	if(queued_action.can_use_action() && queued_action.action_cooldown_check())
-		queued_action.use_ability(A)
+		queued_action.use_ability_wrapper(A)
 
 	queued_action = null
 

@@ -46,7 +46,7 @@ GLOBAL_LIST_EMPTY(hologram_list)
 
 	leave_button = new(null, action_icon_state)
 	leave_button.linked_hologram = src
-	leave_button.give_action(M)
+	leave_button.give_to(M)
 
 /mob/hologram/proc/handle_binoc()
 	SIGNAL_HANDLER
@@ -101,7 +101,7 @@ GLOBAL_LIST_EMPTY(hologram_list)
 
 /datum/action/leave_hologram/Destroy()
 	linked_hologram.leave_button = null
-	QDEL_NULL(linked_hologram)
+	linked_hologram = null
 	return ..()
 
 /mob/hologram/techtree/Initialize(mapload, mob/M)

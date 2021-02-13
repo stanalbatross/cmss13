@@ -41,7 +41,7 @@
 		to_chat(M, SPAN_WARNING("You cannot purchase this node!"))
 		return
 
-	if(!tree.check_and_use_points(required_points))
+	if(!tree.can_use_points(required_points))
 		to_chat(M, SPAN_WARNING("Not enough points to purchase this node."))
 		return
 
@@ -60,7 +60,8 @@
 	return TRUE
 
 /datum/tech/proc/on_unlock(var/datum/techtree/tree)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	tree.add_points(-required_points)
 
 /datum/tech/ui_status(mob/user, datum/ui_state/state)
 	return holder.ui_status(user, state)

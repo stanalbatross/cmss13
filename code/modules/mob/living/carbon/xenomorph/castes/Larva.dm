@@ -31,7 +31,7 @@
 	crit_health = -25
 	gib_chance = 25
 	mob_size = 0
-	actions = list(
+	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/watch_xeno,
 		/datum/action/xeno_action/onclick/xenohide,

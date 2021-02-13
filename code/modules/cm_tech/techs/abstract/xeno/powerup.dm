@@ -64,6 +64,10 @@
 	if(!target_or_targets)
 		to_chat(M, SPAN_WARNING("There are no xenomorphs who can accept this powerup!"))
 		return FALSE
+	if(!islist(target_or_targets))
+		var/mob/target = target_or_targets
+		if(SEND_SIGNAL(target, COMSIG_POWERUP_PRE_UNLOCK, M) & COMPONENT_CANNOT_UNLOCK)
+			return FALSE
 	return TRUE
 
 /datum/tech/xeno/powerup/on_unlock(datum/techtree/tree, target_or_targets)
@@ -78,3 +82,8 @@
 
 /datum/tech/xeno/powerup/proc/apply_powerup(mob/living/carbon/Xenomorph/target)
 	return
+
+/datum/tech/xeno/powerup/proc/cancel_unlock_active(datum/source, mob/M)
+	SIGNAL_HANDLER
+	to_chat(M, SPAN_WARNING("This powerup is still active!"))
+	return COMPONENT_CANNOT_UNLOCK

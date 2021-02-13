@@ -8,6 +8,10 @@
 	var/cooldown = 0 // By default an action has no cooldown
 	var/cost = 0 // By default an action has no cost -> will be utilized by skill actions/xeno actions
 	var/action_flags = 0 // Check out __game.dm for flags
+	/// Whether the action is hidden from its owner
+	/// Useful for when you want to preserve action state while preventing
+	/// a mob from using said action
+	var/hidden = FALSE
 
 /datum/action/New(Target, override_icon_state)
 	target = Target
@@ -27,7 +31,7 @@
 
 /datum/action/Destroy()
 	if(owner)
-		remove_action(owner)
+		remove_from(owner)
 	QDEL_NULL(button)
 	target = null
 	return ..()
@@ -39,28 +43,95 @@
 	return
 
 /datum/action/proc/can_use_action()
-	if(owner) return TRUE
+	if(owner)
+		return TRUE
 
-/datum/action/proc/give_action(mob/L)
-	if(!L)
-		return
+/datum/action/proc/set_name(new_name)
+	name = new_name
+	button.name = new_name
+
+/**
+ * Gives an action to a mob and returns it
+ *
+ * If mob already has the action, unhide it if it's hidden
+ *
+ * Can pass additional initialization args
+ */
+/proc/give_action(mob/L, action_path, ...)
+	for(var/a in L.actions)
+		var/datum/action/A = a
+		if(A.type == action_path)
+			if(A.hidden)
+				A.hidden = FALSE
+				L.update_action_buttons()
+			return A
+
+	var/datum/action/action
+	/// Cannot use arglist for both cases because of
+	/// unique BYOND handling of args in New
+	if(length(args) > 2)
+		action = new action_path(arglist(args.Copy(3)))
+	else
+		action = new action_path()
+	action.give_to(L)
+	return action
+
+/datum/action/proc/give_to(mob/L)
+	SHOULD_CALL_PARENT(TRUE)
 	if(owner)
 		if(owner == L)
 			return
-		remove_action(owner)
+		remove_from(owner)
+	SEND_SIGNAL(src, COMSIG_ACTION_GIVEN, L)
 	owner = L
 	LAZYADD(L.actions, src)
 	if(L.client)
 		L.client.screen += button
 	L.update_action_buttons()
 
-/datum/action/proc/remove_action(mob/L)
+/proc/remove_action(mob/L, action_path)
+	for(var/a in L.actions)
+		var/datum/action/A = a
+		if(A.type == action_path)
+			A.remove_from(L)
+			return A
+
+/datum/action/proc/remove_from(mob/L)
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_ACTION_REMOVED, L)
+	L.actions.Remove(src)
 	if(L.client)
 		L.client.screen -= button
-	L.actions.Remove(src)
-	L.update_action_buttons()
 	owner = null
+	L.update_action_buttons()
 
+/proc/hide_action(mob/L, action_path)
+	for(var/a in L.actions)
+		var/datum/action/A = a
+		if(A.type == action_path)
+			A.hidden = TRUE
+			L.update_action_buttons()
+			return A
+
+/datum/action/proc/hide_from(mob/L)
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_ACTION_HIDDEN, L)
+	hidden = TRUE
+	L.update_action_buttons()
+
+/proc/unhide_action(mob/L, action_path)
+	for(var/a in L.actions)
+		var/datum/action/A = a
+		if(A.type == action_path)
+			A.hidden = FALSE
+			L.update_action_buttons()
+			return A
+
+/datum/action/proc/unhide_from(mob/L)
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_ACTION_UNHIDDEN, L)
+	hidden = FALSE
+	L.update_action_buttons()
 
 
 /datum/action/item_action
@@ -124,11 +195,14 @@
 				client.screen += A.button
 	else
 		for(var/datum/action/A in actions)
-			button_number++
 			var/obj/screen/action_button/B = A.button
-			B.screen_loc = B.get_button_screen_loc(button_number)
 			if(reload_screen)
 				client.screen += B
+			if(A.hidden)
+				B.screen_loc = null
+				continue
+			button_number++
+			B.screen_loc = B.get_button_screen_loc(button_number)
 
 		if(!button_number)
 			hud_used.hide_actions_toggle.screen_loc = null
