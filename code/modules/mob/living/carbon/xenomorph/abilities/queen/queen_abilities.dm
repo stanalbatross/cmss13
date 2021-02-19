@@ -81,9 +81,8 @@
 
 	charges = 5
 
-/datum/action/xeno_action/activable/bombard/queen/give_to(mob/living/L)
+/datum/action/xeno_action/activable/bombard/queen/give_to(mob/living/carbon/Xenomorph/Queen/Q)
 	. = ..()
-	var/mob/living/carbon/Xenomorph/Queen/Q = L
 	if(!Q.ovipositor)
 		hide_from(Q)
 	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
@@ -97,9 +96,11 @@
 	))
 
 /datum/action/xeno_action/activable/bombard/queen/proc/handle_mount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	SIGNAL_HANDLER
 	unhide_from(Q)
 
 /datum/action/xeno_action/activable/bombard/queen/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	SIGNAL_HANDLER
 	hide_from(Q)
 
 /datum/action/xeno_action/activable/bombard/queen/get_bombard_source()
@@ -107,3 +108,43 @@
 	if(istype(H))
 		return H
 	return owner
+
+/datum/action/xeno_action/activable/place_queen_beacon
+	name = "Place Queen Beacon"
+	action_icon_state = "place_queen_beacon"
+	ability_name = "place queen beacon"
+	plasma_cost = 0
+	action_type = XENO_ACTION_CLICK
+
+	charges = 1
+
+	var/datum/hive_status/hive
+	var/remove_from_timer
+	var/list/transported_xenos
+
+/datum/action/xeno_action/activable/place_queen_beacon/give_to(mob/living/carbon/Xenomorph/Queen/Q)
+	. = ..()
+	hive = Q.hive
+	if(!Q.ovipositor)
+		hide_from(Q)
+	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
+	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/handle_dismount_ovipositor)
+	remove_from_timer = addtimer(CALLBACK(src, .proc/remove_from, Q), 1 MINUTES, TIMER_STOPPABLE)
+
+/datum/action/xeno_action/activable/place_queen_beacon/remove_from(mob/living/carbon/Xenomorph/X)
+	. = ..()
+	hive = null
+	UnregisterSignal(X, list(
+		COMSIG_QUEEN_MOUNT_OVIPOSITOR,
+		COMSIG_QUEEN_DISMOUNT_OVIPOSITOR,
+	))
+	if(remove_from_timer)
+		deltimer(remove_from_timer)
+	remove_from_timer = null
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/handle_mount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	SIGNAL_HANDLER
+	unhide_from(Q)
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	remove_from(Q)

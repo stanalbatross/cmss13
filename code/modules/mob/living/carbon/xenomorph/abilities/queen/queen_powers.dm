@@ -458,3 +458,60 @@
 
 /datum/action/xeno_action/activable/expand_weeds/proc/reset_turf_cooldown(var/turf/T)
 	recently_built_turfs -= T
+
+/datum/action/xeno_action/activable/place_queen_beacon/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/Queen/Q = owner
+	if(!Q.check_state())
+		return FALSE
+
+	var/turf/T = get_turf(A)
+	if(!check_turf(Q, T))
+		return FALSE
+	if(!do_after(Q, 1 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
+		return FALSE
+	if(!check_turf(Q, T))
+		return FALSE
+
+	to_chat(Q, SPAN_XENONOTICE("You rally the hive to the queen beacon!"))
+	LAZYCLEARLIST(transported_xenos)
+	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/tunnel_xeno)
+	for(var/xeno in hive.totalXenos)
+		if(xeno == Q)
+			continue
+		tunnel_xeno(src, xeno)
+
+	addtimer(CALLBACK(src, .proc/transport_xenos, T), 3 SECONDS)
+	return TRUE
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/tunnel_xeno(datum/source, mob/living/carbon/Xenomorph/X)
+	SIGNAL_HANDLER
+	if(X.z == hive.living_xeno_queen.z)
+		to_chat(X, SPAN_XENONOTICE("You begin tunneling towards the queen beacon!"))
+		RegisterSignal(X, COMSIG_MOVABLE_PRE_MOVE, .proc/cancel_movement)
+		LAZYADD(transported_xenos, X)
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/transport_xenos(turf/target)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN)
+	for(var/xeno in transported_xenos)
+		var/mob/living/carbon/Xenomorph/X = xeno
+		to_chat(X, SPAN_XENONOTICE("You tunnel to the queen beacon!"))
+		UnregisterSignal(X, COMSIG_MOVABLE_PRE_MOVE)
+		if(target)
+			X.forceMove(target)
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/cancel_movement()
+	SIGNAL_HANDLER
+	return COMPONENT_CANCEL_MOVE
+
+/datum/action/xeno_action/activable/place_queen_beacon/proc/check_turf(mob/living/carbon/Xenomorph/Queen/Q, turf/T)
+	if(!T || T.density)
+		to_chat(Q, SPAN_XENOWARNING("You can't place a queen beacon here."))
+		return FALSE
+
+	var/obj/effect/alien/weeds/located_weeds = locate() in T
+	if(!located_weeds)
+		to_chat(Q, SPAN_XENOWARNING("You need to place the queen beacon on weeds."))
+		return FALSE
+
+	return TRUE
+

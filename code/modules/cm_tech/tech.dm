@@ -14,6 +14,10 @@
 
 	var/datum/techtree/holder
 
+	/// A state var to stop you from trying to purchase
+	/// a tech that is in the process of being purchased
+	var/purchasing = FALSE
+
 /datum/tech/proc/fire()
 	return
 
@@ -30,6 +34,7 @@
 
 /datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree)
 	SHOULD_CALL_PARENT(TRUE)
+
 	if(!tree.has_access(M, TREE_ACCESS_MODIFY))
 		to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
 		return
