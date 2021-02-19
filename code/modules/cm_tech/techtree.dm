@@ -120,9 +120,14 @@
 	if(!M || M.stat == DEAD)
 		return
 
+	if(T.purchasing)
+		return
+
 	if(T.type in unlocked_techs[T.tier.type])
 		M.show_message(SPAN_WARNING("This node is already unlocked!"))
 		return
+
+	T.purchasing = TRUE
 
 	// Get the other arguments that will be passed to `can_unlock` and `on_unlock`
 	var/list/additional_args = T.get_additional_args(M)
@@ -131,6 +136,7 @@
 	if(additional_args)
 		can_unlock_args += additional_args
 	if(!T.can_unlock(arglist(can_unlock_args)))
+		T.purchasing = FALSE
 		return
 	var/list/unlock_args = list(T)
 	if(additional_args)
@@ -138,6 +144,7 @@
 	unlock_node(arglist(unlock_args))
 
 	to_chat(M, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
+	T.purchasing = FALSE
 
 /datum/techtree/proc/unlock_node(var/datum/tech/T, ...)
 	if((T.type in unlocked_techs[T.tier.type]) || !(T.type in all_techs[T.tier.type]))

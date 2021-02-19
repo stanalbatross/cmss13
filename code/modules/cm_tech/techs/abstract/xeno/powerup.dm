@@ -5,10 +5,10 @@
 
 	var/powerup_type
 
-	/// Blacklist for which castes cannot receive this powerup in the form of a typecache
+	/// Blacklist for which castes cannot receive this powerup using caste datum typepaths
 	/// `null` if no caste is unable to receive this powerup
 	var/list/caste_blacklist
-	/// Whitelist for which castes can receive this powerup in the form of a typecache
+	/// Whitelist for which castes can receive this powerup using caste datum typepaths
 	/// `null` if any caste can receive this powerup
 	var/list/caste_whitelist
 
@@ -39,9 +39,9 @@
 	var/list/potential_candidates
 	for(var/x in hive.totalXenos)
 		var/mob/living/carbon/Xenomorph/X = x
-		if(caste_whitelist && !caste_whitelist[X.caste.type])
+		if(caste_whitelist && !(X.caste.type in caste_whitelist))
 			continue
-		if(caste_blacklist && caste_blacklist[X.caste.type])
+		if(caste_blacklist && (X.caste.type in caste_blacklist))
 			continue
 		LAZYADD(potential_candidates, X)
 	potential_candidates = filter_through_candidates(potential_candidates)
@@ -55,7 +55,7 @@
 	else if(powerup_type == POWERUP_PICKED)
 		var/mob/choice = tgui_input_list(M, "Which xenomorph do you want to powerup ?", "Apply [name]", potential_candidates)
 		if(choice)
-			return choice
+			return list(choice)
 
 /datum/tech/xeno/powerup/can_unlock(mob/M, datum/techtree/tree, target_or_targets)
 	. = ..()
