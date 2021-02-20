@@ -271,6 +271,9 @@
 /// From /datum/action/xeno_action/proc/use_ability_wrapper(): (mob/owner)
 #define COMSIG_XENO_ACTION_USED "xeno_action_used"
 
+/// From /mob/living/carbon/Xenomorph/proc/check_blood_splash()
+#define COMSIG_XENO_DEAL_ACID_DAMAGE "xeno_deal_acid_damage"
+
 // Techs
 #define COMPONENT_CANNOT_UNLOCK (1<<0)
 /// From /datum/tech/xeno/powerup/can_unlock(): (mob/M)

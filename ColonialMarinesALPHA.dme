@@ -1266,6 +1266,7 @@
 #include "code\modules\cm_tech\techs\xeno\tier1\overshield.dm"
 #include "code\modules\cm_tech\techs\xeno\tier1\weed_damage_reduction.dm"
 #include "code\modules\cm_tech\techs\xeno\tier2\queen_beacon.dm"
+#include "code\modules\cm_tech\techs\xeno\tier3\acid_blood.dm"
 #include "code\modules\cm_tech\techs\xeno\tier3\artillery_blob.dm"
 #include "code\modules\cm_tech\trees\marine.dm"
 #include "code\modules\cm_tech\trees\xeno.dm"

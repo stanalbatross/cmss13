@@ -206,11 +206,14 @@
 				splash_chance -= 70 //Preds know to avoid the splashback.
 
 			if(splash_chance > 0 && prob(splash_chance)) //Success!
+				var/dmg = list("damage" = acid_blood_damage)
+				if(SEND_SIGNAL(src, COMSIG_XENO_DEAL_ACID_DAMAGE, victim, dmg) & COMPONENT_BLOCK_DAMAGE)
+					continue
 				i++
 				victim.visible_message(SPAN_DANGER("\The [victim] is scalded with hissing green blood!"), \
 				SPAN_DANGER("You are splattered with sizzling blood! IT BURNS!"))
 				if(prob(60) && !victim.stat && pain.feels_pain)
 					victim.emote("scream") //Topkek
-				victim.take_limb_damage(0, rand(8, 12)) //Sizzledam! This automagically burns a random existing body part.
+				victim.take_limb_damage(0, dmg["damage"]) //Sizzledam! This automagically burns a random existing body part.
 				victim.add_blood(get_blood_color(), BLOOD_BODY)
 				acid_splash_last = world.time
