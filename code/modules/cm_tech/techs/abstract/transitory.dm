@@ -39,7 +39,7 @@
 
 	before = /datum/tier/one
 	next = /datum/tier/two
-	var/techs_to_unlock = 3
+	var/techs_to_unlock = 2
 
 	required_points = 0
 

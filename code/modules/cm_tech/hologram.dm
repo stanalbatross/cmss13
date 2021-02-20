@@ -55,7 +55,7 @@ GLOBAL_LIST_EMPTY(hologram_list)
 /mob/hologram/proc/take_damage(var/mob/M, var/damage, var/damagetype)
 	SIGNAL_HANDLER
 
-	if(damage > 5)
+	if(damage["damage"] > 5)
 		qdel(src)
 
 /mob/hologram/proc/handle_move(var/mob/M, NewLoc, direct)
@@ -83,8 +83,10 @@ GLOBAL_LIST_EMPTY(hologram_list)
 	linked_mob.reset_view()
 	linked_mob = null
 
-	if(leave_button)
+	if(!QDESTROYING(leave_button))
 		QDEL_NULL(leave_button)
+	else
+		leave_button = null
 
 	GLOB.hologram_list -= src
 
@@ -100,8 +102,10 @@ GLOBAL_LIST_EMPTY(hologram_list)
 	qdel(src)
 
 /datum/action/leave_hologram/Destroy()
-	linked_hologram.leave_button = null
-	linked_hologram = null
+	if(!QDESTROYING(linked_hologram))
+		QDEL_NULL(linked_hologram)
+	else
+		linked_hologram = null
 	return ..()
 
 /mob/hologram/techtree/Initialize(mapload, mob/M)

@@ -49,7 +49,8 @@
 
 /datum/tech/xeno/weed_damage_reduction/proc/register_component(datum/source, var/mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	X.AddElement(/datum/element/weed_damage_mult, hivenumber, damage_mult)
+	if(X.hivenumber == hivenumber)
+		X.AddElement(/datum/element/weed_damage_mult, hivenumber, damage_mult)
 
 /datum/tech/xeno/weed_damage_reduction/ui_data(mob/user)
 	. = ..()

@@ -210,6 +210,8 @@
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
 	var/list/tackle_counter = list()
 	var/evolving = FALSE // Whether the xeno is in the process of evolving
+	/// The damage dealt by a xeno whenever they take damage near someone
+	var/acid_blood_damage = 12
 
 
 	//////////////////////////////////////////////////////////////////
