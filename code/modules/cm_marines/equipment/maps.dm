@@ -22,27 +22,33 @@
 	var/wikiurl = CONFIG_GET(string/wikiurl)
 	if(wikiurl)
 		dat = {"
+				<html>
+				<head>
+					<style>
+						img {
+							display: none;
+							position: absolute;
+							top: 30;
+							left: 0;
+							max-width: 100%;
+							height: auto;
+							overflow: hidden;
+							border: 0;
+						}
+					</style>
+				</head>
+				<body>
+				<script type="text/javascript">
+					function pageloaded(obj) {
+						document.getElementById("loading").style.display = "none";
+						obj.style.display = "inline";
+	    			}
+				</script>
+				<p id='loading'>You start unfolding the map...</p>
+					<img onload="pageloaded(this)" src="[wikiurl]/[html_link]?printable=yes&remove_links=1" id="main_frame" alt=""></img>
+				</body>
 
-			<html><head>
-			<style>
-				iframe {
-					display: none;
-				}
-			</style>
-			</head>
-			<body>
-			<script type="text/javascript">
-				function pageloaded(myframe) {
-					document.getElementById("loading").style.display = "none";
-					myframe.style.display = "inline";
-    			}
-			</script>
-			<p id='loading'>You start unfolding the map...</p>
-			<iframe width='100%' height='97%' onload="pageloaded(this)" src="[wikiurl]/[html_link]?printable=yes&remove_links=1" frameborder="0" id="main_frame"></iframe>
-			</body>
-
-			</html>
-
+				</html>
 			"}
 	show_browser(usr, dat, name, "map", "size=[window_size]")
 
@@ -78,7 +84,7 @@
 /obj/item/map/FOP_map_v3
 	name = "\improper Fiorina Orbital Civilian Annex Map"
 	desc = "A scan produced by the the Almayer's sensor array of the Fiorina Orbital Penitentiary Civilian Annex. It appears to have broken off from the rest of the station and is now in free geo-sync orbit around the planet."
-	html_link = "images/4/4c/Map_Prison.png"//replace me
+	html_link = "images/e/e0/Prison_Station_Science_Annex.png"
 	color = "#e88a10"
 
 /obj/item/map/desert_dam
@@ -132,8 +138,8 @@
 			color = "#e88a10"
 		if(MAP_PRISON_STATION_V3)
 			name = "\improper Fiorina Orbital Penitentiary Map"
-			desc = "A labelled interior scan of Fiorina Orbital Penitentiary"
-			html_link = "images/4/4c/Map_Prison.png"
+			desc = "A scan produced by the the Almayer's sensor array of the Fiorina Orbital Penitentiary Civilian Annex. It appears to have broken off from the rest of the station and is now in free geo-sync orbit around the planet."
+			html_link = "images/e/e0/Prison_Station_Science_Annex.png"
 			color = "#e88a10"
 		if(MAP_DESERT_DAM)
 			name = "\improper Trijent Dam map"

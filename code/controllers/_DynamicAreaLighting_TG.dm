@@ -34,10 +34,30 @@
 #define LIGHTING_ICON 'icons/effects/ss13_dark_alpha6.dmi'	//Icon used for lighting shading effects
 #define LIGHTING_STATES 6
 
-#define DIRECTIONAL_LUM_OFFSET		2					//Used to tweak direcitonal luminosity
-#define DIRECTIONAL_LUM_GRADIENT 	0.2					//Used to tweak direcitonal luminosity
-#define DIRECTIONAL_LUM_MULT		1.5					//how much brighter directional luminosity is in the right direction
-
+// Update these lists if the luminosity cap
+// of 8 is removed
+GLOBAL_LIST_INIT(comp1table, list(
+	0,
+	0.934,
+	1.868,
+	2.802,
+	3.736,
+	4.67,
+	5.604,
+	6.538,
+	7.472,
+))
+GLOBAL_LIST_INIT(comp2table, list(
+	0,
+	0.427,
+	0.854,
+	1.281,
+	1.708,
+	2.135,
+	2.562,
+	2.989,
+	3.416,
+))
 /datum/light_source
 	var/atom/owner
 	var/changed = 1
@@ -46,33 +66,19 @@
 	var/__y = 0		//y coordinate at last update
 	var/__z = 0		//z coordinate at last update
 
-#define turf_update_lumcount(T, amount) \
-	T.lighting_lumcount += amount; if(!T.lighting_changed){ SSlighting.changed_turfs += T; T.lighting_changed = 1;}
+#define turf_update_lumcount(T, amount)\
+	T.lighting_lumcount += amount;\
+	if(!T.lighting_changed){\
+		SSlighting.changed_turfs += T;\
+		T.lighting_changed = TRUE;\
+	}
 
-#define ls_remove_effect(ls) for(var/turf/T in ls.effect){ turf_update_lumcount(T, -ls.effect[T]); } ls.effect.Cut();
-
-#define ls_lum(ls, T) \
-	var/dist; \
-	if(!T) \
-		dist = 0; \
-	else{ \
-		var/dx = abs(T.x - __x); \
-		var/dy = abs(T.y - __y); \
-		if(dx>=dy)	dist = (0.934*dx) + (0.427*dy); \
-		else		dist = (0.427*dx) + (0.934*dy);} \
-	var/delta_lumen = owner.luminosity - dist; \
-	if(delta_lumen > 0){ \
-		ls.effect[T] = delta_lumen; \
-		turf_update_lumcount(T, delta_lumen);}
-
-#define ls_add_effect(ls) \
-	if(ls.owner.loc && ls.owner.luminosity > 0) { \
-		for(var/turf/T in view(ls.owner.luminosity,owner)){ \
-			ls_lum(ls, T) } \
-		return 0; } \
-	else{ \
-		ls.owner.light = null; \
-		return 1;} \
+#define ls_remove_effect(ls)\
+	for(var/t in ls.effect){\
+		var/turf/T = t;\
+		turf_update_lumcount(T, -ls.effect[T]);\
+	}\
+	ls.effect.Cut();
 
 /datum/light_source/New(atom/A)
 	if(!istype(A))
@@ -89,17 +95,32 @@
 /datum/light_source/proc/check()
 	if(!owner)
 		ls_remove_effect(src)
-		return 1	//causes it to be removed from our list of lights. The garbage collector will then destroy it.
+		return TRUE	//causes it to be removed from our list of lights. The garbage collector will then destroy it.
 
 	if(owner.luminosity > 8)
 		owner.luminosity = 8
 
-	if(changed)
-		changed = 0
-		ls_remove_effect(src)
-		ls_add_effect(src)
+	changed = FALSE
 
-	return 0
+	ls_remove_effect(src)
+	if(owner.loc && owner.luminosity > 0)
+		for(var/turf/T in view(owner.luminosity, owner))
+			var/dist
+			var/dx = abs(T.x - __x)
+			var/dy = abs(T.y - __y)
+			// Use dx+1 and dy+1 because lists use 1-based indexing
+			if(dx >= dy)
+				dist = (GLOB.comp1table[dx+1]) + (GLOB.comp2table[dy+1])
+			else
+				dist = (GLOB.comp2table[dx+1]) + (GLOB.comp1table[dy+1])
+			var/delta_lumen = owner.luminosity - dist
+			if(delta_lumen > 0)
+				effect[T] = delta_lumen
+				turf_update_lumcount(T, delta_lumen)
+		return FALSE
+	else
+		owner.light = null
+		return TRUE
 
 /datum/light_source/proc/changed()
 	if(owner)
@@ -121,7 +142,6 @@
 	var/datum/light_source/light
 	var/trueLuminosity = 0  // Typically 'luminosity' squared.  The builtin luminosity must remain linear.
 	                        // We may read it, but NEVER set it directly.
-	var/directional_lum = 0
 
 //Movable atoms with opacity when they are constructed will trigger nearby lights to update
 //Movable atoms with luminosity when they are constructed will create a light_source automatically
@@ -129,7 +149,8 @@
 	. = ..()
 	if(opacity)
 		if(isturf(loc))
-			if(loc:lighting_lumcount > 1)
+			var/turf/T = loc
+			if(T.lighting_lumcount > 1)
 				UpdateAffectingLights()
 	if(luminosity)
 		if(light)	WARNING("[type] - Don't set lights up manually during New(), We do it automatically.")
@@ -140,7 +161,8 @@
 /atom/movable/Destroy()
 	if(opacity)
 		if(isturf(loc))
-			if(loc:lighting_lumcount > 1)
+			var/turf/T = loc
+			if(T.lighting_lumcount > 1)
 				UpdateAffectingLights()
 	. = ..()
 
@@ -201,28 +223,35 @@
 	if(new_opacity == null)
 		new_opacity = !opacity			//default = toggle opacity
 	else if(opacity == new_opacity)
-		return 0						//opacity hasn't changed! don't bother doing anything
+		return FALSE					//opacity hasn't changed! don't bother doing anything
 	opacity = new_opacity				//update opacity, the below procs now call light updates.
-	return 1
+	return TRUE
 
 /turf/SetOpacity(new_opacity)
-	if(..()==1)							//only bother if opacity changed
-		if(lighting_lumcount)			//only bother with an update if our turf is currently affected by a light
-			UpdateAffectingLights()
+	. = ..()
+	//only bother if opacity changed
+	if(!.)
+		return
+	if(lighting_lumcount)			//only bother with an update if our turf is currently affected by a light
+		UpdateAffectingLights()
 
 /atom/movable/SetOpacity(new_opacity)
-	if(..()==1)							//only bother if opacity changed
-		if(isturf(loc))					//only bother with an update if we're on a turf
-			var/turf/T = loc
-			if(T.lighting_lumcount)		//only bother with an update if our turf is currently affected by a light
-				UpdateAffectingLights()
+	. = ..()
+	// only bother if opacity changed
+	if(!.)
+		return
+	// only bother with an update if we're on a turf
+	if(isturf(loc))
+		var/turf/T = loc
+		// only bother with an update if our turf is currently affected by a light
+		if(T.lighting_lumcount)
+			UpdateAffectingLights()
 
 
 /turf
 	var/lighting_lumcount = 0
 	var/lighting_changed = 0
-	var/color_lighting_lumcount = 0
-	var/chemexploded = FALSE
+	var/cached_lumcount = 0
 
 /turf/open/space
 	lighting_lumcount = 4		//starlight
@@ -244,7 +273,7 @@
 	// replicate vars
 	for(var/V in Area.vars)
 		switch(V)
-			if ("contents","lighting_overlay", "color_overlay", "overlays")
+			if ("contents","lighting_overlay", "overlays")
 				continue
 			else
 				if(issaved(Area.vars[V])) A.vars[V] = Area.vars[V]
@@ -294,7 +323,6 @@
 	var/lighting_subarea = 0		//tracks whether we're a lighting sub-area
 	var/lighting_space = 0			// true for space-only lighting subareas
 	var/tagbase
-	var/image/color_overlay //Tracks the color image.
 
 /area/proc/SetLightLevel(light)
 	if(!src) return
@@ -367,5 +395,3 @@
 #undef LIGHTING_MAX_LUMINOSITY_STATIC
 #undef LIGHTING_MAX_LUMINOSITY_MOBILE
 #undef LIGHTING_MAX_LUMINOSITY_TURF
-#undef DIRECTIONAL_LUM_OFFSET
-#undef DIRECTIONAL_LUM_MULT

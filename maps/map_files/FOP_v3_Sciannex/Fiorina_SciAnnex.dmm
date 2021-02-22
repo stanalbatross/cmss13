@@ -5169,12 +5169,6 @@
 /obj/item/ammo_magazine/pistol/automatic,
 /turf/open/floor/plating/prison,
 /area/fiorina/maintenance)
-"dbg" = (
-/obj/structure/sign/prop3{
-	desc = "Enlist in the Penal Battalions today! The USCM 3rd Fleet features a subset of UA sanctioned penal battalions, drawing from inmate popualtions across the colonies. Mostly New Argentina though."
-	},
-/turf/closed/wall/r_wall/prison,
-/area/fiorina/station/flight_deck)
 "dbq" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/device/flashlight/lamp/candelabra{
@@ -6507,15 +6501,6 @@
 	icon_state = "darkyellow2"
 	},
 /area/fiorina/station/flight_deck)
-"dJm" = (
-/obj/structure/prop/almayer/computers/mission_planning_system{
-	desc = "Its a telephone, and a computer. Woah.";
-	name = "\improper funny telephone booth";
-	pixel_x = 2;
-	pixel_y = 21
-	},
-/turf/open/floor/prison,
-/area/fiorina/station/central_ring)
 "dKo" = (
 /obj/item/ammo_magazine/revolver/cmb{
 	current_rounds = 0
@@ -8763,12 +8748,14 @@
 /turf/open/floor/prison,
 /area/fiorina/tumor/servers)
 "fdK" = (
-/obj/vehicle/souto{
+/obj/effect/decal/cleanable/blood/oil,
+/obj/structure/prop/invuln{
 	desc = "The best ride in the universe. For the one and only Souto Man! Although, this one seems to have no fuel left.";
 	dir = 4;
+	icon = 'icons/obj/vehicles/vehicles.dmi';
+	icon_state = "soutomobile";
 	name = "Disabled Souto Mobile"
 	},
-/obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/prison,
 /area/fiorina/station/park)
 "fdS" = (
@@ -15605,9 +15592,9 @@
 /area/fiorina/tumor/civres)
 "jiJ" = (
 /obj/structure/prop/almayer/computers/mission_planning_system{
+	density = 0;
 	desc = "Its a telephone, and a computer. Woah.";
 	name = "\improper funny telephone booth";
-	pixel_x = 2;
 	pixel_y = 21
 	},
 /turf/open/floor/prison,
@@ -19447,10 +19434,12 @@
 /turf/open/floor/prison,
 /area/fiorina/lz/near_lzII)
 "lro" = (
-/obj/structure/machinery/door/airlock/prison/horizontal{
+/obj/structure/prop/invuln{
+	desc = "Floating cells are reserved for highly dangerous criminals. Whoever is out there is probably best left out there.";
 	dir = 4;
-	indestructible = 1;
-	locked = 1
+	icon = 'icons/obj/structures/doors/celldoor.dmi';
+	icon_state = "door_closed";
+	name = "floating cell door"
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/plating/prison,
@@ -34796,7 +34785,7 @@
 /obj/effect/decal/hefa_cult_decals/d32{
 	icon_state = "4"
 	},
-/turf/closed/wall/r_wall/prison,
+/turf/closed/wall/r_wall/prison_unmeltable,
 /area/fiorina/tumor/servers)
 "uvG" = (
 /obj/effect/decal/cleanable/blood/gibs/xeno/down,
@@ -39327,12 +39316,6 @@
 /obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating/prison,
 /area/fiorina/station/medbay)
-"xgS" = (
-/obj/structure/machinery/door/airlock/prison_hatch/autoname{
-	dir = 1
-	},
-/turf/closed/wall/prison,
-/area/fiorina/station/lowsec)
 "xhc" = (
 /turf/open/floor/prison{
 	dir = 4;
@@ -54553,19 +54536,19 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
 aWV
-dxS
-dxS
 aWV
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
 jKh
 fGb
 fGb
@@ -54765,19 +54748,19 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
 aWV
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
 fGb
 fGb
 fGb
@@ -54977,19 +54960,19 @@ bQM
 bQM
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
 fWS
 fGb
 hPW
@@ -55189,11 +55172,11 @@ phf
 iWq
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
 ldy
 ldy
 ldy
@@ -55201,7 +55184,7 @@ ldy
 ldy
 ldy
 ldy
-dxS
+aWV
 fWS
 fWS
 hPW
@@ -55401,10 +55384,10 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
 ldy
 kDY
 kDY
@@ -55613,9 +55596,9 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
 ldy
 fGb
 mXD
@@ -55825,8 +55808,8 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 uwi
 mXD
@@ -56037,8 +56020,8 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 uwi
 iWW
@@ -56249,8 +56232,8 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 fGb
 iWW
@@ -56459,10 +56442,10 @@ bQM
 bTo
 pcu
 iWq
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
 ldy
 fGb
 iWW
@@ -56671,7 +56654,7 @@ bQM
 bTo
 pcu
 pbV
-dxS
+aWV
 ldy
 ldy
 ldy
@@ -57095,7 +57078,7 @@ bQM
 bTo
 pcu
 fFE
-dxS
+aWV
 ldy
 ldy
 ldy
@@ -57307,10 +57290,10 @@ bQM
 bTo
 pcu
 iWq
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
 ldy
 ghU
 wKQ
@@ -57521,8 +57504,8 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 uqo
 wKQ
@@ -57733,8 +57716,8 @@ pcu
 iWq
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 ljW
 wKQ
@@ -57945,8 +57928,8 @@ pcu
 sVv
 bQM
 bQM
-dxS
-dxS
+aWV
+aWV
 ldy
 lax
 eQR
@@ -58157,9 +58140,9 @@ pcu
 sVv
 bQM
 bQM
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
 ldy
 fGb
 cQG
@@ -58369,10 +58352,10 @@ pcu
 sVv
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
 ldy
 kDY
 kDY
@@ -58581,11 +58564,11 @@ pcu
 sVv
 bQM
 bQM
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
 ldy
 ldy
 ldy
@@ -58793,14 +58776,14 @@ pcu
 sHO
 fQV
 fQV
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
-dxS
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
+aWV
 pwL
 tvU
 dxS
@@ -59005,14 +58988,14 @@ pcu
 pcu
 pcu
 pcu
-dxS
-dxS
+aWV
+aWV
 agi
 agi
 agi
 agi
 agi
-dxS
+aWV
 pxa
 qOy
 dxS
@@ -59436,7 +59419,7 @@ agi
 agi
 agi
 agi
-dxS
+aWV
 agi
 lrA
 gUm
@@ -65894,7 +65877,7 @@ wyT
 wyT
 wyT
 wyT
-uGY
+nqN
 uGY
 uuL
 uuL
@@ -66738,7 +66721,7 @@ bFr
 gdt
 gdt
 gdt
-bis
+bFr
 gdt
 gdt
 gdt
@@ -66950,7 +66933,7 @@ bFr
 iKs
 iKs
 iKs
-bis
+bFr
 iKs
 iKs
 iKs
@@ -68631,8 +68614,8 @@ joW
 dTv
 cvn
 bFr
-bis
-eLu
+bFr
+twb
 eLu
 tLC
 twb
@@ -73916,7 +73899,7 @@ rsE
 jmG
 jmG
 lDC
-dJm
+itG
 tvI
 tvI
 tvI
@@ -78178,7 +78161,7 @@ pHu
 djx
 vei
 wBr
-xgS
+oFI
 vRA
 glD
 kqC
@@ -81760,15 +81743,15 @@ lHy
 dBa
 hfT
 hfT
-hfT
+rBF
 mlC
 mlC
 mlC
-nSx
+ecM
 mlC
 mlC
 mlC
-nSx
+ecM
 nSx
 lZL
 gCb
@@ -81972,7 +81955,7 @@ aRG
 aRG
 tih
 aRG
-dbg
+ezn
 rOa
 bQM
 bQM
@@ -81980,7 +81963,7 @@ rOa
 bQM
 bQM
 rOa
-nSx
+ecM
 nSx
 nrq
 uVQ
@@ -82184,15 +82167,15 @@ aRG
 qHZ
 aRG
 aRG
-hfT
+rBF
 dzl
 dzl
 dzl
-hfT
+rBF
 dzl
 dzl
 dzl
-nSx
+ecM
 nSx
 aah
 ckD
