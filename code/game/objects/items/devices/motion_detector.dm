@@ -33,22 +33,35 @@
 	var/scanning = FALSE // controls if MD is in process of scan
 	var/datum/shape/rectangle/range_bounds
 	var/long_range_locked = FALSE //only long-range MD
+	var/ping_overlay
 
 /obj/item/device/motiondetector/New()
 	range_bounds = new //Just creating a rectangle datum
+	update_icon()
 	..()
 
 /obj/item/device/motiondetector/update_icon()
-	if(ping_count > 8)
-		icon_state = "[initial(icon_state)]_on_9_b"
-		spawn(10)
-			if(active)
-				icon_state = "[initial(icon_state)]_on_9" 
+	//clear overlays
+	if(overlays)
+		overlays.Cut()
 	else
-		icon_state = "[initial(icon_state)]_on_[ping_count]_b"
-		spawn(10)
-			if(active)
-				icon_state = "[initial(icon_state)]_on_[ping_count]"
+		overlays = list()
+
+	if(blood_overlay)
+		overlays += blood_overlay
+	//add ping overlay
+	if(ping_count > 8)
+		ping_overlay = "+[initial(icon_state)]_on_9"
+	else
+		ping_overlay = "+[initial(icon_state)]_on_[ping_count]"
+	var/image/ping_overlay_image = ping_overlay
+	if(active)
+		overlays += ping_overlay_image
+	//add toggle switch overlay
+	if(detector_mode)
+		overlays += "+[initial(icon_state)]_long_switch"
+	else
+		overlays += "+[initial(icon_state)]_short_switch"
 
 /obj/item/device/motiondetector/verb/toggle_range_mode()
 	set name = "Toggle Range Mode"
@@ -70,8 +83,8 @@
 	else
 		to_chat(user, SPAN_NOTICE("You switch [src] to long range mode."))
 		detector_range = 14
-	if(active)
-		update_icon()
+	update_icon()
+	playsound(usr,'sound/machines/click.ogg', 15, TRUE)
 
 /obj/item/device/motiondetector/clicked(mob/user, list/mods)
 	if (isobserver(user) || isXeno(user)) return
@@ -93,7 +106,6 @@
 /obj/item/device/motiondetector/proc/toggle_active(mob/user, var/old_active)
 	active = !old_active
 	if(active)
-		update_icon()
 		if(user)
 			to_chat(user, SPAN_NOTICE("You activate [src]."))
 		playsound(loc, 'sound/items/detector_turn_on.ogg', 30, 0, 5, 2)
@@ -105,6 +117,7 @@
 			to_chat(user, SPAN_NOTICE("You deactivate [src]."))
 		playsound(loc, 'sound/items/detector_turn_off.ogg', 30, 0, 5, 2)
 		STOP_PROCESSING(SSobj, src)
+	update_icon()
 
 /obj/item/device/motiondetector/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -175,7 +188,6 @@
 		var/mob/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
 		if(M == loc) continue //device user isn't detected
 		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
-		if(isrobot(M)) continue
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H.get_target_lock(iff_signal))
@@ -188,7 +200,7 @@
 		if(Q.z != cur_turf.z || !(range_bounds.contains_atom(Q))) continue
 		ping_count++
 		if(human_user)
-			show_blip(human_user, Q, "error")
+			show_blip(human_user, Q, "queen_eye")
 
 	if(ping_count > 0)
 		playsound(loc, pick('sound/items/detector_ping_1.ogg', 'sound/items/detector_ping_2.ogg', 'sound/items/detector_ping_3.ogg', 'sound/items/detector_ping_4.ogg'), 60, 0, 7, 2)
@@ -234,9 +246,11 @@
 
 		DB.screen_loc = "[Clamp(c_view + 1 - view_x_offset + (target.x - user.x), 1, 2*c_view+1)],[Clamp(c_view + 1 - view_y_offset + (target.y - user.y), 1, 2*c_view+1)]"
 		user.client.screen += DB
-		sleep(12)
-		if(user.client)
-			user.client.screen -= DB
+		addtimer(CALLBACK(src, .proc/clear_pings, user, DB), 1 SECONDS)
+
+/obj/item/device/motiondetector/proc/clear_pings(mob/user, var/obj/effect/detector_blip/DB)
+	if(user.client)
+		user.client.screen -= DB
 
 /obj/item/device/motiondetector/intel
 	name = "data detector"
@@ -326,19 +340,13 @@
 
 	scanning = FALSE
 
-/obj/item/device/motiondetector/m717
-	name = "M717 prototype motion detector"
+/obj/item/device/motiondetector/r4t
+	name = "R4T pocket motion detector"
 	desc = "This prototype motion detector sacrifices versatility, having only the long-range mode, for size, being so small it can even fit in pockets."
-	icon_state = "m717-detector"
+	icon_state = "pocket"
 	item_state = "motion_detector"
 	flags_atom = FPRINT| CONDUCT
 	flags_equip_slot = SLOT_WAIST
 	w_class = SIZE_SMALL
-	blip_type = "tracker"
+	//blip_type = "tracker" tracker is ONLY for tracking bulleted xenos
 	long_range_locked = TRUE
-
-/obj/item/device/motiondetector/m717/update_icon()
-	if(active)
-		icon_state = "[initial(icon_state)]_on"
-	else
-		icon_state = "[initial(icon_state)]"

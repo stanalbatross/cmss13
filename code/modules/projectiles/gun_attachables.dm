@@ -814,15 +814,15 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/stock/m717
 	name = "\improper M717 scouting stock"
-	desc = "A wooden stock designed for the M717 lever-action rifle, designed to withstand harsh environments."
+	desc = "A wooden stock designed for the M717 lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way of working the lever."
 	icon_state = "m717-stock"
 	attach_icon = "m717-stock"
-	wield_delay_mod = WIELD_DELAY_FAST
+	wield_delay_mod = WIELD_DELAY_SLOW
 
 /obj/item/attachable/stock/m717/New()
 	..()
 	select_gamemode_skin(type)
-	recoil_mod = -RECOIL_AMOUNT_TIER_1
+	recoil_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_mod = -SCATTER_AMOUNT_TIER_8
 	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_4

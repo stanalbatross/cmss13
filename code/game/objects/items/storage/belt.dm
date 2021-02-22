@@ -331,7 +331,7 @@
 /obj/item/storage/belt/marine/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_ammo_to(M,user)
+		dump_ammo_to(M,user, M.transfer_handful_amount)
 	else
 		return ..()
 
@@ -408,7 +408,7 @@
 /obj/item/storage/belt/shotgun/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/shotgun))
 		var/obj/item/ammo_magazine/shotgun/M = W
-		dump_ammo_to(M,user)
+		dump_ammo_to(M, user, M.transfer_handful_amount)
 	else
 		return ..()
 
@@ -430,7 +430,7 @@
 /obj/item/storage/belt/lever_action/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/lever_action))
 		var/obj/item/ammo_magazine/lever_action/M = W
-		dump_ammo_to(M,user)
+		dump_ammo_to(M, user, M.transfer_handful_amount)
 
 	if(istype(W, /obj/item/storage/belt/gun/m44/lever_action/attach_holster))
 		if(length(contents) || length(W.contents))
@@ -814,6 +814,7 @@
 	w_class = SIZE_LARGE
 	storage_slots = 14
 	max_storage_space = 28
+	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	can_hold = list(
 		/obj/item/ammo_magazine/handful,
 		/obj/item/weapon/gun/revolver,
@@ -827,18 +828,17 @@
 /obj/item/storage/belt/gun/m44/lever_action/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/lever_action))
 		var/obj/item/ammo_magazine/lever_action/M = W
-		dump_ammo_to(M,user)
+		dump_ammo_to(M,user, M.transfer_handful_amount)
 	else
 		return ..()
 
 /obj/item/storage/belt/gun/m44/lever_action/attach_holster
-	name = "\improper M276 prototype revolver holster attachment"
-	desc = "This prototype holster can be instantly attached to an empty M276 45-70 rig, giving up some storage space in exchange for holding a sidearm."
+	name = "\improper M276 revolver holster attachment"
+	desc = "This holster can be instantly attached to an empty M276 45-70 rig, giving up some storage space in exchange for holding a sidearm. You could also clip it to your belt standalone if you really wanted to."
 	icon_state = "m717-attach-holster"
 	item_state = "m717-attach-holster"
 	w_class = SIZE_LARGE
 	storage_slots = 1
-	max_w_class = SIZE_SMALL
 	max_storage_space = 1
 	can_hold = list(
 		/obj/item/weapon/gun/revolver

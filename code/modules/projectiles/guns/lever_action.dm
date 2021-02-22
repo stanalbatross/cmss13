@@ -21,17 +21,23 @@ their unique feature is that a direct hit will buff your damage and firerate
 	var/lever_sound = 'sound/weapons/handling/gun_lever_action_lever.ogg'
 	var/lever_super_sound = 'sound/weapons/handling/gun_lever_action_superload.ogg'
 	var/lever_hitsound = 'sound/weapons/handling/gun_lever_action_hitsound.ogg'
-	var/lever_delay //Higher means longer delay.
-	var/recent_lever //world.time to see when they last levered it.
-	var/levered = FALSE //Used to see if the rifle has already been levered.
-	var/message //To not spam the above.
-	var/onehand_success_chance = 85 //here so it can be easily VVed
-	//fix shotgun unloading? what does this mean
-	//do the glob list thing and after that fix all generate_handfula nd after taht fix dumping into belts doing 5 roudn handfus.
-	//having lever in back makes you get the hit if you shoot with any gun
-	//sling clamping rifle back doesn't re-register signal. STILL TRUE!
-	//hitting dead mobs gives buff
-	var/testing_negative_speed = 5
+	var/lever_delay
+	var/recent_lever
+	var/levered = FALSE
+	var/message_cooldown
+	var/onehand_success_chance = 100 //here so it can be easily VVed
+	//having lever in back makes you get the hit if you shoot with any gun -- fixed?
+	//sling clamping rifle back doesn't re-register signal. STILL TRUE! -- fixed
+	//hitting dead mobs gives buff -- fixed
+	//refactor onehand bonebreaking to fit into direct hit buff -- done
+	//rebase and add sminthnwesson animation
+	//fix all ammos -- just make marksman have flat more penetration. i guess this is why m44 is like this?
+	//remove extra box make it spawn full
+	//rename to r4t
+	//do that MD thing oh god
+	var/lever_message = "<i>You work the lever.<i>"
+	var/buff_time
+	var/testing_fire_reduc = 2
 
 /obj/item/weapon/gun/lever_action/examine(user)
 	..()
@@ -44,50 +50,82 @@ their unique feature is that a direct hit will buff your damage and firerate
 
 /obj/item/weapon/gun/lever_action/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_1
+	fire_delay = FIRE_DELAY_TIER_1 + FIRE_DELAY_TIER_10
 	lever_delay = FIRE_DELAY_TIER_3
 	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_3
-	accuracy_mult_unwielded = BASE_ACCURACY_MULT
+	accuracy_mult_unwielded = BASE_ACCURACY_MULT - HIT_ACCURACY_MULT_TIER_5
 	scatter = SCATTER_AMOUNT_TIER_8
 	burst_scatter_mult = 0
 	scatter_unwielded = SCATTER_AMOUNT_TIER_2
 	damage_mult = BASE_BULLET_DAMAGE_MULT
 	recoil = RECOIL_AMOUNT_TIER_3
-	recoil_unwielded = RECOIL_AMOUNT_TIER_2
+	recoil_unwielded = RECOIL_AMOUNT_TIER_1
 
 /obj/item/weapon/gun/lever_action/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 19,"rail_x" = 11, "rail_y" = 21, "under_x" = 15, "under_y" = 12, "stock_x" = 15, "stock_y" = 11)
 
-/obj/item/weapon/gun/lever_action/pickup(var/mob/M)
+/obj/item/weapon/gun/lever_action/wield(var/mob/M)
 	..()
 	RegisterSignal(M, COMSIG_DIRECT_BULLET_HIT, .proc/direct_hit_buff)
 	to_chat(M, SPAN_BOLDNOTICE("You gained direct signal"))
 
-/obj/item/weapon/gun/lever_action/dropped(var/mob/M)
+/obj/item/weapon/gun/lever_action/unwield(var/mob/M)
 	..()
 	UnregisterSignal(M, COMSIG_DIRECT_BULLET_HIT)
 	to_chat(M, SPAN_BOLDNOTICE("You lost direct signal"))
 
-/obj/item/weapon/gun/lever_action/proc/direct_hit_buff(mob/user, var/one_hand_lever = FALSE)
+/obj/item/weapon/gun/lever_action/proc/direct_hit_buff(mob/user, mob/target, var/one_hand_lever = FALSE)
 	SIGNAL_HANDLER
-	if(!one_hand_lever) //you haven't hit anything so
+	var/mob/living/carbon/human/human_user = user
+	if(one_hand_lever)
+		if(prob(onehand_success_chance) || skillcheck(human_user, SKILL_FIREARMS, SKILL_FIREARMS_TRAINED)) //note for future coders: base marines should never be able to easily pass this skillcheck, only specials
+			onehand_success_chance = onehand_success_chance - 30 //gets steadily worse if you spam it
+		else
+			to_chat(user, SPAN_DANGER("Augh! Your hand catches on the lever!!"))
+			var/obj/limb/O = human_user.get_limb(human_user.hand ? "l_hand" : "r_hand")
+			if(O.status & LIMB_BROKEN)
+				O = human_user.get_limb(user.hand ? "l_arm" : "r_arm")
+				human_user.drop_held_item()
+			O.fracture()
+			O &= ~LIMB_SPLINTED
+			human_user.pain.recalculate_pain()
+			return
+
+	else if(target.stat == DEAD)
+		return
+
+	else
 		to_chat(user, SPAN_BOLDNOTICE(pick("Bullseye!", "Dead center!", "Direct hit!", "Nice shot!", "Perfect!")))
 		playsound(user, lever_hitsound, 25, FALSE)
 	lever_sound = lever_super_sound
+	lever_message = "<b><i>You quickly work the lever!<i><b>"
 	lever_delay = FIRE_DELAY_TIER_10
-	last_fired = world.time - testing_negative_speed //shoot the next round faster	
+	last_fired = world.time - testing_fire_reduc //to shoot the next round faster
+	buff_time = world.time
 	fire_delay = FIRE_DELAY_TIER_5
-	damage_mult = initial(damage_mult) + BULLET_DAMAGE_MULT_TIER_7 //increase the damage
+	damage_mult = initial(damage_mult) + BULLET_DAMAGE_MULT_TIER_10
 	wield_delay = 0 //for one-handed levering
-	addtimer(CALLBACK(src, .proc/reset_hit_buff), 1 SECONDS) //0.5
+	addtimer(CALLBACK(src, .proc/reset_hit_buff, user, one_hand_lever), 1 SECONDS) //0.5
 
-/obj/item/weapon/gun/lever_action/proc/reset_hit_buff(mob/user)
+/obj/item/weapon/gun/lever_action/proc/reset_hit_buff(mob/user, var/one_hand_lever)
+	SIGNAL_HANDLER
+	if(buff_time + 1 SECONDS > world.time)
+	//if 315 is bigger than 310 it returns, good right?
+		return
+	//works, BUT! the last shot that triggered the hit buff inmediately cancels it out once you finish shooting, because it calls the proc inmediately 
+	//so a better way would be to have the addtimer get removed, somehow?
 	lever_sound = initial(lever_sound)
+	lever_message = initial(lever_message)
 	wield_delay = initial(wield_delay)
+	onehand_success_chance = initial(onehand_success_chance)
 	//these are init configs and so cannot be initial()
 	lever_delay = FIRE_DELAY_TIER_3
 	fire_delay = FIRE_DELAY_TIER_1
 	damage_mult = BASE_BULLET_DAMAGE_MULT
+	recalculate_attachment_bonuses() //stock wield delay
+	if(one_hand_lever)
+		addtimer(VARSET_CALLBACK(src, onehand_success_chance, initial(onehand_success_chance)), 4 SECONDS)
+		to_chat(user, SPAN_DANGER("Add reset timer"))
 
 /obj/item/weapon/gun/lever_action/m717
 	name = "M717 lever-action rifle"
@@ -176,7 +214,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 	return TRUE
 
 /obj/item/weapon/gun/lever_action/proc/retrieve_bullet(selection)
-	var/obj/item/ammo_magazine/handful/new_handful = new GLOB.ammo_to_handful[selection]
+	var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
+	new_handful.generate_handful(selection, "45-70", 9, 1, /obj/item/weapon/gun/lever_action)
 	return new_handful
 
 /obj/item/weapon/gun/lever_action/reload(mob/user, var/obj/item/ammo_magazine/magazine)
@@ -185,15 +224,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 		to_chat(user, SPAN_WARNING("You can't use that to reload!"))
 		return
 
-	//From here we know they are using shotgun type ammo and reloading via handful.
-	//Makes some of this a lot easier to determine.
-
 	var/mag_caliber = magazine.default_ammo //Handfuls can get deleted, so we need to keep this on hand for later.
 	if(current_mag.transfer_ammo(magazine,user,1))
 		add_to_internal_mag(user,mag_caliber) //This will check the other conditions.
-
-/obj/item/weapon/gun/lever_action/unload(mob/user)
-	empty_chamber(user)
 
 /obj/item/weapon/gun/lever_action/proc/ready_lever_action_internal_mag()
 	if(isnull(current_mag) || !length(current_mag.chamber_contents))
@@ -238,9 +271,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(world.time < (recent_lever + lever_delay)) 
 		return
 	if(levered)
-		if (world.time > (message + lever_delay))
+		if (world.time > (message_cooldown + lever_delay))
 			to_chat(user, SPAN_WARNING("<i>[src] already has a bullet in the chamber!<i>"))
-			message = world.time
+			message_cooldown = world.time
 		return
 	if(in_chamber) //eject the chambered round
 		in_chamber = null
@@ -261,8 +294,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 		levered = TRUE
 
 /obj/item/weapon/gun/lever_action/proc/twohand_lever(mob/living/carbon/human/user)
-	to_chat(user, SPAN_WARNING("<i>You work the lever.<i>"))
-	animation_move_up_slightly(src) //these animations NEED to end just as the fire_delay is over for maximum feedback
+	to_chat(user, SPAN_WARNING(lever_message))
+	animation_move_up_slightly(src)
 
 /obj/item/weapon/gun/lever_action/proc/try_onehand_lever(mob/living/carbon/human/user)
 	if(flags_item & WIELDED)
@@ -270,16 +303,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 		return
 	to_chat(user, SPAN_WARNING("<i>You spin the [src] one-handed! Fuck yeah!<i>"))
 	animation_wrist_flick(src)
-	if(prob(onehand_success_chance) || skillcheck(user, SKILL_FIREARMS, SKILL_FIREARMS_TRAINED)) //note for future coders: base marines should never be able to easily pass this skillcheck, only specials
-		direct_hit_buff(user, TRUE)
-	else
-		to_chat(user, SPAN_DANGER("Augh! Your hand catches on the lever!!"))
-		var/obj/limb/O = user.get_limb(user.hand ? "l_hand" : "r_hand")
-		if(O.status & LIMB_BROKEN) //if your hand was already broken, your arm will break instead!
-			O = user.get_limb(user.hand ? "l_arm" : "r_arm")
-			user.drop_held_item()
-		O.fracture()
-		return //won't lever if it breaks
+	direct_hit_buff(user, ,TRUE)
 
 /obj/item/weapon/gun/lever_action/reload_into_chamber(mob/user)
 	if(!current_mag)
@@ -296,4 +320,4 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(levered)
 		to_chat(user, SPAN_WARNING("You open the lever on [src]."))
 		levered = FALSE
-	return ..()
+	return empty_chamber(user)

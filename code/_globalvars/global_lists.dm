@@ -68,7 +68,6 @@ var/global/list/list/chemical_gen_classes_list = list("C" = list(),"C1" = list()
 
 GLOBAL_LIST_INIT_TYPED(surgery_steps, /datum/surgery_step, setup_surgeries())				//List of all surgery steps  |BS12
 GLOBAL_LIST_INIT_TYPED(ammo_list, /datum/ammo, setup_ammo())					//List of all ammo types. Used by guns to tell the projectile how to act.
-GLOBAL_LIST_INIT_TYPED(ammo_to_handful, /datum/ammo, convert_ammo_to_handful())
 GLOBAL_REFERENCE_LIST_INDEXED(joblist, /datum/job, title)					//List of all jobstypes, minus borg and AI
 
 GLOBAL_LIST_INIT_TYPED(gear_presets_list, /datum/equipment_preset, setup_gear_presets())
@@ -182,14 +181,6 @@ var/global/list/paramslist_cache = list()
 		var/datum/ammo/A = new T
 		ammo_list[A.type] = A
 	return ammo_list
-
-/proc/convert_ammo_to_handful()
-	var/list/ammo_to_handful_list = list()
-	for(var/new_ammo in subtypesof(/datum/ammo))
-		var/datum/ammo/ammo = new_ammo
-		if(initial(ammo.handful_type))
-			ammo_to_handful_list[ammo.handful.type] = ammo.handful
-	return ammo_to_handful_list
 
 /proc/setup_resin_constructions()
 	var/list/resin_constructions_list = list()

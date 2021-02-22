@@ -27,6 +27,8 @@ They're all essentially identical when it comes to getting the job done.
 	var/flags_magazine = AMMUNITION_REFILLABLE //flags specifically for magazines.
 	var/base_mag_icon //the default mag icon state.
 	var/base_mag_item //the default mag item (inhand) state.
+	var/transfer_handful_amount = 8 //amount of bullets to transfer, 5 for 12g, 9 for 45-70
+	var/handful_state = "bullet" //used for generating handfuls from boxes and setting their sprite when loading/unloading
 
 /obj/item/ammo_magazine/Initialize(mapload, spawn_empty)
 	. = ..()
@@ -116,23 +118,22 @@ They're all essentially identical when it comes to getting the job done.
 
 //This will attempt to place the ammo in the user's hand if possible.
 /obj/item/ammo_magazine/proc/create_handful(mob/user, transfer_amount, var/obj_name = src)
-	var/R
+	var/amount_to_transfer
 	if (current_rounds > 0)
 		var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-		var/MR = caliber == "12g" ? 5 : 8
-		R = transfer_amount ? min(current_rounds, transfer_amount) : min(current_rounds, MR)
-		new_handful.generate_handful(default_ammo, caliber, MR, R, gun_type)
-		current_rounds -= R
+		amount_to_transfer = transfer_amount ? min(current_rounds, transfer_amount) : min(current_rounds, transfer_handful_amount)
+		new_handful.generate_handful(default_ammo, caliber, transfer_handful_amount, amount_to_transfer)
+		current_rounds -= amount_to_transfer
 		if(!istype(src, /obj/item/ammo_magazine/internal) && !istype(src, /obj/item/ammo_magazine/shotgun))	//if we are shotgun or revolver or whatever not using normal mag system
 			playsound(loc, pick('sound/weapons/handling/mag_refill_1.ogg', 'sound/weapons/handling/mag_refill_2.ogg', 'sound/weapons/handling/mag_refill_3.ogg'), 25, 1)
 
 		if(user)
 			user.put_in_hands(new_handful)
-			to_chat(user, SPAN_NOTICE("You grab <b>[R]</b> round\s from [obj_name]."))
+			to_chat(user, SPAN_NOTICE("You grab <b>[amount_to_transfer]</b> round\s from [obj_name]."))
 
 		else new_handful.forceMove(get_turf(src))
-		update_icon(-R) //Update the other one.
-	return R //Give the number created.
+		update_icon(-amount_to_transfer) //Update the other one.
+	return amount_to_transfer //Give the number created.
 
 //our magazine inherits ammo info from a source magazine
 /obj/item/ammo_magazine/proc/match_ammo(obj/item/ammo_magazine/source)
@@ -190,7 +191,7 @@ bullets/shells. ~N
 	if(max_rounds >= current_rounds)
 		var/I = current_rounds*50 // For the metal.
 		matter = list("metal" = I)
-		icon_state = icon_state + "_[current_rounds]"
+	icon_state = handful_state + "_[current_rounds]"
 
 /obj/item/ammo_magazine/handful/pickup(mob/user)
 	var/olddir = dir
@@ -213,17 +214,19 @@ If it is the same and the other stack isn't full, transfer an amount (default 1)
 			transfer_ammo(transfer_from,user, transfer_from.current_rounds) // Transfer it from currently held to src
 		else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
 
-/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, maximum_rounds, new_rounds, new_gun_type)
+/obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, new_max_rounds, new_rounds, new_gun_type)
 	var/datum/ammo/A = GLOB.ammo_list[new_ammo]
 	var/ammo_name = A.name //Let's pull up the name.
+	var/multiple_handful_name = A.multiple_handful_name
 
-	name = "handful of [ammo_name + (ammo_name == "shotgun buckshot"? " ":"s ") + "([new_caliber])"]"
+	name = "handful of [ammo_name + (multiple_handful_name ? " ":"s ") + "([new_caliber])"]"
 
 	default_ammo = new_ammo
 	caliber = new_caliber
-	max_rounds = maximum_rounds
+	max_rounds = new_max_rounds
 	current_rounds = new_rounds
 	gun_type = new_gun_type
+	handful_state = A.handful_state
 	update_icon()
 
 //----------------------------------------------------------------//
@@ -639,7 +642,7 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	overlay_ammo_type = "_reg"
 	overlay_gun_type = "_4570"
 	overlay_content = "_4570"
-	magazine_type = /obj/item/ammo_magazine/lever_action/base
+	magazine_type = /obj/item/ammo_magazine/lever_action
 	num_of_magazines = 100
 	handfuls = TRUE
 
@@ -649,7 +652,7 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	overlay_ammo_type = "_heavy"
 	overlay_gun_type = "_4570"
 	overlay_content = "_45_heavy"
-	magazine_type = /obj/item/ammo_magazine/lever_action/base
+	magazine_type = /obj/item/ammo_magazine/lever_action
 	handfuls = TRUE
 
 /obj/item/ammo_box/magazine/lever_action/marksman
@@ -865,7 +868,7 @@ Turn() or Shift() as there is virtually no overhead. ~N
 		else
 			var/obj/item/ammo_magazine/AM = locate(/obj/item/ammo_magazine) in item_box.contents
 			if(AM)
-				AM.create_handful(user, 5, src)
+				AM.create_handful(user, AM.transfer_handful_amount, src)
 		update_icon()
 	else
 		to_chat(user, SPAN_NOTICE("\The [src] is empty."))
