@@ -22,6 +22,7 @@
 	var/bonus_wall_health = 100
 
 	ui_theme = "xeno"
+	background_icon = "xeno_background"
 
 	resource_receive_process = TRUE
 

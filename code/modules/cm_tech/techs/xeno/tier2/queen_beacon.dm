@@ -1,20 +1,21 @@
 /datum/tech/xeno/powerup/queen_beacon
 	name = "Queen Beacon"
 	desc = "Rally the hive to a specific position!"
-	icon_state = "blue"
+	icon_state = "beacon"
 
 	flags = TREE_FLAG_XENO
-	powerup_type = POWERUP_QUEEN
 
-	required_points = 20 // placeholder
-	// tier = /datum/tier/two
+	required_points = 0
+	var/charges_to_give = 1
+	tier = /datum/tier/two
 
 /datum/tech/xeno/powerup/queen_beacon/apply_powerup(mob/living/carbon/Xenomorph/target)
-	RegisterSignal(target, COMSIG_POWERUP_PRE_UNLOCK, .proc/cancel_unlock_active)
-	var/datum/action/xeno_action/activable/place_queen_beacon/A = give_action(target, /datum/action/xeno_action/activable/place_queen_beacon)
-	RegisterSignal(A, COMSIG_ACTION_REMOVED, .proc/untoggle_active)
+	var/datum/action/xeno_action/A = get_xeno_action_by_type(target, /datum/action/xeno_action/activable/place_queen_beacon)
 
-/datum/tech/xeno/powerup/queen_beacon/proc/untoggle_active(datum/source, mob/owner)
-	SIGNAL_HANDLER
-	UnregisterSignal(source, COMSIG_ACTION_REMOVED)
-	UnregisterSignal(owner, COMSIG_POWERUP_PRE_UNLOCK)
+	if(!A)
+		A = give_action(target, /datum/action/xeno_action/activable/place_queen_beacon)
+
+	A.charges += charges_to_give
+
+/datum/tech/xeno/powerup/queen_beacon/get_applicable_xenos(var/mob/user)
+	return hive.living_xeno_queen

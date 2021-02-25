@@ -2,7 +2,7 @@
 	name = "Squad Engineer Combat Zone Support Package"
 	desc = {"Gives upgraded composite (deployable) cades to regulars. \
 			Gives squad engineers a mod kit for their deployable."}
-	icon_state = "red"
+	icon_state = "engi_kit"
 
 	flags = TREE_FLAG_MARINE
 

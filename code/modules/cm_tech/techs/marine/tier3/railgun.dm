@@ -4,14 +4,14 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 /datum/tech/railgun
 	name = "Enable Stellar Vessel Armements"
 	desc = "Enables the two railguns attached to CIC, allowing for bombardment of enemy positions."
-	icon_state = "red"
+	icon_state = "railgun"
 
 	flags = TREE_FLAG_MARINE
 
 	required_points = 0
 	tier = /datum/tier/three
 
-/datum/tech/railgun/on_unlock(datum/techtree/tree)
+/datum/tech/railgun/on_unlock()
 	. = ..()
 
 	for(var/a in GLOB.railgun_computer_turf_position)

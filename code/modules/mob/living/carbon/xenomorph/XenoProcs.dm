@@ -41,6 +41,15 @@
 
 	. += "Shield: [shieldtotal]"
 
+	if(selected_ability)
+		. += ""
+		. += "Selected Ability: [selected_ability.name]"
+		if(selected_ability.charges != NO_ACTION_CHARGES)
+			. += "Charges Left: [selected_ability.charges]"
+
+		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
+			. += "On Cooldown: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id))]"
+
 	. += ""
 
 	var/evolve_progress

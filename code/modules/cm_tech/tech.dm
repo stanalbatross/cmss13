@@ -2,7 +2,8 @@
 	var/name = "tech"
 	var/desc = "placeholder description"
 
-	var/icon_state = "red"
+	var/icon = 'icons/effects/techtree/tech.dmi'
+	var/icon_state
 
 	var/flags = NO_FLAGS
 	var/tech_flags = NO_FLAGS
@@ -14,59 +15,55 @@
 
 	var/datum/techtree/holder
 
-	/// A state var to stop you from trying to purchase
-	/// a tech that is in the process of being purchased
-	var/purchasing = FALSE
+	// Variables for the physical node in the tree
+	var/obj/effect/node
 
-/datum/tech/proc/fire()
-	return
+	var/locked_color = "#ff0000"
+	var/background_icon = "background"
 
-/**
- * Any additional arguments you want to pass to the `can_unlock` and `on_unlock` procs
- * They will be placed at the end of the argument lists in the order returned by this proc
- *
- * Note that if you want to pass multiple arguments, you will need to return a list
- * Additionally, list arguments need to be nested in lists, otherwise each of their
- * elements will be processed as an individual argument
- */
-/datum/tech/proc/get_additional_args(var/mob/M)
-	return
-
-/datum/tech/proc/can_unlock(var/mob/M, var/datum/techtree/tree)
+/datum/tech/proc/can_unlock(var/mob/M)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(!tree.has_access(M, TREE_ACCESS_MODIFY))
+	if(!holder.has_access(M, TREE_ACCESS_MODIFY))
 		to_chat(M, SPAN_WARNING("You lack the necessary permission required to use this tree"))
 		return
 
-	if(!check_tier_level(M, tree))
+	if(!check_tier_level(M))
 		return
 
-	if(!(type in tree.all_techs[tier.type]))
+	if(!(type in holder.all_techs[tier.type]))
 		to_chat(M, SPAN_WARNING("You cannot purchase this node!"))
 		return
 
-	if(!tree.can_use_points(required_points))
+	if(!holder.can_use_points(required_points))
 		to_chat(M, SPAN_WARNING("Not enough points to purchase this node."))
 		return
 
 	return TRUE
 
-/datum/tech/proc/check_tier_level(var/mob/M, var/datum/techtree/tree)
-	if(tree.tier.tier < tier.tier)
+/datum/tech/proc/check_tier_level(var/mob/M)
+	if(holder.tier.tier < tier.tier)
 		to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
 		return
 
-	var/datum/tier/t_target = tree.tree_tiers[tier.type]
-	if(LAZYLEN(tree.unlocked_techs[tier.type]) >= t_target.max_techs)
+	var/datum/tier/t_target = holder.tree_tiers[tier.type]
+	if(LAZYLEN(holder.unlocked_techs[tier.type]) >= t_target.max_techs)
 		to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
 		return
 
 	return TRUE
 
-/datum/tech/proc/on_unlock(var/datum/techtree/tree)
+/** Called when a tech is unlocked. Usually, benefits can be applied here
+  * however, the purchase can still be cancelled by returning FALSE
+  *
+  * If you sleep in this proc, you must call can_unlock after the sleep ends to make sure you can still purchase the tech in question
+**/
+/datum/tech/proc/on_unlock(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
-	tree.add_points(-required_points)
+	to_chat(user, SPAN_HELPFUL("You have purchased the '[name]' tech node."))
+	holder.add_points(-required_points)
+	update_icon(node)
+	return TRUE
 
 /datum/tech/ui_status(mob/user, datum/ui_state/state)
 	return holder.ui_status(user, state)
@@ -107,4 +104,30 @@
 			. = TRUE
 
 /datum/tech/proc/on_tree_insertion(var/datum/techtree/tree)
-	return
+	holder = tree
+	background_icon = tree.background_icon
+
+/datum/tech/proc/update_icon(var/obj/effect/node)
+	if(!icon_state)
+		node.icon = 'icons/effects/techtree/tech.dmi'
+		node.icon_state = null
+		return
+
+	node.icon = 'icons/effects/techtree/tech.dmi'
+	if(unlocked)
+		node.icon_state = "[background_icon]"
+	else
+		node.icon_state = "[background_icon]_locked"
+
+	node.overlays += get_tier_overlay()
+
+	var/image/tech_icon = image(icon, node, icon_state)
+	if(!unlocked)
+		tech_icon.color = locked_color
+	node.overlays += tech_icon
+
+/datum/tech/proc/get_tier_overlay()
+	var/image/I = image(node.icon, node, unlocked? "+lines" : "+lines_locked")
+	I.color = tier.color
+
+	return I

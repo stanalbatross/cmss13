@@ -66,7 +66,6 @@ SUBSYSTEM_DEF(techtree)
 				techs += node
 
 				node.tier = tree.tree_tiers[node.tier]
-				node.holder = tree
 				node.on_tree_insertion(tree)
 
 		tree.generate_tree()

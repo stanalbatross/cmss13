@@ -79,7 +79,7 @@
 	// Range and other config
 	interrupt_flags = NO_FLAGS
 
-	charges = 5
+	charges = 0
 
 /datum/action/xeno_action/activable/bombard/queen/give_to(mob/living/carbon/Xenomorph/Queen/Q)
 	. = ..()
@@ -116,10 +116,9 @@
 	plasma_cost = 0
 	action_type = XENO_ACTION_CLICK
 
-	charges = 1
+	charges = 0
 
 	var/datum/hive_status/hive
-	var/remove_from_timer
 	var/list/transported_xenos
 
 /datum/action/xeno_action/activable/place_queen_beacon/give_to(mob/living/carbon/Xenomorph/Queen/Q)
@@ -129,7 +128,6 @@
 		hide_from(Q)
 	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
 	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/handle_dismount_ovipositor)
-	remove_from_timer = addtimer(CALLBACK(src, .proc/remove_from, Q), 1 MINUTES, TIMER_STOPPABLE)
 
 /datum/action/xeno_action/activable/place_queen_beacon/remove_from(mob/living/carbon/Xenomorph/X)
 	. = ..()
@@ -138,13 +136,10 @@
 		COMSIG_QUEEN_MOUNT_OVIPOSITOR,
 		COMSIG_QUEEN_DISMOUNT_OVIPOSITOR,
 	))
-	if(remove_from_timer)
-		deltimer(remove_from_timer)
-	remove_from_timer = null
 
 /datum/action/xeno_action/activable/place_queen_beacon/proc/handle_mount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
 	SIGNAL_HANDLER
 	unhide_from(Q)
 
 /datum/action/xeno_action/activable/place_queen_beacon/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
-	remove_from(Q)
+	hide_from(Q)

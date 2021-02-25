@@ -1,7 +1,7 @@
 /datum/tech/xeno/build_distribution
 	name = "Build Distribution"
 	desc = "Distribute the ability to build to all xenomorphs"
-	icon_state = "red"
+	icon_state = "build_distribution"
 
 	flags = TREE_FLAG_XENO
 
@@ -13,7 +13,7 @@
 		/datum/action/xeno_action/activable/secrete_resin
 	)
 
-/datum/tech/xeno/build_distribution/on_unlock(datum/techtree/tree)
+/datum/tech/xeno/build_distribution/on_unlock()
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/give_build_ability)
 

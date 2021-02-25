@@ -6,12 +6,26 @@
 	can_bloody = FALSE
 
 /obj/effect/node
-	name = "Tech Node"
-	icon = 'icons/effects/alert.dmi'
-
-	icon_state = "red"
+	name = "tech node"
 
 	var/datum/tech/info
+
+/obj/effect/node/Initialize(mapload, var/datum/tech/tech)
+	. = ..()
+	if(!tech)
+		stack_trace("Tech node initialized without a tech to attach to! (Expected /datum/tech type, got [tech])")
+		return INITIALIZE_HINT_QDEL
+
+	info = tech
+	name = tech.name
+	tech.node = src
+	tech.update_icon(src)
+
+/obj/effect/node/update_icon()
+	overlays.Cut()
+
+	. = ..()
+	info.update_icon(src)
 
 /obj/effect/node/clicked(mob/user, list/mods)
 	. = ..()

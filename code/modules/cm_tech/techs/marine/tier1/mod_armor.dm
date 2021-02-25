@@ -4,7 +4,7 @@
 			HP. Ceramic plates will have higher temp HP, but break after 1 use; metal plates\
 			break into scrap that can be combined to form improvised plates that are almost\
 			as good."}
-	icon_state = "red"
+	icon_state = "combat_plates"
 
 	flags = TREE_FLAG_MARINE
 

@@ -34,7 +34,7 @@
 	else
 		qdel(item_to_give)
 
-/datum/tech/droppod/item/on_unlock(var/datum/techtree/tree)
+/datum/tech/droppod/item/on_unlock()
 	. = ..()
 	for(var/obj/structure/transmitter/internal/I in GLOB.transmitters)
 		if(!istype(I.loc, /obj/item/storage/backpack/marine/satchel/rto))

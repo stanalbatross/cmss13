@@ -1,27 +1,38 @@
 /datum/tech/transitory
 	name = "Transitory tech"
 	desc = "Transitions the tree to another tier."
+	icon_state = "upgrade"
 
 	var/datum/tier/before
 	var/datum/tier/next
 
-/datum/tech/transitory/check_tier_level(var/mob/M, var/datum/techtree/tree) // messages_to is the
-	if(before && before != tree.tier.type)
+/datum/tech/transitory/check_tier_level(var/mob/M)
+	if(before && before != holder.tier.type)
 		to_chat(M, SPAN_WARNING("You can't unlock this node!"))
 		return
 
 	return TRUE
 
-/datum/tech/transitory/on_unlock(var/datum/techtree/tree)
+/datum/tech/transitory/on_unlock()
+	. = ..()
 	if(!next)
 		return
-	..()
-	var/datum/tier/next_tier = LAZYACCESS(tree.tree_tiers, next)
+	var/datum/tier/next_tier = holder.tree_tiers[next]
 	if(next_tier)
-		tree.tier = next_tier
+		holder.tier = next_tier
 		for(var/a in next_tier.tier_turfs)
 			var/turf/T = a
 			T.color = next_tier.color
+
+/datum/tech/transitory/get_tier_overlay()
+	if(!next)
+		return
+
+	var/datum/tier/next_tier = holder.tree_tiers[next]
+	var/image/I = ..()
+	I.color = next_tier.color
+
+	return I
 
 /datum/tech/transitory/tier1
 	name = "Unlock tier 1"
@@ -43,13 +54,13 @@
 
 	required_points = 0
 
-/datum/tech/transitory/tier2/check_tier_level(var/mob/M, var/datum/techtree/tree)
+/datum/tech/transitory/tier2/check_tier_level(var/mob/M)
 	. = ..()
 
 	if(!.)
 		return .
 
-	var/amount_of_unlocked_techs = LAZYLEN(tree.unlocked_techs[before])
+	var/amount_of_unlocked_techs = LAZYLEN(holder.unlocked_techs[before])
 
 	if(amount_of_unlocked_techs < techs_to_unlock)
 		to_chat(M, SPAN_WARNING("You must unlock [techs_to_unlock - amount_of_unlocked_techs] techs from [initial(before.name)]"))
@@ -80,8 +91,8 @@
 	// This is sadly disabled for now
 	var/control_points_needed = 0.5
 
-/datum/tech/transitory/tier4/check_tier_level(var/mob/M, var/datum/techtree/tree) // Can unlock this at any tier after 2
-	if(tree.tier.tier < initial(before.tier))
+/datum/tech/transitory/tier4/check_tier_level(var/mob/M) // Can unlock this at any tier after 2
+	if(holder.tier.tier < initial(before.tier))
 		to_chat(M, SPAN_WARNING("You can't unlock this node!"))
 		return
 

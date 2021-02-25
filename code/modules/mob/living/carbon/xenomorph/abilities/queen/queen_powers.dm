@@ -485,7 +485,7 @@
 
 /datum/action/xeno_action/activable/place_queen_beacon/proc/tunnel_xeno(datum/source, mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	if(X.z == hive.living_xeno_queen.z)
+	if(X.z == owner.z)
 		to_chat(X, SPAN_XENONOTICE("You begin tunneling towards the queen beacon!"))
 		RegisterSignal(X, COMSIG_MOVABLE_PRE_MOVE, .proc/cancel_movement)
 		LAZYADD(transported_xenos, X)

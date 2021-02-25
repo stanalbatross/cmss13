@@ -1,11 +1,8 @@
 /datum/techtree
+	// General tree variables
 	var/name = TREE_NONE
-
-	var/resource_icon_state = ""
-
-	var/flags = NO_FLAGS
-
 	var/datum/space_level/zlevel = 0
+	var/flags = NO_FLAGS
 
 	var/list/cached_unlocked_techs = list()
 	var/list/techs_by_type = list()
@@ -14,10 +11,15 @@
 
 	var/points = 0
 
-	var/datum/tier/tier = /datum/tier/free
-
+	var/background_icon = "background"
 	var/turf/entrance
 
+	// Tier variables
+	var/datum/tier/tier = /datum/tier/free
+	var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
+
+	// Resource variables
+	var/resource_icon_state = ""
 	var/resource_make_sound = 'sound/machines/click.ogg'
 	var/resource_destroy_sound = 'sound/machines/click.ogg'
 
@@ -28,17 +30,14 @@
 
 	var/obj/structure/resource_node/passive_node
 
-	var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
-
+	// UI Variables
 	var/ui_theme
 
 /datum/techtree/New()
 	. = ..()
 
 	for(var/type in tree_tiers)
-		var/datum/tier/T = new type()
-
-		T.holder = src
+		var/datum/tier/T = new type(src)
 		tree_tiers[type] = T
 
 
@@ -77,8 +76,7 @@
 
 		var/node_pos = x_offset + 1
 		for(var/node in all_techs[tier])
-			var/obj/effect/node/N = new(locate(node_pos, y_offset + 1, zlevel.z_value))
-			N.info = all_techs[tier][node]
+			new /obj/effect/node(locate(node_pos, y_offset + 1, zlevel.z_value), all_techs[tier][node])
 			node_pos += 2
 
 		y_offset += 3
@@ -120,45 +118,24 @@
 	if(!M || M.stat == DEAD)
 		return
 
-	if(T.purchasing)
-		return
-
 	if(T.type in unlocked_techs[T.tier.type])
 		M.show_message(SPAN_WARNING("This node is already unlocked!"))
 		return
 
-	T.purchasing = TRUE
-
-	// Get the other arguments that will be passed to `can_unlock` and `on_unlock`
-	var/list/additional_args = T.get_additional_args(M)
-
-	var/list/can_unlock_args = list(M, src)
-	if(additional_args)
-		can_unlock_args += additional_args
-	if(!T.can_unlock(arglist(can_unlock_args)))
-		T.purchasing = FALSE
+	if(!T.can_unlock(M))
 		return
-	var/list/unlock_args = list(T)
-	if(additional_args)
-		unlock_args += additional_args
-	unlock_node(arglist(unlock_args))
 
-	to_chat(M, SPAN_HELPFUL("You have purchased the '[T]' tech node."))
-	T.purchasing = FALSE
+	unlock_node(T, M)
 
-/datum/techtree/proc/unlock_node(var/datum/tech/T, ...)
+/datum/techtree/proc/unlock_node(var/datum/tech/T, mob/M)
 	if((T.type in unlocked_techs[T.tier.type]) || !(T.type in all_techs[T.tier.type]))
 		return
 
-	// If single use, mark it as so to update the UI
-	// and prevent further purchase
-	if(!(T.tech_flags & TECH_FLAG_MULTIUSE))
-		T.unlocked = TRUE
-		unlocked_techs[T.tier.type] += list(T.type = T)
-	var/list/on_unlock_args = list(src)
-	if(length(args) > 1)
-		on_unlock_args += args.Copy(2)
-	T.on_unlock(arglist(on_unlock_args))
+	if(!T.on_unlock(M))
+		return
+
+	T.unlocked = TRUE
+	unlocked_techs[T.tier.type] += list(T.type = T)
 	cached_unlocked_techs += list(T.type = T)
 
 /datum/techtree/proc/enter_mob(var/mob/M, var/force)
