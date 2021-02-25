@@ -60,6 +60,8 @@
 **/
 /datum/tech/proc/on_unlock(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
+
+	unlocked = TRUE
 	to_chat(user, SPAN_HELPFUL("You have purchased the '[name]' tech node."))
 	holder.add_points(-required_points)
 	update_icon(node)

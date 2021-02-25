@@ -173,6 +173,9 @@
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
 	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
+/// from /mob/living/carbon/Xenomorph/movement_delay()
+#define COMSIG_XENO_MOVEMENT_DELAY "xeno_movement_delay"
+
 /// From /mob/living/carbon/Xenomorph/Queen/proc/mount_ovipositor
 #define COMSIG_QUEEN_MOUNT_OVIPOSITOR "queen_mount_ovipositor"
 /// From /mob/living/carbon/Xenomorph/Queen/proc/dismount_ovipositor(): (instant_dismount)

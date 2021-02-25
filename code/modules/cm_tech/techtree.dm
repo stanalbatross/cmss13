@@ -134,7 +134,6 @@
 	if(!T.on_unlock(M))
 		return
 
-	T.unlocked = TRUE
 	unlocked_techs[T.tier.type] += list(T.type = T)
 	cached_unlocked_techs += list(T.type = T)
 

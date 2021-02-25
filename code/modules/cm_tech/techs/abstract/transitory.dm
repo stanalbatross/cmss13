@@ -63,7 +63,7 @@
 	var/amount_of_unlocked_techs = LAZYLEN(holder.unlocked_techs[before])
 
 	if(amount_of_unlocked_techs < techs_to_unlock)
-		to_chat(M, SPAN_WARNING("You must unlock [techs_to_unlock - amount_of_unlocked_techs] techs from [initial(before.name)]"))
+		to_chat(M, SPAN_WARNING("You must unlock [techs_to_unlock] techs from [initial(before.name)] before you can unlock this tech!"))
 		return FALSE
 
 /datum/tech/transitory/tier3

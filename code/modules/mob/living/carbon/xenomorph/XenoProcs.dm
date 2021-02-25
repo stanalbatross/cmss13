@@ -244,6 +244,10 @@
 	if(slowed && !superslowed)
 		. += XENO_SLOWED_AMOUNT
 
+	var/list/L = list("speed" = .)
+	SEND_SIGNAL(src, COMSIG_XENO_MOVEMENT_DELAY, L)
+	. = L["speed"]
+
 	move_delay = .
 
 
