@@ -41,14 +41,6 @@
 #define DROPPOD_OPEN (1<<2)
 #define DROPPOD_STRIPPED (1<<3)
 
-// Powerups
-/// Powerup for a specifically picked xeno
-#define POWERUP_PICKED		1
-/// Powerup for the whole hive
-#define POWERUP_HIVEWIDE	2
-/// Powerup for the queen
-#define POWERUP_QUEEN		3
-
 #define GET_TREE(treeid) (SStechtree? SStechtree.trees[treeid] : null)
 #define GET_NODE(treeid, nodeid) (SStechtree? SStechtree.trees[treeid].get_node(nodeid) : null)
 

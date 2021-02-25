@@ -1,7 +1,7 @@
 /datum/tech/ltb
 	name = "Armored Support"
 	desc = "Gives the marines the LTB tank and 2 kits to make vehicle crewmen. The kits will be delivered by ASRS."
-	icon_state = "red"
+	icon_state = "ltb"
 
 	flags = TREE_FLAG_MARINE
 
@@ -24,7 +24,7 @@
 	)
 
 
-/datum/tech/ltb/on_unlock(datum/techtree/tree)
+/datum/tech/ltb/on_unlock()
 	. = ..()
 
 	var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole

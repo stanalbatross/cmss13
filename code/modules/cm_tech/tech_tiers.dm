@@ -12,6 +12,10 @@
 
 	var/datum/techtree/holder
 
+/datum/tier/New(var/datum/techtree/tree)
+	. = ..()
+	holder = tree
+
 /datum/tier/free
 	name = "Initial Tier"
 	tier = 0

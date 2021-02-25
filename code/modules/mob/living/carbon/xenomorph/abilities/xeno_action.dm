@@ -141,6 +141,8 @@
 			X.selected_ability = null
 		button.icon_state = "template_on"
 		X.selected_ability = src
+		if(charges)
+			to_chat(X, SPAN_INFO("It has [charges] uses left."))
 
 /datum/action/xeno_action/activable/remove_from(mob/living/carbon/Xenomorph/X)
 	..()

@@ -1,7 +1,7 @@
 /datum/tech/droppod/item/medic_czsp
 	name = "Squad Medic Combat Zone Support Package"
 	desc = "Gives medics to use powerful tools to heal marines."
-	icon_state = "red"
+	icon_state = "medic_qol"
 
 	flags = TREE_FLAG_MARINE
 

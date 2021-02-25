@@ -1,7 +1,7 @@
 /datum/tech/droppod/item/advanced_weapons
 	name = "Advanced Weapons"
 	desc = {"Grants marines a choice of upgraded, advanced weaponry."}
-	icon_state = "blue"
+	icon_state = "weapon"
 
 	flags = TREE_FLAG_MARINE
 

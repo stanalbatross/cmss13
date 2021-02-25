@@ -1,7 +1,6 @@
 /datum/tech/xeno/weed_damage_reduction
 	name = "Fortifying Weeds"
 	desc = "Actively causes weeds to reduce the damage taken by Xenomorphs by providing a light layer of armour, reducing all incoming damage by 5% as long as a xenomorph is on weeds."
-	icon_state = "red"
 
 	flags = TREE_FLAG_XENO
 
@@ -18,7 +17,7 @@
 	var/toggle_cooldown = 5 MINUTES
 
 
-/datum/tech/xeno/weed_damage_reduction/on_unlock(datum/techtree/tree)
+/datum/tech/xeno/weed_damage_reduction/on_unlock()
 	. = ..()
 	enable()
 

@@ -1,14 +1,14 @@
 /datum/tech/xeno_handler
 	name = "Advanced Exobiology"
 	desc = "Give the Marines a Xeno ERT"
-	icon_state = "red"
+	icon_state = "friendly_xeno"
 
 	flags = TREE_FLAG_MARINE
 
 	required_points = 0
 	tier = /datum/tier/three
 
-/datum/tech/xeno_handler/on_unlock(datum/techtree/tree)
+/datum/tech/xeno_handler/on_unlock()
 	. = ..()
 
 	var/datum/emergency_call/xeno_handler/X = new()

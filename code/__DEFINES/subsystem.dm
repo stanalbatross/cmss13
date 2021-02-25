@@ -67,7 +67,6 @@
 #define SS_INIT_TELEPORTER         13
 #define SS_INIT_LIGHTING           12
 #define SS_INIT_DEFCON             9
-#define SS_INIT_TECHTREE           8.5
 #define SS_INIT_LAW                6
 #define SS_INIT_FZ_TRANSITIONS     5
 #define SS_INIT_ATOMS              4
@@ -75,6 +74,7 @@
 #define SS_INIT_SHUTTLE            3.5
 #define SS_INIT_LANDMARK           3.2
 #define SS_INIT_MACHINES              3
+#define SS_INIT_TECHTREE           2.5
 #define SS_INIT_RADIO				2
 #define SS_INIT_TIMER              100
 #define SS_INIT_UNSPECIFIED        0
