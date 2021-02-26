@@ -1246,6 +1246,7 @@
 		else
 			see_invisible = SEE_INVISIBLE_LIVING
 
+	SEND_SIGNAL(src, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 
 
 

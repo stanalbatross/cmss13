@@ -108,14 +108,21 @@
 	id = "speed_stimulant"
 	description = "A highly experimental performance enhancement stimulant. Not as strong as ultrazine, however, it is not addictive."
 	color = "#ffff00"
-	properties = list(PROPERTY_MUSCLESTIMULATING = 30, PROPERTY_PAINKILLING = 3)
+	properties = list(
+		PROPERTY_MUSCLESTIMULATING = 30,
+		PROPERTY_PAINKILLING = 3
+	)
 
 /datum/reagent/stimulant/brain_stimulant
 	name = "Brain Stimulant"
 	id = "brain_stimulant"
 	description = "A highly experimental CNS stimulant."
 	color = "#a800ff"
-	properties = list(PROPERTY_NERVESTIMULATING = 30, PROPERTY_PAINKILLING = 6)
+	properties = list(
+		PROPERTY_NERVESTIMULATING = 30,
+		PROPERTY_PAINKILLING = 6,
+		PROPERTY_NEUROSHIELDING = 1
+	)
 
 /datum/reagent/stimulant/endurance_stimulant
 	name = "Endurance Stimulant"
@@ -126,4 +133,10 @@
 		Pain is impossible to feel whilst this drug is in your system.\
 		During the metabolism of this drug, dysfunctional organs will work normally."}
 	color = "#00ffa8"
-	properties = list(PROPERTY_MUSCLESTIMULATING = 5, PROPERTY_PAINKILLING = 100, PROPERTY_HYPERDENSIFICATING = 1, PROPERTY_ORGANSTABILIZE = 1)
+	properties = list(
+		PROPERTY_NERVESTIMULATING = 5,
+		PROPERTY_MUSCLESTIMULATING = 5,
+		PROPERTY_PAINKILLING = 100,
+		PROPERTY_HYPERDENSIFICATING = 1,
+		PROPERTY_ORGANSTABILIZE = 1
+	)
