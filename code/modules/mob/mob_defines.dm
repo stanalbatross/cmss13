@@ -211,3 +211,5 @@
 	var/turf/listed_turf = null
 
 	var/list/list/item_verbs = list()
+
+	var/list/implants

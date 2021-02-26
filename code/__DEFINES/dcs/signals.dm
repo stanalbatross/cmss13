@@ -190,6 +190,11 @@
 #define COMSIG_HUMAN_UPDATE_SIGHT "human_update_sight"
 	#define COMPONENT_OVERRIDE_UPDATE_SIGHT (1<<0)
 
+///from /mob/living/carbon/human/update_sight()
+#define COMSIG_HUMAN_POST_UPDATE_SIGHT "human_post_update_sight"
+///from /mob/living/carbon/human/movement_delay(): (list/movedata)
+#define COMSIG_HUMAN_POST_MOVE_DELAY "human_post_move_delay"
+
 // /obj/item signals
 ///from base of obj/item/dropped(): (mob/user)
 #define COMSIG_ITEM_DROPPED "item_drop"

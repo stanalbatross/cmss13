@@ -26,6 +26,7 @@
 	last_damage_mob = null
 
 	QDEL_NULL(mob_panel)
+	QDEL_NULL(implants)
 
 	ghostize()
 	clear_fullscreens()
