@@ -9,20 +9,13 @@
 	required_points = 0
 	tier = /datum/tier/one
 
-	options = list()
-
-/datum/tech/droppod/item/engi_czsp/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
-	// We can change the options depending on who's accessing this
-	var/list/newOptions
-	LAZYINITLIST(newOptions)
-
+/datum/tech/droppod/item/engi_czsp/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D, list/options)
+	. = ..()
 	if(H.job == JOB_SQUAD_ENGI)
-		LAZYSET(newOptions, "Engineering Upgrade Kit", /obj/item/engi_upgrade_kit)
+		.["Engineering Upgrade Kit"] = /obj/item/engi_upgrade_kit
 	else
-		LAZYSET(newOptions, "Random Tool", pick(common_tools))
+		.["Random Tool"] = pick(common_tools)
 
-	. = ..(H, D, newOptions)
-	return
 
 /obj/item/engi_upgrade_kit
 	name = "engineering upgrade kit"

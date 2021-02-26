@@ -12,10 +12,12 @@
 	tier = /datum/tier/one
 
 	droppod_input_message = "Choose a plate to retrieve from the droppod."
-	options = list(
-		"Ceramic Plate (High Health, Less Durable)" = /obj/item/clothing/accessory/health/ceramic_plate,
-		"Metal Plate (Durable, Less Health)" = /obj/item/clothing/accessory/health
-	)
+
+/datum/tech/droppod/item/modular_armor_upgrade/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+	. = ..()
+
+	.["Ceramic Plate (High Health, Less Durable)"] = /obj/item/clothing/accessory/health/ceramic_plate
+	.["Metal Plate (Durable, Less Health)"] = /obj/item/clothing/accessory/health
 
 /obj/item/clothing/accessory/health
 	name = "armor plate"

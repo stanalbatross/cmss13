@@ -4,25 +4,24 @@
 
 	var/droppod_input_message = "Choose an item to retrieve from the droppod."
 
-	var/list/options = list()
+/datum/tech/droppod/item/proc/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+	return list()
 
-/datum/tech/droppod/item/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D, list/option_override)
-
-	var/list/listToUse = options
-
-	if(option_override)
-		listToUse = option_override
-
-	var/player_input
-	if(length(listToUse) == 1)
-		player_input = listToUse[1]
-	else
-		player_input = tgui_input_list(H, droppod_input_message, name, listToUse)
-
-	if(!D || !player_input)
+/datum/tech/droppod/item/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
+	var/list/options = get_options(H, D)
+	if(!length(options))
 		return
 
-	var/type_to_give = listToUse[player_input]
+	var/player_input
+	if(length(options) == 1)
+		player_input = options[1]
+	else
+		player_input = tgui_input_list(H, droppod_input_message, name, options)
+
+	if(!player_input || !can_access(H, D))
+		return
+
+	var/type_to_give = options[player_input]
 
 	if(!type_to_give)
 		return
@@ -36,9 +35,7 @@
 
 /datum/tech/droppod/item/on_unlock()
 	. = ..()
-	for(var/obj/structure/transmitter/internal/I in GLOB.transmitters)
-		if(!istype(I.loc, /obj/item/storage/backpack/marine/satchel/rto))
-			continue
-		var/obj/item/storage/backpack/marine/satchel/rto/RTO = I.loc
-		RTO.new_droppod_tech_unlocked(src)
+	for(var/i in GLOB.radio_packs)
+		var/obj/item/storage/backpack/marine/satchel/rto/backpack = i
+		backpack.new_droppod_tech_unlocked(src)
 

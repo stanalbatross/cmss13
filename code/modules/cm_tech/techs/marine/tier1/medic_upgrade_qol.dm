@@ -7,13 +7,12 @@
 
 	required_points = 0
 	tier = /datum/tier/one
-	options = null
 
-/datum/tech/droppod/item/medic/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D, list/option_override)
-	LAZYINITLIST(option_override)
+/datum/tech/droppod/item/medic/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+	. = ..()
 
 	if(H.job == JOB_SQUAD_MEDIC)
-		LAZYSET(option_override, "Medical CZSP", /obj/item/storage/box/combat_zone_support_package)
+		.["Medical CZSP"] = /obj/item/storage/box/combat_zone_support_package
 	else
 		var/type_to_add = /obj/item/stack/medical/bruise_pack
 		if(prob(50))
@@ -22,9 +21,7 @@
 		if(prob(5))
 			type_to_add = /obj/item/device/healthanalyzer
 
-		LAZYSET(option_override, "Random Medical Item", type_to_add)
-
-	. = ..(H, D, option_override)
+		.["Random Medical Item"] = type_to_add
 
 /obj/item/storage/box/combat_zone_support_package
 	name = "medical czsp"

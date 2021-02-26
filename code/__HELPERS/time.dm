@@ -14,6 +14,12 @@
 #define XENO_LEAVE_TIMER_LARVA 6 SECONDS
 #define XENO_LEAVE_TIMER 30 SECONDS
 
+/// Used for calculations with delta_time when figuring how much "amount" to give per "time"
+/// `amount` - The number to get per time
+/// `time` - The time period in which to gain this amount
+/// To be used with delta_time. Multiplied by 10 to convert from deciseconds to seconds
+#define AMOUNT_PER_TIME(amount, time) ((amount / (time))*10)
+
 var/midnight_rollovers = 0
 var/rollovercheck_last_timeofday = 0
 

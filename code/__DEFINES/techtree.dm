@@ -22,11 +22,6 @@
 // Resource
 #define RESOURCE_HEALTH 200
 
-/// Used for calculations with delta_time when figuring how much "amount" to give per "time"
-/// `amount` - The number to get per time
-/// `time` - The time period in which to gain this amount
-#define AMOUNT_PER_TIME(amount, time) (amount / (time))
-
 #define RESOURCE_PER_SECOND AMOUNT_PER_TIME(1, 60 SECONDS) // 1 per 60 seconds
 
 /// Controls the passive increase amount.

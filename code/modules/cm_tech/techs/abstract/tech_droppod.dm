@@ -22,6 +22,9 @@ var/global/list/unlocked_droppod_techs = list()
 
 // Called as to whether on_pod_access should be called
 /datum/tech/droppod/proc/can_access(var/mob/living/carbon/human/H, var/obj/structure/droppod/D)
+	if(!D)
+		return FALSE
+
 	if(H.ckey in already_accessed)
 		return FALSE
 

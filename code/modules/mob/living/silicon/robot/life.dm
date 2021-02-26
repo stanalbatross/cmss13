@@ -1,4 +1,4 @@
-/mob/living/silicon/robot/Life()
+/mob/living/silicon/robot/Life(delta_time)
 	set invisibility = 0
 	set background = 1
 
