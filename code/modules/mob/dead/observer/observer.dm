@@ -173,7 +173,7 @@ Transfer_mind is there to check if mob is being deleted/not going to have a body
 Works together with spawning an observer, noted above.
 */
 
-/mob/dead/observer/Life()
+/mob/dead/observer/Life(delta_time)
 	..()
 	if(!loc) return
 	if(!client) return 0

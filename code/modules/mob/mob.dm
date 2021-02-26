@@ -181,7 +181,7 @@
 	. = ..()
 	SEND_SIGNAL(src, COMSIG_MOB_MOVE, NewLoc, direct)
 
-/mob/proc/Life()
+/mob/proc/Life(delta_time)
 	if(client == null)
 		away_timer++
 	else

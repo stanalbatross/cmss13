@@ -1,7 +1,7 @@
 //Xenomorph Life - Colonial Marines - Apophis775 - Last Edit: 03JAN2015
 
 #define XENO_ARMOR_REGEN_DELAY 30 SECONDS
-/mob/living/carbon/Xenomorph/Life()
+/mob/living/carbon/Xenomorph/Life(delta_time)
 	set invisibility = 0
 	set background = 1
 

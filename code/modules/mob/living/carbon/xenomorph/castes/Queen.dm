@@ -420,7 +420,7 @@
 		hive.set_living_xeno_queen(null)
 	return ..()
 
-/mob/living/carbon/Xenomorph/Queen/Life()
+/mob/living/carbon/Xenomorph/Queen/Life(delta_time)
 	..()
 
 	if(stat != DEAD)

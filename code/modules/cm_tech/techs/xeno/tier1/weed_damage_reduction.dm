@@ -11,7 +11,7 @@
 	var/enabled = FALSE
 
 	/// Amount to lose per second
-	var/point_drain_per_second = AMOUNT_PER_TIME(1, 60 SECONDS) // Drains 1 resource per 60 seconds.
+	var/point_drain_per_second = AMOUNT_PER_TIME(1, 10 MINUTES) // Drains 1 resource per 10 minutes.
 
 	var/next_toggle = 0
 	var/toggle_cooldown = 5 MINUTES
