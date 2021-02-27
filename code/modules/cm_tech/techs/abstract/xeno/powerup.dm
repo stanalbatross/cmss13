@@ -1,3 +1,7 @@
+/**
+ * A tech that applies a buff to a specific set of xenos (or the whole hive) once.
+ * Can be purchased multiple times.
+ */
 /datum/tech/xeno/powerup
 	name = "Xeno Powerup Tech"
 
