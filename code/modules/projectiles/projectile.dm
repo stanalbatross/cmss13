@@ -296,6 +296,10 @@
 		else
 			ammo.on_hit_turf(T,src)
 			T.bullet_act(src)
+
+		if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_TURF, T) & COMPONENT_BULLET_PASS_THROUGH)
+			return FALSE
+
 		return TRUE
 
 	// Firer's turf, keep moving
@@ -405,7 +409,10 @@
 			ammo.on_hit_obj(O,src)
 			if(O && O.loc)
 				O.bullet_act(src)
-		return TRUE
+		. = TRUE
+
+	if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_OBJ, O, .) & COMPONENT_BULLET_PASS_THROUGH)
+		return FALSE
 
 /obj/item/projectile/proc/handle_mob(mob/living/L)
 	// If we've already handled this atom, don't do it again
@@ -451,7 +458,7 @@
 					if (X.behavior_delegate)
 						X.behavior_delegate.on_hitby_projectile(ammo)
 
-			return TRUE
+			. = TRUE
 		else if(!L.lying)
 			animatation_displace_reset(L)
 			if(ammo.sound_miss) playsound_client(L.client, ammo.sound_miss, get_turf(L), 75, TRUE)
@@ -459,6 +466,8 @@
 				SPAN_AVOIDHARM("[src] narrowly misses you!"), null, 4, CHAT_TYPE_TAKING_HIT)
 
 
+	if(SEND_SIGNAL(src, COMSIG_BULLET_POST_HANDLE_MOB, L, .) & COMPONENT_BULLET_PASS_THROUGH)
+		return FALSE
 
 //----------------------------------------------------------
 				//				    	\\
@@ -900,8 +909,23 @@
 	if(damage > 0 && !(ammo_flags & AMMO_IGNORE_ARMOR))
 		var/armor = armor_deflection + armor_deflection_buff
 
-		damage_result = armor_damage_reduction(GLOB.xeno_ranged, damage, armor, P.ammo.penetration, P.ammo.pen_armor_punch, P.ammo.damage_armor_punch, armor_integrity)
-		var/armor_punch = armor_break_calculation(GLOB.xeno_ranged, damage, armor, P.ammo.penetration, P.ammo.pen_armor_punch, P.ammo.damage_armor_punch, armor_integrity)
+		var/list/damagedata = list(
+			"damage" = damage,
+			"armor" = armor,
+			"penetration" = P.ammo.penetration,
+			"armour_break_pr_pen" = P.ammo.pen_armor_punch,
+			"armour_break_flat" = P.ammo.damage_armor_punch,
+			"armor_integrity" = armor_integrity
+		)
+		SEND_SIGNAL(src, COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE, damagedata)
+		damage_result = armor_damage_reduction(GLOB.xeno_ranged, damage,
+			damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
+			damagedata["armour_break_flat"], damagedata["armor_integrity"])
+
+		var/armor_punch = armor_break_calculation(GLOB.xeno_ranged, damage,
+			damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
+			damagedata["armour_break_flat"], damagedata["armor_integrity"])
+
 		apply_armorbreak(armor_punch)
 
 		if(damage <= 3)

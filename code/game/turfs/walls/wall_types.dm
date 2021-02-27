@@ -573,6 +573,8 @@
 	repair_materials = list()
 	var/hivenumber = XENO_HIVE_NORMAL
 
+	flags_turf = TURF_ORGANIC
+
 /turf/closed/wall/resin/Initialize(mapload, ...)
 	icon = get_icon_from_source(CONFIG_GET(string/alien_structures))
 	. = ..()
