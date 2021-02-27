@@ -46,6 +46,8 @@
 	var/list/baseturfs = /turf/baseturf_bottom
 	var/changing_turf = FALSE
 
+	var/flags_turf = NO_FLAGS
+
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE) // this doesn't parent call for optimisation reasons
 	if(flags_atom & INITIALIZED)

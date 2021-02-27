@@ -67,8 +67,23 @@
 	if(armour_type == ARMOR_MELEE)
 		armour_config = GLOB.xeno_melee
 
-	var/modified_damage = armor_damage_reduction(armour_config, damage, (armor_deflection + armor_deflection_buff) * effectiveness_mult, penetration, armour_break_pr_pen, armour_break_flat)
-	var/armor_punch = armor_break_calculation(armour_config, damage, (armor_deflection + armor_deflection_buff) * effectiveness_mult, penetration, armour_break_pr_pen, armour_break_flat, armor_integrity)
+	var/list/damagedata = list(
+		"damage" = damage,
+		"armor" = (armor_deflection + armor_deflection_buff) * effectiveness_mult,
+		"penetration" = penetration,
+		"armour_break_pr_pen" = armour_break_pr_pen,
+		"armour_break_flat" = armour_break_flat,
+		"armor_integrity" = armor_integrity
+	)
+	SEND_SIGNAL(src, COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE, damagedata)
+	var/modified_damage = armor_damage_reduction(armour_config, damage,
+		damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
+		damagedata["armour_break_flat"], damagedata["armor_integrity"])
+
+	var/armor_punch = armor_break_calculation(armour_config, damage,
+		damagedata["armor"], damagedata["penetration"], damagedata["armour_break_pr_pen"],
+		damagedata["armour_break_flat"], damagedata["armor_integrity"])
+
 	apply_armorbreak(armor_punch)
 
 	apply_damage(modified_damage, damage_type)

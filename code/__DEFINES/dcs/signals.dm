@@ -173,6 +173,10 @@
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
 	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
+/// from /mob/living/carbon/Xenomorph/apply_armoured_damage(): (list/damagedata)
+#define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE "xeno_pre_calculate_armoured_damage"
+#define COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE "xeno_pre_apply_armoured_damage"
+
 /// from /mob/living/carbon/Xenomorph/movement_delay()
 #define COMSIG_XENO_MOVEMENT_DELAY "xeno_movement_delay"
 
@@ -263,6 +267,14 @@
 #define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
 /// Called when checking IFF as bullet scans for targets
 #define COMSIG_BULLET_CHECK_IFF "bullet_check_iff"
+
+/// From /obj/item/projectile/handle_mob(): (mob/living/target)
+#define COMSIG_BULLET_POST_HANDLE_MOB "bullet_post_handle_mob"
+/// From /obj/item/projectile/handle_obj(): (obj/target)
+#define COMSIG_BULLET_POST_HANDLE_OBJ "bullet_post_handle_obj"
+/// From /obj/item/projectile/scan_a_turf(): (turf/target)
+#define COMSIG_BULLET_POST_HANDLE_TURF "bullet_post_handle_turf"
+	#define COMPONENT_BULLET_PASS_THROUGH (1<<0)
 
 /// For any additional things that should happen when a xeno's melee_attack_additional_effects_self() proc is called
 #define COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF "xeno_slash_additional_effects_self"

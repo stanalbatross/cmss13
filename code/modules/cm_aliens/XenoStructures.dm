@@ -6,6 +6,7 @@
 	desc = "theres something alien about this"
 	unacidable = TRUE
 	health = 1
+	flags_obj = OBJ_ORGANIC
 
 /obj/effect/alien/Initialize(mapload, ...)
 	. = ..()
@@ -165,6 +166,8 @@
 	health = HEALTH_DOOR_XENO
 	var/close_delay = 100
 	var/hivenumber = XENO_HIVE_NORMAL
+
+	flags_obj = OBJ_ORGANIC
 
 	tiles_with = list(/obj/structure/mineral_door/resin)
 
