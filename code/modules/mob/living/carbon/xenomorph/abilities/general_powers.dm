@@ -144,6 +144,7 @@
 	..()
 	return
 
+
 // Destructive Acid
 /datum/action/xeno_action/activable/corrosive_acid/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner
@@ -474,9 +475,9 @@
 		to_chat(src, SPAN_WARNING("You must wait for your spit glands to refill."))
 		return
 
-	var/turf/current_turf = get_turf(X)
+	var/turf/source_turf = get_turf(X)
 
-	if(!current_turf)
+	if(!source_turf)
 		return
 
 	plasma_cost = X.ammo.spit_cost
@@ -491,7 +492,7 @@
 	var/sound_to_play = pick(1, 2) == 1 ? 'sound/voice/alien_spitacid.ogg' : 'sound/voice/alien_spitacid2.ogg'
 	playsound(X.loc, sound_to_play, 25, 1)
 
-	var/obj/item/projectile/P = new /obj/item/projectile(initial(X.caste_name), X, current_turf)
+	var/obj/item/projectile/P = new /obj/item/projectile(initial(X.caste_name), X, source_turf)
 	P.generate_bullet(X.ammo)
 	P.permutated += X
 	P.def_zone = X.get_limbzone_target()

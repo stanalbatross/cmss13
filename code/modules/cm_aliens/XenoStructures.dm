@@ -317,5 +317,104 @@
 
 /obj/structure/mineral_door/resin/thick
 	name = "thick resin door"
-	health = HEALTH_DOOR_XENO_THICK
+	health = HEALTH_RESIN_PILLAR
 	hardness = 2.0
+
+/obj/structure/resin_pillar
+	name = "resin pillar"
+	desc = "This massive structure arose out of some weeds coating the ground, somehow... It seems to be doing nothing but blocking the way."
+	health = HEALTH_RESIN_PILLAR
+	density = TRUE
+	icon = 'icons/mob/hostiles/structures64x64.dmi'
+	icon_state = "resin_pillar"
+	var/width = 2
+	var/height = 2
+	indestructible = TRUE //initially indestructible
+	var/breaktime
+	var/brittle
+	var/time_to_brittle = 45 SECONDS
+	var/time_to_collapse = 45 SECONDS
+
+/obj/structure/resin_pillar/Initialize(mapload, ...)
+	. = ..()
+	//playsound(granite shuffling)
+	bound_width = width * world.icon_size
+	bound_height = height * world.icon_size
+	playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 25, FALSE)
+	if(mapload) //this should never be called in mapload, but in case it is
+		name = "calcified resin pillar"
+		desc = "This massive structure seems to be inert."
+
+/obj/structure/resin_pillar/process()
+	if(brittle && prob(25))
+		playsound(loc, "alien_resin_break", 25, TRUE)
+
+/obj/structure/resin_pillar/proc/start_decay(brittle_time_override, collapse_time_override)
+	if(brittle_time_override && collapse_time_override)
+		addtimer(CALLBACK(src, .proc/brittle, collapse_time_override), brittle_time_override SECONDS)
+	else
+		addtimer(CALLBACK(src, .proc/brittle, time_to_collapse), time_to_brittle SECONDS)
+
+
+/obj/structure/resin_pillar/proc/brittle(collapse_time_override)
+	//playsound(granite cracking)
+	visible_message(SPAN_DANGER("You hear cracking sounds from the [src] as splinters start falling off from the structure! It seems brittle now."))
+	indestructible = FALSE
+	brittle = TRUE
+	icon_state = "resin_pillar_decay"
+	playsound(loc, "alien_resin_break", 25, TRUE)
+	START_PROCESSING(SSobj, src)
+	if(collapse_time_override)
+		addtimer(CALLBACK(src, .proc/collapse, TRUE), collapse_time_override SECONDS)
+	else
+		addtimer(CALLBACK(src, .proc/collapse, TRUE), time_to_collapse SECONDS)
+
+/obj/structure/resin_pillar/proc/collapse(var/decayed = FALSE)
+	//playsound granite collapsing
+	if(decayed)
+		visible_message(SPAN_DANGER("[src]'s failing structure suddenly collapses!"))
+	else
+		visible_message(SPAN_DANGER("[src]'s structure collapses under the blow!"))
+
+	playsound(loc, "alien_resin_break", 25, TRUE)
+	STOP_PROCESSING(SSobj, src)
+	qdel(src)
+
+/obj/structure/resin_pillar/proc/pillar_health_check()
+	if(health <= 0)
+		collapse(FALSE)
+
+//bullet_act() by default only pings, so it's not overridden here. it should not damage, only ping even post-brittle
+
+/obj/structure/resin_pillar/hitby(atom/movable/AM)
+	if(indestructible)
+		visible_message(SPAN_DANGER("[AM] harmlessly bounces off the [src]!"))
+	else ..()
+
+
+/obj/structure/resin_pillar/attack_alien(mob/living/carbon/Xenomorph/M)
+	M.animation_attack_on(src)
+	if(indestructible)
+		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src], but the slash bounces off!"), \
+		SPAN_XENONOTICE("You claw \the [src], but the slash bounces off!"))
+	else
+		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
+		SPAN_XENONOTICE("You claw \the [src]."))
+		playsound(loc, "alien_resin_break", 25)
+		health -= (M.melee_damage_upper + 50)
+		pillar_health_check()
+
+/obj/structure/resin_pillar/attackby(obj/item/W, mob/living/user)
+	user.animation_attack_on(src)
+	if(indestructible)
+		user.visible_message(SPAN_DANGER("[user] hits \the [src], but \the [W] bounces off!"), \
+	SPAN_DANGER("You hit \the [name], but \the [W] bounces off!"))
+	else
+		if(!(W.flags_item & NOBLUDGEON) && W.force)
+			health -= W.force*RESIN_MELEE_DAMAGE_MULTIPLIER
+			to_chat(user, "You hit the [name] with your [W.name]!")
+			playsound(loc, "alien_resin_move", 25)
+			
+		else
+			return attack_hand(user)
+	pillar_health_check()

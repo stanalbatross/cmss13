@@ -143,3 +143,36 @@
 
 /datum/action/xeno_action/activable/place_queen_beacon/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
 	hide_from(Q)
+
+/datum/action/xeno_action/activable/resin_pillar
+	name = "Resin Pillar"
+	action_icon_state = "resin wall"
+	ability_name = "resin pillar"
+	macro_path = /datum/action/xeno_action/verb/verb_resin_pillar
+	action_type = XENO_ACTION_CLICK
+	ability_primacy = null
+	charges = 0
+	var/datum/hive_status/hive
+
+/datum/action/xeno_action/activable/resin_pillar/give_to(mob/living/carbon/Xenomorph/Queen/Q)
+	. = ..()
+	hive = Q.hive
+	if(!Q.ovipositor)
+		hide_from(Q)
+	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
+	RegisterSignal(Q, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, .proc/handle_dismount_ovipositor)
+
+/datum/action/xeno_action/activable/resin_pillar/remove_from(mob/living/carbon/Xenomorph/X)
+	. = ..()
+	UnregisterSignal(X, list(
+		COMSIG_QUEEN_MOUNT_OVIPOSITOR,
+		COMSIG_QUEEN_DISMOUNT_OVIPOSITOR,
+	))
+
+/datum/action/xeno_action/activable/resin_pillar/proc/handle_mount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	SIGNAL_HANDLER
+	unhide_from(Q)
+
+/datum/action/xeno_action/activable/resin_pillar/proc/handle_dismount_ovipositor(mob/living/carbon/Xenomorph/Queen/Q)
+	SIGNAL_HANDLER
+	hide_from(Q)

@@ -259,6 +259,7 @@
 #define XENO_RESIN_NEST_COST 70
 #define XENO_RESIN_STICKY_COST 30
 #define XENO_RESIN_FAST_COST 10
+#define XENO_RESIN_PILLAR_COST 200
 
 /////////////////////////////////////////////////////////////////////////////////////
 //

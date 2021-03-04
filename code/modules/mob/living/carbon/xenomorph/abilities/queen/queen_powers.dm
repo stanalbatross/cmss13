@@ -515,3 +515,70 @@
 
 	return TRUE
 
+//TECHWEBS - Remote resin pillar
+
+/datum/action/xeno_action/activable/resin_pillar/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	var/datum/resin_construction/resin_obj/pillar/RC = new /datum/resin_construction/resin_obj/pillar
+	var/obj/structure/resin_pillar/RP = RC.obj_path
+
+	var/total_resin_cost = RC.cost
+
+	if(X.action_busy)
+		return FALSE
+	if(!X.check_state())
+		return FALSE
+	if(!X.check_plasma(total_resin_cost))
+		return FALSE
+	if(GLOB.interior_manager.interior_z == X.z)
+		to_chat(X, SPAN_XENOWARNING("It's too tight in here to build."))
+		return FALSE
+
+	var/turf/source_turf = get_turf(A)
+
+	var/wait_time = RC.build_time
+
+	if(!RC.can_build_here(source_turf, X, TRUE))
+		wait_time = RC.build_time * 2 //twice as long offweeds, ignores blockers
+
+	var/source_weeds = source_turf.weeds
+	var/weaken
+
+	var/pillar_height = initial(RP.width)
+	var/pillar_width = initial(RP.height)
+
+	var/list/affected_turfs = block(source_turf, locate(source_turf.x + pillar_width - 1, source_turf.y + pillar_height - 1, source_turf.z))
+
+	for(var/t in affected_turfs)
+		var/turf/a_turf = t
+		if(!a_turf.weeds)
+			to_chat(X, SPAN_XENOWARNING("You feel the nascent pillar weaken as it emerges without full weed coverage."))
+			weaken = TRUE
+			continue
+		a_turf.weeds.secreting = TRUE
+		a_turf.weeds.update_icon()
+
+	var/result = do_after(X, wait_time, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, source_weeds)
+
+	for(var/t in affected_turfs)
+		var/turf/a_turf = t
+		if(a_turf.weeds) //cleaning up weeds
+			a_turf.weeds.secreting = FALSE
+			a_turf.weeds.update_icon()
+
+	if(!result)
+		return FALSE
+
+	//no extra can_build_here() because the pillar can be placed off-weeds. should be in any other resin structure
+
+	X.use_plasma(total_resin_cost)
+	source_turf.visible_message(SPAN_XENONOTICE("[source_weeds] suddenly convulses as a massive resin pillar erects from the ground!"), \
+		SPAN_XENONOTICE("You psychically influence the [source_weeds] to grow a resin pillar!"), null, 5)
+	playsound(source_weeds, "alien_resin_build", 25)
+
+	if(weaken)
+		RC.build(source_turf, X.hivenumber, 20 SECONDS, 20 SECONDS) //breaks faster if weakened
+	else
+		RC.build(source_turf, X.hivenumber)
+
+	return TRUE

@@ -47,6 +47,13 @@
 		action_name = "Secrete Resin (200)"
 	handle_xeno_macro(src, action_name)
 
+/datum/action/xeno_action/verb/verb_resin_pillar()
+	set category = "Alien"
+	set name = "Erect Resin Pillar"
+	set hidden = 1
+	var/action_name = "Erect Resin Pillar (100)"
+	handle_xeno_macro(src, action_name)
+
 /* Resolve this line once structures are resolved.
 /datum/action/xeno_action/verb/verb_morph_resin()
 	set category = "Alien"
