@@ -632,7 +632,7 @@
 		correctly without having to rotate anything. Preloading weapon icons also makes
 		sure that we don't have to do any extra calculations.
 		*/
-		playsound(src,drawSound, 15, 1)
+		playsound(src,drawSound, 15, TRUE)
 		gun_underlay = image(icon, src, current_gun.base_gun_icon)
 		gun_underlay.pixel_x = icon_x
 		gun_underlay.pixel_y = icon_y
@@ -640,7 +640,7 @@
 		item_state = icon_state
 		underlays += gun_underlay
 	else
-		playsound(src,sheatheSound, 15, 1)
+		playsound(src,sheatheSound, 15, TRUE)
 		underlays -= gun_underlay
 		icon_state = copytext(icon_state,1,-2)
 		item_state = icon_state
@@ -820,6 +820,8 @@
 		/obj/item/weapon/gun/revolver,
 		/obj/item/ammo_magazine/revolver
 		)
+	icon_x = 10
+	icon_y = 3
 	//needs belt MR merged. WIP
 
 /obj/item/storage/belt/gun/m44/lever_action/Initialize()

@@ -86,7 +86,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 		return
 
 	else
-		to_chat(user, SPAN_BOLDNOTICE(pick("Bullseye!", "Dead center!", "Direct hit!", "Nice shot!", "Perfect!", , "Dead-eye!")))
+		to_chat(user, SPAN_BOLDNOTICE(pick("Bullseye!", "Dead center!", "Direct hit!", "Nice shot!", "Perfect!", "Dead-eye!")))
 		playsound(user, lever_hitsound, 25, FALSE)
 	lever_sound = lever_super_sound
 	lever_message = "<b><i>You quickly work the lever!<i><b>"
