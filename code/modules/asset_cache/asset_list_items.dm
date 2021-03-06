@@ -52,7 +52,8 @@
 
 /datum/asset/simple/common
 	assets = list(
-		"common.css" = 'html/browser/common.css'
+		"common.css" = 'html/browser/common.css',
+		"legacy.css" = 'html/browser/legacy.css',
 	)
 
 /datum/asset/simple/jquery
@@ -150,7 +151,6 @@
 	keep_local_name = TRUE
 	assets = list(
 		"search.js" = 'html/search.js',
-		"panels.css" = 'html/panels.css',
 		"loading.gif" = 'html/loading.gif',
 	)
 

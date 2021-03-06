@@ -2,10 +2,10 @@
 
 var/list/preferences_datums = list()
 
-var/global/list/stylesheets = list(
-	"Modern" = 'html/browser/common.css',
-	"Legacy" = 'html/browser/legacy.css'
-)
+GLOBAL_LIST_INIT(stylesheets, list(
+	"Modern" = "common.css",
+	"Legacy" = "legacy.css"
+))
 
 var/const/MAX_SAVE_SLOTS = 10
 
@@ -28,7 +28,7 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	//game-preferences
 	var/lastchangelog = ""				// Saved changlog filesize to detect if there was a change
-	var/ooccolor = "#b82e00"
+	var/ooccolor
 	var/be_special = 0				// Special role selection
 	var/toggle_prefs = TOGGLE_MIDDLE_MOUSE_CLICK|TOGGLE_DIRECTIONAL_ATTACK // flags in #define/mode.dm
 	var/UI_style = "midnight"
@@ -161,6 +161,8 @@ var/const/MAX_SAVE_SLOTS = 10
 			if(load_preferences())
 				if(load_character())
 					return
+	if(!ooccolor)
+		ooccolor = CONFIG_GET(string/ooc_color_default)
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender)
 	gear = list()
@@ -1237,7 +1239,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					UI_style_alpha = UI_style_alpha_new
 
 				if("stylesheet")
-					var/stylesheet_new = tgui_input_list(user, "Select a stylesheet to use (affects non-NanoUI interfaces)", "Select a stylesheet", stylesheets)
+					var/stylesheet_new = tgui_input_list(user, "Select a stylesheet to use (affects non-NanoUI interfaces)", "Select a stylesheet", GLOB.stylesheets)
 					stylesheet = stylesheet_new
 
 				if("ViewMC")

@@ -946,7 +946,7 @@ and you're good to go.
 
 	var/bullets_fired
 	for(bullets_fired = 1 to bullets_to_fire)
-		if(loc != user)
+		if(loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY) && !(flags_item & WIELDED))
 			break //If you drop it while bursting, for example.
 
 		if (bullets_fired > 1 && !(flags_gun_features & GUN_BURST_FIRING)) // No longer burst firing somehow
@@ -990,9 +990,11 @@ and you're good to go.
 
 		//Finally, make with the pew pew!
 		if(QDELETED(projectile_to_fire) || !isobj(projectile_to_fire))
-			to_chat(user, "Your gun is malfunctioning. Ahelp the following: ERROR CODE I1: projectile malfunctioned while firing.")
+			to_chat(user, "ERROR CODE I1: Gun malfunctionned due to invalid chambered projectile, clearing it. AHELP if this persists.")
 			log_debug("ERROR CODE I1: projectile malfunctioned while firing. User: <b>[user]</b>")
 			flags_gun_features &= ~GUN_BURST_FIRING
+			in_chamber = null
+			click_empty(user)
 			return
 
 		if(get_turf(target) != get_turf(user))
