@@ -99,25 +99,30 @@
 	return ..()
 
 /obj/item/device/motiondetector/attack_self(mob/user)
-	if(ishuman(user))
-		toggle_active(user, active)
+	toggle_active(user, active)
 
 // var/active is used to forcefully toggle it to a specific state
 /obj/item/device/motiondetector/proc/toggle_active(mob/user, var/old_active)
 	active = !old_active
-	if(active)
-		if(user)
-			to_chat(user, SPAN_NOTICE("You activate [src]."))
-		playsound(loc, 'sound/items/detector_turn_on.ogg', 30, 0, 5, 2)
-		START_PROCESSING(SSobj, src)
+	if(!active)
+		turn_off(user)
 	else
-		scanning = FALSE // safety if MD runtimes in scan and stops scanning
-		icon_state = "[initial(icon_state)]"
-		if(user)
-			to_chat(user, SPAN_NOTICE("You deactivate [src]."))
-		playsound(loc, 'sound/items/detector_turn_off.ogg', 30, 0, 5, 2)
-		STOP_PROCESSING(SSobj, src)
+		turn_on(user)
 	update_icon()
+
+/obj/item/device/motiondetector/proc/turn_on(mob/user)
+	if(user)
+		to_chat(user, SPAN_NOTICE("You activate [src]."))
+	playsound(loc, 'sound/items/detector_turn_on.ogg', 30, FALSE, 5, 2)
+	START_PROCESSING(SSobj, src)
+
+/obj/item/device/motiondetector/proc/turn_off(mob/user)
+	if(user)
+		to_chat(user, SPAN_NOTICE("You deactivate [src]."))
+	scanning = FALSE // safety if MD runtimes in scan and stops scanning
+	icon_state = "[initial(icon_state)]"
+	playsound(loc, 'sound/items/detector_turn_off.ogg', 30, FALSE, 5, 2)
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/device/motiondetector/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -340,13 +345,13 @@
 
 	scanning = FALSE
 
-/obj/item/device/motiondetector/r4t
-	name = "R4T pocket motion detector"
+/obj/item/device/motiondetector/m717
+	name = "M717 pocket motion detector"
 	desc = "This prototype motion detector sacrifices versatility, having only the long-range mode, for size, being so small it can even fit in pockets."
 	icon_state = "pocket"
 	item_state = "motion_detector"
 	flags_atom = FPRINT| CONDUCT
 	flags_equip_slot = SLOT_WAIST
 	w_class = SIZE_SMALL
-	//blip_type = "tracker" tracker is ONLY for tracking bulleted xenos
+	blip_type = "tracker"
 	long_range_locked = TRUE

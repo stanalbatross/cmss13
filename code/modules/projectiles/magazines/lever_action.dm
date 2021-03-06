@@ -17,29 +17,6 @@ Similar to shotguns.dm but not exactly.
 	handful_state = "lever_action_bullet"
 	transfer_handful_amount = 9
 
-/obj/item/ammo_magazine/lever_action/heavy
-	name = "box of heavy 45-70 rounds"
-	desc = "A box filled with handfuls of heavy 45-70 Govt. rounds, which have a higher-density, more impactful bullet package."
-	icon_state = "45-70-heavy-box"
-	item_state = "45-70-heavy-box"
-	default_ammo = /datum/ammo/bullet/lever_action/heavy
-	handful_state = "heavy_lever_action_bullet"
-
-/obj/item/ammo_magazine/lever_action/marksman
-	name = "box of marksman 45-70 rounds"
-	desc = "A box filled with marksman lever action 45-70 rounds, which have a lower-density, more precise bullet package."
-	icon_state = "45-70-marksman-box"
-	item_state = "45-70-marksman-box"
-	default_ammo = /datum/ammo/bullet/lever_action/marksman
-	handful_state = "marksman_lever_action_bullet"
-
-/obj/item/ammo_magazine/lever_action/tracker
-	name = "box of tracker 45-70 rounds"
-	desc = "A box filled with tracker lever action 45-70 rounds, which replace some of the bullet package with an electronic tracking chip."
-	icon_state = "45-70-tracker-box"
-	item_state = "45-70-tracker-box"
-	default_ammo = /datum/ammo/bullet/lever_action/tracker
-	handful_state = "tracking_lever_action_bullet"
 
 /obj/item/ammo_magazine/lever_action/training
 	name = "box of training rounds"
@@ -49,12 +26,30 @@ Similar to shotguns.dm but not exactly.
 	default_ammo = /datum/ammo/bullet/lever_action/training
 	handful_state = "training_lever_action_bullet"
 
+//unused
+/obj/item/ammo_magazine/lever_action/marksman
+	name = "box of marksman 45-70 rounds"
+	desc = "A box filled with marksman lever action 45-70 rounds, which have a lower-density, more precise bullet package."
+	icon_state = "45-70-marksman-box"
+	item_state = "45-70-marksman-box"
+	default_ammo = /datum/ammo/bullet/lever_action/marksman
+	handful_state = "marksman_lever_action_bullet"
+
+//unused
+/obj/item/ammo_magazine/lever_action/tracker
+	name = "box of tracker 45-70 rounds"
+	desc = "A box filled with tracker lever action 45-70 rounds, which replace some of the bullet package with an electronic tracking chip."
+	icon_state = "45-70-tracker-box"
+	item_state = "45-70-tracker-box"
+	default_ammo = /datum/ammo/bullet/lever_action/tracker
+	handful_state = "tracking_lever_action_bullet"
+
 //-------------------------------------------------------
 
 /obj/item/ammo_magazine/internal/lever_action
 	name = "lever action tube"
 	desc = "An internal magazine. It is not supposed to be seen or removed."
-	default_ammo = /datum/ammo/bullet/lever_action/base
+	default_ammo = /datum/ammo/bullet/lever_action
 	caliber = "45-70"
 	max_rounds = 9
 	chamber_closed = 0
@@ -69,7 +64,7 @@ Handfuls of lever_action rounds. For spawning directly on mobs in roundstart, ER
 	name = "handful of rounds (45-70)"
 	desc = "A handful of standard 45-70 Govt. rounds."
 	icon_state = "lever_action_bullet"
-	default_ammo = /datum/ammo/bullet/lever_action/base
+	default_ammo = /datum/ammo/bullet/lever_action
 	caliber = "45-70"
 	max_rounds = 9
 	current_rounds = 9
@@ -77,13 +72,14 @@ Handfuls of lever_action rounds. For spawning directly on mobs in roundstart, ER
 	handful_state = "lever_action_bullet"
 	transfer_handful_amount = 9
 
-/obj/item/ammo_magazine/handful/lever_action/heavy
-	name = "handful of heavy rounds (45-70)"
-	desc = "A handful of heavy 45-70 Govt. rounds. Their dense bullet package reduces penetration, speed, and accuracy, but makes them throw their target back on hit."
-	icon_state = "heavy_lever_action_bullet"
-	default_ammo = /datum/ammo/bullet/lever_action/heavy
-	handful_state = "heavy_lever_action_bullet"
-	
+/obj/item/ammo_magazine/handful/lever_action/training
+	name = "handful of blanks (45-70)"
+	desc = "A handful of blank 45-70 Govt. rounds. These rounds are blanks, which are mostly harmless.... just don't shoot them at point-blank range."
+	icon_state = "training_lever_action_bullet"
+	default_ammo = /datum/ammo/bullet/lever_action/training
+	handful_state = "training_lever_action_bullet"
+
+//unused
 /obj/item/ammo_magazine/handful/lever_action/tracker
 	name = "handful of tracker 45-70 rounds (45-70)"
 	desc = "A handful of tracker 45-70 Govt. rounds. Some of their bullet package's been replaced with a chip that when fired can be picked up by Motion Detectors."
@@ -91,16 +87,10 @@ Handfuls of lever_action rounds. For spawning directly on mobs in roundstart, ER
 	default_ammo = /datum/ammo/bullet/lever_action/tracker
 	handful_state = "tracking_lever_action_bullet"
 
-/obj/item/ammo_magazine/handful/lever_action/training
-	name = "handful of training blanks (45-70)"
-	desc = "A handful of tracker 45-70 Govt. rounds. These rounds are blanks, which are mostly harmless.... just don't shoot them at point-blank range."
-	icon_state = "training_lever_action_bullet"
-	default_ammo = /datum/ammo/bullet/lever_action/training
-	handful_state = "training_lever_action_bullet"
-
+//unused
 /obj/item/ammo_magazine/handful/lever_action/marksman
 	name = "handful of marksman 45-70 rounds (45-70)"
-	desc = "A handful of heavy 45-70 Govt. rounds. Their small bullet package reduces damage, but increases penetration and bullet velocity."
+	desc = "A handful of marksman 45-70 Govt. rounds. Their small bullet package reduces damage, but increases penetration and bullet velocity."
 	icon_state = "marksman_lever_action_bullet"
 	default_ammo = /datum/ammo/bullet/lever_action/marksman
 	handful_state = "marksman_lever_action_bullet"

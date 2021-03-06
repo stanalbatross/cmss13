@@ -257,27 +257,24 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/ammo_magazine/shotgun/flechette(src)
 	new /obj/item/storage/belt/shotgun(src)
 
-/obj/item/storage/box/kit/m717_scout
-	name = "\improper M717 Environment Scouting Kit"
+/obj/item/storage/box/kit/r4t_scout
+	name = "\improper R4T Environment Scouting Kit"
 
-/obj/item/storage/box/kit/m717_scout/New()
+/obj/item/storage/box/kit/r4t_scout/New()
 	..()
-	overlays += image('icons/obj/items/pro_case.dmi', "+m717")
+	overlays += image('icons/obj/items/pro_case.dmi', "+r4t")
 
-/obj/item/storage/box/kit/m717_scout/fill_preset_inventory()
-	new /obj/item/weapon/gun/lever_action/m717(src)
-	new /obj/item/attachable/stock/m717(src)
-	new /obj/item/attachable/m717_sling(src)
+/obj/item/storage/box/kit/r4t_scout/fill_preset_inventory()
+	new /obj/item/weapon/gun/lever_action/r4t(src)
+	new /obj/item/attachable/stock/r4t(src)
+	new /obj/item/attachable/r4t_sling(src)
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/storage/belt/lever_action(src)
 	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
 	new /obj/item/ammo_magazine/lever_action/tracker(src)
-	new /obj/item/device/motiondetector/r4t(src)
-	new /obj/item/device/motiondetector(src)
-	new /obj/item/ammo_magazine/lever_action/heavy(src)
+	new /obj/item/device/motiondetector/m717(src)
 	new /obj/item/ammo_magazine/lever_action/training(src)
-	new /obj/item/ammo_magazine/lever_action/marksman(src)
 	new /obj/item/ammo_magazine/lever_action/tracker(src)
 
 /obj/item/storage/box/kit/machinegunner

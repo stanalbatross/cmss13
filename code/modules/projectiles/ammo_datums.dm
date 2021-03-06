@@ -72,7 +72,7 @@
 /datum/ammo/proc/on_hit_turf(turf/T, obj/item/projectile/P) //Special effects when hitting dense turfs.
 	return
 
-/datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P) //Special effects when hitting mobs.
+/datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P, mob/user) //Special effects when hitting mobs.
 	return
 
 /datum/ammo/proc/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
@@ -827,34 +827,24 @@
 	shell_speed = AMMO_SPEED_TIER_5
 	handful_state = "lever_action_bullet"
 
-
-/datum/ammo/bullet/lever_action/base
-
-
-/datum/ammo/bullet/lever_action/heavy
-	name = "heavy lever-action bullet"
-
-	damage = BULLET_DAMAGE_TIER_12
-	penetration = 0
-	accuracy = HIT_ACCURACY_TIER_4
-	shell_speed = AMMO_SPEED_TIER_3
-	handful_state = "heavy_lever_action_bullet"
-
-/datum/ammo/bullet/lever_action/heavy/on_hit_mob(mob/M, obj/item/projectile/P)
-	knockback(M, P, 5)
-
+//unused and not working. need to refactor MD code
+//intended mechanic is to have xenos hit with it show up very frequently on any MDs around
 /datum/ammo/bullet/lever_action/tracker
 	name = "tracking lever-action bullet"
+	icon_state = "redbullet"
 
 	damage = BULLET_DAMAGE_TIER_15
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
 	handful_state = "tracking_lever_action_bullet"
 
-//datum/ammo/bullet/lever_action/tracker/proc?
+/datum/ammo/bullet/lever_action/tracker/on_hit_mob(mob/M, obj/item/projectile/P, mob/user)
+	//SEND_SIGNAL(user, COMSIG_BULLET_TRACKING, user, M)
+	M.visible_message(SPAN_DANGER("You hear a faint beep under [M]'s [M.mob_size > MOB_SIZE_HUMAN ? "chitin" : "skin"]."))
 
 /datum/ammo/bullet/lever_action/training
 	name = "lever-action blank"
+	icon_state = "blank"
 
 	damage = BULLET_DAMAGE_TIER_15 //blanks CAN hurt you if shot very close
 	penetration = 0
@@ -862,6 +852,7 @@
 	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
 	handful_state = "training_lever_action_bullet"
 
+//unused
 /datum/ammo/bullet/lever_action/marksman
 	name = "marksman lever-action bullet"
 

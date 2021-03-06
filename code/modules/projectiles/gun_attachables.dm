@@ -587,23 +587,23 @@ Defined in conflicts.dm of the #defines folder.
 	. = ..()
 	G.RemoveElement(/datum/element/magharness)
 
-/obj/item/attachable/m717_sling
-	name = "M717 magnetic sling"
-	desc = "A custom sling designed for comfortable holstering of the M717 lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
-	icon_state = "m717-sling"
-	attach_icon = "m717-sling_a"
+/obj/item/attachable/r4t_sling
+	name = "R4T magnetic sling"
+	desc = "A custom sling designed for comfortable holstering of the R4T lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
+	icon_state = "r4t-sling"
+	attach_icon = "r4t-sling_a"
 	slot = "under"
 
-/obj/item/attachable/m717_sling/New()
+/obj/item/attachable/r4t_sling/New()
 	..()
 	wield_delay_mod = WIELD_DELAY_VERY_FAST
 	select_gamemode_skin(type)
 
-/obj/item/attachable/m717_sling/Attach(var/obj/item/weapon/gun/G)
+/obj/item/attachable/r4t_sling/Attach(var/obj/item/weapon/gun/G)
 	. = ..()
 	G.AddElement(/datum/element/magnetic_sling)
 
-/obj/item/attachable/m717_sling/Detach(var/obj/item/weapon/gun/G)
+/obj/item/attachable/r4t_sling/Detach(var/obj/item/weapon/gun/G)
 	. = ..()
 	G.RemoveElement(/datum/element/magnetic_sling)
 
@@ -812,14 +812,14 @@ Defined in conflicts.dm of the #defines folder.
 	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
 
-/obj/item/attachable/stock/m717
-	name = "\improper M717 scouting stock"
-	desc = "A wooden stock designed for the M717 lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way of working the lever."
-	icon_state = "m717-stock"
-	attach_icon = "m717-stock"
+/obj/item/attachable/stock/r4t
+	name = "\improper R4T scouting stock"
+	desc = "A wooden stock designed for the R4T lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way of working the lever."
+	icon_state = "r4t-stock"
+	attach_icon = "r4t-stock"
 	wield_delay_mod = WIELD_DELAY_SLOW
 
-/obj/item/attachable/stock/m717/New()
+/obj/item/attachable/stock/r4t/New()
 	..()
 	select_gamemode_skin(type)
 	recoil_mod = -RECOIL_AMOUNT_TIER_5

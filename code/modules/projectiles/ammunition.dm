@@ -314,6 +314,7 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	var/num_of_magazines = 10
 	var/handfuls = FALSE
 	var/icon_state_deployed = null
+	var/handful = "shells" //used for 'magazine' boxes that give handfuls to determine what kind for the sprite
 
 /obj/item/ammo_box/magazine/Initialize()
 	. = ..()
@@ -634,46 +635,50 @@ Turn() or Shift() as there is virtually no overhead. ~N
 /obj/item/ammo_box/magazine/M16/ap/empty
 	empty = TRUE
 
-//-----------------------M717 Lever-action rifle handfuls box-----------------------
+//-----------------------R4T Lever-action rifle handfuls box-----------------------
 
 /obj/item/ammo_box/magazine/lever_action
-	name = "45-70 bullets box (45-70 x 100)"
+	name = "45-70 bullets box (45-70 x 300)"
 	icon_state = "base_4570"
 	overlay_ammo_type = "_reg"
 	overlay_gun_type = "_4570"
 	overlay_content = "_4570"
-	magazine_type = /obj/item/ammo_magazine/lever_action
-	num_of_magazines = 100
+	magazine_type = /obj/item/ammo_magazine/handful/lever_action
+	num_of_magazines = 300
 	handfuls = TRUE
+	handful = "rounds"
 
-/obj/item/ammo_box/magazine/lever_action/heavy
-	name = "45-70 heavy bullets box (45-70 x 50)"
+/obj/item/ammo_box/magazine/lever_action/training
+	name = "45-70 blank box (45-70 x 300)"
 	icon_state = "base_4570"
-	overlay_ammo_type = "_heavy"
+	overlay_ammo_type = "_45_training"
 	overlay_gun_type = "_4570"
-	overlay_content = "_45_heavy"
-	magazine_type = /obj/item/ammo_magazine/lever_action
-	handfuls = TRUE
+	overlay_content = "_training"
+	magazine_type = /obj/item/ammo_magazine/handful/lever_action/training
 
-/obj/item/ammo_box/magazine/lever_action/marksman
-	name = "45-70 marksman bullets box (45-70 x 50)"
-	icon_state = "base_4570"
-	overlay_ammo_type = "_marksman"
-	overlay_gun_type = "_4570"
-	overlay_content = "_45_marksman"
-	magazine_type = /obj/item/ammo_magazine/lever_action/marksman
-	handfuls = TRUE
+	/*if(overlay_gun_type)
+		overlays += image(icon, icon_state = "text[overlay_gun_type]")		//adding text
+	if(overlay_ammo_type)
+		overlays += image(icon, icon_state = "base_type[overlay_ammo_type]")	//adding base color stripes
+		overlays += image(icon, icon_state = "lid_type[overlay_ammo_type]")	adding base color stripes*/
 
+//unused
 /obj/item/ammo_box/magazine/lever_action/tracker
-	name = "45-70 tracker bullets box (45-70 x 50)"
+	name = "45-70 tracker bullets box (45-70 x 300)"
 	icon_state = "base_4570"
-	overlay_ammo_type = "_tracker"
+	overlay_ammo_type = "_45_tracker"
 	overlay_gun_type = "_4570"
-	overlay_content = "_45_tracker"
-	magazine_type = /obj/item/ammo_magazine/lever_action/tracker
-	handfuls = TRUE
+	overlay_content = "_tracker"
+	magazine_type = /obj/item/ammo_magazine/handful/lever_action/tracker
 
-
+//unused
+/obj/item/ammo_box/magazine/lever_action/marksman
+	name = "45-70 marksman bullets box (45-70 x 300)"
+	icon_state = "base_4570"
+	overlay_ammo_type = "_45_marksman"
+	overlay_gun_type = "_4570"
+	overlay_content = "_marksman"
+	magazine_type = /obj/item/ammo_magazine/handful/lever_action/marksman
 
 //-----------------------M4A3 Pistol Mag Box-----------------------
 
@@ -848,14 +853,16 @@ Turn() or Shift() as there is virtually no overhead. ~N
 			overlays += image(icon, icon_state = "magaz[item_box.overlay_content]_1")
 	else
 		var/obj/item/ammo_magazine/AM = locate(/obj/item/ammo_magazine) in item_box.contents
+		if(item_box.overlay_ammo_type)
+			overlays += image(icon, icon_state = "base_type[item_box.overlay_ammo_type]")
 		if(AM.current_rounds == item_box.num_of_magazines)
-			overlays += image(icon, icon_state = "shells[item_box.overlay_content]")
+			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]")
 		else if(AM.current_rounds > (item_box.num_of_magazines/2))
-			overlays += image(icon, icon_state = "shells[item_box.overlay_content]_3")
+			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_3")
 		else if(AM.current_rounds > (item_box.num_of_magazines/4))
-			overlays += image(icon, icon_state = "shells[item_box.overlay_content]_2")
+			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_2")
 		else if(AM.current_rounds > 0)
-			overlays += image(icon, icon_state = "shells[item_box.overlay_content]_1")
+			overlays += image(icon, icon_state = "[item_box.handful][item_box.overlay_content]_1")
 
 
 /obj/structure/magazine_box/attack_hand(mob/living/user)

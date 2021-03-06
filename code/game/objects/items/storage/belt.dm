@@ -414,8 +414,8 @@
 
 /obj/item/storage/belt/lever_action
 	name = "\improper M276 pattern 45-70 loading rig"
-	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the M717 lever-action rifle."
-	icon_state = "m717-ammobelt"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle."
+	icon_state = "r4t-ammobelt"
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
 	storage_slots = 21
@@ -808,11 +808,11 @@
 
 /obj/item/storage/belt/gun/m44/lever_action
 	name = "\improper M276 pattern 45-70 revolver rig"
-	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the M717 lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
-	icon_state = "m717-cowboybelt"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
+	icon_state = "r4t-cowboybelt"
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
-	storage_slots = 14
+	storage_slots = 18
 	max_storage_space = 28
 	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	can_hold = list(
@@ -820,6 +820,7 @@
 		/obj/item/weapon/gun/revolver,
 		/obj/item/ammo_magazine/revolver
 		)
+	//needs belt MR merged. WIP
 
 /obj/item/storage/belt/gun/m44/lever_action/Initialize()
 	. = ..()
@@ -835,8 +836,8 @@
 /obj/item/storage/belt/gun/m44/lever_action/attach_holster
 	name = "\improper M276 revolver holster attachment"
 	desc = "This holster can be instantly attached to an empty M276 45-70 rig, giving up some storage space in exchange for holding a sidearm. You could also clip it to your belt standalone if you really wanted to."
-	icon_state = "m717-attach-holster"
-	item_state = "m717-attach-holster"
+	icon_state = "r4t-attach-holster"
+	item_state = "r4t-attach-holster"
 	w_class = SIZE_LARGE
 	storage_slots = 1
 	max_storage_space = 1

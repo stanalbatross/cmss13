@@ -274,6 +274,9 @@
 		list("Shotgun Shell Box (Buckshot x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun/buckshot, VENDOR_ITEM_REGULAR),
 		list("Shotgun Shell Box (Flechette x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun/flechette, VENDOR_ITEM_REGULAR),
 		list("Shotgun Shell Box (Slugs x 100)", round(scale * 1), /obj/item/ammo_box/magazine/shotgun, VENDOR_ITEM_REGULAR),
+		list("45-70 bullets box (45-70 x 300)", round(scale * 1), /obj/item/ammo_box/magazine/lever_action, VENDOR_ITEM_REGULAR),
+		list("45-70 blanks box (45-70 x 300)", round(scale * 1.5), /obj/item/ammo_box/magazine/lever_action/training, VENDOR_ITEM_REGULAR),
+
 		list("Speed Loaders Box (M44 x 16)", round(scale * 0.8), /obj/item/ammo_box/magazine/m44, VENDOR_ITEM_REGULAR),
 		list("Speed Loaders Box (Marksman M44 x 16)", round(scale * 0.2), /obj/item/ammo_box/magazine/m44/marksman, VENDOR_ITEM_REGULAR),
 		list("Speed Loaders Box (Heavy M44 x 16)", round(scale * 0.5), /obj/item/ammo_box/magazine/m44/heavy, VENDOR_ITEM_REGULAR),

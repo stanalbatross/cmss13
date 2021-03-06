@@ -447,7 +447,7 @@
 				ammo.on_hit_turf(get_turf(src),src)
 				T.bullet_act(src)
 			else if(L && L.loc && (L.bullet_act(src) != -1))
-				ammo.on_hit_mob(L,src)
+				ammo.on_hit_mob(L,src, firer)
 
 				// If we are a xeno shooting something
 				if (istype(ammo, /datum/ammo/xeno) && isXeno(firer) && L.stat != DEAD)
