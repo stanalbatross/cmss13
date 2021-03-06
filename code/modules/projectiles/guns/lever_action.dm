@@ -13,6 +13,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	fire_sound = 'sound/weapons/gun_lever_action_fire.ogg'
 	reload_sound = 'sound/weapons/handling/gun_lever_action_reload.ogg'
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	current_mag = /obj/item/ammo_magazine/internal/lever_action
 	gun_category = GUN_CATEGORY_RIFLE
 	aim_slowdown = SLOWDOWN_ADS_SMG
 	wield_delay = WIELD_DELAY_FAST
@@ -116,7 +117,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 	icon_state = "r4t"
 	item_state = "r4t"
 	flags_equip_slot = SLOT_BACK
-	current_mag = /obj/item/ammo_magazine/internal/lever_action
 	attachable_allowed = list(
 						//Barrel
 						/obj/item/attachable/bayonet/upp,
