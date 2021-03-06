@@ -814,7 +814,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/stock/r4t
 	name = "\improper R4T scouting stock"
-	desc = "A wooden stock designed for the R4T lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way of working the lever."
+	desc = "A wooden stock designed for the R4T lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way."
 	icon_state = "r4t-stock"
 	attach_icon = "r4t-stock"
 	wield_delay_mod = WIELD_DELAY_SLOW
