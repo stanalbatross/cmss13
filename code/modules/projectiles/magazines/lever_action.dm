@@ -19,8 +19,8 @@ Similar to shotguns.dm but not exactly.
 
 
 /obj/item/ammo_magazine/lever_action/training
-	name = "box of training rounds"
-	desc = "A box filled with training lever action 45-70 rounds that aren't very damaging.. unless you fire them directly into someone's face."
+	name = "box of 45-70 blanks"
+	desc = "A box filled with training lever action 45-70 rounds that aren't very damaging.. unless you fire them point-blank or something."
 	icon_state = "45-70-training-box"
 	item_state = "45-70-training-box"
 	default_ammo = /datum/ammo/bullet/lever_action/training

@@ -272,10 +272,8 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/storage/belt/lever_action(src)
 	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
-	new /obj/item/ammo_magazine/lever_action/tracker(src)
 	new /obj/item/device/motiondetector/m717(src)
 	new /obj/item/ammo_magazine/lever_action/training(src)
-	new /obj/item/ammo_magazine/lever_action/tracker(src)
 
 /obj/item/storage/box/kit/machinegunner
 	name = "\improper M2C Heavy Gunner Kit"

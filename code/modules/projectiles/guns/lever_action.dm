@@ -29,8 +29,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 	var/cur_onehand_chance = 85
 	var/reset_onehand_chance = 85
 	var/lever_message = "<i>You work the lever.<i>"
-	var/buff_time
 	var/buff_fire_reduc = 2
+	var/streak
 
 /obj/item/weapon/gun/lever_action/examine(user)
 	..()
@@ -86,7 +86,11 @@ their unique feature is that a direct hit will buff your damage and firerate
 		return
 
 	else
-		to_chat(user, SPAN_BOLDNOTICE(pick("Bullseye!", "Dead center!", "Direct hit!", "Nice shot!", "Perfect!", "Dead-eye!")))
+		if(streak)
+			to_chat(user, SPAN_BOLDNOTICE("Bullseye! [streak + 1] hits in a row!"))
+		else
+			to_chat(user, SPAN_BOLDNOTICE("Bullseye!"))
+		streak++
 		playsound(user, lever_hitsound, 25, FALSE)
 	lever_sound = lever_super_sound
 	lever_message = "<b><i>You quickly work the lever!<i><b>"
@@ -95,10 +99,11 @@ their unique feature is that a direct hit will buff your damage and firerate
 	fire_delay = FIRE_DELAY_TIER_5
 	damage_mult = initial(damage_mult) + BULLET_DAMAGE_MULT_TIER_10
 	wield_delay = 0 //for one-handed levering
-	addtimer(CALLBACK(src, .proc/reset_hit_buff, user, one_hand_lever), 1 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE) //0.5
+	addtimer(CALLBACK(src, .proc/reset_hit_buff, user, one_hand_lever), 1 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
 
 /obj/item/weapon/gun/lever_action/proc/reset_hit_buff(mob/user, var/one_hand_lever)
 	SIGNAL_HANDLER
+	streak = 0
 	lever_sound = initial(lever_sound)
 	lever_message = initial(lever_message)
 	wield_delay = initial(wield_delay)
