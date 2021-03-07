@@ -618,7 +618,7 @@ var/list/global/item_storage_box_cache = list()
 					handle_item_insertion(I, 1, user) //quiet insertion
 				else
 					break
-			playsound(user.loc, "rustle", 15, 1, 6)
+			playsound(user.loc, "rustle", 15, TRUE, 6)
 		else
 			to_chat(user, SPAN_WARNING("[src] is full."))
 	else
