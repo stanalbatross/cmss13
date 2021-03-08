@@ -31,7 +31,7 @@
 				turns_since_move = 0
 	regenerate_icons()
 
-//COFFEE! SQUEEEEEEEEE!
+//COFFEE!
 /mob/living/simple_animal/crab/Coffee
 	name = "Coffee"
 	real_name = "Coffee"

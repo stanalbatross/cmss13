@@ -96,7 +96,7 @@
 		return
 	..()
 
-//RUNTIME IS ALIVE! SQUEEEEEEEE~
+//RUNTIME!
 /mob/living/simple_animal/cat/Runtime
 	name = "Runtime"
 	desc = "Her fur has the look and feel of velvet, and her tail quivers occasionally."

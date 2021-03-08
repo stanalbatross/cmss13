@@ -8,12 +8,12 @@
 	idle_power_usage = 30
 	active_power_usage = 200
 	power_channel = POWER_CHANNEL_EQUIP
-	var/obj/item/paper/copy = null	//what's in the copier!
+	var/obj/item/paper/copy = null	//what's in the copier
 	var/obj/item/photo/photocopy = null
 	var/obj/item/paper_bundle/bundle = null
-	var/copies = 1	//how many copies to print!
-	var/toner = 30 //how much toner is left! woooooo~
-	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier!
+	var/copies = 1	//how many copies to print
+	var/toner = 30 //how much toner is left
+	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier
 
 	attack_remote(mob/user as mob)
 		return attack_hand(user)

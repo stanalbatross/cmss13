@@ -37,7 +37,7 @@
 
 	faction = "russian"
 
-//SPACE BEARS! SQUEEEEEEEE~     OW! FUCK! IT BIT MY HAND OFF!!
+//SPACE BEARS!
 /mob/living/simple_animal/hostile/bear/Hudson
 	name = "Hudson"
 	desc = ""

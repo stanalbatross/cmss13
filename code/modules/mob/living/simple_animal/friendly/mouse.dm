@@ -145,7 +145,7 @@
 	response_harm   = "stamps on"
 	holder_type = /obj/item/holder/mouse/Doc
 
-//TOM IS ALIVE! SQUEEEEEEEE~K :)
+//TOM!
 /mob/living/simple_animal/mouse/brown/Tom
 	name = "Tom"
 	desc = "Jerry the cat is not amused."

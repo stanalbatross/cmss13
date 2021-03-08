@@ -23,7 +23,7 @@
 	var/obj/item/inventory_back
 	var/facehugger
 
-//IAN! SQUEEEEEEEEE~
+//IAN!
 /mob/living/simple_animal/corgi/Ian
 	name = "Ian"
 	real_name = "Ian"	//Intended to hold the name without altering it.
@@ -157,7 +157,7 @@
 	..()
 
 
-//LISA! SQUEEEEEEEEE~
+//LISA!
 /mob/living/simple_animal/corgi/Lisa
 	name = "Lisa"
 	real_name = "Lisa"
