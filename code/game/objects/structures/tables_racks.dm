@@ -75,7 +75,7 @@
 	..()
 	if(istype(O,/mob/living/carbon/Xenomorph/Ravager) || istype(O,/mob/living/carbon/Xenomorph/Crusher))
 		var/mob/living/carbon/Xenomorph/M = O
-		if(!M.stat) //No dead xenos jumpin on the bed~
+		if(!M.stat) //No dead xenos jumpin on the bed
 			visible_message(SPAN_DANGER("[O] plows straight through [src]!"))
 			destroy()
 
@@ -592,7 +592,7 @@
 	..()
 	if(istype(O,/mob/living/carbon/Xenomorph/Ravager) || istype(O,/mob/living/carbon/Xenomorph/Crusher))
 		var/mob/living/carbon/Xenomorph/M = O
-		if(!M.stat) //No dead xenos jumpin on the bed~
+		if(!M.stat) //No dead xenos jumpin on the bed
 			visible_message(SPAN_DANGER("[O] plows straight through [src]!"))
 			destroy()
 

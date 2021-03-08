@@ -128,7 +128,7 @@
 	use_power = 0
 	var/on = 0
 	var/obj/effect/mist/mymist = null
-	var/ismist = 0				//needs a var so we can make it linger~
+	var/ismist = 0				//needs a var so we can make it linger
 	var/watertemp = "normal"	//freezing, normal, or boiling
 	var/mobpresent = 0		//true if there is a mob on the shower's loc, this is to ease process()
 	var/is_washing = 0

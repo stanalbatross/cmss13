@@ -306,7 +306,7 @@ its easier to just keep the beam vertical.
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 
-		//Fibers~
+		//Fibers
 		blood_touch(H)
 
 		fingerprintslast = M.key

@@ -59,7 +59,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 	var/ispowered = 1 //starts powered, changes with power_change()
 	//var/list/datum/feed_channel/channel_list = list() //This list will contain the names of the feed channels. Each name will refer to a data region where the messages of the feed channels are stored.
 	//OBSOLETE: We're now using a global news network
-	var/screen = 0                  //Or maybe I'll make it into a list within a list afterwards... whichever I prefer, go fuck yourselves :3
+	var/screen = 0
 		// 0 = welcome screen - main menu
 		// 1 = view feed channels
 		// 2 = create feed channel
@@ -72,7 +72,6 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		// 9 = viewing channel feeds
 		// 10 = censor feed story
 		// 11 = censor feed channel
-		//Holy shit this is outdated, made this when I was still starting newscasters :3
 	var/paper_remaining = 0
 	var/securityCaster = 0
 		// 0 = Caster cannot be used to issue wanted posters
@@ -101,7 +100,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 	name = "Security Newscaster"
 	securityCaster = 1
 
-/obj/structure/machinery/newscaster/security_unit/New()         //Constructor, ho~
+/obj/structure/machinery/newscaster/security_unit/New()         //Constructor, ho
 	allCasters += src
 	src.paper_remaining = 15            // Will probably change this to something better
 	for(var/obj/structure/machinery/newscaster/NEWSCASTER in allCasters) // Let's give it an appropriate unit number
@@ -669,7 +668,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 			src.screen=1
 			src.updateUsrDialog()
 
-		else if(href_list["setScreen"]) //Brings us to the main menu and resets all fields~
+		else if(href_list["setScreen"]) //Brings us to the main menu and resets all fields
 			src.screen = text2num(href_list["setScreen"])
 			if (src.screen == 0)
 				src.scanned_user = "Unknown";

@@ -4,7 +4,7 @@
 		return
 	var/dat = "<html>"
 
-	//javascript, the part that does most of the work~
+	//javascript, the part that does most of the work
 	dat += {"
 		<head>
 			<script type='text/javascript'>

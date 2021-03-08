@@ -75,7 +75,7 @@
 	if(health <= 0)
 		user.visible_message(SPAN_DANGER("[user] tears open [src]!"))
 		deflate(1)
-	else	//for nicer text~
+	else	//for nicer text
 		user.visible_message(SPAN_DANGER("[user] tears at [src]!"))
 
 /obj/structure/inflatable/attack_animal(mob/user as mob)
