@@ -1466,6 +1466,11 @@ and you're good to go.
 	var/offset = 5
 
 	var/image/I = image('icons/obj/items/weapons/projectiles.dmi',user,muzzle_flash,image_layer)
+
+	if(in_chamber && in_chamber.color_to_muzzleflash) //If the chambered ammo has color (Like antibio ammo), give the muzzle flash greyscale and color.
+		I = image('icons/obj/items/weapons/projectiles.dmi', user, "greyscale_muzzle_flash", image_layer)
+		I.color = in_chamber.color
+
 	var/matrix/rotate = matrix() //Change the flash angle.
 	rotate.Translate(0, offset)
 	rotate.Turn(angle)

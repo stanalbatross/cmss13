@@ -20,6 +20,9 @@
 
 	var/def_zone = "chest"	//So we're not getting empty strings.
 
+	 ///Does the ammo's color transfer over to the gun's muzzleflash?
+	var/color_to_muzzleflash
+
 	var/yo = null
 	var/xo = null
 
@@ -101,6 +104,7 @@
 	ammo 		= ammo_datum
 	name 		= ammo.name
 	icon_state 	= ammo.icon_state
+	color 		= ammo.color
 	damage 		= ammo.damage + bonus_damage //Mainly for emitters.
 	scatter		= ammo.scatter
 	accuracy   += ammo.accuracy
@@ -109,6 +113,7 @@
 	damage_falloff = ammo.damage_falloff
 	damage_buildup = ammo.damage_buildup
 	projectile_override_flags = special_flags
+	color_to_muzzleflash = ammo.color_to_muzzleflash
 
 	// Apply bullet traits from ammo
 	for(var/entry in ammo.traits_to_give)

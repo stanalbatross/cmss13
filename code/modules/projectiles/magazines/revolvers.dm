@@ -17,13 +17,13 @@
 	name = "\improper M44 marksman speed loader (.44)"
 	default_ammo = /datum/ammo/bullet/revolver/marksman
 	caliber = ".44"
-	icon_state = "m_m44"
+	icon_state = "m44_marksman"
 
 /obj/item/ammo_magazine/revolver/heavy
 	name = "\improper M44 heavy speed loader (.44)"
 	default_ammo = /datum/ammo/bullet/revolver/heavy
 	caliber = ".44"
-	icon_state = "h_m44"
+	icon_state = "m44_heavy"
 
 /obj/item/ammo_magazine/revolver/incendiary
 	name = "\improper M44 incendiary speed loader (.44)"

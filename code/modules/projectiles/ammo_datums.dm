@@ -4,6 +4,9 @@
 	var/impact_limbs = BODY_FLAG_NO_BODY // The body parts that have an impact icon
 	var/icon 		= 'icons/obj/items/weapons/projectiles.dmi'
 	var/icon_state 	= "bullet"
+	var/color
+	 ///Does the ammo's color transfer over to the gun's muzzleflash? Intended to be used for 'special' ammunition, like antibiog ammo.
+	var/color_to_muzzleflash = FALSE
 	var/ping 		= "ping_b" //The icon that is displayed when the bullet bounces off something.
 	var/sound_hit //When it deals damage.
 	var/sound_armor //When it's blocked by human armor.
@@ -248,16 +251,18 @@
 
 /datum/ammo/bullet/pistol/hollow
 	name = "hollowpoint pistol bullet"
-
-	damage = BULLET_DAMAGE_TIER_11 //hollowpoint is strong
-	damage_falloff = DAMAGE_FALLOFF_TIER_9 //should be useful in close-range mostly
-	penetration = 0 //hollowpoint can't pierce armor!
-	shrapnel_chance = SHRAPNEL_CHANCE_TIER_3 //hollowpoint causes shrapnel
+	icon_state = "greyscale_bullet"
+	color = "#EA7500"
+	damage = BULLET_DAMAGE_TIER_11
+	damage_falloff = DAMAGE_FALLOFF_TIER_9
+	penetration = 0
+	shrapnel_chance = SHRAPNEL_CHANCE_TIER_3
 
 // Used by M4A3 AP, Highpower and mod88
 /datum/ammo/bullet/pistol/ap
 	name = "armor-piercing pistol bullet"
-
+	icon_state = "greyscale_bullet"
+	color = "#0D7F0E"
 	damage = BULLET_DAMAGE_TIER_5
 	accuracy = HIT_ACCURACY_TIER_2
 	penetration= ARMOR_PENETRATION_TIER_8
@@ -265,6 +270,9 @@
 
 /datum/ammo/bullet/pistol/penetrating
 	name = "wall-piercing pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#006F8B"
+	color_to_muzzleflash = TRUE
 	shrapnel_chance = 0
 
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -277,6 +285,9 @@
 
 /datum/ammo/bullet/pistol/ap/toxin
 	name = "toxic pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#AD0044"
+	color_to_muzzleflash = TRUE
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -321,6 +332,9 @@
 
 /datum/ammo/bullet/pistol/incendiary
 	name = "incendiary pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -346,6 +360,9 @@
 
 /datum/ammo/bullet/pistol/squash/toxin
 	name = "toxic squash-head pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#AD0044"
+	color_to_muzzleflash = TRUE
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -365,6 +382,9 @@
 
 /datum/ammo/bullet/pistol/squash/penetrating
 	name = "wall-piercing squash-head pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#006F8B"
+	color_to_muzzleflash = TRUE
 	shrapnel_chance = 0
 	penetration = ARMOR_PENETRATION_TIER_10
 
@@ -376,6 +396,9 @@
 
 /datum/ammo/bullet/pistol/squash/incendiary
 	name = "incendiary squash-head pistol bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -437,7 +460,8 @@
 
 /datum/ammo/bullet/revolver/marksman
 	name = "marksman revolver bullet"
-
+	icon_state = "greyscale_bullet"
+	color = "#FF744F"
 	shrapnel_chance = 0
 	damage_falloff = 0
 	accurate_range = 12
@@ -445,7 +469,8 @@
 
 /datum/ammo/bullet/revolver/heavy
 	name = "heavy revolver bullet"
-
+	icon_state = "greyscale_bullet"
+	color = "#484761"
 	damage = BULLET_DAMAGE_TIER_7
 	penetration = ARMOR_PENETRATION_TIER_4
 	accuracy = HIT_ACCURACY_TIER_3
@@ -455,6 +480,9 @@
 
 /datum/ammo/bullet/revolver/incendiary
 	name = "incendiary revolver bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	damage = BULLET_DAMAGE_TIER_8
 
 /datum/ammo/bullet/revolver/incendiary/set_bullet_traits()
@@ -465,6 +493,9 @@
 
 /datum/ammo/bullet/revolver/marksman/toxin
 	name = "toxic revolver bullet"
+	icon_state = "greyscale_bullet"
+	color = "#AD0044"
+	color_to_muzzleflash = TRUE
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -484,6 +515,9 @@
 
 /datum/ammo/bullet/revolver/penetrating
 	name = "wall-piercing revolver bullet"
+	icon_state = "greyscale_bullet"
+	color = "#006F8B"
+	color_to_muzzleflash = TRUE
 	shrapnel_chance = 0
 
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -538,7 +572,8 @@
 
 /datum/ammo/bullet/smg/ap
 	name = "armor-piercing submachinegun bullet"
-
+	icon_state = "greyscale_bullet"
+	color = "#0D7F0E"
 	damage = BULLET_DAMAGE_TIER_7
 	penetration = ARMOR_PENETRATION_TIER_6
 	damage_falloff = DAMAGE_FALLOFF_TIER_8
@@ -546,6 +581,9 @@
 
 /datum/ammo/bullet/smg/ap/toxin
 	name = "toxic submachinegun bullet"
+	icon_state = "greyscale_bullet"
+	color = "#AD0044"
+	color_to_muzzleflash = TRUE
 	var/acid_per_hit = 5
 	var/organic_damage_mult = 3
 
@@ -644,6 +682,9 @@
 
 /datum/ammo/bullet/smg/incendiary
 	name = "incendiary submachinegun bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -659,6 +700,9 @@
 
 /datum/ammo/bullet/smg/penetrating
 	name = "wall-piercing submachinegun bullet"
+	icon_state = "greyscale_bullet"
+	color = "#006F8B"
+	color_to_muzzleflash = TRUE
 	shrapnel_chance = 0
 
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -724,13 +768,17 @@
 
 /datum/ammo/bullet/rifle/ap
 	name = "armor-piercing rifle bullet"
-
+	icon_state = "greyscale_bullet"
+	color = "#0D7F0E"
 	damage = BULLET_DAMAGE_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_8
 
 // Basically AP but better. Focused at taking out armour temporarily
 /datum/ammo/bullet/rifle/ap/toxin
 	name = "toxic rifle bullet"
+	icon_state = "greyscale_bullet"
+	color = "#AD0044"
+	color_to_muzzleflash = TRUE
 	var/acid_per_hit = 7
 	var/organic_damage_mult = 3
 
@@ -751,6 +799,9 @@
 
 /datum/ammo/bullet/rifle/penetrating
 	name = "wall-piercing rifle bullet"
+	icon_state = "greyscale_bullet"
+	color = "#006F8B"
+	color_to_muzzleflash = TRUE
 	shrapnel_chance = 0
 
 	// Completely ignore armour
@@ -779,6 +830,9 @@
 
 /datum/ammo/bullet/rifle/incendiary
 	name = "incendiary rifle bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -808,6 +862,9 @@
 
 /datum/ammo/bullet/rifle/m4ra/incendiary
 	name = "A19 high velocity incendiary bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	flags_ammo_behavior = AMMO_BALLISTIC
 
 	damage = BULLET_DAMAGE_TIER_8
@@ -824,8 +881,9 @@
 
 /datum/ammo/bullet/rifle/m4ra/impact
 	name = "A19 high velocity impact bullet"
+	icon_state = "greyscale_bullet"
+	color = "#0028CA"
 	flags_ammo_behavior = AMMO_BALLISTIC
-
 	damage = BULLET_DAMAGE_TIER_8
 	accuracy = -HIT_ACCURACY_TIER_2
 	scatter = -SCATTER_AMOUNT_TIER_8
@@ -886,6 +944,9 @@
 
 /datum/ammo/bullet/shotgun/incendiary
 	name = "incendiary slug"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	handful_state = "incendiary_slug"
 	damage_type = BURN
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -964,6 +1025,8 @@
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary
 	name = "incendiary buckshot shell"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	handful_type = /obj/item/ammo_magazine/handful/shotgun/custom_color/incendiary
 	handful_color = "#ffa800"
 
@@ -1033,6 +1096,9 @@
 
 /datum/ammo/bullet/sniper/incendiary
 	name = "incendiary sniper bullet"
+	icon_state = "greyscale_bullet"
+	color = "#CF0808"
+	color_to_muzzleflash = TRUE
 	accuracy = 0
 	damage_type = BURN
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
@@ -1062,6 +1128,8 @@
 
 /datum/ammo/bullet/sniper/flak
 	name = "flak sniper bullet"
+	icon_state = "greyscale_bullet"
+	color = "#0066FF"
 	damage_type = BRUTE
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
 
@@ -1154,7 +1222,7 @@
 */
 
 /datum/ammo/bullet/smartgun
-	name = "smartgun bullet"
+	name = "softpoint smartgun bullet"
 	icon_state = "redbullet"
 	flags_ammo_behavior = AMMO_BALLISTIC
 
@@ -1167,7 +1235,6 @@
 /datum/ammo/bullet/smartgun/armor_piercing
 	name = "armor-piercing smartgun bullet"
 	icon_state = "bullet"
-
 	accurate_range = 12
 	accuracy = HIT_ACCURACY_TIER_1
 	damage_falloff = DAMAGE_FALLOFF_TIER_10
@@ -1188,7 +1255,6 @@
 
 /datum/ammo/bullet/smartgun/dirty/armor_piercing
 	debilitate = list(0,0,0,3,0,0,0,1)
-
 	accurate_range = 22
 	accuracy = HIT_ACCURACY_TIER_3
 	damage_falloff = DAMAGE_FALLOFF_TIER_10
@@ -2197,6 +2263,7 @@
 /datum/ammo/bullet/shrapnel/incendiary
 	name = "flaming shrapnel"
 	icon_state = "beanbag" // looks suprisingly a lot like flaming shrapnel chunks
+	color = "#D91313"
 	flags_ammo_behavior = AMMO_STOPPED_BY_COVER
 
 	shell_speed = AMMO_SPEED_TIER_1
