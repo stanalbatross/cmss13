@@ -116,7 +116,7 @@
 
 	var/acquisition_time = target_acquisition_delay
 	if(user.skills)
-		acquisition_time = max(15, acquisition_time - 25*user.skills.get_skill_level(SKILL_LEADERSHIP))
+		acquisition_time = max(15, acquisition_time - 25*user.skills.get_skill_level(SKILL_JTAC))
 
 	var/datum/squad/S = user.assigned_squad
 
@@ -241,7 +241,7 @@
 
 	var/acquisition_time = target_acquisition_delay
 	if(user.skills)
-		acquisition_time = max(15, acquisition_time - 25*user.skills.get_skill_level(SKILL_LEADERSHIP))
+		acquisition_time = max(15, acquisition_time - 25*user.skills.get_skill_level(SKILL_JTAC))
 
 	var/datum/squad/S = user.assigned_squad
 
@@ -300,7 +300,7 @@
 
 		var/turf/userloc = get_turf(user)
 		msg_admin_niche("Laser target [las_name] has been designated by [key_name(user, 1)] at ([TU.x], [TU.y], [TU.z]). (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[userloc.x];Y=[userloc.y];Z=[userloc.z]'>JMP SRC</a>) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[TU.x];Y=[TU.y];Z=[TU.z]'>JMP LOC</a>)")
-		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([x], [y], [z]).")
+		log_game("Laser target [las_name] has been designated by [key_name(user, 1)] at ([TU.x], [TU.y], [TU.z]).")
 
 		playsound(src, 'sound/effects/binoctarget.ogg', 35)
 		while(laser)

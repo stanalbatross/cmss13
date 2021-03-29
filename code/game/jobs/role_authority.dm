@@ -53,7 +53,10 @@ var/global/marines_assigned = 0
 											/datum/job/logistics,
 											/datum/job/logistics/tech,
 											/datum/job/marine,
-											/datum/job/antag)
+											/datum/job/antag,
+											/datum/job/distress,
+											/datum/job/distress/provost
+											)
 	var/squads_all[] = typesof(/datum/squad) - /datum/squad
 	var/castes_all[] = subtypesof(/datum/caste_datum)
 
@@ -452,6 +455,12 @@ var/global/marines_assigned = 0
 				else
 					to_chat(user, "There are no [J.title] slots occupied in [sq.name] Squad.")
 					return
+			if(JOB_SQUAD_RTO)
+				if(sq.num_rto > 0)
+					sq.num_rto--
+				else
+					to_chat(user, "There are no [J.title] slots occupied in [sq.name] Squad.")
+					return
 			if(JOB_SQUAD_LEADER)
 				if(sq.num_leaders > 0)
 					sq.num_leaders--
@@ -677,6 +686,19 @@ var/global/marines_assigned = 0
 						if(!lowest)
 							lowest = S
 						else if(S.num_specialists < lowest.num_specialists)
+							lowest = S
+
+			if("Squad RT Operator")
+				for(var/datum/squad/S in mixed_squads)
+					if(S.usable)
+						if(!skip_limit && S.num_rto >= S.max_rto) continue
+						if(pref_squad_name && S.name == pref_squad_name)
+							S.put_marine_in_squad(H) //fav squad has a spot for us.
+							return
+
+						if(!lowest)
+							lowest = S
+						else if(S.num_rto < lowest.num_rto)
 							lowest = S
 
 			if("Squad Smartgunner")

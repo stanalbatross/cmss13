@@ -24,7 +24,7 @@
 	body_temperature = 350
 
 	mob_flags = KNOWS_TECHNOLOGY
-	flags = IS_WHITELISTED|NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_NEURO
+	flags = IS_WHITELISTED|NO_BREATHE|NO_CLONE_LOSS|NO_BLOOD|NO_POISON|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_NEURO
 
 	blood_color = "#EEEEEE"
 
@@ -45,6 +45,13 @@
 	GLOB.alive_human_list -= H
 	return ..()
 
+/datum/species/synthetic/apply_signals(var/mob/living/carbon/human/H)
+	RegisterSignal(H, COMSIG_HUMAN_IMPREGNATE, .proc/cancel_impregnate)
+
+/datum/species/synthetic/proc/cancel_impregnate(datum/source)
+	SIGNAL_HANDLER
+	return COMPONENT_NO_IMPREGNATE
+
 /datum/species/synthetic/second_gen_synthetic
 	name = "Second Generation Synthetic"
 	uses_ethnicity = FALSE //2nd gen uses generic human look
@@ -60,13 +67,13 @@
 
 	pain_type = /datum/pain/synthetic/early_synthetic
 	rarity_value = 1.5
-	slowdown = 1.4
+	slowdown = 0.45
 	total_health = 200 //But more durable
 	insulated = 1
 
 	hair_color = "#000000"
 
 	knock_down_reduction = 3.5
-	stun_reduction = 3.5 
+	stun_reduction = 3.5
 
 	inherent_verbs = null

@@ -51,7 +51,6 @@ var/internal_tick_usage = 0
 	//Emergency Fix
 	//end-emergency fix
 
-	update_status()
 	. = ..()
 
 	var/testing_locally = (world.params && world.params["local_test"])
@@ -69,6 +68,7 @@ var/internal_tick_usage = 0
 	GLOB.timezoneOffset = text2num(time2text(0,"hh")) * 36000
 
 	Master.Initialize(10, FALSE, TRUE)
+	update_status()
 
 	//Scramble the coords obsfucator
 	obfs_x = rand(-500, 500) //A number between -100 and 100
@@ -106,7 +106,7 @@ var/internal_tick_usage = 0
 			sleep(10)
 
 		// Start the game ASAP
-		SSticker.current_state = GAME_STATE_SETTING_UP
+		SSticker.request_start()
 	return
 
 var/world_topic_spam_protect_ip = "0.0.0.0"
@@ -198,10 +198,10 @@ var/world_topic_spam_protect_time = world.timeofday
 	if(SSticker.mode)
 		round_extra_data = "&message=[SSticker.mode.end_round_message()]"
 	world.Export("http://127.0.0.1:8888/?rebooting=1[round_extra_data]")
-	
+
 	if(CONFIG_GET(flag/no_restarts))
 		shutdown()
-		return 
+		return
 
 	..(reason)
 
@@ -231,17 +231,17 @@ var/world_topic_spam_protect_time = world.timeofday
 		s += "<a href=\"[CONFIG_GET(string/forumurl)]\"><b>[CONFIG_GET(string/servername)] &#8212; [MAIN_SHIP_NAME]</b>"
 		s += "<br><img src=\"[CONFIG_GET(string/forumurl)]/byond_hub_logo.jpg\"></a>"
 		// s += "<a href=\"http://goo.gl/04C5lP\">Wiki</a>|<a href=\"http://goo.gl/hMmIKu\">Rules</a>"
-		if(SSticker)
-			if(master_mode)
-				s += "<br>Map: <b>[SSmapping.configs[GROUND_MAP].map_name]</b>"
-				if(SSticker.mode)
-					s += "<br>Mode: <b>[SSticker.mode.name]</b>"
-				s += "<br>Round time: <b>[duration2text()]</b>"
-		else
-			s += "<br>Map: <b>[SSmapping.configs[GROUND_MAP].map_name]</b>"
-		// s += enter_allowed ? "<br>Entering: <b>Enabled</b>" : "<br>Entering: <b>Disabled</b>"
 
-		status = s
+	if(SSmapping?.configs)
+		var/datum/map_config/MG = SSmapping.configs[GROUND_MAP]
+		if(MG?.map_name)
+			s += "<br>Map: <b>[SSmapping.configs[GROUND_MAP].map_name]</b>"
+
+	if(SSticker?.mode)
+		s += "<br>Mode: <b>[SSticker.mode.name]</b>"
+		s += "<br>Round time: <b>[duration2text()]</b>"
+
+	world.status = s
 
 #define FAILED_DB_CONNECTION_CUTOFF 1
 var/failed_db_connections = 0

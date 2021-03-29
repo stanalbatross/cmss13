@@ -45,7 +45,7 @@
 			owner.jumptokey()
 
 		if("get_mob")
-			var/mob/choice = tgui_input_list(owner, "Pick a mob to teleport here:","Get Mob",null, GLOB.mob_list)
+			var/mob/choice = tgui_input_list(owner, "Pick a mob to teleport here:","Get Mob", GLOB.mob_list)
 			if(QDELETED(choice))
 				return
 
@@ -91,7 +91,7 @@
 				if(!faction)
 					to_chat(owner, SPAN_ALERT("Faction choice error. Aborting."))
 					return
-				var/list/targets = GLOB.alive_human_list
+				var/list/targets = GLOB.alive_human_list.Copy()
 				for(var/mob/living/carbon/human/H in targets)
 					var/area/AR = get_area(H)
 					if(H.faction != faction || AR.statistic_exempt)
@@ -118,7 +118,7 @@
 					hive = GLOB.hive_datum[hivenumber]
 					hives += list("[hive.name]" = hive.hivenumber)
 
-				faction = tgui_input_list(owner, "Select hive you want to teleport to your location. Mobs in Thunderdome/CentComm areas won't be included.", "Hive Choice", "", hives)
+				faction = tgui_input_list(owner, "Select hive you want to teleport to your location. Mobs in Thunderdome/CentComm areas won't be included.", "Hive Choice", hives)
 				if(!faction)
 					to_chat(owner, SPAN_ALERT("Hive choice error. Aborting."))
 					return

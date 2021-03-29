@@ -9,7 +9,7 @@
 
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/Xenomorph/M, dam_bonus)
-	if(M.fortify && !M.steelcrest || M.burrow)
+	if(M.fortify || M.burrow)
 		return FALSE
 
 	//Reviewing the four primary intents
@@ -24,9 +24,6 @@
 
 		if(INTENT_GRAB)
 			if(M == src || anchored || buckled)
-				return FALSE
-
-			if(M.fortify)
 				return FALSE
 
 			if(check_shields(0, M.name)) // Blocking check
@@ -89,9 +86,9 @@
 
 			M.flick_attack_overlay(src, "slash")
 			var/obj/limb/affecting
-			affecting = get_limb(ran_zone(M.zone_selected, 70))
+			affecting = get_limb(rand_zone(M.zone_selected, 70))
 			if(!affecting) //No organ, just get a random one
-				affecting = get_limb(ran_zone(null, 0))
+				affecting = get_limb(rand_zone(null, 0))
 			if(!affecting) //Still nothing??
 				affecting = get_limb("chest") //Gotta have a torso?!
 
@@ -112,6 +109,13 @@
 						drop_inv_item_on_ground(wear_mask)
 						emote("roar")
 						return TRUE
+
+			var/n_damage = armor_damage_reduction(GLOB.marine_melee, damage, armor_block)
+
+			if(M.behavior_delegate)
+				n_damage = M.behavior_delegate.melee_attack_modify_damage(n_damage, src)
+
+			if(SEND_SIGNAL(src, COMSIG_HUMAN_XENO_ATTACK, n_damage) & COMPONENT_CANCEL_XENO_ATTACK) return
 
 			//The normal attack proceeds
 			playsound(loc, "alien_claw_flesh", 25, 1)
@@ -134,11 +138,6 @@
 				attack_log += text("\[[time_stamp()]\] <font color='orange'>was slashed by [key_name(M)]</font>")
 				M.attack_log += text("\[[time_stamp()]\] <font color='red'>slashed [key_name(src)]</font>")
 			log_attack("[key_name(M)] slashed [key_name(src)]")
-
-			var/n_damage = armor_damage_reduction(GLOB.marine_melee, damage, armor_block)
-
-			if(M.behavior_delegate)
-				n_damage = M.behavior_delegate.melee_attack_modify_damage(n_damage, src)
 
 			//nice messages so people know that armor works
 			if(n_damage <= 0.34*damage)
@@ -171,9 +170,6 @@
 
 			if(M.legcuffed && isYautja(src))
 				to_chat(M, SPAN_XENODANGER("You don't have the dexterity to tackle the headhunter with that thing on your leg!"))
-				return FALSE
-
-			if(M.fortify)
 				return FALSE
 
 			M.animation_attack_on(src)
@@ -210,7 +206,7 @@
 
 //Every other type of nonhuman mob
 /mob/living/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(M.fortify && !M.steelcrest || M.burrow)
+	if(M.fortify || M.burrow)
 		return FALSE
 
 	switch(M.a_intent)
@@ -221,9 +217,6 @@
 
 		if(INTENT_GRAB)
 			if(M == src || anchored || buckled)
-				return FALSE
-
-			if(M.fortify)
 				return FALSE
 
 			if(Adjacent(M)) //Logic!
@@ -280,9 +273,6 @@
 			apply_damage(damage, BRUTE)
 
 		if(INTENT_DISARM)
-
-			if(M.fortify)
-				return FALSE
 
 			playsound(loc, 'sound/weapons/alien_knockdown.ogg', 25, 1)
 			M.visible_message(SPAN_WARNING("[M] shoves [src]!"), \
@@ -764,7 +754,7 @@
 
 	else if(wiresexposed == 1 && allcut == 0)
 		for(var/wire = 1; wire < length(get_wire_descriptions()); wire++)
-			cut(wire)
+			cut(wire, M)
 		update_icon()
 		visible_message(SPAN_DANGER("[src]'s wires snap apart in a rain of sparks!"), null, null, 5)
 	else

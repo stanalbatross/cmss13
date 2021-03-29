@@ -1,4 +1,3 @@
-
 // Vanguard shields rapidly decay after the first hit.
 /datum/xeno_shield/vanguard
 	var/hit_yet = FALSE
@@ -11,7 +10,7 @@
 
 	if (!hit_yet)
 		hit_yet = TRUE
-		begin_decay()
+		rapid_decay()
 		return 0
 	else
 		return ..(damage)
@@ -24,8 +23,11 @@
 
 	return ..()
 
+/// Decay is suppressed for Vanguard Shield and triggered on hit
 /datum/xeno_shield/vanguard/begin_decay()
-	rapid_decay()
+	return // Don't process us
+/datum/xeno_shield/vanguard/process()
+	return PROCESS_KILL // REALLY, don't process us!
 
 /datum/xeno_shield/vanguard/proc/rapid_decay()
 	set waitfor = 0
@@ -34,7 +36,7 @@
 		amount -= 50
 
 		notify_xeno()
-		sleep(1)
+		sleep(0.4 SECONDS)
 
 	if (amount <= 0)
 		if (linked_xeno && istype(linked_xeno, /mob/living/carbon/Xenomorph))
@@ -48,7 +50,7 @@
 
 			var/datum/action/xeno_action/activable/cleave/cAction = get_xeno_action_by_type(linked_xeno, /datum/action/xeno_action/activable/cleave)
 			if (istype(cAction))
-				addtimer(CALLBACK(cAction, /datum/action/xeno_action/activable/cleave/proc/remove_buff), 7, TIMER_UNIQUE)
+				addtimer(CALLBACK(cAction, /datum/action/xeno_action/activable/cleave.proc/remove_buff), 7, TIMER_UNIQUE)
 
 /datum/xeno_shield/vanguard/proc/notify_xeno()
 	var/mob/living/carbon/Xenomorph/X = linked_xeno

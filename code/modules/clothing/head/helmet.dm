@@ -302,6 +302,7 @@
 						/obj/item/clothing/accessory/patch = "uscmpatch",
 						/obj/item/clothing/accessory/patch/falcon = "falconspatch",
 						/obj/item/ammo_magazine/handful = "bullet",
+						/obj/item/prop/helmetgarb/riot_shield = "helmet_riot_shield",
 
 						///// MEDICAL
 						/obj/item/stack/medical/bruise_pack ="brutepack",
@@ -426,8 +427,14 @@
 	icon_state = "tech_helmet"
 	specialty = "M10 technician"
 	var/protection_on = FALSE
+	///To remember the helmet's map variant-adjusted icon state
+	var/base_icon_state
 
 	actions_types = list(/datum/action/item_action/toggle)
+
+/obj/item/clothing/head/helmet/marine/tech/Initialize()
+	. = ..()
+	base_icon_state = icon_state
 
 /obj/item/clothing/head/helmet/marine/tech/attack_self()
 	toggle()
@@ -441,13 +448,13 @@
 		if(protection_on)
 			flags_inventory &= ~(COVEREYES|COVERMOUTH)
 			flags_inv_hide &= ~(HIDEEYES|HIDEFACE)
-			icon_state = initial(icon_state)
+			icon_state = base_icon_state
 			eye_protection = 0
 			to_chat(usr, "You <b>deactivate</b> the [src]'s welding screen.")
 		else
 			flags_inventory |= COVEREYES|COVERMOUTH
 			flags_inv_hide |= HIDEEYES|HIDEFACE
-			icon_state = "[initial(icon_state)]_on"
+			icon_state = "[base_icon_state]_on"
 			eye_protection = 2
 			to_chat(usr, "You <b>activate</b> the [src]'s welding screen.")
 
@@ -483,9 +490,9 @@
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	specialty = "M11 pattern leader"
 
-/obj/item/clothing/head/helmet/marine/intel
-	name = "\improper XM12 pattern intelligence helmet"
-	desc = "An experimental brain-bucket. A dust ruffle hangs from back. Moderately better at deflecting blunt objects at the cost of humiliation. But who will be laughing at the memorial? Not you, you'll be busy getting medals for your intel work."
+/obj/item/clothing/head/helmet/marine/rto
+	name = "\improper XM12 pattern radio operator helmet"
+	desc = "An experimental brain-bucket. A dust ruffle hangs from back. Moderately better at deflecting blunt objects at the cost of humiliation. But who will be laughing at the memorial? Not you, you'll be busy getting medals for your IMPORTANT phone calls."
 	icon_state = "io"
 	item_state = "io"
 	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
@@ -495,7 +502,7 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
 	armor_rad = CLOTHING_ARMOR_LOW
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
-	specialty = "XM12 pattern intel"
+	specialty = "XM12 pattern radio operator"
 
 /obj/item/clothing/head/helmet/marine/specialist
 	name = "\improper B18 helmet"
@@ -643,6 +650,13 @@
 	specialty = "M10 pattern military police"
 	flags_atom = NO_SNOW_TYPE
 
+/obj/item/clothing/head/helmet/marine/mp/provost/marshall
+	name = "\improper Provost Marshall Cap"
+	desc = "The expensive headwear of a Provost Marshall. Contains shards of kevlar to keep it's valuable contents safe."
+	icon_state = "pvmarshalhat"
+	item_state = "pvmarshalhat"
+	flags_atom = NO_SNOW_TYPE|UNIQUE_ITEM_TYPE
+
 //=============================//PMCS\\==================================\\
 //=======================================================================\\
 
@@ -724,6 +738,23 @@
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEFACE|HIDEMASK|HIDEALLHAIR
 	flags_marine_helmet = HELMET_DAMAGE_OVERLAY
 	unacidable = TRUE
+
+//FIORINA / UA RIOT CONTROL HELMET//
+
+/obj/item/clothing/head/helmet/marine/veteran/ua_riot
+	name = "\improper RC6 helmet"
+	desc = "The standard UA Riot Control 6 helmet is of odd design, lacking a face shield by default (mounting points are available). The distinct white pattern and red emblem are synonymous with oppression throughout the rim."
+	icon_state = "ua_riot"
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_energy = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_LOW
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_LOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	specialty = "RC6 helmet"
+	flags_atom = NO_SNOW_TYPE
 
 //==========================//DISTRESS\\=================================\\
 //=======================================================================\\

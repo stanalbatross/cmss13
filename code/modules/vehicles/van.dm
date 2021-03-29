@@ -28,6 +28,8 @@
 		"back_right" = list(0, 2)
 	)
 
+	vehicle_flags = VEHICLE_WEAK
+
 	interior_capacity = 8
 
 	misc_multipliers = list(
@@ -45,11 +47,6 @@
 
 	hardpoints_allowed = list(
 		/obj/item/hardpoint/locomotion/van_wheels
-	)
-
-	hardpoints = list(
-		HDPT_SUPPORT = null,
-		HDPT_WHEELS = null
 	)
 
 	turn_momentum_loss_factor = 1
@@ -124,6 +121,20 @@
 	flags_atom = ON_BORDER|NOINTERACT
 	unacidable = TRUE
 
+/obj/structure/interior_wall/van/Initialize()
+	. = ..()
+	pixel_y = 0
+	//alpha = 255
+	layer = ABOVE_OBJ_LAYER
+
+	switch(dir)
+		if(NORTH)
+			pixel_y = 31
+			layer = INTERIOR_WALL_NORTH_LAYER
+		if(SOUTH)
+			alpha = 50
+			layer = INTERIOR_WALL_SOUTH_LAYER
+
 /*
 ** PRESETS
 */
@@ -166,7 +177,7 @@
 	mobs_under += L
 	RegisterSignal(L, COMSIG_PARENT_QDELETING, .proc/remove_under_van)
 	RegisterSignal(L, COMSIG_MOB_LOGIN, .proc/add_client)
-	RegisterSignal(L, COMSIG_MOB_POST_MOVE, .proc/check_under_van)
+	RegisterSignal(L, COMSIG_MOVABLE_MOVED, .proc/check_under_van)
 
 	if(L.client)
 		add_client(L)
@@ -182,12 +193,12 @@
 	UnregisterSignal(L, list(
 		COMSIG_PARENT_QDELETING,
 		COMSIG_MOB_LOGIN,
-		COMSIG_MOB_POST_MOVE,
+		COMSIG_MOVABLE_MOVED,
 	))
 
-/obj/vehicle/multitile/van/proc/check_under_van(var/mob/M, var/turf/NewLoc, var/direction)
+/obj/vehicle/multitile/van/proc/check_under_van(var/mob/M, var/turf/oldloc, var/direction)
 	SIGNAL_HANDLER
-	if(!(NewLoc in locs))
+	if(!(M.loc in locs))
 		remove_under_van(M)
 
 /obj/vehicle/multitile/van/proc/add_client(var/mob/living/L)
@@ -274,17 +285,29 @@
 	icon_state = "van_right_3"
 	dir = SOUTH
 
+/obj/structure/interior_exit/vehicle/van/right/Initialize()
+	..()
+	alpha = 50
+
 /obj/structure/interior_exit/vehicle/van/backleft
 	name = "Van back exit"
 	icon = 'icons/obj/vehicles/interiors/van.dmi'
 	icon_state = "van_back_2"
 	dir = WEST
 
+/obj/structure/interior_exit/vehicle/van/backleft/Initialize()
+	..()
+	pixel_x = 0
+
 /obj/structure/interior_exit/vehicle/van/backright
 	name = "Van back exit"
 	icon = 'icons/obj/vehicles/interiors/van.dmi'
 	icon_state = "van_back_1"
 	dir = WEST
+
+/obj/structure/interior_exit/vehicle/van/backright/Initialize()
+	..()
+	pixel_x = 0
 
 /obj/vehicle/multitile/van/Collide(var/atom/A)
 	if(!seats[VEHICLE_DRIVER])
@@ -293,7 +316,12 @@
 	if(istype(A, /obj/structure/barricade/plasteel))
 		return ..()
 
-	if(istype(A, /obj/structure/barricade) || istype(A, /turf/closed/wall))
+	if(istype(A, /turf/closed/wall) || \
+	   istype(A, /obj/structure/barricade/sandbags) || \
+	   istype(A, /obj/structure/barricade/metal) || \
+	   istype(A, /obj/structure/barricade/deployable) || \
+	   istype(A, /obj/structure/machinery/cryopod)) //Can no longer runover cryopods
+
 		return FALSE
 
 	return ..()

@@ -113,7 +113,7 @@
 							 SPAN_NOTICE("You direct [src] to [M]'s eyes."))
 
 		if(istype(M, /mob/living/carbon/human))	//robots and aliens are unaffected
-			if(M.stat == DEAD || M.sdisabilities & BLIND)	//mob is dead or fully blind
+			if(M.stat == DEAD || M.sdisabilities & DISABILITY_BLIND)	//mob is dead or fully blind
 				to_chat(user, SPAN_NOTICE("[M] pupils does not react to the light!"))
 			else	//they're okay!
 				M.flash_eyes()
@@ -182,12 +182,34 @@
 	w_class = SIZE_LARGE
 	on = 1
 
+//Generic Candelabra
+/obj/item/device/flashlight/lamp/candelabra
+	name = "candelabra"
+	desc = "A firehazard that can be used to thwack things with impunity."
+	icon_state = "candelabra"
+	force = 15
+
 //Green-shaded desk lamp
 /obj/item/device/flashlight/lamp/green
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	item_state = "lampgreen"
 	brightness_on = 5
+
+/obj/item/device/flashlight/lamp/tripod
+	name = "tripod lamp"
+	desc = "An emergency light tube mounted onto a tripod. It seemingly lasts forever."
+	icon_state = "tripod_lamp"
+	brightness_on = 6//pretty good
+	w_class = SIZE_LARGE
+	on = 1
+
+//obj/item/device/flashlight/lamp/tripod/New() //start all tripod lamps as on.
+//	..()
+//	update_brightness()
+
+/obj/item/device/flashlight/lamp/tripod/grey
+	icon_state = "tripod_lamp_grey"
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
 	set name = "Toggle light"
@@ -341,6 +363,11 @@
 	heat_source = 1500
 	damtype = "fire"
 	START_PROCESSING(SSobj, src)
+	// Enable throw mode to be consistent with normal flare
+	var/mob/living/carbon/U = user
+	if(istype(U) && !U.throw_mode)
+		U.toggle_throw_mode(THROW_MODE_NORMAL)
+
 	faction = user.faction
 	addtimer(CALLBACK(src, .proc/activate_signal, user), 5 SECONDS)
 

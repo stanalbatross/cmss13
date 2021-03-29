@@ -17,7 +17,7 @@
 	evolution_allowed = FALSE
 	deevolves_to = "Drone"
 	eggs_max = 5
-	throwspeed = 1
+	throwspeed = SPEED_AVERAGE
 	can_hold_facehuggers = 1
 	can_hold_eggs = CAN_HOLD_ONE_HAND
 	weed_level = WEED_LEVEL_STANDARD
@@ -49,7 +49,7 @@
 	pixel_x = -16 //Needed for 2x2
 	old_x = -16
 
-	actions = list(
+	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno,
@@ -100,7 +100,8 @@
 
 
 /mob/living/carbon/Xenomorph/Carrier/proc/throw_hugger(atom/T)
-	if(!T) return
+	if(!T)
+		return
 
 	if(!check_state())
 		return

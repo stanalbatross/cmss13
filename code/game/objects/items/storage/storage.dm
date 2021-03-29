@@ -101,22 +101,30 @@
 		user.client.screen += storage_end
 
 	user.s_active = src
-	LAZYDISTINCTADD(content_watchers, user)
+	add_to_watchers(user)
 	return
 
-/obj/item/storage/proc/hide_from(mob/user as mob)
-	if(!user.client)
-		return
+/obj/item/storage/proc/add_to_watchers(mob/user)
+	if(!(user in content_watchers))
+		LAZYADD(content_watchers, user)
+		RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/watcher_deleted)
 
-	user.client.screen -= src.boxes
-	user.client.screen -= storage_start
-	user.client.screen -= storage_continue
-	user.client.screen -= storage_end
-	user.client.screen -= src.closer
-	user.client.screen -= src.contents
+/obj/item/storage/proc/del_from_watchers(mob/watcher)
+	if(watcher in content_watchers)
+		LAZYREMOVE(content_watchers, watcher)
+		UnregisterSignal(watcher, COMSIG_PARENT_QDELETING)
+
+/obj/item/storage/proc/hide_from(mob/user as mob)
+	if(user.client)
+		user.client.screen -= src.boxes
+		user.client.screen -= storage_start
+		user.client.screen -= storage_continue
+		user.client.screen -= storage_end
+		user.client.screen -= src.closer
+		user.client.screen -= src.contents
 	if(user.s_active == src)
 		user.s_active = null
-	LAZYREMOVE(content_watchers, user)
+	del_from_watchers(user)
 	return
 
 /obj/item/storage/proc/can_see_content()
@@ -125,7 +133,7 @@
 		if(M.s_active == src && M.client)
 			lookers |= M
 		else
-			LAZYREMOVE(content_watchers, M)
+			del_from_watchers(M)
 	return lookers
 
 /obj/item/storage/proc/open(mob/user)
@@ -140,6 +148,7 @@
 	show_to(user)
 
 /obj/item/storage/proc/close(mob/user)
+	SIGNAL_HANDLER
 
 	hide_from(user)
 	user.s_active = null
@@ -271,33 +280,35 @@ var/list/global/item_storage_box_cache = list()
 	src.closer.screen_loc = "4:[storage_width+19],2:16"
 	return
 
-/obj/screen/storage/clicked(var/mob/user, var/list/mods)
-	if(user.is_mob_incapacitated(TRUE))
-		return 1
+/obj/screen/storage/clicked(var/mob/user, var/list/mods) //Much of this is replicated do_click behaviour.
+	if(user.is_mob_incapacitated() || !isturf(user.loc))
+		return TRUE
+	if(world.time <= user.next_move)
+		return TRUE
+	user.next_move = world.time
 
-	// Placing something in the storage screen
 	if(master)
 		var/obj/item/storage/S = master
 		var/obj/item/I = user.get_active_hand()
-		if(I)
-			if (master.attackby(I, user))
-				user.next_move = world.time + 2
-			return 1
+		// Placing something in the storage screen
+		if(I && !mods["alt"] && !mods["shift"] && !mods["ctrl"]) //These mods should be caught later on and either examine or do nothing.
+			if(master.Adjacent(user)) //Throwing a storage item (or, possibly, other people pulling it away) doesn't close its screen.
+				user.click_adjacent(master, I, mods)
+			return TRUE
 
-		// Taking something out of the storage screen (including clicking on item border overlay)
+		// examining or taking something out of the storage screen by clicking on item border overlay
 		var/list/screen_loc_params = splittext(mods["screen-loc"], ",")
 		var/list/screen_loc_X = splittext(screen_loc_params[1],":")
 		var/click_x = text2num(screen_loc_X[1])*32+text2num(screen_loc_X[2]) - 144
 
 		for(var/i in 1 to length(S.click_border_start))
-			if (S.click_border_start[i] <= click_x && click_x <= S.click_border_end[i])
+			if(S.click_border_start[i] <= click_x && click_x <= S.click_border_end[i])
 				I = LAZYACCESS(S.contents, i)
-				if (I)
-					if (I.clicked(user, mods))
-						return 1
-
-					I.attack_hand(user)
-					return 1
+				if(I && I.Adjacent(user)) //Catches pulling items out of nested storage.
+					if(I.clicked(user, mods)) //Examine, alt-click etc.
+						return TRUE
+					user.click_adjacent(I, null, mods)
+					return TRUE
 	return 0
 
 
@@ -359,6 +370,10 @@ var/list/global/item_storage_box_cache = list()
 		var/obj/item/tool/hand_labeler/L = W
 		if(L.mode)
 			return 0
+
+	if(W.heat_source && !isigniter(W))
+		to_chat(usr, SPAN_ALERT("[W] is on fire!"))
+		return
 
 	if(storage_slots != null && contents.len >= storage_slots)
 		if(!stop_messages)
@@ -565,55 +580,60 @@ var/list/global/item_storage_box_cache = list()
 	user.visible_message(SPAN_NOTICE("[user] empties \the [src]."),
 		SPAN_NOTICE("You empty \the [src]."))
 
+/obj/item/storage/proc/dump_ammo_to(obj/item/ammo_magazine/ammo_dumping, mob/user, var/amount_to_dump = 5) //amount_to_dump should never actually need to be used as default value
+	if(user.action_busy)
+		return
+
+	if(ammo_dumping.flags_magazine & AMMUNITION_HANDFUL_BOX)
+		var/handfuls = round(ammo_dumping.current_rounds / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
+		if(ammo_dumping.current_rounds != 0)
+			if(contents.len < storage_slots)
+				to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
+				if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+					return
+				for(var/i = 1 to handfuls)
+					if(contents.len < storage_slots)
+						//Hijacked from /obj/item/ammo_magazine/proc/create_handful because it had to be handled differently
+						//All this because shell types are instances and not their own objects :)
+						
+						var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
+						var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
+						new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
+						ammo_dumping.current_rounds -= transferred_handfuls
+						handle_item_insertion(new_handful, TRUE,user)
+						update_icon(-transferred_handfuls)
+					else
+						break
+				playsound(user.loc, "rustle", 15, TRUE, 6)
+				ammo_dumping.update_icon()
+			else
+				to_chat(user, SPAN_WARNING("[src] is full."))
+		else
+			to_chat(user, SPAN_WARNING("[ammo_dumping] is empty."))
+	return TRUE
 
 /obj/item/storage/proc/dump_into(obj/item/storage/M, mob/user)
 	if(user.action_busy)
 		return
 
-	if(istype(M,/obj/item/ammo_magazine/shotgun)) //for inserting handfuls of shotgun shells
-		var/obj/item/ammo_magazine/shotgun/B = M
-		var/handfuls = round(B.current_rounds / 5,1) //The number of handfuls, we round up because we still want the last one that isn't full
-		if(B.current_rounds != 0)
-			if(contents.len < storage_slots)
-				to_chat(user, SPAN_NOTICE("You start refilling [src] with [B]."))
-				if(!do_after(user, 15, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
-				for(var/i = 1 to handfuls)
-					if(contents.len < storage_slots)
-						//Hijacked from /obj/item/ammo_magazine/proc/create_handful because it had to be handled differently
-						//All this because shell types are instances and not their own objects
-						var/R
-						var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-						var/MR = B.caliber == "12g" ? 5 : 8
-						R = 5 ? min(B.current_rounds, 5) : min(B.current_rounds, MR)
-						new_handful.generate_handful(B.default_ammo, B.caliber, MR, R, B.gun_type)
-						B.current_rounds -= R
-						handle_item_insertion(new_handful,1,user)
-						update_icon(-R)
-					else
-						break
-				playsound(user.loc, "rustle", 15, 1, 6)
-				B.update_icon()
-			else
-				to_chat(user, SPAN_WARNING("[src] is full."))
-		else
-			to_chat(user, SPAN_WARNING("[B] is empty."))
+	if(M.contents.len)
+		if(contents.len < storage_slots)
+			to_chat(user, SPAN_NOTICE("You start refilling [src] with [M]."))
 
-	else if(istype(M,/obj/item/storage)) //for transfering from storage containers
-		if(M.contents.len)
-			if(contents.len < storage_slots)
-				to_chat(user, SPAN_NOTICE("You start refilling [src] with [M]."))
-				if(!do_after(user, 15, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
-				for(var/obj/item/I in M)
-					if(contents.len < storage_slots)
-						M.remove_from_storage(I)
-						handle_item_insertion(I, 1, user) //quiet insertion
-					else
-						break
-				playsound(user.loc, "rustle", 15, 1, 6)
-			else
-				to_chat(user, SPAN_WARNING("[src] is full."))
+			if(!do_after(user, 15, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+				return
+
+			for(var/obj/item/I in M)
+				if(contents.len < storage_slots)
+					M.remove_from_storage(I)
+					handle_item_insertion(I, 1, user) //quiet insertion
+				else
+					break
+			playsound(user.loc, "rustle", 15, 1, 6)
 		else
-			to_chat(user, SPAN_WARNING("[M] is empty."))
+			to_chat(user, SPAN_WARNING("[src] is full."))
+	else
+		to_chat(user, SPAN_WARNING("[M] is empty."))
 	return TRUE
 
 /obj/item/storage/Initialize()
@@ -652,9 +672,21 @@ var/list/global/item_storage_box_cache = list()
 
 	update_icon()
 
+/*
+ * We need to do this separately from Destroy too...
+ * When a mob is deleted, it's first ghostize()ed,
+ * then its equipement is deleted. This means that client
+ * is already unset and can't be used for clearing 
+ * screen objects properly.
+ */
+/obj/item/storage/proc/watcher_deleted(mob/watcher)
+	SIGNAL_HANDLER
+	hide_from(watcher)
+
 /obj/item/storage/Destroy()
 	for(var/mob/M in content_watchers)
 		hide_from(M)
+	content_watchers = null
 	QDEL_NULL(boxes)
 	QDEL_NULL(storage_start)
 	QDEL_NULL(storage_continue)

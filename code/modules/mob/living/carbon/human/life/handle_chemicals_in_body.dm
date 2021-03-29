@@ -1,6 +1,6 @@
 //Refer to life.dm for caller
 
-/mob/living/carbon/human/proc/handle_chemicals_in_body()
+/mob/living/carbon/human/proc/handle_chemicals_in_body(delta_time)
 
 	reagent_move_delay_modifier = 0
 
@@ -18,7 +18,7 @@
 		var/alien = 0
 		if(species && species.reagent_tag)
 			alien = species.reagent_tag
-		reagents.metabolize(src,alien)
+		reagents.metabolize(src,alien, delta_time=delta_time)
 
 	if(status_flags & GODMODE)
 		return 0 //Godmode
@@ -38,8 +38,9 @@
 	return //TODO: DEFERRED
 
 /mob/living/carbon/human/proc/handle_necro_chemicals_in_body()
-	if(!reagents)
-		return
+	SHOULD_NOT_SLEEP(TRUE)
+	if(!reagents || undefibbable)
+		return // Double checking due to Life() funny background=1
 	for(var/datum/reagent/generated/R in reagents.reagent_list)
 		var/list/mods = list(	REAGENT_EFFECT		= TRUE,
 								REAGENT_BOOST 		= FALSE,

@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/mob/living/carbon/human/Life()
+/mob/living/carbon/human/Life(delta_time)
 	set invisibility = 0
 	set background = 1
 
@@ -10,9 +10,7 @@
 		return
 
 	if(undefibbable && stat == DEAD || spawned_corpse)
-		for (var/datum/data/record/R in GLOB.data_core.general)	// Change their status on the Crew Manifest to Deceased
-			if (R.fields["name"] == real_name)
-				R.fields["p_stat"] = "*Deceased*"
+		GLOB.data_core.manifest_modify(real_name, null, null, "*Deceased*")
 		SShuman.processable_human_list -= src
 		if(hardcore)
 			qdel(src) //We just delete the corpse on WO to keep things simple and lag-free
@@ -35,7 +33,7 @@
 	if(stat == DEAD && species.name == "Zombie")
 		var/datum/species/zombie/zs = species
 		if(zs.to_revive[src])
-			handle_chemicals_in_body()
+			handle_chemicals_in_body(delta_time)
 			return
 	//No need to update all of these procs if the guy is dead.
 	if(!in_stasis)
@@ -44,7 +42,7 @@
 				breathe() //Only try to take a breath every 3 ticks, unless suffocating
 
 			//Chemicals in the body
-			handle_chemicals_in_body()
+			handle_chemicals_in_body(delta_time)
 
 			//Organs and blood
 			handle_organs()

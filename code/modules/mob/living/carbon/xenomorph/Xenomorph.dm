@@ -147,6 +147,10 @@
 	var/leader_aura_strength = 0 //Pheromone strength inherited from Queen
 	var/leader_current_aura = "" //Pheromone type inherited from Queen
 
+	/// List of actions (typepaths) that a
+	/// xenomorph type is given upon spawn
+	var/base_actions
+
 	//////////////////////////////////////////////////////////////////
 	//
 	//		Modifiers
@@ -206,6 +210,8 @@
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
 	var/list/tackle_counter
 	var/evolving = FALSE // Whether the xeno is in the process of evolving
+	/// The damage dealt by a xeno whenever they take damage near someone
+	var/acid_blood_damage = 12
 
 
 	//////////////////////////////////////////////////////////////////
@@ -232,7 +238,7 @@
 	var/devour_timer = 0 // The world.time at which we will regurgitate our currently-vored victim
 	var/extra_build_dist = 0 // For drones/hivelords. Extends the maximum build range they have
 	var/list/resin_build_order
-	var/selected_resin = 1 // Which resin structure to build when we secrete resin, defaults to 1 (first element)
+	var/selected_resin // Which resin structure to build when we secrete resin, defaults to null.
 	var/selected_construction = XENO_STRUCTURE_CORE //which special structure to build when we place constructions
 	var/datum/ammo/xeno/ammo = null //The ammo datum for our spit projectiles. We're born with this, it changes sometimes.
 	var/obj/structure/tunnel/start_dig = null
@@ -242,7 +248,7 @@
 	var/list/current_placeable = list() // If we have current_placeable that are limited, e.g. fruits
 	var/max_placeable = 0 // Limit to that amount
 	var/selected_placeable_index = 1 //In the available build list, what is the index of what we're building next
-
+	var/list/built_structures = list()
 
 	//////////////////////////////////////////////////////////////////
 	//
@@ -283,6 +289,11 @@
 	else if (h_number)
 		hivenumber = h_number
 
+	set_languages(list("Xenomorph", "Hivemind"))
+	if(oldXeno)
+		for(var/datum/language/L in oldXeno.languages)
+			add_language(L.name)//Make sure to keep languages (mostly for event Queens that know English)
+
 	// Well, not yet, technically
 	var/datum/hive_status/in_hive = GLOB.hive_datum[hivenumber]
 	if(in_hive)
@@ -304,11 +315,6 @@
 	if(SSticker?.mode?.hardcore)
 		hardcore = 1 //Prevents healing and queen evolution
 	time_of_birth = world.time
-
-	set_languages(list("Xenomorph", "Hivemind"))
-	if(oldXeno)
-		for(var/datum/language/L in oldXeno.languages)
-			add_language(L.name)//Make sure to keep languages (mostly for event Queens that know English)
 
 	add_inherent_verbs()
 	add_abilities()
@@ -355,6 +361,7 @@
 	if (caste)
 		behavior_delegate = new caste.behavior_delegate_type()
 		behavior_delegate.bound_xeno = src
+		behavior_delegate.add_to_xeno()
 		resin_build_order = caste.resin_build_order
 	else
 		CRASH("Xenomorph [src] has no caste datum! Tell the devs!")
@@ -379,6 +386,7 @@
 	job = caste.caste_name // Used for tracking the caste playtime
 
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
 
 /mob/living/carbon/Xenomorph/proc/handle_screech_act(var/mob/self, var/mob/living/carbon/Xenomorph/Queen/queen)
 	SIGNAL_HANDLER
@@ -571,6 +579,13 @@
 	queued_action = null
 
 	QDEL_NULL(mutators)
+	QDEL_NULL(behavior_delegate)
+
+	for(var/i in built_structures)
+		var/list/L = built_structures[i]
+		QDEL_NULL_LIST(L)
+
+	built_structures = null
 
 	. = ..()
 
@@ -581,6 +596,9 @@
 
 
 /mob/living/carbon/Xenomorph/start_pulling(atom/movable/AM, lunge, no_msg)
+	if(SEND_SIGNAL(AM, COMSIG_MOVABLE_XENO_START_PULLING, src) & COMPONENT_ALLOW_PULL)
+		return do_pull(AM, lunge, no_msg)
+
 	if(!isliving(AM))
 		return FALSE
 	var/mob/living/L = AM
@@ -599,6 +617,9 @@
 
 /mob/living/carbon/Xenomorph/pull_response(mob/puller)
 	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
+		var/mob/living/carbon/human/H = puller
+		if(H.ally_of_hivenumber(hivenumber))
+			return TRUE
 		puller.KnockDown(rand(caste.tacklestrength_min,caste.tacklestrength_max))
 		playsound(puller.loc, 'sound/weapons/pierce.ogg', 25, 1)
 		puller.visible_message(SPAN_WARNING("[puller] tried to pull [src] but instead gets a tail swipe to the head!"))
@@ -829,12 +850,6 @@
 	plasma_stored = plasma_max
 	for(var/datum/action/xeno_action/XA in actions)
 		XA.end_cooldown()
-
-/mob/living/carbon/Xenomorph/proc/remove_action(var/action as text)
-	for(var/X in actions)
-		var/datum/action/A = X
-		if(A.name == action)
-			A.remove_action(src)
 
 /mob/living/carbon/Xenomorph/resist_fire()
 	adjust_fire_stacks(XENO_FIRE_RESIST_AMOUNT, min_stacks = 0)

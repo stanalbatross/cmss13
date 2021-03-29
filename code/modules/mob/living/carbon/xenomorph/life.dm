@@ -1,7 +1,7 @@
 //Xenomorph Life - Colonial Marines - Apophis775 - Last Edit: 03JAN2015
 
 #define XENO_ARMOR_REGEN_DELAY 30 SECONDS
-/mob/living/carbon/Xenomorph/Life()
+/mob/living/carbon/Xenomorph/Life(delta_time)
 	set invisibility = 0
 	set background = 1
 
@@ -42,10 +42,12 @@
 		return
 	var/progress_amount = 1
 
-	if(SSxevolution && ((hive.living_xeno_queen && hive.living_xeno_queen.ovipositor) || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
+	var/no_queen_action = (hive.allow_no_queen_actions || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor))
+
+	if(SSxevolution && (no_queen_action || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
 		progress_amount = SSxevolution.get_evolution_boost_power(hive.hivenumber)
 
-	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && hive.living_xeno_queen && (hive.living_xeno_queen.ovipositor || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
+	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && (no_queen_action || (SSticker.round_start_time + XENO_HIVE_EVOLUTION_FREETIME) >= world.time))
 		evolution_stored = min(evolution_stored + progress_amount, evolution_threshold)
 		if(evolution_stored >= evolution_threshold - 1)
 			to_chat(src, SPAN_XENODANGER("Your carapace crackles and your tendons strengthen. You are ready to evolve!")) //Makes this bold so the Xeno doesn't miss it
@@ -61,10 +63,10 @@
 	var/obj/item/clothing/mask/facehugger/F = get_active_hand()
 	var/obj/item/clothing/mask/facehugger/G = get_inactive_hand()
 	if(istype(F))
-		F.Die()
+		F.die()
 		drop_inv_item_on_ground(F)
 	if(istype(G))
-		G.Die()
+		G.die()
 		drop_inv_item_on_ground(G)
 	if(!caste || !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE) || fire_reagent.fire_penetrating)
 		var/dmg = armor_damage_reduction(GLOB.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks))
@@ -155,14 +157,14 @@
 
 	if(health <= crit_health - warding_aura * 20) //dead
 		if(prob(gib_chance + 0.5*(crit_health - health)))
-			gib(last_damage_source)
+			INVOKE_ASYNC(src, .proc/gib, last_damage_source)
 		else
 			death(last_damage_source)
 		return
 
 	else if(health <= 0) //in crit
 		if(hardcore)
-			gib(last_damage_source)
+			INVOKE_ASYNC(src, .proc/gib, last_damage_source)
 		else
 			stat = UNCONSCIOUS
 			blinded = 1

@@ -4,7 +4,13 @@
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
 	caste_whitelist = list("Carrier")
-	mutator_actions_to_remove = list("Use/Throw Facehugger","Emit Pheromones (30)","Plant Weeds (75)","Place resin hole (200)", "Retrieve Egg")
+	mutator_actions_to_remove = list(
+		/datum/action/xeno_action/activable/throw_hugger,
+		/datum/action/xeno_action/onclick/emit_pheromones,
+		/datum/action/xeno_action/onclick/plant_weeds,
+		/datum/action/xeno_action/onclick/place_trap,
+		/datum/action/xeno_action/activable/retrieve_egg,
+	)
 	mutator_actions_to_add = list(
 		/datum/action/xeno_action/activable/sacrifice_egg/radius_remember,
 		/datum/action/xeno_action/activable/sacrifice_egg/radius_heal, //first macro
@@ -142,6 +148,8 @@
 	for(var/mob/living/carbon/Xenomorph/X in range(src, action_def.get_gather_range()))
 		if(X.hive != hive)
 			continue
+		if(X.stat == DEAD)
+			continue
 		if(X == src)
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
@@ -170,6 +178,8 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in range(src, action_def.get_gather_range()))
 		if(X.hive != hive)
+			continue
+		if(X.stat == DEAD)
 			continue
 		if(X == src)
 			continue
@@ -253,6 +263,8 @@
 	for(var/mob/living/carbon/Xenomorph/X in range(src, action_def.get_gather_range()))
 		if(X.hive != hive)
 			continue
+		if(X.stat == DEAD)
+			continue
 		if(X == src)
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
@@ -283,6 +295,8 @@
 
 	for(var/mob/living/M in view(src, effect))
 		playsound_client(M.client, sound(get_sfx("queen")), src, 70)
+		if(M.stat == DEAD)
+			continue
 		if(M.scream_stun_timeout > world.time)
 			to_chat(src, SPAN_XENOWARNING("Wave of madness passes over you but you were already shocked by same feeling recently."))
 			continue
@@ -293,7 +307,7 @@
 		if(istype(X))
 			if(X.hive == hive)
 				continue
-			to_chat(X, SPAN_XENOWARNING("Wave of madness passes thru and completely overwhelms you. How could they do this to their own little ones!?"))
+			to_chat(X, SPAN_XENOWARNING("Wave of madness passes through and completely overwhelms you. How could they do this to their own little ones!?"))
 			X.KnockDown(action_def.stun_timer)
 			X.emote("needhelp")
 			X.scream_stun_timeout = world.time + action_def.stun_timeout
@@ -309,7 +323,7 @@
 			if(!prob(50))
 				H.extinguish_acid()
 			H.visible_message(SPAN_DANGER("[H] rolls on the floor, flailing their hands in panic!"), \
-				SPAN_NOTICE("Wave of madness passes thru and completely overwhelms you. What is this madness, GET IT OFF ME!"), null, 5)
+				SPAN_NOTICE("Wave of madness passes through and completely overwhelms you. What is this madness, GET IT OFF ME!"), null, 5)
 			H.scream_stun_timeout = world.time + action_def.stun_timeout
 			continue
 
@@ -374,6 +388,8 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in range(src, action_def.get_gather_range()))
 		if(X.hive != hive)
+			continue
+		if(X.stat == DEAD)
 			continue
 		if(X == src)
 			continue
@@ -475,6 +491,8 @@
 
 	for(var/mob/living/carbon/Xenomorph/X in range(src, action_def.get_gather_range()))
 		if(X.hive != hive)
+			continue
+		if(X.stat == DEAD)
 			continue
 		if(X == src)
 			continue

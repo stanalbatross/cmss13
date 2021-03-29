@@ -93,7 +93,8 @@ can cause issues with ammo types getting mixed up during the burst.
 		//While there is a much smaller way to do this,
 		//this is the most resource efficient way to do it.
 /obj/item/weapon/gun/shotgun/proc/retrieve_shell(selection)
-	var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
+	var/datum/ammo/A = GLOB.ammo_list[selection]
+	var/obj/item/ammo_magazine/handful/new_handful = new A.handful_type()
 	new_handful.generate_handful(selection, "12g", 5, 1, /obj/item/weapon/gun/shotgun)
 	return new_handful
 
@@ -425,7 +426,6 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/bayonet/upp,
 						/obj/item/attachable/reddot,
 						/obj/item/attachable/reflex,
-						/obj/item/attachable/scope/mini, //What's the harm, right?
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/verticalgrip,
@@ -592,7 +592,6 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/gyro,
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/compensator,
-						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/extinguisher,
 						/obj/item/attachable/attached_gun/flamer)

@@ -142,9 +142,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 /obj/item/clothing/suit/storage/marine/update_icon(mob/user)
 	var/image/I
-	I = armor_overlays["lamp"]
-	overlays -= I
-	qdel(I)
+	armor_overlays["lamp"] = null
 	if(flags_marine_armor & ARMOR_LAMP_OVERLAY)
 		if(flags_marine_armor & ARMOR_LAMP_ON)
 			I = image('icons/obj/items/clothing/cm_suits.dmi', src, "lamp-on")
@@ -262,10 +260,10 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "6"
 	specialty = "M3 pattern smooth marine"
 
-/obj/item/clothing/suit/storage/marine/intel
+/obj/item/clothing/suit/storage/marine/rto
 	icon_state = "io"
-	name = "\improper XM4 pattern intelligence officer plate armor"
-	desc = "A well tinkered and crafted hybrid of Smart-Gunner mesh and M3 pattern plates. Robust, yet nimble, with room for all your pouches."
+	name = "\improper XM4 pattern radio operator armor"
+	desc = "A well tinkered and crafted hybrid of Smart-Gunner mesh and M3 pattern plates. Robust, yet nimble, with room for all your pouches. Required for carrying a Radio Telephone Pack."
 	armor_melee = CLOTHING_ARMOR_MEDIUM
 	armor_bullet = CLOTHING_ARMOR_MEDIUM
 	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
@@ -274,8 +272,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	storage_slots = 4
-	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit, /obj/item/clothing/under/marine/officer/intel,)
-	specialty = "XM4 pattern intel"
+	brightness_on = 7 //slightly higher
+	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit, /obj/item/clothing/under/marine/officer/rto)
+	specialty = "XM4 pattern radio operator"
 
 /obj/item/clothing/suit/storage/marine/MP
 	name = "\improper M2 pattern MP armor"
@@ -388,7 +387,6 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	item_state_slots = list(WEAR_JACKET = "co_officer")
 
 
-
 /obj/item/clothing/suit/storage/marine/smartgunner
 	name = "M56 combat harness"
 	desc = "A heavy protective vest designed to be worn with the M56 Smartgun System. \nIt has specially designed straps and reinforcement to carry the Smartgun and accessories."
@@ -464,6 +462,28 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	armor_internaldamage = CLOTHING_ARMOR_LOW
 	storage_slots = 2
 	movement_compensation = SLOWDOWN_ARMOR_LIGHT
+
+/obj/item/clothing/suit/storage/marine/light/vest
+	name = "\improper M3-VL pattern ballistics vest"
+	desc = "Up until 2189 USCM non-combat personnel were issued non-standardized ballistics vests, though the lack of IMP compatibility and suit lamps proved time and time again inefficient. This modified M3-L shell is the result of a 6 year R&D program; It provides utility, protection, AND comfort to all USCM non-combat personnel."
+	specialty = "\improper M3-VL pattern vest"
+	icon_state = "VL"
+	storage_slots = 1
+	time_to_unequip = 5
+	time_to_equip = 10
+	flags_atom = NO_SNOW_TYPE|FPRINT|CONDUCT
+	flags_marine_armor = ARMOR_LAMP_OVERLAY //No squad colors when wearing this since it'd look funny.
+
+	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bullet = CLOTHING_ARMOR_HIGH
+	armor_laser = CLOTHING_ARMOR_LOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_LOW
+	armor_bio = CLOTHING_ARMOR_NONE
+	armor_rad = CLOTHING_ARMOR_NONE
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	siemens_coefficient = 0.7
+	uniform_restricted = list(/obj/item/clothing/under)
 
 /obj/item/clothing/suit/storage/marine/heavy
 	name = "\improper M3-H pattern heavy armor"
@@ -629,7 +649,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		to_chat(H, SPAN_WARNING("You must be wearing the M35 pyro armor to activate FIREWALK protocol!"))
 		return
 
-	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_PYRO)
+	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_PYRO)
 		to_chat(H, SPAN_WARNING("You don't seem to know how to use [src]..."))
 		return
 
@@ -788,7 +808,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	if(!ishuman(usr) || hide_in_progress)
 		return
 	var/mob/living/carbon/human/H = usr
-	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_SNIPER)
+	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_SNIPER)
 		to_chat(H, SPAN_WARNING("You don't seem to know how to use [src]..."))
 		return
 
@@ -812,6 +832,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		COMSIG_MOB_FIRED_GUN_ATTACHMENT)
 		, .proc/fade_in)
 	RegisterSignal(H, COMSIG_MOB_DEATH, .proc/deactivate_camouflage)
+	RegisterSignal(H, COMSIG_HUMAN_EXTINGUISH, .proc/deactivate_camouflage)
 	RegisterSignal(H, COMSIG_MOB_GETTING_UP, .proc/fix_density)
 	ghillie_movement = new /datum/event_handler/ghillie_movement()
 	ghillie_movement.gs = src
@@ -831,6 +852,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 
 /obj/item/clothing/suit/storage/marine/ghillie/proc/deactivate_camouflage(mob/user)
+	SIGNAL_HANDLER
 	var/mob/living/carbon/human/H = user
 	if(!istype(H))
 		return FALSE
@@ -849,6 +871,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	UnregisterSignal(H, COMSIG_MOB_FIRED_GUN_ATTACHMENT)
 	UnregisterSignal(H, COMSIG_MOB_DEATH)
 	UnregisterSignal(H, COMSIG_MOB_GETTING_UP)
+	UnregisterSignal(H, COMSIG_HUMAN_EXTINGUISH)
 
 	var/datum/mob_hud/security/advanced/SA = huds[MOB_HUD_SECURITY_ADVANCED]
 	SA.add_to_hud(H)
@@ -1545,3 +1568,97 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "hefadier"
 	flags_atom = UNIQUE_ITEM_TYPE|NO_SNOW_TYPE
 	flags_marine_armor = ARMOR_LAMP_OVERLAY
+
+
+
+//=========================//PROVOST\\================================\\
+//=======================================================================\\
+/obj/item/clothing/suit/storage/marine/MP/provost
+	name = "\improper M3 pattern Provost armor"
+	desc = "A lighter Provost M3 Pattern Chestplate. Protects the chest from ballistic rounds, bladed objects and accidents. It has a small leather pouch strapped to it for limited storage."
+	icon_state = "pvlight"
+	item_state_slots = list(WEAR_JACKET = "pvlight")
+	w_class = SIZE_MEDIUM
+	flags_atom = NO_SNOW_TYPE|UNIQUE_ITEM_TYPE
+
+	slowdown = SLOWDOWN_ARMOR_VERY_LIGHT
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_LOW
+	armor_laser = CLOTHING_ARMOR_LOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUMLOW
+	armor_rad = CLOTHING_ARMOR_MEDIUMLOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMLOW
+
+/obj/item/clothing/suit/storage/marine/MP/provost/enforcer
+	name = "\improper M3 pattern Provost armor"
+	desc = "A standard Provost M3 Pattern Chestplate. Protects the chest from ballistic rounds, bladed objects and accidents. It has a small leather pouch strapped to it for limited storage."
+	icon_state = "pvmedium"
+	item_state_slots = list(WEAR_JACKET = "pvmedium")
+
+	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_MEDIUMLOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+
+/obj/item/clothing/suit/storage/marine/MP/provost/tml
+	name = "\improper M3 pattern Senior Provost armor"
+	icon_state = "pvleader"
+	item_state_slots = list(WEAR_JACKET = "pvleader")
+	desc = "A more refined Provost M3 Pattern Chestplate for senior officers. Protects the chest from ballistic rounds, bladed objects and accidents. It has a small leather pouch strapped to it for limited storage."
+
+	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUMLOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
+
+/obj/item/clothing/suit/storage/marine/MP/provost/marshall
+	icon_state = "pvmarshal"
+	item_state_slots = list(WEAR_JACKET = "pvmarshal")
+	name = "\improper M3 pattern Provost Marshall armor"
+	desc = "A custom fit luxury armor suit for Provost Marshalls. Useful for letting your men know who is in charge when taking to the field."
+
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_laser = CLOTHING_ARMOR_LOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_MEDIUMLOW
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMLOW
+
+/obj/item/clothing/suit/storage/marine/MP/provost/marshall/chief
+	name = "\improper M3 pattern Provost Chief Marshall armor"
+
+//================//UNITED AMERICAS RIOT CONTROL\\=====================\\
+//=======================================================================\\
+
+/obj/item/clothing/suit/storage/marine/veteran/ua_riot
+	name = "\improper UA-M1 body armor"
+	desc = "Based on the M-3 pattern employed by the USCM, the UA-M1 body armor is employed by UA security, riot control and union-busting teams. While robust against melee and bullet attacks, it critically lacks coverage of the legs and arms."
+	icon_state = "ua_riot"
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	slowdown = SLOWDOWN_ARMOR_LIGHT
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_energy = CLOTHING_ARMOR_MEDIUM
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_MEDIUM
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
+	storage_slots = 3
+	uniform_restricted = list(/obj/item/clothing/under/marine/ua_riot)

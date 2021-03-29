@@ -227,7 +227,7 @@
 		close_browser(L,"marineminimap")
 		current_viewers -= L
 		continue
-	..()
+	return ..()
 
 /obj/structure/machinery/prop/almayer/CICmap/examine(mob/living/user)
 	if(ishuman(user) && get_dist(src,user) < 3 && powered())
@@ -298,14 +298,6 @@
 
 	if(hacked)
 		overlays += "+hacked"
-
-/obj/structure/prop/almayer/computers/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/device/agents/floppy_disk))
-		var/obj/item/device/agents/floppy_disk/D = W
-		D.insert_drive(user, src)
-		return
-
-	. = ..()
 
 /obj/structure/prop/almayer/computers/mission_planning_system
 	name = "\improper MPS IV computer"

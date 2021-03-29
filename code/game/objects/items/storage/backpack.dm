@@ -16,7 +16,7 @@
 	var/obj/item/card/id/locking_id = null
 	var/is_id_lockable = FALSE
 	var/lock_overridable = TRUE
-	var/opening_stage = FALSE 
+	var/opening_stage = FALSE
 
 /obj/item/storage/backpack/attack_hand(mob/user)
 	if(!is_accessible_by(user))
@@ -30,9 +30,8 @@
 		toggle_lock(card, H)
 		return
 
-	if (use_sound)
+	if (..() && use_sound)
 		playsound(src.loc, src.use_sound, 15, 1, 6)
-	..()
 
 /obj/item/storage/backpack/proc/toggle_lock(obj/item/card/id/card, mob/living/carbon/human/H)
 	if(QDELETED(locking_id))
@@ -85,7 +84,7 @@
 	..()
 
 /obj/item/storage/backpack/close(mob/user)
-	UnregisterSignal(user, COMSIG_MOB_MOVE)
+	UnregisterSignal(user, COMSIG_MOVABLE_PRE_MOVE)
 	..()
 
 /obj/item/storage/backpack/proc/is_accessible_by(mob/user)
@@ -94,16 +93,16 @@
 		if(!worn_accessible)
 			if(H.back == src && !opening_stage)
 				to_chat(H, SPAN_NOTICE("You begin to open [src], so you can check its contents."))
-				opening_stage = TRUE 
+				opening_stage = TRUE
 				if(!do_after(user, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_GENERIC))
 					to_chat(H, SPAN_WARNING("You were interrupted!"))
-					opening_stage = FALSE 
+					opening_stage = FALSE
 					return FALSE
-				RegisterSignal(user, COMSIG_MOB_MOVE, .proc/close)
-				opening_stage = FALSE 
+				RegisterSignal(user, COMSIG_MOVABLE_PRE_MOVE, .proc/close)
+				opening_stage = FALSE
 				return TRUE
 			else if(H.back == src && opening_stage)
-				return FALSE 
+				return FALSE
 
 		if(!QDELETED(locking_id))
 			var/obj/item/card/id/card = H.wear_id
@@ -182,13 +181,17 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 /obj/item/storage/backpack/santabag
 	name = "Santa's Gift Bag"
 	desc = "Space Santa uses this to deliver toys to all the nice children in space in Christmas! Wow, it's pretty big!"
-	icon_state = "giftbag0"
+	icon_state = "giftbag"
 	item_state = "giftbag"
 	w_class = SIZE_LARGE
-	storage_slots = null
-	max_w_class = SIZE_MEDIUM
-	max_storage_space = 400 // can store a ton of shit!
+	storage_slots = 30
+	max_w_class = SIZE_MASSIVE
+	worn_accessible = TRUE
 
+/obj/item/storage/backpack/santabag/Initialize()
+	. = ..()
+	for(var/total_storage_slots in 1 to storage_slots)
+		new /obj/item/m_gift(src)
 
 /obj/item/storage/backpack/cultpack
 	name = "trophy rack"
@@ -357,11 +360,85 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	desc = "A heavy-duty chestrig used by some USCM technicians."
 	icon_state = "marinesatch_techi"
 
-/obj/item/storage/backpack/marine/satchel/intel
-	name = "\improper USCM lightweight expedition pack"
-	desc = "A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to USCM intelligence officers."
-	icon_state = "marinesatch_io"
-	max_storage_space = 20
+GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/rto)
+
+/obj/item/storage/backpack/marine/satchel/rto
+	name = "\improper USCM Radio Telephone Pack"
+	desc = "A heavy-duty pack, used for telecommunications between central command. Commonly carried by RTOs."
+	icon_state = "rto_backpack"
+	has_gamemode_skin = FALSE
+
+	flags_item = ITEM_OVERRIDE_NORTHFACE
+
+	uniform_restricted = list(/obj/item/clothing/under/marine/officer/rto)
+	var/obj/structure/transmitter/internal/internal_transmitter
+
+/obj/item/storage/backpack/marine/satchel/rto/Initialize()
+	. = ..()
+	internal_transmitter = new(src)
+
+	LAZYADD(actions, new /datum/action/human_action/activable/droppod())
+
+	GLOB.radio_packs += src
+
+/obj/item/storage/backpack/marine/satchel/rto/item_action_slot_check(mob/user, slot)
+	if(slot == WEAR_BACK)
+		return TRUE
+	return FALSE
+
+/obj/item/storage/backpack/marine/satchel/rto/forceMove(atom/dest)
+	. = ..()
+	if(isturf(dest))
+		internal_transmitter.set_tether_holder(src)
+	else
+		internal_transmitter.set_tether_holder(loc)
+
+/obj/item/storage/backpack/marine/satchel/rto/Destroy()
+	GLOB.radio_packs -= src
+	return ..()
+
+/obj/item/storage/backpack/marine/satchel/rto/pickup(mob/user)
+	. = ..()
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.comm_title)
+			internal_transmitter.phone_id = "[H.comm_title] [H]"
+		else if(H.job)
+			internal_transmitter.phone_id = "[H.job] [H]"
+		else
+			internal_transmitter.phone_id = "[H]"
+
+		if(H.assigned_squad)
+			internal_transmitter.phone_id += " ([H.assigned_squad.name])"
+	else
+		internal_transmitter.phone_id = "[user]"
+
+/obj/item/storage/backpack/marine/satchel/rto/dropped(mob/user)
+	. = ..()
+	internal_transmitter.phone_id = "[src]"
+
+/obj/item/storage/backpack/marine/satchel/rto/attack_hand(mob/user)
+	if(user.back == src)
+		internal_transmitter.attack_hand(user)
+	else if(internal_transmitter.get_calling_phone())
+		if(internal_transmitter.attached_to && internal_transmitter.attached_to.loc != internal_transmitter)
+			return . = ..()
+		internal_transmitter.attack_hand(user)
+	else
+		. = ..()
+
+/obj/item/storage/backpack/marine/satchel/rto/attackby(obj/item/W, mob/user)
+	if(internal_transmitter && internal_transmitter.attached_to == W)
+		internal_transmitter.attackby(W, user)
+	else
+		. = ..()
+
+/obj/item/storage/backpack/marine/satchel/rto/proc/new_droppod_tech_unlocked(datum/tech/N)
+	playsound(get_turf(loc), 'sound/machines/techpod/techpod_rto_notif.ogg', 100, FALSE, 1, 4)
+
+	if(ismob(loc))
+		var/mob/M = loc
+		to_chat(M, SPAN_PURPLE("[icon2html(src, M)] New droppod available ([N.name])."))
 
 /obj/item/storage/backpack/marine/smock
 	name = "\improper M3 sniper's smock"
@@ -407,11 +484,12 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	name = "\improper M68 Thermal Cloak"
 	desc = "The lightweight thermal dampeners and optical camouflage provided by this cloak are weaker than those found in standard USCM ghillie suits. In exchange, the cloak can be worn over combat armor and offers the wearer high manueverability and adaptability to many environments."
 	icon_state = "scout_cloak"
-	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/M3S, /obj/item/clothing/head/helmet/marine/scout) //Need to wear Scout armor and helmet to equip this.
+	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/M3S) //Need to wear Scout armor and helmet to equip this.
 	has_gamemode_skin = FALSE //same sprite for all gamemode.
 	var/camo_active = FALSE
 	var/camo_alpha = 10
 	var/allow_gun_usage = FALSE
+	var/cloak_cooldown
 
 	actions_types = list(/datum/action/item_action/specialist/toggle_cloak)
 
@@ -435,7 +513,7 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	if(!ishuman(usr))
 		return
 	var/mob/living/carbon/human/H = usr
-	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_TRAINED) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_SCOUT)
+	if(!skillcheck(H, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_SCOUT)
 		to_chat(H, SPAN_WARNING("You don't seem to know how to use [src]..."))
 		return
 
@@ -447,7 +525,12 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 		deactivate_camouflage(H)
 		return
 
+	if(cloak_cooldown && cloak_cooldown > world.time)
+		to_chat(H, SPAN_WARNING("Your cloak is malfunctioning and can't be enabled right now!"))
+		return
+
 	RegisterSignal(H, COMSIG_GRENADE_PRE_PRIME, .proc/cloak_grenade_callback)
+	RegisterSignal(H, COMSIG_HUMAN_EXTINGUISH, .proc/wrapper_fizzle_camouflage)
 
 	camo_active = TRUE
 	H.visible_message(SPAN_DANGER("[H] vanishes into thin air!"), SPAN_NOTICE("You activate your cloak's camouflage."), max_distance = 4)
@@ -464,13 +547,28 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	XI.remove_from_hud(H)
 
 	anim(H.loc, H, 'icons/mob/mob.dmi', null, "cloak", null, H.dir)
+	return TRUE
 
+/obj/item/storage/backpack/marine/satchel/scout_cloak/proc/wrapper_fizzle_camouflage()
+	SIGNAL_HANDLER
+	var/mob/wearer = src.loc
+	wearer.visible_message(SPAN_DANGER("[wearer]'s cloak fizzles out!"), SPAN_DANGER("Your cloak fizzles out!"))
+	var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
+	sparks.set_up(5, 4, src)
+	sparks.start()
+	deactivate_camouflage(wearer, TRUE, TRUE)
 
-/obj/item/storage/backpack/marine/satchel/scout_cloak/proc/deactivate_camouflage(var/mob/living/carbon/human/H, var/anim = TRUE)
+/obj/item/storage/backpack/marine/satchel/scout_cloak/proc/deactivate_camouflage(var/mob/living/carbon/human/H, var/anim = TRUE, var/forced)
 	if(!istype(H))
 		return FALSE
 
-	UnregisterSignal(H, COMSIG_GRENADE_PRE_PRIME)
+	UnregisterSignal(H, list(
+	COMSIG_GRENADE_PRE_PRIME,
+	COMSIG_HUMAN_EXTINGUISH
+	))
+
+	if(forced)
+		cloak_cooldown = world.time + 10 SECONDS
 
 	camo_active = FALSE
 	H.visible_message(SPAN_DANGER("[H] shimmers into existence!"), SPAN_WARNING("Your cloak's camouflage has deactivated!"), max_distance = 4)
@@ -487,7 +585,7 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	if(anim)
 		anim(H.loc, H,'icons/mob/mob.dmi', null, "uncloak", null, H.dir)
 
-	addtimer(CALLBACK(src, .proc/allow_shooting, H), 5)
+	addtimer(CALLBACK(src, .proc/allow_shooting, H), 0.5 SECONDS)
 
 // This proc is to cancel priming grenades in /obj/item/explosive/grenade/attack_self()
 /obj/item/storage/backpack/marine/satchel/scout_cloak/proc/cloak_grenade_callback(mob/user)
@@ -531,7 +629,7 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	item_state = "welderbackpack"
 	var/max_fuel = 260
 	var/fuel_type = "fuel"
-	max_storage_space = 15
+	max_storage_space = 18
 	storage_slots = null
 	has_gamemode_skin = TRUE
 
@@ -599,6 +697,16 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 /obj/item/storage/backpack/marine/engineerpack/examine(mob/user)
 	..()
 	to_chat(user, "[reagents.total_volume] units of fuel left!")
+
+/obj/item/storage/backpack/marine/engineerpack/satchel
+	name = "\improper USCM technician welder-satchel"
+	desc = "A specialized satchel worn by USCM technicians and engineers. It carries two small fuel tanks for quick welder refueling and use."
+	icon_state = "satchel_marine_welder"
+	item_state = "satchel_marine_welder"
+	max_storage_space = 12
+	has_gamemode_skin = FALSE
+	max_fuel = 100
+	worn_accessible = TRUE
 
 // Pyrotechnician Spec backpack fuel tank
 /obj/item/storage/backpack/marine/engineerpack/flamethrower
@@ -671,8 +779,22 @@ obj/item/storage/backpack/empty(mob/user, turf/T)
 	name = "The Armory"
 	desc = "From the formless void, there springs an entity - More primordial than the elements themselves. In it's wake, there will follow a storm."
 	icon_state = "ivan_bag"
-	storage_slots = null
-	max_storage_space = 30
+	storage_slots = 28
+	worn_accessible = TRUE
+	max_w_class = SIZE_MASSIVE
+	can_hold = list(
+		/obj/item/weapon
+	)
+
+/obj/item/storage/backpack/ivan/Initialize()
+	. = ..()
+	var/list/template_guns = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver, /obj/item/weapon/gun/shotgun, /obj/item/weapon/gun/rifle, /obj/item/weapon/gun/smg, /obj/item/weapon/gun/energy, /obj/item/weapon/gun/launcher, /obj/item/weapon/gun/rifle/sniper)
+	var/list/bad_guns = typesof(/obj/item/weapon/gun/pill) + /obj/item/weapon/gun/souto + /obj/item/weapon/gun/energy/plasma_caster //guns that don't work for some reason
+	var/list/emplacements = list(/obj/item/device/m2c_gun , /obj/item/device/m56d_gun/mounted)
+	var/random_gun = pick(subtypesof(/obj/item/weapon/gun) - (template_guns + bad_guns) + emplacements)
+	for(var/total_storage_slots in 1 to storage_slots) //minus templates
+		new random_gun(src)
+		random_gun = pick(subtypesof(/obj/item/weapon/gun) - (template_guns + bad_guns) + emplacements)
 
 /obj/item/storage/backpack/souto
 	name = "\improper back mounted Souto vending machine"

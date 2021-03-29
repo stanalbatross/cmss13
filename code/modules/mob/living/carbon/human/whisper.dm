@@ -49,7 +49,7 @@
 
 	// Mute disability
 	//TODO: handle_speech_problems
-	if (src.sdisabilities & MUTE)
+	if (src.sdisabilities & DISABILITY_MUTE)
 		return
 
 	//TODO: handle_speech_problems
@@ -116,8 +116,6 @@
 				if(M.client) M.client.images -= speech_bubble
 			for(var/mob/M in eavesdropping)
 				if(M.client) M.client.images -= speech_bubble
-		qdel(speech_bubble)
-
 
 	if (watching.len)
 		var/rendered = "<span class='game say'><span class='name'>[src.name]</span> whispers something.</span>"

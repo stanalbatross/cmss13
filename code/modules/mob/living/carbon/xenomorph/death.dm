@@ -67,7 +67,7 @@
 						break
 				hive.handle_xeno_leader_pheromones()
 				if(SSticker.mode)
-					SSticker.mode.check_queen_status(hivenumber)
+					INVOKE_ASYNC(SSticker.mode, /datum/game_mode.proc/check_queen_status, hivenumber)
 					LAZYADD(SSticker.mode.dead_queens, "<br>[!isnull(src.key) ? src.key : "?"] was [src] [SPAN_BOLDNOTICE("(DIED)")]")
 
 		else
@@ -108,6 +108,10 @@
 
 	if(hardcore)
 		QDEL_IN(src, 3 SECONDS)
+
+	for(var/i in built_structures)
+		var/list/L = built_structures[i]
+		QDEL_NULL_LIST(L)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_DEATH, src, gibbed)
 

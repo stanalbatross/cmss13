@@ -17,7 +17,7 @@
 	if (!X.check_state() || X.agility)
 		return
 
-	if(!isHumanStrict(A) && !ismonkey(A) && (!isXeno(A) || X.can_not_harm(A))) // Can't do isXenoOrHuman because it checks for whether it is strictly human
+	if(X.can_not_harm(A) || !ismob(A))
 		apply_cooldown_override(click_miss_cooldown)
 		return
 
@@ -174,7 +174,7 @@
 	var/damage = rand(base_damage, base_damage + damage_variance)
 
 	if(ishuman(H))
-		if(L.status & LIMB_SPLINTED) //If they have it splinted, the splint won't hold.
+		if((L.status & LIMB_SPLINTED) && !(L.status & LIMB_SPLINTED_INDESTRUCTIBLE)) //If they have it splinted, the splint won't hold.
 			L.status &= ~LIMB_SPLINTED
 			to_chat(H, SPAN_DANGER("The splint on your [L.display_name] comes apart!"))
 			H.pain.apply_pain(PAIN_BONE_BREAK_SPLINTED)

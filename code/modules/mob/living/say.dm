@@ -3,7 +3,7 @@ var/list/department_radio_keys = list(
 	  ":h" = "department",	"#h" = "department",	".h" = "department",
 	  ":+" = "special",		"#+" = "special",		".+" = "special", //activate radio-specific special functions
 	  ":w" = "whisper",		"#w" = "whisper",		".w" = "whisper",
-	  ":t" = "Syndicate",	"#t" = "Syndicate",		".t" = "Syndicate",
+	  ":t" = "HighCom",		"#t" = "HighCom",		".t" = "HighCom",
 
 	  ":m" = "MedSci",		"#m" = "MedSci",		".m" = "MedSci",
 	  ":e" = "Engi", 		"#e" = "Engi",			".e" = "Engi",
@@ -24,7 +24,7 @@ var/list/department_radio_keys = list(
 	  ":I" = "intercom",	"#I" = "intercom",		".I" = "intercom",
 	  ":H" = "department",	"#H" = "department",	".H" = "department",
 	  ":W" = "whisper",		"#W" = "whisper",		".W" = "whisper",
-	  ":T" = "Syndicate",	"#T" = "Syndicate",		".T" = "Syndicate",
+	  ":T" = "HighCom",		"#T" = "HighCom",		".T" = "HighCom",
 
 	  ":M" = "MedSci",		"#M" = "MedSci",		".M" = "MedSci",
 	  ":E" = "Engi", 		"#E" = "Engi",			".E" = "Engi",
@@ -98,6 +98,8 @@ var/list/department_radio_keys = list(
 	if (client && client.prefs && client.prefs.toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION)
 		if (!(copytext(message, -1) in ENDING_PUNCT))
 			message += "."
+
+	if(SEND_SIGNAL(src, COMSIG_LIVING_SPEAK, message, speaking, verb, alt_name, italics, message_range, speech_sound, sound_vol, nolog, message_mode) & COMPONENT_OVERRIDE_SPEAK) return
 
 	for(var/dst=0; dst<=1; dst++) //Will run twice if src has a clone
 		if(!dst && src.clone) //Will speak in src's location and the clone's

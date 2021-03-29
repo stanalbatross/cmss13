@@ -55,9 +55,11 @@
 #define ATTACH_WEAPON		16 //is a weapon that fires stuff
 #define ATTACH_MELEE        32 //This attachment should activate if you attack() with it attached.
 //Ammo magazine defines, for flags_magazine
-#define AMMUNITION_REFILLABLE	1
-#define AMMUNITION_HANDFUL		2
-#define AMMUNITION_HIDE_AMMO    4
+
+#define AMMUNITION_REFILLABLE   (1<<0)
+#define AMMUNITION_HANDFUL      (1<<1)
+#define AMMUNITION_HANDFUL_BOX  (1<<2) //for dump_ammo_to(), boxes of handfuls like shotgun shell boxes
+#define AMMUNITION_HIDE_AMMO    (1<<3)
 
 //Slowdown from various armors.
 #define SHOES_SLOWDOWN -1.0			// How much shoes slow you down by default. Negative values speed you up
@@ -81,6 +83,8 @@
 #define SLOWDOWN_ADS_SUPERWEAPON		2.75
 
 //Wield delays, in milliseconds. 10 is 1 second
+#define WIELD_DELAY_NONE			0
+#define WIELD_DELAY_MIN				1
 #define WIELD_DELAY_VERY_FAST		2
 #define WIELD_DELAY_FAST			4
 #define WIELD_DELAY_NORMAL			6
@@ -113,6 +117,7 @@
 #define RESIN_EXPLOSIVE_MULTIPLIER 0.85
 
 //Projectile block probabilities for different types of cover
+#define PROJECTILE_COVERAGE_NONE		0
 #define PROJECTILE_COVERAGE_LOW			35
 #define PROJECTILE_COVERAGE_MEDIUM		60
 #define PROJECTILE_COVERAGE_HIGH		85
@@ -161,12 +166,17 @@
 #define HEALTH_WALL_XENO_WEAK				100
 #define HEALTH_WALL_XENO_THICK 				1350
 #define HEALTH_WALL_XENO_MEMBRANE 			300
+#define HEALTH_WALL_XENO_REFLECTIVE 		300
 #define HEALTH_WALL_XENO_MEMBRANE_THICK 	600
 
 #define HEALTH_DOOR 		    2000
 #define HEALTH_DOOR_XENO 	    600
 #define HEALTH_DOOR_XENO_THICK 	900
 
+#define HEALTH_RESIN_PILLAR 2200
+#define HEALTH_RESIN_XENO_ACID_PILLAR 300
+#define HEALTH_RESIN_XENO_SHIELD_PILLAR 300
+#define HEALTH_RESIN_XENO_SPIKE 45
 #define HEALTH_RESIN_XENO_STICKY 45
 #define HEALTH_RESIN_XENO_FAST 30
 

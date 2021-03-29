@@ -116,10 +116,16 @@ var/global/list/gear_datums = list()
 	slot = WEAR_EYES
 
 /datum/gear/cigar
-	display_name = "Cigar"
+	display_name = "Premium Cigar"
 	path = /obj/item/clothing/mask/cigarette/cigar
 	slot = WEAR_FACE
 	cost = 2
+
+/datum/gear/classic_cigar
+	display_name = "Classic Cigar"
+	path = /obj/item/clothing/mask/cigarette/cigar/classic
+	slot = WEAR_FACE
+	cost = 3
 
 /datum/gear/cigarette
 	display_name = "Cigarette"
@@ -264,6 +270,12 @@ var/global/list/gear_datums = list()
 /datum/gear/type_80_Bayonet
 	display_name = "Type 80 Bayonet"
 	path = /obj/item/attachable/bayonet/upp
+	slot = WEAR_IN_BACK
+	cost = 4
+
+/datum/gear/m43pistol
+	display_name = "M43 Holdout Pistol"
+	path = /obj/item/storage/box/m43
 	slot = WEAR_IN_BACK
 	cost = 4
 

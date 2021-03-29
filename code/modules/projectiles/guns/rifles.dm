@@ -97,6 +97,10 @@
 /obj/item/weapon/gun/rifle/m41a/stripped
 	starting_attachment_types = list()
 
+
+/obj/item/weapon/gun/rifle/m41a/training
+	current_mag = /obj/item/ammo_magazine/rifle/rubber
+
 //-------------------------------------------------------
 //M41A PMC VARIANT
 
@@ -205,9 +209,14 @@
 	accepted_ammo = list(
 		/obj/item/ammo_magazine/rifle,
 		/obj/item/ammo_magazine/rifle/extended,
-		/obj/item/ammo_magazine/rifle/incendiary,
 		/obj/item/ammo_magazine/rifle/ap,
-		/obj/item/ammo_magazine/rifle/m41aMK1
+		/obj/item/ammo_magazine/rifle/incendiary,
+		/obj/item/ammo_magazine/rifle/toxin,
+		/obj/item/ammo_magazine/rifle/penetrating,
+		/obj/item/ammo_magazine/rifle/m41aMK1,
+		/obj/item/ammo_magazine/rifle/m41aMK1/incendiary,
+		/obj/item/ammo_magazine/rifle/m41aMK1/toxin,
+		/obj/item/ammo_magazine/rifle/m41aMK1/penetrating,
 	)
 	//somewhere in between the mk1 and mk2
 	attachable_allowed = list(
@@ -289,12 +298,19 @@
 	. = ..()
 	if(is_locked && linked_human && linked_human != user)
 		if(linked_human.is_revivable() || linked_human.stat != DEAD)
-			to_chat(user, SPAN_WARNING("[icon2html(src)] A red light flashes at the side of [src]."))
+			to_chat(user, SPAN_WARNING("[icon2html(src)] Trigger locked by [src]. Unauthorized user."))
+			playsound(loc,'sound/weapons/gun_empty.ogg', 25, 1)
 			return FALSE
 
 		linked_human = null
 		is_locked = FALSE
 		UnregisterSignal(linked_human, COMSIG_PARENT_QDELETING)
+
+/obj/item/weapon/gun/rifle/m46c/pickup(user)
+	if(!linked_human)
+		src.name_after_co(user, src)
+		to_chat(usr, SPAN_NOTICE("[icon2html(src)] You pick up [src], registering you as its owner."))
+	..()
 
 /obj/item/weapon/gun/rifle/m46c/verb/toggle_lock()
 	set category = "Weapons"
@@ -302,7 +318,7 @@
 	set src in usr
 
 	if(usr != linked_human)
-		to_chat(usr, SPAN_WARNING("[icon2html(src)] A red light flashes at the side of [src]."))
+		to_chat(usr, SPAN_WARNING("[icon2html(src)] Action denied by [src]. Unauthorized user."))
 		return
 
 	is_locked = !is_locked
@@ -316,7 +332,7 @@
 	set src in usr
 
 	if(is_locked && linked_human && usr != linked_human)
-		to_chat(usr, SPAN_WARNING("[icon2html(src)] A red light flashes at the side of [src]."))
+		to_chat(usr, SPAN_WARNING("[icon2html(src)] Action denied by [src]. Unauthorized user."))
 		return
 
 	iff_enabled = !iff_enabled
@@ -340,9 +356,20 @@
 
 
 /obj/item/weapon/gun/rifle/m46c/proc/name_after_co(var/mob/living/carbon/human/H, var/obj/item/weapon/gun/rifle/m46c/I)
-	I.desc = "A prototype M46C, an experimental rifle platform built to outperform the standard M41A. Back issue only. Uses standard MK1 & MK2 rifle magazines. Property of [H.real_name]."
 	linked_human = H
 	RegisterSignal(linked_human, COMSIG_PARENT_QDELETING, .proc/remove_idlock)
+
+/obj/item/weapon/gun/rifle/m46c/examine()
+	..()
+	if(linked_human)
+		if(is_locked)
+			to_chat(usr, SPAN_NOTICE("It is registered to [linked_human]."))
+		else
+			to_chat(usr, SPAN_NOTICE("It is registered to [linked_human] but has its fire restrictions unlocked."))
+	else
+		to_chat(usr, SPAN_NOTICE("It's unregistered. Pick it up to register you as its owner."))
+	if(!iff_enabled)
+		to_chat(usr, SPAN_WARNING("Its IFF restrictions are disabled."))
 
 /obj/item/weapon/gun/rifle/m46c/proc/remove_idlock()
 	SIGNAL_HANDLER
@@ -525,6 +552,8 @@
 						/obj/item/attachable/attached_gun/flamer,
 						/obj/item/attachable/attached_gun/extinguisher,
 						/obj/item/attachable/attached_gun/shotgun,
+						/obj/item/attachable/lasersight,
+						/obj/item/attachable/stock/m16
 						)
 	random_spawn_chance = 42
 	random_spawn_rail = list(
@@ -539,7 +568,8 @@
 							/obj/item/attachable/burstfire_assembly,
 							/obj/item/attachable/bipod,
 							/obj/item/attachable/attached_gun/extinguisher,
-							/obj/item/attachable/attached_gun/shotgun
+							/obj/item/attachable/attached_gun/shotgun,
+							/obj/item/attachable/lasersight
 									)
 	random_spawn_muzzle = list(
 							/obj/item/attachable/suppressor,
@@ -550,21 +580,28 @@
 
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_ANTIQUE
 
-/obj/item/weapon/gun/rifle/m16/set_gun_attachment_offsets()
-	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 17,"rail_x" = 12, "rail_y" = 22, "under_x" = 24, "under_y" = 14, "stock_x" = 27, "stock_y" = 12)
+/obj/item/weapon/gun/rifle/m16/handle_starting_attachment()
+	..()
+	var/obj/item/attachable/stock/m16/S = new(src)
+	S.hidden = FALSE
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
+	update_attachable(S.slot)
 
+/obj/item/weapon/gun/rifle/m16/set_gun_attachment_offsets()
+	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 17,"rail_x" = 9, "rail_y" = 20, "under_x" = 22, "under_y" = 14, "stock_x" = 15, "stock_y" = 14)
 
 /obj/item/weapon/gun/rifle/m16/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_7
+	fire_delay = FIRE_DELAY_TIER_9
 	burst_amount = BURST_AMOUNT_TIER_3
 	burst_delay = FIRE_DELAY_TIER_9
-	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_1
+	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_7
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT - HIT_ACCURACY_MULT_TIER_7
-	scatter = SCATTER_AMOUNT_TIER_8
-	burst_scatter_mult = SCATTER_AMOUNT_TIER_9
+	scatter = SCATTER_AMOUNT_TIER_10
+	burst_scatter_mult = SCATTER_AMOUNT_TIER_10
 	scatter_unwielded = SCATTER_AMOUNT_TIER_2
-	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_1
+	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_4
 	recoil_unwielded = RECOIL_AMOUNT_TIER_2
 
 //-------------------------------------------------------
@@ -601,21 +638,7 @@
 
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_ANTIQUE
 
-/obj/item/weapon/gun/rifle/m16/dutch/set_gun_attachment_offsets()
-	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 17,"rail_x" = 12, "rail_y" = 22, "under_x" = 24, "under_y" = 14, "stock_x" = 24, "stock_y" = 13)
-
-/obj/item/weapon/gun/rifle/m16/set_gun_config_values()
-	..()
-	fire_delay = FIRE_DELAY_TIER_9
-	burst_amount = BURST_AMOUNT_TIER_3
-	burst_delay = FIRE_DELAY_TIER_9
-	accuracy_mult = BASE_ACCURACY_MULT + HIT_ACCURACY_MULT_TIER_7
-	accuracy_mult_unwielded = BASE_ACCURACY_MULT - HIT_ACCURACY_MULT_TIER_7
-	scatter = SCATTER_AMOUNT_TIER_10
-	burst_scatter_mult = SCATTER_AMOUNT_TIER_10
-	scatter_unwielded = SCATTER_AMOUNT_TIER_2
-	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_4
-	recoil_unwielded = RECOIL_AMOUNT_TIER_2
+//not different from base m16 for NOW, due to shitcode they were always the same
 
 //-------------------------------------------------------
 //M41AE2 HEAVY PULSE RIFLE
@@ -989,6 +1012,10 @@
 	recoil_unwielded = RECOIL_AMOUNT_TIER_4
 	damage_falloff_mult = 0
 	scatter = SCATTER_AMOUNT_TIER_8
+
+
+/obj/item/weapon/gun/rifle/l42a/training
+	current_mag = /obj/item/ammo_magazine/rifle/l42a/rubber
 
 //-------------------------------------------------------
 //-------------------------------------------------------

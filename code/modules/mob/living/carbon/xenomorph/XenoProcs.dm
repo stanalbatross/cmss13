@@ -1,9 +1,6 @@
 //Xenomorph General Procs And Functions - Colonial Marines
 //LAST EDIT: APOPHIS 22MAY16
 
-/mob/living/carbon/Xenomorph/Move(NewLoc, direct)
-	. = ..()
-
 //Send a message to all xenos. Mostly used in the deathgasp display
 /proc/xeno_message(var/message = null, var/size = 3, var/hivenumber = XENO_HIVE_NORMAL)
 	if(!message)
@@ -44,22 +41,43 @@
 
 	. += "Shield: [shieldtotal]"
 
+	if(selected_ability)
+		. += ""
+		. += "Selected Ability: [selected_ability.name]"
+		if(selected_ability.charges != NO_ACTION_CHARGES)
+			. += "Charges Left: [selected_ability.charges]"
+
+		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
+			. += "On Cooldown: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id))]"
+
 	. += ""
 
+	var/evolve_progress
+
 	if(caste_name == "Bloody Larva" || caste_name == "Predalien Larva")
-		. += "Evolve Progress: [round(amount_grown)]/[max_grown]"
-	else if(hive && !hive.living_xeno_queen)
-		. += "Evolve Progress: NO QUEEN"
-	else if(hive && !hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
-		. += "Evolve Progress: NO OVIPOSITOR"
-	else if(caste && caste.evolution_allowed)
-		. += "Evolve Progress: [round(evolution_stored)]/[evolution_threshold]"
+		evolve_progress = "[round(amount_grown)]/[max_grown]"
+	else if(hive && !hive.allow_no_queen_actions)
+		if(!hive.living_xeno_queen)
+			evolve_progress = "NO QUEEN"
+		else if(!hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
+			evolve_progress = "NO OVIPOSITOR"
+
+	if(!evolve_progress)
+		evolve_progress = "[round(evolution_stored)]/[evolution_threshold]"
+
+	if(caste && caste.evolution_allowed)
+		. += "Evolve Progress: [evolve_progress]"
 
 	. += ""
 
 	if (behavior_delegate)
 		var/datum/behavior_delegate/MD = behavior_delegate
 		. += MD.append_to_stat()
+
+	var/list/statdata = list()
+	SEND_SIGNAL(src, COMSIG_XENO_APPEND_TO_STAT, statdata)
+	if(length(statdata))
+		. += statdata
 
 	. += ""
 	//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
@@ -231,6 +249,10 @@
 	if(slowed && !superslowed)
 		. += XENO_SLOWED_AMOUNT
 
+	var/list/L = list("speed" = .)
+	SEND_SIGNAL(src, COMSIG_XENO_MOVEMENT_DELAY, L)
+	. = L["speed"]
+
 	move_delay = .
 
 
@@ -254,20 +276,24 @@
 		if(ishuman(M) && (M.dir in reverse_nearby_direction(dir)))
 			var/mob/living/carbon/human/H = M
 			if(H.check_shields(15, "the pounce")) //Human shield block.
-				KnockDown(3)
+				visible_message(SPAN_DANGER("[src] slams into [H]!"),
+					SPAN_XENODANGER("You slam into [H]!"), null, 5)
+				KnockDown(1)
 				throwing = FALSE //Reset throwing manually.
+				playsound(H, "bonk", 75, FALSE) //bonk
 				return
 
 			if(isYautja(H))
 				if(H.check_shields(0, "the pounce", 1))
 					visible_message(SPAN_DANGER("[H] blocks the pounce of [src] with the combistick!"), SPAN_XENODANGER("[H] blocks your pouncing form with the combistick!"), null, 5)
-					KnockDown(5)
+					KnockDown(3)
 					throwing = FALSE
+					playsound(H, "bonk", 75, FALSE)
 					return
 				else if(prob(75)) //Body slam the fuck out of xenos jumping at your front.
 					visible_message(SPAN_DANGER("[H] body slams [src]!"),
 						SPAN_XENODANGER("[H] body slams you!"), null, 5)
-					KnockDown(4)
+					KnockDown(3)
 					throwing = FALSE
 					return
 			if(isEarlySynthetic(H) && prob(60))
@@ -441,7 +467,7 @@
 	jitter_time--
 
 	if(jitter_time)
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/xeno_jitter, jitter_time), 1)
+		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph.proc/xeno_jitter, jitter_time), 1) // The fuck, use a processing SS, TODO FIXME AHH
 	else
 		//endwhile - reset the pixel offsets to zero
 		pixel_x = old_x
@@ -479,7 +505,7 @@
 		return
 
 	if(queued_action.can_use_action() && queued_action.action_cooldown_check())
-		queued_action.use_ability(A)
+		queued_action.use_ability_wrapper(A)
 
 	queued_action = null
 
@@ -593,6 +619,7 @@
 		LAZYREMOVE(tackle_counter, M)
 
 /mob/living/carbon/Xenomorph/proc/tackle_handle_lying_changed(mob/M)
+	SIGNAL_HANDLER
 	// Infected mobs do not have their tackle counter reset if
 	// they get knocked down or get up from a knockdown
 	if(M.status_flags & XENO_HOST)
@@ -605,3 +632,4 @@
 	if (TC)
 		qdel(TC)
 		LAZYREMOVE(tackle_counter, M)
+		UnregisterSignal(M, COMSIG_MOB_KNOCKED_DOWN)

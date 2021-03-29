@@ -74,7 +74,7 @@
 			continue
 		if(istype(W, /obj/effect/alien/weeds/weedwall))
 			continue
-		addtimer(CALLBACK(W, /obj/effect/alien/weeds/proc/weed_expand, N), PYLON_WEEDS_REGROWTH_TIME, TIMER_UNIQUE)
+		addtimer(CALLBACK(W, /obj/effect/alien/weeds.proc/weed_expand, N), PYLON_WEEDS_REGROWTH_TIME, TIMER_UNIQUE)
 
 	to_chat(M, SPAN_XENONOTICE("You have successfully repaired \the [name]."))
 	playsound(loc, "alien_resin_build", 25)
@@ -107,14 +107,6 @@
 	. = ..()
 
 	// Pick the closest xeno resource activator
-	var/obj/effect/landmark/resource_node_activator/hive/start_activator
-	for(var/obj/effect/landmark/resource_node_activator/hive/node_activator in world)
-		if(!start_activator || get_dist(src, node_activator) < get_dist(src, start_activator))
-			start_activator = node_activator
-
-	// And grow the crystals tied to it
-	if(start_activator)
-		start_activator.trigger()
 
 	if(hive_ref)
 		hive_ref.set_hive_location(src, linked_hive.hivenumber)

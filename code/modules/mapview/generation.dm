@@ -30,12 +30,8 @@
 		if(T.y > max_y && !istype(T,/turf/open/space))
 			max_y = T.y
 		var/area/A = get_area(T)
-		if((SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION || SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) && istype(T,/turf/open/space))
+		if((SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION || SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION_V3 ||SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) && istype(T,/turf/open/space))
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
-			continue
-		var/obj/structure/resource_node/plasma/plasma = locate(/obj/structure/resource_node/plasma) in T
-		if(plasma && plasma.growth_level)
-			minimap.DrawBox(rgb(196,48,201),T.x-1,T.y-1,T.x+1,T.y+1)
 			continue
 		if(A.ceiling >= CEILING_PROTECTION_TIER_2 && A.ceiling != CEILING_REINFORCED_METAL)
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
@@ -164,31 +160,26 @@
 	if(selected)
 		switch(selected)
 			if(1)
-				qdel(marine_mapview_overlay_1)
 				marine_mapview_overlay_1 = newoverlay
 				squad1updated = TRUE
 				spawn(refreshfrequency)
 					squad1updated = FALSE
 			if(2)
-				qdel(marine_mapview_overlay_2)
 				marine_mapview_overlay_2 = newoverlay
 				squad2updated = TRUE
 				spawn(refreshfrequency)
 					squad2updated = FALSE
 			if(3)
-				qdel(marine_mapview_overlay_3)
 				marine_mapview_overlay_3 = newoverlay
 				squad3updated = TRUE
 				spawn(refreshfrequency)
 					squad3updated = FALSE
 			if(4)
-				qdel(marine_mapview_overlay_4)
 				marine_mapview_overlay_4 = newoverlay
 				squad4updated = TRUE
 				spawn(refreshfrequency)
 					squad4updated = FALSE
 	else
-		qdel(marine_mapview_overlay_5)
 		marine_mapview_overlay_5 = newoverlay
 		squad0updated = TRUE
 		spawn(refreshfrequency)

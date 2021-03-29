@@ -48,7 +48,7 @@
 		if(regular_update && ((getOxyLoss() > 50)))
 			KnockOut(3)	
 		
-		if(isHumanStrict(src) && HEALTH_THRESHOLD_CRIT > health)
+		if((src.species.flags & HAS_HARDCRIT) && HEALTH_THRESHOLD_CRIT > health)
 			var/already_in_crit = FALSE
 			for(var/datum/effects/crit/C in effects_list)
 				already_in_crit = TRUE
@@ -71,7 +71,7 @@
 					if((mind.active && client != null) || immune_to_ssd) //This also checks whether a client is connected, if not, sleep is not reduced.
 						sleeping = max(sleeping - 1, 0)
 				if(prob(2) && health && !hal_crit)
-					addtimer(CALLBACK(src, /mob/proc/emote, "snore"))
+					addtimer(CALLBACK(src, .proc/emote, "snore"))
 			blinded = 1
 			stat = UNCONSCIOUS			
 		else

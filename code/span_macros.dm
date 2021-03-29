@@ -25,6 +25,7 @@
 // Announcements
 #define SPAN_ANNOUNCEMENT_HEADER(X) "<span class='announce_header'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_HEADER_BLUE(X) "<span class='announce_header_blue'>[X]</span>"
+#define SPAN_ANNOUNCEMENT_HEADER_ADMIN(X) "<span class='announce_header_admin'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_BODY(X) "<span class='announce_body'>[X]</span>"
 
 // Round and roles
@@ -79,3 +80,4 @@
 #define SPAN_GREEN(X) "<span class='green'>[X]</span>"
 #define SPAN_RED(X) "<span class='red'>[X]</span>"
 #define SPAN_ORANGE(X) "<span class='orange'>[X]</span>"
+#define SPAN_PURPLE(X) "<span class='purple'>[X]</span>"

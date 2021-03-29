@@ -38,13 +38,13 @@
 	tier = 2
 	pull_speed = 2.0 // about what it was before, slightly faster
 
-	actions = list(
+	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno,
 		/datum/action/xeno_action/activable/warrior_punch,
 		/datum/action/xeno_action/activable/lunge,
-		/datum/action/xeno_action/activable/fling
+		/datum/action/xeno_action/activable/fling,
 	)
 
 	mutation_type = WARRIOR_NORMAL
@@ -88,7 +88,7 @@
 	if(!isliving(AM))
 		return FALSE
 	var/mob/living/L = AM
-	var/should_neckgrab = (isHumanStrict(L) || (isXeno(L) && !can_not_harm(L))) && lunge
+	var/should_neckgrab = !(src.can_not_harm(L)) && lunge
 
 	if(!QDELETED(L) && !QDELETED(L.pulledby) && L != src ) //override pull of other mobs
 		visible_message(SPAN_WARNING("[src] has broken [L.pulledby]'s grip on [L]!"), null, null, 5)
@@ -120,24 +120,29 @@
 
 	var/stored_shield_max = 160
 	var/stored_shield_per_slash = 40
-	var/stored_shield = 0
+	var/datum/component/shield_component
 
-/datum/behavior_delegate/warrior_base/melee_attack_additional_effects_self()
-	..()
+/datum/behavior_delegate/warrior_base/New()
+	. = ..()
 
-	if (stored_shield == stored_shield_max)
-		bound_xeno.add_xeno_shield(stored_shield, XENO_SHIELD_SOURCE_GENERIC)
-		bound_xeno.visible_message(SPAN_XENOWARNING("\The [bound_xeno] roars as it mauls its target, its exoskeleton shimmering for a second!"), SPAN_XENOHIGHDANGER("You feel your rage increase your resiliency to damage!"))
-		bound_xeno.xeno_jitter(1 SECONDS)
-		bound_xeno.flick_heal_overlay(2 SECONDS, "#FFA800")
-		bound_xeno.emote("roar")
-		stored_shield = 0
+/datum/behavior_delegate/warrior_base/add_to_xeno()
+	. = ..()
+	if(!shield_component)
+		shield_component = bound_xeno.AddComponent(\
+			/datum/component/shield_slash,\
+			stored_shield_max,\
+			stored_shield_per_slash,\
+			"Warrior Shield")
 	else
-		stored_shield += stored_shield_per_slash
+		bound_xeno.TakeComponent(shield_component)
 
-/datum/behavior_delegate/warrior_base/append_to_stat()
-	. = list()
-	. += "Stored Shield: [stored_shield]/[stored_shield_max]"
+/datum/behavior_delegate/warrior_base/remove_from_xeno()
+	shield_component.RemoveComponent()
+	return ..()
+
+/datum/behavior_delegate/warrior_base/Destroy(force, ...)
+	qdel(shield_component)
+	return ..()
 
 /datum/behavior_delegate/boxer
 	name = "Boxer Warrior Behavior Delegate"
@@ -204,7 +209,7 @@
 	ko_counter = 0
 	if(bound_xeno.client && ko_icon)
 		bound_xeno.client.images -= ko_icon
-	QDEL_NULL(ko_icon)
+	ko_icon = null
 
 /datum/behavior_delegate/boxer/proc/display_ko_message(var/mob/H)
 	if(!bound_xeno.client)
@@ -225,7 +230,7 @@
 /datum/behavior_delegate/boxer/proc/remove_big_ko()
 	if(bound_xeno.client && big_ko_icon)
 		bound_xeno.client.images -= big_ko_icon
-	QDEL_NULL(big_ko_icon)
+	big_ko_icon = null
 
 // a lot of repeats but it's because we are calling different parent procs
 /mob/living/carbon/Xenomorph/Warrior/Daze(amount)

@@ -363,7 +363,7 @@
 		return
 
 	var/mob/living/carbon/human/H = user
-	var/ship_to_tele = list("Public" = CLAN_SHIP_PUBLIC, "Ooman Ship" = CLAN_SHIP_ALMAYER)
+	var/ship_to_tele = list("Public" = -1, "Ooman Ship" = "Ooman")
 
 	if(!isYautja(H))
 		to_chat(user, SPAN_WARNING("You fiddle with it, but nothing happens!"))
@@ -374,25 +374,23 @@
 		if(clan_info.permissions & CLAN_PERMISSION_ADMIN_VIEW)
 			var/list/datum/view_record/clan_view/CPV = DB_VIEW(/datum/view_record/clan_view/)
 			for(var/datum/view_record/clan_view/CV in CPV)
-				if(!SSpredships.is_clanship_loaded("[CV.clan_id]"))
+				if(!SSpredships.is_clanship_loaded(CV?.clan_id))
 					continue
-				ship_to_tele += list("[CV.name]" = "[CV.clan_id]")
-		else if(clan_info.clan_id)
+				ship_to_tele += list("[CV.name]" = "[CV.clan_id]: [CV.name]")
+		if(SSpredships.is_clanship_loaded(clan_info?.clan_id))
 			ship_to_tele += list("Your clan" = "[clan_info.clan_id]")
 
 	var/clan = ship_to_tele[tgui_input_list(H, "Select a ship to teleport to", "[src]", ship_to_tele)]
-
-	if(!SSpredships.is_clanship_loaded(clan))
+	if(clan != "Ooman" && !SSpredships.is_clanship_loaded(clan))
 		return // Checking ship is valid
 
 	// Getting an arrival point
 	var/turf/target_turf
-	if(clan == CLAN_SHIP_ALMAYER)
+	if(clan == "Ooman")
 		var/obj/effect/landmark/yautja_teleport/pickedYT = pick(GLOB.mainship_yautja_teleports)
 		target_turf = get_turf(pickedYT)
 	else
-		var/list/turf/SP = SSpredships.get_clan_spawnpoints(clan)
-		if(SP) target_turf = pick(SP)
+		target_turf = SAFEPICK(SSpredships.get_clan_spawnpoints(clan))
 	if(!istype(target_turf))
 		return
 
@@ -1018,11 +1016,11 @@
 	C.attack_log += text("\[[time_stamp()]\] <font color='orange'>[key_name(C)] was caught in \a [src] at [get_location_in_text(C)].</font>")
 	log_attack("[key_name(C)] was caught in \a [src] at [get_location_in_text(C)].")
 
-	C.KnockDown(2)
 	if(ishuman(C))
 		C.emote("pain")
 	if(isXeno(C))
 		var/mob/living/carbon/Xenomorph/X = C
+		C.emote("needhelp")
 		X.interference = 100 // Some base interference to give pred time to get some damage in, if it cannot land a single hit during this time pred is cheeks
 		RegisterSignal(X, COMSIG_XENO_PRE_HEAL, .proc/block_heal)
 
@@ -1057,6 +1055,7 @@
 		tether_effect = null
 
 /obj/item/hunting_trap/proc/disarm(var/mob/user)
+	SIGNAL_HANDLER
 	armed = FALSE
 	anchored = FALSE
 	icon_state = "yauttrap[armed]"
@@ -1079,7 +1078,7 @@
 	if(!isYautja(H))
 		to_chat(H, SPAN_WARNING("You do not know how to configure the trap."))
 		return
-	var/range = input(H, "Which range would you like to set the hunting trap to?") as null|anything in list(2, 3, 4, 5, 6, 7)
+	var/range = tgui_input_list(H, "Which range would you like to set the hunting trap to?", "Hunting Trap Range", list(2, 3, 4, 5, 6, 7))
 	if(isnull(range))
 		return
 	tether_range = range

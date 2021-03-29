@@ -45,10 +45,10 @@
 /obj/structure/machinery/reagent_analyzer/proc/reagent_process()
 	status++
 	if(status <= 3)
-		addtimer(CALLBACK(src, /obj/structure/machinery/reagent_analyzer/proc/reagent_process), 2 SECONDS)
+		addtimer(CALLBACK(src, /obj/structure/machinery/reagent_analyzer.proc/reagent_process), 2 SECONDS)
 		return
 	playsound(loc, 'sound/machines/fax.ogg', 15, 1)
-	addtimer(CALLBACK(src, /obj/structure/machinery/reagent_analyzer/proc/finish_reagent_process), 4 SECONDS)
+	addtimer(CALLBACK(src, /obj/structure/machinery/reagent_analyzer.proc/finish_reagent_process), 4 SECONDS)
 
 /obj/structure/machinery/reagent_analyzer/proc/finish_reagent_process()
 	if(!sample || !sample.reagents || sample.reagents.total_volume < 30 || sample.reagents.reagent_list.len > 1)
@@ -103,7 +103,6 @@
 					return
 			chemical_data.update_credits(2)
 			chemical_identified_list[S.id] = S.objective_value
-			defcon_controller.check_defcon_level()
 	else
 		report.name += "Analysis of ERROR"
 		report.info += "<center><img src = wylogo.png><HR><I><B>Official Weston-Yamada Document</B><BR>Reagent Analysis Print</I><HR><H2>Analysis ERROR</H2></center>"

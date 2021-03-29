@@ -174,7 +174,7 @@ cases. Override_icon_state should be a list.*/
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
 				icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
 				item_state = new_item_state ? new_item_state : "d_" + item_state
-			if(MAP_PRISON_STATION)
+			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3)
 				icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
 				item_state = new_item_state ? new_item_state : "c_" + item_state
 		if(new_protection)
@@ -203,7 +203,8 @@ cases. Override_icon_state should be a list.*/
 		to_chat(user, desc)
 
 /obj/item/attack_hand(mob/user)
-	if (!user) return
+	if (!user)
+		return
 
 	if(anchored)
 		to_chat(user, "[src] is anchored to the ground.")
@@ -228,7 +229,6 @@ cases. Override_icon_state should be a list.*/
 	else
 		user.next_move = max(user.next_move+2,world.time + 2)
 	if(!QDELETED(src)) //item may have been qdel'd by the drop above.
-		pickup(user)
 		add_fingerprint(user)
 		if(!user.put_in_active_hand(src))
 			dropped(user)
@@ -280,7 +280,7 @@ cases. Override_icon_state should be a list.*/
 
 	for(var/X in actions)
 		var/datum/action/A = X
-		A.remove_action(user)
+		A.remove_from(user)
 
 	if(flags_item & DELONDROP)
 		qdel(src)
@@ -325,6 +325,8 @@ cases. Override_icon_state should be a list.*/
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	if((flags_item & MOB_LOCK_ON_EQUIP) && !locked_to_mob)
 		locked_to_mob = user
 
@@ -339,7 +341,7 @@ cases. Override_icon_state should be a list.*/
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(user, slot)) //some items only give their actions buttons when in a specific slot.
-			A.give_action(user)
+			A.give_to(user)
 
 //sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(mob/user, slot)

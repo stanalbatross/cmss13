@@ -40,6 +40,7 @@
 	if(user)
 		to_chat(user, SPAN_NOTICE("You attach \the [src] to \the [has_suit]."))
 		src.add_fingerprint(user)
+	return TRUE
 
 /obj/item/clothing/accessory/proc/on_removed(mob/living/user, obj/item/clothing/C)
 	if(!has_suit)
@@ -311,6 +312,9 @@
 	..()
 	name = "[initial(name)] ([rank_short])"
 	desc = "[initial(desc)] This one is for the rank <b>[get_paygrades(rank_short, 1)]</b>"
+
+/obj/item/clothing/accessory/ranks/e1
+	rank_short = "E1"
 
 /obj/item/clothing/accessory/ranks/e2
 	rank_short = "E2"

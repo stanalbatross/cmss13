@@ -25,7 +25,7 @@
 	if (!evolve_checks())
 		return
 
-	if((!hive.living_xeno_queen) && castepick != "Queen" && !isXenoLarva(src))
+	if((!hive.living_xeno_queen) && castepick != "Queen" && !isXenoLarva(src) && !hive.allow_no_queen_actions)
 		to_chat(src, SPAN_WARNING("The Hive is shaken by the death of the last Queen. You can't find the strength to evolve."))
 		return
 
@@ -35,6 +35,10 @@
 
 	if(castepick == "Queen") //Special case for dealing with queenae
 		if(!hardcore)
+			if(SSticker.mode && hive.xeno_queen_timer > world.time)
+				to_chat(src, SPAN_WARNING("You must wait about [DisplayTimeText(hive.xeno_queen_timer - world.time, 1)] for the hive to recover from the previous Queen's death."))
+				return
+
 			if(plasma_stored >= 500)
 				if(hive.living_xeno_queen)
 					to_chat(src, SPAN_WARNING("There already is a living Queen."))
@@ -366,10 +370,10 @@
 	if(tier == 1 && (((used_tier_2_slots + used_tier_3_slots) / totalXenos) * hive.tier_slot_multiplier) >= 0.5 && castepick != "Queen")
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 2, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(tier == 2 && ((used_tier_3_slots / length(hive.totalXenos)) * hive.tier_slot_multiplier) >= 0.25 && castepick != "Queen")
+	else if(tier == 2 && ((used_tier_3_slots / length(hive.totalXenos)) * hive.tier_slot_multiplier) >= 0.20 && castepick != "Queen")
 		to_chat(src, SPAN_WARNING("The hive cannot support another Tier 3, wait for either more aliens to be born or someone to die."))
 		return FALSE
-	else if(!hive.living_xeno_queen && potential_queens == 1 && isXenoLarva(src) && castepick != "Drone")
+	else if(hive.allow_queen_evolve && !hive.living_xeno_queen && potential_queens == 1 && isXenoLarva(src) && castepick != "Drone")
 		to_chat(src, SPAN_XENONOTICE("The hive currently has no sister able to become Queen! The survival of the hive requires you to be a Drone!"))
 		return FALSE
 

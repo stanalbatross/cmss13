@@ -1,4 +1,5 @@
-#define XENO_QUEEN_AGE_TIME	(15 MINUTES)
+#define XENO_QUEEN_AGE_TIME	(10 MINUTES)
+#define XENO_QUEEN_DEATH_DELAY (5 MINUTES)
 #define YOUNG_QUEEN_HEALTH_MULTIPLIER 0.5
 
 /datum/caste_datum/queen
@@ -16,6 +17,8 @@
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_QUEEN
 
+	build_time_mult = BUILD_TIME_MULT_BUILDER
+
 	is_intelligent = 1
 	evolution_allowed = FALSE
 	fire_immunity = FIRE_IMMUNITY_NO_DAMAGE|FIRE_IMMUNITY_NO_IGNITE
@@ -25,6 +28,7 @@
 	can_hold_eggs = CAN_HOLD_ONE_HAND
 	acid_level = 2
 	weed_level = WEED_LEVEL_STANDARD
+	can_be_revived = FALSE
 
 	spit_delay = 25
 
@@ -87,7 +91,7 @@
 		COMSIG_XENO_STOP_OVERWATCH,
 		COMSIG_XENO_STOP_OVERWATCH_XENO
 	), .proc/stop_watching)
-	RegisterSignal(src, COMSIG_TURF_ENTER, .proc/turf_weed_only)
+	RegisterSignal(src, COMSIG_MOVABLE_TURF_ENTER, .proc/turf_weed_only)
 
 	// Default colour
 	if(Q.hive.color)
@@ -218,8 +222,7 @@
 	if(linked_mob)
 		var/mob/living/carbon/Xenomorph/Queen/Q = linked_mob
 		if(Q.ovipositor)
-			var/datum/action/xeno_action/onclick/eye/E = new()
-			E.give_action(linked_mob)
+			give_action(linked_mob, /datum/action/xeno_action/onclick/eye)
 
 		linked_mob.sight &= ~(SEE_TURFS|SEE_OBJS)
 
@@ -265,7 +268,7 @@
 	tileoffset = 0
 	viewsize = 12
 
-	actions = list(
+	base_actions = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno,
@@ -280,7 +283,7 @@
 		/datum/action/xeno_action/activable/secrete_resin/queen_macro, //fourth macro
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit
-		)
+	)
 
 	inherent_verbs = list(
 		/mob/living/carbon/Xenomorph/proc/claw_toggle,
@@ -290,7 +293,7 @@
 		/mob/living/carbon/Xenomorph/Queen/proc/set_orders,
 		/mob/living/carbon/Xenomorph/Queen/proc/hive_Message,
 		/mob/living/carbon/Xenomorph/proc/rename_tunnel,
-		)
+	)
 
 	var/list/mobile_abilities = list(
 		/datum/action/xeno_action/onclick/xeno_resting,
@@ -310,7 +313,7 @@
 		/datum/action/xeno_action/activable/secrete_resin/queen_macro, //fourth macro
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit,
-			)
+	)
 
 	// Abilities they get when they've successfully aged.
 	var/mobile_aged_abilities = list(
@@ -356,8 +359,6 @@
 	else
 		make_combat_effective()
 
-	STOP_PROCESSING(SShive_status, hive.hive_ui)
-
 /mob/living/carbon/Xenomorph/Queen/generate_name()
 	. = ..()
 
@@ -392,7 +393,8 @@
 	if(ovipositor)
 		return
 
-	QDEL_LIST(actions)
+	for(var/datum/action/xeno_action/A in actions)
+		A.hide_from(src)
 
 	var/list/abilities_to_give = mobile_abilities.Copy()
 
@@ -400,8 +402,7 @@
 		abilities_to_give -= mobile_aged_abilities
 
 	for(var/path in abilities_to_give)
-		var/datum/action/xeno_action/A = new path()
-		A.give_action(src)
+		give_action(src, path)
 
 
 /mob/living/carbon/Xenomorph/Queen/recalculate_health()
@@ -419,7 +420,7 @@
 		hive.set_living_xeno_queen(null)
 	return ..()
 
-/mob/living/carbon/Xenomorph/Queen/Life()
+/mob/living/carbon/Xenomorph/Queen/Life(delta_time)
 	..()
 
 	if(stat != DEAD)
@@ -508,7 +509,7 @@
 	xeno_announcement(input, hivenumber, "The words of the [name] reverberate in your head...")
 
 	log_and_message_staff("[key_name_admin(src)] has created a Word of the Queen report:")
-	log_and_message_staff("[input]")
+	log_admin("[key_name_admin(src)] Word of the Queen: [input]")
 
 
 /mob/living/carbon/Xenomorph/proc/claw_toggle()
@@ -529,7 +530,7 @@
 		return
 
 	pslash_delay = TRUE
-	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_claw_toggle_cooldown), 30 SECONDS)
+	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph.proc/do_claw_toggle_cooldown), 30 SECONDS)
 
 	var/choice = tgui_input_list(usr, "Choose which level of slashing hosts to permit to your hive.","Harming", list("Allowed", "Restricted - Hosts of Interest", "Forbidden"))
 
@@ -691,20 +692,20 @@
 		stop_pulling()
 
 /mob/living/carbon/Xenomorph/Queen/death(var/cause, var/gibbed)
-	. = ..()
+	if(hive.living_xeno_queen == src)
+		hive.xeno_queen_timer = world.time + XENO_QUEEN_DEATH_DELAY
+	return ..()
 
-	// So observers get updated information
-	START_PROCESSING(SShive_status, hive.hive_ui)
 
 /mob/living/carbon/Xenomorph/Queen/proc/mount_ovipositor()
 	if(ovipositor)
 		return //sanity check
 	ovipositor = TRUE
 
-	for(var/datum/action/A in actions)
-		qdel(A)
+	for(var/datum/action/xeno_action/A in actions)
+		A.hide_from(src)
 
-	var/list/immobile_abilities = list(\
+	var/list/immobile_abilities = list(
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/onclick/remove_eggsac,
 		/datum/action/xeno_action/activable/screech,
@@ -717,17 +718,16 @@
 		/datum/action/xeno_action/onclick/queen_order,
 		/datum/action/xeno_action/onclick/choose_resin,
 		/datum/action/xeno_action/activable/expand_weeds,
-		/datum/action/xeno_action/activable/secrete_resin/ovipositor,
+		/datum/action/xeno_action/activable/secrete_resin/remote/queen,
 		/datum/action/xeno_action/activable/place_construction,
 		/datum/action/xeno_action/onclick/deevolve,
 		/datum/action/xeno_action/onclick/banish,
 		/datum/action/xeno_action/onclick/readmit,
 		/datum/action/xeno_action/onclick/eye
-		)
+	)
 
 	for(var/path in immobile_abilities)
-		var/datum/action/xeno_action/A = new path()
-		A.give_action(src)
+		give_action(src, path)
 
 	extra_build_dist = IGNORE_BUILD_DISTANCE
 	anchored = TRUE
@@ -742,6 +742,8 @@
 
 	START_PROCESSING(SShive_status, hive.hive_ui)
 
+	SEND_SIGNAL(src, COMSIG_QUEEN_MOUNT_OVIPOSITOR)
+
 /mob/living/carbon/Xenomorph/Queen/proc/dismount_ovipositor(instant_dismount)
 	set waitfor = 0
 	if(!instant_dismount)
@@ -755,7 +757,6 @@
 
 	if(!ovipositor)
 		return
-
 	ovipositor = FALSE
 	map_view = 0
 	close_browser(src, "queenminimap")
@@ -783,8 +784,6 @@
 		xeno_message(SPAN_XENOANNOUNCE("The Queen has shed her ovipositor, evolution progress paused."), 3, hivenumber)
 
 	SEND_SIGNAL(src, COMSIG_QUEEN_DISMOUNT_OVIPOSITOR, instant_dismount)
-
-	STOP_PROCESSING(SShive_status, hive.hive_ui)
 
 /mob/living/carbon/Xenomorph/Queen/update_canmove()
 	. = ..()
@@ -815,3 +814,7 @@
 	if(!ovipositor)
 		return FALSE // can't range plant while not in ovi... but who the fuck cares, we can't plant anyways
 	return get_dist(src, T) <= egg_planting_range
+
+/mob/living/carbon/Xenomorph/Queen/gib(var/cause = "gibbing")
+	death(cause, 1)
+

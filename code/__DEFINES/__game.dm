@@ -28,7 +28,8 @@
 #define MAP_ICE_COLONY "Ice Colony" // Highpop only
 #define MAP_LV_624 "LV-624"
 #define MAP_BIG_RED "Solaris Ridge"
-#define MAP_PRISON_STATION "Prison Station"
+#define MAP_PRISON_STATION "Fiorina Cellblocks"
+#define MAP_PRISON_STATION_V3 "Fiorina Science Annex"
 #define MAP_WHISKEY_OUTPOST "Whiskey Outpost" // Unused
 #define MAP_DESERT_DAM "Trijent Dam"  // Highpop only
 #define MAP_SOROKYNE_STRATA "Sorokyne Strata"
@@ -138,7 +139,7 @@
 #define ELEVATOR_RECHARGE 15 SECONDS  // 15 seconds
 
 //Shuttle moving status
-#define SHUTTLE_IDLE		0
+//#define SHUTTLE_IDLE		0
 #define SHUTTLE_WARMUP		1
 #define SHUTTLE_INTRANSIT	2
 #define SHUTTLE_CRASHED		3
@@ -283,6 +284,7 @@
 #define WALL_THICKRESIN "thickresin"
 #define WALL_MEMBRANE "membrane"
 #define WALL_THICKMEMBRANE "thickmembrane"
+#define WALL_BONE_RESIN "bone_resin"
 #define WALL_CAVE "cavewall"
 #define WALL_WOOD "wood"
 #define WALL_GOLD "gold"
@@ -424,3 +426,9 @@
 // Beams
 /// For beams with an infinite duration (deletion is handled separately)
 #define BEAM_INFINITE_DURATION -1
+
+/// Used for calculations with delta_time when figuring how much "amount" to give per "time"
+/// `amount` - The number to get per time
+/// `time` - The time period in which to gain this amount
+/// To be used with delta_time. Multiplied by 10 to convert from deciseconds to seconds
+#define AMOUNT_PER_TIME(amount, time) ((amount / (time))*10)
