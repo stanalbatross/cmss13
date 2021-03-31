@@ -52,3 +52,8 @@ GLOBAL_LIST_EMPTY(teleporter_landmarks)
 
 GLOBAL_LIST_INIT(cardinals, list(NORTH, SOUTH, EAST, WEST))
 GLOBAL_LIST_EMPTY(nightmare_landmarks)
+
+/// All dropship crash landmarks registered
+GLOBAL_LIST_EMPTY_TYPED(shuttle_crash_locations, /obj/effect/landmark/shuttle_loc/marine_crs)
+/// Dropship crash landmarks per assigned section
+GLOBAL_LIST_EMPTY(shuttle_crash_sections)
