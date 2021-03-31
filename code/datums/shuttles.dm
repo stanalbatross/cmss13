@@ -103,3 +103,15 @@
 /datum/map_template/shuttle/vehicle
 	shuttle_id = "vehicle_elevator"
 	name = "Vehicle Elevator"
+
+/datum/map_template/shuttle/sulaco_pod
+	shuttle_id = "drop_pod"
+	name = "Sulaco Drop Pod"
+
+/datum/map_template/shuttle/rasputin
+	shuttle_id = "rasputin"
+	name = "Dropship Rasputin"
+
+/datum/map_template/shuttle/drop_pod
+	shuttle_id = "drop_pod"
+	name = "Sulaco Drop Pod"

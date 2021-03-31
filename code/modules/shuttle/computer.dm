@@ -8,6 +8,11 @@
 	var/possible_destinations = ""
 	var/admin_controlled
 
+// Placeholder FIXME
+/obj/structure/machinery/computer/shuttle/attack_hand(mob/user)
+	if(inoperable() || user?.stat)
+		return
+	tgui_interact(user)
 
 /obj/structure/machinery/computer/shuttle/tgui_interact(mob/user)
 	. = ..()
@@ -28,10 +33,7 @@
 			if(admin_controlled)
 				dat += "Authorized personnel only<br>"
 				dat += "<A href='?src=[REF(src)];request=1]'>Request Authorization</A><br>"
-
-	var/datum/browser/popup = new(user, "computer", "<div align='center'>[M ? M.name : "shuttle"]</div>", 300, 200)
-	popup.set_content("<center>[dat]</center>")
-	popup.open()
+	show_browser(user, dat, M.name, M.name, "size=300x200")
 
 /obj/structure/machinery/computer/shuttle/proc/valid_destinations()
 	return params2list(possible_destinations)
@@ -74,3 +76,7 @@
 /obj/structure/machinery/computer/shuttle/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
 	if(port && (shuttleId == initial(shuttleId) || override))
 		shuttleId = port.id
+
+/obj/structure/machinery/computer/shuttle/dropship
+	density = TRUE
+	icon_state = "shuttle"
