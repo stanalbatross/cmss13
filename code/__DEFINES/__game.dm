@@ -402,15 +402,6 @@
 #define TURF_PROTECTION_CAS 2
 #define TURF_PROTECTION_OB 3
 
-// Anything above the deck boundary is the upper deck, anything below is the lower deck
-// This is exclusive, so anything ON the boundary is an edge case that's neither on the upper nor the lower deck
-#define ALMAYER_DECK_BOUNDARY 101
-
-// These are inclusive bounds. Anything between them is regarded as the midship
-// I.e. the foreship is x = 0 to and including ALMAYER_FORE_BOUNDARY
-#define ALMAYER_FORE_BOUNDARY 121
-#define ALMAYER_AFT_BOUNDARY 197
-
 /proc/get_accurate_dist(var/turf/A, var/turf/B)
 	var/dist
 	if(!A || !B)

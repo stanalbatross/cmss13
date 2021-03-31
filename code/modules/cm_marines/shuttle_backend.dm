@@ -376,9 +376,18 @@ x_pos = 0 1 2 3 4 5 6 7 8 9 ....	   15 16
 	icon_state = "spawn_shuttle_move"
 /obj/effect/landmark/shuttle_loc/marine_trg
 	icon_state = "spawn_shuttle_land"
+
+/// Landmark representing a potential location for Hijack dropship crash
 /obj/effect/landmark/shuttle_loc/marine_crs
 	icon_state = "spawn_shuttle_crash"
-
+/obj/effect/landmark/shuttle_loc/marine_crs/dropship/Initialize(mapload)
+	if(!mapload)
+		return INITIALIZE_HINT_QDEL
+	GLOB.shuttle_crash_locations += src
+	return ..()
+/obj/effect/landmark/shuttle_loc/marine_crs/dropship/Destroy(force)
+	GLOB.shuttle_crash_locations -= src
+	return ..()
 
 // TLDR: Computes a shuttle_tag given the passed string, retrieves that shuttle datum,
 // 		 and dumps the source turf of whatever called it into the passed list.
@@ -416,33 +425,6 @@ qdel(src)
 	SHUTTLE_LINK_LOCATIONS("Evac", S.locs_land)
 
 /obj/effect/landmark/shuttle_loc/marine_crs/dropship
-
-/obj/effect/landmark/shuttle_loc/marine_crs/dropship/link_loc()
-	..()
-
-	// Sort the crash location into the ship section it belongs to
-	var/ship_section = ""
-	// determine upper/lower deck first
-	if(y > ALMAYER_DECK_BOUNDARY)
-		ship_section = UPPER_DECK
-	else if(y < ALMAYER_DECK_BOUNDARY)
-		ship_section = LOWER_DECK
-
-	ship_section += " "
-
-	// then fore/mid/aftship
-	if (x <= ALMAYER_FORE_BOUNDARY)
-		ship_section += FORESHIP
-	else if(x >= ALMAYER_AFT_BOUNDARY)
-		ship_section += AFTSHIP
-	else
-		ship_section += MIDSHIP
-
-	if(isnull(shuttle_controller.locs_crash[ship_section]))
-		shuttle_controller.locs_crash[ship_section] = list()
-
-	shuttle_controller.locs_crash[ship_section][get_turf(src)] = rotation
-	qdel(src)
 
 #undef SHUTTLE_LINK_LOCATIONS
 
