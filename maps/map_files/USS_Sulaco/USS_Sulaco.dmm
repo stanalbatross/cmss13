@@ -601,6 +601,14 @@
 	icon_state = "white"
 	},
 /area/sulaco/cryosleep)
+"bQ" = (
+/obj/effect/landmark/start/liaison,
+/turf/open/floor{
+	dir = 8;
+	icon_state = "carpet15-15";
+	tag = "icon-carpet15-15 (WEST)"
+	},
+/area/sulaco/liaison)
 "bR" = (
 /obj/structure/disposalpipe/segment,
 /turf/closed/wall/almayer,
@@ -1933,6 +1941,7 @@
 /area/sulaco/briefing)
 "fU" = (
 /obj/structure/machinery/light/small,
+/obj/effect/landmark/start/bridge,
 /turf/open/floor/wood,
 /area/sulaco/bridge/quarters)
 "fV" = (
@@ -6266,6 +6275,10 @@
 	},
 /turf/open/floor/plating,
 /area/sulaco/cargo)
+"rF" = (
+/obj/effect/landmark/start/captain,
+/turf/open/floor/wood,
+/area/sulaco/cap_office)
 "rG" = (
 /obj/structure/machinery/light/small{
 	dir = 1
@@ -6941,6 +6954,10 @@
 /obj/structure/sign/prop3,
 /turf/closed/wall/almayer,
 /area/sulaco/engineering/ce)
+"ty" = (
+/obj/effect/landmark/start/executive,
+/turf/open/floor/almayer,
+/area/sulaco/bridge)
 "tz" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/tool/lighter/zippo/fluff,
@@ -11248,6 +11265,7 @@
 /obj/structure/machinery/light/small{
 	dir = 1
 	},
+/obj/effect/landmark/start/bridge,
 /turf/open/floor/wood,
 /area/sulaco/bridge/quarters)
 "EX" = (
@@ -22402,7 +22420,7 @@ GI
 Ii
 TO
 pB
-pB
+ty
 Ys
 pB
 pB
@@ -23280,7 +23298,7 @@ Tf
 FI
 BV
 BV
-BV
+rF
 BV
 dl
 Fa
@@ -23454,7 +23472,7 @@ PR
 Ie
 TY
 Jo
-xK
+bQ
 BY
 TY
 Ks
