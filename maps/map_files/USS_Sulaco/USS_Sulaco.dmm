@@ -1781,7 +1781,11 @@
 /obj/structure/machinery/camera/autoname{
 	dir = 4
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
+	},
 /area/sulaco/cargo)
 "eC" = (
 /obj/structure/bed/chair/office/dark{
@@ -1949,11 +1953,9 @@
 	},
 /area/sulaco/marine/alpha)
 "eZ" = (
-/obj/effect/landmark/shuttle_loc/marine_src/evacuation{
-	name = "1"
-	},
-/turf/closed/wall/almayer/outer,
-/area/sulaco/hallway/central_hall3)
+/obj/docking_port/stationary/marine_dropship/drop_pod,
+/turf/open/floor/plating,
+/area/sulaco/hangar)
 "fb" = (
 /turf/open/floor/almayer,
 /area/sulaco/marine/delta)
@@ -2352,7 +2354,11 @@
 /area/sulaco/bridge/quarters)
 "fV" = (
 /obj/effect/landmark/start/requisition,
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 1;
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
 /area/sulaco/cargo)
 "fW" = (
 /obj/structure/window/framed/almayer/hull,
@@ -3216,9 +3222,6 @@
 	},
 /area/sulaco/hangar/one)
 "hX" = (
-/obj/structure/bed/chair{
-	dir = 4
-	},
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 6;
 	tag = "icon-intact-supply (SOUTHEAST)"
@@ -3498,6 +3501,13 @@
 /obj/structure/machinery/cm_vending/gear/commanding_officer,
 /turf/open/floor/wood,
 /area/sulaco/cap_office)
+"iF" = (
+/obj/structure/pipes/standard/simple/hidden/supply,
+/turf/open/floor/almayer{
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
+/area/sulaco/cargo)
 "iG" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -3765,11 +3775,10 @@
 /turf/open/floor/almayer,
 /area/sulaco/hangar/one)
 "jo" = (
-/obj/effect/landmark/shuttle_loc/marine_src/evacuation{
-	name = "2"
-	},
-/turf/closed/wall/almayer/outer,
-/area/sulaco/hallway/central_hall3)
+/obj/structure/pipes/standard/simple/hidden/supply,
+/obj/structure/machinery/light,
+/turf/open/floor/almayer,
+/area/sulaco/hallway/lower_main_hall)
 "jp" = (
 /obj/structure/machinery/alarm{
 	dir = 4;
@@ -4645,7 +4654,11 @@
 	pixel_x = -30;
 	pixel_y = 0
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
+	},
 /area/sulaco/cargo)
 "lA" = (
 /turf/open/floor/almayer{
@@ -4892,6 +4905,10 @@
 "mb" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/pipes/standard/simple/hidden/supply,
+/obj/structure/machinery/computer/shuttle/dropship{
+	dir = 8;
+	shuttleId = "lz1"
+	},
 /turf/open/floor/almayer,
 /area/sulaco/bridge)
 "mc" = (
@@ -5257,7 +5274,11 @@
 	pixel_x = -30;
 	pixel_y = 0
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
+	},
 /area/sulaco/cargo)
 "mT" = (
 /obj/structure/closet/crate/freezer,
@@ -6961,6 +6982,13 @@
 	tag = "icon-sterile"
 	},
 /area/sulaco/research)
+"qH" = (
+/obj/structure/surface/table/almayer,
+/obj/effect/landmark/map_item,
+/turf/open/floor/prison{
+	icon_state = "kitchen"
+	},
+/area/sulaco/cafeteria)
 "qI" = (
 /obj/structure/machinery/vending/snack,
 /obj/structure/machinery/alarm{
@@ -7022,6 +7050,14 @@
 	tag = "icon-orange (NORTHEAST)"
 	},
 /area/sulaco/telecomms/office)
+"qO" = (
+/obj/structure/pipes/standard/simple/hidden/supply,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green";
+	tag = "icon-green (WEST)"
+	},
+/area/sulaco/cargo)
 "qP" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -7695,7 +7731,11 @@
 	dir = 5;
 	tag = "icon-intact-supply (EAST)"
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green";
+	tag = "icon-green (WEST)"
+	},
 /area/sulaco/cargo)
 "sq" = (
 /obj/structure/pipes/vents/pump,
@@ -8390,7 +8430,7 @@
 /turf/closed/wall/almayer,
 /area/sulaco/engineering/smes)
 "tV" = (
-/obj/structure/bed/chair{
+/obj/structure/bed/chair/office/dark{
 	dir = 4
 	},
 /turf/open/floor/almayer,
@@ -8603,6 +8643,15 @@
 	icon_state = "tcomms"
 	},
 /area/sulaco/telecomms)
+"uv" = (
+/obj/structure/surface/table/almayer,
+/obj/structure/pipes/standard/simple/hidden/supply,
+/obj/structure/machinery/computer/shuttle/dropship{
+	dir = 8;
+	shuttleId = "lz2"
+	},
+/turf/open/floor/almayer,
+/area/sulaco/bridge)
 "uw" = (
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 2;
@@ -9345,6 +9394,15 @@
 	tag = "icon-sterile"
 	},
 /area/sulaco/maintenance/lower_maint)
+"wi" = (
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/rto{
+	dir = 4
+	},
+/turf/open/floor/almayer{
+	icon_state = "test_floor4";
+	tag = "icon-test_floor4"
+	},
+/area/sulaco/marine/alpha)
 "wk" = (
 /obj/structure/machinery/portable_atmospherics/canister/empty,
 /obj/structure/barricade/handrail{
@@ -9828,7 +9886,10 @@
 /obj/vehicle/powerloader{
 	name = "Mark IV Powerloader"
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
 /area/sulaco/cargo)
 "xm" = (
 /obj/structure/machinery/light,
@@ -10648,7 +10709,11 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green";
+	tag = "icon-green (WEST)"
+	},
 /area/sulaco/cargo)
 "zl" = (
 /obj/structure/machinery/light{
@@ -11681,11 +11746,9 @@
 /turf/open/floor/almayer,
 /area/sulaco/briefing)
 "Bw" = (
-/obj/effect/landmark/shuttle_loc/marine_src/evacuation{
-	name = "3"
-	},
-/turf/closed/wall/almayer/outer,
-/area/sulaco/hallway/central_hall3)
+/obj/docking_port/stationary/marine_dropship/rasputin,
+/turf/open/floor/plating,
+/area/sulaco/hangar)
 "Bx" = (
 /obj/structure/machinery/telecomms/server/presets/medical,
 /turf/open/floor/almayer{
@@ -11728,6 +11791,13 @@
 /turf/open/floor/almayer{
 	icon_state = "test_floor5";
 	tag = "icon-test_floor5"
+	},
+/area/sulaco/cargo)
+"BC" = (
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
 	},
 /area/sulaco/cargo)
 "BD" = (
@@ -12290,9 +12360,6 @@
 /turf/open/floor/almayer,
 /area/sulaco/hallway/central_hall3)
 "CS" = (
-/obj/structure/bed/chair{
-	dir = 8
-	},
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
 	tag = "icon-intact-supply (NORTH)"
@@ -12353,7 +12420,6 @@
 	dir = 8;
 	id = "supply_elevator_railing"
 	},
-/obj/effect/landmark/shuttle_loc/marine_crs/dropship,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_regular_floor = "cargo_arrow";
@@ -12823,7 +12889,10 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
 /area/sulaco/cargo)
 "Ee" = (
 /obj/structure/machinery/door/firedoor/border_only/almayer{
@@ -14362,7 +14431,11 @@
 "Hv" = (
 /obj/effect/landmark/start/cargo,
 /obj/structure/pipes/standard/simple/hidden/supply,
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 1;
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
 /area/sulaco/cargo)
 "Hw" = (
 /obj/structure/pipes/vents/scrubber{
@@ -14770,7 +14843,11 @@
 	icon_state = "ladderdown";
 	id = "cargo"
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green";
+	tag = "icon-green (WEST)"
+	},
 /area/sulaco/cargo)
 "Is" = (
 /obj/item/device/radio/intercom{
@@ -16649,6 +16726,14 @@
 	},
 /turf/open/floor/almayer,
 /area/sulaco/maintenance/lower_maint)
+"ME" = (
+/obj/effect/landmark/start/cargo,
+/turf/open/floor/almayer{
+	dir = 1;
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
+/area/sulaco/cargo)
 "MF" = (
 /obj/structure/machinery/light{
 	dir = 4;
@@ -17132,6 +17217,17 @@
 	tag = "icon-red"
 	},
 /area/sulaco/brig)
+"NJ" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/pipes/standard/simple/hidden/supply{
+	dir = 4;
+	tag = "icon-intact-supply (NORTH)"
+	},
+/obj/effect/landmark/shuttle_loc/marine_crs/dropship,
+/turf/open/floor/almayer,
+/area/sulaco/hallway/central_hall)
 "NK" = (
 /obj/structure/machinery/portable_atmospherics/canister/nitrogen,
 /turf/open/floor/plating,
@@ -17352,6 +17448,9 @@
 	},
 /area/sulaco/medbay/surgery_two)
 "Oi" = (
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/smart{
+	dir = 4
+	},
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -17437,6 +17536,13 @@
 	tag = "icon-orangefull"
 	},
 /area/sulaco/maintenance/lower_maint)
+"Ou" = (
+/turf/open/floor/almayer{
+	dir = 1;
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
+	},
+/area/sulaco/cargo)
 "Ov" = (
 /obj/structure/closet/walllocker/emerglocker/west,
 /obj/item/facepaint/green,
@@ -17548,6 +17654,16 @@
 	tag = "icon-orangefull"
 	},
 /area/sulaco/engineering)
+"OJ" = (
+/obj/structure/bed/chair,
+/obj/structure/pipes/standard/simple/hidden/supply,
+/obj/effect/landmark/shuttle_loc/marine_crs/dropship,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "blue";
+	tag = "icon-blue (EAST)"
+	},
+/area/sulaco/briefing)
 "OK" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 5;
@@ -18379,6 +18495,11 @@
 "QN" = (
 /obj/structure/sign/greencross{
 	pixel_y = 32
+	},
+/obj/structure/flora/pottedplant{
+	icon_state = "pottedplant_21";
+	pixel_y = 12;
+	tag = "icon-plant-10"
 	},
 /turf/open/floor/almayer,
 /area/sulaco/hallway/central_hall)
@@ -19459,7 +19580,11 @@
 	dir = 8;
 	icon_state = "tube1"
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
+	},
 /area/sulaco/cargo)
 "Tq" = (
 /obj/structure/bed/chair/office/dark{
@@ -20971,6 +21096,9 @@
 	pixel_x = 34;
 	pixel_y = 0
 	},
+/obj/structure/machinery/light{
+	dir = 4
+	},
 /turf/open/floor/plating/plating_catwalk,
 /area/sulaco/hallway/lower_main_hall)
 "WQ" = (
@@ -21594,7 +21722,11 @@
 	dir = 10;
 	tag = "icon-intact-supply (SOUTHWEST)"
 	},
-/turf/open/floor/almayer,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green";
+	tag = "icon-green (WEST)"
+	},
 /area/sulaco/cargo)
 "Yr" = (
 /obj/structure/machinery/light{
@@ -21701,11 +21833,11 @@
 /turf/open/floor/plating,
 /area/sulaco/liaison/quarters)
 "YC" = (
-/obj/structure/bed/chair{
-	dir = 8
+/turf/open/floor/almayer{
+	icon_state = "green";
+	tag = "icon-green (NORTH)"
 	},
-/turf/open/floor/almayer,
-/area/sulaco/bridge)
+/area/sulaco/cargo)
 "YD" = (
 /obj/structure/machinery/power/smes/buildable{
 	dir = 8
@@ -24962,7 +25094,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 pj
 wC
 pB
@@ -24972,7 +25104,7 @@ pB
 pB
 iD
 aG
-GI
+vR
 GI
 ye
 ye
@@ -25086,7 +25218,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 yu
 kN
 Bh
@@ -25096,7 +25228,7 @@ Hg
 Eb
 pB
 zZ
-GI
+vR
 GI
 ye
 ye
@@ -25210,7 +25342,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 Ky
 jL
 Dm
@@ -25334,7 +25466,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 rB
 jL
 Dm
@@ -25458,7 +25590,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 ms
 ZN
 qp
@@ -25468,7 +25600,7 @@ DS
 zh
 Eb
 xg
-GI
+vR
 GI
 ye
 nR
@@ -25582,7 +25714,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 ic
 yC
 wm
@@ -25592,7 +25724,7 @@ gc
 aO
 yY
 uo
-GI
+vR
 GI
 ye
 ye
@@ -25706,7 +25838,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 He
 TO
 pB
@@ -25716,7 +25848,7 @@ pB
 pB
 pB
 fm
-GI
+vR
 GI
 ye
 ye
@@ -25830,7 +25962,7 @@ ff
 ye
 ye
 GI
-GI
+vR
 Ii
 TO
 pB
@@ -25958,7 +26090,7 @@ dV
 Xa
 iA
 pB
-tV
+pB
 tV
 hX
 pf
@@ -26083,7 +26215,7 @@ cH
 bg
 pf
 mb
-mb
+uv
 sf
 pB
 pB
@@ -26138,7 +26270,7 @@ Jx
 st
 Tw
 Vw
-dN
+jo
 cW
 Ss
 cG
@@ -26206,8 +26338,8 @@ dW
 OH
 Bk
 pB
-YC
-YC
+pB
+pB
 CS
 pB
 eE
@@ -27122,7 +27254,7 @@ nF
 nF
 nF
 nF
-nF
+eZ
 YS
 nF
 nF
@@ -28815,7 +28947,7 @@ ow
 ow
 ow
 Us
-oj
+NJ
 Ox
 zu
 mg
@@ -28997,7 +29129,7 @@ nF
 nF
 nF
 nF
-nF
+Bw
 uX
 nF
 Ri
@@ -33151,7 +33283,7 @@ FB
 xf
 UZ
 sX
-sX
+OJ
 Km
 Il
 Gm
@@ -34264,7 +34396,7 @@ gF
 Kf
 Wb
 iR
-iR
+qH
 kJ
 nc
 iR
@@ -34763,7 +34895,7 @@ iR
 Qr
 nc
 nc
-iR
+qH
 ry
 nc
 kC
@@ -35149,7 +35281,7 @@ fh
 Ix
 Oi
 Ix
-Oi
+wi
 Ix
 Ix
 HC
@@ -35612,14 +35744,14 @@ jj
 qm
 eB
 Tp
-PH
-PH
-PH
+BC
+BC
+BC
 mS
-PH
+BC
 Tp
 lz
-PH
+BC
 bn
 nA
 wL
@@ -35658,7 +35790,7 @@ WL
 WL
 WL
 WL
-eZ
+WL
 WL
 ye
 ye
@@ -35734,16 +35866,16 @@ AH
 AH
 jj
 jg
-PH
+YC
 da
 wn
-wn
+iF
 wn
 wn
 Hv
 SC
 PH
-PH
+Ou
 iH
 nA
 bC
@@ -35861,10 +35993,10 @@ qm
 Ed
 pz
 PH
+YC
 PH
 PH
-PH
-PH
+Ou
 PH
 PH
 fV
@@ -35985,13 +36117,13 @@ qm
 xk
 pz
 PH
+YC
 PH
 PH
-PH
+ME
 oG
-oG
 PH
-PH
+Ou
 Lf
 Gw
 Xy
@@ -36109,13 +36241,13 @@ qm
 xk
 GF
 RV
+YC
 PH
 PH
+Ou
 PH
 PH
-PH
-PH
-PH
+Ou
 sL
 nA
 Js
@@ -36232,12 +36364,12 @@ jj
 qm
 zk
 Yq
-wn
-wn
-wn
-wn
-wn
-wn
+qO
+qO
+qO
+qO
+qO
+qO
 sp
 Ir
 WI
@@ -36402,7 +36534,7 @@ WL
 SR
 WL
 WL
-jo
+WL
 WL
 ye
 ye
@@ -37146,7 +37278,7 @@ WL
 SR
 WL
 WL
-Bw
+WL
 WL
 ye
 ye

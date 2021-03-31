@@ -1,5 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
+/obj/docking_port/mobile/marine_dropship/sulaco_pod,
 /turf/closed/shuttle/dropship{
 	icon_state = "diagrasputin";
 	tag = "icon-diagrasputin"
@@ -8,6 +9,9 @@
 "b" = (
 /obj/structure/machinery/door/airlock/hatch{
 	name = "Dropship Hatch"
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 4
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin5";
@@ -47,6 +51,9 @@
 	density = 0;
 	dir = 2;
 	icon_state = "shutter0"
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 2
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";
@@ -147,8 +154,15 @@
 	},
 /area/shuttle/drop2/sulaco)
 "K" = (
-/obj/structure/machinery/door/poddoor/shutters/almayer{
+/obj/structure/grille,
+/obj/structure/window{
+	dir = 4
+	},
+/obj/structure/window{
 	dir = 8
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 4
 	},
 /turf/open/shuttle{
 	icon_state = "floor7"
@@ -197,6 +211,9 @@
 	dir = 1;
 	icon_state = "shutter0";
 	opacity = 0
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 2
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";

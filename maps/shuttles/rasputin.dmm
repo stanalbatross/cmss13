@@ -79,8 +79,20 @@
 	},
 /area/shuttle/drop1/sulaco)
 "n" = (
-/obj/structure/machinery/door/poddoor/shutters/almayer{
-	dir = 8
+/obj/structure/grille{
+	indestructible = 1
+	},
+/obj/structure/window{
+	dir = 4;
+	indestructible = 1
+	},
+/obj/structure/window{
+	dir = 8;
+	indestructible = 1
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 4;
+	indestructible = 1
 	},
 /turf/open/shuttle{
 	icon_state = "floor7"
@@ -103,6 +115,18 @@
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin13";
 	tag = "icon-rasputin13"
+	},
+/area/shuttle/drop1/sulaco)
+"s" = (
+/obj/structure/machinery/door/airlock/hatch{
+	name = "Dropship Hatch"
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 4
+	},
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin15";
+	tag = "icon-rasputin15"
 	},
 /area/shuttle/drop1/sulaco)
 "t" = (
@@ -142,6 +166,10 @@
 	tag = "icon-diagrasputin (EAST)"
 	},
 /area/shuttle/drop1/sulaco)
+"z" = (
+/obj/docking_port/mobile/marine_dropship/rasputin,
+/turf/template_noop,
+/area/template_noop)
 "B" = (
 /turf/closed/shuttle/dropship{
 	icon_state = "rasputin10";
@@ -220,13 +248,21 @@
 	},
 /area/shuttle/drop1/sulaco)
 "O" = (
-/obj/structure/machinery/door/poddoor/shutters/transit{
-	density = 0;
-	dir = 1;
-	icon_state = "shutter0";
-	opacity = 0
+/obj/structure/grille{
+	indestructible = 1
 	},
-/obj/structure/machinery/door/poddoor/shutters/almayer,
+/obj/structure/window{
+	indestructible = 1
+	},
+/obj/structure/window{
+	dir = 1;
+	indestructible = 1
+	},
+/obj/structure/machinery/door/poddoor/shutters/transit/open{
+	dir = 2;
+	indestructible = 1;
+	layer = 3.2
+	},
 /turf/open/shuttle{
 	icon_state = "floor7"
 	},
@@ -288,10 +324,10 @@ a
 a
 N
 K
-I
+n
 J
 K
-I
+n
 J
 w
 a
@@ -300,7 +336,7 @@ a
 a
 a
 a
-a
+z
 "}
 (2,1,1) = {"
 a
@@ -334,8 +370,8 @@ k
 k
 j
 S
-m
-m
+s
+s
 B
 V
 w
@@ -414,8 +450,8 @@ k
 k
 D
 e
-m
-m
+s
+s
 h
 H
 Y
@@ -448,10 +484,10 @@ a
 a
 B
 K
-I
+n
 J
 K
-I
+n
 J
 Y
 a
