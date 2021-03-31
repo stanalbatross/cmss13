@@ -73,7 +73,7 @@ var/obj/structure/anti_air_cannon/almayer_aa_cannon
 		else
 			dat += "<h2>AutoTrak section focus select</h2>"
 
-			for(var/section in almayer_ship_sections)
+			for(var/section in GLOB.shuttle_crash_sections)
 				if(section == almayer_aa_cannon.protecting_section)
 					dat += "[section]<br>"
 				else

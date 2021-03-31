@@ -347,17 +347,16 @@
 
 	var/target_section = crash_target_section
 	if(isnull(target_section))
-		var/list/potential_crash_sections = almayer_ship_sections.Copy()
+		var/list/potential_crash_sections = GLOB.shuttle_crash_sections.Copy()
 		potential_crash_sections -= almayer_aa_cannon.protecting_section
 		target_section = pick(potential_crash_sections)
 
-	var/turf/T_trg = pick(shuttle_controller.locs_crash[target_section])
-
+	var/turf/T_trg = pick(GLOB.shuttle_crash_sections[target_section])
 	for(var/X in equipments)
 		var/obj/structure/dropship_equipment/E = X
 		if(istype(E, /obj/structure/dropship_equipment/adv_comp/docking))
 			var/list/crash_turfs = list()
-			for(var/turf/TU in shuttle_controller.locs_crash[target_section])
+			for(var/turf/TU in GLOB.shuttle_crash_sections[target_section])
 				if(istype(get_area(TU), /area/almayer/hallways/hangar))
 					crash_turfs += TU
 			if(crash_turfs.len) T_trg = pick(crash_turfs)
@@ -367,7 +366,8 @@
 	if(!istype(T_src) || !istype(T_int) || !istype(T_trg))
 		message_staff(SPAN_WARNING("Error with shuttles: Reference turfs not correctly instantiated. Code: MSD04.\n WARNING: DROPSHIP LAUNCH WILL FAIL"))
 
-	shuttle_controller.locs_crash[target_section] -= T_trg
+	var/list/turf/TCT = GLOB.shuttle_crash_sections[target_section]
+	TCT.Remove(T_trg)
 
 	//END: Heavy lifting backend
 
