@@ -176,10 +176,9 @@
 				xeno_message("The Hive is ready for a new Queen to evolve.", 3, hive.hivenumber)
 
 		if(!active_lz && world.time > lz_selection_timer)
-			for(var/obj/structure/machinery/computer/shuttle_control/dropship1/default_console in machines)
-				if(is_ground_level(default_console.z) && !default_console.onboard)
-					select_lz(default_console)
-					break
+			for(var/obj/structure/machinery/computer/shuttle/dropship/ground/DC in machines)
+				select_lz(DC)
+				break
 
 		// Automated bioscan / Queen Mother message
 		if(world.time > bioscan_current_interval) //If world time is greater than required bioscan time.

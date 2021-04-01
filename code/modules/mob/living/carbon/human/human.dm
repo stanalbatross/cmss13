@@ -78,8 +78,8 @@
 	. += ""
 	. += "Security Level: [uppertext(get_security_level())]"
 
-	if(!isnull(SSticker) && !isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc) && !isnull(SSticker.mode.active_lz.loc.loc))
-		. += "Primary LZ: [SSticker.mode.active_lz.loc.loc.name]"
+	if(!isnull(SSticker) && !isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz))
+		. += "Primary LZ: [get_area(SSticker.mode.active_lz)]"
 
 	if(assigned_squad)
 		if(assigned_squad.overwatch_officer)

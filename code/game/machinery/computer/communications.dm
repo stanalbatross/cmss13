@@ -320,12 +320,13 @@
 		if("selectlz")
 			if(!SSticker.mode.active_lz)
 				var/lz_choices = list()
-				for(var/obj/structure/machinery/computer/shuttle_control/console in machines)
-					if(is_ground_level(console.z) && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
-						lz_choices += console
-				var/new_lz = input(usr, "Choose the primary LZ for this operation", "Operation Staging")  as null|anything in lz_choices
+
+				for(var/obj/structure/machinery/computer/shuttle/dropship/ground/console in machines)
+					if(is_ground_level(console.z))
+						lz_choices[console.lz_name] = console
+				var/new_lz = tgui_input_list(usr, "Choose the primary LZ for this operation", "Operation Staging", lz_choices)
 				if(new_lz)
-					SSticker.mode.select_lz(new_lz)
+					SSticker.mode.select_lz(lz_choices[new_lz])
 
 		else return FALSE
 
@@ -358,8 +359,8 @@
 
 				if(authenticated == 2)
 					dat += "<BR>Primary LZ"
-					if(!isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc))
-						dat += "<BR>[SSticker.mode.active_lz.loc.loc]"
+					if(!isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz))
+						dat += "<BR>[get_area(SSticker.mode.active_lz)]"
 					else
 						dat += "<BR><A HREF='?src=\ref[src];operation=selectlz'>Select primary LZ</A>"
 					dat += "<BR><hr>"
