@@ -121,17 +121,6 @@ SUBSYSTEM_DEF(shuttle)
 
 	return moveShuttleToDock(shuttleId, D, timed)
 
-/datum/controller/subsystem/shuttle/proc/crashShuttle(shuttleId, sectionName)
-	// Start by setting up an imaginary dock port at the crash loc
-	var/obj/effect/landmark/shuttle_loc/marine_crs/LL = SAFEPICK(GLOB.shuttle_crash_sections[sectionName])
-	var/turf/crash_turf = get_turf(LL)
-	if(!crash_turf?.z) return FALSE
-	//var/crash_id = "[shuttleId]-[sectionName]-[world.time]"
-	//var/obj/docking_port/stationary/crash_landing/dp = new(LL, crash_id)
-	// Prepare stuff
-	// Send shuttle to its doom
-	return TRUE
-
 /datum/controller/subsystem/shuttle/proc/moveShuttleToDock(shuttleId, obj/docking_port/stationary/D, timed)
 	var/obj/docking_port/mobile/M = getShuttle(shuttleId)
 

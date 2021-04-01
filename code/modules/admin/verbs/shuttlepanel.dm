@@ -24,7 +24,12 @@
 	options += "Delete Shuttle"
 	options += "Into The Sunset (delete & greentext 'escape')"
 
-	var/selection = input(user, "Select where to fly [name || id]:", "Fly Shuttle") as null|anything in options
+	// YES THIS SUCKS OK I'M IN A RUSH
+	var/obj/docking_port/mobile/marine_dropship/MD = src
+	if(istype(MD))
+		options += "Force Hijack Crash"
+
+	var/selection = tgui_input_list(user, "Select where to fly [name || id]:", "Fly Shuttle", options)
 	if(!selection)
 		return
 
@@ -43,6 +48,11 @@
 			if(alert(user, "Really delete [name || id] and greentext escape objectives?", "Delete Shuttle", "Cancel", "Really!") != "Really!")
 				return
 			intoTheSunset()
+
+		if("Force Hijack Crash")
+			if(alert(user, "Really crash it?", "Crash Shuttle", "Cancel", "Really!") != "Really!")
+				return
+			MD.crashShuttle() // oops
 
 		else
 			if(options[selection])

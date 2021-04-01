@@ -462,8 +462,8 @@ qdel(src)
 	var/searchx
 	var/searchy
 	var/turf/searchspot
-	for(searchx=-5, searchx<15, searchx++)
-		for(searchy=-5, searchy<30, searchy++)
+	for(searchx=-20, searchx<20, searchx++)
+		for(searchy=-20, searchy<20, searchy++)
 			searchspot = locate(ref.x+searchx, ref.y+searchy, ref.z)
 			for(var/obj/structure/machinery/landinglight/L in searchspot)
 				lights += L
