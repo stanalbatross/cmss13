@@ -44,6 +44,13 @@
 	name = "Landing Zone 2"
 	id   = "lz2"
 
+/// Virtual landing point created on-the-fly for Hijack
+/obj/docking_port/stationary/crash_landing
+	name = "Crash location"
+/obj/docking_port/stationary/crash_landing/Initialize(mapload, crash_identifier)
+	id = "crash_[crash_identifier]"
+	return ..()
+
 /// Rasputin Dropship from the USS Sulaco
 /obj/docking_port/mobile/marine_dropship/rasputin
 	name    = "Rasputin Drop Ship"
@@ -64,6 +71,6 @@
 /// Drop pod used aboard the sulaco
 /obj/docking_port/mobile/marine_dropship/sulaco_pod
 	name    = "Sulaco Drop Pod"
+	id      = "drop_pod"
 	width   = 7
 	height  = 7
-

@@ -32,7 +32,7 @@
 	dat += "<BR><A href='?src=\ref[src];operation=mapview'>Tactical Map</A>"
 	dat += "<BR><hr>"
 
-	if(SSticker.mode && (isnull(SSticker.mode.active_lz) || isnull(SSticker.mode.active_lz.loc)))
+	if(SSticker.mode && (isnull(SSticker.mode.active_lz)))
 		dat += "<BR>Primary LZ <BR><A HREF='?src=\ref[src];operation=selectlz'>Select primary LZ</A>"
 		dat += "<BR><hr>"
 
@@ -226,15 +226,15 @@
 				visible_message(SPAN_NOTICE("[src] prints a medal."))
 
 		if("selectlz")
-			if(SSticker.mode.active_lz)
-				return
-			var/lz_choices = list()
-			for(var/obj/structure/machinery/computer/shuttle_control/console in machines)
-				if(is_ground_level(console.z) && !console.onboard && console.shuttle_type == SHUTTLE_DROPSHIP)
-					lz_choices += console
-			var/new_lz = input(usr, "Choose the primary LZ for this operation", "Operation Staging")  as null|anything in lz_choices
-			if(new_lz)
-				SSticker.mode.select_lz(new_lz)
+			if(!SSticker.mode.active_lz)
+				var/lz_choices = list()
+
+				for(var/obj/structure/machinery/computer/shuttle/dropship/ground/console in machines)
+					if(is_ground_level(console.z))
+						lz_choices[console.lz_name] = console
+				var/new_lz = tgui_input_list(usr, "Choose the primary LZ for this operation", "Operation Staging", lz_choices)
+				if(new_lz)
+					SSticker.mode.select_lz(lz_choices[new_lz])
 
 		if("pick_squad")
 			var/list/squad_list = list()

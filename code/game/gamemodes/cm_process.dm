@@ -148,13 +148,13 @@ var/lastHumanBioscan = 30 MINUTES//30 minutes in (we will add to that!)
 var/nextPredatorBioscan = 5 MINUTES//5 minutes in
 var/nextAdminBioscan = 30 MINUTES//30 minutes in
 
-/datum/game_mode/proc/select_lz(var/obj/structure/machinery/computer/shuttle_control/console)
+/datum/game_mode/proc/select_lz(var/obj/structure/machinery/computer/shuttle/dropship/ground/console)
 	if(active_lz)
 		return
 	active_lz = console
 	// The announcement to all Humans.
 	var/name = "[MAIN_AI_SYSTEM] Operation Staging Order"
-	var/input = "Command Order Issued.\n\n[active_lz.loc.loc] has been designated as the primary landing zone."
+	var/input = "Command Order Issued.\n\n[get_area(console)] has been designated as the primary landing zone."
 	marine_announcement(input, name)
 
 //Delta is the randomness interval, in +/-. Might not be the exact mathematical definition

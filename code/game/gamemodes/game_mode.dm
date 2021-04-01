@@ -27,7 +27,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	var/force_end_at = 0
 	var/xeno_evo_speed = 0 // if not 0 - gives xeno an evo boost/nerf
 	var/is_in_endgame = FALSE //Set it to TRUE when we trigger DELTA alert or dropship crashes
-	var/obj/structure/machinery/computer/shuttle_control/active_lz = null
+	var/obj/structure/machinery/computer/shuttle/dropship/ground/active_lz = null
 
 	var/datum/entity/round_stats/round_stats = null
 
