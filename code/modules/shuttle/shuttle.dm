@@ -506,6 +506,8 @@
 	return
 
 /obj/docking_port/mobile/proc/on_prearrival()
+	if(!landing_sound)
+		return
 	if(destination)
 		playsound(destination.return_center_turf(), landing_sound, 60, 0)
 	playsound(return_center_turf(), landing_sound, 60, 0)
@@ -602,6 +604,9 @@
 	jumpToNullSpace()
 
 /obj/docking_port/mobile/proc/create_ripples(obj/docking_port/stationary/S1, animate_time)
+	var/list/lights = get_landing_lights(S1)
+	for(var/obj/structure/machinery/landinglight/F in lights)
+		F.turn_on()
 	if(!use_ripples)
 		return FALSE
 	var/list/turfs = ripple_area(S1)
@@ -610,6 +615,12 @@
 	return TRUE
 
 /obj/docking_port/mobile/proc/remove_ripples()
+	var/turf/T = destination?.return_center_turf()
+	if(T)
+		var/list/lights = get_landing_lights(T)
+		if(lights)
+			for(var/obj/structure/machinery/landinglight/F in lights)
+				F.turn_off()
 	QDEL_LIST(ripples)
 
 /obj/docking_port/mobile/proc/ripple_area(obj/docking_port/stationary/S1)
