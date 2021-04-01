@@ -79,8 +79,11 @@
 	},
 /area/shuttle/drop1/sulaco)
 "n" = (
-/obj/structure/grille{
-	indestructible = 1
+/obj/structure/prop/invuln{
+	density = 1;
+	desc = "this is a grille.";
+	icon_state = "grille";
+	name = "Grille"
 	},
 /obj/structure/window{
 	dir = 4;
@@ -251,8 +254,11 @@
 	},
 /area/shuttle/drop1/sulaco)
 "O" = (
-/obj/structure/grille{
-	indestructible = 1
+/obj/structure/prop/invuln{
+	density = 1;
+	desc = "this is a grille.";
+	icon_state = "grille";
+	name = "Grille"
 	},
 /obj/structure/window{
 	indestructible = 1

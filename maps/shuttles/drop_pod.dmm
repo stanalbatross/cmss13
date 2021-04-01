@@ -157,7 +157,12 @@
 	},
 /area/shuttle/drop2/sulaco)
 "K" = (
-/obj/structure/grille,
+/obj/structure/prop/invuln{
+	density = 1;
+	desc = "this is a grille.";
+	icon_state = "grille";
+	name = "Grille"
+	},
 /obj/structure/window{
 	dir = 4
 	},

@@ -664,6 +664,9 @@
 	pixel_x = -7;
 	pixel_y = 3
 	},
+/obj/structure/machinery/light{
+	dir = 1
+	},
 /turf/open/floor/plating/almayer,
 /area/sulaco/ob_aa_cannon)
 "aRF" = (
@@ -2105,17 +2108,16 @@
 	},
 /area/sulaco/briefing)
 "cnu" = (
-/obj/structure/surface/table/almayer,
-/obj/item/device/defibrillator,
-/obj/item/device/defibrillator,
-/obj/item/device/defibrillator,
-/obj/item/device/defibrillator,
-/obj/item/device/defibrillator,
-/turf/open/floor/almayer{
-	icon_state = "dark_sterile";
-	tag = "icon-sterile"
+/obj/structure/machinery/light/small{
+	dir = 4;
+	pixel_y = 0
 	},
-/area/sulaco/medbay/west)
+/turf/open/floor/almayer{
+	dir = 5;
+	icon_state = "plating";
+	tag = "icon-blue (NORTHEAST)"
+	},
+/area/sulaco/cargo)
 "cnw" = (
 /obj/item/stack/sheet/plasteel{
 	amount = 10
@@ -2994,9 +2996,7 @@
 /area/sulaco/medbay/west)
 "dqO" = (
 /obj/structure/surface/table/almayer,
-/obj/item/fuelCell,
-/obj/item/fuelCell,
-/obj/item/fuelCell,
+/obj/structure/machinery/reagentgrinder/industrial,
 /turf/open/floor/plating,
 /area/sulaco/engineering/engine)
 "dqW" = (
@@ -3146,6 +3146,14 @@
 	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
+"dwf" = (
+/obj/structure/pipes/standard/manifold/hidden,
+/obj/structure/machinery/iv_drip,
+/turf/open/floor/almayer{
+	icon_state = "sterile_green";
+	tag = "icon-sterile"
+	},
+/area/sulaco/medbay/west)
 "dxd" = (
 /obj/structure/machinery/door_control{
 	id = "ROoffice";
@@ -8823,6 +8831,11 @@
 	dir = 6;
 	tag = "icon-intact-supply (SOUTHEAST)"
 	},
+/obj/structure/machinery/landinglight/ds2{
+	dir = 8;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (WEST)"
+	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
 "jqx" = (
@@ -9296,6 +9309,11 @@
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
 	tag = "icon-W"
+	},
+/obj/structure/machinery/landinglight/ds2{
+	dir = 8;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
@@ -9782,6 +9800,10 @@
 	icon_state = "warnwhite"
 	},
 /area/sulaco/cryosleep)
+"kqO" = (
+/obj/structure/machinery/light,
+/turf/open/floor/almayer,
+/area/sulaco/ob_aa_cannon)
 "ksI" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 2;
@@ -10386,6 +10408,7 @@
 /area/sulaco/hangar/two)
 "kVC" = (
 /obj/structure/prop/almayer/cannon_cable_connector,
+/obj/structure/machinery/light,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -12242,6 +12265,13 @@
 	tag = "icon-sterile"
 	},
 /area/sulaco/medbay/storage)
+"mLA" = (
+/obj/structure/machinery/light{
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
+	},
+/turf/open/floor/almayer,
+/area/sulaco/ob_aa_cannon)
 "mLM" = (
 /obj/structure/largecrate/random,
 /turf/open/floor/plating,
@@ -12986,6 +13016,19 @@
 	tag = "icon-orangefull"
 	},
 /area/sulaco/engineering)
+"nyO" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/obj/structure/machinery/light{
+	dir = 1
+	},
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/sulaco/ob_aa_cannon)
 "nzJ" = (
 /obj/item/storage/box/bodybags,
 /obj/item/storage/box/handcuffs,
@@ -14050,6 +14093,10 @@
 	icon_state = "S";
 	tag = "icon-S"
 	},
+/obj/structure/machinery/landinglight/ds2{
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe"
+	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
 "oKE" = (
@@ -14268,6 +14315,13 @@
 	icon_state = "white"
 	},
 /area/sulaco/cryosleep)
+"oWf" = (
+/obj/structure/machinery/iv_drip,
+/turf/open/floor/almayer{
+	icon_state = "dark_sterile";
+	tag = "icon-sterile"
+	},
+/area/sulaco/medbay/west)
 "oWh" = (
 /obj/structure/bed/chair/office/dark,
 /obj/effect/landmark/start/professor,
@@ -14369,6 +14423,15 @@
 	icon_state = "silverfull"
 	},
 /area/sulaco/command/ai)
+"oZX" = (
+/obj/structure/surface/rack,
+/obj/effect/spawner/random/warhead,
+/obj/structure/machinery/light{
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
+	},
+/turf/open/floor/almayer,
+/area/sulaco/ob_aa_cannon)
 "oZZ" = (
 /obj/structure/machinery/cm_vending/clothing/engi/alpha{
 	density = 0;
@@ -16774,6 +16837,10 @@
 	},
 /obj/item/fuelCell,
 /obj/item/fuelCell,
+/obj/item/fuelCell,
+/obj/item/fuelCell,
+/obj/item/fuelCell,
+/obj/item/fuelCell,
 /turf/open/floor/plating,
 /area/sulaco/engineering/engine)
 "rFy" = (
@@ -17391,6 +17458,13 @@
 	tag = "icon-sterile"
 	},
 /area/sulaco/medbay)
+"snH" = (
+/obj/structure/machinery/light{
+	dir = 8;
+	icon_state = "tube1"
+	},
+/turf/closed/wall/almayer,
+/area/sulaco/ob_aa_cannon)
 "sog" = (
 /turf/open/floor{
 	dir = 8;
@@ -17482,6 +17556,11 @@
 	tag = "icon-W"
 	},
 /obj/structure/pipes/standard/simple/hidden/supply,
+/obj/structure/machinery/landinglight/ds2{
+	dir = 8;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (WEST)"
+	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
 "svi" = (
@@ -18091,6 +18170,11 @@
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
 	tag = "icon-N"
+	},
+/obj/structure/machinery/landinglight/ds2{
+	dir = 1;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
@@ -19239,6 +19323,16 @@
 	icon_state = "stan25"
 	},
 /area/adminlevel/ert_station)
+"uDN" = (
+/obj/structure/machinery/light{
+	dir = 8;
+	icon_state = "tube1"
+	},
+/turf/open/floor/almayer{
+	icon_plating = "tcomms";
+	icon_state = "tcomms"
+	},
+/area/sulaco/ob_aa_cannon)
 "uFj" = (
 /obj/structure/machinery/light,
 /turf/open/floor{
@@ -19772,6 +19866,16 @@
 	tag = "icon-test_floor5"
 	},
 /area/sulaco/hallway/central_hall)
+"viP" = (
+/obj/structure/machinery/light/small{
+	dir = 8
+	},
+/turf/open/floor/almayer{
+	dir = 5;
+	icon_state = "plating";
+	tag = "icon-blue (NORTHEAST)"
+	},
+/area/sulaco/cargo)
 "viV" = (
 /obj/structure/machinery/light{
 	dir = 4
@@ -20010,6 +20114,11 @@
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
 	tag = "icon-intact-supply (NORTH)"
+	},
+/obj/structure/machinery/landinglight/ds2{
+	dir = 1;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
@@ -20628,6 +20737,10 @@
 	tag = "icon-S"
 	},
 /obj/effect/spawner/random/toolbox,
+/obj/structure/machinery/light{
+	dir = 8;
+	icon_state = "tube1"
+	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -20905,6 +21018,11 @@
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
 	tag = "icon-E-corner"
+	},
+/obj/structure/machinery/landinglight/ds2{
+	dir = 4;
+	icon_state = "landingstripe";
+	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
 /area/sulaco/hangar)
@@ -27909,7 +28027,7 @@ jtR
 eUR
 uzo
 ifv
-xuB
+qxj
 jCT
 dXv
 dhb
@@ -28164,7 +28282,7 @@ hSq
 dXv
 bbv
 dXv
-cnu
+bbv
 jqx
 gkI
 aVx
@@ -28403,8 +28521,8 @@ prA
 cJr
 jtR
 cVO
-rjv
-bbv
+dwf
+oWf
 xog
 byf
 dXv
@@ -33852,7 +33970,7 @@ gLV
 lLv
 lLv
 mQr
-mQr
+snH
 nsJ
 gcL
 tHK
@@ -34217,7 +34335,7 @@ gLV
 gHf
 mFj
 mFj
-mFj
+uDN
 sQC
 lLv
 gHf
@@ -34586,7 +34704,7 @@ tnz
 prA
 gLV
 gLV
-gHf
+nyO
 mFj
 mFj
 xTt
@@ -34968,7 +35086,7 @@ oRI
 fno
 lLv
 lLv
-qhp
+kqO
 lPI
 gcL
 qLY
@@ -35208,12 +35326,12 @@ gLV
 imC
 lLv
 qhp
-qhp
+mLA
 qhp
 lLv
 vUo
 qiu
-qiu
+oZX
 pih
 lLv
 lLv
@@ -35455,14 +35573,14 @@ vfU
 vfU
 vfU
 vfU
+viP
 vfU
 vfU
 vfU
+viP
 vfU
 vfU
-vfU
-vfU
-vfU
+viP
 vfU
 vfU
 mFS
@@ -36444,18 +36562,18 @@ niT
 tnz
 rbE
 vfU
+cnu
 vfU
 vfU
 vfU
 vfU
 vfU
+cnu
 vfU
 vfU
 vfU
 vfU
-vfU
-vfU
-vfU
+cnu
 vfU
 grx
 qDS
