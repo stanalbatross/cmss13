@@ -592,6 +592,7 @@
 	icon_state = "shuttle2"
 	requires_power = 0
 	flags_area = AREA_NOTUNNEL
+	lighting_use_dynamic = FALSE // Shuttle stuff
 
 //Placeholder.
 /area/almayer/evacuation/pod1
