@@ -5492,7 +5492,7 @@
 /turf/open/floor/wood,
 /area/fiorina/station/park)
 "doA" = (
-/obj/structure/machinery/computer/shuttle_control/dropship1,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/plating/prison,
 /area/fiorina/lz/console_I)
@@ -7749,6 +7749,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating/prison,
 /area/shuttle/drop1/prison_v3)
 "eJi" = (
@@ -14897,7 +14898,7 @@
 	},
 /area/fiorina/station/security)
 "jbG" = (
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/prison,
 /area/fiorina/lz/console_II)
@@ -19221,6 +19222,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating/prison,
 /area/shuttle/drop2/prison_v3)
 "lCm" = (

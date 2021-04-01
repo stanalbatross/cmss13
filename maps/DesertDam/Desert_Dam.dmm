@@ -1608,7 +1608,7 @@
 /area/desert_dam/exterior/river/riverside_east)
 "aeW" = (
 /obj/structure/surface/table,
-/obj/structure/machinery/computer/shuttle_control/dropship1{
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1{
 	use_power = 0
 	},
 /turf/open/floor/prison{
@@ -10746,6 +10746,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating,
 /area/desert_dam/exterior/landing_pad_one)
 "aEu" = (
@@ -39235,7 +39236,7 @@
 /area/desert_dam/exterior/valley/valley_civilian)
 "cnS" = (
 /obj/structure/surface/table,
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "darkbrown2"
@@ -46955,6 +46956,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating,
 /area/desert_dam/exterior/landing_pad_two)
 "cKp" = (

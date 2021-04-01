@@ -9322,6 +9322,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating,
 /area/lv624/lazarus/landing_zones/lz2)
 "aLA" = (
@@ -10735,6 +10736,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating,
 /area/lv624/lazarus/landing_zones/lz1)
 "aQX" = (
@@ -10834,7 +10836,7 @@
 	dir = 1;
 	flipped = 1
 	},
-/obj/structure/machinery/computer/shuttle_control/dropship1,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /turf/open/gm/grass,
 /area/lv624/lazarus/landing_zones/lz1)
 "aRu" = (
@@ -14452,7 +14454,7 @@
 /area/lv624/ground/jungle/east_jungle)
 "eCF" = (
 /obj/structure/surface/table,
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /turf/open/gm/dirt,
 /area/lv624/landing/console2)
 "eDy" = (

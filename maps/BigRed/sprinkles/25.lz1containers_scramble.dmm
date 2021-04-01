@@ -153,9 +153,7 @@
 /turf/open/floor/plating,
 /area/bigredv2/outside/space_port)
 "ay" = (
-/obj/structure/machinery/computer/shuttle_control/dropship1{
-	onboard = 0
-	},
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /obj/structure/surface/table,
 /turf/open/floor{
 	dir = 2;

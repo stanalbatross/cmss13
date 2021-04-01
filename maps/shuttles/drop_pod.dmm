@@ -147,7 +147,10 @@
 	},
 /area/shuttle/drop2/sulaco)
 "D" = (
-/obj/structure/machinery/computer/shuttle_control/dropship2/onboard,
+/obj/structure/machinery/computer/shuttle/dropship/onboard{
+	name = "Drop Pod Controls";
+	shuttleId = "drop_pod"
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin13";
 	tag = "icon-rasputin13"

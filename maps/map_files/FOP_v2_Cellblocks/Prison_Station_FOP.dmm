@@ -6823,7 +6823,7 @@
 /area/prison/research/RD)
 "aqF" = (
 /obj/structure/surface/table/reinforced,
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /obj/structure/platform,
 /turf/open/floor/prison{
 	dir = 10;
@@ -9184,6 +9184,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating,
 /area/prison/hanger/research)
 "awF" = (
@@ -26709,6 +26710,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating,
 /area/prison/hanger/main)
 "bsz" = (
@@ -30256,7 +30258,7 @@
 /area/prison/hallway/east)
 "bCT" = (
 /obj/structure/surface/table/reinforced,
-/obj/structure/machinery/computer/shuttle_control/dropship1{
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1{
 	use_power = 0
 	},
 /turf/open/floor/prison{

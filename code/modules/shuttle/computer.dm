@@ -218,7 +218,7 @@
 	if(!shuttle.crashShuttle(crash_target))
 		to_chat(user, SPAN_XENOHIGHDANGER("Internal error. Maybe try another section?"))
 	else
-		addtimer(CALLBACK(src, .proc/handle_hive_crash, Q), 15 SECONDS)
+		addtimer(CALLBACK(src, .proc/handle_hive_crash, Q), 30 SECONDS)
 
 // Yes, this is very yolo
 /obj/structure/machinery/computer/shuttle/dropship/onboard/proc/handle_hive_crash(mob/living/carbon/Xenomorph/Queen/Q)

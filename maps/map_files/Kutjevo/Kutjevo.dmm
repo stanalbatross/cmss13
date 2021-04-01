@@ -321,6 +321,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating/kutjevo,
 /area/kutjevo/exterior/lz_dunes)
 "bj" = (
@@ -13037,7 +13038,7 @@
 /turf/open/floor/kutjevo/tan,
 /area/kutjevo/interior/colony_central)
 "Qr" = (
-/obj/structure/machinery/computer/shuttle_control/dropship1,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/plating/kutjevo,
 /area/kutjevo/exterior/lz_dunes)

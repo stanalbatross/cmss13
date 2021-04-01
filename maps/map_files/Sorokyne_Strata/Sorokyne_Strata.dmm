@@ -5772,7 +5772,7 @@
 	},
 /area/strata/ag/interior/landingzone_1)
 "apT" = (
-/obj/structure/machinery/computer/shuttle_control/dropship1,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/plating,
 /area/strata/ag/interior/landingzone_1)
@@ -14778,6 +14778,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating,
 /area/strata/ag/interior/landingzone_1)
 "aOP" = (
@@ -45363,7 +45364,7 @@
 	},
 /area/strata/ag/exterior/research_decks/south)
 "vJj" = (
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/floor/plating,
 /area/strata/ag/exterior/landingzone_2)
@@ -46539,7 +46540,7 @@
 	icon_state = "multi_tiles"
 	},
 /area/strata/ag/interior/outpost/maint/aerodrome_to_jungle)
-"xSJ" = (
+"xSJ" = ( 
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
@@ -46549,6 +46550,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating,
 /area/strata/ag/exterior/landingzone_2)
 "xTh" = (
