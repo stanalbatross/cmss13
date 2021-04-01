@@ -1,5 +1,7 @@
 /datum/caste_datum/crusher
 	caste_name = "Crusher"
+	display_name = "Defender"
+	caste_icon = "Defender"
 	tier = 3
 
 	melee_damage_lower = XENO_DAMAGE_TIER_5
@@ -58,7 +60,7 @@
 
 /mob/living/carbon/Xenomorph/Crusher/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_crusher))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_defender))
 
 // Refactored to handle all of crusher's interactions with object during charge.
 /mob/living/carbon/Xenomorph/proc/handle_collision(atom/target)
@@ -198,17 +200,14 @@
 
 /mob/living/carbon/Xenomorph/Crusher/update_icons()
 	if(stat == DEAD)
-		icon_state = "[mutation_type] Crusher Dead"
+		icon_state = "Normal Defender Dead"
 	else if(lying)
 		if((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] Crusher Sleeping"
+			icon_state = "Normal Defender Sleeping"
 		else
-			icon_state = "[mutation_type] Crusher Knocked Down"
+			icon_state = "Normal Defender Knocked Down"
 	else
-		if(throwing) //Let it build up a bit so we're not changing icons every single turf
-			icon_state = "[mutation_type] Crusher Charging"
-		else
-			icon_state = "[mutation_type] Crusher Running"
+		icon_state = "Normal Defender Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
 

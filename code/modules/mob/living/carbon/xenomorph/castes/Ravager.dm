@@ -1,5 +1,7 @@
 /datum/caste_datum/ravager
 	caste_name = "Ravager"
+	display_name = "Praetorian"
+	caste_icon = "Praetorian"
 	tier = 3
 
 	melee_damage_lower = XENO_DAMAGE_TIER_6
@@ -54,7 +56,7 @@
 
 /mob/living/carbon/Xenomorph/Ravager/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_ravager))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_praetorian))
 
 // Mutator delegate for base ravager
 /datum/behavior_delegate/ravager_base

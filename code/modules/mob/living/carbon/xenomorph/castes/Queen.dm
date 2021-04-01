@@ -4,6 +4,8 @@
 
 /datum/caste_datum/queen
 	caste_name = "Queen"
+	display_name = "Ravager"
+	caste_icon = "Ravager"
 	tier = 0
 
 	melee_damage_lower = XENO_DAMAGE_TIER_4
@@ -347,8 +349,8 @@
 
 /mob/living/carbon/Xenomorph/Queen/Initialize()
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
-	queen_standing_icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_ravager))
+	queen_standing_icon = get_icon_from_source(CONFIG_GET(string/alien_ravager))
 	queen_ovipositor_icon = get_icon_from_source(CONFIG_GET(string/alien_queen_ovipositor))
 	if(!is_admin_level(z))//so admins can safely spawn Queens in Thunderdome for tests.
 		xeno_message(SPAN_XENOANNOUNCE("A new Queen has risen to lead the Hive! Rejoice!"),3,hivenumber)
@@ -369,17 +371,17 @@
 	var/name_prefix = in_hive.prefix
 	if(queen_aged)
 		switch(age)
-			if(XENO_NORMAL) name = "[name_prefix]Queen"			 //Young
-			if(XENO_MATURE) name = "[name_prefix]Elder Queen"	 //Mature
-			if(XENO_ELDER) name = "[name_prefix]Elder Empress"	 //Elite
-			if(XENO_ANCIENT) name = "[name_prefix]Ancient Empress" //Ancient
-			if(XENO_PRIME) name = "[name_prefix]Prime Empress" //Primordial
+			if(XENO_NORMAL) name = "[name_prefix]Prime Ravager"			 //Young
+			if(XENO_MATURE) name = "[name_prefix]Ancient Ravager"	 //Mature
+			if(XENO_ELDER) name = "[name_prefix]Elite Ravager"	 //Elite
+			if(XENO_ANCIENT) name = "[name_prefix]Elder Ravager" //Ancient
+			if(XENO_PRIME) name = "[name_prefix]Young Ravager" //Primordial
 	else
 		age = XENO_NORMAL
 		if(client)
 			hud_update()
 
-		name = "[name_prefix]Young Queen"
+		name = "[name_prefix]Young Ravager"
 
 /mob/living/carbon/Xenomorph/Queen/proc/make_combat_effective()
 	queen_aged = TRUE
@@ -796,17 +798,17 @@
 /mob/living/carbon/Xenomorph/Queen/update_icons()
 	icon = queen_standing_icon
 	if(stat == DEAD)
-		icon_state = "[mutation_type] Queen Dead"
+		icon_state = "Normal Ravager Dead"
 	else if(ovipositor)
 		icon = queen_ovipositor_icon
-		icon_state = "[mutation_type] Queen Ovipositor"
+		icon_state = "Normal Queen Ovipositor"
 	else if(lying)
 		if((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] Queen Sleeping"
+			icon_state = "Normal Ravager Sleeping"
 		else
-			icon_state = "[mutation_type] Queen Knocked Down"
+			icon_state = "Normal Ravager Knocked Down"
 	else
-		icon_state = "[mutation_type] Queen Running"
+		icon_state = "Normal Ravager Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
 

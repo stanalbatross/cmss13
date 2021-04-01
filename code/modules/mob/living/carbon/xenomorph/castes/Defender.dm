@@ -1,5 +1,7 @@
 /datum/caste_datum/defender
 	caste_name = "Defender"
+	display_name = "Carrier"
+	caste_icon = "Carrier"
 	caste_desc = "A sturdy front line combatant."
 	tier = 1
 
@@ -43,21 +45,17 @@
 
 /mob/living/carbon/Xenomorph/Defender/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_defender))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_carrier))
 
 /mob/living/carbon/Xenomorph/Defender/update_icons()
 	if (stat == DEAD)
-		icon_state = "[mutation_type] Defender Dead"
+		icon_state = "Normal Carrier Dead"
 	else if (lying)
 		if ((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] Defender Sleeping"
+			icon_state = "Normal Carrier Sleeping"
 		else
-			icon_state = "[mutation_type] Defender Knocked Down"
-	else if (fortify)
-		icon_state = "[mutation_type] Defender Fortify"
-	else if (crest_defense)
-		icon_state = "[mutation_type] Defender Crest"
+			icon_state = "Normal Carrier Knocked Down"
 	else
-		icon_state = "[mutation_type] Defender Running"
+		icon_state = "Normal Carrier Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.

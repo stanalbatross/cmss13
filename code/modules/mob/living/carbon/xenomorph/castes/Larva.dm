@@ -1,5 +1,7 @@
 /datum/caste_datum/larva
 	caste_name = "Bloody Larva"
+	display_name = "Noodle"
+	caste_icon = "Bloody Larva"
 	tier = 0
 	plasma_gain = 0.1
 	plasma_max = 10
@@ -116,7 +118,7 @@
 	if(amount_grown >= max_grown)
 		progress = "Mature "
 
-	name = "\improper [name_prefix][progress]Larva ([nicknumber])"
+	name = "\improper [name_prefix][progress]Noodle ([nicknumber])"
 
 	if(istype(src,/mob/living/carbon/Xenomorph/Larva/predalien)) state = "Predalien " //Sort of a hack.
 

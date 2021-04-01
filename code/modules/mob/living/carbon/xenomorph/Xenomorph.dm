@@ -493,7 +493,7 @@
 	if(isXenoPredalien(src))
 		name = "[name_prefix][caste.display_name] ([name_client_prefix][nicknumber][name_client_postfix])"
 	else if(caste)
-		name = "[name_prefix][age_prefix][caste.caste_name] ([name_client_prefix][nicknumber][name_client_postfix])"
+		name = "[name_prefix][age_prefix][caste.display_name] ([name_client_prefix][nicknumber][name_client_postfix])"
 
 	//Update linked data so they show up properly
 	change_real_name(src, name)
@@ -529,7 +529,7 @@
 
 	if(isXeno(user) || isobserver(user))
 		if(mutation_type != "Normal")
-			to_chat(user, "It has specialized into a [mutation_type].")
+			to_chat(user, "It has specialized into a Normal.")
 
 	return
 

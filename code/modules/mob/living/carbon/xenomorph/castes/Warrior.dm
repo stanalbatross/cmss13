@@ -1,5 +1,7 @@
 /datum/caste_datum/warrior
 	caste_name = "Warrior"
+	display_name = "Crusher"
+	caste_icon = "Crusher"
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_3
@@ -52,20 +54,18 @@
 
 /mob/living/carbon/Xenomorph/Warrior/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_warrior))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_crusher))
 
 /mob/living/carbon/Xenomorph/Warrior/update_icons()
 	if (stat == DEAD)
-		icon_state = "[mutation_type] Warrior Dead"
+		icon_state = "Normal Crusher Dead"
 	else if (lying)
 		if ((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] Warrior Sleeping"
+			icon_state = "Normal Crusher Sleeping"
 		else
-			icon_state = "[mutation_type] Warrior Knocked Down"
-	else if (agility)
-		icon_state = "[mutation_type] Warrior Agility"
+			icon_state = "Normal Crusher Knocked Down"
 	else
-		icon_state = "[mutation_type] Warrior Running"
+		icon_state = "Normal Crusher Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
 

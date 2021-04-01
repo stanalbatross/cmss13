@@ -1,5 +1,7 @@
 /datum/caste_datum/drone
 	caste_name = "Drone"
+	display_name = "Hivelord"
+	caste_icon = "Hivelord"
 	tier = 1
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
@@ -64,4 +66,4 @@
 
 /mob/living/carbon/Xenomorph/Drone/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_drone))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_hivelord))

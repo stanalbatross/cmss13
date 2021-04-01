@@ -3,6 +3,7 @@
 /datum/caste_datum
 	var/caste_name = ""
 	var/display_name = ""
+	var/caste_icon = ""
 	var/tier = 0
 	var/dead_icon = "Drone Dead"
 	var/language = "Xenomorph"

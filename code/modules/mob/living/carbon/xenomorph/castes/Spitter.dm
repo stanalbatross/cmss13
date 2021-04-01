@@ -1,5 +1,7 @@
 /datum/caste_datum/spitter
 	caste_name = "Spitter"
+	display_name = "Sentinel"
+	caste_icon = "Sentinel"
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
@@ -55,7 +57,7 @@
 
 /mob/living/carbon/Xenomorph/Spitter/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_spitter))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_sentinel))
 
 /datum/behavior_delegate/spitter_base
 	name = "Base Spitter Behavior Delegate"

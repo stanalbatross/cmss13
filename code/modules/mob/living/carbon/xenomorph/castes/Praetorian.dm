@@ -1,5 +1,7 @@
 /datum/caste_datum/praetorian
 	caste_name = "Praetorian"
+	display_name = "Queen"
+	caste_icon = "Queen"
 	tier = 3
 
 	melee_damage_lower = XENO_DAMAGE_TIER_5
@@ -54,7 +56,7 @@
 
 /mob/living/carbon/Xenomorph/Praetorian/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_praetorian))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
 
 /datum/behavior_delegate/praetorian_base
 	name = "Base Praetorian Behavior Delegate"

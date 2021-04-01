@@ -1,5 +1,7 @@
 /datum/caste_datum/sentinel
 	caste_name = "Sentinel"
+	display_name = "Spitter"
+	caste_icon = "Spitter"
 	tier = 1
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
@@ -51,4 +53,4 @@
 
 /mob/living/carbon/Xenomorph/Sentinel/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_sentinel))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_spitter))

@@ -1,6 +1,8 @@
 //burrower is COMBAT support
 /datum/caste_datum/burrower
 	caste_name = "Burrower"
+	display_name = "Boiler"
+	caste_icon = "Boiler"
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_2
@@ -63,7 +65,7 @@
 
 /mob/living/carbon/Xenomorph/Burrower/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_burrower))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_boiler))
 	sight |= SEE_TURFS
 
 /mob/living/carbon/Xenomorph/Burrower/update_canmove()
@@ -94,16 +96,18 @@
 		return 0
 
 /mob/living/carbon/Xenomorph/Burrower/update_icons()
+	icon = get_icon_from_source(CONFIG_GET(string/alien_boiler))
 	if (stat == DEAD)
-		icon_state = "[mutation_type] Burrower Dead"
+		icon_state = "Normal Boiler Dead"
 	else if (lying)
 		if ((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] Burrower Sleeping"
+			icon_state = "Normal Boiler Sleeping"
 		else
-			icon_state = "[mutation_type] Burrower Knocked Down"
+			icon_state = "Normal Boiler Knocked Down"
 	else if (burrow)
-		icon_state = "[mutation_type] Burrower Burrowed"
+		icon = get_icon_from_source(CONFIG_GET(string/alien_burrower))
+		icon_state = "Normal Burrower Burrowed"
 	else
-		icon_state = "[mutation_type] Burrower Running"
+		icon_state = "Normal Boiler Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.

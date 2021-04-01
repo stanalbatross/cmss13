@@ -1,5 +1,7 @@
 /datum/caste_datum/carrier
 	caste_name = "Carrier"
+	display_name = "Burrower"
+	caste_icon = "Burrower"
 	caste_desc = "A carrier of huggies."
 	tier = 2
 
@@ -64,7 +66,7 @@
 
 /mob/living/carbon/Xenomorph/Carrier/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_carrier))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_burrower))
 
 /mob/living/carbon/Xenomorph/Carrier/death(var/cause, var/gibbed)
 	. = ..(cause, gibbed)

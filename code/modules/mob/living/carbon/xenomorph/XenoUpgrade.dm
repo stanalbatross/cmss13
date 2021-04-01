@@ -2,18 +2,18 @@
 	if(stat == DEAD || !caste || QDELETED(src) || !client || age == XENO_NO_AGE)
 		return
 
-	age = XENO_NORMAL
+	age = XENO_PRIME
 	var/hours_as_caste = get_job_playtime(client, caste.caste_name)
 
 	switch(hours_as_caste)
 		if(JOB_PLAYTIME_TIER_1 to JOB_PLAYTIME_TIER_2)
-			age = XENO_MATURE
+			age = XENO_ANCIENT
 		if(JOB_PLAYTIME_TIER_2 to JOB_PLAYTIME_TIER_3)
 			age = XENO_ELDER
 		if(JOB_PLAYTIME_TIER_3 to JOB_PLAYTIME_TIER_4)
-			age = XENO_ANCIENT
+			age = XENO_MATURE
 		if(JOB_PLAYTIME_TIER_4 to INFINITY)
-			age = XENO_PRIME
+			age = XENO_NORMAL
 
 	// For people who wish to remain anonymous
 	if(!client.prefs.playtime_perks)

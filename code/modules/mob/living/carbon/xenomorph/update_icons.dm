@@ -29,14 +29,14 @@
 	if(!caste)
 		return
 	if(stat == DEAD)
-		icon_state = "[mutation_type] [caste.caste_name] Dead"
+		icon_state = "Normal [caste.caste_icon] Dead"
 	else if(lying)
 		if((resting || sleeping) && (!knocked_down && !knocked_out && health > 0))
-			icon_state = "[mutation_type] [caste.caste_name] Sleeping"
+			icon_state = "Normal [caste.caste_icon] Sleeping"
 		else
-			icon_state = "[mutation_type] [caste.caste_name] Knocked Down"
+			icon_state = "Normal [caste.caste_icon] Knocked Down"
 	else
-		icon_state = "[mutation_type] [caste.caste_name] Running"
+		icon_state = "Normal [caste.caste_icon] Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
 

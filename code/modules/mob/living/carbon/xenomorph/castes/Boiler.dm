@@ -1,5 +1,7 @@
 /datum/caste_datum/boiler
 	caste_name = "Boiler"
+	display_name = "Warrior"
+	caste_icon = "Warrior"
 	tier = 3
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
@@ -60,7 +62,7 @@
 
 /mob/living/carbon/Xenomorph/Boiler/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_boiler))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_warrior))
 	smoke = new /datum/effect_system/smoke_spread/xeno_acid
 	smoke.attach(src)
 	smoke.source_mob = src

@@ -1,5 +1,7 @@
 /datum/caste_datum/lurker
 	caste_name = "Lurker"
+	display_name = "Runner"
+	caste_icon = "Runner"
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_4
@@ -51,7 +53,7 @@
 
 /mob/living/carbon/Xenomorph/Lurker/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_lurker))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_runner))
 
 /datum/behavior_delegate/lurker_base
 	name = "Base Lurker Behavior Delegate"

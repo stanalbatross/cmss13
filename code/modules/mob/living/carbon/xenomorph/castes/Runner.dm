@@ -1,5 +1,7 @@
 /datum/caste_datum/runner
 	caste_name = "Runner"
+	display_name = "Lurker"
+	caste_icon = "Lurker"
 	caste_desc = "A fast, four-legged terror, but weak in sustained combat."
 	tier = 1
 	melee_damage_lower = XENO_DAMAGE_TIER_1
@@ -55,7 +57,7 @@
 
 /mob/living/carbon/Xenomorph/Runner/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_runner))
+	icon = get_icon_from_source(CONFIG_GET(string/alien_lurker))
 
 /mob/living/carbon/Xenomorph/Runner/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
