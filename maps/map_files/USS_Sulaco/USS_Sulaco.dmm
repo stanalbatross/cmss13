@@ -9449,9 +9449,7 @@
 /turf/open/floor/almayer,
 /area/sulaco/engineering/storage)
 "jVd" = (
-/obj/docking_port/stationary/lifeboat_dock{
-	id = "life_boat3"
-	},
+/obj/docking_port/stationary/lifeboat_dock/dock3,
 /turf/open/floor/plating,
 /area/almayer/evacuation/pod3)
 "jVu" = (
@@ -14458,14 +14456,11 @@
 	},
 /area/sulaco/bridge)
 "pev" = (
-/obj/structure/machinery/door/firedoor/border_only/almayer{
-	dir = 2;
-	tag = "icon-door_open"
-	},
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 1;
 	name = "\improper Escape Pods"
 	},
+/obj/structure/machinery/door/poddoor/shutters/pods,
 /turf/open/floor/almayer{
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
@@ -17683,9 +17678,7 @@
 /turf/open/floor/almayer,
 /area/sulaco/marine/bravo)
 "sIb" = (
-/obj/docking_port/stationary/lifeboat_dock{
-	id = "life_boat1"
-	},
+/obj/docking_port/stationary/lifeboat_dock/dock1,
 /turf/open/floor/plating,
 /area/almayer/evacuation/pod1)
 "sIj" = (
@@ -18731,9 +18724,7 @@
 	},
 /area/sulaco/marine/bravo)
 "tWL" = (
-/obj/docking_port/stationary/lifeboat_dock{
-	id = "life_boat2"
-	},
+/obj/docking_port/stationary/lifeboat_dock/dock2,
 /turf/open/floor/plating,
 /area/almayer/evacuation/pod2)
 "tWP" = (

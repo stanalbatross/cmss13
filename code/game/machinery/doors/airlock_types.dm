@@ -64,6 +64,13 @@
 	opacity = 1
 	assembly_type = /obj/structure/airlock_assembly/airlock_assembly_hatch
 
+/obj/structure/machinery/door/airlock/hatch/launch
+	no_panel = 1
+	not_weldable = 1
+	unslashable = TRUE
+	unacidable = TRUE
+	indestructible = TRUE
+
 /obj/structure/machinery/door/airlock/maintenance_hatch
 	name = "\improper Maintenance Hatch"
 	icon = 'icons/obj/structures/doors/Doorhatchmaint2.dmi'

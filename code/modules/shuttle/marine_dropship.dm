@@ -226,6 +226,3 @@
 	height  = 7
 	landing_sound = null
 
-/obj/structure/window/shuttle/plot
-	not_damageable = TRUE
-	not_deconstructable = TRUE

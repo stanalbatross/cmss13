@@ -1,8 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
-/obj/docking_port/mobile/lifeboat{
-	id = "life_boat"
-	},
+/obj/docking_port/mobile/lifeboat,
 /turf/closed/shuttle{
 	dir = 2;
 	icon_state = "wall_space";
@@ -167,14 +165,8 @@
 	},
 /area/almayer/evacuation/pod1)
 "T" = (
-/obj/structure/machinery/door/unpowered/shuttle,
-/obj/structure/machinery/door/poddoor/shutters{
-	density = 0;
-	icon_state = "shutter0";
-	id = "syndieshutters";
-	name = "Blast Shutters";
-	opacity = 0
-	},
+/obj/structure/machinery/door/airlock/hatch/launch,
+/obj/structure/machinery/door/poddoor/shutters/pods,
 /turf/closed/shuttle{
 	icon_state = "floor7"
 	},

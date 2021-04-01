@@ -97,10 +97,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		evac_status = EVACUATION_STATUS_INITIATING
 		ai_announcement("Attention. Emergency. All personel must evacuate immediately. You have [round(EVACUATION_ESTIMATE_DEPARTURE/60,1)] minute\s until departure.", 'sound/AI/evacuate.ogg')
 		xeno_message("A wave of adrenaline ripples through the hive. The fleshy creatures are trying to escape!")
-		var/datum/shuttle/ferry/marine/evacuation_pod/P
-		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
-			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
-			P.toggle_ready()
 		process_evacuation()
 		return TRUE
 
@@ -110,10 +106,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
 		ai_announcement("Evacuation has been cancelled.", 'sound/AI/evacuate_cancelled.ogg')
-		var/datum/shuttle/ferry/marine/evacuation_pod/P
-		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
-			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
-			P.toggle_ready()
 		return TRUE
 
 /datum/authority/branch/evacuation/proc/begin_launch() //Launches the pods.
@@ -121,20 +113,31 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		evac_status = EVACUATION_STATUS_IN_PROGRESS //Cannot cancel at this point. All shuttles are off.
 		spawn() //One of the few times spawn() is appropriate. No need for a new proc.
 			ai_announcement("WARNING: Evacuation order confirmed. Launching escape pods.", 'sound/AI/evacuation_confirmed.ogg')
-			var/datum/shuttle/ferry/marine/evacuation_pod/P
-			var/L[] = new
-			var/i
-			for(i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER) L += i
-			while(L.len)
-				i = pick(L)
-				P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
-				P.prepare_for_launch() //May or may not launch, will do everything on its own.
-				L -= i
-				sleep(50) //Sleeps 5 seconds each launch.
-			sleep(300) //Sleep 30 more seconds to make sure everyone had a chance to leave.
-			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [P.passengers ? P.passengers  : "none"].", 'sound/AI/evacuation_complete.ogg')
+			for(var/obj/structure/machinery/door/poddoor/shutters/pods/PS in GLOB.escape_pod_shutters)
+				INVOKE_ASYNC(PS, /obj/structure/machinery/door/poddoor/shutters/pods.proc/close)
+			for(var/obj/docking_port/mobile/lifeboat/L in SSshuttle.lifeboats)
+				for(var/area/Ar in L.shuttle_areas)
+					for(var/obj/structure/machinery/door/airlock/hatch/launch/LA in Ar)
+						close_airlock_wtf(LA)
+			sleep(2 SECONDS)
+			for(var/obj/docking_port/mobile/lifeboat/L in SSshuttle.lifeboats)
+				L.mode = SHUTTLE_IGNITING
+				L.setTimer(4 SECONDS)
+			sleep(30 SECONDS)
+			var/passengers = 0
+			for(var/obj/docking_port/mobile/lifeboat/L in SSshuttle.lifeboats)
+				for(var/area/LA in L.shuttle_areas)
+					for(var/mob/M in LA)
+						if(M.stat != DEAD)
+							passengers++
+			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [passengers ? passengers  : "none"].", 'sound/AI/evacuation_complete.ogg')
 			evac_status = EVACUATION_STATUS_COMPLETE
 		return TRUE
+
+/datum/authority/branch/evacuation/proc/close_airlock_wtf(obj/structure/machinery/door/airlock/hatch/launch/LA)
+	set waitfor = FALSE
+	LA.close()
+	LA.lock()
 
 /datum/authority/branch/evacuation/proc/process_evacuation() //Process the timer.
 	set background = 1

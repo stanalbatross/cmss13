@@ -15,7 +15,7 @@
 	var/lightswitch = 1
 
 	/// Bitfield of special area features
-	var/flags_area = NO_FLAGS     
+	var/flags_area = NO_FLAGS
 
 	var/flags_alarm_state = NO_FLAGS
 
@@ -99,7 +99,9 @@
 			power_light = TRUE
 			power_equip = TRUE
 			power_environ = TRUE
-			SetDynamicLighting()
+			if(lighting_use_dynamic)
+				// NO PLEASE NO FUCK OFF PLEASE SERIOUSLY
+				SetDynamicLighting()
 	else
 		power_light = FALSE			//rastaf0
 		power_equip = FALSE			//rastaf0
