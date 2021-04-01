@@ -116,8 +116,6 @@
 	shuttle_id = "drop_pod"
 	name = "Sulaco Drop Pod"
 
-/*
 /datum/map_template/shuttle/lifeboat
-	shuttle_id = "lifeboat"
+	shuttle_id = "sulaco_lifeboat"
 	name = "Escape Lifeboat"
-*/

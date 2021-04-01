@@ -44,7 +44,7 @@
 	if(..() || !allowed(user) || inoperable())
 		return
 
-	if(!istype(loc.loc, /area/almayer/command/cic)) //Has to be in the CIC. Can also be a generic CIC area to communicate, if wanted.
+	if(!istype(loc.loc, /area/sulaco/bridge)) //Has to be in the CIC. Can also be a generic CIC area to communicate, if wanted.
 		to_chat(usr, SPAN_WARNING("Unable to establish a connection."))
 		return FALSE
 
@@ -53,7 +53,7 @@
 /obj/structure/machinery/computer/almayer_control/ui_interact(mob/user as mob)
 	user.set_interaction(src)
 
-	var/dat = "<head><title>Almayer Control Console</title></head><body>"
+	var/dat = "<head><title>[MAIN_SHIP_NAME] Control Console</title></head><body>"
 
 	if(EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
 		dat += "<B>Evacuation in Progress</B>\n<BR>\nETA: [EvacuationAuthority.get_status_panel_eta()]<BR>"

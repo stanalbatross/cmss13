@@ -7,6 +7,13 @@
 /obj/structure/machinery/door/poddoor/shutters/opened
 	density = FALSE
 
+/obj/structure/machinery/door/poddoor/shutters/pods
+	density = FALSE
+	icon_state = "shutter0"
+/obj/structure/machinery/door/poddoor/shutters/pods/Initialize()
+	. = ..()
+	GLOB.escape_pod_shutters += src
+
 /obj/structure/machinery/door/poddoor/shutters/update_icon()
 	if(density)
 		icon_state = "shutter1"

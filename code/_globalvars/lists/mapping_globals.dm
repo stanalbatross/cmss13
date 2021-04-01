@@ -59,3 +59,4 @@ GLOBAL_LIST_EMPTY_TYPED(shuttle_crash_locations, /obj/effect/landmark/shuttle_lo
 GLOBAL_LIST_EMPTY(shuttle_crash_sections)
 /// List of shuttles that have been locked up with time
 GLOBAL_LIST_EMPTY(shuttle_lockdown)
+GLOBAL_LIST_EMPTY(escape_pod_shutters)
