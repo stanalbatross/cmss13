@@ -5,6 +5,8 @@
 	callTime = 100 SECONDS
 	ignitionTime = 10 SECONDS
 	prearrivalTime = 10 SECONDS
+	rechargeTime = 2 MINUTES
+	preferred_direction = SOUTH
 	var/crash_landing = 0
 	var/turf/crashloc
 
@@ -113,16 +115,23 @@
 			if(crash_landing)
 				crash_landing = 2 // Not usable anymore. TOASTED
 			for(var/area/Ar in shuttle_areas)
+				Ar.ambience_exterior = null
 				for(var/obj/structure/machinery/door/poddoor/shutters/transit/AS in Ar)
 					uscm_shutters_up(AS, crash_landing)
 				for(var/obj/structure/machinery/door/airlock/AL in Ar)
 					uscm_open_up(AL)
+				for(var/mob/M in Ar)
+					M?.client?.soundOutput?.update_ambience(Ar, TRUE)
 		else
 			for(var/area/Ar in shuttle_areas)
+				Ar.ambience_exterior = 'sound/ambience/dropship_ambience_loop.ogg'
 				for(var/obj/structure/machinery/door/airlock/AL in Ar)
 					uscm_close_up(AL)
 				for(var/obj/structure/machinery/door/poddoor/shutters/transit/AS in Ar)
 					uscm_shutters_takeoff(AS)
+				for(var/mob/M in Ar)
+					M?.client?.soundOutput?.update_ambience(Ar, TRUE)
+
 
 /obj/docking_port/mobile/marine_dropship/proc/crashShuttle(sectionName)
 	if(crashing) return FALSE

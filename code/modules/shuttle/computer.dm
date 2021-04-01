@@ -69,9 +69,9 @@
 
 	if(href_list["move"])
 		var/obj/docking_port/mobile/M = SSshuttle.getShuttle(shuttleId)
-//		if(!(M.shuttle_flags & GAMEMODE_IMMUNE) && world.time < SSticker.round_start_time + SSticker.mode.deploy_time_lock)
-//			to_chat(usr, "<span class='warning'>The engines are still refueling.</span>")
-//			return TRUE
+		if(world.time < SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK)
+			to_chat(usr, "<span class='warning'>The engines are still refueling.</span>")
+			return TRUE
 		if(!M.can_move_topic(usr))
 			return TRUE
 		if(!(href_list["move"] in valid_destinations()))
@@ -122,6 +122,9 @@
 /obj/structure/machinery/computer/shuttle/dropship/Topic(href, href_list)
 	. = ..()
 	if(.) return
+	if(world.time < SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK)
+		to_chat(usr, SPAN_XENO("Too early..."))
+		return TRUE
 	if(href_list["IAMTHEQUEEN"])
 		if(isXenoQueen(usr))
 			queen_special(usr)

@@ -509,8 +509,8 @@
 	if(!landing_sound)
 		return
 	if(destination)
-		playsound(destination.return_center_turf(), landing_sound, 60, 0)
-	playsound(return_center_turf(), landing_sound, 60, 0)
+		playsound(destination.return_center_turf(), landing_sound, 60, 0, 50)
+	playsound(return_center_turf(), landing_sound, 60, 0, 50)
 	return
 
 /obj/docking_port/mobile/proc/on_crash()
