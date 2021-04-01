@@ -1,0 +1,259 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/docking_port/mobile/lifeboat{
+	id = "life_boat"
+	},
+/turf/closed/shuttle{
+	dir = 2;
+	icon_state = "wall_space";
+	tag = "icon-wall_space"
+	},
+/area/almayer/evacuation/pod1)
+"b" = (
+/turf/closed/shuttle,
+/area/almayer/evacuation/pod1)
+"d" = (
+/obj/structure/machinery/cm_vending/sorted/medical/wall_med{
+	pixel_y = 32
+	},
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 8
+	},
+/obj/structure/machinery/light/small{
+	dir = 4
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"e" = (
+/obj/structure/closet/walllocker/emerglocker/west,
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 4
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"k" = (
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 4
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"o" = (
+/obj/structure/shuttle/engine/propulsion{
+	dir = 1;
+	icon_state = "propulsion_r"
+	},
+/turf/closed/wall/almayer,
+/area/almayer/evacuation/pod1)
+"r" = (
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"s" = (
+/obj/structure/shuttle/window{
+	layer = 5
+	},
+/obj/structure/grille,
+/obj/structure/machinery/door/poddoor/shutters{
+	density = 0;
+	dir = 4;
+	icon_state = "shutter0";
+	id = "syndieshutters";
+	name = "Blast Shutters";
+	opacity = 0
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"t" = (
+/obj/structure/machinery/status_display{
+	pixel_y = 30
+	},
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 4
+	},
+/obj/structure/machinery/light/small{
+	dir = 8
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"A" = (
+/obj/structure/shuttle/window{
+	layer = 5
+	},
+/obj/structure/grille,
+/obj/structure/machinery/door/poddoor/shutters{
+	density = 0;
+	dir = 2;
+	icon_state = "shutter0";
+	id = "syndieshutters";
+	name = "Blast Shutters";
+	opacity = 0
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"D" = (
+/obj/structure/shuttle/window{
+	layer = 5
+	},
+/obj/structure/grille,
+/obj/structure/machinery/door/poddoor/shutters{
+	density = 0;
+	dir = 8;
+	icon_state = "shutter0";
+	id = "syndieshutters";
+	name = "Blast Shutters";
+	opacity = 0
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"E" = (
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 8
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"F" = (
+/turf/closed/shuttle{
+	dir = 4;
+	icon_state = "wall_space";
+	tag = "icon-wall_space (EAST)"
+	},
+/area/almayer/evacuation/pod1)
+"G" = (
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 4
+	},
+/obj/structure/machinery/light/small{
+	dir = 8
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"I" = (
+/obj/structure/closet/walllocker/emerglocker/east,
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 8
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"Q" = (
+/obj/structure/bed/chair/dropship/passenger/shuttle_chair{
+	dir = 8
+	},
+/obj/structure/machinery/light/small{
+	dir = 4
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"T" = (
+/obj/structure/machinery/door/unpowered/shuttle,
+/obj/structure/machinery/door/poddoor/shutters{
+	density = 0;
+	icon_state = "shutter0";
+	id = "syndieshutters";
+	name = "Blast Shutters";
+	opacity = 0
+	},
+/turf/closed/shuttle{
+	icon_state = "floor7"
+	},
+/area/almayer/evacuation/pod1)
+"Y" = (
+/obj/structure/shuttle/engine/propulsion{
+	dir = 1;
+	icon_state = "propulsion_l"
+	},
+/turf/closed/wall/almayer,
+/area/almayer/evacuation/pod1)
+
+(1,1,1) = {"
+o
+b
+b
+D
+b
+b
+b
+b
+D
+b
+b
+a
+"}
+(2,1,1) = {"
+b
+b
+t
+k
+e
+k
+G
+e
+k
+k
+G
+b
+"}
+(3,1,1) = {"
+T
+r
+r
+r
+r
+r
+r
+r
+r
+r
+r
+A
+"}
+(4,1,1) = {"
+b
+b
+d
+E
+I
+E
+Q
+I
+E
+E
+Q
+b
+"}
+(5,1,1) = {"
+Y
+b
+b
+s
+b
+b
+b
+b
+s
+b
+b
+F
+"}
