@@ -4,7 +4,7 @@
 	//callTime = DROPSHIP_TRANSIT_DURATION
 	callTime = 100 SECONDS
 	ignitionTime = 10 SECONDS
-	prearrivalTime = 7 SECONDS
+	prearrivalTime = 10 SECONDS
 	var/crash_landing = 0
 	var/turf/crashloc
 
@@ -51,7 +51,7 @@
 		for(var/mob/M in Ar)
 			to_chat(M, SPAN_HIGHDANGER("You feel an impact as the dropship hits something!"))
 			shake_camera(M, 15, 2)
-			M.KnockDown(6)
+			M.KnockDown(4)
 	enter_allowed = 0 //No joining after dropship crash
 	for (var/obj/structure/machinery/door_display/research_cell/d in machines)
 		if(is_mainship_level(d.z) || is_loworbit_level(d.z))

@@ -643,6 +643,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /turf/open/floor/plating{
 	dir = 10;
 	icon_state = "warnplate"
@@ -2060,6 +2061,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating{
 	dir = 10;
 	icon_state = "warnplate"
@@ -30967,7 +30969,7 @@
 /area/corsat/gamma/hangar/office)
 "bGI" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/shuttle_control/dropship1{
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1{
 	dir = 8
 	},
 /turf/open/floor/corsat{
@@ -57711,7 +57713,7 @@
 /area/corsat/sigma/hangar/security)
 "rrG" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/shuttle_control/dropship2{
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2{
 	dir = 4
 	},
 /turf/open/floor/corsat{

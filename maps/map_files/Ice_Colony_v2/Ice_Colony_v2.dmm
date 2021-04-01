@@ -19808,7 +19808,7 @@
 /area/ice_colony/exterior/surface/landing_pad)
 "aZg" = (
 /obj/structure/surface/table/reinforced,
-/obj/structure/machinery/computer/shuttle_control/dropship1,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz1,
 /turf/open/floor/plating/icefloor{
 	dir = 1;
 	icon_state = "warnplate";
@@ -20384,6 +20384,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "1"
 	},
+/obj/docking_port/stationary/landing_zone/lz1,
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 8;
 	icon_state = "landingstripe";
@@ -22532,6 +22533,7 @@
 /obj/effect/landmark/shuttle_loc/marine_trg/landing{
 	name = "2"
 	},
+/obj/docking_port/stationary/landing_zone/lz2,
 /turf/open/floor/plating/icefloor{
 	dir = 10;
 	icon_state = "warnplate";
@@ -38988,7 +38990,7 @@
 /area/ice_colony/surface/hangar/alpha)
 "jZI" = (
 /obj/structure/surface/table/reinforced,
-/obj/structure/machinery/computer/shuttle_control/dropship2,
+/obj/structure/machinery/computer/shuttle/dropship/ground/lz2,
 /turf/open/floor/plating/icefloor,
 /area/ice_colony/landing/console)
 "kcN" = (
