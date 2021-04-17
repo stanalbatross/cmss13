@@ -145,15 +145,15 @@
 	. = ..()
 	if(activated)
 		RegisterSignal(attached_item, COMSIG_ITEM_EQUIPPED, .proc/toggle_check)
-		RegisterSignal(attached_item, COMSIG_ITEM_DROPPED, .proc/remove_nvg)
+		RegisterSignal(attached_item, COMSIG_ITEM_DROPPED, .proc/remove_buff)
 		if(user.head == attached_item)
-			enable_nvg(user)
+			enable_buff(user)
 	else
 		UnregisterSignal(attached_item, list(
 			COMSIG_ITEM_EQUIPPED,
 			COMSIG_ITEM_DROPPED
 		))
-		remove_nvg()
+		remove_buff()
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/remove_attached_item()
 	if(attached_item)
@@ -162,12 +162,12 @@
 			COMSIG_ITEM_DROPPED
 		))
 
-	remove_nvg()
+	remove_buff()
 	attached_mob = null
 	return ..()
 
-/obj/item/prop/helmetgarb/helmet_nvg/functional/proc/enable_nvg(var/mob/living/carbon/human/user)
-	remove_nvg()
+/obj/item/prop/helmetgarb/helmet_nvg/functional/proc/enable_buff(var/mob/living/carbon/human/user)
+	remove_buff()
 
 	RegisterSignal(user, COMSIG_HUMAN_POST_UPDATE_SIGHT, .proc/update_sight)
 	attached_mob = user
@@ -180,17 +180,38 @@
 	SIGNAL_HANDLER
 
 	if(slot == WEAR_HEAD)
-		enable_nvg(user)
+		enable_buff(user)
 	else
-		remove_nvg()
+		remove_buff()
 
-/obj/item/prop/helmetgarb/helmet_nvg/functional/proc/remove_nvg()
+/obj/item/prop/helmetgarb/helmet_nvg/functional/proc/remove_buff()
 	SIGNAL_HANDLER
 	if(!attached_mob)
 		return
 
 	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 	attached_mob = null
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/thermal //for ERTs and admemes. Not available to marines by default.
+	name = "\improper M3T-P thermal goggles"
+	desc = "The M3T set of goggles are a highly advanced new technology designed by USCM researchers, tracking heat signatures through walls. However, their extreme battery consumption prevents widespread adaptation."
+	var/mob/attached_mob
+	var/m_vision_flags = SEE_MOBS
+	var/fullscreen_vision = /obj/screen/fullscreen/thermal
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/update_sight(var/mob/M)
+	SIGNAL_HANDLER
+	M.vision_flags |= m_vision_flags
+	M.overlay_fullscreen("glasses_vision", fullscreen_vision)
+
+/*obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/remove_buff()
+	SIGNAL_HANDLER
+	if(!attached_mob)
+		return
+
+	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
+	//attached_mob.vision_flags &= ~SEE_MOBS
+	attached_mob = null*/
 
 /obj/item/prop/helmetgarb/flair_initech
 	name = "\improper Initech flair"
