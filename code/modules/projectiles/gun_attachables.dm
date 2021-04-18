@@ -607,6 +607,22 @@ Defined in conflicts.dm of the #defines folder.
 	. = ..()
 	G.RemoveElement(/datum/element/magharness)
 
+/obj/item/attachable/r4t_sling
+	name = "R4T magnetic sling"
+	desc = "A custom sling designed for comfortable holstering of the R4T lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
+	icon_state = "r4t-sling"
+	attach_icon = "r4t-sling_a"
+	slot = "under"
+	wield_delay_mod = WIELD_DELAY_VERY_FAST
+
+/obj/item/attachable/r4t_sling/Attach(var/obj/item/weapon/gun/G)
+	. = ..()
+	G.AddElement(/datum/element/magnetic_sling)
+
+/obj/item/attachable/r4t_sling/Detach(var/obj/item/weapon/gun/G)
+	. = ..()
+	G.RemoveElement(/datum/element/magnetic_sling)
+
 /obj/item/attachable/scope
 	name = "S8 4x telescopic scope"
 	icon_state = "sniperscope"
@@ -812,6 +828,22 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_unwielded_mod = HIT_ACCURACY_MULT_TIER_1
 	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
+
+/obj/item/attachable/stock/lever
+	name = "\improper lever-action stock"
+	desc = "A wooden stock designed for a lever-action rifle. It increases weapon stability but really gets in the way."
+	icon_state = "r4t-stock"
+	attach_icon = "r4t-stock"
+	wield_delay_mod = WIELD_DELAY_SLOW
+
+/obj/item/attachable/stock/lever/New()
+	..()
+	select_gamemode_skin(type)
+	recoil_mod = -RECOIL_AMOUNT_TIER_5
+	scatter_mod = -SCATTER_AMOUNT_TIER_8
+	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_5
+	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_4
+
 
 /obj/item/attachable/stock/tactical
 	name = "\improper MK221 tactical stock"

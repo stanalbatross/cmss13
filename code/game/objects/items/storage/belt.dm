@@ -438,6 +438,18 @@
 	else
 		return ..()
 
+/obj/item/storage/belt/lever_action
+	name = "\improper M276 pattern 45-70 loading rig"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle."
+	icon_state = "r4t-ammobelt"
+	item_state = "marinebelt"
+	w_class = SIZE_LARGE
+	storage_slots = 21
+	max_w_class = SIZE_SMALL
+	max_storage_space = 28
+	can_hold = list(/obj/item/ammo_magazine/handful)
+
+
 /obj/item/storage/belt/shotgun/upp
 	name = "\improper Type 42 pattern shotgun shell loading rig"
 	desc = "An ammunition belt designed to hold shotgun shells, primarily for the Type 23 shotgun."
@@ -821,6 +833,30 @@
 	for(var/i = 1 to storage_slots - 1)
 		new /obj/item/ammo_magazine/revolver/marksman(src)
 	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/m44/lever_action
+	name = "\improper M276 pattern 45-70 revolver rig"
+	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
+	icon_state = "r4t-cowboybelt"
+	item_state = "marinebelt"
+	w_class = SIZE_LARGE
+	storage_slots = 18
+	max_storage_space = 28
+	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
+	can_hold = list(
+		/obj/item/ammo_magazine/handful,
+		/obj/item/weapon/gun/revolver,
+		/obj/item/ammo_magazine/revolver
+		)
+	icon_x = 10
+	icon_y = 3
+
+/obj/item/storage/belt/gun/m44/lever_action/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/ammo_magazine/lever_action))
+		var/obj/item/ammo_magazine/lever_action/M = W
+		dump_ammo_to(M,user, M.transfer_handful_amount)
+	else
+		return ..()
 
 /obj/item/storage/belt/gun/mateba
 	name = "\improper M276 pattern Mateba holster rig"

@@ -758,3 +758,8 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 		mob_state = icon_state
 	return mob_state
 
+/obj/item/proc/on_equip(mob/user)
+	return
+
+/obj/item/proc/on_unequip(mob/user)
+	return

@@ -181,6 +181,7 @@
 	else if (I == s_store)
 		s_store = null
 		update_inv_s_store()
+	I.on_unequip(src)
 
 
 
@@ -383,6 +384,7 @@
 			to_chat(src, SPAN_DANGER("You are trying to eqip this item to an unsupported inventory slot. How the heck did you manage that? Stop it..."))
 			return
 	recalculate_move_delay = TRUE
+	W.on_equip(src)
 	return 1
 
 

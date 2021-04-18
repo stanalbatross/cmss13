@@ -140,20 +140,54 @@
 
 	var/invisibility_level = SEE_INVISIBLE_MINIMUM
 	var/mob/attached_mob
+	var/obj/item/cell/battery = null
+	var/process_cost = 1
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/examine(mob/user)
+	. = ..()
+	if(battery)
+		to_chat(user, SPAN_NOTICE("The battery indicator reads [battery.percent()]/100."))
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/Initialize(mapload, ...)
+	. = ..()
+	battery = new /obj/item/cell(src)
+	update_icon()
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/attackby(obj/item/W, mob/user)
+
+	if(istype(W, /obj/item/cell)) //typechecks...
+		if(!battery)
+			if(user.drop_held_item())
+				W.forceMove(src)
+				battery = W
+				to_chat(user, SPAN_NOTICE("You install a cell in [src]."))
+		else
+			to_chat(user, SPAN_NOTICE("[src] already has a cell."))
+
+	else if(istype(W, /obj/item/tool/screwdriver)) //pending tool refactor
+		if(battery)
+			battery.updateicon()
+			battery.forceMove(get_turf(src.loc))
+			battery = null
+			to_chat(user, SPAN_NOTICE("You remove the cell from the [src]."))
+			return
+		..()
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/toggle_nods(mob/living/carbon/human/user)
 	. = ..()
-	if(activated)
+	if(activated && battery && battery.charge)
 		RegisterSignal(attached_item, COMSIG_ITEM_EQUIPPED, .proc/toggle_check)
 		RegisterSignal(attached_item, COMSIG_ITEM_DROPPED, .proc/remove_buff)
 		if(user.head == attached_item)
 			enable_buff(user)
+		START_PROCESSING(SSobj, src)
 	else
 		UnregisterSignal(attached_item, list(
 			COMSIG_ITEM_EQUIPPED,
 			COMSIG_ITEM_DROPPED
 		))
 		remove_buff()
+		STOP_PROCESSING(SSobj, src)
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/remove_attached_item()
 	if(attached_item)
@@ -192,26 +226,35 @@
 	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 	attached_mob = null
 
-/obj/item/prop/helmetgarb/helmet_nvg/functional/thermal //for ERTs and admemes. Not available to marines by default.
-	name = "\improper M3T-P thermal goggles"
+/obj/item/prop/helmetgarb/helmet_nvg/functional/process()
+	if(battery == null || !battery.charge)
+		to_chat(attached_mob, SPAN_NOTICE("\the [src]'s battery runs out of charge!"))
+		toggle_nods(attached_mob)
+	battery.use(process_cost)
+
+/obj/item/prop/helmetgarb/helmet_nvg/functional/thermal
+	name = "\improper M2T thermal goggles"
 	desc = "The M3T set of goggles are a highly advanced new technology designed by USCM researchers, tracking heat signatures through walls. However, their extreme battery consumption prevents widespread adaptation."
-	var/mob/attached_mob
+	icon_state = "helmet_nvg_thermals"
+	active_icon_state = "helmet_nvg_thermals_down"
+	inactive_icon_state = "helmet_nvg_thermals"
+	invisibility_level = 0
+	process_cost = 10
 	var/m_vision_flags = SEE_MOBS
 	var/fullscreen_vision = /obj/screen/fullscreen/thermal
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/update_sight(var/mob/M)
-	SIGNAL_HANDLER
-	M.vision_flags |= m_vision_flags
+	..()
+	M.sight |= m_vision_flags
 	M.overlay_fullscreen("glasses_vision", fullscreen_vision)
 
-/*obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/remove_buff()
-	SIGNAL_HANDLER
+/obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/remove_buff()
 	if(!attached_mob)
 		return
 
 	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
-	//attached_mob.vision_flags &= ~SEE_MOBS
-	attached_mob = null*/
+	attached_mob.clear_fullscreen("glasses_vision")
+	attached_mob = null
 
 /obj/item/prop/helmetgarb/flair_initech
 	name = "\improper Initech flair"

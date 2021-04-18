@@ -309,6 +309,8 @@
 #define COMSIG_POST_BULLET_ACT_HUMAN "bullet_act_human"
 /// Called when a bullet hits a xenomorph
 #define COMSIG_BULLET_ACT_XENO "bullet_act_xeno"
+/// Called when a bullet hits a living mob on a sprite click (original target is final target)
+#define COMSIG_DIRECT_BULLET_HIT "direct_bullet_hit"
 /// Apply any effects to the bullet (primarily through bullet traits)
 /// based on the user
 #define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
