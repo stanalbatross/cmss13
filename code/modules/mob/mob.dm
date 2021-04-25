@@ -222,6 +222,9 @@
 	var/start_loc = W.loc
 
 	if(W.time_to_equip && !ignore_delay)
+		if(W.is_being_equipped)
+			to_chat(src, SPAN_WARNING("You're already equipping [W]!")) //Only print if del_on_fail is false
+			return FALSE
 		INVOKE_ASYNC(src, .proc/equip_to_slot_timed, W, slot, redraw_mob, permanent, start_loc)
 		return TRUE
 
@@ -239,8 +242,11 @@
 
 //This is an UNSAFE proc. It handles situations of timed equips.
 /mob/proc/equip_to_slot_timed(obj/item/W, slot, redraw_mob = 1, permanent = 0, start_loc)
+	W.is_being_equipped = TRUE
 	if(!do_after(src, W.time_to_equip, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		to_chat(src, "You stop putting on \the [W]")
+	//before the proc just in case
+	W.is_being_equipped = FALSE
 	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
 	if(permanent)
 		W.flags_inventory |= CANTSTRIP

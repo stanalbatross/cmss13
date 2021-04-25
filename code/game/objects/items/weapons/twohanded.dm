@@ -24,7 +24,8 @@
 	unwield(user)
 
 /obj/item/proc/wield(var/mob/user)
-	if( !(flags_item & TWOHANDED) || flags_item & WIELDED ) return
+	if(!(flags_item & TWOHANDED) || flags_item & WIELDED)
+		return
 
 	var/obj/item/I = user.get_inactive_hand()
 	if(I)
@@ -46,7 +47,7 @@
 
 /obj/item/proc/unwield(mob/user)
 	if( (flags_item|TWOHANDED|WIELDED) != flags_item)
-		return FALSE//Have to be actually a twohander and wielded.
+		return FALSE //Have to be actually a twohander and wielded.
 	flags_item ^= WIELDED
 	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
 	name 	    = copytext(name,1,-10)

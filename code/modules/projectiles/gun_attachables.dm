@@ -607,19 +607,19 @@ Defined in conflicts.dm of the #defines folder.
 	. = ..()
 	G.RemoveElement(/datum/element/magharness)
 
-/obj/item/attachable/r4t_sling
+/obj/item/attachable/lever_sling
 	name = "R4T magnetic sling"
-	desc = "A custom sling designed for comfortable holstering of the R4T lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
+	desc = "A custom sling designed for comfortable holstering of a 19th century lever action rifle, for some reason. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
 	icon_state = "r4t-sling"
 	attach_icon = "r4t-sling_a"
 	slot = "under"
 	wield_delay_mod = WIELD_DELAY_VERY_FAST
 
-/obj/item/attachable/r4t_sling/Attach(var/obj/item/weapon/gun/G)
+/obj/item/attachable/lever_sling/Attach(var/obj/item/weapon/gun/G)
 	. = ..()
 	G.AddElement(/datum/element/magnetic_sling)
 
-/obj/item/attachable/r4t_sling/Detach(var/obj/item/weapon/gun/G)
+/obj/item/attachable/lever_sling/Detach(var/obj/item/weapon/gun/G)
 	. = ..()
 	G.RemoveElement(/datum/element/magnetic_sling)
 

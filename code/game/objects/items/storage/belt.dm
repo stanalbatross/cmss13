@@ -441,7 +441,7 @@
 /obj/item/storage/belt/lever_action
 	name = "\improper M276 pattern 45-70 loading rig"
 	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle."
-	icon_state = "r4t-ammobelt"
+	icon_state = "lever_belt"
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
 	storage_slots = 21
@@ -449,6 +449,15 @@
 	max_storage_space = 28
 	can_hold = list(/obj/item/ammo_magazine/handful)
 
+/obj/item/storage/belt/lever_action/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/ammo_magazine/lever_action))
+		var/obj/item/ammo_magazine/lever_action/M = W
+		dump_ammo_to(M,user, M.transfer_handful_amount)
+	else
+		return ..()
+
+/obj/item/storage/belt/update_icon(flap = FALSE) //breaks with this belt if true
+	..()
 
 /obj/item/storage/belt/shotgun/upp
 	name = "\improper Type 42 pattern shotgun shell loading rig"
@@ -837,7 +846,7 @@
 /obj/item/storage/belt/gun/m44/lever_action
 	name = "\improper M276 pattern 45-70 revolver rig"
 	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
-	icon_state = "r4t-cowboybelt"
+	icon_state = "lever_belt_gun"
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
 	storage_slots = 18
@@ -857,7 +866,8 @@
 		dump_ammo_to(M,user, M.transfer_handful_amount)
 	else
 		return ..()
-
+/obj/item/storage/belt/gun/m44/lever_action/update_icon(flap = FALSE) //breaks with this belt if true
+	..()
 /obj/item/storage/belt/gun/mateba
 	name = "\improper M276 pattern Mateba holster rig"
 	desc = "The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is for the powerful Mateba magnum revolver, along with five small pouches for speedloaders. This one is aging poorly, and seems to be surplus equipment. It's stamped '3rd 'Dust Raiders' Battalion'."

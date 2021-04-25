@@ -167,11 +167,13 @@
 	else if(istype(W, /obj/item/tool/screwdriver)) //pending tool refactor
 		if(battery)
 			battery.updateicon()
-			battery.forceMove(get_turf(src.loc))
+			battery.forceMove(get_turf(user.loc))
+			user.put_in_inactive_hand(battery)
 			battery = null
 			to_chat(user, SPAN_NOTICE("You remove the cell from the [src]."))
+			playsound(loc, 'sound/items/Screwdriver.ogg', 25, TRUE)
 			return
-		..()
+	else ..()
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/toggle_nods(mob/living/carbon/human/user)
 	. = ..()

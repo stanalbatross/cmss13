@@ -63,6 +63,8 @@
 
 	var/time_to_equip = 0 // set to ticks it takes to equip a worn suit.
 	var/time_to_unequip = 0 // set to ticks it takes to unequip a worn suit.
+	 ///Stops spamming equip().
+	var/is_being_equipped = FALSE
 
 	var/icon_override = null  //Used to override hardcoded ON-MOB clothing dmis in human clothing proc (i.e. not the icon_state sprites).
 

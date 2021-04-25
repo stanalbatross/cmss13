@@ -1054,6 +1054,319 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 	return TRUE
 
+/obj/item/clothing/head/helmet/marine/b18_tech
+	name = "\improper B18 prototype defensive helmet"
+	desc = "A proof-of-concept prototype based on the MG-34 helmet intended to absorb more damage. Very efficient at this task, though perhaps a bit too much, as the dark ballistics-glass visor slightly hinders vision."
+	icon_state = "b18_helmet"
+	armor_melee = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_HIGHPLUS
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_HIGHPLUS
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE
+	//vision_impair = VISION_IMPAIR_MIN
+
+#define INTEGRITY_FINE 2
+#define INTEGRITY_DAMAGED 1
+#define INTEGRITY_BROKEN 0
+
+/obj/item/clothing/suit/storage/marine/b18_tech
+	name = "\improper B18 prototype defensive armor"
+	desc = "A proof-of-concept prototype based on MG-34 armor intended to absorb more damage. Unfortunately. due to internal flaws it has been known to break after heavy usage."
+	icon_state = "b18"
+	armor_melee = CLOTHING_ARMOR_HIGHPLUS
+	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_HIGHPLUS
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_HIGHPLUS
+	storage_slots = 3
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
+	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
+	slowdown = SLOWDOWN_ARMOR_LOWHEAVY
+	unacidable = FALSE
+	actions_types = list(/datum/action/item_action/toggle, /datum/action/item_action/specialist/quick_scan, /datum/action/item_action/specialist/create_injector)
+	var/injections = 4
+	var/integrity = 100
+	var/integrity_repair_max = 100
+	var/integrity_mult = 0.40
+	var/integrity_repair_mult = 0.20
+	var/integrity_threshold = INTEGRITY_FINE
+	var/flat_dmg_mult = 0.75
+	var/BB_plas_plates = 3
+
+/obj/item/clothing/suit/storage/marine/b18_tech/examine(mob/user)
+	. = ..()
+	if(integrity_threshold)
+		to_chat(user, SPAN_NOTICE("A readout on the side says [round(integrity)]% INTEGRITY.[skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED) ? "You think you could repair it to roughly [round(integrity_repair_max)]& integrity." : "" ]"))
+		to_chat(user, SPAN_NOTICE("[BB_plas_plates]/3 of its plasteel plates are intact. [BB_plas_plates ? "You could remove them with a crowbar." : ""]"))
+		to_chat(user, SPAN_NOTICE("There are [injections] firstaid injectors left in its arm guards. [injections ? "You could remove one with a screwdriver." : ""]"))
+	else
+		to_chat(user, SPAN_NOTICE("The integrity readout is completely broken, alongside its plasteel plates. Guess this junk's scrap metal now."))
+
+/obj/item/clothing/suit/storage/marine/b18_tech/update_icon(var/icon_integrity_threshold)
+	if(!icon_integrity_threshold)
+		icon_integrity_threshold = integrity_threshold
+	if(icon_integrity_threshold == INTEGRITY_FINE)
+		icon_state = "b18"
+	else if (icon_integrity_threshold == INTEGRITY_DAMAGED)
+		icon_state = "b18_damaged"
+	else if (icon_integrity_threshold == INTEGRITY_BROKEN)
+		icon_state = "b18_broken"
+	else
+		log_debug("[src] tried to update_icon but it had a value other than null, 0, 1, or 2. Value: [icon_integrity_threshold]")
+
+/obj/item/clothing/suit/storage/marine/b18_tech/on_equip(var/mob/living/carbon/human/user)
+	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/handle_welding)
+	if(integrity_threshold)
+		RegisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE, .proc/handle_integrity)
+		RegisterSignal(user, COMSIG_HUMAN_BONEBREAK_PROBABILITY, .proc/handle_bonebreak)
+
+/obj/item/clothing/suit/storage/marine/b18_tech/on_unequip(var/mob/living/carbon/human/user)
+	UnregisterSignal(user, list(COMSIG_ITEM_ATTEMPT_ATTACK, COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_welding(mob/living/carbon/human/target, mob/living/user, obj/item/source)
+	//source = item, target = src
+	SIGNAL_HANDLER
+
+	if(user.a_intent != INTENT_HELP)
+		return
+
+	if(iswelder(source))
+		weld(user, source)
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_integrity(var/mob/living/carbon/human/user, list/damagedata, damagetype)
+	SIGNAL_HANDLER
+	if(!integrity_threshold)
+		return
+	//flat reduce some incoming damage (because only god knows how our damage + armor system works)
+	damagedata["damage"] = damagedata["damage"] * flat_dmg_mult
+
+	var/armor_damage = damagedata["damage"] * integrity_mult
+	var/armor_max_damage = damagedata["damage"] * integrity_repair_mult
+	integrity = integrity - armor_damage
+	integrity_repair_max = integrity_repair_max - armor_max_damage
+	handle_integrity_threshold(user)
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_bonebreak(var/mob/living/carbon/human/user, list/bonebreak_data)
+	SIGNAL_HANDLER
+	if(BB_plas_plates)
+		playsound(user, "bonk", 75, TRUE)
+		user.visible_message(SPAN_NOTICE("[user]'s armor protects him from the blow!"), SPAN_NOTICE("Your [src] protects you from the blow!"))
+		bonebreak_data["bonebreak_probability"] = 0
+		BB_plas_plates--
+
+//handles integrity thresholds, to avoid needing to update onmob icons every single slash
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_integrity_threshold(var/mob/living/carbon/human/user)
+	SIGNAL_HANDLER
+
+	if(integrity < 50 && integrity_threshold == INTEGRITY_FINE)
+		integrity_threshold = INTEGRITY_DAMAGED
+		splinter(user)
+		update_icon(INTEGRITY_DAMAGED)
+		user.update_inv_wear_suit()
+
+	else if(integrity <= 0 && integrity_threshold == INTEGRITY_DAMAGED)
+		integrity_threshold = INTEGRITY_BROKEN
+		dismantle(user)
+		update_icon(INTEGRITY_BROKEN)
+		user.update_inv_wear_suit()
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/splinter(var/mob/living/carbon/human/user)
+	SIGNAL_HANDLER
+	to_chat(user, SPAN_HIGHDANGER("Some pieces of [src] fall apart!"))
+	playsound(user, 'sound/effects/metal_crash.ogg', 20, TRUE)
+	integrity_repair_max = min(integrity_repair_max, 49)
+	new /obj/item/stack/rods/plasteel(user.loc, 2)
+	new /obj/item/stack/rods(user.loc, 2)
+	name = "damaged B18 prototype defensive armor"
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/dismantle(var/mob/living/carbon/human/user)
+	SIGNAL_HANDLER
+	to_chat(user, SPAN_HIGHDANGER("[src] falls into pieces!"))
+	playsound(user, 'sound/effects/metal_crash.ogg', 20, TRUE)
+	new /obj/item/stack/sheet/metal(user.loc, 1)
+	new /obj/item/stack/sheet/plasteel(user.loc, 2)
+	for(var/injector in injections)
+		new /obj/item/reagent_container/hypospray/autoinjector/skillless(user.loc)
+		injections--
+	UnregisterSignal(user, list(COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
+	set_broken_values()
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/set_broken_values()
+	//note that this is still a proc
+	SIGNAL_HANDLER
+	name = "broken B18 prototype defensive armor"
+	desc += " This one definitely has shattered into pieces, though it's still surprisingly usable as armor."
+	icon_state = "b18_broken"
+	item_state = "b18_broken"
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUM
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUM
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
+	slowdown = SLOWDOWN_ARMOR_VERY_LIGHT
+	BB_plas_plates = 0
+	injections = 0
+
+/obj/item/clothing/suit/storage/marine/b18_tech/attackby(obj/item/W, var/mob/living/carbon/human/user)
+	if(user.a_intent != INTENT_HARM)
+		return ..()
+
+	//weld
+	if(iswelder(W)) //pending tool rework
+		weld(user, W)
+
+	else if(istype(W, /obj/item/stack/sheet/plasteel)) //typechecks...
+		var/obj/item/stack/sheet/plasteel/sheet = W
+		if(BB_plas_plates >= 3)
+			to_chat(user, SPAN_NOTICE("[src]'s plate container is full!"))
+			return
+		else if(!integrity_threshold)
+			to_chat(user, SPAN_NOTICE("[src]'s plate container is completely broken!"))
+			return
+		else if(sheet.use(5))
+			to_chat(user, SPAN_NOTICE("You insert some plasteel into [src]'s plate container."))
+			BB_plas_plates++
+		else
+			to_chat(user, SPAN_NOTICE("You don't have enough plasteel to insert into [src]'s plate container."))
+
+	else if(W.pry_capable == IS_PRY_CAPABLE_CROWBAR) //pending tool refactor
+		if(BB_plas_plates)
+			to_chat(user, SPAN_NOTICE("You pry a plasteel plate off [src]'s plate container."))
+			BB_plas_plates--
+			playsound(user, 'sound/items/Crowbar.ogg', 25, TRUE)
+			var/obj/item/stack/sheet/plasteel/sheet = new(user.loc, amount = 5)
+			user.put_in_inactive_hand(sheet)
+
+	else if(isscrewdriver(W)) //pending tool refactor
+		if(injections)
+			to_chat(user, SPAN_NOTICE("You screw an injector off [src]'s armguards."))
+			injections--
+			playsound(loc, 'sound/items/Screwdriver.ogg', 25, TRUE)
+			var/obj/item/reagent_container/hypospray/autoinjector/skillless/injector = new(user.loc)
+			user.put_in_inactive_hand(injector)
+			for(var/datum/action/item_action/action in user.actions)
+				action.update_button_icon()
+
+	else ..()
+
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/weld(var/mob/living/carbon/human/user, var/obj/item/tool/weldingtool/welder)
+	SIGNAL_HANDLER
+	if(!integrity_threshold)
+		to_chat(user, SPAN_NOTICE("It's a bit late for that!"))
+		return
+
+	if(integrity >= integrity_repair_max)
+		to_chat(user, SPAN_NOTICE("It's already as repaired as possible. You're not a miracle worker."))
+		return
+
+	if(!skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED))
+		to_chat(user, SPAN_NOTICE("Uh.. you don't know how to do that."))
+		return
+
+	if(!(welder.remove_fuel(2, user)))
+		return
+
+	user.visible_message(SPAN_NOTICE("[user] begins repairing damage to \the [src]."),
+	SPAN_NOTICE("You begin repairing the damage to \the [src]."))
+	playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
+
+	if(do_after(user, 3 SECONDS, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
+
+		user.visible_message(SPAN_NOTICE("[user] repairs some damage on \the [src]."),
+		SPAN_NOTICE("You repair [src]."))
+		var/repair_amount = 15
+		integrity = min(integrity + repair_amount, integrity_repair_max)
+		playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
+
+#undef INTEGRITY_FINE
+#undef INTEGRITY_DAMAGED
+#undef INTEGRITY_BROKEN
+
+/datum/action/item_action/specialist/quick_scan
+	ability_primacy = SPEC_PRIMARY_ACTION_1
+	name = "Scan Health"
+
+/datum/action/item_action/specialist/quick_scan/New(var/mob/living/user, var/obj/item/holder)
+	..()
+	button.name = name
+	button.overlays.Cut()
+	var/image/IMG = image('icons/mob/hud/actions.dmi', button, "quick_scan")
+	button.overlays += IMG
+
+//ideally this would be a component, but i am not going to do that
+/datum/action/item_action/specialist/quick_scan/update_button_icon()
+	button.overlays.Cut()
+	var/image/IMG = image('icons/mob/hud/actions.dmi', button, "quick_scan")
+	button.overlays += IMG
+
+/datum/action/item_action/specialist/quick_scan/can_use_action()
+	return TRUE
+
+/datum/action/item_action/specialist/quick_scan/action_activate()
+	var/mob/living/carbon/human/H = owner
+	H.health_scan(H, TRUE, 1, 1)
+
+/datum/action/item_action/specialist/create_injector
+	ability_primacy = SPEC_PRIMARY_ACTION_2
+	name = "Create Injector"
+
+/datum/action/item_action/specialist/create_injector/New(var/mob/living/user, var/obj/item/holder)
+	..()
+	button.name = name
+	button.overlays.Cut()
+	var/image/IMG = image('icons/mob/hud/actions.dmi', button, "firstaid")
+	button.overlays += IMG
+
+/datum/action/item_action/specialist/create_injector/update_button_icon()
+	button.overlays.Cut()
+	var/obj/item/clothing/suit/storage/marine/b18_tech/armor = holder_item
+	var/image/IMG
+	if(armor.injections)
+		IMG = image('icons/mob/hud/actions.dmi', button, "firstaid")
+	else
+		IMG = image('icons/mob/hud/actions.dmi', button, "firstaid_e")
+	button.overlays += IMG
+
+/datum/action/item_action/specialist/create_injector/can_use_action()
+	var/mob/living/carbon/human/H = owner
+	if(!H.is_mob_incapacitated() && !H.lying && holder_item == H.wear_suit)
+		return TRUE
+
+/datum/action/item_action/specialist/create_injector/action_activate()
+	var/mob/living/carbon/human/H = owner
+	var/obj/item/clothing/suit/storage/marine/b18_tech/armor = holder_item
+	if(!armor.injections)
+		to_chat(H, SPAN_NOTICE("[armor] is out of injectors!"))
+		update_button_icon()
+		return
+
+	var/active_hand_place = TRUE
+	if(H.get_active_hand())
+		if(H.get_inactive_hand())
+			to_chat(H, SPAN_NOTICE("Your hands are full!"))
+			return
+		else
+			active_hand_place = FALSE
+
+	var/obj/item/reagent_container/hypospray/autoinjector/skillless/injector = new(H)
+	to_chat(H, SPAN_NOTICE("You feel a faint hiss as an [injector] drops into your hand."))
+	active_hand_place ? H.put_in_active_hand(injector) : H.put_in_inactive_hand(injector)
+	playsound(H, 'sound/machines/click.ogg', 15, TRUE)
+	armor.injections--
+	update_button_icon()
+
 /obj/item/clothing/suit/storage/marine/marsoc
 	name = "\improper MARSOC commando armor"
 	desc = "A heavily customized suit of M3 armor. Used by MARSOC operators."
