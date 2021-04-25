@@ -244,7 +244,7 @@
 	name = "splatter"
 	desc = "It burns! It burns like hygiene!"
 	icon_state = "acid2"
-
+	damage_amount = 12
 	stun_duration = 0
 
 /obj/effect/xenomorph/spray/praetorian/apply_spray(mob/living/carbon/M)
@@ -451,6 +451,12 @@
 
 /obj/effect/xenomorph/xeno_telegraph/brown
 	icon_state = "xeno_telegraph_brown"
+
+/obj/effect/xenomorph/xeno_telegraph/brown/abduct_hook
+	icon_state = "xeno_telegraph_abduct_hook"
+
+/obj/effect/xenomorph/xeno_telegraph/brown/lash
+	icon_state = "xeno_telegraph_lash"
 
 
 

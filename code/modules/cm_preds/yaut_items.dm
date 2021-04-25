@@ -528,7 +528,11 @@
 
 	if(istype(A, /obj/structure/machinery/door/airlock))
 		var/obj/structure/machinery/door/airlock/D = A
-		if(D.operating || !D.density) return
+		if(D.operating || !D.density || D.locked)
+			return FALSE
+		if(D.heavy)
+			to_chat(usr, SPAN_DANGER("[D] is too heavy to be forced open."))
+			return FALSE
 		user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
 		SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
 		playsound(user,'sound/weapons/wristblades_hit.ogg', 15, TRUE)
@@ -544,7 +548,7 @@
 			user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
 			SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
 			playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, TRUE)
-			if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+			if(do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
 				user.visible_message(SPAN_DANGER("[user] forces [D] open using the [name]."),
 				SPAN_DANGER("You force [D] open with your [name]."))
 				D.Open()
@@ -1101,3 +1105,53 @@
 		return
 	tether_range = range
 	to_chat(H, SPAN_NOTICE("You set the hunting trap's tether range to [range]."))
+
+//flavor armor & greaves, not a subtype
+/obj/item/clothing/suit/armor/yautja_flavor
+	name = "stone clan armor"
+	desc = "A suit of armor made entirely out of stone. Looks incredibly heavy."
+	icon = 'icons/obj/items/clothing/cm_suits.dmi'
+	icon_state = "fullarmor"
+	item_state = "armor"
+	item_icons = list(
+		WEAR_JACKET = 'icons/mob/humans/onmob/suit_1.dmi'
+	)
+	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/suit_monkey_1.dmi')
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_HEAD|BODY_FLAG_LEGS
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_HIGH
+	armor_laser = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_energy = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bomb = CLOTHING_ARMOR_HIGH
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
+	slowdown = SLOWDOWN_ARMOR_VERY_HEAVY
+	siemens_coefficient = 0.1
+	allowed = list(/obj/item/weapon/melee/harpoon,
+			/obj/item/weapon/gun/launcher/spike,
+			/obj/item/weapon/gun/energy/plasmarifle,
+			/obj/item/weapon/gun/energy/plasmapistol,
+			/obj/item/weapon/yautja_chain,
+			/obj/item/weapon/melee/yautja_knife,
+			/obj/item/weapon/melee/yautja_sword,
+			/obj/item/weapon/melee/yautja_scythe,
+			/obj/item/weapon/melee/combistick,
+			/obj/item/weapon/melee/twohanded/glaive)
+	unacidable = TRUE
+	item_state_slots = list(WEAR_JACKET = "fullarmor")
+
+/obj/item/clothing/shoes/yautja_flavor
+	name = "stone clan greaves"
+	icon_state = "y-boots2"
+	desc = "A pair of armored, perfectly balanced boots. Perfect for running through cement because they're incredibly heavy."
+	unacidable = TRUE
+	flags_armor_protection = BODY_FLAG_FEET|BODY_FLAG_LEGS|BODY_FLAG_GROIN
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_HIGH
+	armor_laser = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_energy = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bomb = CLOTHING_ARMOR_HIGH
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH

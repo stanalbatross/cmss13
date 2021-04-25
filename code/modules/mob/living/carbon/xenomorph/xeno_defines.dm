@@ -209,6 +209,7 @@
 	var/evolution_bonus = 0
 
 	var/allow_no_queen_actions = FALSE
+	var/evolution_without_ovipositor = TRUE //Temporary for the roundstart.
 	var/allow_queen_evolve = TRUE // Set to true if you want to prevent evolutions into Queens
 	var/hardcore = FALSE // Set to true if you want to prevent bursts and spawns of new xenos. Will also prevent healing if the queen no longer exists
 
@@ -823,6 +824,18 @@
 	ui_color = "#4d4d99"
 
 	dynamic_evolution = FALSE
+
+/datum/hive_status/feral
+	name = "Feral Hive"
+	hivenumber = XENO_HIVE_FERAL
+	prefix = "Feral "
+	color = "#828296"
+	ui_color = "#828296"
+
+	dynamic_evolution = FALSE
+	allow_no_queen_actions = TRUE
+	allow_queen_evolve = FALSE
+	ignore_slots = TRUE
 
 /datum/hive_status/corrupted/submissive
 	name = "Submissive Hive"

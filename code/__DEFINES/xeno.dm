@@ -1,7 +1,5 @@
 #define XENOCON_THRESHOLD 6000
 
-#define XENO_HIVE_EVOLUTION_FREETIME 3000 // 5 minutes of free evolution
-
 #define TUNNEL_MOVEMENT_XENO_DELAY 20
 #define TUNNEL_MOVEMENT_BIG_XENO_DELAY 60
 #define TUNNEL_MOVEMENT_LARVA_DELAY 5
@@ -9,6 +7,22 @@
 #define TUNNEL_ENTER_XENO_DELAY 40
 #define TUNNEL_ENTER_BIG_XENO_DELAY 120
 #define TUNNEL_ENTER_LARVA_DELAY 10
+
+// Defines for action types and click delays used by xenomorph/UnarmedAttack() and attack_alien().
+
+/// Full attack delay.
+#define XENO_ATTACK_ACTION 1
+/// Noticeable but shorter than full delay.
+#define XENO_NONCOMBAT_ACTION 2
+/// No delay at all.
+#define XENO_NO_DELAY_ACTION 3
+
+/// Usually 1 second delay.
+#define xeno_attack_delay(X) (X.next_move = world.time + (10 + X.caste.attack_delay + X.attack_speed_modifier))
+/// 0.4 seconds, legacy 'open hand clicked something adjacent' delay.
+#define xeno_noncombat_delay(X) (X.next_move = world.time + 4)
+/// Usually half a second's delay.
+#define xeno_miss_delay(X) (X.next_move = world.time + ((10 + X.caste.attack_delay + X.attack_speed_modifier) * 0.5))
 
 // Determines how xenos interact with walls, normal nothing, sharp can destroy normal walls and window frame, very sharp reinforced ones.
 #define CLAW_TYPE_NORMAL 		1
@@ -49,7 +63,7 @@
 #define HUD_ARMOR_STATES_XENO  10
 
 /// Multiplier for time taken for a xeno to place down a resin structure
-#define BUILD_TIME_MULT_XENO        1 
+#define BUILD_TIME_MULT_XENO        1
 #define BUILD_TIME_MULT_BUILDER	    1
 #define BUILD_TIME_MULT_HIVELORD    0.5
 
@@ -518,11 +532,13 @@
 #define XENO_SHIELD_SOURCE_RAVAGER 1
 #define XENO_SHIELD_SOURCE_HEDGE_RAV 2
 #define XENO_SHIELD_SOURCE_VANGUARD_PRAE 3
-#define XENO_SHIELD_SOURCE_CRUSHER 4
-#define XENO_SHIELD_SOURCE_WARDEN_PRAE 5
-#define XENO_SHIELD_SOURCE_SHAMAN 6
-#define XENO_SHIELD_SOURCE_GARDENER 7
-#define XENO_SHIELD_SOURCE_SHIELD_PILLAR 8
+#define XENO_SHIELD_SOURCE_BASE_PRAE 4
+#define XENO_SHIELD_SOURCE_CRUSHER 5
+#define XENO_SHIELD_SOURCE_WARDEN_PRAE 6
+#define XENO_SHIELD_SOURCE_SHAMAN 7
+#define XENO_SHIELD_SOURCE_GARDENER 8
+#define XENO_SHIELD_SOURCE_SHIELD_PILLAR 9
+#define XENO_SHIELD_SOURCE_CUMULATIVE_GENERIC 10
 
 //XENO CASTES
 #define XENO_CASTE_LARVA             "Bloody Larva"

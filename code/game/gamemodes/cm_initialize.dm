@@ -86,9 +86,13 @@ Additional game mode variables.
 	var/bioscan_ongoing_interval = 1 MINUTES//every 1 minute
 
 	var/lz_selection_timer = 25 MINUTES //25 minutes in
-	var/round_time_resin = 40 MINUTES	//Time for when resin placing is allowed close to LZs
 	var/round_time_pooled_cutoff = 25 MINUTES	//Time for when free pooled larvae stop spawning.
-	var/resin_allow_finished
+
+	var/round_time_resin = 40 MINUTES	//Time for when resin placing is allowed close to LZs
+	var/resin_allow_finished = FALSE
+
+	var/round_time_evolution_ovipositor = 5 MINUTES //Time for when ovipositor becomes necessary for evolution to progress.
+	var/evolution_ovipositor_threshold = FALSE
 
 	var/flags_round_type = NO_FLAGS
 
@@ -405,11 +409,11 @@ Additional game mode variables.
 				if(!xeno_bypass_timer)
 					var/deathtime = world.time - xeno_candidate.timeofdeath
 					if(isnewplayer(xeno_candidate))
-						deathtime = 5 MINUTES //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
-					if(deathtime < 5 MINUTES && !check_client_rights(xeno_candidate.client, R_ADMIN, FALSE))
+						deathtime = 2.5 MINUTES //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
+					if(deathtime < 2.5 MINUTES && !check_client_rights(xeno_candidate.client, R_ADMIN, FALSE))
 						var/message = SPAN_WARNING("You have been dead for [DisplayTimeText(deathtime)].")
 						to_chat(xeno_candidate, message)
-						to_chat(xeno_candidate, SPAN_WARNING("You must wait 5 minutes before rejoining the game!"))
+						to_chat(xeno_candidate, SPAN_WARNING("You must wait 2.5 minutes before rejoining the game!"))
 						return FALSE
 				if(isnewplayer(xeno_candidate))
 					var/mob/new_player/N = xeno_candidate

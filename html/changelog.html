@@ -64,7 +64,180 @@
 	</tr>
 </table>
 
+			<h2 class="date">25 April 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Refactored vision_impair.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Refactors xenomorph attack click delay behaviour. Xeno attacks now count as a full-delay XENO_ATTACK_ACTION, 0.4 second XENO_NONCOMBAT_ACTION, zero delay XENO_NO_DELAY_ACTION, or half-delay. Error messages have no delay. This does mean 'You can't do that!'-type messages are spammable, but only the user can see those.</li>
+				<li class="rscadd">A missed xeno melee attempt now has a half-delay and audio-visual feedback, plus a message. Should make the true causes of 'eaten clicks' more apparent.</li>
+				<li class="rscdel">Xenos can no longer click tiles to attack mobs in them. The functionality still exists but is now accessed indirectly through directional attacks and the next change. Weeds & blood etc. often blocked this anyway.</li>
+				<li class="tweak">As a xeno, clicking your own sprite now attacks the tile underneath the mouse pointer. This means that you will no longer miss otherwise-viable attacks because your own dummy thicc sprite got in the way.</li>
+				<li class="tweak">If conducting a tile attack where you and a prone enemy are on the same tile, it will now attempt to target the enemy rather than the standing mob (you).</li>
+				<li class="rscdel">Nibbling allied xenos removed: no attack delay for harm-intent clicking them.</li>
+				<li class="bugfix">Timed xeno actions (as distinguished from ability actions) such as tipping vending machines etc. now apply delays when they *start*, rather than when they finish.</li>
+				<li class="tweak">Attack delay for missing a directional attack is now 0.25 seconds, down from (usually) 1 second.</li>
+				<li class="tweak">Directional attacks now calculate angles more precisely, so your mouse doesn't need to be perfectly lined up to attack in a cardinal direction.</li>
+				<li class="tweak">The non-help intent self-harm preference toggle doesn't apply to xenomorphs anymore, as they can't do anything to themselves unless someone someday gives them weapon items. This prevents the toggle from messing you up when you click your own sprite while trying to attack someone.</li>
+				<li class="tweak">Changed the layer of the residue left by an abandoned ovipositor so that it's above weeds and weed nodes.</li>
+				<li class="rscadd">Added xeno attack animation to slashing resin, resin nests, dropship chairs, claymores, broken powerloader wreckage, discarded ovipositor object, empty eggs, resin fruits, tipping vending machines.</li>
+				<li class="tweak">Only attacks on mobs add to xeno slash stats. Previously all xeno clicks did, making it a useless statistic.</li>
+				<li class="tweak">Xenos no longer need to be on harm intent to open lockers.</li>
+				<li class="tweak">Xeno snow clearing must be done on disarm or grab intents, as harm intent counts as a missed slash and help intent does nothing.</li>
+				<li class="tweak">Clicking resin structures (spikes, sticky resin etc.) on help intent applies no delays.</li>
+			</ul>
+
+			<h2 class="date">24 April 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">fix an issue with changelog parsing adding invalid entries + regenerate it</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Medical personnel now can use the windoors in medbay's lobby.</li>
+			</ul>
+			<h3 class="author">forest2001 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added a variant of sandstone, sandstone walls and sandstone airlocks for Hunters to use. Allows hunters to use their wristblades to open, close, lock and unlock the door. It has no other method of interaction.</li>
+			</ul>
+
+			<h2 class="date">23 April 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added a new XRT, Feral Xenomorphs. Normal XRT but it's a feral queenless hive hostile to everything. Can be called in hijack.</li>
+				<li class="tweak">Halved xeno and in general death timer.</li>
+			</ul>
+			<h3 class="author">ChainsawMullet updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">Added four "duelling" weapon types to the Hunter ship arena room.</li>
+				<li class="maptweak">Added a Hellhound Quarters to the Hunter ship.</li>
+				<li class="maptweak">Elders now have windows in their quarters of the ship.</li>
+				<li class="maptweak">Added some Body Mesh to the Hunter ship storage room for Thralls.</li>
+				<li class="maptweak">Added some more flour to the Hunter ship.</li>
+				<li class="maptweak">Added spare stew to Cooler room on Hunter ship.</li>
+				<li class="maptweak">Moved the new Hunter coffins to the burial chamber.</li>
+				<li class="tweak">Examining a target as a Hunter will now list their honour as "the scent of defeated prey" rather than as "honour".</li>
+			</ul>
+			<h3 class="author">GoldenDarkness55 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Vanguard and Oppressor strains can now break standard walls.</li>
+				<li class="rscdel">Removed corrosive acid from Oppressor and Vanguard strains.</li>
+				<li class="tweak">Dancer strain can no longer break reinforced walls.</li>
+				<li class="tweak">Reinforced window frames can now be broken by all caste capable of breaking standard walls.</li>
+			</ul>
+			<h3 class="author">Jackie_Estegado updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Headless bodies can no longer be revived.</li>
+				<li class="bugfix">Revivable bodies can no longer be put into bodybags.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Gear presets now correctly equip and fill accessories.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Messages that involve resin structures and their areas will now properly display the areas in chat.</li>
+			</ul>
+
+			<h2 class="date">22 April 2021</h2>
+			<h3 class="author">BIgboyyo updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">Added a few more boxes of buck along with HG shotguns and spent buckshot to Kutjevo.</li>
+				<li class="maptweak">Added about 4 medvendors to Kutjveo, all in medbay.</li>
+				<li class="maptweak">Replaced a number of the cades near Fiorina's LZ with metal since they're annoying to move.</li>
+				<li class="bugfix">Fixed the door stack SW of Yard on Fiorina.</li>
+				<li class="tweak">Removed the ghost of the Almayer.</li>
+			</ul>
+			<h3 class="author">Spartanbobby_Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">Significantly revamped the main temple in LV along its nightmare inserts.</li>
+			</ul>
+
+			<h2 class="date">20 April 2021</h2>
+			<h3 class="author">Jackie_Estegado updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed unheard ahelps getting removed when ahelper changes bodies.</li>
+			</ul>
+			<h3 class="author">alardun updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Temporarily falling back onto Praetorian old Telegraph until the server dmi situation can be sorted out.</li>
+			</ul>
+
+			<h2 class="date">19 April 2021</h2>
+			<h3 class="author">50RemAndCounting updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed Commanding Officers not having the Master level JTAC skill.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed predators being able to self-destruct after the critical threshold.</li>
+				<li class="tweak">Time needed to pry open resin doors with wristblades reduced from 3 seconds to 1.5.</li>
+				<li class="wip">Hellhounds can no longer tackle (sleep).</li>
+				<li class="rscdel">The Quickfire Adapter has been removed and its benefits integrated into the M44, the L42, the M41, and the Mod88.</li>
+			</ul>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">The marine ship will now use the marine ship map name as its name</li>
+				<li class="tweak">simplified BYOND pager status</li>
+				<li class="bugfix">BYOND pager status should now properly display round time</li>
+			</ul>
+			<h3 class="author">Jeser updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed putting two vehicle modules to the same slot.</li>
+			</ul>
+
+			<h2 class="date">18 April 2021</h2>
+			<h3 class="author">BIgboyyo updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Removed DEFCON mentions from Event Panel since they do nothing now.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Warden Praetorians have had their 25 armor readded.</li>
+				<li class="rscadd">Base Praetorians now gain 15 shield on acid spit hit, as a reward for hitting spits. Maximum 45 shield.</li>
+				<li class="tweak">Increased acid spit range to fit the intended full screen.</li>
+				<li class="tweak">Reduced single prae acid spray hit damage from 20 to 12 and increased prae acid spit damage.</li>
+				<li class="rscadd">Reduced defender slash damage from 30 to 27.</li>
+				<li class="rscadd">Changed how defender crest toggling works. Reduced crest armor and slowdown, reduced cooldown by 0.5 seconds.</li>
+				<li class="rscadd">Inverted defender headbutt. You will home into a target when crest is up, and fling them away if it's down.</li>
+				<li class="tweak">Increased minimum tackles of Runner from 3 to 4, slightly increased stuntime.</li>
+				<li class="tweak">Increased tackles needed for Burrower by 1, reduced chance from 50 to 40.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Evolution progress on xeno status panel is somewhat cleaner now.</li>
+			</ul>
+			<h3 class="author">Triiodine updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">(Hopefully) fixed the Oppressor Praetorian's invisible telegraph.</li>
+			</ul>
+			<h3 class="author">naut updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Fire alarms now change color and flash depending on the alert state.</li>
+				<li class="rscadd">Admins now have the ability to trigger (and cancel) evacuations through the event panel.</li>
+				<li class="tweak">Status displays now have a blue alert state.</li>
+				<li class="tweak">Status displays now display an evacuation alarm when evacuation is called.</li>
+				<li class="imageadd">Red alert and blue alert status display sprites have been modified. Evacuation status display sprite was added.</li>
+			</ul>
+
 			<h2 class="date">17 April 2021</h2>
+			<h3 class="author">Carlarc_Thwomper_Triiodine updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Significantly reworked the UPP ERT, with the intention to make it a marine menace and middling against Xenomorphs.</li>
+				<li class="rscadd">Added a new gun: The Type 23 riot shotgun. It's a semi-automatic 8 gauge shotgun and packs a ridiculous punch.</li>
+				<li class="rscadd">Significantly buffed or reworked the following guns: Type 71, Type 71-F, PK-9, Nagant revolver, Skorpion (fullauto)</li>
+				<li class="rscdel">Deleted the effectively-bloat HVH and cryo UPP loadouts.</li>
+				<li class="rscdel">Tranq bullets now deal 30 stamina damage instead of insta KOing.</li>
+				<li class="tweak">Significantly weakened ceramic plates against enemy factions. They will absorb 100 damage then break.</li>
+				<li class="tweak">Burst ammo display is accurate now.</li>
+				<li class="bugfix">Fixed PMC glove sprites.</li>
+			</ul>
+			<h3 class="author">Triiodine updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="imageadd">New Praetorian telegraph icons. No more orange boxes.</li>
+			</ul>
 			<h3 class="author">optimisticdude updated:</h3>
 			<ul class="changes bgimages16">
 				<li class="tweak">Doubles the recharge time for ship railguns from 15 to 30 seconds.</li>
@@ -86,7 +259,6 @@
 				<li class="rscadd">Added braziers, wall-mounted torches, predator coffins.</li>
 				<li class="rscadd">Predators can now flay corpses with the ceremonial dagger, and hang them from the ceiling with rope found in the hunter ship.</li>
 				<li class="imageadd">Resprited mending/soothing herbs.</li>
-				<li class="rscadd">Added a new set of Predator armor, "Ravaged".</li>
 			</ul>
 			<h3 class="author">GoldenDarkness55 updated:</h3>
 			<ul class="changes bgimages16">
@@ -99,8 +271,8 @@
 			</ul>
 			<h3 class="author">Segrain updated:</h3>
 			<ul class="changes bgimages16">
-				<li class="bugfix">Railgun should now work properly on Fiorina Science Annex.</li>
 				<li class="bugfix">Dumping boxes of shotgun ammo into belts and pouches now works as intended.</li>
+				<li class="bugfix">Railgun should now work properly on Fiorina Science Annex.</li>
 			</ul>
 			<h3 class="author">SuprisedBaby_ updated:</h3>
 			<ul class="changes bgimages16">
@@ -1311,86 +1483,6 @@
 				<li class="imageadd">Hydroponics trays.</li>
 				<li class="imageadd">Matchboxes and matches.</li>
 				<li class="imageadd">Drink and booze dispensers.</li>
-			</ul>
-
-			<h2 class="date">19 February 2021</h2>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">The "Fix Interfaces" verb will no longer close everyone's UIs.</li>
-			</ul>
-			<h3 class="author">Triiodine updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Replaced some reinforced walls with hull walls on Prison that allowed access to internal space areas.</li>
-				<li class="bugfix">Re-added the HEFA tome sprite.</li>
-				<li class="bugfix">Fixed the medibot's O2 kit overlay referencing the original bay12 version.</li>
-				<li class="bugfix">Fixed some impassable telephone booths on Science Annex.</li>
-				<li class="bugfix">Non-decal plants no longer have 60% chance to catch bullets passing over them, lowered to 0%.</li>
-			</ul>
-
-			<h2 class="date">18 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Regenerated Changelog from 26-01-2020 to account for missing entries</li>
-				<li class="tweak">Changelog tools now account for comment close tags, and MR merging date, rather than using current day</li>
-				<li class="bugfix">Changelog generation utility now properly paginates by last update date when reading MRs</li>
-			</ul>
-
-			<h2 class="date">17 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Changed default project MR template comments so stupid changelog parser doesn't entirely ignore changelog entries</li>
-			</ul>
-
-			<h2 class="date">16 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed revolver catch trick being more of a meme than it should be</li>
-				<li class="tweak">Fix agents destroy logic</li>
-				<li class="bugfix">Agents objective related objects won't delete with them anymore</li>
-			</ul>
-			<h3 class="author">Firatix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">fixed destroy logic for storages regarding mobs observing them</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="spellcheck">Berserker's apprehend ability no longer gets called "enrage".</li>
-				<li class="bugfix">Berserker locked at maximum rage no longer loses it when using clothesline ability.</li>
-				<li class="bugfix">Berserker's eviscerate ability now correctly calculates its variable attributes when used below maximum rage level.</li>
-			</ul>
-			<h3 class="author">Shikareth updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed Prison_Station_Science_Annex wiki link</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Refactored facehugger code to use timers and a processing subsystem.</li>
-				<li class="tweak">Active huggers will try to infect someone every 2 seconds instead of every 5 seconds.</li>
-				<li class="bugfix">Huggers no longer die while infecting people.</li>
-				<li class="bugfix">Huggers that have infected people will show the proper sprite.</li>
-				<li class="bugfix">The hive status subsystem uses the property priority.</li>
-				<li class="bugfix">The throw speed for the carrier "Use/Throw Facehugger" ability properly fits with the speed system we have now.</li>
-			</ul>
-			<h3 class="author">TobiNerd updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">ALT clicking surfaces (tables and racks) now show contents in statpanel again.</li>
-				<li class="bugfix">Intercoms are no longer added to surfaces.</li>
-			</ul>
-
-			<h2 class="date">15 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fix improper deletion with tgui_list_input and tgui_alert</li>
-				<li class="bugfix">Added QDEL_REF_IN to del by timer using weakreferences, allowing GC'ing during long running timers</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed a chat-breaking PMC ERT message.</li>
-				<li class="tweak">Added a to_chat sanity check to prevent issues in the future with bad message types.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscdel">Disables voting on XvX as it is currently broken.</li>
 			</ul>
 </div>
 </body>

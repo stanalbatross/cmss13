@@ -504,7 +504,12 @@ var/list/wood_icons = list("wood", "wood-broken")
 		SPAN_DANGER("You hear broken glass!"), 5)
 		icon_state = "light_off"
 		SetLuminosity(0)
+		return XENO_ATTACK_ACTION
 
 /turf/open/floor/sandstone
 	name = "sandstone floor"
 	icon_state = "whiteyellowfull"
+
+/turf/open/floor/sandstone/runed
+	name = "sandstone temple floor"
+	icon_state = "runedsandstone"

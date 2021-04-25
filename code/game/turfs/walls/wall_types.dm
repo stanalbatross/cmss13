@@ -319,6 +319,23 @@
 	color = "#c6a480"
 	baseturfs = /turf/open/gm/dirt
 
+/turf/closed/wall/mineral/sandstone/runed
+	name = "sandstone temple wall"
+	desc = "A heavy wall of sandstone."
+	mineral = "runed sandstone"
+	color = "#b29082"
+	damage_cap = HEALTH_WALL_REINFORCED//Strong, but only available to Hunters, can can still be blown up or melted by boilers.
+
+/turf/closed/wall/mineral/sandstone/runed/decor
+	name = "runed sandstone temple wall"
+	desc = "A heavy wall of sandstone with elegant carvings and runes inscribed upon its face."
+	icon = 'icons/turf/walls/runedstone.dmi'
+	icon_state = "runedstone"
+	walltype = "runedstone"
+
+/turf/closed/wall/mineral/sandstone/runed/can_be_dissolved()
+	return 2
+
 /turf/closed/wall/mineral/uranium
 	name = "uranium wall"
 	desc = "A wall with uranium plating. This is probably a bad idea."
@@ -854,7 +871,7 @@
 		return FALSE
 
 	if(M.a_intent == INTENT_HELP)
-		return FALSE
+		return XENO_NO_DELAY_ACTION
 
 	M.animation_attack_on(src)
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
@@ -864,6 +881,7 @@
 		take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+	return XENO_ATTACK_ACTION
 
 /obj/structure/alien/movable_wall/attackby(obj/item/W, mob/living/user)
 	if(!(W.flags_item & NOBLUDGEON))
@@ -1058,21 +1076,22 @@
 
 /turf/closed/wall/resin/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(SEND_SIGNAL(src, COMSIG_WALL_RESIN_XENO_ATTACK, M) & COMPONENT_CANCEL_XENO_ATTACK)
-		return
+		return XENO_NO_DELAY_ACTION
 
 	if(isXenoLarva(M)) //Larvae can't do shit
-		return 0
-	else if(M.a_intent == INTENT_HELP)
-		return 0
+		return
+	if(M.a_intent == INTENT_HELP)
+		return XENO_NO_DELAY_ACTION
+
+	M.animation_attack_on(src)
+	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
+	SPAN_XENONOTICE("You claw \the [src]."))
+	playsound(src, "alien_resin_break", 25)
+	if (M.hivenumber == hivenumber)
+		take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
 	else
-		M.animation_attack_on(src)
-		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
-		SPAN_XENONOTICE("You claw \the [src]."))
-		playsound(src, "alien_resin_break", 25)
-		if (M.hivenumber == hivenumber)
-			take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
-		else
-			take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+	return XENO_ATTACK_ACTION
 
 
 /turf/closed/wall/resin/attack_animal(mob/living/M)

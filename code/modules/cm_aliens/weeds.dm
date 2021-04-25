@@ -287,18 +287,14 @@
 			qdel(src)
 
 /obj/effect/alien/weeds/attack_alien(mob/living/carbon/Xenomorph/X)
-	if(indestructible)
-		return
-
-	if(!HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
+	if(!indestructible && !HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
 		X.animation_attack_on(src)
-
 		X.visible_message(SPAN_DANGER("\The [X] slashes [src]!"), \
 		SPAN_DANGER("You slash [src]!"), null, 5)
 		playsound(loc, "alien_resin_break", 25)
 		health -= X.melee_damage_lower*WEED_XENO_DAMAGEMULT
 		healthcheck()
-
+		return XENO_ATTACK_ACTION
 
 
 /obj/effect/alien/weeds/attackby(obj/item/W, mob/living/user)
@@ -465,6 +461,9 @@
 		addtimer(CALLBACK(W, .proc/avoid_orphanage), WEED_BASE_DECAY_SPEED + rand(0, 10)) // Slight variation whilst decaying
 
 	. = ..()
+
+/obj/effect/alien/weeds/node/feral
+	hivenumber = XENO_HIVE_FERAL
 
 /obj/effect/alien/weeds/node/pylon
 	health = WEED_HEALTH_HIVE

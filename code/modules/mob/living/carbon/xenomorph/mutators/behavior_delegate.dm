@@ -74,7 +74,7 @@
 /datum/behavior_delegate/proc/ranged_attack_additional_effects_target(atom/A)
 	return
 
-/datum/behavior_delegate/proc/ranged_attack_additional_effects_self()
+/datum/behavior_delegate/proc/ranged_attack_additional_effects_self(atom/A)
 	return
 
 // Any special behaviors on reception of a projectile attack
@@ -86,7 +86,7 @@
 /datum/behavior_delegate/proc/on_kill_mob(mob/M)
 	return
 
-// Handling specific behavior
+// Handling specific behavior - if TRUE, the attack will not have an attack delay by default.
 
 /datum/behavior_delegate/proc/handle_slash(mob/M)
 	return

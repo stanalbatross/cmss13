@@ -171,7 +171,7 @@ IN_USE						used for vending/denying
 /obj/structure/machinery/cm_vending/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(stat & TIPPED_OVER)
 		to_chat(M, SPAN_WARNING("There's no reason to bother with that old piece of trash."))
-		return FALSE
+		return XENO_NO_DELAY_ACTION
 
 	if(M.a_intent == INTENT_HARM && !unslashable)
 		M.animation_attack_on(src)
@@ -181,15 +181,15 @@ IN_USE						used for vending/denying
 			SPAN_DANGER("You enter a frenzy and smash [src] apart!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 			malfunction()
 			tip_over()
-			return TRUE
 		else
 			M.visible_message(SPAN_DANGER("[M] slashes [src]!"), \
 			SPAN_DANGER("You slash [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 			playsound(loc, 'sound/effects/metalhit.ogg', 25, 1)
-		return TRUE
+		return XENO_ATTACK_ACTION
 
 	if(M.action_busy)
-		return
+		return XENO_NO_DELAY_ACTION
+
 	M.visible_message(SPAN_WARNING("[M] begins to lean against [src]."), \
 	SPAN_WARNING("You begin to lean against [src]."), null, 5, CHAT_TYPE_XENO_COMBAT)
 	var/shove_time = 80
@@ -197,10 +197,15 @@ IN_USE						used for vending/denying
 		shove_time = 30
 	if(istype(M,/mob/living/carbon/Xenomorph/Crusher))
 		shove_time = 15
+
+	xeno_attack_delay(M) //Adds delay here and returns nothing because otherwise it'd cause lag *after* finishing the shove.
+
 	if(do_after(M, shove_time, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		M.animation_attack_on(src)
 		M.visible_message(SPAN_DANGER("[M] knocks [src] down!"), \
 		SPAN_DANGER("You knock [src] down!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 		tip_over()
+	return XENO_NO_DELAY_ACTION
 
 /obj/structure/machinery/cm_vending/attack_hand(mob/user)
 	if(stat & TIPPED_OVER)
@@ -346,7 +351,7 @@ IN_USE						used for vending/denying
 	else if(ismultitool(W))
 		var/obj/item/device/multitool/MT = W
 
-		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI) && !skillcheck(user, SKILL_ANTAG, SKILL_ANTAG_TRAINED))
+		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI) && !skillcheckexplicit(user, SKILL_ANTAG, SKILL_ANTAG_AGENT))
 			to_chat(user, SPAN_WARNING("You do not understand how tweak access requirements in [src]."))
 			return FALSE
 		if(stat != WORKING)
