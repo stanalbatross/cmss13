@@ -664,7 +664,6 @@
 		X.interference = 30
 
 /obj/item/weapon/melee/yautja_sword/proc/add_charges(mob/living/carbon/human/user, var/hit_charged = TRUE)
-
 	if(parrying_charges >= parrying_charges_max)
 		return
 
@@ -682,7 +681,6 @@
 		addtimer(CALLBACK(src, .proc/lose_charges, user), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/weapon/melee/yautja_sword/proc/lose_charges(mob/living/carbon/human/user)
-
 	if(parrying_charges < 1)
 		return
 
@@ -707,7 +705,6 @@
 	..()
 
 /obj/item/weapon/melee/yautja_sword/attack_self(mob/living/carbon/human/user)
-
 	var/is_yautja_user = isSpeciesYautja(user)
 	if(cur_parrying_cooldown > world.time || parrying)
 		to_chat(user, SPAN_WARNING("You've attempted to parry too soon, you must wait a bit before regaining your focus."))
