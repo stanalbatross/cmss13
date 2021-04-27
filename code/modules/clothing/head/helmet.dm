@@ -311,22 +311,22 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	force = 15
 	throwforce = 15 // https://i.imgur.com/VW09I4B.gif
 	attack_verb = list("whacked", "hit", "smacked", "beaten", "battered")
-	var/obj/structure/machinery/camera/camera
-	var/helmet_overlays[]
 	flags_inventory = BLOCKSHARPOBJ
 	flags_inv_hide = HIDEEARS
-	var/flags_marine_helmet = HELMET_SQUAD_OVERLAY|HELMET_GARB_OVERLAY|HELMET_DAMAGE_OVERLAY|HELMET_STORE_GARB
-	var/obj/item/storage/internal/pockets
-	var/helmet_bash_cooldown = 0
-
-	var/specialty = "M10 pattern marine" //Give them a specialty var so that they show up correctly in vendors.
 	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	item_icons = list(
 		WEAR_HEAD = 'icons/mob/humans/onmob/head_1.dmi'
 	)
-
-	//speciality does NOTHING if you have NO_NAME_OVERRIDE
+	var/flags_marine_helmet = HELMET_SQUAD_OVERLAY|HELMET_GARB_OVERLAY|HELMET_DAMAGE_OVERLAY|HELMET_STORE_GARB
+	var/obj/item/storage/internal/pockets
+	var/helmet_bash_cooldown = 0
+	var/obj/structure/machinery/camera/camera
+	var/helmet_overlays[]
+	 ///Specialty does NOTHING if you have NO_NAME_OVERRIDE
+	var/specialty = "M10 pattern marine" //Give them a specialty var so that they show up correctly in vendors.
+	 ///How many tiny items we can fit into the helmet.
+	var/storage_size = 2
 
 /obj/item/clothing/head/helmet/marine/New(loc,
 	new_protection[]	= list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature))
@@ -342,10 +342,10 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 
 	helmet_overlays = list() //To make things simple.
 	pockets = new/obj/item/storage/internal(src)
-	pockets.storage_slots = 2
+	pockets.storage_slots = storage_size
 	pockets.max_w_class = SIZE_TINY //can hold tiny items only, EXCEPT for glasses & metal flask.
 	pockets.bypass_w_limit = GLOB.allowed_helmet_items
-	pockets.max_storage_space = 3
+	pockets.max_storage_space = storage_size + 1
 
 	camera = new /obj/structure/machinery/camera(src)
 	camera.network = list("Overwatch")
@@ -540,6 +540,69 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	anti_hug = 6
 	force = 20
 	specialty = "B18"
+
+/obj/item/clothing/head/helmet/marine/b18_tech
+	name = "\improper B18 prototype defensive helmet"
+	desc = "A proof-of-concept prototype based on the MG-34 helmet intended to absorb more damage. Very efficient at this task, though perhaps a bit too much, as the dark ballistics-glass visor slightly hinders vision."
+	icon_state = "b18_helmet"
+	armor_melee = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_HIGHPLUS
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_HIGHPLUS
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE
+	vision_impair = VISION_IMPAIR_MIN
+	anti_hug = 2
+	force = 20
+	unacidable = FALSE
+	storage_size = 3
+	var/visor_down = TRUE
+
+/obj/item/clothing/head/helmet/marine/b18_tech/examine(mob/user)
+	. = ..()
+	to_chat(user, SPAN_NOTICE("Its visor is [visor_down ? "down." : "inside the helmet."] You could apply a screwdriver to flip it up or down."))
+
+/obj/item/clothing/head/helmet/marine/b18_tech/attackby(obj/item/W, mob/user)
+	
+	if(isscrewdriver(W)) //pending tool refactor
+		playsound(loc, 'sound/items/Screwdriver.ogg', 25, TRUE)
+		if(visor_down)
+			to_chat(user, SPAN_NOTICE("You screw the visor, shuffling it into the helmet, increasing visibility but reducing protection."))
+			visor_down = FALSE
+			visor_up_stats()
+		else
+			to_chat(user, SPAN_NOTICE("You screw the visor, shuffling it back into place, increasing protection but reducing visibility."))
+			visor_down = TRUE
+			visor_down_stats()
+		user.update_tint()
+		user.update_inv_head()
+	else ..()
+
+/obj/item/clothing/head/helmet/marine/b18_tech/proc/visor_up_stats()
+	icon_state = "b18_helmet_u"
+	item_state = "b18_helmet_u"
+	armor_melee = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_bullet = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_HIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_HIGH
+	vision_impair = VISION_IMPAIR_NONE
+
+/obj/item/clothing/head/helmet/marine/b18_tech/proc/visor_down_stats()
+	icon_state = "b18_helmet"
+	item_state = "b18_helmet"
+	armor_melee = CLOTHING_ARMOR_VERYHIGH
+	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_HIGHPLUS
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_HIGHPLUS
+	vision_impair = VISION_IMPAIR_MIN
 
 /obj/item/clothing/head/helmet/marine/grenadier
 	name = "\improper M3-G4 grenadier helmet"
@@ -867,6 +930,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_MEDIUMLOW
 	armor_internaldamage = CLOTHING_ARMOR_HIGH
+	vision_impair = VISION_IMPAIR_MIN
 
 /obj/item/clothing/head/helmet/marine/veteran/UPP/heavy
 	name = "\improper UH7 helmet"

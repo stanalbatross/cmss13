@@ -1054,20 +1054,6 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 	return TRUE
 
-/obj/item/clothing/head/helmet/marine/b18_tech
-	name = "\improper B18 prototype defensive helmet"
-	desc = "A proof-of-concept prototype based on the MG-34 helmet intended to absorb more damage. Very efficient at this task, though perhaps a bit too much, as the dark ballistics-glass visor slightly hinders vision."
-	icon_state = "b18_helmet"
-	armor_melee = CLOTHING_ARMOR_VERYHIGH
-	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
-	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
-	armor_bomb = CLOTHING_ARMOR_VERYHIGH
-	armor_bio = CLOTHING_ARMOR_HIGHPLUS
-	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_internaldamage = CLOTHING_ARMOR_HIGHPLUS
-	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE
-	//vision_impair = VISION_IMPAIR_MIN
-
 #define INTEGRITY_FINE 2
 #define INTEGRITY_DAMAGED 1
 #define INTEGRITY_BROKEN 0
@@ -1094,8 +1080,8 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	var/injections = 4
 	var/integrity = 100
 	var/integrity_repair_max = 100
-	var/integrity_mult = 0.40
-	var/integrity_repair_mult = 0.20
+	var/integrity_mult = 0.4
+	var/integrity_repair_mult = 0.2
 	var/integrity_threshold = INTEGRITY_FINE
 	var/flat_dmg_mult = 0.75
 	var/BB_plas_plates = 3
@@ -1103,7 +1089,10 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/b18_tech/examine(mob/user)
 	. = ..()
 	if(integrity_threshold)
-		to_chat(user, SPAN_NOTICE("A readout on the side says [round(integrity)]% INTEGRITY.[skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED) ? "You think you could repair it to roughly [round(integrity_repair_max)]& integrity." : "" ]"))
+		var/show_repair = ""
+		if(skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED) && integrity < integrity_repair_max)
+			show_repair = "You think you could repair it to roughly [round(integrity_repair_max)]% integrity."
+		to_chat(user, SPAN_NOTICE("A readout on the side says [round(integrity)]% INTEGRITY. [show_repair]"))
 		to_chat(user, SPAN_NOTICE("[BB_plas_plates]/3 of its plasteel plates are intact. [BB_plas_plates ? "You could remove them with a crowbar." : ""]"))
 		to_chat(user, SPAN_NOTICE("There are [injections] firstaid injectors left in its arm guards. [injections ? "You could remove one with a screwdriver." : ""]"))
 	else
@@ -1138,7 +1127,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		return
 
 	if(iswelder(source))
-		weld(user, source)
+		INVOKE_ASYNC(src, .proc/weld, user, source) //sleeps in do_after
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_integrity(var/mob/living/carbon/human/user, list/damagedata, damagetype)
 	SIGNAL_HANDLER
@@ -1147,6 +1136,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	//flat reduce some incoming damage (because only god knows how our damage + armor system works)
 	damagedata["damage"] = damagedata["damage"] * flat_dmg_mult
 
+	//reduce armor integrity, and reduce the maximum the armor can be repaired to
 	var/armor_damage = damagedata["damage"] * integrity_mult
 	var/armor_max_damage = damagedata["damage"] * integrity_repair_mult
 	integrity = integrity - armor_damage
@@ -1176,6 +1166,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		dismantle(user)
 		update_icon(INTEGRITY_BROKEN)
 		user.update_inv_wear_suit()
+		user.recalculate_move_delay = TRUE
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/splinter(var/mob/living/carbon/human/user)
 	SIGNAL_HANDLER
@@ -1197,6 +1188,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		injections--
 	UnregisterSignal(user, list(COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
 	set_broken_values()
+	user.update_canmove()
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/set_broken_values()
 	//note that this is still a proc
@@ -1220,10 +1212,10 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	injections = 0
 
 /obj/item/clothing/suit/storage/marine/b18_tech/attackby(obj/item/W, var/mob/living/carbon/human/user)
+	//replace attackby in store code with forcemove/(etc)
 	if(user.a_intent != INTENT_HARM)
 		return ..()
 
-	//weld
 	if(iswelder(W)) //pending tool rework
 		weld(user, W)
 
@@ -1262,7 +1254,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	else ..()
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/weld(var/mob/living/carbon/human/user, var/obj/item/tool/weldingtool/welder)
-	SIGNAL_HANDLER
+
 	if(!integrity_threshold)
 		to_chat(user, SPAN_NOTICE("It's a bit late for that!"))
 		return
@@ -1286,7 +1278,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 		user.visible_message(SPAN_NOTICE("[user] repairs some damage on \the [src]."),
 		SPAN_NOTICE("You repair [src]."))
-		var/repair_amount = 15
+		var/repair_amount = 10
 		integrity = min(integrity + repair_amount, integrity_repair_max)
 		playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
 

@@ -333,6 +333,7 @@
 #include "code\datums\elements\_element.dm"
 #include "code\datums\elements\bloody_feet.dm"
 #include "code\datums\elements\magharness.dm"
+#include "code\datums\elements\magnetic_sling.dm"
 #include "code\datums\elements\bullet_trait\iff.dm"
 #include "code\datums\elements\bullet_trait\incendiary.dm"
 #include "code\datums\elements\bullet_trait\penetrating.dm"

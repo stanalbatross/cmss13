@@ -56,6 +56,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	var/cur_onehand_chance = 85
 	var/reset_onehand_chance = 85
 	var/lever_message = "<i>You work the lever.<i>"
+	var/lever_super_message = "<b><i>You quickly work the lever!<i><b>"
 	var/buff_fire_reduc = 2
 	var/streak
 
@@ -127,11 +128,11 @@ their unique feature is that a direct hit will buff your damage and firerate
 		streak++
 		playsound(user, lever_hitsound, 25, FALSE)
 	lever_sound = lever_super_sound
-	lever_message = "<b><i>You quickly work the lever!<i><b>"
+	lever_message = lever_super_message
 	lever_delay = FIRE_DELAY_TIER_10
 	last_fired = world.time - buff_fire_reduc //to shoot the next round faster
 	fire_delay = FIRE_DELAY_TIER_5
-	damage_mult = initial(damage_mult) + BULLET_DAMAGE_MULT_TIER_10
+	damage_mult = initial(damage_mult) + BULLET_DAMAGE_MULT_TIER_7
 	wield_delay = 0 //for one-handed levering
 	addtimer(CALLBACK(src, .proc/reset_hit_buff, user, one_hand_lever), 1 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE) //continously override timer as long as streak continues
 
@@ -168,7 +169,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 		update_icon()	//This is not needed for now. Maybe we'll have loaded sprites at some point, but I doubt it. Also doesn't play well with double barrel.
 		ready_in_chamber()
 		cock_gun(user)
-	if(user) playsound(user, reload_sound, 25, TRUE)
+	if(user)
+		playsound(user, reload_sound, 25, TRUE)
 	return TRUE
 
 /obj/item/weapon/gun/lever_action/proc/empty_chamber(mob/user)
@@ -185,7 +187,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 		return
 
 	unload_bullet(user)
-	if(!current_mag.current_rounds && !in_chamber) update_icon()
+	if(!current_mag.current_rounds && !in_chamber)
+		update_icon()
 
 /obj/item/weapon/gun/lever_action/proc/unload_bullet(mob/user)
 	if(isnull(current_mag) || !length(current_mag.chamber_contents))
@@ -315,6 +318,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 //don't think about how this incredibly expensive railgun is roughly as effective as a 19th century lever-action rifle
 /obj/item/weapon/gun/lever_action/railgun
 	name = "XM-42b infantry railgun"
+	//desc = "A poggers hellbliterator"
 	desc = "This extremely advanced and expensive gun was marketed as the future of the USCM for a year, and then severe fundamental structural flaws that were being covered up to keep the project afloat were exposed to the USCM. Despite the scandal that proceeded, many of these guns were still produced as heavy support."
 	icon_state = "xm42b"
 	item_state = "xm42b"
@@ -322,7 +326,26 @@ their unique feature is that a direct hit will buff your damage and firerate
 	attachable_allowed = list()
 	starting_attachment_types = list()
 	lever_sprite = FALSE
+	lever_sound = 'sound/weapons/handling/gun_railgun_load.ogg'
+	lever_super_sound = 'sound/weapons/handling/gun_railgun_superload.ogg'
+	lever_message = "<i>You charge the railgun!<i>"
+	lever_super_message = "<b><i>You supercharge the railgun!<i><b>"
 	var/obj/item/attachable/scope/railgun/scope
+	var/integrity = 50 //shots
+
+//todo: break gun over time when firing
+/obj/item/weapon/gun/lever_action/railgun/Fire(atom/target, mob/living/user, params, reflex, dual_wield)
+	. = ..()
+	if(!.)
+		return
+	switch(integrity)
+		if(1 to 10)
+			to_chat(user, SPAN_DANGER("[src] rattles violently! Some bits and screws fall off."))
+		if(11 to 25)
+			to_chat(user, SPAN_WARNING("[src] rattles violently!"))
+		if(26 to 35)
+			to_chat(user, SPAN_WARNING("[src] rattles after the shot!"))
+	integrity--
 
 /obj/item/weapon/gun/lever_action/railgun/handle_starting_attachment()
 	..()
@@ -337,6 +360,13 @@ their unique feature is that a direct hit will buff your damage and firerate
 	if(scope.broken)
 		return
 	break_scope(M)
+
+/obj/item/weapon/gun/lever_action/railgun/twohand_lever(mob/living/carbon/human/user)
+	to_chat(user, SPAN_WARNING(lever_message))
+
+/obj/item/weapon/gun/lever_action/railgun/try_onehand_lever(mob/living/carbon/human/user)
+	twohand_lever(user)
+	return
 
 /obj/item/weapon/gun/lever_action/railgun/proc/break_scope(var/mob/M)
 	scope.broken = TRUE

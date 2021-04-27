@@ -94,10 +94,10 @@
 	item_state = "egloves"
 
 /obj/item/clothing/gloves/marine/specialist
-	name = "\improper B18 defensive gauntlets"
-	desc = "A pair of heavily armored gloves."
-	icon_state = "black"
-	item_state = "bgloves"
+	name = "\improper B18 prototype defensive gauntlets"
+	desc = "A pair of heavily armored gloves, er, gauntlets."
+	icon_state = "b18"
+	item_state = "b18"
 	armor_melee = CLOTHING_ARMOR_VERYHIGH
 	armor_bullet = CLOTHING_ARMOR_ULTRAHIGH
 	armor_laser = CLOTHING_ARMOR_MEDIUMHIGH
@@ -105,7 +105,7 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_ULTRAHIGH
 	armor_internaldamage = CLOTHING_ARMOR_ULTRAHIGH
-	unacidable = TRUE
+	unacidable = FALSE
 
 /obj/item/clothing/gloves/marine/M3G
 	name = "\improper M3-G4 Grenadier gloves"

@@ -16,7 +16,6 @@
 /datum/tech/droppod/item/combat_implants/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 
-	.["Nightvision Implant"] = /obj/item/device/implanter/nvg
 	.["Rejuvenation Implant"] = /obj/item/device/implanter/rejuv
 	.["Agility Implant"] = /obj/item/device/implanter/agility
 	.["Subdermal Armor"] = /obj/item/device/implanter/subdermal_armor
@@ -123,7 +122,7 @@
 	host = null
 	return ..()
 
-/obj/item/device/implanter/nvg
+/obj/item/device/implanter/nvg //unused
 	name = "nightvision implant"
 	desc = "This implant will give you night vision. These implants get damaged on death."
 	implant_type = /obj/item/device/internal_implant/nvg
