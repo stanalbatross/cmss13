@@ -697,7 +697,6 @@
 
 	if(parrying_charges > 1)
 		addtimer(CALLBACK(src, .proc/lose_charges, user, FALSE), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
-		to_chat(user, SPAN_DANGER("(parrying_charges-- > 1 timer"))
 	if(parrying_charges == 0)
 		src.remove_filter("sword_charge")
 		addtimer(CALLBACK(src, .proc/add_charges, user, FALSE), 40 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
