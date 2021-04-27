@@ -805,6 +805,7 @@
 	. = TRUE
 	if(damage)
 		bullet_message(P)
+		bullet_log(P)
 		apply_damage(damage, P.ammo.damage_type, P.def_zone, 0, 0, P)
 		P.play_damage_effect(src)
 
@@ -871,10 +872,12 @@
 		if(!isSpeciesYautja(src) && !isSpeciesSynth(src))
 			apply_effects(arglist(P.ammo.debilitate))
 
-	bullet_message(P) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
+	bullet_log(P) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
 
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_BULLET_ACT, damage_result, ammo_flags, P) & COMPONENT_CANCEL_BULLET_ACT)
 		return
+
+	bullet_message(P)
 
 	if(damage || (ammo_flags && AMMO_SPECIAL_EMBED))
 		. = TRUE
@@ -955,6 +958,7 @@
 			bullet_ping(P)
 
 	bullet_message(P) //Message us about the bullet, since damage was inflicted.
+	bullet_log(P)
 
 	if(damage)
 		apply_damage(damage_result,P.ammo.damage_type, P.def_zone)	//Deal the damage.
@@ -1084,10 +1088,13 @@
 		last_damage_source = "[P.weapon_source]"
 	else
 		last_damage_source = initial(P.name)
+
+	if(P.weapon_source_mob)
+		last_damage_mob = P.weapon_source_mob
+
+/mob/proc/bullet_log(obj/item/projectile/P)
 	if(P.firer && ismob(P.firer))
 		var/mob/firingMob = P.firer
-		if(P.weapon_source_mob)
-			last_damage_mob = P.weapon_source_mob
 		var/area/A = get_area(src)
 		if(ishuman(firingMob) && ishuman(src) && faction == firingMob.faction && !A?.statistic_exempt) //One human shot another, be worried about it but do everything basically the same //special_role should be null or an empty string if done correctly
 			attack_log += "\[[time_stamp()]\] <b>[key_name(firingMob)]</b> shot <b>[key_name(src)]</b> with \a <b>[P]</b> in [get_area(firingMob)]."
@@ -1103,11 +1110,9 @@
 			msg_admin_attack("[key_name(firingMob)] shot [key_name(src)] with \a [P.name] in [get_area(firingMob)] ([firingMob.x],[firingMob.y],[firingMob.z]).", firingMob.x, firingMob.y, firingMob.z)
 		return
 
-	if(P.weapon_source_mob)
-		last_damage_mob = P.weapon_source_mob
-
 	attack_log += "\[[time_stamp()]\] <b>SOMETHING??</b> shot <b>[key_name(src)]</b> with a <b>[P]</b>"
 	msg_admin_attack("SOMETHING?? shot [key_name(src)] with a [P] in [get_area(src)] ([loc.x],[loc.y],[loc.z]).", loc.x, loc.y, loc.z)
+
 
 //Abby -- Just check if they're 1 tile horizontal or vertical, no diagonals
 /proc/get_adj_simple(atom/Loc1,atom/Loc2)

@@ -1375,6 +1375,17 @@ proc/get_true_location(var/atom/loc)
 		if(WEST) 		return list(EAST,      NORTHEAST, SOUTHEAST)
 		if(NORTHWEST) 	return list(SOUTHEAST, SOUTH,     EAST)
 
+/proc/nearby_direction(direction)
+	switch(direction)
+		if(NORTH) 		return list(NORTH,     NORTHEAST, NORTHWEST)
+		if(NORTHEAST) 	return list(NORTHEAST, NORTH,     EAST)
+		if(EAST) 		return list(EAST,      NORTHEAST, SOUTHEAST)
+		if(SOUTHEAST) 	return list(SOUTHEAST, SOUTH,     EAST)
+		if(SOUTH) 		return list(SOUTH,     SOUTHEAST, SOUTHWEST)
+		if(SOUTHWEST) 	return list(SOUTHWEST, SOUTH,     WEST)
+		if(WEST) 		return list(WEST,      SOUTHWEST, NORTHWEST)
+		if(NORTHWEST) 	return list(NORTHWEST, NORTH,     WEST)
+
 /*
 Checks if that loc and dir has a item on the wall
 */

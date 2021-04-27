@@ -616,9 +616,30 @@
 	attack_speed = 0.9 SECONDS
 	unacidable = TRUE
 	var/parrying
-	var/parrying_duration = 3 SECONDS
+	 /// 1 Free parry, recharging every 45 seconds. Then gain one parry per hit that slowly goes away if unused. Gain one on initialize with add_charges() effect.
+	var/parrying_charges = 0
+	var/parrying_charges_max = 3
+	var/parrying_duration = 2.5 SECONDS
 	var/cur_parrying_cooldown
-	var/parrying_delay = 11 SECONDS // effectively 8, starts counting on activation
+	var/parrying_delay = 8 SECONDS // effectively 6, starts counting on activation
+	var/parry_do_after
+
+/obj/item/weapon/melee/yautja_sword/testing
+	name = "hacker sword"
+	color = COLOR_RED
+	parrying_charges = 1
+	parrying_charges_max = 3
+	parrying_duration = 303 SECONDS
+	parrying_delay = 1 SECONDS
+
+/obj/item/weapon/melee/yautja_sword/Initialize(mapload, ...)
+	. = ..()
+	add_charges(null, FALSE)
+
+/obj/item/weapon/melee/yautja_sword/examine(mob/user)
+	. = ..()
+	if(isYautja(user)) //placeholder typecheck
+		to_chat(user, SPAN_NOTICE("On activating \the [src], you will deflect bullets and melee for [parrying_duration * 0.1] seconds. For bullets, the more precisely you're facing the target, the better the chance you'll manage to reflect them."))
 
 /obj/item/weapon/melee/yautja_sword/Destroy()
 	remove_from_missing_pred_gear(src)
@@ -635,9 +656,51 @@
 	. = ..()
 	if(!.)
 		return
+	if(target == user || target.stat == DEAD)
+		to_chat(user, SPAN_DANGER("You think you're smart?")) //very funny
+	else add_charges(user, FALSE)
 	if(isYautja(user) && isXeno(target))
 		var/mob/living/carbon/Xenomorph/X = target
 		X.interference = 30
+
+/obj/item/weapon/melee/yautja_sword/proc/add_charges(mob/living/carbon/human/user, var/hit_charged = TRUE)
+
+	if(parrying_charges >= parrying_charges_max)
+		return
+
+	if(hit_charged)
+		to_chat(user, SPAN_BOLDNOTICE("[src] charges up on your attack![parrying_charges ? "" : " You may now parry with it!"]"))
+	parrying_charges++
+	to_chat(user, SPAN_NOTICE("\The [src] has [parrying_charges]/[parrying_charges_max] parries left."))
+
+	var/filt_color = COLOR_WHITE
+	var/filt_alpha = 40 * max(1, parrying_charges)
+	filt_color += num2text(filt_alpha, 2, 16)
+	src.remove_filter("sword_charge")
+	src.add_filter("sword_charge", 1, list("type" = "outline", "color" = filt_color, "size" = 2))
+	if(parrying_charges > 1)
+		addtimer(CALLBACK(src, .proc/lose_charges, user), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
+
+/obj/item/weapon/melee/yautja_sword/proc/lose_charges(mob/living/carbon/human/user)
+
+	if(parrying_charges < 1)
+		return
+
+	parrying_charges--
+	to_chat(user, SPAN_NOTICE("\The [src] has [parrying_charges]/[parrying_charges_max] parries left."))
+
+	var/filt_color = COLOR_WHITE
+	var/filt_alpha = 55 * max(1, parrying_charges)
+	filt_color += num2text(filt_alpha, 2, 16)
+	src.remove_filter("sword_charge")
+	src.add_filter("sword_charge", 1, list("type" = "outline", "color" = filt_color, "size" = 2))
+
+	if(parrying_charges > 1)
+		addtimer(CALLBACK(src, .proc/lose_charges, user, FALSE), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
+		to_chat(user, SPAN_DANGER("(parrying_charges-- > 1 timer"))
+	if(parrying_charges == 0)
+		src.remove_filter("sword_charge")
+		addtimer(CALLBACK(src, .proc/add_charges, user, FALSE), 40 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/weapon/melee/yautja_sword/pickup(mob/living/user as mob)
 	if(isYautja(user))
@@ -645,58 +708,70 @@
 	..()
 
 /obj/item/weapon/melee/yautja_sword/attack_self(mob/living/carbon/human/user)
-	if(!isSpeciesYautja(user))
-		if(do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE, src, INTERRUPT_MOVED, BUSY_ICON_HOSTILE))
-			var/wield_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
-			if(!prob(wield_chance))
-				user.visible_message(SPAN_DANGER("[user] tries to hold \the [src] steadily but drops it!"),SPAN_DANGER("You focus on \the [src], attempting to hold it steadily, but its heavy weight makes you lose your grip!"))
-				user.hand ? user.drop_l_hand() : user.drop_r_hand()
-				return
-	if(cur_parrying_cooldown > world.time)
+
+	var/is_yautja_user = isSpeciesYautja(user)
+	if(cur_parrying_cooldown > world.time || parrying)
 		to_chat(user, SPAN_WARNING("You've attempted to parry too soon, you must wait a bit before regaining your focus."))
 		return
+
+	if(!parrying_charges && is_yautja_user)
+		to_chat(user, SPAN_WARNING("Your sword refuses to allow you to parry. You must draw blood before doing so! Or wait a minute."))
+		return
+
+	var/filt_color = COLOR_CYAN
+	var/filt_alpha = 45 //lesser
+	filt_color += num2text(filt_alpha, 2, 16)
+	user.add_filter("parry_sword", 1, list("type" = "outline", "color" = filt_color, "size" = 2))
+	user.visible_message(SPAN_HIGHDANGER("[user] starts holding \the [src] steadily..."),SPAN_DANGER("You focus on \the [src], holding it to parry any incoming attacks."))
+
+	if(!parry_do_after)
+		parry_do_after = TRUE
+		if(!do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE)) //windup
+			user.remove_filter("parry_sword")
+			parry_do_after = FALSE
+			return
+
+		var/wield_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
+		if(!prob(wield_chance))
+			user.visible_message(SPAN_DANGER("[user] tries to hold \the [src] steadily but drops it!"),SPAN_DANGER("You focus on \the [src], attempting to hold it steadily, but its heavy weight makes you lose your grip!"))
+			user.hand ? user.drop_l_hand() : user.drop_r_hand()
+			user.remove_filter("parry_sword")
+			parry_do_after = FALSE
+			return
+
+	parry_do_after = FALSE
 	cur_parrying_cooldown = world.time + parrying_delay
+	user.remove_filter("parry_sword")
+	lose_charges(user, TRUE)
 	parry(user)
 
 /obj/item/weapon/melee/yautja_sword/proc/parry(mob/living/carbon/human/user)
-	user.visible_message(SPAN_HIGHDANGER("[user] starts holding \the [src] steadily..."),SPAN_DANGER("You focus on \the [src], holding it to parry any incoming attacks."))
 	flags_item |= NODROP
 	parrying = TRUE
 
-	var/filt_color = COLOR_WHITE
+	var/filt_color = COLOR_CYAN
 	var/filt_alpha = 70
 	filt_color += num2text(filt_alpha, 2, 16)
 	user.add_filter("parry_sword", 1, list("type" = "outline", "color" = filt_color, "size" = 2))
 
-	RegisterSignal(user, COMSIG_HUMAN_BULLET_ACT, .proc/deflect_bullet)
+	RegisterSignal(user, COMSIG_HUMAN_BULLET_ACT, .proc/block_bullet)
 	RegisterSignal(user, COMSIG_HUMAN_XENO_ATTACK, .proc/riposte_slash)
 	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/riposte_melee)
 	addtimer(CALLBACK(src, .proc/end_parry, user), parrying_duration)
 
-/obj/item/weapon/melee/yautja_sword/proc/deflect_bullet(mob/living/carbon/human/user, var/x, var/y, obj/item/projectile/P)
+/obj/item/weapon/melee/yautja_sword/proc/block_bullet(mob/living/carbon/human/user, var/x, var/y, obj/item/projectile/P)
 	SIGNAL_HANDLER
 	var/parry_chance = 100
+	var/skill = max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
 	if(!isSpeciesYautja(user))
-		parry_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
+		parry_chance = 50 * skill
 
-	if(P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT || P.projectile_override_flags & AMMO_NO_DEFLECT)
-		return
-
-	if(!prob(parry_chance))
+	if(!prob(parry_chance) || P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT || P.projectile_override_flags & AMMO_NO_DEFLECT)
 		user.visible_message(SPAN_DANGER("[user] fails to deflect \the [P]!"),SPAN_DANGER("You fail to deflect \the [P]!"))
 		return
 
-	if(!P.runtime_iff_group)
-		user.visible_message(SPAN_DANGER("[user] blocks \the [P] and deflects it back at [P.firer]!"),SPAN_DANGER("You parry \the [P] and deflect it at [P.firer]!"))
+	P.play_damage_effect(user)
 
-		var/obj/item/projectile/new_proj = new(src)
-		new_proj.generate_bullet(P.ammo, special_flags = P.projectile_override_flags|AMMO_HOMING|AMMO_NO_DEFLECT)
-		new_proj.firer = user
-
-		// Move back to who fired you.
-		new_proj.jank_wrapper()
-
-		new_proj.fire_at(P.firer, user, src, 10, speed = P.ammo.shell_speed)
 	return COMPONENT_CANCEL_BULLET_ACT
 
 /obj/item/weapon/melee/yautja_sword/proc/riposte_slash(mob/living/carbon/human/user, list/slashdata, var/mob/living/carbon/Xenomorph/X)
@@ -733,7 +808,7 @@
 		return
 
 	target.animation_attack_on(user)
-	user.visible_message(SPAN_DANGER("[user] blocks the slash and counterattacks!"),SPAN_DANGER("You parry the slash and initiate a riposte attack!"))
+	user.visible_message(SPAN_DANGER("[user] blocks the attack and counterattacks!"),SPAN_DANGER("You parry the attack and initiate a riposte attack!"))
 	attack(target, user, check_zone(user.zone_selected), riposte = TRUE)
 	return COMPONENT_CANCEL_ATTACK
 
