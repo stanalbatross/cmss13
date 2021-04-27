@@ -639,7 +639,7 @@
 /obj/item/weapon/melee/yautja_sword/examine(mob/user)
 	. = ..()
 	if(isYautja(user)) //placeholder typecheck
-		to_chat(user, SPAN_NOTICE("On activating \the [src], you will deflect bullets and melee for [parrying_duration * 0.1] seconds. For bullets, the more precisely you're facing the target, the better the chance you'll manage to reflect them."))
+		to_chat(user, SPAN_NOTICE("On activating \the [src], you will deflect bullets and melee for [parrying_duration * 0.1] seconds, on a cooldown of [parrying_delay * 0.1 - parrying_duration * 0.1] seconds"))
 
 /obj/item/weapon/melee/yautja_sword/Destroy()
 	remove_from_missing_pred_gear(src)
