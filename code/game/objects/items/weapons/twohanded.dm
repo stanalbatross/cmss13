@@ -89,9 +89,6 @@
 
 /obj/item/weapon/melee/twohanded/attack_self(mob/user)
 	..()
-	if(ismonkey(user))
-		to_chat(user, SPAN_WARNING("It's too heavy for you to wield fully!"))
-		return
 
 	if(flags_item & WIELDED) unwield(user)
 	else 				wield(user)

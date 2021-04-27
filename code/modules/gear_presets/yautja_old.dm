@@ -137,7 +137,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/yautja(H), WEAR_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/yautja(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/yautja(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/weapon/melee/yautja_sword(H), WEAR_L_HAND)
+	H.equip_to_slot_or_del(new /obj/item/weapon/melee/twohanded/yautja_sword(H), WEAR_L_HAND)
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/spawnergrenade/smartdisc(H), WEAR_R_HAND)
 
 //*****************************************************************************************************/

@@ -49,7 +49,7 @@
 			/obj/item/weapon/gun/energy/plasmapistol,
 			/obj/item/weapon/yautja_chain,
 			/obj/item/weapon/melee/yautja_knife,
-			/obj/item/weapon/melee/yautja_sword,
+			/obj/item/weapon/melee/twohanded/yautja_sword,
 			/obj/item/weapon/melee/yautja_scythe,
 			/obj/item/weapon/melee/combistick,
 			/obj/item/weapon/melee/twohanded/glaive)
@@ -121,7 +121,7 @@
 			/obj/item/weapon/gun/energy/plasmapistol,
 			/obj/item/weapon/yautja_chain,
 			/obj/item/weapon/melee/yautja_knife,
-			/obj/item/weapon/melee/yautja_sword,
+			/obj/item/weapon/melee/twohanded/yautja_sword,
 			/obj/item/weapon/melee/yautja_scythe,
 			/obj/item/weapon/melee/combistick,
 			/obj/item/storage/backpack/yautja,
@@ -597,13 +597,14 @@
 	add_to_missing_pred_gear(src)
 	..()
 
-/obj/item/weapon/melee/yautja_sword
+/obj/item/weapon/melee/twohanded/yautja_sword
 	name = "clan sword"
 	desc = "An expertly crafted Yautja blade carried by hunters who wish to fight up close. Razor sharp, and capable of cutting flesh into ribbons. Commonly carried by aggresive and lethal hunters."
 	icon = 'icons/obj/items/weapons/predator.dmi'
 	icon_state = "clansword"
+	item_state = "clansword"
 	flags_atom = FPRINT|CONDUCT
-	flags_item = ITEM_PREDATOR
+	flags_item = TWOHANDED|ITEM_PREDATOR
 	flags_equip_slot = SLOT_BACK
 	force = MELEE_FORCE_TIER_7
 	throwforce = MELEE_FORCE_TIER_5
@@ -624,7 +625,7 @@
 	var/parrying_delay = 8 SECONDS // effectively 6, starts counting on activation
 	var/parry_do_after
 
-/obj/item/weapon/melee/yautja_sword/testing
+/obj/item/weapon/melee/twohanded/yautja_sword/testing
 	name = "hacker sword"
 	color = COLOR_RED
 	parrying_charges = 1
@@ -632,24 +633,38 @@
 	parrying_duration = 303 SECONDS
 	parrying_delay = 1 SECONDS
 
-/obj/item/weapon/melee/yautja_sword/Initialize(mapload, ...)
+/obj/item/weapon/melee/twohanded/yautja_sword/Initialize(mapload, ...)
 	. = ..()
 	add_charges(null, FALSE)
 
-/obj/item/weapon/melee/yautja_sword/examine(mob/user)
+/obj/item/weapon/melee/twohanded/yautja_sword/examine(mob/user)
 	. = ..()
 	if(isYautja(user)) //placeholder typecheck
 		to_chat(user, SPAN_NOTICE("On activating \the [src], you will deflect bullets and melee for [parrying_duration * 0.1] seconds, on a cooldown of [parrying_delay * 0.1 - parrying_duration * 0.1] seconds"))
 
-/obj/item/weapon/melee/yautja_sword/Destroy()
+/obj/item/weapon/melee/twohanded/yautja_sword/Destroy()
 	remove_from_missing_pred_gear(src)
 	return ..()
 
-/obj/item/weapon/melee/yautja_sword/dropped(mob/living/user)
+/obj/item/weapon/melee/twohanded/yautja_sword/dropped(mob/living/user)
 	add_to_missing_pred_gear(src)
 	..()
 
-/obj/item/weapon/melee/yautja_sword/attack(mob/living/target, mob/living/carbon/human/user, def_zone, var/riposte)
+/obj/item/weapon/melee/twohanded/yautja_sword/wield(mob/living/user, var/forced)
+	if(!forced)
+		return
+	. = ..()
+	flags_item |= NODROP
+
+/obj/item/weapon/melee/twohanded/yautja_sword/unwield(mob/living/user, var/forced)
+	if(!forced)
+		return
+	. = ..()
+	flags_item &= ~NODROP
+	user.remove_filter("parry_sword")
+	parry_do_after = FALSE
+
+/obj/item/weapon/melee/twohanded/yautja_sword/attack(mob/living/target, mob/living/carbon/human/user, def_zone, var/riposte)
 	if(parrying && !riposte)
 		to_chat(user, SPAN_WARNING("You're a bit busy concentrating to hit something."))
 		return
@@ -663,7 +678,7 @@
 		var/mob/living/carbon/Xenomorph/X = target
 		X.interference = 30
 
-/obj/item/weapon/melee/yautja_sword/proc/add_charges(mob/living/carbon/human/user, var/hit_charged = TRUE)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/add_charges(mob/living/carbon/human/user, var/hit_charged = TRUE)
 
 	if(parrying_charges >= parrying_charges_max)
 		return
@@ -681,7 +696,7 @@
 	if(parrying_charges > 1)
 		addtimer(CALLBACK(src, .proc/lose_charges, user), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
-/obj/item/weapon/melee/yautja_sword/proc/lose_charges(mob/living/carbon/human/user)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/lose_charges(mob/living/carbon/human/user)
 
 	if(parrying_charges < 1)
 		return
@@ -701,12 +716,12 @@
 		src.remove_filter("sword_charge")
 		addtimer(CALLBACK(src, .proc/add_charges, user, FALSE), 40 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
-/obj/item/weapon/melee/yautja_sword/pickup(mob/living/user as mob)
+/obj/item/weapon/melee/twohanded/yautja_sword/pickup(mob/living/user as mob)
 	if(isYautja(user))
 		remove_from_missing_pred_gear(src)
 	..()
 
-/obj/item/weapon/melee/yautja_sword/attack_self(mob/living/carbon/human/user)
+/obj/item/weapon/melee/twohanded/yautja_sword/attack_self(mob/living/carbon/human/user)
 
 	var/is_yautja_user = isSpeciesYautja(user)
 	if(cur_parrying_cooldown > world.time || parrying)
@@ -722,20 +737,19 @@
 	filt_color += num2text(filt_alpha, 2, 16)
 	user.add_filter("parry_sword", 1, list("type" = "outline", "color" = filt_color, "size" = 2))
 	user.visible_message(SPAN_HIGHDANGER("[user] starts holding \the [src] steadily..."),SPAN_DANGER("You focus on \the [src], holding it to parry any incoming attacks."))
+	wield(user, TRUE)
 
 	if(!parry_do_after)
 		parry_do_after = TRUE
-		if(!do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE)) //windup
-			user.remove_filter("parry_sword")
-			parry_do_after = FALSE
+		if(!do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE, src, INTERRUPT_DIFF_LOC, BUSY_ICON_HOSTILE)) //windup
+			unwield(user, TRUE)
 			return
 
 		var/wield_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
 		if(!prob(wield_chance))
-			user.visible_message(SPAN_DANGER("[user] tries to hold \the [src] steadily but drops it!"),SPAN_DANGER("You focus on \the [src], attempting to hold it steadily, but its heavy weight makes you lose your grip!"))
+			user.visible_message(SPAN_DANGER("[user] tries to hold \the [src] steadily but flunks it!"),SPAN_DANGER("You focus on \the [src], attempting to hold it steadily, but its heavy weight makes you lose your grip!"))
+			unwield(user, TRUE)
 			user.hand ? user.drop_l_hand() : user.drop_r_hand()
-			user.remove_filter("parry_sword")
-			parry_do_after = FALSE
 			return
 
 	parry_do_after = FALSE
@@ -744,8 +758,7 @@
 	lose_charges(user, TRUE)
 	parry(user)
 
-/obj/item/weapon/melee/yautja_sword/proc/parry(mob/living/carbon/human/user)
-	flags_item |= NODROP
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/parry(mob/living/carbon/human/user)
 	parrying = TRUE
 
 	var/filt_color = COLOR_CYAN
@@ -758,7 +771,7 @@
 	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/riposte_melee)
 	addtimer(CALLBACK(src, .proc/end_parry, user), parrying_duration)
 
-/obj/item/weapon/melee/yautja_sword/proc/block_bullet(mob/living/carbon/human/user, var/x, var/y, obj/item/projectile/P)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/block_bullet(mob/living/carbon/human/user, var/x, var/y, obj/item/projectile/P)
 	SIGNAL_HANDLER
 	var/parry_chance = 100
 	var/skill = max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
@@ -773,7 +786,7 @@
 
 	return COMPONENT_CANCEL_BULLET_ACT
 
-/obj/item/weapon/melee/yautja_sword/proc/riposte_slash(mob/living/carbon/human/user, list/slashdata, var/mob/living/carbon/Xenomorph/X)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/riposte_slash(mob/living/carbon/human/user, list/slashdata, var/mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
 	if(user.is_mob_incapacitated())
 		return
@@ -790,7 +803,7 @@
 	slashdata["n_damage"] = 0
 	attack(X, user, riposte = TRUE)
 
-/obj/item/weapon/melee/yautja_sword/proc/riposte_melee(mob/living/carbon/human/user, var/mob/living/carbon/human/target)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/riposte_melee(mob/living/carbon/human/user, var/mob/living/carbon/human/target)
 	SIGNAL_HANDLER
 	if(user.is_mob_incapacitated())
 		return
@@ -811,12 +824,10 @@
 	attack(target, user, check_zone(user.zone_selected), riposte = TRUE)
 	return COMPONENT_CANCEL_ATTACK
 
-/obj/item/weapon/melee/yautja_sword/proc/end_parry(mob/living/carbon/human/user)
+/obj/item/weapon/melee/twohanded/yautja_sword/proc/end_parry(mob/living/carbon/human/user)
 	user.visible_message(SPAN_HIGHDANGER("[user] lowers \the [src]."),SPAN_DANGER("You lower \the [src], no longer parrying."))
-	flags_item &= ~NODROP
+	unwield(user, TRUE)
 	parrying = FALSE
-
-	user.remove_filter("parry_sword")
 
 	UnregisterSignal(user, list(COMSIG_HUMAN_XENO_ATTACK, COMSIG_HUMAN_BULLET_ACT, COMSIG_ITEM_ATTEMPT_ATTACK))
 
@@ -1322,7 +1333,7 @@
 			/obj/item/weapon/gun/energy/plasmapistol,
 			/obj/item/weapon/yautja_chain,
 			/obj/item/weapon/melee/yautja_knife,
-			/obj/item/weapon/melee/yautja_sword,
+			/obj/item/weapon/melee/twohanded/yautja_sword,
 			/obj/item/weapon/melee/yautja_scythe,
 			/obj/item/weapon/melee/combistick,
 			/obj/item/weapon/melee/twohanded/glaive)

@@ -297,7 +297,7 @@
 			if("The Rending Chain-Whip")
 				new /obj/item/weapon/yautja_chain(src.loc)
 			if("The Piercing Hunting Sword")
-				new /obj/item/weapon/melee/yautja_sword(src.loc)
+				new /obj/item/weapon/melee/twohanded/yautja_sword(src.loc)
 			if("The Cleaving War-Scythe")
 				new /obj/item/weapon/melee/yautja_scythe(src.loc)
 			if("The Adaptive Combi-Stick")
