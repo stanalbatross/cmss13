@@ -9,7 +9,8 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 	flags = TREE_FLAG_MARINE
 
 	required_points = 20
-	tier = /datum/tier/two
+	tier = /datum/tier/three
+
 	var/obj/structure/machinery/computer/railgun/railgun_type = /obj/structure/machinery/computer/railgun
 
 /datum/tech/railgun/ui_static_data(mob/user)
@@ -83,7 +84,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 
 	var/max_ammo = 10
 	var/ammo = 10
-	var/ammo_recharge_time = 30 SECONDS
+	var/ammo_recharge_time = 15 SECONDS
 
 	var/fire_cooldown = 1.5 SECONDS
 	var/next_fire = 0

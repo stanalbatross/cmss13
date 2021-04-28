@@ -1,7 +1,7 @@
 /datum/tech/droppod/item/prototype_equipment
 	name = "Prototype Equipment"
 	desc = "Gain access to prototype USCM weaponry and equipment."
-	icon_state = "equipment"
+	icon_state = "ammo"
 
 	droppod_name = "Prototype Equipment"
 
@@ -19,6 +19,7 @@
 	.["M2 Thermal Goggles"] = /obj/item/storage/box/m2t_thermals
 	.["B18 Defensive Armor"] = /obj/item/storage/box/spec/b18_tech
 	//.["XM-42b Railgun"] = /obj/item/storage/box/kit/railgun
+
 /obj/item/storage/box/m2t_thermals
 	name = "M2T storage case"
 	desc = "This case contains a set of M2T thermal goggles, a screwdriver, and a backup battery."

@@ -1,3 +1,4 @@
+//UNUSED!!
 /datum/tech/droppod/item/combat_stimulants
 	name = "Combat Stimulants"
 	desc = "Marines get access to combat stimulants to assist them in their activities."
