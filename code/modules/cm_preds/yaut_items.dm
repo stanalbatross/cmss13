@@ -738,7 +738,7 @@
 
 	if(!parry_do_after)
 		parry_do_after = TRUE
-		if(!do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE, src, INTERRUPT_DIFF_LOC, BUSY_ICON_HOSTILE)) //windup
+		if(!do_after(user, 0.5 SECONDS, INTERRUPT_INCAPACITATED, BUSY_ICON_HOSTILE, src, INTERRUPT_NEEDHAND, BUSY_ICON_HOSTILE)) //windup
 			unwield(user, TRUE)
 			return
 
