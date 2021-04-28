@@ -13,32 +13,12 @@
 	droppod_input_message = "Choose a piece of prototype gear to retrieve from the droppod."
 	options_to_give = 1
 
-/*
-INTERNAL CL
-- New T2 tech
-- Added Thermal NVGs
-- Added b18, breaks apart over time, has injectors and self-scan
-- Added pogers railgun, lever-action mechanics
-- Added lever-action rifle to freelancers (not yet)
-
-Code changes:
-- NVG backend
-- Added two item procs that happen in every u_/equip() call
-- Added new signal for direct bullet hits.
-- MD backend changes, unused mini MD, can see toggled range mode
-- Internal mag guns no longer switch hands on unload if preference enabled
-
-- BREAKING ONEHAND FIRING IS BROKEN
-*/
-
-
 /datum/tech/droppod/item/prototype_equipment/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 
 	.["M2 Thermal Goggles"] = /obj/item/storage/box/m2t_thermals
 	.["B18 Defensive Armor"] = /obj/item/storage/box/spec/b18_tech
-	.["XM-42b Railgun"] = /obj/item/storage/box/kit/railgun
-
+	//.["XM-42b Railgun"] = /obj/item/storage/box/kit/railgun
 /obj/item/storage/box/m2t_thermals
 	name = "M2T storage case"
 	desc = "This case contains a set of M2T thermal goggles, a screwdriver, and a backup battery."
@@ -67,6 +47,7 @@ Code changes:
 	new /obj/item/tool/weldingtool(src)
 	new /obj/item/clothing/head/welding(src)
 
+//pending sprites
 /obj/item/storage/box/kit/railgun
 	name = "\improper XM-42b railgun experimental kit"
 

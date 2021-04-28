@@ -1052,6 +1052,7 @@ and you're good to go.
 
 	flags_gun_features &= ~GUN_BURST_FIRING // We always want to turn off bursting when we're done, mainly for when we break early mid-burstfire.
 	display_ammo(user)
+	return TRUE
 
 #define EXECUTION_CHECK M.stat == UNCONSCIOUS && ((user.a_intent == INTENT_GRAB)||(user.a_intent == INTENT_DISARM))
 

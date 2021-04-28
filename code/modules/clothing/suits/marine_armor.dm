@@ -1194,7 +1194,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	//note that this is still a proc
 	SIGNAL_HANDLER
 	name = "broken B18 prototype defensive armor"
-	desc += " This one definitely has shattered into pieces, though it's still surprisingly usable as armor."
+	desc += " This one has definitely shattered into pieces, though it's still surprisingly usable as armor."
 	icon_state = "b18_broken"
 	item_state = "b18_broken"
 	armor_melee = CLOTHING_ARMOR_MEDIUM
@@ -1212,7 +1212,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	injections = 0
 
 /obj/item/clothing/suit/storage/marine/b18_tech/attackby(obj/item/W, var/mob/living/carbon/human/user)
-	//replace attackby in store code with forcemove/(etc)
+
 	if(user.a_intent != INTENT_HARM)
 		return ..()
 

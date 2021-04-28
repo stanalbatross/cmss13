@@ -355,8 +355,8 @@
 		if(WEAR_IN_JACKET)
 			var/obj/item/clothing/suit/storage/S = wear_suit
 			if(istype(S) && S.pockets.storage_slots)
-				wear_suit.attackby(W, src)
-				wear_suit.update_icon()
+				S.pockets.attackby(W, src)
+				S.update_icon()
 		if(WEAR_IN_ACCESSORY)
 			var/obj/item/clothing/accessory/A = W
 			if(istype(A))

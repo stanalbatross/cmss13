@@ -68,6 +68,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	. = ..()
 	if(current_mag)
 		replace_internal_mag(current_mag.current_rounds)
+	update_icon()
 
 /obj/item/weapon/gun/lever_action/set_gun_config_values()
 	..()
@@ -103,9 +104,12 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/proc/direct_hit_buff(mob/user, mob/target, var/one_hand_lever = FALSE)
 	SIGNAL_HANDLER
 	var/mob/living/carbon/human/human_user = user
-	if(one_hand_lever) //base marines should never be able to easily pass the skillcheck, only specialists and etc.
-		if(prob(cur_onehand_chance) || skillcheck(human_user, SKILL_FIREARMS, SKILL_FIREARMS_TRAINED)) 
-			cur_onehand_chance = cur_onehand_chance - 20 //gets steadily worse if you spam it
+	if(one_hand_lever)
+		if(prob(cur_onehand_chance))
+			if(skillcheck(human_user, SKILL_FIREARMS, SKILL_FIREARMS_TRAINED)) //base marines should never be able to easily pass the skillcheck, only specialists and etc.
+				to_chat(human_user, SPAN_NOTICE("Your experience with firearms allows you to keep [src] steady."))
+			else
+				cur_onehand_chance = cur_onehand_chance - 20 //gets steadily worse if you spam it
 		else
 			to_chat(user, SPAN_DANGER("Augh! Your hand catches on the lever!!"))
 			var/obj/limb/O = human_user.get_limb(human_user.hand ? "l_hand" : "r_hand")
@@ -113,7 +117,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 				O = human_user.get_limb(user.hand ? "l_arm" : "r_arm")
 				human_user.drop_held_item()
 			O.fracture()
-			O &= ~LIMB_SPLINTED
+			O.status &= ~LIMB_SPLINTED
 			human_user.pain.recalculate_pain()
 			return
 
@@ -285,6 +289,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 
 		playsound(user, lever_sound, 25, TRUE) //should be TRUE not 1
 		levered = TRUE
+		update_icon()
 
 /obj/item/weapon/gun/lever_action/proc/twohand_lever(mob/living/carbon/human/user)
 	to_chat(user, SPAN_WARNING(lever_message))
@@ -333,19 +338,31 @@ their unique feature is that a direct hit will buff your damage and firerate
 	var/obj/item/attachable/scope/railgun/scope
 	var/integrity = 50 //shots
 
+/obj/item/weapon/gun/lever_action/railgun/examine(user)
+	. = ..()
+	to_chat(user, SPAN_NOTICE("A readout on the side says '[integrity *2]% INTEGRITY.'"))
+
 //todo: break gun over time when firing
 /obj/item/weapon/gun/lever_action/railgun/Fire(atom/target, mob/living/user, params, reflex, dual_wield)
+	if(!integrity)
+		user.visible_message(SPAN_DANGER("[user] attempts to fire [src], but it doesn't do anything!"),
+		SPAN_DANGER("You press the trigger but nothing happens! Guess it's broke."))
+		click_empty(user)
+		return
 	. = ..()
 	if(!.)
 		return
 	switch(integrity)
 		if(1 to 10)
 			to_chat(user, SPAN_DANGER("[src] rattles violently! Some bits and screws fall off."))
+			playsound(user, 'sound/effects/metal_crash.ogg', 15, FALSE)
 		if(11 to 25)
 			to_chat(user, SPAN_WARNING("[src] rattles violently!"))
+			playsound(user, 'sound/effects/metalhit.ogg', 15, FALSE)
 		if(26 to 35)
 			to_chat(user, SPAN_WARNING("[src] rattles after the shot!"))
 	integrity--
+	update_icon()
 
 /obj/item/weapon/gun/lever_action/railgun/handle_starting_attachment()
 	..()
@@ -367,6 +384,12 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/railgun/try_onehand_lever(mob/living/carbon/human/user)
 	twohand_lever(user)
 	return
+
+/obj/item/weapon/gun/lever_action/railgun/update_icon()
+	if(levered)
+		icon_state = initial(icon_state)
+	else
+		icon_state = initial(icon_state) + "_c"
 
 /obj/item/weapon/gun/lever_action/railgun/proc/break_scope(var/mob/M)
 	scope.broken = TRUE

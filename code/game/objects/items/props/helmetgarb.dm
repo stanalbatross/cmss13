@@ -236,12 +236,12 @@
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal
 	name = "\improper M2T thermal goggles"
-	desc = "The M3T set of goggles are a highly advanced new technology designed by USCM researchers, tracking heat signatures through walls. However, their extreme battery consumption prevents widespread adaptation."
+	desc = "The M2T set of helmet-mounted goggles are a new technology designed by USCM researchers, tracking heat signatures through walls. However, their extreme battery consumption prevents widespread adaptation."
 	icon_state = "helmet_nvg_thermals"
 	active_icon_state = "helmet_nvg_thermals_down"
 	inactive_icon_state = "helmet_nvg_thermals"
 	invisibility_level = 0
-	process_cost = 10
+	process_cost = 20
 	var/m_vision_flags = SEE_MOBS
 	var/fullscreen_vision = /obj/screen/fullscreen/thermal
 
