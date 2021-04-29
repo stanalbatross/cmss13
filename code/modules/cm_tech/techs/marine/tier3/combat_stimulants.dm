@@ -1,5 +1,5 @@
 //UNUSED!!
-/datum/tech/droppod/item/combat_stimulants
+/*datum/tech/droppod/item/combat_stimulants
 	name = "Combat Stimulants"
 	desc = "Marines get access to combat stimulants to assist them in their activities."
 	icon_state = "stimulants"
@@ -16,7 +16,7 @@
 
 	.["Speed Stimulant"] = /obj/item/storage/pouch/stimulant_injector/speed
 	.["Redemption Stimulant"] = /obj/item/storage/pouch/stimulant_injector/redemption
-	.["Brain Stimulant"] = /obj/item/storage/pouch/stimulant_injector/brain
+	.["Brain Stimulant"] = /obj/item/storage/pouch/stimulant_injector/brain*/
 
 /obj/item/storage/pouch/stimulant_injector
 	name = "stimulant pouch"
