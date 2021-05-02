@@ -715,11 +715,11 @@ var/global/image/hud_icon_hunter_thralled
 
 	if(hunter_data.dishonored)
 		if(!hud_icon_hunter_dishonored)
-			hud_icon_hunter_dishonored = image('icons/mob/hud/hud_icons.dmi', src, "hunter_dishonored")
+			hud_icon_hunter_dishonored = image('icons/mob/hud/hud_icons.dmi', src, "hunter_dishonor")
 		holder.overlays += hud_icon_hunter_dishonored
 	else if(hunter_data.honored)
 		if(!hud_icon_hunter_honored)
-			hud_icon_hunter_honored = image('icons/mob/hud/hud_icons.dmi', src, "hunter_honored")
+			hud_icon_hunter_honored = image('icons/mob/hud/hud_icons.dmi', src, "hunter_honor")
 		holder.overlays += hud_icon_hunter_honored
 
 	if(hunter_data.thralled)

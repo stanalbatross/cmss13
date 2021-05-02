@@ -543,7 +543,12 @@
 
 	playsound(src, 'sound/effects/pred_countdown.ogg', 100, 0, 17, status = 0)
 	message_staff(FONT_SIZE_XL("<A HREF='?_src_=admin_holder;admincancelpredsd=1;bracer=\ref[src];victim=\ref[victim]'>CLICK TO CANCEL THIS PRED SD</a>"))
-	do_after(victim, rand(72, 80), INTERRUPT_NONE, BUSY_ICON_HOSTILE)
+	do_after(victim, 7.5 SECONDS, INTERRUPT_NONE, BUSY_ICON_HOSTILE)
+
+	if(!(src in victim))
+		to_chat(usr, SPAN_WARNING("Your bracer seems to have gone missing."))
+		exploding = FALSE
+		return
 
 	var/turf/T = get_turf(victim)
 	if(istype(T) && exploding)

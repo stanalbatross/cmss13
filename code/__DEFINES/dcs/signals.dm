@@ -178,6 +178,10 @@
 
 /// From /obj/item/device/defibrillator/attack
 #define COMSIG_HUMAN_REVIVED "human_revived"
+
+/// From /mob/living/carbon/human/examine
+#define COMSIG_HUMAN_EXAMINED "human_examined"
+
 /// From /mob/living/carbon/human/bullet_act
 #define COMSIG_HUMAN_PRE_BULLET_ACT "human_pre_bullet_act"
 #define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"

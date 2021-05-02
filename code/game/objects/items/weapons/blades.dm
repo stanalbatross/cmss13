@@ -207,7 +207,7 @@
 				create_leftovers(victim, has_meat = FALSE, skin_amount = 1)
 				victim.apply_damage(10, BRUTE, v_head, sharp = FALSE)
 				v_head.disfigured = TRUE
-				victim.h_style = "Bald"
+				victim.h_style = "Scalped" //this has no icon
 				victim.update_hair() //tear the hair off with the scalp
 			playsound(loc, 'sound/weapons/slashmiss.ogg', 25)
 
@@ -218,7 +218,7 @@
 				for(var/L in victim.limbs)
 					victim.apply_damage(18, BRUTE, L, sharp = FALSE)
 				victim.remove_overlay(UNDERWEAR_LAYER)
-				victim.f_style = "Shaved"
+				victim.f_style = "Scalped"
 				victim.update_hair() //then rip the beard off along the skin
 				victim.add_flay_overlay(stage = 2)
 

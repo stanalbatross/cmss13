@@ -11,7 +11,8 @@
 
 /obj/structure/mirror/attack_hand(mob/user as mob)
 
-	if(shattered)	return
+	if(shattered)
+		return
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -34,6 +35,9 @@
 
 		//handle facial hair (if necessary)
 		if(H.gender == MALE)
+			if(H.f_style == "Scalped")
+				to_chat(user, SPAN_WARNING("You can't clean up your 'stache because you don't have one anymore."))
+				return
 			var/list/species_facial_hair = list()
 			if(H.species)
 				for(var/i in GLOB.facial_hair_styles_list)
@@ -52,6 +56,9 @@
 		//handle normal hair
 		var/list/species_hair = list()
 		if(H.species)
+			if(H.h_style == "Scalped")
+				to_chat(user, SPAN_WARNING("You can't clean up your 'do because you don't have one anymore."))
+				return
 			for(var/i in GLOB.hair_styles_list)
 				var/datum/sprite_accessory/hair/tmp_hair = GLOB.hair_styles_list[i]
 				if(H.species.name in tmp_hair.species_allowed)
