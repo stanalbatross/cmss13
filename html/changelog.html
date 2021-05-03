@@ -64,6 +64,86 @@
 	</tr>
 </table>
 
+			<h2 class="date">02 May 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Ported datum status traits from TG. Applied them to Yautja code.</li>
+				<li class="tweak">You can perform surgery on Predators if you so choose.</li>
+				<li class="tweak">You can use the ceremonial dagger to flay things of a different species than yours, if you're strong enough.</li>
+				<li class="rscadd">Ravager: Visual indicators for empowering, scissor cut and super-empowering (Empowering with 3 or more tragets)</li>
+				<li class="rscadd">Slightly increased charge CD reduction per slash. (Experimental)</li>
+				<li class="rscadd">Super-empowering and slash buff are now based on targets nearby instead of shields, and the former gives the following effects for 5 seconds:</li>
+				<li class="rscadd">On Empower: Charge tramples + slashes on hit, Scissor cut superslows.</li>
+				<li class="rscadd">On Empower: Grow a bright red spooky hue.</li>
+				<li class="bugfix">Praetorian: Fixed Oppressor buffed slash not dealing damage.</li>
+				<li class="rscdel">Halved Oppressor Punch damage.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="spellcheck">Building with Build Distribution technology no longer says that it spent plasma when it actually was free.</li>
+				<li class="bugfix">Hivelord's thickening resin structures now has proper static cost per structure type.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Tidied armour plate backend code and tweaked descriptions.</li>
+				<li class="tweak">Examining a uniform with attached trauma plate will now show you its damage status.</li>
+				<li class="tweak">Examining a uniform with a shoulder holster will now tell you what gun it has in it, if any.</li>
+				<li class="tweak">Added break sound and message to ceramic plate.</li>
+				<li class="tweak">You can no longer attach armour plates to suit/armor type clothing (bulletproof vests etc). No different mechanically as they only function when attached to a uniform, but it prevents confusion.</li>
+				<li class="bugfix">Removed duplicate message when attaching armour plates to uniforms.</li>
+				<li class="bugfix">A human who is buckled to a bed or goes prone no longer has rotated chat text. Other transforms will still mess it up if they don't countertransform the langchat image, but resting/buckle is the main chat bug.</li>
+			</ul>
+
+			<h2 class="date">01 May 2021</h2>
+			<h3 class="author">Nanu updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added devs and updated thanks in the changelog_html.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">MARSOC's engineering tools once again have their sprites.</li>
+			</ul>
+
+			<h2 class="date">29 April 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Pouches and belt can no longer hold throwing knives</li>
+				<li class="bugfix">Revolvers no longer say they have "+1 bullets" because their (active) chamber is always full.</li>
+				<li class="bugfix">Fixed M44 Custom not receiving the same firerate buffs as the M44.</li>
+				<li class="rscadd">Any xenos can clear out hatched eggs, reduced click delay for doing so.</li>
+				<li class="tweak">BFA can no longer fit on the M41A.</li>
+				<li class="tweak">Ceramic plate nerfed against FF. Effective plate health from a thousand to three hundred.</li>
+				<li class="bugfix">Fixed throwing knife belts not allowing you to put throwing knives back</li>
+			</ul>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">made legacy implanters use correct initializing backend</li>
+				<li class="tweak">MapView init is now deferred to game start to account for potential map changes</li>
+				<li class="tweak">show_browser now has an option to specify the browser datum onclose reference</li>
+				<li class="bugfix">MapView controller subystem should now behave as such and properly pause</li>
+				<li class="bugfix">Tactical Maps should now refresh and detect closing properly</li>
+			</ul>
+			<h3 class="author">forest2001 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Ancients can be in clans now</li>
+				<li class="tweak">Default Hunter rank is now Young Blood</li>
+			</ul>
+
+			<h2 class="date">28 April 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">stopped decals from applying as overlays improperly</li>
+			</ul>
+			<h3 class="author">QuickLoad updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added sensormate HUD purchasable by RTO in gear vendor.</li>
+				<li class="rscadd">Added two new ESSENTIAL sets to the RTO vendor, which include a sidearm of choice, ammo, laser binoculars, and signal flares to help the RTO in their JTAC role for CAS.</li>
+				<li class="rscadd">Added three relevant sidearm ammo choices for purchase from the gear vendor.</li>
+				<li class="tweak">Changed RTO insulated gloves to be marine insulated gloves.</li>
+				<li class="tweak">Streamlines the RTO vendor for better loadout experience, less button mashing, more relevant options in relevant places.</li>
+				<li class="rscdel">Removed now redundant or irrelevant options such as helmet selection, machete, sidearm selection, GLTD etc.</li>
+			</ul>
+
 			<h2 class="date">26 April 2021</h2>
 			<h3 class="author">Carlarc updated:</h3>
 			<ul class="changes bgimages16">
@@ -81,6 +161,7 @@
 				<li class="tweak">Player and Staff access logging is now tied to client and not mob Login/Logout, and won't trigger on mob changes constantly (eg. xeno evo)</li>
 				<li class="bugfix">new_player logins are not logged twice anymore</li>
 				<li class="bugfix">occupied stasis bags now are visually layered similarly to laying down persons (avoiding misplacement of sad players eg. under medevac)</li>
+				<li class="tweak">Refactored dropship attach points and FM gimbals in preparation for CAS Weapons rework</li>
 			</ul>
 			<h3 class="author">naut updated:</h3>
 			<ul class="changes bgimages16">
@@ -1371,139 +1452,6 @@
 			<h3 class="author">Waltermeldron updated:</h3>
 			<ul class="changes bgimages16">
 				<li class="rscadd">Sets up the repository to work well with deployment with docker.</li>
-			</ul>
-
-			<h2 class="date">28 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">fix potential issue with midnight rollover and brig timers</li>
-				<li class="bugfix">brig incident reports won't appear blank anymore</li>
-				<li class="bugfix">Fixed an issue with usage of config values for lobby music</li>
-				<li class="bugfix">fix random visual error with forsaken hallucination code.</li>
-			</ul>
-			<h3 class="author">Nanu updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Fixes LZ on SciAnnex being weedable.</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Ported tg's getFlatIcon proc and modified it a bit to compensate for how we use planes and how we handle human overlays.</li>
-				<li class="bugfix">Alt-click panel should now update the icon for humans when they put on new items and should display their bodies properly now.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Tidied my old hypospray code. Main things are that tactical-reloads only swap hands if moving an old vial into the inactive hand, and there's text for starting to load a vial into an empty hypo.</li>
-				<li class="bugfix">Ghosts and xenos and unconscious people can no longer toggle hypospray injection amounts, fixed hypospray tactical-reloading vials out of inventory not properly updating the storage screen.</li>
-			</ul>
-
-			<h2 class="date">27 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">CI - overhauled CM GitLab CI process to hopefully be more flexible and generic</li>
-				<li class="rscadd">CI - pipeline now runs SpacemanDMM tooling for maps related tasks</li>
-				<li class="rscadd">CI - added artifact exports to most of build process</li>
-				<li class="experiment">CI - added game-running docker container task to pipeline</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">After clicking a link for a legacy stylesheet, it should change color to have purple text.</li>
-				<li class="bugfix">The rainbow-colored gib spawner should no longer appear when mobs are being gibbed (or machinery is being destroyed).</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed acid runners being able to suicide whilst in containment.</li>
-			</ul>
-
-			<h2 class="date">26 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Gun I1 error has been bandaid'ed so it is not as much a pain to players as it is to people reading code</li>
-			</ul>
-			<h3 class="author">Nanu updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Fixed walls being broken could lead to space on Prison Annex</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed bug with browser links having purple text for no reason.</li>
-			</ul>
-
-			<h2 class="date">25 February 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fix conveyor switches invalid init preventing them from controlling conveyors.</li>
-			</ul>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed van's wall and doors transparency and offsets issues.</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">ID cards (and dogtags) once again list the bearer's bloodtype.</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">The "Legacy" stylesheet should work now.</li>
-				<li class="bugfix">The traits var and gear var for character preferences should no longer be able to get null elements.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed an exploit with unicode characters.</li>
-			</ul>
-
-			<h2 class="date">24 February 2021</h2>
-			<h3 class="author">BIgboyyo updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Synthetics now spawn in their closet as intended.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Tweaked wrongly intended changes to mentorhelp messaging</li>
-				<li class="bugfix">Fix a mistake in the mhelp message sending that would result in mentor also seeing each others messages</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Smartgun autofire mode now works. Specifically: if the gun is wielded and autofire toggled, it will take shots at targets that are in range and within a 135 degree arc in the direction you're facing. These aren't free bonus shots -- it respects fire delays.</li>
-				<li class="bugfix">Attaching or removing a smartgun attachment no longer resets the gun's stats to initial values. This fixes some bugs relating to recoil comp.</li>
-				<li class="bugfix">Toggling recoil comp on and off on a Terminator smartgun no longer increases its base scatter.</li>
-				<li class="bugfix">Unwielding a gun that can only be fired while wielded in the middle of a burst (ex. HPR, M4RA, smartgun) now stops the burst.</li>
-				<li class="tweak">Autofire scan range reduced to 7 tiles.</li>
-				<li class="tweak">Tidied SG code a bit.</li>
-			</ul>
-
-			<h2 class="date">23 February 2021</h2>
-			<h3 class="author">BIgboyyo updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">George no longer disappears when you scoop him up</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">base OOC Colors now use the config system</li>
-				<li class="tweak">removed get_staff_by_categories and AHOLD_IS_ONLY_MENTOR</li>
-				<li class="tweak">added CLIENT_IS_STAFF (in practice R_MOD|R_ADMIN)</li>
-				<li class="tweak">only client distinction other than individual rights should now be staff/non-staff</li>
-				<li class="tweak">Defer overwatch officer handling and messaging back to squads from the puny console</li>
-				<li class="tweak">Normalize deletion from overwatch in the ongoing war against stale references</li>
-				<li class="tweak">added a standard way to request early game start in ticker backend</li>
-				<li class="tweak">remove ticker 'start_immediately' bypassing lobby phase as unused and not properly accounted for</li>
-				<li class="bugfix">Fixed attempting to edit a 0 offset in a Fire Mission breaking it</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Cancelling upgrading a metal barricade no longer consumes metal.</li>
-			</ul>
-			<h3 class="author">Shikareth updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Activating signal flare enables throw mode.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixes runtimes with vehicle lockers, including one which meant things could not be inserted into them at all.</li>
-			</ul>
-			<h3 class="author">forest2001 updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added logs to ID modifications.</li>
-				<li class="rscadd">Added an internal log on individual IDs that records any changes to them.</li>
 			</ul>
 </div>
 </body>

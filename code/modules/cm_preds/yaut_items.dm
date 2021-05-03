@@ -720,12 +720,12 @@
 	..()
 
 /obj/item/weapon/melee/twohanded/yautja_sword/attack_self(mob/living/carbon/human/user)
-	var/is_yautja_user = isSpeciesYautja(user)
+	var/is_strong_user = HAS_TRAIT(user, TRAIT_SUPER_STRONG)
 	if(cur_parrying_cooldown > world.time || parrying)
 		to_chat(user, SPAN_WARNING("You've attempted to parry too soon, you must wait a bit before regaining your focus."))
 		return
 
-	if(!parrying_charges && is_yautja_user)
+	if(!parrying_charges && is_strong_user)
 		to_chat(user, SPAN_WARNING("Your sword refuses to allow you to parry. You must draw blood before doing so! Or wait a minute."))
 		return
 
@@ -772,7 +772,7 @@
 	SIGNAL_HANDLER
 	var/parry_chance = 100
 	var/skill = max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
-	if(!isSpeciesYautja(user))
+	if(!HAS_TRAIT(user, TRAIT_SUPER_STRONG))
 		parry_chance = 50 * skill
 
 	if(!prob(parry_chance) || P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT || P.projectile_override_flags & AMMO_NO_DEFLECT)
@@ -789,7 +789,7 @@
 		return
 
 	var/parry_chance = 100
-	if(!isSpeciesYautja(user))
+	if(!HAS_TRAIT(user, TRAIT_SUPER_STRONG))
 		parry_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
 
 	if(!prob(parry_chance))
@@ -809,7 +809,7 @@
 		return
 
 	var/parry_chance = 100
-	if(!isSpeciesYautja(user))
+	if(!HAS_TRAIT(user, TRAIT_SUPER_STRONG))
 		parry_chance = 50 * max(1, user.skills.get_skill_level(SKILL_MELEE_WEAPONS))
 
 	if(!prob(parry_chance))
@@ -1031,7 +1031,7 @@
 		add_filter("combistick_charge", 1, list("type" = "outline", "color" = color, "size" = 2))
 
 /obj/item/weapon/melee/combistick/attack_hand(mob/living/carbon/human/user) //Prevents marines from instantly picking it up via pickup macros.
-	if(!isSpeciesYautja(user))
+	if(!HAS_TRAIT(user, TRAIT_YAUTJA_TECH))
 		user.visible_message(SPAN_DANGER("[user] starts to untangle the chain on \the [src]..."), SPAN_NOTICE("You start to untangle the chain on \the [src]..."))
 		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, src, INTERRUPT_MOVED, BUSY_ICON_HOSTILE))
 			..()
@@ -1074,7 +1074,7 @@
 
 	attack_self(mob/living/carbon/human/user)
 		if(!active)
-			if(!isSpeciesYautja(user))
+			if(!HAS_TRAIT(user, TRAIT_YAUTJA_TECH))
 				to_chat(user, "What's this thing?")
 				return
 			to_chat(user, SPAN_WARNING("You activate the hellhound beacon!"))
@@ -1084,7 +1084,7 @@
 				var/mob/living/carbon/C = user
 				C.toggle_throw_mode(THROW_MODE_NORMAL)
 		else
-			if(!isSpeciesYautja(user)) return
+			if(!HAS_TRAIT(user, TRAIT_YAUTJA_TECH)) return
 			activated_turf = get_turf(user)
 			display_camera(user)
 		return
@@ -1190,9 +1190,8 @@
 /obj/item/hunting_trap/attack_self(mob/user as mob)
 	..()
 	if(ishuman(user) && !user.stat && !user.is_mob_restrained())
-		var/mob/living/carbon/human/H = user
 		var/wait_time = 3 SECONDS
-		if(!isSpeciesYautja(H))
+		if(!HAS_TRAIT(user, TRAIT_YAUTJA_TECH))
 			wait_time = rand(5 SECONDS, 10 SECONDS)
 		if(!do_after(user, wait_time, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			return
@@ -1205,7 +1204,7 @@
 		user.drop_held_item()
 
 /obj/item/hunting_trap/attack_hand(mob/living/carbon/human/user)
-	if(isSpeciesYautja(user))
+	if(HAS_TRAIT(user, TRAIT_YAUTJA_TECH))
 		disarm(user)
 	//Humans and synths don't know how to handle those traps!
 	if(isHumanSynthStrict(user) && armed)
@@ -1293,7 +1292,7 @@
 	set category = "Object"
 
 	var/mob/living/carbon/human/H = usr
-	if(!isSpeciesYautja(H))
+	if(!HAS_TRAIT(H, TRAIT_YAUTJA_TECH))
 		to_chat(H, SPAN_WARNING("You do not know how to configure the trap."))
 		return
 	var/range = tgui_input_list(H, "Which range would you like to set the hunting trap to?", "Hunting Trap Range", list(2, 3, 4, 5, 6, 7))
