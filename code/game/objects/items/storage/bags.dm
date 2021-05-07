@@ -33,7 +33,7 @@
 	max_w_class = SIZE_SMALL
 	storage_slots = 21
 	can_hold = list() // any
-	cant_hold = list(/obj/item/disk/nuclear)
+	cant_hold = list(/obj/item/disk/nuclear, /obj/item/weapon/melee/throwing_knife)
 
 	storage_flags = STORAGE_GATHER_SIMULTAENOUSLY|STORAGE_QUICK_GATHER|STORAGE_CLICK_GATHER
 
@@ -64,7 +64,7 @@
 	max_w_class = SIZE_SMALL
 	storage_slots = 21
 	can_hold = list() // any
-	cant_hold = list(/obj/item/disk/nuclear)
+	cant_hold = list(/obj/item/disk/nuclear, /obj/item/weapon/melee/throwing_knife)
 
 // -----------------------------
 //        Mining Satchel
@@ -114,7 +114,7 @@
 	icon = 'icons/obj/structures/props/mining.dmi'
 	icon_state = "sheetsnatcher"
 	name = "Sheet Snatcher"
-	desc = "A patented Yamada storage system designed for any kind of mineral sheet."
+	desc = "A patented Yutani storage system designed for any kind of mineral sheet."
 
 	var/capacity = 300; //the number of sheets it can carry.
 	w_class = SIZE_MEDIUM

@@ -186,7 +186,7 @@
 			homing_projectile = FALSE
 		if(ishuman(ht))
 			var/mob/living/carbon/human/H = ht
-			if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_IFF, H) & COMPONENT_CANCEL_BULLET_ACT\
+			if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_MOB_SKIPPING, H) & COMPONENT_SKIP_MOB\
 				|| runtime_iff_group && H.get_target_lock(runtime_iff_group)\
 			)
 				homing_target = null
@@ -342,7 +342,7 @@
 				var/mob/living/dL = dA
 				if(dL.is_dead())
 					continue
-				if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_IFF, dL) & COMPONENT_CANCEL_BULLET_ACT\
+				if(SEND_SIGNAL(src, COMSIG_BULLET_CHECK_MOB_SKIPPING, dL) & COMPONENT_SKIP_MOB\
 					|| runtime_iff_group && dL.get_target_lock(runtime_iff_group)\
 				)
 					continue
@@ -422,6 +422,10 @@
 
 /obj/item/projectile/proc/handle_mob(mob/living/L)
 	// If we've already handled this atom, don't do it again
+
+	if(SEND_SIGNAL(src, COMSIG_BULLET_PRE_HANDLE_MOB, L, .) & COMPONENT_BULLET_PASS_THROUGH)
+		return FALSE
+
 	if(L in permutated)
 		return FALSE
 	permutated |= L
@@ -735,7 +739,7 @@
 	. = ..()
 	if(.)
 		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_IFF, src) & COMPONENT_CANCEL_BULLET_ACT\
+		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
 			|| P.runtime_iff_group && get_target_lock(P.runtime_iff_group)\
 		)
 			return FALSE
@@ -751,7 +755,7 @@
 	. = ..()
 	if(.)
 		var/ammo_flags = P.ammo.flags_ammo_behavior | P.projectile_override_flags
-		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_IFF, src) & COMPONENT_CANCEL_BULLET_ACT\
+		if(SEND_SIGNAL(P, COMSIG_BULLET_CHECK_MOB_SKIPPING, src) & COMPONENT_SKIP_MOB\
 			|| P.runtime_iff_group && get_target_lock(P.runtime_iff_group))
 			return FALSE
 
@@ -866,7 +870,8 @@
 
 	if(P.ammo.debilitate && stat != DEAD && ( damage || ( ammo_flags & AMMO_IGNORE_RESIST) ) )  //They can't be dead and damage must be inflicted (or it's a xeno toxin).
 		//Predators and synths are immune to these effects to cut down on the stun spam. This should later be moved to their apply_effects proc, but right now they're just humans.
-		if(species.name != "Yautja" && !(species.flags & IS_SYNTHETIC)) apply_effects(arglist(P.ammo.debilitate))
+		if(!isSpeciesYautja(src) && !isSpeciesSynth(src))
+			apply_effects(arglist(P.ammo.debilitate))
 
 	bullet_message(P) //We still want this, regardless of whether or not the bullet did damage. For griefers and such.
 

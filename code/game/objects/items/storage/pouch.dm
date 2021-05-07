@@ -8,6 +8,7 @@
 	flags_equip_slot = SLOT_STORE
 	storage_slots = 1
 	storage_flags = STORAGE_FLAGS_POUCH
+	cant_hold = list(/obj/item/weapon/melee/throwing_knife)
 
 ///Means that it closes a flap over its contents, and therefore update_icon should lift that flap when opened. If it doesn't have _half and _full iconstates, this doesn't matter either way.
 /obj/item/storage/pouch/update_icon(flap = TRUE)
@@ -103,6 +104,7 @@
 		/obj/item/weapon/melee/throwing_knife,
 		/obj/item/attachable/bayonet
 	)
+	cant_hold = list()
 	icon_state = "bayonet"
 	storage_slots = 5
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
@@ -318,6 +320,13 @@
 	storage_slots = 6
 	icon_state = "large_pistol_mag"
 
+/obj/item/storage/pouch/magazine/pistol/large/mateba/fill_preset_inventory()
+	for(var/i in 1 to storage_slots)
+		new /obj/item/ammo_magazine/revolver/mateba(src)
+
+/obj/item/storage/pouch/magazine/pistol/large/mateba/impact/fill_preset_inventory()
+	for(var/i in 1 to storage_slots)
+		new /obj/item/ammo_magazine/revolver/mateba/highimpact(src)
 
 /obj/item/storage/pouch/magazine/pistol/pmc_mateba/fill_preset_inventory()
 	for(var/i = 1 to storage_slots)

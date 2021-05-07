@@ -52,6 +52,7 @@
 		src.add_fingerprint(usr)
 	else
 		src.forceMove(get_turf(src))
+	return TRUE
 
 //default attackby behaviour
 /obj/item/clothing/accessory/attackby(obj/item/I, mob/user)
@@ -62,6 +63,10 @@
 	if(has_suit)
 		return	//we aren't an object on the ground so don't call parent
 	..()
+
+///Extra text to append when attached to another clothing item and the host clothing is examined.
+/obj/item/clothing/accessory/proc/additional_examine_text()
+	return "."
 
 /obj/item/clothing/accessory/blue
 	name = "blue tie"
@@ -128,7 +133,8 @@
 
 /obj/item/clothing/accessory/medal/on_attached(obj/item/clothing/S, mob/living/user)
 	. = ..()
-	RegisterSignal(S, COMSIG_ITEM_PICKUP, .proc/remove_medal)
+	if(.)
+		RegisterSignal(S, COMSIG_ITEM_PICKUP, .proc/remove_medal)
 
 /obj/item/clothing/accessory/medal/proc/remove_medal(var/obj/item/clothing/C, var/mob/user)
 	SIGNAL_HANDLER
@@ -138,7 +144,8 @@
 
 /obj/item/clothing/accessory/medal/on_removed(mob/living/user, obj/item/clothing/C)
 	. = ..()
-	UnregisterSignal(C, COMSIG_ITEM_PICKUP)
+	if(.)
+		UnregisterSignal(C, COMSIG_ITEM_PICKUP)
 
 /obj/item/clothing/accessory/medal/attack(mob/living/carbon/human/H, mob/living/carbon/human/user)
 	if(istype(H) && istype(user) && user.a_intent == INTENT_HELP)
@@ -212,7 +219,7 @@
 
 /obj/item/clothing/accessory/medal/silver/security
 	name = "robust security award"
-	desc = "An award for distinguished combat and sacrifice in defence of W-Y's commercial interests. Often awarded to security staff."
+	desc = "An award for distinguished combat and sacrifice in defence of Wey-Yu's commercial interests. Often awarded to security staff."
 
 /obj/item/clothing/accessory/medal/gold
 	name = "gold medal"
@@ -221,7 +228,7 @@
 
 /obj/item/clothing/accessory/medal/gold/captain
 	name = "medal of captaincy"
-	desc = "A golden medal awarded exclusively to those promoted to the rank of captain. It signifies the codified responsibilities of a captain to W-Y, and their undisputable authority over their crew."
+	desc = "A golden medal awarded exclusively to those promoted to the rank of captain. It signifies the codified responsibilities of a captain to Wey-Yu, and their undisputable authority over their crew."
 
 /obj/item/clothing/accessory/medal/gold/heroism
 	name = "medal of exceptional heroism"
@@ -484,6 +491,11 @@
 	else
 		to_chat(user, "It is empty.")
 
+/obj/item/clothing/accessory/holster/additional_examine_text()
+	if(holstered)
+		return ", carrying \a [holstered]."
+	. = ..()
+
 /obj/item/clothing/accessory/holster/armpit
 	name = "shoulder holster"
 	desc = "A worn-out handgun holster. Perfect for concealed carry"
@@ -551,12 +563,14 @@
 	src.add_fingerprint(user)
 
 /obj/item/clothing/accessory/storage/on_attached(obj/item/clothing/C, mob/living/user)
-	..()
-	C.verbs += /obj/item/clothing/suit/storage/verb/toggle_draw_mode
+	. = ..()
+	if(.)
+		C.verbs += /obj/item/clothing/suit/storage/verb/toggle_draw_mode
 
 /obj/item/clothing/accessory/storage/on_removed(mob/living/user, obj/item/clothing/C)
-	..()
-	C.verbs -= /obj/item/clothing/suit/storage/verb/toggle_draw_mode
+	. = ..()
+	if(.)
+		C.verbs -= /obj/item/clothing/suit/storage/verb/toggle_draw_mode
 
 /obj/item/clothing/accessory/storage/webbing
 	name = "webbing"
@@ -669,7 +683,7 @@
 		to_chat(user, "Waving around a badge before swiping an ID would be pretty pointless.")
 		return
 	if(isliving(user))
-		user.visible_message(SPAN_DANGER("[user] displays their W-Y Internal Security Legal Authorization Badge.\nIt reads: [stored_name], W-Y Security."),SPAN_DANGER("You display your W-Y Internal Security Legal Authorization Badge.\nIt reads: [stored_name], W-Y Security."))
+		user.visible_message(SPAN_DANGER("[user] displays their Wey-Yu Internal Security Legal Authorization Badge.\nIt reads: [stored_name], Wey-Yu Security."),SPAN_DANGER("You display your Wey-Yu Internal Security Legal Authorization Badge.\nIt reads: [stored_name], Wey-Yu Security."))
 
 /obj/item/clothing/accessory/holobadge/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(istype(O, /obj/item/card/id))

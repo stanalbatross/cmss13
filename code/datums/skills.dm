@@ -204,7 +204,7 @@ CIVILIAN
 	)
 
 /datum/skills/civilian/manager
-	name = "Weston-Yamada Manager" // Semi-competent leader with basic knowledge in most things.
+	name = "Weyland-Yutani Manager" // Semi-competent leader with basic knowledge in most things.
 	skills = list(
 		SKILL_ENDURANCE = SKILL_ENDURANCE_TRAINED,
 		SKILL_LEADERSHIP = SKILL_LEAD_MASTER,
@@ -214,7 +214,7 @@ CIVILIAN
 	)
 
 /datum/skills/civilian/manager_survivor
-	name = "Weston-Yamada Manager" //Manager but balanced for survivor, endurance 5 and can build cades
+	name = "Weyland-Yutani Manager" //Manager but balanced for survivor, endurance 5 and can build cades
 	skills = list(
 		SKILL_ENDURANCE = SKILL_ENDURANCE_SURVIVOR,
 		SKILL_LEADERSHIP = SKILL_LEAD_MASTER,
@@ -380,10 +380,11 @@ COMMAND STAFF
 /datum/skills/admiral
 	name = "Admiral"
 	skills = list(
+		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
 		SKILL_CONSTRUCTION = SKILL_CONSTRUCTION_ENGI,
 		SKILL_LEADERSHIP = SKILL_LEAD_MASTER,
 		SKILL_MEDICAL = SKILL_MEDICAL_DOCTOR,
-		SKILL_POLICE = SKILL_POLICE_FLASH,
+		SKILL_POLICE = SKILL_POLICE_SKILLED,
 		SKILL_POWERLOADER = SKILL_POWERLOADER_MASTER,
 		SKILL_ENDURANCE = SKILL_ENDURANCE_SURVIVOR,
 		SKILL_JTAC = SKILL_JTAC_MASTER,

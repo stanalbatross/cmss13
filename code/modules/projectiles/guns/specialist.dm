@@ -117,7 +117,7 @@
 
 /obj/item/weapon/gun/rifle/sniper/elite
 	name = "\improper M42C anti-tank sniper rifle"
-	desc = "A high end mag-rail heavy sniper rifle from Weston-Armat chambered in the heaviest ammo available, 10x99mm Caseless."
+	desc = "A high end mag-rail heavy sniper rifle from Weyland-Armat chambered in the heaviest ammo available, 10x99mm Caseless."
 	icon_state = "m42c"
 	item_state = "m42c" //NEEDS A TWOHANDED STATE
 
@@ -769,11 +769,8 @@
 	set name = "Switch Storage Drawing Method"
 	set category = "Object"
 	set src in usr
-	cylinder.storage_flags ^= STORAGE_USING_DRAWING_METHOD
-	if (cylinder.storage_flags & STORAGE_USING_DRAWING_METHOD)
-		to_chat(usr, "Clicking [src] with an empty hand now puts the last stored item in your hand.")
-	else
-		to_chat(usr, "Clicking [src] with an empty hand now opens the internal storage menu.")
+
+	cylinder.storage_draw_logic(src.name)
 
 //-------------------------------------------------------
 //GRENADE LAUNCHER

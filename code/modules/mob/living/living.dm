@@ -329,8 +329,7 @@
 	now_pushing = TRUE
 	var/mob/living/L = AM
 
-	// For now a kind of hacky check for if you are performing an action that stops you from being pushed by teammates
-	if(L.status_flags & IMMOBILE_ACTION && areSameSpecies(src, L) && src.mob_size <= L.mob_size)
+	if(L.status_flags & IMMOBILE_ACTION && src.faction == L.faction && src.mob_size <= L.mob_size)
 		now_pushing = FALSE
 		return
 
@@ -454,10 +453,10 @@
 /mob/proc/flash_eyes()
 	return
 
-/mob/living/flash_eyes(intensity = 1, bypass_checks, type = /obj/screen/fullscreen/flash)
+/mob/living/flash_eyes(intensity = 1, bypass_checks, type = /obj/screen/fullscreen/flash, var/flash_timer = 40)
 	if( bypass_checks || (get_eye_protection() < intensity && !(disabilities & DISABILITY_BLIND)) )
 		overlay_fullscreen("flash", type)
-		spawn(40)
+		spawn(flash_timer)
 			clear_fullscreen("flash", 20)
 		return 1
 

@@ -499,10 +499,10 @@
 
 /turf/closed/wall/strata_ice/jungle
 	name = "jungle vegetation"
-	icon = 'icons/turf/walls/strata_ice.dmi'
-	icon_state = "strata_jungle"
+	icon = 'icons/turf/walls/jungle_veg.dmi'
+	icon_state = "jungle_veg"
 	desc = "Exceptionally dense vegetation that you can't see through."
-	walltype = WALL_STRATA_JUNGLE //Not a metal wall
+	walltype = WALL_JUNGLE_UPDATED //Not a metal wall
 	hull = 1
 
 /turf/closed/wall/strata_outpost_ribbed //this guy is our reinforced replacement
@@ -878,7 +878,7 @@
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
 	if (M.hivenumber == hivenumber)
-		take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
+		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
 	return XENO_ATTACK_ACTION
@@ -1014,8 +1014,8 @@
 		damage *= brute_multiplier
 
 	if(prob(chance_to_reflect))
-		if(P.runtime_iff_group)
-			// Bullet gets absorbed if it has IFF.
+		if(P.runtime_iff_group || P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT)
+			// Bullet gets absorbed if it has IFF or can't be reflected.
 			return
 
 		var/obj/item/projectile/new_proj = new(src)
@@ -1088,7 +1088,7 @@
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
 	if (M.hivenumber == hivenumber)
-		take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
+		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
 	return XENO_ATTACK_ACTION
