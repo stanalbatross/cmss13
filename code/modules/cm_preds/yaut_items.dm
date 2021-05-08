@@ -728,6 +728,7 @@
 	..()
 
 /obj/item/weapon/melee/twohanded/yautja_sword/attack_self(mob/living/carbon/human/user)
+	. = ..()
 	var/is_strong_user = HAS_TRAIT(user, TRAIT_SUPER_STRONG)
 	if(cur_parrying_cooldown > world.time || parrying)
 		to_chat(user, SPAN_WARNING("You've attempted to parry too soon, you must wait a bit before regaining your focus."))
