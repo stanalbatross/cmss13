@@ -89,17 +89,6 @@
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
 	uniform_restricted = list(/obj/item/clothing/under/marine/veteran/dutch)
 
-/obj/item/clothing/suit/armor/vest/admiral
-	name = "admiral's jacket"
-	desc = "An armoured jacket with gold regalia"
-	icon_state = "admiral_jacket"
-	item_state = "admiral_jacket"
-	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS
-	w_class = SIZE_MEDIUM
-
-/obj/item/clothing/suit/armor/vest/admiral/executive
-	name = "director's jacket"
-
 /obj/item/clothing/suit/armor/vest/security
 	name = "Wey-Yu security armor"
 	desc = "An armored vest that protects against some damage. This one has a Weyland-Yutani corporate badge."
@@ -268,18 +257,19 @@
 		return 1
 	return 0
 
-/obj/item/clothing/suit/armor/reactive/attack_self(mob/user as mob)
-	src.active = !( src.active )
-	if (src.active)
+/obj/item/clothing/suit/armor/reactive/attack_self(mob/user)
+	..()
+
+	active = !active
+	if (active)
 		to_chat(user, SPAN_NOTICE(" The reactive armor is now active."))
-		src.icon_state = "reactive"
-		src.item_state = "reactive"
+		icon_state = "reactive"
+		item_state = "reactive"
 	else
 		to_chat(user, SPAN_NOTICE(" The reactive armor is now inactive."))
-		src.icon_state = "reactiveoff"
-		src.item_state = "reactiveoff"
-		src.add_fingerprint(user)
-	return
+		icon_state = "reactiveoff"
+		item_state = "reactiveoff"
+		add_fingerprint(user)
 
 /obj/item/clothing/suit/armor/reactive/emp_act(severity)
 	active = 0

@@ -339,7 +339,7 @@
 	)
 
 /obj/item/clothing/head/beret/marine/commander/dress
-	name = "marine captain dress beret"
+	name = "marine captain white beret"
 	icon_state = "codressberet"
 	desc = "A white beret with the captain insignia emblazoned on it. Its dazzling white color commands power and exudes class."
 
@@ -409,15 +409,17 @@
 	flags_inv_hide = HIDEEARS|HIDETOPHAIR
 	anti_hug = 1
 
-	attack_self(mob/user as mob)
-		if(src.icon_state == "ushankadown")
-			src.icon_state = "ushankaup"
-			src.item_state = "ushankaup"
-			to_chat(user, "You raise the ear flaps on the ushanka.")
-		else
-			src.icon_state = "ushankadown"
-			src.item_state = "ushankadown"
-			to_chat(user, "You lower the ear flaps on the ushanka.")
+/obj/item/clothing/head/ushanka/attack_self(mob/user)
+	..()
+
+	if(src.icon_state == "ushankadown")
+		src.icon_state = "ushankaup"
+		src.item_state = "ushankaup"
+		to_chat(user, "You raise the ear flaps on the ushanka.")
+	else
+		src.icon_state = "ushankadown"
+		src.item_state = "ushankadown"
+		to_chat(user, "You lower the ear flaps on the ushanka.")
 
 
 /obj/item/clothing/head/bearpelt
