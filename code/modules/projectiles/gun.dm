@@ -130,6 +130,8 @@
 
 	var/last_recoil_update = 0
 
+	var/auto_magharness = FALSE
+
 	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
 	/// that will be given to a projectile with the current ammo datum
 	var/list/list/traits_to_give
@@ -164,6 +166,8 @@
 	handle_starting_attachment()
 	handle_random_attachments()
 	GLOB.gun_list += src
+	if(auto_magharness)
+		AddElement(/datum/element/magharness)
 
 
 /obj/item/weapon/gun/proc/set_gun_attachment_offsets()
@@ -1027,7 +1031,7 @@ and you're good to go.
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 			last_fired = world.time
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
-			
+
 
 			if(flags_gun_features & GUN_FULL_AUTO_ON)
 				fa_shots++
@@ -1172,9 +1176,8 @@ and you're good to go.
 			return FALSE
 		var/damage_buff = BASE_BULLET_DAMAGE_MULT
 		//if target is lying or unconscious - add damage bonus
-		if(M.lying == 1 || M.stat == UNCONSCIOUS)
+		if(M.lying == TRUE || M.stat == UNCONSCIOUS)
 			damage_buff += BULLET_DAMAGE_MULT_TIER_4
-		damage_buff *= damage_mult //damage_mult is a gun stat. Some guns don't have one that matters. It's also applied again, later on, in apply_bullet_effects. Some guns have no damage difference when PBing a standing targets. Some have a very big difference. It's not consistent or predictable for users.
 		projectile_to_fire.damage *= damage_buff //Multiply the damage for point blank.
 		if(bullets_fired == 1) //First shot gives the PB message.
 			user.visible_message(SPAN_DANGER("[user] fires [src] point blank at [M]!"), null, null, null, CHAT_TYPE_WEAPON_USE)

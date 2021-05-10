@@ -129,16 +129,25 @@
 #define WEED_RANGE_PYLON     5
 #define WEED_RANGE_CORE      7
 
-#define WEED_XENO_DAMAGEMULT 0.25 //Multiplicative. The amount of damage xenos do to weeds
-#define WEED_XENO_SPEED_MULT 1 //Multiplicative. The slowdown that other xenos from different hives suffer. Also applies to sticky resin
+/// Multiplicative. The amount of damage xenos do to weeds.
+#define WEED_XENO_DAMAGEMULT 0.25
+/// Multiplicative. The slowdown that other xenos from different hives suffer. Also applies to sticky resin.
+#define WEED_XENO_SPEED_MULT 1
 
-#define WEED_HEALTH_STANDARD 1
+#define WEED_HEALTH_STANDARD 5
 #define WEED_HEALTH_HIVE     15
 
+#define NODE_HEALTH_GROWING  5
 #define NODE_HEALTH_STANDARD 11
 #define NODE_HEALTH_HIVE     30
 
 #define PYLON_COVERAGE_MULT 1.5
+
+#define WEED_BASE_GROW_SPEED (5 SECONDS)
+#define WEED_BASE_DECAY_SPEED (10 SECONDS)
+
+/// Between 2% to 10% of explosion severity
+#define WEED_EXPLOSION_DAMAGEMULT rand(2, 10)*0.01
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -283,6 +292,11 @@
 #define XENO_RESIN_ACID_PILLAR_COST 250
 #define XENO_RESIN_SHIELD_PILLAR_COST 250
 #define XENO_RESIN_ACID_GRENADE_COST 500
+
+// Cost to thicken constructions.
+#define XENO_THICKEN_WALL_COST (XENO_RESIN_WALL_THICK_COST - XENO_RESIN_WALL_COST)
+#define XENO_THICKEN_DOOR_COST (XENO_RESIN_DOOR_THICK_COST - XENO_RESIN_DOOR_COST)
+#define XENO_THICKEN_MEMBRANE_COST (XENO_RESIN_MEMBRANE_THICK_COST - XENO_RESIN_MEMBRANE_COST)
 
 #define RESIN_CONSTRUCTION_NO_MAX -1
 

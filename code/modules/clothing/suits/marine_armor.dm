@@ -187,19 +187,21 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	return ..()
 
 /obj/item/clothing/suit/storage/marine/attack_self(mob/user)
+	..()
+
 	if(!isturf(user.loc))
 		to_chat(user, SPAN_WARNING("You cannot turn the light on while in [user.loc].")) //To prevent some lighting anomalities.
 		return
-
 	if(flashlight_cooldown > world.time)
 		return
+	if(!ishuman(user))
+		return
 
-	if(!ishuman(user)) return
 	var/mob/living/carbon/human/H = user
-	if(H.wear_suit != src) return
+	if(H.wear_suit != src)
+		return
 
 	toggle_armor_light(user)
-	return 1
 
 /obj/item/clothing/suit/storage/marine/item_action_slot_check(mob/user, slot)
 	if(!ishuman(user)) return FALSE
@@ -369,7 +371,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/MP/RO
 	icon_state = "officer"
 	name = "\improper M3 pattern officer armor"
-	desc = "A well-crafted suit of M3 Pattern Armor typically found in the hands of higher-ranking officers. Useful for letting your men know who is in charge when taking to the field"
+	desc = "A well-crafted suit of M3 Pattern Armor typically found in the hands of higher-ranking officers. Useful for letting your men know who is in charge when taking to the field."
 	flags_atom = null
 	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit)
 	specialty = "M2 pattern officer"
@@ -381,13 +383,12 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "co_officer"
 	item_state = "co_officer"
 	name = "\improper M3 pattern captain armor"
-	desc = "A well-crafted suit of M3 Pattern Armor typically found in the hands of higher-ranking officers. Useful for letting your men know who is in charge when taking to the field"
+	desc = "A robust, well-polished suit of armor for the Commanding Officer. Custom-made to fit its owner. Show those Marines who's really in charge."
 	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit)
 	flags_atom = NO_SNOW_TYPE
 	armor_bullet = CLOTHING_ARMOR_HIGH
 	specialty = "M3 pattern captain"
 	item_state_slots = list(WEAR_JACKET = "co_officer")
-
 
 /obj/item/clothing/suit/storage/marine/smartgunner
 	name = "M56 combat harness"
@@ -1064,22 +1065,6 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 	return TRUE
 
-/obj/item/clothing/suit/storage/marine/marsoc
-	name = "\improper MARSOC commando armor"
-	desc = "A heavily customized suit of M3 armor. Used by MARSOC operators."
-	icon_state = "marsoc"
-	armor_melee = CLOTHING_ARMOR_HIGH
-	armor_bullet = CLOTHING_ARMOR_HIGH
-	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
-	armor_bomb = CLOTHING_ARMOR_VERYHIGH
-	armor_bio = CLOTHING_ARMOR_MEDIUMLOW
-	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
-	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
-	slowdown = SLOWDOWN_ARMOR_LIGHT
-	unacidable = TRUE
-	specialty = "MARSOC M3 pattern"
-	flags_atom = MOB_LOCK_ON_EQUIP|NO_CRYO_STORE|NO_SNOW_TYPE
-
 /datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(var/mob/firer, var/mob/target, obj/item/projectile/P)
 	var/list/turf/path = getline2(firer, target, include_from_atom = FALSE)
 	if(!path.len || get_dist(firer, target) > P.ammo.max_range)
@@ -1103,6 +1088,22 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	return blocked
 
 #undef FULL_CAMOUFLAGE_ALPHA
+
+/obj/item/clothing/suit/storage/marine/marsoc
+	name = "\improper MARSOC commando armor"
+	desc = "A heavily customized suit of M3 armor. Used by MARSOC operators."
+	icon_state = "marsoc"
+	armor_melee = CLOTHING_ARMOR_HIGH
+	armor_bullet = CLOTHING_ARMOR_HIGH
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_VERYHIGH
+	armor_bio = CLOTHING_ARMOR_MEDIUMLOW
+	armor_rad = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
+	slowdown = SLOWDOWN_ARMOR_LIGHT
+	unacidable = TRUE
+	flags_atom = MOB_LOCK_ON_EQUIP|NO_CRYO_STORE|NO_SNOW_TYPE
+	storage_slots = 4
 
 //=============================//PMCS\\==================================\\
 //=======================================================================\\
