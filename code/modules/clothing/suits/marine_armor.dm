@@ -1119,7 +1119,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	else if (icon_integrity_threshold == INTEGRITY_BROKEN)
 		icon_state = "b18_broken"
 	else
-		log_debug("[src] tried to update_icon but it had a value other than null, 0, 1, or 2. Value: [icon_integrity_threshold]")
+		CRASH("[src] tried to update_icon but it had a value other than null, 0, 1, or 2. Value: [icon_integrity_threshold]")
 
 /obj/item/clothing/suit/storage/marine/b18_tech/on_equip(var/mob/living/carbon/human/user)
 	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/handle_welding)
@@ -1182,7 +1182,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/splinter(var/mob/living/carbon/human/user)
 	SIGNAL_HANDLER
 	to_chat(user, SPAN_HIGHDANGER("Some pieces of [src] fall apart!"))
-	playsound(user, 'sound/effects/metal_crash.ogg', 20, TRUE)
+	playsound(user, 'sound/effects/metal_crash.ogg', 40, TRUE)
 	integrity_repair_max = min(integrity_repair_max, 49)
 	new /obj/item/stack/rods/plasteel(user.loc, 2)
 	new /obj/item/stack/rods(user.loc, 2)
@@ -1191,15 +1191,11 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/dismantle(var/mob/living/carbon/human/user)
 	SIGNAL_HANDLER
 	to_chat(user, SPAN_HIGHDANGER("[src] falls into pieces!"))
-	playsound(user, 'sound/effects/metal_crash.ogg', 20, TRUE)
+	playsound(user, 'sound/effects/metal_crash.ogg', 40, TRUE)
 	new /obj/item/stack/sheet/metal(user.loc, 1)
 	new /obj/item/stack/sheet/plasteel(user.loc, 2)
-	for(var/injector in injections)
-		new /obj/item/reagent_container/hypospray/autoinjector/skillless(user.loc)
-		injections--
 	UnregisterSignal(user, list(COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
 	set_broken_values()
-	user.update_canmove()
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/set_broken_values()
 	//note that this is still a proc
@@ -1220,7 +1216,6 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
 	slowdown = SLOWDOWN_ARMOR_VERY_LIGHT
 	BB_plas_plates = 0
-	injections = 0
 
 /obj/item/clothing/suit/storage/marine/b18_tech/attackby(obj/item/W, var/mob/living/carbon/human/user)
 
@@ -1336,7 +1331,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	button.overlays.Cut()
 	var/obj/item/clothing/suit/storage/marine/b18_tech/armor = holder_item
 	var/image/IMG
-	if(armor.injections)
+	if(armor.injections && armor.integrity_threshold)
 		IMG = image('icons/mob/hud/actions.dmi', button, "firstaid")
 	else
 		IMG = image('icons/mob/hud/actions.dmi', button, "firstaid_e")
@@ -1353,6 +1348,15 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	if(!armor.injections)
 		to_chat(H, SPAN_NOTICE("[armor] is out of injectors!"))
 		update_button_icon()
+		return
+
+	if(!armor.integrity_threshold)
+		to_chat(H, SPAN_NOTICE("You try to create an injector, but [armor] sparks and fizzles out."))
+		var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
+		sparks.set_up(5, 4, H)
+		sparks.start()
+		update_button_icon()
+		armor.injections--
 		return
 
 	var/active_hand_place = TRUE
