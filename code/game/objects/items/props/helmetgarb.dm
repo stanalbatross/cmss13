@@ -229,7 +229,7 @@
 	attached_mob = null
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/process()
-	if(battery == null || !battery.charge)
+	if(isnull(battery) || !battery.charge)
 		to_chat(attached_mob, SPAN_NOTICE("\the [src]'s battery runs out of charge!"))
 		toggle_nods(attached_mob)
 	battery.use(process_cost)
