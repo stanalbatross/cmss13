@@ -373,7 +373,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		..()
 
 /obj/item/clothing/head/helmet/marine/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/ammo_magazine) && world.time > helmet_bash_cooldown)
+	if(istype(W, /obj/item/ammo_magazine) && world.time > helmet_bash_cooldown && user)
 		var/obj/item/ammo_magazine/M = W
 		var/ammo_level = "somewhat"
 		playsound(user, 'sound/items/trayhit1.ogg', 15, FALSE)
@@ -454,7 +454,8 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	. = ..()
 	base_icon_state = icon_state
 
-/obj/item/clothing/head/helmet/marine/tech/attack_self()
+/obj/item/clothing/head/helmet/marine/tech/attack_self(mob/user)
+	..()
 	toggle()
 
 /obj/item/clothing/head/helmet/marine/tech/verb/toggle()
@@ -979,6 +980,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	var/flaps_up = FALSE
 
 /obj/item/clothing/head/uppcap/ushanka/attack_self(mob/user)
+	..()
 	if(flaps_up)
 		to_chat(user, SPAN_INFO("You move the ear flaps back."))
 		icon_state = "upp_ushanka"
@@ -1121,9 +1123,9 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	O.icon = 'icons/effects/explosion.dmi'
 	flick("grenade", O)
 	QDEL_IN(O, 7)
-	return
 
-/obj/item/clothing/head/helmet/marine/specialist/hefa/attack_self(var/mob/user)
+/obj/item/clothing/head/helmet/marine/specialist/hefa/attack_self(mob/user)
+	..()
 	activator = user
 	activate()
 

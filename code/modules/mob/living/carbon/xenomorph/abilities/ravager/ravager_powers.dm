@@ -43,7 +43,7 @@
 	for(var/mob/living/carbon/H in mobs_in_range)
 		if(X.can_not_harm(H))
 			continue
-		if(H.stat == DEAD || istype(H.buckled, /obj/structure/bed/nest))
+		if(H.stat == DEAD || HAS_TRAIT(H, TRAIT_NESTED))
 			continue
 		if(empower_targets >= max_targets)
 			break
@@ -94,12 +94,6 @@
 
 	var/mob/living/carbon/Xenomorph/X = owner
 	actual_empower(X)
-
-/datum/action/xeno_action/activable/empower/can_use_action()
-	if (activated_once)
-		return TRUE
-	else
-		return ..()
 
 /datum/action/xeno_action/activable/empower/action_cooldown_check()
 	if (cooldown_timer_id == TIMER_ID_NULL)

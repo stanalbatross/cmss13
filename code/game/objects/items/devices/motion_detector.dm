@@ -109,6 +109,7 @@
 	return ..()
 
 /obj/item/device/motiondetector/attack_self(mob/user)
+	..()
 	toggle_active(user, active)
 
 // var/active is used to forcefully toggle it to a specific state

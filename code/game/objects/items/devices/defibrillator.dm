@@ -60,6 +60,8 @@
 
 
 /obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
+	..()
+
 	if(defib_cooldown > world.time)
 		return
 
@@ -105,7 +107,7 @@
 		to_chat(user, SPAN_WARNING("Take [src]'s paddles out first."))
 		return
 	if(dcell.charge <= charge_cost)
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Internal battery depleted. Cannot analyze nor administer shock."))
+		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src]'s battery is too low! It needs to recharge."))
 		return
 	if(H.stat != DEAD)
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Vital signs detected. Aborting."))
@@ -116,7 +118,7 @@
 		return
 
 	if(blocked_by_suit && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interferring."))
+		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interfering."))
 		return
 
 	if((!H.check_tod() && !isSynth(H))) //synthetic species have no expiration date
@@ -159,6 +161,9 @@
 		SPAN_WARNING("You stop setting up the paddles on [H]'s chest"))
 		return
 
+	if(!check_revive(H, user))
+		return
+
 	//Do this now, order doesn't matter
 	sparks.start()
 	dcell.use(charge_cost)
@@ -168,9 +173,6 @@
 		SPAN_HELPFUL("You shock <b>[H]</b> with the paddles."))
 	H.visible_message(SPAN_DANGER("[H]'s body convulses a bit."))
 	defib_cooldown = world.time + 10 //1 second cooldown before you can shock again
-
-	if(!check_revive(H, user))
-		return
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
 	if(heart && prob(25))
