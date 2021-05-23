@@ -567,7 +567,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 
 /obj/item/clothing/head/helmet/marine/b18_tech/attackby(obj/item/W, mob/user)
 	
-	if(isscrewdriver(W)) //pending tool refactor
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 25, TRUE)
 		if(visor_down)
 			to_chat(user, SPAN_NOTICE("You screw the visor, shuffling it into the helmet, increasing visibility but reducing protection."))

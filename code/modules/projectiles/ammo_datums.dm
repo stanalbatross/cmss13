@@ -1232,7 +1232,7 @@
 	debilitate = list(1,0,0,0,0,0,0,0)
 
 	damage = BULLET_DAMAGE_TIER_18
-	damage_falloff = DAMAGE_FALLOFF_TIER_7 //WIP TEST
+	damage_falloff = DAMAGE_FALLOFF_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
 	shell_speed = AMMO_SPEED_TIER_6

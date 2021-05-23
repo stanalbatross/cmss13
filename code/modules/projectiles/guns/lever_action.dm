@@ -35,7 +35,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 						/obj/item/attachable/angledgrip,
 						/obj/item/attachable/gyro,
 						/obj/item/attachable/lasersight,
-						/obj/item/attachable/lever_sling,
+						/obj/item/attachable/magnetic_harness/lever_sling,
 						//Stock
 						/obj/item/attachable/stock/lever
 						)
@@ -320,6 +320,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 		levered = FALSE
 	return empty_chamber(user)
 
+/obj/item/weapon/gun/lever_action/sling
+	starting_attachment_types = list(/obj/item/attachable/stock/lever, /obj/item/attachable/magnetic_harness/lever_sling)
+
 //don't think about how this incredibly expensive railgun is roughly as effective as a 19th century lever-action rifle
 /obj/item/weapon/gun/lever_action/railgun
 	name = "XM-42b infantry railgun"
@@ -342,7 +345,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 	. = ..()
 	to_chat(user, SPAN_NOTICE("A readout on the side says '[integrity *2]% INTEGRITY.'"))
 
-//todo: break gun over time when firing
 /obj/item/weapon/gun/lever_action/railgun/Fire(atom/target, mob/living/user, params, reflex, dual_wield)
 	if(!integrity)
 		user.visible_message(SPAN_DANGER("[user] attempts to fire [src], but it doesn't do anything!"),
@@ -362,7 +364,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 		if(26 to 35)
 			to_chat(user, SPAN_WARNING("[src] rattles after the shot!"))
 	integrity--
-	update_icon()
+	if(scope.broken)
+		return
+	break_scope(user)
 
 /obj/item/weapon/gun/lever_action/railgun/handle_starting_attachment()
 	..()
@@ -371,12 +375,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 	scope.flags_attach_features &= ~ATTACH_REMOVABLE
 	scope.Attach(src)
 	update_attachable(scope.slot)
-
-/obj/item/weapon/gun/lever_action/railgun/direct_hit_effect(var/mob/M, mob/target, var/one_hand_lever = FALSE)
-	direct_hit_buff(M, target, one_hand_lever)
-	if(scope.broken)
-		return
-	break_scope(M)
 
 /obj/item/weapon/gun/lever_action/railgun/twohand_lever(mob/living/carbon/human/user)
 	to_chat(user, SPAN_WARNING(lever_message))

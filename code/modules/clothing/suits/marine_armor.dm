@@ -1239,7 +1239,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		else
 			to_chat(user, SPAN_NOTICE("You don't have enough plasteel to insert into [src]'s plate container."))
 
-	else if(W.pry_capable == IS_PRY_CAPABLE_CROWBAR) //pending tool refactor
+	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		if(BB_plas_plates)
 			to_chat(user, SPAN_NOTICE("You pry a plasteel plate off [src]'s plate container."))
 			BB_plas_plates--
@@ -1247,7 +1247,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 			var/obj/item/stack/sheet/plasteel/sheet = new(user.loc, amount = 5)
 			user.put_in_inactive_hand(sheet)
 
-	else if(isscrewdriver(W)) //pending tool refactor
+	else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(injections)
 			to_chat(user, SPAN_NOTICE("You screw an injector off [src]'s armguards."))
 			injections--
