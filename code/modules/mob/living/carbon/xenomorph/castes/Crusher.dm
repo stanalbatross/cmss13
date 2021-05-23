@@ -4,7 +4,7 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_5
 	melee_damage_upper = XENO_DAMAGE_TIER_5
-	max_health = XENO_HEALTH_TIER_7
+	max_health = XENO_HEALTH_TIER_10
 	plasma_gain = XENO_PLASMA_GAIN_TIER_7
 	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_10
@@ -243,8 +243,7 @@
 
 		bound_xeno.flick_attack_overlay(H, "slash")
 
-		H.last_damage_source = initial(bound_xeno.name)
-		H.last_damage_mob = bound_xeno
+		H.last_damage_data = create_cause_data(initial(bound_xeno.name), bound_xeno)
 
 		//Logging, including anti-rulebreak logging
 		if(H.status_flags & XENO_HOST && H.stat != DEAD)

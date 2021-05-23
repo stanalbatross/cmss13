@@ -179,7 +179,7 @@
 
 		var/final_angle = initial_angle
 
-		var/obj/item/projectile/P = new /obj/item/projectile(original_P.weapon_source, original_P.weapon_source_mob, original_P.shot_from)
+		var/obj/item/projectile/P = new /obj/item/projectile(original_P.weapon_cause_data)
 		P.generate_bullet(GLOB.ammo_list[bonus_projectiles_type]) //No bonus damage or anything.
 		P.accuracy = round(P.accuracy * original_P.accuracy/initial(original_P.accuracy)) //if the gun changes the accuracy of the main projectile, it also affects the bonus ones.
 
@@ -337,7 +337,7 @@
 	H.visible_message(SPAN_DANGER("[M] WAS EXECUTED!"), \
 		SPAN_HIGHDANGER("You were Executed!"))
 
-	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_source)
+	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
 	var/area/A = get_area(H)
 
@@ -598,7 +598,7 @@
 	H.visible_message(SPAN_HIGHDANGER("[M] WAS EXECUTED!"), \
 		SPAN_HIGHDANGER("You were Executed!"))
 
-	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_source)
+	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
 	var/area/A = get_area(H)
 
@@ -618,16 +618,16 @@
 
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive/on_hit_mob(mob/M, obj/item/projectile/P)
 	..()
-	cell_explosion(get_turf(M), 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(M), 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive/on_hit_obj(obj/O, obj/item/projectile/P)
 	..()
-	cell_explosion(get_turf(O), 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(O), 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive/on_hit_turf(turf/T, obj/item/projectile/P)
 	..()
 	if(T.density)
-		cell_explosion(T, 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+		cell_explosion(T, 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /*
 //================================================
@@ -693,73 +693,49 @@
 	shell_speed = AMMO_SPEED_TIER_4
 
 
-/datum/ammo/bullet/smg/nail/on_pointblank(mob/M, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
-	if(!user || user.a_intent != INTENT_HARM)
-		return ..()
-	if(!istype(M, /mob/living/carbon))
-		return ..()
+/datum/ammo/bullet/smg/nail/on_pointblank(mob/living/L, obj/item/projectile/P, mob/living/user) //Special effects when pointblanking mobs.
+	if(!L || L == P.firer || L.lying)
+		return
 
-	var/mob/living/carbon/C = M
-	if(isXeno(C))
-		var/mob/living/carbon/Xenomorph/X = C
+	if(isCarbonSizeXeno(L))
+		var/mob/living/carbon/Xenomorph/X = L
 		if(X.tier != 1) // 0 is queen!
-			return ..()
-	if(isYautja(C) || C.stat == DEAD)
-		return ..()
-	if(C.frozen)
-		to_chat(user, SPAN_DANGER("[C] struggles and avoids being nailed further!"))
-		return ..()
+			return
+
+	if(L.frozen)
+		to_chat(user, SPAN_DANGER("[L] struggles and avoids being nailed further!"))
+		return
+
 	//Check for presence of solid surface behind
-	var/turf/T = get_step(C, user.dir)
-	if(!T || T.z != C.z)
-		return ..() //Welp we tried boy, pack it up.
+	var/atom/movable/thick_surface = LinkBlocked(L, get_turf(L), get_step(L, get_dir(user, L)))
+	if(!thick_surface || ismob(thick_surface) && !thick_surface.anchored)
+		return
 
-	var/thick_surface = null
-	if(T.density || T.opacity)
-		thick_surface = T
-	else
-		for(var/obj/O in T)
-			if(O.get_projectile_hit_boolean(P))
-				thick_surface = O
-				break
+	L.frozen = TRUE
+	user.visible_message(SPAN_DANGER("[user] punches [L] with the nailgun and nails their limb to [thick_surface]!"),
+		SPAN_DANGER("You punch [L] with the nailgun and nail their limb to [thick_surface]!"))
+	L.update_canmove()
+	addtimer(CALLBACK(L, /mob.proc/unfreeze), 3 SECONDS)
 
-	if(!thick_surface)
-		return ..()
+/datum/ammo/bullet/smg/nail/on_hit_mob(mob/living/L, obj/item/projectile/P)
+	if(!L || L == P.firer || L.lying)
+		return
 
-	C.frozen = TRUE
-	user.visible_message(SPAN_DANGER("[user] punches [C] with the nailgun, and nail their limb to [thick_surface]!"),
-		SPAN_DANGER("You punch [C] with the nailgun, and nail their limb to [thick_surface]!"))
-	C.update_canmove()
-	addtimer(CALLBACK(C, /mob.proc/unfreeze), 3 SECONDS)
+	L.AdjustSlowed(1) //Slow on hit.
+	L.recalculate_move_delay = TRUE
 
-/datum/ammo/bullet/smg/nail/on_hit_mob(mob/M, obj/item/projectile/P)
-	var/turf/T = get_step(M.loc, P.dir)
+	//If there's an obstacle on the far side, superslow and do extra damage.
+	if(isCarbonSizeXeno(L)) //Unless they're a strong xeno.
+		var/mob/living/carbon/Xenomorph/X = L
+		if(X.tier != 1) // 0 is queen!
+			return
 
-	var/thick_surface = FALSE
-	if(!istype(M, /mob/living/carbon))
-		return FALSE
+	var/atom/movable/thick_surface = LinkBlocked(L, get_turf(L), get_step(L, get_dir(P.loc ? P : P.firer, L)))
+	if(!thick_surface || ismob(thick_surface) && !thick_surface.anchored)
+		return
 
-	var/mob/living/carbon/C = M
-	C.AdjustSlowed(1) //Slow on hit.
-
-	if(!T || T.z != C.z)
-		return FALSE //Welp we tried boy, pack it up. Slow applied, but no further
-
-	if(T.density || T.opacity)
-		thick_surface = TRUE
-	else
-		for(var/obj/O in T)
-			if(O.get_projectile_hit_boolean(P))
-				thick_surface = TRUE
-				break
-
-	if(!thick_surface)
-		C.recalculate_move_delay = TRUE
-		return FALSE
-
-	C.apply_armoured_damage(damage*0.5, ARMOR_BULLET, BRUTE, null, penetration)
-	C.AdjustSuperslowed(3) //Superslows if there`s an obstacle behind
-	C.recalculate_move_delay = TRUE
+	L.apply_armoured_damage(damage*0.5, ARMOR_BULLET, BRUTE, null, penetration)
+	L.AdjustSuperslowed(3) 
 
 /datum/ammo/bullet/smg/incendiary
 	name = "incendiary submachinegun bullet"
@@ -833,14 +809,14 @@
 	damage_falloff = DAMAGE_FALLOFF_TIER_9
 
 /datum/ammo/bullet/rifle/explosive/on_hit_mob(mob/M, obj/item/projectile/P)
-	cell_explosion(get_turf(M), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(M), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /datum/ammo/bullet/rifle/explosive/on_hit_obj(obj/O, obj/item/projectile/P)
-	cell_explosion(get_turf(O), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(O), 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /datum/ammo/bullet/rifle/explosive/on_hit_turf(turf/T, obj/item/projectile/P)
 	if(T.density)
-		cell_explosion(T, 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_source, P.weapon_source_mob)
+		cell_explosion(T, 80, 40, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
 /datum/ammo/bullet/rifle/ap
 	name = "armor-piercing rifle bullet"
@@ -1592,24 +1568,24 @@
 	. = ..()
 
 /datum/ammo/rocket/on_hit_mob(mob/M, obj/item/projectile/P)
-	cell_explosion(get_turf(M), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(M), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, get_turf(M))
 	if(isHumanStrict(M)) // No yautya or synths. Makes humans gib on direct hit.
-		M.ex_act(350, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+		M.ex_act(350, P.dir, P.weapon_cause_data, 100)
 	smoke.start()
 
 /datum/ammo/rocket/on_hit_obj(obj/O, obj/item/projectile/P)
-	cell_explosion(get_turf(O), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(O), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, get_turf(O))
 	smoke.start()
 
 /datum/ammo/rocket/on_hit_turf(turf/T, obj/item/projectile/P)
-	cell_explosion(T, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(T, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, T)
 	smoke.start()
 
 /datum/ammo/rocket/do_at_max_range(obj/item/projectile/P)
-	cell_explosion(get_turf(P), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(P), 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, get_turf(P))
 	smoke.start()
 
@@ -1627,26 +1603,26 @@
 
 /datum/ammo/rocket/ap/on_hit_mob(mob/M, obj/item/projectile/P)
 	var/turf/T = get_turf(M)
-	M.ex_act(150, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+	M.ex_act(150, P.dir, P.weapon_cause_data, 100)
 	M.KnockDown(2)
 	M.KnockOut(2)
 	if(isHumanStrict(M)) // No yautya or synths. Makes humans gib on direct hit.
-		M.ex_act(300, P.dir, P.weapon_source, P.weapon_source_mob, 100)
-	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+		M.ex_act(300, P.dir, P.weapon_cause_data, 100)
+	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, T)
 	smoke.start()
 
 /datum/ammo/rocket/ap/on_hit_obj(obj/O, obj/item/projectile/P)
 	var/turf/T = get_turf(O)
-	O.ex_act(150, P.dir, P.weapon_source, P.weapon_source_mob, 100)
-	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	O.ex_act(150, P.dir, P.weapon_cause_data, 100)
+	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, T)
 	smoke.start()
 
 /datum/ammo/rocket/ap/on_hit_turf(turf/T, obj/item/projectile/P)
 	var/hit_something = 0
 	for(var/mob/M in T)
-		M.ex_act(150, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+		M.ex_act(150, P.dir, P.weapon_cause_data, 100)
 		M.KnockDown(4)
 		M.KnockOut(4)
 		hit_something = 1
@@ -1654,13 +1630,13 @@
 	if(!hit_something)
 		for(var/obj/O in T)
 			if(O.density)
-				O.ex_act(150, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+				O.ex_act(150, P.dir, P.weapon_cause_data, 100)
 				hit_something = 1
 				continue
 	if(!hit_something)
-		T.ex_act(150, P.dir, P.weapon_source, P.weapon_source_mob, 200)
+		T.ex_act(150, P.dir, P.weapon_cause_data, 200)
 
-	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, T)
 	smoke.start()
 
@@ -1668,7 +1644,7 @@
 	var/turf/T = get_turf(P)
 	var/hit_something = 0
 	for(var/mob/M in T)
-		M.ex_act(250, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+		M.ex_act(250, P.dir, P.weapon_cause_data, 100)
 		M.KnockDown(2)
 		M.KnockOut(2)
 		hit_something = 1
@@ -1676,12 +1652,12 @@
 	if(!hit_something)
 		for(var/obj/O in T)
 			if(O.density)
-				O.ex_act(250, P.dir, P.weapon_source, P.weapon_source_mob, 100)
+				O.ex_act(250, P.dir, P.weapon_cause_data, 100)
 				hit_something = 1
 				continue
 	if(!hit_something)
-		T.ex_act(250, P.dir, P.weapon_source, P.weapon_source_mob)
-	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+		T.ex_act(250, P.dir, P.weapon_cause_data)
+	cell_explosion(T, 100, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 	smoke.set_up(1, T)
 	smoke.start()
 
@@ -1697,20 +1673,20 @@
 	shell_speed = AMMO_SPEED_TIER_3
 
 /datum/ammo/rocket/ltb/on_hit_mob(mob/M, obj/item/projectile/P)
-	cell_explosion(get_turf(M), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
-	cell_explosion(get_turf(M), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(M), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
+	cell_explosion(get_turf(M), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/on_hit_obj(obj/O, obj/item/projectile/P)
-	cell_explosion(get_turf(O), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
-	cell_explosion(get_turf(O), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(O), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
+	cell_explosion(get_turf(O), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/on_hit_turf(turf/T, obj/item/projectile/P)
-	cell_explosion(get_turf(T), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
-	cell_explosion(get_turf(T), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(T), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
+	cell_explosion(get_turf(T), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 
 /datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/P)
-	cell_explosion(get_turf(P), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
-	cell_explosion(get_turf(P), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_source, P.weapon_source_mob)
+	cell_explosion(get_turf(P), 220, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
+	cell_explosion(get_turf(P), 200, 100, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, P.weapon_cause_data)
 
 /datum/ammo/rocket/wp
 	name = "white phosphorous rocket"
@@ -1762,19 +1738,19 @@
 
 /datum/ammo/rocket/wp/quad/on_hit_mob(mob/M,obj/item/projectile/P)
 	drop_flame(get_turf(M))
-	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_source, P.weapon_source_mob)
+	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/on_hit_obj(obj/O,obj/item/projectile/P)
 	drop_flame(get_turf(O))
-	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_source, P.weapon_source_mob)
+	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/on_hit_turf(turf/T,obj/item/projectile/P)
 	drop_flame(T)
-	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_source, P.weapon_source_mob)
+	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/do_at_max_range(obj/item/projectile/P)
 	drop_flame(get_turf(P))
-	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_source, P.weapon_source_mob)
+	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/custom
 	name = "custom rocket"
@@ -1945,13 +1921,13 @@
 /datum/ammo/energy/yautja/rifle/blast/on_hit_mob(mob/M,obj/item/projectile/P)
 	knockback(M,P)
 	playsound(M.loc, 'sound/weapons/pulse.ogg', 25, 1)
-	explosion(get_turf(M), -1, -1, 2, -1, P.weapon_source, P.weapon_source_mob)
+	explosion(get_turf(M), -1, -1, 2, -1, , , , P.weapon_cause_data)
 
 /datum/ammo/energy/yautja/rifle/blast/on_hit_turf(turf/T,obj/item/projectile/P)
-	explosion(T, -1, -1, 2, -1, P.weapon_source, P.weapon_source_mob)
+	explosion(T, -1, -1, 2, -1, , , , P.weapon_cause_data)
 
 /datum/ammo/energy/yautja/rifle/blast/on_hit_obj(obj/O,obj/item/projectile/P)
-	explosion(get_turf(P), -1, -1, 2, -1, P.weapon_source, P.weapon_source_mob)
+	explosion(get_turf(P), -1, -1, 2, -1, , , , P.weapon_cause_data)
 
 
 /*
@@ -2365,8 +2341,7 @@
 	var/amount = 4
 	var/lifetime_mult = 1.0
 	if(isXenoBoiler(P.firer))
-		smoke_system.source = P.weapon_source
-		smoke_system.source_mob = P.weapon_source_mob
+		smoke_system.cause_data = P.weapon_cause_data
 	smoke_system.set_up(amount, 0, T)
 	smoke_system.lifetime = 12 * lifetime_mult
 	smoke_system.start()
@@ -2773,7 +2748,7 @@
 	var/obj/item/explosive/grenade/G = new nade_type(T)
 	G.visible_message(SPAN_WARNING("\A [G] lands on [T]!"))
 	G.det_time = 10
-	G.source_mob = P.weapon_source_mob
+	G.cause_data = P.weapon_cause_data
 	G.activate()
 
 /datum/ammo/grenade_container/rifle

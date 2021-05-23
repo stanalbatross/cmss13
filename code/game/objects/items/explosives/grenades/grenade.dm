@@ -64,7 +64,7 @@
 
 	activate(user)
 
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 
 	user.visible_message(SPAN_WARNING("[user] primes \a [name]!"), \
 	SPAN_WARNING("You prime \a [name]!"))
@@ -85,7 +85,7 @@
 	if(!hand_throwable && hand_throw)
 		to_chat(user, SPAN_WARNING("This isn't a hand grenade!"))
 		return
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 	playsound(loc, arm_sound, 25, 1, 6)
 	if(customizable)
 		activate_sensors()
@@ -109,7 +109,7 @@
 
 
 /obj/item/explosive/grenade/attackby(obj/item/W as obj, mob/user as mob)
-	if(isscrewdriver(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		switch(det_time)
 			if ("1")
 				det_time = 10

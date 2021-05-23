@@ -295,8 +295,8 @@
 
 
 /mob/living/carbon/human/a_intent_change(intent as num)
-	. = ..(intent)
-	if(isEarlySynthetic(src)) //1st gen synths change eye colour based on intent
+	. = ..()
+	if(HAS_TRAIT(src, TRAIT_INTENT_EYES)) //1st gen synths change eye colour based on intent
 		switch(a_intent)
 			if(INTENT_HELP) //Green, defalt
 				r_eyes = 0
@@ -364,3 +364,6 @@
 	for (var/datum/effects/tethered/TD in effects_list)
 		return TRUE
 	return FALSE
+
+/mob/living/carbon/human/get_role_name()
+	return get_actual_job_name(src)

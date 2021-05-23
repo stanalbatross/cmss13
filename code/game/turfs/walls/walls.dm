@@ -205,26 +205,27 @@
 
 	ScrapeAway()
 
-/turf/closed/wall/ex_act(severity, explosion_direction, source, mob/source_mob)
+/turf/closed/wall/ex_act(severity, explosion_direction, datum/cause_data/cause_data)
 	if(hull)
 		return
 	var/location = get_step(get_turf(src), explosion_direction) // shrapnel will just collide with the wall otherwise
 	var/exp_damage = severity*EXPLOSION_DAMAGE_MULTIPLIER_WALL
+	var/mob/M = cause_data.resolve_mob()
 
 	if ( damage + exp_damage > damage_cap*2 )
-		if(source_mob)
-			SEND_SIGNAL(source_mob, COMSIG_MOB_EXPLODED_WALL, src)
+		if(M)
+			SEND_SIGNAL(M, COMSIG_MOB_EXPLODED_WALL, src)
 		dismantle_wall(FALSE, TRUE)
 		if(!istype(src, /turf/closed/wall/resin))
-			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/light)
+			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/light, cause_data)
 	else
 		if(!istype(src, /turf/closed/wall/resin) && prob(25))
 			if(prob(50)) // prevents spam in close corridors etc
 				src.visible_message(SPAN_WARNING("The explosion causes shards to spall off of [src]!"))
-			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/spall)
+			create_shrapnel(location, rand(2,5), explosion_direction, , /datum/ammo/bullet/shrapnel/spall, cause_data)
 		else
 			exp_damage *= RESIN_EXPLOSIVE_MULTIPLIER
-		take_damage(exp_damage, source_mob)
+		take_damage(exp_damage, M)
 
 	return
 
@@ -374,7 +375,7 @@
 				return
 
 		if(WALL_STATE_SCREW)
-			if(isscrewdriver(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 				user.visible_message(SPAN_NOTICE("[user] begins removing the support lines."),
 				SPAN_NOTICE("You begin removing the support lines."))
 				playsound(src, 'sound/items/Screwdriver.ogg', 25, 1)
@@ -385,7 +386,7 @@
 				return
 
 		if(WALL_STATE_WIRECUTTER)
-			if(iswirecutter(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 				user.visible_message(SPAN_NOTICE("[user] begins uncrimping the hydraulic lines."),
 				SPAN_NOTICE("You begin uncrimping the hydraulic lines."))
 				playsound(src, 'sound/items/Wirecutter.ogg', 25, 1)
@@ -396,7 +397,7 @@
 				return
 
 		if(WALL_STATE_WRENCH)
-			if(iswrench(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 				user.visible_message(SPAN_NOTICE("[user] starts loosening the anchoring bolts securing the support rods."),
 				SPAN_NOTICE("You start loosening the anchoring bolts securing the support rods."))
 				playsound(src, 'sound/items/Ratchet.ogg', 25, 1)
@@ -407,7 +408,7 @@
 				return
 
 		if(WALL_STATE_CROWBAR)
-			if(iscrowbar(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 				user.visible_message(SPAN_NOTICE("[user] struggles to pry apart the connecting rods."),
 				SPAN_NOTICE("You struggle to pry apart the connecting rods."))
 				playsound(src, 'sound/items/Crowbar.ogg', 25, 1)

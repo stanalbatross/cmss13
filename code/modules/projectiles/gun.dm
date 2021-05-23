@@ -130,7 +130,7 @@
 
 	var/last_recoil_update = 0
 
-	var/auto_magharness = FALSE
+	var/auto_retrieval_slot
 
 	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
 	/// that will be given to a projectile with the current ammo datum
@@ -166,8 +166,8 @@
 	handle_starting_attachment()
 	handle_random_attachments()
 	GLOB.gun_list += src
-	if(auto_magharness)
-		AddElement(/datum/element/magharness)
+	if(auto_retrieval_slot)
+		AddElement(/datum/element/drop_retrieval/gun, auto_retrieval_slot)
 
 
 /obj/item/weapon/gun/proc/set_gun_attachment_offsets()
@@ -354,6 +354,10 @@
 	attachments = null
 	attachable_overlays = null
 	GLOB.gun_list -= src
+
+	var/obj/item/storage/belt/gun/gun_belt = loc //These use a var to prevent inserting more than one pistol, so the gun must be removed to clear it.
+	if(istype(gun_belt))
+		gun_belt.remove_from_storage(src, null)
 	. = ..()
 
 /obj/item/weapon/gun/emp_act(severity)
@@ -778,10 +782,8 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 //----------------------------------------------------------
 
 /obj/item/weapon/gun/afterattack(atom/A, mob/living/user, flag, params)
-	if(active_attachable && (active_attachable.flags_attach_features & ATTACH_MELEE)) //this is expected to do something in melee.
-		return active_attachable.fire_attachment(A, src, user)
 	if(flag)
-		return ..() //It's adjacent, is the user, or is on the user's person
+		return FALSE //It's adjacent, is the user, or is on the user's person
 	if(!istype(A))
 		return FALSE
 	// If firing full-auto, the firing starts when the mouse is clicked, not when it's released
@@ -866,11 +868,11 @@ and you're good to go.
 		log_debug("ERROR CODE I2: null ammo while create_bullet(). User: <b>[usr]</b>")
 		chambered = GLOB.ammo_list[/datum/ammo/bullet] //Slap on a default bullet if somehow ammo wasn't passed.
 
-	var/weapon_source_mob
-	if(isliving(usr))
-		var/mob/M = usr
+	var/weapon_source_mob = null
+	if(isliving(loc))
+		var/mob/M = loc
 		weapon_source_mob = M
-	var/obj/item/projectile/P = new /obj/item/projectile(bullet_source, weapon_source_mob, src)
+	var/obj/item/projectile/P = new /obj/item/projectile(src, create_cause_data(bullet_source, weapon_source_mob))
 	P.generate_bullet(chambered, 0, NO_FLAGS)
 
 	return P
@@ -949,8 +951,8 @@ and you're good to go.
 				to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
 				active_attachable.activate_attachment(src, null, TRUE)
 			else
-				active_attachable.fire_attachment(target,src,user) //Fire it.
-				last_fired = world.time
+				active_attachable.fire_attachment(target, src, user) //Fire it.
+				active_attachable.last_fired = world.time
 			return
 			//If there's more to the attachment, it will be processed farther down, through in_chamber and regular bullet act.
 
@@ -989,7 +991,7 @@ and you're good to go.
 		if(bullets_fired == 1 && !reflex && !dual_wield)
 			if(user)
 				var/obj/item/IH = user.get_inactive_hand()
-				if(istype(IH, /obj/item/weapon/gun))
+				if(isgun(IH))
 					var/obj/item/weapon/gun/OG = IH
 					if(!(OG.flags_gun_features & GUN_WIELDED_FIRING_ONLY) && OG.gun_category == gun_category)
 						OG.Fire(target,user,params, 0, TRUE)
@@ -1029,7 +1031,11 @@ and you're good to go.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-			last_fired = world.time
+			
+			if(check_for_attachment_fire)
+				active_attachable.last_fired = world.time
+			else
+				last_fired = world.time
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 
@@ -1061,12 +1067,17 @@ and you're good to go.
 #define EXECUTION_CHECK M.stat == UNCONSCIOUS && ((user.a_intent == INTENT_GRAB)||(user.a_intent == INTENT_DISARM))
 
 /obj/item/weapon/gun/attack(mob/living/M, mob/living/user, def_zone)
+	if(active_attachable && (active_attachable.flags_attach_features & ATTACH_MELEE)) //this is expected to do something in melee.
+		active_attachable.last_fired = world.time
+		active_attachable.fire_attachment(M, src, user)
+		return TRUE
+
 	if(!(flags_gun_features & GUN_CAN_POINTBLANK)) // If it can't point blank, you can't suicide and such.
 		return ..()
 
 	if(M == user && user.zone_selected == "mouth")
 		if(!able_to_fire(user))
-			return
+			return TRUE
 
 		var/ffl = " (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>) (<a href='?priv_msg=\ref[user.client]'>PM</a>)"
 
@@ -1080,7 +1091,7 @@ and you're good to go.
 		if(!do_after(user, 40, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			M.visible_message(SPAN_NOTICE("[user] decided life was worth living."))
 			flags_gun_features ^= GUN_CAN_POINTBLANK //Reset this.
-			return
+			return TRUE
 
 		if(active_attachable && !(active_attachable.flags_attach_features & ATTACH_PROJECTILE))
 			active_attachable.activate_attachment(src, null, TRUE)//We're not firing off a nade into our mouth.
@@ -1092,11 +1103,12 @@ and you're good to go.
 			playsound(user, actual_sound, sound_volume, 1)
 			simulate_recoil(2, user)
 			var/t = "\[[time_stamp()]\] <b>[key_name(user)]</b> committed suicide with <b>[src]</b>" //Log it.
+			var/datum/cause_data/cause_data = create_cause_data("suicide by [initial(name)]")
 			if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
 				t += " after playing Russian Roulette"
 				user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", sharp = 1)
 				user.apply_damage(200, OXY) //In case someone tried to defib them. Won't work.
-				user.death("russian roulette with \a [name]")
+				user.death(create_cause_data("russian roulette with \a [name]", user))
 				msg_admin_ff("[key_name(user)] lost at Russian Roulette with \a [name] in [get_area(user)] [ffl]")
 				to_chat(user, SPAN_HIGHDANGER("Your life flashes before you as your spirit is torn from your body!"))
 				user.ghostize(0) //No return.
@@ -1110,12 +1122,11 @@ and you're good to go.
 					if(ishuman(user) && user == M)
 						var/mob/living/carbon/human/HM = user
 						HM.undefibbable = TRUE //can't be defibbed back from self inflicted gunshot to head
-					user.death("suicide by [initial(name)]")
+					user.death(cause_data)
 					msg_admin_ff("[key_name(user)] committed suicide with \a [name] in [get_area(user)] [ffl]")
-			M.last_damage_source = initial(name)
-			M.last_damage_mob = null
+			M.last_damage_data = cause_data
 			user.attack_log += t //Apply the attack log.
-			last_fired = world.time
+			last_fired = world.time //This is incorrect if firing an attached undershotgun, but the user is too dead to care.
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 			projectile_to_fire.play_damage_effect(user)
@@ -1129,12 +1140,12 @@ and you're good to go.
 				msg_admin_niche("[key_name(user)] played live Russian Roulette with \a [name] in [get_area(user)] [ffl]") //someone might want to know anyway...
 
 		flags_gun_features ^= GUN_CAN_POINTBLANK //Reset this.
-		return
+		return TRUE
 
 	else if(EXECUTION_CHECK) //Execution
 		user.visible_message(SPAN_DANGER("[user] puts [src] up to [M], steadying their aim."), SPAN_WARNING("You put [src] up to [M], steadying your aim."),null, null, CHAT_TYPE_COMBAT_ACTION)
 		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL|INTERRUPT_DIFF_INTENT, BUSY_ICON_HOSTILE))
-			return FALSE
+			return TRUE
 	else if(user.a_intent != INTENT_HARM) //Thwack them
 		return ..()
 
@@ -1152,8 +1163,6 @@ and you're good to go.
 
 
 	var/bullets_to_fire = 1
-	///Instructs to handoff to Fire after exiting loop, if necessary.
-	var/handoff = FALSE
 
 	if(!check_for_attachment_fire && (flags_gun_features & GUN_BURST_ON) && burst_amount > 1)
 		bullets_to_fire = burst_amount
@@ -1192,7 +1201,7 @@ and you're good to go.
 		if(projectile_to_fire.ammo.bonus_projectiles_amount)
 			var/obj/item/projectile/BP
 			for(var/i in 1 to projectile_to_fire.ammo.bonus_projectiles_amount)
-				BP = new /obj/item/projectile(initial(name), user, M.loc)
+				BP = new /obj/item/projectile(M.loc, create_cause_data(initial(name), user))
 				BP.generate_bullet(GLOB.ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0, NO_FLAGS)
 				BP.accuracy = round(BP.accuracy * projectile_to_fire.accuracy/initial(projectile_to_fire.accuracy)) //Modifies accuracy of pellets per fire_bonus_projectiles.
 				BP.damage *= damage_buff
@@ -1219,7 +1228,11 @@ and you're good to go.
 			projectile_to_fire.ammo.on_hit_mob(M, projectile_to_fire)
 			M.bullet_act(projectile_to_fire)
 
-		last_fired = world.time
+		if(check_for_attachment_fire)
+			active_attachable.last_fired = world.time
+		else
+			last_fired = world.time
+
 		SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 
 		if(EXECUTION_CHECK) //Continue execution if on the correct intent. Accounts for change via the earlier do_after
@@ -1238,15 +1251,14 @@ and you're good to go.
 		if(bullets_fired < bullets_to_fire) // We still have some bullets to fire.
 			extra_delay = fire_delay * 0.5
 			sleep(burst_delay)
-		if(get_dist(user, M) > 1) //We can each move around while burst-PBing, but if we get too far from the target, we'll have to shoot at them normally.
-			PB_burst_bullets_fired = bullets_fired
-			handoff = TRUE
-			break
+			if(get_dist(user, M) > 1) //We can each move around while burst-PBing, but if we get too far from the target, we'll have to shoot at them normally.
+				PB_burst_bullets_fired = bullets_fired
+				break
 
 	flags_gun_features &= ~GUN_BURST_FIRING
 	display_ammo(user)
 
-	if(handoff)
+	if(PB_burst_bullets_fired)
 		Fire(get_turf(M), user, reflex = TRUE) //Reflex prevents dual-wielding.
 
 	return TRUE
@@ -1301,19 +1313,21 @@ and you're good to go.
 		if(fa_firing)
 			return TRUE
 
-		var/added_delay = fire_delay
-		if(active_attachable)
-			if(active_attachable.attachment_firing_delay)
-				added_delay = active_attachable.attachment_firing_delay
-		else
-			if(user && user.skills)
-				if(user.skills.get_skill_level(SKILL_FIREARMS) == 0) //no training in any firearms
-					added_delay += FIRE_DELAY_TIER_8 //untrained humans fire more slowly.
-		if(world.time >= last_fired + added_delay + extra_delay) //check the last time it was fired.
+		var/next_shot
+
+		if(user && user.skills && user.skills.get_skill_level(SKILL_FIREARMS) == 0) //no training in any firearms
+			next_shot += FIRE_DELAY_TIER_8 //untrained humans fire more slowly.
+
+		if(active_attachable) //Underbarrel attached weapon?
+			next_shot += active_attachable.last_fired + active_attachable.attachment_firing_delay
+		else	//Normal fire.
+			next_shot += last_fired + fire_delay
+	
+		if(world.time >= next_shot + extra_delay) //check the last time it was fired.
 			extra_delay = 0
 		else if(!PB_burst_bullets_fired) //Special delay exemption for handed-off PB bursts. It's the same burst, after all.
 			return
-	return 1
+	return TRUE
 
 /obj/item/weapon/gun/proc/click_empty(mob/user)
 	if(user)

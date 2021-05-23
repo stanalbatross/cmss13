@@ -165,7 +165,7 @@
 		return
 
 	if (X && !QDELETED(X))
-		var/obj/effect/particle_effect/smoke/S = new /obj/effect/particle_effect/smoke/xeno_burn(get_turf(X), 1, X, X)
+		var/obj/effect/particle_effect/smoke/S = new /obj/effect/particle_effect/smoke/xeno_burn(get_turf(X), 1, create_cause_data(initial(X.caste_type), X))
 		S.time_to_live = smoke_duration
 		S.spread_speed = spread_speed
 	else
@@ -302,7 +302,7 @@
 	X.visible_message(SPAN_XENOWARNING("The [X] fires a blast of acid at [A]!"), SPAN_XENOWARNING("You fire a blast of acid at [A]!"))
 
 	var/turf/target = locate(A.x, A.y, A.z)
-	var/obj/item/projectile/P = new /obj/item/projectile(initial(X.caste_type), X, X.loc)
+	var/obj/item/projectile/P = new /obj/item/projectile(X.loc, create_cause_data(initial(X.caste_type), X))
 
 	var/datum/ammo/ammoDatum = new ammo_type()
 

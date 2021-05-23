@@ -253,7 +253,7 @@
 	if(!ishuman(user)) //first make sure theres no funkiness
 		return
 
-	if(istype(O,/obj/item/tool/wrench)) //rotate the mount
+	if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH)) //rotate the mount
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 		user.visible_message(SPAN_NOTICE("[user] rotates [src]."),SPAN_NOTICE("You rotate [src]."))
 		setDir(turn(dir, -90))
@@ -291,7 +291,7 @@
 			update_icon()
 		return
 
-	if(istype(O,/obj/item/tool/screwdriver))
+	if(HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER))
 		if(gun_mounted)
 			to_chat(user, "You're securing the M56D into place...")
 
@@ -432,7 +432,7 @@
 	if(QDELETED(O))
 		return
 
-	if(istype(O,/obj/item/tool/wrench)) // Let us rotate this stuff.
+	if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH)) // Let us rotate this stuff.
 		if(locked)
 			to_chat(user, "This one is anchored in place and cannot be rotated.")
 			return
@@ -442,7 +442,7 @@
 			setDir(turn(dir, -90))
 		return
 
-	if(isscrewdriver(O)) // Lets take it apart.
+	if(HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER)) // Lets take it apart.
 		if(locked)
 			to_chat(user, "This one cannot be disassembled.")
 		else
@@ -560,7 +560,8 @@
 		update_icon() //make sure the user can see the lack of ammo.
 		return 0 //Out of ammo.
 
-	in_chamber = new /obj/item/projectile(initial(name), null, loc) //New bullet!
+	var/datum/cause_data/cause_data = create_cause_data(initial(name))
+	in_chamber = new /obj/item/projectile(loc, cause_data) //New bullet!
 	in_chamber.generate_bullet(ammo)
 	return 1
 
@@ -620,7 +621,7 @@
 				final_angle += rand(-total_scatter_angle, total_scatter_angle)
 				target = get_angle_target_turf(T, final_angle, 30)
 
-			in_chamber.weapon_source_mob = user
+			in_chamber.weapon_cause_data = create_cause_data(initial(name), user)
 			in_chamber.setDir(dir)
 			in_chamber.def_zone = pick("chest","chest","chest","head")
 			playsound(loc,gun_noise, 50, 1)

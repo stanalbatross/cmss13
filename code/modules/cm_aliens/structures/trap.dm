@@ -18,18 +18,25 @@
 	var/created_by // ckey
 	var/list/notify_list = list() // list of xeno mobs to notify on trigger
 	var/datum/effect_system/smoke_spread/smoke_system
-	var/source_name
-	var/source_mob
+	var/datum/cause_data/cause_data
 
 /obj/effect/alien/resin/trap/New(loc, mob/living/carbon/Xenomorph/X)
 	if(X)
 		created_by = X.ckey
 		hivenumber = X.hivenumber
-		source_name = X.caste_type
-		source_mob = X
+		cause_data = create_cause_data(initial(X.caste_type), X)
 
 	set_hive_data(src, hivenumber)
 	..()
+
+/obj/effect/alien/resin/trap/Initialize()
+	. = ..()
+
+	var/obj/effect/alien/weeds/node/WD = locate() in loc
+	if(WD)
+		WD.RegisterSignal(src, COMSIG_PARENT_PREQDELETED, /obj/effect/alien/weeds/node/proc/trap_destroyed)
+		WD.overlay_node = FALSE
+		WD.overlays -= WD.staticnode
 
 /obj/effect/alien/resin/trap/examine(mob/user)
 	if(!isXeno(user))
@@ -164,9 +171,9 @@
 			trap_type_name = "acid"
 			var/spray_type = get_spray_type(trap_type)
 
-			new spray_type(loc, source_name, source_mob)
+			new spray_type(loc, cause_data, hivenumber)
 			for(var/turf/T in range(1,loc))
-				var/obj/effect/xenomorph/spray/SP = new spray_type(T, source_name, source_mob)
+				var/obj/effect/xenomorph/spray/SP = new spray_type(T, cause_data, hivenumber)
 				for(var/mob/living/carbon/H in T)
 					if(H.ally_of_hivenumber(hivenumber))
 						continue

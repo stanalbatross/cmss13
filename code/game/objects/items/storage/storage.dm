@@ -60,6 +60,13 @@
 	if(!mods["shift"] && mods["middle"] && CAN_PICKUP(user, src))
 		open(user)
 		return
+
+	//Allow alt-clicking to remove items directly from storage, if the storage is flagged or could be toggled to do so.
+	//Does so by passing the alt mod back to do_click(), which eventually delivers it to attack_hand().
+	//This ensures consistent click behaviour between alt-click and left-mouse drawing.
+	if(mods["alt"] && storage_flags & STORAGE_ALLOW_DRAWING_METHOD_TOGGLE|STORAGE_USING_DRAWING_METHOD && loc == user && !user.get_active_hand())
+		return
+
 	. = ..()
 
 /obj/item/storage/proc/return_inv()
@@ -269,9 +276,10 @@ var/list/global/item_storage_box_cache = list()
 	if(master)
 		var/obj/item/storage/S = master
 		var/obj/item/I = user.get_active_hand()
+		var/user_carried_master = user.contains(master)
 		// Placing something in the storage screen
 		if(I && !mods["alt"] && !mods["shift"] && !mods["ctrl"]) //These mods should be caught later on and either examine or do nothing.
-			if(world.time <= user.next_move && master.loc != user) //Click delay doesn't apply to clicking items in your first-layer inventory.
+			if(world.time <= user.next_move && !user_carried_master) //Click delay doesn't apply to clicking items in your first-layer inventory.
 				return TRUE
 			user.next_move = world.time
 			if(master.Adjacent(user)) //Throwing a storage item (or, possibly, other people pulling it away) doesn't close its screen.
@@ -487,9 +495,9 @@ var/list/global/item_storage_box_cache = list()
 	W.add_fingerprint(user)
 	return handle_item_insertion(W, FALSE, user)
 
-/obj/item/storage/attack_hand(mob/user)
+/obj/item/storage/attack_hand(mob/user, mods)
 	if (loc == user)
-		if(storage_flags & STORAGE_USING_DRAWING_METHOD && ishuman(user) && contents.len)
+		if((mods && mods["alt"] || storage_flags & STORAGE_USING_DRAWING_METHOD) && ishuman(user) && length(contents)) //Alt mod can reach attack_hand through the clicked() override.
 			var/obj/item/I
 			if(storage_flags & STORAGE_USING_FIFO_DRAWING)
 				I = contents[1]
@@ -540,7 +548,7 @@ var/list/global/item_storage_box_cache = list()
 	empty(H, get_turf(H))
 
 /obj/item/storage/proc/empty(var/mob/user, var/turf/T)
-	if (!(storage_flags & STORAGE_ALLOW_EMPTY) || !ishuman(user) || loc != user || user.is_mob_incapacitated())
+	if (!(storage_flags & STORAGE_ALLOW_EMPTY) || !ishuman(user) || !(user.l_hand == src || user.r_hand == src) || user.is_mob_incapacitated())
 		return
 
 	if (!isturf(T) || get_dist(src, T) > 1)

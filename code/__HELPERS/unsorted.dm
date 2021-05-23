@@ -14,7 +14,7 @@
 //Returns 1 if the given item is capable of popping things like balloons, inflatable barriers, or cutting police tape.
 // For the record, WHAT THE HELL IS THIS METHOD OF DOING IT?
 #define can_puncture(W) (isitem(W) && (W.sharp || W.heat_source >= 400 || \
-							istype(W, /obj/item/tool/screwdriver) || istype(W, /obj/item/tool/pen ) || istype(W, /obj/item/tool/shovel)) \
+							HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) || istype(W, /obj/item/tool/pen ) || istype(W, /obj/item/tool/shovel)) \
 						)
 
 #define is_surgery_tool(W) (istype(W, /obj/item/tool/surgery))
@@ -1843,3 +1843,8 @@ GLOBAL_LIST_INIT(duplicate_forbidden_vars,list(
 		M.regenerate_icons()
 	return O
 
+/proc/convert_to_json_text(var/json_file_string)
+	var/json_file = file(json_file_string)
+	json_file = file2text(json_file)
+	json_file = json_decode(json_file)
+	return json_file

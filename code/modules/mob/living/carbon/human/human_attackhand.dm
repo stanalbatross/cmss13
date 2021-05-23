@@ -80,8 +80,7 @@
 			if(!attack.is_usable(M)) attack = M.species.secondary_unarmed
 			if(!attack.is_usable(M)) return
 
-			M.last_damage_source = "fisticuffs"
-			M.last_damage_mob = src
+			M.last_damage_data = create_cause_data("fisticuffs", src)
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [key_name(src)]</font>")
 			attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [key_name(M)]</font>")
 			msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)] in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
@@ -123,15 +122,15 @@
 
 			//Accidental gun discharge
 			if(!skillcheck(M, SKILL_CQC, SKILL_CQC_SKILLED))
-				if (istype(r_hand,/obj/item/weapon/gun) || istype(l_hand,/obj/item/weapon/gun))
+				if (isgun(r_hand) || isgun(l_hand))
 					var/obj/item/weapon/gun/W = null
 					var/chance = 0
 
-					if (istype(l_hand,/obj/item/weapon/gun))
+					if (isgun(l_hand))
 						W = l_hand
 						chance = hand ? 40 : 20
 
-					if (istype(r_hand,/obj/item/weapon/gun))
+					if (isgun(r_hand))
 						W = r_hand
 						chance = !hand ? 40 : 20
 

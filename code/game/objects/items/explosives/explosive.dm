@@ -4,7 +4,7 @@
 /obj/item/explosive
 	var/active = FALSE
 	var/customizable = FALSE
-	var/source_mob
+	var/datum/cause_data/cause_data
 	var/creator
 	//Below is used for customization
 	var/obj/item/device/assembly_holder/detonator = null
@@ -34,13 +34,12 @@
 		reagents.vars[limit] = reaction_limits[limit]
 
 /obj/item/explosive/Destroy()
-	source_mob = null
+	cause_data = null
 	creator = null
 	. = ..()
 
 /obj/item/explosive/attack_self(mob/user)
 	..()
-
 	if(customizable && assembly_stage <= ASSEMBLY_UNLOCKED)
 		if(detonator)
 			detonator.detached()
@@ -56,7 +55,7 @@
 			current_container_volume = 0
 		desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 		return
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 	return TRUE
 
 /obj/item/explosive/update_icon()
@@ -79,7 +78,7 @@
 /obj/item/explosive/attackby(obj/item/W as obj, mob/user as mob)
 	if(!customizable || active)
 		return
-	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
+	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_MASTER))
 		to_chat(user, SPAN_WARNING("You do not know how to tinker with [name]."))
 		return
 	if(istype(W,/obj/item/device/assembly_holder) && (!assembly_stage || assembly_stage == ASSEMBLY_UNLOCKED))
@@ -104,7 +103,7 @@
 		assembly_stage = ASSEMBLY_UNLOCKED
 		desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 		update_icon()
-	else if(istype(W,/obj/item/tool/screwdriver))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(assembly_stage == ASSEMBLY_UNLOCKED)
 			if(containers.len)
 				to_chat(user, SPAN_NOTICE("You lock the assembly."))
@@ -177,9 +176,10 @@
 			reagent_list_text += " [R.volume] [R.name], "
 		i++
 
-	if(source_mob)//so we don't message for simulations
-		msg_admin_niche("[key_name(source_mob)] detonated custom explosive by [key_name(creator)]: [name] (REAGENTS: [reagent_list_text]) in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)", loc.x, loc.y, loc.z)
-		reagents.source_mob = source_mob
+	var/mob/cause_mob = cause_data.resolve_mob()
+	reagents.source_mob = cause_mob
+	if(cause_mob) //so we don't message for simulations
+		msg_admin_niche("[key_name(cause_mob)] detonated custom explosive by [key_name(creator)]: [name] (REAGENTS: [reagent_list_text]) in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)", loc.x, loc.y, loc.z)
 
 	if(containers.len < 2)
 		reagents.trigger_volatiles = TRUE //Explode on the first transfer

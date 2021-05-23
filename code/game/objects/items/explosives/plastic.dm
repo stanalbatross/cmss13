@@ -72,7 +72,7 @@
 		return
 
 	user.drop_held_item()
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 	plant_target = target
 	icon_state = overlay_image
 
@@ -108,7 +108,7 @@
 		addtimer(CALLBACK(src, .proc/prime), timer * 10)
 
 /obj/item/explosive/plastic/attackby(obj/item/W, mob/user)
-	if(ismultitool(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL))
 		if(active)
 			if(user.action_busy)
 				return
@@ -135,7 +135,7 @@
 /obj/item/explosive/plastic/proc/disarm()
 	pixel_x = 0
 	pixel_y = 0
-	if(plant_target && !istype(plant_target, /obj/structure/window) & !istype(plant_target, /turf/closed))
+	if(plant_target && !istype(plant_target, /obj/structure/window) && !istype(plant_target, /turf/closed))
 		plant_target.overlays -= overlay
 		qdel(overlay)
 		plant_target.contents -= src
@@ -218,15 +218,14 @@
 		return
 	var/turf/target_turf
 	if(!force)
-		if(!istype(plant_target, /obj/structure/window) & !istype(plant_target, /turf/closed))
+		if(!istype(plant_target, /obj/structure/window) && !istype(plant_target, /turf/closed))
 			plant_target.overlays -= overlay
 			qdel(overlay)
 			plant_target.contents -= src
 			forceMove(plant_target)
 		if(ismob(plant_target))
 			var/mob/M = plant_target
-			M.last_damage_source = initial(name)
-			M.last_damage_mob = source_mob
+			M.last_damage_data = cause_data
 
 		target_turf = get_turf(plant_target)
 	else
@@ -246,26 +245,26 @@
 			. = ..()
 		if(!QDELETED(src))
 			overlays.Cut()
-			cell_explosion(target_turf, 60, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, initial(name), source_mob)
+			cell_explosion(target_turf, 60, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 			qdel(src)
 		return
-	plant_target.ex_act(1000, , initial(name), source_mob)
+	plant_target.ex_act(1000, , cause_data)
 
 	for(var/turf/closed/wall/W in orange(1, target_turf))
 		if(W.hull)
 			continue
-		W.ex_act(1000, , initial(name), source_mob)
+		W.ex_act(1000, , cause_data)
 
 	for(var/obj/structure/window/W in orange(1, target_turf))
 		if(W.not_damageable)
 			continue
 
-		W.ex_act(1000, , initial(name), source_mob)
+		W.ex_act(1000, , cause_data)
 
 	for(var/obj/structure/machinery/door/D in orange(1, target_turf))
-		D.ex_act(1000, , initial(name), source_mob)
+		D.ex_act(1000, , cause_data)
 
-	cell_explosion(target_turf, 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, initial(name), source_mob)
+	cell_explosion(target_turf, 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 
 	qdel(src)
 
