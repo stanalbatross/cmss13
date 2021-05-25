@@ -206,9 +206,16 @@ Contains most of the procs that are called when a mob is attacked by something
 		user.flick_attack_overlay(src, "punch")
 	else
 		user.flick_attack_overlay(src, "punch")
+	var/integrity_damage_multiplier
+	if(weapon_edge)
+		integrity_damage_multiplier = INT_DMG_MULTIPLIER_VERYSHARP
+	else if(weapon_sharp)
+		integrity_damage_multiplier = INT_DMG_MULTIPLIER_SHARP
+	else
+		integrity_damage_multiplier = INT_DMG_MULTIPLIER_NORMAL
 
 	var/damage = armor_damage_reduction(GLOB.marine_melee, I.force, armor, (weapon_sharp?30:0) + (weapon_edge?10:0)) // no penetration frm punches
-	apply_damage(damage, I.damtype, affecting, sharp=weapon_sharp, edge=weapon_edge, used_weapon=I)
+	apply_damage(damage, I.damtype, affecting, integrity_damage_multiplier , used_weapon=I)
 
 	var/bloody = FALSE
 	if((I.damtype == BRUTE || I.damtype == HALLOSS) && prob(I.force*2 + 25))

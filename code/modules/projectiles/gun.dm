@@ -604,8 +604,10 @@
 			return
 
 	if(ishuman(user))
-		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/mob/living/carbon/human/wielder = user
+		if(world.time < (pull_time + wielder.minimum_wield_delay))
+			return
+		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/obj/limb/hand = wielder.get_limb(check_hand)
 		if(!istype(hand) || !hand.is_usable())
 			to_chat(user, SPAN_WARNING("Your other hand can't hold \the [src]!"))
@@ -1031,7 +1033,7 @@ and you're good to go.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-			
+
 			if(check_for_attachment_fire)
 				active_attachable.last_fired = world.time
 			else
@@ -1321,7 +1323,7 @@ and you're good to go.
 			next_shot += active_attachable.last_fired + active_attachable.attachment_firing_delay
 		else	//Normal fire.
 			next_shot += last_fired + fire_delay
-	
+
 		if(world.time >= next_shot + extra_delay) //check the last time it was fired.
 			extra_delay = 0
 		else if(!PB_burst_bullets_fired) //Special delay exemption for handed-off PB bursts. It's the same burst, after all.
@@ -1487,6 +1489,10 @@ and you're good to go.
 			total_recoil += RECOIL_AMOUNT_TIER_5
 		else
 			total_recoil -= user.skills.get_skill_level(SKILL_FIREARMS)*RECOIL_AMOUNT_TIER_5
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		total_recoil = max(total_recoil + H.minimum_gun_recoil, H.minimum_gun_recoil)
 
 	if(total_recoil > 0 && ishuman(user))
 		if(total_recoil >= 4)

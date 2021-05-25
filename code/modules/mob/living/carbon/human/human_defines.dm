@@ -141,6 +141,15 @@
 
 	var/datum/action/human_action/activable/selected_ability
 
+	// Integrity
+	var/bonus_knockdown
+	var/zoom_blocked //Can't use zoom
+	var/special_vision_blocked  //Can't see in the dark, etc
+	var/xeno_neurotoxin_buff //Increases effectiveness of xeno neurotoxin
+	var/minimum_gun_recoil
+	var/minimum_wield_delay
+
+
 /client/var/cached_human_playtime
 
 /client/proc/get_total_human_playtime(var/skip_cache = FALSE)

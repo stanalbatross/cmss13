@@ -72,3 +72,5 @@
 
 	var/datum/pain/pain	//Pain datum for the mob, set on New()
 	var/datum/stamina/stamina
+
+	var/action_delay //for do_after()

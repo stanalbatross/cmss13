@@ -65,7 +65,20 @@
 
 	var/icon/splinted_icon = null
 
+	// Integrity mechanic vars
 	var/list/bleeding_effects_list = list()
+	var/integrity_level = 0
+	var/integrity_level_effects = NO_FLAGS //Levels are not cumulative, but instead, are flags. This is so to allow some levels to be neutralized without changing the others (ex: level 3 effects are neutralized, but 2 and 4 are in effect)
+	var/perma_min_damage = 0
+
+	var/brute_autoheal = 0.02 //per life tick
+	var/burn_autoheal = 0.04
+	var/integrity_autoheal = 0.1
+	var/can_autoheal = TRUE
+	var/integrity_damage = 0
+	var/last_dam_time = 0
+
+	var/neutralized_integrity_effects = NO_FLAGS
 
 
 /obj/limb/Initialize(mapload, obj/limb/P, mob/mob_owner)
@@ -204,7 +217,7 @@
 	Less clear vars:
 	*	impact_name: name of an "impact icon." For now, is only relevant for projectiles but can be expanded to apply to melee weapons with special impact sprites.
 */
-/obj/limb/proc/take_damage(brute, burn, sharp, edge, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/damage_source = "dismemberment", var/mob/attack_source = null)
+/obj/limb/proc/take_damage(brute, burn, integrity_damage_multiplier = 1, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/damage_source = "dismemberment", var/mob/attack_source = null)
 	if((brute <= 0) && (burn <= 0))
 		return 0
 
@@ -215,9 +228,9 @@
 	if(istype(attack_source) && attack_source.faction == owner.faction)
 		is_ff = TRUE
 
-	//High brute damage or sharp objects may damage internal organs
-	if(!is_ff && take_damage_organ_damage(brute, sharp))
-		brute /= 2
+	if((owner.stat != DEAD))
+		var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
+		take_integrity_damage(brute * int_conversion * integrity_damage_multiplier) //Need to adjust to skills and armor
 
 	if(CONFIG_GET(flag/bones_can_break) && !(status & LIMB_ROBOT))
 		take_damage_bone_break(brute)
@@ -228,7 +241,7 @@
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
 
-	var/can_cut = (prob(brute*2) || sharp) && !(status & LIMB_ROBOT)
+	var/can_cut = (prob(brute*2) && !(status & LIMB_ROBOT))
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
 	if((brute_dam + burn_dam + brute + burn) < max_damage || !CONFIG_GET(flag/limbs_can_break))
 		if(brute)
@@ -276,7 +289,7 @@
 			if(possible_points.len)
 				//And pass the damage around, but not the chance to cut the limb off.
 				var/obj/limb/target = pick(possible_points)
-				target.take_damage(remain_brute, remain_burn, sharp, edge, used_weapon, forbidden_limbs + src, TRUE, attack_source = attack_source)
+				target.take_damage(remain_brute, remain_burn, integrity_damage_multiplier, used_weapon, forbidden_limbs + src, TRUE, attack_source = attack_source)
 
 	// Check what the damage was before
 	var/old_brute_dam = brute_dam
@@ -297,9 +310,118 @@
 				droplimb(0, 0, damage_source)
 				return
 
+	last_dam_time = world.time
 	owner.updatehealth()
 	update_icon()
 	start_processing()
+
+/obj/limb/proc/take_integrity_damage(amount)
+	integrity_damage = max(min(integrity_damage + amount, MAX_LIMB_INTEGRITY),0)
+	recalculate_integrity_level()
+
+/obj/limb/proc/recalculate_integrity()
+	recalculate_health_effects()
+	recalculate_integrity_level()
+
+/obj/limb/proc/recalculate_integrity_level()
+	var/old_level = integrity_level
+	integrity_level = 0
+	var/new_effects
+	if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
+		integrity_level++
+		new_effects |= LIMB_INTEGRITY_EFFECT_OKAY
+		if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CONCERNING)
+			integrity_level++
+			new_effects |= LIMB_INTEGRITY_EFFECT_CONCERNING
+			if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_SERIOUS)
+				integrity_level++
+				new_effects |= LIMB_INTEGRITY_EFFECT_SERIOUS
+				if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CRITICAL)
+					integrity_level++
+					new_effects |= LIMB_INTEGRITY_EFFECT_NONE
+
+	if(integrity_level > old_level)
+		integrity_warning()
+
+	new_effects &= ~neutralized_integrity_effects
+
+	if(new_effects == integrity_level_effects)
+		return
+
+	var/added_effects = ~integrity_level_effects & new_effects
+	var/removed_effects = integrity_level_effects & ~new_effects
+	integrity_level_effects = new_effects
+
+	reapply_integrity_effects(added_effects, removed_effects)
+
+/obj/limb/proc/reapply_integrity_effects(added, removed)
+	if(added & LIMB_INTEGRITY_THRESHOLD_CRITICAL)
+		perma_min_damage += 80
+	else if(removed & LIMB_INTEGRITY_THRESHOLD_CRITICAL)
+		perma_min_damage -= 80
+
+//Set damage to the desired level's threshold, so when the effects are recalculated
+//the level is set
+/obj/limb/proc/set_integrity_level(new_level)
+	switch(new_level)
+		if(LIMB_INTEGRITY_OKAY)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_OKAY
+		if(LIMB_INTEGRITY_CONCERNING)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CONCERNING
+		if(LIMB_INTEGRITY_SERIOUS)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_SERIOUS
+		if(LIMB_INTEGRITY_CRITICAL)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CRITICAL
+		if(LIMB_INTEGRITY_NONE)
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_CRITICAL
+		else
+			integrity_damage = LIMB_INTEGRITY_THRESHOLD_PERFECT
+	recalculate_integrity()
+
+/obj/limb/proc/integrity_warning()
+	switch(integrity_level)
+		if(LIMB_INTEGRITY_OKAY)
+			playsound(owner, 'sound/effects/bone_break2.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] feels weird..."))
+		if(LIMB_INTEGRITY_CONCERNING)
+			playsound(owner, 'sound/effects/bone_break4.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] begins to tingle..."))
+		if(LIMB_INTEGRITY_SERIOUS)
+			playsound(owner, 'sound/effects/bone_break6.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("Your [display_name] starts to feel hot..."))
+		if(LIMB_INTEGRITY_CRITICAL)
+			playsound(owner, 'sound/effects/bone_break1.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("You can barely feel your [display_name]!!"))
+		if(LIMB_INTEGRITY_NONE)
+			playsound(owner, 'sound/effects/limb_gore.ogg', 45, 1)
+			to_chat(owner, SPAN_DANGER("You can't feel your [display_name]!!"))
+
+/obj/limb/proc/recalculate_health_effects()
+	if(can_autoheal)
+		brute_autoheal = initial(brute_autoheal)
+		burn_autoheal = initial(burn_autoheal)
+		integrity_autoheal = initial(integrity_autoheal)
+	else
+		brute_autoheal = 0
+		burn_autoheal = 0
+		integrity_autoheal = 0
+	var/old_neutralized = neutralized_integrity_effects
+	neutralized_integrity_effects = 0
+
+	/*for(var/obj/item/stack/medical/M in medical_items)
+		if(M.brute_autoheal > brute_autoheal)
+			brute_autoheal = M.brute_autoheal
+			healing_naturally = FALSE
+		if(M.burn_autoheal > burn_autoheal)
+			burn_autoheal = M.burn_autoheal
+			healing_naturally = FALSE
+		if(M.integrity_autoheal > integrity_autoheal)
+			integrity_autoheal = M.integrity_autoheal
+
+		neutralized_integrity_effects |= M.limb_integrity_levels_neutralized*/
+	if(neutralized_integrity_effects != old_neutralized)
+		recalculate_integrity_level()
+
 
 /obj/limb/proc/heal_damage(brute, burn, internal = 0, robo_repair = 0)
 	if(status & LIMB_ROBOT && !robo_repair)
@@ -499,6 +621,21 @@ This function completely restores a damaged organ to perfect condition.
 	return 0
 
 /obj/limb/process()
+	if(!brute_dam && !burn_dam && !integrity_damage)
+		return
+	if(world.time - last_dam_time < MINIMUM_AUTOHEAL_DAMAGE_INTERVAL)
+		return
+	/*if(healing_naturally)
+		if(!can_autoheal)
+			stop_processing()
+			return
+		if((brute_dam + burn_dam) > MINIMUM_AUTOHEAL_HEALTH || owner.stat == DEAD)
+			return*/
+	//Integrity autoheal
+	if(integrity_autoheal && integrity_damage < LIMB_INTEGRITY_AUTOHEAL_THRESHOLD)
+		take_integrity_damage(-integrity_autoheal)
+	if(brute_autoheal || burn_autoheal)
+		heal_damage(brute_autoheal, burn_autoheal, TRUE, TRUE)
 
 	// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 	if(owner.life_tick % wound_update_accuracy == 0)

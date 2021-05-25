@@ -735,7 +735,7 @@
 		return
 
 	L.apply_armoured_damage(damage*0.5, ARMOR_BULLET, BRUTE, null, penetration)
-	L.AdjustSuperslowed(3) 
+	L.AdjustSuperslowed(3)
 
 /datum/ammo/bullet/smg/incendiary
 	name = "incendiary submachinegun bullet"
@@ -1923,6 +1923,8 @@
 		if(H.chem_effect_flags & CHEM_EFFECT_RESIST_NEURO || H.species.flags & NO_NEURO)
 			H.visible_message(SPAN_DANGER("[M] shrugs off the neurotoxin!"))
 			return //species like zombies or synths are immune to neurotoxin
+		if(H.xeno_neurotoxin_buff)
+			power *= H.xeno_neurotoxin_buff
 
 	if(M.knocked_out || pass_down_the_line) //second part is always false, but consistency is a great thing
 		pass_down_the_line = TRUE

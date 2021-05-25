@@ -557,7 +557,9 @@
 			for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
 				bleeding_check = TRUE
 				break
-			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || (org.status & LIMB_SPLINTED) || open_incision || bleeding_check)
+			var/integrity_damage = org.integrity_damage
+
+			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || (org.status & LIMB_SPLINTED) || integrity_damage || open_incision || bleeding_check)
 
 			var/org_name = "[capitalize(org.display_name)][org.status & LIMB_ROBOT ? " (Cybernetic)" : ""]"
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
@@ -598,6 +600,14 @@
 					dat += "(Nanosplinted)"
 				else if(org.status & LIMB_SPLINTED)
 					dat += "(Splinted)"
+
+				var/limb_integrity_damaged
+				for(var/obj/limb/L in H.limbs)
+					if(L.integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
+						limb_integrity_damaged++
+					if(limb_integrity_damaged)
+						dat += "[SPAN_SCANNER("*<b>Unoptimal Integrity</b> detected in [limb_integrity_damaged] limbs.")]\n"
+
 				dat += "\n"
 
 	// Show red messages - broken bokes, etc

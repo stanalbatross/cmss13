@@ -25,6 +25,9 @@
 			msg += "<span style='font-weight: bold; color: purple;'>You sense this creature is dead.\n"
 		else if(stat || !client)
 			msg += "<span class='xenowarning'>It doesn't seem responsive.\n</span>"
+		for(var/obj/limb/L in limbs)
+			if(length(L.integrity_damage))
+				msg += SPAN_XENOMINORWARNING("It's [L.display_name] is [L.integrity_damage > 100 ? "greatly weakened" : "weakened"]!")
 		msg += "*---------*</span>"
 		to_chat(user, msg)
 		return

@@ -1495,6 +1495,7 @@
 #include "code\modules\mob\living\carbon\human\life\handle_environment.dm"
 #include "code\modules\mob\living\carbon\human\life\handle_fire.dm"
 #include "code\modules\mob\living\carbon\human\life\handle_grabbed.dm"
+#include "code\modules\mob\living\carbon\human\life\handle_limbs.dm"
 #include "code\modules\mob\living\carbon\human\life\handle_organs.dm"
 #include "code\modules\mob\living\carbon\human\life\handle_pulse.dm"
 #include "code\modules\mob\living\carbon\human\life\handle_regular_hud_updates.dm"
