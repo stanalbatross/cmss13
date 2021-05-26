@@ -162,7 +162,6 @@ Contains most of the procs that are called when a mob is attacked by something
 			I.emp_act(severity)
 	..()
 
-
 //Returns 1 if the attack hit, 0 if it missed.
 /mob/living/carbon/human/proc/attacked_by(var/obj/item/I, var/mob/living/user, var/def_zone)
 	if(!I || !user)
@@ -309,7 +308,7 @@ Contains most of the procs that are called when a mob is attacked by something
 	var/weapon_edge = has_edge(O)
 
 	var/damage = armor_damage_reduction(GLOB.marine_melee, impact_damage, armor, (weapon_sharp?30:0) + (weapon_edge?10:0))
-	apply_damage(damage, dtype, affecting, sharp=weapon_sharp, edge=weapon_edge, used_weapon=O)
+	apply_damage(damage, dtype, affecting, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL, used_weapon=O)
 
 	var/last_damage_source = null
 	var/last_damage_mob = null

@@ -217,7 +217,7 @@
 	Less clear vars:
 	*	impact_name: name of an "impact icon." For now, is only relevant for projectiles but can be expanded to apply to melee weapons with special impact sprites.
 */
-/obj/limb/proc/take_damage(brute, burn, integrity_damage_multiplier = 1, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/damage_source = "dismemberment", var/mob/attack_source = null)
+/obj/limb/proc/take_damage(brute, burn, int_dmg_multiplier = 1, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/damage_source = "dismemberment", var/mob/attack_source = null)
 	if((brute <= 0) && (burn <= 0))
 		return 0
 
@@ -230,7 +230,7 @@
 
 	if((owner.stat != DEAD))
 		var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
-		take_integrity_damage(brute * int_conversion * integrity_damage_multiplier) //Need to adjust to skills and armor
+		take_integrity_damage(brute * int_conversion * int_dmg_multiplier) //Need to adjust to skills and armor
 
 	if(CONFIG_GET(flag/bones_can_break) && !(status & LIMB_ROBOT))
 		take_damage_bone_break(brute)
@@ -289,7 +289,7 @@
 			if(possible_points.len)
 				//And pass the damage around, but not the chance to cut the limb off.
 				var/obj/limb/target = pick(possible_points)
-				target.take_damage(remain_brute, remain_burn, integrity_damage_multiplier, used_weapon, forbidden_limbs + src, TRUE, attack_source = attack_source)
+				target.take_damage(remain_brute, remain_burn, int_dmg_multiplier , used_weapon, forbidden_limbs + src, TRUE, attack_source = attack_source)
 
 	// Check what the damage was before
 	var/old_brute_dam = brute_dam
@@ -1372,7 +1372,7 @@ This function completely restores a damaged organ to perfect condition.
 		var/icon/lips = new /icon('icons/mob/humans/onmob/human_face.dmi', "paint_[owner.lip_style]")
 		overlays += lips
 
-/obj/limb/head/take_damage(brute, burn, sharp, edge, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/mob/attack_source = null)
+/obj/limb/head/take_damage(brute, burn, int_dmg_multiplier = 1, used_weapon = null, list/forbidden_limbs = list(), no_limb_loss, impact_name = null, var/mob/attack_source = null)
 	. = ..()
 	if (!disfigured)
 		if (brute_dam > 50 || brute_dam > 40 && prob(50))

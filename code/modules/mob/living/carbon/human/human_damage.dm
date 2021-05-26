@@ -118,7 +118,7 @@
 		var/obj/limb/O = X
 		if(O.name == organ_name)
 			if(amount > 0)
-				O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+				O.take_damage(amount, 0, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL, used_weapon=damage_source)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
 				O.heal_damage(-amount, 0, internal=0, robo_repair=(O.status & LIMB_ROBOT))
@@ -134,7 +134,7 @@
 		var/obj/limb/O = X
 		if(O.name == organ_name)
 			if(amount > 0)
-				O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+				O.take_damage(0, amount, 0, used_weapon=damage_source)
 			else
 				//if you don't want to heal robot limbs, they you will have to check that yourself before using this proc.
 				O.heal_damage(0, -amount, internal=0, robo_repair=(O.status & LIMB_ROBOT))
@@ -384,8 +384,9 @@ This function restores all limbs.
 	*	permanent_kill: whether this attack causes human to become irrevivable
 */
 /mob/living/carbon/human/apply_damage(var/damage = 0, var/damagetype = BRUTE, var/def_zone = null, \
-	var/int_dmg_multiplier = 1, var/permanent_kill = FALSE,\
-	var/mob/firer = null, var/force = FALSE
+	var/int_dmg_multiplier = 1,var/obj/used_weapon = null, var/no_limb_loss = FALSE, \
+	var/impact_name = null, var/impact_limbs = null, var/permanent_kill = FALSE, var/mob/firer = null, \
+	var/force = FALSE
 )
 	if(protection_aura)
 		damage = round(damage * ((15 - protection_aura) / 15))

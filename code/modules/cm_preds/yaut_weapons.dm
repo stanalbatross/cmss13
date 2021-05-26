@@ -602,7 +602,7 @@
 		playsound(loc, 'sound/weapons/slash.ogg', 25)
 		create_leftovers(victim, has_meat = TRUE, skin_amount = 0)
 		for(var/L in victim.limbs)
-			victim.apply_damage(15, BRUTE, L, sharp = FALSE)
+			victim.apply_damage(15, BRUTE, L, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 		victim.add_flay_overlay(stage = 1)
 
 		if(do_after(user, 4 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE, victim))
@@ -610,7 +610,7 @@
 			if(v_head) //they might be beheaded
 				to_chat(user, SPAN_WARNING("You slam \the [src] into [victim]'s scalp, ripping it from the head, pocketing the scalp on yourself afterwards."))
 				create_leftovers(victim, has_meat = FALSE, skin_amount = 1)
-				victim.apply_damage(10, BRUTE, v_head, sharp = FALSE)
+				victim.apply_damage(10, BRUTE, v_head, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 				v_head.disfigured = TRUE
 				victim.h_style = "Bald"
 				victim.update_hair() //tear the hair off with the scalp
@@ -621,7 +621,7 @@
 				playsound(loc, 'sound/weapons/bladeslice.ogg', 25)
 				create_leftovers(victim, has_meat = FALSE, skin_amount = 3)
 				for(var/L in victim.limbs)
-					victim.apply_damage(18, BRUTE, L, sharp = FALSE)
+					victim.apply_damage(18, BRUTE, L, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 				victim.remove_overlay(UNDERWEAR_LAYER)
 				victim.f_style = "Shaved"
 				victim.update_hair() //then rip the beard off along the skin
@@ -632,7 +632,7 @@
 					playsound(loc, 'sound/weapons/wristblades_hit.ogg', 25)
 					create_leftovers(victim, has_meat = TRUE, skin_amount = 2)
 					for(var/L in victim.limbs)
-						victim.apply_damage(22, BRUTE, L, sharp = FALSE)
+						victim.apply_damage(22, BRUTE, L, INT_DMG_MULTIPLIER_NORMAL)
 					for(var/obj/item/I in victim)
 						victim.drop_inv_item_to_loc(I, victim.loc, FALSE, TRUE)
 
