@@ -87,7 +87,7 @@
 
 	return modified_damage
 
-/mob/living/carbon/Xenomorph/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, used_weapon = null, int_dmg_multiplier, force = FALSE)
+/mob/living/carbon/Xenomorph/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, used_weapon = null, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL, force = FALSE)
 	if(!damage)
 		return
 

@@ -264,14 +264,14 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //Damages ONE external organ, organ gets randomly selected from damagable ones.
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
-/mob/living/carbon/human/take_limb_damage(var/brute, var/burn, var/int_dmg_mult = 1)
+/mob/living/carbon/human/take_limb_damage(var/brute, var/burn, var/int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 	var/list/obj/limb/parts = get_damageable_limbs()
 	if(!parts.len)	return
 	var/obj/limb/picked = pick(parts)
 	if(brute != 0)
-		apply_damage(brute, BRUTE, picked, int_dmg_mult)
+		apply_damage(brute, BRUTE, picked, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 	if(burn != 0)
-		apply_damage(burn, BURN, picked, int_dmg_mult)
+		apply_damage(burn, BURN, picked, int_dmg_multiplier = INT_DMG_MULTIPLIER_NORMAL)
 	UpdateDamageIcon()
 	updatehealth()
 	speech_problem_flag = 1
@@ -388,14 +388,14 @@ This function restores all limbs.
 	var/impact_name = null, var/impact_limbs = null, var/permanent_kill = FALSE, var/mob/firer = null, \
 	var/force = FALSE
 )
-	if(protection_aura)
-		damage = round(damage * ((15 - protection_aura) / 15))
+	if(protection_aura && damage > 0)
+		damage = round(damage * ((ORDER_HOLD_CALC_LEVEL - protection_aura) / ORDER_HOLD_CALC_LEVEL))
 
 	//Handle other types of damage
 	if(damage < 0 || (damagetype != BRUTE) && (damagetype != BURN))
 		if(damagetype == HALLOSS && pain.feels_pain)
 			if((damage > 25 && prob(20)) || (damage > 50 && prob(60)))
-				emote("pain")
+				INVOKE_ASYNC(src, .proc/emote, "pain")
 
 		..(damage, damagetype, def_zone)
 		return TRUE
