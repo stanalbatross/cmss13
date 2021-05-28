@@ -148,7 +148,7 @@
 	var/xeno_neurotoxin_buff //Increases effectiveness of xeno neurotoxin
 	var/minimum_gun_recoil
 	var/minimum_wield_delay
-
+	var/int_dmg_malus = 1
 
 /client/var/cached_human_playtime
 

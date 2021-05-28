@@ -191,21 +191,22 @@
 	if(isobserver(H.mind?.current) && !H.client) //Let's call up the correct ghost! Also, bodies with clients only, thank you.
 		H.mind.transfer_to(H, TRUE)
 
-
 	//At this point, the defibrillator is ready to work
-	H.apply_damage(-damage_heal_threshold, BRUTE)
-	H.apply_damage(-damage_heal_threshold, BURN)
-	H.apply_damage(-damage_heal_threshold, TOX)
-	H.apply_damage(-damage_heal_threshold, CLONE)
-	H.apply_damage(-H.getOxyLoss(), OXY)
-	H.updatehealth() //Needed for the check to register properly
+	if(!(SEND_SIGNAL(H, COMSIG_MOB_STOP_DEFIBHEAL) & COMPONENT_BLOCK_DEFIB_HEAL))
+		H.apply_damage(-damage_heal_threshold, BRUTE)
+		H.apply_damage(-damage_heal_threshold, BURN)
+		H.apply_damage(-damage_heal_threshold, TOX)
+		H.apply_damage(-damage_heal_threshold, CLONE)
+		H.apply_damage(-H.getOxyLoss(), OXY)
+		H.updatehealth() //Needed for the check to register properly
 
-	for(var/datum/reagent/R in H.reagents.reagent_list)
-		var/datum/chem_property/P = R.get_property(PROPERTY_ELECTROGENETIC)//Adrenaline helps greatly at restarting the heart
-		if(P)
-			P.trigger(H)
-			H.reagents.remove_reagent(R.id, 1)
-			break
+		for(var/datum/reagent/R in H.reagents.reagent_list)
+			var/datum/chem_property/P = R.get_property(PROPERTY_ELECTROGENETIC)//Adrenaline helps greatly at restarting the heart
+			if(P)
+				P.trigger(H)
+				H.reagents.remove_reagent(R.id, 1)
+				break
+				
 	if(H.health > HEALTH_THRESHOLD_DEAD)
 		user.visible_message(SPAN_NOTICE("[icon2html(src, viewers(src))] \The [src] beeps: Defibrillation successful."))
 		user.track_life_saved(user.job)

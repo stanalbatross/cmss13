@@ -687,7 +687,8 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 		if(I.zoom && I != src)
 			to_chat(user, SPAN_WARNING("You are already looking through \the [zoom_device]."))
 			return //Return in the interest of not unzooming the other item. Check first in the interest of not fucking with the other clauses
-
+	if(SEND_SIGNAL(user, COMSIG_MOB_PRE_ITEM_ZOOM, src) & COMPONENT_CANCEL_ZOOM)
+		return
 	if(user.eye_blind)
 		to_chat(user, SPAN_WARNING("You are too blind to see anything."))
 	else if(user.stat || !ishuman(user))

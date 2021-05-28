@@ -566,6 +566,7 @@
 			burn_info += "[burn_treated ? "" : "{B}"]"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
 			brute_info += "[brute_treated ? "" : "{T}"]"
+			var/integrity_info = "<font color='purple'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font>"
 			var/fracture_info = ""
 			if(org.status & LIMB_BROKEN)
 				fracture_info = "{F}"
@@ -595,18 +596,11 @@
 							org_advice = " Possible Groin Fracture."
 							show_limb = 1
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] [fracture_info][org_bleed][org_incision][org_advice]"
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] | [integrity_info] | [fracture_info][org_bleed][org_incision][org_advice]"
 				if(org.status & LIMB_SPLINTED_INDESTRUCTIBLE)
 					dat += "(Nanosplinted)"
 				else if(org.status & LIMB_SPLINTED)
 					dat += "(Splinted)"
-
-				var/limb_integrity_damaged
-				for(var/obj/limb/L in H.limbs)
-					if(L.integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
-						limb_integrity_damaged++
-					if(limb_integrity_damaged)
-						dat += "[SPAN_SCANNER("*<b>Unoptimal Integrity</b> detected in [limb_integrity_damaged] limbs.")]\n"
 
 				dat += "\n"
 
@@ -636,6 +630,12 @@
 
 		if(H.embedded_items.len > 0)
 			embedded_item_detected = TRUE
+		var/limb_integrity_damaged
+		for(var/obj/limb/L in H.limbs)
+			if(L.integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
+				limb_integrity_damaged++
+		if(limb_integrity_damaged)
+			dat += "[SPAN_SCANNER("*<b>Unoptimal Integrity</b> detected in [limb_integrity_damaged] limbs.")]\n"
 
 		var/core_fracture = 0
 		for(var/X in H.limbs)

@@ -79,7 +79,7 @@
 	var/last_dam_time = 0
 
 	var/neutralized_integrity_effects = NO_FLAGS
-
+	var/natural_int_dmg_resist = 1 // less = better
 
 /obj/limb/Initialize(mapload, obj/limb/P, mob/mob_owner)
 	. = ..()
@@ -187,31 +187,51 @@
 	if(!owner)
 		return
 
-	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
-	if(owner.mind && owner.skills)
-		armor += owner.skills.get_skill_level(SKILL_ENDURANCE)*5
+	message_staff("<b>organ damage check, [display_name]</b>")
+	message_staff("--------------------------------------------")
 
-	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute, armor, sharp ? ARMOR_SHARP_INTERNAL_PENETRATION : 0, 0, 0, max_damage ? (100*(max_damage-brute_dam) / max_damage) : 100)
+	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
+
+	message_staff("internal damage resist armor = [armor]")
+	message_staff("internal damage resist armor effective integrity = [max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100]%")
+	message_staff("[sharp? "sharp attack, +10 penetration" : "attack not sharp"]")
+
+	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute, armor, sharp ? ARMOR_SHARP_INTERNAL_PENETRATION : 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
+
+	message_staff("organ damage probability: [damage*DMG_ORGAN_DAM_PROB_MULT + brute_dam*BRUTE_ORGAN_DAM_PROB_MULT]")
 
 	if(internal_organs && prob(damage*DMG_ORGAN_DAM_PROB_MULT + brute_dam*BRUTE_ORGAN_DAM_PROB_MULT))
 		//Damage an internal organ
 		var/datum/internal_organ/I = pick(internal_organs)
 		I.take_damage(brute / 2)
+		message_staff("<b>organ damage given, [brute/2] damage to [I]</b>")
+		message_staff("--------------------------------------------")
 		return TRUE
+	message_staff("--------------------------------------------")
 	return FALSE
 
 /obj/limb/proc/take_damage_bone_break(brute)
 	if(!owner)
 		return
 
+	message_staff("<b>fracture check, [display_name]</b>")
+	message_staff("--------------------------------------------")
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
-	if(owner.mind && owner.skills)
-		armor += owner.skills.get_skill_level(SKILL_ENDURANCE)*5
 
-	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute*3, armor, 0, 0, 0, max_damage ? (100*(max_damage-brute_dam) / max_damage) : 100)
+	message_staff("internal damage resist armor = [armor]")
+	message_staff("internal damage resist armor effective integrity = [max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100]%")
 
-	if(brute_dam > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && prob(damage*2))
+	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute*3, armor, 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
+
+	var/probability = prob(damage*2)
+
+	message_staff("fracture first stage probability: [probability]")
+	message_staff("brute = [brute_dam + brute], threshold = [min_broken_damage * CONFIG_GET(number/organ_health_multiplier)], can cause frac? [brute_dam + brute > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && probability ? "yes" : "no"]")
+
+	if(brute_dam + brute  > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && probability)
 		fracture()
+	message_staff("--------------------------------------------")
+
 /*
 	Describes how limbs (body parts) of human mobs get damage applied.
 	Less clear vars:
@@ -230,7 +250,7 @@
 
 	if((owner.stat != DEAD))
 		var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
-		take_integrity_damage(brute * int_conversion * int_dmg_multiplier) //Need to adjust to skills and armor
+		take_integrity_damage(brute * int_conversion * int_dmg_multiplier * owner.int_dmg_malus) //Need to adjust to skills and armor
 
 	if(CONFIG_GET(flag/bones_can_break) && !(status & LIMB_ROBOT))
 		take_damage_bone_break(brute)
@@ -300,8 +320,8 @@
 	//If limb was damaged before and took enough damage, try to cut or tear it off
 	var/no_perma_damage = owner.status_flags & NO_PERMANENT_DAMAGE
 	if(old_brute_dam > 0 && !is_ff && body_part != BODY_FLAG_CHEST && !no_limb_loss && !no_perma_damage)
-		if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_NONE)
-			droplimb(0, 0, damage_source) 
+		if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CRTICAL)
+			droplimb(0, 0, damage_source)
 			return
 
 	last_dam_time = world.time
@@ -323,16 +343,16 @@
 	var/new_effects
 	if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_OKAY)
 		integrity_level++
-		new_effects |= LIMB_INTEGRITY_EFFECT_OKAY
+		new_effects |= LIMB_INTEGRITY_EFFECT_MINOR
 		if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CONCERNING)
 			integrity_level++
-			new_effects |= LIMB_INTEGRITY_EFFECT_CONCERNING
+			new_effects |= LIMB_INTEGRITY_EFFECT_MODERATE
 			if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_SERIOUS)
 				integrity_level++
-				new_effects |= LIMB_INTEGRITY_EFFECT_SERIOUS
+				new_effects |= LIMB_INTEGRITY_EFFECT_MAJOR
 				if(integrity_damage >= LIMB_INTEGRITY_THRESHOLD_CRITICAL)
 					integrity_level++
-					new_effects |= LIMB_INTEGRITY_EFFECT_NONE
+					new_effects |= LIMB_INTEGRITY_EFFECT_CRTICAL
 
 	if(integrity_level > old_level)
 		integrity_warning()
@@ -1049,16 +1069,16 @@ This function completely restores a damaged organ to perfect condition.
 		bonebreak_probability = 100 / Clamp(owner.skills.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
 	*/
 
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CONCERNING)
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE)
 		//hairline frac RNG calc goes here
 		return
 
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS)
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MAJOR)
 		//bone frac RNG calc goes here
 		//hairline RNG calc goes here
 		return
 
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_CRITICAL || prob(bonebreak_probability))
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		owner.recalculate_move_delay = TRUE
 		owner.visible_message(\
 			SPAN_WARNING("You hear a loud cracking sound coming from [owner]!"),
@@ -1216,9 +1236,6 @@ This function completely restores a damaged organ to perfect condition.
 	surgery_organ = null
 	cavity = 0
 
-
-
-
 /*
 			LIMB TYPES
 */
@@ -1235,6 +1252,25 @@ This function completely restores a damaged organ to perfect condition.
 	splint_icon_amount = 4
 	bandage_icon_amount = 4
 
+/obj/limb/chest/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
+		UnregisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL)
+		UnregisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE)
+	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
+		RegisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL, .proc/cancel_defib_heal)
+		RegisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE, .proc/bonus_burn_damage)
+
+	if(removed & LIMB_INTEGRITY_EFFECT_MODERATE)
+		owner.int_dmg_malus -= 0.5
+	else if(added & LIMB_INTEGRITY_EFFECT_MODERATE)
+		owner.int_dmg_malus += 0.5
+
+/obj/limb/chest/proc/cancel_defib_heal()
+	return COMPONENT_BLOCK_DEFIB_HEAL
+
+/obj/limb/chest/proc/bonus_burn_damage()
+	return COMPONENT_ADD_DMG_MODIFIER
 /obj/limb/groin
 	name = "groin"
 	icon_name = "groin"
@@ -1242,9 +1278,30 @@ This function completely restores a damaged organ to perfect condition.
 	max_damage = 200
 	min_broken_damage = 30
 	body_part = BODY_FLAG_GROIN
-	vital = 1
 	splint_icon_amount = 1
 	bandage_icon_amount = 2
+
+/obj/limb/groin/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
+		owner.xeno_neurotoxin_buff -= 1.5
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		owner.xeno_neurotoxin_buff += 1.5
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		UnregisterSignal(owner, COMSIG_MOB_INGESTION)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		RegisterSignal(owner, COMSIG_MOB_INGESTION, .proc/ingestion_cancel)
+
+/obj/limb/groin/proc/ingestion_cancel(mob/living/carbon/human/H, obj/item/reagent_container/ingested)
+	var/turf/T = get_turf(H)
+	to_chat(H, SPAN_WARNING("You violently throw up a chunk of the contents of \the [ingested] as your body fails to properly digest it!")) // hey maybe you should go to a doctor MAYBE
+	H.nutrition -= 20
+	H.apply_damage(-3, TOX)
+	playsound(T, 'sound/effects/splat.ogg', 25, 1, 7)
+	T.add_vomit_floor(H)
+
+	for(var/datum/reagent/R in ingested.reagents.reagent_list)
+		H.reagents.remove_reagent(R.id, R.volume/2)
 
 /obj/limb/leg
 	name = "leg"
@@ -1360,6 +1417,17 @@ This function completely restores a damaged organ to perfect condition.
 	bandage_icon_amount = 4
 	var/disfigured = 0 //whether the head is disfigured.
 	var/face_surgery_stage = 0
+
+/obj/limb/head/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
+		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
+
+/obj/limb/head/proc/block_zoom(obj/item/O)
+	to_chat(owner, SPAN_WARNING("You try to look through [O], but the blood and pain clouding your vision forces you to rub your eyes, lowering it in the process!"))
+	return COMPONENT_CANCEL_ZOOM
 
 /obj/limb/head/update_overlays()
 	..()

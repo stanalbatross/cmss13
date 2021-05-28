@@ -63,6 +63,7 @@
 			reagents.set_source_mob(user)
 			reagents.trans_to_ingest(M, reagents.total_volume)
 
+		SEND_SIGNAL(M, COMSIG_MOB_INGESTION, M, src)
 		qdel(src)
 		return 1
 
@@ -100,6 +101,7 @@
 		if(reagents && reagents.total_volume)
 			reagents.set_source_mob(user)
 			reagents.trans_to_ingest(M, reagents.total_volume)
+		SEND_SIGNAL(M, COMSIG_MOB_INGESTION, M, src)
 		qdel(src)
 
 		return 1
@@ -162,7 +164,7 @@
 	pill_desc = "A Kelotane pill. Used to treat burns."
 	pill_initial_reagents = list("kelotane" = 15)
 	pill_icon_class = "kelo"
-	
+
 /obj/item/reagent_container/pill/oxycodone
     pill_desc = "A Oxycodone pill. A powerful painkiller."
     pill_initial_reagents = list("oxycodone" = 15)

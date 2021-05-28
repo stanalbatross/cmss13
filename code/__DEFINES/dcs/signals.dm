@@ -378,3 +378,18 @@
 #define COMSIG_WEEDNODE_GROWTH_COMPLETE "weednode_growth_complete"
 /// From /obj/effect/alien/weeds/proc/on_weed_expand()
 #define COMSIG_WEEDNODE_CANNOT_EXPAND_FURTHER "weednode_cannot_expand_further"
+
+#define COMSIG_MOB_INGESTION "mob_ingestion"
+
+#define COMSIG_MOB_PRE_ITEM_ZOOM "mob_pre_item_zoom"
+	#define COMPONENT_CANCEL_ZOOM (1<<0)
+
+#define COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS "mob_pre_special_vision_application"
+	#define COMPONENT_BLOCK_GLASSES_SIGHT_BONUS (1<<0)
+
+/// From obj/item/limb/chest/reapply_integrity_effects()
+#define COMSIG_MOB_STOP_DEFIBHEAL "mob_stop_defibheal"
+	#define COMPONENT_BLOCK_DEFIB_HEAL (1<<0)
+
+#define COMSIG_MOB_BONUS_DAMAGE "mob_bonus_damage"
+	#define COMPONENT_ADD_DMG_MODIFIER (1<<0)
