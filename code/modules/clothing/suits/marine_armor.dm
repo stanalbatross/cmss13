@@ -1302,13 +1302,15 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	SPAN_NOTICE("You begin repairing the damage to \the [src]."))
 	playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
 
-	if(do_after(user, 3 SECONDS, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
+	if(!do_after(user, 3 SECONDS, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src))
+		to_chat(user, SPAN_WARNING("You try to weld [src], but it was moved!"))
+		return
 
-		user.visible_message(SPAN_NOTICE("[user] repairs some damage on \the [src]."),
-		SPAN_NOTICE("You repair [src]."))
-		var/repair_amount = 10
-		integrity = min(integrity + repair_amount, integrity_repair_max)
-		playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
+	user.visible_message(SPAN_NOTICE("[user] repairs some damage on \the [src]."),
+	SPAN_NOTICE("You repair [src]."))
+	var/repair_amount = 10
+	integrity = min(integrity + repair_amount, integrity_repair_max)
+	playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
 
 #undef INTEGRITY_FINE
 #undef INTEGRITY_DAMAGED

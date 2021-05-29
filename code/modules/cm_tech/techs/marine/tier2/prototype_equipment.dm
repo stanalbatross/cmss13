@@ -18,7 +18,6 @@
 
 	.["M2 Thermal Goggles"] = /obj/item/storage/box/m2t_thermals
 	.["B18 Defensive Armor"] = /obj/item/storage/box/spec/b18_tech
-	//.["XM-42b Railgun"] = /obj/item/storage/box/kit/railgun
 
 /obj/item/storage/box/m2t_thermals
 	name = "M2T storage case"
@@ -47,16 +46,3 @@
 	new /obj/item/tool/crowbar(src)
 	new /obj/item/tool/weldingtool(src)
 	new /obj/item/clothing/head/welding(src)
-
-//pending sprites
-/obj/item/storage/box/kit/railgun
-	name = "\improper XM-42b railgun experimental kit"
-
-/obj/item/storage/box/kit/railgun/New()
-	..()
-	overlays += image('icons/obj/items/pro_case.dmi', "+mou53") //+lever_action from old pr
-
-/obj/item/storage/box/kit/railgun/fill_preset_inventory()
-	new /obj/item/weapon/gun/lever_action/railgun(src)
-	new /obj/item/ammo_magazine/lever_action/marksman(src)
-

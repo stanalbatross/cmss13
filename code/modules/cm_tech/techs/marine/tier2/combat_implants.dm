@@ -122,37 +122,6 @@
 	host = null
 	return ..()
 
-/obj/item/device/implanter/nvg //unused
-	name = "nightvision implant"
-	desc = "This implant will give you night vision. These implants get damaged on death."
-	implant_type = /obj/item/device/internal_implant/nvg
-	implant_string = "your pupils dilating to unsettling levels."
-
-/obj/item/device/internal_implant/nvg
-	var/implant_health = 2
-
-/obj/item/device/internal_implant/nvg/on_implanted(var/mob/living/M)
-	. = ..()
-	RegisterSignal(M, COMSIG_HUMAN_POST_UPDATE_SIGHT, .proc/give_nvg)
-	RegisterSignal(M, COMSIG_MOB_DEATH, .proc/remove_health)
-	give_nvg(M)
-
-/obj/item/device/internal_implant/nvg/proc/remove_health(var/mob/living/M)
-	SIGNAL_HANDLER
-	implant_health -= 1
-	if(implant_health <= 0)
-		UnregisterSignal(M, list(
-			COMSIG_HUMAN_POST_UPDATE_SIGHT,
-			COMSIG_MOB_DEATH
-		))
-		to_chat(M, SPAN_WARNING("Everything feels a lot darker."))
-	else
-		to_chat(M, SPAN_WARNING("You feel the effects of the nightvision implant waning."))
-
-/obj/item/device/internal_implant/nvg/proc/give_nvg(var/mob/living/M)
-	SIGNAL_HANDLER
-	M.see_invisible = SEE_INVISIBLE_MINIMUM
-
 /obj/item/device/implanter/rejuv
 	name = "rejuvenation implant"
 	desc = "This implant will automatically activate at the brink of death. When activated, it will expend itself, greatly healing you, and giving you a stimulant that speeds you up significantly and dulls all pain."
