@@ -461,7 +461,7 @@
 	..()
 
 /obj/item/storage/belt/lever_action/full/fill_preset_inventory()	
-	for(var/i = 1 to storage_slots)
+	for(var/i in 1 to storage_slots)
 		new /obj/item/ammo_magazine/handful/lever_action(src)
 
 /obj/item/storage/belt/shotgun/upp
