@@ -222,8 +222,7 @@
 			// Prepend the bullet trait to the list
 			L = list(entry) + bullet_trait_entries[entry]
 		// Apply bullet traits from gun to current projectile
-		// Need to use the proc instead of the wrapper because each entry is a list
-		in_chamber._AddElement(L)
+		in_chamber.apply_bullet_trait(L)
 
 /// @bullet_traits: A list of bullet trait typepaths or ids
 /obj/item/weapon/gun/proc/remove_bullet_traits(list/bullet_traits)
@@ -784,6 +783,9 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 //----------------------------------------------------------
 
 /obj/item/weapon/gun/afterattack(atom/A, mob/living/user, flag, params)
+	if(active_attachable && (active_attachable.flags_attach_features & ATTACH_MELEE)) //this is expected to do something in melee.
+		active_attachable.fire_attachment(A, src, user)
+		return TRUE
 	if(flag)
 		return FALSE //It's adjacent, is the user, or is on the user's person
 	if(!istype(A))
@@ -822,7 +824,18 @@ and you're good to go.
 	if(active_attachable)
 		if(active_attachable.current_rounds > 0) //If it's still got ammo and stuff.
 			active_attachable.current_rounds--
-			return create_bullet(active_attachable.ammo, initial(name))
+			var/obj/item/projectile/bullet = create_bullet(active_attachable.ammo, initial(name))
+			// For now, only bullet traits from the attachment itself will apply to its projectiles
+			for(var/entry in active_attachable.traits_to_give_attached)
+				var/list/L
+				// Check if this is an ID'd bullet trait
+				if(istext(entry))
+					L = active_attachable.traits_to_give_attached[entry].Copy()
+				else
+					// Prepend the bullet trait to the list
+					L = list(entry) + active_attachable.traits_to_give_attached[entry]
+				bullet.apply_bullet_trait(L)
+			return bullet
 		else
 			to_chat(user, SPAN_WARNING("[active_attachable] is empty!"))
 			to_chat(user, SPAN_NOTICE("You disable [active_attachable]."))
@@ -841,8 +854,7 @@ and you're good to go.
 		else
 			// Prepend the bullet trait to the list
 			L = list(entry) + traits_to_give[entry]
-		// Need to use the proc instead of the wrapper because each entry is a list
-		P._AddElement(L)
+		P.apply_bullet_trait(L)
 
 	// Apply bullet traits from attachments
 	for(var/slot in attachments)
@@ -851,10 +863,14 @@ and you're good to go.
 
 		var/obj/item/attachable/AT = attachments[slot]
 		for(var/entry in AT.traits_to_give)
-			// Prepend the bullet trait to the list
-			var/list/L = list(entry) + AT.traits_to_give[entry]
-			// Need to use the proc instead of the wrapper because each entry is a list
-			P._AddElement(L)
+			var/list/L
+			// Check if this is an ID'd bullet trait
+			if(istext(entry))
+				L = AT.traits_to_give[entry].Copy()
+			else
+				// Prepend the bullet trait to the list
+				L = list(entry) + AT.traits_to_give[entry]
+			P.apply_bullet_trait(L)
 
 /obj/item/weapon/gun/proc/ready_in_chamber()
 	if(current_mag && current_mag.current_rounds > 0)
@@ -1206,6 +1222,7 @@ and you're good to go.
 				BP.generate_bullet(GLOB.ammo_list[projectile_to_fire.ammo.bonus_projectiles_type], 0, NO_FLAGS)
 				BP.accuracy = round(BP.accuracy * projectile_to_fire.accuracy/initial(projectile_to_fire.accuracy)) //Modifies accuracy of pellets per fire_bonus_projectiles.
 				BP.damage *= damage_buff
+				projectile_to_fire.give_bullet_traits(BP)
 				if(bullets_fired > 1)
 					BP.original = M //original == the original target of the projectile. If the target is downed and this isn't set, the projectile will try to fly over it. Of course, it isn't going anywhere, but it's the principle of the thing. Very embarrassing.
 					if(!BP.handle_mob(M) && M.lying) //This is the 'handle impact' proc for a flying projectile, including hit RNG, on_hit_mob and bullet_act. If it misses, it doesn't go anywhere. We'll pretend it slams into the ground or punches a hole in the ceiling, because trying to make it bypass the xeno or shoot from the tile beyond it is probably more spaghet than my life is worth.
@@ -1338,6 +1355,11 @@ and you're good to go.
 		playsound(src, 'sound/weapons/gun_empty.ogg', 25, 1, 5)
 
 /obj/item/weapon/gun/proc/display_ammo(mob/user)
+	// Do not display ammo if you have an attachment
+	// currently activated
+	if(active_attachable)
+		return
+
 	if(flags_gun_features & GUN_AMMO_COUNTER && !(flags_gun_features & GUN_BURST_FIRING) && current_mag)
 		var/chambered = in_chamber ? TRUE : FALSE
 		to_chat(user, SPAN_DANGER("[current_mag.current_rounds][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
