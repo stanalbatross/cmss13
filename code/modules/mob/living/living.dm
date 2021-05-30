@@ -271,6 +271,11 @@
 				grab_level_delay = 9
 
 		. += max(pull_speed + (pull_delay + reagent_move_delay_modifier) + grab_level_delay, 0) //harder grab makes you slower
+
+		var/list/dragdata = list("drag_delay" = .)
+		SEND_SIGNAL(src, COMSIG_MOB_ADD_DRAG_DELAY, dragdata)
+		move_delay = dragdata["drag_delay"]
+
 	move_delay = .
 
 
@@ -566,7 +571,7 @@
 			burn_info += "[burn_treated ? "" : "{B}"]"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
 			brute_info += "[brute_treated ? "" : "{T}"]"
-			var/integrity_info = "<font color='purple'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font>"
+			var/integrity_info = "<font color='#28e661'>Integrity: [integrity_damage] [org.integrity_level ? "{T[org.integrity_level]}":""]</font>"
 			var/fracture_info = ""
 			if(org.status & LIMB_BROKEN)
 				fracture_info = "{F}"

@@ -379,8 +379,10 @@
 /// From /obj/effect/alien/weeds/proc/on_weed_expand()
 #define COMSIG_WEEDNODE_CANNOT_EXPAND_FURTHER "weednode_cannot_expand_further"
 
+/// From obj/item/limb/groin/reapply_integrity_effects()
 #define COMSIG_MOB_INGESTION "mob_ingestion"
 
+/// From obj/item/limb/head/reapply_integrity_effects()
 #define COMSIG_MOB_PRE_ITEM_ZOOM "mob_pre_item_zoom"
 	#define COMPONENT_CANCEL_ZOOM (1<<0)
 
@@ -393,3 +395,9 @@
 
 #define COMSIG_MOB_BONUS_DAMAGE "mob_bonus_damage"
 	#define COMPONENT_ADD_DMG_MODIFIER (1<<0)
+
+/// From obj/item/limb/arm/reapply_integrity_effects()
+	#define COMSIG_MOB_ADD_DELAY "add_work_delay"
+
+/// From obj/item/limb/leg/reapply_integrity_effects()
+	#define COMSIG_MOB_ADD_DRAG_DELAY "add_drag_delay"

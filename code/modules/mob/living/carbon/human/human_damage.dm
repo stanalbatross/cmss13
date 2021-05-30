@@ -336,7 +336,9 @@ This function restores all limbs.
 			var/datum/internal_organ/IO = new internal_organ_type(src)
 			internal_organs_by_name[organ_slot] = IO
 
-
+/mob/living/carbon/human/heal_integrity_damage()
+	for(var/obj/limb/E in limbs)
+		E.set_integrity_level(LIMB_INTEGRITY_PERFECT)
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/limb/E = get_limb(zone)

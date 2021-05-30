@@ -187,49 +187,24 @@
 	if(!owner)
 		return
 
-	message_staff("<b>organ damage check, [display_name]</b>")
-	message_staff("--------------------------------------------")
-
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
-
-	message_staff("internal damage resist armor = [armor]")
-	message_staff("internal damage resist armor effective integrity = [max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100]%")
-	message_staff("[sharp? "sharp attack, +10 penetration" : "attack not sharp"]")
-
 	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute, armor, sharp ? ARMOR_SHARP_INTERNAL_PENETRATION : 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
 
-	message_staff("organ damage probability: [damage*DMG_ORGAN_DAM_PROB_MULT + brute_dam*BRUTE_ORGAN_DAM_PROB_MULT]")
-
-	if(internal_organs && prob(damage*DMG_ORGAN_DAM_PROB_MULT + brute_dam*BRUTE_ORGAN_DAM_PROB_MULT))
+	if(internal_organs && (integrity_level_effects & LIMB_INTEGRITY_SERIOUS) && damage)
 		//Damage an internal organ
 		var/datum/internal_organ/I = pick(internal_organs)
-		I.take_damage(brute / 2)
-		message_staff("<b>organ damage given, [brute/2] damage to [I]</b>")
-		message_staff("--------------------------------------------")
+		I.take_damage(damage / 2)
 		return TRUE
-	message_staff("--------------------------------------------")
 	return FALSE
 
 /obj/limb/proc/take_damage_bone_break(brute)
 	if(!owner)
 		return
-
-	message_staff("<b>fracture check, [display_name]</b>")
-	message_staff("--------------------------------------------")
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
-
-	message_staff("internal damage resist armor = [armor]")
-	message_staff("internal damage resist armor effective integrity = [max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100]%")
-
 	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute*3, armor, 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
 
-	var/probability = prob(damage*2)
-
-	message_staff("fracture first stage probability: [probability]")
-	message_staff("brute = [brute_dam + brute], threshold = [min_broken_damage * CONFIG_GET(number/organ_health_multiplier)], can cause frac? [brute_dam + brute > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && probability ? "yes" : "no"]")
-
-	if(brute_dam + brute  > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && probability)
-		fracture()
+	if(brute_dam + brute  > min_broken_damage)
+		fracture(damage)
 	message_staff("--------------------------------------------")
 
 /*
@@ -1048,7 +1023,7 @@ This function completely restores a damaged organ to perfect condition.
 		not_salved |= !W.salved
 	return !not_salved
 
-/obj/limb/proc/fracture(var/bonebreak_probability)
+/obj/limb/proc/fracture(var/damage_input, var/fracture_probability)
 	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOT))
 		if (knitting_time != -1)
 			knitting_time = -1
@@ -1064,21 +1039,20 @@ This function completely restores a damaged organ to perfect condition.
 	if((owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE) || owner.species.flags & SPECIAL_BONEBREAK) //stops division by zero
 		return
 
-	/*//if the chance was not set by what called fracture(), the endurance check is done instead
-	if(bonebreak_probability == null) //bone break chance is based on endurance, 25% for survivors, erts, 100% for most everyone else.
-		bonebreak_probability = 100 / Clamp(owner.skills.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
-	*/
+	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
+	var/endurance_buff = 0
+	if(owner.skills)
+		endurance_buff = owner.skills.get_skill_level(SKILL_ENDURANCE) - 1
 
 	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE)
 		//hairline frac RNG calc goes here
-		return
 
 	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MAJOR)
-		//bone frac RNG calc goes here
-		//hairline RNG calc goes here
-		return
+		// hairline frac also goes here
+		if(!fracture_probability)
+			fracture_probability = fracture_probability - (brute_dam + damage_input) + (integrity_damage * 0.40) - max(armor, endurance_buff * 4.0 , 0)
 
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS)
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS || prob(fracture_probability))
 		owner.recalculate_move_delay = TRUE
 		owner.visible_message(\
 			SPAN_WARNING("You hear a loud cracking sound coming from [owner]!"),
@@ -1237,9 +1211,8 @@ This function completely restores a damaged organ to perfect condition.
 	cavity = 0
 
 /*
-			LIMB TYPES
+			LIMB TYPES AND INTEGRITY EFFECTS
 */
-
 /obj/limb/chest
 	name = "chest"
 	icon_name = "torso"
@@ -1267,10 +1240,13 @@ This function completely restores a damaged organ to perfect condition.
 		owner.int_dmg_malus += 0.5
 
 /obj/limb/chest/proc/cancel_defib_heal()
+	SIGNAL_HANDLER
 	return COMPONENT_BLOCK_DEFIB_HEAL
 
 /obj/limb/chest/proc/bonus_burn_damage()
+	SIGNAL_HANDLER
 	return COMPONENT_ADD_DMG_MODIFIER
+
 /obj/limb/groin
 	name = "groin"
 	icon_name = "groin"
@@ -1293,6 +1269,7 @@ This function completely restores a damaged organ to perfect condition.
 		RegisterSignal(owner, COMSIG_MOB_INGESTION, .proc/ingestion_cancel)
 
 /obj/limb/groin/proc/ingestion_cancel(mob/living/carbon/human/H, obj/item/reagent_container/ingested)
+	SIGNAL_HANDLER
 	var/turf/T = get_turf(H)
 	to_chat(H, SPAN_WARNING("You violently throw up a chunk of the contents of \the [ingested] as your body fails to properly digest it!")) // hey maybe you should go to a doctor MAYBE
 	H.nutrition -= 20
@@ -1308,6 +1285,29 @@ This function completely restores a damaged organ to perfect condition.
 	display_name = "leg"
 	max_damage = 35
 	min_broken_damage = 20
+	var/climb_delay_mult = 2.0
+	var/drag_delay_mult = 1.5
+
+/obj/limb/leg/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
+		UnregisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE)
+		UnregisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY)
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		RegisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE, .proc/handle_climb_delay)
+		RegisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY, .proc/handle_drag_delay)
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		owner.bonus_knockdown -= 0.6 SECONDS
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		owner.bonus_knockdown += 0.6 SECONDS
+
+/obj/limb/leg/proc/handle_climb_delay(var/mob/living/M, list/climbdata)
+	SIGNAL_HANDLER
+	climbdata["climb_delay"] *= climb_delay_mult
+
+/obj/limb/leg/proc/handle_drag_delay(var/mob/living/M, list/dragdata)
+	SIGNAL_HANDLER
+	dragdata["drag_delay"] *= drag_delay_mult
 
 /obj/limb/foot
 	name = "foot"
@@ -1320,30 +1320,32 @@ This function completely restores a damaged organ to perfect condition.
 	display_name = "arm"
 	max_damage = 35
 	min_broken_damage = 20
+	var/work_delay_mult = 1.3 // 30% increase
 
-/obj/limb/hand
-	name = "hand"
-	display_name = "hand"
-	max_damage = 30
-	min_broken_damage = 20
+/obj/limb/arm/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
+		UnregisterSignal(owner, COMSIG_MOB_ADD_DELAY)
+	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
+		RegisterSignal(owner, COMSIG_MOB_ADD_DELAY, .proc/increase_work_delay)
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
+		owner.minimum_wield_delay -= 5
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		owner.minimum_wield_delay += 5
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		work_delay_mult = 1.3
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		work_delay_mult = 2.0
+
+/obj/limb/arm/proc/increase_work_delay(var/mob/living/M, list/delaydata)
+	SIGNAL_HANDLER
+	delaydata["work_delay"] *= work_delay_mult
 
 /obj/limb/arm/l_arm
 	name = "l_arm"
 	display_name = "left arm"
 	icon_name = "l_arm"
 	body_part = BODY_FLAG_ARM_LEFT
-	has_stump_icon = TRUE
-
-	process()
-		..()
-		process_grasp(owner.l_hand, "left hand")
-
-/obj/limb/leg/l_leg
-	name = "l_leg"
-	display_name = "left leg"
-	icon_name = "l_leg"
-	body_part = BODY_FLAG_LEG_LEFT
-	icon_position = LEFT
 	has_stump_icon = TRUE
 
 /obj/limb/arm/r_arm
@@ -1353,9 +1355,19 @@ This function completely restores a damaged organ to perfect condition.
 	body_part = BODY_FLAG_ARM_RIGHT
 	has_stump_icon = TRUE
 
-	process()
-		..()
-		process_grasp(owner.r_hand, "right hand")
+/obj/limb/hand
+	name = "hand"
+	display_name = "hand"
+	max_damage = 30
+	min_broken_damage = 20
+
+/obj/limb/leg/l_leg
+	name = "l_leg"
+	display_name = "left leg"
+	icon_name = "l_leg"
+	body_part = BODY_FLAG_LEG_LEFT
+	icon_position = LEFT
+	has_stump_icon = TRUE
 
 /obj/limb/leg/r_leg
 	name = "r_leg"
@@ -1424,10 +1436,19 @@ This function completely restores a damaged organ to perfect condition.
 		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		UnregisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		RegisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS, .proc/block_night_vision)
 
 /obj/limb/head/proc/block_zoom(obj/item/O)
+	SIGNAL_HANDLER
 	to_chat(owner, SPAN_WARNING("You try to look through [O], but the blood and pain clouding your vision forces you to rub your eyes, lowering it in the process!"))
 	return COMPONENT_CANCEL_ZOOM
+
+/obj/limb/head/proc/block_night_vision()
+	SIGNAL_HANDLER
+	return COMPONENT_BLOCK_GLASSES_SIGHT_BONUS
 
 /obj/limb/head/update_overlays()
 	..()

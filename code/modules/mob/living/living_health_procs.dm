@@ -116,7 +116,8 @@
 /mob/living/proc/restore_all_organs()
 	return
 
-
+/mob/living/proc/heal_integrity_damage()
+	return
 
 /mob/living/proc/revive(keep_viruses)
 	rejuvenate()
@@ -147,6 +148,9 @@
 
 	// fix all of our organs
 	restore_all_organs()
+
+	//fix integrity damage
+	heal_integrity_damage()
 
 	// remove the character from the list of the dead
 	if(stat == DEAD)

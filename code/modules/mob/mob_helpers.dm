@@ -398,34 +398,49 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	. = 1.0
 	if(!skills)
 		return
+
+	var/list/delaydata = list("climb_delay" = .)
+	SEND_SIGNAL(src, COMSIG_MOB_ADD_DELAY, src, delaydata)
+	var/final_work_delay = delaydata["work_delay"]
+
 	switch(skill)
 		if(SKILL_CQC)
 			if(skillcheck(src, SKILL_CQC, SKILL_CQC_MASTER))
-				return DURATION_MULTIPLIER_TIER_3
+				return final_work_delay * DURATION_MULTIPLIER_TIER_3
 			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_SKILLED))
-				return DURATION_MULTIPLIER_TIER_2
+				return final_work_delay * DURATION_MULTIPLIER_TIER_2
 			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_TRAINED))
-				return DURATION_MULTIPLIER_TIER_1
+				return final_work_delay * DURATION_MULTIPLIER_TIER_1
+			else
+				return final_work_delay
 		//if(SKILL_MELEE_WEAPONS)
 		//if(SKILL_FIREARMS)
 		//if(SKILL_SPEC_WEAPONS)
 		//if(SKILL_ENDURANCE)
 		if(SKILL_ENGINEER)
 			if(skillcheck(src, SKILL_ENGINEER, SKILL_ENGINEER_MASTER))
-				return DURATION_MULTIPLIER_TIER_3
+				return final_work_delay * DURATION_MULTIPLIER_TIER_3
+			else
+				return final_work_delay
 		if(SKILL_CONSTRUCTION)
 			if(skillcheck(src, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_MASTER))
-				return DURATION_MULTIPLIER_TIER_3
+				return final_work_delay * DURATION_MULTIPLIER_TIER_3
+			else
+				return final_work_delay
 		//if(SKILL_LEADERSHIP)
 		if(SKILL_MEDICAL)
 			if(skillcheck(src, SKILL_MEDICAL, SKILL_MEDICAL_MASTER))
-				return DURATION_MULTIPLIER_TIER_3
+				return final_work_delay * DURATION_MULTIPLIER_TIER_3
 			else if(skillcheck(src, SKILL_MEDICAL, SKILL_MEDICAL_DOCTOR))
-				return DURATION_MULTIPLIER_TIER_1
+				return final_work_delay * DURATION_MULTIPLIER_TIER_1
+			else
+				return final_work_delay
 
 		if(SKILL_SURGERY)
 			if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_EXPERT))
-				return DURATION_MULTIPLIER_TIER_3
+				return final_work_delay * DURATION_MULTIPLIER_TIER_3
+			else
+				return final_work_delay
 		//if(SKILL_RESEARCH)
 		//if(SKILL_PILOT)
 		//if(SKILL_POLICE)
