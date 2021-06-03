@@ -42,9 +42,9 @@
 	else if(!H || skillcheck(H, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
 		.["Medical CZSP"] = /obj/item/storage/box/combat_zone_support_package
 	else
-		var/type_to_add = /obj/item/storage/firstaid/regular
+		var/type_to_add = pick(/obj/item/storage/firstaid/regular, /obj/item/storage/toolbox/mechanical)
 
-		.["First-Aid Kit"] = type_to_add
+		.["Random Support Box"] = type_to_add
 
 /obj/item/storage/box/combat_zone_support_package
 	name = "medical combat support kit"
