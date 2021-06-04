@@ -426,8 +426,9 @@ This function restores all limbs.
 			damageoverlaytemp = 20
 			if(species.burn_mod && !force)
 				damage = damage * species.burn_mod
-			if(SEND_SIGNAL(src, COMSIG_MOB_BONUS_DAMAGE) & COMPONENT_ADD_DMG_MODIFIER)
-				damage = damage * 1.5
+			var/list/damagedata = list("damage_bonus" = damage)
+			SEND_SIGNAL(src, COMSIG_MOB_BONUS_DAMAGE, damagedata)
+			damage = damagedata["damage_bonus"]
 
 			organ.take_damage(0, damage, int_dmg_multiplier, attack_source = firer)
 

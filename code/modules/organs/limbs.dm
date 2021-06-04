@@ -1108,28 +1108,14 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/proc/is_broken()
 	return ((status & LIMB_BROKEN) && !(status & LIMB_SPLINTED))
 
+/obj/limb/proc/is_integrity_disabled()
+	return (!(status & LIMB_SPLINTED) && integrity_level_effects & LIMB_INTEGRITY_EFFECT_MAJOR)
+
 /obj/limb/proc/is_malfunctioning()
 	return ((status & LIMB_ROBOT) && prob(brute_dam + burn_dam))
 
 //for arms and hands
-/obj/limb/proc/process_grasp(var/obj/item/c_hand, var/hand_name)
-	if (!c_hand)
-		return
 
-	if(is_broken())
-		if(prob(15))
-			owner.drop_inv_item_on_ground(c_hand)
-			var/emote_scream = pick("screams in pain and", "lets out a sharp cry and", "cries out and")
-			owner.emote("me", 1, "[(!owner.pain.feels_pain) ? "" : emote_scream ] drops what they were holding in their [hand_name]!")
-	if(is_malfunctioning())
-		if(prob(10))
-			owner.drop_inv_item_on_ground(c_hand)
-			owner.emote("me", 1, "drops what they were holding, their [hand_name] malfunctioning!")
-			var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread()
-			spark_system.set_up(5, 0, owner)
-			spark_system.attach(owner)
-			spark_system.start()
-			QDEL_IN(spark_system, 1 SECONDS)
 
 /obj/limb/proc/embed(var/obj/item/W, var/silent = 0)
 	if(!W || QDELETED(W) || (W.flags_item & (NODROP|DELONDROP)) || W.embeddable == FALSE)
@@ -1224,28 +1210,28 @@ This function completely restores a damaged organ to perfect condition.
 	encased = "ribcage"
 	splint_icon_amount = 4
 	bandage_icon_amount = 4
+	var/burn_damage_bonus = 1.45
 
 /obj/limb/chest/reapply_integrity_effects(added, removed)
 	..()
-	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
+	if(removed & LIMB_INTEGRITY_EFFECT_MODERATE)
+		owner.int_dmg_malus -= 0.3
+	else if(added & LIMB_INTEGRITY_EFFECT_MODERATE)
+		owner.int_dmg_malus += 0.3
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		UnregisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL)
 		UnregisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE)
-	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		RegisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL, .proc/cancel_defib_heal)
 		RegisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE, .proc/bonus_burn_damage)
-
-	if(removed & LIMB_INTEGRITY_EFFECT_MODERATE)
-		owner.int_dmg_malus -= 0.5
-	else if(added & LIMB_INTEGRITY_EFFECT_MODERATE)
-		owner.int_dmg_malus += 0.5
 
 /obj/limb/chest/proc/cancel_defib_heal()
 	SIGNAL_HANDLER
 	return COMPONENT_BLOCK_DEFIB_HEAL
 
-/obj/limb/chest/proc/bonus_burn_damage()
+/obj/limb/chest/proc/bonus_burn_damage(var/mob/living/M, list/damagedata)
 	SIGNAL_HANDLER
-	return COMPONENT_ADD_DMG_MODIFIER
+	damagedata["damage_bonus"] *= burn_damage_bonus
 
 /obj/limb/groin
 	name = "groin"
@@ -1314,6 +1300,18 @@ This function completely restores a damaged organ to perfect condition.
 	display_name = "foot"
 	max_damage = 30
 	min_broken_damage = 20
+	var/move_delay_mult = HUMAN_SLOWED_AMOUNT
+
+/obj/limb/foot/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		UnregisterSignal(owner, COMSIG_HUMAN_POST_MOVE_DELAY)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		RegisterSignal(owner, COMSIG_HUMAN_POST_MOVE_DELAY, .proc/increase_move_delay)
+
+/obj/limb/foot/proc/increase_move_delay(var/mob/living/M, list/movedata)
+	SIGNAL_HANDLER
+	return COMPONENT_HUMAN_MOVE_DELAY_MALUS
 
 /obj/limb/arm
 	name = "arm"
@@ -1333,7 +1331,7 @@ This function completely restores a damaged organ to perfect condition.
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		owner.minimum_wield_delay += 5
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		work_delay_mult = 1.3
+		work_delay_mult = 1.2
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		work_delay_mult = 2.0
 
@@ -1360,6 +1358,75 @@ This function completely restores a damaged organ to perfect condition.
 	display_name = "hand"
 	max_damage = 30
 	min_broken_damage = 20
+	var/obj/item/c_hand
+	var/hand_name = "ambidexterous hand"
+
+/obj/limb/hand/reapply_integrity_effects(added, removed)
+	..()
+	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
+		owner.action_delay -= 6
+	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
+		owner.action_delay += 6
+	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
+		UnregisterSignal(owner, COMSIG_MOB_ADD_RECOIL)
+	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		RegisterSignal(owner, COMPONENT_ADD_RECOIL, .proc/decrease_gun_handling)
+
+/obj/limb/hand/proc/decrease_gun_handling()
+	SIGNAL_HANDLER
+	return COMPONENT_ADD_RECOIL
+
+/obj/limb/hand/process()
+	..()
+	process_grasp(c_hand, hand_name)
+
+/obj/limb/hand/proc/process_grasp(c_hand, hand_name)
+	if (!c_hand)
+		return
+
+	var/drop_probability = 0.6 * ((brute_dam + burn_dam) + (integrity_damage * 0.5))
+	if(is_broken())
+		drop_probability *= 1.25 //25% bonus
+
+	if(is_integrity_disabled())
+		if(prob(drop_probability))
+			owner.drop_inv_item_on_ground(c_hand)
+			var/emote_scream = pick("screams in pain and", "lets out a sharp cry and", "cries out and")
+			owner.emote("me", 1, "[(!owner.pain.feels_pain) ? "" : emote_scream ] drops what they were holding in their [hand_name]!")
+	/* NEED TO THINK ON HOW TO REWORK THIS TO BE HONEST WITH YOU
+	if(is_malfunctioning())
+		if(prob(10))
+			owner.drop_inv_item_on_ground(c_hand)
+			owner.emote("me", 1, "drops what they were holding, their [hand_name] malfunctioning!")
+			var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread()
+			spark_system.set_up(5, 0, owner)
+			spark_system.attach(owner)
+			spark_system.start()
+			QDEL_IN(spark_system, 1 SECONDS) */
+
+/obj/limb/hand/r_hand
+	name = "r_hand"
+	display_name = "right hand"
+	icon_name = "r_hand"
+	body_part = BODY_FLAG_HAND_RIGHT
+	has_stump_icon = TRUE
+	hand_name = "right hand"
+
+/obj/limb/hand/r_hand/Initialize()
+	..()
+	c_hand = owner.r_hand
+
+/obj/limb/hand/l_hand
+	name = "l_hand"
+	display_name = "left hand"
+	icon_name = "l_hand"
+	body_part = BODY_FLAG_HAND_LEFT
+	has_stump_icon = TRUE
+	hand_name = "left hand"
+
+/obj/limb/hand/l_hand/Initialize()
+	..()
+	c_hand = owner.l_hand
 
 /obj/limb/leg/l_leg
 	name = "l_leg"
@@ -1392,28 +1459,6 @@ This function completely restores a damaged organ to perfect condition.
 	body_part = BODY_FLAG_FOOT_RIGHT
 	icon_position = RIGHT
 	has_stump_icon = TRUE
-
-/obj/limb/hand/r_hand
-	name = "r_hand"
-	display_name = "right hand"
-	icon_name = "r_hand"
-	body_part = BODY_FLAG_HAND_RIGHT
-	has_stump_icon = TRUE
-
-	process()
-		..()
-		process_grasp(owner.r_hand, "right hand")
-
-/obj/limb/hand/l_hand
-	name = "l_hand"
-	display_name = "left hand"
-	icon_name = "l_hand"
-	body_part = BODY_FLAG_HAND_LEFT
-	has_stump_icon = TRUE
-
-	process()
-		..()
-		process_grasp(owner.l_hand, "left hand")
 
 /obj/limb/head
 	name = "head"

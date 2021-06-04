@@ -1471,6 +1471,8 @@ and you're good to go.
 		else
 			total_scatter_angle -= user.skills.get_skill_level(SKILL_FIREARMS)*SCATTER_AMOUNT_TIER_8
 
+		if(SEND_SIGNAL(user, COMSIG_MOB_ADD_RECOIL) & COMPONENT_ADD_RECOIL)
+			total_scatter_angle += SCATTER_AMOUNT_TIER_9
 
 	//Not if the gun doesn't scatter at all, or negative scatter.
 	if(total_scatter_angle > 0)
@@ -1511,6 +1513,8 @@ and you're good to go.
 			total_recoil += RECOIL_AMOUNT_TIER_5
 		else
 			total_recoil -= user.skills.get_skill_level(SKILL_FIREARMS)*RECOIL_AMOUNT_TIER_5
+		if(SEND_SIGNAL(user, COMSIG_MOB_ADD_RECOIL) & COMPONENT_ADD_RECOIL)
+			total_recoil += RECOIL_AMOUNT_TIER_4
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user

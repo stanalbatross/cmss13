@@ -237,6 +237,7 @@
 #define COMSIG_HUMAN_POST_UPDATE_SIGHT "human_post_update_sight"
 ///from /mob/living/carbon/human/movement_delay(): (list/movedata)
 #define COMSIG_HUMAN_POST_MOVE_DELAY "human_post_move_delay"
+	#define COMPONENT_HUMAN_MOVE_DELAY_MALUS (1<<0)
 
 // /obj/item signals
 ///from base of obj/item/dropped(): (mob/user)
@@ -382,25 +383,29 @@
 /// From /obj/effect/alien/weeds/proc/on_weed_expand()
 #define COMSIG_WEEDNODE_CANNOT_EXPAND_FURTHER "weednode_cannot_expand_further"
 
-/// From obj/item/limb/groin/reapply_integrity_effects()
+/// From obj/limb/groin/reapply_integrity_effects()
 #define COMSIG_MOB_INGESTION "mob_ingestion"
 
-/// From obj/item/limb/head/reapply_integrity_effects()
+/// From obj/limb/head/reapply_integrity_effects()
 #define COMSIG_MOB_PRE_ITEM_ZOOM "mob_pre_item_zoom"
 	#define COMPONENT_CANCEL_ZOOM (1<<0)
 
 #define COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS "mob_pre_special_vision_application"
 	#define COMPONENT_BLOCK_GLASSES_SIGHT_BONUS (1<<0)
 
-/// From obj/item/limb/chest/reapply_integrity_effects()
+/// From obj/limb/chest/reapply_integrity_effects()
 #define COMSIG_MOB_STOP_DEFIBHEAL "mob_stop_defibheal"
 	#define COMPONENT_BLOCK_DEFIB_HEAL (1<<0)
 
 #define COMSIG_MOB_BONUS_DAMAGE "mob_bonus_damage"
 	#define COMPONENT_ADD_DMG_MODIFIER (1<<0)
 
-/// From obj/item/limb/arm/reapply_integrity_effects()
+/// From obj/limb/arm/reapply_integrity_effects()
 	#define COMSIG_MOB_ADD_DELAY "add_work_delay"
 
-/// From obj/item/limb/leg/reapply_integrity_effects()
+/// From obj/limb/leg/reapply_integrity_effects()
 	#define COMSIG_MOB_ADD_DRAG_DELAY "add_drag_delay"
+
+/// From obj/limb/hand/reapply_integrity_effects()
+	#define COMSIG_MOB_ADD_RECOIL "add_recoil"
+		#define COMPONENT_ADD_RECOIL (1<<0)
