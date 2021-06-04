@@ -140,7 +140,7 @@
 
 /turf/closed/wall/almayer/research/containment/wall/divide/proc/change_weeds()
 	for(var/obj/effect/alien/W in src) // Destroy all alien things on the divider (traps, special structures, etc)
-		playsound(loc, "alien_resin_break", 25)
+		playsound(src, "alien_resin_break", 25)
 		qdel(W)
 
 
@@ -325,10 +325,15 @@
 	mineral = "runed sandstone"
 	color = "#b29082"
 	damage_cap = HEALTH_WALL_REINFORCED//Strong, but only available to Hunters, can can still be blown up or melted by boilers.
+	baseturfs = /turf/open/floor/sandstone/runed
+
+/turf/closed/wall/mineral/sandstone/runed/attack_alien(mob/living/carbon/Xenomorph/user)
+	visible_message("[user] scrapes uselessly against [src] with their claws.")
+	return
 
 /turf/closed/wall/mineral/sandstone/runed/decor
 	name = "runed sandstone temple wall"
-	desc = "A heavy wall of sandstone with elegant carvings and runes inscribed upon its face."
+	desc = "A heavy wall of sandstone, with elegant carvings and runes inscribed upon its face."
 	icon = 'icons/turf/walls/runedstone.dmi'
 	icon_state = "runedstone"
 	walltype = "runedstone"
