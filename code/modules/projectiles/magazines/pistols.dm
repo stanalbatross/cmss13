@@ -120,7 +120,7 @@
 /obj/item/ammo_magazine/pistol/b92fs
 	name = "\improper Beretta 92FS magazine (9mm)"
 	caliber = "9mm"
-	icon_state = "m4a3" //PLACEHOLDER
+	icon_state = "b92fs" //PLACEHOLDER
 	max_rounds = 15
 	default_ammo = /datum/ammo/bullet/pistol
 	gun_type = /obj/item/weapon/gun/pistol/b92fs
@@ -180,7 +180,7 @@
 	desc = "A surprisingly small magazine, holding .22 bullets. No Kolibri, but it's getting there."
 	default_ammo = /datum/ammo/bullet/pistol/tiny
 	caliber = ".22"
-	icon_state = "m4a3" //PLACEHOLDER
+	icon_state = "holdout"
 	max_rounds = 5
 	w_class = SIZE_TINY
 	gun_type = /obj/item/weapon/gun/pistol/holdout
@@ -205,7 +205,7 @@
 	name = "\improper Highpower magazine (9mm)"
 	default_ammo = /datum/ammo/bullet/pistol/ap
 	caliber = "9mm"
-	icon_state = "m4a3" //PLACEHOLDER
+	icon_state = "highpower"
 	max_rounds = 13
 	gun_type = /obj/item/weapon/gun/pistol/highpower
 
