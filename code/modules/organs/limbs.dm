@@ -1479,12 +1479,16 @@ This function completely restores a damaged organ to perfect condition.
 	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
+		UnregisterSignal(owner, COMSIG_MOB_APPLY_STUTTER)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
+		RegisterSignal(owner, COMSIG_MOB_APPLY_STUTTER, .proc/handle_stutter)
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		UnregisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS)
+		UnregisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		RegisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS, .proc/block_night_vision)
+		RegisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK, .proc/add_eye_tint)
 
 /obj/limb/head/proc/block_zoom(obj/item/O)
 	SIGNAL_HANDLER
@@ -1494,6 +1498,14 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/head/proc/block_night_vision()
 	SIGNAL_HANDLER
 	return COMPONENT_BLOCK_GLASSES_SIGHT_BONUS
+
+/obj/limb/head/proc/add_eye_tint()
+	SIGNAL_HANDLER
+	return COMPONENT_ADD_EYETINT
+
+/obj/limb/head/proc/handle_stutter()
+	SIGNAL_HANDLER
+	return COMPONENT_ADD_STUTTERING
 
 /obj/limb/head/update_overlays()
 	..()

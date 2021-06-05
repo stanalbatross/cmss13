@@ -393,6 +393,12 @@
 #define COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS "mob_pre_special_vision_application"
 	#define COMPONENT_BLOCK_GLASSES_SIGHT_BONUS (1<<0)
 
+#define COMSIG_MOB_PRE_EYE_TINTCHECK "mob_pre_eye_tintcheck"
+	#define COMPONENT_ADD_EYETINT (1<<0)
+
+#define COMSIG_MOB_APPLY_STUTTER "mob_apply_stutter"
+	#define COMPONENT_ADD_STUTTERING (1<<0)
+
 /// From obj/limb/chest/reapply_integrity_effects()
 #define COMSIG_MOB_STOP_DEFIBHEAL "mob_stop_defibheal"
 	#define COMPONENT_BLOCK_DEFIB_HEAL (1<<0)

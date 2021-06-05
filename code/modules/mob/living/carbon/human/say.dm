@@ -228,7 +228,7 @@
 		message = slur(message)
 		verb = pick("stammers","stutters")
 		handled = TRUE
-	if(stuttering)
+	if(stuttering || (SEND_SIGNAL(src, COMSIG_MOB_APPLY_STUTTER) & COMPONENT_ADD_STUTTERING))
 		message = NewStutter(message)
 		verb = pick("stammers", "stutters")
 		handled = TRUE
