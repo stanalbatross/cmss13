@@ -600,7 +600,6 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/verticalgrip,
-						/obj/item/attachable/angledgrip,
 						/obj/item/attachable/flashlight/grip,
 						/obj/item/attachable/gyro,
 						/obj/item/attachable/lasersight,
@@ -628,6 +627,9 @@ can cause issues with ammo types getting mixed up during the burst.
 		to_chat(user, SPAN_WARNING("\the [src] cannot safely fire this type of shell!"))
 		return
 	..()
+
+/obj/item/weapon/gun/shotgun/double/mou53/stock
+	starting_attachment_types = list(/obj/item/attachable/stock/mou53)
 
 //-------------------------------------------------------
 //PUMP SHOTGUN
