@@ -53,17 +53,19 @@
 #define BE_ALIEN_AFTER_DEATH	1
 #define BE_AGENT				2
 
-#define TOGGLE_IGNORE_SELF					1 	// Determines whether you will not hurt yourself when clicking yourself
-#define TOGGLE_HELP_INTENT_SAFETY			2 	// Determines whether help intent will be completely harmless
-#define TOGGLE_MIDDLE_MOUSE_CLICK			4 	// This toggles whether selected ability for xeno uses middle mouse clicking or shift clicking
-#define TOGGLE_DIRECTIONAL_ATTACK			8 	// This toggles whether attacks for xeno use directional attacks
-#define TOGGLE_AUTO_EJECT_MAGAZINE_OFF		16 	// This toggles whether guns with auto ejectors will not auto eject their magazines
-												// MUTUALLY EXCLUSIVE TO TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND
-#define TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND	32	// This toggles whether guns with auto ejectors will cause you to unwield your gun and put the empty magazine in your hand
-												// MUTUALLY EXCLUSIVE TO TOGGLE_AUTO_EJECT_MAGAZINE
-#define TOGGLE_EJECT_MAGAZINE_TO_HAND		64	// This toggles whether manuallyejecting magazines from guns will cause you to unwield your gun
-												// and put the empty magazine in your hand
-#define TOGGLE_AUTOMATIC_PUNCTUATION		128 // Whether your sentences will automatically be punctuated with a period
+#define TOGGLE_IGNORE_SELF					(1<<0) // Determines whether you will not hurt yourself when clicking yourself
+#define TOGGLE_HELP_INTENT_SAFETY			(1<<1) // Determines whether help intent will be completely harmless
+#define TOGGLE_MIDDLE_MOUSE_CLICK			(1<<2) // This toggles whether selected ability for xeno uses middle mouse clicking or shift clicking
+#define TOGGLE_DIRECTIONAL_ATTACK			(1<<3) // This toggles whether attacks for xeno use directional attacks
+#define TOGGLE_AUTO_EJECT_MAGAZINE_OFF		(1<<4) // This toggles whether guns with auto ejectors will not auto eject their magazines
+                                                   // MUTUALLY EXCLUSIVE TO TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND
+#define TOGGLE_AUTO_EJECT_MAGAZINE_TO_HAND	(1<<5) // This toggles whether guns with auto ejectors will cause you to unwield your gun and put the empty magazine in your hand
+                                                   // MUTUALLY EXCLUSIVE TO TOGGLE_AUTO_EJECT_MAGAZINE
+#define TOGGLE_EJECT_MAGAZINE_TO_HAND		(1<<6) // This toggles whether manuallyejecting magazines from guns will cause you to unwield your gun
+                                                   // and put the empty magazine in your hand
+#define TOGGLE_AUTOMATIC_PUNCTUATION		(1<<7) // Whether your sentences will automatically be punctuated with a period
+
+#define TOGGLE_COMBAT_CLICKDRAG_OVERRIDE	(1<<8) // Whether disarm/harm intents cause clicks to trigger immediately when the mouse button is depressed.
 
 //=================================================
 
@@ -188,7 +190,7 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 #define FACTION_WY "Wey-Yu"
 #define FACTION_CLF "CLF"
 #define FACTION_PMC "PMC"
-#define FACTION_DEATHSQUAD "Death Squad"
+#define FACTION_WY_DEATHSQUAD "WY Death Squad"
 #define FACTION_MERCENARY "Mercenary"
 #define FACTION_FREELANCER "Freelancer"
 #define FACTION_HEFA "HEFA Order"
@@ -203,10 +205,10 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 #define FACTION_MUTINEER "Mutineer"
 
 #define FACTION_LIST_MARINE list(FACTION_MARINE)
-#define FACTION_LIST_HUMANOID list(FACTION_MARINE, FACTION_MUTINEER, FACTION_PMC, FACTION_WY, FACTION_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_SURVIVOR, FACTION_NEUTRAL, FACTION_COLONIST, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO, FACTION_YAUTJA, FACTION_ZOMBIE)
-#define FACTION_LIST_ERT list(FACTION_PMC, FACTION_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO)
-#define FACTION_LIST_WY list(FACTION_PMC, FACTION_DEATHSQUAD, FACTION_WY)
-#define FACTION_LIST_MARINE_WY list(FACTION_MARINE, FACTION_PMC, FACTION_DEATHSQUAD, FACTION_WY)
+#define FACTION_LIST_HUMANOID list(FACTION_MARINE, FACTION_MUTINEER, FACTION_PMC, FACTION_WY, FACTION_WY_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_SURVIVOR, FACTION_NEUTRAL, FACTION_COLONIST, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO, FACTION_YAUTJA, FACTION_ZOMBIE)
+#define FACTION_LIST_ERT list(FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO)
+#define FACTION_LIST_WY list(FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_WY)
+#define FACTION_LIST_MARINE_WY list(FACTION_MARINE, FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_WY)
 #define FACTION_LIST_MARINE_UPP	list(FACTION_MARINE, FACTION_UPP)
 #define FACTION_LIST_MARINE_RESS list(FACTION_MARINE, FACTION_RESS)
 

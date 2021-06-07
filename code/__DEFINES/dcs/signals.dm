@@ -209,6 +209,10 @@
 #define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE "xeno_pre_calculate_armoured_damage"
 #define COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE "xeno_pre_apply_armoured_damage"
 
+/// From /mob/living/carbon/Xenomorph/bullet_act
+#define COMSIG_XENO_BULLET_ACT "xeno_bullet_act"
+	//#define COMPONENT_CANCEL_BULLET_ACT (1<<0) already defined
+
 /// from /mob/living/carbon/Xenomorph/get_status_tab_items(): (list/statdata)
 #define COMSIG_XENO_APPEND_TO_STAT "xeno_append_to_stat"
 
@@ -333,10 +337,13 @@
 #define COMSIG_BULLET_PRE_HANDLE_MOB "bullet_pre_handle_mob"
 /// From /obj/item/projectile/handle_mob(): (mob/living/target)
 #define COMSIG_BULLET_POST_HANDLE_MOB "bullet_post_handle_mob"
-/// From /obj/item/projectile/handle_obj(): (obj/target)
+/// From /obj/item/projectile/handle_obj(): (obj/target, did_hit)
 #define COMSIG_BULLET_POST_HANDLE_OBJ "bullet_post_handle_obj"
+/// From /obj/item/projectile/handle_obj(): (obj/target)
+#define COMSIG_BULLET_PRE_HANDLE_OBJ "bullet_pre_handle_obj"
 /// From /obj/item/projectile/scan_a_turf(): (turf/target)
 #define COMSIG_BULLET_POST_HANDLE_TURF "bullet_post_handle_turf"
+/// From /obj/item/projectile/scan_a_turf(): (turf/target)
 #define COMSIG_BULLET_PRE_HANDLE_TURF "bullet_pre_handle_turf"
 	#define COMPONENT_BULLET_PASS_THROUGH (1<<0)
 
