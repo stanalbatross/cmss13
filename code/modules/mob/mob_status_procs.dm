@@ -39,7 +39,7 @@
 
 /mob/proc/AdjustStunned(amount)
 	if(status_flags & CANSTUN)
-		stunned = max(stunned + amount,0)		
+		stunned = max(stunned + amount,0)
 		stun_callback_check()
 		update_canmove()
 	return
@@ -55,7 +55,7 @@
 	return
 
 /mob/proc/AdjustDazed(amount)
-	if(status_flags & CANDAZE)		
+	if(status_flags & CANDAZE)
 		dazed = max(dazed + amount,0)
 	return
 
@@ -130,7 +130,12 @@
 
 /mob/proc/KnockDown(amount, force)
 	if((status_flags & CANKNOCKDOWN) || force)
-		knocked_down = max(max(knocked_down,amount),0)
+
+		var/list/knockdowndata = list("knockdown" = amount)
+		SEND_SIGNAL(src, COMSIG_MOB_ADD_KNOCKDOWN, knockdowndata)
+		var/new_knockdown = knockdowndata["knockdown"]
+
+		knocked_down = max(max(knocked_down, new_knockdown),0)
 		knockdown_clock_adjustment()
 		knocked_down_callback_check()
 		update_canmove()	//updates lying, canmove and icons

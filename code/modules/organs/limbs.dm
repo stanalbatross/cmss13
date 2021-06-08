@@ -1262,8 +1262,8 @@ This function completely restores a damaged organ to perfect condition.
 		to_chat(owner, SPAN_DANGER("You feel like your very flesh and skin has become more vulnerable and softer to attacks!"))
 		owner.int_dmg_malus += 0.3
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
-		UnregisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL)
-		UnregisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE)
+		UnregisterSignal(owner, list(COMSIG_MOB_STOP_DEFIBHEAL,
+		COMSIG_MOB_BONUS_DAMAGE))
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		to_chat(owner, SPAN_DANGER("Adrenaline puppets you for a little longer, but your wounds are nearing critical limits; no shock will patch you if you fail now!"))
 		RegisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL, .proc/cancel_defib_heal)
@@ -1300,7 +1300,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		UnregisterSignal(owner, COMSIG_MOB_INGESTION)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		to_chat(owner, SPAN_DANGER("Your stomach and guts begin to shut off like a power grid. God save you, for no medicine man can give will."))
+		to_chat(owner, SPAN_DANGER("Your stomach and guts begin to shut off like a power grid. God save you, for no medicine will."))
 		RegisterSignal(owner, COMSIG_MOB_INGESTION, .proc/ingestion_cancel)
 
 /obj/limb/groin/proc/ingestion_cancel(mob/living/carbon/human/H, obj/item/reagent_container/ingested)
@@ -1322,21 +1322,27 @@ This function completely restores a damaged organ to perfect condition.
 	min_broken_damage = 20
 	var/climb_delay_mult = 2.0
 	var/drag_delay_mult = 1.5
+	var/bonus_knockdown = 1
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
-		UnregisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE)
-		UnregisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY)
+		UnregisterSignal(owner, list(
+			COMSIG_LIVING_CLIMB_STRUCTURE,
+			COMSIG_MOB_ADD_DRAG_DELAY))
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
 		to_chat(owner, SPAN_DANGER("Your legs feel limper and weaker; perhaps climbing and dragging wouldn't be a good idea."))
 		RegisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE, .proc/handle_climb_delay)
 		RegisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY, .proc/handle_drag_delay)
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		owner.bonus_knockdown -= 1.2 SECONDS
+		UnregisterSignal(owner, COMSIG_MOB_ADD_KNOCKDOWN)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		to_chat(owner, SPAN_DANGER("Your legs buckle just standing up, this could be very bad if you got knocked over!"))
-		owner.bonus_knockdown += 1.2 SECONDS
+		RegisterSignal(owner, COMSIG_MOB_ADD_KNOCKDOWN, .proc/add_knockdown)
+
+/obj/limb/leg/proc/add_knockdown(var/mob/living/M, list/knockdowndata)
+	SIGNAL_HANDLER
+	knockdowndata["knockdown"] += bonus_knockdown
 
 /obj/limb/leg/proc/handle_climb_delay(var/mob/living/M, list/climbdata)
 	SIGNAL_HANDLER
@@ -1387,7 +1393,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		work_delay_mult = 1.3
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		to_chat(owner, SPAN_DANGER("Your arms quickly begin to droop limp, looking like any plans you had for them are borderline Heruclean now."))
+		to_chat(owner, SPAN_DANGER("Your arms look flayed and beaten like two steaks, looking like any plans you had for them are borderline Heruclean."))
 		work_delay_mult = 2.0
 
 /obj/limb/arm/proc/increase_work_delay(var/mob/living/M, list/delaydata)
@@ -1421,12 +1427,12 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
 		owner.action_delay -= 8
 	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
-		to_chat(owner, SPAN_DANGER("Your hands become less responsive due to the tears on them, reducing your productivity."))
+		to_chat(owner, SPAN_DANGER("Your hands become less responsive due to the tears on them, you're definitely going to need more time to solve stuff now."))
 		owner.action_delay += 8
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		UnregisterSignal(owner, COMSIG_MOB_ADD_RECOIL)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
-		to_chat(owner, SPAN_DANGER("Your hands struggle to deal with any future recoil, as your hands become more limp and weaker."))
+		to_chat(owner, SPAN_DANGER("Your hands struggle to deal with any future recoil, as the wounds eat away at your flesh and bone."))
 		RegisterSignal(owner, COMPONENT_ADD_RECOIL, .proc/decrease_gun_handling)
 
 /obj/limb/hand/proc/decrease_gun_handling()
@@ -1535,17 +1541,17 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/head/reapply_integrity_effects(added, removed)
 	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
-		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
-		UnregisterSignal(owner, COMSIG_MOB_APPLY_STUTTER)
+		UnregisterSignal(owner, list(COMSIG_MOB_PRE_ITEM_ZOOM,
+		 COMSIG_MOB_APPLY_STUTTER))
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
-		to_chat(owner, SPAN_DANGER("The damage to your head has caused black and red to splay all over your eyesight, and feel a fuzzy feeling in your head."))
+		to_chat(owner, SPAN_DANGER("The damage to your head has caused black and red to splay all over your eyesight, and force a fuzzy feeling in your head."))
 		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
 		RegisterSignal(owner, COMSIG_MOB_APPLY_STUTTER, .proc/handle_stutter)
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		UnregisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS)
-		UnregisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK)
+		UnregisterSignal(owner, list(COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS,
+		 COMSIG_MOB_PRE_EYE_TINTCHECK))
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		to_chat(owner, SPAN_DANGER("You definitely feel pains in your eyes, as you struggle to see anything through your fading vision!"))
+		to_chat(owner, SPAN_DANGER("You definitely feel hell in your head, as you struggle to see, think or feel anything. Any more damage might make your head burst!"))
 		RegisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS, .proc/block_night_vision)
 		RegisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK, .proc/add_eye_tint)
 

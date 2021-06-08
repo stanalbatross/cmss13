@@ -142,7 +142,6 @@
 	var/datum/action/human_action/activable/selected_ability
 
 	// Integrity
-	var/bonus_knockdown
 	var/xeno_neurotoxin_buff //Increases effectiveness of xeno neurotoxin
 	var/minimum_gun_recoil
 	var/minimum_wield_delay

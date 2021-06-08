@@ -407,11 +407,13 @@
 	#define COMPONENT_ADD_DMG_MODIFIER (1<<0)
 
 /// From obj/limb/arm/reapply_integrity_effects()
-	#define COMSIG_MOB_ADD_DELAY "add_work_delay"
+#define COMSIG_MOB_ADD_DELAY "add_work_delay"
 
 /// From obj/limb/leg/reapply_integrity_effects()
-	#define COMSIG_MOB_ADD_DRAG_DELAY "add_drag_delay"
+#define COMSIG_MOB_ADD_DRAG_DELAY "add_drag_delay"
+
+#define COMSIG_MOB_ADD_KNOCKDOWN "add_knockdown"
 
 /// From obj/limb/hand/reapply_integrity_effects()
-	#define COMSIG_MOB_ADD_RECOIL "add_recoil"
-		#define COMPONENT_ADD_RECOIL (1<<0)
+#define COMSIG_MOB_ADD_RECOIL "add_recoil"
+	#define COMPONENT_ADD_RECOIL (1<<0)
