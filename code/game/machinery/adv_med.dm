@@ -416,7 +416,7 @@
 			bled = "Bleeding<br>"
 			break
 		if(e.status & LIMB_BROKEN)
-			AN = "[e.broken_description]<br>"
+			AN = "Broken<br>"
 		if(e.status & LIMB_ROBOT)
 			robot = "Prosthetic<br>"
 		if(e.surgery_open_stage)

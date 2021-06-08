@@ -1,4 +1,5 @@
-#define BICAOD_BLOOD_REDUCTION 0.67 //15 OD ticks to heal 1 blood loss
+#define BICAOD_BLOOD_REDUCTION 0.005
+#define IB_BLOOD_ACCUMULATION 0.055
 #define CRYO_BLOOD_REDUCTION 0.67
 #define THWEI_BLOOD_REDUCTION 0.75
 #define BLOOD_ADD_PENALTY	1.5
@@ -74,10 +75,12 @@
 
 	return TRUE
 
-			
+
 /datum/effects/bleeding/internal
 	effect_name = "internal bleeding"
 	flags = INF_DURATION | NO_PROCESS_ON_DEATH | DEL_ON_UNDEFIBBABLE
+	blood_loss_divider = 60
+	blood_duration_multiplier = 3
 
 /datum/effects/bleeding/internal/process_mob()
 	. = ..()
@@ -88,15 +91,21 @@
 	if(affected_mob.in_stasis == STASIS_IN_BAG)
 		return FALSE
 
+	var/loss_accumulation = FALSE
 	if(affected_mob.bodytemperature < T0C && (affected_mob.reagents && affected_mob.reagents.get_reagent_amount("cryoxadone") || affected_mob.reagents.get_reagent_amount("clonexadone")))
 		blood_loss -= CRYO_BLOOD_REDUCTION
+		loss_accumulation = TRUE
 
 	var/bicaridine = affected_mob.reagents?.get_reagent_amount("bicaridine")
-	if(bicaridine > REAGENTS_OVERDOSE && affected_mob.getBruteLoss() <= 0)
+	if(bicaridine > REAGENTS_OVERDOSE)
 		blood_loss -= BICAOD_BLOOD_REDUCTION
+		loss_accumulation = TRUE
 
 	if(affected_mob.reagents && affected_mob.reagents.get_reagent_amount("quickclot")) // Annoying QC check
 		return FALSE
+
+	if(!loss_accumulation)
+		blood_loss += IB_BLOOD_ACCUMULATION
 
 	affected_mob.blood_volume = max(affected_mob.blood_volume - blood_loss, 0)
 

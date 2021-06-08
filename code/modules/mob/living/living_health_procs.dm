@@ -81,12 +81,6 @@
 /mob/living/proc/setMaxHealth(var/newMaxHealth)
 	maxHealth = newMaxHealth
 
-
-
-
-
-
-
 // heal ONE limb, organ gets randomly selected from damaged ones.
 /mob/living/proc/heal_limb_damage(var/brute, var/burn)
 	apply_damage(-brute, BRUTE)

@@ -29,6 +29,9 @@
 		else if((O.status & LIMB_SPLINTED) && !(O.status & LIMB_BROKEN))
 			apply_pain(PAIN_BONE_BREAK_SPLINTED)
 
+		else if((O.status & LIMB_DISLOCATED) && !(O.status & LIMB_SPLINTED))
+			apply_pain(PAIN_DISLOCATED_BREAK)
+
 	//Internal organs
 	for(var/datum/internal_organ/O in H.internal_organs)
 		if(O.damage)

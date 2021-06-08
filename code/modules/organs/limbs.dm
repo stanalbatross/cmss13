@@ -36,7 +36,6 @@
 	var/list/datum/internal_organ/internal_organs
 
 	var/damage_msg = "<span class='danger'>You feel an intense pain</span>"
-	var/broken_description
 
 	var/surgery_open_stage = 0
 	var/bone_repair_stage = 0
@@ -190,7 +189,7 @@
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
 	var/damage = armor_damage_reduction(GLOB.marine_organ_damage, brute, armor, sharp ? ARMOR_SHARP_INTERNAL_PENETRATION : 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
 
-	if(internal_organs && (integrity_level_effects & LIMB_INTEGRITY_SERIOUS) && damage)
+	if(internal_organs && (integrity_level_effects & LIMB_INTEGRITY_SERIOUS) && damage > 10)
 		//Damage an internal organ
 		var/datum/internal_organ/I = pick(internal_organs)
 		I.take_damage(damage / 2)
@@ -205,7 +204,6 @@
 
 	if(brute_dam + brute  > min_broken_damage)
 		fracture(damage)
-	message_staff("--------------------------------------------")
 
 /*
 	Describes how limbs (body parts) of human mobs get damage applied.
@@ -440,6 +438,7 @@
 	if(internal)
 		owner.pain.apply_pain(-PAIN_BONE_BREAK)
 		status &= ~LIMB_BROKEN
+		status &= ~LIMB_DISLOCATED
 		status |= LIMB_REPAIRED
 		perma_injury = 0
 
@@ -486,15 +485,19 @@ This function completely restores a damaged organ to perfect condition.
 		return
 
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
+	var/endurance_buff = 0
 	if(owner.mind && owner.skills)
-		armor += owner.skills.get_skill_level(SKILL_ENDURANCE)*5
+		endurance_buff = owner.skills.get_skill_level(SKILL_ENDURANCE)*5
+		armor += endurance_buff
 
 	var/damage_ratio = armor_damage_reduction(GLOB.marine_organ_damage, 2*damage/3, armor, 0, 0, 0, max_damage ? (100*(max_damage - brute_dam) / max_damage) : 100)
-	if(prob(damage_ratio) && damage > 10)
+	var/ib_probability = 40 + (brute_dam + damage_ratio) + (integrity_damage * 0.40) - max(armor, endurance_buff , 0)
+
+	if(((integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS) || ((integrity_level_effects & LIMB_INTEGRITY_EFFECT_MAJOR && prob(ib_probability)))) && damage_ratio > 10)
 		var/datum/wound/internal_bleeding/I = new (0)
 		add_bleeding(I, TRUE)
 		wounds += I
-		owner.custom_pain("You feel something rip in your [display_name]!", 1)
+		owner.custom_pain("You feel something rip in your [display_name], causing you to suddenly feel a lot weaker than usual!", 1)
 
 /obj/limb/proc/createwound(var/type = CUT, var/damage, var/impact_name, var/is_ff = FALSE)
 	if(!damage)
@@ -571,7 +574,7 @@ This function completely restores a damaged organ to perfect condition.
 
 	var/datum/effects/bleeding/bleeding_status
 	if(internal)
-		bleeding_status = new /datum/effects/bleeding/internal(owner, src, 40)
+		bleeding_status = new /datum/effects/bleeding/internal(owner, src, (max(40, brute_dam)+ (0.15 * integrity_damage)))
 	else
 		bleeding_status = new /datum/effects/bleeding/external(owner, src, W.damage)
 	bleeding_effects_list += bleeding_status
@@ -638,13 +641,14 @@ This function completely restores a damaged organ to perfect condition.
 				trace_chemicals.Remove(chemID)
 
 	//Bone fractures
-	if(!(status & LIMB_BROKEN))
+	if(!(status & (LIMB_BROKEN|LIMB_DISLOCATED)))
 		perma_injury = 0
 	if(knitting_time > 0)
 		if(world.time > knitting_time)
 			to_chat(owner, SPAN_WARNING("The bones in your [display_name] feel fully knitted."))
 			owner.pain.apply_pain(-PAIN_BONE_BREAK)
 			status &= ~LIMB_BROKEN //Let it be known that this code never unbroke the limb.
+			status &= ~LIMB_DISLOCATED
 			knitting_time = -1
 
 //Updating wounds. Handles wound natural I had some free spachealing, internal bleedings and infections
@@ -1024,7 +1028,7 @@ This function completely restores a damaged organ to perfect condition.
 	return !not_salved
 
 /obj/limb/proc/fracture(var/damage_input, var/fracture_probability)
-	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOT))
+	if(status & (LIMB_DISLOCATED|LIMB_BROKEN|LIMB_DESTROYED|LIMB_ROBOT))
 		if (knitting_time != -1)
 			knitting_time = -1
 			to_chat(owner, SPAN_WARNING("You feel your [display_name] stop knitting together as it is impacted by damage!"))
@@ -1044,35 +1048,73 @@ This function completely restores a damaged organ to perfect condition.
 	if(owner.skills)
 		endurance_buff = owner.skills.get_skill_level(SKILL_ENDURANCE) - 1
 
-	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE)
-		//hairline frac RNG calc goes here
+	var/hairline_probability = 0
+	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE || !(status & LIMB_DISLOCATED))
+		hairline_probability = 50 - (endurance_buff * 2.0) + (damage_input * 0.5) - (armor * 0.25) + (integrity_damage * 0.10) + (brute_dam * 0.20)
+		message_staff("fracture success = [fracture_probability]")
 
 	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MAJOR)
-		// hairline frac also goes here
+		if(prob(hairline_probability))
+			handle_dislocated()
+			return
+
 		if(!fracture_probability)
 			fracture_probability = fracture_probability - (brute_dam + damage_input) + (integrity_damage * 0.40) - max(armor, endurance_buff * 4.0 , 0)
+			message_staff("fracture success = [fracture_probability]")
 
 	if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_SERIOUS || prob(fracture_probability))
-		owner.recalculate_move_delay = TRUE
-		owner.visible_message(\
-			SPAN_WARNING("You hear a loud cracking sound coming from [owner]!"),
-			SPAN_HIGHDANGER("Something feels like it shattered in your [display_name]!"),
-			SPAN_HIGHDANGER("You hear a sickening crack!"))
-		playsound(owner, "bone_break", 45, TRUE)
-		start_processing()
-
-		status |= LIMB_BROKEN
-		status &= ~LIMB_REPAIRED
-		owner.pain.apply_pain(PAIN_BONE_BREAK)
-		broken_description = "broken"
-		perma_injury = min_broken_damage
+		handle_fracture()
 	else
 		owner.visible_message(\
 			SPAN_WARNING("[owner] seems to withstand the blow!"),
 			SPAN_WARNING("Your [display_name] manages to withstand the blow!"))
 
+/obj/limb/proc/handle_dislocated()
+	owner.recalculate_move_delay = TRUE
+	owner.visible_message(\
+		SPAN_WARNING("You hear a loud crunching sound coming from [owner] as their [display_name] dislocates out of place!"),
+		SPAN_HIGHDANGER("Something feels out of place in your [display_name], as you feel your bones shift!"),
+		SPAN_HIGHDANGER("You see bones being shifted out of place!"))
+	playsound(owner, "bone_break", 45, TRUE)
+	start_processing()
+
+	status |= LIMB_DISLOCATED
+	status &= ~LIMB_REPAIRED
+	owner.pain.apply_pain(PAIN_DISLOCATED_BREAK)
+	perma_injury = min_broken_damage
+
+/obj/limb/proc/handle_fracture()
+	owner.recalculate_move_delay = TRUE
+	owner.visible_message(\
+		SPAN_WARNING("You hear a loud cracking sound coming from [owner] as their bones shatter!"),
+		SPAN_HIGHDANGER("Something feels like it shattered in your [display_name], fragments ripping all over it!"),
+		SPAN_HIGHDANGER("You hear a sickening cracking noise!"))
+	playsound(owner, "bone_break", 45, TRUE)
+	start_processing()
+
+	status |= LIMB_BROKEN
+	status &= ~LIMB_REPAIRED
+	owner.pain.apply_pain(PAIN_BONE_BREAK)
+	perma_injury = min_broken_damage
+	addtimer(CALLBACK(src, .proc/register_fracture_effects), 8 SECONDS)
+
+/obj/limb/proc/register_fracture_effects()
+	RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE, .proc/handle_fracture_int_damage)
+
+/obj/limb/proc/handle_fracture_int_damage()
+	SIGNAL_HANDLER
+	if(!owner)
+		return
+	if(!(status & LIMB_BROKEN))
+		UnregisterSignal(src, COMSIG_MOVABLE_PRE_MOVE)
+
+	if(is_broken() && (!owner.lying && world.time - owner.l_move_time < 15) && integrity_damage < LIMB_INTEGRITY_BONE_MOVEMENT_CAP) // kinda messy but it'll do
+		to_chat(owner, SPAN_WARNING("You feel your [display_name]'s bones shift around, further ripping and damaging it!"))
+		take_integrity_damage(PASSIVE_INT_DAMAGE_PER_STEP)
+
 /obj/limb/proc/robotize()
 	status &= ~LIMB_BROKEN
+	status &= ~LIMB_DISLOCATED
 	status &= ~LIMB_SPLINTED
 	status &= ~LIMB_AMPUTATED
 	status &= ~LIMB_DESTROYED
@@ -1158,8 +1200,8 @@ This function completely restores a damaged organ to perfect condition.
 
 			if(status & LIMB_BROKEN)
 				owner.pain.apply_pain(-PAIN_BONE_BREAK_SPLINTED)
-			else
-				owner.pain.apply_pain(PAIN_BONE_BREAK_SPLINTED)
+			else if(status & LIMB_DISLOCATED)
+				owner.pain.apply_pain(PAIN_BONE_BREAK_SPLINTED * 0.5) // half
 			. = TRUE
 			owner.update_med_icon()
 
@@ -1217,13 +1259,18 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_MODERATE)
 		owner.int_dmg_malus -= 0.3
 	else if(added & LIMB_INTEGRITY_EFFECT_MODERATE)
+		to_chat(owner, SPAN_DANGER("You feel like your very flesh and skin has become more vulnerable and softer to attacks!"))
 		owner.int_dmg_malus += 0.3
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		UnregisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL)
 		UnregisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("Adrenaline puppets you for a little longer, but your wounds are nearing critical limits; no shock will patch you if you fail now!"))
 		RegisterSignal(owner, COMSIG_MOB_STOP_DEFIBHEAL, .proc/cancel_defib_heal)
 		RegisterSignal(owner, COMSIG_MOB_BONUS_DAMAGE, .proc/bonus_burn_damage)
+	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
+	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		to_chat(owner, SPAN_HIGHDANGER("Looking down, you see small parts of your guts waiting to liberate themselves from your feeble chest; you sure you want to challenge destiny, [owner.name]?"))
 
 /obj/limb/chest/proc/cancel_defib_heal()
 	SIGNAL_HANDLER
@@ -1248,10 +1295,12 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		owner.xeno_neurotoxin_buff -= 1.5
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("You start to feel more vulnerable to toxins, as you feel your kidneys start to oppose your mad persistence."))
 		owner.xeno_neurotoxin_buff += 1.5
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		UnregisterSignal(owner, COMSIG_MOB_INGESTION)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		to_chat(owner, SPAN_DANGER("Your stomach and guts begin to shut off like a power grid. God save you, for no medicine man can give will."))
 		RegisterSignal(owner, COMSIG_MOB_INGESTION, .proc/ingestion_cancel)
 
 /obj/limb/groin/proc/ingestion_cancel(mob/living/carbon/human/H, obj/item/reagent_container/ingested)
@@ -1280,12 +1329,14 @@ This function completely restores a damaged organ to perfect condition.
 		UnregisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE)
 		UnregisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("Your legs feel limper and weaker; perhaps climbing and dragging wouldn't be a good idea."))
 		RegisterSignal(owner, COMSIG_LIVING_CLIMB_STRUCTURE, .proc/handle_climb_delay)
 		RegisterSignal(owner, COMSIG_MOB_ADD_DRAG_DELAY, .proc/handle_drag_delay)
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		owner.bonus_knockdown -= 0.6 SECONDS
+		owner.bonus_knockdown -= 1.2 SECONDS
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		owner.bonus_knockdown += 0.6 SECONDS
+		to_chat(owner, SPAN_DANGER("Your legs buckle just standing up, this could be very bad if you got knocked over!"))
+		owner.bonus_knockdown += 1.2 SECONDS
 
 /obj/limb/leg/proc/handle_climb_delay(var/mob/living/M, list/climbdata)
 	SIGNAL_HANDLER
@@ -1307,6 +1358,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		UnregisterSignal(owner, COMSIG_HUMAN_POST_MOVE_DELAY)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		to_chat(owner, SPAN_DANGER("You feel significantly more slower, as your feet can no longer handle your movement!"))
 		RegisterSignal(owner, COMSIG_HUMAN_POST_MOVE_DELAY, .proc/increase_move_delay)
 
 /obj/limb/foot/proc/increase_move_delay(var/mob/living/M, list/movedata)
@@ -1325,14 +1377,17 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
 		UnregisterSignal(owner, COMSIG_MOB_ADD_DELAY)
 	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
+		to_chat(owner, SPAN_DANGER("Your arms begin to tremble in weakness; this may be horrible for any work you have planned."))
 		RegisterSignal(owner, COMSIG_MOB_ADD_DELAY, .proc/increase_work_delay)
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		owner.minimum_wield_delay -= 5
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("You feel as if your arms have weights strapped against them, forcing you to exert yourself to raise any weapon or tool!"))
 		owner.minimum_wield_delay += 5
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		work_delay_mult = 1.2
+		work_delay_mult = 1.3
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		to_chat(owner, SPAN_DANGER("Your arms quickly begin to droop limp, looking like any plans you had for them are borderline Heruclean now."))
 		work_delay_mult = 2.0
 
 /obj/limb/arm/proc/increase_work_delay(var/mob/living/M, list/delaydata)
@@ -1364,12 +1419,14 @@ This function completely restores a damaged organ to perfect condition.
 /obj/limb/hand/reapply_integrity_effects(added, removed)
 	..()
 	if(removed & LIMB_INTEGRITY_EFFECT_MINOR)
-		owner.action_delay -= 6
+		owner.action_delay -= 8
 	else if(added & LIMB_INTEGRITY_EFFECT_MINOR)
-		owner.action_delay += 6
+		to_chat(owner, SPAN_DANGER("Your hands become less responsive due to the tears on them, reducing your productivity."))
+		owner.action_delay += 8
 	if(removed & LIMB_INTEGRITY_EFFECT_MAJOR)
 		UnregisterSignal(owner, COMSIG_MOB_ADD_RECOIL)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("Your hands struggle to deal with any future recoil, as your hands become more limp and weaker."))
 		RegisterSignal(owner, COMPONENT_ADD_RECOIL, .proc/decrease_gun_handling)
 
 /obj/limb/hand/proc/decrease_gun_handling()
@@ -1481,12 +1538,14 @@ This function completely restores a damaged organ to perfect condition.
 		UnregisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM)
 		UnregisterSignal(owner, COMSIG_MOB_APPLY_STUTTER)
 	else if(added & LIMB_INTEGRITY_EFFECT_MAJOR)
+		to_chat(owner, SPAN_DANGER("The damage to your head has caused black and red to splay all over your eyesight, and feel a fuzzy feeling in your head."))
 		RegisterSignal(owner, COMSIG_MOB_PRE_ITEM_ZOOM, .proc/block_zoom)
 		RegisterSignal(owner, COMSIG_MOB_APPLY_STUTTER, .proc/handle_stutter)
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		UnregisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS)
 		UnregisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK)
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
+		to_chat(owner, SPAN_DANGER("You definitely feel pains in your eyes, as you struggle to see anything through your fading vision!"))
 		RegisterSignal(owner, COMSIG_MOB_PRE_GLASSES_SIGHT_BONUS, .proc/block_night_vision)
 		RegisterSignal(owner, COMSIG_MOB_PRE_EYE_TINTCHECK, .proc/add_eye_tint)
 

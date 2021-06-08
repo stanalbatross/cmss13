@@ -539,6 +539,7 @@
 	dat += "\tUntreated: {B}=Burns,{T}=Trauma,{F}=Fracture\n"
 
 	var/unrevivable = 0
+	var/bleed_rate = 0
 
 	// Show specific limb damage
 	if(istype(src, /mob/living/carbon/human) && mode == 1)
@@ -561,6 +562,7 @@
 			var/bleeding_check = FALSE
 			for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
 				bleeding_check = TRUE
+				bleed_rate += E.blood_loss
 				break
 			var/integrity_damage = org.integrity_damage
 
@@ -646,7 +648,8 @@
 		for(var/X in H.limbs)
 			var/obj/limb/e = X
 			for(var/datum/effects/bleeding/internal/I in e.bleeding_effects_list)
-				internal_bleed_detected = TRUE
+				bleed_rate += I.blood_loss
+				internal_bleed_detected += TRUE
 				break
 			if(e.status & LIMB_BROKEN)
 				if(!((e.name == "l_arm") || (e.name == "r_arm") || (e.name == "l_leg") || (e.name == "r_leg") || (e.name == "l_hand") || (e.name == "r_hand") || (e.name == "l_foot") || (e.name == "r_foot")))
@@ -697,6 +700,9 @@
 				dat += "\t<span class='scanner'> <b>Warning: Blood Level CRITICAL: [blood_percent]% [blood_volume]cl.</span> [SET_CLASS("Type: [blood_type]", INTERFACE_BLUE)]\n"
 			else
 				dat += "\tBlood Level normal: [blood_percent]% [blood_volume]cl. Type: [blood_type]\n"
+
+		if(bleed_rate)
+			dat += "\tBlood Loss Rate: [bleed_rate * 0.5 * 0.00179]/second"
 		// Show pulse
 		dat += "\tPulse: <span class='[H.pulse == PULSE_THREADY || H.pulse == PULSE_NONE ? INTERFACE_RED : ""]'>[H.get_pulse(GETPULSE_TOOL)] bpm.</span>\n"
 		if((H.stat == DEAD && !H.client))

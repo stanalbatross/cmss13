@@ -19,6 +19,7 @@
 #define LIMB_AMPUTATED 32 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
 #define LIMB_REPAIRED 64 //we just repaired the bone, stops the gelling after setting
 #define LIMB_SPLINTED_INDESTRUCTIBLE 128 // Splint is indestructible
+#define LIMB_DISLOCATED 256 // Mild fracture
 
 ///////////////SURGERY DEFINES///////////////
 #define SPECIAL_SURGERY_INVALID	"special_surgery_invalid"
@@ -96,11 +97,14 @@
 #define LIMB_INTEGRITY_THRESHOLD_CONCERNING 80 // 80-139
 #define LIMB_INTEGRITY_THRESHOLD_SERIOUS 140 // 140-199
 #define LIMB_INTEGRITY_THRESHOLD_CRITICAL 200
+#define LIMB_INTEGRITY_BONE_MOVEMENT_CAP 130
+
+#define PASSIVE_INT_DAMAGE_PER_STEP 2
 
 #define NO_INTERNAL_DAMAGE 0
-#define INT_DMG_MULTIPLIER_NORMAL 1
-#define INT_DMG_MULTIPLIER_SHARP 1.2
-#define INT_DMG_MULTIPLIER_VERYSHARP 1.5
+#define INT_DMG_MULTIPLIER_NORMAL 0.7
+#define INT_DMG_MULTIPLIER_SHARP 1.0
+#define INT_DMG_MULTIPLIER_VERYSHARP 1.25 
 
 // Surgery chance modifiers
 #define SURGERY_MULTIPLIER_SMALL 	0.10
