@@ -1404,6 +1404,9 @@
 /mob/living/carbon/human/synthetic_old/Initialize(mapload)
 	. = ..(mapload, "Early Synthetic")
 
+/mob/living/carbon/human/synthetic_combat/Initialize(mapload)
+	. = ..(mapload, "Combat Synthetic")
+
 /mob/living/carbon/human/synthetic_2nd_gen/Initialize(mapload)
 	. = ..(mapload, "Second Generation Synthetic")
 

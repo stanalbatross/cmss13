@@ -189,12 +189,12 @@
 
 		P.fire_at(new_target, original_P.firer, original_P.shot_from, P.ammo.max_range, P.ammo.shell_speed, original_P.original) //Fire!
 
-/datum/ammo/proc/drop_flame(turf/T, var/source, var/source_mob) // ~Art updated fire 20JAN17
+/datum/ammo/proc/drop_flame(turf/T, datum/cause_data/cause_data) // ~Art updated fire 20JAN17
 	if(!istype(T)) return
 	if(locate(/obj/flamer_fire) in T) return
 
 	var/datum/reagent/napalm/ut/R = new()
-	new /obj/flamer_fire(T, source, source_mob, R)
+	new /obj/flamer_fire(T, cause_data, R)
 
 
 /*
@@ -273,6 +273,15 @@
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating)
 	))
 
+/datum/ammo/bullet/pistol/ap/cluster
+	name = "cluster pistol bullet"
+	shrapnel_chance = 0
+	var/cluster_addon = 1.5
+
+/datum/ammo/bullet/pistol/ap/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
+
 /datum/ammo/bullet/pistol/ap/toxin
 	name = "toxic pistol bullet"
 	var/acid_per_hit = 10
@@ -316,6 +325,14 @@
 	damage = BULLET_DAMAGE_TIER_8
 	penetration= ARMOR_PENETRATION_TIER_2
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_2
+
+/datum/ammo/bullet/pistol/heavy/cluster
+	name = "heavy cluster pistol bullet"
+	var/cluster_addon = 1.5
+
+/datum/ammo/bullet/pistol/heavy/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
 
 /datum/ammo/bullet/pistol/heavy/highimpact
 	name = "heavy high-impact pistol bullet"
@@ -398,6 +415,15 @@
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating)
 	))
+
+/datum/ammo/bullet/pistol/squash/cluster
+	name = "cluster squash-head pistol bullet"
+	shrapnel_chance = 0
+	var/cluster_addon = 2
+
+/datum/ammo/bullet/pistol/squash/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
 
 /datum/ammo/bullet/pistol/squash/incendiary
 	name = "incendiary squash-head pistol bullet"
@@ -518,6 +544,16 @@
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating)
 	))
+
+/datum/ammo/bullet/revolver/cluster
+	name = "cluster revolver bullet"
+	shrapnel_chance = 0
+	var/cluster_addon = 4
+	penetration = ARMOR_PENETRATION_TIER_10
+
+/datum/ammo/bullet/revolver/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
 
 /datum/ammo/bullet/revolver/nagant
 	name = "nagant revolver bullet"
@@ -765,6 +801,17 @@
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating)
 	))
 
+/datum/ammo/bullet/smg/ap/cluster
+	name = "cluster submachinegun bullet"
+	shrapnel_chance = 0
+	damage = BULLET_DAMAGE_TIER_6
+	penetration = ARMOR_PENETRATION_TIER_10
+	var/cluster_addon = 0.8
+
+/datum/ammo/bullet/smg/ap/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
+
 /datum/ammo/bullet/smg/le
 	name = "armor-shredding submachinegun bullet"
 
@@ -825,19 +872,6 @@
 	damage = BULLET_DAMAGE_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_8
 
-/datum/ammo/bullet/rifle/type71
-	name = "heavy rifle bullet"
-
-	damage = BULLET_DAMAGE_TIER_7
-	penetration = ARMOR_PENETRATION_TIER_2
-
-/datum/ammo/bullet/rifle/type71/ap
-	name = "heavy armor-piercing rifle bullet"
-
-	damage = BULLET_DAMAGE_TIER_4
-	penetration = ARMOR_PENETRATION_TIER_10
-
-
 // Basically AP but better. Focused at taking out armour temporarily
 /datum/ammo/bullet/rifle/ap/toxin
 	name = "toxic rifle bullet"
@@ -871,6 +905,18 @@
 	LAZYADD(traits_to_give, list(
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_penetrating)
 	))
+
+/datum/ammo/bullet/rifle/ap/cluster
+	name = "cluster rifle bullet"
+	shrapnel_chance = 0
+
+	damage = BULLET_DAMAGE_TIER_7
+	penetration = ARMOR_PENETRATION_TIER_10
+	var/cluster_addon = 1
+
+/datum/ammo/bullet/rifle/ap/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
+	. = ..()
+	M.AddComponent(/datum/component/cluster_stack, cluster_addon, damage, world.time)
 
 /datum/ammo/bullet/rifle/le
 	name = "armor-shredding rifle bullet"
@@ -949,6 +995,18 @@
 	name = "heavy rifle bullet"
 
 	damage = BULLET_DAMAGE_TIER_11
+
+/datum/ammo/bullet/rifle/type71
+	name = "heavy rifle bullet"
+
+	damage = BULLET_DAMAGE_TIER_7
+	penetration = ARMOR_PENETRATION_TIER_2
+
+/datum/ammo/bullet/rifle/type71/ap
+	name = "heavy armor-piercing rifle bullet"
+
+	damage = BULLET_DAMAGE_TIER_4
+	penetration = ARMOR_PENETRATION_TIER_10
 
 /*
 //================================================
@@ -1656,30 +1714,30 @@
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary)
 	))
 
-/datum/ammo/rocket/wp/drop_flame(turf/T, var/source, var/source_mob)
+/datum/ammo/rocket/wp/drop_flame(turf/T, datum/cause_data/cause_data)
 	playsound(T, 'sound/weapons/gun_flamethrower3.ogg', 75, 1, 7)
 	if(!istype(T)) return
 	smoke.set_up(1, T)
 	smoke.start()
 	var/datum/reagent/napalm/blue/R = new()
-	new /obj/flamer_fire(T, source, source_mob, R, 3)
+	new /obj/flamer_fire(T, cause_data, R, 3)
 
 	var/datum/effect_system/smoke_spread/phosphorus/landingSmoke = new /datum/effect_system/smoke_spread/phosphorus
-	landingSmoke.set_up(3, 0, T, null, 6)
+	landingSmoke.set_up(3, 0, T, null, 6, cause_data)
 	landingSmoke.start()
 	landingSmoke = null
 
-/datum/ammo/rocket/wp/on_hit_mob(mob/M,obj/item/projectile/P)
-	drop_flame(get_turf(M))
+/datum/ammo/rocket/wp/on_hit_mob(mob/M, obj/item/projectile/P)
+	drop_flame(get_turf(M), P.weapon_cause_data)
 
-/datum/ammo/rocket/wp/on_hit_obj(obj/O,obj/item/projectile/P)
-	drop_flame(get_turf(O))
+/datum/ammo/rocket/wp/on_hit_obj(obj/O, obj/item/projectile/P)
+	drop_flame(get_turf(O), P.weapon_cause_data)
 
-/datum/ammo/rocket/wp/on_hit_turf(turf/T,obj/item/projectile/P)
-	drop_flame(T)
+/datum/ammo/rocket/wp/on_hit_turf(turf/T, obj/item/projectile/P)
+	drop_flame(T, P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/do_at_max_range(obj/item/projectile/P)
-	drop_flame(get_turf(P))
+	drop_flame(get_turf(P), P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad
 	name = "thermobaric rocket"
@@ -1688,20 +1746,20 @@
 	damage = BULLET_DAMAGE_TIER_20
 	max_range = 32
 
-/datum/ammo/rocket/wp/quad/on_hit_mob(mob/M,obj/item/projectile/P)
-	drop_flame(get_turf(M))
+/datum/ammo/rocket/wp/quad/on_hit_mob(mob/M, obj/item/projectile/P)
+	drop_flame(get_turf(M), P.weapon_cause_data)
 	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
-/datum/ammo/rocket/wp/quad/on_hit_obj(obj/O,obj/item/projectile/P)
-	drop_flame(get_turf(O))
+/datum/ammo/rocket/wp/quad/on_hit_obj(obj/O, obj/item/projectile/P)
+	drop_flame(get_turf(O), P.weapon_cause_data)
 	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
-/datum/ammo/rocket/wp/quad/on_hit_turf(turf/T,obj/item/projectile/P)
-	drop_flame(T)
+/datum/ammo/rocket/wp/quad/on_hit_turf(turf/T, obj/item/projectile/P)
+	drop_flame(T, P.weapon_cause_data)
 	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/wp/quad/do_at_max_range(obj/item/projectile/P)
-	drop_flame(get_turf(P))
+	drop_flame(get_turf(P), P.weapon_cause_data)
 	explosion(P.loc,  -1, 2, 4, 5, , , ,P.weapon_cause_data)
 
 /datum/ammo/rocket/custom
@@ -2498,25 +2556,25 @@
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary)
 	))
 
-/datum/ammo/flamethrower/on_hit_mob(mob/M,obj/item/projectile/P)
-	drop_flame(get_turf(M))
+/datum/ammo/flamethrower/on_hit_mob(mob/M, obj/item/projectile/P)
+	drop_flame(get_turf(M), P.weapon_cause_data)
 
-/datum/ammo/flamethrower/on_hit_obj(obj/O,obj/item/projectile/P)
-	drop_flame(get_turf(O))
+/datum/ammo/flamethrower/on_hit_obj(obj/O, obj/item/projectile/P)
+	drop_flame(get_turf(O), P.weapon_cause_data)
 
-/datum/ammo/flamethrower/on_hit_turf(turf/T,obj/item/projectile/P)
-	drop_flame(T)
+/datum/ammo/flamethrower/on_hit_turf(turf/T, obj/item/projectile/P)
+	drop_flame(T, P.weapon_cause_data)
 
 /datum/ammo/flamethrower/do_at_max_range(obj/item/projectile/P)
-	drop_flame(get_turf(P))
+	drop_flame(get_turf(P), P.weapon_cause_data)
 
-/datum/ammo/flamethrower/tank_flamer/drop_flame(var/turf/T, var/source, var/source_mob)
+/datum/ammo/flamethrower/tank_flamer/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))
 		return
 	if(locate(/obj/flamer_fire) in T)
 		return
 	var/datum/reagent/napalm/blue/R = new()
-	new /obj/flamer_fire(T, source, source_mob, R, 2)
+	new /obj/flamer_fire(T, cause_data, R, 2)
 
 /datum/ammo/flamethrower/sentry_flamer
 	flags_ammo_behavior = AMMO_IGNORE_ARMOR|AMMO_IGNORE_COVER
@@ -2532,11 +2590,11 @@
 		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary)
 	))
 
-/datum/ammo/flamethrower/sentry_flamer/drop_flame(var/turf/T, var/source, var/source_mob)
+/datum/ammo/flamethrower/sentry_flamer/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))
 		return
 	var/datum/reagent/napalm/blue/R = new()
-	new /obj/flamer_fire(T, source, source_mob, R, 0)
+	new /obj/flamer_fire(T, cause_data, R, 0)
 
 /datum/ammo/flamethrower/sentry_flamer/glob
 	var/datum/effect_system/smoke_spread/phosphorus/smoke
@@ -2545,10 +2603,10 @@
 	. = ..()
 	smoke = new()
 
-/datum/ammo/flamethrower/sentry_flamer/glob/drop_flame(turf/T, source, source_mob)
+/datum/ammo/flamethrower/sentry_flamer/glob/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))
 		return
-	smoke.set_up(1, 0, T)
+	smoke.set_up(1, 0, T, new_cause_data = cause_data)
 	smoke.start()
 
 /datum/ammo/flamethrower/sentry_flamer/glob/Destroy()
@@ -2558,21 +2616,21 @@
 /datum/ammo/flamethrower/sentry_flamer/assault
 	name = "light fire"
 
-/datum/ammo/flamethrower/sentry_flamer/assault/drop_flame(turf/T, source, source_mob)
+/datum/ammo/flamethrower/sentry_flamer/assault/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))
 		return
 	var/datum/reagent/napalm/blue/R = new()
 	R.durationfire = BURN_TIME_INSTANT
-	new /obj/flamer_fire(T, source, source_mob, R, 0)
+	new /obj/flamer_fire(T, cause_data, R, 0)
 
 /datum/ammo/flamethrower/sentry_flamer/mini
 	name = "normal fire"
 
-/datum/ammo/flamethrower/sentry_flamer/mini/drop_flame(turf/T, source, source_mob)
+/datum/ammo/flamethrower/sentry_flamer/mini/drop_flame(turf/T, datum/cause_data/cause_data)
 	if(!istype(T))
 		return
 	var/datum/reagent/napalm/R = new()
-	new /obj/flamer_fire(T, source, source_mob, R, 0)
+	new /obj/flamer_fire(T, cause_data, R, 0)
 
 /datum/ammo/flare
 	name = "flare"
