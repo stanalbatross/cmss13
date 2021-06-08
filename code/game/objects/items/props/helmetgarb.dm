@@ -146,7 +146,7 @@
 /obj/item/prop/helmetgarb/helmet_nvg/functional/examine(mob/user)
 	. = ..()
 	if(battery)
-		to_chat(user, SPAN_NOTICE("The battery indicator reads [battery.percent()]/100."))
+		to_chat(user, SPAN_NOTICE("The battery indicator reads [battery.percent()]%."))
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/Initialize(mapload, ...)
 	. = ..()

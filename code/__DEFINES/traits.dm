@@ -115,6 +115,8 @@
 #define TRAIT_CRAWLER "t_crawler"
  /// If the mob is hidden from examination
 #define TRAIT_SIMPLE_DESC "t_simple_desc"
+ /// If the mob is burdened (used for hoverpack, halves launch distance)
+#define TRAIT_BURDENED "t_burden"
 //-- item traits --
 // TOOL TRAITS
 #define TRAIT_TOOL_SCREWDRIVER "t_tool_screwdriver"
@@ -123,7 +125,7 @@
 #define TRAIT_TOOL_WRENCH "t_tool_wrench"
 #define TRAIT_TOOL_MULTITOOL "t_tool_multitool"
 
-//List of all traits
+//List of all mob traits
 GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_YAUTJA_TECH,
 	TRAIT_SUPER_STRONG,
@@ -131,13 +133,17 @@ GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_INTENT_EYES,
 	TRAIT_NESTED,
 	TRAIT_CRAWLER,
-	TRAIT_SIMPLE_DESC
+	TRAIT_SIMPLE_DESC,
+	TRAIT_BURDENED
 ))
 
 //trait SOURCES
 /// Example trait source
 // #define TRAIT_SOURCE_Y "t_s_y"
 #define TRAIT_SOURCE_GENERIC "t_s_generic"
+//-- item traits --
+ ///Status trait for generic armor effects.
+#define TRAIT_SOURCE_ARMOR "t_s_armor"
 //-- mob traits --
  ///Status trait coming from species. .human/species_gain()
 #define TRAIT_SOURCE_SPECIES "t_s_species"

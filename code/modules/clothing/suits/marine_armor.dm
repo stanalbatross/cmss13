@@ -1119,6 +1119,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	var/flat_dmg_mult = 0.75
 	var/BB_plas_plates = 3
 
+/obj/item/clothing/suit/storage/marine/b18_tech/Initialize(mapload, ...)
+	. = ..()
+
 /obj/item/clothing/suit/storage/marine/b18_tech/examine(mob/user)
 	. = ..()
 	if(integrity_threshold)
@@ -1134,23 +1137,26 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 /obj/item/clothing/suit/storage/marine/b18_tech/update_icon(var/icon_integrity_threshold)
 	if(!icon_integrity_threshold)
 		icon_integrity_threshold = integrity_threshold
-	if(icon_integrity_threshold == INTEGRITY_FINE)
-		icon_state = "b18"
-	else if (icon_integrity_threshold == INTEGRITY_DAMAGED)
-		icon_state = "b18_damaged"
-	else if (icon_integrity_threshold == INTEGRITY_BROKEN)
-		icon_state = "b18_broken"
-	else
-		CRASH("[src] tried to update_icon but it had a value other than null, 0, 1, or 2. Value: [icon_integrity_threshold]")
+	switch(icon_integrity_threshold)
+		if(INTEGRITY_FINE)
+			icon_state = "b18"
+		if(INTEGRITY_DAMAGED)
+			icon_state = "b18_damaged"
+		if(INTEGRITY_BROKEN)
+			icon_state = "b18_broken"
+		else
+			CRASH("[src] tried to update_icon but it had a value other than null, 0, 1, or 2. Value: [icon_integrity_threshold]")
 
 /obj/item/clothing/suit/storage/marine/b18_tech/on_equip(var/mob/living/carbon/human/user)
 	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/handle_welding)
 	if(integrity_threshold)
 		RegisterSignal(user, COMSIG_HUMAN_TAKE_DAMAGE, .proc/handle_integrity)
 		RegisterSignal(user, COMSIG_HUMAN_BONEBREAK_PROBABILITY, .proc/handle_bonebreak)
+		ADD_TRAIT(user, TRAIT_BURDENED, TRAIT_SOURCE_ARMOR)
 
 /obj/item/clothing/suit/storage/marine/b18_tech/on_unequip(var/mob/living/carbon/human/user)
 	UnregisterSignal(user, list(COMSIG_ITEM_ATTEMPT_ATTACK, COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
+	REMOVE_TRAIT(user, TRAIT_BURDENED, TRAIT_SOURCE_ARMOR)
 
 /obj/item/clothing/suit/storage/marine/b18_tech/proc/handle_welding(mob/living/carbon/human/target, mob/living/user, obj/item/source)
 	//source = item, target = src
@@ -1167,7 +1173,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	if(!integrity_threshold)
 		return
 	//flat reduce some incoming damage (because only god knows how our damage + armor system works)
-	damagedata["damage"] = damagedata["damage"] * flat_dmg_mult
+	switch(damagetype)
+		if(BRUTE, BURN)
+			damagedata["damage"] = damagedata["damage"] * flat_dmg_mult
 
 	//reduce armor integrity, and reduce the maximum the armor can be repaired to
 	var/armor_damage = damagedata["damage"] * integrity_mult
@@ -1217,9 +1225,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	new /obj/item/stack/sheet/metal(user.loc, 1)
 	new /obj/item/stack/sheet/plasteel(user.loc, 2)
 	UnregisterSignal(user, list(COMSIG_HUMAN_TAKE_DAMAGE, COMSIG_HUMAN_BONEBREAK_PROBABILITY))
-	set_broken_values()
+	set_broken_values(user)
 
-/obj/item/clothing/suit/storage/marine/b18_tech/proc/set_broken_values()
+/obj/item/clothing/suit/storage/marine/b18_tech/proc/set_broken_values(var/mob/living/carbon/human/user)
 	//note that this is still a proc
 	SIGNAL_HANDLER
 	name = "broken B18 prototype defensive armor"
@@ -1238,16 +1246,17 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN
 	slowdown = SLOWDOWN_ARMOR_VERY_LIGHT
 	BB_plas_plates = 0
+	REMOVE_TRAIT(user, TRAIT_BURDENED, TRAIT_SOURCE_ARMOR)
 
 /obj/item/clothing/suit/storage/marine/b18_tech/attackby(obj/item/W, var/mob/living/carbon/human/user)
 
 	if(user.a_intent != INTENT_HARM)
 		return ..()
 
-	if(iswelder(W)) //pending tool rework
+	if(iswelder(W)) //pending welder rework
 		weld(user, W)
 
-	else if(istype(W, /obj/item/stack/sheet/plasteel)) //typechecks...
+	else if(istype(W, /obj/item/stack/sheet/plasteel))
 		var/obj/item/stack/sheet/plasteel/sheet = W
 		if(BB_plas_plates >= 3)
 			to_chat(user, SPAN_NOTICE("[src]'s plate container is full!"))
@@ -1287,12 +1296,12 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		to_chat(user, SPAN_NOTICE("It's a bit late for that!"))
 		return
 
-	if(integrity >= integrity_repair_max)
-		to_chat(user, SPAN_NOTICE("It's already as repaired as possible. You're not a miracle worker."))
-		return
-
 	if(!skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED))
 		to_chat(user, SPAN_NOTICE("Uh.. you don't know how to do that."))
+		return
+
+	if(integrity >= integrity_repair_max)
+		to_chat(user, SPAN_NOTICE("It's already as repaired as possible. You're not a miracle worker."))
 		return
 
 	if(!(welder.remove_fuel(2, user)))

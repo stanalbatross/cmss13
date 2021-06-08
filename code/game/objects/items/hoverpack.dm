@@ -1,7 +1,7 @@
 //most code (and the sound) stolen from https://github.com/tgstation/TerraGov-Marine-Corps/pull/5811, thank you BraveMole
 /obj/item/hoverpack
 	name = "experimental hoverpack"
-	desc = "This prototype hoverpack allows marines to quickly jump over to strategic locations on the battlefield, at the cost of their backpack."
+	desc = "This prototype hoverpack allows marines to quickly jump over to strategic locations on the battlefield, at the cost of their backpack. You think you could change the settings with a screwdriver."
 	icon = 'icons/obj/items/devices.dmi'
 	icon_state = "hoverpack"
 	w_class = SIZE_LARGE
@@ -54,7 +54,7 @@
 				hover_cooldown = 10 SECONDS
 			if("Weak (Leap)")
 				speed = 4.5
-				max_distance = 7
+				max_distance = 6
 				fuel_usage = 0.5
 				hover_cooldown = 5 SECONDS
 
@@ -66,40 +66,46 @@
 		to_chat(user, SPAN_WARNING("The gas gauge meter indicates it has no gas left."))
 	else
 		to_chat(user, SPAN_NOTICE("The gas gauge meter indicates it has [total_uses/max_uses * 100]% gas left. You see on a readout:"))
-	to_chat(user, SPAN_BOLDNOTICE(" DISTANCE: [max_distance] METERS <br/> SPEED: [speed] METERS PER SECOND <br/> USAGE: [fuel_usage * 100]% GAS USAGE <br/> COOLDOWN: [hover_cooldown SECONDS] SECONDS"))
+	to_chat(user, SPAN_BOLDNOTICE(" DISTANCE: [max_distance] METERS <br/> SPEED: [speed] METERS PER SECOND <br/> USAGE: [fuel_usage * 100]% GAS USAGE <br/> COOLDOWN: [hover_cooldown * 0.1] SECONDS"))
 
 /obj/item/hoverpack/proc/hover(var/mob/living/carbon/human/user, atom/A)
 	if(!can_use_hoverpack(user))
 		return
 
+	var/f_distance = max_distance
+
+	if(HAS_TRAIT(user, TRAIT_BURDENED))
+		to_chat(user, SPAN_WARNING("You're burdened! \The [src] won't be able to carry you as far."))
+		f_distance = round(f_distance * 0.5)
+
 	can_hover = FALSE
 	last_hover = world.time
 	update_icon()
-	playsound(user, 'sound/items/jetpack_sound.ogg', 45, FALSE)
+	playsound(user, 'sound/items/jetpack_sound.ogg', 45, TRUE)
 	total_uses = total_uses - fuel_usage
 	user.update_inv_back()
 	var/turf/t_turf = get_turf(A)
 	var/obj/effect/warning/warning = new(t_turf)
 	warning.color = "#D4AE1E"
-	calculate_warning_turf(warning, user, t_turf)
+	calculate_warning_turf(warning, user, t_turf, f_distance)
 	to_chat(user, SPAN_BOLDNOTICE(" GAS EXPENDED: [fuel_usage/max_uses * 100]% <br> GAS REMAINING: [total_uses/max_uses * 100]%"))
 	//has sleep
-	user.throw_atom(t_turf, max_distance, speed, launch_type = HIGH_LAUNCH)
+	user.throw_atom(t_turf, f_distance, speed, launch_type = HIGH_LAUNCH)
 	qdel(warning)
 	addtimer(CALLBACK(src, .proc/end_cooldown, user), hover_cooldown)
 
 /obj/item/hoverpack/proc/end_cooldown(var/mob/living/carbon/human/user)
 	can_hover = TRUE
 	update_icon()
-	playsound(user, 'sound/items/jetpack_beep.ogg', 45, TRUE)
+	playsound(user, 'sound/items/jetpack_beep.ogg', 60, FALSE)
 	to_chat(user, SPAN_BOLDNOTICE("You can use \the [src] again."))
 
-/obj/item/hoverpack/proc/calculate_warning_turf(var/obj/effect/warning/warning, var/mob/living/user, var/turf/t_turf)
+/obj/item/hoverpack/proc/calculate_warning_turf(var/obj/effect/warning/warning, var/mob/living/user, var/turf/t_turf, var/f_distance)
 	var/t_dist = get_dist(user, t_turf)
-	if(!(t_dist > max_distance))
+	if(!(t_dist > f_distance))
 		return
 	var/list/turf/path = getline2(user, t_turf, FALSE)
-	warning.forceMove(path[max_distance])
+	warning.forceMove(path[f_distance])
 
 /obj/item/hoverpack/proc/can_use_hoverpack(mob/living/carbon/human/user)
 	if(!can_hover)

@@ -341,7 +341,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		select_gamemode_skin(type,null,new_protection)
 
 	helmet_overlays = list() //To make things simple.
-	pockets = new/obj/item/storage/internal(src)
+	pockets = new /obj/item/storage/internal(src)
 	pockets.storage_slots = storage_size
 	pockets.max_w_class = SIZE_TINY //can hold tiny items only, EXCEPT for glasses & metal flask.
 	pockets.bypass_w_limit = GLOB.allowed_helmet_items
@@ -544,7 +544,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 
 /obj/item/clothing/head/helmet/marine/b18_tech
 	name = "\improper B18 prototype defensive helmet"
-	desc = "A proof-of-concept prototype based on the MG-34 helmet intended to absorb more damage. Very efficient at this task, though perhaps a bit too much, as the dark ballistics-glass visor slightly hinders vision."
+	desc = "A proof-of-concept prototype based on the MG-34 helmet intended to absorb more damage. Very efficient at this task, though perhaps a bit too much, as the dark ballistics-glass visor slightly hinders vision. Their unique design prevents certain types of helmet garb from attaching."
 	icon_state = "b18_helmet"
 	armor_melee = CLOTHING_ARMOR_VERYHIGH
 	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
@@ -560,6 +560,10 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	unacidable = FALSE
 	storage_size = 3
 	var/visor_down = TRUE
+
+/obj/item/clothing/head/helmet/marine/b18_tech/Initialize(mapload, ...)
+	. = ..()
+	pockets.cant_hold += list(/obj/item/prop/helmetgarb/helmet_nvg) //no NVGs for you - 2 same-tech items at once is a bit much
 
 /obj/item/clothing/head/helmet/marine/b18_tech/examine(mob/user)
 	. = ..()

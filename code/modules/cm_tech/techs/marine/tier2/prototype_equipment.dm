@@ -18,10 +18,11 @@
 
 	.["M2 Thermal Goggles"] = /obj/item/storage/box/m2t_thermals
 	.["B18 Defensive Armor"] = /obj/item/storage/box/spec/b18_tech
+	.["Experimental Hoverpack"] = /obj/item/hoverpack
 
 /obj/item/storage/box/m2t_thermals
 	name = "M2T storage case"
-	desc = "This case contains a set of M2T thermal goggles, a screwdriver, and a backup battery."
+	desc = "This case contains a set of M2T thermal goggles, a screwdriver, a backup battery, and a disclaimer at the bottom indicating that the USCM is 'not responsible for any permanent eye or brain damage incurred by the use of this device'."
 	icon = 'icons/obj/items/storage.dmi'
 	icon_state = "m43case" //placeholder :sunglasses:
 	w_class = SIZE_SMALL
