@@ -79,7 +79,6 @@
 	icon_state = "m41a_mk1"
 	max_rounds = 95
 	gun_type = /obj/item/weapon/gun/rifle/m41aMK1
-	default_ammo = /datum/ammo/bullet/rifle/ap
 
 /obj/item/ammo_magazine/rifle/m41aMK1/incendiary
 	name = "\improper M41A MK1 incendiary magazine (10x24mm)"

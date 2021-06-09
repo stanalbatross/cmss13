@@ -237,9 +237,9 @@
 
 		list("ARMOR-PIERCING AMMUNITION", -1, null, null),
 		list("88 Mod 4 AP Magazine (9mm)", round(scale * 5.5), /obj/item/ammo_magazine/pistol/mod88, VENDOR_ITEM_REGULAR),
-		list("L42A AP Magazine (10x24mm)", round(scale * 4.5), /obj/item/ammo_magazine/rifle/l42a/ap, VENDOR_ITEM_REGULAR),
-		list("M39 AP Magazine (10x20mm)", round(scale * 3.5), /obj/item/ammo_magazine/smg/m39/ap, VENDOR_ITEM_REGULAR),
-		list("M41A AP Magazine (10x24mm)", round(scale * 3.5), /obj/item/ammo_magazine/rifle/ap, VENDOR_ITEM_REGULAR),
+		list("L42A AP Magazine (10x24mm)", 0, /obj/item/ammo_magazine/rifle/l42a/ap, VENDOR_ITEM_REGULAR),
+		list("M39 AP Magazine (10x20mm)", 0, /obj/item/ammo_magazine/smg/m39/ap, VENDOR_ITEM_REGULAR),
+		list("M41A AP Magazine (10x24mm)", 0, /obj/item/ammo_magazine/rifle/ap, VENDOR_ITEM_REGULAR),
 		list("M4A3 AP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/ap, VENDOR_ITEM_REGULAR),
 
 		list("EXTENDED AMMUNITION", -1, null, null),
@@ -264,9 +264,9 @@
 
 		list("MAGAZINE BOXES", -1, null, null),
 		list("Magazine Box (88 Mod 4 AP x 16)", round(scale * 0.7), /obj/item/ammo_box/magazine/mod88, VENDOR_ITEM_REGULAR),
-		list("Magazine Box (AP L42A x 16)", round(scale * 0.7), /obj/item/ammo_box/magazine/l42a/ap, VENDOR_ITEM_REGULAR),
-		list("Magazine Box (AP M39 x 12)", round(scale * 0.7), /obj/item/ammo_box/magazine/m39/ap, VENDOR_ITEM_REGULAR),
-		list("Magazine Box (AP M41A x 10)", round(scale * 0.7), /obj/item/ammo_box/magazine/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP L42A x 16)", 0, /obj/item/ammo_box/magazine/l42a/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP M39 x 12)", 0, /obj/item/ammo_box/magazine/m39/ap, VENDOR_ITEM_REGULAR),
+		list("Magazine Box (AP M41A x 10)", 0, /obj/item/ammo_box/magazine/ap, VENDOR_ITEM_REGULAR),
 		list("Magazine Box (Ext M39 x 10)", round(scale * 0.7), /obj/item/ammo_box/magazine/m39/ext, VENDOR_ITEM_REGULAR),
 		list("Magazine Box (Ext M41A x 8)", round(scale * 0.7), /obj/item/ammo_box/magazine/ext, VENDOR_ITEM_REGULAR),
 		list("Magazine Box (L42A x 16)", round(scale * 0.8), /obj/item/ammo_box/magazine/l42a, VENDOR_ITEM_REGULAR),
@@ -342,12 +342,6 @@
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/squad/populate_product_list(var/scale)
 	listed_products = list(
 
-		list("ARMOR-PIERCING AMMUNITION", -1, null, null),
-		list("L42A AP Magazine (10x24mm)", round(scale * 3.5), /obj/item/ammo_magazine/rifle/l42a/ap, VENDOR_ITEM_REGULAR),
-		list("M39 AP Magazine (10x20mm)", round(scale * 3), /obj/item/ammo_magazine/smg/m39/ap, VENDOR_ITEM_REGULAR),
-		list("M41A AP Magazine (10x24mm)", round(scale * 3), /obj/item/ammo_magazine/rifle/ap, VENDOR_ITEM_REGULAR),
-		list("M41A MK1 Magazine (10x24mm)", round(scale * 1.5), /obj/item/ammo_magazine/rifle/m41aMK1, VENDOR_ITEM_REGULAR),
-
 		list("EXTENDED AMMUNITION", -1, null, null),
 		list("M39 Extended Magazine (10x20mm)", round(scale * 1.8), /obj/item/ammo_magazine/smg/m39/extended, VENDOR_ITEM_REGULAR),
 		list("M41A Extended Magazine (10x24mm)", round(scale * 1.9), /obj/item/ammo_magazine/rifle/extended, VENDOR_ITEM_REGULAR),
@@ -355,6 +349,7 @@
 		list("SPECIAL AMMUNITION", -1, null, null),
 		list("Incinerator Tank", round(scale * 1.5), /obj/item/ammo_magazine/flamer_tank, VENDOR_ITEM_REGULAR),
 		list("M56 Smartgun Drum", 1, /obj/item/ammo_magazine/smartgun, VENDOR_ITEM_REGULAR),
+		list("M41A MK1 Magazine (10x24mm)", round(scale * 1.5), /obj/item/ammo_magazine/rifle/m41aMK1, VENDOR_ITEM_REGULAR),
 		list("M44 Heavy Speed Loader (.44)", round(scale * 2), /obj/item/ammo_magazine/revolver/heavy, VENDOR_ITEM_REGULAR),
 		list("M44 Marksman Speed Loader (.44)", round(scale * 2), /obj/item/ammo_magazine/revolver/marksman, VENDOR_ITEM_REGULAR),
 		list("M4A3 HP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
