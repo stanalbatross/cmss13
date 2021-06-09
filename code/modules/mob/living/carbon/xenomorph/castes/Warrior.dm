@@ -1,10 +1,10 @@
 /datum/caste_datum/warrior
-	caste_name = "Warrior"
+	caste_type = XENO_CASTE_WARRIOR
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_3
 	melee_damage_upper = XENO_DAMAGE_TIER_5
-	max_health = XENO_HEALTH_TIER_5
+	max_health = XENO_HEALTH_TIER_6
 	plasma_gain = XENO_PLASMA_GAIN_TIER_9
 	plasma_max = XENO_NO_PLASMA
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
@@ -14,8 +14,8 @@
 
 	behavior_delegate_type = /datum/behavior_delegate/warrior_base
 
-	evolves_to = list("Praetorian", "Crusher")
-	deevolves_to = "Defender"
+	evolves_to = list(XENO_CASTE_PRAETORIAN, XENO_CASTE_CRUSHER)
+	deevolves_to = XENO_CASTE_DEFENDER
 	caste_desc = "A powerful front line combatant."
 	can_vent_crawl = 0
 
@@ -27,8 +27,8 @@
 	heal_resting = 1.4
 
 /mob/living/carbon/Xenomorph/Warrior
-	caste_name = "Warrior"
-	name = "Warrior"
+	caste_type = XENO_CASTE_WARRIOR
+	name = XENO_CASTE_WARRIOR
 	desc = "A beefy, alien with an armored carapace."
 	icon_size = 64
 	icon_state = "Warrior Walking"
@@ -68,6 +68,7 @@
 		icon_state = "[mutation_type] Warrior Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
+	update_wounds()
 
 /mob/living/carbon/Xenomorph/Warrior/throw_item(atom/target)
 	toggle_throw_mode(THROW_MODE_OFF)
@@ -181,7 +182,7 @@
 		clear_head++
 		next_clear_head_regen = wt + clear_head_delay
 
-/datum/behavior_delegate/boxer/melee_attack_additional_effects_target(atom/A, ko_boost = 0.5)
+/datum/behavior_delegate/boxer/melee_attack_additional_effects_target(mob/living/carbon/A, ko_boost = 0.5)
 	if(!ismob(A))
 		return
 	if(punching_bag != A)

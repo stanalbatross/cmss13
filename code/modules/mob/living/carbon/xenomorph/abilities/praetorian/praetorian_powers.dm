@@ -17,7 +17,7 @@
 
 
 	var/list/target_turfs = list()
-	var/facing = get_dir(X, A)
+	var/facing = Get_Compass_Dir(X, A)
 	var/turf/T = X.loc
 	var/turf/temp = X.loc
 
@@ -60,7 +60,7 @@
 		if (!isXenoOrHuman(H) || X.can_not_harm(H))
 			continue
 
-		if (H.stat)
+		if (H.stat == DEAD)
 			continue
 
 		X.flick_attack_overlay(H, "slash")
@@ -239,7 +239,7 @@
 
 		turflist += T
 		facing = get_dir(T, A)
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(T, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/abduct_hook(T, windup)
 
 	var/throw_target_turf = get_step(X.loc, facing)
 
@@ -335,8 +335,7 @@
 	if (!check_and_use_plasma_owner())
 		return
 
-	H.last_damage_mob = X
-	H.last_damage_source = initial(X.caste_name)
+	H.last_damage_data = create_cause_data(X.caste_type, X)
 
 	X.visible_message(SPAN_XENOWARNING("\The [X] hits [H] in the [L? L.display_name : "chest"] with a devastatingly powerful punch!"), \
 	SPAN_XENOWARNING("You hit [H] in the [L? L.display_name : "chest"] with a devastatingly powerful punch!"))
@@ -368,35 +367,6 @@
 
 	shake_camera(H, 2, 1)
 
-
-
-	apply_cooldown()
-	..()
-	return
-
-/datum/action/xeno_action/onclick/crush/use_ability(atom/A)
-	var/mob/living/carbon/Xenomorph/X = owner
-
-	if (!istype(X))
-		return
-
-	if (!action_cooldown_check())
-		return
-
-	if (!check_and_use_plasma_owner())
-		return
-
-	// This one is more tightly coupled than I'd like
-	// but as it stands, everything to do with slashes is bound up onto the behavior datums.
-	if (X.mutation_type != PRAETORIAN_OPPRESSOR)
-		return
-
-	var/datum/behavior_delegate/oppressor_praetorian/BD = X.behavior_delegate
-	if (istype(BD))
-		BD.next_slash_buffed = TRUE
-
-	X.next_move = world.time + 1 // Autoattack reset
-	to_chat(X, SPAN_XENOHIGHDANGER("Your click delay has been reset and your next slash will deal additional damage!"))
 
 
 	apply_cooldown()
@@ -438,14 +408,14 @@
 			continue
 
 		target_turfs += T
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(T, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/lash(T, windup)
 
 		var/turf/next_turf = get_step(T, facing)
 		if (!istype(next_turf) || next_turf.density)
 			continue
 
 		target_turfs += next_turf
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(next_turf, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/lash(next_turf, windup)
 
 	if(!do_after(X, windup, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
 		to_chat(X, SPAN_XENOWARNING("You cancel your tail lash."))
@@ -554,8 +524,7 @@
 	X.animation_attack_on(A)
 	X.flick_attack_overlay(A, "slash")
 
-	H.last_damage_mob = X
-	H.last_damage_source = initial(X.caste_name)
+	H.last_damage_data = create_cause_data(initial(X.caste_type), X)
 	H.apply_armoured_damage(damage, ARMOR_MELEE, BRUTE, "chest", 10)
 	playsound(get_turf(A), "alien_claw_flesh", 30, 1)
 
@@ -733,7 +702,7 @@
 	to_chat(X, SPAN_XENOWARNING("You lob a compressed ball of acid into the air!"))
 
 	var/obj/item/explosive/grenade/xeno_acid_grenade/grenade = new /obj/item/explosive/grenade/xeno_acid_grenade
-	grenade.source_mob = X
+	grenade.cause_data = create_cause_data(initial(X.caste_type), X)
 	grenade.forceMove(get_turf(X))
 	grenade.throw_atom(A, 5, SPEED_SLOW, X, TRUE)
 	addtimer(CALLBACK(grenade, /obj/item/explosive.proc/prime), prime_delay)

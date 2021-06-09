@@ -5,7 +5,7 @@
 
 /obj/item/storage/backpack/marine/smartpack
 	name = "\improper S-V42 prototype smartpack"
-	desc = "A joint project between the USCM and W-Y. It is said to be top-class engineering and state of the art technology. Given to USCM deployed Synthetic units and the intended usage involve assisting in battlefield support. Can be recharged by grabbing onto an APC and completing the circuit with one's fingers (procedure not advised for non-synthetic personel). WARNING - User is advised to take precautions."
+	desc = "A joint project between the USCM and Wey-Yu. It is said to be top-class engineering and state of the art technology. Given to USCM deployed Synthetic units and the intended usage involve assisting in battlefield support. Can be recharged by grabbing onto an APC and completing the circuit with one's fingers (procedure not advised for non-synthetic personel). WARNING - User is advised to take precautions."
 	item_state = "smartpack"
 	icon_state = "smartpack"
 	has_gamemode_skin = FALSE
@@ -69,6 +69,19 @@
 		for(var/datum/action/A in M.actions)
 			A.update_button_icon()
 
+	if(content_watchers) //If someone's looking inside it, don't close the flap.
+		return
+
+	var/sum_storage_cost = 0
+	for(var/obj/item/I in contents)
+		sum_storage_cost += I.get_storage_cost()
+	if(!sum_storage_cost)
+		return
+	else if(sum_storage_cost <= max_storage_space * 0.5)
+		overlays += "+[icon_state]_half"
+	else
+		overlays += "+[icon_state]_full"
+
 /obj/item/storage/backpack/marine/smartpack/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 
@@ -91,7 +104,7 @@
 	else
 		to_chat(M, SPAN_DANGER("[name] beeps, \"Unathorized user!\""))
 
-	if(light_state && src.loc != M)
+	if(light_state && loc != M)
 		M.SetLuminosity(BACKPACK_LIGHT_LEVEL)
 		SetLuminosity(0)
 	..()
@@ -111,13 +124,15 @@
 	..()
 
 /obj/item/storage/backpack/marine/smartpack/Destroy()
-	if(ismob(src.loc))
-		src.loc.SetLuminosity(-BACKPACK_LIGHT_LEVEL)
+	if(ismob(loc))
+		loc.SetLuminosity(-BACKPACK_LIGHT_LEVEL)
 	else
 		SetLuminosity(0)
 	. = ..()
 
 /obj/item/storage/backpack/marine/smartpack/attack_self(mob/user)
+	..()
+
 	if(!isturf(user.loc) || flashlight_cooldown > world.time || !ishuman(user))
 		return
 
@@ -135,7 +150,7 @@
 			user.SetLuminosity(-BACKPACK_LIGHT_LEVEL)
 		else
 			SetLuminosity(0)
-		playsound(src,'sound/handling/click_2.ogg', 50, 1)
+		playsound(src, 'sound/handling/click_2.ogg', 50, TRUE)
 	else //Turn it on.
 		if(user)
 			user.SetLuminosity(BACKPACK_LIGHT_LEVEL)
@@ -144,7 +159,7 @@
 
 	light_state = !light_state
 
-	playsound(src,'sound/handling/light_on_1.ogg', 50, 1)
+	playsound(src, 'sound/handling/light_on_1.ogg', 50, TRUE)
 
 	update_icon(user)
 
@@ -164,7 +179,7 @@
 	H.species.melee_allowed = FALSE
 	to_chat(user, SPAN_DANGER("[name] beeps, \"You are now protected, but unable to attack.\""))
 	battery_charge -= PROTECTIVE_COST
-	playsound(src.loc, 'sound/mecha/mechmove04.ogg', 25, 1)
+	playsound(loc, 'sound/mecha/mechmove04.ogg', 25, TRUE)
 	to_chat(user, SPAN_INFO("The current charge reads [battery_charge]/[SMARTPACK_MAX_POWER_STORED]"))
 	update_icon(user)
 
@@ -176,7 +191,7 @@
 	H.species.brute_mod = initial(H.species.brute_mod)
 	H.species.burn_mod = initial(H.species.burn_mod)
 	to_chat(H, SPAN_DANGER("[name] beeps, \"The protection wears off.\""))
-	playsound(src.loc, 'sound/mecha/mechmove04.ogg', 25, 1)
+	playsound(loc, 'sound/mecha/mechmove04.ogg', 25, TRUE)
 	update_icon(H)
 
 
@@ -201,7 +216,7 @@
 		to_chat(user, SPAN_DANGER("[name] beeps, \"You are anchored in place and cannot be moved.\""))
 		to_chat(user, SPAN_INFO("The current charge reads [battery_charge]/[SMARTPACK_MAX_POWER_STORED]"))
 
-	playsound(src.loc, 'sound/mecha/mechmove04.ogg', 25, 1)
+	playsound(loc, 'sound/mecha/mechmove04.ogg', 25, TRUE)
 	immobile_form = !immobile_form
 	update_icon(user)
 	activated_form = TRUE
@@ -231,14 +246,14 @@
 
 	H.visible_message(SPAN_WARNING("[name] beeps, \"Engaging the repairing process.\""), \
 		SPAN_WARNING("[name] beeps, \"Beginning to carefully examine your sustained damage.\""))
-	playsound(src.loc, 'sound/mecha/mechmove04.ogg', 25, 1)
+	playsound(loc, 'sound/mecha/mechmove04.ogg', 25, TRUE)
 	if(!do_after(H, 100, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 		repairing = FALSE
 		update_icon(user)
 		to_chat(user, SPAN_DANGER("[name] beeps, \"Repair process was cancelled.\""))
 		return
 
-	playsound(src.loc, 'sound/items/Welder2.ogg', 25, 1)
+	playsound(loc, 'sound/items/Welder2.ogg', 25, TRUE)
 	battery_charge -= REPAIR_COST
 	H.heal_overall_damage(50, 50, TRUE)
 	H.pain.recalculate_pain()

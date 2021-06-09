@@ -91,8 +91,10 @@
 	S["pred_mask_type"]		>> predator_mask_type
 	S["pred_armor_type"]	>> predator_armor_type
 	S["pred_boot_type"]		>> predator_boot_type
+	S["pred_armor_mat"]		>> predator_armor_material
 
 	S["commander_status"]	>> commander_status
+	S["co_sidearm"]			>> commander_sidearm
 	S["yautja_status"]		>> yautja_status
 	S["synth_status"]		>> synth_status
 	S["key_bindings"] 		>> key_bindings
@@ -101,6 +103,7 @@
 
 	S["lang_chat_disabled"]	>> lang_chat_disabled
 	S["hear_vox"] >> hear_vox
+	S["hide_statusbar"] >> hide_statusbar
 	S["hotkeys"] >> hotkeys
 
 	//Sanitize
@@ -118,6 +121,7 @@
 	window_skin		= sanitize_integer(window_skin, 0, 65535, initial(window_skin))
 	playtime_perks   = sanitize_integer(playtime_perks, 0, 1, 1)
 	hear_vox  		= sanitize_integer(hear_vox, FALSE, TRUE, TRUE)
+	hide_statusbar = sanitize_integer(hide_statusbar, FALSE, TRUE, FALSE)
 
 	synthetic_name 		= synthetic_name ? sanitize_text(synthetic_name, initial(synthetic_name)) : initial(synthetic_name)
 	synthetic_type		= sanitize_text(synthetic_type, initial(synthetic_type))
@@ -127,7 +131,9 @@
 	predator_mask_type 	= sanitize_integer(predator_mask_type,1,1000000,initial(predator_mask_type))
 	predator_armor_type = sanitize_integer(predator_armor_type,1,1000000,initial(predator_armor_type))
 	predator_boot_type 	= sanitize_integer(predator_boot_type,1,1000000,initial(predator_boot_type))
+	predator_armor_material = sanitize_inlist(predator_armor_material, list("ebony", "silver", "bronze"), initial(predator_armor_material))
 	commander_status	= sanitize_inlist(commander_status, whitelist_hierarchy, initial(commander_status))
+	commander_sidearm   = sanitize_inlist(commander_sidearm, list("Mateba","Commodore's Mateba","Golden Desert Eagle","Desert Eagle"), initial(commander_sidearm))
 	yautja_status		= sanitize_inlist(yautja_status, whitelist_hierarchy + list("Elder"), initial(yautja_status))
 	synth_status		= sanitize_inlist(synth_status, whitelist_hierarchy, initial(synth_status))
 	key_bindings 		= sanitize_keybindings(key_bindings)
@@ -196,8 +202,10 @@
 	S["pred_mask_type"] 	<< predator_mask_type
 	S["pred_armor_type"] 	<< predator_armor_type
 	S["pred_boot_type"] 	<< predator_boot_type
+	S["pred_armor_mat"]		<< predator_armor_material
 
 	S["commander_status"] 	<< commander_status
+	S["co_sidearm"]			<< commander_sidearm
 	S["yautja_status"]		<< yautja_status
 	S["synth_status"]		<< synth_status
 
@@ -206,6 +214,8 @@
 	S["hotkeys"] << hotkeys
 
 	S["hear_vox"] << hear_vox
+
+	S["hide_statusbar"] << hide_statusbar
 
 	return TRUE
 

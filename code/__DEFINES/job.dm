@@ -65,6 +65,8 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_REQUISITION_ROLES           /datum/timelock/requisition
 #define JOB_REQUISITION_ROLES_LIST      list(JOB_CHIEF_REQUISITION, JOB_CARGO_TECH)
 
+#define JOB_MARSOC "MARSOC Operator"
+
 #define JOB_HUMAN_ROLES                 /datum/timelock/human
 #define JOB_XENO_ROLES                  /datum/timelock/xeno
 
@@ -128,6 +130,7 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 //-------- UPP --------//
 #define JOB_UPP							"UPP Private"
+#define JOB_UPP_CONSCRIPT				"UPP Conscript"
 #define JOB_UPP_ENGI					"UPP Korporal Sapper"
 #define JOB_UPP_MEDIC					"UPP Korporal Medic"
 #define JOB_UPP_SPECIALIST				"UPP Serzhant"

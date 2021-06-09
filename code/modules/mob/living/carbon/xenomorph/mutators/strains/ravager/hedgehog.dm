@@ -4,7 +4,7 @@
 	flavor_description = "In the midst of the Chaos of the battlefield, there is also opportunity."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Ravager")  	// Only Ravager.
+	caste_whitelist = list(XENO_CASTE_RAVAGER)  	// Only Ravager.
 	mutator_actions_to_remove = list(
 		/datum/action/xeno_action/activable/empower,
 		/datum/action/xeno_action/activable/pounce/charge,
@@ -28,7 +28,7 @@
 	R.mutation_type = RAVAGER_HEDGEHOG
 	R.plasma_max = 0
 	R.small_explosives_stun = FALSE
-	R.health_modifier -= XENO_HEALTH_MOD_MED
+	R.health_modifier -= XENO_HEALTH_MOD_SMALL
 	R.speed_modifier += XENO_SPEED_SLOWMOD_TIER_8
 
 	apply_behavior_holder(R)

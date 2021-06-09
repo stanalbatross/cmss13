@@ -65,11 +65,12 @@
 
 /obj/effect/alien/resin/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(isXenoLarva(M)) //Larvae can't do shit
-		return 0
+		return
+
 	if(M.a_intent == INTENT_HELP)
-		M.visible_message(SPAN_WARNING("\The [M] creepily taps on [src] with its huge claw."), \
-			SPAN_WARNING("You creepily tap on [src]."), null, 5)
+		return XENO_NO_DELAY_ACTION
 	else
+		M.animation_attack_on(src)
 		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 		SPAN_XENONOTICE("You claw \the [src]."))
 		if(istype(src, /obj/effect/alien/resin/sticky))
@@ -79,6 +80,7 @@
 
 		health -= (M.melee_damage_upper + 50) //Beef up the damage a bit
 		healthcheck()
+	return XENO_ATTACK_ACTION
 
 /obj/effect/alien/resin/attack_animal(mob/living/M as mob)
 	M.visible_message(SPAN_DANGER("[M] tears \the [src]!"), \
@@ -209,7 +211,7 @@
 	var/hivenumber = XENO_HIVE_NORMAL
 
 	flags_obj = OBJ_ORGANIC
-
+	layer = DOOR_CLOSED_LAYER
 	tiles_with = list(/obj/structure/mineral_door/resin)
 
 /obj/structure/mineral_door/resin/Initialize(mapload, hive)
@@ -270,7 +272,7 @@
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
-
+	layer = DOOR_OPEN_LAYER
 	spawn(close_delay)
 		if(!isSwitchingStates && state == 1)
 			Close()
@@ -292,6 +294,7 @@
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
+	layer = DOOR_CLOSED_LAYER
 	for(var/turf/turf in locs)
 		if(locate(/mob/living) in turf)
 			Open()
@@ -455,7 +458,7 @@
 	info.distance_travelled += 1
 	info.current_turf = next_turf
 
-	new acid_type(next_turf, name, null, hivenumber)
+	new acid_type(next_turf, create_cause_data(initial(name)), hivenumber)
 
 	if(get_dist(next_turf, C) == 0)
 		LAZYSET(next_fire, info.target, world.time + firing_cooldown)
@@ -560,7 +563,7 @@
 		T = i
 		if(T.density)
 			continue
-		T = T.ChangeTurf(resin_wall_type)
+		T.PlaceOnTop(resin_wall_type)
 		T.walltype = turf_icon
 		T.update_connections(TRUE)
 		T.update_icon()
@@ -655,7 +658,7 @@
 		M.animation_attack_on(src)
 		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src], but the slash bounces off!"), \
 		SPAN_XENONOTICE("You claw \the [src], but the slash bounces off!"))
-		return
+		return XENO_ATTACK_ACTION
 
 	return ..()
 
@@ -696,8 +699,9 @@
 	if(isXeno(user))
 		to_chat(user, SPAN_NOTICE("You prepare to throw [src]."))
 		if(!do_after(user, xeno_throw_time, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
-			return TRUE
+			return FALSE
 		activate(user)
+		return TRUE
 
 /obj/item/explosive/grenade/alien/can_use_grenade(mob/user)
 	if(!isXeno(user))
@@ -721,6 +725,14 @@
 /obj/item/explosive/grenade/alien/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(!active)
 		attack_hand(M)
+	else
+		to_chat(M, SPAN_XENOWARNING("It's about to burst!"))
+	return XENO_NO_DELAY_ACTION
+
+/obj/item/explosive/grenade/alien/verb_pickup()
+	if(isXeno(usr))
+		attack_alien(usr)
+	return
 
 /obj/item/explosive/grenade/alien/acid
 	name = "acid grenade"
@@ -728,8 +740,7 @@
 
 	color = "#00ff00"
 
-	var/range = 2
-	var/acid_type = /obj/effect/xenomorph/spray/weak
+	var/range = 3
 
 /obj/item/explosive/grenade/alien/acid/get_projectile_hit_boolean(obj/item/projectile/P)
 	return FALSE
@@ -743,19 +754,20 @@
 		return
 
 	E.range = range
-	E.acid_type = acid_type
 	E.hivenumber = hivenumber
+	E.source = initial(name)
 	qdel(src)
 
 
 /datum/automata_cell/acid
 	neighbor_type = NEIGHBORS_NONE
 
-	var/obj/effect/xenomorph/spray/acid_type = /obj/effect/xenomorph/spray/weak
+	var/obj/effect/xenomorph/spray/acid_type = /obj/effect/xenomorph/spray/strong/no_stun
 
 	// Which direction is the explosion traveling?
 	// Note that this will be null for the epicenter
 	var/hivenumber = XENO_HIVE_NORMAL
+	var/source
 	var/direction = null
 	var/range = 0
 
@@ -787,7 +799,7 @@
 		return
 	QDEL_NULL(temp)
 
-	new acid_type(in_turf, null, null, hivenumber)
+	new acid_type(in_turf, create_cause_data(source), hivenumber)
 
 	// Range has been reached
 	if(range <= 0)
@@ -802,8 +814,20 @@
 			E.range = range - 1
 			// Set the direction the explosion is traveling in
 			E.direction = dir
-			E.acid_type = /obj/effect/xenomorph/spray/weak
+
+			if(dir in diagonals)
+				E.range -= 1
+
+			switch(E.range)
+				if(-INFINITY to 0)
+					E.acid_type = /obj/effect/xenomorph/spray/weak
+				if(1)
+					E.acid_type = /obj/effect/xenomorph/spray/no_stun
+				if(2 to INFINITY)
+					E.acid_type = /obj/effect/xenomorph/spray/strong/no_stun
+
 			E.hivenumber = hivenumber
+			E.source = source
 
 	// We've done our duty, now die pls
 	qdel(src)

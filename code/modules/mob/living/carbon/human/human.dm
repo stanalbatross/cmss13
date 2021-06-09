@@ -101,7 +101,7 @@
 		if(eta_status)
 			. += eta_status
 
-/mob/living/carbon/human/ex_act(var/severity, var/direction, var/source, var/source_mob)
+/mob/living/carbon/human/ex_act(var/severity, var/direction, var/datum/cause_data/cause_data)
 	if(lying)
 		severity *= EXPLOSION_PRONE_MULTIPLIER
 
@@ -115,18 +115,15 @@
 
 	damage = armor_damage_reduction(GLOB.marine_explosive, damage, getarmor(null, ARMOR_BOMB))
 
-	if(source)
-		last_damage_source = source
-	if(source_mob)
-		last_damage_mob = source_mob
+	last_damage_data = cause_data
 
 	if(damage >= EXPLOSION_THRESHOLD_GIB)
 		var/oldloc = loc
-		gib(source)
-		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human, source, source_mob)
+		gib(cause_data)
+		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human, cause_data)
 		sleep(1)
-		create_shrapnel(oldloc, rand(5, 9), direction, 30, /datum/ammo/bullet/shrapnel/light/human/var1, source, source_mob)
-		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human/var2, source, source_mob)
+		create_shrapnel(oldloc, rand(5, 9), direction, 30, /datum/ammo/bullet/shrapnel/light/human/var1, cause_data)
+		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human/var2, cause_data)
 		return
 
 	if(!istype(wear_ear, /obj/item/clothing/ears/earmuffs))
@@ -158,7 +155,7 @@
 
 	//Focus half the blast on one organ
 	var/obj/limb/take_blast = pick(limbs)
-	update |= take_blast.take_damage(b_loss * 0.5, f_loss * 0.5, used_weapon = "Explosive blast", attack_source = source_mob)
+	update |= take_blast.take_damage(b_loss * 0.5, f_loss * 0.5, used_weapon = "Explosive blast", attack_source = cause_data.resolve_mob())
 	pain.apply_pain(b_loss * 0.5, BRUTE)
 	pain.apply_pain(f_loss * 0.5, BURN)
 
@@ -190,7 +187,7 @@
 				limb_multiplier = 0.05
 			if("l_arm")
 				limb_multiplier = 0.05
-		update |= temp.take_damage(b_loss * limb_multiplier, f_loss * limb_multiplier, used_weapon = weapon_message, attack_source = source_mob)
+		update |= temp.take_damage(b_loss * limb_multiplier, f_loss * limb_multiplier, used_weapon = weapon_message, attack_source = cause_data.resolve_mob())
 		pain.apply_pain(b_loss * limb_multiplier, BRUTE)
 		pain.apply_pain(f_loss * limb_multiplier, BURN)
 	if(update)
@@ -206,8 +203,7 @@
 			playsound(loc, M.attack_sound, 25, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(SPAN_DANGER("<B>[M]</B> [M.attacktext] [src]!"), 1)
-		last_damage_source = initial(M.name)
-		last_damage_mob = M
+		last_damage_data = create_cause_data(initial(M.name), M)
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [key_name(src)]</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [key_name(M)]</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -387,7 +383,7 @@
 	if(href_list["item"])
 		if(!usr.is_mob_incapacitated() && Adjacent(usr))
 			if(href_list["item"] == "id")
-				if(istype(wear_id, /obj/item/card/id/dogtag) && (undefibbable || !skillcheck(usr, SKILL_POLICE, SKILL_POLICE_MP)))
+				if(istype(wear_id, /obj/item/card/id/dogtag) && (undefibbable || !skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED)))
 					var/obj/item/card/id/dogtag/DT = wear_id
 					if(!DT.dogtag_taken)
 						if(stat == DEAD)
@@ -405,7 +401,7 @@
 						to_chat(usr, SPAN_WARNING("Someone's already taken [src]'s information tag."))
 					return
 			//police skill lets you strip multiple items from someone at once.
-			if(!usr.action_busy || skillcheck(usr, SKILL_POLICE, SKILL_POLICE_MP))
+			if(!usr.action_busy || skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED))
 				var/slot = href_list["item"]
 				var/obj/item/what = get_item_by_slot(slot)
 				if(what)
@@ -1074,6 +1070,8 @@
 		oldspecies.post_species_loss(src)
 
 	mob_flags = species.mob_flags
+	for(var/T in species.mob_inherent_traits)
+		ADD_TRAIT(src, T, TRAIT_SOURCE_SPECIES)
 
 	species.create_organs(src)
 
@@ -1239,23 +1237,17 @@
 /mob/living/carbon/human/update_tint()
 	var/tint_level = VISION_IMPAIR_NONE
 
-	if(istype(head, /obj/item/clothing/head/welding))
-		var/obj/item/clothing/head/welding/O = head
-		if(!O.up)
-			tint_level = VISION_IMPAIR_MAX
+	if(head && head.vision_impair)
+		tint_level += head.vision_impair
 
-	else if(istype(head, /obj/item/clothing/head/helmet/marine/tech))
-		var/obj/item/clothing/head/helmet/marine/tech/O = head
-		if(O.protection_on)
-			tint_level = VISION_IMPAIR_MAX
+	if(glasses && glasses.vision_impair)
+		tint_level += glasses.vision_impair
 
-	if(glasses && glasses.has_tint && glasses.active)
-		tint_level = VISION_IMPAIR_MAX
+	if(wear_mask && wear_mask.vision_impair)
+		tint_level += wear_mask.vision_impair
 
-	if(istype(wear_mask, /obj/item/clothing/mask/gas))
-		var/obj/item/clothing/mask/gas/G = wear_mask
-		if(G.vision_impair && tint_level < G.vision_impair)
-			tint_level = G.vision_impair
+	if(tint_level > VISION_IMPAIR_STRONG)
+		tint_level = VISION_IMPAIR_STRONG
 
 	if(tint_level)
 		overlay_fullscreen("tint", /obj/screen/fullscreen/impaired, tint_level)
@@ -1409,6 +1401,9 @@
 
 /mob/living/carbon/human/synthetic_old/Initialize(mapload)
 	. = ..(mapload, "Early Synthetic")
+
+/mob/living/carbon/human/synthetic_combat/Initialize(mapload)
+	. = ..(mapload, "Combat Synthetic")
 
 /mob/living/carbon/human/synthetic_2nd_gen/Initialize(mapload)
 	. = ..(mapload, "Second Generation Synthetic")

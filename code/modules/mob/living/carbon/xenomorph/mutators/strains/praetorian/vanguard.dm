@@ -4,12 +4,13 @@
 	flavor_description = "...They shall be the finest warriors among my children, my Vanguard against the tallhosts. And they shall know no fear."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Praetorian") //Only praetorian.
+	caste_whitelist = list(XENO_CASTE_PRAETORIAN) //Only praetorian.
 	mutator_actions_to_remove = list(
 		/datum/action/xeno_action/activable/xeno_spit,
 		/datum/action/xeno_action/activable/pounce/base_prae_dash,
 		/datum/action/xeno_action/activable/prae_acid_ball,
 		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
+		/datum/action/xeno_action/activable/corrosive_acid,
 	)
 	mutator_actions_to_add = list(
 		/datum/action/xeno_action/activable/pierce,
@@ -27,7 +28,8 @@
 
 	var/mob/living/carbon/Xenomorph/Praetorian/P = MS.xeno
 	P.speed_modifier += XENO_SPEED_FASTMOD_TIER_3
-	P.health_modifier -= XENO_HEALTH_MOD_VERYLARGE
+	P.health_modifier -= XENO_HEALTH_MOD_MED
+	P.claw_type = CLAW_TYPE_SHARP
 	mutator_update_actions(P)
 	MS.recalculate_actions(description, flavor_description)
 	P.recalculate_everything()

@@ -44,7 +44,7 @@
 	see_in_dark = 8
 	recovery_constant = 1.5
 	see_invisible = SEE_INVISIBLE_MINIMUM
-	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, QUEEN_OVERWATCH_HUD, ARMOR_HUD_XENO, XENO_STATUS_HUD, XENO_BANISHED_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE)
+	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, QUEEN_OVERWATCH_HUD, ARMOR_HUD_XENO, XENO_STATUS_HUD, XENO_BANISHED_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_HUD)
 	unacidable = TRUE
 	rebounds = TRUE
 	faction = FACTION_XENOMORPH
@@ -135,7 +135,7 @@
 	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents healing and queen evolution
 
 	//Naming variables
-	var/caste_name = "Drone"
+	var/caste_type = "Drone"
 	var/nicknumber = 0 //The number after the name. Saved right here so it transfers between castes.
 
 	//This list of inherent verbs lets us take any proc basically anywhere and add them.
@@ -278,10 +278,17 @@
 	//Taken from update_icon for all xeno's
 	var/list/overlays_standing[X_TOTAL_LAYERS]
 
+	var/atom/movable/vis_obj/xeno_wounds/wound_icon_carrier
+
 /mob/living/carbon/Xenomorph/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	var/area/A = get_area(src)
 	if(A && A.statistic_exempt)
 		statistic_exempt = TRUE
+
+	wound_icon_carrier = new(null, src)
+	vis_contents += wound_icon_carrier
+	wound_icon_carrier.icon = get_icon_from_source(CONFIG_GET(string/alien_wounds))
+
 
 	if(oldXeno)
 		hivenumber = oldXeno.hivenumber
@@ -368,7 +375,7 @@
 
 	// Only handle free slots if the xeno is not in tdome
 	if(!is_admin_level(z))
-		var/selected_caste = GLOB.xeno_datum_list[caste_name]?.type
+		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
 		var/free_slots = LAZYACCESS(hive.free_slots, selected_caste)
 		if(free_slots)
 			hive.free_slots[selected_caste] -= 1
@@ -383,7 +390,7 @@
 	if (hive && hive.hive_ui)
 		hive.hive_ui.update_all_xeno_data()
 
-	job = caste.caste_name // Used for tracking the caste playtime
+	job = caste.caste_type // Used for tracking the caste playtime
 
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
@@ -408,8 +415,8 @@
 	stamina = new /datum/stamina/none(src)
 
 /mob/living/carbon/Xenomorph/proc/update_caste()
-	if(caste_name && GLOB.xeno_datum_list[caste_name])
-		caste = GLOB.xeno_datum_list[caste_name]
+	if(caste_type && GLOB.xeno_datum_list[caste_type])
+		caste = GLOB.xeno_datum_list[caste_type]
 	else
 		to_world("something went very wrong")
 		return
@@ -493,7 +500,7 @@
 	if(isXenoPredalien(src))
 		name = "[name_prefix][caste.display_name] ([name_client_prefix][nicknumber][name_client_postfix])"
 	else if(caste)
-		name = "[name_prefix][age_prefix][caste.caste_name] ([name_client_prefix][nicknumber][name_client_postfix])"
+		name = "[name_prefix][age_prefix][caste.caste_type] ([name_client_prefix][nicknumber][name_client_postfix])"
 
 	//Update linked data so they show up properly
 	change_real_name(src, name)
@@ -503,6 +510,10 @@
 
 /mob/living/carbon/Xenomorph/examine(mob/user)
 	..()
+	if(HAS_TRAIT(src, TRAIT_SIMPLE_DESC))
+		to_chat(user, desc)
+		return
+
 	if(isXeno(user) && caste && caste.caste_desc)
 		to_chat(user, caste.caste_desc)
 
@@ -549,7 +560,7 @@
 
 	// Only handle free slots if the xeno is not in tdome
 	if(!is_admin_level(z))
-		var/selected_caste = GLOB.xeno_datum_list[caste_name]?.type
+		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
 		var/used_slots = LAZYACCESS(hive.used_free_slots, selected_caste)
 		if(used_slots)
 			hive.used_free_slots[selected_caste] -= 1
@@ -587,6 +598,9 @@
 
 	built_structures = null
 
+	vis_contents -= wound_icon_carrier
+	QDEL_NULL(wound_icon_carrier)
+
 	. = ..()
 
 
@@ -611,7 +625,7 @@
 	var/atom/A = AM.handle_barriers(src)
 	if(A != AM)
 		A.attack_alien(src)
-		next_move = world.time + (10 + caste.attack_delay + attack_speed_modifier)
+		xeno_attack_delay(src)
 		return FALSE
 	return ..()
 

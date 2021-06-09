@@ -56,7 +56,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/predator_mask_type = 1
 	var/predator_armor_type = 1
 	var/predator_boot_type = 1
-
+	var/predator_armor_material = "ebony"
+	//CO-specific preferences
+	var/commander_sidearm = "Mateba"
 
 	//WL Council preferences.
 	var/yautja_status = WHITELIST_NORMAL
@@ -155,6 +157,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/tgui_lock = FALSE
 
 	var/hear_vox = TRUE
+
+	var/hide_statusbar
 
 /datum/preferences/New(client/C)
 	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key) // give them default keybinds and update their movement keys
@@ -395,6 +399,8 @@ var/const/MAX_SAVE_SLOTS = 10
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_EJECT_MAGAZINE_TO_HAND]'><b>[toggle_prefs & TOGGLE_EJECT_MAGAZINE_TO_HAND ? "On" : "Off"]</b></a><br>"
 	dat += "<b>Toggle Automatic Punctuation: \
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTOMATIC_PUNCTUATION]'><b>[toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION ? "On" : "Off"]</b></a><br>"
+	dat += "<b>Toggle Combat Click-Drag Override: \
+			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_COMBAT_CLICKDRAG_OVERRIDE]'><b>[toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE ? "On" : "Off"]</b></a><br>"
 
 	if(CONFIG_GET(flag/allow_Metadata))
 		dat += "<b>OOC Notes:</b> <a href='?_src_=prefs;preference=metadata;task=input'> Edit </a><br>"
@@ -405,6 +411,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Color</b>: <a href='?_src_=prefs;preference=UIcolor'><b>[UI_style_color]</b> <table style='display:inline;' bgcolor='[UI_style_color]'><tr><td>__</td></tr></table></a><br>"
 	dat += "<b>Alpha</b>: <a href='?_src_=prefs;preference=UIalpha'><b>[UI_style_alpha]</b></a><br><br>"
 	dat += "<b>Stylesheet</b>: <a href='?_src_=prefs;preference=stylesheet'><b>[stylesheet]</b></a><br>"
+	dat += "<b>Hide Statusbar</b>: <a href='?_src_=prefs;preference=hide_statusbar'><b>[hide_statusbar ? "TRUE" : "FALSE"]</b></a><br>"
 	if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
 		dat += "<b>View Master Controller Tab: <a href='?_src_=prefs;preference=ViewMC'><b>[View_MC ? "TRUE" : "FALSE"]</b></a>"
 	dat += "</div>"
@@ -413,6 +420,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<div id='column1'>"
 		dat += "<h2><b><u>Commander Settings:</u></b></h2>"
 		dat += "<b>Commander whitelist status:</b><a href='?_src_=prefs;preference=commander_status;task=input'>[commander_status]</a><br>"
+		dat += "<b>Commander sidearm:</b><a href='?_src_=prefs;preference=co_sidearm;task=input'>[commander_sidearm]</a><br>"
 		dat += "</div>"
 
 	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
@@ -424,6 +432,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<b>Mask style:</b> <a href='?_src_=prefs;preference=pred_mask_type;task=input'>([predator_mask_type])</a><br>"
 		dat += "<b>Armor style:</b> <a href='?_src_=prefs;preference=pred_armor_type;task=input'>([predator_armor_type])</a><br>"
 		dat += "<b>Greave style:</b> <a href='?_src_=prefs;preference=pred_boot_type;task=input'>([predator_boot_type])</a><br><br>"
+		dat += "<b>Armor Material:</b> <a href='?_src_=prefs;preference=pred_armor_mat;task=input'>[predator_armor_material]</a><br><br>"
 		dat += "<b>Yautja whitelist status:</b> <a href='?_src_=prefs;preference=yautja_status;task=input'>[yautja_status]</a><br>"
 		dat += "</div>"
 
@@ -871,14 +880,20 @@ var/const/MAX_SAVE_SLOTS = 10
 					var/new_predator_age = input(user, "Choose your Predator's age(20 to 10000):", "Character Preference") as num|null
 					if(new_predator_age) predator_age = max(min( round(text2num(new_predator_age)), 10000),20)
 				if("pred_mask_type")
-					var/new_predator_mask_type = input(user, "Choose your mask type:\n(1-11)", "Mask Selection") as num|null
+					var/new_predator_mask_type = input(user, "Choose your mask type:\n(1-12)", "Mask Selection") as num|null
 					if(new_predator_mask_type) predator_mask_type = round(text2num(new_predator_mask_type))
 				if("pred_armor_type")
-					var/new_predator_armor_type = input(user, "Choose your armor type:\n(1-6)", "Armor Selection") as num|null
+					var/new_predator_armor_type = input(user, "Choose your armor type:\n(1-7)", "Armor Selection") as num|null
 					if(new_predator_armor_type) predator_armor_type = round(text2num(new_predator_armor_type))
 				if("pred_boot_type")
-					var/new_predator_boot_type = input(user, "Choose your greaves type:\n(1-3)", "Greave Selection") as num|null
+					var/new_predator_boot_type = input(user, "Choose your greaves type:\n(1-4)", "Greave Selection") as num|null
 					if(new_predator_boot_type) predator_boot_type = round(text2num(new_predator_boot_type))
+				if("pred_armor_mat")
+					var/list/options = list("ebony", "silver", "bronze")
+					var/new_pred_armor_mat = tgui_input_list(user, "Choose your armour material:", "Armor Material", options)
+					if(!new_pred_armor_mat)
+						return
+					predator_armor_material = new_pred_armor_mat
 
 				if("commander_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
@@ -894,6 +909,19 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 
 					commander_status = options[new_commander_status]
+
+				if("co_sidearm")
+					var/list/options = list("Mateba","Desert Eagle")
+
+					if(whitelist_flags & WHITELIST_COMMANDER_COUNCIL)
+						options += list("Commodore's Mateba","Golden Desert Eagle")
+					else
+						options -= list("Commodore's Mateba","Golden Desert Eagle") //This is weird and should not be necessary but it wouldn't remove these from the list otherwise
+
+					var/new_co_sidearm = tgui_input_list(user, "Choose your preferred sidearm.", "Commanding Officer's Sidearm", options)
+					if(!new_co_sidearm)
+						return
+					commander_sidearm = new_co_sidearm
 
 				if("yautja_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
@@ -1121,7 +1149,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						backbag = backbaglist.Find(new_backbag)
 
 				if("nt_relation")
-					var/new_relation = input(user, "Choose your relation to the Weston-Yamada company. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
+					var/new_relation = input(user, "Choose your relation to the Weyland-Yutani company. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
 					if(new_relation)
 						nanotrasen_relation = new_relation
 
@@ -1253,12 +1281,18 @@ var/const/MAX_SAVE_SLOTS = 10
 
 				if("UIalpha")
 					var/UI_style_alpha_new = input(user, "Select a new alpha(transparence) parametr for UI, between 50 and 255") as num
-					if(!UI_style_alpha_new|!(UI_style_alpha_new <= 255 && UI_style_alpha_new >= 50)) return
+					if(!UI_style_alpha_new || !(UI_style_alpha_new <= 255 && UI_style_alpha_new >= 50))
+						return
 					UI_style_alpha = UI_style_alpha_new
 
 				if("stylesheet")
 					var/stylesheet_new = tgui_input_list(user, "Select a stylesheet to use (affects non-NanoUI interfaces)", "Select a stylesheet", GLOB.stylesheets)
 					stylesheet = stylesheet_new
+
+				if("hide_statusbar")
+					hide_statusbar = !hide_statusbar
+					if(hide_statusbar)
+						winset(owner, "atom_name", "text=\"\"")
 
 				if("ViewMC")
 					if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
@@ -1639,6 +1673,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/i = 1
 	for(var/trait_group in GLOB.character_trait_groups)
 		var/datum/character_trait_group/CTG = GLOB.character_trait_groups[trait_group]
+		if(!CTG.group_visible)
+			continue
 		var/button_class = ""
 		if(!character_trait_group && i == 1 || character_trait_group == trait_group)
 			button_class = "class='linkOn'"

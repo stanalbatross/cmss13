@@ -38,7 +38,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	/client/proc/toggle_auto_eject_to_hand,
 	/client/proc/toggle_eject_to_hand,
 	/client/proc/toggle_automatic_punctuation,
-	/client/proc/toggle_middle_mouse_click
+	/client/proc/toggle_middle_mouse_click,
+	/client/proc/toggle_clickdrag_override
 ))
 
 /client/Topic(href, href_list, hsrc)
@@ -237,6 +238,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	admin_holder = admin_datums[ckey]
 	if(admin_holder)
 		admin_holder.associate(src)
+	notify_login()
 
 	add_pref_verbs()
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
@@ -351,6 +353,11 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	GLOB.directory -= ckey
 	GLOB.clients -= src
 
+	unansweredAhelps?.Remove(computer_id)
+	log_access("Logout: [key_name(src)]")
+	if(CLIENT_IS_STAFF(src))
+		message_staff("Admin logout: [key_name(src)]")
+
 	. = ..()
 
 /client/Destroy()
@@ -362,6 +369,30 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 #undef TOPIC_SPAM_DELAY
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+
+/// Handles login-related logging and associated notifications
+/client/proc/notify_login()
+	log_access("Login: [key_name(src)] from [address ? address : "localhost"]-[computer_id] || BYOND v[byond_version].[byond_build]")
+	if(CLIENT_IS_STAFF(src))
+		message_staff("Admin login: [key_name(src)]")
+	if(CONFIG_GET(flag/log_access))
+		for(var/mob/M in GLOB.player_list)
+			if( M.key && (M.key != key) )
+				var/matches
+				if( (M.lastKnownIP == address) )
+					matches += "IP ([address])"
+				if( (connection != "web") && (M.computer_id == computer_id) )
+					if(matches)	matches += " and "
+					matches += "ID ([computer_id])"
+					spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
+				if(matches)
+					if(M.client)
+						message_staff("<font color='red'><B>Notice: </B>[SPAN_BLUE("<A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(M)]</A>.")]", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].")
+					else
+						message_staff("<font color='red'><B>Notice: </B>[SPAN_BLUE("<A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in).")]", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
+
 
 //checks if a client is afk
 //3000 frames = 5 minutes
@@ -387,13 +418,13 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	P.ckey = ckey
 	P.name = ckey
 	player_entities["[ckey]"] = P
-	P.setup_save(ckey)
+	// P.setup_save(ckey)
 	return P
 
 /proc/save_player_entities()
 	for(var/key_ref in player_entities)
-		var/datum/entity/player_entity/P = player_entities["[key_ref]"]
-		P.save_statistics()
+		// var/datum/entity/player_entity/P = player_entities["[key_ref]"]
+		// P.save_statistics()
 	log_debug("STATISTICS: Statistics saving complete.")
 	message_staff("STATISTICS: Statistics saving complete.")
 
@@ -529,3 +560,17 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 					winset(src, "srvkeybinds-[REF(key)]", "parent=default;name=[key];command=\"me\\n.typing\"")
 				if("Whisper")
 					winset(src, "srvkeybinds-[REF(key)]", "parent=default;name=[key];command=whisper")
+
+/client/MouseEntered(atom/object, location, control, params)
+	if(prefs?.hide_statusbar)
+		return
+
+	if(object.show_in_statusbar)
+		winset(src, "atom_name", "text=\"[object.name]\"")
+
+/client/MouseExited(atom/object, location, control, params)
+	if(prefs?.hide_statusbar)
+		return
+
+	if(object.show_in_statusbar)
+		winset(src, "atom_name", "text=\"\"")

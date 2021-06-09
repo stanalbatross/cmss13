@@ -36,7 +36,7 @@
 		weld_cade(WT, user)
 		return
 
-	else if(iswrench(W))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		if(user.action_busy)
 			return
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
@@ -52,7 +52,7 @@
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 				build_state = BARRICADE_BSTATE_UNSECURED
 
-	else if(iscrowbar(W))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		if(build_state != BARRICADE_BSTATE_UNSECURED)
 			return
 		if(user.action_busy)
@@ -117,7 +117,9 @@
 	if (PF)
 		PF.flags_can_pass_front &= ~PASS_OVER_THROW_MOB
 
-/obj/item/folding_barricade/attack_self(mob/user as mob)
+/obj/item/folding_barricade/attack_self(mob/user)
+	..()
+
 	for(var/obj/structure/barricade/B in loc)
 		if(B != src && B.dir == dir)
 			to_chat(user, SPAN_WARNING("There's already a barricade here."))

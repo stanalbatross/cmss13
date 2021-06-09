@@ -200,7 +200,9 @@
 			medal.recipient_name = H.real_name
 			medal.recipient_rank = current_rank
 
-			if(H.w_uniform && H.w_uniform.can_attach_accessory(medal))
+			if(H.wear_suit && H.wear_suit.can_attach_accessory(medal))
+				H.wear_suit.attach_accessory(H, medal)
+			else if(H.w_uniform && H.w_uniform.can_attach_accessory(medal))
 				H.w_uniform.attach_accessory(H, medal)
 			else
 				if(!H.equip_to_slot_if_possible(medal, WEAR_IN_BACK))
@@ -327,8 +329,8 @@
 		/obj/item/weapon/gun/pistol/b92fs = /obj/item/ammo_magazine/pistol/b92fs,
 		/obj/item/weapon/gun/smg/mp7 = /obj/item/ammo_magazine/smg/mp7,
 		/obj/item/weapon/gun/smg/mp5 = /obj/item/ammo_magazine/smg/mp5,
-		/obj/item/weapon/gun/smg/skorpion = /obj/item/ammo_magazine/smg/skorpion,
-		/obj/item/weapon/gun/smg/skorpion/upp = /obj/item/ammo_magazine/smg/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion = /obj/item/ammo_magazine/pistol/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion/upp = /obj/item/ammo_magazine/pistol/skorpion,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi,
 		/obj/item/weapon/gun/pistol/mod88 = /obj/item/ammo_magazine/pistol/mod88,
 		)
@@ -427,7 +429,7 @@
 		/obj/item/weapon/gun/pistol/holdout = /obj/item/ammo_magazine/pistol/holdout,
 		/obj/item/weapon/gun/pistol/highpower = /obj/item/ammo_magazine/pistol/highpower,
 		/obj/item/weapon/gun/smg/mp7 = /obj/item/ammo_magazine/smg/mp7,
-		/obj/item/weapon/gun/smg/skorpion = /obj/item/ammo_magazine/smg/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion = /obj/item/ammo_magazine/pistol/skorpion,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi/extended)
 

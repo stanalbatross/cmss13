@@ -37,6 +37,11 @@
 	if (PF)
 		PF.flags_can_pass_all = PASS_OVER
 
+/obj/structure/platform/Collided(atom/movable/AM)
+	do_climb(AM)
+
+	..()
+
 /obj/structure/platform/BlockedPassDirs(atom/movable/mover, target_dir)
 	var/obj/structure/S = locate(/obj/structure) in get_turf(mover)
 	if(S && S.climbable && !(S.flags_atom & ON_BORDER) && climbable && isliving(mover)) //Climbable objects allow you to universally climb over others
@@ -50,7 +55,7 @@
 obj/structure/platform_decoration
 	name = "platform"
 	desc = "A square metal surface resting on four legs."
-	icon = 'icons/obj/structures/props//platforms.dmi'
+	icon = 'icons/obj/structures/props/platforms.dmi'
 	icon_state = "platform_deco"
 	anchored = TRUE
 	density = 0
@@ -142,6 +147,32 @@ obj/structure/platform_decoration
 	desc = "A collection of stones and rocks that provide ample grappling and vaulting opportunity. Indicates a change in elevation. You could probably climb it."
 
 /obj/structure/platform_decoration/kutjevo/rock
-	icon_state = "kutjevo_rock_deco"
 	name = "raised rock corner"
 	desc = "A collection of stones and rocks that cap the edge of some conveniently 1 meter long lengths of perfectly climbable chest high walls."
+	icon_state = "kutjevo_rock_deco"
+
+
+/obj/structure/platform/mineral
+	icon_state = "stone"
+/obj/structure/platform_decoration/mineral
+	icon_state = "stone_deco"
+
+/obj/structure/platform/mineral/sandstone
+	name = "sandstone platform"
+	desc = "A platform supporting elevated ground, made of sandstone. Has what seem to be ancient hieroglyphs on its side."
+	color = "#c6a480"
+
+/obj/structure/platform/mineral/sandstone/runed
+	name = "sandstone temple platform"
+	color = "#b29082"
+
+
+
+/obj/structure/platform_decoration/mineral/sandstone
+	name = "sandstone platform corner"
+	desc = "A platform corner supporting elevated ground, made of sandstone. Has what seem to be ancient hieroglyphs on its side."
+	color = "#c6a480"
+
+/obj/structure/platform_decoration/mineral/sandstone/runed
+	name = "sandstone temple platform corner"
+	color = "#b29082"

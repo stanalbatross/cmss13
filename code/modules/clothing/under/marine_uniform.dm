@@ -20,9 +20,11 @@
 	var/specialty = "USCM" //Makes it so that we can see the right name in the vendor.
 	layer = UPPER_ITEM_LAYER
 
+	//speciality does NOTHING if you have NO_NAME_OVERRIDE
+
 /obj/item/clothing/under/marine/Initialize(mapload, new_protection[] = list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature), override_icon_state[] 	= null)
 	. = ..()
-	if(!(flags_atom & UNIQUE_ITEM_TYPE))
+	if(!(flags_atom & NO_NAME_OVERRIDE))
 		name = "[specialty]"
 		if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
 			name += " snow uniform"
@@ -32,7 +34,7 @@
 		select_gamemode_skin(type, override_icon_state, new_protection)
 
 /obj/item/clothing/under/marine/set_sensors(mob/user)
-	if(!skillcheck(user, SKILL_ANTAG, SKILL_ANTAG_TRAINED))
+	if(!skillcheckexplicit(user, SKILL_ANTAG, SKILL_ANTAG_AGENT))
 		to_chat(user, SPAN_WARNING("The sensors in your uniform can't be modified."))
 		return
 	. = ..()
@@ -70,16 +72,13 @@
 	worn_state = "marine_tanker"
 	rollable_sleeves = FALSE
 	specialty = "USCM tanker"
-	flags_atom = NO_SNOW_TYPE//They have object sprites but no on mobbies, someone get around to fixing this
 
-/*
 /obj/item/clothing/under/marine/tanker/New(loc,expected_type 		= type,
 	new_name[] 			= list(MAP_ICE_COLONY = "\improper USCM tanker snow uniform"),
 	new_protection[] 	= list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature),
 	override_icon_state[]		= list(MAP_ICE_COLONY = "s_marine_tanker")
 	)
 	..(loc,expected_type, override_icon_state, new_name, new_protection)
-*/
 
 /obj/item/clothing/under/marine/chef
 	name = "\improper USCM mess sergeant uniform"
@@ -156,7 +155,7 @@
 	worn_state = "marine_tanker"
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/tanker)
 	specialty = "vehicle crewman"
-	flags_atom = NO_SNOW_TYPE
+	rollable_sleeves = TRUE
 	item_state_slots = list(WEAR_BODY = "marine_tanker")
 
 /obj/item/clothing/under/marine/officer/bridge
@@ -306,7 +305,7 @@
 
 /obj/item/clothing/under/marine/mp/provost
 	rollable_sleeves = FALSE
-	flags_atom = NO_SNOW_TYPE|UNIQUE_ITEM_TYPE
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE
 
 	name = "\improper Provost Uniform"
 	desc = "The crisp uniform of a Provost Officer."
@@ -372,11 +371,20 @@
 
 /obj/item/clothing/under/marine/veteran
 	rollable_sleeves = FALSE
-	flags_atom = NO_SNOW_TYPE|UNIQUE_ITEM_TYPE //Let's make them keep their original name.
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE //Let's make them keep their original name.
+
+/obj/item/clothing/under/marine/veteran/marsoc
+	name = "MARSOC tactical operator uniform"
+	desc = "A black uniform for elite Marine operators. So this is where all their money goes."
+	rollable_sleeves = TRUE
+	icon_state = "marsoc"
+	worn_state = "marsoc"
+	specialty = "marsoc uniform"
+	flags_item = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/veteran/PMC
 	name = "\improper PMC fatigues"
-	desc = "A white set of fatigues, designed for private security operators. The symbol of the Weston-Yamada corporation is emblazed on the suit."
+	desc = "A white set of fatigues, designed for private security operators. The symbol of the Weyland-Yutani corporation is emblazed on the suit."
 	icon_state = "pmc_jumpsuit"
 	worn_state = "pmc_jumpsuit"
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
@@ -394,13 +402,13 @@
 
 /obj/item/clothing/under/marine/veteran/PMC/leader
 	name = "\improper PMC command fatigues"
-	desc = "A white set of fatigues, designed for private security operators. The symbol of the Weston-Yamada corporation is emblazed on the suit. This particular suit looks like it belongs to a high-ranking officer."
+	desc = "A white set of fatigues, designed for private security operators. The symbol of the Weyland-Yutani corporation is emblazed on the suit. This particular suit looks like it belongs to a high-ranking officer."
 	icon_state = "officer_jumpsuit"
 	worn_state = "officer_jumpsuit"
 
 /obj/item/clothing/under/marine/veteran/PMC/commando
 	name = "\improper PMC commando uniform"
-	desc = "An armored uniform worn by Weston-Yamada elite commandos. It is well protected while remaining light and comfortable."
+	desc = "An armored uniform worn by Weyland-Yutani elite commandos. It is well protected while remaining light and comfortable."
 	icon_state = "commando_jumpsuit"
 	worn_state = "commando_jumpsuit"
 	armor_melee = CLOTHING_ARMOR_LOW
@@ -428,11 +436,12 @@
 	icon_state = "upp_uniform"
 	worn_state = "upp_uniform"
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
-	has_sensor = 0
-	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/storage/marine/smartgunner/UPP, /obj/item/clothing/suit/gimmick/jason)
+	has_sensor = FALSE
+	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet)
 
 /obj/item/clothing/under/marine/veteran/UPP/medic
 	name = "\improper UPP medic fatigues"
+	desc = "A set of medic UPP fatigues, mass produced for the armed-forces of the Union of Progressive Peoples. A rare sight, especially in ICC zones. This particular set sports the dark drab pattern of the UPP 17th battalion, 'Smoldering Sons', operating in the sparse UPP frontier in the Anglo-Japanese arm."
 	icon_state = "upp_uniform_medic"
 	worn_state = "upp_uniform_medic"
 
@@ -499,9 +508,9 @@
 	desc = "Overalls made of kevlon cover a snazzy blue dress shirt. UA branded security uniforms are notorious for their association with anti-union riot control teams."
 	icon_state = "ua_riot"
 	worn_state = "ua_riot"
-	flags_atom = NO_SNOW_TYPE
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE //Let's make them keep their original name.
 	rollable_sleeves = FALSE
-	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/ua_riot)
+	suit_restricted = null
 
 /obj/item/clothing/under/pizza
 	name = "pizza delivery uniform"
@@ -548,7 +557,7 @@
 
 /obj/item/clothing/under/liaison_suit
 	name = "liaison's tan suit"
-	desc = "A stiff, stylish tan suit commonly worn by businessmen from the Weston-Yamada corporation. Expertly crafted to make you look like a prick."
+	desc = "A stiff, stylish tan suit commonly worn by businessmen from the Weyland-Yutani corporation. Expertly crafted to make you look like a prick."
 	icon_state = "liaison_regular"
 	worn_state = "liaison_regular"
 
@@ -560,13 +569,13 @@
 
 /obj/item/clothing/under/liaison_suit/formal
 	name = "liaison's white suit"
-	desc = "A formal, white suit. Looks like something you'd wear to a funeral, a Weston-Yamada corporate dinner, or both. Stiff as a board, but makes you feel like rolling out of a Rolls-Royce."
+	desc = "A formal, white suit. Looks like something you'd wear to a funeral, a Weyland-Yutani corporate dinner, or both. Stiff as a board, but makes you feel like rolling out of a Rolls-Royce."
 	icon_state = "liaison_formal"
 	worn_state = "liaison_formal"
 
 /obj/item/clothing/under/liaison_suit/suspenders
 	name = "liaison's attire"
-	desc = "A collared shirt, complimented by a pair of suspenders. Worn by Weston-Yamada employees who ask the tough questions. Smells faintly of cigars and bad acting."
+	desc = "A collared shirt, complimented by a pair of suspenders. Worn by Weyland-Yutani employees who ask the tough questions. Smells faintly of cigars and bad acting."
 	icon_state = "liaison_suspenders"
 	worn_state = "liaison_suspenders"
 
@@ -578,12 +587,12 @@
 
 /obj/item/clothing/under/stowaway
 	name = "dirty suit"
-	desc = "A stiff, stylish tan suit commonly worn by businessmen from the Weston-Yamada corporation. Expertly crafted to make you look like a prick."
+	desc = "A stiff, stylish tan suit commonly worn by businessmen from the Weyland-Yutani corporation. Expertly crafted to make you look like a prick."
 	icon_state = "stowaway_uniform"
 	worn_state = "stowaway_uniform"
 
 /obj/item/clothing/under/rank/chef/exec
-	name = "\improper Weston-Yamada suit"
+	name = "\improper Weyland-Yutani suit"
 	desc = "A formal white undersuit."
 	rollable_sleeves = FALSE
 

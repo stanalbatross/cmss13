@@ -8,12 +8,7 @@
 		if(!I)
 			to_chat(H, SPAN_NOTICE("You are not holding anything to equip."))
 			return
-		if(H.equip_to_appropriate_slot(I, 0))
-			if(hand)
-				update_inv_l_hand(0)
-			else
-				update_inv_r_hand(0)
-		else
+		if(!H.equip_to_appropriate_slot(I, 0))
 			to_chat(H, SPAN_DANGER("You are unable to equip that."))
 
 /mob/living/carbon/human/proc/equip_in_one_of_slots(obj/item/W, list/slots, del_on_fail = 1)
@@ -56,6 +51,8 @@
 		if(WEAR_HANDS)
 			return has_limb("l_hand") && has_limb("r_hand")
 		if(WEAR_HEAD)
+			return has_limb("head")
+		if(WEAR_IN_HELMET)
 			return has_limb("head")
 		if(WEAR_FEET)
 			return has_limb("r_foot") && has_limb("l_foot")
@@ -338,6 +335,7 @@
 					C.attach_accessory(src, A)
 					break
 			update_inv_w_uniform()
+			update_inv_wear_suit()
 		if(WEAR_J_STORE)
 			s_store = W
 			W.equipped(src, slot)
@@ -356,6 +354,13 @@
 			if(istype(S) && S.pockets.storage_slots)
 				wear_suit.attackby(W, src)
 				wear_suit.update_icon()
+
+		if(WEAR_IN_HELMET)
+			var/obj/item/clothing/head/helmet/marine/HM = src.head
+			if(istype(HM) && HM.pockets.storage_slots)
+				HM.pockets.attackby(W, src)
+				HM.update_icon()
+
 		if(WEAR_IN_ACCESSORY)
 			var/obj/item/clothing/accessory/A = W
 			if(istype(A))
@@ -366,6 +371,7 @@
 			else
 				w_uniform.attackby(W,src)
 			update_inv_w_uniform()
+
 		if(WEAR_IN_BELT)
 			belt.attackby(W,src)
 			belt.update_icon()

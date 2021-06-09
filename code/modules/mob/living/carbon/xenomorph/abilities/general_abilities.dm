@@ -75,6 +75,14 @@
 
 	plasma_cost = 1
 
+/datum/action/xeno_action/activable/secrete_resin/can_use_action()
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/carbon/Xenomorph/X = owner
+	return X.selected_resin
+
 /datum/action/xeno_action/activable/secrete_resin/queen_macro //see above for reasoning
 	ability_primacy = XENO_PRIMARY_ACTION_4
 
@@ -91,6 +99,7 @@
 	var/level = 2 //level of the acid strength
 	var/acid_type = /obj/effect/xenomorph/acid
 	macro_path = /datum/action/xeno_action/verb/verb_corrosive_acid
+	ability_primacy = XENO_CORROSIVE_ACID
 	action_type = XENO_ACTION_CLICK
 
 /datum/action/xeno_action/activable/corrosive_acid/New()

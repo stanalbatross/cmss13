@@ -3,7 +3,7 @@
 #define YOUNG_QUEEN_HEALTH_MULTIPLIER 0.5
 
 /datum/caste_datum/queen
-	caste_name = "Queen"
+	caste_type = XENO_CASTE_QUEEN
 	tier = 0
 
 	melee_damage_lower = XENO_DAMAGE_TIER_4
@@ -231,8 +231,8 @@
 	return ..()
 
 /mob/living/carbon/Xenomorph/Queen
-	caste_name = "Queen"
-	name = "Queen"
+	caste_type = XENO_CASTE_QUEEN
+	name = XENO_CASTE_QUEEN
 	desc = "A huge, looming alien creature. The biggest and the baddest."
 	icon_size = 64
 	icon_state = "Queen Walking"
@@ -345,6 +345,9 @@
 /mob/living/carbon/Xenomorph/Queen/Delta
 	hivenumber = XENO_HIVE_DELTA
 
+/mob/living/carbon/Xenomorph/Queen/combat_ready
+	queen_aged = TRUE
+
 /mob/living/carbon/Xenomorph/Queen/Initialize()
 	. = ..()
 	icon = get_icon_from_source(CONFIG_GET(string/alien_queen_standing))
@@ -354,7 +357,7 @@
 		xeno_message(SPAN_XENOANNOUNCE("A new Queen has risen to lead the Hive! Rejoice!"),3,hivenumber)
 	playsound(loc, 'sound/voice/alien_queen_command.ogg', 75, 0)
 
-	if(hive.dynamic_evolution)
+	if(hive.dynamic_evolution && !queen_aged)
 		queen_age_timer_id = addtimer(CALLBACK(src, .proc/make_combat_effective), XENO_QUEEN_AGE_TIME, TIMER_UNIQUE|TIMER_STOPPABLE)
 	else
 		make_combat_effective()
@@ -809,6 +812,18 @@
 		icon_state = "[mutation_type] Queen Running"
 
 	update_fire() //the fire overlay depends on the xeno's stance, so we must update it.
+	update_wounds()
+
+
+/mob/living/carbon/Xenomorph/Queen/handle_special_state()
+	if(ovipositor)
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/Xenomorph/Queen/handle_special_wound_states(severity)
+	. = ..()
+	if(ovipositor)
+		return "Queen_ovipositor_[severity]" // I don't actually have it, but maybe one day.
 
 /mob/living/carbon/Xenomorph/Queen/proc/in_egg_plant_range(var/turf/T)
 	if(!ovipositor)

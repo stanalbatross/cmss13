@@ -135,7 +135,7 @@
 
 //Colony Areas
 /area/lv624/ground/colony
-	name = "\improper Weston-Yamada Compound"
+	name = "\improper Weyland-Yutani Compound"
 	icon_state = "green"
 
 /area/lv624/ground/colony/north_nexus_road
@@ -216,6 +216,11 @@
 	name = "\improper Sand Temple"
 	icon_state = "bluenew"
 
+/area/lv624/ground/caves/sand_temple/powered
+	name = "\improper Sand Temple - Powered"
+	icon_state = "green"
+	requires_power = FALSE
+
 //Lazarus landing
 /area/lv624/lazarus
 	name = "\improper Lazarus"
@@ -237,8 +242,8 @@
 	icon_state = "green"
 	ceiling = CEILING_METAL
 
-/area/lv624/lazarus/garage
-	name = "vehicle garage"
+/area/lv624/lazarus/corporate_dome
+	name = "\improper Corporate Dome"
 	icon_state = "green"
 
 /area/lv624/lazarus/yggdrasil

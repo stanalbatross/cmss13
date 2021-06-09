@@ -22,8 +22,7 @@
 
 	interactee = null
 
-	last_damage_source = null
-	last_damage_mob = null
+	last_damage_data = null
 
 	QDEL_NULL(mob_panel)
 
@@ -55,7 +54,7 @@
 
 	set_focus(src)
 	prepare_huds()
-
+	langchat_make_image()
 	create_player_panel()
 
 	return ..()
@@ -453,6 +452,9 @@
 /mob/living/proc/do_pull(atom/movable/clone/AM, lunge, no_msg)
 	if(pulling)
 		stop_pulling()
+
+	if(SEND_SIGNAL(AM, COMSIG_ATTEMPT_MOB_PULL) & COMPONENT_CANCEL_MOB_PULL)
+		return
 
 	var/mob/M
 	if(ismob(AM))
@@ -990,3 +992,6 @@ mob/proc/yank_out_object()
 /// Adds this list to the output to the stat browser
 /mob/proc/get_status_tab_items()
 	. = list()
+
+/mob/proc/get_role_name()
+	return

@@ -82,7 +82,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 
 
-/obj/item/tool/candle/attack_self(mob/user as mob)
+/obj/item/tool/candle/attack_self(mob/user)
+	..()
+
 	if(heat_source)
 		heat_source = 0
 		update_icon()
@@ -242,7 +244,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
 
-	else if(istype(W, /obj/item/weapon/gun))
+	else if(isgun(W))
 		var/obj/item/weapon/gun/G = W
 		for(var/slot in G.attachments)
 			if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
@@ -498,7 +500,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
 
-	else if(istype(W, /obj/item/weapon/gun))
+	else if(isgun(W))
 		var/obj/item/weapon/gun/G = W
 		for(var/slot in G.attachments)
 			if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
@@ -544,7 +546,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		STOP_PROCESSING(SSobj, src)
 		return
 
-/obj/item/clothing/mask/cigarette/pipe/attack_self(mob/user as mob) //Refills the pipe. Can be changed to an attackby later, if loose tobacco is added to vendors or something.
+/// Refills the pipe. Can be changed to an attackby later, if loose tobacco is added to vendors or something.
+/obj/item/clothing/mask/cigarette/pipe/attack_self(mob/user)
+	..()
+
 	if(heat_source)
 		user.visible_message(SPAN_NOTICE("[user] puts out [src]."))
 		heat_source = 0
@@ -555,7 +560,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(smoketime <= 0)
 		to_chat(user, SPAN_NOTICE("You refill the pipe with tobacco."))
 		smoketime = initial(smoketime)
-	return
 
 /obj/item/clothing/mask/cigarette/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/tool/weldingtool))

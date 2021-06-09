@@ -13,7 +13,7 @@
 	var/blocked_by_suit = TRUE
 	var/heart_damage_to_deal = 5
 	var/ready = 0
-	var/damage_threshold = 12 //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
+	var/damage_heal_threshold = 12 //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
 	var/charge_cost = 66 //How much energy is used.
 	var/obj/item/cell/dcell = null
@@ -60,6 +60,8 @@
 
 
 /obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
+	..()
+
 	if(defib_cooldown > world.time)
 		return
 
@@ -91,8 +93,9 @@
 	if(isnull(internal_organs_by_name) || isnull(internal_organs_by_name["heart"]))
 		return FALSE
 	var/datum/internal_organ/heart/heart = internal_organs_by_name["heart"]
+	var/obj/limb/head = get_limb("head")
 
-	if(!get_limb("head") || !heart || heart.is_broken() || !has_brain() || chestburst || status_flags & PERMANENTLY_DEAD)
+	if(chestburst || !head || head.status & LIMB_DESTROYED || !heart || heart.is_broken() || !has_brain() || status_flags & PERMANENTLY_DEAD)
 		return FALSE
 	return TRUE
 
@@ -104,7 +107,7 @@
 		to_chat(user, SPAN_WARNING("Take [src]'s paddles out first."))
 		return
 	if(dcell.charge <= charge_cost)
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Internal battery depleted. Cannot analyze nor administer shock."))
+		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src]'s battery is too low! It needs to recharge."))
 		return
 	if(H.stat != DEAD)
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Vital signs detected. Aborting."))
@@ -115,7 +118,7 @@
 		return
 
 	if(blocked_by_suit && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
-		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interferring."))
+		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interfering."))
 		return
 
 	if((!H.check_tod() && !isSynth(H))) //synthetic species have no expiration date
@@ -158,6 +161,9 @@
 		SPAN_WARNING("You stop setting up the paddles on [H]'s chest"))
 		return
 
+	if(!check_revive(H, user))
+		return
+
 	//Do this now, order doesn't matter
 	sparks.start()
 	dcell.use(charge_cost)
@@ -167,9 +173,6 @@
 		SPAN_HELPFUL("You shock <b>[H]</b> with the paddles."))
 	H.visible_message(SPAN_DANGER("[H]'s body convulses a bit."))
 	defib_cooldown = world.time + 10 //1 second cooldown before you can shock again
-
-	if(!check_revive(H, user))
-		return
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
 	if(heart && prob(25))
@@ -190,10 +193,10 @@
 
 
 	//At this point, the defibrillator is ready to work
-	H.apply_damage(-damage_threshold, BRUTE)
-	H.apply_damage(-damage_threshold, BURN)
-	H.apply_damage(-damage_threshold, TOX)
-	H.apply_damage(-damage_threshold, CLONE)
+	H.apply_damage(-damage_heal_threshold, BRUTE)
+	H.apply_damage(-damage_heal_threshold, BURN)
+	H.apply_damage(-damage_heal_threshold, TOX)
+	H.apply_damage(-damage_heal_threshold, CLONE)
 	H.apply_damage(-H.getOxyLoss(), OXY)
 	H.updatehealth() //Needed for the check to register properly
 
@@ -214,10 +217,12 @@
 
 /obj/item/device/defibrillator/compact
 	name = "compact defibrillator"
-	desc = "A compact defibrillator not tested to be reliable. Success is not guaranteed on use."
+	desc = "A compact defibrillator that trades capacity for strong immediate power. Ignores armor and heals strongly and quickly, at the cost of very low charge."
 	icon = 'icons/obj/items/experimental_tools.dmi'
 	icon_state = "compact_defib"
 	item_state = "defib"
-	w_class = SIZE_SMALL
-
-	charge_cost = 132 //How much energy is used.
+	w_class = SIZE_MEDIUM
+	blocked_by_suit = FALSE
+	heart_damage_to_deal = 0
+	damage_heal_threshold = 40
+	charge_cost = 198

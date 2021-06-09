@@ -1,7 +1,7 @@
 /datum/tech/droppod/item/modular_armor_upgrade
 	name = "Modular Armor Upgrade Kits"
 	desc = {"Marines get access to plates they can put in their uniforms that act as temporary\
-			HP. Ceramic plates will have higher temp HP, but break after 1 use; metal plates\
+			HP. Ceramic plates are tougher, but only block bullets and break after use; metal plates\
 			break into scrap that can be combined to form improvised plates that are almost\
 			as good."}
 	icon_state = "combat_plates"
@@ -22,7 +22,7 @@
 
 /obj/item/clothing/accessory/health
 	name = "armor plate"
-	desc = "A durable plate, able to absorb a lot of damage. Attach it to a uniform to use."
+	desc = "A metal trauma plate, able to absorb some blows."
 
 	icon = 'icons/obj/items/items.dmi'
 	var/base_icon_state
@@ -34,7 +34,8 @@
 
 	var/take_slash_damage = TRUE
 	var/slash_durability_mult = 0.25
-	var/projectile_durability_mult = 0.1
+	var/FF_projectile_durability_mult = 0.1
+	var/hostile_projectile_durability_mult = 1
 
 	var/list/health_states = list(
 		0,
@@ -55,39 +56,53 @@
 
 /obj/item/clothing/accessory/health/update_icon()
 	for(var/health_state in health_states)
-		if((armor_health/armor_maxhealth) <= (health_state*0.01))
+		if(armor_health / armor_maxhealth * 100 <= health_state)
 			icon_state = "[base_icon_state]_[health_state]"
 			return
 
+/obj/item/clothing/accessory/health/proc/get_damage_status()
+	var/percentage = round(armor_health / armor_maxhealth * 100)
+	switch(percentage)
+		if(0)
+			. = "It is broken."
+			if(scrappable)
+				. += " If you had two, you could repair it."
+		if(1 to 19)
+			. = "It is falling apart!"
+		if(20 to 49)
+			. = "It is seriously damaged."
+		if(50 to 79)
+			. = "It is moderately damaged."
+		if(80 to 99)
+			. = "It is slightly damaged."
+		else
+			. = "It is in pristine condition."
+
 /obj/item/clothing/accessory/health/examine(mob/user)
 	. = ..()
-	if(armor_health >= armor_maxhealth)
-		to_chat(user, SPAN_NOTICE("It is in pristine condition."))
-	else if(armor_health >= armor_maxhealth*0.8)
-		to_chat(user, SPAN_NOTICE("It is slightly damaged."))
-	else if(armor_health >= armor_maxhealth*0.5)
-		to_chat(user, SPAN_NOTICE("It is moderately damaged."))
-	else if(armor_health >= armor_maxhealth*0.2)
-		to_chat(user, SPAN_NOTICE("It is seriously damaged."))
-	else if(armor_health > 0)
-		to_chat(user, SPAN_NOTICE("It is falling apart!"))
-	else
-		to_chat(user, SPAN_NOTICE("It is broken."))
+	to_chat(user, "To use it, attach it to your uniform.")
+	to_chat(user, SPAN_NOTICE(get_damage_status()))
 
-/obj/item/clothing/accessory/health/on_attached(obj/item/clothing/S, mob/living/user)
+/obj/item/clothing/accessory/health/additional_examine_text()
+	return ". [get_damage_status()]"
+
+/obj/item/clothing/accessory/health/on_attached(obj/item/clothing/S, mob/living/carbon/human/user)
 	. = ..()
-	if(!.)
-		return
+	if(.)
+		RegisterSignal(S, COMSIG_ITEM_EQUIPPED, .proc/check_to_signal)
+		RegisterSignal(S, COMSIG_ITEM_DROPPED, .proc/unassign_signals)
 
-	RegisterSignal(S, COMSIG_ITEM_EQUIPPED, .proc/check_to_signal)
-	RegisterSignal(S, COMSIG_ITEM_DROPPED, .proc/unassign_signals)
+		if(istype(user) && user.w_uniform == S)
+			check_to_signal(S, user, WEAR_BODY)
 
-	var/mob/living/carbon/human/H = user
-	if(istype(H) && H.w_uniform == S)
-		check_to_signal(S, user, WEAR_BODY)
-
-	if(user)
-		to_chat(user, SPAN_NOTICE("You attach [src] to [has_suit]."))
+/obj/item/clothing/accessory/health/on_removed(mob/living/user, obj/item/clothing/C)
+	. = ..()
+	if(.)
+		unassign_signals(C, user)
+		UnregisterSignal(C, list(
+			COMSIG_ITEM_EQUIPPED,
+			COMSIG_ITEM_DROPPED
+		))
 
 /obj/item/clothing/accessory/health/proc/check_to_signal(obj/item/clothing/S, mob/living/user, slot)
 	SIGNAL_HANDLER
@@ -107,78 +122,66 @@
 		COMSIG_HUMAN_BULLET_ACT
 	))
 
-/obj/item/clothing/accessory/health/proc/take_bullet_damage(mob/living/user, damage, ammo_flags)
+/obj/item/clothing/accessory/health/proc/take_bullet_damage(mob/living/carbon/human/user, damage, ammo_flags, obj/item/projectile/P)
 	SIGNAL_HANDLER
 	if(damage <= 0 || (ammo_flags & AMMO_IGNORE_ARMOR))
 		return
 
 	var/damage_to_nullify = armor_health
-	armor_health = max(armor_health - damage*projectile_durability_mult, 0)
+	var/final_proj_mult = FF_projectile_durability_mult
 
-	update_icon()
+	var/mob/living/carbon/human/pfirer = P.firer
+	if(user.faction != pfirer.faction)
+		final_proj_mult = hostile_projectile_durability_mult
 
-	if(damage_to_nullify)
-		playsound(user, armor_hitsound, 25, 1)
-		return COMPONENT_CANCEL_BULLET_ACT
-
-/obj/item/clothing/accessory/health/proc/take_slash_damage(mob/living/user, damage)
-	SIGNAL_HANDLER
-	var/damage_to_nullify = armor_health
-	armor_health = max(armor_health - damage*slash_durability_mult, 0)
+	armor_health = max(armor_health - damage*final_proj_mult, 0)
 
 	update_icon()
 	if(!armor_health && damage_to_nullify)
 		user.show_message(SPAN_WARNING("You feel [src] break apart."), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
-		playsound(user, armor_shattersound, 35, 1)
+		playsound(user, armor_shattersound, 35, TRUE)
 
 	if(damage_to_nullify)
-		playsound(user, armor_hitsound, 25, 1)
-		return COMPONENT_CANCEL_XENO_ATTACK
+		playsound(user, armor_hitsound, 25, TRUE)
+		P.play_damage_effect(user)
+		return COMPONENT_CANCEL_BULLET_ACT
 
-/obj/item/clothing/accessory/health/on_removed(mob/living/user, obj/item/clothing/C)
-	if(!has_suit)
+/obj/item/clothing/accessory/health/proc/take_slash_damage(mob/living/user, list/slashdata)
+	SIGNAL_HANDLER
+	var/armor_damage = slashdata["n_damage"]
+	var/damage_to_nullify = armor_health
+	armor_health = max(armor_health - armor_damage*slash_durability_mult, 0)
+
+	update_icon()
+	if(!armor_health && damage_to_nullify)
+		user.show_message(SPAN_WARNING("You feel [src] break apart."), null, null, null, CHAT_TYPE_ARMOR_DAMAGE)
+		playsound(user, armor_shattersound, 50, TRUE)
+
+	if(damage_to_nullify)
+		slashdata["n_damage"] = 0
+		slashdata["slash_noise"] = armor_hitsound
+
+/obj/item/clothing/accessory/health/attackby(obj/item/clothing/accessory/health/I, mob/user)
+	if(!istype(I, src.type) || !scrappable || has_suit || I.has_suit)
 		return
 
-	unassign_signals(C, user)
-
-	UnregisterSignal(C, list(
-		COMSIG_ITEM_EQUIPPED,
-		COMSIG_ITEM_DROPPED
-	))
-
-
-	has_suit = null
-	if(usr)
-		usr.put_in_hands(src)
-	else
-		src.forceMove(get_turf(src))
-
-/obj/item/clothing/accessory/health/attackby(obj/item/I, mob/user)
-	if(has_suit || !scrappable)
-		return ..()
-
-	if(!istype(I, /obj/item/clothing/accessory/health)) // Only works for matching types
-		return ..()
-
-	var/obj/item/clothing/accessory/health/H = I
-
-	if(H.has_suit || !H.scrappable)
-		return ..()
-
-	if(!H.armor_health && !armor_health)
-		new /obj/item/clothing/accessory/health/scrap(get_turf(user))
-
-		qdel(H)
+	if(!I.armor_health && !armor_health)
+		to_chat(user, SPAN_NOTICE("You use the shards of armour to cobble together an improvised trauma plate."))
+		qdel(I)
 		qdel(src)
+		user.put_in_active_hand(new /obj/item/clothing/accessory/health/scrap())
+
+/obj/item/clothing/accessory/health/metal_plate
 
 /obj/item/clothing/accessory/health/ceramic_plate
 	name = "ceramic plate"
-	desc = "A strong plate, able to protect the user from a large amount of bullets. Ineffective against sharp objects."
+	desc = "A strong trauma plate, able to protect the user from a large amount of bullets. Ineffective against sharp objects."
 
 	icon_state = "ceramic2"
 
 	take_slash_damage = FALSE
 	scrappable = FALSE
+	FF_projectile_durability_mult = 0.3
 
 	armor_health = 100
 	armor_maxhealth = 100
@@ -193,7 +196,7 @@
 
 /obj/item/clothing/accessory/health/scrap
 	name = "scrap metal"
-	desc = "A weak plate, only able to protect from a little bit of damage."
+	desc = "A weak armour plate, only able to protect from a little bit of damage. Perhaps that will be enough."
 
 	icon_state = "scrap"
 	health_states = list(
@@ -208,6 +211,5 @@
 
 /obj/item/clothing/accessory/health/scrap/on_removed(mob/living/user, obj/item/clothing/C)
 	. = ..()
-
-	if(!armor_health)
+	if(. && !armor_health)
 		qdel(src)

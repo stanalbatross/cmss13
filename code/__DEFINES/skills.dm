@@ -82,13 +82,14 @@
 
 //antag skill
 #define SKILL_ANTAG_DEFAULT 0
-#define SKILL_ANTAG_TRAINED 1
-#define SKILL_ANTAG_MAX 1
+#define SKILL_ANTAG_AGENT 1
+#define SKILL_ANTAG_HUNTER 2
+#define SKILL_ANTAG_MAX 2
 
 //police skill, hidden
 #define SKILL_POLICE_DEFAULT 0
 #define SKILL_POLICE_FLASH 1 //flash use (CE, CMO, any officer starting with a flash)
-#define SKILL_POLICE_MP 2 //all police gear use, can strip someone's clothes simultaneously (MP)
+#define SKILL_POLICE_SKILLED 2 //all police gear use, can strip someone's clothes simultaneously (MP)
 #define SKILL_POLICE_MAX 2
 
 
@@ -97,7 +98,7 @@
 //slight increase in punch damage.
 #define SKILL_CQC_DEFAULT 0
 #define SKILL_CQC_TRAINED 1
-#define SKILL_CQC_MP 2 //no risk of accidental weapon discharge upon disarming (MP)
+#define SKILL_CQC_SKILLED 2 //no risk of accidental weapon discharge upon disarming (MP)
 #define SKILL_CQC_EXPERT 3
 #define SKILL_CQC_MASTER 5
 #define SKILL_CQC_MAX 5
@@ -149,6 +150,7 @@
 #define SKILL_ENDURANCE_WEAK 1
 #define SKILL_ENDURANCE_TRAINED 2
 #define SKILL_ENDURANCE_MASTER 3
+#define SKILL_ENDURANCE_EXPERT 4
 #define SKILL_ENDURANCE_SURVIVOR 5
 #define SKILL_ENDURANCE_MAX 5
 

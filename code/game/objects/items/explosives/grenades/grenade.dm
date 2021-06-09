@@ -24,7 +24,7 @@
 	. = ..()
 	det_time = rand(det_time - 5, det_time + 5)
 
-/obj/item/explosive/grenade/proc/can_use_grenade(mob/user)
+/obj/item/explosive/grenade/proc/can_use_grenade(mob/living/carbon/human/user)
 	if(!hand_throwable)
 		to_chat(user, SPAN_WARNING("This isn't a hand grenade!"))
 		return FALSE
@@ -33,7 +33,7 @@
 		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!"))
 		return FALSE
 
-	if(harmful && isSynth(user))
+	if(harmful && !user.allow_gun_usage)
 		to_chat(user, SPAN_WARNING("Your programming prevents you from using this!"))
 		return FALSE
 
@@ -64,7 +64,7 @@
 
 	activate(user)
 
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 
 	user.visible_message(SPAN_WARNING("[user] primes \a [name]!"), \
 	SPAN_WARNING("You prime \a [name]!"))
@@ -85,7 +85,7 @@
 	if(!hand_throwable && hand_throw)
 		to_chat(user, SPAN_WARNING("This isn't a hand grenade!"))
 		return
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 	playsound(loc, arm_sound, 25, 1, 6)
 	if(customizable)
 		activate_sensors()
@@ -109,7 +109,7 @@
 
 
 /obj/item/explosive/grenade/attackby(obj/item/W as obj, mob/user as mob)
-	if(isscrewdriver(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		switch(det_time)
 			if ("1")
 				det_time = 10

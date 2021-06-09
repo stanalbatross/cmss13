@@ -21,6 +21,16 @@
 	var/injectSFX = 'sound/items/hypospray.ogg'
 	var/injectVOL = 60 //was 50
 	var/starting_vial = /obj/item/reagent_container/glass/beaker/vial
+	var/next_inject = 0
+	var/inject_cd = 0.75 SECONDS
+
+/obj/item/reagent_container/hypospray/attack_self(mob/user)
+	..()
+
+	if(next_inject > world.time)
+		return
+	next_inject = world.time + inject_cd
+	attack(user, user)
 
 //Transfer amount switch//
 /obj/item/reagent_container/hypospray/clicked(var/mob/user, var/list/mods)
@@ -108,12 +118,6 @@
 		magfill.color = mix_color_from_reagents(reagents.reagent_list)
 		overlays += magfill
 
-/obj/item/reagent_container/hypospray/attack_self(mob/user as mob)
-	if (world.time <= user.next_move)
-		return
-	attack(user, user)
-	user.next_move += attack_speed
-
 /obj/item/reagent_container/hypospray/afterattack(obj/target, mob/user, proximity)
 	if(!magfed || !proximity) //Autoinjectors aren't supposed to be self-fillable or use vials.
 		return
@@ -183,7 +187,7 @@
 			return 0
 		if(!M.Adjacent(user))
 			return 0
-	if(M != user && M.stat != DEAD && M.a_intent != INTENT_HELP && !M.is_mob_incapacitated() && (skillcheck(M, SKILL_CQC, SKILL_CQC_MP) || isYautja(M))) // preds have null skills
+	if(M != user && M.stat != DEAD && M.a_intent != INTENT_HELP && !M.is_mob_incapacitated() && (skillcheck(M, SKILL_CQC, SKILL_CQC_SKILLED) || isYautja(M))) // preds have null skills
 		user.KnockDown(3)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Used CQC skill to stop [key_name(user)] injecting them.</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Was stopped from injecting [key_name(M)] by their cqc skill.</font>")
@@ -202,7 +206,7 @@
 		var/list/injected = list()
 		for(var/datum/reagent/R in reagents.reagent_list)
 			injected += R.name
-			R.last_source_mob = user
+			R.last_source_mob = WEAKREF(user)
 		var/contained = english_list(injected)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected with [src.name] by [key_name(user)]. Reagents: [contained]</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to inject [key_name(M)]. Reagents: [contained]</font>")

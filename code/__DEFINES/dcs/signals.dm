@@ -34,6 +34,9 @@
 ///from /datum/controller/subsystem/ticker/PostSetup
 #define COMSIG_GLOB_POST_SETUP "!post_setup"
 
+///from /proc/set_security_level
+#define COMSIG_GLOB_SECURITY_LEVEL_CHANGED "!security_level_changed"
+
 //////////////////////////////////////////////////////////////////
 
 #define COMSIG_CLIENT_LMB_DOWN "client_lmb_down"
@@ -133,6 +136,9 @@
 #define COMSIG_HUMAN_TAKE_DAMAGE "human_take_damage"
 	#define COMPONENT_BLOCK_DAMAGE (1<<0)
 
+#define COMSIG_ITEM_ATTEMPT_ATTACK "item_attempt_attack"
+	#define COMPONENT_CANCEL_ATTACK (1<<0)
+
 ///Called in /mob/reset_view(): (atom/A)
 #define COMSIG_MOB_RESET_VIEW "mob_reset_view"
 #define COMSIG_CLIENT_RESET_VIEW "client_reset_view"
@@ -203,6 +209,10 @@
 #define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE "xeno_pre_calculate_armoured_damage"
 #define COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE "xeno_pre_apply_armoured_damage"
 
+/// From /mob/living/carbon/Xenomorph/bullet_act
+#define COMSIG_XENO_BULLET_ACT "xeno_bullet_act"
+	//#define COMPONENT_CANCEL_BULLET_ACT (1<<0) already defined
+
 /// from /mob/living/carbon/Xenomorph/get_status_tab_items(): (list/statdata)
 #define COMSIG_XENO_APPEND_TO_STAT "xeno_append_to_stat"
 
@@ -235,10 +245,16 @@
 // /obj/item signals
 ///from base of obj/item/dropped(): (mob/user)
 #define COMSIG_ITEM_DROPPED "item_drop"
-
+/// From base of /obj/item/proc/equipped(): (mob/user, slot)
 #define COMSIG_ITEM_EQUIPPED "item_equipped"
 ///from /obj/item/proc/unwield
 #define COMSIG_ITEM_UNWIELD "item_unwield"
+/// From base of /obj/item/proc/attack_self(): (mob/user)
+#define COMSIG_ITEM_ATTACK_SELF "item_attack_self"
+
+/// From /datum/element/drop_retrieval usage: /obj/item/attachable/magnetic_harness/can_be_attached_to_gun(), /obj/item/storage/pouch/sling/can_be_inserted() (/obj/item/I)
+#define COMSIG_DROP_RETRIEVAL_CHECK "drop_retrieval_check"
+	#define COMPONENT_DROP_RETRIEVAL_PRESENT (1<<0)
 
 /// From /atom/movable/proc/launch_towards
 #define COMSIG_MOVABLE_PRE_THROW "movable_pre_throw"
@@ -280,7 +296,12 @@
 #define COMSIG_GRENADE_PRE_PRIME "grenade_pre_prime"
 	#define COMPONENT_GRENADE_PRIME_CANCEL	(1<<0)
 
+#define COMSIG_OBJ_FLASHBANGED "flashbanged"
+
 #define COMSIG_ITEM_PICKUP "item_pickup"
+
+#define COMSIG_ATTEMPT_MOB_PULL "attempt_mob_pull"
+	#define COMPONENT_CANCEL_MOB_PULL (1<<0)
 
 ///from /mob/living/carbon/Xenomorph/start_pulling(): (mob/living/carbon/Xenomorph/X)
 #define COMSIG_MOVABLE_XENO_START_PULLING "movable_xeno_start_pulling"
@@ -306,15 +327,21 @@
 /// Apply any effects to the bullet (primarily through bullet traits)
 /// based on the user
 #define COMSIG_BULLET_USER_EFFECTS "bullet_user_effects"
-/// Called when checking IFF as bullet scans for targets
-#define COMSIG_BULLET_CHECK_IFF "bullet_check_iff"
+/// Called when checking whether bullet should skip mob for whatever reasons (like IFF)
+#define COMSIG_BULLET_CHECK_MOB_SKIPPING "bullet_check_mob_skipping"
+	#define COMPONENT_SKIP_MOB (1<<0)
 
 /// From /obj/item/projectile/handle_mob(): (mob/living/target)
+#define COMSIG_BULLET_PRE_HANDLE_MOB "bullet_pre_handle_mob"
+/// From /obj/item/projectile/handle_mob(): (mob/living/target)
 #define COMSIG_BULLET_POST_HANDLE_MOB "bullet_post_handle_mob"
-/// From /obj/item/projectile/handle_obj(): (obj/target)
+/// From /obj/item/projectile/handle_obj(): (obj/target, did_hit)
 #define COMSIG_BULLET_POST_HANDLE_OBJ "bullet_post_handle_obj"
+/// From /obj/item/projectile/handle_obj(): (obj/target)
+#define COMSIG_BULLET_PRE_HANDLE_OBJ "bullet_pre_handle_obj"
 /// From /obj/item/projectile/scan_a_turf(): (turf/target)
 #define COMSIG_BULLET_POST_HANDLE_TURF "bullet_post_handle_turf"
+/// From /obj/item/projectile/scan_a_turf(): (turf/target)
 #define COMSIG_BULLET_PRE_HANDLE_TURF "bullet_pre_handle_turf"
 	#define COMPONENT_BULLET_PASS_THROUGH (1<<0)
 
@@ -350,3 +377,11 @@
 #define COMSIG_SHUTTLE_SETMODE "shuttle_setmode"
 /// shuttle crushing something
 #define COMSIG_MOVABLE_SHUTTLE_CRUSH "movable_shuttle_crush"
+
+/// from /obj/structure/transmitter/update_icon()
+#define COMSIG_TRANSMITTER_UPDATE_ICON "transmitter_update_icon"
+
+/// From /obj/effect/alien/weeds/Initialize()
+#define COMSIG_WEEDNODE_GROWTH_COMPLETE "weednode_growth_complete"
+/// From /obj/effect/alien/weeds/proc/on_weed_expand()
+#define COMSIG_WEEDNODE_CANNOT_EXPAND_FURTHER "weednode_cannot_expand_further"

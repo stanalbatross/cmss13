@@ -1,10 +1,10 @@
 /datum/caste_datum/hivelord
-	caste_name = "Hivelord"
+	caste_type = XENO_CASTE_HIVELORD
 	tier = 2
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
-	max_health = XENO_HEALTH_TIER_6
+	max_health = XENO_HEALTH_TIER_7
 	plasma_gain = XENO_PLASMA_GAIN_TIER_10
 	plasma_max = XENO_PLASMA_TIER_10
 	crystal_max = XENO_CRYSTAL_HIGH
@@ -15,7 +15,7 @@
 
 	evolution_allowed = FALSE
 	caste_desc = "A builder of really big hives."
-	deevolves_to = "Drone"
+	deevolves_to = XENO_CASTE_DRONE
 	can_hold_facehuggers = 1
 	can_hold_eggs = CAN_HOLD_TWO_HANDS
 	acid_level = 2
@@ -37,8 +37,8 @@
 	resin_build_order = GLOB.resin_build_order_hivelord
 
 /mob/living/carbon/Xenomorph/Hivelord
-	caste_name = "Hivelord"
-	name = "Hivelord"
+	caste_type = XENO_CASTE_HIVELORD
+	name = XENO_CASTE_HIVELORD
 	desc = "A builder of really big hives."
 	icon_size = 64
 	icon_state = "Hivelord Walking"

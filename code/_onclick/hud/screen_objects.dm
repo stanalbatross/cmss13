@@ -22,6 +22,7 @@
 	screen_loc = "CENTER-7,CENTER-7"
 	maptext_height = 480
 	maptext_width = 480
+	show_in_statusbar = FALSE
 
 /obj/screen/cinematic
 	layer = CINEMATIC_LAYER
@@ -34,18 +35,20 @@
 
 /obj/screen/inventory
 	var/slot_id	//The indentifier for the slot. It has nothing to do with ID cards.
+	show_in_statusbar = FALSE
 
 
 /obj/screen/close
 	name = "close"
 	icon_state = "x"
+	show_in_statusbar = FALSE
 
 
 /obj/screen/close/clicked(var/mob/user)
 	if(master)
 		if(isstorage(master))
 			var/obj/item/storage/S = master
-			S.close(user)
+			S.storage_close(user)
 	return TRUE
 
 
@@ -99,6 +102,7 @@
 /obj/screen/storage
 	name = "storage"
 	layer = HUD_LAYER
+	show_in_statusbar = FALSE
 
 /obj/screen/storage/proc/update_fullness(obj/item/storage/S)
 	if(!S.contents.len)
@@ -148,7 +152,7 @@
 
 	if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 		return 1
-	if(!istype(user.get_held_item(),/obj/item/weapon/gun))
+	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
 		return 1
 	user.AllowTargetMove()
@@ -179,7 +183,7 @@
 
 	if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 		return 1
-	if(!istype(user.get_held_item(),/obj/item/weapon/gun))
+	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
 		return 1
 	user.AllowTargetRun()
@@ -209,7 +213,7 @@
 
 	if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 		return 1
-	if(!istype(user.get_held_item(),/obj/item/weapon/gun))
+	if(!isgun(user.get_held_item()))
 		to_chat(user, "You need your gun in your active hand to do that!")
 		return 1
 	user.AllowTargetClick()

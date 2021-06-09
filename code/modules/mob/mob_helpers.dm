@@ -1,9 +1,4 @@
 #define isdeaf(A) (ismob(A) && ((A?:sdisabilities & DISABILITY_DEAF) || A?:ear_deaf))
-#define areSameSpecies(A, B) 	(isliving(A) && isliving(B) && \
-									((isXeno(A) && isXeno(B)) || \
-										(ishuman(A) && ishuman(B) && !(isYautja(A) ^ isYautja(B))) \
-									) \
-								)
 #define xeno_hivenumber(A) (isXeno(A) ? A?:hivenumber : FALSE)
 
 /mob/proc/can_use_hands()
@@ -407,7 +402,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		if(SKILL_CQC)
 			if(skillcheck(src, SKILL_CQC, SKILL_CQC_MASTER))
 				return DURATION_MULTIPLIER_TIER_3
-			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_MP))
+			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_SKILLED))
 				return DURATION_MULTIPLIER_TIER_2
 			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_TRAINED))
 				return DURATION_MULTIPLIER_TIER_1

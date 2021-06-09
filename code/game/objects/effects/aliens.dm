@@ -48,8 +48,7 @@
 	anchored = 1
 	layer = ABOVE_OBJ_LAYER
 	mouse_opacity = 0
-	var/mob/source_mob
-	var/source_name
+	var/datum/cause_data/cause_data
 
 	var/hivenumber = XENO_HIVE_NORMAL
 
@@ -59,19 +58,14 @@
 
 	var/time_to_live = 10
 
-/obj/effect/xenomorph/spray/Initialize(mapload, new_source_name, mob/new_source_mob, var/hive) //Self-deletes
+/obj/effect/xenomorph/spray/no_stun
+	stun_duration = 0
+
+/obj/effect/xenomorph/spray/Initialize(mapload, new_cause_data, var/hive) //Self-deletes
 	. = ..()
 
 	// Stats tracking
-	if(new_source_mob)
-		source_mob = new_source_mob
-		if (isXeno(source_mob))
-			var/mob/living/carbon/Xenomorph/X = source_mob
-			hivenumber = X.hivenumber
-	if(new_source_name)
-		source_name = new_source_name
-	else
-		source_name = initial(name)
+	cause_data = new_cause_data
 
 	if(hive)
 		hivenumber = hive
@@ -124,7 +118,7 @@
 
 /obj/effect/xenomorph/spray/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	source_mob = null
+	cause_data = null
 	return ..()
 
 /obj/effect/xenomorph/spray/initialize_pass_flags(var/datum/pass_flags_container/PF)
@@ -167,8 +161,7 @@
 			X.emote("hiss")
 			H.apply_armoured_damage(damage_amount * 0.4 * XVX_ACID_DAMAGEMULT, ARMOR_BIO, BURN)
 
-		H.last_damage_mob = source_mob
-		H.last_damage_source = source_name
+		H.last_damage_data = cause_data
 		H.UpdateDamageIcon()
 		H.updatehealth()
 	else
@@ -206,6 +199,9 @@
 	time_to_live = 3 SECONDS
 	// Stuns for 2 seconds, lives for 3 seconds. Seems to stun longer than it lives for at 2 seconds
 
+/obj/effect/xenomorph/spray/strong/no_stun
+	stun_duration = 0
+
 /obj/effect/xenomorph/spray/weak/apply_spray(mob/living/carbon/M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -225,8 +221,7 @@
 		H.emote("pain")
 		if (should_stun && !H.lying)
 			H.KnockDown(stun_duration)
-		H.last_damage_mob = source_mob
-		H.last_damage_source = source_name
+		H.last_damage_data = cause_data
 		H.apply_armoured_damage(damage_amount * 0.5, ARMOR_BIO, BURN, "l_foot", 50)
 		H.apply_armoured_damage(damage_amount * 0.5, ARMOR_BIO, BURN, "r_foot", 50)
 		H.UpdateDamageIcon()
@@ -238,7 +233,7 @@
 	name = "splatter"
 	desc = "It burns! It burns like hygiene!"
 	icon_state = "acid2"
-
+	damage_amount = 12
 	stun_duration = 0
 
 /obj/effect/xenomorph/spray/praetorian/apply_spray(mob/living/carbon/M)
@@ -257,8 +252,7 @@
 		if(!H.lying)
 			to_chat(H, SPAN_DANGER("Your feet scald and burn! Argh!"))
 			H.emote("pain")
-			H.last_damage_mob = source_mob
-			H.last_damage_source = source_name
+			H.last_damage_data = cause_data
 			H.apply_armoured_damage(damage_amount * 0.5, ARMOR_BIO, BURN, "l_foot", 50)
 			H.apply_armoured_damage(damage_amount * 0.5, ARMOR_BIO, BURN, "r_foot", 50)
 			H.UpdateDamageIcon()
@@ -424,7 +418,7 @@
 	icon_state = "boiler_bombard_heavy"
 
 /obj/effect/xenomorph/boiler_bombard/proc/make_smoke()
-	var/obj/effect/particle_effect/smoke/S = new smoke_type(loc, 1, source_xeno, source_xeno)
+	var/obj/effect/particle_effect/smoke/S = new smoke_type(loc, 1, create_cause_data(initial(source_xeno?.caste_type), source_xeno))
 	S.time_to_live = smoke_duration
 	S.spread_speed = smoke_duration + 5 // No spreading
 
@@ -445,6 +439,12 @@
 
 /obj/effect/xenomorph/xeno_telegraph/brown
 	icon_state = "xeno_telegraph_brown"
+
+/obj/effect/xenomorph/xeno_telegraph/brown/abduct_hook
+	icon_state = "xeno_telegraph_abduct_hook"
+
+/obj/effect/xenomorph/xeno_telegraph/brown/lash
+	icon_state = "xeno_telegraph_lash"
 
 
 
@@ -491,10 +491,10 @@
 			H.apply_armoured_damage(damage * XVX_ACID_DAMAGEMULT * xeno_empower_modifier, ARMOR_BIO, BURN)
 		else
 			if(empowered)
-				new /datum/effects/acid(H, linked_xeno, initial(linked_xeno.caste_name))
+				new /datum/effects/acid(H, linked_xeno, initial(linked_xeno.caste_type))
 			var/found = null
 			for (var/datum/effects/boiler_trap/F in H.effects_list)
-				if (F.source_mob == linked_xeno)
+				if (F.cause_data && F.cause_data.resolve_mob() == linked_xeno)
 					found = F
 					break
 			if(found)

@@ -117,7 +117,7 @@
 
 /obj/item/weapon/gun/rifle/sniper/elite
 	name = "\improper M42C anti-tank sniper rifle"
-	desc = "A high end mag-rail heavy sniper rifle from Weston-Armat chambered in the heaviest ammo available, 10x99mm Caseless."
+	desc = "A high end mag-rail heavy sniper rifle from Weyland-Armat chambered in the heaviest ammo available, 10x99mm Caseless."
 	icon_state = "m42c"
 	item_state = "m42c" //NEEDS A TWOHANDED STATE
 
@@ -241,7 +241,7 @@
 						/obj/item/attachable/reflex
 						)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
 	starting_attachment_types = list(/obj/item/attachable/stock/rifle/marksman)
 
 	flags_item = TWOHANDED|NO_CRYO_STORE
@@ -319,13 +319,13 @@
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO
 	gun_category = GUN_CATEGORY_HEAVY
 	starting_attachment_types = list(/obj/item/attachable/smartbarrel)
+	auto_retrieval_slot = WEAR_J_STORE
 
 
 /obj/item/weapon/gun/smartgun/Initialize(mapload, ...)
 	. = ..()
 	ammo_primary = GLOB.ammo_list[ammo_primary]
 	ammo_secondary = GLOB.ammo_list[ammo_secondary]
-	AddElement(/datum/element/magharness)
 	MD = new(src)
 
 /obj/item/weapon/gun/smartgun/set_gun_attachment_offsets()
@@ -769,11 +769,8 @@
 	set name = "Switch Storage Drawing Method"
 	set category = "Object"
 	set src in usr
-	cylinder.storage_flags ^= STORAGE_USING_DRAWING_METHOD
-	if (cylinder.storage_flags & STORAGE_USING_DRAWING_METHOD)
-		to_chat(usr, "Clicking [src] with an empty hand now puts the last stored item in your hand.")
-	else
-		to_chat(usr, "Clicking [src] with an empty hand now opens the internal storage menu.")
+
+	cylinder.storage_draw_logic(src.name)
 
 //-------------------------------------------------------
 //GRENADE LAUNCHER
@@ -797,7 +794,7 @@
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	wield_delay = WIELD_DELAY_SLOW
 	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
-	///Can you access the storage by clicking it, put things into it, or take things out? Meant for break-actions mostly but useful for any state where you want access to be toggleable. Make sure to call cylinder.hide_from(user) so they don't still have the screen open!
+	///Can you access the storage by clicking it, put things into it, or take things out? Meant for break-actions mostly but useful for any state where you want access to be toggleable. Make sure to call cylinder.close(user) so they don't still have the screen open!
 	var/open_chamber = TRUE
 	///Does it launch its grenades in a low arc or a high? Do they strike people in their path, or fly beyond?
 	var/is_lobbing = FALSE
@@ -1121,7 +1118,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	. = ..()
 	if (. && istype(user))
 		if(riot_version)
-			if(!skillcheck(user, SKILL_POLICE, SKILL_POLICE_MP))
+			if(!skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
 				to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 				return FALSE
 		else if(!skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_GRENADIER)

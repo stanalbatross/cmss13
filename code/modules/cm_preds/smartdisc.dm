@@ -4,7 +4,12 @@
 	deliveryamt = 1
 	desc = "A strange piece of alien technology. It has many jagged, whirring blades and bizarre writing."
 	flags_item = ITEM_PREDATOR
-	icon = 'icons/obj/items/weapons/predator.dmi'
+	icon = 'icons/obj/items/hunter/pred_gear.dmi'
+	item_icons = list(
+		WEAR_BACK = 'icons/mob/humans/onmob/hunter/pred_gear.dmi',
+		WEAR_L_HAND = 'icons/mob/humans/onmob/hunter/items_lefthand.dmi',
+		WEAR_R_HAND = 'icons/mob/humans/onmob/hunter/items_righthand.dmi'
+	)
 	icon_state = "disk"
 	item_state = "pred_disk"
 	w_class = SIZE_TINY
@@ -71,21 +76,24 @@
 		remove_from_missing_pred_gear(src)
 	..()
 
-/obj/item/explosive/grenade/spawnergrenade/smartdisc/attack_self(mob/user as mob)
-	if(!active)
-		if(!isYautja(user))
-			if(prob(75))
-				to_chat(user, "You fiddle with the disc, but nothing happens. Try again maybe?")
-				return
-		to_chat(user, SPAN_WARNING("You activate the smart-disc and it whirrs to life!"))
-		activate(user)
-		add_fingerprint(user)
-		var/mob/living/carbon/C = user
-		if(istype(C) && !C.throw_mode)
-			C.toggle_throw_mode(THROW_MODE_NORMAL)
-	return
+/obj/item/explosive/grenade/spawnergrenade/smartdisc/attack_self(mob/user)
+	..()
 
-/obj/item/explosive/grenade/spawnergrenade/smartdisc/activate(mob/user as mob)
+	if(active)
+		return
+
+	if(!isYautja(user))
+		if(prob(75))
+			to_chat(user, "You fiddle with the disc, but nothing happens. Try again maybe?")
+			return
+	to_chat(user, SPAN_WARNING("You activate the smart-disc and it whirrs to life!"))
+	activate(user)
+	add_fingerprint(user)
+	var/mob/living/carbon/C = user
+	if(istype(C) && !C.throw_mode)
+		C.toggle_throw_mode(THROW_MODE_NORMAL)
+
+/obj/item/explosive/grenade/spawnergrenade/smartdisc/activate(mob/user)
 	if(active)
 		return
 
@@ -121,7 +129,7 @@
 /mob/living/simple_animal/hostile/smartdisc
 	name = "smart-disc"
 	desc = "A furious, whirling array of blades and alien technology."
-	icon = 'icons/obj/items/weapons/predator.dmi'
+	icon = 'icons/obj/items/hunter/pred_gear.dmi'
 	icon_state = "disk_active"
 	icon_living = "disk_active"
 	icon_dead = "disk"

@@ -54,18 +54,17 @@
 
 	var/evolve_progress
 
-	if(caste_name == "Bloody Larva" || caste_name == "Predalien Larva")
+	if(caste_type == XENO_CASTE_LARVA || caste_type == XENO_CASTE_PREDALIEN_LARVA)
 		evolve_progress = "[round(amount_grown)]/[max_grown]"
-	else if(hive && !hive.allow_no_queen_actions)
-		if(!hive.living_xeno_queen)
-			evolve_progress = "NO QUEEN"
-		else if(!hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
-			evolve_progress = "NO OVIPOSITOR"
-
-	if(!evolve_progress)
+	else if(caste && caste.evolution_allowed)
 		evolve_progress = "[round(evolution_stored)]/[evolution_threshold]"
+		if(hive && !hive.allow_no_queen_actions)
+			if(!hive.living_xeno_queen)
+				evolve_progress += " (NO QUEEN)"
+			else if(!(hive.living_xeno_queen.ovipositor || hive.evolution_without_ovipositor))
+				evolve_progress += " (NO OVIPOSITOR)"
 
-	if(caste && caste.evolution_allowed)
+	if(evolve_progress)
 		. += "Evolve Progress: [evolve_progress]"
 
 	. += ""
@@ -117,7 +116,7 @@
 	if(hive)
 		if(!hive.living_xeno_queen)
 			. += "Queen's Location: NO QUEEN"
-		else if(!(caste_name == "Queen"))
+		else if(!(caste_type == XENO_CASTE_QUEEN))
 			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
 
 		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
@@ -152,7 +151,7 @@
 		if(is_mob_incapacitated() || lying || buckled)
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 			return FALSE
-		else if(!(caste_name == "Queen") && observed_xeno)
+		else if(!(caste_type == XENO_CASTE_QUEEN) && observed_xeno)
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 	else
 		if(is_mob_incapacitated() || buckled)
@@ -316,10 +315,10 @@
 		frozen = TRUE
 		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, .proc/unfreeze), pounceAction.freeze_time, TIMER_STOPPABLE)
 
+	pounceAction.additional_effects(M)
+
 	if(pounceAction.slash)
 		M.attack_alien(src, pounceAction.slash_bonus_damage)
-
-	pounceAction.additional_effects(M)
 
 	throwing = FALSE //Reset throwing since something was hit.
 
@@ -566,8 +565,7 @@
 		SPAN_XENOWARNING("[M]'s [L.display_name] bones snap with a satisfying crunch!"))
 		L.take_damage(rand(15,25), 0, 0)
 		L.fracture(100)
-	M.last_damage_source = initial(name)
-	M.last_damage_mob = src
+	M.last_damage_data = create_cause_data(initial(caste_type), src)
 	src.attack_log += text("\[[time_stamp()]\] <font color='red'>ripped the [L.display_name] off of [M.name] ([M.ckey]) 1/2 progress</font>")
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>had their [L.display_name] ripped off by [src.name] ([src.ckey]) 1/2 progress</font>")
 	log_attack("[src.name] ([src.ckey]) ripped the [L.display_name] off of [M.name] ([M.ckey]) 1/2 progress")
@@ -633,3 +631,19 @@
 		qdel(TC)
 		LAZYREMOVE(tackle_counter, M)
 		UnregisterSignal(M, COMSIG_MOB_KNOCKED_DOWN)
+
+
+/mob/living/carbon/Xenomorph/burn_skin(burn_amount)
+	if(burrow)
+		return FALSE
+
+	if(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE)
+		burn_amount *= 0.5
+
+	apply_damage(burn_amount, BURN)
+	to_chat(src, SPAN_DANGER("Your flesh, it melts!"))
+	updatehealth()
+	return TRUE
+
+/mob/living/carbon/Xenomorph/get_role_name()
+	return caste_type

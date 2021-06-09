@@ -10,6 +10,10 @@
 	var/passive_increase_interval = 20 MINUTES
 	var/next_passive_increase = 0
 
+	var/research_allocation_interval = 10 MINUTES
+	var/next_research_allocation = 0
+	var/research_allocation_amount = 5
+
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -142,12 +146,13 @@
 
 /datum/game_mode/colonialmarines/proc/map_announcement()
 	if(SSmapping.configs[GROUND_MAP].announce_text)
-		marine_announcement(SSmapping.configs[GROUND_MAP].announce_text, "[MAIN_SHIP_NAME]")
+		var/rendered_announce_text = replacetext(SSmapping.configs[GROUND_MAP].announce_text, "###SHIPNAME###", MAIN_SHIP_NAME)
+		marine_announcement(rendered_announce_text, "[MAIN_SHIP_NAME]")
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#define FOG_DELAY_INTERVAL		(35 MINUTES)
+#define FOG_DELAY_INTERVAL		(25 MINUTES)
 #define PODLOCKS_OPEN_WAIT		(45 MINUTES) // CORSAT pod doors drop at 12:45
 
 //This is processed each tick, but check_win is only checked 5 ticks, so we don't go crazy with scanning for mobs.
@@ -163,6 +168,10 @@
 			tree.passive_node.resources_per_second += PASSIVE_INCREASE_AMOUNT
 
 		next_passive_increase = world.time + passive_increase_interval
+
+	if(next_research_allocation < world.time)
+		chemical_data.update_credits(research_allocation_amount)
+		next_research_allocation = world.time + research_allocation_interval
 
 	if(!round_finished)
 		var/datum/hive_status/hive
@@ -205,11 +214,20 @@
 				check_win()
 			round_checkwin = 0
 
-		if(!(resin_allow_finished) && world.time >= round_time_resin)
+		if(!evolution_ovipositor_threshold && world.time >= SSticker.round_start_time + round_time_evolution_ovipositor)
+			for(var/hivenumber in GLOB.hive_datum)
+				hive = GLOB.hive_datum[hivenumber]
+				hive.evolution_without_ovipositor = FALSE
+				if(hive.living_xeno_queen && !hive.living_xeno_queen.ovipositor)
+					to_chat(hive.living_xeno_queen, SPAN_XENODANGER("It is time to settle down and let your children grow."))
+			evolution_ovipositor_threshold = TRUE
+			msg_admin_niche("Xenomorphs now require the queen's ovipositor for evolution progress.")
+
+		if(!(resin_allow_finished) && world.time >= SSticker.round_start_time + round_time_resin)
 			for(var/area/A in all_areas)
 				if(!(A.is_resin_allowed))
 					A.is_resin_allowed = TRUE
-			resin_allow_finished = 1
+			resin_allow_finished = TRUE
 			msg_admin_niche("Areas close to landing zones are now weedable.")
 
 

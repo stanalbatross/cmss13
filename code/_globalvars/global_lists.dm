@@ -63,7 +63,7 @@ GLOBAL_LIST_INIT(resin_build_order_hivelord, list(
 ))
 
 /// Xeno caste datums
-GLOBAL_REFERENCE_LIST_INDEXED(xeno_datum_list, /datum/caste_datum, caste_name)
+GLOBAL_REFERENCE_LIST_INDEXED(xeno_datum_list, /datum/caste_datum, caste_type)
 
 //Chem Stuff
 var/global/list/chemical_reactions_filtered_list	//List of all /datum/chemical_reaction datums filtered by reaction components. Used during chemical reactions
@@ -96,8 +96,6 @@ var/global/list/grenade_antigrief_exempt_areas = list(
 var/global/list/yautja_gear = list() // list of loose pred gear
 var/global/list/untracked_yautja_gear = list() // List of untracked loose pred gear
 
-GLOBAL_LIST_EMPTY_TYPED(gun_cabinets, /obj/structure/closet/secure_closet/guncabinet)
-
 //Languages/species/whitelist.
 GLOBAL_LIST_INIT_TYPED(all_species, /datum/species, setup_species())
 GLOBAL_REFERENCE_LIST_INDEXED(all_languages, /datum/language, name)
@@ -115,7 +113,8 @@ GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_BRAVO = new /datum/hive_status/bravo(),
 	XENO_HIVE_CHARLIE = new /datum/hive_status/charlie(),
 	XENO_HIVE_DELTA = new /datum/hive_status/delta(),
-	XENO_HIVE_SUBMISSIVE = new /datum/hive_status/corrupted/submissive()
+	XENO_HIVE_FERAL = new /datum/hive_status/feral(),
+	XENO_HIVE_TAMED = new /datum/hive_status/corrupted/tamed()
 ))
 
 GLOBAL_LIST_INIT(custom_event_info_list, setup_custom_event_info())

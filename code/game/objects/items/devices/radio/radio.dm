@@ -19,6 +19,7 @@
 	var/subspace_transmission = 0
 	var/syndie = 0//Holder to see if it's a syndicate encrpyed radio
 	var/maxf = 1499
+	var/volume = RADIO_VOLUME_QUIET
 //			"Example" = FREQ_LISTENING|FREQ_BROADCASTING
 	flags_atom = FPRINT|CONDUCT
 	flags_equip_slot = SLOT_WAIST
@@ -70,6 +71,7 @@
 
 
 /obj/item/device/radio/attack_self(mob/user as mob)
+	..()
 	user.set_interaction(src)
 	interact(user)
 
@@ -161,7 +163,8 @@
 				channels[chan_name] |= FREQ_LISTENING
 	else if (href_list["wires"])
 		var/t1 = text2num(href_list["wires"])
-		if (!( istype(usr.get_active_hand(), /obj/item/tool/wirecutters) ))
+		var/obj/item/held_item = usr.get_held_item()
+		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 			return
 		if (wires & t1)
 			wires &= ~t1
@@ -290,7 +293,7 @@
 
 	Broadcast_Message(connection, M, voicemask, pick(M.speak_emote),
 					  src, message, displayname, jobname, real_name, M.voice_name,
-					  filter_type, 0, target_zs, connection.frequency, verb, speaking)
+					  filter_type, 0, target_zs, connection.frequency, verb, speaking, volume)
 
 
 /obj/item/device/radio/proc/get_target_zs()
@@ -399,7 +402,7 @@
 /obj/item/device/radio/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	user.set_interaction(src)
-	if (!( istype(W, /obj/item/tool/screwdriver) ))
+	if (!HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		return
 	b_stat = !( b_stat )
 	if(!istype(src, /obj/item/device/radio/beacon))
@@ -443,10 +446,10 @@
 /obj/item/device/radio/borg/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_interaction(src)
-	if (!( istype(W, /obj/item/tool/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
+	if (!(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) || (istype(W, /obj/item/device/encryptionkey))))
 		return
 
-	if(istype(W, /obj/item/tool/screwdriver))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(keyslot)
 
 

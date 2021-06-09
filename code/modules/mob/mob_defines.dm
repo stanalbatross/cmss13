@@ -135,7 +135,7 @@
 
 	var/job = null					// Internal job title used when mob is spawned. Preds are "Predator", Xenos are "Xenomorph", Marines have their actual job title
 	var/comm_title = ""
-	var/faction = FACTION_NEUTRAL //Used for checking whether hostile simple animals will attack you, possibly more stuff later
+	var/faction = FACTION_NEUTRAL
 	var/faction_group
 
 	var/datum/skills/skills = null //the knowledge you have about certain abilities and actions (e.g. do you how to do surgery?)
@@ -183,8 +183,7 @@
 	var/clicked_something 	// a list of booleans for if a mob did a specific click
 							// only left click, shift click, right click, and middle click
 
-	var/last_damage_source // for tracking whatever damaged us last, mainly for stat tracking
-	var/last_damage_mob // for tracking last hits on mob death, for kill stat tracking and moderation
+	var/datum/cause_data/last_damage_data // for tracking whatever damaged us last
 
 	var/ambience_playing = FALSE
 

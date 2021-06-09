@@ -25,6 +25,8 @@
 #define AMMO_HITS_TARGET_TURF	(1<<17) // Whether or not the bullet hits the target that was clicked or if it keeps travelling
 #define AMMO_ALWAYS_FF			(1<<18)
 #define AMMO_HOMING				(1<<19) // If the bullet target is a mob, it will correct its trajectory toward the mob.
+/// Can't be deflected
+#define AMMO_NO_DEFLECT			(1<<20)
 
 //Gun defines for gun related thing. More in the projectile folder.
 #define GUN_CAN_POINTBLANK		(1<<0)
@@ -43,9 +45,12 @@
 #define GUN_WIELDED_FIRING_ONLY	(1<<13)
 #define GUN_HAS_FULL_AUTO		(1<<14)
 #define GUN_FULL_AUTO_ON		(1<<15)
-#define GUN_ONE_HAND_WIELDED	(1<<16) //removes one-hand accuracy penalty
+#define GUN_ONE_HAND_WIELDED	(1<<16) //removes unwielded accuracy and scatter penalties (not recoil)
 #define GUN_ANTIQUE 			(1<<17)
 #define GUN_RECOIL_BUILDUP		(1<<18)
+#define GUN_INTERNAL_SILENCED	(1<<19) //suppressor doesnt override sound
+/// Whether the gun has been fired by its current user (reset upon `dropped()`)
+#define GUN_FIRED_BY_USER		(1<<20)
 
 //Gun attachable related flags.
 #define ATTACH_REMOVABLE	1
@@ -71,7 +76,7 @@
 #define SLOWDOWN_ARMOR_HEAVY		1
 #define SLOWDOWN_ARMOR_VERY_HEAVY	1.15
 
-#define SLOWDOWN_ADS_SMG				0.35
+#define SLOWDOWN_ADS_QUICK				0.35
 #define SLOWDOWN_ADS_VERSATILE			0.50
 #define SLOWDOWN_ADS_SHOTGUN			0.75
 #define SLOWDOWN_ADS_RIFLE				1
@@ -169,7 +174,7 @@
 #define HEALTH_WALL_XENO_REFLECTIVE 		300
 #define HEALTH_WALL_XENO_MEMBRANE_THICK 	600
 
-#define HEALTH_DOOR 		    2000
+#define HEALTH_DOOR 		    1200
 #define HEALTH_DOOR_XENO 	    600
 #define HEALTH_DOOR_XENO_THICK 	900
 

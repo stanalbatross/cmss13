@@ -216,7 +216,7 @@
 				update_icon()
 		return
 
-	if(istype(W, /obj/item/tool/wirecutters))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(is_wired)
 			user.visible_message(SPAN_NOTICE("[user] begin removing the barbed wire on [src]."),
 			SPAN_NOTICE("You begin removing the barbed wire on [src]."))
@@ -279,7 +279,7 @@
 	qdel(src)
 
 
-/obj/structure/barricade/ex_act(severity, direction)
+/obj/structure/barricade/ex_act(severity, direction, cause_data)
 	for(var/obj/structure/barricade/B in get_step(src,dir)) //discourage double-stacking barricades by removing health from opposing barricade
 		if(B.dir == reverse_direction(dir))
 			spawn(1)
@@ -291,7 +291,7 @@
 		if(prob(50)) // no message spam pls
 			visible_message(SPAN_WARNING("[src] blows apart in the explosion, sending shards flying!"))
 		qdel(src)
-		create_shrapnel(location, rand(2,5), direction, , /datum/ammo/bullet/shrapnel/light)
+		create_shrapnel(location, rand(2,5), direction, , /datum/ammo/bullet/shrapnel/light, cause_data)
 	else
 		update_health(round(severity * explosive_multiplier))
 

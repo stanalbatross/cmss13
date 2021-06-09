@@ -1,7 +1,7 @@
 
 // Actual caste datum basedef
 /datum/caste_datum
-	var/caste_name = ""
+	var/caste_type = ""
 	var/display_name = ""
 	var/tier = 0
 	var/dead_icon = "Drone Dead"
@@ -209,6 +209,7 @@
 	var/evolution_bonus = 0
 
 	var/allow_no_queen_actions = FALSE
+	var/evolution_without_ovipositor = TRUE //Temporary for the roundstart.
 	var/allow_queen_evolve = TRUE // Set to true if you want to prevent evolutions into Queens
 	var/hardcore = FALSE // Set to true if you want to prevent bursts and spawns of new xenos. Will also prevent healing if the queen no longer exists
 
@@ -430,10 +431,10 @@
 	// Every caste is manually defined here so you get
 	var/list/xeno_counts = list(
 		// Yes, Queen is technically considered to be tier 0
-		list("Bloody Larva" = 0, "Queen" = 0),
-		list("Drone" = 0, "Runner" = 0, "Sentinel" = 0, "Defender" = 0),
-		list("Hivelord" = 0, "Burrower" = 0, "Carrier" = 0, "Lurker" = 0, "Spitter" = 0, "Warrior" = 0),
-		list("Boiler" = 0, "Crusher" = 0, "Praetorian" = 0, "Ravager" = 0)
+		list(XENO_CASTE_LARVA = 0, "Queen" = 0),
+		list(XENO_CASTE_DRONE = 0, XENO_CASTE_RUNNER = 0, XENO_CASTE_SENTINEL = 0, XENO_CASTE_DEFENDER = 0),
+		list(XENO_CASTE_HIVELORD = 0, XENO_CASTE_BURROWER = 0, XENO_CASTE_CARRIER = 0, XENO_CASTE_LURKER = 0, XENO_CASTE_SPITTER = 0, XENO_CASTE_WARRIOR = 0),
+		list(XENO_CASTE_BOILER = 0, XENO_CASTE_CRUSHER = 0, XENO_CASTE_PRAETORIAN = 0, XENO_CASTE_RAVAGER = 0)
 	)
 
 	for(var/mob/living/carbon/Xenomorph/X in totalXenos)
@@ -444,7 +445,7 @@
 				continue
 
 		if(X.caste)
-			xeno_counts[X.caste.tier+1][X.caste.caste_name]++
+			xeno_counts[X.caste.tier+1][X.caste.caste_type]++
 
 	return xeno_counts
 
@@ -469,7 +470,7 @@
 			"tier" = X.tier, // This one is only important for sorting
 			"is_leader" = (IS_XENO_LEADER(X)),
 			"is_queen" = istype(X.caste, /datum/caste_datum/queen),
-			"caste_name" = X.caste_name
+			"caste_type" = X.caste_type
 		)
 
 	// Clear nulls from the xenos list
@@ -526,7 +527,7 @@
 			// Could not think of an elegant way to write this
 			if(!(current["is_leader"]^prev["is_leader"])\
 				&& (prev["tier"] < current["tier"]\
-				|| prev["tier"] == current["tier"] && prev["caste_name"] > current["caste_name"]\
+				|| prev["tier"] == current["tier"] && prev["caste_type"] > current["caste_type"]\
 			))
 				sorted_list.Swap(j-1, j)
 
@@ -629,8 +630,8 @@
 			continue
 		var/datum/caste_datum/C = caste_path
 		switch(initial(C.tier))
-			if(2) slots[TIER_2][GUARANTEED_SLOTS][initial(C.caste_name)] = slot_count
-			if(3) slots[TIER_3][GUARANTEED_SLOTS][initial(C.caste_name)] = slot_count
+			if(2) slots[TIER_2][GUARANTEED_SLOTS][initial(C.caste_type)] = slot_count
+			if(3) slots[TIER_3][GUARANTEED_SLOTS][initial(C.caste_type)] = slot_count
 
 	var/effective_total = length(totalXenos) + pooled_factor
 
@@ -741,7 +742,7 @@
 			continue
 		for(var/obj/item/alien_embryo/embryo in potential_host)
 			qdel(embryo)
-		potential_host.death("larva suicide")
+		potential_host.death(create_cause_data("larva suicide"))
 
 /datum/hive_status/proc/free_respawn(var/client/C)
 	stored_larva++
@@ -824,10 +825,22 @@
 
 	dynamic_evolution = FALSE
 
-/datum/hive_status/corrupted/submissive
-	name = "Submissive Hive"
-	hivenumber = XENO_HIVE_SUBMISSIVE
-	prefix = "Submissive "
+/datum/hive_status/feral
+	name = "Feral Hive"
+	hivenumber = XENO_HIVE_FERAL
+	prefix = "Feral "
+	color = "#828296"
+	ui_color = "#828296"
+
+	dynamic_evolution = FALSE
+	allow_no_queen_actions = TRUE
+	allow_queen_evolve = FALSE
+	ignore_slots = TRUE
+
+/datum/hive_status/corrupted/tamed
+	name = "Tamed Hive"
+	hivenumber = XENO_HIVE_TAMED
+	prefix = "Tamed "
 	color = "#80ff80"
 
 	dynamic_evolution = FALSE
@@ -838,12 +851,12 @@
 	var/mob/living/carbon/human/leader
 	var/list/allied_factions
 
-/datum/hive_status/corrupted/submissive/New()
+/datum/hive_status/corrupted/tamed/New()
 	. = ..()
 	hive_structures_limit[XENO_STRUCTURE_EGGMORPH] = 0
 	hive_structures_limit[XENO_STRUCTURE_EVOPOD] = 0
 
-/datum/hive_status/corrupted/submissive/proc/make_leader(var/mob/living/carbon/human/H)
+/datum/hive_status/corrupted/tamed/proc/make_leader(var/mob/living/carbon/human/H)
 	if(!istype(H))
 		return
 
@@ -853,7 +866,7 @@
 	leader = H
 	RegisterSignal(leader, COMSIG_PARENT_QDELETING, .proc/handle_qdelete)
 
-/datum/hive_status/corrupted/submissive/proc/handle_qdelete(var/mob/living/carbon/human/H)
+/datum/hive_status/corrupted/tamed/proc/handle_qdelete(var/mob/living/carbon/human/H)
 	SIGNAL_HANDLER
 
 	if(H == leader)
@@ -865,15 +878,15 @@
 		if(!(H.faction in allied_factions))
 			allied_factions += H.faction
 
-/datum/hive_status/corrupted/submissive/add_xeno(mob/living/carbon/Xenomorph/X)
+/datum/hive_status/corrupted/tamed/add_xeno(mob/living/carbon/Xenomorph/X)
 	. = ..()
 	X.faction_group = allied_factions
 
-/datum/hive_status/corrupted/submissive/remove_xeno(mob/living/carbon/Xenomorph/X, hard)
+/datum/hive_status/corrupted/tamed/remove_xeno(mob/living/carbon/Xenomorph/X, hard)
 	. = ..()
 	X.faction_group = list(X.faction)
 
-/datum/hive_status/corrupted/submissive/is_ally(mob/living/carbon/C)
+/datum/hive_status/corrupted/tamed/is_ally(mob/living/carbon/C)
 	if(leader)
 		if(C.faction in leader.faction_group)
 			return TRUE

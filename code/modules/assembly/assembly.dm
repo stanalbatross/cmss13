@@ -79,7 +79,7 @@
 		if((!A.secured) && (!secured))
 			attach_assembly(A,user)
 			return
-	if(isscrewdriver(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(toggle_secure())
 			to_chat(user, SPAN_NOTICE("\The [src] is ready!"))
 		else
@@ -99,11 +99,14 @@
 		else
 			to_chat(user, "[src] can be attached!")
 
-/obj/item/device/assembly/attack_self(mob/user as mob)
-	if(!user)	return 0
+/obj/item/device/assembly/attack_self(mob/user)
+	..()
+
+	if(!user)
+		return
+
 	user.set_interaction(src)
 	interact(user)
-	return 1
 
 /obj/item/device/assembly/proc/holder_movement()							//Called when the holder is moved
 		return

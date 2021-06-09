@@ -1,10 +1,10 @@
 /datum/caste_datum/boiler
-	caste_name = "Boiler"
+	caste_type = XENO_CASTE_BOILER
 	tier = 3
 
 	melee_damage_lower = XENO_DAMAGE_TIER_1
 	melee_damage_upper = XENO_DAMAGE_TIER_2
-	max_health = XENO_HEALTH_TIER_6
+	max_health = XENO_HEALTH_TIER_8
 	plasma_gain = XENO_PLASMA_GAIN_TIER_7
 	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_2
@@ -15,7 +15,7 @@
 	behavior_delegate_type = /datum/behavior_delegate/boiler_base
 
 	evolution_allowed = FALSE
-	deevolves_to = "Spitter"
+	deevolves_to = XENO_CASTE_SPITTER
 	spit_delay = 35
 	caste_desc = "Gross!"
 	acid_level = 3
@@ -28,8 +28,8 @@
 	tacklestrength_max = 4
 
 /mob/living/carbon/Xenomorph/Boiler
-	caste_name = "Boiler"
-	name = "Boiler"
+	caste_type = XENO_CASTE_BOILER
+	name = XENO_CASTE_BOILER
 	desc = "A huge, grotesque xenomorph covered in glowing, oozing acid slime."
 	icon_size = 64
 	icon_state = "Boiler Walking"
@@ -63,7 +63,7 @@
 	icon = get_icon_from_source(CONFIG_GET(string/alien_boiler))
 	smoke = new /datum/effect_system/smoke_spread/xeno_acid
 	smoke.attach(src)
-	smoke.source_mob = src
+	smoke.cause_data = create_cause_data(initial(caste_type), src)
 	see_in_dark = 20
 	ammo = GLOB.ammo_list[/datum/ammo/xeno/boiler_gas]
 

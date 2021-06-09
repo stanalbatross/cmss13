@@ -1,4 +1,5 @@
 /datum/species/yautja
+	group = SPECIES_YAUTJA
 	name = "Yautja"
 	name_plural = "Yautja"
 	brute_mod = 0.33 //Beefy!
@@ -6,6 +7,11 @@
 	reagent_tag = IS_YAUTJA
 	mob_flags = KNOWS_TECHNOLOGY
 	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_CLONE_LOSS|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL|HAS_HARDCRIT
+	mob_inherent_traits = list(
+		TRAIT_YAUTJA_TECH,
+		TRAIT_SUPER_STRONG,
+		TRAIT_FOREIGN_BIO
+		)
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	pain_type = /datum/pain/yautja
@@ -28,7 +34,16 @@
 		/mob/living/carbon/human/proc/pred_buy,
 		/mob/living/carbon/human/proc/butcher,
 		/mob/living/carbon/human/proc/mark_for_hunt,
-		/mob/living/carbon/human/proc/remove_from_hunt
+		/mob/living/carbon/human/proc/remove_from_hunt,
+		/mob/living/carbon/human/proc/mark_gear,
+		/mob/living/carbon/human/proc/unmark_gear,
+		/mob/living/carbon/human/proc/mark_honored,
+		/mob/living/carbon/human/proc/unmark_honored,
+		/mob/living/carbon/human/proc/mark_dishonored,
+		/mob/living/carbon/human/proc/unmark_dishonored,
+		/mob/living/carbon/human/proc/mark_thralled,
+		/mob/living/carbon/human/proc/unmark_thralled,
+		/mob/living/carbon/human/proc/mark_panel
 		)
 
 	knock_down_reduction = 4
@@ -93,13 +108,33 @@
 	if(gibbed)
 		GLOB.yautja_mob_list -= H
 
-	if(H.yautja_hunted_prey)
-		H.yautja_hunted_prey = null
+	for(var/mob/living/carbon/M in H.hunter_data.dishonored_targets)
+		M.hunter_data.dishonored_set = null
+		H.hunter_data.dishonored_targets -= M
+	for(var/mob/living/carbon/M in H.hunter_data.honored_targets)
+		M.hunter_data.honored_set = null
+		H.hunter_data.honored_targets -= M
+	for(var/mob/living/carbon/M in H.hunter_data.gear_targets)
+		M.hunter_data.gear_set = null
+		H.hunter_data.gear_targets -= M
+
+	if(H.hunter_data.prey)
+		var/mob/living/carbon/M = H.hunter_data.prey
+		H.hunter_data.prey = null
+		M.hunter_data.hunter = null
+		M.hud_set_hunter()
 
 	// Notify all yautja so they start the gear recovery
-	message_all_yautja("[H] has died at \the [get_area_name(H)].")
+	message_all_yautja("[H.real_name] has died at \the [get_area_name(H)].")
+
+	if(H.hunter_data.thrall)
+		var/mob/living/carbon/T = H.hunter_data.thrall
+		message_all_yautja("[H.real_name]'s Thrall, [T.real_name] is now masterless.")
+		H.message_thrall("Your master has fallen!")
+		H.hunter_data.thrall = null
 
 /datum/species/yautja/post_species_loss(mob/living/carbon/human/H)
+	..()
 	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
 	A.add_to_hud(H)
 	H.blood_type = pick("A+","A-","B+","B-","O-","O+","AB+","AB-")

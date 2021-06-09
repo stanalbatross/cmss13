@@ -124,7 +124,8 @@
 #define XENO_HIVE_BRAVO "xeno_hive_bravo"
 #define XENO_HIVE_CHARLIE "xeno_hive_charlie"
 #define XENO_HIVE_DELTA "xeno_hive_delta"
-#define XENO_HIVE_SUBMISSIVE "xeno_hive_submissive"
+#define XENO_HIVE_FERAL "xeno_hive_feral"
+#define XENO_HIVE_TAMED "xeno_hive_tamed"
 
 //=================================================
 
@@ -204,7 +205,7 @@
 #define MOB_SIZE_XENO_SMALL 	2
 #define MOB_SIZE_XENO			3
 #define MOB_SIZE_BIG			4
-#define MOB_SIZE_IMMOBILE		5 // if you are not supposed to be able to move AT ALL then you get this flag
+#define MOB_SIZE_IMMOBILE		5 // if you are not supposed to be able to moved AT ALL then you get this flag
 
 
 //defines for the busy icons when the mob does something that takes time using do_after proc
@@ -363,4 +364,5 @@ var/list/default_onmob_icons = list(
 // species names
 #define SPECIES_HUMAN "Human"
 #define SPECIES_YAUTJA "Yautja"
+#define SPECIES_SYNTHETIC "Synthetic"
 #define SPECIES_MONKEY "Monkey"

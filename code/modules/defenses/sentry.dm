@@ -124,7 +124,7 @@
 		return
 
 	//Securing/Unsecuring
-	if(iswrench(O))
+	if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH))
 		if(immobile)
 			to_chat(user, SPAN_WARNING("[src] is completely welded in place. You can't move it without damaging it."))
 			return
@@ -133,7 +133,7 @@
 		return
 
 	// Rotation
-	if(isscrewdriver(O))
+	if(HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER))
 		if(immobile)
 			to_chat(user, SPAN_WARNING("[src] is completely welded in place. You can't move it without damaging it."))
 			return
@@ -182,7 +182,7 @@
 		setDir(pick(NORTH, EAST, SOUTH, WEST))
 		sleep(2)
 
-	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "sentry explosion")
+	cell_explosion(loc, 10, 10, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("sentry explosion"))
 	if(!QDELETED(src))
 		qdel(src)
 
@@ -215,7 +215,7 @@
 		addtimer(CALLBACK(src, .proc/get_target), fire_delay)
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(var/atom/A)
-	var/obj/item/projectile/P = new(initial(name), owner_mob)
+	var/obj/item/projectile/P = new(create_cause_data(initial(name), owner_mob))
 	P.generate_bullet(new ammo.default_ammo)
 	P.damage *= damage_mult
 	P.accuracy *= accuracy_mult

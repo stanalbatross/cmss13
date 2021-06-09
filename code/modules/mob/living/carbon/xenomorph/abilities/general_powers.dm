@@ -206,7 +206,6 @@
 	var/mob/living/carbon/Xenomorph/X = owner
 	. = X.build_resin(A, thick, make_message, plasma_cost != 0)
 	..()
-	return
 
 // Destructive Acid
 /datum/action/xeno_action/activable/corrosive_acid/use_ability(atom/A)
@@ -274,6 +273,7 @@
 
 	if(X.layer == XENO_HIDING_LAYER) //Xeno is currently hiding, unhide him
 		X.layer = MOB_LAYER
+		X.update_wounds()
 
 	if(isXenoRavager(X))
 		X.emote("roar")
@@ -382,6 +382,7 @@
 	else
 		X.layer = MOB_LAYER
 		to_chat(X, SPAN_NOTICE("You have stopped hiding."))
+	X.update_wounds()
 
 
 /datum/action/xeno_action/onclick/place_trap/use_ability(atom/A)
@@ -465,7 +466,30 @@
 		return
 	if(choice == "cancel" || !X.check_state(1) || !X.check_plasma(400))
 		return FALSE
+	var/structure_type = X.hive.hive_structure_types[choice]
+	var/datum/construction_template/xenomorph/structure_template = new structure_type()
+
 	if(!do_after(X, XENO_STRUCTURE_BUILD_TIME, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+		return FALSE
+
+	if(structure_template.requires_node)
+		for(var/turf/TA in range(T, structure_template.block_range))
+			if(TA.density)
+				to_chat(X, SPAN_WARNING("You need more open space to build here."))
+				qdel(structure_template)
+				return FALSE
+		if(!X.check_alien_construction(T))
+			to_chat(X, SPAN_WARNING("You need more open space to build here."))
+			qdel(structure_template)
+			return FALSE
+		var/obj/effect/alien/weeds/alien_weeds = locate() in T
+		if(!alien_weeds || alien_weeds.weed_strength < WEED_LEVEL_HIVE || alien_weeds.linked_hive.hivenumber != X.hivenumber)
+			to_chat(X, SPAN_WARNING("You can only shape on [lowertext(GLOB.hive_datum[X.hivenumber].prefix)]hive weeds. Find a hive node or core before you start building!"))
+			qdel(structure_template)
+			return FALSE
+
+	else if(T.density)
+		to_chat(X, SPAN_WARNING("You need an empty space to build this."))
 		return FALSE
 
 	if((choice == XENO_STRUCTURE_CORE) && isXenoQueen(X) && X.hive.has_structure(XENO_STRUCTURE_CORE))
@@ -479,9 +503,6 @@
 	else if(!X.hive.can_build_structure(choice))
 		to_chat(X, SPAN_WARNING("You can't build any more [choice]s for the hive."))
 		return FALSE
-
-	var/structure_type = X.hive.hive_structure_types[choice]
-	var/datum/construction_template/xenomorph/structure_template = new structure_type()
 
 	if(!X.hive.can_build_structure(structure_template.name) && !(choice == XENO_STRUCTURE_CORE))
 		to_chat(X, SPAN_WARNING("You cannot build any more [structure_template.name]!"))
@@ -503,24 +524,6 @@
 		to_chat(X, SPAN_WARNING("It's too early to be placing [structure_template.name] here!"))
 		qdel(structure_template)
 		return FALSE
-
-
-	if(structure_template.requires_node)
-		for(var/turf/TA in range(T, structure_template.block_range))
-			if(TA.density)
-				to_chat(X, SPAN_WARNING("You need more open space to build here."))
-				qdel(structure_template)
-				return FALSE
-
-		if(!X.check_alien_construction(T))
-			to_chat(X, SPAN_WARNING("You need more open space to build here."))
-			qdel(structure_template)
-			return FALSE
-		var/obj/effect/alien/weeds/alien_weeds = locate() in T
-		if(!alien_weeds || alien_weeds.weed_strength < WEED_LEVEL_HIVE || alien_weeds.linked_hive.hivenumber != X.hivenumber)
-			to_chat(X, SPAN_WARNING("You can only shape on [lowertext(GLOB.hive_datum[X.hivenumber].prefix)]hive weeds. Find a hive node or core before you start building!"))
-			qdel(structure_template)
-			return FALSE
 
 	X.use_plasma(400)
 	X.place_construction(T, structure_template)
@@ -555,7 +558,7 @@
 	var/sound_to_play = pick(1, 2) == 1 ? 'sound/voice/alien_spitacid.ogg' : 'sound/voice/alien_spitacid2.ogg'
 	playsound(X.loc, sound_to_play, 25, 1)
 
-	var/obj/item/projectile/P = new /obj/item/projectile(initial(X.caste_name), X, current_turf)
+	var/obj/item/projectile/P = new /obj/item/projectile(current_turf, create_cause_data(initial(X.caste_type), X))
 	P.generate_bullet(X.ammo)
 	P.permutated += X
 	P.def_zone = X.get_limbzone_target()

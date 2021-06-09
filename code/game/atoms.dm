@@ -50,6 +50,9 @@
 	var/list/beams // An assoc list where the keys are ids and their values are TRUE (indicating beam should persist)
 	var/beam_id = 0
 
+	/// Whether hovering over this atom will cause it to show in the statusbar
+	var/show_in_statusbar = TRUE
+
 /atom/New(loc, ...)
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)
@@ -364,7 +367,7 @@ its easier to just keep the beam vertical.
 
 
 //Generalized Fire Proc.
-/atom/proc/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1)
+/atom/proc/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1, var/datum/cause_data/flame_cause_data)
 	return
 
 /atom/proc/acid_spray_act()
@@ -558,12 +561,16 @@ Parameters are passed from New.
 	if(!filter_data)
 		return
 
+	var/found = FALSE
 	var/list/names = islist(name_or_names) ? name_or_names : list(name_or_names)
 
 	for(var/name in names)
 		if(filter_data[name])
 			filter_data -= name
-	update_filters()
+			found = TRUE
+
+	if(found)
+		update_filters()
 
 /atom/proc/clear_filters()
 	filter_data = null

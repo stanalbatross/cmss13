@@ -38,7 +38,7 @@
 	return TRUE
 
 /datum/keybinding/human/quick_equip_tertiary
-	hotkey_keys = list("Shift+R")
+	hotkey_keys = list("Ctrl+E", "Alt+E")
 	classic_keys = list("Ctrl+E", "Alt+E")
 	name = "quick_equip_tertiary"
 	full_name = "Unholster tertiary"
@@ -61,7 +61,7 @@
 	description = "Quickly puts an item in the best slot available"
 	keybind_signal = COMSIG_KB_HUMAN_QUICK_EQUIP_DOWN
 
-/datum/keybinding/human/quick_equip_tertiary/down(client/user)
+/datum/keybinding/human/quick_equip_inventory/down(client/user)
 	. = ..()
 	if(.)
 		return

@@ -77,6 +77,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Black Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 		list("Brown Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest/brown_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_RECOMMENDED),
 		list("Webbing", 0, /obj/item/clothing/accessory/storage/webbing, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
+		list("Surgical Webbing Vest", 0, /obj/item/clothing/accessory/storage/surg_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("SHOES (CHOOSE 1)", 0, null, null, null),
 		list("Boots", 0, /obj/item/clothing/shoes/marine/knife, MARINE_CAN_BUY_SHOES, VENDOR_ITEM_REGULAR),
@@ -92,6 +93,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Hazard Vest", 0, /obj/item/clothing/suit/storage/hazardvest, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_RECOMMENDED),
 		list("Labcoat", 0, /obj/item/clothing/suit/storage/labcoat, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 		list("Labcoat, Researcher", 0, /obj/item/clothing/suit/storage/labcoat/researcher, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
+		list("M3A1 Pattern Synthetic Utility Vest ", 0, /obj/item/clothing/suit/storage/marine/light/synvest, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 
 		list("GLOVES (CHOOSE 1)", 0, null, null, null),
 		list("Insulated Gloves", 0, /obj/item/clothing/gloves/yellow, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_RECOMMENDED),
@@ -138,7 +140,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 
 /obj/structure/machinery/cm_vending/clothing/synth/snowflake
 	name = "\improper Snowflake Vendor"
-	desc = "A vendor with a large snowflake on it. Provided by W-Y Fashion Division(TM)."
+	desc = "A vendor with a large snowflake on it. Provided by Wey-Yu Fashion Division(TM)."
 	icon_state = "snowflake"
 	use_points = TRUE
 	show_points = TRUE
@@ -164,7 +166,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Medical Scrubs, Green", 12, /obj/item/clothing/under/rank/medical/green, null, VENDOR_ITEM_REGULAR),
 		list("Medical Scrubs, Purple", 12, /obj/item/clothing/under/rank/medical/purple, null, VENDOR_ITEM_REGULAR),
 		list("Medical Scrubs, White", 12, /obj/item/clothing/under/rank/medical, null, VENDOR_ITEM_REGULAR),
-		list("Priest Robes", 12, /obj/item/clothing/under/rank/priest_robe, null, VENDOR_ITEM_REGULAR),
 		list("Security Uniform, Black and Red", 12, /obj/item/clothing/under/rank/security/corp, null, VENDOR_ITEM_REGULAR),
 		list("Security Uniform, Red and Black", 12, /obj/item/clothing/under/rank/security, null, VENDOR_ITEM_REGULAR),
 		list("Security Uniform, White and Blue", 12, /obj/item/clothing/under/rank/security/navyblue, null, VENDOR_ITEM_REGULAR),
@@ -172,6 +173,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Shaft Miner's Jumpsuit", 12, /obj/item/clothing/under/rank/miner, null, VENDOR_ITEM_REGULAR),
 		list("USCM Service Uniform", 12, /obj/item/clothing/under/marine/officer/bridge, null, VENDOR_ITEM_REGULAR),
 		list("Worker Overalls", 12, /obj/item/clothing/under/rank/worker_overalls, null, VENDOR_ITEM_REGULAR),
+		list("Engineer Uniform", 12, /obj/item/clothing/under/marine/officer/engi, null, VENDOR_ITEM_REGULAR),
 
 		list("GLASSES", 0, null, null, null),
 		list("Augmented Sunglasses", 12, /obj/item/clothing/glasses/jensen, null, VENDOR_ITEM_REGULAR),
@@ -229,10 +231,12 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Hazard Vest", 12, /obj/item/clothing/suit/storage/hazardvest, null, VENDOR_ITEM_REGULAR),
 		list("Jacket, Colonial Marshal", 12, /obj/item/clothing/suit/storage/CMB, null, VENDOR_ITEM_REGULAR),
 		list("Overalls", 12, /obj/item/clothing/suit/storage/apron/overalls, null, VENDOR_ITEM_REGULAR),
+		list("Priest Robes", 12, /obj/item/clothing/suit/priest_robe, null, VENDOR_ITEM_REGULAR),
 		list("Snow Suit", 12, /obj/item/clothing/suit/storage/snow_suit, null, VENDOR_ITEM_REGULAR),
 		list("USCM Service Jacket", 12, /obj/item/clothing/suit/storage/jacket/marine, null, VENDOR_ITEM_REGULAR),
 		list("Waistcoat", 12, /obj/item/clothing/suit/storage/wcoat, null, VENDOR_ITEM_REGULAR),
 		list("Holiday Priest", 12, /obj/item/clothing/suit/holidaypriest, null, VENDOR_ITEM_REGULAR),
+		list("RO Jacket", 12, /obj/item/clothing/suit/storage/RO, null, VENDOR_ITEM_REGULAR),
 
 		list("BACKPACK", 0, null, null, null),
 		list("Backpack, Industrial", 12, /obj/item/storage/backpack/industrial, null, VENDOR_ITEM_REGULAR),

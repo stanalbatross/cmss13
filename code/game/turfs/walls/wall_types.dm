@@ -140,7 +140,7 @@
 
 /turf/closed/wall/almayer/research/containment/wall/divide/proc/change_weeds()
 	for(var/obj/effect/alien/W in src) // Destroy all alien things on the divider (traps, special structures, etc)
-		playsound(loc, "alien_resin_break", 25)
+		playsound(src, "alien_resin_break", 25)
 		qdel(W)
 
 
@@ -319,6 +319,28 @@
 	color = "#c6a480"
 	baseturfs = /turf/open/gm/dirt
 
+/turf/closed/wall/mineral/sandstone/runed
+	name = "sandstone temple wall"
+	desc = "A heavy wall of sandstone."
+	mineral = "runed sandstone"
+	color = "#b29082"
+	damage_cap = HEALTH_WALL_REINFORCED//Strong, but only available to Hunters, can can still be blown up or melted by boilers.
+	baseturfs = /turf/open/floor/sandstone/runed
+
+/turf/closed/wall/mineral/sandstone/runed/attack_alien(mob/living/carbon/Xenomorph/user)
+	visible_message("[user] scrapes uselessly against [src] with their claws.")
+	return
+
+/turf/closed/wall/mineral/sandstone/runed/decor
+	name = "runed sandstone temple wall"
+	desc = "A heavy wall of sandstone, with elegant carvings and runes inscribed upon its face."
+	icon = 'icons/turf/walls/runedstone.dmi'
+	icon_state = "runedstone"
+	walltype = "runedstone"
+
+/turf/closed/wall/mineral/sandstone/runed/can_be_dissolved()
+	return 2
+
 /turf/closed/wall/mineral/uranium
 	name = "uranium wall"
 	desc = "A wall with uranium plating. This is probably a bad idea."
@@ -482,10 +504,10 @@
 
 /turf/closed/wall/strata_ice/jungle
 	name = "jungle vegetation"
-	icon = 'icons/turf/walls/strata_ice.dmi'
-	icon_state = "strata_jungle"
+	icon = 'icons/turf/walls/jungle_veg.dmi'
+	icon_state = "jungle_veg"
 	desc = "Exceptionally dense vegetation that you can't see through."
-	walltype = WALL_STRATA_JUNGLE //Not a metal wall
+	walltype = WALL_JUNGLE_UPDATED //Not a metal wall
 	hull = 1
 
 /turf/closed/wall/strata_outpost_ribbed //this guy is our reinforced replacement
@@ -854,16 +876,17 @@
 		return FALSE
 
 	if(M.a_intent == INTENT_HELP)
-		return FALSE
+		return XENO_NO_DELAY_ACTION
 
 	M.animation_attack_on(src)
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
 	if (M.hivenumber == hivenumber)
-		take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
+		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+	return XENO_ATTACK_ACTION
 
 /obj/structure/alien/movable_wall/attackby(obj/item/W, mob/living/user)
 	if(!(W.flags_item & NOBLUDGEON))
@@ -996,11 +1019,11 @@
 		damage *= brute_multiplier
 
 	if(prob(chance_to_reflect))
-		if(P.runtime_iff_group)
-			// Bullet gets absorbed if it has IFF.
+		if(P.runtime_iff_group || P.ammo.flags_ammo_behavior & AMMO_NO_DEFLECT)
+			// Bullet gets absorbed if it has IFF or can't be reflected.
 			return
 
-		var/obj/item/projectile/new_proj = new(src)
+		var/obj/item/projectile/new_proj = new(src, create_cause_data(initial(name)))
 		new_proj.generate_bullet(P.ammo, special_flags = P.projectile_override_flags|AMMO_HOMING)
 		new_proj.damage = original_damage
 
@@ -1058,21 +1081,22 @@
 
 /turf/closed/wall/resin/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(SEND_SIGNAL(src, COMSIG_WALL_RESIN_XENO_ATTACK, M) & COMPONENT_CANCEL_XENO_ATTACK)
-		return
+		return XENO_NO_DELAY_ACTION
 
 	if(isXenoLarva(M)) //Larvae can't do shit
-		return 0
-	else if(M.a_intent == INTENT_HELP)
-		return 0
+		return
+	if(M.a_intent == INTENT_HELP)
+		return XENO_NO_DELAY_ACTION
+
+	M.animation_attack_on(src)
+	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
+	SPAN_XENONOTICE("You claw \the [src]."))
+	playsound(src, "alien_resin_break", 25)
+	if (M.hivenumber == hivenumber)
+		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
-		M.animation_attack_on(src)
-		M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
-		SPAN_XENONOTICE("You claw \the [src]."))
-		playsound(src, "alien_resin_break", 25)
-		if (M.hivenumber == hivenumber)
-			take_damage(Ceiling(HEALTH_WALL_XENO/4)) //Four hits for a regular wall
-		else
-			take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
+	return XENO_ATTACK_ACTION
 
 
 /turf/closed/wall/resin/attack_animal(mob/living/M)

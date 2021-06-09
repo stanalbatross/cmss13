@@ -7,8 +7,8 @@
 	density = 1
 	throwpass = TRUE
 	climbable = 1 //Small enough to vault over, but you do need to vault over it
-	health = 200
-	var/max_health = 200
+	health = 600
+	var/max_health = 600
 	var/obj/item/stack/sheet/sheet_type = /obj/item/stack/sheet/glass/reinforced
 	var/obj/structure/window/framed/almayer/window_type = /obj/structure/window/framed/almayer
 	var/basestate = "window"
@@ -98,7 +98,7 @@
 			SEND_SIGNAL(user, COMSIG_MOB_CONSTRUCT_WINDOW, window_type)
 			qdel(src)
 
-	else if(istype(W, /obj/item/tool/wrench))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		if(buildstacktype)
 			to_chat(user, SPAN_NOTICE(" You start to deconstruct [src]."))
 			playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
@@ -139,14 +139,19 @@
 		user.animation_attack_on(src)
 		playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 		take_damage((max_health / XENO_HITS_TO_DESTROY_WINDOW_FRAME) + 1)
-		return
-	else if (reinforced && user.claw_type >= CLAW_TYPE_VERY_SHARP)
+		return XENO_ATTACK_ACTION
+	else if (reinforced && user.claw_type >= CLAW_TYPE_SHARP)
 		user.animation_attack_on(src)
 		playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
 		take_damage((max_health / XENO_HITS_TO_DESTROY_R_WINDOW_FRAME) + 1)
-		return
+		return XENO_ATTACK_ACTION
 
 	. = ..()
+
+/obj/structure/window_frame/bullet_act(obj/item/projectile/P)
+	bullet_ping(P)
+	take_damage(P.damage)
+	return TRUE
 
 /obj/structure/window_frame/proc/take_damage(var/damage)
 	health = max(0, (health - damage))

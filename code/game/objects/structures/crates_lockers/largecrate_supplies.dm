@@ -196,8 +196,8 @@
 	icon_state = "case_double"
 
 /obj/structure/largecrate/supply/explosives/mines
-	name = "\improper M20 claymore case (x20)"
-	desc = "A case containing five four M20 claymore boxes."
+	name = "\improper M20 claymore case (x25)"
+	desc = "A case containing five boxes of five M20 claymores."
 	supplies = list(/obj/item/storage/box/explosive_mines = 5)
 
 /obj/structure/largecrate/supply/explosives/grenades
@@ -257,7 +257,7 @@
 
 /obj/structure/largecrate/supply/supplies/water
 	name = "\improper WY Bottled Water crate (x50)"
-	desc = "A crate containing fifty Weston-Yamada Bottled Spring Water bottles."
+	desc = "A crate containing fifty Weyland-Yutani Bottled Spring Water bottles."
 	supplies = list(/obj/item/reagent_container/food/drinks/cans/waterbottle = 50)
 
 /obj/structure/largecrate/supply/powerloader
@@ -265,7 +265,7 @@
 	desc = "A crate containing one folded, but fully assembled, Caterpillar P-5000 Work Loader and included pamphlet for quick training."
 	supplies = list(
 		/obj/vehicle/powerloader = 1,
-		/obj/item/pamphlet/powerloader = 1,
+		/obj/item/pamphlet/skill/powerloader = 1,
 	)
 
 /obj/structure/largecrate/supply/floodlights
@@ -310,8 +310,8 @@
 	supplies = list(/obj/structure/machinery/optable = 1, /obj/item/storage/surgical_tray = 1, /obj/item/tank/anesthetic = 2, /obj/item/reagent_container/spray/cleaner = 1)
 
 /obj/structure/largecrate/supply/medicine/medivend
-	name = "\improper WestonMed Plus crate (x1)"
-	desc = "A crate containing one Weston Plus medical vendor."
+	name = "\improper Wey-Med Plus crate (x1)"
+	desc = "A crate containing one Weyland Plus medical vendor."
 	supplies = list(/obj/structure/machinery/cm_vending/sorted/medical = 1)
 
 
@@ -328,7 +328,7 @@
 		to_chat(user, "<b>!!WARNING!! CONTENTS OF CRATE UNABLE TO BE MOVED ONCE UNPACKAGED!</b>")
 
 /obj/structure/largecrate/machine/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar) && dir_needed)
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR) && dir_needed)
 		var/turf/next_turf = get_step(src, dir_needed)
 		if(next_turf.density)
 			to_chat(user, SPAN_WARNING("You can't open the crate here, there's not enough room!"))
@@ -345,7 +345,7 @@
 	dir_needed = 0
 
 /obj/structure/largecrate/machine/recycler/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		var/turf/T = get_turf(loc)
 		if(istype(T, /turf/open))
 			new /obj/structure/machinery/wo_recycler (T)
@@ -356,7 +356,7 @@
 	desc = "A crate containing one autodoc."
 
 /obj/structure/largecrate/machine/autodoc/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		var/turf/T = get_turf(loc)
 		if(istype(T, /turf/open))
 			var/obj/structure/machinery/autodoc/event/E = new (T)
@@ -371,7 +371,7 @@
 	desc = "A crate containing one medical bodyscanner."
 
 /obj/structure/largecrate/supply/machine/bodyscanner/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		var/turf/T = get_turf(loc)
 		if(istype(T, /turf/open))
 			var/obj/structure/machinery/bodyscanner/E = new (T)
@@ -385,7 +385,7 @@
 	desc = "A crate containing one medical sleeper."
 
 /obj/structure/largecrate/machine/sleeper/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		var/turf/T = get_turf(loc)
 		if(istype(T, /turf/open))
 			var/obj/structure/machinery/sleeper/E = new (T)
