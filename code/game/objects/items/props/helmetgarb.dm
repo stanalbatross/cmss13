@@ -228,11 +228,11 @@
 	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 	attached_mob = null
 
-/obj/item/prop/helmetgarb/helmet_nvg/functional/process()
+/obj/item/prop/helmetgarb/helmet_nvg/functional/process(delta_time)
 	if(isnull(battery) || !battery.charge)
 		to_chat(attached_mob, SPAN_NOTICE("\the [src]'s battery runs out of charge!"))
 		toggle_nods(attached_mob)
-	battery.use(process_cost)
+	battery.use(process_cost * delta_time)
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal
 	name = "\improper M2T thermal goggles"
@@ -241,7 +241,7 @@
 	active_icon_state = "helmet_nvg_thermals_down"
 	inactive_icon_state = "helmet_nvg_thermals"
 	invisibility_level = 0
-	process_cost = 20
+	process_cost = 10 //10 per second
 	var/m_vision_flags = SEE_MOBS
 	var/fullscreen_vision = /obj/screen/fullscreen/thermal
 
