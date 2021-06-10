@@ -401,13 +401,17 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/device/encryptionkey/tactics(src)
 
 /obj/item/storage/box/kit/mini_grenadier
-	name = "\improper Frontline M79 Grenadier Kit"
+	name = "\improper Frontline M40 Grenadier Kit"
 
 /obj/item/storage/box/kit/mini_grenadier/New()
 	..()
 	overlays += image('icons/obj/items/pro_case.dmi', "+grenadier")
 
 /obj/item/storage/box/kit/mini_grenadier/fill_preset_inventory()
+	new /obj/item/storage/belt/grenade/full(src)
+	new /obj/item/storage/pouch/explosive(src)
+
+/obj/item/storage/box/kit/mini_grenadier/m79/fill_preset_inventory()
 	new /obj/item/weapon/gun/launcher/grenade/break_action/m79(src)
 	new /obj/item/storage/belt/grenade/AGM(src)
 	new /obj/item/storage/box/nade_box/airburst/basic(src)

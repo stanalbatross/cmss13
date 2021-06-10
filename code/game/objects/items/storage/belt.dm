@@ -518,6 +518,15 @@
 	max_storage_space = 24
 	can_hold = list(/obj/item/explosive/grenade)
 
+/obj/item/storage/belt/grenade/full/fill_preset_inventory()
+	new /obj/item/explosive/grenade/incendiary(src)
+	new /obj/item/explosive/grenade/incendiary(src)
+	new /obj/item/explosive/grenade/incendiary/airburst(src)
+	new /obj/item/explosive/grenade/HE(src)
+	new /obj/item/explosive/grenade/HE(src)
+	new /obj/item/explosive/grenade/HE(src)
+	new /obj/item/explosive/grenade/HE/airburst(src)
+
 /obj/item/storage/belt/grenade/AGM
 	name="\improper M276 pattern M74 Grenade rig"
 	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is designed to carry increased quantities of AGM grenades at the cost of the ability to carry M40 ones."
