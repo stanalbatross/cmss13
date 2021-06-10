@@ -526,7 +526,7 @@
 	new /obj/item/explosive/grenade/HE(src)
 	new /obj/item/explosive/grenade/HE(src)
 	new /obj/item/explosive/grenade/HE/airburst(src)
-	new /obj/item/explosive/grenade/HE/airburst(src
+	new /obj/item/explosive/grenade/HE/airburst(src)
 
 /obj/item/storage/belt/grenade/AGM
 	name="\improper M276 pattern M74 Grenade rig"
