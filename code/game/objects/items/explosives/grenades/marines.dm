@@ -179,15 +179,9 @@
 	desc = "M74 - Airburst Grenade Munition - Basic. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperse jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. This -B version trades the strength of its sister for ease of production, increasing total supply."
 	icon_state = "grenade_m74_airburst_b"
 	item_state = "grenade_m74_airburst_b_active"
-	explosion_power = 0
-	explosion_falloff = 25
 	shrapnel_count = 15
-	det_time = 0 // Unused, because we don't use prime.
-	hand_throwable = FALSE
-	falloff_mode = EXPLOSION_FALLOFF_SHAPE_LINEAR
-	shrapnel_type = /datum/ammo/bullet/shrapnel/jagged
 	direct_hit_shrapnel = 3
-	dispersion_angle = 75
+	dispersion_angle = 65
 
 /*
 //================================================

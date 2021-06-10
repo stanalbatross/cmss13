@@ -1030,7 +1030,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	playsound(usr, break_close_sound, 30, TRUE)
 	update_icon()
 
-/obj/item/weapon/gun/launcher/grenade/break_action/on_attackby(obj/item/explosive/grenade/I, mob/user)
+/obj/item/weapon/gun/launcher/grenade/break_action/on_pocket_attackby(obj/item/explosive/grenade/I, mob/user)
 	if(!open_chamber)
 		to_chat(user, SPAN_WARNING("[src] was closed!"))
 		open_chamber(user)
@@ -1090,7 +1090,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/break_action/m79/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_7
+	fire_delay = FIRE_DELAY_TIER_5
 	recoil = RECOIL_AMOUNT_TIER_2 //turns to TIER_4 with the stock
 
 /obj/item/weapon/gun/launcher/grenade/break_action/m79/naked

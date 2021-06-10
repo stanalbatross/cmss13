@@ -62,8 +62,7 @@ obj/item/pamphlet/Initialize()
 	name = "explosives handling instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering insignia."
 	icon_state = "pamphlet_machinegunner"
-	skill_to_increment = SKILL_ENGINEER
-	skill_increment = SKILL_ENGINEER_TRAINED
+	trait = /datum/character_trait/skills/engineering
 	bypass_pamphlet_limit = TRUE
 
 /obj/item/pamphlet/skill/machinegunner

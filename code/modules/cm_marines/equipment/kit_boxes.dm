@@ -411,7 +411,7 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/weapon/gun/launcher/grenade/break_action/m79(src)
 	new /obj/item/storage/belt/grenade/AGM(src)
 	new /obj/item/storage/box/nade_box/airburst/basic(src)
-	new /obj/item/pamphlet/explosives(src)
+	new /obj/item/pamphlet/skill/explosives(src)
 	new /obj/item/storage/pouch/explosive(src)
 	new /obj/item/storage/box/explosive_mines(src)
 
