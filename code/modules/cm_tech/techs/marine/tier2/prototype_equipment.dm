@@ -1,7 +1,7 @@
 /datum/tech/droppod/item/prototype_equipment
 	name = "Prototype Equipment"
 	desc = "Gain access to prototype USCM weaponry and equipment."
-	icon_state = "ammo"
+	icon_state = "ammo" //placeholder
 
 	droppod_name = "Prototype Equipment"
 

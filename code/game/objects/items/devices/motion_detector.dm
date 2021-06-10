@@ -77,13 +77,14 @@
 	set name = "Toggle Range Mode"
 	set category = "Object"
 	set src in usr
-	if(!long_range_locked)
-		toggle_mode(usr)
-	else
-		to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
+	toggle_mode(usr)
 
 /obj/item/device/motiondetector/proc/toggle_mode(mob/user)
 	if(isobserver(user) || isXeno(user) || !Adjacent(user))
+		return
+
+	if(long_range_locked)
+		to_chat(user, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
 		return
 
 	detector_mode = !detector_mode
@@ -100,10 +101,7 @@
 	if (isobserver(user) || isXeno(user)) return
 
 	if (mods["alt"])
-		if(!long_range_locked)
-			toggle_mode(usr)
-		else
-			to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
+		toggle_mode(user)
 		return TRUE
 
 	return ..()
