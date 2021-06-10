@@ -198,6 +198,26 @@
 	 that will be given to a projectile with the current ammo datum**/
 	var/list/list/traits_to_give
 
+	/**
+	 * The group or groups of the gun where a fire delay is applied and the delays applied to each group when the gun is dropped
+	 * after being fired
+	 *
+	 * Guns with this var set will apply the specified delays for firing any other guns
+	 * in a specific group
+	 * e.g. FIRE_DELAY_GROUP_X = 1 SECONDS means any gun with the fire delay group FIRE_DELAY_GROUP_X will have to wait 1
+	 * second after the gun has been dropped (the user has to have fired the gun beforehand otherwise no delay is applied)
+	 *
+	 * Set as null (does not apply any fire delays to any other gun group) or a list of fire delay groups (string defines)
+	 * matched with the corresponding fire delays applied
+	 */
+	var/list/fire_delay_group
+
+/**
+ * An assoc list where the keys are fire delay group string defines
+ * and the keys are when the guns of the group can be fired again
+ */
+/mob/var/list/fire_delay_next_fire
+
 
 //----------------------------------------------------------
 				//				    \\
@@ -312,6 +332,10 @@
 	force = initial(force)
 	w_class = initial(w_class)
 
+	//reset HUD and pixel offsets
+	hud_offset = initial(hud_offset)
+	pixel_x = initial(hud_offset)
+
 	//Get default gun config values
 	set_gun_config_values()
 
@@ -338,12 +362,23 @@
 		movement_onehanded_acc_penalty_mult += R.movement_onehanded_acc_penalty_mod
 		force += R.melee_mod
 		w_class += R.size_mod
+		if(!R.hidden)
+			hud_offset += R.hud_offset_mod
+			pixel_x += R.hud_offset_mod
 
 		if(R.suppress_firesound)
 			flags_gun_features |= GUN_SILENCED
 			muzzle_flash = null
 			if(!(flags_gun_features & GUN_INTERNAL_SILENCED))
 				fire_sound = "gun_silenced"
+
+	//Refresh location in HUD.
+	if(ishuman(loc))
+		var/mob/living/carbon/human/M = loc
+		if(M.l_hand == src)
+			M.update_inv_l_hand()
+		else if(M.r_hand == src)
+			M.update_inv_r_hand()
 
 /obj/item/weapon/gun/proc/handle_random_attachments()
 	var/attachmentchoice
@@ -1001,11 +1036,13 @@ and you're good to go.
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, params, reflex = 0, dual_wield)
 	set waitfor = 0
 
-	if(!able_to_fire(user)) return
+	if(!able_to_fire(user))
+		return
 
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
-	if (!targloc || !curloc) return //Something has gone wrong...
+	if (!targloc || !curloc)
+		return //Something has gone wrong...
 	var/atom/original_target = target //This is for burst mode, in case the target changes per scatter chance in between fired bullets.
 
 	/*
@@ -1108,7 +1145,7 @@ and you're good to go.
 			else
 				last_fired = world.time
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
-
+			flags_gun_features |= GUN_FIRED_BY_USER
 
 			if(flags_gun_features & GUN_FULL_AUTO_ON)
 				fa_shots++
@@ -1173,20 +1210,25 @@ and you're good to go.
 			var/sound_volume = (flags_gun_features & GUN_SILENCED && !active_attachable) ? 25 : 60
 			playsound(user, actual_sound, sound_volume, 1)
 			simulate_recoil(2, user)
-			var/t = "\[[time_stamp()]\] <b>[key_name(user)]</b> committed suicide with <b>[src]</b>" //Log it.
-			var/datum/cause_data/cause_data = create_cause_data("suicide by [initial(name)]")
-			if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
-				t += " after playing Russian Roulette"
-				user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", sharp = 1)
-				user.apply_damage(200, OXY) //In case someone tried to defib them. Won't work.
-				user.death(create_cause_data("russian roulette with \a [name]", user))
-				msg_admin_ff("[key_name(user)] lost at Russian Roulette with \a [name] in [get_area(user)] [ffl]")
-				to_chat(user, SPAN_HIGHDANGER("Your life flashes before you as your spirit is torn from your body!"))
-				user.ghostize(0) //No return.
+			var/t
+			var/datum/cause_data/cause_data
+			if(projectile_to_fire.ammo.damage == BULLET_DAMAGE_OFF)
+				t += "\[[time_stamp()]\] <b>[key_name(user)]</b> tried to commit suicide with a [name]"
+				cause_data = create_cause_data("failed suicide by [initial(name)]")
+				to_chat(user, SPAN_DANGER("Ow..."))
+				msg_admin_ff("[key_name(user)] tried to commit suicide with a [name] in [get_area(user)] [ffl]")
+				user.apply_damage(200, HALLOSS)
 			else
-				if(projectile_to_fire.ammo.damage_type == HALLOSS)
-					to_chat(user, SPAN_NOTICE("Ow..."))
-					user.apply_effect(110, AGONY, 0)
+				t += "\[[time_stamp()]\] <b>[key_name(user)]</b> committed suicide with <b>[src]</b>" //Log it.
+				cause_data = create_cause_data("suicide by [initial(name)]")
+				if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
+					t += " after playing Russian Roulette"
+					user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", sharp = 1)
+					user.apply_damage(200, OXY) //In case someone tried to defib them. Won't work.
+					user.death(create_cause_data("russian roulette with \a [name]", user))
+					msg_admin_ff("[key_name(user)] lost at Russian Roulette with \a [name] in [get_area(user)] [ffl]")
+					to_chat(user, SPAN_HIGHDANGER("Your life flashes before you as your spirit is torn from your body!"))
+					user.ghostize(0) //No return.
 				else
 					user.apply_damage(projectile_to_fire.damage * 2.5, projectile_to_fire.ammo.damage_type, "head", used_weapon = "Point blank shot in the mouth with \a [projectile_to_fire]", sharp = 1)
 					user.apply_damage(100, OXY)
@@ -1308,6 +1350,7 @@ and you're good to go.
 			last_fired = world.time
 
 		SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
+		flags_gun_features |= GUN_FIRED_BY_USER
 
 		if(EXECUTION_CHECK) //Continue execution if on the correct intent. Accounts for change via the earlier do_after
 			user.visible_message(SPAN_DANGER("[user] has executed [M] with [src]!"), SPAN_DANGER("You have executed [M] with [src]!"), message_flags = CHAT_TYPE_WEAPON_USE)
@@ -1351,9 +1394,12 @@ and you're good to go.
 	Consequently, predators are able to fire while cloaked.
 	*/
 
-	if(flags_gun_features & GUN_BURST_FIRING) return
-	if(world.time < guaranteed_delay_time) return
-	if((world.time < wield_time || world.time < pull_time) && (delay_style & WEAPON_DELAY_NO_FIRE > 0)) return //We just put the gun up. Can't do it that fast
+	if(flags_gun_features & GUN_BURST_FIRING)
+		return
+	if(world.time < guaranteed_delay_time)
+		return
+	if((world.time < wield_time || world.time < pull_time) && (delay_style & WEAPON_DELAY_NO_FIRE > 0))
+		return //We just put the gun up. Can't do it that fast
 
 	if(ismob(user)) //Could be an object firing the gun.
 		if(!user.IsAdvancedToolUser())
@@ -1401,6 +1447,12 @@ and you're good to go.
 			extra_delay = 0
 		else if(!PB_burst_bullets_fired) //Special delay exemption for handed-off PB bursts. It's the same burst, after all.
 			return
+
+		if(fire_delay_group)
+			for(var/group in fire_delay_group)
+				var/group_next_fire = LAZYACCESS(user.fire_delay_next_fire, group)
+				if(!isnull(group_next_fire) && world.time < group_next_fire)
+					return
 	return TRUE
 
 /obj/item/weapon/gun/proc/click_empty(mob/user)
