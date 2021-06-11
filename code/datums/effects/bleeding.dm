@@ -54,7 +54,6 @@
 		limb.bleeding_effects_list -= src
 	return ..()
 
-
 /datum/effects/bleeding/external
 	var/buffer_blood_loss = 0
 
@@ -111,4 +110,27 @@
 
 	return TRUE
 
+/datum/effects/bleeding/arterial
+	effect_name = "arterial bleeding"
+	flags = INF_DURATION | NO_PROCESS_ON_DEATH | DEL_ON_UNDEFIBBABLE
+	blood_loss_divider = 60
+	blood_duration_multiplier = 3
+	var/next_bleed_spray = 0
+
+/datum/effects/bleeding/arterial/process_mob()
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/carbon/human/affected_mob = affected_atom
+	if(world.time >= next_bleed_spray && istype(affected_mob.loc, /turf))
+		affected_mob.visible_message(SPAN_DANGER("Blood sprays from your [limb.display_name], due to \the [effect_name], draining some of your precious blood!"))
+		next_bleed_spray = world.time + rand(8,12) SECONDS
+		var/turf/sprayloc = get_turf(affected_mob)
+		affected_mob.drip(blood_loss)
+
+		if(affected_mob.blood_volume > 0)
+			affected_mob.blood_volume -= affected_mob.blood_spray(affected_mob.blood_volume, sprayloc)
+
 #undef BLOOD_ADD_PENALTY
+

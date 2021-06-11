@@ -78,7 +78,7 @@
 	var/last_dam_time = 0
 
 	var/neutralized_integrity_effects = NO_FLAGS
-	var/natural_int_dmg_resist = 1 // less = better
+	var/natural_int_dmg_resist = 0.8 // less = better
 
 /obj/limb/Initialize(mapload, obj/limb/P, mob/mob_owner)
 	. = ..()
@@ -223,7 +223,7 @@
 
 	if((owner.stat != DEAD))
 		var/int_conversion = owner.skills ? min(0.7, 1 - owner.skills.get_skill_level(SKILL_ENDURANCE) / 10) : 0.7
-		take_integrity_damage(brute * int_conversion * int_dmg_multiplier * owner.int_dmg_malus) //Need to adjust to skills and armor
+		take_integrity_damage(brute * int_conversion * int_dmg_multiplier * owner.int_dmg_malus * natural_int_dmg_resist) //Need to adjust to skills and armor
 
 	if(CONFIG_GET(flag/bones_can_break) && !(status & LIMB_ROBOT))
 		take_damage_bone_break(brute)
@@ -369,19 +369,19 @@
 	switch(integrity_level)
 		if(LIMB_INTEGRITY_OKAY)
 			playsound(owner, 'sound/effects/bone_break2.ogg', 45, 1)
-			to_chat(owner, SPAN_DANGER("Your [display_name] feels weird..."))
+			to_chat(owner, SPAN_WARNING("Your [display_name] starts to ache, but it's nothing to worry about."))
 		if(LIMB_INTEGRITY_CONCERNING)
 			playsound(owner, 'sound/effects/bone_break4.ogg', 45, 1)
-			to_chat(owner, SPAN_DANGER("Your [display_name] begins to tingle..."))
+			to_chat(owner, SPAN_DANGER("Your [display_name] hurts badly from the wounds; but you can definitely continue fighting."))
 		if(LIMB_INTEGRITY_SERIOUS)
 			playsound(owner, 'sound/effects/bone_break6.ogg', 45, 1)
-			to_chat(owner, SPAN_DANGER("Your [display_name] starts to feel hot..."))
+			to_chat(owner, SPAN_DANGER("Your [display_name] is in pain; all you can see is blood, cuts and rips littered all over it. The only thing stopping you is your resolve and hubris."))
 		if(LIMB_INTEGRITY_CRITICAL)
 			playsound(owner, 'sound/effects/bone_break1.ogg', 45, 1)
-			to_chat(owner, SPAN_DANGER("You can barely feel your [display_name]!!"))
+			to_chat(owner, SPAN_HIGHDANGER("Your [display_name] feels like hell, only hanging on by threads of flesh and sinew. You sure you want to continue fighting?"))
 		if(LIMB_INTEGRITY_NONE)
 			playsound(owner, 'sound/effects/limb_gore.ogg', 45, 1)
-			to_chat(owner, SPAN_DANGER("You can't feel your [display_name]!!"))
+			to_chat(owner, SPAN_HIGHDANGER("You can't feel your [display_name]. It's gone, and all that's left is blood and gore."))
 
 /obj/limb/proc/recalculate_health_effects()
 	if(can_autoheal)
@@ -497,7 +497,7 @@ This function completely restores a damaged organ to perfect condition.
 		var/datum/wound/internal_bleeding/I = new (0)
 		add_bleeding(I, TRUE)
 		wounds += I
-		owner.custom_pain("You feel something rip in your [display_name], causing you to suddenly feel a lot weaker than usual!", 1)
+		owner.custom_pain("You feel something tear in your [display_name], causing you to suddenly feel a lot weaker than usual!", 1)
 
 /obj/limb/proc/createwound(var/type = CUT, var/damage, var/impact_name, var/is_ff = FALSE)
 	if(!damage)
@@ -555,7 +555,7 @@ This function completely restores a damaged organ to perfect condition.
 			wounds += W
 
 
-/obj/limb/proc/add_bleeding(var/datum/wound/W, var/internal = FALSE)
+/obj/limb/proc/add_bleeding(var/datum/wound/W, var/internal = FALSE, var/arterial = FALSE)
 	if(!(SSticker.current_state >= GAME_STATE_PLAYING)) //If the game hasnt started, don't add bleed. Hacky fix to avoid having 100 bleed effect from roundstart.
 		return
 
@@ -577,10 +577,12 @@ This function completely restores a damaged organ to perfect condition.
 		bleeding_status = new /datum/effects/bleeding/internal(owner, src, (max(40, brute_dam)+ (0.15 * integrity_damage)))
 	else
 		bleeding_status = new /datum/effects/bleeding/external(owner, src, W.damage)
+		if(arterial)
+			bleeding_status = new /datum/effects/bleeding/arterial(owner, src, W.damage)
+
 	bleeding_effects_list += bleeding_status
 
-
-/obj/limb/proc/remove_all_bleeding(var/external = FALSE, var/internal = FALSE)
+/obj/limb/proc/remove_all_bleeding(var/external = FALSE, var/internal = FALSE, var/arterial = FALSE)
 	if(external)
 		for(var/datum/effects/bleeding/external/B in bleeding_effects_list)
 			qdel(B)
@@ -682,6 +684,7 @@ This function completely restores a damaged organ to perfect condition.
 
 		// slow healing
 		var/heal_amt = 0
+
 
 		// if damage >= 50 AFTER treatment then it's probably too severe to heal within the timeframe of a round.
 		if (W.can_autoheal() && owner.health >= 0 && !W.is_treated() && owner.bodytemperature > owner.species.cold_level_1)
@@ -1252,7 +1255,7 @@ This function completely restores a damaged organ to perfect condition.
 	encased = "ribcage"
 	splint_icon_amount = 4
 	bandage_icon_amount = 4
-	var/burn_damage_bonus = 1.45
+	var/burn_damage_bonus = 1.65
 
 /obj/limb/chest/reapply_integrity_effects(added, removed)
 	..()
@@ -1393,7 +1396,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(removed & LIMB_INTEGRITY_EFFECT_SERIOUS)
 		work_delay_mult = 1.3
 	else if(added & LIMB_INTEGRITY_EFFECT_SERIOUS)
-		to_chat(owner, SPAN_DANGER("Your arms look flayed and beaten like two steaks, looking like any plans you had for them are borderline Heruclean."))
+		to_chat(owner, SPAN_DANGER("Your arms look flayed and beaten like two roadkills, looking like any plans you had for them are borderline Heruclean."))
 		work_delay_mult = 2.0
 
 /obj/limb/arm/proc/increase_work_delay(var/mob/living/M, list/delaydata)
@@ -1537,6 +1540,8 @@ This function completely restores a damaged organ to perfect condition.
 	bandage_icon_amount = 4
 	var/disfigured = 0 //whether the head is disfigured.
 	var/face_surgery_stage = 0
+
+	natural_int_dmg_resist = 0.6
 
 /obj/limb/head/reapply_integrity_effects(added, removed)
 	..()

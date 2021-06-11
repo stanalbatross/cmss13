@@ -2391,23 +2391,23 @@
 	bonus_projectiles_amount = 0
 
 /datum/ammo/xeno/bone_chips/spread/short_range
-    name = "small bone chips"
+	name = "small bone chips"
 
-    max_range = 3 // Very short range
+	max_range = 3 // Very short range
 
 /datum/ammo/xeno/bone_chips/spread/runner_skillshot
-    name = "bone chips"
+	name = "bone chips"
 
-    scatter = 0
-    max_range = 5
-    damage = 10
-    shrapnel_chance = 0
+	scatter = 0
+	max_range = 5
+	damage = 10
+	shrapnel_chance = 0
 
 /datum/ammo/xeno/bone_chips/spread/runner/on_hit_mob(mob/M, obj/item/projectile/P)
-    if(isHumanStrict(M) || isXeno(M))
-        playsound(M, 'sound/effects/spike_hit.ogg', 25, 1, 1)
-        if(M.slowed < 5)
-            M.AdjustSlowed(4)
+	if(isHumanStrict(M) || isXeno(M))
+		playsound(M, 'sound/effects/spike_hit.ogg', 25, 1, 1)
+		if(M.slowed < 5)
+			M.AdjustSlowed(4)
 
 /*
 //================================================
@@ -2520,6 +2520,45 @@
 /datum/ammo/bullet/shrapnel/jagged/on_hit_mob(mob/M, obj/item/projectile/P)
 	if(isXeno(M))
 		M.Slow(0.4)
+
+/datum/ammo/bullet/shrapnel/blood
+	name = "blood spray"
+
+	scatter = SCATTER_AMOUNT_TIER_10
+	max_range = BLOOD_SPRAY_DISTANCE
+	damage = BULLET_DAMAGE_OFF
+	flags_ammo_behavior = AMMO_STOPPED_BY_COVER|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF
+	shrapnel_chance = 0 // of course theres no shrapnel embedding you moron, it's literally liquid
+	shell_speed = AMMO_SPEED_TIER_1
+	var/obj/effect/decal/cleanable/blood
+
+/datum/ammo/bullet/shrapnel/blood/Destroy()
+	new blood()
+	. = ..()
+
+/datum/ammo/bullet/shrapnel/blood/on_hit_mob(mob/M, obj/item/projectile/P)
+	if(!isHumanStrict(M))
+		return
+
+	if(M == P.firer)
+		return
+
+	var/mob/living/carbon/human/H = M
+	var/mob/living/carbon/human/bleeder = P.firer
+	H.add_blood(bleeder.get_blood_color(), BLOOD_ALL)
+	to_chat(H, SPAN_DANGER("You are sprayed by a burst of blood from [bleeder.name], drenching you near-completely with it!"))
+	if(P.def_zone == "head")
+		var/blinding = TRUE
+		var/list/protections = list(H.glasses, H.wear_mask, H.head)
+		for(var/obj/item/clothing/C in protections)
+			if(C && (C.flags_armor_protection & BODY_FLAG_EYES))
+				blinding = FALSE
+				break
+		if(blinding)
+			H.eye_blurry = max(H.eye_blurry, 5)
+			H.eye_blind = max(H.eye_blind, 2)
+			to_chat(H, SPAN_DANGER("You are sprayed by a burst of blood from [name], drenching your eyes with the hot blood and blinding you!"))
+
 /*
 //================================================
 					Misc Ammo

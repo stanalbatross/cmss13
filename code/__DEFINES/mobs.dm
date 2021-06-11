@@ -241,6 +241,8 @@
 #define BLOOD_VOLUME_BAD		224
 #define BLOOD_VOLUME_SURVIVE	122
 
+// arterial bleeding stats
+#define BLOOD_SPRAY_DISTANCE 2
 
 //diseases
 #define SPECIAL -1
