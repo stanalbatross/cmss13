@@ -1,32 +1,19 @@
 //------------GEAR VENDOR---------------
 
 GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
-		list("PERSONAL PRIMARY (CHOOSE 1)", 0, null, null, null),
-		list("M46C pulse rifle", 0, /obj/item/weapon/gun/rifle/m46c, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_RECOMMENDED),
-		list("FN FP9000", 0, /obj/item/weapon/gun/smg/fp9000, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_REGULAR),
-		list("M16 rifle", 0, /obj/item/weapon/gun/rifle/m16, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_REGULAR),
-
-		list("PERSONAL SIDEARM (CHOOSE 1)", 0, null, null, null),
-		list("Mateba Autorevolver", 0, /obj/effect/essentials_set/cmateba, MARINE_CAN_BUY_BELT, VENDOR_ITEM_RECOMMENDED),
-		list("Desert Eagle", 0, /obj/item/storage/belt/gun/m4a3/heavy/co, MARINE_CAN_BUY_BELT, VENDOR_ITEM_RECOMMENDED),
-		list("M4A3 Custom Pistol", 0, /obj/item/storage/belt/gun/m4a3/commander, MARINE_CAN_BUY_BELT, VENDOR_ITEM_REGULAR),
-		list("VP78 Pistol", 0, /obj/item/storage/belt/gun/m4a3/vp78, MARINE_CAN_BUY_BELT, VENDOR_ITEM_REGULAR),
+		list("CAPTAIN'S PRIMARY", 0, null, null, null),
+		list("M46C pulse rifle", 0, /obj/item/weapon/gun/rifle/m46c, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_MANDATORY),
 
 		list("PRIMARY AMMUNITION", 0, null, null, null),
 		list("M41A MK1 Magazine", 40, /obj/item/ammo_magazine/rifle/m41aMK1, null, VENDOR_ITEM_RECOMMENDED),
 		list("M41A Extended Magazine", 30, /obj/item/ammo_magazine/rifle/extended, null, VENDOR_ITEM_REGULAR),
 		list("M41A AP Magazine", 20, /obj/item/ammo_magazine/rifle/ap, null, VENDOR_ITEM_REGULAR),
-		list("FN FP9000 Magazine", 20, /obj/item/ammo_magazine/smg/fp9000, null, VENDOR_ITEM_REGULAR),
-		list("M16 Magazine", 15, /obj/item/ammo_magazine/rifle/m16, null, VENDOR_ITEM_REGULAR),
-		list("M16 AP Magazine", 20, /obj/item/ammo_magazine/rifle/m16/ap, null, VENDOR_ITEM_REGULAR),
 
 		list("SIDEARM AMMUNITION", 0, null, null, null),
 		list("High Impact Mateba Speedloader (.454)", 20, /obj/item/ammo_magazine/revolver/mateba/highimpact, null, VENDOR_ITEM_REGULAR),
 		list("Mateba Speedloader (.454)", 10, /obj/item/ammo_magazine/revolver/mateba, null, VENDOR_ITEM_REGULAR),
-		list("High Impact Desert Eagle Magazine (.50)", 20, /obj/item/ammo_magazine/pistol/heavy/highimpact, null, VENDOR_ITEM_REGULAR),
-		list("Desert Eagle Magazine (.50)", 10, /obj/item/ammo_magazine/pistol/heavy, null, VENDOR_ITEM_REGULAR),
-		list("M4A3 Magazine (9mm)", 10, /obj/item/ammo_magazine/pistol, null, VENDOR_ITEM_REGULAR),
-		list("VP78 Magazine (9mm)", 10, /obj/item/ammo_magazine/pistol/vp78, null, VENDOR_ITEM_REGULAR),
+		list("High Impact Desert Eagle Magazine (.50)", 20, /obj/item/ammo_magazine/pistol/heavy/super/highimpact, null, VENDOR_ITEM_REGULAR),
+		list("Heavy Desert Eagle Magazine (.50)", 10, /obj/item/ammo_magazine/pistol/heavy/super, null, VENDOR_ITEM_REGULAR),
 
 		list("SHOTGUN AMMUNITION", 0, null, null, null),
 		list("Buckshot Shells", 20, /obj/item/ammo_magazine/shotgun/buckshot, null, VENDOR_ITEM_REGULAR),
@@ -48,12 +35,12 @@ GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
 		list("Laser Sight", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
 		list("Angled Grip", 15, /obj/item/attachable/angledgrip, null, VENDOR_ITEM_REGULAR),
 		list("Vertical Grip", 15, /obj/item/attachable/verticalgrip, null, VENDOR_ITEM_REGULAR),
-		list("Underbarrel Grenade Launcher", 15, /obj/item/attachable/attached_gun/grenade, null, VENDOR_ITEM_REGULAR),
 		list("Underbarrel Shotgun", 15, /obj/item/attachable/attached_gun/shotgun, null, VENDOR_ITEM_REGULAR),
 		list("Underbarrel Extinguisher", 15, /obj/item/attachable/attached_gun/extinguisher, null, VENDOR_ITEM_REGULAR),
 		list("Underbarrel Flamethrower", 15, /obj/item/attachable/attached_gun/flamer, null, VENDOR_ITEM_REGULAR),
 
 		list("BARREL ATTACHMENTS", 0, null, null, null),
+		list("Barrel Charger", 25, /obj/item/attachable/heavy_barrel, null, VENDOR_ITEM_RECOMMENDED),
 		list("Suppressor", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
 		list("Extended Barrel", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
 		list("Recoil Compensator", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
@@ -93,13 +80,13 @@ GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 		list("Webbing", 0, /obj/item/clothing/accessory/storage/webbing, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("HUDS (CHOOSE 1)", 0, null, null, null),
+		list("Medical HUD Glasses", 0, /obj/item/clothing/glasses/hud/health, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_RECOMMENDED),
 		list("Security HUD Glasses", 0, /obj/item/clothing/glasses/sunglasses/sechud, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
-		list("Medical HUD Glasses", 0, /obj/item/clothing/glasses/hud/health, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
 
 		list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("First-Aid Pouch (Full)", 0, /obj/item/storage/pouch/firstaid/full, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
 		list("Medkit Pouch", 0, /obj/item/storage/pouch/medkit, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
-		list("Autoinjector Pouch", 0, /obj/item/storage/pouch/autoinjector, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
+		list("Autoinjector Pouch", 0, /obj/item/storage/pouch/autoinjector/full, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
 		list("Large General Pouch", 0, /obj/item/storage/pouch/general/large, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
 		list("Large Pistol Magazine Pouch", 0, /obj/item/storage/pouch/magazine/pistol/large, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
 		list("Large Magazine Pouch", 0, /obj/item/storage/pouch/magazine/large, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), VENDOR_ITEM_REGULAR),
@@ -109,16 +96,10 @@ GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 
 /obj/structure/machinery/cm_vending/clothing/commanding_officer
 	name = "\improper ColMarTech Commanding Officer Equipment Rack"
-	desc = "An automated rack hooked up to a colossal storage of Commanding Officer standard-issue equipment."
+	desc = "An automated equipment vendor for the Commanding Officer. Contains a prime selection of equipment for only the USCM's top officers."
 	req_access = list(ACCESS_MARINE_COMMANDER)
 	vendor_role = list(JOB_CO)
 
 /obj/structure/machinery/cm_vending/clothing/commanding_officer/Initialize(mapload, ...)
 	. = ..()
 	listed_products = GLOB.cm_vending_clothing_commanding_officer
-
-/obj/effect/essentials_set/cmateba
-	spawned_gear_list = list(
-		/obj/item/storage/belt/gun/mateba/cmateba/full,
-		/obj/item/storage/mateba_case/captain
-	)

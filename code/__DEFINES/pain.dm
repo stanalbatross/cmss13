@@ -10,7 +10,7 @@
 #define PAIN_REDUCTION_AURA			20
 // The values below are thresholds used for surgery
 #define PAIN_REDUCTION_LIGHT		20  //inaprovaline
-#define PAIN_REDUCTION_MEDIUM		30  //synaptizine
+#define PAIN_REDUCTION_MEDIUM		30
 #define PAIN_REDUCTION_HEAVY		40  //paracetamol, tramadol
 #define PAIN_REDUCTION_FULL			80 //oxycodone, neuraline
 
