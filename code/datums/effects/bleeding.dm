@@ -125,7 +125,8 @@
 	var/mob/living/carbon/human/affected_mob = affected_atom
 	if(world.time >= next_bleed_spray && istype(affected_mob.loc, /turf))
 		playsound(affected_mob, 'sound/effects/blood_spray.ogg', 100, 0)
-		to_chat(affected_mob, SPAN_DANGER("Blood sprays from your [limb.display_name], due to \the [effect_name], draining some of your precious blood!"))
+		affected_mob.visible_message(SPAN_DANGER("Blood spurts from [affected_mob.name]'s wounded [limb.artery_name]!"), \
+   		SPAN_DANGER("Blood spurts from your wounded [limb.artery_name]!"))
 		next_bleed_spray = world.time + rand(8,12) SECONDS
 		var/turf/sprayloc = get_turf(affected_mob)
 		affected_mob.drip(blood_loss)

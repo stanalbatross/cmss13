@@ -49,6 +49,7 @@
 
 	var/obj/item/hidden = null
 	var/list/implants = list()
+	var/artery_name = "artery"
 
 	// how often wounds should be updated, a higher number means less often
 	var/wound_update_accuracy = 1
@@ -1272,6 +1273,7 @@ This function completely restores a damaged organ to perfect condition.
 	splint_icon_amount = 4
 	bandage_icon_amount = 4
 	var/burn_damage_bonus = 1.65
+	artery_name = "aorta"
 
 /obj/limb/chest/reapply_integrity_effects(added, removed)
 	..()
@@ -1308,6 +1310,7 @@ This function completely restores a damaged organ to perfect condition.
 	body_part = BODY_FLAG_GROIN
 	splint_icon_amount = 1
 	bandage_icon_amount = 2
+	artery_name = "iliac artery"
 
 /obj/limb/groin/reapply_integrity_effects(added, removed)
 	..()
@@ -1342,6 +1345,7 @@ This function completely restores a damaged organ to perfect condition.
 	var/climb_delay_mult = 2.0
 	var/drag_delay_mult = 1.5
 	var/bonus_knockdown = 1
+	artery_name = "femoral artery"
 
 /obj/limb/leg/reapply_integrity_effects(added, removed)
 	..()
@@ -1377,6 +1381,7 @@ This function completely restores a damaged organ to perfect condition.
 	max_damage = 30
 	min_broken_damage = 20
 	var/move_delay_mult = HUMAN_SLOWED_AMOUNT
+	artery_name = "plantar artery"
 
 /obj/limb/foot/reapply_integrity_effects(added, removed)
 	..()
@@ -1396,6 +1401,7 @@ This function completely restores a damaged organ to perfect condition.
 	max_damage = 35
 	min_broken_damage = 20
 	var/work_delay_mult = 1.3 // 30% increase
+	artery_name = "basilic vein"
 
 /obj/limb/arm/reapply_integrity_effects(added, removed)
 	..()
@@ -1556,6 +1562,7 @@ This function completely restores a damaged organ to perfect condition.
 	bandage_icon_amount = 4
 	var/disfigured = 0 //whether the head is disfigured.
 	var/face_surgery_stage = 0
+	artery_name = "cartoid artery"
 
 	natural_int_dmg_resist = 0.6
 
