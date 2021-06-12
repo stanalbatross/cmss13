@@ -1224,7 +1224,7 @@ and you're good to go.
 				cause_data = create_cause_data("suicide by [initial(name)]")
 				if(istype(current_revolver) && current_revolver.russian_roulette) //If it's a revolver set to Russian Roulette.
 					t += " after playing Russian Roulette"
-					user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", int_damage_multiplier = INT_DMG_MULTIPLIER_SHARP)
+					user.apply_damage(projectile_to_fire.damage * 3, projectile_to_fire.ammo.damage_type, "head", used_weapon = "An unlucky pull of the trigger during Russian Roulette!", int_dmg_multiplier = INT_DMG_MULTIPLIER_SHARP)
 					user.apply_damage(200, OXY) //In case someone tried to defib them. Won't work.
 					user.death(create_cause_data("russian roulette with \a [name]", user))
 					msg_admin_ff("[key_name(user)] lost at Russian Roulette with \a [name] in [get_area(user)] [ffl]")

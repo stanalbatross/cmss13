@@ -2537,18 +2537,15 @@
 
 /datum/ammo/bullet/shrapnel/blood
 	name = "blood spray"
-
+	icon_state = "shrapnel_blood"
 	scatter = SCATTER_AMOUNT_TIER_10
-	max_range = BLOOD_SPRAY_DISTANCE
+	max_range = 3
 	damage = BULLET_DAMAGE_OFF
 	flags_ammo_behavior = AMMO_STOPPED_BY_COVER|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF
 	shrapnel_chance = 0 // of course theres no shrapnel embedding you moron, it's literally liquid
-	shell_speed = AMMO_SPEED_TIER_1
+	shell_speed = AMMO_SPEED_TIER_1 // very slow
+	accuracy = HIT_ACCURACY_TIER_MAX
 	var/obj/effect/decal/cleanable/blood
-
-/datum/ammo/bullet/shrapnel/blood/Destroy()
-	new blood()
-	. = ..()
 
 /datum/ammo/bullet/shrapnel/blood/on_hit_mob(mob/M, obj/item/projectile/P)
 	if(!isHumanStrict(M))
@@ -2572,6 +2569,24 @@
 			H.eye_blurry = max(H.eye_blurry, 5)
 			H.eye_blind = max(H.eye_blind, 2)
 			to_chat(H, SPAN_DANGER("You are sprayed by a burst of blood from [name], drenching your eyes with the hot blood and blinding you!"))
+
+	drop_blood(get_turf(H), P)
+
+/datum/ammo/bullet/shrapnel/blood/on_hit_obj(obj/O, obj/item/projectile/P)
+	var/mob/living/carbon/human/bleeder = P.firer
+	O.add_blood(bleeder.get_blood_color())
+	drop_blood(get_turf(O), P)
+
+/datum/ammo/bullet/shrapnel/blood/on_hit_turf(turf/T, obj/item/projectile/P)
+	drop_blood(T, P)
+
+/datum/ammo/bullet/shrapnel/blood/do_at_max_range(obj/item/projectile/P)
+	drop_blood(get_turf(P), P)
+
+/datum/ammo/bullet/shrapnel/blood/proc/drop_blood(turf/T, obj/item/projectile/P)
+	blood =  new /obj/effect/decal/cleanable/blood(T)
+	blood.icon_state = "blood_spray"
+	blood.dir = P.dir
 
 /*
 //======

@@ -813,7 +813,7 @@ mob/proc/yank_out_object()
 
 		if(prob(selection.w_class * 5) && !(affected.status & LIMB_ROBOT))
 			var/datum/wound/internal_bleeding/I = new (0)
-			affected.add_bleeding(I, TRUE)
+			affected.add_bleeding(I, FALSE, TRUE)
 			affected.wounds += I
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 1)
 

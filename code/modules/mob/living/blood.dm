@@ -93,15 +93,13 @@
 /mob/living/carbon/human/restore_blood()
 	blood_volume = BLOOD_VOLUME_NORMAL
 
-/mob/living/carbon/human/proc/blood_spray(var/amt, var/turf/sprayloc)
+/mob/living/carbon/proc/blood_spray(var/amt, var/turf/sprayloc)
 	if(amt <= 0)
 		return
 	var/spray_direction = pick(alldirs)
-	amt = round(amt/BLOOD_SPRAY_DISTANCE)
 
-	var/datum/cause_data/cause_data
-	cause_data = create_cause_data("arterial blood spray") // this should NEVER actually kill something
- 	create_shrapnel(sprayloc, 1, spray_direction, 45, /datum/ammo/bullet/shrapnel/blood, cause_data)
+	var/datum/cause_data/cause_data = create_cause_data("arterial blood spray", src)
+ 	create_shrapnel(sprayloc, 1, spray_direction, 45, /datum/ammo/bullet/shrapnel/blood, cause_data, TRUE)
 	drip(amt)
 
 /*

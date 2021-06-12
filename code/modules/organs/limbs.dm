@@ -534,6 +534,8 @@ This function completely restores a damaged organ to perfect condition.
 				if(type != BURN)
 					add_bleeding(W)
 					owner.add_splatter_floor(get_turf(loc))
+					if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE)
+						add_bleeding(W, FALSE, TRUE)
 				if(prob(25))
 					//maybe have a separate message for BRUISE type damage?
 					owner.visible_message(SPAN_WARNING("The wound on [owner.name]'s [display_name] widens with a nasty ripping noise."),
@@ -549,7 +551,8 @@ This function completely restores a damaged organ to perfect condition.
 		if(damage >= 10 && type != BURN) //Only add bleeding when its over 10 damage
 			add_bleeding(W)
 			owner.add_splatter_floor(get_turf(loc))
-
+			if(integrity_level_effects & LIMB_INTEGRITY_EFFECT_MODERATE)
+				add_bleeding(W, FALSE, TRUE)
 		//Check whether we can add the wound to an existing wound
 		for(var/datum/wound/other in wounds)
 			if(other.can_merge(W))
@@ -578,19 +581,22 @@ This function completely restores a damaged organ to perfect condition.
 				return
 
 	var/datum/effects/bleeding/bleeding_status
+
 	if(internal)
 		bleeding_status = new /datum/effects/bleeding/internal(owner, src, (max(40, brute_dam)+ (0.15 * integrity_damage)))
+	else if(arterial)
+		bleeding_status = new /datum/effects/bleeding/arterial(owner, src, W.damage)
 	else
 		bleeding_status = new /datum/effects/bleeding/external(owner, src, W.damage)
-		if(arterial)
-			bleeding_status = new /datum/effects/bleeding/arterial(owner, src, W.damage)
 
 	bleeding_effects_list += bleeding_status
 
-/obj/limb/proc/remove_all_bleeding(var/external = FALSE, var/internal = FALSE, var/arterial = FALSE)
+/obj/limb/proc/remove_all_bleeding(var/external = FALSE, var/internal = FALSE)
 	if(external)
 		for(var/datum/effects/bleeding/external/B in bleeding_effects_list)
 			qdel(B)
+		for(var/datum/effects/bleeding/arterial/A in bleeding_effects_list)
+			qdel(A)
 
 	if(internal)
 		for(var/datum/effects/bleeding/internal/I in bleeding_effects_list)
