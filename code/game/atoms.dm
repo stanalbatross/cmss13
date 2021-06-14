@@ -481,6 +481,8 @@ Parameters are passed from New.
 		return
 	var/client/usr_client = usr.client
 	var/list/paramslist = list()
+	if(href_list["statpanel_item_middleclick"])
+		paramslist["middle"] = "1"
 	if(href_list["statpanel_item_shiftclick"])
 		paramslist["shift"] = "1"
 	if(href_list["statpanel_item_ctrlclick"])
@@ -490,6 +492,7 @@ Parameters are passed from New.
 	if(href_list["statpanel_item_click"])
 		// first of all make sure we valid
 		var/mouseparams = list2params(paramslist)
+		usr_client.ignore_next_click = FALSE
 		usr_client.Click(src, loc, TRUE, mouseparams)
 		return TRUE
 

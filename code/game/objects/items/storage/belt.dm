@@ -174,7 +174,8 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/reagent_container/hypospray/autoinjector,
-		/obj/item/stack/medical
+		/obj/item/stack/medical,
+		/obj/item/device/defibrillator/compact
 	)
 	var/has_gamemode_skin = TRUE
 
@@ -714,17 +715,14 @@
 		return 1
 
 /obj/item/weapon/gun/on_enter_storage(obj/item/storage/belt/gun/gun_belt)
-	if(istype(gun_belt))
-		if(!gun_belt.current_gun)
-			gun_belt.current_gun = src //If there's no active gun, we want to make this our icon.
-			gun_belt.update_gun_icon()
+	if(istype(gun_belt) && !gun_belt.current_gun)
+		gun_belt.current_gun = src //If there's no active gun, we want to make this our icon.
+		gun_belt.update_gun_icon()
 
 /obj/item/weapon/gun/on_exit_storage(obj/item/storage/belt/gun/gun_belt)
-	if(istype(gun_belt))
-		fast_pulled = TRUE //We fast pulled that gun, for equipped()
-		if(gun_belt.current_gun == src)
-			gun_belt.current_gun = null
-			gun_belt.update_gun_icon()
+	if(istype(gun_belt) && gun_belt.current_gun == src)
+		gun_belt.current_gun = null
+		gun_belt.update_gun_icon()
 
 /obj/item/storage/belt/gun/m4a3
 	name = "\improper M276 pattern general pistol holster rig"
@@ -734,7 +732,9 @@
 	can_hold = list(
 		/obj/item/weapon/gun/pistol,
 		/obj/item/ammo_magazine/pistol,
-		/obj/item/ammo_magazine/pistol/heavy/highimpact
+		/obj/item/ammo_magazine/pistol/heavy,
+		/obj/item/ammo_magazine/pistol/heavy/super,
+		/obj/item/ammo_magazine/pistol/heavy/super/highimpact
 	)
 	cant_hold = list(
 		/obj/item/weapon/gun/pistol/smart,
@@ -795,12 +795,22 @@
 
 /obj/item/storage/belt/gun/m4a3/heavy/co/fill_preset_inventory()
 	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/heavy/co(src)
-	new /obj/item/ammo_magazine/pistol/heavy/highimpact(src)
-	new /obj/item/ammo_magazine/pistol/heavy/highimpact(src)
-	new /obj/item/ammo_magazine/pistol/heavy(src)
-	new /obj/item/ammo_magazine/pistol/heavy(src)
-	new /obj/item/ammo_magazine/pistol/heavy(src)
-	new /obj/item/ammo_magazine/pistol/heavy(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
+	new_gun.on_enter_storage(src)
+
+/obj/item/storage/belt/gun/m4a3/heavy/co_golden/fill_preset_inventory()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/heavy/co/gold(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super/highimpact(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
+	new /obj/item/ammo_magazine/pistol/heavy/super(src)
 	new_gun.on_enter_storage(src)
 
 /obj/item/storage/belt/gun/m44
@@ -1072,6 +1082,7 @@
 
 /obj/item/storage/belt/gun/smartgunner/pmc/full/fill_preset_inventory()
 	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/vp78(src)
+	new /obj/item/ammo_magazine/pistol/vp78(src)
 	new /obj/item/ammo_magazine/pistol/vp78(src)
 	new /obj/item/ammo_magazine/smartgun/dirty(src)
 	new /obj/item/ammo_magazine/smartgun/dirty(src)

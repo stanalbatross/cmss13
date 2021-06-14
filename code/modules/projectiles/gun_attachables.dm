@@ -65,6 +65,8 @@ Defined in conflicts.dm of the #defines folder.
 	var/aim_speed_mod	= 0 //Changes the aiming speed slowdown of the wearer by this value.
 	var/wield_delay_mod	= 0 //How long ADS takes (time before firing)
 	var/movement_onehanded_acc_penalty_mod = 0 //Modifies accuracy/scatter penalty when firing onehanded while moving.
+	var/velocity_mod    = 0 // Added velocity to bullets
+	var/hud_offset_mod  = 0 //How many pixels to adjust the gun's sprite coords by. Ideally, this should keep the gun approximately centered.
 
 	var/activation_sound = 'sound/weapons/handling/gun_underbarrel_activate.ogg'
 	var/deactivation_sound = 'sound/weapons/handling/gun_underbarrel_deactivate.ogg'
@@ -140,13 +142,15 @@ Defined in conflicts.dm of the #defines folder.
 		if(!(G.flags_gun_features & GUN_INTERNAL_SILENCED))
 			G.fire_sound = "gun_silenced"
 
+	var/mob/living/living
+	if(isliving(G.loc))
+		living = G.loc
+
 	if(attachment_action_type)
 		var/given_action = FALSE
-		if(isliving(G.loc))
-			var/mob/living/L = G.loc
-			if(G == L.l_hand || G == L.r_hand)
-				give_action(L, attachment_action_type, src, G)
-				given_action = TRUE
+		if(living && (G == living.l_hand || G == living.r_hand))
+			give_action(living, attachment_action_type, src, G)
+			given_action = TRUE
 		if(!given_action)
 			new attachment_action_type(src, G)
 
@@ -211,7 +215,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/proc/reload_attachment(obj/item/I, mob/user)
 	return
 
-/obj/item/attachable/proc/fire_attachment(atom/target,obj/item/weapon/gun/gun, mob/user) //For actually shooting those guns.
+/obj/item/attachable/proc/fire_attachment(atom/target, obj/item/weapon/gun/gun, mob/user) //For actually shooting those guns.
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN_ATTACHMENT, src) // Because of this, the . = ..() check should be called last, just before firing
 	return TRUE
@@ -227,6 +231,7 @@ Defined in conflicts.dm of the #defines folder.
 	suppress_firesound = TRUE
 	pixel_shift_y = 16
 	attach_icon = "suppressor_a"
+	hud_offset_mod = -3
 
 /obj/item/attachable/suppressor/New()
 	..()
@@ -253,7 +258,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_mod = -SCATTER_AMOUNT_TIER_10
 	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
-	damage_falloff_mod = 0.4
+	damage_falloff_mod = 0.1
 	attach_icon = "m40sd_suppressor_a"
 
 /obj/item/attachable/bayonet
@@ -277,6 +282,7 @@ Defined in conflicts.dm of the #defines folder.
 	slot = "muzzle"
 	pixel_shift_x = 14 //Below the muzzle.
 	pixel_shift_y = 18
+	hud_offset_mod = -4
 	var/pry_delay = 3 SECONDS
 
 /obj/item/attachable/bayonet/New()
@@ -309,17 +315,16 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/extended_barrel
 	name = "extended barrel"
-	desc = "A lengthened barrel allows for greater accuracy, particularly at long range.\nHowever, natural resistance also slows the bullet, leading to slightly reduced damage."
+	desc = "The lengthened barrel speeds up and stabilizes the bullet, increasing velocity and accuracy."
 	slot = "muzzle"
 	icon_state = "ebarrel"
 	attach_icon = "ebarrel_a"
+	hud_offset_mod = -3
 
 /obj/item/attachable/extended_barrel/New()
 	..()
 	accuracy_mod = HIT_ACCURACY_MULT_TIER_4
-	damage_mod = -BULLET_DAMAGE_MULT_TIER_1
-
-
+	velocity_mod = AMMO_SPEED_TIER_1
 
 /obj/item/attachable/heavy_barrel
 	name = "barrel charger"
@@ -327,6 +332,7 @@ Defined in conflicts.dm of the #defines folder.
 	slot = "muzzle"
 	icon_state = "hbarrel"
 	attach_icon = "hbarrel_a"
+	hud_offset_mod = -3
 
 /obj/item/attachable/heavy_barrel/New()
 	..()
@@ -350,6 +356,7 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "comp"
 	attach_icon = "comp_a"
 	pixel_shift_x = 17
+	hud_offset_mod = -3
 
 /obj/item/attachable/compensator/New()
 	..()
@@ -371,6 +378,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 20
 	pixel_shift_y = 16
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = -4
 
 /obj/item/attachable/slavicbarrel/New()
 	..()
@@ -383,6 +391,7 @@ Defined in conflicts.dm of the #defines folder.
 	desc = "A heavy barrel. CANNOT BE REMOVED."
 	slot = "muzzle"
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = -3
 
 /obj/item/attachable/sniperbarrel/New()
 	..()
@@ -395,6 +404,7 @@ Defined in conflicts.dm of the #defines folder.
 	desc = "A heavy barrel. CANNOT BE REMOVED."
 	slot = "muzzle"
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = -6
 
 /obj/item/attachable/m60barrel/New()
 	..()
@@ -408,6 +418,7 @@ Defined in conflicts.dm of the #defines folder.
 	slot = "muzzle"
 	flags_attach_features = NO_FLAGS
 	pixel_shift_x = 14
+	hud_offset_mod = -4
 
 // Mateba barrels
 
@@ -438,6 +449,7 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "mateba_long"
 	desc = "A marksman mateba barrel. Offers a greater accuracy at the cost of firerate."
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = -1
 
 /obj/item/attachable/mateba/long/New()
 	..()
@@ -456,6 +468,7 @@ Defined in conflicts.dm of the #defines folder.
 	name = "snubnose mateba barrel"
 	icon_state = "mateba_short"
 	desc = "A snubnosed mateba barrel. Offers a fast firerate at the cost of accuracy."
+	hud_offset_mod = 2
 
 /obj/item/attachable/mateba/short/New()
 	..()
@@ -666,6 +679,10 @@ Defined in conflicts.dm of the #defines folder.
 			if(user)
 				to_chat(user, SPAN_WARNING("You must hold [G] with two hands to use [src]."))
 			return FALSE
+		if(SSticker?.mode.flags_round_type & MODE_THUNDERSTORM)
+			if(user)
+				to_chat(user, SPAN_DANGER("You peer into [src], but it seems to have fogged up. You can't use this!"))
+			return FALSE
 		else
 			G.zoom(user, zoom_offset, zoom_viewsize, allows_movement)
 			apply_scoped_buff(G,user)
@@ -785,6 +802,7 @@ Defined in conflicts.dm of the #defines folder.
 	wield_delay_mod = WIELD_DELAY_FAST
 	pixel_shift_x = 32
 	pixel_shift_y = 15
+	hud_offset_mod = 6 //*Very* long sprite.
 
 /obj/item/attachable/stock/shotgun/New()
 	..()
@@ -809,6 +827,7 @@ Defined in conflicts.dm of the #defines folder.
 	name = "\improper MOU53 tactical stock"
 	desc = "A metal stock fitted specifically for the MOU53 break action shotgun."
 	icon_state = "ou_stock"
+	hud_offset_mod = 5
 
 /obj/item/attachable/stock/mou53/New()
 	..()
@@ -823,6 +842,7 @@ Defined in conflicts.dm of the #defines folder.
 	name = "\improper MK221 tactical stock"
 	desc = "A metal stock made for the MK221 tactical shotgun."
 	icon_state = "tactical_stock"
+	hud_offset_mod = 6
 
 /obj/item/attachable/stock/tactical/New()
 	..()
@@ -840,6 +860,7 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "type23_stock"
 	pixel_shift_x = 15
 	pixel_shift_y = 15
+	hud_offset_mod = 2
 
 /obj/item/attachable/stock/type23/New()
 	..()
@@ -860,6 +881,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 32
 	pixel_shift_y = 13
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = 0 //Already attached to base sprite.
 
 /obj/item/attachable/stock/slavic/New()
 	..()
@@ -879,6 +901,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 41
 	pixel_shift_y = 10
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = 6
 
 /obj/item/attachable/stock/hunting/New()
 	..()
@@ -903,6 +926,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 40
 	pixel_shift_y = 10
 	wield_delay_mod = WIELD_DELAY_FAST
+	hud_offset_mod = 3
 
 /obj/item/attachable/stock/rifle/New()
 	..()
@@ -925,6 +949,7 @@ Defined in conflicts.dm of the #defines folder.
 	attach_icon = "m16_stock_a"
 	wield_delay_mod = WIELD_DELAY_MIN
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = 3
 
 /obj/item/attachable/stock/m16/New()//no stats, its cosmetic
 	..()
@@ -939,6 +964,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 37
 	pixel_shift_y = 8
 	wield_delay_mod = WIELD_DELAY_NORMAL
+	hud_offset_mod = 2
 
 /obj/item/attachable/stock/carbine/New()
 	..()
@@ -958,6 +984,7 @@ Defined in conflicts.dm of the #defines folder.
 	icon_state = "m4markstock"
 	attach_icon = "m4markstock"
 	flags_attach_features = NO_FLAGS
+	hud_offset_mod = 2
 
 
 /obj/item/attachable/stock/smg
@@ -971,6 +998,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_x = 42
 	pixel_shift_y = 11
 	wield_delay_mod = WIELD_DELAY_FAST
+	hud_offset_mod = 5
 
 /obj/item/attachable/stock/smg/New()
 	..()
@@ -994,6 +1022,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_y = 11
 	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
 	attachment_action_type = /datum/action/item_action/toggle
+	hud_offset_mod = 5
 	var/activated = TRUE
 	var/collapse_delay = 0
 	var/list/deploy_message = list("collapse","extend")
@@ -1025,11 +1054,11 @@ Defined in conflicts.dm of the #defines folder.
 		movement_onehanded_acc_penalty_mod = -MOVEMENT_ACCURACY_PENALTY_MULT_TIER_5
 		accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_3
 		recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
+		hud_offset_mod = 5
 		icon_state = "smgstockc"
 		attach_icon = "smgstockc_a"
 
 	else
-
 		scatter_unwielded_mod = 0
 		size_mod = 0
 		aim_speed_mod = 0
@@ -1037,6 +1066,7 @@ Defined in conflicts.dm of the #defines folder.
 		movement_onehanded_acc_penalty_mod = 0
 		accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_1
 		recoil_unwielded_mod = RECOIL_AMOUNT_TIER_5
+		hud_offset_mod = 3
 		icon_state = "smgstockcc"
 		attach_icon = "smgstockcc_a"
 
@@ -1081,6 +1111,7 @@ Defined in conflicts.dm of the #defines folder.
 	collapse_delay = 2.5 SECONDS
 	activated = FALSE
 	deploy_message = list("unlock","lock")
+	hud_offset_mod = 4
 
 /obj/item/attachable/stock/smg/collapsible/brace/New()
 	..()
@@ -1102,6 +1133,7 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_unwielded_mod = HIT_ACCURACY_MULT_TIER_4
 		recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_4
 		movement_onehanded_acc_penalty_mod = -MOVEMENT_ACCURACY_PENALTY_MULT_TIER_4 //Does well if it isn't.
+		hud_offset_mod = 5
 		icon_state = "smg_brace_on"
 		attach_icon = "smg_brace_a_on"
 	else
@@ -1112,6 +1144,7 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_unwielded_mod = 0
 		recoil_unwielded_mod = 0
 		movement_onehanded_acc_penalty_mod = 0 //Does pretty much nothing if it's not activated.
+		hud_offset_mod = 4
 		icon_state = "smg_brace"
 		attach_icon = "smg_brace_a"
 
@@ -1130,6 +1163,7 @@ Defined in conflicts.dm of the #defines folder.
 	wield_delay_mod = WIELD_DELAY_FAST
 	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
 	attachment_action_type = /datum/action/item_action/toggle
+	hud_offset_mod = 7 //Extremely long.
 	var/folded = FALSE
 	var/list/allowed_hat_items = list(
 					/obj/item/ammo_magazine/revolver,
@@ -1179,6 +1213,7 @@ Defined in conflicts.dm of the #defines folder.
 		R.folded = FALSE
 		icon_state = "44stock"
 		size_mod = 1
+		hud_offset_mod = 7
 		G.recalculate_attachment_bonuses()
 	else
 		to_chat(user, SPAN_NOTICE("You fold [src]."))
@@ -1186,6 +1221,7 @@ Defined in conflicts.dm of the #defines folder.
 		R.folded = TRUE		// We can't shoot anymore, its folded
 		icon_state = "44stock_folded"
 		size_mod = 0
+		hud_offset_mod = 4
 		G.recalculate_attachment_bonuses()
 	folded = !folded
 	G.update_overlays(src, "stock")

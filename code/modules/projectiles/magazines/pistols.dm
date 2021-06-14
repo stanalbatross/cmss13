@@ -39,6 +39,12 @@
 	icon_state = "m4a3_penetrating"
 	default_ammo = /datum/ammo/bullet/pistol/ap/penetrating
 
+/obj/item/ammo_magazine/pistol/cluster
+	name = "\improper M4A3 cluster magazine (9mm)"
+	desc = "A pistol magazine. Designed to attach tiny explosives to targets, to detonate all at once if enough hit."
+	icon_state = "m4a3_cluster"
+	default_ammo = /datum/ammo/bullet/pistol/heavy/cluster
+
 /obj/item/ammo_magazine/pistol/toxin
 	name = "\improper M4A3 toxin magazine (9mm)"
 	icon_state = "m4a3_toxin"
@@ -77,6 +83,11 @@
 	default_ammo = /datum/ammo/bullet/pistol/ap/penetrating
 	icon_state = "88m4_mag_penetrating"
 
+/obj/item/ammo_magazine/pistol/mod88/cluster
+	name = "\improper 88M4 cluster magazine (9mm)"
+	default_ammo = /datum/ammo/bullet/pistol/ap/cluster
+	icon_state = "88m4_mag_cluster"
+
 /obj/item/ammo_magazine/pistol/mod88/incendiary
 	name = "\improper 88M4 incendiary magazine (9mm)"
 	default_ammo = /datum/ammo/bullet/pistol/incendiary
@@ -108,6 +119,11 @@
 	default_ammo = /datum/ammo/bullet/pistol/squash/penetrating
 	icon_state = "vp78_penetrating"
 
+/obj/item/ammo_magazine/pistol/vp78/cluster
+	name = "\improper VP78 cluster magazine (9mm)"
+	default_ammo = /datum/ammo/bullet/pistol/squash/cluster
+	icon_state = "vp78_cluster"
+
 /obj/item/ammo_magazine/pistol/vp78/incendiary
 	name = "\improper VP78 incendiary magazine (9mm)"
 	default_ammo = /datum/ammo/bullet/pistol/squash/incendiary
@@ -131,16 +147,25 @@
 
 /obj/item/ammo_magazine/pistol/heavy
 	name = "\improper Desert Eagle magazine (.50)"
+
 	default_ammo = /datum/ammo/bullet/pistol/heavy
 	caliber = ".50"
-	icon_state = "m4a345" //PLACEHOLDER
+	icon_state = "deagle"
 	max_rounds = 7
 	gun_type = /obj/item/weapon/gun/pistol/heavy
 
-/obj/item/ammo_magazine/pistol/heavy/highimpact
+/obj/item/ammo_magazine/pistol/heavy/super //Commander's variant
+	name = "\improper Heavy Desert Eagle magazine (.50)"
+	desc = "A heavy variant of Desert Eagle magazines specially-tuned to fit a high-ranking officer. This variant is optimized for anti-armor."
+	gun_type = /obj/item/weapon/gun/pistol/heavy/co
+	default_ammo = /datum/ammo/bullet/pistol/heavy/super
+	icon_state = "deagleS"
+
+/obj/item/ammo_magazine/pistol/heavy/super/highimpact
 	name = "\improper High Impact Desert Eagle magazine (.50)"
-	default_ammo = /datum/ammo/bullet/pistol/heavy/highimpact
-	icon_state = "deagleE" //PLACEHOLDER
+	desc = "A heavy variant of Desert Eagle magazines specially-tuned to fit a high-ranking officer. This variant is optimized for anti-personnel. Don't fire it at anyone you'd like to stay alive."
+	default_ammo = /datum/ammo/bullet/pistol/heavy/super/highimpact
+	icon_state = "deagleE"
 
 //-------------------------------------------------------
 //MAUSER MERC PISTOL //Inspired by the Makarov.

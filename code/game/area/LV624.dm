@@ -5,6 +5,13 @@
 	powernet_name = "ground"
 	ambience_exterior = AMBIENCE_JUNGLE
 
+/area/lv624/Initialize()
+	. = ..()
+	if(SSticker.current_state > GAME_STATE_SETTING_UP)
+		add_thunder()
+	else
+		LAZYADD(GLOB.thunder_setup_areas, src)
+
 /area/lv624/ground
 	name = "Ground"
 	icon_state = "green"
@@ -242,8 +249,8 @@
 	icon_state = "green"
 	ceiling = CEILING_METAL
 
-/area/lv624/lazarus/garage
-	name = "vehicle garage"
+/area/lv624/lazarus/corporate_dome
+	name = "\improper Corporate Dome"
 	icon_state = "green"
 
 /area/lv624/lazarus/yggdrasil

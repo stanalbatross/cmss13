@@ -28,6 +28,8 @@
 
 	var/hitsound = null
 	var/center_of_mass = "x=16;y=16"
+	///Adjusts the item's position in the HUD, currently only by guns with stock/barrel attachments.
+	var/hud_offset = 0
 	var/w_class = SIZE_MEDIUM
 	var/storage_cost = null
 	flags_atom = FPRINT
@@ -48,7 +50,7 @@
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by flags_cold_protection flags
 
 	var/list/actions //list of /datum/action's that this item has.
-	var/list/actions_types = list() //list of paths of action datums to give to the item on New().
+	var/list/actions_types //list of paths of action datums to give to the item on New().
 
 	//var/heat_transfer_coefficient = 1 //0 prevents all transfers, 1 is invisible
 	var/gas_transfer_coefficient = 1 // for leaking gas from turf to mask and vice-versa (for masks right now, but at some point, i'd like to include space helmets)
@@ -79,6 +81,9 @@
 
 	 ///Vision impairing effect if worn on head/mask/glasses.
 	var/vision_impair = VISION_IMPAIR_NONE
+
+	 ///Used for stepping onto flame and seeing how much dmg you take and if you're ignited.
+	var/fire_intensity_resistance
 
 	var/map_specific_decoration = FALSE
 	var/blood_color = "" //color of the blood on us if there's any.
@@ -590,12 +595,11 @@ cases. Override_icon_state should be a list.*/
 
 	if(!(usr)) //BS12 EDIT
 		return
+	if(ismob(src))
+		return
 	if(!usr.canmove || usr.stat || usr.is_mob_restrained() || !Adjacent(usr))
 		return
 	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/brain)))//Is humanoid, and is not a brain
-		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
-		return
-	if( usr.stat || usr.is_mob_restrained() )//Is not asleep/dead and is not restrained
 		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
 		return
 	if(src.anchored) //Object isn't anchored

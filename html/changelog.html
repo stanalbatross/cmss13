@@ -64,6 +64,310 @@
 	</tr>
 </table>
 
+			<h2 class="date">14 June 2021</h2>
+			<h3 class="author">Carnage068 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Hedgehog Ravager health increased from 610 to 650. Explosion resist increased by 20%.</li>
+				<li class="tweak">Hedgehog Fire Spikes ability cooldown decreased from 13 seconds to 10. Projectiles increased from 7 to 8.</li>
+				<li class="tweak">Hedgehog's Shed Spikes ability no longer reduces their armor by an additional 10 for the duration of the lockout. Projectiles increased from 20 to 40. Movement speed gain during lockout increased from 0.75 to 0.85.</li>
+				<li class="tweak">Hedgehog's bone chip shrapnel damage per tile-moved increased from 0.4 to 0.6.</li>
+			</ul>
+			<h3 class="author">Jeser updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added access restrictions to ColMarTech Techpod Vendor based on user faction. In Distress Beacon gamemode vendor's access is limited to USCM faction. New access_settings_override variable in vendor allows staff to lift access restrictions. In Whiskey Outpost gamemode access requirements are always lifted. In other gamemodes access requirements are lifted by default, but can be limited by staff to original as in Distress Beacon gamemode via toggling access_settings_override variable.</li>
+				<li class="tweak">ColMarTech Techpod Vendor no longer will be accessible if area is unpowered.</li>
+			</ul>
+
+			<h2 class="date">13 June 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Cleaned up fire code, allowing for fire damage to be properly reduced not just nullified by fire armor.</li>
+				<li class="tweak">Due to code shenanigans, M35 armor now makes you immune to welder fuel fire.</li>
+				<li class="tweak">Xenos dragging marines into fire no longer get ignited themselves.</li>
+			</ul>
+			<h3 class="author">TrollerNoob updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">AGM-227 'Banshee' now properly spawns fire. It burns hot, but doesn't last long.</li>
+				<li class="tweak">AGM-277 'Banshee' has now been efficiently fueled, resulting in less explosion damage for a much higher fire intensity. Explosion fall off has been moderately reduced. (175 explosion, 20 linear fall off, 50 burn intensity, 15 burn duration)</li>
+				<li class="tweak">GBU-67 'Keeper II' has had its explosion damage and fall off drastically increased. It also hits laser-guided targets much quicker. (450 explosion, 100 exponential fall off)</li>
+				<li class="tweak">AIM-224 'Widowmaker' now has slightly less fall off. (300 explosion, 40 linear fall off)</li>
+				<li class="tweak">XN-99 'Napalm' now has orange fire, correctly conveying its identical intensity to UTNapalm. (200 explosion, 25 linear fall off, 30 burn intensity, 60 burn duration)</li>
+				<li class="tweak">Mini Rocket Stacks have been refitted, although there's no noticeable change. (200 explosion, 44 linear fall off)</li>
+				<li class="tweak">Incendiary Mini Rocket Stacks were found to be overfueled. The fire now affects a slightly smaller area. (200 explosion, 44 linear fall off, 20 burn intensity, 25 burn duration)</li>
+				<li class="tweak">Laser Batteries have received some enhancements after extensive field testing. They burn much, much hotter and have a bigger area of effect, but go out just as fast. (75 burn intensity, 5 burn duration)</li>
+				<li class="tweak">All old explosion procs in dropship_ammo.dm have been converted to use cell_explosion, making tweaking much easier. GAU has been left untouched for now.</li>
+			</ul>
+
+			<h2 class="date">12 June 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added a gamemode for admin HvH setup: Faction Clash.</li>
+				<li class="rscadd">In FC, on non-station maps, exterior areas will gain dim brightness and a rain effect will appear on this gamemode. Not much else will change from normal extended settings.</li>
+				<li class="tweak">In FC, marines will be unable to peer down scopes, as they have 'fogged up'. Sad!</li>
+				<li class="tweak">(Always) Humans can now snuff out flares after a short windup.</li>
+				<li class="tweak">Added an option in the Events Panel to disable CAS.</li>
+				<li class="rscadd">The extended barrel has been reworked to slightly increase bullet speed and accuracy.</li>
+			</ul>
+
+			<h2 class="date">11 June 2021</h2>
+			<h3 class="author">50RemAndCounting updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="wip">Added a new Experimental Tools vendor to synthetic prep, containing a limited variety of specialized items oriented towards usage by synthetics, alongside an initial set of items in it.</li>
+			</ul>
+			<h3 class="author">Mercadier updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Made soda fountains and booze fountains wrenchable.</li>
+				<li class="tweak">Added some Tips of the Round.</li>
+			</ul>
+			<h3 class="author">NeroCavalier updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Masterkeys can be attached to MK1s again.</li>
+			</ul>
+			<h3 class="author">Silencer_pl updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Stackable construction materials no longer can be exploited to attack without any click delay.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">The climb time for ledges has been decreased from 1 second to 0.2 seconds.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Can no longer use the pick-up verb on mobs.</li>
+				<li class="bugfix">Fixed bug where it was possible to start multiple exclusive timed actions. For ex. defibbing, splinting, possibly surgeries and various engi things as well.</li>
+				<li class="bugfix">Gun scatter will no longer break burst target tracking.</li>
+				<li class="bugfix">If you're firing a PB burst with a gun that needs both hands to fire and then unwield it, you will now stop firing</li>
+				<li class="tweak">Adjusted projectile knockback screenshake. Buck/plasma rifle hits no longer cause shake beyond their 2 tile knockback range, ditto for heavy revolver shots beyond 4 tiles. T3s don't get shaken by buck/heavy rev/plasma rifle hits. Slug/scout rifle impact ammo hits cause screenshake to non-xenos again.</li>
+			</ul>
+			<h3 class="author">senjx updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">The CAS rocket pod has been renamed to missile pod. The AIM-224 Widowmaker rocket has been renamed to AIM-224/B Widowmaker missile. Both are unchanged in function.</li>
+			</ul>
+
+			<h2 class="date">10 June 2021</h2>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">allowed turf listing to relay middle click (eg. ability activation)</li>
+				<li class="bugfix">fixed recent issue breaking interactions with turf contents list</li>
+				<li class="bugfix">made pager status update periodically again</li>
+			</ul>
+			<h3 class="author">Foolosopher updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed a bug where punching someone would always hit any limb except the one targeted</li>
+			</ul>
+			<h3 class="author">TeDGamer updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Acid runner macro is now selected instead of activated.</li>
+			</ul>
+			<h3 class="author">Triiodine updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="maptweak">removed all unnecessary hull walls on Kutjevo.</li>
+				<li class="maptweak">remapped south botany on Kutjevo.</li>
+				<li class="maptweak">removed majority ledges on Kutjevo.</li>
+				<li class="maptweak">remapped scrubland on Kutjevo.</li>
+			</ul>
+
+			<h2 class="date">09 June 2021</h2>
+			<h3 class="author">Benbot16 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="experiment">Tweaks research in a few different ways.</li>
+				<li class="rscadd">Research now gets a free research note when they buy a new clearance level. New research notes are also slightly cheaper.</li>
+				<li class="tweak">OD and metabolization of custom chemicals now scales somewhat with chemical level.</li>
+				<li class="tweak">Create mode's minimum cost is increased when using high-level properties, or when using large amounts of properties.</li>
+				<li class="tweak">Chemical transmission is now limited by property level. This starts at level 4, and increases by 1 every time clearance is raised.</li>
+				<li class="rscdel">Roundstart sources of MST/NST properties have been removed.</li>
+				<li class="tweak">MST now makes you slightly hungrier.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">You can now grab items inside a storage container that are inside another storage container. Like an injector in a firstaid kit in a satchel.</li>
+				<li class="rscadd">Alt-clicking most storage items draw the last item in them. (Except gun belts, which draw the last non-gun item.)</li>
+				<li class="bugfix">Middle-click no longer swaps hands if you're using it to quickly open a container. (Which is something you can do with middle click!)</li>
+				<li class="tweak">Added tips displaying the above.</li>
+			</ul>
+			<h3 class="author">NeroCavalier updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Adds Mk.1 magazine for 6 points to SL vendor</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Re-enabled Triiodine's stump sprites on severed limbs.</li>
+			</ul>
+			<h3 class="author">naut updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">A metric ton of changes to CO sidearms. See below.</li>
+				<li class="rscadd">CO's Desert Eagle has been buffed up to speed to rival the Mateba in stats. Still inferior in damage to the Mateba but comes with more ammunition as a tradeoff.</li>
+				<li class="rscadd">New 'super' variants of Desert Eagle ammo added that only fit the CO Deagle(s). Comes with massively buffed stats compared to the base (survivor) model.</li>
+				<li class="tweak">Swapped sprites of survivor Deagle and CO Deagle around. CO Deagle now has wooden grips while the regular Deagle has rubberized ones.</li>
+				<li class="bugfix">Desert Eagle high-impact ammo can now properly stun and BE people.</li>
+				<li class="bugfix">Desert Eagle BEs are now role-locked to CO just like with the Mateba.</li>
+				<li class="soundadd">Desert Eagle firing sound changed. Now 150% meatier.</li>
+				<li class="rscadd">Commanding Officers are now able to choose their sidearm in Character Preferences instead of in the vendor. Choices are the Mateba, Desert Eagle, M4A3C and VP78. Commodores additionally get the golden Mateba and Desert Eagle.</li>
+				<li class="rscdel">Removed CO sidearms from the vendor (as they already spawn with it roundstart).</li>
+				<li class="tweak">Modified descriptions of CO sidearms.</li>
+				<li class="imageadd">New magazines and holster sprites for Desert Eagle.</li>
+				<li class="tweak">Point costs for items in CO vendor shifted a wee bit.</li>
+				<li class="bugfix">Admiral coat should no longer have a bugged sprite on non-LV maps.</li>
+			</ul>
+
+			<h2 class="date">08 June 2021</h2>
+			<h3 class="author">50RemAndCounting updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">(Re)added the USCM Officer uniform and added the USCM standard uniform to the CO dress vendor list.</li>
+				<li class="rscdel">Removed useless trap items, including the purchasable underslung grenade launcher, the F2000 rifle, the VP78 pistol etc.</li>
+			</ul>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">rewrote ammobox transfer to properly account for changes while transfering</li>
+			</ul>
+			<h3 class="author">Jackie updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Non-lethal guns can no longer be used to suicide.</li>
+			</ul>
+			<h3 class="author">NeroCavalier updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">You can now see your hair when wearing a ushanka.</li>
+				<li class="rscadd">Added a color matching helmet for CIC staff.</li>
+				<li class="tweak">Made CO and SO armor contain 3 slots.</li>
+				<li class="rscadd">Added boot knives and shotgun scabbards to SO armory lockers.</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">White phosphorous rockets and flamer sentries once again work properly.</li>
+				<li class="bugfix">Vehicle hardpoints should now properly track the cause data of their shots.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added fire delay groups to counteract gun-juggling combos that deal too much burst damage.</li>
+				<li class="rscadd">After you have fired a MOU53, dropping it or storing it in one of your inventory slots will incur a 1 second fire delay to firing any other MOU53s.</li>
+			</ul>
+			<h3 class="author">TheFlyingFlail updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added New Survivors Types For LV-624</li>
+				<li class="rscadd">Added New Survivors Types For Solaris Ridge</li>
+				<li class="rscadd">Added New Survivors Types For Trijent Dam</li>
+				<li class="rscadd">Created Separate Interstellar Human Rights Watcher for Fionna and Soro</li>
+				<li class="tweak">Tweaked Survivor Loadouts For Soro Doctor, Researcher, and Interstellar Human Rights Watcher</li>
+				<li class="tweak">Gave several doctors their missing health huds</li>
+				<li class="tweak">Tweaked Security and Colonial Marshall-type survivors so they have distinct handguns for each map as opposed to the same throughout the maps.</li>
+				<li class="tweak">Tweaked Trucker and Chaplin Loadout</li>
+				<li class="bugfix">Fixed Spelling Error in researcher on all researchers</li>
+				<li class="bugfix">Fixed issue where survivors were spawning in without knives used for removing shrapnel</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Stock and muzzle attachments now shift guns to one side or another, so that the overall sprite remains centered. Theoretically it works on any item in any inventory slot, but I can't think of any others that really need it.</li>
+			</ul>
+
+			<h2 class="date">07 June 2021</h2>
+			<h3 class="author">Carlarc_Triiodine updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Added a hoverpack, admin-only for now.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Eggs will properly be triggered when pushing mobs or regurgitating mobs on top of them.</li>
+				<li class="bugfix">Facehuggers will go through xenos when jumping at humans.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">You can now PB at (almost) your gun's full normal fire rate. Provided it's an otherwise valid PB (gun can PB, harm intent) an attempt that fails due to no ammo, safety, gun on cooldown etc. won't add click delay. You *will* get a delay if you miss and click a ground tile, at least until I get around to reworking item attack delays (500+ overrides to dig through and adjust means don't hold your breath).</li>
+				<li class="bugfix">Fixes a bug with suicide where you could turn the safety on or unwield a gun that needed to be wielded to fire etc. before it finishes but it still killed you.</li>
+			</ul>
+
+			<h2 class="date">06 June 2021</h2>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Replaced wallpiercing rounds with cluster rounds.</li>
+			</ul>
+			<h3 class="author">Firartix updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fix mistake with forum link in BYOND pager server info</li>
+			</ul>
+
+			<h2 class="date">05 June 2021</h2>
+			<h3 class="author">50RemAndCounting updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Reduced the LV fog timer by 10 minutes.</li>
+			</ul>
+			<h3 class="author">Aortae updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Updated toilets to increase hunger when used.</li>
+				<li class="imageadd">Updated sink and toilet sprites. Added new animations for sink and toilet.</li>
+				<li class="soundadd">Added new sounds for sink and toilet.</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">The M4RA can now fire one-handed, including with the underbarrel attachments.</li>
+			</ul>
+			<h3 class="author">Nanu updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">The W-Y Deathsquad have gotten new names, they now start with "Whiteout".</li>
+				<li class="tweak">The W-Y Whiteout Team are made up of a modified Gen 1 Synth Type, they are tough and extremely hard to kill due to their extra armor and health.</li>
+				<li class="tweak">Buffed the /2 PMC Rifle due to it being powercrept by the Mk2. Gave it a 15% dmg buff.</li>
+				<li class="tweak">Made synths be able to use grenades and guns with just a VV change.</li>
+			</ul>
+			<h3 class="author">NeroCavalier updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Gives XOs and SOs an extra large general pouch</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">Queen gets a building boost for the first 30 minutes of round start. This boost applies to building while in ovi and removes both the building cooldown and the plasma cost. However, the removed building cooldown only applies if the turf is within 35 tiles of the hive core.</li>
+			</ul>
+			<h3 class="author">Vanagandr updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">NO_PERMANENT_DAMAGE flag now prevents fractures as intended.</li>
+				<li class="tweak">Ravager Scissor Cut and Praetorian Pierce now use a more intuitive target angle calculation. This is the same formula used for directional slash.</li>
+			</ul>
+
+			<h2 class="date">04 June 2021</h2>
+			<h3 class="author">Cakey updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixes gibbing related runtimes for death tracking.</li>
+				<li class="bugfix">Fixes runtimes caused by wildfires</li>
+			</ul>
+			<h3 class="author">Carlarc updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">You can now uproot xeno fruits as a marine, though the result won't necessarily be fully edible.</li>
+				<li class="tweak">Added a new chemical property.</li>
+			</ul>
+			<h3 class="author">Foolosopher updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Bandage, ointments and splints can now be applied to the selected limb by simply clicking/activating the item</li>
+			</ul>
+			<h3 class="author">Segrain updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed sound for dividing wall in containment cells.</li>
+			</ul>
+			<h3 class="author">TheDonkified updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Can no longer place people on roller beds if there is something blocking the path between you and the roller bed (example, LV fog).</li>
+			</ul>
+
+			<h2 class="date">03 June 2021</h2>
+			<h3 class="author">forest2001 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed me being stupid. Translator works again.</li>
+			</ul>
+
+			<h2 class="date">02 June 2021</h2>
+			<h3 class="author">Nanu updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscdel">Removed trucks from Big Red.</li>
+				<li class="maptweak">Reworked the garage near Lz1 on Big Red.</li>
+				<li class="bugfix">Fixed some area issues near virology.</li>
+				<li class="rscdel">Removed trucks from LV.</li>
+				<li class="maptweak">Added back the Corporate Dome, this time with some changes to itself.</li>
+				<li class="bugfix">Replaced a lot of old types of Reinforced Tables with new types.</li>
+			</ul>
+
+			<h2 class="date">01 June 2021</h2>
+			<h3 class="author">GoldenDarkness55 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="tweak">Changed lurker alpha from 35 to 25</li>
+			</ul>
+
 			<h2 class="date">31 May 2021</h2>
 			<h3 class="author">Firartix updated:</h3>
 			<ul class="changes bgimages16">
@@ -943,369 +1247,6 @@
 			<ul class="changes bgimages16">
 				<li class="bugfix">OTs can now open the windoor at their front desk.</li>
 				<li class="rscadd">Added an instantly mature subtype of queen. Admin usage only.</li>
-			</ul>
-
-			<h2 class="date">12 April 2021</h2>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed bug with some jobs slots being permanently locked under specific conditions.</li>
-				<li class="rscadd">Clicking adjacent multitile vehicle with a motion detector will start a short scanning process that will show a blip on vehicle if there are xenos inside.</li>
-				<li class="tweak">Changed motion detector description to be more detailed.</li>
-				<li class="bugfix">Fixed entering vehicle despite vehicle rotating during timed action.</li>
-				<li class="maptweak">Swapped WY-med and blood bags vendors in MED APC to allow easier medical supplies restocking without enterrupting surgeries. Per CynicalRose's request.</li>
-			</ul>
-			<h3 class="author">JohnTitor updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Carp fillet and the food made out of it now properly contain fish meat in addition to carpotoxin.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Non-heart organ damage (toxin damage, blindness, suffocation etc - pain was a different section and not bugged) is now functional again. Embrace suffering.</li>
-				<li class="bugfix">Pain checks no longer backwards: pain messages now appear when *not* on painkillers, and tram or stronger painkillers now block them, as they used to.</li>
-				<li class="tweak">Adjusted some backend around pain message calculations. No effect on mechanical pain, but some messages should now be working which previously would be almost impossible to see.</li>
-				<li class="tweak">Pain messages for toxins and organ damage no longer require brute/burns/unsplinted fractures to be checked for.</li>
-			</ul>
-			<h3 class="author">forest2001 updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added a HUD for predators to mark targets as honored, dishonorable, gear carriers and thralls. Dishonorable overrides honored and thrall overrides gear carrier.</li>
-				<li class="rscadd">Added a panel for marking the above. Each mark can also be macro'd. Marking for hunt is in this panel however remains in it's original location too.</li>
-				<li class="rscadd">When predators examine a mob it will now show who is hunting the mob, and details regarding any other statuses set by the Pred HUD.</li>
-				<li class="rscadd">Humans marked as thralls will no longer show their gear on the gear tracker until they die, are unmarked as thralls or become dishonorable.</li>
-				<li class="rscadd">Abominations and their larva now permanently show up as dishonorable.</li>
-				<li class="tweak">Using the relay beacon to set a teleportation marker now transmits via bracer instead of AI announcement.</li>
-				<li class="tweak">Only one predator can mark a target as prey.</li>
-				<li class="wip">Added the ground works for some improvements for thralls.</li>
-			</ul>
-
-			<h2 class="date">11 April 2021</h2>
-			<h3 class="author">BIgboyyo updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Trijent's bridges can be mostly navigated  by default now, meaning you don't have to turn on filtration to walk across them.</li>
-				<li class="maptweak">Deleted the Nightmare Inserts that fixed the bridges since they're redundant with the above change.</li>
-			</ul>
-			<h3 class="author">Nanu updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Changed the SE Jungle Barrens slightly.</li>
-			</ul>
-
-			<h2 class="date">10 April 2021</h2>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Replaced MED APC triage space floor tiles (green and white ones) with medical version which doesn't add huge surgery failure chance. Oops.</li>
-				<li class="bugfix">Fixed CMD APC's reserved roles slots not being used.</li>
-			</ul>
-
-			<h2 class="date">09 April 2021</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="experiment">Increased larva latejoin ratio from 1 per 4 to 1 per 3.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">hotfix mishap with chinook and z level traits</li>
-			</ul>
-			<h3 class="author">Sigil updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added skill traits. You **CANNOT** select them in character setup.</li>
-				<li class="tweak">Pamphlets now give traits. All current pamphlets changed to use the new system.</li>
-				<li class="rscadd">JTAC pamphlet added to the utility section of PFC vendors. It costs 30 points and increases your JTAC skill to 1 (SG/spec/engie/medic level).</li>
-				<li class="tweak">VC pamphlet from the tank tech now gives 2 engineering instead of 3.</li>
-				<li class="bugfix">Restricting the amount of traits that can be picked from a specific group now actually works.</li>
-				<li class="imageadd">Proper sprites added for the JTAC, VC and powerloader pamphlets.</li>
-				<li class="bugfix">Fixes pamphlets being unable to be read.</li>
-			</ul>
-
-			<h2 class="date">08 April 2021</h2>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Reworked and improved APC variants interiors.</li>
-				<li class="rscadd">Reworked passenger system for vehicles. In addition to common passenger and xeno slots, vehicle now can contain passenger slots dedicated to specific roles. For example, APC has 2 Crewmen slots, meaning only humans with Vehicle Crewman job can occupy these passenger slots.</li>
-				<li class="spellcheck">Changed CIC Map Table name to Tactical Map Table.</li>
-				<li class="rscadd">CMD APC now has inbuilt sensor tower with limited range. Destroying vehicle's hull breaks it.</li>
-				<li class="tweak">Vehicle's Get Status Info verb now shows passenger slots in details.</li>
-				<li class="rscadd">Added separate floors for vehicle interiors. Changed floor in tank, APC and van interiors to new floor type.</li>
-				<li class="imageadd">Added edited dropship floor sprites for vehicle interiors.</li>
-				<li class="rscadd">Added new type of vehicle walls to replace current one due to problems with them. Only for APC for now.</li>
-				<li class="imageadd">Added a lot of edited sprites for APC new walls.</li>
-				<li class="tweak">Armored vehicles (tank, APC) use tank's driver and gunner seats now. Unarmored vehicles (vans and others) keep using comfy seats.</li>
-				<li class="rscadd">Added new APC passenger seats. Can be fixed with a welding tool.</li>
-				<li class="imageadd">Added new APC passenger seats sprites by Nauticall.</li>
-				<li class="tweak">Vehicle storage unit now can be accessed by UPP Crewmen (for events).</li>
-				<li class="rscadd">Added medical version of vehicle storage unit - wall-mounted surgery kit storage. This locker can only be accessed by some medical roles who can perform surgery, it comes pre-filled with surgical tools. Those with access can use Remove Surgical Tray verb that will spawn surgical tray and all current instruments in locker will be moved there. Locker cannot be used while it's missing surgical tray. Clickon locker with surgical tray to install it back.</li>
-				<li class="rscadd">Standing at vehicle entrance and clicking on vehicle with pulled object on HELP intent will attempt to fit pulled object into vehicle without user entering. This action takes 1 second. Still requires doors to be unlocked or appropriate access and enough passenger slots, in case it's alive mob.</li>
-				<li class="tweak">Changed entering/exiting time for vehicles. Default time is 1 second. Pulling something increases it to 2 seconds. Xenos always wait 1 second. APC entering/exiting time is 0.5 seconds.</li>
-				<li class="tweak">Door locks changes: 1. Xenos now require 3 seconds to bypass doorlocks. 2. Door locks stop working when hull is broken.</li>
-				<li class="tweak">Vehicle's Get Status Info verb now shows vehicle lock's status.</li>
-				<li class="tweak">Clicking on driver/gunner seats as a xeno will unbuckle the mob now.</li>
-				<li class="bugfix">Fixed being able to deploy mines in vehicle interior.</li>
-				<li class="bugfix">Fixed being able to pull and deploy M56D and it's tripod into vehicle interior.</li>
-				<li class="bugfix">Fixed being able to pull handheld defenses into vehicle interior.</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Nurses can now practise surgery on Professor DUMMY mannequin.</li>
-			</ul>
-			<h3 class="author">monkeysfist updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added two banners: Maximum Effort and Happy Birth ay Steve</li>
-				<li class="imageadd">Added more Semiotic Standard. We now have 61 signs for mappers to play with.</li>
-				<li class="rscadd">Added the Arcturian stop sign that Bravo stole on the last shore leave.</li>
-				<li class="imagedel">Removed deprecated and redundant decal icons.</li>
-				<li class="tweak">Converted more signage to Semiotic Standard.</li>
-			</ul>
-			<h3 class="author">naut updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added a new template, Chinook 91 GSO, High Command's central station for the sector. This station is meant to be used for USCM events.</li>
-				<li class="tweak">Fixed pen's sprite in the mapping editor.</li>
-				<li class="imageadd">Added black tables, blackened (duh) versions of the stock Almayer table. Basically a legged version of the chunky Almayer reinforced table.</li>
-				<li class="imageadd">Added a nameplate for Chinook on its hull.</li>
-			</ul>
-
-			<h2 class="date">07 April 2021</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Reverted M39's burst delay increase.</li>
-				<li class="tweak">Provost Marshalls no longer have explosive mateba speedloaders.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">fix density issue with ghillie suit cloak</li>
-			</ul>
-			<h3 class="author">Jackie_Estegado updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Hivecores and pylons can no longer be built inside walls.</li>
-			</ul>
-			<h3 class="author">Nanu updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">Fixed Lighting in Briefing.</li>
-				<li class="maptweak">Fixed Walltype used in the Brig.</li>
-				<li class="maptweak">Fixed ID on perma brig shutters.</li>
-				<li class="maptweak">Fixed random phone/iv in Delta Bunks.</li>
-				<li class="maptweak">Fixed APC layering in Brig.</li>
-				<li class="maptweak">Fixed camera directions.</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Predalien larvas no longer go into spawn pool when they have no player.</li>
-			</ul>
-			<h3 class="author">TheDonkified updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Huggers that go back in eggs naturally now properly deploy egg triggers.</li>
-				<li class="tweak">Changed code so egg triggers are only deleted when an egg is deleted.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Stack-type items now display the number of uses remaining when carried or in storage items. This includes bandages, ointments, barbed wire, rods, floor tiles, metal or glass sheets, planks, etc. The number should update any time it changes.</li>
-				<li class="tweak">Plant bags, ore bags, sheet snatchers now visually condense stored items again. This makes them tidier on the user end but does not have any mechanical effect.</li>
-				<li class="rscdel">removed unused storage proc.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Dialysis no longer requires an empty beaker to function.</li>
-			</ul>
-
-			<h2 class="date">06 April 2021</h2>
-			<h3 class="author">Nanu updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="maptweak">These are all Almayer changes.</li>
-				<li class="maptweak">The Brig has been moved to the upper deck west of CiC</li>
-				<li class="maptweak">Medbay has been expanded on lower deck.</li>
-				<li class="maptweak">Briefing now has a public canteen.</li>
-				<li class="maptweak">Extended Bunks are now west of the Squad Preps.</li>
-				<li class="maptweak">Maint has seen some upgrades and in general been made 2x wide.</li>
-				<li class="maptweak">There are now 4 Ladders in Maint, increasing the mobility you can make between each deck, they are located Fore-Port/starboard side and Aft-Port/starboard side.</li>
-				<li class="maptweak">RnR has seen some changes, with an expanded kitchen and hydroponics. Includes a gibber as well!</li>
-				<li class="maptweak">Fixed countless map related bugs.</li>
-			</ul>
-			<h3 class="author">Sigil updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Marines now have taste buds.</li>
-				<li class="rscadd">Added a bunch of nutriment subtypes to make the above work.</li>
-				<li class="tweak">Moonshine can be made from nutriment and any of its subtypes originating from plants/mushrooms.</li>
-				<li class="tweak">Xeno meat and products made from it now contain acidic blood. Make sure you add something to counteract its effects to the food.</li>
-			</ul>
-			<h3 class="author">Solidfury7 updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Military Police and Riot ERTs now spawn with the correct gloves, which have armour values.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Vial boxes, bags, pill bottles no longer do any spam at all when picking up multiple items off the floor.</li>
-				<li class="bugfix">Fixed six-year-old bug in which clicking a stack with a different item ran through its process twice.</li>
-			</ul>
-			<h3 class="author">monkeysfist updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Overhauled our semiotic standard.</li>
-				<li class="tweak">Updated existing semiotic standard to new paths.</li>
-			</ul>
-
-			<h2 class="date">05 April 2021</h2>
-			<h3 class="author">monkeysfist updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="imageadd">More Posters</li>
-				<li class="imageadd">Added radiator women from the radiator planet.</li>
-				<li class="imagedel">Removed unused space heater sprite.</li>
-			</ul>
-
-			<h2 class="date">04 April 2021</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed behaviour delegates not working on armor plates. (Shield slash, rage, etc now works on metal plates)</li>
-				<li class="rscadd">Hitting a CC'd target as Oppressor plays the old crit sound.</li>
-				<li class="rscadd">Nodes show up above most objects.</li>
-				<li class="bugfix">'armor softens/absorbs the blow!' messages work again.</li>
-				<li class="rscdel">Daze no longer stops you from shooting until your wield delay is done.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Add verb to change ship map - though there are currently no alternatives to Almayer</li>
-				<li class="tweak">BYOND Pager information will now show both ship and ground maps</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Status panel for xenomorphs once again works properly.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Stims don't appear in recipes anymore.</li>
-			</ul>
-
-			<h2 class="date">03 April 2021</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Turns caste_name strings into defines.</li>
-			</ul>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed missing argument during some movement triggered actions</li>
-				<li class="tweak">minor backend refactor around effects and hive structures processing</li>
-				<li class="tweak">Reimplemented perf logging controller</li>
-			</ul>
-			<h3 class="author">Jeser updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Breaking vehicle hull with turn off vehicle lights. Fully fixing vehicle hull will turn lights back on.</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Lucky feathers are now available in loadout in all intended colours.</li>
-				<li class="bugfix">CORSAT Researcher survivors now properly get their gear and skills.</li>
-			</ul>
-
-			<h2 class="date">02 April 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Debug messages are now tagged as such for filtering in chat.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">quick_equip_inventory keybind now works.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Increased cost of communication disruption and evolution boost techs to 10.</li>
-				<li class="tweak">Moved shielding slashes back to T2, nerfed it back to its original state.</li>
-				<li class="tweak">Re-added back acidic blood tech and buffed it.</li>
-				<li class="tweak">Buffed acid grenade to have a longer range and also have different levels of acid depending on the range. Also cannot be picked up via macro anymore.</li>
-			</ul>
-			<h3 class="author">forest2001 updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added a verb to allow predators to dye their capes. It has a single use only and can only be accessede via right-click on the cape.</li>
-			</ul>
-
-			<h2 class="date">01 April 2021</h2>
-			<h3 class="author">Firartix updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="experiment">limited concurrent async rustg requests in flight from DBQM Controller</li>
-			</ul>
-			<h3 class="author">Lengord updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added RTO ringing sprites</li>
-			</ul>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Deconstructing sandbag barricades once again yields correct quantity of sandbags.</li>
-			</ul>
-			<h3 class="author">Vanagandr updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Numerous changes to storage items, mostly cosmetic.</li>
-				<li class="rscadd">Accessing a storage item now visibly opens it, if it has open/close sprites. Closing the inventory window also closes the item. This applies to backpacks, satchels, belts, pouches, G8s, first-aid kits, pill bottles, and the vehicle internal storage locker. Looks pretty good generally; a bit weird on first aid kits, but the consistency is worth it I think.</li>
-				<li class="rscdel">An item that can't be dumped out will no longer show an unusable Toggle Tile Dumping verb.</li>
-				<li class="tweak">Attempting to empty an already empty item now fails. Didn't make sense you could keep dumping it out over and over when there was nothing in it.</li>
-				<li class="tweak">Activating a storage item in hand will attempt to empty it automatically, if that's possible. If it's empty and can be folded, activating it will attempt to fold it.</li>
-				<li class="tweak">You can no longer spam storage opening sounds.</li>
-				<li class="tweak">Inventory storage now closes when you die, to prevent cute bugs with items that suddenly pop closed when the owner finally gets around to ghosting or logging out.</li>
-				<li class="tweak">Opening/closing vehicle storage lockers plays SFX.</li>
-				<li class="tweak">Renamed storage 'close()' proc to 'storage_close()' so that looking for the damned thing in the code isn't like pulling teeth.</li>
-				<li class="rscadd">You can now dump pills from one pill bottle to another. Just click on one while holding the one you want to dump out.</li>
-				<li class="imageadd">Adds open/closed overlays for pill bottles. Also shows when empty.</li>
-				<li class="rscadd">The pistol pouch now visually displays holstered guns.</li>
-				<li class="tweak">The UPP knife pouch spawned with 10 knives but could only hold 5. Modified it to be loaded with 5 UPP bayonets instead of the usual throwing knives, in line with what appeared to be the original intention.</li>
-				<li class="tweak">Gunbelts adjusted - ones that can take both automatic pistols and the M44 now use different sprite coords for each, vastly improving appearance. Tweaked mortarbelt base coords.</li>
-				<li class="tweak">Extended when-equipped mouse opacity changes (letting a click anywhere on its 32x32 area count as a direct click) on belts to include belts worn on armour (gunbelt only, I believe) and the G8 pouch generally, which for whatever reason is not actually a Belt-type item.</li>
-				<li class="rscadd">Lockable backpacks open when clicked like other packs, and when doing so display an unlocked overlay whether locked or not.</li>
-				<li class="bugfix">Fixed the Smartpack not properly displaying contents overlays.</li>
-				<li class="bugfix">Fixed the delay in opening a worn backpack running twice.</li>
-				<li class="bugfix">Fixed dead people being able to spam attempts to empty inventory items. It didn't dump out, but did send messages.</li>
-				<li class="bugfix">Emptying a magazine while holding it in your hand now updates its on-mob sprite, if it has one.</li>
-				<li class="tweak">Floorbots and secure storage code tweaked and cleaned up a little.</li>
-				<li class="spellcheck">adjusted description text for many pouches, backpacks, belts, scabbards. Particularly some belts where the M276 description had been copied but insufficiently tweaked. Also fixes a couple typos elsewhere.</li>
-				<li class="bugfix">Pill packets no longer show lid overlays.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Moved the phone UI to a separate TGUI panel.</li>
-				<li class="bugfix">Fixed phones hanging up on launch.</li>
-				<li class="bugfix">Fixed phones not correctly disabling headsets when raised to ear.</li>
-				<li class="bugfix">Fixed phones runtiming as soon as they spawn in.</li>
-			</ul>
-			<h3 class="author">naut updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Alcohol is no longer deadly in small doses.</li>
-				<li class="tweak">Alcohol no longer gives you effects past slurring: blurred vision, random movement and passing out has been disabled.</li>
-				<li class="tweak">Threshold for slurring from drinking alcohol increased to 300 from 180.</li>
-				<li class="tweak">Alcohol now metabolizes faster, at the rate of oxycodone (15u metabolized every 5 minutes).</li>
-			</ul>
-
-			<h2 class="date">31 March 2021</h2>
-			<h3 class="author">Segrain updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">MARSOC's backpack now has intended sprites.</li>
-				<li class="imageadd">M3-VL vests once again have their sprite when worn.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixed RTOs being able to launch multiple droppods at once.</li>
-			</ul>
-
-			<h2 class="date">30 March 2021</h2>
-			<h3 class="author">Carlarc updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscdel">Fatties have been removed.</li>
-			</ul>
-			<h3 class="author">Triiodine_Bongosz_Fourkhan_WalterMeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="imageadd">Resprited squad glove objects.</li>
-				<li class="imageadd">Resprited helmet netting, adjusted the M10 rain cover.</li>
-				<li class="rscadd">Added trimmed barbed wire, integrated gasmasks, broken NVGS, a bullet pipe, and squad colored lucky feathers to loadout.</li>
-				<li class="bugfix">Fixed the lucky feather not rotating properly.</li>
-				<li class="experiment">Added another ERT Te-[FURTHER DETAILS REDACTED BY ORDER OF UA HIGH COMMAND].</li>
-				<li class="experiment">Made phosphorus grenades actually work against aliens and humans. They are incredibly deadly to both sides.</li>
-			</ul>
-			<h3 class="author">Waltermeldron updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="tweak">Disabled the background option from human life subsystem.</li>
-				<li class="bugfix">Fixed ERT shuttles.</li>
-			</ul>
-			<h3 class="author">naut updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="rscadd">Added tactical tools (and a pouch for them to go in). Function identically to their normal counterparts but come in matte black and deal more damage.</li>
-				<li class="rscadd">Added a tactical medical pouch. Contains techwebs-level upgraded medical equipment, and a fire extinguisher just in case.</li>
-				<li class="rscadd">MARSOC now starts with one of each techweb stimulant in their backpack.</li>
-				<li class="imageadd">Added dedicated sprites for the MARSOC rucksack, matte black tools, and MARSOC medical and tools pouches.</li>
-				<li class="tweak">Removed some buckshot and a phosphor grenade from the MARSOC backpack to accomodate the stimulants, and added an extra C4.</li>
-				<li class="tweak">MARSOC now gets their own tactical medical and tools pouches.</li>
-				<li class="tweak">Changed (and fixed) descriptions of several MARSOC items.</li>
-				<li class="tweak">MARSOC balaclava is now a subitem of the PMC balaclava, and as a result is now facehugger-resistant.</li>
 			</ul>
 </div>
 </body>
