@@ -1137,7 +1137,8 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	else
 		to_chat(user, SPAN_NOTICE("The integrity readout is completely broken, alongside its plasteel plates. Guess this junk's scrap metal now."))
 
-/obj/item/clothing/suit/storage/marine/b18_tech/update_icon(var/icon_integrity_threshold)
+/obj/item/clothing/suit/storage/marine/b18_tech/update_icon(mob/user, var/icon_integrity_threshold)
+	..()
 	if(!icon_integrity_threshold)
 		icon_integrity_threshold = integrity_threshold
 	switch(icon_integrity_threshold)
@@ -1202,13 +1203,13 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	if(integrity < 50 && integrity_threshold == INTEGRITY_FINE)
 		integrity_threshold = INTEGRITY_DAMAGED
 		splinter(user)
-		update_icon(INTEGRITY_DAMAGED)
+		update_icon(user, INTEGRITY_DAMAGED)
 		user.update_inv_wear_suit()
 
 	else if(integrity <= 0 && integrity_threshold == INTEGRITY_DAMAGED)
 		integrity_threshold = INTEGRITY_BROKEN
 		dismantle(user)
-		update_icon(INTEGRITY_BROKEN)
+		update_icon(user, INTEGRITY_BROKEN)
 		user.update_inv_wear_suit()
 		user.recalculate_move_delay = TRUE
 
