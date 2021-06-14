@@ -810,7 +810,7 @@
 
 
 /obj/item/weapon/gun/launcher/grenade/on_pocket_insertion() //Plays load sfx whenever a nade is put into storage.
-	playsound(usr, reload_sound, 25, 1)
+	playsound(usr, reload_sound, 25, TRUE)
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/on_pocket_removal()
@@ -864,7 +864,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 	user.visible_message(SPAN_NOTICE("[user] unloads [nade] from [src]."),
 	SPAN_NOTICE("You unload [nade] from [src]."), null, 4, CHAT_TYPE_COMBAT_ACTION)
-	playsound(user, unload_sound, 30, 1)
+	playsound(user, unload_sound, 30, TRUE)
 
 
 /obj/item/weapon/gun/launcher/grenade/attackby(obj/item/I, mob/user)
@@ -926,7 +926,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 			to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
 			return
 		fire_grenade(target,user)
-		playsound(user.loc, cocked_sound, 25, 1)
+		playsound(user.loc, cocked_sound, 25, TRUE)
 
 
 /obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user)
@@ -957,7 +957,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	F.activate(user, FALSE)
 	F.forceMove(get_turf(src))
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
-	playsound(F.loc, fire_sound, 50, 1)
+	playsound(F.loc, fire_sound, 50, TRUE)
 
 
 //Doesn't use these. Listed for reference.
@@ -1019,15 +1019,15 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	direct_draw = TRUE
 
 /obj/item/weapon/gun/launcher/grenade/break_action/proc/open_chamber(user)
-	to_chat(user, SPAN_WARNING("You open the [src]'s chamber."))
+	to_chat(user, SPAN_WARNING("You open \the [src]'s chamber."))
 	open_chamber = TRUE
-	playsound(usr, break_open_sound, 30, TRUE)
+	playsound(user, break_open_sound, 30, TRUE)
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/break_action/proc/close_chamber(user)
-	to_chat(user, SPAN_WARNING("You close the [src]'s chamber."))
+	to_chat(user, SPAN_WARNING("You close \the [src]'s chamber."))
 	open_chamber = FALSE
-	playsound(usr, break_close_sound, 30, TRUE)
+	playsound(user, break_close_sound, 30, TRUE)
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/break_action/on_pocket_attackby(obj/item/explosive/grenade/I, mob/user)
@@ -1049,7 +1049,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/break_action/on_pocket_removal()
 	..()
-	playsound(usr, unload_sound, 30, 1)
+	playsound(usr, unload_sound, 30, TRUE)
 
 /obj/item/weapon/gun/launcher/grenade/break_action/m79
 	name = "\improper M79 break-action grenade launcher"
