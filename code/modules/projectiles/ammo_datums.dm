@@ -1307,7 +1307,7 @@
 	name = "lever-action bullet"
 	debilitate = list(1,0,0,0,0,0,0,0)
 
-	damage = BULLET_DAMAGE_TIER_18
+	damage = 90
 	damage_falloff = DAMAGE_FALLOFF_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
@@ -1320,7 +1320,7 @@
 	name = "tracking lever-action bullet"
 	icon_state = "redbullet"
 
-	damage = BULLET_DAMAGE_TIER_15
+	damage = 75
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
 	handful_state = "tracking_lever_action_bullet"
@@ -1333,7 +1333,7 @@
 	name = "lever-action blank"
 	icon_state = "blank"
 
-	damage = BULLET_DAMAGE_TIER_15 //blanks CAN hurt you if shot very close
+	damage = 75 //blanks CAN hurt you if shot very close
 	penetration = 0
 	accuracy = HIT_ACCURACY_TIER_1
 	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
@@ -1347,7 +1347,7 @@
 	shrapnel_chance = 0
 	damage_falloff = 0
 	accurate_range = 12
-	damage = BULLET_DAMAGE_TIER_18
+	damage = 90
 	penetration = ARMOR_PENETRATION_TIER_8
 	shell_speed = AMMO_SPEED_TIER_6
 	handful_state = "marksman_lever_action_bullet"
