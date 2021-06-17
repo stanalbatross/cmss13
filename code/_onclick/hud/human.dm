@@ -347,6 +347,10 @@
 	gun_run_icon.update_icon(mymob)
 	static_inventory += gun_run_icon
 
+	ammo = new /obj/screen/ammo()
+	ammo.alpha = ui_alpha
+	ammo.screen_loc = ui_datum.UI_AMMO
+
 /datum/hud/human/proc/draw_status_effects(var/datum/custom_hud/ui_datum)
 	slowed_icon = new /obj/screen()
 	slowed_icon.icon = ui_datum.ui_style_icon

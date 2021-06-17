@@ -126,7 +126,8 @@
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_eject_to_hand'>Toggle 'Unload Weapon' Ejecting Magazines to Your Hands</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_automatic_punctuation'>Toggle Automatic Punctuation</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_click'>Toggle Middle Mouse Ability Activation</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>Toggle Combat Click-Drag Override</a><br>"
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>Toggle Combat Click-Drag Override</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_disable_gun_ammo_counter'>Toggle Gun Ammo Counter</a><br>"
 	)
 
 	var/dat = ""
@@ -209,6 +210,13 @@
 		to_chat(src, "Click-dragging now blocks clicks from going through.")
 	prefs.save_preferences()
 
+/client/proc/toggle_disable_gun_ammo_counter()
+	prefs.toggle_prefs ^= TOGGLE_DISABLE_GUN_AMMO_COUNTER
+	if(prefs.toggle_prefs & TOGGLE_DISABLE_GUN_AMMO_COUNTER)
+		to_chat(src, "Modern guns will no longer display an ammo counter when wielded.")
+	else
+		to_chat(src, "Modern guns will now display an ammo counter when wielded.")
+	prefs.save_preferences()
 
 //------------ GHOST PREFERENCES ---------------------------------
 

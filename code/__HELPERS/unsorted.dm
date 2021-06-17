@@ -1579,6 +1579,8 @@ var/list/WALLITEMS = list(
 // Certain areas may be exempt from this check. Look up grenade_antigrief_exempt_areas
 /proc/grenade_grief_check(var/obj/item/explosive/grenade/G)
 	var/turf/T = get_turf(G)
+	if(!T) //just in case
+		return FALSE
 	if(!(T.loc.type in grenade_antigrief_exempt_areas))
 		var/crash_occured = (SSticker?.mode?.is_in_endgame)
 		if(G.harmful && (T.z in SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_LOWORBIT))) && (security_level < SEC_LEVEL_RED) && !crash_occured && grenade_antigrief_on)

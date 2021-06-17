@@ -32,6 +32,20 @@ can cause issues with ammo types getting mixed up during the burst.
 		var/chambered = in_chamber ? TRUE : FALSE
 		to_chat(user, "It has [current_mag.current_rounds][chambered ? "+1" : ""] / [current_mag.max_rounds] rounds remaining.")
 
+/obj/item/weapon/gun/shotgun/get_ammo_type()
+	if(!ammo)
+		return list("shotgun_slug", "shotgun_empty")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else 
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/shotgun/get_ammo_count()
+	if(!current_mag)
+		return in_chamber ? 1 : 0
+	else
+		return in_chamber ? (current_mag.current_rounds + 1) : current_mag.current_rounds
+
 /obj/item/weapon/gun/shotgun/set_gun_config_values()
 	..()
 	fire_delay = FIRE_DELAY_TIER_5
@@ -222,6 +236,7 @@ can cause issues with ammo types getting mixed up during the burst.
 
 	fire_sound = 'sound/weapons/gun_shotgun_automatic.ogg'
 	current_mag = /obj/item/ammo_magazine/internal/shotgun
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
 	attachable_allowed = list(
 						/obj/item/attachable/bayonet,
 						/obj/item/attachable/bayonet/upp,
@@ -290,7 +305,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	current_mag = /obj/item/ammo_magazine/internal/shotgun/buckshot
 
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_HAS_FULL_AUTO|GUN_FULL_AUTO_ON
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER|GUN_HAS_FULL_AUTO|GUN_FULL_AUTO_ON
 	fa_delay = FIRE_DELAY_TIER_6
 	auto_retrieval_slot = WEAR_J_STORE
 
@@ -352,7 +367,7 @@ can cause issues with ammo types getting mixed up during the burst.
 						//Stock
 						/obj/item/attachable/stock/type23
 						)
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
 	flags_equip_slot = SLOT_BACK
 	map_specific_decoration = FALSE
 	gauge = "8g"
@@ -893,6 +908,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	item_state = "m37"
 	current_mag = /obj/item/ammo_magazine/internal/shotgun
 	flags_equip_slot = SLOT_BACK
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
 	fire_sound = 'sound/weapons/gun_shotgun.ogg'
 	var/pump_sound = 'sound/weapons/gun_shotgun_pump.ogg'
 	var/pump_delay //Higher means longer delay.

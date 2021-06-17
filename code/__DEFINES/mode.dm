@@ -68,6 +68,8 @@
 
 #define TOGGLE_COMBAT_CLICKDRAG_OVERRIDE	(1<<8) // Whether disarm/harm intents cause clicks to trigger immediately when the mouse button is depressed.
 
+#define TOGGLE_DISABLE_GUN_AMMO_COUNTER		(1<<9) // Needs to start on.
+
 //=================================================
 
 var/list/be_special_flags = list(

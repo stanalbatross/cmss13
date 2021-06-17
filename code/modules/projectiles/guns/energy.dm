@@ -18,7 +18,7 @@
 	ammo = /datum/ammo/energy/taser
 	var/obj/item/cell/high/cell //10000 power.
 	var/charge_cost = 625 // approx 16 shots shots.
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
 	gun_category = GUN_CATEGORY_HANDGUN
 
 /obj/item/weapon/gun/energy/taser/Initialize(mapload, spawn_empty)
@@ -57,6 +57,19 @@
 		else
 			overlays += "+charge_0"
 
+/obj/item/weapon/gun/energy/taser/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else if(!in_chamber)
+		return list(ammo.hud_state, ammo.hud_state_empty)
+	else 
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
+
+/obj/item/weapon/gun/energy/taser/get_ammo_count()
+	if(!cell)
+		return 0
+	else
+		return FLOOR(cell.charge / max(charge_cost, 1),1)
 
 /obj/item/weapon/gun/energy/taser/emp_act(severity)
 	cell.use(round(cell.maxcharge / severity))

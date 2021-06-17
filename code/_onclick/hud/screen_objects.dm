@@ -590,3 +590,118 @@
 
 		user.hud_used.hidden_inventory_update()
 	return 1
+
+/obj/screen/ammo
+	name = "ammo"
+	icon = 'icons/mob/hud/ammoHUD.dmi'
+	icon_state = "ammo"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	var/warned = FALSE
+	var/is_warning = FALSE
+
+/obj/screen/ammo/proc/add_hud(mob/living/user)
+	if(!user?.client)
+		return
+
+	var/obj/item/weapon/gun/G = user.get_held_item()
+
+	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) && !G.active_attachable)
+		return
+
+	if(user.client.prefs && user.client.prefs.toggle_prefs & TOGGLE_DISABLE_GUN_AMMO_COUNTER)
+		return
+
+	user.client.screen += src
+
+/obj/screen/ammo/proc/remove_hud(mob/living/user)
+	user?.client?.screen -= src
+
+/obj/screen/ammo/proc/update_hud(mob/living/user)
+	if(!user?.client?.screen.Find(src))
+		return
+	
+	if(user.client.prefs && user.client.prefs.toggle_prefs & TOGGLE_DISABLE_GUN_AMMO_COUNTER)
+		return
+
+	var/obj/item/weapon/gun/G = user.get_held_item()
+
+	if(!istype(G))
+		remove_hud(user)
+		return
+
+	if(!(G.flags_gun_features & GUN_AMMO_COUNTER) || !G.get_ammo_type() || isnull(G.get_ammo_count()) && !G.active_attachable)
+		remove_hud(user)
+		return
+
+	if(G.active_attachable)
+		update_attachable_hud(user, G)
+		return
+
+	var/list/ammo_type = G.get_ammo_type()
+	var/rounds = G.get_ammo_count()
+
+	var/hud_state = ammo_type[1]
+	var/hud_state_empty = ammo_type[2]
+
+	overlays.Cut()
+
+	var/empty = image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state_empty]")
+
+	if(rounds == 0)
+		overlays += empty
+	else
+		overlays += image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state]")
+
+	rounds = num2text(rounds)
+
+	//Handle the amount of rounds
+	switch(length(rounds))
+		if(1)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[1]]")
+		if(2)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[2]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t[rounds[1]]")
+		if(3)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[3]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t[rounds[2]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "h[rounds[1]]")
+		else //"0" is still length 1 so this means it's over 999
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o9")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t9")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "h9")
+
+/obj/screen/ammo/proc/update_attachable_hud(mob/living/user, obj/item/weapon/gun/G)
+	var/obj/item/attachable/attached_gun/AG = G.active_attachable
+
+	var/list/ammo_type = AG.get_attachment_ammo_type()
+	var/rounds = AG.get_attachment_ammo_count()
+
+	var/hud_state = ammo_type[1]
+	var/hud_state_empty = ammo_type[2]
+
+	overlays.Cut()
+
+	var/empty = image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state_empty]")
+
+	if(rounds == 0)
+		overlays += empty
+	else
+		overlays += image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state]")
+
+	rounds = num2text(rounds)
+
+	//Handle the amount of rounds
+	switch(length(rounds))
+		if(1)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[1]]")
+		if(2)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[2]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t[rounds[1]]")
+		if(3)
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o[rounds[3]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t[rounds[2]]")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "h[rounds[1]]")
+		else //"0" is still length 1 so this means it's over 999
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "o9")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "t9")
+			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "h9")

@@ -1297,28 +1297,40 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/activate_attachment(obj/item/weapon/gun/G, mob/living/user, turn_off)
 	if(G.active_attachable == src)
-		if(user)
-			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
-			playsound(user, gun_deactivate_sound, 30, 1)
 		G.active_attachable = null
 		var/diff = G.damage_mult - 1 //so that if we buffed gun in process, it still does stuff
 		//yeah you can cheat by placing BC after switching to underbarrell, but that is one time and we can skip it for sake of optimization
 		G.damage_mult = gun_original_damage_mult + diff
 		icon_state = initial(icon_state)
-	else if(!turn_off)
 		if(user)
-			to_chat(user, SPAN_NOTICE("You are now using [src]."))
-			playsound(user, gun_activate_sound, 45, 1)
+			to_chat(user, SPAN_NOTICE("You are no longer using [src]."))
+			playsound(user, gun_deactivate_sound, 30, 1)
+			update_ammo_hud(user)
+
+	else if(!turn_off)
 		G.active_attachable = src
 		gun_original_damage_mult = G.damage_mult
 		G.damage_mult = 1
 		icon_state += "-on"
-
+		if(user)
+			to_chat(user, SPAN_NOTICE("You are now using [src]."))
+			playsound(user, gun_activate_sound, 45, 1)
+			update_ammo_hud(user)
 	for(var/X in G.actions)
 		var/datum/action/A = X
 		A.update_button_icon()
+
 	return 1
 
+/obj/item/attachable/attached_gun/proc/update_ammo_hud(mob/living/user)
+	var/obj/screen/ammo/A = user.hud_used.ammo
+	A.update_hud(user)
+
+/obj/item/attachable/attached_gun/proc/get_attachment_ammo_type()
+	return null
+
+/obj/item/attachable/attached_gun/proc/get_attachment_ammo_count()
+	return 0
 
 
 //The requirement for an attachable being alt fire is AMMO CAPACITY > 0.
@@ -1351,9 +1363,15 @@ Defined in conflicts.dm of the #defines folder.
 	if(current_rounds) 	to_chat(user, "It has [current_rounds] grenade\s left.")
 	else 				to_chat(user, "It's empty.")
 
+/obj/item/attachable/attached_gun/grenade/get_attachment_ammo_type()
+	if(length(loaded_grenades))
+		var/obj/item/explosive/grenade/G = loaded_grenades[1]
+		return list(G.hud_state, G.hud_state_empty)
+	else 
+		return list("grenade_empty", "grenade_empty")
 
-
-
+/obj/item/attachable/attached_gun/grenade/get_attachment_ammo_count()
+	return LAZYLEN(loaded_grenades)
 
 /obj/item/attachable/attached_gun/grenade/reload_attachment(obj/item/explosive/grenade/G, mob/user)
 	if(!istype(G) || istype(G, /obj/item/explosive/grenade/spawnergrenade/))
@@ -1371,6 +1389,7 @@ Defined in conflicts.dm of the #defines folder.
 			loaded_grenades += G
 			to_chat(user, SPAN_NOTICE("You load [G] in [src]."))
 			user.drop_inv_item_to_loc(G, src)
+			update_ammo_hud(user)
 
 /obj/item/attachable/attached_gun/grenade/fire_attachment(atom/target,obj/item/weapon/gun/gun,mob/living/user)
 	if(!(gun.flags_item & WIELDED))
@@ -1383,6 +1402,7 @@ Defined in conflicts.dm of the #defines folder.
 
 	if(current_rounds > 0 && ..())
 		prime_grenade(target,gun,user)
+	
 
 /obj/item/attachable/attached_gun/grenade/proc/prime_grenade(atom/target,obj/item/weapon/gun/gun,mob/living/user)
 	set waitfor = 0
@@ -1406,6 +1426,7 @@ Defined in conflicts.dm of the #defines folder.
 	G.throw_atom(target, max_range, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
 	current_rounds--
 	loaded_grenades.Cut(1,2)
+	update_ammo_hud(user)
 
 //For the Mk1
 /obj/item/attachable/attached_gun/grenade/mk1
@@ -1444,8 +1465,16 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/flamer/examine(mob/user)
 	..()
-	if(current_rounds > 0) to_chat(user, "It has [current_rounds] unit\s of fuel left.")
-	else to_chat(user, "It's empty.")
+	if(current_rounds > 0)
+		to_chat(user, "It has [current_rounds] unit\s of fuel left.")
+	else
+		to_chat(user, "It's empty.")
+
+/obj/item/attachable/attached_gun/flamer/get_attachment_ammo_type()
+	return list("flame", "flame_empty")
+
+/obj/item/attachable/attached_gun/flamer/get_attachment_ammo_count()
+	return round(100 * current_rounds/max_rounds)
 
 /obj/item/attachable/attached_gun/flamer/reload_attachment(obj/item/ammo_magazine/flamer_tank/FT, mob/user)
 	if(istype(FT))
@@ -1459,6 +1488,7 @@ Defined in conflicts.dm of the #defines folder.
 			var/transfered_rounds = min(max_rounds - current_rounds, FT.current_rounds)
 			current_rounds += transfered_rounds
 			FT.current_rounds -= transfered_rounds
+			update_ammo_hud(user)
 	else
 		to_chat(user, SPAN_WARNING("[src] can only be refilled with an incinerator tank."))
 
@@ -1507,6 +1537,11 @@ Defined in conflicts.dm of the #defines folder.
 		prev_T = T
 		sleep(1)
 
+	show_percentage(user)
+
+/obj/item/attachable/attached_gun/flamer/proc/show_percentage(var/mob/living/user)
+	to_chat(user, SPAN_WARNING("The gauge reads: <b>[round(100 * current_rounds/max_rounds)]</b>% fuel remains!"))
+	update_ammo_hud(user)
 
 /obj/item/attachable/attached_gun/flamer/proc/flame_turf(turf/T, mob/living/user)
 	if(!istype(T)) return
@@ -1547,8 +1582,16 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/shotgun/examine(mob/user)
 	..()
-	if(current_rounds > 0) 	to_chat(user, "It has [current_rounds] shell\s left.")
-	else 					to_chat(user, "It's empty.")
+	if(current_rounds > 0)
+		to_chat(user, "It has [current_rounds] shell\s left.")
+	else
+		to_chat(user, "It's empty.")
+
+/obj/item/attachable/attached_gun/shotgun/get_attachment_ammo_type()
+	return list(ammo.hud_state, ammo.hud_state_empty)
+
+/obj/item/attachable/attached_gun/shotgun/get_attachment_ammo_count()
+	return current_rounds
 
 /obj/item/attachable/attached_gun/shotgun/set_bullet_traits()
 	LAZYADD(traits_to_give_attached, list(
@@ -1570,6 +1613,7 @@ Defined in conflicts.dm of the #defines folder.
 				if(mag.current_rounds <= 0)
 					user.temp_drop_inv_item(mag)
 					qdel(mag)
+				update_ammo_hud(user)
 			return
 	to_chat(user, SPAN_WARNING("[src] only accepts shotgun buckshot."))
 
@@ -1591,6 +1635,12 @@ Defined in conflicts.dm of the #defines folder.
 		return
 	to_chat(user, "It's empty.")
 
+/obj/item/attachable/attached_gun/extinguisher/get_attachment_ammo_type()
+	return list("flame_blue", "flame_empty") //placeholder
+
+/obj/item/attachable/attached_gun/extinguisher/get_attachment_ammo_count()
+	return round(100 * internal_extinguisher.reagents.total_volume/internal_extinguisher.max_water)
+
 /obj/item/attachable/attached_gun/extinguisher/New()
 	..()
 	initialize_internal_extinguisher()
@@ -1599,7 +1649,8 @@ Defined in conflicts.dm of the #defines folder.
 	if(!internal_extinguisher)
 		return
 	if(..())
-		return internal_extinguisher.afterattack(target, user)
+		. = internal_extinguisher.afterattack(target, user)
+		update_ammo_hud(user)
 
 /obj/item/attachable/attached_gun/extinguisher/proc/initialize_internal_extinguisher()
 	internal_extinguisher = new /obj/item/tool/extinguisher/mini/integrated_flamer()

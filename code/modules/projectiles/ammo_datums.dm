@@ -3,6 +3,10 @@
 	var/headshot_state	= null //Icon state when a human is permanently killed with it by execution/suicide.
 	var/icon 		= 'icons/obj/items/weapons/projectiles.dmi'
 	var/icon_state 	= "bullet"
+	 ///Bullet type on the Ammo HUD
+	var/hud_state   = "unknown"
+	 ///Empty bullet type on the Ammo HUD
+	var/hud_state_empty = "unknown"
 	var/ping 		= "ping_b" //The icon that is displayed when the bullet bounces off something.
 	var/sound_hit //When it deals damage.
 	var/sound_armor //When it's blocked by human armor.
@@ -236,24 +240,27 @@
 	accuracy = HIT_ACCURACY_TIER_2
 	effective_range_max = 4
 	damage_falloff = DAMAGE_FALLOFF_TIER_4 //should be useful in close-range mostly
+	hud_state = "pistol"
+	hud_state_empty = "pistol_empty"
 
 /datum/ammo/bullet/pistol/tiny
 	name = "light pistol bullet"
+	hud_state = "pistol_light"
 
 /datum/ammo/bullet/pistol/tranq
 	name = "tranquilizer bullet"
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_RESIST
 	stamina_damage = 30
-
-//2020 rebalance: is supposed to counter runners and lurkers, dealing high damage to the only castes with no armor.
-//Limited by its lack of versatility and lower supply, so marines finally have an answer for flanker castes that isn't just buckshot.
+	hud_state = "pistol_tranq"
 
 /datum/ammo/bullet/pistol/hollow
 	name = "hollowpoint pistol bullet"
 
-	damage = 55 //hollowpoint is strong
-	penetration = 0 //hollowpoint can't pierce armor!
-	shrapnel_chance = SHRAPNEL_CHANCE_TIER_3 //hollowpoint causes shrapnel
+	damage = BULLET_DAMAGE_TIER_11
+	damage_falloff = DAMAGE_FALLOFF_TIER_9
+	penetration = 0
+	shrapnel_chance = SHRAPNEL_CHANCE_TIER_3
+	hud_state = "pistol_hollow"
 
 // Used by M4A3 AP, Highpower and mod88
 /datum/ammo/bullet/pistol/ap
@@ -263,9 +270,11 @@
 	accuracy = HIT_ACCURACY_TIER_2
 	penetration= ARMOR_PENETRATION_TIER_8
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_2
+	hud_state = "pistol_ap"
 
 /datum/ammo/bullet/pistol/ap/penetrating
 	name = "wall-piercing pistol bullet"
+	hud_state = "pistol_wp"
 	shrapnel_chance = 0
 
 	damage = 30
@@ -279,6 +288,7 @@
 
 /datum/ammo/bullet/pistol/ap/cluster
 	name = "cluster pistol bullet"
+	hud_state = "pistol_cluster"
 	shrapnel_chance = 0
 	var/cluster_addon = 1.5
 
@@ -288,6 +298,7 @@
 
 /datum/ammo/bullet/pistol/ap/toxin
 	name = "toxic pistol bullet"
+	hud_state = "pistol_tox"
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -315,9 +326,9 @@
 /datum/ammo/bullet/pistol/rubber
 	name = "rubber pistol bullet"
 	sound_override = 'sound/weapons/gun_c99.ogg'
-
-	damage = 0
-	stamina_damage = 25
+	hud_state = "pistol_light"
+	damage = BULLET_DAMAGE_OFF
+	stamina_damage = BULLET_DAMAGE_TIER_5
 	shrapnel_chance = 0
 
 // Used by M1911, Deagle and KT-42
@@ -332,6 +343,7 @@
 
 /datum/ammo/bullet/pistol/heavy/cluster
 	name = "heavy cluster pistol bullet"
+	hud_state = "pistol_cluster"
 	var/cluster_addon = 1.5
 
 /datum/ammo/bullet/pistol/heavy/cluster/on_hit_mob(mob/M, obj/item/projectile/P)
@@ -341,12 +353,15 @@
 /datum/ammo/bullet/pistol/heavy/super //Commander's variant
 	name = ".50 heavy pistol bullet"
 	damage = 50
+	hud_state = "pistol_eagle_super"
+	hud_state_empty = "pistol_eagle_empty"
 	damage_var_low = PROJECTILE_VARIANCE_TIER_8
 	damage_var_high = PROJECTILE_VARIANCE_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_4
 
 /datum/ammo/bullet/pistol/heavy/super/highimpact
 	name = ".50 high-impact pistol bullet"
+	hud_state = "pistol_eagle_highimpact"
 	penetration = ARMOR_PENETRATION_TIER_2
 	debilitate = list(0,2,0,0,0,1,0,0)
 
@@ -385,6 +400,7 @@
 
 /datum/ammo/bullet/pistol/incendiary
 	name = "incendiary pistol bullet"
+	hud_state = "pistol_fire"
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -411,6 +427,7 @@
 
 /datum/ammo/bullet/pistol/squash/toxin
 	name = "toxic squash-head pistol bullet"
+	hud_state = "pistol_tox"
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -430,6 +447,7 @@
 
 /datum/ammo/bullet/pistol/squash/penetrating
 	name = "wall-piercing squash-head pistol bullet"
+	hud_state = "pistol_wp"
 	shrapnel_chance = 0
 	penetration = ARMOR_PENETRATION_TIER_10
 
@@ -441,6 +459,7 @@
 
 /datum/ammo/bullet/pistol/squash/cluster
 	name = "cluster squash-head pistol bullet"
+	hud_state = "pistol_wp"
 	shrapnel_chance = 0
 	var/cluster_addon = 2
 
@@ -450,6 +469,7 @@
 
 /datum/ammo/bullet/pistol/squash/incendiary
 	name = "incendiary squash-head pistol bullet"
+	hud_state = "pistol_fire"
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -466,6 +486,8 @@
 /datum/ammo/bullet/pistol/mankey
 	name = "live monkey"
 	icon_state = "monkey1"
+	hud_state = "monkey"
+	hud_state_empty = "monkey_empty"
 	ping = null //no bounce off.
 	damage_type = BURN
 	debilitate = list(4,4,0,0,0,0,0,0)
@@ -504,6 +526,8 @@
 /datum/ammo/bullet/revolver
 	name = "revolver bullet"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
+	hud_state = "revolver"
+	hud_state_empty = "revolver_empty"
 	debilitate = list(1,0,0,0,0,0,0,0)
 
 	damage = 55
@@ -512,7 +536,7 @@
 
 /datum/ammo/bullet/revolver/marksman
 	name = "marksman revolver bullet"
-
+	hud_state = "revolver_ap"
 	shrapnel_chance = 0
 	damage_falloff = 0
 	accurate_range = 12
@@ -520,7 +544,7 @@
 
 /datum/ammo/bullet/revolver/heavy
 	name = "heavy revolver bullet"
-
+	hud_state = "revolver_heavy"
 	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_4
 	accuracy = HIT_ACCURACY_TIER_3
@@ -530,6 +554,7 @@
 
 /datum/ammo/bullet/revolver/incendiary
 	name = "incendiary revolver bullet"
+	hud_state = "revolver_fire"
 	damage = 40
 
 /datum/ammo/bullet/revolver/incendiary/set_bullet_traits()
@@ -540,6 +565,7 @@
 
 /datum/ammo/bullet/revolver/marksman/toxin
 	name = "toxic revolver bullet"
+	hud_state = "revolver_toxin"
 	var/acid_per_hit = 10
 	var/organic_damage_mult = 3
 
@@ -559,6 +585,7 @@
 
 /datum/ammo/bullet/revolver/penetrating
 	name = "wall-piercing revolver bullet"
+	hud_state = "revolver_wp"
 	shrapnel_chance = 0
 
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -571,6 +598,7 @@
 
 /datum/ammo/bullet/revolver/cluster
 	name = "cluster revolver bullet"
+	hud_state = "revolver_cluster"
 	shrapnel_chance = 0
 	var/cluster_addon = 4
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -590,6 +618,7 @@
 	headshot_state	= HEADSHOT_OVERLAY_HEAVY //Gol-dang shotgun blow your fething head off.
 	debilitate = list(0,0,0,0,0,0,0,0)
 	icon_state = "shrapnelshot"
+	hud_state = "revolver_shrapnel"
 	bonus_projectiles_type = /datum/ammo/bullet/revolver/nagant/shrapnel_bits
 
 	max_range = 6
@@ -623,6 +652,9 @@
 
 /datum/ammo/bullet/revolver/mateba
 	name = ".454 heavy revolver bullet"
+	hud_state = "revolver_heavy"
+	impact_name = "mateba"
+	impact_limbs = BODY_FLAG_HEAD
 	debilitate = list(0,2,0,0,0,1,0,0)
 
 	damage = 60
@@ -633,6 +665,9 @@
 
 /datum/ammo/bullet/revolver/mateba/highimpact
 	name = ".454 heavy high-impact revolver bullet"
+	hud_state = "revolver_highimpact"
+	impact_name = "mateba"
+	impact_limbs = BODY_FLAG_HEAD
 	debilitate = list(0,2,0,0,0,1,0,0)
 	penetration = ARMOR_PENETRATION_TIER_2
 
@@ -675,6 +710,7 @@
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive //if you ever put this in normal gameplay, i am going to scream
 	name = ".454 heavy explosive revolver bullet"
 	damage = 100
+	hud_state = "revolver_explosive"
 	damage_var_low = PROJECTILE_VARIANCE_TIER_10
 	damage_var_high = PROJECTILE_VARIANCE_TIER_1
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -705,13 +741,6 @@
 					SMG Ammo
 //======
 */
- //2020 SMG/ammo rebalance. default ammo actually has penetration so it can be useful, by 4khan: should be meh against t3s, better under 15 armor. Perfectly does this right now (oct 2020)
- //has reduced falloff compared to the m39. this means it is best for kiting castes (mostly t2s and below admittedly)
- //while the m39 ap is better for shredding them at close range, but has reduced velocity, so it's better for just running in and erasing armor-centric castes (defender, crusher)
- // which i think is really interesting and good balance, giving both ammo types a reason to exist even against ravagers.
- //i feel it is necessary to reflavor the default bullet, because otherwise, people won't be able to notice it has less falloff and faster bullet speed. even with a changelog,
- //way too many people don't read the changelog, and after one or two months the changelog entry is all but archive, so there needs to be an ingame description of what the ammo does
- //in comparison to armor-piercing rounds.
 
 /datum/ammo/bullet/smg
 	name = "submachinegun bullet"
@@ -726,16 +755,18 @@
 
 /datum/ammo/bullet/smg/m39
 	name = "high-velocity submachinegun bullet" //i don't want all smgs to inherit 'high velocity'
+	hud_state = "smg_hv"
 
 /datum/ammo/bullet/smg/ap
 	name = "armor-piercing submachinegun bullet"
-
+	hud_state = "smg_ap"
 	damage = 28
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_4
 
 /datum/ammo/bullet/smg/ap/toxin
 	name = "toxic submachinegun bullet"
+	hud_state = "smg_tox"
 	var/acid_per_hit = 5
 	var/organic_damage_mult = 3
 
@@ -810,6 +841,7 @@
 
 /datum/ammo/bullet/smg/incendiary
 	name = "incendiary submachinegun bullet"
+	hud_state = "smg_fire"
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -825,6 +857,7 @@
 
 /datum/ammo/bullet/smg/ap/penetrating
 	name = "wall-piercing submachinegun bullet"
+	hud_state = "smg_wp"
 	shrapnel_chance = 0
 
 	damage = 30
@@ -838,6 +871,7 @@
 
 /datum/ammo/bullet/smg/ap/cluster
 	name = "cluster submachinegun bullet"
+	hud_state = "smg_cluster"
 	shrapnel_chance = 0
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -859,6 +893,7 @@
 
 /datum/ammo/bullet/smg/rubber
 	name = "rubber submachinegun bullet"
+	hud_state = "smg_light"
 	sound_override = 'sound/weapons/gun_c99.ogg'
 
 	damage = 0
@@ -873,8 +908,9 @@
 
 /datum/ammo/bullet/rifle
 	name = "rifle bullet"
+	hud_state = "rifle"
+	hud_state_empty = "rifle_empty"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
-
 	damage = 40
 	penetration = ARMOR_PENETRATION_TIER_1
 	accurate_range = 16
@@ -905,13 +941,14 @@
 
 /datum/ammo/bullet/rifle/ap
 	name = "armor-piercing rifle bullet"
-
+	hud_state = "rifle_ap"
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_8
 
 // Basically AP but better. Focused at taking out armour temporarily
 /datum/ammo/bullet/rifle/ap/toxin
 	name = "toxic rifle bullet"
+	hud_state = "rifle_tox"
 	var/acid_per_hit = 7
 	var/organic_damage_mult = 3
 
@@ -932,8 +969,8 @@
 
 /datum/ammo/bullet/rifle/ap/penetrating
 	name = "wall-piercing rifle bullet"
+	hud_state = "rifle_wp"
 	shrapnel_chance = 0
-
 	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_10
 
@@ -945,6 +982,7 @@
 
 /datum/ammo/bullet/rifle/ap/cluster
 	name = "cluster rifle bullet"
+	hud_state = "rifle_cluster"
 	shrapnel_chance = 0
 
 	damage = 35
@@ -964,6 +1002,7 @@
 
 /datum/ammo/bullet/rifle/rubber
 	name = "rubber rifle bullet"
+	hud_state = "rifle_light"
 	sound_override = 'sound/weapons/gun_c99.ogg'
 
 	damage = 0
@@ -972,6 +1011,7 @@
 
 /datum/ammo/bullet/rifle/incendiary
 	name = "incendiary rifle bullet"
+	hud_state = "rifle_fire"
 	damage_type = BURN
 	shrapnel_chance = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -989,6 +1029,8 @@
 
 /datum/ammo/bullet/rifle/m4ra
 	name = "A19 high velocity bullet"
+	hud_state = "hivelo"
+	hud_state_empty = "hivelo_empty"
 	shrapnel_chance = 0
 	damage_falloff = 0
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -1001,6 +1043,7 @@
 
 /datum/ammo/bullet/rifle/m4ra/incendiary
 	name = "A19 high velocity incendiary bullet"
+	hud_state = "hivelo_fire"
 	flags_ammo_behavior = AMMO_BALLISTIC
 
 	damage = 40
@@ -1017,6 +1060,7 @@
 
 /datum/ammo/bullet/rifle/m4ra/impact
 	name = "A19 high velocity impact bullet"
+	hud_state = "hivelo_impact"
 	flags_ammo_behavior = AMMO_BALLISTIC
 
 	damage = 40
@@ -1030,18 +1074,19 @@
 
 /datum/ammo/bullet/rifle/mar40
 	name = "heavy rifle bullet"
+	hud_state = "rifle_heavy"
 
 	damage = 55
 
 /datum/ammo/bullet/rifle/type71
 	name = "heavy rifle bullet"
-
 	damage = 35
+	hud_state = "rifle_heavy"
 	penetration = ARMOR_PENETRATION_TIER_2
 
 /datum/ammo/bullet/rifle/type71/ap
 	name = "heavy armor-piercing rifle bullet"
-
+	hud_state = "rifle_heavy_ap"
 	damage = 20
 	penetration = ARMOR_PENETRATION_TIER_10
 
@@ -1053,9 +1098,12 @@
 
 /datum/ammo/bullet/shotgun
 	headshot_state	= HEADSHOT_OVERLAY_HEAVY
+	hud_state = "shotgun_buckshot"
+	hud_state_empty = "shotgun_empty"
 
 /datum/ammo/bullet/shotgun/slug
 	name = "shotgun slug"
+	hud_state = "shotgun_slug"
 	handful_state = "slug_shell"
 
 	accurate_range = 6
@@ -1072,6 +1120,8 @@
 	headshot_state	= HEADSHOT_OVERLAY_LIGHT //It's not meant to kill people... but if you put it in your mouth, it will.
 	handful_state = "beanbag_slug"
 	icon_state = "beanbag"
+	handful_state = "beanbag_slug"
+	hud_state = "shotgun_beanbag"
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_RESIST
 	sound_override = 'sound/weapons/gun_shotgun_small.ogg'
 
@@ -1091,6 +1141,7 @@
 
 /datum/ammo/bullet/shotgun/incendiary
 	name = "incendiary slug"
+	hud_state = "shotgun_fire_slug"
 	handful_state = "incendiary_slug"
 	damage_type = BURN
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -1120,6 +1171,7 @@
 /datum/ammo/bullet/shotgun/flechette
 	name = "flechette shell"
 	icon_state = "flechette"
+	hud_state = "shotgun_flechette"
 	handful_state = "flechette_shell"
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/flechette_spread
 
@@ -1149,6 +1201,7 @@
 /datum/ammo/bullet/shotgun/buckshot
 	name = "buckshot shell"
 	icon_state = "buckshot"
+	hud_state = "shotgun_buckshot"
 	handful_state = "buckshot_shell"
 	multiple_handful_name = TRUE
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/spread
@@ -1169,6 +1222,7 @@
 /datum/ammo/bullet/shotgun/buckshot/incendiary
 	name = "incendiary buckshot shell"
 	handful_state = "incen_buckshot"
+	hud_state = "shotgun_fire_buckshot"
 	handful_type = /obj/item/ammo_magazine/handful/shotgun/buckshot/incendiary
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary/set_bullet_traits()
@@ -1213,6 +1267,7 @@
 /datum/ammo/bullet/shotgun/heavy/buckshot
 	name = "heavy buckshot shell"
 	icon_state = "buckshot"
+	hud_state = "shotgun_buckshot"
 	handful_state = "heavy_buckshot"
 	multiple_handful_name = TRUE
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/buckshot/spread
@@ -1237,6 +1292,7 @@
 //basically the same
 /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath
 	name = "dragon's breath shell"
+	hud_state = "shotgun_fire_buck"
 	handful_state = "heavy_dragonsbreath"
 	multiple_handful_name = TRUE
 	damage_type = BURN
@@ -1260,6 +1316,7 @@
 
 /datum/ammo/bullet/shotgun/heavy/slug
 	name = "heavy shotgun slug"
+	hud_state = "shotgun_slug"
 	handful_state = "heavy_slug"
 
 	accurate_range = 7
@@ -1276,6 +1333,7 @@
 	icon_state = "beanbag"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	handful_state = "heavy_beanbag"
+	hud_state = "shotgun_beanbag"
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_RESIST
 
 	max_range = 7
@@ -1295,6 +1353,7 @@
 /datum/ammo/bullet/shotgun/heavy/flechette
 	name = "heavy flechette shell"
 	icon_state = "flechette"
+	hud_state = "shotgun_flechette"
 	handful_state = "heavy_flechette"
 	multiple_handful_name = TRUE
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/flechette_spread
@@ -1367,6 +1426,8 @@
 /datum/ammo/bullet/sniper
 	name = "sniper bullet"
 	headshot_state	= HEADSHOT_OVERLAY_HEAVY
+	hud_state = "sniper"
+	hud_state_empty = "sniper_empty"
 	damage_falloff = 0
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
 	accurate_range_min = 4
@@ -1388,6 +1449,7 @@
 
 /datum/ammo/bullet/sniper/incendiary
 	name = "incendiary sniper bullet"
+	hud_state = "sniper_fire"
 	accuracy = 0
 	damage_type = BURN
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
@@ -1417,6 +1479,7 @@
 
 /datum/ammo/bullet/sniper/flak
 	name = "flak sniper bullet"
+	hud_state = "sniper_flak"
 	damage_type = BRUTE
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
 
@@ -1486,6 +1549,7 @@
 
 /datum/ammo/bullet/sniper/svd
 	name = "crude sniper bullet"
+	hud_state = "sniper_heavy"
 
 /datum/ammo/bullet/sniper/anti_tank
 	name = "anti-tank sniper bullet"
@@ -1497,7 +1561,7 @@
 
 /datum/ammo/bullet/sniper/elite
 	name = "supersonic sniper bullet"
-
+	hud_state = "sniper_supersonic"
 	accuracy = HIT_ACCURACY_TIER_8
 	damage = 95
 	shell_speed = AMMO_SPEED_TIER_6
@@ -1511,6 +1575,8 @@
 /datum/ammo/bullet/smartgun
 	name = "smartgun bullet"
 	icon_state = "redbullet"
+	hud_state = "smartgun"
+	hud_state_empty = "smartgun_empty"
 	flags_ammo_behavior = AMMO_BALLISTIC
 
 	max_range = 12
@@ -1521,7 +1587,7 @@
 /datum/ammo/bullet/smartgun/armor_piercing
 	name = "armor-piercing smartgun bullet"
 	icon_state = "bullet"
-
+	hud_state = "smartgun_ap"
 	accurate_range = 12
 	accuracy = HIT_ACCURACY_TIER_1
 	damage = 20
@@ -1531,7 +1597,7 @@
 /datum/ammo/bullet/smartgun/dirty
 	name = "irradiated smartgun bullet"
 	debilitate = list(0,0,0,3,0,0,0,1)
-
+	hud_state = "smartgun_radioactive"
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_7
 	accurate_range = 32
 	accuracy = HIT_ACCURACY_TIER_3
@@ -1539,6 +1605,9 @@
 	penetration = 0
 
 /datum/ammo/bullet/smartgun/dirty/armor_piercing
+	name = "irradiated armor-piercing smartgun bullet"
+	icon_state = "bullet"
+	hud_state = "smartgun_radioactive_ap"
 	debilitate = list(0,0,0,3,0,0,0,1)
 
 	accurate_range = 22
@@ -1571,7 +1640,8 @@
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
 	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
-
+	hud_state = "minigun"
+	hud_state_empty = "minigun_empty"
 	accurate_range = 12
 	damage = 35
 	penetration= ARMOR_PENETRATION_TIER_10 //Bumped the penetration to serve a different role from sentries, MGs are a bit more offensive
@@ -1592,7 +1662,8 @@
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
-
+	hud_state = "minigun"
+	hud_state_empty = "minigun_empty"
 	accuracy = -HIT_ACCURACY_TIER_3
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
@@ -1609,7 +1680,8 @@
 /datum/ammo/bullet/m60
 	name = "M60 bullet"
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
-
+	hud_state = "rifle_heavy"
+	hud_state_empty = "rifle_empty"
 	accuracy = -HIT_ACCURACY_TIER_3
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_8
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
@@ -1627,6 +1699,7 @@
 /datum/ammo/rocket
 	name = "high explosive rocket"
 	icon_state = "missile"
+	hud_state = "rocket_he"
 	ping = null //no bounce off.
 	sound_bounce	= "rocket_bounce"
 	damage_falloff = 0
@@ -1672,6 +1745,7 @@
 
 /datum/ammo/rocket/ap
 	name = "anti-armor rocket"
+	hud_state = "rocket_ap"
 	damage_falloff = 0
 	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
@@ -1771,6 +1845,7 @@
 
 /datum/ammo/rocket/wp
 	name = "white phosphorous rocket"
+	hud_state = "rocket_fire"
 	flags_ammo_behavior = AMMO_ROCKET|AMMO_EXPLOSIVE|AMMO_STRIKES_SURFACE
 	damage_type = BURN
 
@@ -1812,6 +1887,7 @@
 
 /datum/ammo/rocket/wp/quad
 	name = "thermobaric rocket"
+	hud_state = "rocket_thermobaric"
 	flags_ammo_behavior = AMMO_ROCKET|AMMO_STRIKES_SURFACE
 
 	damage = 100
@@ -1888,6 +1964,8 @@
 	name = "taser bolt"
 	icon_state = "stun"
 	damage_type = OXY
+	hud_state = "taser"
+	hud_state_empty = "battery_empty"
 	flags_ammo_behavior = AMMO_ENERGY|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF //Not that ignoring will do much right now.
 
 	stamina_damage = 45
@@ -1899,7 +1977,7 @@
 		var/mob/living/carbon/human/H = M
 		H.disable_special_items() // Disables scout cloak
 
-/datum/ammo/energy/yautja/
+/datum/ammo/energy/yautja
 	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	accurate_range = 12
 	shell_speed = AMMO_SPEED_TIER_3
