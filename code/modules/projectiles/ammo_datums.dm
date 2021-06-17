@@ -1892,6 +1892,7 @@
 	name = "taser bolt"
 	icon_state = "stun"
 	hud_state = "taser"
+	damage_type = OXY
 	hud_state_empty = "battery_empty"
 	flags_ammo_behavior = AMMO_ENERGY|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF //Not that ignoring will do much right now.
 

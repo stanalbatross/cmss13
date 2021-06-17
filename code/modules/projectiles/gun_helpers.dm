@@ -338,7 +338,7 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	return null //usually a list
 
 /obj/item/weapon/gun/proc/get_ammo_count()
-	return FALSE
+	return 0
 
 /obj/item/weapon/gun/proc/check_inactive_hand(mob/user)
 	if(user)
