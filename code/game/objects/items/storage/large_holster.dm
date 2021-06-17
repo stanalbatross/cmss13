@@ -243,7 +243,6 @@
 
 	var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
 	A.update_hud(user)
-//todo: 8g shotgun, wm37 counter, doublecheck
 	return TRUE
 
 /obj/item/storage/large_holster/fuelpack/verb/toggle_fuel()
