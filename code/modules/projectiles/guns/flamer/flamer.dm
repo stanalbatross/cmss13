@@ -23,7 +23,7 @@
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/extinguisher)
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY|GUN_AMMO_COUNTER
 	gun_category = GUN_CATEGORY_HEAVY
 
 
@@ -220,6 +220,22 @@
 	if(current_mag)
 		to_chat(user, SPAN_WARNING("The gauge reads: <b>[round(current_mag.get_ammo_percent())]</b>% fuel remains!"))
 
+	var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+	A.update_hud(user)
+
+/obj/item/weapon/gun/flamer/get_ammo_type()
+	if(!current_mag)
+		return list("empty", "empty")
+	else
+		var/obj/item/ammo_magazine/flamer_tank/flame_tank = current_mag
+		return list(flame_tank.hud_state, flame_tank.hud_state_empty)
+
+/obj/item/weapon/gun/flamer/get_ammo_count()
+	if(!current_mag)
+		return 0
+	else
+		return round(current_mag.get_ammo_percent())
+
 /obj/item/weapon/gun/flamer/underextinguisher
 	starting_attachment_types = list(/obj/item/attachable/attached_gun/extinguisher)
 
@@ -233,7 +249,7 @@
 	current_mag = null
 	var/obj/item/storage/large_holster/fuelpack/fuelpack
 	starting_attachment_types = list(/obj/item/attachable/attached_gun/extinguisher/pyro)
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	flags_item = TWOHANDED|NO_CRYO_STORE
 
 

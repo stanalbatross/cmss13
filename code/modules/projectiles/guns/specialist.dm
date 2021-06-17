@@ -179,7 +179,7 @@
 						/obj/item/attachable/bipod,
 						/obj/item/attachable/scope/slavic)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 
 
 /obj/item/weapon/gun/rifle/sniper/svd/handle_starting_attachment()
@@ -316,7 +316,7 @@
 						/obj/item/attachable/burstfire_assembly,
 						/obj/item/attachable/flashlight)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO|GUN_AMMO_COUNTER
 	gun_category = GUN_CATEGORY_HEAVY
 	starting_attachment_types = list(/obj/item/attachable/smartbarrel)
 	auto_retrieval_slot = WEAR_J_STORE
@@ -327,6 +327,21 @@
 	ammo_primary = GLOB.ammo_list[ammo_primary]
 	ammo_secondary = GLOB.ammo_list[ammo_secondary]
 	MD = new(src)
+
+/obj/item/weapon/gun/smartgun/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else
+		return list(ammo.hud_state, ammo.hud_state_empty)
+
+/obj/item/weapon/gun/smartgun/get_ammo_count()
+	if(!current_mag)
+		return 0
+	else
+		return current_mag.current_rounds
+
+/obj/item/weapon/gun/smartgun/display_ammo(mob/user)
+	return //would lag chat
 
 /obj/item/weapon/gun/smartgun/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 16,"rail_x" = 17, "rail_y" = 18, "under_x" = 22, "under_y" = 14, "stock_x" = 22, "stock_y" = 14)
@@ -708,7 +723,7 @@
 	ammo = /obj/item/ammo_magazine/smartgun/dirty
 	ammo_primary = /datum/ammo/bullet/smartgun/dirty//Toggled ammo type
 	ammo_secondary = /datum/ammo/bullet/smartgun/dirty/armor_piercing///Toggled ammo type
-	flags_gun_features = GUN_WY_RESTRICTED|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO
+	flags_gun_features = GUN_WY_RESTRICTED|GUN_SPECIALIST|GUN_AMMO_COUNTER|GUN_WIELDED_FIRING_ONLY|GUN_HAS_FULL_AUTO
 
 
 //TERMINATOR SMARTGUN
@@ -793,7 +808,7 @@
 
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	wield_delay = WIELD_DELAY_SLOW
-	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	///Can you access the storage by clicking it, put things into it, or take things out? Meant for break-actions mostly but useful for any state where you want access to be toggleable. Make sure to call cylinder.close(user) so they don't still have the screen open!
 	var/open_chamber = TRUE
 	///Does it launch its grenades in a low arc or a high? Do they strike people in their path, or fly beyond?
@@ -927,7 +942,8 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 			return
 		fire_grenade(target,user)
 		playsound(user.loc, cocked_sound, 25, 1)
-
+		var/obj/screen/ammo/A = user.hud_used.ammo
+		A.update_hud(user)
 
 /obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user)
 	set waitfor = 0
@@ -959,6 +975,15 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
 	playsound(F.loc, fire_sound, 50, 1)
 
+/obj/item/weapon/gun/launcher/grenade/get_ammo_type()
+	if(length(cylinder.contents) == 0)
+		return list("empty", "empty")
+	else
+		var/obj/item/explosive/grenade/F = cylinder.contents[1]
+		return list(F.hud_state, F.hud_state_empty)
+
+/obj/item/weapon/gun/launcher/grenade/get_ammo_count()
+	return length(cylinder.contents)
 
 //Doesn't use these. Listed for reference.
 /obj/item/weapon/gun/launcher/grenade/load_into_chamber()
@@ -1067,7 +1092,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 						/obj/item/attachable/magnetic_harness
 						)
 
-	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 	var/datum/effect_system/smoke_spread/smoke
 
 	flags_item = TWOHANDED|NO_CRYO_STORE
@@ -1077,6 +1102,17 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	smoke = new()
 	smoke.attach(src)
 
+/obj/item/weapon/gun/launcher/rocket/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else
+		return list(ammo.hud_state, ammo.hud_state_empty)
+
+/obj/item/weapon/gun/launcher/rocket/get_ammo_count()
+	if(!current_mag)
+		return 0
+	else
+		return current_mag.current_rounds
 
 /obj/item/weapon/gun/launcher/rocket/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 18,"rail_x" = 6, "rail_y" = 19, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
@@ -1239,7 +1275,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 	current_mag = /obj/item/ammo_magazine/rocket/m57a4
 	aim_slowdown = SLOWDOWN_ADS_SUPERWEAPON
-	flags_gun_features = GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
 
 /obj/item/weapon/gun/launcher/rocket/m57a4/set_gun_config_values()
 	..()

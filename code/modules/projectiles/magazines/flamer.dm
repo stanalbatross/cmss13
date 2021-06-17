@@ -20,6 +20,10 @@
 	var/max_range = 5
 	var/max_duration = 30
 
+	
+	var/hud_state = "flame"
+	var/hud_state_empty = "flame_empty"
+
 /obj/item/ammo_magazine/flamer_tank/empty
 	flamer_chem = null
 
@@ -155,6 +159,8 @@
 
 	max_range = 7
 
+	hud_state = "flame_green"
+
 // This is the green flamer fuel for the pyro.
 /obj/item/ammo_magazine/flamer_tank/large/B
 	name = "large incinerator tank (B)"
@@ -164,6 +170,8 @@
 
 	max_range = 6
 
+	hud_state = "flame_green"
+
 // This is the blue flamer fuel for the pyro.
 /obj/item/ammo_magazine/flamer_tank/large/X
 	name = "large incinerator tank (X)"
@@ -172,3 +180,5 @@
 	flamer_chem = "napalmx"
 
 	max_range = 6
+
+	hud_state = "flame_blue"

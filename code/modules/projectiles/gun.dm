@@ -715,12 +715,18 @@
 			wield_time += 3
 		else
 			wield_time -= 2*user.skills.get_skill_level(SKILL_FIREARMS)
+	var/obj/screen/ammo/A = user.hud_used.ammo
+	A.add_hud(user)
+	A.update_hud(user)
 	return 1
 
 /obj/item/weapon/gun/unwield(var/mob/user)
 	. = ..()
 	if(.)
 		slowdown = initial(slowdown)
+	var/obj/screen/ammo/A = user.hud_used?.ammo
+	if(A)
+		A.remove_hud(user)
 
 //----------------------------------------------------------
 			//							        \\
@@ -1170,6 +1176,8 @@ and you're good to go.
 
 	flags_gun_features &= ~GUN_BURST_FIRING // We always want to turn off bursting when we're done, mainly for when we break early mid-burstfire.
 	display_ammo(user)
+	var/obj/screen/ammo/A = user.hud_used.ammo
+	A.update_hud(user) //Ammo HUD.
 
 #define EXECUTION_CHECK M.stat == UNCONSCIOUS && ((user.a_intent == INTENT_GRAB)||(user.a_intent == INTENT_DISARM))
 
@@ -1246,6 +1254,9 @@ and you're good to go.
 				qdel(projectile_to_fire) //If this proc DIDN'T delete the bullet, we're going to do so here.
 
 			reload_into_chamber(user) //Reload the sucker.
+			if(user) //Update dat HUD
+				var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+				A.update_hud(user)
 		else
 			click_empty(user)//If there's no projectile, we can't do much.
 			if(istype(current_revolver) && current_revolver.russian_roulette && current_revolver.current_mag && current_revolver.current_mag.current_rounds)
@@ -1456,6 +1467,8 @@ and you're good to go.
 
 /obj/item/weapon/gun/proc/click_empty(mob/user)
 	if(user)
+		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		A.update_hud(user)
 		to_chat(user, SPAN_WARNING("<b>*click*</b>"))
 		playsound(user, 'sound/weapons/gun_empty.ogg', 25, 1, 5) //5 tile range
 	else

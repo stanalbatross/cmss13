@@ -28,6 +28,18 @@
 /obj/item/weapon/gun/smg/unique_action(mob/user)
 	cock(user)
 
+/obj/item/weapon/gun/smg/get_ammo_type()
+	if(!ammo)
+		return list("unknown", "unknown")
+	else
+		return list(ammo.hud_state, ammo.hud_state_empty)
+
+/obj/item/weapon/gun/smg/get_ammo_count()
+	if(!current_mag)
+		return in_chamber ? 1 : 0
+	else
+		return in_chamber ? (current_mag.current_rounds + 1) : current_mag.current_rounds
+
 /obj/item/weapon/gun/smg/set_gun_config_values()
 	..()
 	movement_onehanded_acc_penalty_mult = 4
@@ -209,7 +221,7 @@
 							/obj/item/attachable/lasersight
 							)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
 
 
 /obj/item/weapon/gun/smg/mp7/set_gun_attachment_offsets()
@@ -335,7 +347,7 @@
 							/obj/item/attachable/extended_barrel
 								)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
 
 /obj/item/weapon/gun/smg/fp9000/handle_starting_attachment()
 	..()

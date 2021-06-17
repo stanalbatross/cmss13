@@ -54,6 +54,7 @@
 	var/UI_HEALTH_LOC 		= "EAST-1:28,7:15"
 	var/UI_TEMP_LOC 		= "EAST-1:28,6:13"
 	var/UI_NUTRITION_LOC 	= "EAST-1:28,5:11"
+	var/UI_AMMO 			= "EAST-1:28,4:8"
 
 	//Pop-up inventory
 	var/ui_shoes 		= "WEST+1:8,1:5"
