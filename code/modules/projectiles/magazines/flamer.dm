@@ -182,3 +182,10 @@
 	max_range = 6
 
 	hud_state = "flame_blue"
+/obj/item/ammo_magazine/flamer_tank/large/EX
+	name = "large incinerator tank (EX)"
+	desc = "A large fuel tank of Ultra Thick Napthal Fuel type EX, a sticky combustable liquid chemical that burns so hot it melts straight through flame-resistant material, for use in the M240-T incinerator unit. Handle with care."
+	caliber = "Napalm EX"
+	flamer_chem = "napalmex"
+
+	max_range = 7
