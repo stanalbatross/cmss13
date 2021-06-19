@@ -16,10 +16,10 @@
 	max_duration = FIXVEIN_MAX_DURATION
 
 /datum/surgery_step/fix_vein/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, obj/limb/affected, checks_only)
-	if(affected.surgery_open_stage >= 2)
+	/*if(affected.surgery_open_stage >= 2)
 		for(var/datum/wound/W in affected.wounds)
 			if(W.internal)
-				return 1
+				return 1*/
 
 /datum/surgery_step/fix_vein/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, obj/limb/affected)
 	user.visible_message(SPAN_NOTICE("[user] starts patching the damaged vein in [target]'s [affected.display_name] with \the [tool].") , \
@@ -36,11 +36,11 @@
 
 	user.count_niche_stat(STATISTICS_NICHE_SURGERY_IB)
 
-	for(var/datum/wound/W in affected.wounds)
+	/*for(var/datum/wound/W in affected.wounds)
 		if(W.internal)
 			affected.wounds -= W
 			affected.remove_all_bleeding(FALSE, TRUE)
-			affected.update_damages()
+			affected.update_damages()*/
 	if(ishuman(user) && prob(40))
 		var/mob/living/carbon/human/H = user
 		H.add_blood(target.get_blood_color(), BLOOD_HANDS)

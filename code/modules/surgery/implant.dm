@@ -68,8 +68,6 @@
 	SPAN_WARNING("Your hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to make some space in [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	affected.createwound(CUT, 20)
-	affected.update_wounds()
 
 
 
@@ -108,8 +106,7 @@
 	SPAN_WARNING("Your hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to mend [key_name(target)]'s [get_cavity(affected)] cavity wall with \the [tool].")
 
-	affected.createwound(CUT, 20)
-	affected.update_wounds()
+
 
 
 
@@ -141,9 +138,8 @@
 		to_chat(user, SPAN_WARNING("You tear some blood vessels trying to fit such a big object in this cavity."))
 		log_interact(user, target, "[key_name(user)] damaged some blood vessels while putting \the [tool] inside [key_name(target)]'s [get_cavity(affected)] cavity.")
 
-		var/datum/wound/internal_bleeding/I = new (0)
-		affected.add_bleeding(I, TRUE)
-		affected.wounds += I
+		//var/datum/wound/internal_bleeding/I = new (0)
+
 		affected.owner.custom_pain("You feel something rip in your [affected.display_name]!", 1)
 	user.drop_inv_item_to_loc(tool, target)
 	affected.hidden = tool
@@ -154,8 +150,6 @@
 	SPAN_WARNING("Your hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to put \the [tool] inside [key_name(target)]'s [get_cavity(affected)] cavity.")
 
-	affected.createwound(CUT, 20)
-	affected.update_wounds()
 
 
 
@@ -232,7 +226,6 @@
 	SPAN_WARNING("Your hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] damaged the inside of [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	affected.createwound(CUT, 20)
 	if(affected.implants.len)
 		var/fail_prob = 10
 		fail_prob += 100 - tool_quality(tool)
@@ -244,4 +237,3 @@
 				playsound(imp.loc, 'sound/items/countdown.ogg', 25, 1)
 				addtimer(CALLBACK(imp, /obj/item/implant.proc/activate), 25)
 	target.updatehealth()
-	affected.update_wounds()

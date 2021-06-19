@@ -48,10 +48,8 @@
 	SPAN_WARNING("Your hand slips, slicing [target]'s throat wth \the [tool]!") )
 	log_interact(user, target, "[key_name(user)] failed to cut open [key_name(target)]'s face and neck with \the [tool].")
 
-	affected.createwound(CUT, 60)
 	target.losebreath += 10
 	target.updatehealth()
-	affected.update_wounds()
 
 
 /datum/surgery_step/face/mend_vocal
@@ -118,7 +116,7 @@
 	SPAN_WARNING("Your hand slips, tearing skin on [target]'s face with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to pull the skin on [key_name(target)]'s face back in place with \the [tool].")
 
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
+	target.apply_damage(10, BRUTE, affected)
 	target.updatehealth()
 
 

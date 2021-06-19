@@ -9,17 +9,16 @@
 
 #define HUMAN_STRIP_DELAY 40 //takes 40ds = 4s to strip someone.
 #define POCKET_STRIP_DELAY 20
+#define HUMAN_LIMB_ITEM_REMOVAL_DELAY 8 SECONDS
 
 ///////////////////LIMB DEFINES///////////////////
-#define LIMB_BROKEN 1
-#define LIMB_DESTROYED 2 //limb is missing
-#define LIMB_ROBOT 4
-#define LIMB_SPLINTED 8
-#define LIMB_MUTATED 16 //limb is deformed by mutations
-#define LIMB_AMPUTATED 32 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
-#define LIMB_REPAIRED 64 //we just repaired the bone, stops the gelling after setting
-#define LIMB_SPLINTED_INDESTRUCTIBLE 128 // Splint is indestructible
-#define LIMB_DISLOCATED 256 // Mild fracture
+#define LIMB_DESTROYED 1 //limb is missing
+#define LIMB_ROBOT 2
+#define LIMB_MUTATED 4 //limb is deformed by mutations
+#define LIMB_AMPUTATED 8 //limb was amputated cleanly or destroyed limb was cleaned up, thus causing no pain
+#define LIMB_REPAIRED 16 //we just repaired the bone, stops the gelling after setting
+
+#define HUMAN_LIMB_AMOUNT 11
 
 ///////////////SURGERY DEFINES///////////////
 #define SPECIAL_SURGERY_INVALID	"special_surgery_invalid"
@@ -85,13 +84,6 @@
 #define LIMB_INTEGRITY_CRITICAL     4
 #define LIMB_INTEGRITY_NONE         5
 
-#define LIMB_INTEGRITY_EFFECT_PERFECT      (0)
-#define LIMB_INTEGRITY_EFFECT_MINOR        (1 << 0)
-#define LIMB_INTEGRITY_EFFECT_MODERATE		(1 << 1)
-#define LIMB_INTEGRITY_EFFECT_MAJOR      	(1 << 2)
-#define LIMB_INTEGRITY_EFFECT_SERIOUS     (1 << 3)
-#define LIMB_INTEGRITY_EFFECT_CRTICAL         (1 << 4)
-
 #define LIMB_INTEGRITY_THRESHOLD_PERFECT 0 //0-29
 #define LIMB_INTEGRITY_THRESHOLD_OKAY 30 //30-79
 #define LIMB_INTEGRITY_THRESHOLD_CONCERNING 80 // 80-139
@@ -105,6 +97,11 @@
 #define INT_DMG_MULTIPLIER_NORMAL 0.7
 #define INT_DMG_MULTIPLIER_SHARP 1.0
 #define INT_DMG_MULTIPLIER_VERYSHARP 1.25 
+
+// Gauzes, splints & co.
+
+#define CATEGORY_GAUZES 1
+#define CATEGORY_SPLINTS 2
 
 // Surgery chance modifiers
 #define SURGERY_MULTIPLIER_SMALL 	0.10

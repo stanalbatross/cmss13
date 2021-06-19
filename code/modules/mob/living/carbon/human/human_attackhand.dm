@@ -230,10 +230,16 @@
 	visible_message(SPAN_NOTICE("[src] examines [gender==MALE?"himself":"herself"]."), \
 	SPAN_NOTICE("You check yourself for injuries."), null, 3)
 
+	var/dat = ""
+	var/status
+	var/brutedamage
+	var/burndamage
+	var/count = 0
+
 	for(var/obj/limb/org in limbs)
-		var/status = ""
-		var/brutedamage = org.brute_dam
-		var/burndamage = org.burn_dam
+		status = ""
+		brutedamage = org.brute_dam
+		burndamage = org.burn_dam
 		if(org.status & LIMB_DESTROYED)
 			status = "MISSING!"
 		else
@@ -264,14 +270,11 @@
 				else
 					status += "numb"
 
-		if(!status)
-			status = "OK"
-
-		if(org.status & LIMB_BROKEN)
-			status += " <b>(BROKEN)</b>"
-		if(org.status & LIMB_SPLINTED_INDESTRUCTIBLE)
-			status += " <b>(NANOSPLINTED)</b>"
-		else if(org.status & LIMB_SPLINTED)
-			status += " <b>(SPLINTED)</b>"
-
-		to_chat(src, "\t My [org.display_name] is [status=="OK"?SPAN_NOTICE(status):SPAN_WARNING(status)]")
+		if(status)
+			count++
+			dat += "\t My [org.display_name] is [SPAN_WARNING(status)].\n"
+	
+	if(count < HUMAN_LIMB_AMOUNT && count > 0)
+		dat += SPAN_HELPFUL("\t My other limbs are OK.\n")
+	dat += "<a href='?src=\ref[src];limbitems=1'>Check limb items</a>"
+	to_chat(src, dat)

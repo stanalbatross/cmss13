@@ -812,9 +812,8 @@ mob/proc/yank_out_object()
 		H.pain.apply_pain(selection.w_class * 3)
 
 		if(prob(selection.w_class * 5) && !(affected.status & LIMB_ROBOT))
-			var/datum/wound/internal_bleeding/I = new (0)
-			affected.add_bleeding(I, FALSE, TRUE)
-			affected.wounds += I
+			//var/datum/wound/internal_bleeding/I = new (0)
+
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 1)
 
 	selection.forceMove(get_turf(src))

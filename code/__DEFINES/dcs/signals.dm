@@ -136,7 +136,8 @@
 #define COMSIG_HUMAN_TAKE_DAMAGE "human_take_damage"
 	#define COMPONENT_BLOCK_DAMAGE (1<<0)
 
-#define COMSIG_ITEM_ATTEMPT_ATTACK "item_attempt_attack"
+#define COMSIG_ITEM_ATTACK "item_attack"
+#define COMSIG_MOB_ITEM_ATTEMPT_ATTACK "mob_item_attempt_attack"
 	#define COMPONENT_CANCEL_ATTACK (1<<0)
 
 ///Called in /mob/reset_view(): (atom/A)
@@ -424,3 +425,22 @@
 /// From obj/limb/hand/reapply_integrity_effects()
 #define COMSIG_MOB_ADD_RECOIL "add_recoil"
 	#define COMPONENT_ADD_RECOIL (1<<0)
+
+#define COMSIG_PRE_LOCAL_WOUND_EFFECTS "pre_local_wound_effects"
+	#define COMPONENT_STABILIZE_WOUND (1<<0)
+
+// From obj/limb/proc/take_damage()
+// Sent after the limb has taken damage
+#define COMSIG_LIMB_TAKEN_DAMAGE "limb_taken_damage"
+
+#define COMSIG_LIMB_WOUND_STABILIZER_ADDED "limb_wound_stabilizer_added"
+
+#define COMSIG_LIMB_WOUND_STABILIZER_REMOVED "limb_wound_stabilizer_removed"
+
+#define COMSIG_LIMB_INTEGRITY_INCREASED "limb_integrity_increased"
+
+#define COMSIG_LIMB_INTEGRITY_LOWERED "limb_integrity_lowered"
+
+#define COMSIG_LIMB_GET_APPLIED_ITEMS "limb_get_removable_items"
+
+#define COMSIG_LIMB_ITEM_REMOVED "limb_item_removed"
