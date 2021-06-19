@@ -54,9 +54,7 @@
 			A.forceMove(target.loc)
 			target.status_flags &= ~XENO_HOST
 
-	affected.createwound(CUT, rand(0,20), 1)
 	target.updatehealth()
-	affected.update_wounds()
 
 
 //////////////////////////////////////////////////////////////////
@@ -131,13 +129,11 @@
 	else if(istype(tool, /obj/item/stack/medical/bruise_pack))
 		dam_amt = 5
 		target.apply_damage(10, TOX)
-		affected.createwound(CUT, 5)
 
 	for(var/datum/internal_organ/I in affected.internal_organs)
 		if(I && I.damage > 0)
 			I.take_damage(dam_amt,0)
 	target.updatehealth()
-	affected.update_wounds()
 
 
 
@@ -184,13 +180,11 @@
 	log_interact(user, target, "[key_name(user)] failed to repair damage inside of [key_name(target)]'s [affected.display_name] with \the [tool].")
 
 	target.apply_damage(5, TOX)
-	affected.createwound(CUT, 5)
 
 	for(var/datum/internal_organ/I in affected.internal_organs)
 		if(I)
 			I.take_damage(rand(3, 5), 0)
 	target.updatehealth()
-	affected.update_wounds()
 
 
 
@@ -255,8 +249,6 @@
 	SPAN_WARNING("Your hand slips, slicing an artery inside [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to detatch [key_name(target)]'s [affected.surgery_organ] with \the [tool].")
 
-	affected.createwound(CUT, rand(30, 50), 1)
-	affected.update_wounds()
 	affected.surgery_organ = null
 
 
@@ -349,8 +341,6 @@
 	SPAN_WARNING("Your hand slips, damaging the flesh in [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to remove [key_name(target)]'s [affected.surgery_organ] with \the [tool].")
 
-	affected.createwound(BRUISE, 20)
-	affected.update_wounds()
 	affected.surgery_organ = null
 
 
@@ -517,6 +507,4 @@
 	SPAN_WARNING("Your hand slips, damaging the flesh in [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to reattach [key_name(target)]'s [affected.surgery_organ] with \the [tool].")
 
-	affected.createwound(BRUISE, 20)
-	affected.update_wounds()
 	affected.surgery_organ = null

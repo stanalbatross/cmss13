@@ -271,7 +271,7 @@
 
 	RegisterSignal(user, COMSIG_HUMAN_BULLET_ACT, .proc/deflect_bullet)
 	RegisterSignal(user, COMSIG_HUMAN_XENO_ATTACK, .proc/riposte_slash)
-	RegisterSignal(user, COMSIG_ITEM_ATTEMPT_ATTACK, .proc/riposte_melee)
+	RegisterSignal(user, COMSIG_MOB_ITEM_ATTEMPT_ATTACK, .proc/riposte_melee)
 	addtimer(CALLBACK(src, .proc/end_parry, user), parrying_duration)
 
 /obj/item/weapon/melee/yautja/sword/proc/deflect_bullet(mob/living/carbon/human/user, var/x, var/y, obj/item/projectile/P)
@@ -345,7 +345,7 @@
 
 	user.remove_filter("parry_sword")
 
-	UnregisterSignal(user, list(COMSIG_HUMAN_XENO_ATTACK, COMSIG_HUMAN_BULLET_ACT, COMSIG_ITEM_ATTEMPT_ATTACK))
+	UnregisterSignal(user, list(COMSIG_HUMAN_XENO_ATTACK, COMSIG_HUMAN_BULLET_ACT, COMSIG_MOB_ITEM_ATTEMPT_ATTACK))
 
 /obj/item/projectile/proc/jank_wrapper()
 	RegisterSignal(src, COMSIG_BULLET_PRE_HANDLE_MOB, .proc/bullet_ignore_mob)

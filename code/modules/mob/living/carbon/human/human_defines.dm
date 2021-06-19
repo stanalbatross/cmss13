@@ -147,6 +147,8 @@
 	var/minimum_wield_delay
 	var/int_dmg_malus = 1
 
+	var/list/limb_wounds = list()
+
 /client/var/cached_human_playtime
 
 /client/proc/get_total_human_playtime(var/skip_cache = FALSE)

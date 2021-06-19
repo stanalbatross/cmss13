@@ -20,7 +20,7 @@
 			E.process()
 
 			if(E.name in list("l_leg","l_foot","r_leg","r_foot") && !lying)
-				if (!E.is_usable() || E.is_malfunctioning() || (E.is_broken() && !(E.status & LIMB_SPLINTED)))
+				if (!E.is_usable() || E.is_malfunctioning())
 					leg_tally--			// let it fail even if just foot&leg
 
 	// standing is poor

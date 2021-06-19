@@ -48,7 +48,7 @@
 	SPAN_WARNING("Your hand slips, jabbing \the [tool] in [target]'s brain!"))
 	log_interact(user, target, "[key_name(user)] failed to take the bone chips out of [key_name(target)]'s brain with \the [tool].")
 
-	target.apply_damage(30, BRUTE, "head", 1, sharp = 1)
+	target.apply_damage(30, BRUTE, "head", 1)
 	target.updatehealth()
 
 
@@ -89,5 +89,5 @@
 	SPAN_WARNING("Your hand slips, bruising [target]'s brain with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to mend hematoma [key_name(target)]'s brain with \the [tool].")
 
-	target.apply_damage(20, BRUTE, "head", 1, sharp = 1)
+	target.apply_damage(20, BRUTE, "head", 1)
 	target.updatehealth()

@@ -97,9 +97,8 @@
 	if(amt <= 0)
 		return
 	var/spray_direction = pick(alldirs)
-
 	var/datum/cause_data/cause_data = create_cause_data("arterial blood spray", src)
- 	create_shrapnel(sprayloc, 1, spray_direction, 45, /datum/ammo/bullet/shrapnel/blood, cause_data, TRUE)
+	create_shrapnel(sprayloc, 1, spray_direction, 45, /datum/ammo/bullet/shrapnel/blood, cause_data, TRUE)
 
 	return amt
 

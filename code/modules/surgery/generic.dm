@@ -50,8 +50,6 @@
 
 	affected.surgery_open_stage = 1
 
-	affected.createwound(CUT, 10)
-	affected.clamp_wounds() //Hemostat function, clamp bleeders
 	affected.surgery_open_stage = 2 //Can immediately proceed to other surgery steps
 	target.updatehealth()
 
@@ -60,11 +58,6 @@
 	SPAN_WARNING("Your hand jolts as the system sparks, ripping a gruesome hole in [target]'s [affected.display_name] with \the [tool]!"))
 
 	log_interact(user, target, "[key_name(user)] failed to construct a prepared incision on and within [key_name(target)]'s [affected.display_name]")
-
-	affected.createwound(CUT, 20)
-	affected.createwound(BURN, 15)
-	affected.update_wounds()
-
 
 
 /datum/surgery_step/generic/cut_with_laser
@@ -96,19 +89,12 @@
 	//Could be cleaner
 	affected.surgery_open_stage = 1
 
-	affected.createwound(CUT, 10)
-	affected.clamp_wounds() //Hemostat function, clamp bleeders
-	affected.update_wounds()
 
 /datum/surgery_step/generic/cut_with_laser/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, obj/limb/affected)
 	user.visible_message(SPAN_WARNING("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.display_name] with \the [tool]!"), \
 	SPAN_WARNING("Your hand slips as the blade sputters, searing a long gash in [target]'s [affected.display_name] with \the [tool]!"))
 
 	log_interact(user, target, "[key_name(user)] failed to complete a bloodless incision on [key_name(target)]'s [affected.display_name] with \the [tool].")
-
-	affected.createwound(CUT, 7.5)
-	affected.createwound(BURN, 12.5)
-	affected.update_wounds()
 
 
 
@@ -142,8 +128,6 @@
 
 	log_interact(user, target, "[key_name(user)] finished an incision on [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	affected.createwound(CUT, 10)
-	target.updatehealth()
 
 /datum/surgery_step/generic/cut_open/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, obj/limb/affected)
 	user.visible_message(SPAN_WARNING("[user]'s hand slips, slicing open [target]'s [affected.display_name] in the wrong place with \the [tool]!"), \
@@ -151,8 +135,6 @@
 
 	log_interact(user, target, "[key_name(user)] failed to complete an incision on [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	affected.createwound(CUT, 10)
-	affected.update_wounds()
 
 
 
@@ -197,8 +179,6 @@
 
 	log_interact(user, target, "[key_name(user)] failed to clamp bleeders in [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	affected.createwound(CUT, 10)
-	affected.update_wounds()
 
 /datum/surgery_step/generic/retract_skin
 	allowed_tools = list(
@@ -258,9 +238,7 @@
 		SPAN_WARNING("Your hand slips, tearing the edges of the incision on [target]'s [affected.display_name] with \the [tool]!"))
 		log_interact(user, target, "[key_name(user)] failed to pry open the incision on [key_name(target)]'s [affected.display_name] with \the [tool].")
 
-	target.apply_damage(12, BRUTE, affected, sharp = 1)
-	affected.update_wounds()
-
+	target.apply_damage(12, BRUTE, affected)
 
 /datum/surgery_step/generic/cauterize
 	allowed_tools = list(

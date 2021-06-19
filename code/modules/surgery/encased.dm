@@ -45,9 +45,6 @@
 	SPAN_WARNING("Your hand slips, cracking [target]'s [affected.encased] with \the [tool]!") )
 	log_interact(user, target, "[key_name(user)] failed to cut through [key_name(target)]'s [affected.encased] with \the [tool].")
 
-	affected.createwound(CUT, 20)
-	affected.fracture()
-	affected.update_wounds()
 
 
 /datum/surgery_step/open_encased/retract
@@ -75,18 +72,11 @@
 
 	affected.surgery_open_stage = 3
 
-	//Whoops!
-	if(prob(10))
-		affected.fracture()
-
 /datum/surgery_step/open_encased/retract/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, obj/limb/affected)
 	user.visible_message(SPAN_WARNING("[user]'s hand slips, cracking [target]'s [affected.encased]!"), \
 	SPAN_WARNING("Your hand slips, cracking [target]'s  [affected.encased]!"))
 	log_interact(user, target, "[key_name(user)] failed to open [key_name(target)]'s [affected.encased] with \the [tool].")
 
-	affected.createwound(BRUISE, 20)
-	affected.fracture()
-	affected.update_wounds()
 
 
 /datum/surgery_step/open_encased/close
@@ -119,10 +109,6 @@
 	SPAN_WARNING("Your hand slips, bending [target]'s [affected.encased] the wrong way!"))
 	log_interact(user, target, "[key_name(user)] failed to bend [key_name(target)]'s [affected.encased] back into place with \the [tool].")
 
-
-	affected.createwound(BRUISE, 20)
-	affected.fracture()
-	affected.update_wounds()
 
 
 /datum/surgery_step/open_encased/mend

@@ -169,12 +169,7 @@
 			msg += SPAN_WARNING("[t_He] [t_is] extremely jittery.\n")
 		else if(jitteriness >= 100)
 			msg += SPAN_WARNING("[t_He] [t_is] twitching ever so slightly.\n")
-
-	//splints
-	for(var/organ in list("l_leg","r_leg","l_arm","r_arm","l_foot","r_foot","l_hand","r_hand","chest","groin","head"))
-		var/obj/limb/o = get_limb(organ)
-		if(o && o.status & LIMB_SPLINTED)
-			msg += SPAN_WARNING("[t_He] [t_has] a splint on [t_his] [o.display_name]!\n")
+			
 
 	if(holo_card_color)
 		msg += "[t_He] has a [holo_card_color] holo card on [t_his] chest.\n"
@@ -213,7 +208,7 @@
 	var/list/wound_flavor_text = list()
 	var/list/is_destroyed = list()
 	var/list/is_bleeding = list()
-	for(var/obj/limb/temp in limbs)
+	for(var/obj/limb/temp in limbs)/*
 		if(temp)
 			if(temp.status & LIMB_DESTROYED)
 				is_destroyed["[temp.display_name]"] = 1
@@ -292,7 +287,7 @@
 					is_bleeding["[temp.display_name]"] = TRUE
 					break
 			else
-				wound_flavor_text["[temp.display_name]"] = ""
+				wound_flavor_text["[temp.display_name]"] = ""*/
 
 	//Handles the text strings being added to the actual description.
 	//If they have something that covers the limb, and it is not missing, put flavortext.  If it is covered but bleeding, add other flavortext.

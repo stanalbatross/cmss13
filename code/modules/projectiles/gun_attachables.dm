@@ -287,6 +287,7 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/bayonet/New()
 	..()
 	accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_1
+	ADD_TRAIT(src, TRAIT_PRECISE, TRAIT_SOURCE_TOOL)
 
 /obj/item/attachable/bayonet/attack(mob/living/target, mob/living/carbon/human/user)
 	if(!dig_out_shrapnel_check(target,user))

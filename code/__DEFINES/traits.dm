@@ -123,6 +123,9 @@
 #define TRAIT_TOOL_WRENCH "t_tool_wrench"
 #define TRAIT_TOOL_MULTITOOL "t_tool_multitool"
 
+//If the item can be used for more precise actions, such as digging shrapnel out of wounds or speeding up the process of removing something
+#define TRAIT_PRECISE "t_precise"
+
 //List of all traits
 GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_YAUTJA_TECH,
