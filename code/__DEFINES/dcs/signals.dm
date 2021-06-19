@@ -168,8 +168,9 @@
 #define COMSIG_LIVING_FLAMER_CROSSED "living_flamer_crossed"
 /// From /obj/flamer_fire/Initialize
 #define COMSIG_LIVING_FLAMER_FLAMED "living_flamer_flamed"
-	#define COMPONENT_NO_BURN	(1<<0)
-	#define COMPONENT_NO_IGNITE	(1<<1)
+	#define COMPONENT_NO_BURN		(1<<0)
+	#define COMPONENT_NO_IGNITE		(1<<1)
+	#define COMPONENT_XENO_FRENZY	(1<<2)
 /// From /obj/item/proc/unzoom
 #define COMSIG_LIVING_ZOOM_OUT "living_zoom_out"
 
@@ -180,6 +181,7 @@
 #define COMSIG_HUMAN_REVIVED "human_revived"
 /// From /mob/living/carbon/human/bullet_act
 #define COMSIG_HUMAN_PRE_BULLET_ACT "human_pre_bullet_act"
+/// From /mob/living/carbon/human/bullet_act(): (damage_result, ammo_flags, obj/item/projectile/P)
 #define COMSIG_HUMAN_BULLET_ACT "human_bullet_act"
 	#define COMPONENT_CANCEL_BULLET_ACT (1<<0)
 /// From /obj/effect/decal/cleanable/blood/Crossed(): (amount, bcolor, dry_time_left)
@@ -205,8 +207,9 @@
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
 	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
 
+/// from /mob/living/carbon/Xenomorph/bullet_act(): (list/damagedata)
+#define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE_PROJECTILE "xeno_pre_calculate_armoured_damage_projectile"
 /// from /mob/living/carbon/Xenomorph/apply_armoured_damage(): (list/damagedata)
-#define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE "xeno_pre_calculate_armoured_damage"
 #define COMSIG_XENO_PRE_APPLY_ARMOURED_DAMAGE "xeno_pre_apply_armoured_damage"
 
 /// From /mob/living/carbon/Xenomorph/bullet_act
