@@ -54,10 +54,8 @@
 	SPAN_WARNING("Your hand slips, slicing [target]'s eyes with \the [tool]!") )
 	log_interact(user, target, "[key_name(user)] failed to separate the cornea on [key_name(target)]'s eyes with \the [tool].")
 
-	affected.createwound(CUT, 10)
 	E.take_damage(5, 0)
 	target.updatehealth()
-	affected.update_wounds()
 
 
 /datum/surgery_step/eye/lift_eyes
@@ -128,7 +126,7 @@
 	SPAN_WARNING("Your hand slips, stabbing \the [tool] into [target]'s eye!"))
 	log_interact(user, target, "[key_name(user)] failed to mend the nerves and lenses in [key_name(target)]'s eyes with \the [tool].")
 
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
+	target.apply_damage(10, BRUTE, affected)
 	E.take_damage(5, 0)
 	target.updatehealth()
 

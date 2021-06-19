@@ -30,7 +30,10 @@
 	if(flags_item & NOBLUDGEON)
 		return FALSE
 
-	if(SEND_SIGNAL(M, COMSIG_ITEM_ATTEMPT_ATTACK, user, src) & COMPONENT_CANCEL_ATTACK)
+	if(SEND_SIGNAL(M, COMSIG_MOB_ITEM_ATTEMPT_ATTACK, user, src) & COMPONENT_CANCEL_ATTACK)
+		return
+
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user) & COMPONENT_CANCEL_ATTACK)
 		return
 
 	if (!istype(M)) // not sure if this is the right thing...

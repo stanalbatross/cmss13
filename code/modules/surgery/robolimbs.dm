@@ -52,8 +52,6 @@
 		SPAN_WARNING("Your hand slips, cutting [target]'s [affected.display_name] open!"))
 		log_interact(user, target, "[key_name(user)] failed to cut away flesh where [key_name(target)]'s [affected.display_name] used to be with \the [tool].")
 
-		affected.createwound(CUT, 10)
-		affected.update_wounds()
 
 
 
@@ -89,7 +87,7 @@
 		SPAN_WARNING("Your hand slips, tearing flesh on [target]'s [affected.display_name]!"))
 		log_interact(user, target, "[key_name(user)] failed to reposition flesh and nerve endings where [key_name(target)]'s [affected.display_name] used to be with \the [tool].")
 
-		target.apply_damage(10, BRUTE, affected, sharp = 1)
+		target.apply_damage(10, BRUTE, affected)
 		target.updatehealth()
 
 
@@ -178,5 +176,5 @@
 	SPAN_WARNING("Your hand slips, damaging connectors on [target]'s [affected.display_name]!"))
 	log_interact(user, target, "[key_name(user)] failed to attach \the [tool] where [key_name(target)]'s [affected.display_name] used to be.")
 
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
+	target.apply_damage(10, BRUTE, affected)
 	target.updatehealth()

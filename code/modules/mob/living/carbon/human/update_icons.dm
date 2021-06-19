@@ -223,25 +223,15 @@ There are several things that need to be remembered:
 	var/image/standing_image = image(icon = standing)
 
 	// blend the individual damage states with our icons
+	var/list/limb_items = list()
 	for(var/obj/limb/L in limbs)
-		for(var/datum/wound/W in L.wounds)
-			if(!W.bandaged)
-				continue
-			if(!W.bandaged_icon)
-				var/bandaged_icon_name = "gauze_[L.icon_name]"
-				if(L.bandage_icon_amount > 1)
-					bandaged_icon_name += "_[rand(1, L.bandage_icon_amount)]"
-				W.bandaged_icon = new /icon('icons/mob/humans/onmob/med_human.dmi', "[bandaged_icon_name]")
-			standing_image.overlays += W.bandaged_icon
-		if(L.status & LIMB_SPLINTED)
-			if(!L.splinted_icon)
-				var/splinted_icon_name = "splint_[L.icon_name]"
-				if(L.splint_icon_amount > 1)
-					splinted_icon_name += "_[rand(1, L.splint_icon_amount)]"
-				L.splinted_icon = new /icon('icons/mob/humans/onmob/med_human.dmi', "[splinted_icon_name]")
-			standing_image.overlays += L.splinted_icon
-		else
-			L.splinted_icon = null
+		SEND_SIGNAL(L, COMSIG_LIMB_GET_APPLIED_ITEMS, limb_items)
+		for(var/obj/item/stack/medical/S in limb_items)
+			if(istype(S))
+				if(S.onbody_icon_state)
+					if(!S.onbody_icon)
+						S.onbody_icon = icon('icons/mob/humans/onmob/med_human.dmi', "[S.onbody_icon_state]_[L.icon_name]")
+					standing_image.overlays += S.onbody_icon
 
 	if(standing_image)
 		standing_image.layer = -MEDICAL_LAYER
@@ -455,7 +445,7 @@ There are several things that need to be remembered:
 	if(client && hud_used && hud_used.hud_shown && hud_used.ui_datum)
 		client.screen += belt
 		belt.screen_loc = hud_used.ui_datum.hud_slot_offset(belt, hud_used.ui_datum.ui_belt)
-	
+
 	var/image/I = belt.get_mob_overlay(src, WEAR_WAIST)
 	I.layer = -BELT_LAYER
 	overlays_standing[BELT_LAYER] = I

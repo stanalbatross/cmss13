@@ -45,7 +45,3 @@
 	user.visible_message(SPAN_WARNING("[user]'s hand slips, sawing through the bone in [target]'s [affected.display_name] with \the [tool]!"), \
 	SPAN_WARNING("Your hand slips, sawing through the bone in [target]'s [affected.display_name] with \the [tool]!"))
 	log_interact(user, target, "[key_name(user)] failed to cut off [key_name(target)]'s [affected.display_name] with \the [tool].")
-
-	affected.createwound(CUT, 30)
-	affected.fracture()
-	affected.update_wounds()

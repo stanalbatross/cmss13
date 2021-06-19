@@ -172,10 +172,6 @@
 	var/damage = rand(base_damage, base_damage + damage_variance)
 
 	if(ishuman(H))
-		if((L.status & LIMB_SPLINTED) && !(L.status & LIMB_SPLINTED_INDESTRUCTIBLE)) //If they have it splinted, the splint won't hold.
-			L.status &= ~LIMB_SPLINTED
-			to_chat(H, SPAN_DANGER("The splint on your [L.display_name] comes apart!"))
-			H.pain.apply_pain(PAIN_BONE_BREAK_SPLINTED)
 
 		if(isYautja(H))
 			damage = rand(base_punch_damage_pred, base_punch_damage_pred + damage_variance)
@@ -190,10 +186,10 @@
 					fracture_chance = 30
 				if(BODY_FLAG_GROIN)
 					fracture_chance = 40
-
+			/*
 			if(prob(fracture_chance))
 				L.fracture()
-
+			*/
 
 	H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
 

@@ -49,8 +49,6 @@
 		SPAN_WARNING("Your hand slips,  ripping [target]'s [affected.display_name] open!"))
 		log_interact(user, target, "[key_name(user)] finished peeling back flesh where [key_name(target)]'s head used to be with \the [tool].")
 
-		affected.createwound(CUT, 10)
-		affected.update_wounds()
 
 
 /datum/surgery_step/head/shape
@@ -219,5 +217,5 @@
 	SPAN_WARNING("Your hand slips, damaging connectors on [target]'s neck!"))
 	log_interact(user, target, "[key_name(user)] failed to attach [tool] to [key_name(target)]'s reshaped neck.")
 
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
+	target.apply_damage(10, BRUTE, affected)
 	target.updatehealth()

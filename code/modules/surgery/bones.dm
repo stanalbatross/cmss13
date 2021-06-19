@@ -79,10 +79,7 @@
 		log_interact(user, target, "[key_name(user)] set the damaged bone in [key_name(target)]'s [affected.display_name] in place with \the [tool].")
 
 	user.count_niche_stat(STATISTICS_NICHE_SURGERY_BONES)
-	affected.status &= ~LIMB_BROKEN
-	if(affected.status & LIMB_SPLINTED_INDESTRUCTIBLE)
-		new /obj/item/stack/medical/splint/nano(get_turf(target), 1)
-	affected.status &= ~(LIMB_SPLINTED|LIMB_SPLINTED_INDESTRUCTIBLE|LIMB_BROKEN)
+	
 	affected.status |= LIMB_REPAIRED
 	affected.bone_repair_stage = 0
 	affected.perma_injury = 0
@@ -95,14 +92,10 @@
 		log_interact(user, target, "[key_name(user)] failed to set [key_name(target)]'s skull with \the [tool].")
 
 		var/obj/limb/head/h = affected
-		h.createwound(BRUISE, 10)
 		h.disfigured = 1
 		h.owner.name = h.owner.get_visible_name()
-		h.update_wounds()
 	else
 		user.visible_message(SPAN_WARNING("[user]'s hand slips, damaging the bone in [target]'s [affected.display_name] with \the [tool]!") , \
 		SPAN_WARNING("Your hand slips, damaging the bone in [target]'s [affected.display_name] with \the [tool]!"))
 		log_interact(user, target, "[key_name(user)] failed to set the damaged bone in [key_name(target)]'s [affected.display_name] in place with \the [tool].")
 
-		affected.createwound(BRUISE, 5)
-		affected.update_wounds()

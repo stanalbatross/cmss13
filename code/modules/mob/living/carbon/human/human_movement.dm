@@ -24,26 +24,9 @@
 			var/obj/limb/E = get_limb(organ_name)
 			if(!E || (E.status & LIMB_DESTROYED))
 				. += MOVE_REDUCTION_LIMB_DESTROYED
-			if(E.status & LIMB_SPLINTED)
-				. += MOVE_REDUCTION_LIMB_SPLINTED
-			else if(E.status & LIMB_BROKEN)
-				. += MOVE_REDUCTION_LIMB_BROKEN
 	else
 		if(shoes)
 			. += shoes.slowdown
-
-		/*
-		for(var/organ_name in list("l_foot","r_foot","l_leg","r_leg","chest","groin","head"))
-			var/obj/limb/E = get_limb(organ_name)
-			if(!E || (E.status & LIMB_DESTROYED))
-				. += MOVE_REDUCTION_LIMB_DESTROYED
-			// Splinted limbs are not as punishing
-			if(E.status & LIMB_SPLINTED)
-				. += MOVE_REDUCTION_LIMB_SPLINTED
-			else if(E.status & LIMB_BROKEN)
-				. += MOVE_REDUCTION_LIMB_BROKEN
-				*/
-
 
 	var/hungry = (500 - nutrition)/5 // So overeat would be 100 and default level would be 80
 	if(hungry >= 50) //Level where a yellow food pip shows up, aka hunger level 3 at 250 nutrition and under

@@ -87,11 +87,6 @@
 
 	max_amount = 10
 	amount = 10
-
-/obj/item/stack/medical/advanced/ointment/upgraded/Initialize(mapload, ...)
-	. = ..()
-	heal_burn = initial(heal_burn) * 3 // 3x stronger
-
 /obj/item/stack/medical/advanced/bruise_pack/upgraded
 	name = "upgraded trauma kit"
 	singular_name = "upgraded trauma kit"
@@ -102,11 +97,6 @@
 
 	max_amount = 10
 	amount = 10
-
-/obj/item/stack/medical/advanced/bruise_pack/upgraded/Initialize(mapload, ...)
-	. = ..()
-	heal_brute = initial(heal_brute) * 3 // 3x stronger
-
 /obj/item/stack/medical/splint/nano
 	name = "nano splints"
 	singular_name = "nano splint"
