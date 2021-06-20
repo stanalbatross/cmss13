@@ -829,14 +829,15 @@ User can be passed as null, (a gun reloading itself for instance), so we need to
 		current_mag.forceMove(get_turf(src))//Drop it on the ground.
 	else
 		user.put_in_hands(current_mag)
+		user.visible_message(SPAN_NOTICE("[user] unloads [current_mag] from [src]."),
+		SPAN_NOTICE("You unload [current_mag] from [src]."), null, 4, CHAT_TYPE_COMBAT_ACTION)
 
 	playsound(user, unload_sound, 25, 1, 5)
-	user.visible_message(SPAN_NOTICE("[user] unloads [current_mag] from [src]."),
-	SPAN_NOTICE("You unload [current_mag] from [src]."), null, 4, CHAT_TYPE_COMBAT_ACTION)
 	current_mag.update_icon()
 	current_mag = null
 
 	update_icon()
+	display_ammo(user)
 
 //Manually cock the gun
 //This only works on weapons NOT marked with UNUSUAL_DESIGN or INTERNAL_MAG
@@ -1160,6 +1161,7 @@ and you're good to go.
 				last_fired = world.time
 			SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, projectile_to_fire)
 			flags_gun_features |= GUN_FIRED_BY_USER
+			display_ammo(user)
 
 			if(flags_gun_features & GUN_FULL_AUTO_ON)
 				fa_shots++
@@ -1183,8 +1185,6 @@ and you're good to go.
 
 	flags_gun_features &= ~GUN_BURST_FIRING // We always want to turn off bursting when we're done, mainly for when we break early mid-burstfire.
 	display_ammo(user)
-	var/obj/screen/ammo/A = user.hud_used.ammo
-	A.update_hud(user) //Ammo HUD.
 
 #define EXECUTION_CHECK M.stat == UNCONSCIOUS && ((user.a_intent == INTENT_GRAB)||(user.a_intent == INTENT_DISARM))
 
@@ -1261,9 +1261,7 @@ and you're good to go.
 				qdel(projectile_to_fire) //If this proc DIDN'T delete the bullet, we're going to do so here.
 
 			reload_into_chamber(user) //Reload the sucker.
-			if(user) //Update dat HUD
-				var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
-				A.update_hud(user)
+			display_ammo(user)
 		else
 			click_empty(user)//If there's no projectile, we can't do much.
 			if(istype(current_revolver) && current_revolver.russian_roulette && current_revolver.current_mag && current_revolver.current_mag.current_rounds)
@@ -1477,8 +1475,7 @@ and you're good to go.
 
 /obj/item/weapon/gun/proc/click_empty(mob/user)
 	if(user)
-		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
-		A.update_hud(user)
+		display_ammo(user)
 		to_chat(user, SPAN_WARNING("<b>*click*</b>"))
 		playsound(user, 'sound/weapons/gun_empty.ogg', 25, 1, 5) //5 tile range
 	else
@@ -1487,12 +1484,13 @@ and you're good to go.
 /obj/item/weapon/gun/proc/display_ammo(mob/user)
 	// Do not display ammo if you have an attachment
 	// currently activated
-	if(active_attachable)
-		return
 
-	if(flags_gun_features & GUN_AMMO_COUNTER && !(flags_gun_features & GUN_BURST_FIRING) && current_mag)
-		var/chambered = in_chamber ? TRUE : FALSE
-		to_chat(user, SPAN_DANGER("[current_mag.current_rounds][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		if(current_mag && !(flags_gun_features & GUN_BURST_FIRING && !active_attachable))
+			var/chambered = in_chamber ? TRUE : FALSE
+			to_chat(user, SPAN_DANGER("[current_mag.current_rounds][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
+		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		A.update_hud(user)
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.
 /obj/item/weapon/gun/proc/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, bullets_fired = 1, reflex = 0, dual_wield = 0)

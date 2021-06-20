@@ -477,6 +477,7 @@
 	name = "live monkey"
 	icon_state = "monkey1"
 	hud_state = "monkey"
+	hud_state_empty = "monkey_empty"
 	ping = null //no bounce off.
 	damage_type = BURN
 	debilitate = list(4,4,0,0,0,0,0,0)
@@ -724,7 +725,7 @@
 
 /datum/ammo/bullet/smg/m39
 	name = "high-velocity submachinegun bullet" //i don't want all smgs to inherit 'high velocity'
-	hud_state = "smg_light"
+	hud_state = "smg_hv"
 
 /datum/ammo/bullet/smg/ap
 	name = "armor-piercing submachinegun bullet"
@@ -1138,7 +1139,7 @@
 /datum/ammo/bullet/shotgun/flechette
 	name = "flechette shell"
 	icon_state = "flechette"
-	hud_state = "shotgun_fire_flechette"
+	hud_state = "shotgun_flechette"
 	handful_state = "flechette_shell"
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/flechette_spread
 
@@ -1189,7 +1190,7 @@
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary
 	name = "incendiary buckshot shell"
-	hud_state = "shotgun_fire_buckshot"
+	hud_state = "shotgun_fire_buck"
 	handful_type = /obj/item/ammo_magazine/handful/shotgun/buckshot/incendiary
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary/set_bullet_traits()
@@ -1261,7 +1262,7 @@
 //basically the same
 /datum/ammo/bullet/shotgun/heavy/buckshot/dragonsbreath
 	name = "dragon's breath shell"
-	hud_state = "shotgun_fire_buckshot"
+	hud_state = "shotgun_fire_buck"
 	handful_state = "heavy_dragonsbreath"
 	multiple_handful_name = TRUE
 	damage_type = BURN
@@ -1323,7 +1324,7 @@
 /datum/ammo/bullet/shotgun/heavy/flechette
 	name = "heavy flechette shell"
 	icon_state = "flechette"
-	hud_state = "shotgun_fire_flechette"
+	hud_state = "shotgun_flechette"
 	handful_state = "heavy_flechette"
 	multiple_handful_name = TRUE
 	bonus_projectiles_type = /datum/ammo/bullet/shotgun/heavy/flechette_spread
@@ -1358,6 +1359,7 @@
 /datum/ammo/bullet/sniper
 	name = "sniper bullet"
 	hud_state = "sniper"
+	hud_state_empty = "sniper_empty"
 	damage_falloff = 0
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_IGNORE_COVER
 	accurate_range_min = 4
@@ -1613,6 +1615,7 @@
 /datum/ammo/bullet/m60
 	name = "M60 bullet"
 	hud_state = "rifle_heavy"
+	hud_state_empty = "rifle_empty"
 	accuracy = -HIT_ACCURACY_TIER_3
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_8
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
@@ -1894,8 +1897,8 @@
 /datum/ammo/energy/taser
 	name = "taser bolt"
 	icon_state = "stun"
-	hud_state = "taser"
 	damage_type = OXY
+	hud_state = "taser"
 	hud_state_empty = "battery_empty"
 	flags_ammo_behavior = AMMO_ENERGY|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF //Not that ignoring will do much right now.
 

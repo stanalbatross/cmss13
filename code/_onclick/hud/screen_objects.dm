@@ -595,8 +595,9 @@
 	name = "ammo"
 	icon = 'icons/mob/hud/ammoHUD.dmi'
 	icon_state = "ammo"
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/warned = FALSE
-
+	var/is_warning = FALSE
 
 /obj/screen/ammo/proc/add_hud(mob/living/user)
 	if(!user?.client)
@@ -607,6 +608,9 @@
 	if(!(G.flags_gun_features & GUN_AMMO_COUNTER))
 		return
 
+	if(user.client.prefs && user.client.prefs.toggle_prefs & TOGGLE_DISABLE_GUN_AMMO_COUNTER)
+		return
+
 	user.client.screen += src
 
 /obj/screen/ammo/proc/remove_hud(mob/living/user)
@@ -614,6 +618,9 @@
 
 /obj/screen/ammo/proc/update_hud(mob/living/user)
 	if(!user?.client?.screen.Find(src))
+		return
+	
+	if(user.client.prefs && user.client.prefs.toggle_prefs & TOGGLE_DISABLE_GUN_AMMO_COUNTER)
 		return
 
 	var/obj/item/weapon/gun/G = user.get_held_item()
@@ -633,20 +640,8 @@
 	var/empty = image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state_empty]")
 
 	if(rounds == 0)
-		if(warned)
-			overlays += empty
-		else
-			warned = TRUE
-			var/obj/screen/ammo/F = new /obj/screen/ammo(src)
-			F.icon_state = "frame"
-			user.client.screen += F
-			flick("[hud_state_empty]_flash", F)
-			spawn(20)
-				user.client.screen -= F
-				qdel(F)
-				overlays += empty
+		overlays += empty
 	else
-		warned = FALSE
 		overlays += image('icons/mob/hud/ammoHUD.dmi', src, "[hud_state]")
 
 	rounds = num2text(rounds)

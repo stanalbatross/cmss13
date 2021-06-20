@@ -143,7 +143,7 @@
 	desc = "M74 - Airburst Grenade Munition - Fragmentation. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperse jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. Dispersion pattern is optimized against large target. Suffers from overpenetration on a direct hit."
 	icon_state = "grenade_m74_airburst_f"
 	item_state = "grenade_m74_airburst_f_active"
-	hud_state = "unknown"
+	hud_state = "grenade_agm_f"
 	explosion_power = 0
 	explosion_falloff = 25
 	shrapnel_count = 30
@@ -252,7 +252,7 @@
 	desc = "M74 - Airburst Grenade Munition - Incendiary. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperse a cone of lingering flames in a small area in front of it. The warped pieces of the grenade can also set fire as they fly away."
 	icon_state = "grenade_m74_airburst_i"
 	item_state = "grenade_m74_airburst_i_active"
-	hud_state = "unknown"
+	hud_state = "grenade_agm_i"
 	det_time = 0 // Unused, because we don't use prime.
 	hand_throwable = FALSE
 	flame_level = 15

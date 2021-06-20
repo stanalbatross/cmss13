@@ -60,8 +60,10 @@
 /obj/item/weapon/gun/energy/taser/get_ammo_type()
 	if(!ammo)
 		return list("unknown", "unknown")
-	else
+	else if(!in_chamber)
 		return list(ammo.hud_state, ammo.hud_state_empty)
+	else 
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
 
 /obj/item/weapon/gun/energy/taser/get_ammo_count()
 	if(!cell)

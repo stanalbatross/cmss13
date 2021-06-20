@@ -331,7 +331,7 @@
 /obj/item/weapon/gun/smartgun/get_ammo_type()
 	if(!ammo)
 		return list("unknown", "unknown")
-	else
+	else //for clarity's sake, smartguns will not return the chamber ammo but the magazine ammo
 		return list(ammo.hud_state, ammo.hud_state_empty)
 
 /obj/item/weapon/gun/smartgun/get_ammo_count()
@@ -341,7 +341,10 @@
 		return current_mag.current_rounds
 
 /obj/item/weapon/gun/smartgun/display_ammo(mob/user)
-	return //would lag chat
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		A.update_hud(user)
+	return //no text warn, would clutter chat
 
 /obj/item/weapon/gun/smartgun/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 16,"rail_x" = 17, "rail_y" = 18, "under_x" = 22, "under_y" = 14, "stock_x" = 22, "stock_y" = 14)
@@ -499,6 +502,7 @@
 	to_chat(user, "[icon2html(src, usr)] You changed the [src.name]'s ammo preparation procedures. You now fire [secondary_toggled ? "armor shredding rounds" : "highly precise rounds"].")
 	playsound(loc,'sound/machines/click.ogg', 25, 1)
 	ammo = secondary_toggled ? ammo_secondary : ammo_primary
+	display_ammo(user)
 
 /obj/item/weapon/gun/smartgun/replace_ammo()
 	..()
@@ -977,7 +981,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/get_ammo_type()
 	if(length(cylinder.contents) == 0)
-		return list("empty", "empty")
+		return list("grenade_empty", "grenade_empty")
 	else
 		var/obj/item/explosive/grenade/F = cylinder.contents[1]
 		return list(F.hud_state, F.hud_state_empty)
@@ -1105,8 +1109,10 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 /obj/item/weapon/gun/launcher/rocket/get_ammo_type()
 	if(!ammo)
 		return list("unknown", "unknown")
-	else
+	else if(!in_chamber)
 		return list(ammo.hud_state, ammo.hud_state_empty)
+	else 
+		return list(in_chamber.ammo.hud_state, in_chamber.ammo.hud_state_empty)
 
 /obj/item/weapon/gun/launcher/rocket/get_ammo_count()
 	if(!current_mag)

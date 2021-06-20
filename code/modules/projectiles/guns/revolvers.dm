@@ -49,8 +49,11 @@
 		to_chat(user, message)
 
 /obj/item/weapon/gun/revolver/display_ammo(mob/user) // revolvers don't *really* have a chamber, at least in a way that matters for ammo displaying
-	if(flags_gun_features & GUN_AMMO_COUNTER && !(flags_gun_features & GUN_BURST_FIRING) && current_mag)
-		to_chat(user, SPAN_DANGER("[current_mag.current_rounds] / [current_mag.max_rounds] ROUNDS REMAINING"))
+	if(flags_gun_features & GUN_AMMO_COUNTER)
+		if(current_mag && !(flags_gun_features & GUN_BURST_FIRING))
+			to_chat(user, SPAN_DANGER("[current_mag.current_rounds] / [current_mag.max_rounds] ROUNDS REMAINING"))
+		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		A.update_hud(user)
 
 /obj/item/weapon/gun/revolver/get_ammo_type()
 	if(!ammo)
