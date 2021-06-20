@@ -1096,7 +1096,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 /obj/item/clothing/suit/storage/marine/b18_tech
 	name = "\improper B18 prototype defensive armor"
-	desc = "A proof-of-concept prototype based on MG-34 armor intended to absorb more damage. Unfortunately. due to internal flaws it has been known to break after heavy usage."
+	desc = "A proof-of-concept prototype based on MG-34 armor intended to absorb more damage. Unfortunately, due to internal flaws it has been known to break after heavy usage."
 	icon_state = "b18"
 	armor_melee = CLOTHING_ARMOR_HIGHPLUS
 	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
