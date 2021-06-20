@@ -163,7 +163,7 @@
 
 	var/turf/t_turf = get_turf(A)
 	var/obj/effect/warning/hover/warning = new(t_turf)
-	calculate_warning_turf(warning, user, t_turf)
+	calculate_warning_turf(warning, user, t_turf, f_distance)
 
 	//has sleep
 	RegisterSignal(user, COMSIG_CLIENT_MOB_MOVE, .proc/disable_flying_movement)
