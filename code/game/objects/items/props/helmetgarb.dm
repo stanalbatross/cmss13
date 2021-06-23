@@ -139,7 +139,7 @@
 	desc = "With a pack of triple As, nothing can stop you. Put them on your helmet and press the button and it's go-time."
 
 	var/invisibility_level = SEE_INVISIBLE_MINIMUM
-	var/mob/attached_mob
+	var/mob/living/carbon/human/attached_human
 	var/obj/item/cell/battery = null
 	var/process_cost = 1
 
@@ -199,14 +199,15 @@
 		))
 
 	remove_buff()
-	attached_mob = null
+	attached_human = null
 	return ..()
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/proc/enable_buff(var/mob/living/carbon/human/user)
 	remove_buff()
 
 	RegisterSignal(user, COMSIG_HUMAN_POST_UPDATE_SIGHT, .proc/update_sight)
-	attached_mob = user
+	attached_human = user
+	attached_human.update_sight()
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/proc/update_sight(var/mob/M)
 	SIGNAL_HANDLER
@@ -222,16 +223,17 @@
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/proc/remove_buff()
 	SIGNAL_HANDLER
-	if(!attached_mob)
+	if(!attached_human)
 		return
 
-	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
-	attached_mob = null
+	UnregisterSignal(attached_human, COMSIG_HUMAN_POST_UPDATE_SIGHT)
+	attached_human.update_sight()
+	attached_human = null
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/process(delta_time)
 	if(isnull(battery) || !battery.charge)
-		to_chat(attached_mob, SPAN_NOTICE("\the [src]'s battery runs out of charge!"))
-		toggle_nods(attached_mob)
+		to_chat(attached_human, SPAN_NOTICE("\the [src]'s battery runs out of charge!"))
+		toggle_nods(attached_human)
 	battery.use(process_cost * delta_time)
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal
@@ -241,7 +243,7 @@
 	active_icon_state = "helmet_nvg_thermals_down"
 	inactive_icon_state = "helmet_nvg_thermals"
 	invisibility_level = 0
-	process_cost = 10 //10 per second
+	process_cost = 5 //5 per 2 seconds
 	var/m_vision_flags = SEE_MOBS
 	var/fullscreen_vision = /obj/screen/fullscreen/thermal
 
@@ -251,12 +253,13 @@
 	M.overlay_fullscreen("glasses_vision", fullscreen_vision)
 
 /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal/remove_buff()
-	if(!attached_mob)
+	if(!attached_human)
 		return
 
-	UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
-	attached_mob.clear_fullscreen("glasses_vision")
-	attached_mob = null
+	UnregisterSignal(attached_human, COMSIG_HUMAN_POST_UPDATE_SIGHT)
+	attached_human.clear_fullscreen("glasses_vision")
+	attached_human.update_sight()
+	attached_human = null
 
 /obj/item/prop/helmetgarb/flair_initech
 	name = "\improper Initech flair"

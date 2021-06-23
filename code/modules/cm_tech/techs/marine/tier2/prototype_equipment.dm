@@ -31,7 +31,7 @@
 
 /obj/item/storage/box/m2t_thermals/fill_preset_inventory()
 	new /obj/item/prop/helmetgarb/helmet_nvg/functional/thermal(src)
-	new /obj/item/cell/crap(src)
+	new /obj/item/cell(src)
 	new /obj/item/tool/screwdriver(src)
 
 /obj/item/storage/box/spec/b18_tech

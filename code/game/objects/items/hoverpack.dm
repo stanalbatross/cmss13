@@ -16,16 +16,17 @@
 	w_class = SIZE_LARGE
 	flags_equip_slot = SLOT_BACK
 	actions_types = list(/datum/action/item_action/hover)
-	var/hover_cooldown = 7.5 SECONDS
 	 /// If you can use it, used for cooldowns.
 	var/can_hover = TRUE
 
-	// These vars change in attackby().
+	// -- // These vars change in attackby().
 	var/fuel_multiplier = 1
+	var/hover_cooldown = 5 SECONDS
 	 ///How quick you will fly
-	var/speed = 5
+	var/speed = 4
 	 ///How many tiles you can leap to at once.
-	var/max_distance = 4
+	var/max_distance = 6
+	// -- //
 
 	 /// Reservoir that stores the reagents that fuel the propellant for the hoverpack. Or something like that..
 	var/obj/item/reagent_container/glass/beaker/reservoir/reservoir
@@ -62,26 +63,21 @@
 
 /obj/item/hoverpack/attackby(obj/item/W, mob/user)
 	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
-		var/input = tgui_input_list(user, "Change the air canister's pressure?", "Select an intensity level", list("Strong (Dash)", "Normal (Jump)", "Weak (Leap)"))
+		var/input = tgui_input_list(user, "Change the air canister's pressure?", "Select an intensity level", list("Dash", "Leap"))
 		if(!input)
 			return
 		playsound(loc, 'sound/items/Screwdriver.ogg', 25, TRUE)
 		switch(input)
-			if("Strong (Dash)")
+			if("Dash")
 				speed = 6
-				max_distance = 2
+				max_distance = 3
+				fuel_multiplier = 1.25
+				hover_cooldown = 3.5 SECONDS
+			if("Leap")
+				speed = 4
+				max_distance = 6
 				fuel_multiplier = 1
 				hover_cooldown = 5 SECONDS
-			if("Normal (Jump)")
-				speed = 5
-				max_distance = 4
-				fuel_multiplier = 1
-				hover_cooldown = 7.5 SECONDS
-			if("Weak (Leap)")
-				speed = 3
-				max_distance = 6
-				fuel_multiplier = 0.75
-				hover_cooldown = 10 SECONDS
 
 		to_chat(user, SPAN_NOTICE("You set the hoverpack's pressure output to [input]."))
 
@@ -95,6 +91,8 @@
 	. = ..()
 	to_chat(user, SPAN_NOTICE("A meter next to the tank intake indicates it has [round(reservoir.reagents.total_volume/reservoir.reagents.maximum_volume * 100, 0.1)]% propellant left. You see on a readout:"))
 	to_chat(user, SPAN_BOLDNOTICE(" DISTANCE: [max_distance] METERS <br/> SPEED: [speed] METERS PER SECOND <br/> USAGE: [fuel_multiplier * 100]% PROPELLANT USAGE <br/> COOLDOWN: [hover_cooldown * 0.1] SECONDS"))
+	if(!reservoir.reagents.total_volume)
+		to_chat(user, SPAN_NOTICE("[src]'s [reservoir] is empty! The readout indicates you should refill it with an oxidizing agent."))
 
 /obj/item/hoverpack/proc/expend_fuel(var/mob/user) //jesus
 	if(!reservoir.reagents.total_volume)

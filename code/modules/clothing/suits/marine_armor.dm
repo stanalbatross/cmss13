@@ -1098,7 +1098,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	name = "\improper B18 prototype defensive armor"
 	desc = "A proof-of-concept prototype based on MG-34 armor intended to absorb more damage. Unfortunately, due to internal flaws it has been known to break after heavy usage."
 	icon_state = "b18"
-	armor_melee = CLOTHING_ARMOR_HIGHPLUS
+	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
 	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
 	armor_bomb = CLOTHING_ARMOR_VERYHIGH
@@ -1110,29 +1110,26 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
 	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
 	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS|BODY_FLAG_FEET
-	slowdown = SLOWDOWN_ARMOR_LOWHEAVY
+	slowdown = SLOWDOWN_ARMOR_HEAVY
 	unacidable = FALSE
 	actions_types = list(/datum/action/item_action/toggle, /datum/action/item_action/specialist/quick_scan, /datum/action/item_action/specialist/create_injector)
 	var/injections = 4
 	var/integrity = 100
 	var/integrity_repair_max = 100
-	var/integrity_mult = 0.4
+	var/integrity_mult = 0.45
 	var/integrity_repair_mult = 0.2
 	var/integrity_threshold = INTEGRITY_FINE
-	var/flat_dmg_mult = 0.75
-	var/BB_plas_plates = 3
-
-/obj/item/clothing/suit/storage/marine/b18_tech/Initialize(mapload, ...)
-	. = ..()
+	var/flat_dmg_mult = 0.9
+	var/BB_plas_plates = 2
 
 /obj/item/clothing/suit/storage/marine/b18_tech/examine(mob/user)
 	. = ..()
 	if(integrity_threshold)
 		var/show_repair = ""
 		if(skillcheck(user, SKILL_CONSTRUCTION, SKILL_CONSTRUCTION_TRAINED) && integrity < integrity_repair_max)
-			show_repair = "You think you could repair it to roughly [round(integrity_repair_max)]% integrity."
-		to_chat(user, SPAN_NOTICE("A readout on the side says [round(integrity)]% INTEGRITY. [show_repair]"))
-		to_chat(user, SPAN_NOTICE("[BB_plas_plates]/3 of its plasteel plates are intact. [BB_plas_plates ? "You could remove them with a crowbar." : ""]"))
+			show_repair = "You think you could repair it to roughly [round(integrity_repair_max, 0.1)]% integrity."
+		to_chat(user, SPAN_NOTICE("A readout on the side says [round(integrity, 0.1)]% INTEGRITY. [show_repair]"))
+		to_chat(user, SPAN_NOTICE("[BB_plas_plates]/2 of its plasteel plates are intact. [BB_plas_plates ? "You could remove them with a crowbar." : ""]"))
 		to_chat(user, SPAN_NOTICE("There are [injections] firstaid injectors left in its arm guards. [injections ? "You could remove one with a screwdriver." : ""]"))
 	else
 		to_chat(user, SPAN_NOTICE("The integrity readout is completely broken, alongside its plasteel plates. Guess this junk's scrap metal now."))
@@ -1217,7 +1214,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	SIGNAL_HANDLER
 	to_chat(user, SPAN_HIGHDANGER("Some pieces of [src] fall apart!"))
 	playsound(user, 'sound/effects/metal_crash.ogg', 40, TRUE)
-	integrity_repair_max = min(integrity_repair_max, 49)
+	integrity_repair_max = min(integrity_repair_max, 49.9)
 	new /obj/item/stack/rods/plasteel(user.loc, 2)
 	new /obj/item/stack/rods(user.loc, 2)
 	name = "damaged B18 prototype defensive armor"
@@ -1262,7 +1259,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 
 	else if(istype(W, /obj/item/stack/sheet/plasteel))
 		var/obj/item/stack/sheet/plasteel/sheet = W
-		if(BB_plas_plates >= 3)
+		if(BB_plas_plates >= 2)
 			to_chat(user, SPAN_NOTICE("[src]'s plate container is full!"))
 			return
 		else if(!integrity_threshold)
