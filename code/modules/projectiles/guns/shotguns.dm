@@ -605,7 +605,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	fire_sound = 'sound/weapons/gun_mou53.ogg'
 	reload_sound = 'sound/weapons/handling/gun_mou_reload.ogg'//unique shell insert
 	flags_equip_slot = SLOT_BACK
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
 	current_mag = /obj/item/ammo_magazine/internal/shotgun/double/mou53 //Take care, she comes loaded!
 	attachable_allowed = list(
 						/obj/item/attachable/bayonet,
@@ -658,7 +658,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	item_state = "m37"
 	current_mag = /obj/item/ammo_magazine/internal/shotgun
 	flags_equip_slot = SLOT_BACK
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
 	fire_sound = 'sound/weapons/gun_shotgun.ogg'
 	var/pump_sound = 'sound/weapons/gun_shotgun_pump.ogg'
 	var/pump_delay //Higher means longer delay.
