@@ -241,7 +241,7 @@
 	F.current_mag = active_fuel
 	F.update_icon()
 
-	var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+	var/obj/screen/ammo/A = user.hud_used.ammo
 	A.update_hud(user)
 	return TRUE
 

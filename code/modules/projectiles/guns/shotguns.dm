@@ -34,7 +34,7 @@ can cause issues with ammo types getting mixed up during the burst.
 
 /obj/item/weapon/gun/shotgun/get_ammo_type()
 	if(!ammo)
-		return list("unknown", "unknown")
+		return list("shotgun_slug", "shotgun_empty")
 	else if(!in_chamber)
 		return list(ammo.hud_state, ammo.hud_state_empty)
 	else 

@@ -330,7 +330,7 @@
 
 /obj/item/weapon/gun/smartgun/get_ammo_type()
 	if(!ammo)
-		return list("unknown", "unknown")
+		return list("smartgun", "smartgun_empty")
 	else //for clarity's sake, smartguns will not return the chamber ammo but the magazine ammo
 		return list(ammo.hud_state, ammo.hud_state_empty)
 
@@ -342,7 +342,7 @@
 
 /obj/item/weapon/gun/smartgun/display_ammo(mob/user)
 	if(flags_gun_features & GUN_AMMO_COUNTER)
-		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		var/obj/screen/ammo/A = user.hud_used.ammo
 		A.update_hud(user)
 	return //no text warn, would clutter chat
 
@@ -1108,7 +1108,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/weapon/gun/launcher/rocket/get_ammo_type()
 	if(!ammo)
-		return list("unknown", "unknown")
+		return list("rocket_he", "rocket_empty")
 	else if(!in_chamber)
 		return list(ammo.hud_state, ammo.hud_state_empty)
 	else 

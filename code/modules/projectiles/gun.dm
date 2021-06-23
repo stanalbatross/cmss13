@@ -1489,7 +1489,7 @@ and you're good to go.
 		if(current_mag && !(flags_gun_features & GUN_BURST_FIRING && !active_attachable))
 			var/chambered = in_chamber ? TRUE : FALSE
 			to_chat(user, SPAN_DANGER("[current_mag.current_rounds][chambered ? "+1" : ""] / [current_mag.max_rounds] ROUNDS REMAINING"))
-		var/obj/screen/ammo/A = user.hud_used.ammo //The ammo HUD
+		var/obj/screen/ammo/A = user.hud_used.ammo
 		A.update_hud(user)
 
 //This proc applies some bonus effects to the shot/makes the message when a bullet is actually fired.

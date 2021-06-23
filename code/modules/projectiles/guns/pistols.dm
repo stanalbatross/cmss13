@@ -38,7 +38,7 @@
 
 /obj/item/weapon/gun/pistol/get_ammo_type()
 	if(!ammo)
-		return list("unknown", "unknown")
+		return list("pistol", "pistol_empty")
 	else if(!in_chamber)
 		return list(ammo.hud_state, ammo.hud_state_empty)
 	else 
