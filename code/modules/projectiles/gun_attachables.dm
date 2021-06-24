@@ -1353,7 +1353,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/grenade/get_attachment_ammo_type()
 	if(length(loaded_grenades))
-		var/obj/item/explosive/grenade/G = loaded_grenades[current_rounds]
+		var/obj/item/explosive/grenade/G = loaded_grenades[1]
 		return list(G.hud_state, G.hud_state_empty)
 	else 
 		return list("grenade_empty", "grenade_empty")
@@ -1394,7 +1394,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/grenade/proc/prime_grenade(atom/target,obj/item/weapon/gun/gun,mob/living/user)
 	set waitfor = 0
-	var/obj/item/explosive/grenade/G = loaded_grenades[current_rounds]
+	var/obj/item/explosive/grenade/G = loaded_grenades[1]
 
 	if(G.has_iff && grenade_grief_check(G))
 		to_chat(user, SPAN_WARNING("\The [name]'s IFF inhibitor prevents you from firing!"))
