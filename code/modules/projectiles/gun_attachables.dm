@@ -1353,7 +1353,7 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/attached_gun/grenade/get_attachment_ammo_type()
 	if(length(loaded_grenades))
-		var/obj/item/explosive/grenade/G = LAZYACCESS(loaded_grenades, current_rounds)
+		var/obj/item/explosive/grenade/G = loaded_grenades[current_rounds]
 		return list(G.hud_state, G.hud_state_empty)
 	else 
 		return list("grenade_empty", "grenade_empty")
