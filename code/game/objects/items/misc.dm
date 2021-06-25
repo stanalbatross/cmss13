@@ -28,7 +28,24 @@
 	matter = list("metal" = 50)
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
 
+	var/gripped
 
+/obj/item/cane/examine(mob/user)
+	. = ..()
+	to_chat(SPAN_NOTICE("Activate this cane in your hand to grip it tightly!"))
+
+/obj/item/cane/attack_self(mob/living/user)
+	..()
+	if(!gripped)
+		user.visible_message(SPAN_NOTICE("[user] grips \the [src] tightly."), SPAN_NOTICE("You grip \the [src] tightly."))
+		flags_item |= NODROP
+		ADD_TRAIT(user, TRAIT_HOLDS_CANE, TRAIT_SOURCE_ITEM)
+		gripped = TRUE
+	else
+		user.visible_message(SPAN_NOTICE("[user] loosens \his grip on \the [src]."), SPAN_NOTICE("You loosen your grip on \the [src]."))
+		flags_item &= ~NODROP
+		REMOVE_TRAIT(user, TRAIT_HOLDS_CANE, TRAIT_SOURCE_ITEM)
+		gripped = FALSE
 
 /*
 /obj/item/game_kit
@@ -54,11 +71,29 @@
 	w_class = SIZE_LARGE
 
 /obj/item/staff/gentcane
-	name = "Gentlemans Cane"
+	name = "\improper Gentleman's Cane"
 	desc = "An ebony cane with an ivory tip."
 	icon = 'icons/obj/items/weapons/weapons.dmi'
 	icon_state = "cane"
 	item_state = "stick"
+	var/gripped
+
+/obj/item/staff/gentcane/examine(mob/user)
+	. = ..()
+	to_chat(SPAN_NOTICE("Activate this cane in your hand to grip it tightly!"))
+
+/obj/item/staff/gentcane/attack_self(mob/living/user)
+	..()
+	if(!gripped)
+		user.visible_message(SPAN_NOTICE("[user] grips \the [src] tightly."), SPAN_NOTICE("You grip \the [src] tightly."))
+		flags_item |= NODROP
+		ADD_TRAIT(user, TRAIT_HOLDS_CANE, TRAIT_SOURCE_ITEM)
+		gripped = TRUE
+	else
+		user.visible_message(SPAN_NOTICE("[user] loosens \his grip on \the [src]."), SPAN_NOTICE("You loosen your grip on \the [src]."))
+		flags_item &= ~NODROP
+		REMOVE_TRAIT(user, TRAIT_HOLDS_CANE, TRAIT_SOURCE_ITEM)
+		gripped = FALSE
 
 /obj/item/staff/stick
 	name = "stick"

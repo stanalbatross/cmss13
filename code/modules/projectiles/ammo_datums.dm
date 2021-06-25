@@ -2543,7 +2543,7 @@
 	icon_state = "shrapnel_blood"
 	scatter = SCATTER_AMOUNT_TIER_10
 	max_range = 3
-	damage = BULLET_DAMAGE_OFF
+	damage = 0
 	flags_ammo_behavior = AMMO_STOPPED_BY_COVER|AMMO_IGNORE_RESIST|AMMO_ALWAYS_FF
 	shrapnel_chance = 0 // of course theres no shrapnel embedding you moron, it's literally liquid
 	shell_speed = AMMO_SPEED_TIER_1 // very slow

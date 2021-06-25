@@ -922,10 +922,15 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/limb/leg/on_integrity_tier_increased(old_level)
 	if(integrity_level >= LIMB_INTEGRITY_CONCERNING && old_level < LIMB_INTEGRITY_CONCERNING)
-		to_chat(owner, SPAN_DANGER("Your legs feel limper and weaker; perhaps climbing and dragging wouldn't be a good idea."))
-		owner.add_limb_wound(/datum/limb_wound/limited_joint_mobility, src, LIMB_INTEGRITY_THRESHOLD_CONCERNING)
+		to_chat(owner, SPAN_DANGER("Your [display_name] feels limper and weaker; perhaps climbing and dragging wouldn't be a good idea."))
+		owner.add_limb_wound(/datum/limb_wound/limited_joint_mobility, src, LIMB_INTEGRITY_CONCERNING)
 	if(integrity_level >= LIMB_INTEGRITY_SERIOUS && old_level < LIMB_INTEGRITY_SERIOUS)
-		to_chat(owner, SPAN_DANGER("Your legs buckle just standing up, this could be very bad if you got knocked over!"))
+		to_chat(owner, SPAN_DANGER("Your [display_name] buckles and your knees flare in pain just standing up, this could be very bad if you got knocked over!"))
+		owner.add_limb_wound(/datum/limb_wound/weakened_knee_musculature, src, LIMB_INTEGRITY_SERIOUS)
+	if(integrity_level >= LIMB_INTEGRITY_CRITICAL && old_level < LIMB_INTEGRITY_CRITICAL)
+		to_chat(owner, SPAN_HIGHDANGER("You hear a sound like paper tearing inside of your [display_name] and your next step is noticeably painful. You should probably find a cane or a doctor."))
+		//todo add rip sound
+		owner.add_limb_wound(/datum/limb_wound/severely_torn_ligaments, src, LIMB_INTEGRITY_CRITICAL)
 
 /obj/limb/foot
 	name = "foot"

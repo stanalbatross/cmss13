@@ -9,8 +9,8 @@
 		stun_timer = TIMER_ID_NULL
 
 /mob/proc/stun_callback_check()
-	if(stunned && stunned < recovery_constant)
-		stun_timer = addtimer(CALLBACK(src, .proc/stun_callback), (stunned/recovery_constant) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE)
+	if(stunned && stunned < recovery_constant_mult)
+		stun_timer = addtimer(CALLBACK(src, .proc/stun_callback), (stunned* recovery_constant_mult) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE)
 		return
 
 	if(stun_timer != TIMER_ID_NULL)
@@ -96,8 +96,8 @@
 	knocked_down_timer = null
 
 /mob/proc/knocked_down_callback_check()
-	if(knocked_down && knocked_down < recovery_constant)
-		knocked_down_timer = addtimer(CALLBACK(src, .proc/knocked_down_callback), (knocked_down/recovery_constant) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE) // times whatever amount we have per tick
+	if(knocked_down && knocked_down < recovery_constant_mult)
+		knocked_down_timer = addtimer(CALLBACK(src, .proc/knocked_down_callback), (knocked_down* recovery_constant_mult) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE) // times whatever amount we have per tick
 		return
 
 	if(knocked_down_timer)
@@ -113,8 +113,8 @@
 	knocked_out_timer = null
 
 /mob/proc/knocked_out_callback_check()
-	if(knocked_out && knocked_out < recovery_constant)
-		knocked_out_timer = addtimer(CALLBACK(src, .proc/knocked_out_callback), (knocked_out/recovery_constant) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE) // times whatever amount we have per tick
+	if(knocked_out && knocked_out < recovery_constant_mult)
+		knocked_out_timer = addtimer(CALLBACK(src, .proc/knocked_out_callback), (knocked_out* recovery_constant_mult) * 2 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE) // times whatever amount we have per tick
 		return
 	else if(!knocked_out)
 		//It's been called, and we're probably inconscious, so fix that.

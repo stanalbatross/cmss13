@@ -171,7 +171,7 @@
 	var/mob/living/carbon/Xenomorph/X = owner
 	var/damage = rand(base_damage, base_damage + damage_variance)
 
-	if(ishuman(H))
+/*	if(ishuman(H))
 
 		if(isYautja(H))
 			damage = rand(base_punch_damage_pred, base_punch_damage_pred + damage_variance)
@@ -186,11 +186,12 @@
 					fracture_chance = 30
 				if(BODY_FLAG_GROIN)
 					fracture_chance = 40
-			/*
+			
 			if(prob(fracture_chance))
 				L.fracture()
 			*/
 
+	H.apply_effect(2, SUPERSLOW)
 	H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
 
 	shake_camera(H, 2, 1)

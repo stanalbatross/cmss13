@@ -115,7 +115,8 @@
 #define TRAIT_CRAWLER "t_crawler"
  /// If the mob is hidden from examination
 #define TRAIT_SIMPLE_DESC "t_simple_desc"
-//-- item traits --
+ /// If the mob is holding a cane.
+#define TRAIT_HOLDS_CANE "t_holds_cane"
 // TOOL TRAITS
 #define TRAIT_TOOL_SCREWDRIVER "t_tool_screwdriver"
 #define TRAIT_TOOL_CROWBAR "t_tool_crowbar"
@@ -148,6 +149,8 @@ GLOBAL_LIST_INIT(mob_traits, list(
 #define TRAIT_SOURCE_BUCKLE "t_s_buckle"
  ///Status trait coming from tools
 #define TRAIT_SOURCE_TOOL "t_s_tool"
+ ///Status trait coming from generic items
+#define TRAIT_SOURCE_ITEM "t_s_item"
  ///Status trait coming from roundstart quirks (that don't exist yet). Unremovable by REMOVE_TRAIT
 #define TRAIT_SOURCE_QUIRK "t_s_quirk"
  ///Status trait forced by staff
