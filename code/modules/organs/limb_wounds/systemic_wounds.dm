@@ -168,7 +168,7 @@
 	if(HAS_TRAIT(M, TRAIT_HOLDS_CANE))
 		if(last_message_time + MESSAGE_COOLDOWN * 10 < world.time) //longer cooldown if using canes
 			M.visible_message(SPAN_NOTICE("[M] paces \his movement with \his cane."), SPAN_NOTICE("Your cane lets you pace your movement, lessening the suffering on your [affected_limb.display_name]."))
-			last_message_time = world.time //has the unfortunate downside of showing those messages when forcibly moved (thrown), but oh well
+			last_message_time = world.time // has the unfortunate downside of showing those messages when forcibly moved (thrown), but oh well
 		steps_walking = max(steps_walking - 1, 0)
 		return
 
