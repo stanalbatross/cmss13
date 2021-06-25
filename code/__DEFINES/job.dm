@@ -13,9 +13,10 @@
 #define JOB_SQUAD_ENGI					"Squad Engineer"
 #define JOB_SQUAD_MEDIC					"Squad Medic"
 #define JOB_SQUAD_SPECIALIST			"Squad Specialist"
+#define JOB_SQUAD_RTO       			"Squad RT Operator"
 #define JOB_SQUAD_SMARTGUN				"Squad Smartgunner"
 #define JOB_SQUAD_ROLES					/datum/timelock/squad
-#define JOB_SQUAD_ROLES_LIST            list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN)
+#define JOB_SQUAD_ROLES_LIST            list(JOB_SQUAD_MARINE, JOB_SQUAD_LEADER, JOB_SQUAD_ENGI, JOB_SQUAD_MEDIC, JOB_SQUAD_SPECIALIST, JOB_SQUAD_SMARTGUN, JOB_SQUAD_RTO)
 
 var/global/list/job_squad_roles = JOB_SQUAD_ROLES_LIST
 
@@ -44,7 +45,6 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 #define JOB_PILOT						"Pilot Officer"
 #define JOB_CREWMAN						"Vehicle Crewman"
-#define JOB_INTEL						"Intelligence Officer"
 
 #define JOB_POLICE						"Military Police"
 #define JOB_WARDEN						"Military Warden"
@@ -65,10 +65,14 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_REQUISITION_ROLES           /datum/timelock/requisition
 #define JOB_REQUISITION_ROLES_LIST      list(JOB_CHIEF_REQUISITION, JOB_CARGO_TECH)
 
+#define JOB_MARSOC "MARSOC Operator"
+
 #define JOB_HUMAN_ROLES                 /datum/timelock/human
 #define JOB_XENO_ROLES                  /datum/timelock/xeno
 
 #define JOB_STOWAWAY					"Stowaway"
+
+#define JOB_ADMIRAL						"USCM Admiral"
 
 // Used to add a timelock to a job. Will be passed onto derivatives
 #define AddTimelock(Path, timelockList) \
@@ -119,12 +123,14 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_PMC_GUNNER					"PMC Support Specialist" //Renamed from Specialist to Support Specialist as it only has SG skills.
 #define JOB_PMC_SNIPER					"PMC Specialist" //Renamed from Sharpshooter to specialist as it uses specialist skills.
 #define JOB_PMC_NINJA					"PMC Ninja"
+#define JOB_PMC_XENO_HANDLER            "PMC Xeno Handler"
 #define JOB_PMC_COMMANDO				"PMC Commando"
 #define JOB_PMC_LEADER					"PMC Leader"
 #define JOB_PMC_LEAD_INVEST				"PMC Lead Investigator"
 
 //-------- UPP --------//
 #define JOB_UPP							"UPP Private"
+#define JOB_UPP_CONSCRIPT				"UPP Conscript"
 #define JOB_UPP_ENGI					"UPP Korporal Sapper"
 #define JOB_UPP_MEDIC					"UPP Korporal Medic"
 #define JOB_UPP_SPECIALIST				"UPP Serzhant"
@@ -152,8 +158,37 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define CLF_JOB_LIST					list(JOB_CLF, JOB_CLF_ENGI, JOB_CLF_MEDIC, JOB_CLF_SPECIALIST, JOB_CLF_LEADER)
 
 //-------- RESS --------//
-
 #define JOB_RESS_REPRESENTATIVE			"RESS Representative"
+
+#define JOB_RESS_YONTO					"RMC Yonto"
+#define JOB_RESS_SANTO					"RMC Santo"
+#define JOB_RESS_NITO					"RMC Nito"
+#define JOB_RESS_ITTO					"RMC Itto"
+
+#define RESS_COMMANDO_JOB_LIST			list(JOB_RESS_YONTO, JOB_RESS_SANTO, JOB_RESS_NITO, JOB_RESS_ITTO)
+
+#define JOB_RESS_SEAMAN					"RESS Seaman"
+#define JOB_RESS_LSEAMAN				"RESS Leading Seaman"
+#define JOB_RESS_SO						"RESS Standing Officer"
+#define JOB_RESS_WO						"RESS Warrant Officer"
+#define JOB_RESS_CPT					"RESS Captain"
+#define JOB_RESS_ADM					"RESS Admiral"
+#define JOB_RESS_GADM					"RESS Grand Admiral"
+#define JOB_RESS_ER						"RESS Emperor"
+
+#define RESS_OFFICER_JOB_LIST			list(JOB_RESS_SEAMAN, JOB_RESS_LSEAMAN, JOB_RESS_SO, JOB_RESS_WO, JOB_RESS_CPT, JOB_RESS_ADM, JOB_RESS_GADM, JOB_RESS_ER)
+
+//-------- PROVOST --------//
+#define JOB_PROVOST_OFFICER				"Provost Officer"
+#define JOB_PROVOST_ENFORCER			"Provost Enforcer"
+#define JOB_PROVOST_TML					"Provost Team Leader"
+#define JOB_PROVOST_ADVISOR				"Provost Advisor"
+#define JOB_PROVOST_INSPECTOR			"Provost Inspector"
+#define JOB_PROVOST_MARSHALL			"Provost Marshall"
+#define JOB_PROVOST_SMARSHALL			"Provost Sector Marshall"
+#define JOB_PROVOST_CMARSHALL			"Provost Chief Marshall"
+
+#define PROVOST_JOB_LIST				list(JOB_PROVOST_OFFICER, JOB_PROVOST_ENFORCER, JOB_PROVOST_TML, JOB_PROVOST_ADVISOR, JOB_PROVOST_INSPECTOR, JOB_PROVOST_MARSHALL, JOB_PROVOST_SMARSHALL, JOB_PROVOST_CMARSHALL)
 
 //antag jobs supported by adaptive antag vendors
 #define VENDOR_ANTAG_JOBS				list(JOB_UPP_COMMANDO, JOB_UPP_COMMANDO_MEDIC, JOB_UPP_COMMANDO_LEADER, JOB_UPP, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST, JOB_UPP_LEADER, JOB_CLF, JOB_CLF_ENGI, JOB_CLF_MEDIC, JOB_CLF_SPECIALIST, JOB_CLF_LEADER)

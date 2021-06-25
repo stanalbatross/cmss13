@@ -37,6 +37,10 @@
 		qdel(src)
 		return FALSE
 
+	var/mob/living/carbon/human/affected_mob = affected_atom
+	if(affected_mob.status_flags & NO_PERMANENT_DAMAGE)
+		return FALSE
+
 	return TRUE
 
 /datum/effects/bleeding/proc/add_on(var/damage)
@@ -47,7 +51,7 @@
 /datum/effects/bleeding/Destroy()
 	if(limb)
 		limb.bleeding_effects_list -= src
-	..()
+	return ..()
 
 
 /datum/effects/bleeding/external

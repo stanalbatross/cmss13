@@ -19,7 +19,7 @@
 	max_heat_protection_temperature = SHOE_max_heat_protection_temperature
 	siemens_coefficient = 0.7
 	var/armor_stage = 0
-	items_allowed = list(/obj/item/attachable/bayonet, /obj/item/weapon/melee/throwing_knife, /obj/item/weapon/gun/pistol/holdout)
+	items_allowed = list(/obj/item/attachable/bayonet, /obj/item/weapon/melee/throwing_knife, /obj/item/weapon/gun/pistol/holdout, /obj/item/weapon/gun/pistol/m43pistol)
 
 /obj/item/clothing/shoes/marine/update_icon()
 	if(stored_item && !armor_stage)
@@ -31,6 +31,22 @@
 /obj/item/clothing/shoes/marine/knife/New()
 	..()
 	stored_item = new /obj/item/attachable/bayonet(src)
+	update_icon()
+
+/obj/item/clothing/shoes/marine/upp
+	name = "military combat boots"
+	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bullet = CLOTHING_ARMOR_HIGHPLUS
+	armor_laser = CLOTHING_ARMOR_LOW
+	armor_energy = CLOTHING_ARMOR_NONE
+	armor_bomb = CLOTHING_ARMOR_MEDIUM
+	armor_bio = CLOTHING_ARMOR_MEDIUM
+	armor_rad = CLOTHING_ARMOR_NONE
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUMHIGH
+
+/obj/item/clothing/shoes/marine/upp/New()
+	..()
+	stored_item = new /obj/item/attachable/bayonet/upp(src)
 	update_icon()
 
 /obj/item/clothing/shoes/marine/upp_knife/New()
@@ -77,7 +93,7 @@
 	flags_heat_protection = BODY_FLAG_FEET
 	flags_inventory = FPRINT|NOSLIPPING
 	siemens_coefficient = 0.6
-	items_allowed = list(/obj/item/attachable/bayonet, /obj/item/weapon/melee/throwing_knife, /obj/item/weapon/gun/pistol/holdout)
+	items_allowed = list(/obj/item/attachable/bayonet, /obj/item/weapon/melee/throwing_knife, /obj/item/weapon/gun/pistol/holdout, /obj/item/weapon/gun/pistol/m43pistol)
 
 /obj/item/clothing/shoes/veteran/PMC/update_icon()
 	if(stored_item)

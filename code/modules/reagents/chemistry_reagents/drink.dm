@@ -22,9 +22,8 @@
 	if(alien == IS_YAUTJA || alien == IS_HORROR || !holder)
 		return
 	M.nutrition += nutriment_factor
-	holder.remove_reagent(src.id, FOOD_METABOLISM)
 	// Drinks should be used up faster than other reagents.
-	holder.remove_reagent(src.id, FOOD_METABOLISM)
+	holder.remove_reagent(src.id, FOOD_METABOLISM * 2)
 	if(adj_dizzy)
 		M.dizziness = max(0,M.dizziness + adj_dizzy)
 	if(adj_drowsy)
@@ -48,10 +47,12 @@
 	description = "Both delicious AND rich in Vitamin C, what more do you need?"
 	color = "#E78108" // rgb: 231, 129, 8
 
-	on_mob_life(mob/living/M)
-		. = ..()
-		if(!.) return
-		if(M.getOxyLoss() && prob(30)) M.apply_damage(-1, OXY)
+/datum/reagent/drink/orangejuice/on_mob_life(mob/living/M)
+	. = ..()
+	if(!.)
+		return
+	if(M.getOxyLoss() && prob(30))
+		M.apply_damage(-1, OXY)
 
 /datum/reagent/drink/tomatojuice
 	name = "Tomato Juice"
@@ -315,7 +316,7 @@
 /datum/reagent/drink/wy_beer
 	name = "Aspen Beer"
 	id = "aspen"
-	description = "Pretty good when you get past the fact that it tastes like piss. Canned by the Weston-Yamada Corporation."
+	description = "Pretty good when you get past the fact that it tastes like piss. Canned by the Weyland-Yutani Corporation."
 	color = "#ffcc66"
 
 

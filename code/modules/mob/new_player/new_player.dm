@@ -273,7 +273,7 @@
 		if(player.get_playtime(STATISTIC_HUMAN) == 0 && player.get_playtime(STATISTIC_XENO) == 0)
 			msg_admin_niche("NEW PLAYER: <b>[key_name(character, 1, 1, 0)] (<A HREF='?_src_=admin_holder;ahelp=adminmoreinfo;extra=\ref[character]'>?</A>)</b>. IP: [character.lastKnownIP], CID: [character.computer_id]")
 
-	character.client.init_verbs() // init verbs for the late join
+	character.client.init_statbrowser() // init verbs for the late join
 
 	qdel(src)
 
@@ -391,7 +391,7 @@
 
 	if(new_character.client)
 		new_character.client.change_view(world_view_size)
-		new_character.client.init_verbs()
+		new_character.client.init_statbrowser()
 
 	return new_character
 
@@ -445,7 +445,7 @@
 /mob/new_player/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null)
 	return
 
-/mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0)
+/mob/new_player/hear_radio(message, verb, datum/language/language, part_a, part_b, mob/speaker, hard_to_hear, vname, command, no_paygrade = FALSE)
 	return
 
 /mob/new_player/get_status_tab_items()

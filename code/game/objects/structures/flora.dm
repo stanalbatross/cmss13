@@ -188,7 +188,7 @@ ICE GRASS
 							for(var/obj/structure/flora/grass/tallgrass/G in T.contents)
 								if(istype(G,/obj/structure/flora/grass/tallgrass))
 									var/datum/reagent/napalm/ut/R = new()
-									new /obj/flamer_fire(T, "wildfire", null, R)
+									new /obj/flamer_fire(T, create_cause_data("wildfire"), R)
 									if(fire_flag ==FLORA_BURN_SPREAD_ONCE)
 										G.fire_flag = FLORA_BURN_NO_SPREAD
 									G.fire_act()
@@ -407,6 +407,7 @@ ICE GRASS
 	icon = 'icons/turf/ground_map.dmi'
 	density = 0
 	layer = ABOVE_XENO_LAYER
+	projectile_coverage = PROJECTILE_COVERAGE_NONE
 
 
 /obj/structure/flora/jungle/shrub

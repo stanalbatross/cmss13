@@ -22,6 +22,8 @@
 /obj/structure/machinery/cm_vending/gear/vehicle_crew/Initialize(mapload, ...)
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_VEHICLE_ORDERED, .proc/populate_products)
+	if(!VehicleGearConsole)
+		VehicleGearConsole = src
 
 /obj/structure/machinery/cm_vending/gear/vehicle_crew/get_appropriate_vend_turf(var/mob/living/carbon/human/H)
 	var/turf/T = loc
@@ -44,11 +46,8 @@
 	SIGNAL_HANDLER
 	UnregisterSignal(SSdcs, COMSIG_GLOB_VEHICLE_ORDERED)
 
-	if(istype(V, /obj/vehicle/multitile/tank))
-		selected_vehicle = "TANK"
-	else if(istype(V, /obj/vehicle/multitile/apc))
-		selected_vehicle = "APC"
-		available_categories &= ~(VEHICLE_ARMOR_AVAILABLE|VEHICLE_INTEGRAL_AVAILABLE)	//APC lacks these, so we need to remove these flags to be able to access spare parts section
+	selected_vehicle = "APC"
+	available_categories &= ~(VEHICLE_ARMOR_AVAILABLE|VEHICLE_INTEGRAL_AVAILABLE)	//APC lacks these, so we need to remove these flags to be able to access spare parts section
 
 /obj/structure/machinery/cm_vending/gear/vehicle_crew/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 0)
 
@@ -427,7 +426,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_vehicle_crew, list(
 		list("M37 Wooden Stock", 10, /obj/item/attachable/stock/shotgun, null, VENDOR_ITEM_REGULAR),
 		list("M39 Stock", 10, /obj/item/attachable/stock/smg, null, VENDOR_ITEM_REGULAR),
 		list("M41A Solid Stock", 10, /obj/item/attachable/stock/rifle, null, VENDOR_ITEM_REGULAR),
-		list("Quickfire Adapter", 10, /obj/item/attachable/quickfire, null, VENDOR_ITEM_REGULAR),
 		list("Recoil Compensator", 10, /obj/item/attachable/compensator, null, VENDOR_ITEM_REGULAR),
 		list("Red-Dot Sight", 10, /obj/item/attachable/reddot, null, VENDOR_ITEM_REGULAR),
 		list("Reflex Sight", 10, /obj/item/attachable/reflex, null, VENDOR_ITEM_REGULAR),

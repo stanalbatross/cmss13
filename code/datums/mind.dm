@@ -9,7 +9,6 @@
 	var/roundstart_picked = FALSE
 
 	var/memory
-	var/datum/objective_memory_storage/objective_memory = new() //a list of objectives you have knowledge about
 
 	var/datum/entity/player_entity/player_entity = null
 
@@ -47,7 +46,7 @@
 		new_character.key = key		//now transfer the key to link the client to our new body
 		SSround_recording.recorder.update_key(new_character)
 		if(new_character.client)
-			new_character.client.init_verbs()
+			new_character.client.init_statbrowser()
 			new_character.client.change_view(world_view_size) //reset view range to default.
 			new_character.client.pixel_x = 0
 			new_character.client.pixel_y = 0
@@ -68,19 +67,6 @@
 	var/output = memory
 
 	show_browser(recipient, output, "[current.real_name]'s Memory", "memory")
-
-//this is an objective that the player has just completed
-//and we want to store the objective clues generated based on it -spookydonut
-/datum/mind/proc/store_objective(var/datum/cm_objective/O)
-	if(objective_memory)
-		objective_memory.store_objective(O)
-
-/datum/mind/proc/view_objective_memories(mob/recipient)
-	if(objective_memory)
-		if(ismob(current))
-			objective_memory.view_objective_memories(recipient, current.real_name)
-		else
-			objective_memory.view_objective_memories(recipient, null)
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))

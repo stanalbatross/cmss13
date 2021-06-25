@@ -19,6 +19,9 @@ SUBSYSTEM_DEF(vote)
 	  * Pass the number of current round votes and carryover
 	  */
 	var/datum/callback/vote_adjustment_callback = null
+
+	/// Callback that runs when the vote ends
+	var/datum/callback/on_vote_end = null
 	/// Adjustments applied to the current round's votes
 	var/list/adjustments = list()
 	/// Current round votes
@@ -46,6 +49,9 @@ SUBSYSTEM_DEF(vote)
 	question = null
 	if(vote_adjustment_callback)
 		QDEL_NULL(vote_adjustment_callback)
+	if(on_vote_end)
+		on_vote_end.Invoke()
+		QDEL_NULL(on_vote_end)
 	adjustments.Cut()
 	choices.Cut()
 	carryover.Cut()
@@ -188,11 +194,10 @@ SUBSYSTEM_DEF(vote)
 /datum/controller/subsystem/vote/proc/handle_client_joining(var/dcs, var/client/C)
 	SIGNAL_HANDLER
 
-	var/datum/action/innate/vote/V = new
+	var/datum/action/innate/vote/V = give_action(C.mob, /datum/action/innate/vote)
 	if(question)
-		V.name = "Vote: [question]"
+		V.set_name("Vote: [question]")
 	C.player_details.player_actions += V
-	V.give_action(C.mob)
 
 /datum/controller/subsystem/vote/proc/submit_vote(vote)
 	if(mode)
@@ -226,7 +231,7 @@ SUBSYSTEM_DEF(vote)
 
 		carryover[i] += vote.total_votes
 
-/datum/controller/subsystem/vote/proc/initiate_vote(vote_type, initiator_key)
+/datum/controller/subsystem/vote/proc/initiate_vote(vote_type, initiator_key, datum/callback/on_end)
 	if(!mode)
 		if(started_time)
 			var/next_allowed_time = (started_time + CONFIG_GET(number/vote_delay))
@@ -279,7 +284,8 @@ SUBSYSTEM_DEF(vote)
 					return FALSE
 				SSentity_manager.filter_then(/datum/entity/map_vote, null, CALLBACK(src, .proc/carry_over_callback))
 
-				vote_adjustment_callback = CALLBACK(src, .proc/map_vote_adjustment)
+				if(CONFIG_GET(flag/vote_adjustment_callback))
+					vote_adjustment_callback = CALLBACK(src, .proc/map_vote_adjustment)
 			if("shipmap")
 				question = "Ship map vote"
 				var/list/maps = list()
@@ -315,6 +321,7 @@ SUBSYSTEM_DEF(vote)
 		mode = vote_type
 		initiator = initiator_key
 		started_time = world.time
+		on_vote_end = on_end
 		var/text = "[capitalize(mode)] vote started by [initiator]."
 		if(mode == "custom")
 			text += "<br>[question]"
@@ -325,11 +332,10 @@ SUBSYSTEM_DEF(vote)
 		time_remaining = round(vp/10)
 		for(var/c in GLOB.clients)
 			var/client/C = c
-			var/datum/action/innate/vote/V = new
+			var/datum/action/innate/vote/V = give_action(C.mob, /datum/action/innate/vote)
 			if(question)
-				V.name = "Vote: [question]"
+				V.set_name("Vote: [question]")
 			C.player_details.player_actions += V
-			V.give_action(C.mob)
 
 		RegisterSignal(SSdcs, COMSIG_GLOB_CLIENT_LOGIN, .proc/handle_client_joining)
 		SStgui.update_uis(src)
@@ -338,7 +344,7 @@ SUBSYSTEM_DEF(vote)
 
 /datum/controller/subsystem/vote/proc/map_vote_adjustment(current_votes, carry_over, total_votes)
 	// Get 10% of the total map votes and remove them from the pool
-	var/total_vote_adjustment = round(total_votes * 0.1)
+	var/total_vote_adjustment = round(total_votes * CONFIG_GET(number/vote_adjustment_callback))
 
 	// Do not remove more votes than were made for the map
 	return -(min(current_votes, total_vote_adjustment))
@@ -360,7 +366,7 @@ SUBSYSTEM_DEF(vote)
 	name = "Vote!"
 	action_icon_state = "vote"
 
-/datum/action/innate/vote/give_action(mob/M)
+/datum/action/innate/vote/give_to(mob/M)
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_REMOVE_VOTE_BUTTON, .proc/remove_vote_action)
 
@@ -368,7 +374,7 @@ SUBSYSTEM_DEF(vote)
 	SIGNAL_HANDLER
 
 	if(remove_from_client())
-		remove_action(owner)
+		remove_from(owner)
 	qdel(src)
 
 /datum/action/innate/vote/action_activate()

@@ -51,17 +51,6 @@
 	stamina = new /datum/stamina(src)
 
 /mob/living/carbon/human/Destroy()
-	if(assigned_squad)
-		SStracking.stop_tracking(assigned_squad.tracking_id, src)
-		var/n = assigned_squad.marines_list.Find(src)
-		if(n)
-			assigned_squad.marines_list[n] = name //mob reference replaced by name string
-		if(assigned_squad.squad_leader == src)
-			assigned_squad.squad_leader = null
-		if(assigned_squad.overwatch_officer == src)
-			assigned_squad.overwatch_officer = null
-		assigned_squad = null
-
 	if(internal_organs_by_name)
 		for(var/name in internal_organs_by_name)
 			var/datum/internal_organ/I = internal_organs_by_name[name]
@@ -83,16 +72,11 @@
 
 	. = ..()
 
-	if(agent_holder)
-		agent_holder.source_human = null
-		GLOB.human_agent_list -= src
-
 /mob/living/carbon/human/get_status_tab_items()
 	. = ..()
 
 	. += ""
 	. += "Security Level: [uppertext(get_security_level())]"
-	. += "DEFCON Level: [defcon_controller.current_defcon_level]"
 
 	if(!isnull(SSticker) && !isnull(SSticker.mode) && !isnull(SSticker.mode.active_lz) && !isnull(SSticker.mode.active_lz.loc) && !isnull(SSticker.mode.active_lz.loc.loc))
 		. += "Primary LZ: [SSticker.mode.active_lz.loc.loc.name]"
@@ -117,7 +101,7 @@
 		if(eta_status)
 			. += eta_status
 
-/mob/living/carbon/human/ex_act(var/severity, var/direction, var/source, var/source_mob)
+/mob/living/carbon/human/ex_act(var/severity, var/direction, var/datum/cause_data/cause_data)
 	if(lying)
 		severity *= EXPLOSION_PRONE_MULTIPLIER
 
@@ -131,18 +115,15 @@
 
 	damage = armor_damage_reduction(GLOB.marine_explosive, damage, getarmor(null, ARMOR_BOMB))
 
-	if(source)
-		last_damage_source = source
-	if(source_mob)
-		last_damage_mob = source_mob
+	last_damage_data = cause_data
 
 	if(damage >= EXPLOSION_THRESHOLD_GIB)
 		var/oldloc = loc
-		gib(source)
-		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human, source, source_mob)
+		gib(cause_data)
+		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human, cause_data)
 		sleep(1)
-		create_shrapnel(oldloc, rand(5, 9), direction, 30, /datum/ammo/bullet/shrapnel/light/human/var1, source, source_mob)
-		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human/var2, source, source_mob)
+		create_shrapnel(oldloc, rand(5, 9), direction, 30, /datum/ammo/bullet/shrapnel/light/human/var1, cause_data)
+		create_shrapnel(oldloc, rand(5, 9), direction, 45, /datum/ammo/bullet/shrapnel/light/human/var2, cause_data)
 		return
 
 	if(!istype(wear_ear, /obj/item/clothing/ears/earmuffs))
@@ -174,7 +155,7 @@
 
 	//Focus half the blast on one organ
 	var/obj/limb/take_blast = pick(limbs)
-	update |= take_blast.take_damage(b_loss * 0.5, f_loss * 0.5, used_weapon = "Explosive blast", attack_source = source_mob)
+	update |= take_blast.take_damage(b_loss * 0.5, f_loss * 0.5, used_weapon = "Explosive blast", attack_source = cause_data.resolve_mob())
 	pain.apply_pain(b_loss * 0.5, BRUTE)
 	pain.apply_pain(f_loss * 0.5, BURN)
 
@@ -206,7 +187,7 @@
 				limb_multiplier = 0.05
 			if("l_arm")
 				limb_multiplier = 0.05
-		update |= temp.take_damage(b_loss * limb_multiplier, f_loss * limb_multiplier, used_weapon = weapon_message, attack_source = source_mob)
+		update |= temp.take_damage(b_loss * limb_multiplier, f_loss * limb_multiplier, used_weapon = weapon_message, attack_source = cause_data.resolve_mob())
 		pain.apply_pain(b_loss * limb_multiplier, BRUTE)
 		pain.apply_pain(f_loss * limb_multiplier, BURN)
 	if(update)
@@ -222,13 +203,12 @@
 			playsound(loc, M.attack_sound, 25, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(SPAN_DANGER("<B>[M]</B> [M.attacktext] [src]!"), 1)
-		last_damage_source = initial(M.name)
-		last_damage_mob = M
+		last_damage_data = create_cause_data(initial(M.name), M)
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [key_name(src)]</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [key_name(M)]</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
-		var/obj/limb/affecting = get_limb(ran_zone(dam_zone))
+		var/obj/limb/affecting = get_limb(rand_zone(dam_zone))
 		apply_damage(damage, BRUTE, affecting)
 
 
@@ -403,7 +383,7 @@
 	if(href_list["item"])
 		if(!usr.is_mob_incapacitated() && Adjacent(usr))
 			if(href_list["item"] == "id")
-				if(istype(wear_id, /obj/item/card/id/dogtag) && (undefibbable || !skillcheck(usr, SKILL_POLICE, SKILL_POLICE_MP)))
+				if(istype(wear_id, /obj/item/card/id/dogtag) && (undefibbable || !skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED)))
 					var/obj/item/card/id/dogtag/DT = wear_id
 					if(!DT.dogtag_taken)
 						if(stat == DEAD)
@@ -421,7 +401,7 @@
 						to_chat(usr, SPAN_WARNING("Someone's already taken [src]'s information tag."))
 					return
 			//police skill lets you strip multiple items from someone at once.
-			if(!usr.action_busy || skillcheck(usr, SKILL_POLICE, SKILL_POLICE_MP))
+			if(!usr.action_busy || skillcheck(usr, SKILL_POLICE, SKILL_POLICE_SKILLED))
 				var/slot = href_list["item"]
 				var/obj/item/what = get_item_by_slot(slot)
 				if(what)
@@ -1090,6 +1070,8 @@
 		oldspecies.post_species_loss(src)
 
 	mob_flags = species.mob_flags
+	for(var/T in species.mob_inherent_traits)
+		ADD_TRAIT(src, T, TRAIT_SOURCE_SPECIES)
 
 	species.create_organs(src)
 
@@ -1229,6 +1211,10 @@
 	return
 
 /mob/living/carbon/human/update_sight()
+	if(SEND_SIGNAL(src, COMSIG_HUMAN_UPDATE_SIGHT) & COMPONENT_OVERRIDE_UPDATE_SIGHT) return
+
+	sight &= ~BLIND // Never have blind on by default
+
 	if(stat == DEAD)
 		sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)
 		see_in_dark = 8
@@ -1242,6 +1228,7 @@
 		else
 			see_invisible = SEE_INVISIBLE_LIVING
 
+	SEND_SIGNAL(src, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 
 
 
@@ -1250,23 +1237,17 @@
 /mob/living/carbon/human/update_tint()
 	var/tint_level = VISION_IMPAIR_NONE
 
-	if(istype(head, /obj/item/clothing/head/welding))
-		var/obj/item/clothing/head/welding/O = head
-		if(!O.up)
-			tint_level = VISION_IMPAIR_MAX
+	if(head && head.vision_impair)
+		tint_level += head.vision_impair
 
-	else if(istype(head, /obj/item/clothing/head/helmet/marine/tech))
-		var/obj/item/clothing/head/helmet/marine/tech/O = head
-		if(O.protection_on)
-			tint_level = VISION_IMPAIR_MAX
+	if(glasses && glasses.vision_impair)
+		tint_level += glasses.vision_impair
 
-	if(glasses && glasses.has_tint && glasses.active)
-		tint_level = VISION_IMPAIR_MAX
+	if(wear_mask && wear_mask.vision_impair)
+		tint_level += wear_mask.vision_impair
 
-	if(istype(wear_mask, /obj/item/clothing/mask/gas))
-		var/obj/item/clothing/mask/gas/G = wear_mask
-		if(G.vision_impair && tint_level < G.vision_impair)
-			tint_level = G.vision_impair
+	if(tint_level > VISION_IMPAIR_STRONG)
+		tint_level = VISION_IMPAIR_STRONG
 
 	if(tint_level)
 		overlay_fullscreen("tint", /obj/screen/fullscreen/impaired, tint_level)
@@ -1311,6 +1292,7 @@
 		dat += "Police: [usr.skills.get_skill_level(SKILL_POLICE)]<br/>"
 		dat += "Powerloader: [usr.skills.get_skill_level(SKILL_POWERLOADER)]<br/>"
 		dat += "Vehicles: [usr.skills.get_skill_level(SKILL_VEHICLE)]<br/>"
+		dat += "JTAC: [usr.skills.get_skill_level(SKILL_JTAC)]<br/>"
 
 	show_browser(src, dat, "Skills", "checkskills")
 	return
@@ -1344,7 +1326,7 @@
 			return
 		for(var/bodypart in list("l_leg","r_leg","l_arm","r_arm","r_hand","l_hand","r_foot","l_foot","chest","head","groin"))
 			var/obj/limb/l = HT.get_limb(bodypart)
-			if(l && l.status & LIMB_SPLINTED)
+			if(l && (l.status & LIMB_SPLINTED))
 				if(HS == HT)
 					if((bodypart in list("l_arm", "l_hand")) && (cur_hand == "l_hand"))
 						same_arm_side = TRUE
@@ -1373,7 +1355,10 @@
 						amount_removed += 1
 						l.status &= ~LIMB_SPLINTED
 						pain.recalculate_pain()
-						if(!W.add(1))
+						if(l.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+							new /obj/item/stack/medical/splint/nano(HS.loc, 1)
+							l.status &= ~LIMB_SPLINTED_INDESTRUCTIBLE
+						else if(!W.add(1))
 							W = new /obj/item/stack/medical/splint(HS.loc)//old stack is dropped, time for new one
 							W.amount = 0
 							W.add_fingerprint(HS)
@@ -1416,6 +1401,9 @@
 
 /mob/living/carbon/human/synthetic_old/Initialize(mapload)
 	. = ..(mapload, "Early Synthetic")
+
+/mob/living/carbon/human/synthetic_combat/Initialize(mapload)
+	. = ..(mapload, "Combat Synthetic")
 
 /mob/living/carbon/human/synthetic_2nd_gen/Initialize(mapload)
 	. = ..(mapload, "Second Generation Synthetic")
@@ -1537,3 +1525,4 @@
 	if(species)
 		slot_equipment_priority = species.slot_equipment_priority
 	return ..(W,ignore_delay,slot_equipment_priority)
+

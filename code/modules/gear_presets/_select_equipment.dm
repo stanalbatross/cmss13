@@ -115,6 +115,7 @@
 	W.rank = rank
 	W.registered_name = H.real_name
 	W.registered_gid = H.gid
+	W.blood_type = H.blood_type
 	W.paygrade = load_rank(H)
 	W.uniform_sets = uniform_sets
 	H.equip_to_slot_or_del(W, WEAR_ID)
@@ -199,7 +200,9 @@
 			medal.recipient_name = H.real_name
 			medal.recipient_rank = current_rank
 
-			if(H.w_uniform && H.w_uniform.can_attach_accessory(medal))
+			if(H.wear_suit && H.wear_suit.can_attach_accessory(medal))
+				H.wear_suit.attach_accessory(H, medal)
+			else if(H.w_uniform && H.w_uniform.can_attach_accessory(medal))
 				H.w_uniform.attach_accessory(H, medal)
 			else
 				if(!H.equip_to_slot_if_possible(medal, WEAR_IN_BACK))
@@ -326,8 +329,8 @@
 		/obj/item/weapon/gun/pistol/b92fs = /obj/item/ammo_magazine/pistol/b92fs,
 		/obj/item/weapon/gun/smg/mp7 = /obj/item/ammo_magazine/smg/mp7,
 		/obj/item/weapon/gun/smg/mp5 = /obj/item/ammo_magazine/smg/mp5,
-		/obj/item/weapon/gun/smg/skorpion = /obj/item/ammo_magazine/smg/skorpion,
-		/obj/item/weapon/gun/smg/skorpion/upp = /obj/item/ammo_magazine/smg/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion = /obj/item/ammo_magazine/pistol/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion/upp = /obj/item/ammo_magazine/pistol/skorpion,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi,
 		/obj/item/weapon/gun/pistol/mod88 = /obj/item/ammo_magazine/pistol/mod88,
 		)
@@ -426,7 +429,7 @@
 		/obj/item/weapon/gun/pistol/holdout = /obj/item/ammo_magazine/pistol/holdout,
 		/obj/item/weapon/gun/pistol/highpower = /obj/item/ammo_magazine/pistol/highpower,
 		/obj/item/weapon/gun/smg/mp7 = /obj/item/ammo_magazine/smg/mp7,
-		/obj/item/weapon/gun/smg/skorpion = /obj/item/ammo_magazine/smg/skorpion,
+		/obj/item/weapon/gun/pistol/skorpion = /obj/item/ammo_magazine/pistol/skorpion,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi,
 		/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi/extended)
 
@@ -500,7 +503,7 @@
 /datum/equipment_preset/proc/add_ice_colony_survivor_equipment(var/mob/living/carbon/human/H)
 	if((SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD]) && (SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT))
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka(H), WEAR_HEAD)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/snow_suit(H), WEAR_JACKET)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/snow_suit/survivor(H), WEAR_JACKET)
 		H.equip_to_slot_or_del(new /obj/item/clothing/mask/rebreather(H), WEAR_FACE)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 		H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(H), WEAR_HANDS)

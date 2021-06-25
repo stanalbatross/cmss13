@@ -45,7 +45,7 @@
 		return
 	var sec_level = input(usr, "It's currently code [get_security_level()].", "Select Security Level")  as null|anything in (list("green","blue","red","delta")-get_security_level())
 	if(sec_level && alert("Switch from code [get_security_level()] to code [sec_level]?","Change security level?","Yes","No") == "Yes")
-		set_security_level(sec_level)
+		set_security_level(seclevel2num(sec_level))
 		log_admin("[key_name(usr)] changed the security level to code [sec_level].")
 
 /client/proc/toggle_gun_restrictions()
@@ -63,6 +63,9 @@
 /client/proc/togglebuildmodeself()
 	set name = "Buildmode"
 	set category = "Admin.Events"
+	if(!check_rights(R_ADMIN))
+		return
+
 	if(src.mob)
 		togglebuildmode(src.mob)
 
@@ -76,15 +79,16 @@
 	var/list/choices = list("Small Bomb", "Medium Bomb", "Big Bomb", "Custom Bomb")
 	var/list/falloff_shape_choices = list("CANCEL", "Linear", "Exponential")
 	var/choice = tgui_input_list(usr, "What size explosion would you like to produce?", "Drop Bomb", choices)
+	var/datum/cause_data/cause_data = create_cause_data("divine intervention")
 	switch(choice)
 		if(null)
 			return 0
 		if("Small Bomb")
-			explosion(epicenter, 1, 2, 3, 3)
+			explosion(epicenter, 1, 2, 3, 3, , , , cause_data)
 		if("Medium Bomb")
-			explosion(epicenter, 2, 3, 4, 4)
+			explosion(epicenter, 2, 3, 4, 4, , , , cause_data)
 		if("Big Bomb")
-			explosion(epicenter, 3, 5, 7, 5)
+			explosion(epicenter, 3, 5, 7, 5, , , , cause_data)
 		if("Custom Bomb")
 			var/power = input(src, "Power?", "Power?") as num
 			if(!power)
@@ -104,7 +108,7 @@
 
 			if(power > custom_limit)
 				return
-			cell_explosion(epicenter, power, falloff, explosion_shape)
+			cell_explosion(epicenter, power, falloff, explosion_shape, null, cause_data)
 			message_staff("[key_name(src, TRUE)] dropped a custom cell bomb with power [power], falloff [falloff] and falloff_shape [shape_choice]!")
 	message_staff("[ckey] used 'Drop Bomb' at [epicenter.loc].")
 
@@ -227,6 +231,29 @@
 
 	message_staff("[key_name_admin(usr)] admin-called a [choice == "Randomize" ? "randomized ":""]distress beacon: [chosen_ert.name]")
 
+/datum/admins/proc/admin_force_evacuation()
+	set name = "Trigger Evacuation"
+	set desc = "Triggers emergency evacuation."
+	set category = "Admin.Events"
+
+	if(!SSticker.mode || !check_rights(R_ADMIN))
+		return
+	set_security_level(SEC_LEVEL_RED)
+	EvacuationAuthority.initiate_evacuation()
+
+	message_staff("[key_name_admin(usr)] forced an emergency evacuation.")
+
+/datum/admins/proc/admin_cancel_evacuation()
+	set name = "Cancel Evacuation"
+	set desc = "Cancels emergency evacuation."
+	set category = "Admin.Events"
+
+	if(!SSticker.mode || !check_rights(R_ADMIN))
+		return
+	EvacuationAuthority.cancel_evacuation()
+
+	message_staff("[key_name_admin(usr)] canceled an emergency evacuation.")
+
 /datum/admins/proc/admin_force_selfdestruct()
 	set name = "Self Destruct"
 	set desc = "Trigger self destruct countdown. This should not be done if the self destruct has already been called."
@@ -272,24 +299,6 @@
 			show_browser(src, body, "Faxes from the USCM", "uscmfaxviewer", "size=300x600")
 		if("Cancel")
 			return
-
-/client/proc/show_objectives_status()
-	set name = "Objectives Status"
-	set desc = "Check the status of objectives."
-	set category = "Admin.Events"
-
-	if(!admin_holder || !(admin_holder.rights & R_MOD))
-		to_chat(src, "Only administrators may use this command.")
-		return
-
-	to_chat(src, SSobjectives.get_objectives_progress())
-	to_chat(src, "<b>DEFCON:</b> [SSobjectives.get_scored_points()] / [SSobjectives.get_total_points()] points")
-
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		if(hive.xenocon_points)
-			to_chat(src, "<b>XENOCON [hive.hivenumber]:</b> [hive.xenocon_points] / [XENOCON_THRESHOLD] points")
 
 /client/proc/award_medal()
 	if(!check_rights(R_ADMIN))
@@ -385,7 +394,7 @@
 	if(!customname)
 		customname = "USCM Update"
 	if(faction == FACTION_MARINE)
-		for(var/obj/structure/machinery/computer/communications/C in machines)
+		for(var/obj/structure/machinery/computer/almayer_control/C in machines)
 			if(!(C.inoperable()))
 				var/obj/item/paper/P = new /obj/item/paper( C.loc )
 				P.name = "'[command_name] Update.'"
@@ -403,6 +412,7 @@
 		marine_announcement(input, customname, 'sound/AI/commandreport.ogg', faction)
 
 	message_staff("[key_name_admin(src)] has created a [faction] command report")
+	log_admin("[key_name_admin(src)] [faction] command report: [input]")
 
 /client/proc/cmd_admin_xeno_report()
 	set name = "Report: Queen Mother"
@@ -441,6 +451,7 @@
 		xeno_announcement(input, hivenumber, SPAN_ANNOUNCEMENT_HEADER_BLUE("[hive_prefix][QUEEN_MOTHER_ANNOUNCE]"))
 
 	message_staff("[key_name_admin(src)] has created a [hive_choice] Queen Mother report")
+	log_admin("[key_name_admin(src)] Queen Mother ([hive_choice]): [input]")
 
 /client/proc/cmd_admin_create_AI_report()
 	set name = "Report: ARES Comms"
@@ -452,18 +463,20 @@
 	var/input = input(usr, "This is a standard message from the ship's AI. It uses Almayer General channel and won't be heard by humans without access to Almayer General channel (headset or intercom). Check with online staff before you send this. Do not use html.", "What?", "") as message|null
 	if(!input)
 		return FALSE
-	if(ai_announcement(input))
-		for(var/obj/structure/machinery/computer/communications/C in machines)
-			if(!(C.inoperable()))
-				var/obj/item/paper/P = new /obj/item/paper(C.loc)
-				P.name = "'[MAIN_AI_SYSTEM] Update.'"
-				P.info = input
-				P.update_icon()
-				C.messagetitle.Add("[MAIN_AI_SYSTEM] Update")
-				C.messagetext.Add(P.info)
-		message_staff("[key_name_admin(src)] has created an AI comms report")
-	else
-		to_chat(usr, SPAN_WARNING("[MAIN_AI_SYSTEM] is not responding. It may be offline or destroyed."))
+
+	for(var/obj/structure/machinery/computer/almayer_control/C in machines)
+		if(!(C.inoperable()))
+//			var/obj/item/paper/P = new /obj/item/paper(C.loc)//Don't need a printed copy currently.
+//			P.name = "'[MAIN_AI_SYSTEM] Update.'"
+//			P.info = input
+//			P.update_icon()
+			C.messagetitle.Add("[MAIN_AI_SYSTEM] Update")
+			C.messagetext.Add(input)
+			ai_announcement(input)
+			message_staff("[key_name_admin(src)] has created an AI comms report")
+			log_admin("AI comms report: [input]")
+		else
+			to_chat(usr, SPAN_WARNING("[MAIN_AI_SYSTEM] is not responding. It may be offline or destroyed."))
 
 /client/proc/cmd_admin_create_AI_shipwide_report()
 	set name = "Report: ARES Shipwide"
@@ -476,17 +489,18 @@
 	if(!input)
 		return FALSE
 
-	for(var/obj/structure/machinery/computer/communications/C in machines)
+	for(var/obj/structure/machinery/computer/almayer_control/C in machines)
 		if(!(C.inoperable()))
-			var/obj/item/paper/P = new /obj/item/paper(C.loc)
-			P.name = "'[MAIN_AI_SYSTEM] Update.'"
-			P.info = input
-			P.update_icon()
-			C.messagetitle.Add("[MAIN_AI_SYSTEM] Update")
-			C.messagetext.Add(P.info)
+//			var/obj/item/paper/P = new /obj/item/paper(C.loc)//Don't need a printed copy currently.
+//			P.name = "'[MAIN_AI_SYSTEM] Update.'"
+//			P.info = input
+//			P.update_icon()
+			C.messagetitle.Add("[MAIN_AI_SYSTEM] Shipwide Update")
+			C.messagetext.Add(input)
 
 	shipwide_ai_announcement(input)
 	message_staff("[key_name_admin(src)] has created an AI shipwide report")
+	log_admin("[key_name_admin(src)] AI shipwide report: [input]")
 
 /client/proc/cmd_admin_create_predator_report()
 	set name = "Report: Yautja AI"
@@ -500,6 +514,7 @@
 		return FALSE
 	yautja_announcement(SPAN_YAUTJABOLDBIG(input))
 	message_staff("[key_name_admin(src)] has created a predator ship AI report")
+	log_admin("[key_name_admin(src)] predator ship AI report: [input]")
 
 /client/proc/cmd_admin_world_narrate() // Allows administrators to fluff events a little easier -- TLE
 	set name = "Narrate to Everyone"
@@ -558,10 +573,8 @@
 		<A href='?src=\ref[src];events=securitylevel'>Set Security Level</A><BR>
 		<A href='?src=\ref[src];events=distress'>Send a Distress Beacon</A><BR>
 		<A href='?src=\ref[src];events=selfdestruct'>Activate Self-Destruct</A><BR>
-		<BR>
-		<B>Defcon</B><BR>
-		<A href='?src=\ref[src];events=decrease_defcon'>Decrease DEFCON level</A><BR>
-		<A href='?src=\ref[src];events=give_defcon_points'>Give DEFCON points</A><BR>
+		<A href='?src=\ref[src];events=evacuation_start'>Trigger Evacuation</A><BR>
+		<A href='?src=\ref[src];events=evacuation_cancel'>Cancel Evacuation</A><BR>
 		<BR>
 		<B>Research</B><BR>
 		<A href='?src=\ref[src];events=change_clearance'>Change Research Clearance</A><BR>
@@ -668,4 +681,23 @@
 			H.hud_set_squad()
 
 			for(var/datum/action/human_action/activable/mutineer/A in H.actions)
-				A.remove_action(H)
+				A.remove_from(H)
+
+/client/proc/cmd_fun_fire_ob()
+	set category = "Admin.Fun"
+	set desc = "Fire an OB warhead at your current location."
+	set name = "Fire OB"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	if(alert("Are you SURE you want to do this? It will create an OB explosion!",, "Yes", "No") == "No") return
+
+	// Select the warhead.
+	var/list/warheads = subtypesof(/obj/structure/ob_ammo/warhead/)
+	var/choice = tgui_input_list(usr, "Select the warhead:", "Warhead to use", warheads)
+	var/obj/structure/ob_ammo/warhead/warhead = new choice
+	var/turf/target = get_turf(usr.loc)
+	message_staff("[key_name(usr)] has fired \an [warhead.name] at ([target.x],[target.y],[target.z]).")
+	warhead.warhead_impact(target)
+	QDEL_IN(warhead, OB_CRASHING_DOWN)
