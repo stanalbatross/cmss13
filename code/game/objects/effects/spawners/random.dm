@@ -82,6 +82,7 @@
 	item_to_spawn()
 		return pick(prob(3);/obj/item/storage/toolbox/mechanical,\
 					prob(2);/obj/item/storage/toolbox/electrical,\
+					prob(2);/obj/item/storage/toolbox/mechanical/green,\
 					prob(1);/obj/item/storage/toolbox/emergency)
 
 
@@ -111,7 +112,6 @@
 	item_to_spawn()
 		return pick(prob(3);/obj/item/attachable/flashlight,\
 					prob(3);/obj/item/attachable/reddot,\
-					prob(3);/obj/item/attachable/quickfire,\
 					prob(3);/obj/item/attachable/extended_barrel,\
 					prob(3);/obj/item/attachable/magnetic_harness,\
 					prob(2);/obj/item/attachable/flashlight/grip,\

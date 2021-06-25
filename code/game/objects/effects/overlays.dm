@@ -7,6 +7,8 @@
 	name="beam"
 	icon='icons/effects/beam.dmi'
 	icon_state="b_beam"
+	mouse_opacity = FALSE
+
 	var/tmp/atom/BeamSource
 	New()
 		..()
@@ -38,6 +40,8 @@
 	icon = 'icons/obj/items/weapons/grenade.dmi'
 	icon_state = "danger"
 	layer = ABOVE_FLY_LAYER
+
+	appearance_flags = RESET_COLOR|KEEP_APART
 
 /obj/effect/overlay/temp
 	anchored = 1
@@ -83,6 +87,9 @@
 /obj/effect/overlay/temp/point/big
 	icon_state = "big_arrow"
 	effect_duration = 4 SECONDS
+
+/obj/effect/overlay/temp/point/big/greyscale
+	icon_state = "big_arrow_grey"
 
 /obj/effect/overlay/temp/point/big/greyscale
 	icon_state = "big_arrow_grey"

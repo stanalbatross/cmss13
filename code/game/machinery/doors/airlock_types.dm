@@ -180,8 +180,6 @@
 	icon = 'icons/obj/structures/doors/Doorphoron.dmi'
 	mineral = "phoron"
 
-
-
 /obj/structure/machinery/door/airlock/sandstone
 	name = "\improper Sandstone Airlock"
 	icon = 'icons/obj/structures/doors/Doorsand.dmi'
@@ -216,10 +214,6 @@
 		/obj/structure/window/framed/strata,
 		/obj/structure/machinery/door/airlock)
 
-/obj/structure/machinery/door/airlock/strata/New()
-	addtimer(CALLBACK(src, /atom.proc/relativewall_neighbours), 10)
-	..()
-
 /obj/structure/machinery/door/airlock/strata/autoname
 	autoname = TRUE
 
@@ -242,6 +236,21 @@
 	icon = 'icons/obj/structures/doors/strata/strata_mining.dmi'
 
 /obj/structure/machinery/door/airlock/strata/mining/autoname
+	autoname = TRUE
+
+//FIORINA PENITENTIARY (PRISON_FOP) MAINTENANCE HATCHES
+
+/obj/structure/machinery/door/airlock/prison_hatch
+	name = "\improper Maintenance Hatch"
+	icon = 'icons/obj/structures/doors/prison_FOP/prison_hatches.dmi'
+	openspeed = 5
+	req_access = null
+	req_one_access = null
+	tiles_with = list(
+		/obj/structure/window/framed/prison,
+		/obj/structure/machinery/door/airlock)
+
+/obj/structure/machinery/door/airlock/prison_hatch/autoname
 	autoname = TRUE
 
 //ALMAYER AIRLOCKS
@@ -592,7 +601,31 @@
 	opacity = 0
 	glass = 1
 
+//RTO doors, yes this is stupid
 
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/rto
+	name = "\improper Alpha Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/bravo/rto
+	name = "\improper Bravo Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/charlie/rto
+	name = "\improper Charlie Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/delta/rto
+	name = "\improper Delta Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
 
 //DROPSHIP SIDE AIRLOCKS
 

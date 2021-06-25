@@ -103,12 +103,12 @@
 	var/soundplaycooldown = 0
 	var/debriscooldown = 0
 	for(var/i=1, i<=ammo_used_per_firing, i++)
-		var/turf/U = pick(turf_list)			
+		var/turf/U = pick(turf_list)
 		sleep(1)
 		U.ex_act(EXPLOSION_THRESHOLD_MLOW)
 		for(var/atom/movable/AM in U)
 			if(iscarbon(AM))
-				AM.ex_act(EXPLOSION_THRESHOLD_MLOW, , initial(name), source_mob)
+				AM.ex_act(EXPLOSION_THRESHOLD_MLOW, , create_cause_data(initial(name), source_mob))
 			else
 				AM.ex_act(EXPLOSION_THRESHOLD_MLOW)
 		if(!soundplaycooldown) //so we don't play the same sound 20 times very fast.
@@ -190,7 +190,7 @@
 		L.adjust_fire_stacks(10)
 		L.IgniteMob()
 	if(!locate(/obj/flamer_fire) in T)
-		new/obj/flamer_fire(T, initial(name), source_mob) //short but intense
+		new/obj/flamer_fire(T, create_cause_data(initial(name), source_mob)) //short but intense
 
 
 //Rockets
@@ -227,7 +227,7 @@
 /obj/structure/ship_ammo/rocket/widowmaker/detonate_on(turf/impact)
 	impact.ceiling_debris_check(3)
 	spawn(5)
-		explosion(impact,1,3,5, , , , , initial(name), source_mob)
+		explosion(impact,1,3,5, , , , , create_cause_data(initial(name), source_mob))
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/banshee
@@ -241,7 +241,7 @@
 /obj/structure/ship_ammo/rocket/banshee/detonate_on(turf/impact)
 	impact.ceiling_debris_check(3)
 	spawn(5)
-		explosion(impact,1,3,6,6,1,0,7, initial(name), source_mob) //more spread out, with flames
+		explosion(impact,1,3,6,6,1,0,7, create_cause_data(initial(name), source_mob)) //more spread out, with flames
 		qdel(src)
 
 /obj/structure/ship_ammo/rocket/keeper
@@ -255,38 +255,8 @@
 /obj/structure/ship_ammo/rocket/keeper/detonate_on(turf/impact)
 	impact.ceiling_debris_check(3)
 	spawn(5)
-		explosion(impact,3,4,4,6, , , , initial(name), source_mob) //tighter blast radius, but more devastating near center
+		explosion(impact,3,4,4,6, , , , create_cause_data(initial(name), source_mob)) //tighter blast radius, but more devastating near center
 		qdel(src)
-
-
-/obj/structure/ship_ammo/rocket/fatty
-	name = "\improper SM-17 'Fatty'"
-	desc = "The SM-17 'Fatty' is a cluster-bomb type ordnance that only requires laser-guidance when first launched."
-	icon_state = "fatty"
-	ammo_id = "f"
-	travelling_time = 70 //slower but deadly accurate, even if laser guidance is stopped mid-travel.
-	max_inaccuracy = 1
-	point_cost = 450
-	fire_mission_delay = 0 //0 means unusable
-	warning_sound = 'sound/weapons/gun_mortar_travel.ogg'
-	warning_sound_volume = 100
-
-/obj/structure/ship_ammo/rocket/fatty/detonate_on(turf/impact)
-	set waitfor = 0
-	impact.ceiling_debris_check(2)
-	spawn(5)
-		explosion(impact,1,2,3, , , , , initial(name), source_mob) //first explosion is small to trick xenos into thinking its a minirocket.
-	sleep(20)
-	var/list/impact_coords = list(list(-3,3),list(0,4),list(3,3),list(-4,0),list(4,0),list(-3,-3),list(0,-4), list(3,-3))
-	var/turf/T
-	var/list/coords
-	for(var/i=1 to 8)
-		coords = impact_coords[i]
-		T = locate(impact.x+coords[1],impact.y+coords[2],impact.z)
-		T.ceiling_debris_check(2)
-		spawn(5)
-			explosion(T,1,2,3, , , , , initial(name), source_mob)
-	qdel(src)
 
 /obj/structure/ship_ammo/rocket/napalm
 	name = "\improper XN-99 'Napalm'"
@@ -299,8 +269,9 @@
 /obj/structure/ship_ammo/rocket/napalm/detonate_on(turf/impact)
 	impact.ceiling_debris_check(3)
 	spawn(5)
-		explosion(impact,1,2,3,6,1,0, , initial(name), source_mob) //relatively weak
-		fire_spread(impact, initial(name), source_mob, 6, 60, 30, "white")
+		var/datum/cause_data/cause_data = create_cause_data(initial(name), source_mob)
+		explosion(impact,1,2,3,6,1,0, , cause_data) //relatively weak
+		fire_spread(impact, cause_data, 6, 60, 30, "white")
 		qdel(src)
 
 
@@ -324,7 +295,7 @@
 /obj/structure/ship_ammo/minirocket/detonate_on(turf/impact)
 	impact.ceiling_debris_check(2)
 	spawn(5)
-		explosion(impact,-1,1,3, 5, 0, , , initial(name), source_mob)//no messaging admin, that'd spam them.
+		explosion(impact,-1,1,3, 5, 0, , , create_cause_data(initial(name), source_mob))//no messaging admin, that'd spam them.
 		var/datum/effect_system/expl_particles/P = new/datum/effect_system/expl_particles()
 		P.set_up(4, 0, impact)
 		P.start()
@@ -356,4 +327,4 @@
 	spawn(5)
 		for(var/turf/T in range(2, impact))
 			if(!locate(/obj/flamer_fire) in T) // No stacking flames!
-				new/obj/flamer_fire(T, initial(name), source_mob)
+				new/obj/flamer_fire(T, create_cause_data(initial(name), source_mob))

@@ -6,8 +6,6 @@
 	desc = "Protected by FRM."
 	icon = 'icons/obj/items/circuitboards.dmi'
 	icon_state = "cyborg_upgrade"
-	var/construction_time = 120
-	var/construction_cost = list("metal"=10000)
 	var/locked = 0
 	var/require_module = 0
 	var/installed = 0
@@ -42,10 +40,10 @@
 	name = "robot reclassification board"
 	desc = "Used to rename a cyborg."
 	icon_state = "cyborg_upgrade1"
-	construction_cost = list("metal"=35000)
 	var/heldname = "default name"
 
-/obj/item/robot/upgrade/rename/attack_self(mob/user as mob)
+/obj/item/robot/upgrade/rename/attack_self(mob/user)
+	..()
 	heldname = stripped_input(user, "Enter new robot name", "Robot Reclassification", heldname, MAX_NAME_LEN)
 
 /obj/item/robot/upgrade/rename/action(var/mob/living/silicon/robot/R)
@@ -58,7 +56,6 @@
 /obj/item/robot/upgrade/restart
 	name = "robot emergency restart module"
 	desc = "Used to force a restart of a disabled-but-repaired robot, bringing it back online."
-	construction_cost = list("metal"=60000 , "glass"=5000)
 	icon_state = "cyborg_upgrade1"
 
 
@@ -81,7 +78,6 @@
 /obj/item/robot/upgrade/vtec
 	name = "robotic VTEC Module"
 	desc = "Used to kick in a robot's VTEC systems, increasing their speed."
-	construction_cost = list("metal"=80000 , "glass"=6000 , "gold"= 5000)
 	icon_state = "cyborg_upgrade2"
 	require_module = 1
 
@@ -98,7 +94,6 @@
 /obj/item/robot/upgrade/tasercooler
 	name = "robotic Rapid Taser Cooling Module"
 	desc = "Used to cool a mounted taser, increasing the potential current in it and thus its recharge rate."
-	construction_cost = list("metal"=80000 , "glass"=6000 , "gold"= 2000, "diamond" = 500)
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
@@ -134,7 +129,6 @@
 /obj/item/robot/upgrade/jetpack
 	name = "mining robot jetpack"
 	desc = "A carbon dioxide jetpack suitable for low-gravity mining operations."
-	construction_cost = list("metal"=10000,"phoron"=15000,"uranium" = 20000)
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 
@@ -151,6 +145,5 @@
 /obj/item/robot/upgrade/syndicate
 	name = "illegal equipment module"
 	desc = "Unlocks the hidden, deadlier functions of a robot"
-	construction_cost = list("metal"=10000,"glass"=15000,"diamond" = 10000)
 	icon_state = "cyborg_upgrade3"
 	require_module = 1

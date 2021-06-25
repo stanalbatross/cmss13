@@ -8,8 +8,6 @@
 	var/fingerprintslast = null
 
 	var/unacidable = FALSE
-	//determines whether or not the atom can be destroyed by an explosion
-	var/indestructible = FALSE
 	var/last_bumped = 0
 
 	// The cached datum for the permanent pass flags for any given atom
@@ -30,14 +28,13 @@
 	//Effects
 	var/list/effects_list
 
+	var/list/filter_data //For handling persistent filters
+
 	// Base transform matrix
 	var/matrix/base_transform = null
 
 	///Chemistry.
 	var/datum/reagents/reagents = null
-
-	//Detective Work, used for the duplicate data points kept in the scanners
-	var/list/original_atom
 
 	//Z-Level Transitions
 	var/atom/movable/clone/clone = null
@@ -46,16 +43,15 @@
 	// See #define/tests.dm
 	var/test_exemptions = 0
 
-	// Bitflag to test if this type can be ever decorated with anything
-	// This is here to optimze things we never want to decorate
-	var/decoratable = FALSE
-
 	// Whether the atom is an obstacle that should be considered for passing
 	var/can_block_movement = FALSE
 
 	// Beams
 	var/list/beams // An assoc list where the keys are ids and their values are TRUE (indicating beam should persist)
 	var/beam_id = 0
+
+	/// Whether hovering over this atom will cause it to show in the statusbar
+	var/show_in_statusbar = TRUE
 
 /atom/New(loc, ...)
 	var/do_initialize = SSatoms.initialized
@@ -75,6 +71,7 @@ directive is properly returned.
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(light)
+	fingerprintshidden = null
 	. = ..()
 
 //===========================================================================
@@ -187,7 +184,7 @@ Also, the icon used for the beam will have to be vertical and 32x32.
 The math involved assumes that the icon is vertical to begin with so unless you want to adjust the math,
 its easier to just keep the beam vertical.
 */
-/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi', time = 50, maxdistance = 10)
+/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi', time = 50, maxdistance = 10, always_turn = TRUE)
 	set waitfor = FALSE
 
 	if (isnull(beams))
@@ -209,7 +206,8 @@ its easier to just keep the beam vertical.
 	//of range or to another z-level, then the beam will stop.  Otherwise it will
 	//continue to draw.
 
-		setDir(get_dir(src,BeamTarget))	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
+		if(always_turn)
+			setDir(get_dir(src,BeamTarget))	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
 
 		for(var/obj/effect/overlay/beam/O in orange(10,src))	//This section erases the previously drawn beam because I found it was easier to
 			if(O.BeamSource == src)				//just draw another instance of the beam instead of trying to manipulate all the
@@ -217,8 +215,8 @@ its easier to just keep the beam vertical.
 		var/Angle = round(Get_Angle(src,BeamTarget))
 		var/icon/I = new(icon,icon_state)
 		I.Turn(Angle)
-		var/DX = (32*BeamTarget.x + BeamTarget.pixel_x) - (32*x + pixel_x)
-		var/DY = (32*BeamTarget.y + BeamTarget.pixel_y) - (32*y + pixel_y)
+		var/DX = (32*BeamTarget.x - BeamTarget.pixel_x) - (32*x + pixel_x)
+		var/DY = (32*BeamTarget.y - BeamTarget.pixel_y) - (32*y + pixel_y)
 		var/N = 0
 		var/length = round(sqrt((DX)**2 + (DY)**2))
 		for(N, N < length, N += 32)
@@ -253,14 +251,15 @@ its easier to just keep the beam vertical.
 				for(var/a = 0, a >= Pixel_y, a -= 32)
 					X.y--
 					Pixel_y += 32
-			X.pixel_x = Pixel_x
-			X.pixel_y = Pixel_y
+			X.pixel_x = Pixel_x + pixel_x
+			X.pixel_y = Pixel_y + pixel_y
 		stoplag()
 
 	for(var/obj/effect/overlay/beam/O in orange(10,src))
 		if(O.BeamSource == src)
 			qdel(O)
 
+	return TRUE
 
 //All atoms
 /atom/verb/atom_examine()
@@ -288,6 +287,7 @@ its easier to just keep the beam vertical.
 	return
 
 /atom/proc/hitby(atom/movable/AM)
+	SEND_SIGNAL(src, COMSIG_ATOM_HITBY, AM)
 	return
 
 /atom/proc/add_hiddenprint(mob/living/M)
@@ -367,7 +367,7 @@ its easier to just keep the beam vertical.
 
 
 //Generalized Fire Proc.
-/atom/proc/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1)
+/atom/proc/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1, var/datum/cause_data/flame_cause_data)
 	return
 
 /atom/proc/acid_spray_act()
@@ -399,9 +399,7 @@ Parameters are passed from New.
 		pass_flags_cache[type] = pass_flags
 	else
 		initialize_pass_flags()
-
-	if(!mapload)
-		Decorate()
+	Decorate(mapload)
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -495,6 +493,10 @@ Parameters are passed from New.
 		usr_client.Click(src, loc, TRUE, mouseparams)
 		return TRUE
 
+///This proc is called on atoms when they are loaded into a shuttle
+/atom/proc/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
+	return
+
 /**
  * Hook for running code when a dir change occurs
  *
@@ -504,3 +506,72 @@ Parameters are passed from New.
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_DIR_CHANGE, dir, newdir)
 	dir = newdir
+
+
+/atom/proc/add_filter(name,priority,list/params)
+	LAZYINITLIST(filter_data)
+	var/list/p = params.Copy()
+	p["priority"] = priority
+	filter_data[name] = p
+	update_filters()
+
+/atom/proc/update_filters()
+	filters = null
+	filter_data = sortTim(filter_data, /proc/cmp_filter_data_priority, TRUE)
+	for(var/f in filter_data)
+		var/list/data = filter_data[f]
+		var/list/arguments = data.Copy()
+		arguments -= "priority"
+		filters += filter(arglist(arguments))
+	UNSETEMPTY(filter_data)
+
+/atom/proc/transition_filter(name, time, list/new_params, easing, loop)
+	var/filter = get_filter(name)
+	if(!filter)
+		return
+
+	var/list/old_filter_data = filter_data[name]
+
+	var/list/params = old_filter_data.Copy()
+	for(var/thing in new_params)
+		params[thing] = new_params[thing]
+
+	animate(filter, new_params, time = time, easing = easing, loop = loop)
+	for(var/param in params)
+		filter_data[name][param] = params[param]
+
+/atom/proc/change_filter_priority(name, new_priority)
+	if(!filter_data || !filter_data[name])
+		return
+
+	filter_data[name]["priority"] = new_priority
+	update_filters()
+
+/*/obj/item/update_filters()
+	. = ..()
+	for(var/X in actions)
+		var/datum/action/A = X
+		A.UpdateButtonIcon()*/
+
+/atom/proc/get_filter(name)
+	if(filter_data && filter_data[name])
+		return filters[filter_data.Find(name)]
+
+/atom/proc/remove_filter(name_or_names)
+	if(!filter_data)
+		return
+
+	var/found = FALSE
+	var/list/names = islist(name_or_names) ? name_or_names : list(name_or_names)
+
+	for(var/name in names)
+		if(filter_data[name])
+			filter_data -= name
+			found = TRUE
+
+	if(found)
+		update_filters()
+
+/atom/proc/clear_filters()
+	filter_data = null
+	filters = null

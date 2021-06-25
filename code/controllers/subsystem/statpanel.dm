@@ -65,6 +65,12 @@ SUBSYSTEM_DEF(statpanels)
 						if(!target_image.loc || target_image.loc.loc != target_mob.listed_turf || !target_image.override)
 							continue
 						overrides += target_image.loc
+					for(var/tc in target_mob.listed_turf) //load items in surfaces
+						if(issurface(tc))
+							var/obj/structure/surface/S = tc
+							for(var/obj/item/I in S.contents)
+								turfitems[++turfitems.len] = list("[I.name]", REF(I), icon2html(I, target, sourceonly=TRUE))
+							break //there shouldn't ever be multiple surfaces in one turf
 					turfitems[++turfitems.len] = list("[target_mob.listed_turf]", REF(target_mob.listed_turf), icon2html(target_mob.listed_turf, target, sourceonly=TRUE))
 					for(var/tc in target_mob.listed_turf)
 						var/atom/movable/turf_content = tc
@@ -79,11 +85,19 @@ SUBSYSTEM_DEF(statpanels)
 						if(length(turfitems) < 30) // only create images for the first 30 items on the turf, for performance reasons
 							if(!(REF(turf_content) in cached_images))
 								cached_images += REF(turf_content)
-								turf_content.RegisterSignal(turf_content, COMSIG_PARENT_QDELETING, /atom/.proc/remove_from_cache) // we reset cache if anything in it gets deleted
+								turf_content.RegisterSignal(turf_content, COMSIG_PARENT_QDELETING, /atom/.proc/remove_from_cache_qdeleting) // we reset cache if anything in it gets deleted
+								/* Uncomment below to re-enable generation of icons with overlays. THIS IS VERY PERFORMANCE INTENSIVE.
 								if(ismob(turf_content) || length(turf_content.overlays) > 2)
-									turfitems[++turfitems.len] = list("[turf_content.name]", REF(turf_content), costly_icon2html(turf_content, target, sourceonly=TRUE))
+									if(ishuman(turf_content))
+										turf_content.RegisterSignal(turf_content, list(
+											COMSIG_HUMAN_OVERLAY_APPLIED,
+											COMSIG_HUMAN_OVERLAY_REMOVED,
+										), /atom/.proc/remove_from_cache_updated_overlays)
+									turfitems[++turfitems.len] = list("[turf_content.name]", REF(turf_content), costly_icon2html(turf_content, target, sourceonly = TRUE))
 								else
 									turfitems[++turfitems.len] = list("[turf_content.name]", REF(turf_content), icon2html(turf_content, target, sourceonly=TRUE))
+								*/
+								turfitems[++turfitems.len] = list("[turf_content.name]", REF(turf_content), icon2html(turf_content, target, sourceonly=TRUE))
 							else
 								turfitems[++turfitems.len] = list("[turf_content.name]", REF(turf_content))
 						else
@@ -112,7 +126,17 @@ SUBSYSTEM_DEF(statpanels)
 	//mc_data[++mc_data.len] = list("Camera Net", "Cameras: [GLOB.cameranet.cameras.len] | Chunks: [GLOB.cameranet.chunks.len]", "\ref[GLOB.cameranet]")
 	mc_data_encoded = url_encode(json_encode(mc_data))
 
-/atom/proc/remove_from_cache()
+/atom/proc/remove_from_cache_qdeleting()
+	SIGNAL_HANDLER
+	SSstatpanels.cached_images -= REF(src)
+
+/atom/proc/remove_from_cache_updated_overlays()
+	SIGNAL_HANDLER
+	UnregisterSignal(src, list(
+		COMSIG_PARENT_QDELETING,
+		COMSIG_HUMAN_OVERLAY_APPLIED,
+		COMSIG_HUMAN_OVERLAY_REMOVED,
+	))
 	SSstatpanels.cached_images -= REF(src)
 
 /// verbs that send information from the browser UI
@@ -145,4 +169,14 @@ SUBSYSTEM_DEF(statpanels)
 	set hidden = TRUE
 
 	statbrowser_ready = TRUE
-	init_verbs()
+	init_statbrowser()
+
+/client/verb/open_statbrowser_options(current_fontsize as num|null)
+	set name = "Open Statbrowser Options"
+	set hidden = TRUE
+
+
+	var/datum/statbrowser_options/SM = statbrowser_options
+	if(!SM)
+		SM = statbrowser_options = new(src, current_fontsize)
+	SM.tgui_interact()

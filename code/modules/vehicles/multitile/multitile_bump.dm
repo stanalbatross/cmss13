@@ -42,6 +42,21 @@
 		playsound(O, 'sound/effects/metal_crash.ogg', 35)
 		O.tip_over()
 
+	else if(istype(A, /obj/structure/alien/movable_wall))
+		var/obj/structure/alien/movable_wall/MW = A
+		playsound(MW, 'sound/effects/metal_crash.ogg', 35)
+		take_damage_type(5, "blunt", MW)
+
+		if(!(vehicle_flags & VEHICLE_WEAK))
+			return FALSE
+
+		if(MW.group)
+			MW.take_damage(wall_ram_damage)
+			MW.group.try_move_in_direction(get_dir(loc, get_turf(MW)))
+			return FALSE
+		else
+			qdel(MW)
+
 	else if(isobj(A) && !istype(A, /obj/vehicle))
 		var/obj/O = A
 		if(O.unacidable)
@@ -87,7 +102,7 @@
 		if(W.hull)
 			return FALSE
 
-		W.take_damage(30)
+		W.take_damage(wall_ram_damage)
 		take_damage_type(10, "blunt", W)
 		playsound(W, 'sound/effects/metal_crash.ogg', 35)
 		return FALSE
@@ -184,8 +199,7 @@
 		mob_moved = step(L, last_move_dir)
 
 	playsound(loc, "punch", 25, 1)
-	L.last_damage_mob = seats[VEHICLE_DRIVER]
-	L.last_damage_source = "[initial(name)] roadkill"
+	L.last_damage_data = create_cause_data("[initial(name)] roadkill", seats[VEHICLE_DRIVER])
 	L.visible_message(SPAN_DANGER("[src] rams [L]!"), SPAN_DANGER("[src] rams you! Get out of the way!"))
 
 	var/list/slots = get_activatable_hardpoints()

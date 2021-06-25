@@ -20,8 +20,19 @@
 	new /obj/item/spacecash(src)
 	new /obj/item/spacecash(src)
 
+/obj/item/storage/bible/hefa
+	name = "Holy texts of the High Explosive Fragmenting Anti-personnel hand grenade."
+	desc = "Praise be he, reverand Clearsmire who has brought us into the light of the shrapnel! Sworn to the holy service of the HEFA lord are we, and while few, we are the voices of the silent many! Printed in the RESS."
+	icon_state ="tome_hefa"
+
+/obj/item/storage/bible/hefa/Initialize()
+	. = ..()
+	new /obj/item/explosive/grenade/HE/frag(src)
+	new /obj/item/explosive/grenade/HE/frag(src)
+	new /obj/item/explosive/grenade/HE/frag(src)
+
 /obj/item/storage/bible/afterattack(atom/A, mob/user as mob, proximity)
-	if(!proximity) 
+	if(!proximity)
 		return
 	if(user.job == "Chaplain")
 		if(A.reagents && A.reagents.has_reagent("water")) //blesses all the water in the holder
@@ -31,6 +42,6 @@
 			A.reagents.add_reagent("holywater",water2holy)
 
 /obj/item/storage/bible/attackby(obj/item/W as obj, mob/user as mob)
-	if (src.use_sound)
-		playsound(src.loc, src.use_sound, 25, 1, 6)
+	if (use_sound)
+		playsound(loc, use_sound, 25, TRUE, 6)
 	..()

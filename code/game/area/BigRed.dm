@@ -14,8 +14,8 @@
 	name = "uground"
 	icon_state = "blue"
 
-/area/bigred/ground/garage
-	name = "vehicle garage"
+/area/bigred/ground/garage_workshop
+	name = "\improper garage workshop"
 	icon_state = "green"
 	ceiling = CEILING_METAL
 
@@ -170,7 +170,7 @@
 /area/bigred/ground/exterior
 	name = "\improper underground"
 	icon_state = "blue-red"
-	ambience = list('sound/ambience/ambiatm1.ogg')
+	//ambience = list('sound/ambience/ambiatm1.ogg')
 
 /area/bigred/ground/exterior/north
 	name = "\improper northern facility exterior"
@@ -544,7 +544,7 @@
 	base_muffle = MUFFLE_HIGH
 
 /area/bigredv2/caves_research
-	name = "\improper W-Y Research Lab Caves"
+	name = "\improper Wey-Yu Research Lab Caves"
 	icon_state = "caves_research"
 	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	sound_environment = 6

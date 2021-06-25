@@ -14,7 +14,7 @@
 		recalculate_move_delay = TRUE
 
 		if(health <= HEALTH_THRESHOLD_DEAD || (species.has_organ["brain"] && !has_brain()))
-			death(last_damage_source)
+			death(last_damage_data)
 			blinded = 1
 			silent = 0
 			return 1
@@ -46,9 +46,9 @@
 
 		//UNCONSCIOUS. NO-ONE IS HOME
 		if(regular_update && ((getOxyLoss() > 50)))
-			KnockOut(3)	
-		
-		if(isHumanStrict(src) && HEALTH_THRESHOLD_CRIT > health)
+			KnockOut(3)
+
+		if((src.species.flags & HAS_HARDCRIT) && HEALTH_THRESHOLD_CRIT > health)
 			var/already_in_crit = FALSE
 			for(var/datum/effects/crit/C in effects_list)
 				already_in_crit = TRUE
@@ -71,9 +71,9 @@
 					if((mind.active && client != null) || immune_to_ssd) //This also checks whether a client is connected, if not, sleep is not reduced.
 						sleeping = max(sleeping - 1, 0)
 				if(prob(2) && health && !hal_crit)
-					addtimer(CALLBACK(src, /mob/proc/emote, "snore"))
+					addtimer(CALLBACK(src, .proc/emote, "snore"))
 			blinded = 1
-			stat = UNCONSCIOUS			
+			stat = UNCONSCIOUS
 		else
 			stat = CONSCIOUS
 
@@ -99,12 +99,12 @@
 
 		//Ears
 		if(ear_deaf) //Deafness, heals slowly over time
-			if(client && client.soundOutput && !client.soundOutput.status_flags & EAR_DEAF_MUTE)
+			if(client && client.soundOutput && !(client.soundOutput.status_flags & EAR_DEAF_MUTE))
 				client.soundOutput.status_flags |= EAR_DEAF_MUTE
 				client.soundOutput.apply_status()
 
 			ear_deaf = max(ear_deaf - 1, 0)
-			
+
 			if(!ear_deaf && client && client.soundOutput)
 				client.soundOutput.status_flags ^= EAR_DEAF_MUTE
 				client.soundOutput.apply_status()

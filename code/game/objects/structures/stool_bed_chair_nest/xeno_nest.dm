@@ -141,6 +141,7 @@
 			return
 
 	do_buckle(M, user)
+	ADD_TRAIT(M, TRAIT_NESTED, TRAIT_SOURCE_BUCKLE)
 	if(!M.mind || !ishuman(M))
 		return
 
@@ -177,6 +178,7 @@
 	resisting_ready = FALSE
 	buckled_mob.pixel_y = 0
 	buckled_mob.old_y = 0
+	REMOVE_TRAIT(buckled_mob, TRAIT_NESTED, TRAIT_SOURCE_BUCKLE)
 	var/mob/living/carbon/human/H = buckled_mob
 
 	. = ..()
@@ -218,13 +220,16 @@
 	if(isXenoLarva(M)) //Larvae can't do shit
 		return
 	if(M.a_intent == INTENT_HARM && !buckled_mob) //can't slash nest with an occupant.
+		M.animation_attack_on(src)
 		M.visible_message(SPAN_DANGER("\The [M] claws at \the [src]!"), \
 		SPAN_DANGER("You claw at \the [src]."))
 		playsound(loc, "alien_resin_break", 25)
 		health -= (M.melee_damage_upper + 25) //Beef up the damage a bit
 		healthcheck()
-	else
-		attack_hand(M)
+		return XENO_ATTACK_ACTION
+	
+	attack_hand(M)
+	return XENO_NONCOMBAT_ACTION
 
 /obj/structure/bed/nest/attack_animal(mob/living/M as mob)
 	M.visible_message(SPAN_DANGER("\The [M] tears at \the [src]!"), \

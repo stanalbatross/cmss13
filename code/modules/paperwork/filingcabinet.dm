@@ -17,13 +17,13 @@
 	density = 1
 	anchored = 1
 	wrenchable = TRUE
-	var/list/allowed_types = list(/obj/item/paper, /obj/item/folder, /obj/item/clipboard, /obj/item/photo, /obj/item/paper_bundle, /obj/item/document_objective/paper, /obj/item/document_objective/report, /obj/item/document_objective/folder, /obj/item/pamphlet)
+	var/list/allowed_types = list(/obj/item/paper, /obj/item/folder, /obj/item/clipboard, /obj/item/photo, /obj/item/paper_bundle, /obj/item/pamphlet)
 
 /obj/structure/filingcabinet/Destroy()
 	for(var/obj/item/W in contents)
 		if(W.unacidable)
 			W.forceMove(loc)
-	..()
+	return ..()
 
 /obj/structure/filingcabinet/chestdrawer
 	name = "chest drawer"
@@ -43,7 +43,7 @@
 
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(iswrench(P))
+	if(HAS_TRAIT(P, TRAIT_TOOL_WRENCH))
 		..()
 	else
 		for(var/allowed_type in allowed_types)

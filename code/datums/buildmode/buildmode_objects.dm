@@ -3,12 +3,12 @@
     set category = "Admin.Events"
     if(M.client)
         if(M.client.buildmode)
-            log_admin("[key_name(usr)] has left build mode.")
+            message_staff("[key_name(usr)] has left build mode.")
             qdel(M.client.buildmode.master)
 
             M.client.show_popup_menus = TRUE
         else
-            log_admin("[key_name(usr)] has entered build mode.")
+            message_staff("[key_name(usr)] has entered build mode.")
             M.client.show_popup_menus = FALSE
 
             new /obj/effect/buildholder(M, M.client)
@@ -99,15 +99,13 @@
     buildmode = BM
 
 /obj/effect/buildholder/Destroy()
-    . = ..()
+	QDEL_NULL(bm_help)
+	QDEL_NULL(bm_quit)
 
-    QDEL_NULL(bm_help)
-    QDEL_NULL(bm_help)
-    QDEL_NULL(bm_quit)
-
-    cl.buildmode = null
-    buildmode.master = null
-    QDEL_NULL(buildmode)
+	cl.buildmode = null
+	buildmode.master = null
+	QDEL_NULL(buildmode)
+	return ..()
 
 
 /obj/effect/buildholder/proc/next_mode()

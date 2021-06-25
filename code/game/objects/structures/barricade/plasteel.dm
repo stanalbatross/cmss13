@@ -4,8 +4,10 @@
 	icon_state = "plasteel_closed_0"
 	health = 800
 	maxhealth = 800
+	burn_multiplier = 1.5
+	brute_multiplier = 1
 	crusher_resistant = TRUE
-	barricade_resistance = 20
+	force_level_absorption = 20
 	stack_type = /obj/item/stack/sheet/plasteel
 	debris = list(/obj/item/stack/sheet/plasteel)
 	stack_amount = 10
@@ -53,6 +55,11 @@
 		if(BARRICADE_BSTATE_MOVABLE)
 			to_chat(user, SPAN_INFO("The protection panel has been removed and the anchor bolts loosened. It's ready to be taken apart."))
 
+/obj/structure/barricade/plasteel/weld_cade(obj/item/W, mob/user)
+	busy = TRUE
+	..()
+	busy = FALSE
+
 /obj/structure/barricade/plasteel/attackby(obj/item/W, mob/user)
 	if(iswelder(W))
 		if(busy || tool_cooldown > world.time)
@@ -70,20 +77,7 @@
 			to_chat(user, SPAN_WARNING("[src] doesn't need repairs."))
 			return
 
-		if(WT.remove_fuel(1, user))
-			user.visible_message(SPAN_NOTICE("[user] begins repairing damage to [src]."),
-			SPAN_NOTICE("You begin repairing the damage to [src]."))
-			playsound(src.loc, 'sound/items/Welder2.ogg', 25, 1)
-			busy = 1
-			if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, src))
-				busy = 0
-				user.visible_message(SPAN_NOTICE("[user] repairs some damage on [src]."),
-				SPAN_NOTICE("You repair [src]."))
-				update_health(-200)
-				playsound(src.loc, 'sound/items/Welder2.ogg', 25, 1)
-			else
-				busy = 0
-				WT.remove_fuel(-1)
+		weld_cade(WT, user)
 		return
 
 	if(try_nailgun_usage(W, user))
@@ -96,7 +90,7 @@
 
 	switch(build_state)
 		if(2) //Fully constructed step. Use screwdriver to remove the protection panels to reveal the bolts
-			if(isscrewdriver(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 				if(busy || tool_cooldown > world.time)
 					return
 				tool_cooldown = world.time + 10
@@ -114,7 +108,7 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 				build_state = BARRICADE_BSTATE_UNSECURED
 				return
-			if(iscrowbar(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 				if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 					to_chat(user, SPAN_WARNING("You are not trained to modify [src]..."))
 					return
@@ -131,7 +125,7 @@
 						cade.update_icon()
 				update_icon()
 		if(1) //Protection panel removed step. Screwdriver to put the panel back, wrench to unsecure the anchor bolts
-			if(isscrewdriver(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 				if(busy || tool_cooldown > world.time)
 					return
 				tool_cooldown = world.time + 10
@@ -144,7 +138,7 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 				build_state = BARRICADE_BSTATE_SECURED
 				return
-			if(iswrench(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 				if(busy || tool_cooldown > world.time)
 					return
 				tool_cooldown = world.time + 10
@@ -161,7 +155,7 @@
 				return
 
 		if(0) //Anchor bolts loosened step. Apply crowbar to unseat the panel and take apart the whole thing. Apply wrench to rescure anchor bolts
-			if(iswrench(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 				if(busy || tool_cooldown > world.time)
 					return
 				tool_cooldown = world.time + 10
@@ -176,7 +170,7 @@
 				build_state = BARRICADE_BSTATE_UNSECURED
 				update_icon() //unanchored changes layer
 				return
-			if(iscrowbar(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 				if(busy || tool_cooldown > world.time)
 					return
 				tool_cooldown = world.time + 10

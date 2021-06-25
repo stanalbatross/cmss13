@@ -10,9 +10,7 @@ SUBSYSTEM_DEF(ticker)
 	var/force_ending = FALSE					//Round was ended by admin intervention
 	var/bypass_checks = FALSE 				//Bypass mode init checks
 	var/setup_failed = FALSE 				//If the setup has failed at any point
-
-	var/start_immediately = FALSE //If true, there is no lobby phase, the game starts immediately.
-	var/setup_done = FALSE //All game setup done including mode post setup and
+	var/setup_started = FALSE
 
 	var/datum/game_mode/mode = null
 
@@ -43,36 +41,29 @@ SUBSYSTEM_DEF(ticker)
 
 	var/automatic_delay_end = FALSE
 
+	 ///If we have already done tip of the round.
+	var/tipped
+
 	var/totalPlayers = 0					//used for pregame stats on statpanel
 	var/totalPlayersReady = 0				//used for pregame stats on statpanel
+	var/datum/nmcontext/NM
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
 	load_mode()
 
+	if(CONFIG_GET(flag/nightmare_enabled))
+		NM = new
+		if(!NM.init_config() || !NM.init_scenario())
+			QDEL_NULL(NM)
+			log_debug("TICKER: Error during Nightmare Init, aborting")
+
 	var/all_music = CONFIG_GET(keyed_list/lobby_music)
 	var/key = SAFEPICK(all_music)
 	if(key)
-		var/music_options = splittext(all_music[key], " ")
-		login_music = list(music_options[1], music_options[2], music_options[3])
-
-	if(!SSperf_logging || !SSperf_logging.round)
-		RegisterSignal(SSdcs, COMSIG_GLOB_ENTITY_ROUND_INIT, .proc/try_do_round_vote)
-	else
-		try_do_round_vote(SSdcs, SSperf_logging.round)
-
+		login_music = file(all_music[key])
 	return ..()
 
-/datum/controller/subsystem/ticker/proc/try_do_round_vote(var/dcs, var/datum/entity/mc_round/round)
-	SIGNAL_HANDLER
-
-	if(CONFIG_GET(number/gamemode_rounds_needed) == -1)
-		return
-
-	if(text2num(round.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0)
-		INVOKE_ASYNC(SSvote, /datum/controller/subsystem/vote/proc/initiate_vote, "gamemode", "SERVER")
-
-
-/datum/controller/subsystem/ticker/fire()
+/datum/controller/subsystem/ticker/fire(resumed = FALSE)
 	switch(current_state)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in && !length(GLOB.clients))
@@ -94,33 +85,17 @@ SUBSYSTEM_DEF(ticker)
 				var/mob/new_player/player = i
 				if(player.ready) // TODO: port this     == PLAYER_READY_TO_PLAY)
 					++totalPlayersReady
-
-			if(start_immediately)
-				time_left = 0
-
-			//countdown
-			if(time_left < 0)
-				return
-
-			if(delay_start)
+			if(time_left < 0 || delay_start)
 				return
 
 			time_left -= wait
 
-			if(time_left <= 0)
-				current_state = GAME_STATE_SETTING_UP
-				Master.SetRunLevel(RUNLEVEL_SETUP)
-				if(start_immediately)
-					fire()
+			if(time_left <= 40 SECONDS && !tipped)
+				send_tip_of_the_round()
+				tipped = TRUE
 
-		if(GAME_STATE_SETTING_UP)
-			setup_failed = !setup()
-			if(setup_failed)
-				current_state = GAME_STATE_STARTUP
-				time_left = null
-				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-				start_immediately = FALSE
-				Master.SetRunLevel(RUNLEVEL_LOBBY)
+			if(time_left <= 0)
+				request_start()
 
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
@@ -129,10 +104,76 @@ SUBSYSTEM_DEF(ticker)
 				current_state = GAME_STATE_FINISHED
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
-				addtimer(CALLBACK(SSvote, /datum/controller/subsystem/vote.proc/initiate_vote, "groundmap", "SERVER"), 3 SECONDS)
-				addtimer(CALLBACK(src, .proc/Reboot), 63 SECONDS)
+				if(text2num(SSperf_logging?.round?.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0)
+					addtimer(CALLBACK(
+						SSvote,
+						/datum/controller/subsystem/vote/proc/initiate_vote,
+						"gamemode",
+						"SERVER",
+						CALLBACK(src, .proc/handle_map_reboot)
+					), 3 SECONDS)
+				else
+					handle_map_reboot()
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
+/// Attempt to start game asynchronously if applicable
+/datum/controller/subsystem/ticker/proc/request_start(skip_nightmare = FALSE)
+	if(current_state != GAME_STATE_PREGAME)
+		return FALSE
+
+	if(!CONFIG_GET(flag/nightmare_enabled))
+		skip_nightmare = TRUE
+		QDEL_NULL(NM)
+
+	current_state = GAME_STATE_SETTING_UP
+	if(!skip_nightmare)
+		setup_nightmare()
+	else
+		INVOKE_ASYNC(src, .proc/setup_start)
+	return TRUE
+
+/// Request to start nightmare setup before moving on to regular setup
+/datum/controller/subsystem/ticker/proc/setup_nightmare()
+	PRIVATE_PROC(TRUE)
+	if(NM && !NM.done)
+		RegisterSignal(SSdcs, COMSIG_GLOB_NIGHTMARE_SETUP_DONE, .proc/nightmare_setup_done)
+		if(!NM.start_setup())
+			QDEL_NULL(NM)
+			INVOKE_ASYNC(src, .proc/setup_start)
+		return
+	INVOKE_ASYNC(src, .proc/setup_start)
+
+/// Catches nightmare result to proceed to game start
+/datum/controller/subsystem/ticker/proc/nightmare_setup_done(_, datum/nmcontext/ctx, retval)
+	SIGNAL_HANDLER
+	PRIVATE_PROC(TRUE)
+	if(ctx != NM)
+		return
+	if(retval != NM_TASK_OK)
+		QDEL_NULL(NM)
+	INVOKE_ASYNC(src, .proc/setup_start)
+
+/// Try to effectively setup gamemode and start now
+/datum/controller/subsystem/ticker/proc/setup_start()
+	PRIVATE_PROC(TRUE)
+	Master.SetRunLevel(RUNLEVEL_SETUP)
+	setup_failed = !setup()
+	if(setup_failed)
+		current_state = GAME_STATE_STARTUP
+		time_left = null
+		start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
+		Master.SetRunLevel(RUNLEVEL_LOBBY)
+		return FALSE
+	return TRUE
+
+/datum/controller/subsystem/ticker/proc/handle_map_reboot()
+	addtimer(CALLBACK(
+		SSvote,
+		/datum/controller/subsystem/vote/proc/initiate_vote,
+		"groundmap",
+		"SERVER",
+		CALLBACK(src, .proc/Reboot)
+	), 3 SECONDS)
 
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, SPAN_BOLDNOTICE("Enjoy the game!"))
@@ -191,12 +232,9 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 
 	for(var/mob/new_player/np in GLOB.new_player_list)
-		np.new_player_panel_proc(TRUE)
+		INVOKE_ASYNC(np, /mob/new_player.proc/new_player_panel_proc, TRUE)
 
 	begin_game_recording()
-
-	if((master_mode == "Distress Signal") && SSevents)
-		SSevents.Initialize()
 
 	setup_economy()
 
@@ -225,7 +263,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/obj/structure/machinery/vending/V in machines)
 		INVOKE_ASYNC(V, /obj/structure/machinery/vending.proc/select_gamemode_equipment, mode.type)
 
-	setup_done = TRUE
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_POST_SETUP)
 
 
 //These callbacks will fire after roundstart key transfer
@@ -395,3 +433,17 @@ SUBSYSTEM_DEF(ticker)
 			if(!istype(M,/mob/new_player))
 				to_chat(M, "Marine commanding officer position not forced on anyone.")
 
+/datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
+	var/message
+	var/tip_file = pick("strings/xenotips.txt", "strings/marinetips.txt", "strings/metatips.txt", 15;"strings/memetips.txt")
+	var/list/tip_list = file2list(tip_file)
+	if(length(tip_file))
+		message = pick(tip_list)
+	else
+		CRASH("send_tip_of_the_round() failed somewhere")
+
+	if(message)
+		to_chat(world, "<span class='purple'><b>Tip of the round: </b>[html_encode(message)]</span>")
+		return TRUE
+	else
+		return FALSE

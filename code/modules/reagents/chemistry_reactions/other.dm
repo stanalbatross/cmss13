@@ -17,7 +17,7 @@
 	result = "anfo"
 	required_reagents = list("ammonium_nitrate" = 2, "fuel" = 1)
 	result_amount = 2
-	sensitivity_threshold = 60
+	sensitivity_threshold = 60.001
 
 /datum/chemical_reaction/explosive/nitroglycerin
 	name = "nitroglycerin"
@@ -25,7 +25,7 @@
 	result = "nitroglycerin"
 	required_reagents = list("glycerol" = 1, "pacid" = 1, "sacid" = 1)
 	result_amount = 2
-	sensitivity_threshold = 5
+	sensitivity_threshold = 5.001
 
 /datum/chemical_reaction/emp_pulse
 	name = "EMP Pulse"
@@ -42,25 +42,11 @@
 		holder.clear_reagents()
 
 
-/datum/chemical_reaction/hptoxin
-	name = "Toxin"
-	id = "hptoxin"
-	result = "hptoxin"
-	required_reagents = list("hyperzine" = 1, "peridaxon" = 1)
-	result_amount = 2
-
 /datum/chemical_reaction/pttoxin
 	name = "Toxin"
 	id = "pttoxin"
 	result = "pttoxin"
 	required_reagents = list("paracetamol" = 1, "tramadol" = 1)
-	result_amount = 2
-
-/datum/chemical_reaction/sdtoxin
-	name = "Toxin"
-	id = "sdtoxin"
-	result = "sdtoxin"
-	required_reagents = list("synaptizine" = 1, "anti_toxin" = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/mutagen

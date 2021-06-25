@@ -1,6 +1,8 @@
 /obj
 	//Used to store information about the contents of the object.
 	var/list/matter
+	//determines whether or not the object can be destroyed by an explosion
+	var/indestructible = FALSE
 	var/health = null
 	var/reliability = 100	//Used by SOME devices to determine how reliable they are.
 	var/crit_fail = 0
@@ -19,6 +21,8 @@
 	var/list/req_one_access = null
 	var/req_access_txt = null
 	var/req_one_access_txt = null
+
+	var/flags_obj = NO_FLAGS
 
 /obj/Initialize(mapload, ...)
 	. = ..()
@@ -209,8 +213,11 @@
 		afterbuckle(target)
 		if(buckle_lying) // Make sure buckling to beds/nests etc only turns, and doesn't give a random offset
 			var/matrix/M = matrix()
+			var/matrix/L = matrix() //Counterrotation for langchat text.
 			M.Turn(90)
+			L.Turn(270)
 			target.apply_transform(M)
+			target.langchat_image.transform = L
 		return TRUE
 
 /obj/proc/send_buckling_message(mob/M, mob/user)

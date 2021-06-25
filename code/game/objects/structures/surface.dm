@@ -6,6 +6,10 @@
 		/obj/item/storage,
 		/obj/item/reagent_container/food/snacks
 	)
+	//add items there that behave like structures for whatever dumb reason
+	var/list/blacklisted_item_types = list(
+		/obj/item/device/radio/intercom
+	)
 
 /obj/structure/surface/Initialize()
 	. = ..()
@@ -19,7 +23,7 @@
 	detach_all()
 	. = ..()
 
-/obj/structure/surface/ex_act(severity, direction)
+/obj/structure/surface/ex_act(severity, direction, datum/cause_data/cause_data)
 	health -= severity
 	if(health <= 0)
 		var/location = get_turf(src)
@@ -29,13 +33,21 @@
 			O.explosion_throw(severity, direction)
 		qdel(src)
 		if(prob(66))
-			create_shrapnel(location, rand(1,4), direction, , /datum/ammo/bullet/shrapnel/light)
+			create_shrapnel(location, rand(1,4), direction, , /datum/ammo/bullet/shrapnel/light, cause_data)
 		return TRUE
 
 /obj/structure/surface/proc/attach_all()
 	for(var/obj/item/O in loc)
+		if(in_blacklist(O))
+			continue
 		attach_item(O, FALSE)
 	draw_item_overlays()
+
+/obj/structure/surface/proc/in_blacklist(var/obj/item/O)
+	for(var/allowed_type in blacklisted_item_types)
+		if(istype(O, allowed_type))
+			return TRUE
+	return FALSE
 
 /obj/structure/surface/proc/attach_item(var/obj/item/O, var/update = TRUE)
 	if(!O)
@@ -83,11 +95,13 @@
 	return FALSE
 
 /obj/structure/surface/proc/draw_item_overlays()
-	overlays.Cut()
-	for(var/obj/item/O in contents)
-		var/image/I = image(O.icon, icon_state = O.icon_state, dir = dir, layer = O.layer, pixel_x = O.pixel_x, pixel_y = O.pixel_y)
-		I.overlays = O.overlays
-		LAZYADD(overlays, I)
+    overlays.Cut()
+    for(var/obj/item/O in contents)
+        var/image/I = image(O.icon)
+        I.appearance = O.appearance
+        I.appearance_flags = RESET_COLOR
+        I.overlays = O.overlays
+        LAZYADD(overlays, I)
 
 /obj/structure/surface/clicked(var/mob/user, var/list/mods)
 	if(mods["shift"] && !mods["middle"])
@@ -96,20 +110,6 @@
 			return ..()
 		if(O.can_examine(user))
 			O.examine(user)
-		return TRUE
-	if(mods["alt"])
-		var/turf/T = get_turf(src)
-		if(T && user.TurfAdjacent(T) && LAZYLEN(T.contents))
-			user.tile_contents = contents.Copy()
-			LAZYADD(user.tile_contents, T.contents.Copy())
-			LAZYADD(user.tile_contents, T)
-
-			for(var/atom/A in user.tile_contents)
-				if (A.invisibility > user.see_invisible)
-					LAZYREMOVE(user.tile_contents, A)
-
-			if(LAZYLEN(user.tile_contents))
-				user.tile_contents_change = TRUE
 		return TRUE
 	..()
 
@@ -126,6 +126,8 @@
 
 /obj/structure/surface/attack_hand(mob/user, click_data)
 	. = ..()
+	if(click_data && click_data["alt"])
+		return
 	var/obj/item/O = get_item(click_data)
 	if(!O)
 		return
@@ -135,10 +137,11 @@
 
 /obj/structure/surface/attackby(obj/item/W, mob/user, click_data)
 	var/obj/item/O = get_item(click_data)
-	if(!O || click_data["ctrl"])//holding the ALT key will force it to place the object
+	if(!O || click_data["ctrl"])//holding the ctrl key will force it to place the object
 		// Placing stuff on tables
 		if(user.drop_inv_item_to_loc(W, loc))
 			auto_align(W, click_data)
+			user.next_move = world.time + 2
 			return TRUE
 	else if(!O.attackby(W, user))
 		W.afterattack(O, user, TRUE)

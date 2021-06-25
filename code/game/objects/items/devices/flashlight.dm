@@ -11,9 +11,10 @@
 	matter = list("metal" = 50,"glass" = 20)
 
 	actions_types = list(/datum/action/item_action)
-	var/on = 0
+	var/on = FALSE
 	var/brightness_on = 5 //luminosity when on
-	var/raillight_compatible = 1 //Can this be turned into a rail light ?
+	var/raillight_compatible = TRUE //Can this be turned into a rail light ?
+	var/toggleable = TRUE
 
 /obj/item/device/flashlight/Initialize()
 	. = ..()
@@ -46,15 +47,22 @@
 			SetLuminosity(0)
 
 /obj/item/device/flashlight/attack_self(mob/user)
+	..()
+
+	if(!toggleable)
+		to_chat(user, SPAN_WARNING("You cannot toggle \the [src.name] on or off."))
+		return FALSE
 	if(!isturf(user.loc))
 		to_chat(user, "You cannot turn the light on while in [user.loc].") //To prevent some lighting anomalities.
-		return 0
+		return FALSE
+
 	on = !on
 	update_brightness(user)
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.update_button_icon()
-	return 1
+
+	return TRUE
 
 /obj/item/device/flashlight/proc/turn_off_light(mob/bearer)
 	if(on)
@@ -67,7 +75,7 @@
 	return 0
 
 /obj/item/device/flashlight/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I,/obj/item/tool/screwdriver))
+	if(HAS_TRAIT(I, TRAIT_TOOL_SCREWDRIVER))
 		if(!raillight_compatible) //No fancy messages, just no
 			return
 		if(on)
@@ -113,7 +121,7 @@
 							 SPAN_NOTICE("You direct [src] to [M]'s eyes."))
 
 		if(istype(M, /mob/living/carbon/human))	//robots and aliens are unaffected
-			if(M.stat == DEAD || M.sdisabilities & BLIND)	//mob is dead or fully blind
+			if(M.stat == DEAD || M.sdisabilities & DISABILITY_BLIND)	//mob is dead or fully blind
 				to_chat(user, SPAN_NOTICE("[M] pupils does not react to the light!"))
 			else	//they're okay!
 				M.flash_eyes()
@@ -182,12 +190,34 @@
 	w_class = SIZE_LARGE
 	on = 1
 
+//Generic Candelabra
+/obj/item/device/flashlight/lamp/candelabra
+	name = "candelabra"
+	desc = "A firehazard that can be used to thwack things with impunity."
+	icon_state = "candelabra"
+	force = 15
+
 //Green-shaded desk lamp
 /obj/item/device/flashlight/lamp/green
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	item_state = "lampgreen"
 	brightness_on = 5
+
+/obj/item/device/flashlight/lamp/tripod
+	name = "tripod lamp"
+	desc = "An emergency light tube mounted onto a tripod. It seemingly lasts forever."
+	icon_state = "tripod_lamp"
+	brightness_on = 6//pretty good
+	w_class = SIZE_LARGE
+	on = 1
+
+//obj/item/device/flashlight/lamp/tripod/New() //start all tripod lamps as on.
+//	..()
+//	update_brightness()
+
+/obj/item/device/flashlight/lamp/tripod/grey
+	icon_state = "tripod_lamp_grey"
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
 	set name = "Toggle light"
@@ -248,9 +278,9 @@
 	// Usual checks
 	if(!fuel)
 		to_chat(user, SPAN_NOTICE("It's out of fuel."))
-		return
+		return FALSE
 	if(on)
-		return
+		return FALSE
 
 	. = ..()
 	// All good, turn it on.
@@ -279,21 +309,22 @@
 	name = "glowing slime"
 	desc = "A glowing ball of what appears to be amber."
 	icon = 'icons/obj/items/lighting.dmi'
-	icon_state = "floor1" //not a slime extract sprite but... something close enough!
+	// not a slime extract sprite but... something close enough!
+	icon_state = "floor1"
 	item_state = "slime"
 	w_class = SIZE_TINY
 	brightness_on = 6
-	on = 1 //Bio-luminesence has one setting, on.
-	raillight_compatible = 0
+	// Bio-luminesence has one setting, on.
+	on = TRUE
+	raillight_compatible = FALSE
+	// Bio-luminescence does not toggle.
+	toggleable = FALSE
 
 /obj/item/device/flashlight/slime/Initialize()
 	. = ..()
 	SetLuminosity(brightness_on)
 	update_brightness()
 	icon_state = initial(icon_state)
-
-/obj/item/device/flashlight/slime/attack_self(mob/user)
-	return //Bio-luminescence does not toggle.
 
 //******************************Lantern*******************************/
 
@@ -320,29 +351,12 @@
 /obj/item/device/flashlight/flare/signal/attack_self(mob/living/carbon/human/user)
 	if(!istype(user))
 		return
-	// Usual checks
-	if(!fuel)
-		to_chat(user, SPAN_NOTICE("It's out of fuel."))
-		return
-	if(on)
-		return
 
-	if(!isturf(user.loc))
-		to_chat(user, "You cannot turn the light on while in [user.loc].") //To prevent some lighting anomalities.
-		return 0
-	on = !on
-	update_brightness(user)
-	for(var/X in actions)
-		var/datum/action/A = X
-		A.update_button_icon()
-	// All good, turn it on.
-	user.visible_message(SPAN_NOTICE("[user] activates the flare."), SPAN_NOTICE("You pull the cord on the flare, activating it!"))
-	force = on_damage
-	heat_source = 1500
-	damtype = "fire"
-	START_PROCESSING(SSobj, src)
-	faction = user.faction
-	addtimer(CALLBACK(src, .proc/activate_signal, user), 5 SECONDS)
+	. = ..()
+
+	if(.)
+		faction = user.faction
+		addtimer(CALLBACK(src, .proc/activate_signal, user), 5 SECONDS)
 
 /obj/item/device/flashlight/flare/signal/proc/activate_signal(mob/living/carbon/human/user)
 	if(faction && cas_groups[faction])

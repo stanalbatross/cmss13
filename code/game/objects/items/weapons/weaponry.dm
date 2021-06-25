@@ -78,6 +78,8 @@
 
 
 /obj/item/weapon/melee/butterfly/attack_self(mob/user)
+	..()
+
 	active = !active
 	if(active)
 		to_chat(user, SPAN_NOTICE("You flip out your [src]."))
@@ -134,7 +136,7 @@
 		qdel(src)
 		update_icon(user)
 
-	else if(istype(I, /obj/item/tool/wirecutters))
+	else if(HAS_TRAIT(I, TRAIT_TOOL_WIRECUTTERS))
 		var/obj/item/weapon/melee/baton/cattleprod/P = new /obj/item/weapon/melee/baton/cattleprod
 
 		user.put_in_hands(P)
@@ -189,8 +191,7 @@
 		already_dead -= M
 
 	/////////////////////////
-	M.last_damage_source = initial(name)
-	M.last_damage_mob = user
+	M.last_damage_data = create_cause_data(initial(name), user)
 
 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [key_name(M)] with [name] (INTENT: [uppertext(intent_text(user.a_intent))]) (DAMTYE: [uppertext(damtype)])</font>"
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [key_name(user)] with [name] (INTENT: [uppertext(intent_text(user.a_intent))]) (DAMTYE: [uppertext(damtype)])</font>"

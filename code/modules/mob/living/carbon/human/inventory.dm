@@ -8,12 +8,7 @@
 		if(!I)
 			to_chat(H, SPAN_NOTICE("You are not holding anything to equip."))
 			return
-		if(H.equip_to_appropriate_slot(I, 0))
-			if(hand)
-				update_inv_l_hand(0)
-			else
-				update_inv_r_hand(0)
-		else
+		if(!H.equip_to_appropriate_slot(I, 0))
 			to_chat(H, SPAN_DANGER("You are unable to equip that."))
 
 /mob/living/carbon/human/proc/equip_in_one_of_slots(obj/item/W, list/slots, del_on_fail = 1)
@@ -56,6 +51,8 @@
 		if(WEAR_HANDS)
 			return has_limb("l_hand") && has_limb("r_hand")
 		if(WEAR_HEAD)
+			return has_limb("head")
+		if(WEAR_IN_HELMET)
 			return has_limb("head")
 		if(WEAR_FEET)
 			return has_limb("r_foot") && has_limb("l_foot")
@@ -220,7 +217,7 @@
 		//removes item's actions, may be readded once re-equipped to the new slot
 		for(var/X in W.actions)
 			var/datum/action/A = X
-			A.remove_action(src)
+			A.remove_from(src)
 
 	else if(W == r_hand)
 		if(W.flags_item & NODROP)
@@ -230,9 +227,11 @@
 		//removes item's actions, may be readded once re-equipped to the new slot
 		for(var/X in W.actions)
 			var/datum/action/A = X
-			A.remove_action(src)
+			A.remove_from(src)
 
 	W.screen_loc = null
+	if(W.loc != src)
+		W.pickup(src)
 	W.forceMove(src)
 	W.layer = ABOVE_HUD_LAYER
 
@@ -336,6 +335,7 @@
 					C.attach_accessory(src, A)
 					break
 			update_inv_w_uniform()
+			update_inv_wear_suit()
 		if(WEAR_J_STORE)
 			s_store = W
 			W.equipped(src, slot)
@@ -354,6 +354,13 @@
 			if(istype(S) && S.pockets.storage_slots)
 				wear_suit.attackby(W, src)
 				wear_suit.update_icon()
+
+		if(WEAR_IN_HELMET)
+			var/obj/item/clothing/head/helmet/marine/HM = src.head
+			if(istype(HM) && HM.pockets.storage_slots)
+				HM.pockets.attackby(W, src)
+				HM.update_icon()
+
 		if(WEAR_IN_ACCESSORY)
 			var/obj/item/clothing/accessory/A = W
 			if(istype(A))
@@ -364,6 +371,7 @@
 			else
 				w_uniform.attackby(W,src)
 			update_inv_w_uniform()
+
 		if(WEAR_IN_BELT)
 			belt.attackby(W,src)
 			belt.update_icon()
@@ -440,6 +448,7 @@
 		return
 	M.attack_log += "\[[time_stamp()]\] <font color='orange'>Has had their [I.name] ([slot_to_process]) attempted to be removed by [key_name(src)]</font>"
 	attack_log += "\[[time_stamp()]\] <font color='red'>Attempted to remove [key_name(M)]'s [I.name] ([slot_to_process])</font>"
+	log_interact(src, M, "[key_name(src)] tried to remove [key_name(M)]'s [I.name] ([slot_to_process]).")
 
 	M.visible_message(SPAN_DANGER("[src] tries to remove [M]'s [I.name]."), \
 					SPAN_DANGER("You are trying to remove [M]'s [I.name]."), null, 5)
@@ -447,6 +456,7 @@
 	if(do_after(src, HUMAN_STRIP_DELAY * src.get_skill_duration_multiplier(), INTERRUPT_ALL, BUSY_ICON_GENERIC, M, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
 		if(I && Adjacent(M) && I == M.get_item_by_slot(slot_to_process))
 			M.drop_inv_item_on_ground(I)
+			log_interact(src, M, "[key_name(src)] removed [key_name(M)]'s [I.name] ([slot_to_process]) successfully.")
 
 	if(M)
 		if(interactee == M && Adjacent(M))
