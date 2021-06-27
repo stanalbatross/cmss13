@@ -671,7 +671,6 @@
 			overlays += image('icons/mob/hud/ammoHUD.dmi', src, "h9")
 
 /obj/screen/ammo/proc/update_attachable_hud(mob/living/user, obj/item/weapon/gun/G)
-
 	var/obj/item/attachable/attached_gun/AG = G.active_attachable
 
 	var/list/ammo_type = AG.get_attachment_ammo_type()
