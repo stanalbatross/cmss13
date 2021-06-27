@@ -4,7 +4,9 @@
 	var/impact_limbs = BODY_FLAG_NO_BODY // The body parts that have an impact icon
 	var/icon 		= 'icons/obj/items/weapons/projectiles.dmi'
 	var/icon_state 	= "bullet"
-	var/hud_state   = "unknown"  //Bullet type on the Ammo HUD
+	 ///Bullet type on the Ammo HUD
+	var/hud_state   = "unknown"
+	 ///Empty bullet type on the Ammo HUD
 	var/hud_state_empty = "unknown"
 	var/ping 		= "ping_b" //The icon that is displayed when the bullet bounces off something.
 	var/sound_hit //When it deals damage.
