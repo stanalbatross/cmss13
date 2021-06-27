@@ -82,6 +82,9 @@
 	 ///Vision impairing effect if worn on head/mask/glasses.
 	var/vision_impair = VISION_IMPAIR_NONE
 
+	 ///Used for stepping onto flame and seeing how much dmg you take and if you're ignited.
+	var/fire_intensity_resistance
+
 	var/map_specific_decoration = FALSE
 	var/blood_color = "" //color of the blood on us if there's any.
 	appearance_flags = KEEP_TOGETHER //taken from blood.dm
@@ -174,7 +177,7 @@ cases. Override_icon_state should be a list.*/
 		if(override_protection && override_protection.len)
 			new_protection = override_protection[SSmapping.configs[GROUND_MAP].map_name]
 		switch(SSmapping.configs[GROUND_MAP].map_name) // maploader TODO: json
-			if(MAP_ICE_COLONY, MAP_CORSAT, MAP_SOROKYNE_STRATA)
+			if(MAP_ICE_COLONY, MAP_ICE_COLONY_V3, MAP_CORSAT, MAP_SOROKYNE_STRATA)
 				icon_state = new_icon_state ? new_icon_state : "s_" + icon_state
 				item_state = new_item_state ? new_item_state : "s_" + item_state
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
@@ -592,12 +595,11 @@ cases. Override_icon_state should be a list.*/
 
 	if(!(usr)) //BS12 EDIT
 		return
+	if(ismob(src))
+		return
 	if(!usr.canmove || usr.stat || usr.is_mob_restrained() || !Adjacent(usr))
 		return
 	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/brain)))//Is humanoid, and is not a brain
-		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
-		return
-	if( usr.stat || usr.is_mob_restrained() )//Is not asleep/dead and is not restrained
 		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
 		return
 	if(src.anchored) //Object isn't anchored

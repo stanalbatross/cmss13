@@ -327,6 +327,7 @@
 #define XENO_HEALTH_MOD_MED        60
 #define XENO_HEALTH_MOD_LARGE      80
 #define XENO_HEALTH_MOD_VERYLARGE  100
+#define XENO_HEALTH_MOD_ACIDER  115
 
 // Armor mods. Use the above defines for some guidance
 // In general, +20 armor should be a little more than +20% effective HP, however,
@@ -597,3 +598,6 @@
 #define FIRE_IMMUNITY_NONE		0
 #define FIRE_IMMUNITY_NO_DAMAGE	(1<<0)
 #define FIRE_IMMUNITY_NO_IGNITE	(1<<1)
+#define FIRE_IMMUNITY_XENO_FRENZY	(1<<2)
+
+#define TRAPPER_VIEWRANGE 13

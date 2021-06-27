@@ -287,8 +287,6 @@
 
 	wound_icon_carrier = new(null, src)
 	vis_contents += wound_icon_carrier
-	wound_icon_carrier.icon = get_icon_from_source(CONFIG_GET(string/alien_wounds))
-
 
 	if(oldXeno)
 		hivenumber = oldXeno.hivenumber
@@ -460,6 +458,8 @@
 	// Burrowed xenos also cannot be ignited
 	if((caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || burrow)
 		. |= COMPONENT_NO_IGNITE
+	if(caste.fire_immunity & FIRE_IMMUNITY_XENO_FRENZY)
+		. |= COMPONENT_XENO_FRENZY
 
 //Off-load this proc so it can be called freely
 //Since Xenos change names like they change shoes, we need somewhere to hammer in all those legos

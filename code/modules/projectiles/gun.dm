@@ -43,7 +43,7 @@
 	 /**How the bullet will behave once it leaves the gun, also used for basic bullet damage and effects, etc.
 	 Ammo will be replaced on New() for things that do not use mags.**/
 	var/datum/ammo/ammo = null
-	 ///What is currently in the chamber. Most guns will want something in the chamber upon creation.	
+	 ///What is currently in the chamber. Most guns will want something in the chamber upon creation.
 	var/obj/item/projectile/in_chamber = null
 	/*Ammo mags may or may not be internal, though the difference is a few additional variables. If they are not internal, don't call
 	on those unique vars. This is done for quicker pathing. Just keep in mind most mags aren't internal, though some are.
@@ -63,6 +63,8 @@
 	var/recoil 					= 0
 	 ///How much the bullet scatters when fired.
 	var/scatter					= 0
+	 /// Added velocity to fired bullet.
+	var/velocity_add			= 0
 	 ///Multiplier. Increases or decreases how much bonus scatter is added with each bullet during burst fire (wielded only).
 	var/burst_scatter_mult		= 4
 
@@ -96,7 +98,7 @@
 	var/guaranteed_delay_time = 0
 	 ///Storing value for how long pulling a gun takes before you can use it
 	var/pull_time		= 0
-	
+
 	 ///Determines what happens when you fire a gun before its wield or pull time has finished. This one is extra scatter and an acc. malus.
 	var/delay_style		= WEAPON_DELAY_SCATTER_AND_ACCURACY
 
@@ -349,6 +351,7 @@
 		scatter += R.scatter_mod
 		scatter_unwielded += R.scatter_unwielded_mod
 		damage_mult += R.damage_mod
+		velocity_add += R.velocity_mod
 		damage_falloff_mult += R.damage_falloff_mod
 		damage_buildup_mult += R.damage_buildup_mod
 		effective_range_min += R.range_min_mod
@@ -658,7 +661,7 @@
 		"recoil_max" = RECOIL_AMOUNT_TIER_1,
 		"scatter_max" = SCATTER_AMOUNT_TIER_1,
 		"firerate_max" = 1 MINUTES / FIRE_DELAY_TIER_10,
-		"damage_max" = BULLET_DAMAGE_TIER_20,
+		"damage_max" = 100,
 		"accuracy_max" = 32,
 		"range_max" = 32,
 		"falloff_max" = DAMAGE_FALLOFF_TIER_1,
@@ -1036,7 +1039,7 @@ and you're good to go.
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, params, reflex = 0, dual_wield)
 	set waitfor = 0
 
-	if(!able_to_fire(user))
+	if(!able_to_fire(user) || !target)
 		return
 
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
@@ -1081,7 +1084,7 @@ and you're good to go.
 
 	var/bullets_fired
 	for(bullets_fired = 1 to bullets_to_fire)
-		if(loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY) && !(flags_item & WIELDED))
+		if(loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED)))
 			break //If you drop it while bursting, for example.
 
 		if (bullets_fired > 1 && !(flags_gun_features & GUN_BURST_FIRING)) // No longer burst firing somehow
@@ -1109,12 +1112,17 @@ and you're good to go.
 		apply_bullet_effects(projectile_to_fire, user, bullets_fired, reflex, dual_wield) //User can be passed as null.
 		SEND_SIGNAL(projectile_to_fire, COMSIG_BULLET_USER_EFFECTS, user)
 
-		var/scatter_mod = 0
-		var/burst_scatter_mod = 0
+		curloc = get_turf(user)
+		if(QDELETED(original_target)) //If the target's destroyed, shoot at where it was last.
+			target = targloc
+		else
+			target = original_target
+			targloc = get_turf(target)	
 
-		target = original_target ? original_target : targloc
 		projectile_to_fire.original = target
-		target = simulate_scatter(projectile_to_fire, target, targloc, scatter_mod, user, burst_scatter_mod, bullets_fired)
+		target = simulate_scatter(projectile_to_fire, target, curloc, targloc, user, bullets_fired)
+
+		var/bullet_velocity = projectile_to_fire?.ammo?.shell_speed + velocity_add
 
 		if(params)
 			var/list/mouse_control = params2list(params)
@@ -1132,12 +1140,12 @@ and you're good to go.
 			click_empty(user)
 			return
 
-		if(get_turf(target) != get_turf(user))
+		if(targloc != curloc)
 			simulate_recoil(recoil_comp, user, target)
 
 			//This is where the projectile leaves the barrel and deals with projectile code only.
 			//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, projectile_to_fire?.ammo?.shell_speed, original_target, FALSE)
+			projectile_to_fire.fire_at(target, user, src, projectile_to_fire?.ammo?.max_range, bullet_velocity, original_target, FALSE)
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 			if(check_for_attachment_fire)
@@ -1155,9 +1163,8 @@ and you're good to go.
 			break
 
 		//>>POST PROCESSING AND CLEANUP BEGIN HERE.<<
-		if(target) //If we had a target, let's do a muzzle flash.
-			var/angle = round(Get_Angle(user,target))
-			muzzle_flash(angle,user)
+		var/angle = round(Get_Angle(user,target)) //Let's do a muzzle flash.
+		muzzle_flash(angle,user)
 
 		//This is where we load the next bullet in the chamber. We check for attachments too, since we don't want to load anything if an attachment is active.
 		if(!check_for_attachment_fire && !reload_into_chamber(user)) // It has to return a bullet, otherwise it's empty. Unless it's an undershotgun.
@@ -1211,7 +1218,7 @@ and you're good to go.
 			simulate_recoil(2, user)
 			var/t
 			var/datum/cause_data/cause_data
-			if(projectile_to_fire.ammo.damage == BULLET_DAMAGE_OFF)
+			if(projectile_to_fire.ammo.damage == 0)
 				t += "\[[time_stamp()]\] <b>[key_name(user)]</b> tried to commit suicide with a [name]"
 				cause_data = create_cause_data("failed suicide by [initial(name)]")
 				to_chat(user, SPAN_DANGER("Ow..."))
@@ -1284,10 +1291,13 @@ and you're good to go.
 
 	var/bullets_fired
 	for(bullets_fired = 1 to bullets_to_fire)
-		if(loc != user)
+		if(loc != user || (flags_gun_features & GUN_WIELDED_FIRING_ONLY && !(flags_item & WIELDED)))
 			break //If you drop it while bursting, for example.
 
 		if (bullets_fired > 1 && !(flags_gun_features & GUN_BURST_FIRING)) // No longer burst firing somehow
+			break
+
+		if(QDELETED(M)) //Target deceased.
 			break
 
 		var/obj/item/projectile/projectile_to_fire = load_into_chamber(user)
@@ -1547,20 +1557,16 @@ and you're good to go.
 
 	return 1
 
-/obj/item/weapon/gun/proc/simulate_scatter(obj/item/projectile/projectile_to_fire, atom/target, turf/targloc, total_scatter_angle = 0, mob/user, burst_scatter_mod = 0, bullets_fired = 1)
-
-	var/turf/curloc = get_turf(src)
-	var/initial_angle = Get_Angle(curloc, targloc)
-	var/final_angle = initial_angle
-
-	total_scatter_angle += projectile_to_fire.scatter
+/obj/item/weapon/gun/proc/simulate_scatter(obj/item/projectile/projectile_to_fire, atom/target, turf/curloc, turf/targloc, mob/user, bullets_fired = 1)
+	var/fire_angle = Get_Angle(curloc, targloc)
+	var/total_scatter_angle = projectile_to_fire.scatter
 
 	if(flags_gun_features & GUN_BURST_ON && bullets_fired > 1)//Much higher scatter on burst. Each additional bullet adds scatter
 		var/bullet_amt_scat = min(bullets_fired-1, SCATTER_AMOUNT_TIER_6)//capped so we don't penalize large bursts too much.
 		if(flags_item & WIELDED)
-			total_scatter_angle += max(0, bullet_amt_scat * (burst_scatter_mult + burst_scatter_mod))
+			total_scatter_angle += max(0, bullet_amt_scat * burst_scatter_mult)
 		else
-			total_scatter_angle += max(0, 2 * bullet_amt_scat * (burst_scatter_mult + burst_scatter_mod))
+			total_scatter_angle += max(0, 2 * bullet_amt_scat * burst_scatter_mult)
 
 	// Full auto fucks your scatter up big time
 	// Note that full auto uses burst scatter multipliers
@@ -1568,9 +1574,9 @@ and you're good to go.
 		// The longer you fire full-auto, the worse the scatter gets
 		var/bullet_amt_scat = min((fa_shots/fa_scatter_peak) * fa_max_scatter, fa_max_scatter)
 		if(flags_item & WIELDED)
-			total_scatter_angle += max(0, bullet_amt_scat * (burst_scatter_mult + burst_scatter_mod))
+			total_scatter_angle += max(0, bullet_amt_scat * burst_scatter_mult)
 		else
-			total_scatter_angle += max(0, 2 * bullet_amt_scat * (burst_scatter_mult + burst_scatter_mod))
+			total_scatter_angle += max(0, 2 * bullet_amt_scat * burst_scatter_mult)
 
 	if(user && user.mind && user.skills)
 		if(user.skills.get_skill_level(SKILL_FIREARMS) == 0) //no training in any firearms
@@ -1581,8 +1587,8 @@ and you're good to go.
 
 	//Not if the gun doesn't scatter at all, or negative scatter.
 	if(total_scatter_angle > 0)
-		final_angle += rand(-total_scatter_angle, total_scatter_angle)
-		target = get_angle_target_turf(curloc, final_angle, 30)
+		fire_angle += rand(-total_scatter_angle, total_scatter_angle)
+		target = get_angle_target_turf(curloc, fire_angle, 30)
 
 	return target
 

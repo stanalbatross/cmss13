@@ -576,7 +576,7 @@
 /obj/structure/machinery/light/bullet_act(obj/item/projectile/P)
 	src.bullet_ping(P)
 	if(P.ammo.damage_type == BRUTE)
-		if(P.damage > BULLET_DAMAGE_TIER_2)
+		if(P.damage > 10)
 			broken()
 		else
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 25, 1)
@@ -703,7 +703,7 @@
 /obj/structure/machinery/landinglight
 	name = "landing light"
 	icon = 'icons/obj/structures/props/landinglights.dmi'
-	icon_state = "landingstripetop"
+	icon_state = "landingstripe"
 	desc = "A landing light, if it's flashing stay clear!"
 	var/id = "" // ID for landing zone
 	anchored = 1
@@ -725,7 +725,7 @@
 	turn_off()
 
 /obj/structure/machinery/landinglight/proc/turn_off()
-	icon_state = "landingstripe"
+	icon_state = initial(icon_state)
 	SetLuminosity(0)
 
 /obj/structure/machinery/landinglight/ds1
@@ -735,29 +735,43 @@
 	id = "USS Almayer Dropship 2" // ID for landing zone
 
 /obj/structure/machinery/landinglight/proc/turn_on()
-	icon_state = "landingstripe0"
+	icon_state = initial(icon_state) + "0"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds1/delayone/turn_on()
-	icon_state = "landingstripe1"
+	icon_state = initial(icon_state) + "1"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds1/delaytwo/turn_on()
-	icon_state = "landingstripe2"
+	icon_state = initial(icon_state) + "2"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds1/delaythree/turn_on()
-	icon_state = "landingstripe3"
+	icon_state = initial(icon_state) + "3"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds2/delayone/turn_on()
-	icon_state = "landingstripe1"
+	icon_state = initial(icon_state) + "1"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds2/delaytwo/turn_on()
-	icon_state = "landingstripe2"
+	icon_state = initial(icon_state) + "2"
 	SetLuminosity(2)
 
 /obj/structure/machinery/landinglight/ds2/delaythree/turn_on()
-	icon_state = "landingstripe3"
+	icon_state = initial(icon_state) + "3"
 	SetLuminosity(2)
+
+/obj/structure/machinery/landinglight/ds1/spoke
+	icon_state = "lz_spoke_light"
+
+/obj/structure/machinery/landinglight/ds1/spoke/turn_on()
+	icon_state = initial(icon_state) + "1"
+	SetLuminosity(3)
+
+/obj/structure/machinery/landinglight/ds2/spoke
+	icon_state = "lz_spoke_light"
+
+/obj/structure/machinery/landinglight/ds2/spoke/turn_on()
+	icon_state = initial(icon_state) + "1"
+	SetLuminosity(3)

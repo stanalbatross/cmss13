@@ -17,6 +17,7 @@
 	reload_sound = 'sound/weapons/handling/flamer_reload.ogg'
 	aim_slowdown = SLOWDOWN_ADS_INCINERATOR
 	current_mag = /obj/item/ammo_magazine/flamer_tank
+	var/fuel_pressure = 1 //Pressure setting of the attached fueltank, controls how much fuel is used per tile
 	var/max_range = 9 //9 tiles, 7 is screen range, controlled by the type of napalm in the canister. We max at 9 since diagonal bullshit.
 
 	attachable_allowed = list( //give it some flexibility.
@@ -164,7 +165,8 @@
 			current_mag = magazine
 			magazine.forceMove(src)
 			replace_ammo(,magazine)
-
+	var/obj/item/ammo_magazine/flamer_tank/tank = magazine
+	fuel_pressure = tank.fuel_pressure
 	update_icon()
 	return 1
 
@@ -183,6 +185,7 @@
 
 	current_mag.update_icon()
 	current_mag = null
+	fuel_pressure = 1
 
 	update_icon()
 
@@ -200,7 +203,8 @@
 	R.durationfire = Clamp(R.durationfire, current_mag.reagents.min_fire_dur, current_mag.reagents.max_fire_dur)
 	R.rangefire = Clamp(R.rangefire, current_mag.reagents.min_fire_rad, current_mag.reagents.max_fire_rad)
 	var/max_range = R.rangefire
-
+	if (max_range < fuel_pressure) //Used for custom tanks, allows for higher ranges
+		max_range = Clamp(fuel_pressure, 0, current_mag.reagents.max_fire_rad)
 	if(R.rangefire == -1)
 		max_range = current_mag.reagents.max_fire_rad
 
@@ -214,7 +218,7 @@
 
 	playsound(to_fire, src.get_fire_sound(), 50, TRUE)
 
-	new /obj/flamer_fire(to_fire, create_cause_data(initial(name), user), R, max_range, current_mag.reagents, flameshape, target, CALLBACK(src, .proc/show_percentage, user))
+	new /obj/flamer_fire(to_fire, create_cause_data(initial(name), user), R, max_range, current_mag.reagents, flameshape, target, CALLBACK(src, .proc/show_percentage, user), fuel_pressure)
 
 /obj/item/weapon/gun/flamer/proc/show_percentage(var/mob/living/user)
 	if(current_mag)
@@ -343,7 +347,7 @@
 	var/datum/reagents/tied_reagents
 	var/datum/callback/to_call
 
-/obj/flamer_fire/Initialize(mapload, var/datum/cause_data/cause_data, var/datum/reagent/R, fire_spread_amount = 0, var/datum/reagents/obj_reagents = null, new_flameshape = FLAMESHAPE_DEFAULT, var/atom/target = null, var/datum/callback/C)
+/obj/flamer_fire/Initialize(mapload, var/datum/cause_data/cause_data, var/datum/reagent/R, fire_spread_amount = 0, var/datum/reagents/obj_reagents = null, new_flameshape = FLAMESHAPE_DEFAULT, var/atom/target = null, var/datum/callback/C, var/fuel_pressure = 1)
 	. = ..()
 	if(!R)
 		R = new /datum/reagent/napalm/ut()
@@ -371,7 +375,8 @@
 
 	icon_state = "[flame_icon]_2"
 
-	firelevel = R.durationfire
+	//Fire duration increases with fuel usage
+	firelevel = R.durationfire + fuel_pressure*R.durationmod
 	burnlevel = R.intensityfire
 
 	START_PROCESSING(SSobj, src)
@@ -381,7 +386,7 @@
 	var/burn_dam = burnlevel*FIRE_DAMAGE_PER_LEVEL
 
 	if(tied_reagents && !tied_reagents.locked)
-		var/removed = tied_reagents.remove_reagent(tied_reagent.id, FLAME_REAGENT_USE_AMOUNT)
+		var/removed = tied_reagents.remove_reagent(tied_reagent.id, FLAME_REAGENT_USE_AMOUNT * fuel_pressure)
 		if(removed)
 			qdel(src)
 			return
@@ -391,7 +396,7 @@
 		if(!FS)
 			CRASH("Invalid flameshape passed to /obj/flamer_fire. (Expected /datum/flameshape, got [FS] (id: [flameshape]))")
 
-		FS.handle_fire_spread(src, fire_spread_amount, burn_dam)
+		FS.handle_fire_spread(src, fire_spread_amount, burn_dam, fuel_pressure)
 	//Apply fire effects onto everyone in the fire
 
 	// Melt a single layer of snow
@@ -432,6 +437,11 @@
 				if(weapon_cause_data.cause_name)
 					H.track_shot_hit(weapon_cause_data.cause_name, H)
 
+		var/fire_intensity_resistance = M.check_fire_intensity_resistance()
+		var/firedamage = max(burn_dam - fire_intensity_resistance, 0)
+		if(!firedamage)
+			continue
+
 		var/sig_result = SEND_SIGNAL(M, COMSIG_LIVING_FLAMER_FLAMED, tied_reagent)
 
 		if(!(sig_result & COMPONENT_NO_IGNITE))
@@ -441,7 +451,7 @@
 			continue
 
 		M.last_damage_data = weapon_cause_data
-		M.apply_damage(burn_dam, BURN)
+		M.apply_damage(firedamage, BURN)
 
 		var/msg = "Augh! You are roasted by the flames!"
 		if (isXeno(M))
@@ -465,38 +475,40 @@
 		PF.flags_pass = PASS_FLAGS_FLAME
 
 /obj/flamer_fire/Crossed(mob/living/M) //Only way to get it to reliable do it when you walk into it.
+	set_on_fire(M)
+
+/obj/flamer_fire/proc/set_on_fire(mob/living/M)
 	if(!istype(M))
 		return
+
 	var/sig_result = SEND_SIGNAL(M, COMSIG_LIVING_FLAMER_CROSSED, tied_reagent)
-	var/burn_damage = round(burnlevel*0.5)
+	var/burn_damage = round(burnlevel * 0.5)
+	var/fire_intensity_resistance = M.check_fire_intensity_resistance()
 
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(isXeno(H.pulledby))
-			var/mob/living/carbon/Xenomorph/Z = H.pulledby
-			Z.TryIgniteMob(tied_reagent.durationfire, tied_reagent)
-		if(istype(H.wear_suit, /obj/item/clothing/suit/storage/marine/M35) || istype(H.wear_suit, /obj/item/clothing/suit/fire))
-			burn_damage = round(burnlevel*0.25) //Does small burn damage to a person wearing one of the suits.
+	if(!tied_reagent.fire_penetrating)
+		burn_damage = max(burn_damage - fire_intensity_resistance * 0.5, 0)
 
-	if(isXeno(M))
+	if(sig_result & COMPONENT_XENO_FRENZY)
 		var/mob/living/carbon/Xenomorph/X = M
-		if((X.caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) && !tied_reagent.fire_penetrating)
-			return
-		if(X.burrow)
-			return
+		if(X.plasma_stored != X.plasma_max) //limit num of noise
+			to_chat(X, SPAN_DANGER("The heat of the fire roars in your veins! KILL! CHARGE! DESTROY!"))
+			X.emote("roar")
+		X.plasma_stored = X.plasma_max
 
-	if(!(sig_result & COMPONENT_NO_IGNITE))
+	if(!(sig_result & COMPONENT_NO_IGNITE) && burn_damage)
 		M.TryIgniteMob(tied_reagent.durationfire, tied_reagent)
 
-	if(sig_result & COMPONENT_NO_BURN)
+	if(sig_result & COMPONENT_NO_BURN && !tied_reagent.fire_penetrating)
+		burn_damage = 0
+	
+	if(!burn_damage)
+		to_chat(M, SPAN_DANGER("You step over the flames."))
 		return
 
 	M.last_damage_data = weapon_cause_data
 	M.apply_damage(burn_damage, BURN) //This makes fire stronk.
 	to_chat(M, SPAN_DANGER("You are burned!"))
-	if(isXeno(M))
-		M.updatehealth()
-
+	M.updatehealth()
 
 /obj/flamer_fire/proc/updateicon()
 	if(burnlevel < 15 && flame_icon != "dynamic")
@@ -530,30 +542,7 @@
 	for(var/i in loc)
 		if(++j >= 11) break
 		if(isliving(i))
-			var/mob/living/I = i
-			if(isXenoBurrower(I))
-				var/mob/living/carbon/Xenomorph/Burrower/B = I
-				if(B.burrow)
-					continue
-			if(isXenoRavager(I) && !tied_reagent.fire_penetrating)
-				if(!I.stat)
-					var/mob/living/carbon/Xenomorph/Ravager/X = I
-					X.plasma_stored = X.plasma_max
-					X.used_charge = 0 //Reset charge cooldown
-					X.show_message(text(SPAN_DANGER("The heat of the fire roars in your veins! KILL! CHARGE! DESTROY!")),1)
-					if(rand(1,100) < 70)
-						X.emote("roar")
-			if(ishuman(I))
-				var/mob/living/carbon/human/H = I
-				if(istype(H.wear_suit, /obj/item/clothing/suit/storage/marine/M35) || istype(H.wear_suit, /obj/item/clothing/suit/fire))
-					continue
-			// If I stand in the fire I deserve all of this. Also Napalm stacks quickly.
-			if(!I.TryIgniteMob(firelevel, tied_reagent))
-				continue
-			I.show_message(text(SPAN_WARNING("You are burned!")), 1)
-			if(isXeno(I)) //Have no fucken idea why the Xeno thing was there twice.
-				var/mob/living/carbon/Xenomorph/X = I
-				X.updatehealth()
+			set_on_fire(i)
 		if(isobj(i))
 			var/obj/O = i
 			O.flamer_fire_act(0, weapon_cause_data)

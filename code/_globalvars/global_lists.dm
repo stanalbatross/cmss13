@@ -5,8 +5,8 @@ var/list/fax_contents = list() 				//List of fax contents to maintain it even if
 var/list/USCMFaxes = list()					//List of all USCM faxes sent this round
 
 //Names of maps that can be compiled on
-var/list/DEFAULT_NEXT_MAP_CANDIDATES = list(MAP_LV_624, MAP_BIG_RED, MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_ICE_COLONY, MAP_PRISON_STATION, MAP_CORSAT, MAP_SOROKYNE_STRATA, MAP_KUTJEVO)
-var/list/LOWPOP_NEXT_MAP_CANDIDATES = list(MAP_LV_624, MAP_BIG_RED, MAP_PRISON_STATION, MAP_KUTJEVO, MAP_PRISON_STATION_V3)
+var/list/DEFAULT_NEXT_MAP_CANDIDATES = list(MAP_LV_624, MAP_BIG_RED, MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_ICE_COLONY, MAP_PRISON_STATION, MAP_CORSAT, MAP_SOROKYNE_STRATA, MAP_KUTJEVO, MAP_ICE_COLONY_V3)
+var/list/LOWPOP_NEXT_MAP_CANDIDATES = list(MAP_LV_624, MAP_BIG_RED, MAP_PRISON_STATION, MAP_KUTJEVO, MAP_PRISON_STATION_V3, MAP_ICE_COLONY_V3)
 var/list/NOTVOTABLE_MAPS = list(MAP_WHISKEY_OUTPOST, MAP_ICE_COLONY)
 var/list/NEXT_MAP_CANDIDATES = DEFAULT_NEXT_MAP_CANDIDATES.Copy() - NOTVOTABLE_MAPS
 
@@ -100,7 +100,7 @@ var/global/list/untracked_yautja_gear = list() // List of untracked loose pred g
 GLOBAL_LIST_INIT_TYPED(all_species, /datum/species, setup_species())
 GLOBAL_REFERENCE_LIST_INDEXED(all_languages, /datum/language, name)
 GLOBAL_LIST_INIT(language_keys, setup_language_keys())					//table of say codes for all languages
-var/global/list/synth_types = list("Synthetic","Second Generation Synthetic")
+var/global/list/synth_types = list(SYNTH_GEN_ONE,SYNTH_GEN_TWO, SYNTH_GEN_THREE)
 
 //Xeno mutators
 GLOBAL_REFERENCE_LIST_INDEXED_SORTED(xeno_mutator_list, /datum/xeno_mutator, name)

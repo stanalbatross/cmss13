@@ -14,6 +14,7 @@
 	breakable = FALSE
 	flags_atom = ON_BORDER
 	unacidable = TRUE
+	climb_delay = CLIMB_DELAY_SHORT
 
 /obj/structure/platform/Initialize()
 	. = ..()
@@ -97,7 +98,6 @@ obj/structure/platform_decoration
 	name = "ice rock edge"
 	desc = "A solid chunk of desolate rocks and ice. Looks like you could climb it with some difficulty."
 	icon_state = "strata_platform"
-	climb_delay = CLIMB_DELAY_SHORT //Lowered climb speed for both sides since people complained. Half of the base climb delay since these are in combat zones. To-Do, specific climb speeds for up and down, xenos, climb verb, macro, auto-climb client pref.
 
 //Strata wall metal platforms
 /obj/structure/platform_decoration/strata/metal
@@ -172,6 +172,16 @@ obj/structure/platform_decoration
 	name = "sandstone platform corner"
 	desc = "A platform corner supporting elevated ground, made of sandstone. Has what seem to be ancient hieroglyphs on its side."
 	color = "#c6a480"
+
+/obj/structure/platform/shiva/catwalk
+	icon_state = "shiva"
+	name = "raised rubber cord platform"
+	desc = "Reliable steel and a polymer rubber substitute. Doesn't crack under cold weather."
+
+/obj/structure/platform_decoration/shiva/catwalk
+	icon_state = "shiva_deco"
+	name = "raised rubber cord platform"
+	desc = "Reliable steel and a polymer rubber substitute. Doesn't crack under cold weather."
 
 /obj/structure/platform_decoration/mineral/sandstone/runed
 	name = "sandstone temple platform corner"

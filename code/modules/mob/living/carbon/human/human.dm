@@ -128,7 +128,7 @@
 
 	if(!istype(wear_ear, /obj/item/clothing/ears/earmuffs))
 		ear_damage += severity * 0.15
-		ear_deaf += severity * 0.5
+		AdjustEarDeafness(severity * 0.5)
 
 	var/knockdown_value = min( round( severity*0.1  ,1) ,10)
 	if(knockdown_value > 0)
@@ -1399,14 +1399,20 @@
 /mob/living/carbon/human/synthetic/Initialize(mapload)
 	. = ..(mapload, "Synthetic")
 
-/mob/living/carbon/human/synthetic_old/Initialize(mapload)
-	. = ..(mapload, "Early Synthetic")
+/mob/living/carbon/human/synthetic/old/Initialize(mapload)
+	. = ..(mapload, SYNTH_COLONY)
 
-/mob/living/carbon/human/synthetic_combat/Initialize(mapload)
-	. = ..(mapload, "Combat Synthetic")
+/mob/living/carbon/human/synthetic/combat/Initialize(mapload)
+	. = ..(mapload, SYNTH_COMBAT)
 
-/mob/living/carbon/human/synthetic_2nd_gen/Initialize(mapload)
-	. = ..(mapload, "Second Generation Synthetic")
+/mob/living/carbon/human/synthetic/first/Initialize(mapload)
+	. = ..(mapload, SYNTH_GEN_ONE)
+
+/mob/living/carbon/human/synthetic/second/Initialize(mapload)
+	. = ..(mapload, SYNTH_GEN_TWO)
+
+/mob/living/carbon/human/synthetic/third/Initialize(mapload)
+	. = ..(mapload, SYNTH_GEN_THREE)
 
 
 /mob/living/carbon/human/resist_fire()
@@ -1525,4 +1531,3 @@
 	if(species)
 		slot_equipment_priority = species.slot_equipment_priority
 	return ..(W,ignore_delay,slot_equipment_priority)
-
