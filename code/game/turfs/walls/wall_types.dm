@@ -609,6 +609,62 @@
 	desc = "Dusty worn down walls that were once built to last. This one is indestructable."
 	hull = 1
 
+//ICE COLONY, AKA SHIVA'S SNOWBALL TOBLERONE WALLS
+/turf/closed/wall/shiva
+	icon = 'icons/turf/walls/ice_colony/shiva_turfs.dmi'
+
+/turf/closed/wall/shiva/ice
+	name = "black ice sabs"
+	icon_state = "shiva_ice"
+	desc = "Slabs on slabs of dirty black ice crusted over ancient rock formations. The perma frost fluctuates between 20in and 12in during the Summer months."
+	walltype = WALL_SHIVA_ICE //Not a metal wall
+	hull = 1 //Can't break this ice.
+
+/turf/closed/wall/strata_ice/ex_act(severity)
+	return
+
+/turf/closed/wall/shiva/prefabricated
+	name = "prefabricated structure wall"
+	icon_state = "shiva_fab"
+	desc = "This structure is made of metal support rods and robust poly-kevlon plastics. A derivative of the stuff used in UA ballistics vests, USCM and UPP uniforms. These walls are pulled taught and have been reinforced into a more permanent structure."
+	walltype = WALL_SHIVA_FAB
+	damage_cap = HEALTH_WALL
+
+/turf/closed/wall/shiva/prefabricated/reinforced
+	name = "reinforced prefabricated structure wall"
+	icon_state = "shiva_fab_r"
+	desc = "This structure is made of metal support rods. The poly-kevlon has been replaced with sheet metal, reinforcing it."
+	walltype = WALL_SHIVA_FAB_R
+	damage_cap = HEALTH_WALL + HEALTH_WALL_XENO_THICK
+
+/turf/closed/wall/shiva/prefabricated/reinforced/hull
+	name = "reinforced prefabricated structure wall"
+	icon_state = "shiva_fab_r_h"
+	desc = "It cannot be destroyed by any means you have available. Perhaps praying to the gods may help."
+	walltype = WALL_SHIVA_FAB_R
+	hull = TRUE
+
+/turf/closed/wall/shiva/prefabricated/orange
+	icon_state = "shiva_fab_oj"
+	walltype = WALL_SHIVA_FAB_ORANGE
+
+/turf/closed/wall/shiva/prefabricated/blue
+	icon_state = "shiva_fab_blu"
+	walltype = WALL_SHIVA_FAB_BLUE
+
+/turf/closed/wall/shiva/prefabricated/pink
+	icon_state = "shiva_fab_pnk"
+	walltype = WALL_SHIVA_FAB_PINK
+
+/turf/closed/wall/shiva/prefabricated/white
+	icon_state = "shiva_fab_wht"
+	walltype = WALL_SHIVA_FAB_WHITE
+
+/turf/closed/wall/shiva/prefabricated/red
+	icon_state = "shiva_fab_red"
+	walltype = WALL_SHIVA_FAB_RED
+
+
 //Xenomorph's Resin Walls
 
 /turf/closed/wall/resin
@@ -623,11 +679,17 @@
 	blend_objects = list(/obj/structure/mineral_door/resin)
 	repair_materials = list()
 	var/hivenumber = XENO_HIVE_NORMAL
+	var/should_track_build = FALSE
+	var/datum/cause_data/construction_data
 	flags_turf = TURF_ORGANIC
 
 /turf/closed/wall/resin/pillar
 	name = "resin pillar segment"
 	hull = TRUE
+
+/turf/closed/wall/resin/proc/set_resin_builder(var/mob/M)
+	if(istype(M) && should_track_build)
+		construction_data = create_cause_data(initial(name), M)
 
 /turf/closed/wall/resin/make_girder()
 	return
@@ -990,6 +1052,7 @@
 	health = HEALTH_WALL_XENO_MEMBRANE_THICK
 	icon_state = "thickmembrane"
 	wall_type = "thickmembrane"
+
 /turf/closed/wall/resin/reflective
 	name = "resin reflective wall"
 	desc = "Weird hardened slime solidified into a fine, smooth wall."
@@ -997,6 +1060,7 @@
 	icon_state = "resin"
 	walltype = WALL_BONE_RESIN
 	damage_cap = HEALTH_WALL_XENO_MEMBRANE
+	should_track_build = TRUE
 
 	// 75% chance of reflecting projectiles
 	var/chance_to_reflect = 75
@@ -1018,7 +1082,7 @@
 			// Bullet gets absorbed if it has IFF or can't be reflected.
 			return
 
-		var/obj/item/projectile/new_proj = new(src, create_cause_data(initial(name)))
+		var/obj/item/projectile/new_proj = new(src, construction_data ? construction_data : create_cause_data(initial(name)))
 		new_proj.generate_bullet(P.ammo, special_flags = P.projectile_override_flags|AMMO_HOMING)
 		new_proj.damage = original_damage
 
