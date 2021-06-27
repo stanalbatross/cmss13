@@ -30,12 +30,8 @@
 		if(T.y > max_y && !istype(T,/turf/open/space))
 			max_y = T.y
 		var/area/A = get_area(T)
-		if((SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION || SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) && istype(T,/turf/open/space))
+		if((SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION || SSmapping.configs[GROUND_MAP].map_name != MAP_PRISON_STATION_V3 ||SSmapping.configs[GROUND_MAP].map_name != MAP_CORSAT) && istype(T,/turf/open/space))
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
-			continue
-		var/obj/structure/resource_node/plasma/plasma = locate(/obj/structure/resource_node/plasma) in T
-		if(plasma && plasma.growth_level)
-			minimap.DrawBox(rgb(196,48,201),T.x-1,T.y-1,T.x+1,T.y+1)
 			continue
 		if(A.ceiling >= CEILING_PROTECTION_TIER_2 && A.ceiling != CEILING_REINFORCED_METAL)
 			minimap.DrawBox(rgb(0,0,0),T.x,T.y)
@@ -159,36 +155,64 @@
 				newoverlay.DrawBox(rgb(255,102,102),T2.loc.x-1,T2.loc.y-1,T2.loc.x+1,T2.loc.y+1)
 			for(var/mob/living/carbon/Xenomorph/T3 in tier_3)
 				newoverlay.DrawBox(rgb(255,77,77),T3.loc.x-1,T3.loc.y-1,T3.loc.x+1,T3.loc.y+1)
+	else
+		//check if we have at least one CMD APC
+		if(length(GLOB.command_apc_list))
+			//take xenomorph from the pool
+			for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
+				//filter out those not on the ground
+				var/turf/XT = get_turf(X)
+				if(!is_ground_level(XT?.z))
+					continue
+				//check whether xeno is within sensors range of any intact CMD APCs deployed on the ground
+				for(var/i in GLOB.command_apc_list)
+					var/obj/vehicle/multitile/apc/command/CMDAPC = i
+					if(CMDAPC.health > 0 && CMDAPC.visible_in_tacmap && is_ground_level(CMDAPC.loc?.z) && get_dist(CMDAPC, X) < 33)
+						switch(X.tier)
+							if(0)
+								tier_0 += X
+							if(1)
+								tier_1 += X
+							if(2)
+								tier_2 += X
+							if(3)
+								tier_3 += X
+
+			//finally, mark on the map all xenos that we found
+			for(var/mob/living/carbon/Xenomorph/T0 in tier_0)
+				newoverlay.DrawBox(rgb(255,153,153),T0.loc.x-1,T0.loc.y-1,T0.loc.x+1,T0.loc.y+1)
+			for(var/mob/living/carbon/Xenomorph/T1 in tier_1)
+				newoverlay.DrawBox(rgb(255,128,128),T1.loc.x-1,T1.loc.y-1,T1.loc.x+1,T1.loc.y+1)
+			for(var/mob/living/carbon/Xenomorph/T2 in tier_2)
+				newoverlay.DrawBox(rgb(255,102,102),T2.loc.x-1,T2.loc.y-1,T2.loc.x+1,T2.loc.y+1)
+			for(var/mob/living/carbon/Xenomorph/T3 in tier_3)
+				newoverlay.DrawBox(rgb(255,77,77),T3.loc.x-1,T3.loc.y-1,T3.loc.x+1,T3.loc.y+1)
+
 	newoverlay.Crop(1,1,map_sizes[1][1],map_sizes[1][2])
 	newoverlay.Scale(map_sizes[1][1]*2,map_sizes[1][2]*2)
 	if(selected)
 		switch(selected)
 			if(1)
-				qdel(marine_mapview_overlay_1)
 				marine_mapview_overlay_1 = newoverlay
 				squad1updated = TRUE
 				spawn(refreshfrequency)
 					squad1updated = FALSE
 			if(2)
-				qdel(marine_mapview_overlay_2)
 				marine_mapview_overlay_2 = newoverlay
 				squad2updated = TRUE
 				spawn(refreshfrequency)
 					squad2updated = FALSE
 			if(3)
-				qdel(marine_mapview_overlay_3)
 				marine_mapview_overlay_3 = newoverlay
 				squad3updated = TRUE
 				spawn(refreshfrequency)
 					squad3updated = FALSE
 			if(4)
-				qdel(marine_mapview_overlay_4)
 				marine_mapview_overlay_4 = newoverlay
 				squad4updated = TRUE
 				spawn(refreshfrequency)
 					squad4updated = FALSE
 	else
-		qdel(marine_mapview_overlay_5)
 		marine_mapview_overlay_5 = newoverlay
 		squad0updated = TRUE
 		spawn(refreshfrequency)

@@ -41,7 +41,7 @@
 
 /obj/structure/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
-	if (istype(W, /obj/item/tool/wrench))
+	if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		if (src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 			to_chat(usr, "You begin deconstructing [src].")
@@ -60,7 +60,7 @@
 			to_chat(usr, "You have to unscrew the case first.")
 			return
 
-	if(istype(W, /obj/item/tool/wirecutters))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if (src.stage != 2) return
 		src.stage = 1
 		switch(fixture_type)
@@ -88,7 +88,7 @@
 				"You add wires to [src].")
 		return
 
-	if(istype(W, /obj/item/tool/screwdriver))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if (src.stage == 2)
 			switch(fixture_type)
 				if ("tube")
@@ -169,6 +169,19 @@
 	brightness = 4
 	desc = "A small lighting fixture."
 	light_type = /obj/item/light_bulb/bulb
+
+
+/obj/structure/machinery/light/double
+	icon_state = "ptube1"
+	base_state = "ptube"
+	brightness = 6
+/obj/structure/machinery/light/double/blue
+	icon_state = "bptube1"
+	base_state = "bptube"
+/obj/structure/machinery/light/alt
+	icon_state = "ltube1"
+	base_state = "ltube"
+
 
 /obj/structure/machinery/light/spot
 	name = "spotlight"
@@ -368,7 +381,7 @@
 
 	// attempt to stick weapon into light socket
 	else if(status == LIGHT_EMPTY)
-		if(istype(W, /obj/item/tool/screwdriver)) //If it's a screwdriver open it.
+		if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER)) //If it's a screwdriver open it.
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 			user.visible_message("[user.name] opens [src]'s casing.", \
 				"You open [src]'s casing.", "You hear a noise.")
@@ -629,6 +642,15 @@
 	icon_state = "fbulb"
 	base_state = "fbulb"
 	item_state = "egg4"
+	matter = list("glass" = 100)
+	brightness = 5
+
+/obj/item/light_bulb/tube/prison
+	name = "light tubes"
+	desc = "Replacement light tubes."
+	icon_state = "pbulb"
+	base_state = "pbulb"
+	item_state = "contvapour"
 	matter = list("glass" = 100)
 	brightness = 5
 

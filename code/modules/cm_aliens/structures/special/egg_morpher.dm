@@ -148,7 +148,7 @@
 	if (!linked_hive)
 		return
 
-	if(!CanHug(AM, linked_hive.hivenumber))
+	if(!can_hug(AM, linked_hive.hivenumber))
 		return
 
 	stored_huggers = max(0, stored_huggers - 1)
@@ -165,7 +165,7 @@
 		to_chat(M, SPAN_XENONOTICE("You retrieve a child."))
 		stored_huggers = max(0, stored_huggers - 1)
 		new /obj/item/clothing/mask/facehugger(loc, linked_hive.hivenumber)
-		return
+		return XENO_NONCOMBAT_ACTION
 	..()
 
 #undef EGGMORPG_RANGE

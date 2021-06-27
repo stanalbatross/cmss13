@@ -4,13 +4,19 @@
 	flavor_description = "Crush and butcher, maim and rage, until the tallhosts are finished."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Ravager")
-	mutator_actions_to_remove = list()
-	mutator_actions_to_add = list()
+	caste_whitelist = list(XENO_CASTE_RAVAGER)
+	mutator_actions_to_remove = list(
+		/datum/action/xeno_action/activable/empower,
+		/datum/action/xeno_action/activable/pounce/charge,
+		/datum/action/xeno_action/activable/scissor_cut,
+	)
+	mutator_actions_to_add = list(
+		/datum/action/xeno_action/activable/apprehend,
+		/datum/action/xeno_action/activable/clothesline,
+		/datum/action/xeno_action/activable/eviscerate
+	)
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/ravager_berserker
-	mutator_actions_to_remove = list("Empower", "Charge", "Scissor Cut")
-	mutator_actions_to_add = list(/datum/action/xeno_action/activable/apprehend, /datum/action/xeno_action/activable/clothesline, /datum/action/xeno_action/activable/eviscerate)
 
 /datum/xeno_mutator/berserker/apply_mutator(datum/mutator_set/individual_mutators/MS)
 	. = ..()
@@ -82,11 +88,13 @@
 
 /datum/behavior_delegate/ravager_berserker/on_life()
 	// Compute our current rage (demerit if necessary)
-	if (((last_slash_time + rage_decay_time) < world.time) && !(rage <= 0) && !rage_lock_start_time)
+	if (((last_slash_time + rage_decay_time) < world.time) && !(rage <= 0))
 		decrement_rage()
 
 // Handles internal state from decrementing rage
 /datum/behavior_delegate/ravager_berserker/proc/decrement_rage(amount = 1)
+	if (rage_lock_start_time)
+		return
 	var/real_amount = amount
 	if (amount > rage)
 		real_amount = rage

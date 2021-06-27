@@ -94,7 +94,7 @@
 	max_rounds = 500 //Should be 500 in total.
 	icon_state = "m56_drum"
 	w_class = SIZE_MEDIUM
-	default_ammo = /datum/ammo/bullet/smartgun/marine
+	default_ammo = /datum/ammo/bullet/smartgun
 	gun_type = /obj/item/weapon/gun/smartgun
 
 /obj/item/ammo_magazine/smartgun/dirty
@@ -128,6 +128,7 @@
 	flags_magazine = NO_FLAGS
 
 /obj/item/ammo_magazine/rocket/attack_self(mob/user)
+	..()
 	if(current_rounds <= 0)
 		to_chat(user, SPAN_NOTICE("You begin taking apart the empty tube frame..."))
 		if(do_after(user,10, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
@@ -136,7 +137,8 @@
 			M.amount = 2
 			user.drop_held_item()
 			qdel(src)
-	else to_chat(user, "Not with a missile inside!")
+	else
+		to_chat(user, "Not with a missile inside!")
 
 /obj/item/ammo_magazine/rocket/attack(mob/living/carbon/human/M, mob/living/carbon/human/user, def_zone)
 	if(!istype(M) || !istype(user) || get_dist(user, M) > 1)
@@ -251,7 +253,7 @@
 	if(current_rounds <= 0)
 		to_chat(user, SPAN_WARNING("The rocket tube has been used already."))
 		return
-	if(istype(W,/obj/item/tool/screwdriver))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(!warhead)
 			to_chat(user, SPAN_NOTICE("[name] must contain a warhead to do that!"))
 			return

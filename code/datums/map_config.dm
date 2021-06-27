@@ -16,6 +16,8 @@
 	var/map_name = "LV624"
 	var/map_path = "map_files/LV624"
 	var/map_file = "LV624.dmm"
+	/// Hash of nightmare parser types to config file paths
+	var/list/nightmare
 
 	var/traits = null
 	var/space_empty_levels = 1
@@ -68,7 +70,10 @@
 	var/list/configs = list()
 
 	for(var/i in maptypes)
-		var/filename = MAP_TO_FILENAME[i]
+		var/filename
+		if(CONFIG_GET(flag/ephemeral_map_mode) && i == GROUND_MAP)
+			filename = CONFIG_GET(string/ephemeral_ground_map)
+		else filename = MAP_TO_FILENAME[i]
 		var/datum/map_config/config = new
 		if(default)
 			configs[i] = config
@@ -203,7 +208,7 @@
 		force_mode = json["force_mode"]
 
 	if(json["announce_text"])
-		announce_text = replacetext(json["announce_text"], "###SHIPNAME###", MAIN_SHIP_NAME)
+		announce_text = json["announce_text"]
 
 	if(json["weather_holder"])
 		weather_holder = text2path(json["weather_holder"])
@@ -216,6 +221,12 @@
 		if(!map_item_type)
 			log_world("map_config map_item_type is not a proper typepath!")
 			return
+
+	if(json["nightmare"])
+		if(!islist(json["nightmare"]))
+			log_world("map_config nightmare is not a list!")
+			return
+		nightmare = json["nightmare"]
 
 	if(islist(json["environment_traits"]))
 		environment_traits = json["environment_traits"]
@@ -258,6 +269,9 @@
 
 
 /datum/map_config/proc/MakeNextMap(maptype = GROUND_MAP)
+	if(CONFIG_GET(flag/ephemeral_map_mode))
+		message_staff("NOTICE: Running in ephemeral mode - map change request ignored")
+		return TRUE
 	if(maptype == GROUND_MAP)
 		return config_filename == "data/next_map.json" || fcopy(config_filename, "data/next_map.json")
 	else if(maptype == SHIP_MAP)

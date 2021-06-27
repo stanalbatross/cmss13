@@ -161,7 +161,7 @@
 	return dat
 
 /obj/structure/machinery/computer/groundside_operations/proc/update_mapview(var/close = 0)
-	if (current_mapviewer && !Adjacent(current_mapviewer) || close)
+	if (close || !current_mapviewer || !Adjacent(current_mapviewer))
 		close_browser(current_mapviewer, "marineminimap")
 		current_mapviewer = null
 		return
@@ -170,21 +170,18 @@
 		overlay_marine_mapview()
 
 	current_mapviewer << browse_rsc(marine_mapview_overlay_5, "marine_minimap.png")
-
-	show_browser(current_mapviewer, "<img src=marine_minimap.png>", "Marine Minimap", "marineminimap", "size=[(map_sizes[1][1]*2)+50]x[(map_sizes[1][2]*2)+50]")
-	onclose(current_mapviewer, "marineminimap", src)
+	show_browser(current_mapviewer, "<img src=marine_minimap.png>", "Marine Minimap", "marineminimap", "size=[(map_sizes[1][1]*2)+50]x[(map_sizes[1][2]*2)+50]", closeref = src)
 
 /obj/structure/machinery/computer/groundside_operations/Topic(href, href_list)
-	if(..())
-		return FALSE
-
-	usr.set_interaction(src)
-
 	if (href_list["close"] && current_mapviewer)
 		close_browser(current_mapviewer, "marineminimap")
 		current_mapviewer = null
 		return
 
+	if(..())
+		return FALSE
+
+	usr.set_interaction(src)
 	switch(href_list["operation"])
 		if("mapview")
 			if(current_mapviewer)
@@ -213,8 +210,8 @@
 					signed = "[paygrade] [id.registered_name]"
 
 			marine_announcement(input, signature = signed)
-			addtimer(CALLBACK(GLOBAL_PROC, .proc/message_staff, "[key_name(usr)] has announced the following: [input]"), 20)
 			addtimer(CALLBACK(src, .proc/reactivate_announcement, usr), COOLDOWN_COMM_MESSAGE)
+			message_staff("[key_name(usr)] has made a command annoucement.")
 			log_announcement("[key_name(usr)] has announced the following: [input]")
 
 		if("award")

@@ -109,6 +109,7 @@ var/const/ERT_FREQ 		= 1342
 var/const/RUS_FREQ		= 1338
 var/const/DTH_FREQ 		= 1344
 var/const/AI_FREQ 		= 1447
+var/const/HC_FREQ		= 1240
 
 //Ship department channels
 var/const/COMM_FREQ 	= 1353
@@ -117,7 +118,7 @@ var/const/ENG_FREQ 		= 1357
 var/const/SEC_FREQ 		= 1359
 var/const/SUP_FREQ 		= 1354
 var/const/JTAC_FREQ 	= 1358
-var/const/INTEL_FREQ	= 1356
+var/const/TACTICS_FREQ	= 1356
 
 var/const/DS1_FREQ		= 1441
 var/const/DS2_FREQ		= 1443
@@ -143,6 +144,7 @@ var/list/radiochannels = list(
 	"SpecOps" 		= DTH_FREQ,
 	"UPP" 			= RUS_FREQ,
 	"Colonist"		= DUT_FREQ,
+	"HighCom"		= HC_FREQ,
 
 	"Almayer"		= PUB_FREQ,
 	"Command"		= COMM_FREQ,
@@ -151,7 +153,7 @@ var/list/radiochannels = list(
 	"MP"			= SEC_FREQ,
 	"Req"			= SUP_FREQ,
 	"JTAC"			= JTAC_FREQ,
-	"Intel" 		= INTEL_FREQ,
+	"Tactics" 		= TACTICS_FREQ,
 
 	SQUAD_NAME_1	= ALPHA_FREQ,
 	SQUAD_NAME_2	= BRAVO_FREQ,
@@ -166,13 +168,13 @@ var/list/radiochannels = list(
 )
 
 // central command channels, i.e deathsquid & response teams
-var/list/CENT_FREQS = list(ERT_FREQ, DTH_FREQ, PMC_FREQ, DUT_FREQ, YAUT_FREQ)
+var/list/CENT_FREQS = list(ERT_FREQ, DTH_FREQ, PMC_FREQ, DUT_FREQ, YAUT_FREQ, HC_FREQ)
 
 // Antag channels, i.e. Syndicate
 var/list/ANTAG_FREQS = list(RUS_FREQ)
 
 //Depts - just used for colors in headset.dm
-var/list/DEPT_FREQS = list(MED_FREQ, ENG_FREQ, SEC_FREQ, ERT_FREQ, DTH_FREQ, CIV_GEN_FREQ, CIV_COMM_FREQ, ALPHA_FREQ, BRAVO_FREQ,CHARLIE_FREQ, DELTA_FREQ, SUP_FREQ, JTAC_FREQ, INTEL_FREQ, WY_FREQ)
+var/list/DEPT_FREQS = list(MED_FREQ, ENG_FREQ, SEC_FREQ, ERT_FREQ, DTH_FREQ, CIV_GEN_FREQ, CIV_COMM_FREQ, ALPHA_FREQ, BRAVO_FREQ,CHARLIE_FREQ, DELTA_FREQ, SUP_FREQ, JTAC_FREQ, TACTICS_FREQ, WY_FREQ)
 
 #define TRANSMISSION_WIRE	0
 #define TRANSMISSION_RADIO	1
@@ -252,6 +254,8 @@ SUBSYSTEM_DEF(radio)
 	if(tcomm_machines_almayer.len > 0)
 		target_zs += SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP)
 		target_zs += SSmapping.levels_by_trait(ZTRAIT_LOWORBIT)
+
+	SEND_SIGNAL(src, COMSIG_SSRADIO_GET_AVAILABLE_TCOMMS_ZS, target_zs)
 	return target_zs
 
 /datum/controller/subsystem/radio/proc/add_tcomm_machine(var/obj/machine)

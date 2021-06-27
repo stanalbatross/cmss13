@@ -37,7 +37,7 @@
 	if(dirt_amt)
 		overlays += I
 	else
-		qdel(I)
+		I = null
 
 
 
@@ -48,6 +48,7 @@
 		to_chat(user, "It holds [dirt_amt] layer\s of [dirt_name].")
 
 /obj/item/tool/shovel/attack_self(mob/user)
+	..()
 	add_fingerprint(user)
 
 	if(dirt_amt)

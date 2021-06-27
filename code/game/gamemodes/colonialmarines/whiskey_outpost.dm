@@ -138,9 +138,6 @@
 		spawn(0)
 			//Deleting Almayer, for performance!
 			SSitem_cleanup.delete_almayer()
-	if(SSdefcon)
-		//Don't need DEFCON
-		SSdefcon.wait = 30 MINUTES
 	if(SSxenocon)
 		//Don't need XENOCON
 		SSxenocon.wait = 30 MINUTES
@@ -520,7 +517,10 @@
 	var/supply_drop = 0 //0 = Regular ammo, 1 = Rocket, 2 = Smartgun, 3 = Sniper, 4 = Explosives + GL
 
 /obj/item/device/whiskey_supply_beacon/attack_self(mob/user)
-	if(!ishuman(user)) return
+	..()
+
+	if(!ishuman(user))
+		return
 	if(!user.mind)
 		to_chat(user, "It doesn't seem to do anything for you.")
 		return
@@ -639,7 +639,7 @@
 							/obj/item/ammo_magazine/sniper/flak)
 		if(4) // Give them explosives + Grenades for the Grenade spec. Might be too many grenades, but we'll find out.
 			spawnitems = list(/obj/item/storage/box/explosive_mines,
-							/obj/item/storage/belt/grenade/full)
+							/obj/item/storage/belt/grenade/large/full)
 		if(5) // Pyrotech
 			var/fuel = pick(/obj/item/ammo_magazine/flamer_tank/large/B, /obj/item/ammo_magazine/flamer_tank/large/X)
 			spawnitems = list(/obj/item/ammo_magazine/flamer_tank/large,
@@ -668,7 +668,7 @@
 								/obj/item/attachable/extended_barrel,/obj/item/attachable/verticalgrip, /obj/item/attachable/angledgrip,
 								/obj/item/attachable/gyro, /obj/item/attachable/bipod)
 	var/list/attachment_2 = list(/obj/item/attachable/stock/smg, /obj/item/attachable/stock/shotgun, /obj/item/attachable/stock/rifle, /obj/item/attachable/magnetic_harness,
-								/obj/item/attachable/quickfire, /obj/item/attachable/heavy_barrel, /obj/item/attachable/scope, /obj/item/attachable/quickfire,
+								/obj/item/attachable/heavy_barrel, /obj/item/attachable/scope,
 								/obj/item/attachable/scope/mini)
 
 /obj/item/storage/box/attachments/fill_preset_inventory()

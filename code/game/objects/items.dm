@@ -10,11 +10,12 @@
 						//also useful for items with many icon_state values when you don't want to make an inhand sprite for each value.
 	var/r_speed = 1.0
 	var/force = 0
-	var/damtype = "brute"
+	var/damtype = BRUTE
 	var/embeddable = TRUE //FALSE if unembeddable
 	var/embedded_organ = null
 	var/attack_speed = 11  //+3, Adds up to 10.  Added an extra 4 removed from /mob/proc/do_click()
-	var/list/attack_verb = list() //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	 ///Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	var/list/attack_verb
 
 	health = null
 
@@ -27,6 +28,8 @@
 
 	var/hitsound = null
 	var/center_of_mass = "x=16;y=16"
+	///Adjusts the item's position in the HUD, currently only by guns with stock/barrel attachments.
+	var/hud_offset = 0
 	var/w_class = SIZE_MEDIUM
 	var/storage_cost = null
 	flags_atom = FPRINT
@@ -47,7 +50,7 @@
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by flags_cold_protection flags
 
 	var/list/actions //list of /datum/action's that this item has.
-	var/list/actions_types = list() //list of paths of action datums to give to the item on New().
+	var/list/actions_types //list of paths of action datums to give to the item on New().
 
 	//var/heat_transfer_coefficient = 1 //0 prevents all transfers, 1 is invisible
 	var/gas_transfer_coefficient = 1 // for leaking gas from turf to mask and vice-versa (for masks right now, but at some point, i'd like to include space helmets)
@@ -75,6 +78,9 @@
 
 	var/list/equip_sounds = list() //Sounds played when this item is equipped
 	var/list/unequip_sounds = list() //Same but when unequipped
+
+	 ///Vision impairing effect if worn on head/mask/glasses.
+	var/vision_impair = VISION_IMPAIR_NONE
 
 	var/map_specific_decoration = FALSE
 	var/blood_color = "" //color of the blood on us if there's any.
@@ -174,7 +180,7 @@ cases. Override_icon_state should be a list.*/
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
 				icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
 				item_state = new_item_state ? new_item_state : "d_" + item_state
-			if(MAP_PRISON_STATION)
+			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3)
 				icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
 				item_state = new_item_state ? new_item_state : "c_" + item_state
 		if(new_protection)
@@ -203,7 +209,8 @@ cases. Override_icon_state should be a list.*/
 		to_chat(user, desc)
 
 /obj/item/attack_hand(mob/user)
-	if (!user) return
+	if (!user)
+		return
 
 	if(anchored)
 		to_chat(user, "[src] is anchored to the ground.")
@@ -213,7 +220,7 @@ cases. Override_icon_state should be a list.*/
 		if(src.clone && !src.clone.Adjacent(user)) // Is the clone adjacent?
 			return
 
-	if(istype(loc, /obj/item/weapon/gun)) // more alt-click hijinx
+	if(isgun(loc)) // more alt-click hijinx
 		return
 
 	if(isstorage(loc))
@@ -228,7 +235,6 @@ cases. Override_icon_state should be a list.*/
 	else
 		user.next_move = max(user.next_move+2,world.time + 2)
 	if(!QDELETED(src)) //item may have been qdel'd by the drop above.
-		pickup(user)
 		add_fingerprint(user)
 		if(!user.put_in_active_hand(src))
 			dropped(user)
@@ -240,15 +246,11 @@ cases. Override_icon_state should be a list.*/
 		var/obj/item/storage/S = W
 		if(S.storage_flags & STORAGE_CLICK_GATHER && isturf(loc))
 			if(S.storage_flags & STORAGE_GATHER_SIMULTAENOUSLY) //Mode is set to collect all items on a tile and we clicked on a valid one.
-				var/list/rejections = list()
 				var/success = 0
 				var/failure = 0
 
 				for(var/obj/item/I in src.loc)
-					if(I.type in rejections) // To limit bag spamming: any given type only complains once
-						continue
-					if(!S.can_be_inserted(I))	// Note can_be_inserted still makes noise when the answer is no
-						rejections += I.type	// therefore full bags are still a little spammy
+					if(!S.can_be_inserted(I, TRUE))
 						failure = 1
 						continue
 					success = 1
@@ -280,7 +282,7 @@ cases. Override_icon_state should be a list.*/
 
 	for(var/X in actions)
 		var/datum/action/A = X
-		A.remove_action(user)
+		A.remove_from(user)
 
 	if(flags_item & DELONDROP)
 		qdel(src)
@@ -325,6 +327,8 @@ cases. Override_icon_state should be a list.*/
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	if((flags_item & MOB_LOCK_ON_EQUIP) && !locked_to_mob)
 		locked_to_mob = user
 
@@ -339,7 +343,7 @@ cases. Override_icon_state should be a list.*/
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(user, slot)) //some items only give their actions buttons when in a specific slot.
-			A.give_action(user)
+			A.give_to(user)
 
 //sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(mob/user, slot)
@@ -476,6 +480,11 @@ cases. Override_icon_state should be a list.*/
 				if(w_class <= SIZE_SMALL || (flags_equip_slot & SLOT_STORE))
 					return 1
 				return FALSE
+			if(WEAR_ACCESSORY)
+				for(var/obj/item/clothing/C in H.contents)
+					if(C.can_attach_accessory(src))
+						return TRUE
+				return FALSE
 			if(WEAR_J_STORE)
 				if(H.s_store)
 					return FALSE
@@ -504,10 +513,15 @@ cases. Override_icon_state should be a list.*/
 				return 1
 			if(WEAR_IN_ACCESSORY)
 				if(H.w_uniform)
-					for(var/obj/item/clothing/accessory/storage/T in H.w_uniform.accessories)
-						var/obj/item/storage/internal/I = T.hold
-						if(I.can_be_inserted(src, 1))
-							return 1
+					for(var/A in H.w_uniform.accessories)
+						if(istype(A, /obj/item/clothing/accessory/storage))
+							var/obj/item/clothing/accessory/storage/S = A
+							if(S.hold.can_be_inserted(src, TRUE))
+								return TRUE
+						else if(istype(A, /obj/item/clothing/accessory/holster))
+							var/obj/item/clothing/accessory/holster/AH = A
+							if(!(AH.holstered) && AH.can_holster(src))
+								return TRUE
 				return FALSE
 			if(WEAR_IN_JACKET)
 				if(H.wear_suit)
@@ -517,6 +531,13 @@ cases. Override_icon_state should be a list.*/
 						if(I.can_be_inserted(src,1))
 							return 1
 				return FALSE
+			if(WEAR_IN_HELMET)
+				if(H.head)
+					var/obj/item/clothing/head/helmet/marine/HM = H.head
+					if(istype(HM) && HM.pockets)//not all helmuts have pockits
+						var/obj/item/storage/internal/I = HM.pockets
+						if(I.can_be_inserted(src,TRUE))
+							return TRUE
 			if(WEAR_IN_BACK)
 				if (H.back && isstorage(H.back))
 					var/obj/item/storage/B = H.back

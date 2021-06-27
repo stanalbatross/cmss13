@@ -29,7 +29,10 @@
 #define CATWALK_LAYER 2.5 //catwalk overlay of /turf/open/floor/plating/plating_catwalk
 
 #define WEED_LAYER 2.51	// Alien weeds and node layer
-#define ABOVE_WEED_LAYER 2.519	// Over weeds, such as blood
+
+#define ABOVE_WEED_LAYER 2.518	// Over weeds, such as blood
+
+#define ABOVE_BLOOD_LAYER 2.519
 
 #define ATMOS_DEVICE_LAYER 2.52 //vents, connector ports, atmos devices that should be above pipe layer.
 
@@ -101,6 +104,8 @@
 #define INTERIOR_DOOR_LAYER       5.21
 
 //#define FLY_LAYER 5
+
+#define RIPPLE_LAYER 5.1
 
 #define ABOVE_FLY_LAYER 6
 

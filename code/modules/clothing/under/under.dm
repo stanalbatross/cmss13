@@ -31,8 +31,8 @@
 	var/removed_parts = 0
 	var/worn_state = null
 	drag_unequip = TRUE
-	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY, ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_RANK, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
-	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY, ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_RANK)
+	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY, ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_RANK, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL, ACCESSORY_SLOT_ARMOR_C)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY, ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_RANK, ACCESSORY_SLOT_ARMOR_C)
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/uniform_monkey_0.dmi')
 	equip_sounds = list('sound/handling/clothing_on.ogg')
 	unequip_sounds = list('sound/handling/clothing_off.ogg')
@@ -65,16 +65,6 @@
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_w_uniform()
-
-/obj/item/clothing/attackby(obj/item/I, mob/user)
-	if(loc == user && istype(I,/obj/item/clothing/under) && src != I)
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			if(H.w_uniform == src)
-				H.drop_inv_item_on_ground(src)
-				if(H.equip_to_appropriate_slot(I))
-					H.put_in_active_hand(src)
-	..()
 
 /obj/item/clothing/under/MouseDrop(obj/over_object as obj)
 	if (ishuman(usr))
@@ -201,12 +191,10 @@
 
 /obj/item/clothing/under/attackby(obj/item/B, mob/user)
 	if(istype(B, /obj/item/attachable/bayonet) && (user.a_intent == INTENT_HARM))
-		if(user.a_intent != INTENT_HARM)
-			to_chat(user, SPAN_NOTICE("You need to be on harm intent to cut up [src] with [B]."))
 		if(cuttable_sleeves == FALSE)
 			to_chat(user, SPAN_NOTICE("You can't cut up [src]."))
-		if(rolled_sleeves == TRUE)
-			to_chat(user, SPAN_NOTICE("You can't dice up [src] while its rolled."))
+		else if(rolled_sleeves == TRUE)
+			to_chat(user, SPAN_NOTICE("You can't dice up [src] while it's rolled."))
 		else
 			rollable_sleeves = FALSE
 			cuttable_sleeves = FALSE
@@ -214,5 +202,13 @@
 			user.visible_message("[user] slices [src] with [B].")
 			update_clothing_icon()
 			update_rollsuit_status()
+
+	else if(loc == user && istype(B,/obj/item/clothing/under) && src != B && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.w_uniform == src)
+			H.drop_inv_item_on_ground(src)
+			if(H.equip_to_appropriate_slot(B))
+				H.put_in_active_hand(src)
+
 	else
 		..()

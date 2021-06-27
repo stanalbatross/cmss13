@@ -31,6 +31,7 @@
 	E.interior = I
 	E.entrance_id = tag
 	E.setDir(dir)
+	E.alpha = alpha
 	E.update_icon()
 	// Don't qdel this because it's used for entering as well
 
@@ -43,6 +44,7 @@
 	E.interior = I
 	E.entrance_id = tag
 	E.setDir(dir)
+	E.alpha = alpha
 	E.update_icon()
 
 // Driver's seat spawner
@@ -60,7 +62,9 @@
 	S.layer = layer
 	S.vehicle = I.exterior
 	S.setDir(dir)
+	S.alpha = alpha
 	S.update_icon()
+	S.handle_rotation()
 
 	qdel(src)
 
@@ -79,6 +83,46 @@
 	S.layer = layer
 	S.vehicle = I.exterior
 	S.setDir(dir)
+	S.alpha = alpha
 	S.update_icon()
+	S.handle_rotation()
+
+	qdel(src)
+
+/obj/effect/landmark/interior/spawn/vehicle_driver_seat/armor
+	name = "armor driver's seat spawner"
+	icon = 'icons/obj/vehicles/interiors/general.dmi'
+	icon_state = "armor_chair"
+	color = "red"
+
+/obj/effect/landmark/interior/spawn/vehicle_driver_seat/armor/on_load(var/datum/interior/I)
+	var/obj/structure/bed/chair/comfy/vehicle/driver/armor/S = new(loc)
+
+	S.icon = icon
+	S.icon_state = icon_state
+	S.vehicle = I.exterior
+	S.setDir(dir)
+	S.update_icon()
+	S.alpha = alpha
+	S.handle_rotation()
+
+	qdel(src)
+
+/obj/effect/landmark/interior/spawn/vehicle_gunner_seat/armor
+	name = "armor gunner's seat spawner"
+	icon = 'icons/obj/vehicles/interiors/general.dmi'
+	icon_state = "armor_chair"
+	color = "blue"
+
+/obj/effect/landmark/interior/spawn/vehicle_gunner_seat/armor/on_load(var/datum/interior/I)
+	var/obj/structure/bed/chair/comfy/vehicle/gunner/armor/S = new(loc)
+
+	S.icon = icon
+	S.icon_state = icon_state
+	S.vehicle = I.exterior
+	S.setDir(dir)
+	S.alpha = alpha
+	S.update_icon()
+	S.handle_rotation()
 
 	qdel(src)

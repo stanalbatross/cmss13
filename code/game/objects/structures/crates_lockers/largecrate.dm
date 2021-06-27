@@ -16,7 +16,7 @@
 	return
 
 /obj/structure/largecrate/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		new /obj/item/stack/sheet/wood(src)
 		var/turf/T = get_turf(src)
 		for(var/obj/O in contents)
@@ -44,7 +44,7 @@
 	icon_state = "lisacrate"
 
 /obj/structure/largecrate/lisa/attackby(obj/item/W as obj, mob/user as mob)	//ugly but oh well
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		new /mob/living/simple_animal/corgi/Lisa(loc)
 	..()
 
@@ -53,7 +53,7 @@
 	icon_state = "lisacrate"
 
 /obj/structure/largecrate/cow/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		new /mob/living/simple_animal/cow(loc)
 	..()
 
@@ -62,7 +62,7 @@
 	icon_state = "lisacrate"
 
 /obj/structure/largecrate/goat/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		new /mob/living/simple_animal/hostile/retaliate/goat(loc)
 	..()
 
@@ -71,7 +71,7 @@
 	icon_state = "lisacrate"
 
 /obj/structure/largecrate/chick/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/crowbar))
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		var/num = rand(4, 6)
 		for(var/i = 0, i < num, i++)
 			new /mob/living/simple_animal/chick(loc)
@@ -211,7 +211,7 @@
 	num_guns = 1
 	num_mags = 1
 	name = "\improper Nagant-Yamasaki firearm crate"
-	stuff = list(	/obj/item/weapon/gun/revolver/upp = /obj/item/ammo_magazine/revolver/upp,
+	stuff = list(	/obj/item/weapon/gun/revolver/nagant = /obj/item/ammo_magazine/revolver/upp,
 					/obj/item/weapon/gun/pistol/c99 = /obj/item/ammo_magazine/pistol/c99,
 					/obj/item/weapon/gun/pistol/kt42 = /obj/item/ammo_magazine/pistol/automatic,
 					/obj/item/weapon/gun/rifle/mar40 = /obj/item/ammo_magazine/rifle/mar40,
@@ -234,7 +234,7 @@
 					/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/shotgun/incendiary,
 					/obj/item/weapon/gun/shotgun/double = /obj/item/ammo_magazine/shotgun/buckshot,
 					/obj/item/weapon/gun/smg/mp7 = /obj/item/ammo_magazine/smg/mp7,
-					/obj/item/weapon/gun/smg/skorpion = /obj/item/ammo_magazine/smg/skorpion,
+					/obj/item/weapon/gun/pistol/skorpion = /obj/item/ammo_magazine/pistol/skorpion,
 					/obj/item/weapon/gun/smg/uzi = /obj/item/ammo_magazine/smg/uzi,
 					/obj/item/weapon/gun/smg/fp9000 = /obj/item/ammo_magazine/smg/fp9000
 				)
@@ -401,9 +401,9 @@
 		new /obj/item/weapon/gun/rifle/mar40(src)
 		new /obj/item/ammo_magazine/rifle/mar40(src)
 		new /obj/item/ammo_magazine/rifle/mar40(src)
-	new /obj/item/weapon/gun/smg/skorpion(src)
-	new /obj/item/ammo_magazine/smg/skorpion(src)
-	new /obj/item/ammo_magazine/smg/skorpion(src)
+	new /obj/item/weapon/gun/pistol/skorpion(src)
+	new /obj/item/ammo_magazine/pistol/skorpion(src)
+	new /obj/item/ammo_magazine/pistol/skorpion(src)
 	new /obj/item/weapon/gun/shotgun/combat(src)
 	new /obj/item/ammo_magazine/shotgun(src)
 	new /obj/item/ammo_magazine/shotgun/buckshot(src)
@@ -447,8 +447,8 @@
 	new /obj/item/ammo_magazine/rifle(src)
 	new /obj/item/ammo_magazine/rifle/mar40(src)
 	new /obj/item/ammo_magazine/rifle/mar40(src)
-	new /obj/item/ammo_magazine/smg/skorpion(src)
-	new /obj/item/ammo_magazine/smg/skorpion(src)
+	new /obj/item/ammo_magazine/pistol/skorpion(src)
+	new /obj/item/ammo_magazine/pistol/skorpion(src)
 	new /obj/item/ammo_magazine/shotgun(src)
 	new /obj/item/ammo_magazine/shotgun/buckshot(src)
 

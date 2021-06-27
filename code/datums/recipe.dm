@@ -186,9 +186,16 @@
 /datum/recipe/roburger
 	items = list(
 		/obj/item/reagent_container/food/snacks/flour,
-		/obj/item/robot_parts/head
+		/obj/item/fake_robot_head
 	)
 	result = /obj/item/reagent_container/food/snacks/roburger
+
+/datum/recipe/roburger_unsafe
+	items = list(
+		/obj/item/reagent_container/food/snacks/flour,
+		/obj/item/robot_parts/head
+	)
+	result = /obj/item/reagent_container/food/snacks/roburger/unsafe
 
 /datum/recipe/xenoburger
 	items = list(
@@ -347,14 +354,14 @@
 	)
 	result = /obj/item/reagent_container/food/snacks/eggplantparm
 
-/datum/recipe/soylenviridians
+/datum/recipe/soylentviridians
 	items = list(
 		/obj/item/reagent_container/food/snacks/flour,
 		/obj/item/reagent_container/food/snacks/flour,
 		/obj/item/reagent_container/food/snacks/flour,
 		/obj/item/reagent_container/food/snacks/grown/soybeans
 	)
-	result = /obj/item/reagent_container/food/snacks/soylenviridians
+	result = /obj/item/reagent_container/food/snacks/soylentviridians
 
 /datum/recipe/soylentgreen
 	items = list(

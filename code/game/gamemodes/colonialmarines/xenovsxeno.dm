@@ -21,6 +21,7 @@
 
 	var/round_time_larva_interval = 0
 	var/round_time_sd = 0
+	votable = FALSE // broken
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +46,11 @@
 				hives += XENO_HIVE_DELTA
 
 		if(MAP_PRISON_STATION)
+			monkey_types = list(/mob/living/carbon/human/monkey)
+			hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE)
+			structures_to_delete += /obj/structure/machinery/defenses/sentry/premade
+
+		if(MAP_PRISON_STATION_V3)
 			monkey_types = list(/mob/living/carbon/human/monkey)
 			hives = list(XENO_HIVE_ALPHA, XENO_HIVE_BRAVO, XENO_HIVE_CHARLIE)
 			structures_to_delete += /obj/structure/machinery/defenses/sentry/premade
@@ -119,9 +125,6 @@
 		spawn(0)
 			//Deleting Almayer, for performance!
 			SSitem_cleanup.delete_almayer()
-	if(SSdefcon)
-		//Don't need DEFCON
-		SSdefcon.wait = 30 MINUTES
 	if(SSxenocon)
 		//Don't need XENOCON
 		SSxenocon.wait = 30 MINUTES
@@ -170,6 +173,17 @@
 		var/obj/effect/alien/resin/special/pylon/core/C = new(hive_spots[hive], hive)
 		C.hardcore = TRUE // This'll make losing the hive core more detrimental than losing a Queen
 		hive_cores += C
+
+/datum/game_mode/xenovs/pick_queen_spawn(datum/mind/ghost_mind, var/hivenumber = XENO_HIVE_NORMAL)
+	. = ..()
+	if(!.) return
+	// Spawn additional hive structures
+	var/turf/T  = .
+	var/area/AR = get_area(T)
+	if(!AR) return
+	for(var/obj/effect/landmark/structure_spawner/xvx_hive/SS in AR)
+		SS.apply()
+		qdel(SS)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////

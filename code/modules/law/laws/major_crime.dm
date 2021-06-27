@@ -36,7 +36,6 @@
 /datum/law/major_law/neglect_of_duty
 	name = "Neglect of duty"
 	desc = "Failure to perform one’s role to an acceptable standard. For example, a Commanding Officer failing to properly organize and ensure his personnel are given orders, failing to follow proper procedure in detriment of one’s duties, or ship crew leaving the ship without authorization from the Commanding Officer or their Department Head. Any officer who commits a crime may be charged with Neglect of Duty in addition to the appropriate crimes."
-	special_punishment = "Demotion"
 	brig_time = 15
 
 /datum/law/major_law/subterfuge
@@ -69,4 +68,9 @@
 /datum/law/major_law/sexual_harrasment
 	name = "Sexual Harrasment"
 	desc = "Unwelcome sexual advances, verbal or physical conduct of a sexual nature. Creating an intimidating, hostile or offensive work environment as a result of the harassment."
+	brig_time = 30
+
+/datum/law/major_law/animal_cruelty
+	name = "Animal Cruelty"
+	desc = "Injuring or killing any domestic animal or wild life with malicious intent. Research monkeys used for chemical research, scientific purposes or hostile wildlife are exempt."
 	brig_time = 30

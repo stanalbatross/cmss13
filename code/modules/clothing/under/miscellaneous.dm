@@ -110,6 +110,18 @@
 	desc = "For the Motherland!"
 	icon_state = "soviet"
 
+/obj/item/clothing/under/rank/veteran/soviet_uniform_01
+	name = "soviet military uniform"
+	desc = "Made with fabric so strong and unified it would make the capitalist talors jelious"
+	icon_state = "soviet_uniform_01"
+	item_state = "soviet_uniform_01_d"
+	rollable_sleeves = TRUE
+
+/obj/item/clothing/under/rank/miner
+	desc = "It's a snappy jumpsuit with a sturdy set of overalls. It is very dirty."
+	name = "shaft miner's jumpsuit"
+	icon_state = "miner"
+
 /obj/item/clothing/under/redcoat
 	name = "redcoat uniform"
 	desc = "Looks old."
@@ -218,6 +230,6 @@
 
 /obj/item/clothing/under/suit_jacket/trainee
 	name = "trainee's uniform"
-	desc = "It's a uniform that has a W-Y insignia on it with the words \"Trainee\" stamped below."
+	desc = "It's a uniform that has a Wey-Yu insignia on it with the words \"Trainee\" stamped below."
 	icon_state = "trainee_uniform"
 	item_state = "trainee_uniform"

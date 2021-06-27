@@ -124,13 +124,11 @@
 	var/last_chew = 0
 
 	//taken from human.dm
-	directional_lum = 0 				//humans carrying light sources only illuminate the area in front of themselves
-	hud_possible = list(HEALTH_HUD,STATUS_HUD, STATUS_HUD_OOC, STATUS_HUD_XENO_INFECTION, STATUS_HUD_XENO_CULTIST, ID_HUD, WANTED_HUD, SQUAD_HUD, ORDER_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, PRED_CLAN, FACTION_HUD)
+	hud_possible = list(HEALTH_HUD,STATUS_HUD, STATUS_HUD_OOC, STATUS_HUD_XENO_INFECTION, STATUS_HUD_XENO_CULTIST, ID_HUD, WANTED_HUD, SQUAD_HUD, ORDER_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_CLAN, HUNTER_HUD, FACTION_HUD)
 	var/embedded_flag	  				//To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/allow_gun_usage = TRUE
 	var/has_used_pamphlet = FALSE 		//Has this person used a pamphlet?
 	var/list/embedded_items = list() 	//A list of all the shrapnel currently embedded in the human
-	var/mob/yautja_hunted_prey
 
 	var/list/synthetic_HUD_toggled = list(FALSE,FALSE)
 
@@ -142,8 +140,6 @@
 	throw_range = 4 // Humans can't be thrown that far
 
 	var/datum/action/human_action/activable/selected_ability
-
-	var/datum/agent/agent_holder
 
 /client/var/cached_human_playtime
 

@@ -29,6 +29,10 @@ Basics, the most important.
 
 /datum/config_entry/string/dburl
 
+// Shutdown instead of restarting
+/datum/config_entry/flag/no_restarts
+	config_entry_value = FALSE
+
 /// URL for the CentCom Galactic Ban DB API
 /datum/config_entry/string/centcom_ban_db
 
@@ -96,6 +100,12 @@ Administrative related.
 
 /datum/config_entry/flag/log_game
 
+/datum/config_entry/flag/log_overwatch
+
+/datum/config_entry/flag/log_interact
+
+/datum/config_entry/flag/log_idmod
+
 /datum/config_entry/flag/log_vote
 
 /datum/config_entry/flag/log_whisper
@@ -109,6 +119,29 @@ Administrative related.
 /datum/config_entry/flag/log_manifest
 
 /datum/config_entry/flag/allow_admin_ooccolor // Allows admins to customize their OOC color.
+
+/datum/config_entry/flag/vote_adjustment_callback
+
+/datum/config_entry/number/vote_adjustment_callback
+	config_entry_value = 0.1
+
+/datum/config_entry/string/ooc_color_normal
+	config_entry_value = "#1c52f5"
+
+/datum/config_entry/string/ooc_color_other
+	config_entry_value = "#2e78d9"
+
+/datum/config_entry/string/ooc_color_mods
+	config_entry_value = "#ffbf00"
+
+/datum/config_entry/string/ooc_color_debug
+ 	config_entry_value = "#6bd1b4"
+
+/datum/config_entry/string/ooc_color_admin
+	config_entry_value = "#ff8000"
+
+/datum/config_entry/string/ooc_color_default
+	config_entry_value = "#b82e00"
 
 /datum/config_entry/flag/usewhitelist
 
@@ -139,9 +172,14 @@ Administrative related.
 
 /datum/config_entry/flag/autooocmute
 
+/datum/config_entry/flag/mentor_tools // Extra tooling for mentors that might otherwise be staff only
+	config_entry_value = FALSE
+
 /datum/config_entry/flag/show_mentors
+	config_entry_value = TRUE
 
 /datum/config_entry/flag/show_mods
+	config_entry_value = TRUE
 
 /datum/config_entry/flag/looc_enabled
 
@@ -444,3 +482,11 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/str_list/lobby_art_images
 
 /datum/config_entry/str_list/lobby_art_authors
+
+/// Force map bypassing configuration, and ignore map changes
+/datum/config_entry/flag/ephemeral_map_mode
+	config_entry_value = FALSE
+
+/// Map configuration file to use in ephemeral mode
+/datum/config_entry/string/ephemeral_ground_map
+	config_entry_value = "maps/testing.json"

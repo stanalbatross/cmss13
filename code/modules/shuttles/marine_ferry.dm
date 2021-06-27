@@ -305,6 +305,10 @@
 
 	//END: Heavy lifting backend
 
+	if(SSticker && SSticker.mode && !(SSticker.mode.flags_round_type & MODE_DS_LANDED))
+		SSticker.mode.flags_round_type |= MODE_DS_LANDED
+		SSticker.mode.ds_first_drop(src)
+
 	for(var/X in equipments)
 		var/obj/structure/dropship_equipment/E = X
 		E.on_arrival()
@@ -313,21 +317,6 @@
 
 	if(!transit_gun_mission) //we're back where we started, no location change.
 		location = !location
-
-		// Arrived at the planet/offsite
-		if(location)
-			// Shuttle code is so fucking shitty that I can't be bothered to make anything better than this
-			// Begin growing LZ & primary resource plasmagas
-			for(var/obj/effect/landmark/resource_node_activator/node_activator in world)
-				if(istype(node_activator, /obj/effect/landmark/resource_node_activator/hive))
-					continue
-
-				var/lz_tag = (shuttle_tag == "[MAIN_SHIP_NAME] Dropship 1" ? "lz1" : "lz2")
-				if(istype(node_activator, /obj/effect/landmark/resource_node_activator/landing) && \
-				((SSticker.mode.active_lz && SSticker.mode.active_lz.shuttle_tag != shuttle_tag) || node_activator.node_group != "marine_first_landfall_[lz_tag]"))
-					continue
-
-				node_activator.trigger()
 
 	transit_optimized = 0 //De-optimize the flight plans
 
@@ -478,7 +467,7 @@
 	for(var/j=0; j<10; j++)
 		sploded = locate(T_trg.x + rand(-5, 15), T_trg.y + rand(-5, 25), T_trg.z)
 		//Fucking. Kaboom.
-		cell_explosion(sploded, 200, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, "dropship crash") //Clears out walls
+		cell_explosion(sploded, 200, 20, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, , , ,create_cause_data("dropship crash")) //Clears out walls
 		sleep(3)
 
 	// Break the ultra-reinforced windows.
@@ -496,7 +485,7 @@
 	while(explosion_alive)
 		explosion_alive = FALSE
 		for(var/datum/automata_cell/explosion/E in cellauto_cells)
-			if(E.explosion_source == "dropship crash")
+			if(E.explosion_cause_data && E.explosion_cause_data.cause_name == "dropship crash")
 				explosion_alive = TRUE
 				break
 		sleep(1)
@@ -606,62 +595,26 @@
 
 	location = !location
 
-	if(!location)
-		return
+/datum/shuttle/ferry/marine/close_doors(var/list/turf/L)
+	for(var/turf/T in L) // For every turf
+		for(var/obj/structure/machinery/door/D in T) // For every relevant door there
+			if(!D.density && istype(D, /obj/structure/machinery/door/poddoor/shutters/transit))
+				INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/close) // Pod can't close if blocked
+			if(iselevator && istype(D, /obj/structure/machinery/door/airlock)) // Just close. Why is this here though...?
+				INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/close)
+			else if(istype(D, /obj/structure/machinery/door/airlock/dropship_hatch) || istype(D, /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear))
+				INVOKE_ASYNC(src, .proc/force_close_launch, D) // The whole shabang
 
-	// Begin growing LZ & primary resource plasmagas
-	for(var/obj/effect/landmark/resource_node_activator/node_activator in world)
-		if(istype(node_activator, /obj/effect/landmark/resource_node_activator/hive))
-			continue
-
-		var/lz_tag = (shuttle_tag == "[MAIN_SHIP_NAME] Dropship 1" ? "lz1" : "lz2")
-		if(istype(node_activator, /obj/effect/landmark/resource_node_activator/landing) && \
-		((SSticker.mode.active_lz && SSticker.mode.active_lz.shuttle_tag != shuttle_tag) || node_activator.node_group != "marine_first_landfall_[lz_tag]"))
-			continue
-
-		node_activator.trigger()
-
-/datum/shuttle/ferry/marine/close_doors(var/list/L)
-
-	var/i //iterator
-	var/turf/T
-
-	for(i in L)
-		T = i
-		if(!istype(T)) continue
-
-		//I know an iterator is faster, but this broke for some reason when I used it so I won't argue
-		for(var/obj/structure/machinery/door/poddoor/shutters/transit/ST in T)
-			if(!istype(ST)) continue
-			if(!ST.density)
-				//"But MadSnailDisease!", you say, "Don't use spawn! Use sleep() and waitfor instead!
-				//Well you would be right if close() were different, but alas it is not.
-				//Without spawn(), it closes each door one at a time.
-				//"Well then why not change the proc itself?"
-				//Excellent question!
-				//Because when you open doors by Collided() it would have you fly through before the animation is complete
-				INVOKE_ASYNC(ST, /obj/structure/machinery/door.proc/close)
-				break
-
-		//Elevators
-		if (iselevator)
-			for(var/obj/structure/machinery/door/airlock/A in T)
-				spawn(0)
-					A.unlock()
-					A.close(1)
-					A.lock()
-		else
-			for(var/obj/structure/machinery/door/airlock/dropship_hatch/M in T)
-				spawn(0)
-					M.unlock()
-					M.close(1)
-					M.lock()
-
-			for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/D in T)
-				spawn(0)
-					D.unlock()
-					D.close(1)
-					D.lock()
+/datum/shuttle/ferry/marine/force_close_launch(var/obj/structure/machinery/door/AL)
+	if(!iselevator)
+		for(var/mob/M in AL.loc) // Bump all mobs outta the way for outside airlocks of shuttles
+			to_chat(M, SPAN_HIGHDANGER("You get thrown back as the dropship doors slam shut!"))
+			M.KnockDown(4)
+			for(var/turf/T in orange(1, AL)) // Forcemove to a non shuttle turf
+				if(!istype(T, /turf/open/shuttle) && !istype(T, /turf/closed/shuttle))
+					M.forceMove(T)
+					break
+	return ..() // Sleeps
 
 /datum/shuttle/ferry/marine/open_doors(var/list/L)
 	var/i //iterator

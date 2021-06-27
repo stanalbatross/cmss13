@@ -116,6 +116,7 @@
 		<A href='?src=\ref[src];quick_create_object=1'>Quick Create Object</A><br>
 		<A href='?src=\ref[src];create_turf=1'>Create Turf</A><br>
 		<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>
+		<A href='?src=\ref[src];send_tip=1'>Inmediately Send Tip</A><br>
 		"}
 
 	show_browser(usr, dat, "Game Panel", "admin2", "size=210x280")
@@ -185,20 +186,6 @@
 	if(istype(H))
 		H.regenerate_icons()
 
-
-/*
-	helper proc to test if someone is a mentor or not.  Got tired of writing this same check all over the place.
-*/
-/proc/is_mentor(client/C)
-	if(!istype(C))
-		return 0
-	if(!C.admin_holder)
-		return 0
-
-	if(AHOLD_IS_ONLY_MENTOR(C.admin_holder))
-		return 1
-	return 0
-
 /proc/ishost(whom)
 	if(!whom)
 		return 0
@@ -218,3 +205,9 @@
 		return 1
 	else
 		return 0
+
+/datum/admins/proc/send_tip()
+	if(SSticker)
+		var/success = SSticker.send_tip_of_the_round()
+		if(!success)
+			to_chat(usr, SPAN_ADMINNOTICE("Sending tip failed!"))

@@ -23,10 +23,20 @@
 	var/is_reinforced = 0
 	var/list/construction_options = list("One Direction", "Full Window")
 
+/obj/item/stack/sheet/glass/small_stack
+	amount = STACK_10
+
+/obj/item/stack/sheet/glass/medium_stack
+	amount = STACK_25
+
+/obj/item/stack/sheet/glass/large_stack
+	amount = STACK_50
+
 /obj/item/stack/sheet/glass/cyborg
 	matter = null
 
-/obj/item/stack/sheet/glass/attack_self(mob/user as mob)
+/obj/item/stack/sheet/glass/attack_self(mob/user)
+	..()
 	construct_window(user)
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user)
@@ -70,7 +80,7 @@
 		return 0
 	var/title = "Sheet-[name]"
 	title += " ([src.amount] sheet\s left)"
-	switch(tgui_input_list(title, "What would you like to construct?", "Construct Object", construction_options))
+	switch(tgui_input_list(user, title, "What would you like to construct?", construction_options))
 		if("One Direction")
 			if(!src)	return 1
 			if(src.loc != user)	return 1
