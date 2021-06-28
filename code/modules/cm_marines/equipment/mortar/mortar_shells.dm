@@ -138,12 +138,12 @@
 	desc = "It's really bright, and unreachable."
 	icon_state = "" //No sprite
 	invisibility = 101 //Can't be seen or found, it's "up in the sky"
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	brightness_on = 7 //Way brighter than most lights
 
 /obj/item/device/flashlight/flare/on/illumination/Initialize()
 	. = ..()
-	fuel = rand(400, 500) // Half the duration of a flare, but justified since it's invincible
+	fuel = rand(40 SECONDS, 50 SECONDS) // Half the duration of a flare, but justified since it's invincible
 
 /obj/item/device/flashlight/flare/on/illumination/turn_off()
 	..()

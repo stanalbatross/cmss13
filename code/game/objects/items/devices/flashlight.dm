@@ -247,7 +247,7 @@
 
 /obj/item/device/flashlight/flare/Initialize()
 	. = ..()
-	fuel = rand(80 SECONDS, 100 SECONDS) // Sorry for changing this so much but I keep under-estimating how long X number of ticks last in seconds.
+	fuel = rand(80 SECONDS, 100 SECONDS)
 
 /obj/item/device/flashlight/flare/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -265,8 +265,15 @@
 	add_to_garbage(src)
 	STOP_PROCESSING(SSobj, src)
 
+/obj/item/device/flashlight/flare/proc/turn_on()
+	playsound(src,'sound/handling/flare_activate_2.ogg', 50, TRUE) //cool guy sound
+	force = on_damage
+	heat_source = 1500
+	damtype = BURN
+	START_PROCESSING(SSobj, src)
+
 /obj/item/device/flashlight/flare/proc/turn_off()
-	on = 0
+	on = FALSE
 	heat_source = 0
 	force = initial(force)
 	damtype = initial(damtype)
@@ -276,7 +283,7 @@
 	else
 		update_brightness(null)
 
-/obj/item/device/flashlight/flare/attack_self(mob/living/user)
+/obj/item/device/flashlight/flare/attack_self(mob/living/carbon/user)
 
 	// Usual checks
 	if(!fuel)
@@ -296,23 +303,18 @@
 	// All good, turn it on.
 	if(.)
 		user.visible_message(SPAN_NOTICE("[user] activates the flare."), SPAN_NOTICE("You pull the cord on the flare, activating it!"))
-		playsound(src,'sound/handling/flare_activate_2.ogg', 50, 1) //cool guy sound
-		force = on_damage
-		heat_source = 1500
-		damtype = "fire"
-		START_PROCESSING(SSobj, src)
-		var/mob/living/carbon/U = user
-		if(istype(U) && !U.throw_mode)
-			U.toggle_throw_mode(THROW_MODE_NORMAL)
+		turn_on()
+		if(!user.throw_mode)
+			user.toggle_throw_mode(THROW_MODE_NORMAL)
 
 /obj/item/device/flashlight/flare/on/Initialize()
 	. = ..()
-	on = 1
-	heat_source = 1500
-	update_brightness()
-	force = on_damage
-	damtype = "fire"
-	START_PROCESSING(SSobj, src)
+	turn_on()
+
+/obj/item/device/flashlight/flare/on/bright
+	name = "bright flare"
+	desc = "A red USCM issued flare. There are instructions on the side, it reads 'pull cord, make light'. This one is burning very brightly, for some reason."
+	brightness_on = 6
 
 /obj/item/device/flashlight/slime
 	gender = PLURAL

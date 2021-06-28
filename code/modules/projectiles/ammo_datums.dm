@@ -2680,7 +2680,7 @@
 	drop_flare(get_turf(P))
 
 /datum/ammo/flare/proc/drop_flare(var/turf/T)
-	var/obj/item/device/flashlight/flare/on/G = new (T)
+	var/obj/item/device/flashlight/flare/on/bright/G = new (T)
 	G.visible_message(SPAN_WARNING("\A [G] bursts into brilliant light nearby!"))
 
 /datum/ammo/souto
