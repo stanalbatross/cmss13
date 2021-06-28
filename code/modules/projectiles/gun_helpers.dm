@@ -254,20 +254,6 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 	else
 		unload(user) // We just unload it.
 
-//magnetic sling
-
-/obj/item/weapon/gun/proc/handle_sling(mob/living/carbon/human/user)
-
-	addtimer(CALLBACK(src, .proc/sling_return, user), 3, TIMER_UNIQUE|TIMER_OVERRIDE)
-
-/obj/item/weapon/gun/proc/sling_return(var/mob/living/carbon/human/user)
-	if (!loc || !user)
-		return
-	if (!isturf(loc))
-		return
-
-	if(user.equip_to_slot_if_possible(src, WEAR_BACK))
-		to_chat(user, SPAN_WARNING("[src]'s magnetic sling automatically yanks it into your back."))
 
 //Clicking stuff onto the gun.
 //Attachables & Reloading

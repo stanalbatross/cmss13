@@ -153,6 +153,11 @@
 	battery = new /obj/item/cell(src)
 	update_icon()
 
+/obj/item/prop/helmetgarb/helmet_nvg/functional/Destroy()
+	QDEL_NULL(battery)
+	attached_human = null
+	. = ..()
+
 /obj/item/prop/helmetgarb/helmet_nvg/functional/attackby(obj/item/W, mob/user)
 
 	if(istype(W, /obj/item/cell)) //typechecks...
