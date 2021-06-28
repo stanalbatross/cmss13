@@ -92,7 +92,8 @@
 	else
 		active = TRUE
 		w_class = SIZE_MASSIVE // We cheat a little, primed nades become massive so they cant be stored anywhere
-		addtimer(CALLBACK(src, .proc/prime), det_time)
+		if(det_time)
+			addtimer(CALLBACK(src, .proc/prime), det_time)
 	update_icon()
 
 /obj/item/explosive/grenade/update_icon()

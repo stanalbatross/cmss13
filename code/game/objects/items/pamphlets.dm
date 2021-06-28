@@ -65,6 +65,13 @@ obj/item/pamphlet/Initialize()
 	trait = /datum/character_trait/skills/engineering
 	bypass_pamphlet_limit = TRUE
 
+/obj/item/pamphlet/skill/explosives
+	name = "explosives handling instructional pamphlet"
+	desc = "A pamphlet used to quickly impart vital knowledge. This one has an engineering insignia."
+	icon_state = "pamphlet_machinegunner"
+	trait = /datum/character_trait/skills/engineering
+	bypass_pamphlet_limit = TRUE
+
 /obj/item/pamphlet/skill/powerloader
 	name = "powerloader instructional pamphlet"
 	desc = "A pamphlet used to quickly impart vital knowledge. This one has a powerloader insignia. The title reads 'Moving freight and squishing heads - a practical guide to Caterpillar P-5000 Work Loader'."

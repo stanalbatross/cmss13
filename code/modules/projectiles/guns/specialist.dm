@@ -677,7 +677,7 @@
 
 	if(target && (world.time-last_fired >= 3)) //Practical firerate is limited mainly by process delay; this is just to make sure it doesn't fire too soon after a manual shot or slip a shot into an ongoing burst.
 		if(world.time-last_fired >= 300 && !warned) //if we haven't fired for a while, beep first
-			playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)
+			playsound(loc, 'sound/machines/twobeep.ogg', 50, TRUE)
 			addtimer(CALLBACK(src, /obj/item/weapon/gun/smartgun/proc/auto_prefire, TRUE), 3)
 			return
 
@@ -817,7 +817,7 @@
 
 
 /obj/item/weapon/gun/launcher/grenade/on_pocket_insertion() //Plays load sfx whenever a nade is put into storage.
-	playsound(usr, reload_sound, 25, 1)
+	playsound(src, reload_sound, 25, TRUE)
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/on_pocket_removal()
@@ -871,7 +871,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 	user.visible_message(SPAN_NOTICE("[user] unloads [nade] from [src]."),
 	SPAN_NOTICE("You unload [nade] from [src]."), null, 4, CHAT_TYPE_COMBAT_ACTION)
-	playsound(user, unload_sound, 30, 1)
+	playsound(user, unload_sound, 30, TRUE)
 
 
 /obj/item/weapon/gun/launcher/grenade/attackby(obj/item/I, mob/user)
@@ -933,7 +933,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 			to_chat(user, SPAN_WARNING("The grenade launcher beeps a warning noise. You are too close!"))
 			return
 		fire_grenade(target,user)
-		playsound(user.loc, cocked_sound, 25, 1)
+		playsound(user, cocked_sound, 25, TRUE)
 
 
 /obj/item/weapon/gun/launcher/grenade/proc/fire_grenade(atom/target, mob/user)
@@ -964,7 +964,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 	F.activate(user, FALSE)
 	F.forceMove(get_turf(src))
 	F.throw_atom(target, 20, SPEED_VERY_FAST, user, null, NORMAL_LAUNCH, pass_flags)
-	playsound(F.loc, fire_sound, 50, 1)
+	playsound(F, fire_sound, 50, TRUE)
 
 
 //Doesn't use these. Listed for reference.
@@ -1010,41 +1010,128 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 
 //-------------------------------------------------------
+//-------------------------------------------------------
+//BREAK ACTION LAUNCHERS
+
+/obj/item/weapon/gun/launcher/grenade/break_action
+	name = "\improper break-action grenade launcher"
+	desc = "A lightweight, single-shot low-angle grenade launcher for area denial and big explosions."
+	icon_state = "m81"
+	item_state = "m81"
+	internal_slots = 1
+	var/break_open_sound  = 'sound/weapons/handling/gun_m79_open.ogg'
+	var/break_close_sound = 'sound/weapons/handling/gun_m79_close.ogg'
+	GL_has_open_icon = TRUE
+	GL_has_empty_icon = FALSE
+	open_chamber = FALSE
+	direct_draw = TRUE
+
+/obj/item/weapon/gun/launcher/grenade/break_action/proc/open_chamber(user)
+	to_chat(user, SPAN_WARNING("You open \the [src]'s chamber."))
+	open_chamber = TRUE
+	playsound(user, break_open_sound, 30, TRUE)
+	update_icon()
+
+/obj/item/weapon/gun/launcher/grenade/break_action/proc/close_chamber(user)
+	to_chat(user, SPAN_WARNING("You close \the [src]'s chamber."))
+	open_chamber = FALSE
+	playsound(user, break_close_sound, 30, TRUE)
+	update_icon()
+
+/obj/item/weapon/gun/launcher/grenade/break_action/on_pocket_attackby(obj/item/explosive/grenade/I, mob/user)
+	if(!open_chamber)
+		to_chat(user, SPAN_WARNING("[src] was closed!"))
+		open_chamber(user)
+		return
+	..()
+	if(length(cylinder.contents) >= internal_slots)
+		close_chamber(user)
+		return FALSE
+
+/obj/item/weapon/gun/launcher/grenade/break_action/unique_action(user)
+	if(flags_item & WIELDED)
+		unwield(user)
+	if(open_chamber)
+		close_chamber(user)
+	else
+		open_chamber(user)
+
+/obj/item/weapon/gun/launcher/grenade/break_action/on_pocket_removal()
+	. = ..()
+	playsound(src, unload_sound, 30, TRUE)
+
+/obj/item/weapon/gun/launcher/grenade/break_action/m79
+	name = "\improper M79 break-action grenade launcher"
+	desc = "A two-shot grenade launcher currently in field testing by the USCM. Its custom internal mechanism cannot fire M40 grenades, only AGM."
+	icon_state = "m79"
+	item_state = "m79"
+	cocked_sound = 'sound/weapons/gun_m79_fire.ogg'
+	reload_sound = 'sound/weapons/gun_m79_reload.ogg'
+	attachable_allowed = list(
+						//Barrel (nothing)
+						//Rail
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/reflex,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/magnetic_harness,
+						//Underbarrel
+						/obj/item/attachable/verticalgrip,
+						/obj/item/attachable/lasersight,
+						//angled grip would be the only choice
+						//no flashlight grip it looks bad
+						//Stock
+						/obj/item/attachable/stock/m79
+						)
+
+	map_specific_decoration = FALSE //someone add these
+	is_lobbing = TRUE
+	internal_slots = 2
+	preload = /obj/item/explosive/grenade/HE/airburst
+	aim_slowdown = SLOWDOWN_ADS_VERSATILE
+	wield_delay = WIELD_DELAY_FAST //rest is added by stock
+	flags_gun_features = GUN_UNUSUAL_DESIGN|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY
+	flags_equip_slot = SLOT_BACK
+	valid_munitions = list(/obj/item/explosive/grenade/HE/airburst, /obj/item/explosive/grenade/HE/airburst/basic, /obj/item/explosive/grenade/incendiary/airburst) //only airburst
+	starting_attachment_types = list(/obj/item/attachable/stock/m79)
+
+/obj/item/weapon/gun/launcher/grenade/break_action/m79/set_gun_attachment_offsets()
+	attachable_offset = list("muzzle_x" = 0, "muzzle_y" = 0,"rail_x" = 10, "rail_y" = 21, "under_x" = 17, "under_y" = 13, "stock_x" = 3, "stock_y" = 15)
+
+/obj/item/weapon/gun/launcher/grenade/break_action/m79/set_gun_config_values()
+	..()
+	fire_delay = 0.6 SECONDS
+	recoil = RECOIL_AMOUNT_TIER_2 //turns to TIER_4 with the stock
+
+/obj/item/weapon/gun/launcher/grenade/break_action/m79/naked
+	starting_attachment_types = list()
+
+//-------------------------------------------------------
 //M81 GRENADE LAUNCHER
 
-/obj/item/weapon/gun/launcher/grenade/m81
+/obj/item/weapon/gun/launcher/grenade/break_action/m81
 	name = "\improper M81 grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher used by the Colonial Marines for area denial and big explosions."
 	icon_state = "m81"
 	item_state = "m81" //needs a wield sprite.
 	var/riot_version = FALSE
-
 	matter = list("metal" = 7000)
 
-/obj/item/weapon/gun/launcher/grenade/m81/set_gun_attachment_offsets()
+/obj/item/weapon/gun/launcher/grenade/break_action/m81/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 18,"rail_x" = 14, "rail_y" = 22, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
 
-/obj/item/weapon/gun/launcher/grenade/m81/set_gun_config_values()
+/obj/item/weapon/gun/launcher/grenade/break_action/m81/set_gun_config_values()
 	..()
-	fire_delay = FIRE_DELAY_TIER_4 * 1.5
+	fire_delay = 1 SECONDS
 
-/obj/item/weapon/gun/launcher/grenade/m81/on_pocket_removal()
-	..()
-	playsound(usr, unload_sound, 30, 1)
-
-/obj/item/weapon/gun/launcher/grenade/m81/able_to_fire(mob/living/user)
+/obj/item/weapon/gun/launcher/grenade/break_action/m81/able_to_fire(mob/living/user)
 	. = ..()
-	if (. && istype(user))
-		if(riot_version)
-			if(!skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
-				to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
-				return FALSE
-		else if(!skillcheck(user, SKILL_SPEC_WEAPONS, SKILL_SPEC_ALL) && user.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_GRENADIER)
-			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
-			return FALSE
+	if(!.)
+		return
+	if(riot_version && !skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
+		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
+		return FALSE
 
-
-/obj/item/weapon/gun/launcher/grenade/m81/riot
+/obj/item/weapon/gun/launcher/grenade/break_action/m81/riot
 	name = "\improper M81 riot grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher to launch tear gas grenades. Used by the Colonial Marines Military Police during riots."
 	valid_munitions = list(/obj/item/explosive/grenade/custom/teargas)

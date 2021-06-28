@@ -8250,7 +8250,7 @@
 /obj/structure/closet/secure_closet/guncabinet{
 	req_access = null
 	},
-/obj/item/weapon/gun/launcher/grenade/m81,
+/obj/item/weapon/gun/launcher/grenade/break_action/m81,
 /obj/item/storage/pill_bottle/kelotane,
 /turf/open/floor/prison{
 	icon_state = "redfull"

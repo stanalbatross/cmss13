@@ -173,6 +173,17 @@
 		if(explosion_power)
 			cell_explosion(loc, explosion_power, explosion_falloff, falloff_mode, last_move_dir, cause_data)
 		qdel(src)
+
+
+/obj/item/explosive/grenade/HE/airburst/basic
+	name = "\improper M74 AGM-B 40mm Grenade"
+	desc = "M74 - Airburst Grenade Munition - Basic. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperse jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. This -B version trades the strength of its sister for ease of production, increasing total supply."
+	icon_state = "grenade_m74_airburst_b"
+	item_state = "grenade_m74_airburst_b_active"
+	shrapnel_count = 15
+	direct_hit_shrapnel = 3
+	dispersion_angle = 65
+
 /*
 //================================================
 				Incendiary Grenades
