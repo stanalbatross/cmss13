@@ -4486,7 +4486,7 @@
 	},
 /area/almayer/command/cichallway)
 "amJ" = (
-/obj/structure/largecrate/supply/machine/bodyscanner,
+/obj/structure/largecrate/machine/bodyscanner,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -59439,6 +59439,37 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/almayer/medical/upper_medical)
+"oPd" = (
+/obj/structure/window/reinforced{
+	dir = 4;
+	pixel_x = -2;
+	pixel_y = 4
+	},
+/obj/structure/window/reinforced{
+	dir = 8;
+	layer = 3.3;
+	pixel_y = 4
+	},
+/obj/structure/bed{
+	can_buckle = 0
+	},
+/obj/item/bedsheet/yellow{
+	pixel_y = 13
+	},
+/obj/structure/bed{
+	buckling_y = 13;
+	layer = 3.5;
+	pixel_y = 13
+	},
+/obj/item/bedsheet/yellow{
+	layer = 3.2
+	},
+/obj/item/toy/plushie_cade,
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/living/port_emb)
 "oPy" = (
 /obj/structure/flora/pottedplant{
 	icon_state = "pottedplant_22";
@@ -114204,7 +114235,7 @@ qJY
 qLH
 xTW
 oGP
-cnM
+oPd
 nsY
 aLG
 awb
