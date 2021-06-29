@@ -143,7 +143,7 @@
 
 /obj/item/device/flashlight/flare/on/illumination/Initialize()
 	. = ..()
-	fuel = rand(40 SECONDS, 50 SECONDS) // Half the duration of a flare, but justified since it's invincible
+	fuel *= 0.5 // Half the duration of a flare, but justified since it's invincible
 
 /obj/item/device/flashlight/flare/on/illumination/turn_off()
 	..()

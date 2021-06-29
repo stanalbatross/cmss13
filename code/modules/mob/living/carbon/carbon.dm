@@ -255,7 +255,10 @@
 	if(!stat && isturf(loc) && !is_mob_restrained())
 		toggle_throw_mode(THROW_MODE_HIGH)
 
-/mob/living/carbon/proc/toggle_throw_mode(type)
+/mob/proc/toggle_throw_mode(type)
+	return
+
+/mob/living/carbon/toggle_throw_mode(type)
 	if(type == THROW_MODE_OFF || throw_mode == type)
 		throw_mode = THROW_MODE_OFF
 		if(hud_used && hud_used.throw_icon)

@@ -283,7 +283,7 @@
 	else
 		update_brightness(null)
 
-/obj/item/device/flashlight/flare/attack_self(mob/living/carbon/user)
+/obj/item/device/flashlight/flare/attack_self(mob/user)
 
 	// Usual checks
 	if(!fuel)
