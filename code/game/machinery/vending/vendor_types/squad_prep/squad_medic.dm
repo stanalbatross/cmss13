@@ -2,6 +2,7 @@
 
 GLOBAL_LIST_INIT(cm_vending_gear_medic, list(
 		list("MEDIC SET (MANDATORY)", 0, null, null, null),
+		list("Basic Field Surgery Kit", 0, /obj/item/storage/firstaid/surgical, MARINE_CAN_BUY_SECONDARY, VENDOR_ITEM_RECOMMENDED),
 		list("Essential Medic Set", 0, /obj/effect/essentials_set/medic, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_MANDATORY),
 
 		list("FIELD SUPPLIES", 0, null, null, null),
