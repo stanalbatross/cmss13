@@ -178,7 +178,7 @@
 	if(!istype(M))
 		return
 
-	if(!M.can_be_operated_on())
+	if(!M.lying && (locate(/obj/structure/machinery/optable, M.loc) || locate(/obj/structure/bed/roller, M.loc)))
 		return
 
 	if(target_name != M.name)
@@ -194,7 +194,7 @@
 	if(!S)
 		to_chat(usr, "<b>You can't scan this body part.</b>")
 		return
-	if(!S.surgery_open_stage)
+	if(M.incision_depths[S.name] == SURGERY_DEPTH_SURFACE)
 		to_chat(usr, "<b>You have to cut the limb open first!</b>")
 		return
 	for(var/mob/O in viewers(M))
@@ -202,4 +202,4 @@
 
 	src.add_data(S)
 
-	return 1
+	return TRUE
