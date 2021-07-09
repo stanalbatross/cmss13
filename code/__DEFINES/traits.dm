@@ -117,6 +117,9 @@
 #define TRAIT_SIMPLE_DESC "t_simple_desc"
  /// Replace s with th in talking
 #define TRAIT_LISPING "t_lisping"
+ /// If the mob can handle the superheavy two-bore rifle and speaks its fluff lines when landing hits with it.
+#define TRAIT_TWOBORE_TRAINING "t_twobore"
+
 //-- item traits --
 // TOOL TRAITS
 #define TRAIT_TOOL_SCREWDRIVER "t_tool_screwdriver"
@@ -134,7 +137,8 @@ GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_NESTED,
 	TRAIT_CRAWLER,
 	TRAIT_SIMPLE_DESC,
-	TRAIT_LISPING
+	TRAIT_LISPING,
+	TRAIT_TWOBORE_TRAINING
 ))
 
 //trait SOURCES

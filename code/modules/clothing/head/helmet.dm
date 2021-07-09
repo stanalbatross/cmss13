@@ -22,7 +22,24 @@
 	siemens_coefficient = 0.7
 	w_class = SIZE_MEDIUM
 
+/obj/item/clothing/head/helmet/verb/hidehair()
+	set name = "Toggle Hair"
+	set category = "Object"
+	set src in usr
+	if(!isliving(usr)) return
+	if(usr.stat) return
 
+	if(flags_inv_hide & HIDETOPHAIR)
+		flags_inv_hide &= ~HIDETOPHAIR
+		to_chat(usr, "You let your hair out from [src].")
+	else
+		flags_inv_hide |= HIDETOPHAIR
+		to_chat(usr, "You tuck your hair into \the [src].")
+
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(H.head == src)
+			H.update_hair()
 
 /obj/item/clothing/head/helmet/riot
 	name = "riot helmet"
@@ -605,6 +622,13 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	flags_inv_hide = HIDEEARS|HIDETOPHAIR
 	specialty = "M30 tactical"
 
+/obj/item/clothing/head/helmet/marine/pilottex
+	name = "\improper Tex's M30 tactical helmet"
+	desc = "The M30 tactical helmet has an left eyepiece filter used to filter tactical data. It is required to fly the dropships manually and in safety. This one belonged to Tex: the craziest sum'bitch pilot the Almayer ever had. He's not dead or anything, but he did get a medical discharge after he was hit by a car on shore leave last year."
+	icon_state = "helmetp_tex"
+	item_state = "helmetp_tex"
+	flags_atom = NO_SNOW_TYPE
+
 /obj/item/clothing/head/helmet/marine/tanker
 	name = "\improper M50 tanker helmet"
 	desc = "The lightweight M50 tanker helmet is designed for use by armored crewmen in the USCM. It offers low weight protection, and allows agile movement inside the confines of an armored vehicle."
@@ -933,6 +957,13 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		flaps_up = TRUE
 	update_icon()
 
+obj/item/clothing/head/helmet/marine/veteran/van_bandolier
+	name = "pith helmet"
+	desc = "A stylish pith helmet, made from space-age materials. Lightweight, breathable, cool, and protective."
+	icon_state = "van_bandolier"
+	item_state = "s_helmet"
+	flags_marine_helmet = NO_FLAGS
+
 //head rag
 
 /obj/item/clothing/head/helmet/specrag
@@ -958,11 +989,11 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	select_gamemode_skin(type)
 	..()
 
-/obj/item/clothing/head/helmet/durag
-	name = "durag"
+/obj/item/clothing/head/helmet/skullcap
+	name = "skullcap"
 	desc = "Good for keeping sweat out of your eyes"
 	icon = 'icons/obj/items/clothing/cm_hats.dmi'
-	icon_state = "durag"
+	icon_state = "skullcap"
 	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
 	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
 	armor_laser = CLOTHING_ARMOR_LOW
@@ -977,17 +1008,17 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 		WEAR_HEAD = 'icons/mob/humans/onmob/head_1.dmi'
 	)
 
-/obj/item/clothing/head/helmet/durag/jungle
+/obj/item/clothing/head/helmet/skullcap/jungle
 	name = "\improper M8 marksman cowl"
 	desc = "A cowl worn to conceal the face of a marksman in the jungle."
-	icon_state = "duragm"
+	icon_state = "skullcapm"
 
-/obj/item/clothing/head/helmet/durag/jungle/New(loc, type,
+/obj/item/clothing/head/helmet/skullcap/jungle/New(loc, type,
 	new_protection[] 	= list(MAP_ICE_COLONY = ICE_PLANET_min_cold_protection_temperature))
 	select_gamemode_skin(type,, new_protection)
 	..()
 	switch(icon_state)
-		if("s_duragm")
+		if("s_skullcapm")
 			desc = "A hood meant to protect the wearer from both the cold and the guise of the enemy in the tundra."
 			flags_inventory = BLOCKSHARPOBJ
 			flags_inv_hide = HIDEEARS|HIDEALLHAIR

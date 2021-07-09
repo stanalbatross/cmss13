@@ -518,11 +518,11 @@
 
 	var/effective_accuracy = accuracy //We want a temporary variable so accuracy doesn't change every time the bullet misses.
 	var/ammo_flags = ammo.flags_ammo_behavior | projectile_override_flags
-	if(distance_travelled <= ammo.accurate_range + rand(0, 2))
+	if(distance_travelled <= ammo.accurate_range)
 		if(distance_travelled <= ammo.accurate_range_min) // If bullet stays within max accurate range + random variance
-			effective_accuracy -= (ammo.accurate_range_min - distance_travelled) * 5 // Snipers have accuracy falloff at closer range before point blank
+			effective_accuracy -= (ammo.accurate_range_min - distance_travelled) * 10 // Snipers have accuracy falloff at closer range before point blank
 	else
-		effective_accuracy -= (ammo_flags & AMMO_SNIPER) ? (distance_travelled * 1.5) : (distance_travelled * 5) // Snipers have a smaller falloff constant due to longer max range
+		effective_accuracy -= (ammo_flags & AMMO_SNIPER) ? (distance_travelled * 1.5) : (distance_travelled * 10) // Snipers have a smaller falloff constant due to longer max range
 
 	effective_accuracy = max(5, effective_accuracy) //default hit chance is at least 5%.
 
@@ -893,7 +893,7 @@
 
 	if(damage || (ammo_flags && AMMO_SPECIAL_EMBED))
 		. = TRUE
-		apply_damage(damage_result, P.ammo.damage_type, P.def_zone, impact_name = P.ammo.impact_name, impact_limbs = P.ammo.impact_limbs, firer = P.firer)
+		apply_damage(damage_result, P.ammo.damage_type, P.def_zone, firer = P.firer)
 		P.play_damage_effect(src)
 
 		if(P.ammo.shrapnel_chance > 0 && prob(P.ammo.shrapnel_chance + round(damage / 10)))

@@ -250,6 +250,27 @@ There are several things that need to be remembered:
 
 
 
+/**Handles headshot images. These render above hair and below hats/helmets. Must be given a headshot_state or it just removes the overlay.
+Applied by gun suicide and high impact bullet executions, removed by rejuvenate, since such people are otherwise unrevivable.**/
+/mob/living/carbon/human/proc/update_headshot_overlay(headshot_state)
+	remove_overlay(HEADSHOT_LAYER)
+
+	if(!headshot_state)
+		return
+
+	var/obj/limb/head/head_organ = get_limb("head")
+	if(!head_organ || (head_organ.status & LIMB_DESTROYED))
+		return
+
+	var/image/headshot = new('icons/mob/humans/dam_human.dmi', headshot_state)
+	headshot.appearance_flags = RESET_COLOR
+	headshot.blend_mode = BLEND_INSET_OVERLAY
+	headshot.layer = -HEADSHOT_LAYER
+	overlays_standing[HEADSHOT_LAYER] = headshot
+	apply_overlay(HEADSHOT_LAYER)
+
+
+
 /* --------------------------------------- */
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()
@@ -310,13 +331,11 @@ There are several things that need to be remembered:
 		client.screen += wear_id
 		wear_id.screen_loc = hud_used.ui_datum.hud_slot_offset(wear_id, hud_used.ui_datum.ui_id)
 
-	if(!wear_id.pinned_on_uniform || (w_uniform && w_uniform.displays_id && !w_uniform.rolled_sleeves))
+	if(!wear_id.pinned_on_uniform || (w_uniform && w_uniform.displays_id && !(w_uniform.flags_jumpsuit & UNIFORM_JACKET_REMOVED)))
 		var/image/id_overlay = wear_id.get_mob_overlay(src, WEAR_ID)
 		id_overlay.layer = -ID_LAYER
 		overlays_standing[ID_LAYER]	= id_overlay
 		apply_overlay(ID_LAYER)
-
-
 
 /mob/living/carbon/human/update_inv_gloves()
 	remove_overlay(GLOVES_LAYER)

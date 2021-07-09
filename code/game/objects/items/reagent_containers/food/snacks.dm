@@ -40,7 +40,7 @@
 	attack(user, user, "head")//zone does not matter
 	user.next_move += attack_speed
 
-/obj/item/reagent_container/food/snacks/attack(mob/M, mob/user, def_zone)
+/obj/item/reagent_container/food/snacks/attack(mob/M, mob/user)
 	if(reagents && !reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
 		to_chat(user, SPAN_DANGER("None of [src] left, oh no!"))
 		M.drop_inv_item_on_ground(src)	//so icons update :[
@@ -422,7 +422,7 @@
 		if(1)
 			reagents.add_reagent("nutriment", 3)
 		if(2)
-			reagents.add_reagent("capsaicin", 3)
+			reagents.add_reagent("hotsauce", 3)
 		if(3)
 			reagents.add_reagent("frostoil", 3)
 		if(4)
@@ -1142,7 +1142,7 @@
 	. = ..()
 	reagents.add_reagent("fish", 6)
 	reagents.add_reagent("carpotoxin", 3)
-	reagents.add_reagent("capsaicin", 3)
+	reagents.add_reagent("hotsauce", 3)
 	bitesize = 3
 
 /obj/item/reagent_container/food/snacks/popcorn
@@ -1445,7 +1445,7 @@
 	switch(mysteryselect)
 		if(1)
 			reagents.add_reagent("plantmatter", 6)
-			reagents.add_reagent("capsaicin", 3)
+			reagents.add_reagent("hotsauce", 3)
 			reagents.add_reagent("tomatojuice", 2)
 		if(2)
 			reagents.add_reagent("plantmatter", 6)
@@ -1501,7 +1501,7 @@
 /obj/item/reagent_container/food/snacks/hotchili/Initialize()
 	. = ..()
 	reagents.add_reagent("meatprotein", 6)
-	reagents.add_reagent("capsaicin", 3)
+	reagents.add_reagent("hotsauce", 3)
 	reagents.add_reagent("tomatojuice", 2)
 	bitesize = 5
 
@@ -1673,7 +1673,7 @@
 	. = ..()
 	reagents.add_reagent("vegetable",2)
 	reagents.add_reagent("meatprotein", 4)
-	reagents.add_reagent("capsaicin", 6)
+	reagents.add_reagent("hotsauce", 6)
 	bitesize = 4
 
 /obj/item/reagent_container/food/snacks/monkeysdelight
@@ -3239,7 +3239,7 @@
 	name = "\improper MRE component"
 	desc = "A package from a Meal Ready-to-Eat, property of the US Colonial Marines. Contains a part of a meal, prepared for field consumption."
 	package = 1
-	bitesize = 1
+	bitesize = 5
 	icon_state = "entree"
 	var/flavor = "boneless pork ribs"//default value
 
@@ -3253,13 +3253,13 @@
 		playsound(loc,"rip", 15, 1)
 
 		name = "\improper" + flavor
-		desc = "The contents of a USCM Standard issue MRE. This one is " + flavor + "."
+		desc = "The contents of a USCM Standard issue MRE. This one is [flavor]."
 		icon_state = flavor
 		package = 0
 		return
 	..()
 /obj/item/reagent_container/food/snacks/packaged_meal/proc/determinetype(newflavor)
-	name = "\improper MRE component" + " (" + newflavor + ")"
+	name = "\improper MRE component ([newflavor])"
 	flavor = newflavor
 
 	switch(newflavor)
@@ -3280,5 +3280,3 @@
 			reagents.add_reagent("nutriment", 2)
 			reagents.add_reagent("sugar", 2)
 			reagents.add_reagent("coco", 1)
-
-
