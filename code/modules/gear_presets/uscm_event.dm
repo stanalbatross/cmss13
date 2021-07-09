@@ -14,8 +14,8 @@
 
 	idtype = /obj/item/card/id/admiral
 	access = list(ACCESS_MARINE_MEDBAY, ACCESS_MARINE_CHEMISTRY, ACCESS_MARINE_MORGUE)
-	assignment = "USCM Admiral"
-	rank = "USCM Admiral"
+	assignment = JOB_ADMIRAL
+	rank = JOB_ADMIRAL
 	paygrade = "O7"
 	role_comm_title = "RADM"
 	minimum_age = 50

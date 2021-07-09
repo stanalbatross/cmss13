@@ -1,0 +1,4 @@
+
+#define REGEX_FLAG_GLOBAL "g"
+
+#define REGEX_FLAG_INSENSITIVE "i"

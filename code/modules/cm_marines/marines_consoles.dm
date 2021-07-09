@@ -784,7 +784,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 
 		// 200-229: Centcom
 		"Admiral" = 200,
-		"USCM Admiral" = 210,
+		JOB_ADMIRAL = 210,
 		"Custodian" = 211,
 		"Medical Officer" = 212,
 		"Research Officer" = 213,

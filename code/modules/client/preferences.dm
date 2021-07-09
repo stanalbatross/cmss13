@@ -326,9 +326,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	else
 		dat += "<b><a href=\"byond://?src=\ref[user];preference=records;record=1\">Character Records</a></b><br>"
 
-	dat += "<a href='byond://?src=\ref[user];preference=flavor_text;task=open'><b>Character Description</b></a>"
+	dat += "<a href='byond://?src=\ref[user];preference=flavor_text;task=open'><b>Character Description</b></a><br>"
 
-	dat += "<a href='byond://?src=\ref[user];preference=traits;task=open'><b>Character Traits</b></a>"
+	dat += "<a href='byond://?src=\ref[user];preference=traits;task=open'><b>Character Traits</b></a>" //<br>
 
 	dat += "<br><br>"
 

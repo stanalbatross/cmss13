@@ -42,6 +42,10 @@ GLOBAL_REFERENCE_LIST_INDEXED(character_traits, /datum/character_trait, type)
 	var/datum/character_trait_group/trait_group = /datum/character_trait_group
 	/// The point cost for the preferences menu
 	var/cost = 0
+	 /// Roles that will not allow the trait to be added at roundstart.
+	var/list/inapplicable_roles
+	 /// Species that will not allow the trait to be added at roundstart.
+	var/list/inapplicable_species
 
 /datum/character_trait/New()
 	trait_group = GLOB.character_trait_groups[trait_group]
@@ -92,7 +96,16 @@ GLOBAL_REFERENCE_LIST_INDEXED(character_traits, /datum/character_trait, type)
 /datum/character_trait/proc/apply_trait(mob/living/carbon/human/target)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(target.job in inapplicable_roles)
+		to_chat(target, SPAN_DANGER("The role '[target.job]' is incompatible with the [trait_name] trait."))
+		return FALSE
+
+	if(target.species.group in inapplicable_species)
+		to_chat(target, SPAN_DANGER("The species group '[target.species.group]' is incompatible with the [trait_name] trait."))
+		return FALSE
+
 	LAZYADD(target.traits, src)
+	return TRUE
 
 /// Revert character trait changes in this proc
 /datum/character_trait/proc/unapply_trait(mob/living/carbon/human/target)

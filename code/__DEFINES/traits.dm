@@ -115,6 +115,8 @@
 #define TRAIT_CRAWLER "t_crawler"
  /// If the mob is hidden from examination
 #define TRAIT_SIMPLE_DESC "t_simple_desc"
+ /// Replace s with th in talking
+#define TRAIT_LISPING "t_lisping"
 //-- item traits --
 // TOOL TRAITS
 #define TRAIT_TOOL_SCREWDRIVER "t_tool_screwdriver"
@@ -131,7 +133,8 @@ GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_INTENT_EYES,
 	TRAIT_NESTED,
 	TRAIT_CRAWLER,
-	TRAIT_SIMPLE_DESC
+	TRAIT_SIMPLE_DESC,
+	TRAIT_LISPING
 ))
 
 //trait SOURCES
@@ -145,6 +148,8 @@ GLOBAL_LIST_INIT(mob_traits, list(
 #define TRAIT_SOURCE_BUCKLE "t_s_buckle"
  ///Status trait coming from tools
 #define TRAIT_SOURCE_TOOL "t_s_tool"
+ /// Status trait coming from reagents
+#define TRAIT_SOURCE_REAGENT "t_s_reagent"
  ///Status trait coming from roundstart quirks (that don't exist yet). Unremovable by REMOVE_TRAIT
 #define TRAIT_SOURCE_QUIRK "t_s_quirk"
  ///Status trait forced by staff

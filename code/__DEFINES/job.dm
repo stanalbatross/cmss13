@@ -128,6 +128,8 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_PMC_LEADER					"PMC Leader"
 #define JOB_PMC_LEAD_INVEST				"PMC Lead Investigator"
 
+#define PMC_JOB_LIST 					list(JOB_PMC, JOB_PMC_ENGINEER, JOB_PMC_DOCTOR, JOB_PMC_INVESTIGATOR, JOB_PMC_ELITE, JOB_PMC_GUNNER, JOB_PMC_SNIPER, JOB_PMC_NINJA, JOB_PMC_XENO_HANDLER, JOB_PMC_COMMANDO, JOB_PMC_LEADER, JOB_PMC_LEAD_INVEST)
+
 //-------- UPP --------//
 #define JOB_UPP							"UPP Private"
 #define JOB_UPP_CONSCRIPT				"UPP Conscript"
@@ -136,7 +138,8 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_UPP_SPECIALIST				"UPP Serzhant"
 #define JOB_UPP_LEADER					"UPP Master Serzhant"
 
-#define UPP_JOB_LIST					list(JOB_UPP, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST, JOB_UPP_LEADER)
+#define UPP_ERT_JOB_LIST				list(JOB_UPP, JOB_UPP_ENGI, JOB_UPP_MEDIC, JOB_UPP_SPECIALIST, JOB_UPP_LEADER)
+#define UPP_JOB_LIST 					UPP_COMMANDO_JOB_LIST + UPP_ERT_JOB_LIST
 
 #define JOB_UPP_COMMANDO				"UPP Junior Kommando"
 #define JOB_UPP_COMMANDO_MEDIC			"UPP 2nd Kommando"

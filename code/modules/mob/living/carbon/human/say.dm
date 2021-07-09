@@ -239,12 +239,15 @@
 	var/braindam = getBrainLoss()
 	if(braindam >= 60)
 		handled = 1
-		if(prob(braindam/4))
+		if(prob(braindam * 0.25))
 			message = stutter(message)
 			verb = pick("stammers", "stutters")
 		if(prob(braindam))
 			message = uppertext(message)
 			verb = pick("yells like an idiot","says rather loudly")
+	if(HAS_TRAIT(src, TRAIT_LISPING))
+		handled = TRUE
+		message = lisp_replace(message)
 
 	returns[1] = message
 	returns[2] = verb
