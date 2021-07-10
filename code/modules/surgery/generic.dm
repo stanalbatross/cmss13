@@ -343,7 +343,8 @@ datum/surgery_step/clamp_bleeders_step/skip_step_criteria(mob/user, mob/living/c
 	required_surgery_skill = SKILL_SURGERY_TRAINED
 	steps = list(
 		/datum/surgery_step/saw_encased,
-		/datum/surgery_step/open_encased_step
+		/datum/surgery_step/open_encased_step,
+		/datum/surgery_step/mend_encased
 	)
 	pain_reduction_required = PAIN_REDUCTION_HEAVY
 
@@ -415,11 +416,16 @@ datum/surgery_step/saw_encased/skip_step_criteria(mob/user, mob/living/carbon/ta
 
 //------------------------------------
 
+//This step can be skipped. In rib-opening surgery, it can be skipped to abort the operation.
+//In rib-closing surgery, it can be skipped to finish closing the ribcage, or completed to abort the operation.
 /datum/surgery_step/open_encased_step
 	name = "Open Bone"
 	desc = "prise the bones open"
 	tools = SURGERY_TOOLS_PRY_ENCASED
 	time = 2 SECONDS
+
+datum/surgery_step/open_encased_step/skip_step_criteria(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	return TRUE
 
 /datum/surgery_step/open_encased_step/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
@@ -438,6 +444,7 @@ datum/surgery_step/saw_encased/skip_step_criteria(mob/user, mob/living/carbon/ta
 		SPAN_NOTICE("[user] uses \the [tool] to hold [target]'s [surgery.affected_limb.encased] open, exposing \his [brain ? "brain" : "vital organs"]."))
 
 	target.incision_depths[target_zone] = SURGERY_DEPTH_DEEP
+	surgery.status += 1 //This finishes the surgery.
 
 	if(prob(10)) //RNG slip chance.
 		surgery.affected_limb.fracture(100)
@@ -469,6 +476,7 @@ datum/surgery_step/saw_encased/skip_step_criteria(mob/user, mob/living/carbon/ta
 	required_surgery_skill = SKILL_SURGERY_TRAINED
 	steps = list(
 		/datum/surgery_step/close_encased_step,
+		/datum/surgery_step/open_encased_step,
 		/datum/surgery_step/mend_encased
 	)
 	pain_reduction_required = PAIN_REDUCTION_HEAVY

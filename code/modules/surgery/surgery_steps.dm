@@ -119,6 +119,7 @@ datum/surgery_step/proc/repeat_step_criteria(mob/user, mob/living/carbon/target,
 	var/try_to_fail
 	if(user.a_intent != INTENT_HELP)
 		try_to_fail = TRUE 
+		user.a_intent_change(INTENT_HELP) //So that stabbing your patient to death takes deliberate malice.
 	else if(!repeating) //Looping steps only play the start message on the first iteration; deliberate failure only plays the failure message.
 		preop(user, target, target_zone, tool, tool_type, surgery)
 		var/list/message = new()	//Duration hint messages.
