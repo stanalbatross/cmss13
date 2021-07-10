@@ -1,6 +1,7 @@
 /datum/ammo
 	var/name 		= "generic bullet"
-	var/headshot_state	= null //Icon state when a human is permanently killed with it by execution/suicide.
+	var/impact_name	= null // Name of icon when trying to give a mob a projectile impact overlay
+	var/impact_limbs = BODY_FLAG_NO_BODY // The body parts that have an impact icon
 	var/icon 		= 'icons/obj/items/weapons/projectiles.dmi'
 	var/icon_state 	= "bullet"
 	 ///Bullet type on the Ammo HUD
@@ -212,7 +213,6 @@
 /datum/ammo/bullet
 	name = "default bullet"
 	icon_state = "bullet"
-	headshot_state	= HEADSHOT_OVERLAY_LIGHT
 	flags_ammo_behavior = AMMO_BALLISTIC
 	sound_hit 	 = "ballistic_hit"
 	sound_armor  = "ballistic_armor"
@@ -238,8 +238,6 @@
 
 	damage = 35
 	accuracy = HIT_ACCURACY_TIER_2
-	effective_range_max = 4
-	damage_falloff = DAMAGE_FALLOFF_TIER_4 //should be useful in close-range mostly
 	hud_state = "pistol"
 	hud_state_empty = "pistol_empty"
 
@@ -256,7 +254,7 @@
 /datum/ammo/bullet/pistol/hollow
 	name = "hollowpoint pistol bullet"
 
-	damage = BULLET_DAMAGE_TIER_11
+	damage = 55
 	damage_falloff = DAMAGE_FALLOFF_TIER_9
 	penetration = 0
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_3
@@ -327,14 +325,13 @@
 	name = "rubber pistol bullet"
 	sound_override = 'sound/weapons/gun_c99.ogg'
 	hud_state = "pistol_light"
-	damage = BULLET_DAMAGE_OFF
-	stamina_damage = BULLET_DAMAGE_TIER_5
+	damage = 0
+	stamina_damage = 25
 	shrapnel_chance = 0
 
 // Used by M1911, Deagle and KT-42
 /datum/ammo/bullet/pistol/heavy
 	name = "heavy pistol bullet"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	accuracy = -HIT_ACCURACY_TIER_3
 	accuracy_var_low = PROJECTILE_VARIANCE_TIER_6
 	damage = 40
@@ -352,9 +349,9 @@
 
 /datum/ammo/bullet/pistol/heavy/super //Commander's variant
 	name = ".50 heavy pistol bullet"
-	damage = 50
 	hud_state = "pistol_eagle_super"
 	hud_state_empty = "pistol_eagle_empty"
+	damage = 50
 	damage_var_low = PROJECTILE_VARIANCE_TIER_8
 	damage_var_high = PROJECTILE_VARIANCE_TIER_6
 	penetration = ARMOR_PENETRATION_TIER_4
@@ -363,6 +360,7 @@
 	name = ".50 high-impact pistol bullet"
 	hud_state = "pistol_eagle_highimpact"
 	penetration = ARMOR_PENETRATION_TIER_2
+	impact_limbs = BODY_FLAG_HEAD
 	debilitate = list(0,2,0,0,0,1,0,0)
 
 /datum/ammo/bullet/pistol/heavy/super/highimpact/on_hit_mob(mob/M, obj/item/projectile/P)
@@ -382,14 +380,9 @@
 	if(!do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_HOSTILE) || !user.Adjacent(H))
 		return -1
 
-	H.apply_damage(damage * 3, BRUTE, "head", no_limb_loss = TRUE, permanent_kill = TRUE) //Apply gobs of damage and make sure they can't be revived later...
-	H.apply_damage(200, OXY) //...fill out the rest of their health bar with oxyloss...
-	H.death(create_cause_data("execution", user)) //...make certain they're properly dead...
-
-	H.update_headshot_overlay(headshot_state) //...and add a gory headshot overlay.
-
+	H.apply_damage(500, BRUTE, "head", no_limb_loss = TRUE, impact_name = impact_name, impact_limbs = impact_limbs, permanent_kill = TRUE) //not coming back
 	H.visible_message(SPAN_DANGER("[M] WAS EXECUTED!"), \
-		SPAN_HIGHDANGER("You were executed!"))
+		SPAN_HIGHDANGER("You were Executed!"))
 
 	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
@@ -417,7 +410,6 @@
 // Used by VP78 and Auto 9
 /datum/ammo/bullet/pistol/squash
 	name = "squash-head pistol bullet"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	debilitate = list(0,0,0,0,0,0,0,2)
 
 	accuracy = HIT_ACCURACY_TIER_4
@@ -525,7 +517,6 @@
 
 /datum/ammo/bullet/revolver
 	name = "revolver bullet"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	hud_state = "revolver"
 	hud_state_empty = "revolver_empty"
 	debilitate = list(1,0,0,0,0,0,0,0)
@@ -609,13 +600,11 @@
 
 /datum/ammo/bullet/revolver/nagant
 	name = "nagant revolver bullet"
-	headshot_state	= HEADSHOT_OVERLAY_LIGHT //Smaller bullet.
 	damage = 40
 
 
 /datum/ammo/bullet/revolver/nagant/shrapnel
 	name = "shrapnel shot"
-	headshot_state	= HEADSHOT_OVERLAY_HEAVY //Gol-dang shotgun blow your fething head off.
 	debilitate = list(0,0,0,0,0,0,0,0)
 	icon_state = "shrapnelshot"
 	hud_state = "revolver_shrapnel"
@@ -646,7 +635,6 @@
 
 /datum/ammo/bullet/revolver/small
 	name = "small revolver bullet"
-	headshot_state	= HEADSHOT_OVERLAY_LIGHT
 
 	damage = 30
 
@@ -688,14 +676,9 @@
 	if(!do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_HOSTILE) || !user.Adjacent(H))
 		return -1
 
-	H.apply_damage(damage * 3, BRUTE, "head", no_limb_loss = TRUE, permanent_kill = TRUE) //Apply gobs of damage and make sure they can't be revived later...
-	H.apply_damage(200, OXY) //...fill out the rest of their health bar with oxyloss...
-	H.death(create_cause_data("execution", user)) //...make certain they're properly dead...
-
-	H.update_headshot_overlay(headshot_state) //...and add a gory headshot overlay.
-
+	H.apply_damage(500, BRUTE, "head", no_limb_loss = TRUE, impact_name = impact_name, impact_limbs = impact_limbs, permanent_kill = TRUE) //not coming back
 	H.visible_message(SPAN_HIGHDANGER("[M] WAS EXECUTED!"), \
-		SPAN_HIGHDANGER("You were executed!"))
+		SPAN_HIGHDANGER("You were Executed!"))
 
 	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
@@ -709,8 +692,8 @@
 
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive //if you ever put this in normal gameplay, i am going to scream
 	name = ".454 heavy explosive revolver bullet"
-	damage = 100
 	hud_state = "revolver_explosive"
+	damage = 100
 	damage_var_low = PROJECTILE_VARIANCE_TIER_10
 	damage_var_high = PROJECTILE_VARIANCE_TIER_1
 	penetration = ARMOR_PENETRATION_TIER_10
@@ -729,27 +712,16 @@
 	if(T.density)
 		cell_explosion(T, 120, 30, EXPLOSION_FALLOFF_SHAPE_LINEAR, P.dir, P.weapon_cause_data)
 
-/datum/ammo/bullet/revolver/webley //Mateba round without the knockdown.
-	name = ".455 Webley bullet"
-	damage = 60
-	damage_var_low = PROJECTILE_VARIANCE_TIER_8
-	damage_var_high = PROJECTILE_VARIANCE_TIER_6
-	penetration = ARMOR_PENETRATION_TIER_2
-
-/*
-//======
-					SMG Ammo
-//======
-*/
 
 /datum/ammo/bullet/smg
 	name = "submachinegun bullet"
+	hud_state = "smg"
+	hud_state_empty = "smg_empty"
 	damage = 40
 	accurate_range = 4
-	effective_range_max = 4
 	penetration = ARMOR_PENETRATION_TIER_1
 	shell_speed = AMMO_SPEED_TIER_6
-	damage_falloff = DAMAGE_FALLOFF_TIER_1
+	damage_falloff = DAMAGE_FALLOFF_TIER_9
 	scatter = SCATTER_AMOUNT_TIER_6
 	accuracy = HIT_ACCURACY_TIER_3
 
@@ -762,6 +734,7 @@
 	hud_state = "smg_ap"
 	damage = 28
 	penetration = ARMOR_PENETRATION_TIER_6
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	shell_speed = AMMO_SPEED_TIER_4
 
 /datum/ammo/bullet/smg/ap/toxin
@@ -910,15 +883,13 @@
 	name = "rifle bullet"
 	hud_state = "rifle"
 	hud_state_empty = "rifle_empty"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	damage = 40
 	penetration = ARMOR_PENETRATION_TIER_1
 	accurate_range = 16
 	accuracy = HIT_ACCURACY_TIER_4
 	scatter = SCATTER_AMOUNT_TIER_10
 	shell_speed = AMMO_SPEED_TIER_6
-	effective_range_max = 7
-	damage_falloff = DAMAGE_FALLOFF_TIER_6
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 
 /datum/ammo/bullet/rifle/explosive
 	name = "explosive rifle bullet"
@@ -969,8 +940,8 @@
 
 /datum/ammo/bullet/rifle/ap/penetrating
 	name = "wall-piercing rifle bullet"
-	hud_state = "rifle_wp"
 	shrapnel_chance = 0
+
 	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_10
 
@@ -1080,8 +1051,8 @@
 
 /datum/ammo/bullet/rifle/type71
 	name = "heavy rifle bullet"
-	damage = 35
 	hud_state = "rifle_heavy"
+	damage = 35
 	penetration = ARMOR_PENETRATION_TIER_2
 
 /datum/ammo/bullet/rifle/type71/ap
@@ -1097,7 +1068,6 @@
 */
 
 /datum/ammo/bullet/shotgun
-	headshot_state	= HEADSHOT_OVERLAY_HEAVY
 	hud_state = "shotgun_buckshot"
 	hud_state_empty = "shotgun_empty"
 
@@ -1105,6 +1075,8 @@
 	name = "shotgun slug"
 	hud_state = "shotgun_slug"
 	handful_state = "slug_shell"
+	impact_name = "slug"
+	impact_limbs = BODY_FLAG_HEAD
 
 	accurate_range = 6
 	max_range = 8
@@ -1117,8 +1089,6 @@
 
 /datum/ammo/bullet/shotgun/beanbag
 	name = "beanbag slug"
-	headshot_state	= HEADSHOT_OVERLAY_LIGHT //It's not meant to kill people... but if you put it in your mouth, it will.
-	handful_state = "beanbag_slug"
 	icon_state = "beanbag"
 	handful_state = "beanbag_slug"
 	hud_state = "shotgun_beanbag"
@@ -1213,6 +1183,7 @@
 	damage = 60
 	damage_var_low = PROJECTILE_VARIANCE_TIER_8
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	penetration	= 0
 	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
 	shell_speed = AMMO_SPEED_TIER_2
@@ -1221,8 +1192,7 @@
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary
 	name = "incendiary buckshot shell"
-	handful_state = "incen_buckshot"
-	hud_state = "shotgun_fire_buckshot"
+	hud_state = "shotgun_fire_buck"
 	handful_type = /obj/item/ammo_magazine/handful/shotgun/buckshot/incendiary
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary/set_bullet_traits()
@@ -1251,6 +1221,7 @@
 	damage = 60
 	damage_var_low = PROJECTILE_VARIANCE_TIER_8
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	penetration = ARMOR_PENETRATION_TIER_1
 	shell_speed = AMMO_SPEED_TIER_2
 	scatter = SCATTER_AMOUNT_TIER_1
@@ -1275,6 +1246,7 @@
 	accurate_range = 3
 	max_range = 3
 	damage = 90
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
 	penetration	= 0
 	shell_speed = AMMO_SPEED_TIER_2
 	damage_armor_punch = 0
@@ -1318,6 +1290,8 @@
 	name = "heavy shotgun slug"
 	hud_state = "shotgun_slug"
 	handful_state = "heavy_slug"
+	impact_name = "slug"
+	impact_limbs = BODY_FLAG_HEAD
 
 	accurate_range = 7
 	max_range = 8
@@ -1331,7 +1305,6 @@
 /datum/ammo/bullet/shotgun/heavy/beanbag
 	name = "heavy beanbag slug"
 	icon_state = "beanbag"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	handful_state = "heavy_beanbag"
 	hud_state = "shotgun_beanbag"
 	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_IGNORE_RESIST
@@ -1379,44 +1352,6 @@
 	penetration	= ARMOR_PENETRATION_TIER_10
 	scatter = SCATTER_AMOUNT_TIER_4
 
-//Enormous shell for Van Bandolier's superheavy double-barreled hunting gun.
-/datum/ammo/bullet/shotgun/twobore 
-	name = "two bore bullet"
-	icon_state 	= "autocannon"
-	handful_state = "twobore"
-
-	accurate_range = 8 //Big low-velocity projectile; this is for blasting dangerous game at close range.
-	max_range = 14 //At this range, it's lost all its damage anyway.
-	damage = 300 //Hits like a buckshot PB.
-	penetration = 15
-	damage_falloff = DAMAGE_FALLOFF_TIER_1 * 3 //It has a lot of energy, but the 26mm bullet drops off fast.
-	effective_range_max	= EFFECTIVE_RANGE_MAX_TIER_2 //Full damage up to this distance, then falloff for each tile beyond.
-	var/hit_messages = list()
-
-/datum/ammo/bullet/shotgun/twobore/on_hit_mob(mob/living/M, obj/item/projectile/P)
-	var/mob/shooter = P.firer
-	if(shooter && ismob(shooter) && HAS_TRAIT(shooter, TRAIT_TWOBORE_TRAINING) && M.stat != DEAD && prob(40)) //Death is handled by periodic life() checks so this should have a chance to fire on a killshot.
-		if(!length(hit_messages)) //Pick and remove lines, refill on exhaustion.
-			hit_messages = list("Got you!", "Aha!", "Bullseye!", "It's curtains for you, Sonny Jim!", "Your head will look fantastic on my wall!", "I have you now!", "You miserable coward! Come and fight me like a man!", "Tally ho!")
-		var/message = pick_n_take(hit_messages)
-		shooter.say(message)
-
-	if(P.distance_travelled > 8)
-		heavy_knockback(M, P, 12)
-
-	else if(!M || M == P.firer || M.lying) //These checks are included in heavy_knockback and would be redundant above.
-		return
-
-	shake_camera(M, 3, 4)
-	M.apply_effect(2, WEAKEN)
-	M.apply_effect(4, SLOW)
-	if(isCarbonSizeXeno(M))
-		to_chat(M, SPAN_XENODANGER("The impact knocks you off your feet!"))
-	else //This will hammer a Yautja as hard as a human.
-		to_chat(M, SPAN_HIGHDANGER("The impact knocks you off your feet!"))
-
-	step(M, get_dir(P.firer, M))
-
 /*
 //======
 					Sniper Ammo
@@ -1425,7 +1360,6 @@
 
 /datum/ammo/bullet/sniper
 	name = "sniper bullet"
-	headshot_state	= HEADSHOT_OVERLAY_HEAVY
 	hud_state = "sniper"
 	hud_state_empty = "sniper_empty"
 	damage_falloff = 0
@@ -1581,6 +1515,7 @@
 
 	max_range = 12
 	accuracy = HIT_ACCURACY_TIER_3
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 	damage = 30
 	penetration = 0
 
@@ -1590,6 +1525,7 @@
 	hud_state = "smartgun_ap"
 	accurate_range = 12
 	accuracy = HIT_ACCURACY_TIER_1
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 	damage = 20
 	penetration = ARMOR_PENETRATION_TIER_8
 	damage_armor_punch = 1
@@ -1601,6 +1537,7 @@
 	shrapnel_chance = SHRAPNEL_CHANCE_TIER_7
 	accurate_range = 32
 	accuracy = HIT_ACCURACY_TIER_3
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 	damage = 40
 	penetration = 0
 
@@ -1612,6 +1549,7 @@
 
 	accurate_range = 22
 	accuracy = HIT_ACCURACY_TIER_3
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 	damage = 30
 	penetration = ARMOR_PENETRATION_TIER_7
 	damage_armor_punch = 3
@@ -1661,7 +1599,6 @@
 
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	hud_state = "minigun"
 	hud_state_empty = "minigun_empty"
 	accuracy = -HIT_ACCURACY_TIER_3
@@ -1679,7 +1616,6 @@
 
 /datum/ammo/bullet/m60
 	name = "M60 bullet"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	hud_state = "rifle_heavy"
 	hud_state_empty = "rifle_empty"
 	accuracy = -HIT_ACCURACY_TIER_3
@@ -1978,7 +1914,6 @@
 		H.disable_special_items() // Disables scout cloak
 
 /datum/ammo/energy/yautja
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	accurate_range = 12
 	shell_speed = AMMO_SPEED_TIER_3
 
@@ -2369,6 +2304,7 @@
 /datum/ammo/xeno/acid/praetorian
 	name = "acid splash"
 
+	damage_falloff = DAMAGE_FALLOFF_TIER_9
 	accuracy = HIT_ACCURACY_TIER_10 + HIT_ACCURACY_TIER_5
 	max_range = 8
 	damage = 30
@@ -2386,6 +2322,7 @@
 	accurate_range = 32
 	max_range = 4
 	damage = 25
+	damage_falloff = DAMAGE_FALLOFF_TIER_6
 	shell_speed = AMMO_SPEED_TIER_1
 	scatter = SCATTER_AMOUNT_TIER_6
 
@@ -2572,6 +2509,7 @@
 	damage = 25
 	damage_var_low = -PROJECTILE_VARIANCE_TIER_6
 	damage_var_high = PROJECTILE_VARIANCE_TIER_6
+	damage_falloff = DAMAGE_FALLOFF_TIER_10
 	penetration = ARMOR_PENETRATION_TIER_4
 	shell_speed = AMMO_SPEED_TIER_2
 	shrapnel_chance = 5
@@ -2673,7 +2611,6 @@
 
 /datum/ammo/alloy_spike
 	name = "alloy spike"
-	headshot_state	= HEADSHOT_OVERLAY_MEDIUM
 	ping = "ping_s"
 	icon_state = "MSpearFlight"
 	sound_hit 	 	= "alloy_hit"

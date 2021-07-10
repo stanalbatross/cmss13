@@ -20,14 +20,12 @@
 	var/max_range = 5
 	var/max_duration = 30
 
-<<<<<<< HEAD
-	var/fuel_pressure = 1 //How much fuel is used per tile fired
-	var/max_pressure = 10
-=======
-	
 	var/hud_state = "flame"
 	var/hud_state_empty = "flame_empty"
->>>>>>> 43871e855... Ammo HUD
+
+	var/fuel_pressure = 1 //How much fuel is used per tile fired
+	var/max_pressure = 10
+
 
 /obj/item/ammo_magazine/flamer_tank/empty
 	flamer_chem = null
@@ -214,8 +212,8 @@
 	flamer_chem = "napalmx"
 
 	max_range = 6
+	hud_state = "flame_blue"
 
-<<<<<<< HEAD
 /obj/item/ammo_magazine/flamer_tank/large/EX
 	name = "large incinerator tank (EX)"
 	desc = "A large fuel tank of Ultra Thick Napthal Fuel type EX, a sticky combustable liquid chemical that burns so hot it melts straight through flame-resistant material, for use in the M240-T incinerator unit. Handle with care."
@@ -234,6 +232,4 @@
 	max_intensity = 60
 	max_range = 8
 	max_duration = 50
-=======
 	hud_state = "flame_blue"
->>>>>>> 43871e855... Ammo HUD
