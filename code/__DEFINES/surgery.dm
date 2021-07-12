@@ -79,12 +79,14 @@ here instead of copying things in in New() or w/e, so that all surgery tools and
 //	 	CUT AND SEAL	   //
 /////////////////////////////
 
-/**Tools used to open incisions or cut flesh. IMS is listed separately as the generic incision surgery uses it to skip steps.
+/**Tools used to open incisions or cut flesh. IMS listed separately as the generic incision surgery uses it to skip steps.
+PICT isn't as fast as standard to disincentivise using it instead of a normal scalpel.
 See also /datum/surgery_step/cut_larval_pseudoroots, /datum/surgery_step/retract_skin.**/
 #define SURGERY_TOOLS_INCISION list(\
 	/obj/item/tool/surgery/scalpel = SURGERY_TOOL_MULT_IDEAL,\
 	/obj/item/tool/surgery/scalpel/manager = SURGERY_TOOL_MULT_IDEAL,\
 	/obj/item/tool/surgery/scalpel/laser = SURGERY_TOOL_MULT_IDEAL,\
+	/obj/item/tool/surgery/scalpel/pict_system = SURGERY_TOOL_MULT_SUBOPTIMAL,\
 	/obj/item/attachable/bayonet = SURGERY_TOOL_MULT_SUBSTITUTE,\
 	/obj/item/tool/kitchen/knife = SURGERY_TOOL_MULT_SUBSTITUTE,\
 	/obj/item/shard = SURGERY_TOOL_MULT_AWFUL\

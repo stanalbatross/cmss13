@@ -111,7 +111,7 @@
  */
 /obj/item/tool/surgery/scalpel/laser
 	name = "laser scalpel"
-	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks basic and could be improved."
+	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks like an unreliable early model."
 	icon_state = "scalpel_laser1_on"
 	damtype = "fire"
 	///The likelihood an incision made with this will be bloodless.
@@ -119,7 +119,7 @@
 
 /obj/item/tool/surgery/scalpel/laser/improved
 	name = "laser scalpel"
-	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks somewhat advanced."
+	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks trustworthy, though it could be better."
 	icon_state = "scalpel_laser2_on"
 	damtype = "fire"
 	force = 12.0
@@ -127,7 +127,7 @@
 
 /obj/item/tool/surgery/scalpel/laser/advanced
 	name = "laser scalpel"
-	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks to be the pinnacle of precision energy cutlery!"
+	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks to be the pinnacle of precision energy cutlery!"
 	icon_state = "scalpel_laser3_on"
 	damtype = "fire"
 	force = 15.0
@@ -137,10 +137,10 @@
  * Special Variants
  */
 
-/obj/item/tool/surgery/pict_system
+/obj/item/tool/surgery/scalpel/pict_system
 	name = "PICT system"
-	desc = "(Precision Incision and Cauterization Tool). A tool used for the most complicated procedures, where fluid leakage from incisions must be avoided."
-	icon_state = "scalpel_manager_on"
+	desc = "The Precision Incision and Cauterization Tool uses a high-frequency vibrating blade, laser cautery, and suction liquid control system to precisely sever target tissues while preventing all fluid leakage. Despite its troubled development program and horrifying pricetag, outside of complex experimental surgeries it isn't any better than an ordinary twenty-dollar scalpel and can't create a full-length incision bloodlessly."
+	icon_state = "pict_system"
 	w_class = SIZE_SMALL
 	force = 7.5
 

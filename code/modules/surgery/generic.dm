@@ -47,7 +47,7 @@
 
 /datum/surgery_step/incision/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	var/obj/item/tool/surgery/scalpel/laser/las_scalpel = tool
-		
+
 	if(tool_type == /obj/item/tool/surgery/scalpel/manager)
 		user.affected_message(target,
 			SPAN_NOTICE("You have constructed a prepared incision in [target]'s [surgery.affected_limb.display_name]."),
