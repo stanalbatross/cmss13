@@ -277,11 +277,10 @@
 
 		if(org.get_incision_depth()) //Unindented because robotic and severed limbs may also have surgeries performed upon them.
 			status += "cut open"
-			for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
-				if(status)
-					status += " and "
-				status += "bleeding"
-				break
+
+		for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
+			status += "bleeding"
+			break
 
 		var/limb_surgeries = org.get_active_limb_surgeries()
 		if(limb_surgeries)
