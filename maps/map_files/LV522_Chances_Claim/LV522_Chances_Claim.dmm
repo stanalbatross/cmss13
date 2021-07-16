@@ -7,7 +7,7 @@
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ac" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ammo_box/magazine/smg/nailgun/empty,
@@ -15,19 +15,19 @@
 	pixel_y = 15
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "af" = (
 /turf/open/floor{
 	dir = 8;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ai" = (
 /obj/structure/bed/chair{
 	dir = 1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "aj" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -39,7 +39,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "an" = (
 /obj/structure/barricade/handrail,
 /obj/structure/barricade/handrail{
@@ -48,13 +48,13 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ao" = (
 /obj/structure/barricade/handrail{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "as" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 1;
@@ -62,18 +62,18 @@
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "at" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "au" = (
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aw" = (
 /obj/structure/cargo_container{
 	health = 5000;
@@ -82,20 +82,20 @@
 	unacidable = 1
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "az" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aC" = (
 /obj/structure/stairs/perspective{
 	dir = 9;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "aD" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/fire{
@@ -107,7 +107,7 @@
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aF" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /obj/structure/closet/crate/miningcar{
@@ -119,12 +119,12 @@
 	dir = 1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "aG" = (
 /obj/item/tool/pickaxe,
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "aI" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -132,52 +132,52 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aN" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "aP" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/screwdriver,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aX" = (
 /obj/structure/machinery/mill,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "aY" = (
 /obj/structure/cryofeed,
 /turf/open/floor/bluegrid,
-/area/space)
+/area/lv522/colony_streets)
 "aZ" = (
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ba" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_door,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "be" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "47"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bg" = (
 /obj/structure/platform_decoration/shiva/catwalk{
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "bk" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
@@ -188,26 +188,26 @@
 	pixel_y = -1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "bl" = (
 /obj/structure/machinery/autolathe,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bm" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bn" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/toolbox/mechanical,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bo" = (
 /obj/structure/reagent_dispensers/water_cooler/stacks{
 	density = 0;
@@ -216,7 +216,7 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bp" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -225,11 +225,11 @@
 	dir = 6;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "br" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "bt" = (
 /obj/structure/surface/table/almayer,
 /obj/item/xeno_egg,
@@ -237,28 +237,28 @@
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bu" = (
 /obj/item/tool/crowbar/red,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "bA" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "65"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bC" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 4;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bE" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "62"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bF" = (
 /obj/structure/platform{
 	dir = 1;
@@ -269,31 +269,31 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bH" = (
 /turf/open/floor/plating,
 /area/shuttle/drop1/sulaco)
 "bI" = (
 /obj/structure/closet/crate,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "bM" = (
 /turf/open/floor{
 	icon_state = "warningcorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bP" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "46"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bQ" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
 	tag = "icon-0,2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "bS" = (
 /obj/structure/machinery/defenses/sentry/premade/dumb{
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a high-capacity drum magazine. This one's IFF system have been damaged, and it will open fire on any targets within range.";
@@ -303,64 +303,64 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bT" = (
 /obj/structure/machinery/vending/hydronutrients,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "bW" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "bY" = (
 /obj/structure/largecrate/random/barrel,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ca" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cd" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cg" = (
 /turf/open/floor/strata{
 	dir = 6;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ci" = (
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "cj" = (
 /turf/closed/wall/rock,
-/area/space)
+/area/lv522/colony_streets)
 "ck" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "14"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cm" = (
 /turf/open/floor{
 	dir = 6;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cn" = (
 /turf/open/floor/strata{
 	dir = 9;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cq" = (
 /obj/structure/barricade/wooden{
 	dir = 1
@@ -369,17 +369,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cr" = (
 /obj/structure/machinery/chem_dispenser/medbay,
 /turf/open/floor/strata{
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cs" = (
 /obj/structure/machinery/vending/hydroseeds,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "cv" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor{
 	dir = 1;
@@ -392,39 +392,39 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cz" = (
 /obj/structure/machinery/portable_atmospherics/canister/air,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cC" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "cJ" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "cM" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cN" = (
 /obj/structure/cargo_container{
 	icon_state = "HD_blue 0,1";
 	tag = "icon-blue 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "cQ" = (
 /obj/structure/sink{
 	dir = 1;
@@ -434,36 +434,36 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cS" = (
 /turf/open/floor{
 	icon_state = "bcircuit";
 	tag = "icon-bcircuit"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cT" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
 	tag = "icon-0,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "cW" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "cY" = (
 /obj/structure/window_frame/shiva,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "cZ" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "db" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 1;
@@ -471,10 +471,10 @@
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "dd" = (
 /turf/open/shuttle/dropship,
-/area/space)
+/area/lv522/colony_streets)
 "de" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/coffee{
@@ -489,30 +489,30 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "df" = (
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dg" = (
 /obj/structure/machinery/conveyor,
 /obj/structure/largecrate/random,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "dh" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dj" = (
 /obj/structure/machinery/bioprinter,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dk" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/weldpack{
@@ -524,20 +524,20 @@
 	pixel_x = -4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "dn" = (
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_2";
 	opacity = 0
 	},
-/area/space)
+/area/lv522/colony_streets)
 "do" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/toolbox/electrical,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dq" = (
 /obj/structure/surface/table/almayer,
 /obj/item/weapon/gun/smg/nailgun,
@@ -545,7 +545,7 @@
 /obj/item/ammo_magazine/smg/nailgun,
 /obj/item/ammo_magazine/smg/nailgun,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ds" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
@@ -554,7 +554,7 @@
 	dir = 9
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "du" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/flora/pottedplant{
@@ -567,7 +567,7 @@
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dz" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -580,7 +580,7 @@
 	pixel_y = -15
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "dA" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -594,20 +594,20 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dG" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dH" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/prop/almayer/computer/PC{
 	pixel_y = 3
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "dI" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 8
@@ -616,12 +616,12 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dK" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "45"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dL" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
 	icon_state = "white_trim"
@@ -635,32 +635,32 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "dM" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "97"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dP" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "dS" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
 	icon_state = "white_trim"
 	},
 /obj/structure/prop/invuln/ice_prefab/roof_greeble,
 /turf/closed/wall/rock,
-/area/space)
+/area/lv522/colony_streets)
 "dW" = (
 /obj/structure/barricade/handrail,
 /obj/structure/barricade/handrail{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "dX" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -668,13 +668,13 @@
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "dY" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ea" = (
 /obj/structure/stairs/perspective{
 	dir = 9;
@@ -683,18 +683,18 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eb" = (
 /obj/structure/platform,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "eg" = (
 /obj/structure/machinery/disposal,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eh" = (
 /obj/structure/sink{
 	pixel_y = 15
@@ -702,7 +702,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ek" = (
 /obj/structure/machinery/computer/operating{
 	dir = 1
@@ -712,7 +712,7 @@
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "en" = (
 /obj/structure/filingcabinet/chestdrawer{
 	pixel_x = -8
@@ -729,17 +729,17 @@
 	pixel_y = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "eo" = (
 /obj/item/pamphlet/skill/powerloader,
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "es" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan22"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "et" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -747,7 +747,7 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ew" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -757,7 +757,7 @@
 	pixel_y = 10
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ez" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -765,7 +765,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eC" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -774,7 +774,7 @@
 	dir = 5;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eF" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
@@ -782,29 +782,29 @@
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "eG" = (
 /turf/open/floor/strata{
 	dir = 6;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eI" = (
 /obj/structure/platform_decoration/shiva/catwalk,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "eL" = (
 /obj/structure/pipes/standard/manifold/visible,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eM" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eN" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank{
@@ -813,20 +813,20 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eQ" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "eR" = (
 /obj/structure/cargo_container{
 	icon_state = "green 0,0";
 	tag = "icon-green 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "eU" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/box/cups{
@@ -837,18 +837,18 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eV" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "eY" = (
 /turf/open/floor/coagulation{
 	icon_state = "0,8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fb" = (
 /obj/structure/prop/invuln/ice_prefab/roof_greeble{
 	icon_state = "vent2";
@@ -859,11 +859,11 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "fr" = (
 /obj/structure/largecrate/random/barrel/green,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "fv" = (
 /turf/open/space/basic,
 /area/space)
@@ -872,7 +872,7 @@
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "fC" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
@@ -883,7 +883,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fD" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
@@ -891,26 +891,26 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fH" = (
 /obj/structure/closet/crate/trashcart,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fM" = (
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fN" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 1,0";
 	tag = "icon-blue 1,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "fO" = (
 /obj/structure/pipes/unary/freezer{
 	icon_state = "freezer_1"
@@ -919,13 +919,13 @@
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fP" = (
 /obj/structure/barricade/wooden{
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "fT" = (
 /obj/item/ammo_magazine/rifle{
 	current_rounds = 0
@@ -934,12 +934,12 @@
 	current_mag = null
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "fV" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "40"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fX" = (
 /obj/structure/machinery/door/airlock/almayer/medical{
 	name = "Medical Laboratory Operating Theatre";
@@ -952,35 +952,35 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "fZ" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ga" = (
 /turf/open/floor/corsat{
 	dir = 4;
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gf" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "102"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gg" = (
 /obj/structure/closet/crate/miningcar,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "gh" = (
 /obj/structure/surface/rack,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /obj/item/weapon/gun/shotgun/double,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "gi" = (
 /obj/structure/closet,
 /obj/item/clothing/shoes/jackboots,
@@ -990,7 +990,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gj" = (
 /obj/structure/pipes/unary/freezer{
 	dir = 1;
@@ -999,7 +999,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gk" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -1008,18 +1008,18 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gl" = (
 /obj/structure/closet/secure_closet/engineering_welding,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "gm" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/suit/storage/hazardvest,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gr" = (
 /obj/structure/barricade/handrail{
 	dir = 1
@@ -1027,24 +1027,24 @@
 /turf/open/floor/coagulation{
 	icon_state = "2,0"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gs" = (
 /obj/structure/machinery/conveyor,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "gu" = (
 /obj/structure/prop/dam/crane/cargo,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gz" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gC" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
@@ -1053,17 +1053,17 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gE" = (
 /obj/structure/prop/invuln/ice_prefab{
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "gG" = (
 /obj/structure/window/framed/shiva,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "gH" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -1075,26 +1075,26 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "gJ" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gM" = (
 /turf/open/floor/corsat,
-/area/space)
+/area/lv522/colony_streets)
 "gN" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 5
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "gP" = (
 /obj/structure/prop/dam/truck,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "gR" = (
 /obj/structure/surface/table/almayer,
 /obj/item/alienjar,
@@ -1102,7 +1102,7 @@
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "gZ" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
@@ -1110,7 +1110,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hb" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
@@ -1121,7 +1121,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hc" = (
 /obj/structure/barricade/deployable{
 	dir = 4
@@ -1130,7 +1130,7 @@
 	current_mag = null
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hh" = (
 /obj/structure/platform{
 	dir = 4
@@ -1141,7 +1141,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hj" = (
 /obj/structure/machinery/power/monitor{
 	name = "Main Power Grid Monitoring"
@@ -1149,7 +1149,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hk" = (
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
@@ -1158,7 +1158,7 @@
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "hm" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -1183,17 +1183,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ho" = (
 /turf/closed/wall/shiva/prefabricated,
-/area/space)
+/area/lv522/colony_streets)
 "hp" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/suit/storage/hazardvest,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ht" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
@@ -1203,11 +1203,11 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hv" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "hw" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
@@ -1217,28 +1217,28 @@
 	pixel_y = -9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hx" = (
 /obj/structure/cargo_container{
 	icon_state = "red 0,0";
 	tag = "icon-red 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "hB" = (
 /obj/structure/platform{
 	dir = 8;
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hC" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "hD" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -1248,7 +1248,7 @@
 	icon_state = "4-8"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "hF" = (
 /obj/item/xeno_egg,
 /obj/item/xeno_egg,
@@ -1257,43 +1257,43 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hG" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hH" = (
 /obj/structure/curtain/medical,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hI" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "hO" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hQ" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
 	tag = "icon-WY 0,0"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "hR" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "24"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hT" = (
 /obj/structure/machinery/conveyor{
 	dir = 5;
@@ -1302,7 +1302,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hU" = (
 /obj/structure/machinery/door/airlock/hatch/cockpit/two{
 	name = "cargo door"
@@ -1311,12 +1311,12 @@
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "hX" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "83"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ib" = (
 /obj/structure/filtration/machine_64x96{
 	icon_state = "filtration_machine_A_1"
@@ -1326,41 +1326,41 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ic" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "id" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "50"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ie" = (
 /obj/structure/surface/rack,
 /obj/item/clothing/head/hardhat,
 /obj/item/clothing/head/hardhat,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "if" = (
 /obj/structure/barricade/handrail{
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ig" = (
 /obj/structure/window_frame/shiva,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "ih" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "63"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ii" = (
 /obj/structure/platform{
 	dir = 8
@@ -1369,17 +1369,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "il" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iq" = (
 /obj/structure/largecrate/random,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "iv" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -1387,47 +1387,47 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iw" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ix" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iA" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_core,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "iB" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iF" = (
 /obj/structure/surface/rack,
 /obj/item/tool/shovel,
 /obj/item/tool/shovel,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "iH" = (
 /obj/structure/blocker/forcefield/vehicles,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iL" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/belt/utility,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iM" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -1435,34 +1435,34 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iO" = (
 /obj/structure/bed/chair/dropship/passenger,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iP" = (
 /obj/structure/window/framed/shiva,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iS" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "iU" = (
 /obj/structure/barricade/wooden{
 	dir = 4
 	},
 /obj/structure/barricade/wooden,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "jb" = (
 /obj/structure/reagent_dispensers/peppertank{
 	pixel_x = 32
@@ -1470,24 +1470,24 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jd" = (
 /obj/structure/cryofeed/right,
 /turf/open/floor/bluegrid,
-/area/space)
+/area/lv522/colony_streets)
 "je" = (
 /obj/structure/bed/chair{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "jf" = (
 /obj/structure/machinery/conveyor{
 	dir = 10;
 	id = "cargo_container"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ji" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -1495,14 +1495,14 @@
 	pixel_y = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "jj" = (
 /obj/structure/machinery/door/airlock/almayer/generic,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-rasputin7"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jm" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -1510,12 +1510,12 @@
 	pixel_y = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "jo" = (
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jp" = (
 /obj/effect/decal/cleanable/blood,
 /obj/structure/pipes/standard/manifold/hidden/green{
@@ -1524,20 +1524,20 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jq" = (
 /obj/structure/reagent_dispensers/water_cooler/stacks,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jv" = (
 /obj/structure/machinery/reagentgrinder{
 	pixel_y = 8
 	},
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "jw" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
@@ -1546,14 +1546,14 @@
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "jz" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jN" = (
 /obj/structure/filingcabinet/chestdrawer{
 	density = 0;
@@ -1566,18 +1566,18 @@
 	pixel_y = 19
 	},
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "jR" = (
 /obj/structure/platform{
 	density = 0;
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "jV" = (
 /obj/structure/platform,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "jW" = (
 /obj/structure/platform{
 	dir = 1
@@ -1586,33 +1586,33 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "jX" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "64"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ki" = (
 /obj/structure/cargo_container{
 	icon_state = "red 2,0";
 	tag = "icon-red 2,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "kj" = (
 /obj/structure/machinery/landinglight/ds1{
 	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "km" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ammo_magazine/smg/nailgun,
 /obj/item/ammo_magazine/smg/nailgun,
 /obj/item/ammo_magazine/smg/nailgun,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "kr" = (
 /obj/item/ammo_magazine/rifle/l42a/ap{
 	current_rounds = 0
@@ -1621,7 +1621,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ks" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -1630,41 +1630,41 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kw" = (
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-floor8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kx" = (
 /obj/structure/largecrate/random/barrel/white,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ky" = (
 /turf/closed/shuttle/dropship2/transparent,
-/area/space)
+/area/lv522/colony_streets)
 "kz" = (
 /turf/closed/wall/mineral/bone_resin,
-/area/space)
+/area/lv522/colony_streets)
 "kB" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "kG" = (
 /obj/item/ammo_magazine/rifle{
 	current_rounds = 0
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "kI" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kJ" = (
 /obj/structure/machinery/vending/cola{
 	pixel_x = 4
@@ -1673,7 +1673,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kK" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/regular{
@@ -1685,54 +1685,54 @@
 	dir = 4;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kN" = (
 /turf/open/floor/strata{
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "kR" = (
 /obj/effect/decal/cleanable/cobweb{
 	dir = 1
 	},
 /turf/open/floor/corsat,
-/area/space)
+/area/lv522/colony_streets)
 "kS" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "kV" = (
 /obj/item/weapon/gun/pistol/holdout,
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "lb" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "48"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ld" = (
 /obj/vehicle/powerloader,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "le" = (
 /obj/structure/barricade/wooden,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lj" = (
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lk" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
@@ -1740,20 +1740,20 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ll" = (
 /obj/structure/closet/bodybag,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ln" = (
 /obj/structure/machinery/chem_master,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lu" = (
 /obj/structure/filtration/machine_64x128{
 	icon_state = "filtration_1"
@@ -1763,7 +1763,7 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lF" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
 	icon_state = "white_trim"
@@ -1772,20 +1772,20 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "lJ" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 2,0";
 	tag = "icon-blue 2,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "lK" = (
 /obj/structure/fence,
 /turf/open/floor{
 	icon_state = "warningcorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lM" = (
 /obj/structure/window/reinforced{
 	dir = 4;
@@ -1812,7 +1812,7 @@
 	layer = 3.1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "lP" = (
 /obj/structure/prop/invuln/ice_prefab/roof_greeble{
 	icon_state = "vent2";
@@ -1825,21 +1825,21 @@
 	pixel_y = 28
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "lQ" = (
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "lS" = (
 /obj/structure/machinery/vending/cola,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "lY" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "lZ" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/recharger,
@@ -1847,7 +1847,7 @@
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mb" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -1856,26 +1856,26 @@
 	dir = 4;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "me" = (
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mi" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "mj" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/fedora,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mo" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 1;
@@ -1883,13 +1883,13 @@
 	req_one_access = null
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "mq" = (
 /obj/structure/machinery/portable_atmospherics/hydroponics,
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mu" = (
 /obj/structure/pipes/standard/simple/visible{
 	dir = 6;
@@ -1898,7 +1898,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "my" = (
 /obj/structure/platform{
 	density = 0;
@@ -1906,32 +1906,32 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "mz" = (
 /obj/effect/landmark/survivor_spawn,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mD" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mF" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 10;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mJ" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "mL" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/security/wooden_tv{
@@ -1943,23 +1943,23 @@
 	pixel_y = 7
 	},
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "mP" = (
 /turf/closed/wall/shiva/prefabricated/reinforced,
-/area/space)
+/area/lv522/colony_streets)
 "mS" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "mT" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 0,0";
 	tag = "icon-blue 0,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "mW" = (
 /obj/structure/platform,
 /obj/structure/platform{
@@ -1970,17 +1970,17 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "mZ" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "16"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nc" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan25"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nd" = (
 /obj/structure/bed/chair{
 	can_buckle = 0;
@@ -2002,14 +2002,14 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ne" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 1
 	},
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "ni" = (
 /obj/structure/surface/rack,
 /obj/item/tool/minihoe{
@@ -2029,11 +2029,11 @@
 	},
 /obj/item/tool/wirecutters/clippers,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "nl" = (
 /obj/effect/decal/cleanable/blood/oil/streak,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "np" = (
 /obj/structure/prop/invuln/ice_prefab/roof_greeble{
 	icon_state = "flagpole";
@@ -2047,7 +2047,7 @@
 	pixel_y = 28
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "nv" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/cans/souto{
@@ -2055,14 +2055,14 @@
 	pixel_y = 2
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "nw" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /obj/structure/prop/invuln/minecart_tracks/bumper{
 	dir = 1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "nz" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 4
@@ -2071,7 +2071,7 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nA" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -2079,7 +2079,7 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nC" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 2.99;
@@ -2087,25 +2087,25 @@
 	pixel_y = 28
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "nG" = (
 /obj/structure/bed/chair{
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "nH" = (
 /obj/structure/closet/secure_closet/freezer/fridge/full,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nI" = (
 /obj/item/clothing/suit/storage/hazardvest,
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "nO" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/transmitter/rotary{
@@ -2117,12 +2117,12 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nP" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "70"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nQ" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -2132,11 +2132,11 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nV" = (
 /obj/structure/surface/rack,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "nX" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/coffee{
@@ -2147,19 +2147,19 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "nZ" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
 	dir = 9;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ob" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "5"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "of" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/security/wooden_tv{
@@ -2173,7 +2173,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oi" = (
 /obj/structure/platform{
 	dir = 1;
@@ -2187,7 +2187,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ov" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -2196,19 +2196,19 @@
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "oB" = (
 /obj/structure/barricade/handrail,
 /turf/open/floor/coagulation{
 	icon_state = "4,8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oD" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oE" = (
 /obj/structure/surface/rack,
 /obj/item/tool/shovel/spade{
@@ -2228,16 +2228,16 @@
 	},
 /obj/item/reagent_container/glass/bucket,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "oF" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "101"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oG" = (
 /obj/structure/bed/chair,
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "oH" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/hugger{
@@ -2246,12 +2246,12 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oI" = (
 /obj/effect/decal/cleanable/blood,
 /obj/item/weapon/gun/pistol/mod88,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "oJ" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -2260,7 +2260,7 @@
 	icon_state = "solarpanel1"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "oK" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 4
@@ -2270,7 +2270,7 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oL" = (
 /obj/structure/filtration/machine_64x96{
 	icon_state = "filtration_machine_B_1"
@@ -2280,13 +2280,13 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oN" = (
 /obj/structure/window/framed/shiva,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oP" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/broken{
@@ -2302,7 +2302,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oR" = (
 /obj/structure/platform,
 /obj/structure/stairs/perspective{
@@ -2310,17 +2310,17 @@
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "oS" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "28"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oW" = (
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "oZ" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 10
@@ -2328,20 +2328,20 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pi" = (
 /obj/structure/toilet{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "pl" = (
 /obj/structure/platform{
 	dir = 4;
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "pm" = (
 /obj/effect/landmark/survivor_spawn,
 /obj/structure/pipes/standard/manifold/hidden/green{
@@ -2350,45 +2350,45 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pp" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "py" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pC" = (
 /obj/structure/fence,
 /turf/open/floor{
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pD" = (
 /obj/structure/machinery/sleeper,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pE" = (
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "pF" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "pG" = (
 /obj/effect/landmark/survivor_spawn,
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-floor8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "pQ" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 2.99;
@@ -2396,7 +2396,7 @@
 	pixel_y = 28
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "pR" = (
 /obj/structure/platform{
 	dir = 8
@@ -2407,7 +2407,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "pS" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
@@ -2416,10 +2416,10 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "pT" = (
 /turf/open/gm/river,
-/area/space)
+/area/lv522/colony_streets)
 "pW" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -2428,18 +2428,18 @@
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "pY" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "pZ" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "26"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qa" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 10
@@ -2449,7 +2449,7 @@
 	pixel_y = 11
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "qb" = (
 /obj/item/shard{
 	icon_state = "medium"
@@ -2458,7 +2458,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qe" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/box/pillbottles{
@@ -2471,13 +2471,13 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qi" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qj" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -2489,13 +2489,13 @@
 	pixel_y = 13
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "qn" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "qq" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
@@ -2511,7 +2511,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qt" = (
 /obj/structure/surface/rack,
 /obj/item/reagent_container/spray/cleaner{
@@ -2525,20 +2525,20 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qu" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
 	},
 /obj/structure/largecrate/random,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "qw" = (
 /obj/structure/machinery/vending/coffee,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qA" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 3.1;
@@ -2546,25 +2546,25 @@
 	pixel_y = 25
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "qC" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qG" = (
 /obj/structure/prop/tower,
 /obj/structure/cable/heavyduty{
 	icon_state = "0-8"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "qH" = (
 /obj/structure/prop/invuln/ice_prefab,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "qJ" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -2573,13 +2573,13 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qK" = (
 /obj/structure/largecrate/guns/merc,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qR" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 2.99;
@@ -2587,7 +2587,7 @@
 	pixel_y = 28
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "qS" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
@@ -2597,25 +2597,25 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "qW" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "49"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rb" = (
 /obj/structure/closet/secure_closet/detective,
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "re" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "rg" = (
 /obj/structure/filtration/machine_96x96/indestructible{
 	icon_state = "sedementation_A_1";
@@ -2626,7 +2626,7 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rh" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -2634,45 +2634,45 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rm" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 10
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "rn" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rp" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "rq" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rr" = (
 /obj/structure/surface/table/almayer,
 /obj/item/hardpoint/locomotion/van_wheels,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "rs" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ru" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/computer/operating,
@@ -2680,14 +2680,14 @@
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rB" = (
 /obj/structure/machinery/vending/dinnerware,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rC" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -2698,19 +2698,19 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rF" = (
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rJ" = (
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_1";
 	opacity = 0
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rL" = (
 /obj/structure/platform{
 	dir = 4;
@@ -2721,20 +2721,20 @@
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "rN" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rQ" = (
 /obj/structure/computerframe,
 /obj/effect/decal/cleanable/cobweb{
 	dir = 4
 	},
 /turf/open/floor/corsat,
-/area/space)
+/area/lv522/colony_streets)
 "rR" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/kitchen/tray,
@@ -2745,7 +2745,7 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rU" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -2755,13 +2755,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "rW" = (
 /obj/structure/barricade/handrail{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "rX" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -2770,23 +2770,23 @@
 	icon_state = "smokestack"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "sa" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sb" = (
 /obj/structure/machinery/bodyscanner,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sd" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "33"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "se" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -2796,7 +2796,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sf" = (
 /obj/structure/closet/secure_closet/freezer/fridge/full,
 /obj/item/reagent_container/food/condiment/sugar,
@@ -2804,23 +2804,23 @@
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sg" = (
 /obj/structure/barricade/wooden{
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "si" = (
 /obj/structure/prop/dam/drill,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "sj" = (
 /obj/structure/machinery/cm_vending/sorted/medical/chemistry,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sl" = (
 /obj/structure/platform{
 	dir = 1
@@ -2833,17 +2833,17 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "sn" = (
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/powercell,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "sy" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan_rightengine"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sz" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -2852,7 +2852,7 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sB" = (
 /obj/structure/platform{
 	dir = 1
@@ -2868,17 +2868,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sC" = (
 /obj/structure/closet/secure_closet/medical2,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sD" = (
 /obj/item/tool/wirecutters,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "sG" = (
 /obj/structure/platform{
 	dir = 4
@@ -2886,7 +2886,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sL" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -2895,11 +2895,11 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sO" = (
 /obj/structure/closet/cabinet,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "sQ" = (
 /obj/item/storage/surgical_tray,
 /obj/structure/surface/table/reinforced/prison,
@@ -2917,30 +2917,30 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sS" = (
 /obj/structure/cargo_container{
 	icon_state = "WY 2,0";
 	tag = "icon-WY 2,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "sU" = (
 /turf/closed/shuttle/elevator{
 	dir = 4
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sW" = (
 /obj/structure/machinery/power/port_gen/pacman/mrs,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "sX" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "sZ" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
@@ -2953,12 +2953,12 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tb" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "53"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "te" = (
 /obj/structure/platform{
 	dir = 4
@@ -2970,19 +2970,19 @@
 	},
 /obj/item/stack/rods,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "tl" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_door,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tm" = (
 /obj/structure/prop/dam/truck/mining,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tn" = (
 /obj/structure/closet/crate/miningcar,
 /obj/item/folder/black_random,
@@ -2991,22 +2991,22 @@
 /obj/item/folder/white,
 /obj/item/folder/yellow,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "tr" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "tt" = (
 /obj/item/stack/sheet/metal,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "tv" = (
 /obj/structure/largecrate/random,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "ty" = (
 /obj/item/ammo_magazine/rifle/l42a/ap{
 	current_rounds = 0
@@ -3017,7 +3017,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tz" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
@@ -3025,13 +3025,13 @@
 	},
 /obj/structure/platform,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "tB" = (
 /obj/structure/surface/rack,
 /obj/item/hardpoint/locomotion/van_wheels,
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "tH" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -3039,19 +3039,19 @@
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "tI" = (
 /obj/structure/reagent_dispensers/fueltank/custom,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tJ" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "6"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tL" = (
 /obj/structure/platform,
 /obj/structure/platform{
@@ -3062,18 +3062,18 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "tN" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tR" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "51"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tT" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "\improper Marshall Office";
@@ -3082,19 +3082,19 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "tV" = (
 /obj/structure/powerloader_wreckage,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ub" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin7";
 	tag = "icon-rasputin7"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uc" = (
 /obj/structure/sink{
 	pixel_y = 15
@@ -3103,19 +3103,19 @@
 	dir = 4;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ud" = (
 /obj/vehicle/powerloader{
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ue" = (
 /obj/structure/barricade/handrail{
 	layer = 3.7
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "uj" = (
 /obj/structure/filtration/collector_pipes{
 	icon_state = "lower_1"
@@ -3126,7 +3126,7 @@
 /turf/open/floor/coagulation{
 	icon_state = "0,5"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uk" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -3134,13 +3134,13 @@
 	tag = "icon-WY 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "ul" = (
 /obj/structure/filtration/machine_96x96/indestructible{
 	icon_state = "distribution"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "um" = (
 /obj/structure/platform{
 	dir = 1;
@@ -3153,11 +3153,11 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "un" = (
 /obj/structure/prop/dam/crane/damaged,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "up" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -3166,17 +3166,17 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uq" = (
 /obj/structure/toilet{
 	pixel_y = 16
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "ur" = (
 /obj/structure/prop/dam/crane,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "uw" = (
 /obj/structure/platform,
 /obj/structure/platform{
@@ -3187,13 +3187,13 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "uB" = (
 /obj/item/ammo_magazine/rifle/explosive{
 	current_rounds = 0
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "uD" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -3202,7 +3202,7 @@
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "uE" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/box/gloves,
@@ -3210,7 +3210,7 @@
 	dir = 4;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uF" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -3218,13 +3218,13 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uG" = (
 /obj/structure/platform_decoration/shiva/catwalk{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "uH" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/structure/machinery/computer/security/wooden_tv{
@@ -3243,46 +3243,46 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uI" = (
 /obj/structure/stairs/perspective{
 	dir = 1;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "uK" = (
 /obj/structure/largecrate/random/barrel/red,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "uO" = (
 /turf/open/floor{
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uP" = (
 /obj/structure/closet/secure_closet/freezer/fridge/groceries,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "uR" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
 	tag = "icon-WY 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "uS" = (
 /obj/structure/window,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "vi" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "vk" = (
 /obj/structure/closet/fireaxecabinet{
 	pixel_y = 28
@@ -3291,7 +3291,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vl" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -3300,16 +3300,16 @@
 	dir = 4;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vm" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "vq" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "25"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vs" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -3318,25 +3318,25 @@
 	dir = 1;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vt" = (
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vx" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "31"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vy" = (
 /obj/structure/pipes/standard/tank/oxygen,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vz" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -3354,25 +3354,25 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vD" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "36"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vF" = (
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vG" = (
 /obj/structure/prop/dam/truck/cargo,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vK" = (
 /obj/structure/bed/chair/wheelchair{
 	dir = 4
@@ -3381,18 +3381,18 @@
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vP" = (
 /obj/structure/machinery/conveyor,
 /obj/structure/plasticflaps,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "vT" = (
 /obj/structure/bed/chair{
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "vU" = (
 /obj/structure/filingcabinet{
 	density = 0;
@@ -3408,7 +3408,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vX" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/coffee{
@@ -3418,13 +3418,13 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "vY" = (
 /obj/structure/cable/heavyduty{
 	icon_state = "1-2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "vZ" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -3432,18 +3432,18 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wa" = (
 /obj/item/ammo_magazine/pistol/mod88,
 /obj/item/weapon/gun/pistol/mod88,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "we" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wf" = (
 /obj/structure/pipes/standard/simple/visible{
 	dir = 5;
@@ -3452,22 +3452,22 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wg" = (
 /obj/structure/foamedmetal,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "wh" = (
 /obj/structure/curtain/red,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "wi" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "wj" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ashtray/plastic{
@@ -3483,27 +3483,27 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wk" = (
 /obj/structure/closet/secure_closet/medical1,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wl" = (
 /obj/structure/largecrate/random,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wn" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wo" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/chem_dispenser/soda{
@@ -3512,27 +3512,27 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wp" = (
 /obj/structure/prop/dam/crane/cargo{
 	dir = 1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "wr" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 2,0";
 	tag = "icon-blue 2,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "wt" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wu" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
@@ -3542,23 +3542,23 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wv" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan20"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ww" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wx" = (
 /turf/open/floor/corsat{
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wy" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -3567,16 +3567,16 @@
 	dir = 8;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wB" = (
 /turf/open/floor/strata{
 	icon_state = "red2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wG" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "wJ" = (
 /obj/structure/platform{
 	dir = 1;
@@ -3600,19 +3600,19 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wK" = (
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wL" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 10;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wM" = (
 /obj/item/ammo_magazine/rifle/l42a/ap{
 	current_rounds = 0
@@ -3621,17 +3621,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wO" = (
 /obj/structure/largecrate/random/barrel/white,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "wQ" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "wY" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 1;
@@ -3639,42 +3639,42 @@
 	req_one_access = null
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "xg" = (
 /obj/structure/machinery/cryo_cell,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xi" = (
 /obj/effect/alien/resin/sticky,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xj" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin4";
 	tag = "icon-rasputin4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xm" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xo" = (
 /turf/closed/shuttle/elevator{
 	dir = 6
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xp" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xq" = (
 /obj/structure/surface/table/almayer,
 /obj/item/book/manual/chef_recipes,
@@ -3685,13 +3685,13 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xt" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "xy" = (
 /obj/structure/machinery/light/double/blue{
 	dir = 8;
@@ -3707,7 +3707,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xA" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -3715,14 +3715,14 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xG" = (
 /obj/structure/barricade/wooden,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xI" = (
 /obj/structure/platform{
 	density = 0;
@@ -3732,19 +3732,19 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xM" = (
 /obj/structure/filtration/collector_pipes{
 	icon_state = "lower_2"
 	},
 /turf/open/gm/river,
-/area/space)
+/area/lv522/colony_streets)
 "xN" = (
 /obj/structure/platform{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "xO" = (
 /obj/vehicle/powerloader{
 	dir = 4
@@ -3755,7 +3755,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xP" = (
 /obj/structure/curtain/medical,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -3764,7 +3764,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xQ" = (
 /obj/structure/pipes/standard/tank/oxygen{
 	dir = 1
@@ -3772,38 +3772,38 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xR" = (
 /obj/structure/surface/rack,
 /obj/item/device/radio,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "xU" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "89"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "xX" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 6;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yb" = (
 /obj/structure/closet/crate/freezer,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yh" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 8;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yj" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -3811,13 +3811,13 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yk" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yp" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -3825,25 +3825,25 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yq" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "warningcorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yv" = (
 /obj/structure/platform{
 	dir = 1;
 	layer = 2
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "yw" = (
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "yy" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/broken{
@@ -3858,7 +3858,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yz" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/kitchen/knife/butcher,
@@ -3867,7 +3867,7 @@
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yC" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -3880,14 +3880,14 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yD" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
 	tag = "icon-0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "yG" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/flashlight/lamp{
@@ -3902,13 +3902,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yO" = (
 /obj/structure/machinery/iv_drip,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "yP" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 1;
@@ -3918,7 +3918,7 @@
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "yX" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -3926,18 +3926,18 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zd" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "73"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ze" = (
 /obj/structure/barricade/handrail{
 	dir = 1
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "zh" = (
 /obj/structure/platform/shiva/catwalk{
 	dir = 1
@@ -3946,24 +3946,24 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zl" = (
 /obj/structure/largecrate/random/barrel,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "zn" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 1,0";
 	tag = "icon-blue 1,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "zp" = (
 /obj/item/reagent_container/blood/empty,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zz" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -3971,12 +3971,12 @@
 	},
 /obj/structure/largecrate/random,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "zB" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "74"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zD" = (
 /obj/structure/coatrack,
 /obj/item/clothing/suit/storage/labcoat{
@@ -3984,7 +3984,7 @@
 	pixel_y = 4
 	},
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "zH" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -3994,25 +3994,25 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zI" = (
 /turf/open/floor/coagulation{
 	icon_state = "8,8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zK" = (
 /obj/structure/bed/sofa/vert/grey/top,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zM" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "zO" = (
 /obj/structure/platform{
 	dir = 8;
@@ -4026,24 +4026,24 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zR" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "75"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zT" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "66";
 	name = "\improper Waterloo"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zW" = (
 /obj/effect/landmark/xeno_hive_spawn,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zY" = (
 /obj/structure/surface/table/almayer,
 /obj/item/trash/plate{
@@ -4058,7 +4058,7 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "zZ" = (
 /obj/structure/machinery/door/airlock/almayer/generic{
 	dir = 2
@@ -4067,14 +4067,14 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Aa" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
 	tag = "icon-0,2"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Ab" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/snacks/sliceable/bread{
@@ -4088,7 +4088,7 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ac" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/prison{
@@ -4096,7 +4096,7 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Af" = (
 /obj/structure/platform{
 	density = 0;
@@ -4105,14 +4105,14 @@
 	},
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Ag" = (
 /obj/structure/stairs/perspective{
 	dir = 9;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Al" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
@@ -4121,20 +4121,20 @@
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Am" = (
 /turf/open/floor{
 	dir = 9;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "An" = (
 /obj/effect/landmark/survivor_spawn,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ao" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -4156,19 +4156,19 @@
 	pixel_y = -15
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "As" = (
 /obj/item/xeno_egg,
 /obj/structure/surface/table/almayer,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Av" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 0,0";
 	tag = "icon-blue 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Ax" = (
 /obj/structure/machinery/light/double/blue{
 	dir = 4;
@@ -4178,12 +4178,12 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AB" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "91"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AD" = (
 /obj/structure/surface/table/almayer{
 	dir = 4;
@@ -4193,7 +4193,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AG" = (
 /obj/structure/stairs/perspective{
 	dir = 1;
@@ -4203,18 +4203,18 @@
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "AI" = (
 /obj/structure/largecrate/random/barrel,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AL" = (
 /turf/open/floor/strata{
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AR" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/hugger{
@@ -4224,7 +4224,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AX" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -4236,19 +4236,19 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "AY" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan_leftengine"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ba" = (
 /obj/effect/landmark/survivor_spawn,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Bb" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -4264,30 +4264,30 @@
 	dir = 8
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "Bd" = (
 /obj/structure/girder,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Bk" = (
 /obj/structure/closet/crate,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Bl" = (
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Bm" = (
 /obj/structure/machinery/colony_floodlight_switch{
 	pixel_y = 30
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Bn" = (
 /obj/structure/bed/chair,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Bo" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 1;
@@ -4295,7 +4295,7 @@
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Bp" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/structure/platform{
@@ -4304,12 +4304,12 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Bt" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan5"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Bx" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
@@ -4319,24 +4319,24 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "By" = (
 /obj/item/ammo_magazine/m2c{
 	current_rounds = 0
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "BC" = (
 /obj/structure/closet/secure_closet/freezer/meat,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "BE" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "BJ" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
@@ -4346,44 +4346,44 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "BK" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "BL" = (
 /obj/effect/landmark/xeno_hive_spawn,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "BM" = (
 /obj/structure/barricade/handrail{
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "BR" = (
 /obj/structure/machinery/vending/coffee,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "BS" = (
 /obj/structure/bed/stool,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "BT" = (
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable,
-/area/space)
+/area/lv522/colony_streets)
 "BU" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
 	tag = "icon-WY 0,0"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "BZ" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC,
@@ -4391,17 +4391,17 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cd" = (
 /obj/structure/barricade/deployable,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Cj" = (
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cl" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 2.99;
@@ -4409,14 +4409,14 @@
 	pixel_y = 28
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Cm" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 8;
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cn" = (
 /obj/structure/cargo_container{
 	icon_state = "red 0,0";
@@ -4425,7 +4425,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Co" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/broken{
@@ -4434,18 +4434,18 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cr" = (
 /obj/structure/fence,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Cu" = (
 /obj/effect/landmark/xeno_spawn,
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_pool,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cv" = (
 /obj/structure/bookcase/manuals/engineering{
 	pixel_x = 2
@@ -4453,7 +4453,7 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Cw" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -4463,7 +4463,7 @@
 	pixel_y = 11
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Cx" = (
 /obj/structure/platform{
 	density = 0;
@@ -4471,7 +4471,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Cz" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	layer = 2.6
@@ -4480,7 +4480,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "CA" = (
 /obj/structure/platform{
 	dir = 1;
@@ -4490,7 +4490,7 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "CI" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
@@ -4498,12 +4498,12 @@
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "CM" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "69"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "CO" = (
 /obj/structure/machinery/optable,
 /obj/structure/pipes/vents/pump,
@@ -4511,19 +4511,19 @@
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "CT" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "CV" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "72"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "CX" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ashtray/plastic{
@@ -4543,12 +4543,12 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Db" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "27"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Dc" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -4558,7 +4558,7 @@
 	pixel_y = -9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Df" = (
 /obj/structure/platform{
 	dir = 8
@@ -4570,11 +4570,11 @@
 	},
 /obj/item/stack/rods,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Dg" = (
 /obj/structure/surface/table/gamblingtable,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Dh" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
@@ -4583,23 +4583,23 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Dm" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Dn" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/corsat,
-/area/space)
+/area/lv522/colony_streets)
 "Do" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
 	icon_state = "white_trim"
 	},
 /turf/closed/wall/shiva/prefabricated/reinforced,
-/area/space)
+/area/lv522/colony_streets)
 "Dp" = (
 /obj/structure/prop/invuln{
 	desc = "big pile energy.";
@@ -4609,12 +4609,12 @@
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Dq" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "68"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Dy" = (
 /obj/structure/surface/table/almayer{
 	dir = 1;
@@ -4625,13 +4625,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DA" = (
 /turf/open/floor/strata{
 	dir = 5;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DB" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -4639,13 +4639,13 @@
 /turf/open/floor/strata{
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DF" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin8";
 	tag = "icon-rasputin8"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DI" = (
 /obj/effect/decal/cleanable/blood,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -4654,22 +4654,22 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DJ" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "43"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DL" = (
 /obj/structure/platform,
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "DO" = (
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DP" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -4677,7 +4677,7 @@
 /turf/open/floor/coagulation{
 	icon_state = "8,3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DR" = (
 /obj/item/stack/sheet/metal,
 /obj/item/stack/rods,
@@ -4685,25 +4685,25 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DT" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_core,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "DV" = (
 /obj/structure/platform{
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "DY" = (
 /obj/structure/curtain/medical,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ea" = (
 /obj/structure/machinery/computer/security{
 	network = null;
@@ -4718,7 +4718,7 @@
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Eb" = (
 /obj/structure/platform{
 	dir = 1
@@ -4731,20 +4731,20 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Ee" = (
 /obj/structure/window_frame/shiva,
 /obj/item/shard{
 	icon_state = "medium"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Ef" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Eh" = (
 /obj/item/clothing/mask/facehugger{
 	desc = "It has some sort of a tube at the end of its tail. What the hell is this thing?";
@@ -4756,7 +4756,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ei" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/reagentgrinder{
@@ -4771,7 +4771,7 @@
 	dir = 4;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Em" = (
 /obj/structure/machinery/computer/security{
 	network = null;
@@ -4786,13 +4786,13 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Er" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "61";
 	name = "\improper Waterloo"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Et" = (
 /obj/structure/barricade/wooden{
 	dir = 1
@@ -4801,7 +4801,7 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Eu" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -4810,18 +4810,18 @@
 	dir = 5;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ew" = (
 /turf/open/floor/strata{
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ex" = (
 /turf/open/floor/strata{
 	dir = 10;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EA" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/accessory/storage/black_vest,
@@ -4829,7 +4829,7 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EC" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -4837,7 +4837,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EF" = (
 /obj/structure/surface/table/almayer{
 	dir = 1;
@@ -4847,7 +4847,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EI" = (
 /obj/structure/barricade/deployable{
 	dir = 4
@@ -4857,13 +4857,13 @@
 	},
 /obj/effect/decal/cleanable/blood,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "EN" = (
 /obj/structure/surface/table/almayer,
 /obj/item/newspaper,
 /obj/item/tool/pen/blue/clicky,
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "EU" = (
 /obj/structure/platform{
 	density = 0;
@@ -4874,13 +4874,13 @@
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EV" = (
 /obj/structure/closet/secure_closet/medical2,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EY" = (
 /obj/structure/machinery/processor,
 /obj/structure/surface/table/almayer,
@@ -4888,7 +4888,7 @@
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "EZ" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -4898,12 +4898,12 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Fb" = (
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Fe" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
@@ -4914,7 +4914,7 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Fi" = (
 /obj/effect/decal/cleanable/blood/oil,
 /obj/item/ammo_magazine/m2c{
@@ -4924,15 +4924,15 @@
 	pixel_y = -4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Fj" = (
 /obj/structure/prop/dam/truck/cargo,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Fk" = (
 /obj/structure/prop/dam/truck/mining,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Fm" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
 /obj/item/reagent_container/food/snacks/meatpizzaslice,
@@ -4940,13 +4940,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Fq" = (
 /turf/open/floor{
 	dir = 10;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Fv" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -4955,7 +4955,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "FD" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
@@ -4964,27 +4964,27 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "FG" = (
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "FH" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
 	tag = "icon-WY 0,0"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "FI" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "FJ" = (
 /obj/structure/platform,
 /obj/structure/platform{
@@ -4995,27 +4995,27 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "FM" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "FQ" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "32"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "FV" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "FX" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "44"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "FY" = (
 /obj/structure/filingcabinet{
 	density = 0;
@@ -5028,26 +5028,26 @@
 	pixel_y = 20
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Gb" = (
 /obj/structure/bed/sofa/vert/grey,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ge" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Gf" = (
 /turf/closed/shuttle/ert{
 	icon_state = "leftengine_3";
 	opacity = 0
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Gi" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/adv{
@@ -5059,24 +5059,24 @@
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Gk" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Gm" = (
 /obj/structure/machinery/sensortower,
 /turf/open/floor{
 	icon_state = "bcircuit";
 	tag = "icon-bcircuit"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Go" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Gu" = (
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 8;
@@ -5088,7 +5088,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GD" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin{
@@ -5101,7 +5101,7 @@
 	pixel_y = 10
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "GG" = (
 /obj/structure/stairs/perspective{
 	dir = 1;
@@ -5111,13 +5111,13 @@
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "GL" = (
 /obj/structure/prop/dam/van,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GM" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -5127,7 +5127,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GN" = (
 /obj/structure/platform_decoration/shiva/catwalk{
 	dir = 8
@@ -5136,7 +5136,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GQ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/computer3_part{
@@ -5147,20 +5147,20 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GR" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GS" = (
 /obj/structure/machinery/washing_machine,
 /obj/structure/machinery/washing_machine{
 	pixel_y = 15
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "GT" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/glass/beaker,
@@ -5173,13 +5173,13 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "GU" = (
 /obj/item/tool/screwdriver,
 /obj/effect/decal/cleanable/blood,
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "GV" = (
 /obj/structure/surface/table/almayer{
 	dir = 8;
@@ -5189,21 +5189,21 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ha" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "71";
 	name = "\improper Waterloo"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Hc" = (
 /obj/item/weapon/gun/pistol/b92fs,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Hd" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Hg" = (
 /obj/structure/machinery/shower{
 	dir = 8
@@ -5219,7 +5219,7 @@
 	pixel_y = -15
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "Hi" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
@@ -5227,17 +5227,17 @@
 	},
 /obj/structure/platform,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Hl" = (
 /obj/structure/closet,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Hp" = (
 /obj/structure/bed/sofa/south/grey/right,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Hr" = (
 /obj/structure/sink{
 	dir = 1;
@@ -5246,31 +5246,31 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ht" = (
 /obj/structure/machinery/door/airlock/almayer/generic,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Hu" = (
 /obj/structure/cargo_container{
 	icon_state = "HD_blue 0,2";
 	tag = "icon-blue 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "HA" = (
 /obj/structure/machinery/power/geothermal{
 	fail_rate = 5
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "HB" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
 	tag = "icon-0,1"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "HC" = (
 /obj/vehicle/multitile/apc/decrepit{
 	dir = 8
@@ -5282,7 +5282,7 @@
 	pixel_y = 9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "HD" = (
 /obj/structure/machinery/power/geothermal{
 	fail_rate = 5
@@ -5291,13 +5291,13 @@
 	dir = 4;
 	icon_state = "warnplate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HE" = (
 /obj/structure/platform{
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "HF" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin,
@@ -5306,7 +5306,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HJ" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
@@ -5318,7 +5318,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "HL" = (
 /obj/structure/machinery/power/smes/buildable{
 	capacity = 1e+006;
@@ -5327,19 +5327,19 @@
 /turf/open/floor/plating{
 	icon_state = "platebotc"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HQ" = (
 /obj/structure/machinery/conveyor,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HS" = (
 /obj/structure/machinery/power/monitor{
 	name = "Main Power Grid Monitoring"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "HV" = (
 /obj/structure/pipes/standard/manifold/visible{
 	dir = 1
@@ -5347,7 +5347,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HX" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/fancy/vials/random,
@@ -5355,42 +5355,42 @@
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "HY" = (
 /obj/structure/largecrate/random,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "HZ" = (
 /obj/structure/prop/invuln/ice_prefab/standalone{
 	icon_state = "white"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Ia" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 10;
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Ig" = (
 /obj/structure/largecrate/random,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ih" = (
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ij" = (
 /obj/structure/bed/sofa/south/grey/left,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ir" = (
 /obj/item/weapon/shield/riot,
 /obj/item/weapon/melee/classic_baton,
@@ -5398,7 +5398,7 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Is" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/microwave{
@@ -5411,7 +5411,7 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ix" = (
 /obj/structure/platform{
 	dir = 1;
@@ -5424,14 +5424,14 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Iz" = (
 /obj/structure/closet/secure_closet/marshal,
 /obj/item/clothing/suit/storage/CMB,
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IA" = (
 /obj/structure/cargo_container{
 	health = 5000;
@@ -5440,7 +5440,7 @@
 	unacidable = 1
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "IB" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -5449,17 +5449,17 @@
 	dir = 8;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IF" = (
 /obj/structure/prop/dam/van,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "IJ" = (
 /obj/structure/machinery/iv_drip,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IL" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
@@ -5471,27 +5471,27 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IN" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "IP" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/pouch/tools/full,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IR" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IS" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -5503,7 +5503,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "IT" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
@@ -5511,25 +5511,25 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IU" = (
 /obj/structure/machinery/shower{
 	dir = 4;
 	tag = "icon-shower (EAST)"
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "IW" = (
 /turf/open/floor/strata{
 	dir = 6;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IX" = (
 /obj/item/stack/sheet/metal,
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "IY" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 10
@@ -5537,7 +5537,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "IZ" = (
 /obj/structure/platform{
 	dir = 8
@@ -5546,14 +5546,14 @@
 /obj/item/stack/rods,
 /obj/effect/decal/cleanable/blood/gibs/xeno,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Ja" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 4
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Jb" = (
 /obj/structure/window/reinforced{
 	dir = 4;
@@ -5583,7 +5583,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jd" = (
 /obj/item/storage/backpack/marine/satchel{
 	desc = "It's the heavy-duty black polymer kind. Time to take out the trash!";
@@ -5609,41 +5609,41 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Je" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jh" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "86"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ji" = (
 /obj/structure/cargo_container{
 	icon_state = "HD_blue 0,0";
 	tag = "icon-blue 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Jj" = (
 /obj/structure/window{
 	dir = 4
 	},
 /obj/structure/window,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Jk" = (
 /obj/structure/prop/dam/truck/damaged,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Jn" = (
 /turf/open/floor{
 	dir = 4;
 	icon_state = "warningcorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jo" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -5652,13 +5652,13 @@
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jp" = (
 /obj/vehicle/train/cargo/trolley,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jq" = (
 /obj/structure/platform{
 	density = 0;
@@ -5668,17 +5668,17 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Js" = (
 /obj/structure/girder/reinforced,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Jx" = (
 /obj/item/clothing/head/hardhat,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Jy" = (
 /obj/structure/coatrack,
 /obj/item/clothing/suit/storage/snow_suit{
@@ -5689,25 +5689,25 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JC" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JD" = (
 /obj/structure/extinguisher_cabinet{
 	pixel_y = 30
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "JG" = (
 /turf/open/floor/corsat{
 	dir = 6;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JJ" = (
 /obj/structure/platform{
 	density = 0;
@@ -5715,20 +5715,20 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "JL" = (
 /obj/structure/machinery/gibber,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JN" = (
 /obj/structure/machinery/portable_atmospherics/canister/phoron,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JP" = (
 /obj/item/key/cargo_train,
 /obj/structure/surface/rack,
@@ -5736,12 +5736,12 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JQ" = (
 /obj/effect/landmark/xeno_spawn,
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_pool,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "JS" = (
 /obj/structure/surface/table/almayer{
 	dir = 4;
@@ -5754,7 +5754,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JT" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -5763,13 +5763,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JU" = (
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "JV" = (
 /obj/item/xeno_egg,
 /obj/structure/closet/crate/freezer,
@@ -5778,7 +5778,7 @@
 /obj/item/xeno_egg,
 /obj/item/xeno_egg,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "JW" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -5790,7 +5790,7 @@
 	pixel_y = -8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "JX" = (
 /obj/structure/sink{
 	dir = 8;
@@ -5801,37 +5801,37 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kf" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Kj" = (
 /turf/open/floor/corsat{
 	dir = 4;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kk" = (
 /obj/structure/platform{
 	density = 0;
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Km" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kp" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "95"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kq" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -5840,27 +5840,27 @@
 	dir = 8;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kt" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Kz" = (
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "KA" = (
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/tool,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "KB" = (
 /turf/open/floor/corsat{
 	dir = 10;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KC" = (
 /obj/structure/platform{
 	density = 0;
@@ -5868,7 +5868,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "KD" = (
 /obj/structure/stairs/perspective{
 	dir = 9;
@@ -5880,7 +5880,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "KG" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/item/ammo_magazine/rifle/l42a/ap{
@@ -5889,13 +5889,13 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KJ" = (
 /obj/structure/platform/shiva/catwalk{
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "KK" = (
 /obj/item/shard{
 	icon_state = "medium"
@@ -5904,12 +5904,12 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KL" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KR" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -5919,13 +5919,13 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KS" = (
 /turf/open/floor/plating{
 	dir = 4;
 	icon_state = "warnplate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KV" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
@@ -5939,38 +5939,38 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "KX" = (
 /obj/structure/platform_decoration/shiva/catwalk{
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Le" = (
 /obj/structure/barricade/wooden{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Lg" = (
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ll" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/wrench,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Lm" = (
 /obj/structure/platform{
 	dir = 8
 	},
 /obj/effect/decal/cleanable/blood,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Lp" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 8
@@ -5980,7 +5980,7 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Lq" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
@@ -5991,14 +5991,14 @@
 	pixel_y = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Lr" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/hardhat,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ls" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/snacks/monkeyburger{
@@ -6011,7 +6011,7 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Lz" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -6020,20 +6020,20 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LC" = (
 /turf/open/floor/strata{
 	dir = 10;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LE" = (
 /obj/item/stack/sheet/metal,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LG" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 4
@@ -6041,7 +6041,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LJ" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -6049,7 +6049,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LN" = (
 /obj/structure/platform{
 	density = 0;
@@ -6058,7 +6058,7 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LO" = (
 /obj/effect/decal/cleanable/blood/gibs/xeno/body,
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -6066,7 +6066,7 @@
 	dir = 1;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LP" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/paper_bin{
@@ -6075,21 +6075,21 @@
 	},
 /obj/item/tool/pen/blue/clicky,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "LQ" = (
 /obj/effect/acid_hole,
 /turf/closed/wall/shiva/prefabricated/reinforced,
-/area/space)
+/area/lv522/colony_streets)
 "LR" = (
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "LS" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin6";
 	tag = "icon-rasputin6"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "LT" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -6099,21 +6099,21 @@
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "LU" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/wirecutters,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ma" = (
 /obj/effect/landmark/xeno_spawn,
 /obj/effect/landmark/queen_spawn,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Mb" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
@@ -6123,7 +6123,7 @@
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Md" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/healthanalyzer,
@@ -6133,13 +6133,13 @@
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Me" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Mi" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -6148,43 +6148,43 @@
 	dir = 1;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ml" = (
 /obj/structure/girder/reinforced,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Mm" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
 	tag = "icon-WY 0,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Mn" = (
 /turf/closed/shuttle/ert,
-/area/space)
+/area/lv522/colony_streets)
 "Mo" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 9
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ms" = (
 /turf/open/shuttle/dropship{
 	icon_state = "floor8";
 	tag = "icon-rasputin7"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Mu" = (
 /turf/open/floor/strata{
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Mw" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "100"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "MB" = (
 /obj/structure/surface/table/almayer,
 /obj/item/ashtray/plastic{
@@ -6200,7 +6200,7 @@
 	pixel_x = -5
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "MD" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/reagent_container/food/drinks/flask/detflask{
@@ -6212,51 +6212,51 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "MG" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "MH" = (
 /turf/open/floor{
 	dir = 1;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "MI" = (
 /obj/structure/machinery/seed_extractor,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "MV" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "MZ" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Na" = (
 /obj/structure/bed/chair{
 	dir = 4
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Nb" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Nh" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "No" = (
 /obj/structure/filingcabinet{
 	pixel_x = 7
@@ -6265,7 +6265,7 @@
 	pixel_x = -9
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ns" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -6274,24 +6274,24 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Nt" = (
 /obj/structure/reagent_dispensers/water_cooler/stacks,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Nv" = (
 /obj/item/device/flashlight/lantern,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Nw" = (
 /obj/structure/window{
 	dir = 4
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ny" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
@@ -6301,23 +6301,23 @@
 	layer = 2.9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Nz" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "NC" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ND" = (
 /obj/structure/bed/chair{
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "NK" = (
 /obj/structure/surface/rack,
 /obj/item/reagent_container/food/snacks/sliceable/cheesewheel{
@@ -6330,7 +6330,7 @@
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "NN" = (
 /obj/structure/machinery/door/airlock/dropship_hatch/two{
 	dir = 8
@@ -6339,14 +6339,14 @@
 	icon_state = "rasputin3";
 	tag = "icon-rasputin3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "NO" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
 /obj/structure/fence,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "NR" = (
 /obj/structure/platform{
 	density = 0;
@@ -6354,7 +6354,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "NS" = (
 /obj/structure/barricade/deployable{
 	dir = 1
@@ -6363,19 +6363,19 @@
 	current_rounds = 0
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "NW" = (
 /obj/effect/landmark/xeno_spawn,
 /obj/effect/landmark/queen_spawn,
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "NX" = (
 /obj/structure/curtain/red,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "NY" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/radio/off{
@@ -6386,13 +6386,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "NZ" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 6
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Od" = (
 /obj/structure/platform{
 	dir = 1;
@@ -6402,7 +6402,7 @@
 	icon_state = "p_stair_ew_full_cap"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Oe" = (
 /obj/structure/machinery/power/terminal{
 	dir = 1
@@ -6412,13 +6412,13 @@
 	icon_state = "platebot";
 	tag = "icon-platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Of" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Og" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -6427,30 +6427,30 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Oh" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Oj" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "22"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ok" = (
 /obj/structure/surface/rack,
 /obj/item/xeno_egg,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "On" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Oo" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 1;
@@ -6458,7 +6458,7 @@
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Oq" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
@@ -6467,21 +6467,21 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ov" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/CICmap,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ow" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 4;
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Oz" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -6489,7 +6489,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "OE" = (
 /obj/structure/window_frame/shiva,
 /obj/effect/decal/cleanable/blood,
@@ -6497,7 +6497,7 @@
 	icon_state = "medium"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "OG" = (
 /obj/structure/platform{
 	dir = 8
@@ -6510,7 +6510,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "OJ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin{
@@ -6523,7 +6523,7 @@
 	pixel_y = 10
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ON" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -6539,13 +6539,13 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "OQ" = (
 /turf/open/floor/corsat{
 	dir = 9;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "OS" = (
 /obj/structure/surface/table/almayer,
 /obj/item/newspaper,
@@ -6553,20 +6553,20 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "OU" = (
 /obj/item/tool/pickaxe,
 /obj/structure/surface/rack,
 /obj/item/device/flashlight/lantern,
 /obj/item/tool/pickaxe,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "OY" = (
 /obj/structure/machinery/floodlight/landing,
 /turf/open/floor/mech_bay_recharge_floor{
 	name = "Shuttle Landing Lights"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pb" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
@@ -6574,12 +6574,12 @@
 	},
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Pd" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "29"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pf" = (
 /obj/structure/machinery/power/terminal{
 	dir = 1
@@ -6588,34 +6588,34 @@
 	icon_state = "platebot";
 	tag = "icon-platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pg" = (
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pi" = (
 /obj/structure/closet/toolcloset,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Pj" = (
 /obj/item/device/multitool,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pk" = (
 /obj/structure/surface/table/almayer,
 /obj/item/XenoBio/Blood,
 /turf/open/floor/strata{
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pl" = (
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Pm" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 5
@@ -6624,20 +6624,20 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Po" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pq" = (
 /obj/structure/surface/table/almayer,
 /obj/item/device/taperecorder,
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ps" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -6645,7 +6645,7 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pw" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
@@ -6656,7 +6656,7 @@
 	pixel_y = -1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Px" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "\improper Marshall Office";
@@ -6668,14 +6668,14 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Pz" = (
 /obj/structure/cargo_container{
 	icon_state = "green 2,0";
 	tag = "icon-green 2,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "PA" = (
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 1
@@ -6684,7 +6684,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PB" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -6693,11 +6693,11 @@
 	dir = 6;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PE" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "PH" = (
 /obj/structure/barricade/handrail{
 	dir = 4
@@ -6705,19 +6705,19 @@
 /turf/open/floor/coagulation{
 	icon_state = "0,5"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PJ" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan9"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PN" = (
 /obj/structure/closet/wardrobe/medic_white,
 /turf/open/floor/strata{
 	dir = 1;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PQ" = (
 /obj/structure/filingcabinet/chestdrawer{
 	density = 0;
@@ -6725,28 +6725,28 @@
 	pixel_y = 19
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "PS" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "PU" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "PW" = (
 /obj/structure/xenoautopsy,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "PZ" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "23"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qa" = (
 /obj/structure/platform{
 	density = 0;
@@ -6756,16 +6756,16 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qb" = (
 /obj/structure/platform{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Qc" = (
 /turf/closed/shuttle/elevator,
-/area/space)
+/area/lv522/colony_streets)
 "Qd" = (
 /obj/structure/machinery/conveyor{
 	dir = 10;
@@ -6774,7 +6774,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qe" = (
 /obj/structure/platform{
 	dir = 8;
@@ -6788,17 +6788,17 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qf" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "99"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qi" = (
 /turf/closed/shuttle/elevator{
 	dir = 5
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qo" = (
 /obj/structure/pipes/standard/simple/visible{
 	dir = 9;
@@ -6807,13 +6807,13 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qq" = (
 /obj/structure/machinery/portable_atmospherics/canister/phoron,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Qv" = (
 /obj/structure/platform{
 	density = 0;
@@ -6821,11 +6821,11 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Qx" = (
 /obj/structure/closet/secure_closet/engineering_welding,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Qz" = (
 /obj/item/key,
 /obj/structure/surface/rack,
@@ -6833,18 +6833,18 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QB" = (
 /obj/structure/cargo_container{
 	icon_state = "green 1,0";
 	tag = "icon-green 1,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "QF" = (
 /obj/structure/coatrack,
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "QG" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -6852,7 +6852,7 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QH" = (
 /obj/structure/barricade/handrail{
 	dir = 4
@@ -6860,18 +6860,18 @@
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QI" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "QJ" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "QL" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 4;
@@ -6879,19 +6879,19 @@
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "QN" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QO" = (
 /obj/vehicle/powerloader{
 	dir = 8
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "QS" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/kitchen/rollingpin,
@@ -6909,19 +6909,19 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QU" = (
 /turf/open/floor/strata{
 	dir = 9;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QW" = (
 /obj/vehicle/train/cargo/engine,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "QZ" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -6929,12 +6929,12 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rd" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "20"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Re" = (
 /obj/structure/stairs/perspective{
 	dir = 4;
@@ -6944,18 +6944,18 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rh" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rj" = (
 /turf/open/floor/coagulation{
 	icon_state = "8,0"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rn" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -6965,12 +6965,12 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rs" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "21"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rt" = (
 /obj/structure/platform_decoration/shiva/catwalk{
 	dir = 1
@@ -6979,13 +6979,13 @@
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Ry" = (
 /obj/structure/barricade/handrail,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Rz" = (
 /obj/structure/platform{
 	density = 0;
@@ -6996,7 +6996,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RA" = (
 /obj/effect/decal/cleanable/blood/oil/streak,
 /obj/item/prop{
@@ -7022,7 +7022,7 @@
 	pixel_y = -14
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "RF" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -7031,7 +7031,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RJ" = (
 /obj/structure/machinery/power/geothermal{
 	fail_rate = 5
@@ -7039,26 +7039,26 @@
 /turf/open/floor/plating{
 	icon_state = "warnplate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RN" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "RP" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RQ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/cans/waterbottle,
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RS" = (
 /obj/structure/cargo_container{
 	icon_state = "red 1,0";
@@ -7067,13 +7067,13 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RT" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RV" = (
 /obj/structure/surface/rack,
 /obj/item/weapon/gun/revolver/cmb,
@@ -7081,13 +7081,13 @@
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "RZ" = (
 /obj/structure/prop/dam/crane,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sb" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -7096,25 +7096,25 @@
 /turf/open/floor/strata{
 	icon_state = "fake_wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sc" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sf" = (
 /turf/open/floor/corsat{
 	dir = 5;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sg" = (
 /obj/structure/machinery/cm_vending/sorted/medical/blood,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sj" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 8;
@@ -7122,32 +7122,32 @@
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Sl" = (
 /obj/item/stack/rods,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sm" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "17"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sn" = (
 /obj/structure/closet/crate/secure/surgery,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sr" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
 	tag = "icon-0,2"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Ss" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -7157,13 +7157,13 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Su" = (
 /obj/structure/machinery/vending/dinnerware,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sw" = (
 /obj/structure/filtration/machine_96x96/indestructible{
 	icon_state = "sedementation"
@@ -7173,13 +7173,13 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Sy" = (
 /obj/structure/cable/heavyduty{
 	icon_state = "1-4"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Sz" = (
 /obj/structure/machinery/vending/coffee{
 	pixel_x = -5
@@ -7191,7 +7191,7 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SB" = (
 /obj/structure/barricade/handrail{
 	dir = 1
@@ -7199,13 +7199,13 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SD" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "SE" = (
 /obj/structure/platform{
 	dir = 1;
@@ -7216,7 +7216,7 @@
 	icon_state = "p_stair_ew_full_cap"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "SG" = (
 /obj/structure/cargo_container{
 	icon_state = "red 2,0";
@@ -7225,7 +7225,7 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SH" = (
 /obj/structure/filingcabinet{
 	density = 0;
@@ -7238,19 +7238,19 @@
 	pixel_y = 19
 	},
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "SI" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan23"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SJ" = (
 /obj/effect/decal/cleanable/blood/gibs/xeno,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SK" = (
 /obj/structure/stairs/perspective{
 	dir = 9;
@@ -7262,64 +7262,64 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "SL" = (
 /obj/structure/girder,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "SP" = (
 /turf/open/floor/plating{
 	icon_state = "warnplate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SQ" = (
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/corsat,
-/area/space)
+/area/lv522/colony_streets)
 "SS" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
 	id = "cargo_container"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "ST" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/weapon/gun/revolver/m44/custom/webley,
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SX" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "30"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "SY" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 1;
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "SZ" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ta" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tb" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Te" = (
 /obj/structure/barricade/deployable{
 	dir = 1
@@ -7329,7 +7329,7 @@
 	},
 /obj/effect/decal/cleanable/blood,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Tf" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/juicer{
@@ -7339,7 +7339,7 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tg" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
@@ -7349,34 +7349,34 @@
 	pixel_y = -9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Th" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tj" = (
 /obj/structure/machinery/cm_vending/sorted/medical/no_access,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tk" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
 	tag = "icon-0,0"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "To" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "warningcorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tr" = (
 /obj/structure/surface/table/almayer,
 /obj/item/prop/helmetgarb/spacejam_tickets{
@@ -7389,25 +7389,25 @@
 	},
 /obj/item/newspaper,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Tt" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tu" = (
 /turf/open/floor{
 	dir = 4;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tv" = (
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Tx" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 8;
@@ -7415,27 +7415,27 @@
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "TJ" = (
 /turf/open/floor/coagulation{
 	icon_state = "0,0"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TK" = (
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "TL" = (
 /turf/open/floor/plating{
 	dir = 6;
 	icon_state = "warnplate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TM" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan21"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TN" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -7450,18 +7450,18 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TP" = (
 /obj/structure/machinery/smartfridge/chemistry,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TV" = (
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "TX" = (
 /obj/structure/machinery/conveyor{
 	dir = 10;
@@ -7469,7 +7469,7 @@
 	},
 /obj/structure/largecrate/cow,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ub" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
@@ -7477,15 +7477,15 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ue" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "41"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Uf" = (
 /turf/closed/wall/r_wall/bunker,
-/area/space)
+/area/lv522/colony_streets)
 "Uo" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -7494,14 +7494,14 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Uq" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ut" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
@@ -7510,14 +7510,14 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Uv" = (
 /obj/item/lightstick/red/spoke/planted{
 	pixel_x = 12;
 	pixel_y = 25
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Uz" = (
 /obj/vehicle/powerloader{
 	dir = 8
@@ -7528,25 +7528,25 @@
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "UB" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "81"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "UE" = (
 /obj/effect/alien/egg,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "UF" = (
 /obj/item/clothing/gloves/yellow,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "UG" = (
 /turf/open/floor/corsat{
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "UO" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
@@ -7555,7 +7555,7 @@
 	dir = 1
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "UR" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 8;
@@ -7563,12 +7563,12 @@
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "UW" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "84"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "UZ" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
@@ -7578,17 +7578,17 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Va" = (
 /turf/open/floor/strata{
 	dir = 5;
 	icon_state = "blue3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vd" = (
 /obj/structure/closet/secure_closet/quartermaster,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Ve" = (
 /obj/structure/platform{
 	dir = 1;
@@ -7600,11 +7600,11 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vf" = (
 /obj/structure/platform/shiva/catwalk,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Vk" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/chefhat,
@@ -7612,64 +7612,64 @@
 	dir = 4;
 	icon_state = "white_cyan1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vm" = (
 /obj/structure/largecrate/random/barrel/white,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Vn" = (
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vv" = (
 /turf/closed/shuttle/elevator{
 	dir = 9
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vx" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Vy" = (
 /obj/structure/mirror{
 	pixel_y = 32
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Vz" = (
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "VA" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
 	icon_state = "red2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "VC" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "VE" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
 	tag = "icon-0,1"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "VI" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "VJ" = (
 /obj/structure/machinery/power/port_gen/pacman{
 	pixel_y = 6
@@ -7678,7 +7678,7 @@
 	icon_state = "1-2-4"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "VK" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/o2{
@@ -7690,7 +7690,7 @@
 	dir = 8;
 	icon_state = "white_cyan4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "VT" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
@@ -7698,19 +7698,19 @@
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "VU" = (
 /obj/structure/machinery/cryo_cell,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "VZ" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Wb" = (
 /turf/closed/shuttle{
 	dir = 1;
@@ -7723,13 +7723,13 @@
 	tag = "icon-red 1,0"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Wj" = (
 /obj/structure/prop/invuln/ice_prefab/standalone{
 	icon_state = "white"
 	},
 /turf/open/floor,
-/area/space)
+/area/lv522/colony_streets)
 "Wl" = (
 /obj/structure/filingcabinet{
 	pixel_x = 12
@@ -7740,13 +7740,13 @@
 /turf/open/floor{
 	icon_state = "wood"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Wq" = (
 /turf/open/floor/corsat{
 	dir = 8;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Wr" = (
 /obj/structure/filtration/machine_96x96{
 	icon_state = "disinfection"
@@ -7756,7 +7756,7 @@
 	icon_state = "whitegreenfull";
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Wt" = (
 /obj/structure/prop/invuln/minecart_tracks,
 /obj/structure/prop/invuln/minecart_tracks{
@@ -7765,7 +7765,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Wy" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
@@ -7777,7 +7777,7 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WA" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -7787,20 +7787,20 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WC" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/corsat{
 	dir = 5;
 	icon_state = "brown"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WD" = (
 /obj/structure/machinery/body_scanconsole,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WE" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/microwave{
@@ -7811,19 +7811,19 @@
 	pixel_y = 16
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "WF" = (
 /obj/structure/closet/crate,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WG" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "67"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WK" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 1
@@ -7831,7 +7831,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WL" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -7840,7 +7840,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WU" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
@@ -7853,7 +7853,7 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WV" = (
 /obj/structure/surface/rack,
 /obj/item/stack/sheet/cardboard{
@@ -7868,58 +7868,58 @@
 	dir = 8;
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "WW" = (
 /turf/open/floor/carpet,
-/area/space)
+/area/lv522/colony_streets)
 "WX" = (
 /obj/structure/closet/secure_closet/engineering_electrical,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Xa" = (
 /obj/structure/computerframe,
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xc" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Xe" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan27"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xf" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xg" = (
 /obj/structure/machinery/power/port_gen/pacman/super,
 /turf/open/floor/prison{
 	icon_state = "darkyellowfull2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xi" = (
 /turf/open/floor/strata{
 	dir = 10;
 	icon_state = "red3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xj" = (
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xn" = (
 /obj/structure/barricade/handrail,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Xo" = (
 /obj/structure/barricade/wooden{
 	dir = 8
@@ -7928,7 +7928,7 @@
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Xq" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
@@ -7938,11 +7938,11 @@
 	pixel_y = -9
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Xu" = (
 /obj/item/stool,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Xv" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -7952,18 +7952,18 @@
 	dir = 1;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XA" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/green,
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "XF" = (
 /obj/structure/machinery/disposal,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XL" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
@@ -7972,7 +7972,7 @@
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XN" = (
 /obj/item/storage/backpack/marine/satchel{
 	desc = "It's the heavy-duty black polymer kind. Time to take out the trash!";
@@ -7986,20 +7986,20 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XO" = (
 /obj/structure/closet/wardrobe/engineering_yellow,
 /turf/open/floor/prison{
 	icon_state = "darkyellowfull2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XS" = (
 /obj/structure/machinery/conveyor{
 	dir = 8;
 	id = "cargo_container"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "XT" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	dir = 1;
@@ -8010,20 +8010,20 @@
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XU" = (
 /obj/structure/barricade/handrail,
 /turf/open/floor/corsat{
 	icon_state = "squares"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XV" = (
 /obj/structure/fence,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "warning"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XX" = (
 /obj/item/clothing/head/beret/sec/hos,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -8032,19 +8032,19 @@
 /turf/open/floor/strata{
 	icon_state = "red2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XY" = (
 /turf/closed/shuttle/elevator{
 	dir = 10
 	},
-/area/space)
+/area/lv522/colony_streets)
 "XZ" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
 	tag = "icon-0,1"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Ya" = (
 /obj/item/weapon/melee/telebaton,
 /obj/effect/decal/cleanable/blood,
@@ -8052,20 +8052,20 @@
 /turf/open/floor/strata{
 	icon_state = "red2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Yc" = (
 /obj/structure/largecrate/random/barrel/white,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Yh" = (
 /obj/structure/platform{
 	dir = 8;
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Yi" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/stamp/denied{
@@ -8079,11 +8079,11 @@
 	registered_name = "John Forklift"
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "Yj" = (
 /obj/structure/fence,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Yk" = (
 /obj/structure/machinery/light/double/blue{
 	dir = 8;
@@ -8093,7 +8093,7 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Yl" = (
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
@@ -8102,7 +8102,7 @@
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Yn" = (
 /obj/structure/prop/invuln{
 	desc = "big pile energy.";
@@ -8112,20 +8112,20 @@
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Yo" = (
 /obj/structure/platform{
 	dir = 8
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Yp" = (
 /obj/structure/bed/sofa/vert/grey/bot,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Yu" = (
 /obj/effect/decal/cleanable/blood,
 /obj/structure/window_frame/shiva,
@@ -8133,21 +8133,21 @@
 	icon_state = "medium"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Yw" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 8;
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "Yz" = (
 /obj/structure/platform{
 	dir = 4;
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "YA" = (
 /obj/structure/pipes/standard/simple/visible{
 	dir = 10;
@@ -8156,7 +8156,7 @@
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "YJ" = (
 /obj/structure/platform{
 	density = 0;
@@ -8164,7 +8164,7 @@
 	},
 /obj/effect/decal/cleanable/blood/gibs/xeno,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "YL" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
@@ -8175,7 +8175,7 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "YN" = (
 /obj/structure/surface/table/almayer,
 /obj/item/prop{
@@ -8187,74 +8187,74 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "YO" = (
 /obj/structure/machinery/door/airlock/hatch/cockpit/two,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "YP" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "YQ" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/welding{
 	pixel_y = 7
 	},
 /turf/open/floor/strata,
-/area/space)
+/area/lv522/colony_streets)
 "YS" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 6;
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "YT" = (
 /obj/effect/decal/warning_stripes,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "YU" = (
 /obj/structure/largecrate/supply/supplies/water,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "YW" = (
 /obj/structure/machinery/power/port_gen/pacman/mrs,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "YX" = (
 /obj/structure/computerframe,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Za" = (
 /turf/open/floor/corsat{
 	dir = 8;
 	icon_state = "browncorner"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Ze" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "Zg" = (
 /obj/structure/machinery/bioprinter,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Zi" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 4;
@@ -8262,13 +8262,13 @@
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Zn" = (
 /obj/structure/closet/secure_closet/atmos_personal,
 /turf/open/floor/prison{
 	icon_state = "darkyellowfull2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Zv" = (
 /obj/structure/platform{
 	dir = 1
@@ -8281,17 +8281,17 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Zw" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "Zx" = (
 /obj/item/weapon/gun/rifle/hunting,
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "Zz" = (
 /obj/structure/platform{
 	dir = 1
@@ -8304,17 +8304,17 @@
 	icon_state = "platform_deco"
 	},
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "ZA" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
 	icon_state = "p_stair_full"
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ZB" = (
 /turf/open/floor/plating,
-/area/space)
+/area/lv522/colony_streets)
 "ZC" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
@@ -8324,7 +8324,7 @@
 	},
 /obj/structure/blocker/invisible_wall,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ZE" = (
 /obj/item/ammo_box/magazine/l42a/ap/empty,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -8333,7 +8333,7 @@
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ZF" = (
 /obj/structure/platform{
 	dir = 8
@@ -8346,33 +8346,33 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ZI" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ZM" = (
 /obj/structure/machinery/sleep_console,
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ZN" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ZP" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/bedsheetbin{
 	pixel_y = 10
 	},
 /turf/open/floor/plating/plating_catwalk/shiva,
-/area/space)
+/area/lv522/colony_streets)
 "ZQ" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -8384,7 +8384,7 @@
 	dir = 1;
 	icon_state = "blue4"
 	},
-/area/space)
+/area/lv522/colony_streets)
 "ZT" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
@@ -8392,7 +8392,7 @@
 	},
 /obj/structure/platform,
 /turf/open/gm/dirt2,
-/area/space)
+/area/lv522/colony_streets)
 "ZY" = (
 /turf/open/floor/plating,
 /area/almayer/hallways/hangar)
