@@ -51,6 +51,9 @@ map sorokyne_strata
 	disabled
 endmap
 
+map LV_522_Chances_Claim
+endmap
+
 map whiskey_outpost_v2
 	minplayers 130
 	disabled
