@@ -12,6 +12,28 @@
 	else
 		LAZYADD(GLOB.thunder_setup_areas, src)
 
+//Landing Zones
+
+/area/shuttle/drop1/lv522
+	name = "Chances Claim - Dropship Alamo Landing Zone"
+	icon_state = "shuttle"
+	icon = 'icons/turf/area_shiva.dmi'
+	lighting_use_dynamic = TRUE
+
+/area/shuttle/drop2/lv522
+	name = "Chances Claim - Dropship Normandy Landing Zone"
+	icon_state = "shuttle2"
+	icon = 'icons/turf/area_shiva.dmi'
+	lighting_use_dynamic = TRUE
+
+/area/lv522/exterior/lz1_console
+	name = "Chances Claim - Dropship Alamo Console"
+	requires_power = FALSE
+
+/area/lv522/exterior/lz1_console/two
+	name = "Chances Claim - Dropship Normandy Console"
+
+//Colony
 /area/lv522/colony_streets
 	name = "Colony Streets"
 	icon_state = "green"

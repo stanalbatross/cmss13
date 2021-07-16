@@ -272,7 +272,7 @@
 /area/lv522/colony_streets)
 "bH" = (
 /turf/open/floor/plating,
-/area/shuttle/drop1/sulaco)
+/area/shuttle/drop1/lv522)
 "bI" = (
 /obj/structure/closet/crate,
 /turf/open/floor/plating,
@@ -8394,8 +8394,20 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "ZY" = (
-/turf/open/floor/plating,
-/area/almayer/hallways/hangar)
+/obj/item/prop{
+	anchored = 1;
+	density = 1;
+	desc = "A drop pod used to launch remote piloting software to USCM areas of operation";
+	icon = 'icons/obj/structures/droppod_32x64.dmi';
+	icon_state = "techpod_open";
+	name = "dropship console pod"
+	},
+/obj/structure/machinery/computer/shuttle_control/dropship1{
+	layer = 3.1;
+	pixel_y = -8
+	},
+/turf/open/gm/dirt2,
+/area/lv522/colony_streets)
 
 (1,1,1) = {"
 Wb
@@ -14760,7 +14772,7 @@ Bl
 Bl
 Bl
 Bl
-Bl
+ZY
 Bl
 Bl
 Bl
@@ -16794,27 +16806,27 @@ ZB
 ZB
 MH
 FI
-ZY
-ZY
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
+ZB
+ZB
 bH
 bH
 bH
-ZY
-ZY
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
+ZB
+ZB
 bH
 bH
 bH
 bH
 bH
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 db
 uO
 ZB
@@ -17022,9 +17034,9 @@ ZB
 ZB
 MH
 hC
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 bH
 bH
 bH
@@ -17040,8 +17052,8 @@ bH
 bH
 bH
 bH
-ZY
-ZY
+ZB
+ZB
 bH
 as
 uO
@@ -17250,9 +17262,9 @@ ZB
 ZB
 MH
 kj
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 bH
 bH
 bH
@@ -17269,7 +17281,7 @@ bH
 bH
 bH
 bH
-ZY
+ZB
 bH
 Oo
 uO
@@ -17725,8 +17737,8 @@ bH
 bH
 bH
 bH
-ZY
-ZY
+ZB
+ZB
 db
 uO
 ZB
@@ -17953,8 +17965,8 @@ bH
 bH
 bH
 bH
-ZY
-ZY
+ZB
+ZB
 as
 uO
 ZB
@@ -18181,8 +18193,8 @@ bH
 bH
 bH
 bH
-ZY
-ZY
+ZB
+ZB
 Oo
 uO
 ZB
@@ -18618,9 +18630,9 @@ ZB
 ZB
 MH
 FI
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 bH
 bH
 bH
@@ -18637,7 +18649,7 @@ bH
 bH
 bH
 bH
-ZY
+ZB
 bH
 db
 uO
@@ -18846,9 +18858,9 @@ ZB
 ZB
 MH
 hC
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 bH
 bH
 bH
@@ -18864,8 +18876,8 @@ bH
 bH
 bH
 bH
-ZY
-ZY
+ZB
+ZB
 bH
 as
 uO
@@ -19074,27 +19086,27 @@ ZB
 ZB
 MH
 kj
-ZY
-ZY
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
+ZB
+ZB
 bH
 bH
 bH
-ZY
-ZY
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
+ZB
+ZB
 bH
 bH
 bH
 bH
 bH
-ZY
-ZY
-ZY
+ZB
+ZB
+ZB
 Oo
 uO
 ZB
