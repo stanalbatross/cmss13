@@ -122,6 +122,14 @@
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
 /area/space)
+"aI" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/space)
 "aN" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/carpet,
@@ -378,7 +386,10 @@
 	dir = 1;
 	pixel_y = -10
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/space)
 "cS" = (
 /turf/open/floor{
@@ -613,6 +624,12 @@
 	tag = "icon-gorg 0,0"
 	},
 /turf/open/gm/dirt2,
+/area/space)
+"dY" = (
+/obj/structure/bed/chair,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/space)
 "ea" = (
 /obj/structure/stairs/perspective{
@@ -915,7 +932,10 @@
 /obj/item/clothing/shoes/jackboots,
 /obj/item/clothing/under/colonist,
 /obj/item/clothing/suit/storage/apron/overalls,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/space)
 "gj" = (
 /obj/structure/pipes/unary/freezer{
@@ -1758,7 +1778,9 @@
 "mj" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/fedora,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/space)
 "mo" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
@@ -2041,7 +2063,9 @@
 	pixel_x = 7;
 	pixel_y = 6
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/space)
 "oi" = (
 /obj/structure/platform{
@@ -2496,6 +2520,14 @@
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
 /area/space)
+"rh" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/space)
 "rm" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 10
@@ -2664,6 +2696,10 @@
 /obj/structure/barricade/wooden{
 	dir = 8
 	},
+/turf/open/gm/dirt2,
+/area/space)
+"si" = (
+/obj/structure/prop/dam/drill,
 /turf/open/gm/dirt2,
 /area/space)
 "sj" = (
@@ -3704,6 +3740,14 @@
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
+/area/space)
+"yX" = (
+/obj/structure/bed/chair{
+	dir = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/space)
 "zd" = (
 /turf/closed/shuttle/dropship2{
@@ -5282,8 +5326,34 @@
 /turf/open/floor,
 /area/space)
 "Jb" = (
-/obj/structure/prop/dam/drill,
-/turf/open/gm/dirt2,
+/obj/structure/window/reinforced{
+	dir = 4;
+	pixel_x = -2;
+	pixel_y = 4
+	},
+/obj/structure/window/reinforced{
+	dir = 8;
+	layer = 3.3;
+	pixel_y = 4
+	},
+/obj/structure/bed{
+	can_buckle = 0
+	},
+/obj/structure/bed{
+	buckling_y = 13;
+	layer = 3.5;
+	pixel_y = 13
+	},
+/obj/item/bedsheet/brown{
+	pixel_y = 13
+	},
+/obj/item/bedsheet/brown{
+	layer = 3.1
+	},
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/space)
 "Jd" = (
 /obj/item/storage/backpack/marine/satchel{
@@ -28909,7 +28979,7 @@ Kz
 Kz
 pF
 Kz
-Kz
+yk
 mP
 mP
 mP
@@ -29137,8 +29207,8 @@ Kz
 Kz
 Kz
 Kz
-Kz
-Kz
+yk
+yk
 mP
 mP
 mP
@@ -29366,15 +29436,15 @@ Kz
 Kz
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
 mP
 Bl
 Bl
@@ -29594,15 +29664,15 @@ Kz
 Kz
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
 mP
 mP
 Bl
@@ -29822,16 +29892,16 @@ Kz
 Kz
 Kz
 Kz
-Kz
+yk
 mP
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 mP
 Bl
 Bl
@@ -30031,10 +30101,10 @@ ZB
 ZB
 ZB
 Lg
-Kz
-Kz
-Kz
-Kz
+yk
+yk
+yk
+yk
 Kz
 Kz
 Kz
@@ -30050,16 +30120,16 @@ je
 Kz
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -30278,16 +30348,16 @@ PE
 ai
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -30487,10 +30557,10 @@ ZB
 ZB
 ZB
 Lg
-Kz
-Kz
-Kz
-Kz
+yk
+yk
+yk
+yk
 Kz
 Kz
 Kz
@@ -30506,16 +30576,16 @@ PE
 ai
 Kz
 Kz
-Kz
+yk
 mP
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 mP
 Bl
 Bl
@@ -30718,7 +30788,7 @@ mP
 mP
 wh
 mP
-Kz
+yk
 Kz
 Kz
 Kz
@@ -30734,16 +30804,16 @@ nG
 Kz
 Kz
 Kz
-Kz
+yk
 Lg
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
 mP
 Bl
 Bl
@@ -30946,8 +31016,8 @@ GS
 yk
 Kz
 mP
-Kz
-Kz
+yk
+yk
 Kz
 Kz
 Kz
@@ -30962,16 +31032,16 @@ pF
 Kz
 Kz
 Kz
-Kz
+yk
 Lg
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
 mP
 Bl
 Bl
@@ -31190,7 +31260,7 @@ Kz
 Kz
 je
 Kz
-Kz
+yk
 mP
 mP
 mP
@@ -31405,9 +31475,9 @@ mP
 uq
 NX
 Kz
-Kz
-Kz
-Kz
+yk
+yk
+yk
 Kz
 Kz
 Kz
@@ -31418,16 +31488,16 @@ Kz
 Bn
 PE
 ai
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -31635,7 +31705,7 @@ mP
 Vy
 cQ
 mP
-Kz
+yk
 Kz
 Kz
 Bn
@@ -31646,16 +31716,16 @@ Kz
 Bn
 PE
 ai
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -31863,7 +31933,7 @@ NX
 Kz
 cQ
 mP
-Kz
+yk
 Kz
 Kz
 Bn
@@ -31874,16 +31944,16 @@ Kz
 Kz
 nG
 Kz
-Kz
+yk
 mP
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 mP
 Bl
 Bl
@@ -32091,7 +32161,7 @@ mP
 Vy
 cQ
 mP
-Kz
+yk
 Kz
 Kz
 Bn
@@ -32102,16 +32172,16 @@ Kz
 Kz
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -32319,7 +32389,7 @@ NX
 Kz
 cQ
 mP
-Kz
+yk
 Kz
 Kz
 Kz
@@ -32330,16 +32400,16 @@ Kz
 Kz
 Kz
 Kz
-Kz
+yk
 mP
-lM
-Kz
-lM
-Kz
-lM
-Kz
-lM
-Kz
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
+Jb
+Pg
 mP
 Bl
 Bl
@@ -32547,6 +32617,7 @@ mP
 Vy
 cQ
 mP
+yk
 Kz
 Kz
 Kz
@@ -32557,17 +32628,16 @@ Kz
 Kz
 Kz
 Kz
-Kz
-Kz
+yk
 mP
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 gi
-Kz
+Pg
 mP
 Js
 Le
@@ -32775,27 +32845,27 @@ NX
 Kz
 cQ
 mP
+yk
+yk
+yk
+yk
+yk
 Kz
 Kz
 Kz
 Kz
 Kz
 Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+yk
 Lg
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
 mP
 Bl
 Fj
@@ -33007,23 +33077,23 @@ Lg
 Lg
 mP
 mP
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+yk
+yk
+yk
+yk
+yk
+yk
+yk
+yk
 Lg
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
+Pg
 mP
 Bl
 Bl
@@ -33245,13 +33315,13 @@ iH
 mP
 mP
 of
-ai
-Kz
-je
-je
-Kz
-Kz
-Kz
+aI
+Pg
+rh
+rh
+Pg
+Pg
+Pg
 mP
 sg
 sg
@@ -33472,14 +33542,14 @@ cJ
 cJ
 Hi
 mP
-PE
-Kz
-Kz
+ZN
+Pg
+Pg
 mj
-PE
-ai
-Kz
-Kz
+ZN
+aI
+Pg
+Pg
 mP
 Bl
 Bl
@@ -33701,12 +33771,12 @@ Bl
 Qv
 mP
 mP
-nG
-Kz
-Bn
-PE
-PE
-ai
+yX
+Pg
+dY
+ZN
+ZN
+aI
 mP
 mP
 Bl
@@ -33930,11 +34000,11 @@ Bl
 Bl
 mP
 mP
-Kz
-Kz
-nG
-nG
-Kz
+Pg
+Pg
+yX
+yX
+Pg
 mP
 Bl
 Bl
@@ -40801,7 +40871,7 @@ Bl
 Bl
 Bl
 Bl
-Jb
+Bl
 Bl
 Bl
 mP
@@ -41030,7 +41100,7 @@ Bl
 Bl
 Bl
 Bl
-Bl
+si
 Bl
 mP
 Kz
@@ -41254,7 +41324,7 @@ Bl
 Pl
 Bl
 Bl
-Jb
+Bl
 Bl
 Bl
 Bl
@@ -41706,11 +41776,11 @@ Bl
 Bl
 Bl
 Bl
+si
 Bl
 Bl
 Bl
-Bl
-Bl
+Pl
 Bl
 Bl
 Bl
