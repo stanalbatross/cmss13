@@ -305,7 +305,10 @@
 	},
 /area/lv522/buildings/A_Block)
 "bT" = (
-/obj/structure/machinery/vending/hydronutrients,
+/obj/structure/machinery/reagentgrinder{
+	pixel_y = 8
+	},
+/obj/structure/surface/table/almayer,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
 "bW" = (
@@ -350,9 +353,8 @@
 	},
 /area/lv522/colony_streets)
 "cl" = (
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
@@ -384,8 +386,8 @@
 	},
 /area/lv522/buildings/B_Block)
 "cs" = (
-/obj/structure/machinery/vending/hydroseeds,
-/turf/open/floor/strata,
+/obj/structure/platform_decoration,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "cv" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor{
@@ -589,19 +591,11 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "dA" = (
-/obj/structure/stairs/perspective{
-	dir = 6;
-	icon_state = "p_stair_full"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
-	},
-/area/lv522/buildings/A_Block)
+/turf/open/floor/plating,
+/area/lv522/colony_streets)
 "dE" = (
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
@@ -1003,8 +997,10 @@
 	},
 /area/lv522/colony_streets)
 "gg" = (
-/obj/structure/closet/crate/miningcar,
-/turf/open/gm/dirt2,
+/obj/structure/prop/invuln/ice_prefab/standalone/trim{
+	icon_state = "white_trim"
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
 /area/lv522/colony_streets)
 "gh" = (
 /obj/structure/surface/rack,
@@ -1100,10 +1096,8 @@
 	dir = 6;
 	icon_state = "p_stair_full"
 	},
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -1146,15 +1140,24 @@
 	},
 /area/lv522/buildings/A_Block)
 "hb" = (
-/obj/structure/stairs/perspective{
-	dir = 5;
-	icon_state = "p_stair_full"
+/obj/structure/surface/rack,
+/obj/item/tool/minihoe{
+	pixel_x = -4
 	},
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
+/obj/item/tool/minihoe{
+	pixel_x = 4
 	},
-/turf/open/gm/dirt2,
+/obj/item/tool/minihoe{
+	pixel_y = -4
+	},
+/obj/item/tool/wirecutters/clippers{
+	pixel_y = -4
+	},
+/obj/item/tool/wirecutters/clippers{
+	pixel_y = -2
+	},
+/obj/item/tool/wirecutters/clippers,
+/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "hc" = (
 /obj/structure/barricade/deployable{
@@ -1166,15 +1169,8 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "hh" = (
-/obj/structure/platform{
-	dir = 4
-	},
-/obj/structure/platform,
-/obj/structure/platform{
-	dir = 6;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
+/obj/structure/reagent_dispensers/watertank,
+/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "hj" = (
 /obj/structure/machinery/power/monitor{
@@ -1260,11 +1256,8 @@
 /turf/open/floor,
 /area/lv522/colony_streets)
 "hB" = (
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
+/obj/effect/decal/cleanable/blood/drip,
+/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "hC" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
@@ -1581,10 +1574,7 @@
 	},
 /area/lv522/colony_streets)
 "jv" = (
-/obj/structure/machinery/reagentgrinder{
-	pixel_y = 8
-	},
-/obj/structure/surface/table/almayer,
+/obj/structure/machinery/vending/hydroseeds,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
 "jw" = (
@@ -1617,11 +1607,8 @@
 /turf/open/floor/carpet,
 /area/lv522/buildings/B_Block)
 "jR" = (
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
+/obj/structure/pipes/vents/pump,
+/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "jV" = (
 /obj/structure/platform,
@@ -1954,12 +1941,8 @@
 	},
 /area/lv522/buildings/A_Block)
 "my" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
+/obj/structure/machinery/vending/hydronutrients,
+/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "mz" = (
 /obj/effect/landmark/survivor_spawn,
@@ -2019,9 +2002,8 @@
 /obj/structure/platform{
 	dir = 4
 	},
-/obj/structure/platform{
-	dir = 6;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 6
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -2065,23 +2047,7 @@
 /turf/open/floor/carpet,
 /area/lv522/buildings/B_Block)
 "ni" = (
-/obj/structure/surface/rack,
-/obj/item/tool/minihoe{
-	pixel_x = -4
-	},
-/obj/item/tool/minihoe{
-	pixel_x = 4
-	},
-/obj/item/tool/minihoe{
-	pixel_y = -4
-	},
-/obj/item/tool/wirecutters/clippers{
-	pixel_y = -4
-	},
-/obj/item/tool/wirecutters/clippers{
-	pixel_y = -2
-	},
-/obj/item/tool/wirecutters/clippers,
+/obj/structure/machinery/seed_extractor,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
 "nl" = (
@@ -2269,24 +2235,8 @@
 	},
 /area/lv522/colony_streets)
 "oE" = (
-/obj/structure/surface/rack,
-/obj/item/tool/shovel/spade{
-	pixel_x = -4
-	},
-/obj/item/tool/shovel/spade{
-	pixel_x = 4
-	},
-/obj/item/tool/shovel/spade,
-/obj/item/reagent_container/glass/bucket{
-	pixel_x = -4;
-	pixel_y = -3
-	},
-/obj/item/reagent_container/glass/bucket{
-	pixel_x = 4;
-	pixel_y = -3
-	},
-/obj/item/reagent_container/glass/bucket,
-/turf/open/floor/strata,
+/obj/structure/closet/crate/miningcar,
+/turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "oF" = (
 /turf/closed/shuttle/dropship2/transparent{
@@ -2405,9 +2355,8 @@
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
 "pl" = (
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -2448,8 +2397,10 @@
 /turf/open/floor/plating/plating_catwalk/shiva,
 /area/lv522/colony_streets)
 "pF" = (
-/obj/effect/decal/cleanable/blood/drip,
-/turf/open/floor/strata,
+/obj/structure/platform_decoration{
+	dir = 4
+	},
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "pG" = (
 /obj/effect/landmark/survivor_spawn,
@@ -2467,13 +2418,9 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "pR" = (
+/obj/effect/decal/cleanable/blood/drip,
 /obj/structure/platform{
 	dir = 8
-	},
-/obj/structure/platform,
-/obj/structure/platform{
-	dir = 10;
-	icon_state = "platform_deco"
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -2628,7 +2575,7 @@
 /obj/structure/cable/heavyduty{
 	icon_state = "0-8"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "qH" = (
 /obj/structure/prop/invuln/ice_prefab,
@@ -2786,13 +2733,9 @@
 	},
 /area/lv522/colony_streets)
 "rL" = (
+/obj/structure/platform,
 /obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
-	},
-/obj/structure/stairs/perspective{
-	dir = 10;
-	icon_state = "p_stair_full"
+	dir = 8
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -2911,9 +2854,8 @@
 /obj/structure/platform{
 	dir = 4
 	},
-/obj/structure/platform{
-	dir = 9;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 9
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -2948,10 +2890,6 @@
 	},
 /obj/structure/platform{
 	dir = 8
-	},
-/obj/structure/platform{
-	dir = 5;
-	icon_state = "platform_deco"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -3052,11 +2990,6 @@
 /obj/structure/platform{
 	dir = 4
 	},
-/obj/structure/platform,
-/obj/structure/platform{
-	dir = 6;
-	icon_state = "platform_deco"
-	},
 /obj/item/stack/rods,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -3142,15 +3075,14 @@
 	},
 /area/lv522/colony_streets)
 "tL" = (
+/obj/structure/platform{
+	dir = 8
+	},
 /obj/structure/platform,
-/obj/structure/platform{
-	dir = 4
+/obj/structure/platform_decoration{
+	dir = 10
 	},
-/obj/structure/platform{
-	dir = 6;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
+/turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "tN" = (
 /turf/open/floor/strata{
@@ -3266,17 +3198,6 @@
 /obj/structure/prop/dam/crane,
 /turf/open/floor,
 /area/lv522/colony_streets)
-"uw" = (
-/obj/structure/platform,
-/obj/structure/platform{
-	dir = 8
-	},
-/obj/structure/platform{
-	dir = 10;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
-/area/lv522/colony_streets)
 "uB" = (
 /obj/item/ammo_magazine/rifle/explosive{
 	current_rounds = 0
@@ -3345,10 +3266,8 @@
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
 "uN" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
@@ -3399,7 +3318,9 @@
 	},
 /area/lv522/buildings/A_Block)
 "vm" = (
-/obj/structure/machinery/colony_floodlight,
+/obj/structure/machinery/colony_floodlight{
+	pixel_y = 9
+	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
 "vq" = (
@@ -3532,7 +3453,7 @@
 /obj/structure/cable/heavyduty{
 	icon_state = "1-2"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "vZ" = (
 /obj/structure/stairs/perspective{
@@ -3697,13 +3618,11 @@
 /obj/structure/platform{
 	dir = 8
 	},
-/obj/structure/platform{
-	dir = 5;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 5
 	},
-/obj/structure/platform{
-	dir = 9;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 9
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
@@ -3836,10 +3755,8 @@
 	},
 /area/lv522/colony_streets)
 "xI" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/floor/corsat{
 	icon_state = "marked"
@@ -4096,10 +4013,7 @@
 	},
 /area/lv522/buildings/B_Block)
 "zy" = (
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
-	},
+/obj/structure/platform_decoration,
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
 "zz" = (
@@ -4152,13 +4066,12 @@
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
 "zO" = (
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
-	},
 /obj/structure/stairs/perspective{
 	dir = 6;
 	icon_state = "p_stair_full"
+	},
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -4236,12 +4149,10 @@
 	},
 /area/lv522/colony_streets)
 "Af" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
-	},
 /obj/structure/reagent_dispensers/fueltank,
+/obj/structure/platform_decoration{
+	dir = 4
+	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
 "Ag" = (
@@ -4448,10 +4359,8 @@
 /area/lv522/colony_streets)
 "Bp" = (
 /obj/effect/decal/cleanable/blood/drip,
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -4503,10 +4412,6 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
-"BK" = (
-/obj/structure/reagent_dispensers/watertank,
-/turf/open/floor/strata,
-/area/lv522/colony_streets)
 "BL" = (
 /obj/effect/landmark/xeno_hive_spawn,
 /turf/open/floor,
@@ -4621,10 +4526,8 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "Cx" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 8;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -4719,11 +4622,6 @@
 /obj/structure/platform{
 	dir = 8
 	},
-/obj/structure/platform,
-/obj/structure/platform{
-	dir = 10;
-	icon_state = "platform_deco"
-	},
 /obj/item/stack/rods,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -4755,12 +4653,6 @@
 "Dn" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/corsat,
-/area/lv522/colony_streets)
-"Do" = (
-/obj/structure/prop/invuln/ice_prefab/standalone/trim{
-	icon_state = "white_trim"
-	},
-/turf/closed/wall/shiva/prefabricated/reinforced,
 /area/lv522/colony_streets)
 "Dp" = (
 /obj/structure/prop/invuln{
@@ -4823,7 +4715,6 @@
 	},
 /area/lv522/colony_streets)
 "DL" = (
-/obj/structure/platform,
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -4888,9 +4779,8 @@
 /obj/structure/platform{
 	dir = 8
 	},
-/obj/structure/platform{
-	dir = 5;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 5
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -5031,10 +4921,8 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "EU" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/floor/strata{
 	dir = 1;
@@ -5156,9 +5044,8 @@
 /obj/structure/platform{
 	dir = 8
 	},
-/obj/structure/platform{
-	dir = 10;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 10
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -5486,18 +5373,6 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
-"HJ" = (
-/obj/structure/stairs/perspective{
-	dir = 10;
-	icon_state = "p_stair_full"
-	},
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
 "HL" = (
 /obj/structure/machinery/power/smes/buildable{
 	capacity = 1e+006;
@@ -5681,18 +5556,6 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/B_Block)
-"IS" = (
-/obj/structure/stairs/perspective{
-	dir = 6;
-	icon_state = "p_stair_full"
-	},
-/obj/structure/platform{
-	density = 0;
-	dir = 8;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
 "IT" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
@@ -5849,10 +5712,8 @@
 	},
 /area/lv522/colony_streets)
 "Jq" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
@@ -5898,10 +5759,8 @@
 	},
 /area/lv522/colony_streets)
 "JJ" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
@@ -6003,10 +5862,7 @@
 	},
 /area/lv522/colony_streets)
 "Kk" = (
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
-	},
+/obj/structure/platform_decoration,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "Km" = (
@@ -6051,22 +5907,8 @@
 	},
 /area/lv522/colony_streets)
 "KC" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
-"KD" = (
-/obj/structure/stairs/perspective{
-	dir = 9;
-	icon_state = "p_stair_full"
-	},
-/obj/structure/platform{
-	density = 0;
-	dir = 8;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -6120,9 +5962,8 @@
 	dir = 10;
 	icon_state = "p_stair_full"
 	},
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -6154,11 +5995,8 @@
 	},
 /area/lv522/buildings/A_Block)
 "Lm" = (
-/obj/structure/platform{
-	dir = 8
-	},
 /obj/effect/decal/cleanable/blood,
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "Lp" = (
 /obj/structure/bed/chair/dropship/passenger{
@@ -6211,10 +6049,8 @@
 	},
 /area/lv522/buildings/A_Block)
 "LB" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
@@ -6248,10 +6084,7 @@
 	},
 /area/lv522/buildings/B_Block)
 "LN" = (
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
-	},
+/obj/structure/platform_decoration,
 /turf/open/floor/corsat{
 	icon_state = "marked"
 	},
@@ -6421,7 +6254,23 @@
 	},
 /area/lv522/colony_streets)
 "MI" = (
-/obj/structure/machinery/seed_extractor,
+/obj/structure/surface/rack,
+/obj/item/tool/shovel/spade{
+	pixel_x = -4
+	},
+/obj/item/tool/shovel/spade{
+	pixel_x = 4
+	},
+/obj/item/tool/shovel/spade,
+/obj/item/reagent_container/glass/bucket{
+	pixel_x = -4;
+	pixel_y = -3
+	},
+/obj/item/reagent_container/glass/bucket{
+	pixel_x = 4;
+	pixel_y = -3
+	},
+/obj/item/reagent_container/glass/bucket,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
 "MV" = (
@@ -6545,10 +6394,8 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "NR" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 8;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
@@ -6949,16 +6796,6 @@
 	icon_state = "23"
 	},
 /area/lv522/colony_streets)
-"Qa" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 8;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/corsat{
-	icon_state = "squares"
-	},
-/area/lv522/colony_streets)
 "Qb" = (
 /obj/structure/platform{
 	dir = 4
@@ -6978,13 +6815,11 @@
 	},
 /area/lv522/colony_streets)
 "Qe" = (
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
@@ -7017,10 +6852,8 @@
 	},
 /area/lv522/buildings/A_Block)
 "Qv" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 1
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -7194,10 +7027,8 @@
 	},
 /area/lv522/buildings/A_Block)
 "Rz" = (
-/obj/structure/platform{
-	density = 0;
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -7391,7 +7222,7 @@
 /obj/structure/cable/heavyduty{
 	icon_state = "1-4"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "Sz" = (
 /obj/structure/machinery/vending/coffee{
@@ -7464,18 +7295,6 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
-"SK" = (
-/obj/structure/stairs/perspective{
-	dir = 9;
-	icon_state = "p_stair_full"
-	},
-/obj/structure/platform{
-	density = 0;
-	dir = 1;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
 "SL" = (
 /obj/structure/girder,
 /turf/open/floor/plating,
@@ -7514,10 +7333,6 @@
 	icon_state = "fab_2"
 	},
 /turf/open/gm/dirt2,
-/area/lv522/colony_streets)
-"SZ" = (
-/obj/structure/pipes/vents/pump,
-/turf/open/floor/strata,
 /area/lv522/colony_streets)
 "Ta" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -7674,7 +7489,9 @@
 	},
 /area/lv522/buildings/B_Block)
 "TS" = (
-/obj/structure/machinery/colony_floodlight,
+/obj/structure/machinery/colony_floodlight{
+	pixel_y = 9
+	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
 "TV" = (
@@ -7911,7 +7728,7 @@
 /obj/structure/cable/heavyduty{
 	icon_state = "1-2-4"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "VK" = (
 /obj/structure/surface/table/reinforced/prison,
@@ -8306,13 +8123,6 @@
 	icon_state = "platebot"
 	},
 /area/lv522/buildings/B_Block)
-"Yh" = (
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
-/area/lv522/colony_streets)
 "Yi" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/stamp/denied{
@@ -8388,13 +8198,6 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
-"Yz" = (
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
-	},
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
 "YA" = (
 /obj/structure/pipes/standard/simple/visible{
 	dir = 10;
@@ -8405,10 +8208,6 @@
 	},
 /area/lv522/buildings/A_Block)
 "YJ" = (
-/obj/structure/platform{
-	density = 0;
-	icon_state = "platform_deco"
-	},
 /obj/effect/decal/cleanable/blood/gibs/xeno,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -8417,9 +8216,8 @@
 	dir = 5;
 	icon_state = "p_stair_full"
 	},
-/obj/structure/platform{
-	dir = 4;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -8523,19 +8321,6 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/B_Block)
-"Zv" = (
-/obj/structure/platform{
-	dir = 1
-	},
-/obj/structure/platform{
-	dir = 4
-	},
-/obj/structure/platform{
-	dir = 9;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
-/area/lv522/colony_streets)
 "Zw" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
@@ -8546,19 +8331,6 @@
 /obj/item/weapon/gun/rifle/hunting,
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
-"Zz" = (
-/obj/structure/platform{
-	dir = 1
-	},
-/obj/structure/platform{
-	dir = 8
-	},
-/obj/structure/platform{
-	dir = 5;
-	icon_state = "platform_deco"
-	},
-/turf/open/floor/plating,
-/area/lv522/colony_streets)
 "ZA" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
@@ -16209,8 +15981,8 @@ Bl
 br
 Bl
 Bl
-Kk
-KD
+Bl
+Ag
 Oh
 Oh
 Oh
@@ -19505,21 +19277,21 @@ Bl
 Qv
 Yo
 KC
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+Kk
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Qb
+Cx
 Bl
 Bl
 Bl
@@ -19732,22 +19504,22 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
 Kk
-Qb
-Qb
-Qb
-Qb
-Qb
-Qb
-Qb
-Qb
-Qb
-Qb
-hB
-Bl
-Bl
+mW
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+HE
 Bl
 Bl
 Bl
@@ -19960,23 +19732,23 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Kk
-hh
-jR
+eb
+ZB
+ZB
+ZB
+cs
 xN
 xN
 xN
 xN
 xN
 xN
-xN
-xN
-Yh
+pl
+ZB
+ZB
+ZB
 sl
-hB
-Bl
-Bl
+Cx
 Bl
 Bl
 Bl
@@ -20188,10 +19960,10 @@ Bl
 Bl
 Bl
 Bl
-Bl
 eb
-jR
-tL
+ZB
+ZB
+ZB
 Tm
 gG
 ig
@@ -20200,12 +19972,12 @@ cY
 gG
 gG
 Tm
-Zv
-Yh
+ZB
+ZB
+ZB
+ZB
 sl
-hB
-Bl
-Kk
+Qb
 Qb
 Qb
 Qb
@@ -20415,10 +20187,10 @@ yc
 Bl
 Bl
 Bl
-Bl
 Kk
-hh
-jV
+mW
+ZB
+cs
 Tm
 Tm
 GV
@@ -20429,18 +20201,18 @@ GV
 GV
 Tm
 Tm
-Zv
-Yh
-sl
-Qb
-hh
+ZB
+ZB
+ZB
+ZB
+ZB
 YJ
-xN
-xN
-xN
-xN
-xN
-xN
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
 Tm
 Tm
 me
@@ -20643,10 +20415,10 @@ UH
 Bl
 Bl
 Bl
-Bl
 eb
-jR
-tL
+ZB
+ZB
+jV
 gG
 Km
 jp
@@ -20658,7 +20430,7 @@ Gu
 yk
 Tm
 Tm
-Zv
+xN
 xN
 xN
 xN
@@ -20871,9 +20643,9 @@ UH
 Bl
 Bl
 Bl
-Bl
 eb
-jV
+ZB
+cs
 Tm
 Tm
 Ba
@@ -21099,8 +20871,8 @@ UH
 Bl
 Bl
 Bl
-Bl
 eb
+ZB
 jV
 Yu
 LE
@@ -21327,8 +21099,8 @@ yc
 Bl
 Bl
 Bl
-Bl
 eb
+ZB
 jV
 gG
 Dy
@@ -21555,8 +21327,8 @@ yc
 Bl
 Bl
 Bl
-Bl
 eb
+ZB
 jV
 gG
 EF
@@ -21783,9 +21555,9 @@ yc
 Bl
 Bl
 Bl
-Bl
 eb
-jV
+ZB
+dA
 Tm
 Tm
 wM
@@ -22011,10 +21783,10 @@ yc
 Bl
 Bl
 Bl
-Bl
 eb
-my
-uw
+ZB
+ZB
+jV
 gG
 Km
 LG
@@ -22026,7 +21798,7 @@ rC
 PA
 Tm
 Tm
-Zz
+DV
 DV
 DV
 IZ
@@ -22239,10 +22011,10 @@ yc
 Bl
 Bl
 Bl
-Bl
 Qv
-pR
-jV
+FJ
+ZB
+dA
 Tm
 Tm
 LE
@@ -22253,11 +22025,11 @@ AD
 AD
 Tm
 Tm
-Zz
-pl
-Eb
-Yo
-pR
+ZB
+ZB
+ZB
+ZB
+ZB
 DL
 Tm
 Tm
@@ -22468,10 +22240,10 @@ kx
 Bl
 Bl
 Bl
-Bl
 eb
-my
-uw
+ZB
+ZB
+ZB
 Tm
 Ee
 gG
@@ -22480,14 +22252,14 @@ OE
 gG
 gG
 Tm
-Zz
-pl
+ZB
+ZB
+ZB
+ZB
 Eb
-Yz
-Bl
-eb
-my
-DV
+rL
+ZB
+ZB
 gG
 yk
 aZ
@@ -22696,26 +22468,26 @@ iq
 lY
 Bl
 Bl
-Bl
-Qv
-pR
-my
+eb
+ZB
+ZB
+ZB
+dA
 DV
 DV
 DV
 DV
 DV
 DV
-DV
-DV
-pl
+pF
+ZB
+ZB
+ZB
 Eb
-Yz
-Bl
-Bl
+KC
 Qv
 Yo
-Yo
+tL
 gG
 qb
 aZ
@@ -22924,26 +22696,26 @@ jw
 Pm
 qH
 Bl
-Bl
-Bl
 Qv
-Yo
-Yo
-Yo
-Yo
-Yo
-Yo
+FJ
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
+ZB
 Lm
-Yo
-Yo
-Yo
-Yz
+ZB
+ZB
+ZB
+ZB
+ZB
+HE
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
+eb
 Yu
 Sl
 ZQ
@@ -23153,25 +22925,25 @@ cC
 gE
 Bl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Nb
-Bl
+Qv
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+Yo
+pR
+KC
 Bl
 Bl
 oI
-Bl
+Qv
 Tm
 OS
 GM
@@ -23384,12 +23156,12 @@ Bl
 Bl
 Bl
 Bl
-mP
-mP
-Lg
-Lg
-mP
-mP
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
 Bl
 Bl
 Bl
@@ -23611,14 +23383,14 @@ Bl
 Bl
 Bl
 Bl
+Bl
 mP
 mP
-Kz
-Kz
-pF
-Kz
+Lg
+Lg
 mP
 mP
+Bl
 Bl
 Bl
 Bl
@@ -23838,16 +23610,16 @@ Bl
 Bl
 Bl
 Bl
+Bl
 mP
 mP
-BK
 Kz
 Kz
+hB
 Kz
-pF
-SZ
 mP
 mP
+Bl
 Bl
 Bl
 Bl
@@ -23954,7 +23726,7 @@ Bl
 Bl
 Bl
 Bl
-Kk
+Bl
 AG
 MH
 lQ
@@ -24067,14 +23839,14 @@ Bl
 Bl
 Bl
 mP
-mq
+mP
+hh
 Kz
 Kz
-mq
-mq
 Kz
-Kz
-mq
+hB
+jR
+mP
 mP
 Bl
 Bl
@@ -24099,7 +23871,7 @@ gQ
 gQ
 Ew
 me
-KV
+ht
 Ih
 xA
 xA
@@ -24182,7 +23954,7 @@ Bl
 Bl
 Bl
 Bl
-SK
+Ag
 MZ
 yq
 lQ
@@ -24523,14 +24295,14 @@ Bl
 Bl
 Bl
 mP
-oE
+mq
 Kz
 Kz
+mq
+mq
 Kz
 Kz
-Kz
-Kz
-cs
+mq
 mP
 Bl
 Bl
@@ -25011,7 +24783,7 @@ PE
 PE
 DB
 me
-dA
+zH
 Ih
 Ih
 Ih
@@ -25207,14 +24979,14 @@ Bl
 Bl
 Bl
 mP
-mq
+hb
 Kz
 Kz
-mq
-mq
 Kz
 Kz
-mq
+Kz
+Kz
+my
 mP
 Bl
 Bl
@@ -25652,7 +25424,7 @@ FT
 FT
 FT
 FT
-rL
+ZA
 Bl
 Bl
 Bl
@@ -25663,17 +25435,17 @@ Bl
 Bl
 Bl
 mP
+mq
+Kz
+Kz
+mq
+mq
+Kz
+Kz
+mq
 mP
-Kz
-Kz
-Kz
-Kz
-Kz
-Kz
-mP
-mP
-Bl
-Bl
+Yj
+Yj
 Tm
 nH
 iC
@@ -25890,17 +25662,17 @@ Bl
 Bl
 Bl
 Bl
+mP
+mP
+Kz
+Kz
+Kz
+Kz
+Kz
+Kz
+mP
+mP
 Bl
-mP
-mP
-Kz
-Kz
-Kz
-Kz
-mP
-Do
-Bl
-HZ
 Bl
 Tm
 WV
@@ -26119,16 +25891,16 @@ Bl
 Bl
 Bl
 Bl
-Bl
 mP
 mP
-Lg
-Lg
-mP
+Kz
+Kz
+Kz
+Kz
 mP
 gg
 Bl
-Bl
+HZ
 Bl
 Tm
 iC
@@ -26348,13 +26120,13 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+mP
+mP
+Lg
+Lg
+mP
+mP
+oE
 Bl
 Bl
 Bl
@@ -29253,7 +29025,7 @@ BT
 BT
 BT
 sG
-Qa
+Fb
 Fb
 Fb
 Fb
@@ -30109,7 +29881,7 @@ Bl
 cj
 Bl
 Bl
-Kk
+Bl
 AG
 MH
 Hd
@@ -30337,7 +30109,7 @@ Bl
 Bl
 Bl
 Bl
-SK
+Ag
 Am
 Jn
 lQ
@@ -30793,7 +30565,7 @@ Bl
 Bl
 Bl
 Bl
-hb
+wi
 BT
 BT
 df
@@ -31021,7 +30793,7 @@ Bl
 Bl
 Bl
 Bl
-Qv
+Bl
 BT
 gM
 fM
@@ -46409,7 +46181,7 @@ ZB
 BT
 lQ
 uO
-HJ
+ZA
 Bl
 Bl
 Bl
@@ -47549,7 +47321,7 @@ qA
 lQ
 lQ
 uO
-IS
+pp
 Bl
 Bl
 Bl
