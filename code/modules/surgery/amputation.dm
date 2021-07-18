@@ -292,6 +292,7 @@ datum/surgery_step/abort_amputation/skip_step_criteria(mob/user, mob/living/carb
 		SPAN_NOTICE("[user] finishes repairing the stump of [target]'s [surgery.affected_limb.display_name]."))
 
 	surgery.affected_limb.setAmputatedTree()
+	target.pain.recalculate_pain()
 	log_interact(user, target, "[key_name(user)] closed the stump of [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], ending [surgery].")
 
 /datum/surgery_step/close_amputation/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
@@ -361,6 +362,7 @@ datum/surgery_step/abort_amputation/skip_step_criteria(mob/user, mob/living/carb
 		SPAN_NOTICE("[user] has revealed the bare stump of [target]'s [surgery.affected_limb.display_name]."))
 
 	surgery.affected_limb.setAmputatedTree()
+	target.pain.recalculate_pain()
 	log_interact(user, target, "[key_name(user)] successfully removed the last of [key_name(target)]'s severed prosthetic [surgery.affected_limb.display_name], ending [surgery].")
 
 /datum/surgery_step/remove_old_prosthetic/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)

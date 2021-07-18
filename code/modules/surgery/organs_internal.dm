@@ -85,7 +85,7 @@ datum/surgery_step/repair_organs/repeat_step_criteria(mob/user, mob/living/carbo
 			user.count_niche_stat(STATISTICS_NICHE_SURGERY_ORGAN_REPAIR)
 			I.rejuvenate()
 			target.pain.recalculate_pain()
-			return
+			break
 
 /datum/surgery_step/repair_organs/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,

@@ -59,6 +59,7 @@
 	target.disabilities &= ~NERVOUS
 	target.sdisabilities &= ~DISABILITY_DEAF
 	target.sdisabilities &= ~DISABILITY_MUTE
+	target.pain.recalculate_pain()
 
 	log_interact(user, target, "[key_name(user)] finished taking bone chips out of [key_name(target)]'s brain with \the [tool], finishing [surgery].")
 

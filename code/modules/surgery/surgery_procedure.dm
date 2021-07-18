@@ -38,10 +38,9 @@
 	///The step the surgery is currently on. When status > number of steps, the surgery ends.
 	var/status = 1
 	var/mob/living/carbon/target
-	/**The limb the surgery is being performed on. If designing a surgery for a species without limbs, this var won't be usable.
-	For a species with limbs, all surgeries on that limb use its incision depth <-- FIX THIS LATER -V.**/
+	///The limb the surgery is being performed on. If designing a surgery for a species without limbs, this var won't be usable.
 	var/obj/limb/affected_limb
-	///The location this instance of the surgery is being performed on. In the case of a limbless mob or target location, surgery depth defaults to SURFACE.
+	///The location this instance of the surgery is being performed on.
 	var/location = "chest"
 
 /datum/surgery/New(surgery_target, surgery_location, surgery_limb)

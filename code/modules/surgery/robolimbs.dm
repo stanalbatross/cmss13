@@ -47,6 +47,7 @@
 
 	surgery.affected_limb.robotize(surgery_in_progress = TRUE, uncalibrated = TRUE)
 	target.update_body()
+	target.pain.recalculate_pain()
 
 	user.temp_drop_inv_item(tool)
 	qdel(tool)
