@@ -50,7 +50,7 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 	log_interact(user, target, "[key_name(user)] began tending wounds in [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], starting [surgery].")
 
 /datum/surgery_step/tend_wounds/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
-	surgery.affected_limb.heal_damage(10, 10, keep_bleeding = TRUE)
+	surgery.affected_limb.heal_damage(10, 10)
 
 	if(surgery.affected_limb.brute_dam <= 0 && surgery.affected_limb.burn_dam <= 0)
 		user.affected_message(target,
@@ -90,7 +90,7 @@ YOU TO 200 DAMAGE. I ASK NOT FOR MY OWN MEDIC EGOSTROKING, BUT FOR THE GOOD OF T
 	log_interact(user, target, "[key_name(user)] began suturing an incision in [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool].")
 
 /datum/surgery_step/tend_wounds/suture_incision/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
-	surgery.affected_limb.heal_damage(10, 10, keep_bleeding = TRUE)
+	surgery.affected_limb.heal_damage(10, 10)
 
 	if(surgery.affected_limb.brute_dam <= 0 && surgery.affected_limb.burn_dam <= 0)
 		user.affected_message(target,

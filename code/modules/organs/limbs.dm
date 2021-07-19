@@ -304,14 +304,9 @@
 	update_icon()
 	start_processing()
 
-/obj/limb/proc/heal_damage(brute, burn, robo_repair = FALSE, keep_bleeding = FALSE) //Kepe bleeding?
+/obj/limb/proc/heal_damage(brute, burn, robo_repair = FALSE)
 	if(status & LIMB_ROBOT && !robo_repair)
 		return
-
-??
-	if(brute && !keep_bleeding)
-		remove_all_bleeding(TRUE)
-??
 
 	//Heal damage on the individual wounds
 	for(var/datum/wound/W in wounds)
@@ -488,7 +483,7 @@ This function completely restores a damaged organ to perfect condition.
 
 //Determines if we even need to process this organ.
 
-/obj/limb/proc/need_process() GERE 1st TRUE?
+/obj/limb/proc/need_process()
 	if(status & LIMB_DESTROYED)	//Missing limb is missing
 		return FALSE
 	if(status & LIMB_BROKEN) // Causes things to drop and may be healed by bonemending chem.
