@@ -70,7 +70,6 @@
 		SPAN_NOTICE("[user] opens an implant cavity inside [target]'s [surgery.affected_limb.cavity]."))
 
 	log_interact(user, target, "[key_name(user)] made some space in [key_name(target)]'s [surgery.affected_limb.cavity] with \the [tool], beginning [surgery].")
-	target.apply_damage(10, BRUTE, target_zone)
 
 /datum/surgery_step/create_cavity/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
@@ -78,7 +77,7 @@
 		SPAN_WARNING("[user]'s hand slips, scraping tissue inside your [surgery.affected_limb.cavity] with \the [tool]!"),
 		SPAN_WARNING("[user]'s hand slips, scraping tissue inside [target]'s [surgery.affected_limb.cavity] with \the [tool]!"))
 
-	target.apply_damage(20, BRUTE, target_zone)
+	target.apply_damage(15, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to make some space in [key_name(target)]'s [surgery.affected_limb.cavity] with \the [tool], aborting [surgery].")
 	return FALSE
 
@@ -146,7 +145,7 @@ datum/surgery_step/place_item/skip_step_criteria(mob/user, mob/living/carbon/tar
 		SPAN_WARNING("[user]'s hand slips, scraping tissue inside your [surgery.affected_limb.cavity] with \the [tool]!"),
 		SPAN_WARNING("[user]'s hand slips, scraping tissue inside [target]'s [surgery.affected_limb.cavity] with \the [tool]!"))
 
-	target.apply_damage(15, BRUTE, target_zone)
+	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to implant \the [tool] into [key_name(target)]'s [surgery.affected_limb.cavity].")
 	return FALSE
 
@@ -205,7 +204,7 @@ datum/surgery_step/remove_implant/skip_step_criteria(mob/user, mob/living/carbon
 
 	log_interact(user, target, "[key_name(user)] damaged the inside of [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool].")
 
-	target.apply_damage(15, BRUTE, target_zone)
+	target.apply_damage(10, BRUTE, target_zone)
 	return FALSE
 
 //------------------------------------
@@ -231,7 +230,6 @@ datum/surgery_step/remove_implant/skip_step_criteria(mob/user, mob/living/carbon
 		SPAN_NOTICE("[user] mends [target]'s [surgery.affected_limb.cavity] wall."))
 
 	log_interact(user, target, "[key_name(user)] mended [key_name(target)]'s [surgery.affected_limb.cavity] wall with \the [tool], ending [surgery].")
-	target.apply_damage(5, BURN, target_zone)
 
 /datum/surgery_step/cauterize/close_cavity/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
@@ -241,7 +239,7 @@ datum/surgery_step/remove_implant/skip_step_criteria(mob/user, mob/living/carbon
 
 	log_interact(user, target, "[key_name(user)] failed to mend [key_name(target)]'s [surgery.affected_limb.cavity] wall with \the [tool].")
 
-	target.apply_damage(15, BURN, target_zone)
+	target.apply_damage(10, BURN, target_zone)
 	return FALSE
 
 
@@ -337,7 +335,7 @@ datum/surgery_step/remove_implant/skip_step_criteria(mob/user, mob/living/carbon
 
 	log_interact(user, target, "[key_name(user)] damaged the inside of [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], ending [surgery].")
 
-	target.apply_damage(15, BRUTE, target_zone)
+	target.apply_damage(10, BRUTE, target_zone)
 	if(length(surgery.affected_limb.implants) && prob(10 + 100 * (tools[tool_type] - 1)))
 		var/obj/item/implant/imp = surgery.affected_limb.implants[1]
 		if(istype(imp))

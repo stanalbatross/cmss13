@@ -72,7 +72,6 @@
 		SPAN_WARNING("[user] has severed the muscles in your [surgery.affected_limb.display_name]!"),
 		SPAN_NOTICE("[user] has severed the muscles in [target]'s [surgery.affected_limb.display_name]."))
 
-	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] successfully began an amputation on [key_name(target)]'s [surgery.affected_limb.display_name] with [tool ? "\the [tool]" : "their hands"], starting [surgery].")
 
 /datum/surgery_step/cut_muscle/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
@@ -120,7 +119,7 @@ datum/surgery_step/abort_amputation/skip_step_criteria(mob/user, mob/living/carb
 		SPAN_WARNING("[user]'s hand slips, damaging your [surgery.affected_limb.display_name] with \the [tool]!"),
 		SPAN_WARNING("[user]'s hand slips, damaging [target]'s [surgery.affected_limb.display_name] with \the [tool]!"))
 
-	target.apply_damage(15, BRUTE, target_zone)
+	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to abort an amputation on [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool].")
 	return FALSE
 
@@ -213,7 +212,6 @@ datum/surgery_step/abort_amputation/skip_step_criteria(mob/user, mob/living/carb
 		SPAN_NOTICE("[user] cuts away uneven flesh where your [surgery.affected_limb.display_name] used to be."),
 		SPAN_NOTICE("[user] cuts away uneven flesh where [target]'s [surgery.affected_limb.display_name] used to be."))
 
-	target.apply_damage(-20, BRUTE, surgery.affected_limb.parent)
 	log_interact(user, target, "[key_name(user)] successfully began cleaning up the stump of [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], possibly starting [surgery].")
 
 /datum/surgery_step/carve_amputation/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)

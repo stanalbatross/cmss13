@@ -116,5 +116,5 @@
 
 	log_interact(user, target, "[key_name(user)] failed to mend the hematoma in [key_name(target)]'s brain with \the [tool], aborting [surgery].")
 
-	target.apply_damage(20, BRUTE, target_zone)
+	target.apply_damage(15, BRUTE, target_zone)
 	return FALSE

@@ -72,7 +72,6 @@
 		incision_bleed.duration = 10 MINUTES //A weak bleed, but it doesn't stop on its own.
 		surgery.affected_limb.bleeding_effects_list += incision_bleed
 
-	target.apply_damage(5, BRUTE, target_zone)
 	target.incision_depths[target_zone] = SURGERY_DEPTH_SHALLOW //Descriptionwise this is done by the retractor, but putting it here means people can examine to see if an unfinished surgery has been done.
 	user.add_blood(target.get_blood_color(), BLOOD_HANDS)
 	log_interact(user, target, "[key_name(user)] made an incision in [key_name(target)]'s [surgery.affected_limb.display_name], beginning [surgery].")
@@ -85,7 +84,7 @@
 				SPAN_WARNING("[user]'s hand jolts as the system sparks, ripping a gruesome hole in your [surgery.affected_limb.display_name] with \the [tool]!"),
 				SPAN_WARNING("[user]'s hand jolts as the system sparks, ripping a gruesome hole in [target]'s [surgery.affected_limb.display_name] with \the [tool]!"))
 
-			target.apply_damage(20, BRUTE, target_zone)
+			target.apply_damage(15, BRUTE, target_zone)
 			target.apply_damage(15, BURN, target_zone)
 		if(/obj/item/tool/surgery/scalpel/laser)
 			user.affected_message(target,
@@ -388,7 +387,6 @@ datum/surgery_step/saw_encased/skip_step_criteria(mob/user, mob/living/carbon/ta
 		SPAN_NOTICE("[user] finishes cutting through your [surgery.affected_limb.encased]."),
 		SPAN_NOTICE("[user] finishes cutting through [target]'s [surgery.affected_limb.encased]."))
 
-	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] cut through [key_name(target)]'s [surgery.affected_limb.encased], beginning [surgery].")
 
 /datum/surgery_step/saw_encased/failure(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
@@ -463,7 +461,7 @@ datum/surgery_step/open_encased_step/skip_step_criteria(mob/user, mob/living/car
 			SPAN_WARNING("[user]'s hand slips, cracking [target]'s [surgery.affected_limb.encased]!"))
 
 	surgery.affected_limb.fracture(100)
-	target.apply_damage(20, BRUTE, target_zone)
+	target.apply_damage(15, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to open [key_name(target)]'s [surgery.affected_limb.encased].")
 
 //------------------------------------
@@ -520,7 +518,7 @@ datum/surgery_step/open_encased_step/skip_step_criteria(mob/user, mob/living/car
 			SPAN_WARNING("[user]'s hand slips, cracking [target]'s [surgery.affected_limb.encased]!"))
 
 	surgery.affected_limb.fracture(100)
-	target.apply_damage(20, BRUTE, target_zone)
+	target.apply_damage(15, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to close [key_name(target)]'s [surgery.affected_limb.encased], aborting [surgery].")
 
 //------------------------------------
@@ -583,7 +581,7 @@ datum/surgery_step/open_encased_step/skip_step_criteria(mob/user, mob/living/car
 
 		surgery.affected_limb.fracture(100)
 
-	target.apply_damage(20, BRUTE, target_zone)
+	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to mend [key_name(target)]'s [surgery.affected_limb.encased].")
 
 
@@ -626,7 +624,6 @@ If fiddling with, uncomment /mob/living/attackby surgery code also. It's pointle
 		SPAN_NOTICE("[user] finishes the incision on [target]'s [parse_zone(target_zone)]."))
 
 	target.incision_depths[target_zone] = SURGERY_DEPTH_SHALLOW
-	target.apply_damage(5, BRUTE, target_zone)
 	user.add_blood(target.get_blood_color(), BLOOD_HANDS)
 	log_interact(user, target, "[key_name(user)] made an incision in [key_name(target)]'s [parse_zone(target_zone)], beginning [surgery].")
 
