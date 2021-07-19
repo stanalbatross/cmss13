@@ -69,14 +69,22 @@
 		user.visible_message(SPAN_NOTICE("[user] severs the last of the pseudoroots with \the [tool], without spilling any of the larva's acid blood."),
 			SPAN_NOTICE("You sever the last of the pseudoroots with \the [tool], without spilling any of the larva's acid blood."))
 	else
-		user.visible_message(SPAN_NOTICE("Pressurised acid sprays as [user] severs the larva's tubes!"),
-			SPAN_WARNING("Pressurised acid sprays as you sever the pseudoroots!"))
+		user.visible_message(SPAN_WARNING("Pressurised acid sprays everywhere as [user] severs the larva's tubes!"),
+			SPAN_WARNING("As you sever the larva's pseudoroots, acid sprays through the air, pools in [target]'s [surgery.affected_limb.cavity], and spills sizzling across \his organs!"))
 
 		if(target.stat == CONSCIOUS)
+			to_chat(target, SPAN_HIGHDANGER("Your organs are melting!"))
 			target.emote("scream")
 
 		larva_blood_spray(user, target)
 		target.apply_damage(15, BURN, target_zone)
+
+		/*10-30 dam across 1-3 organs. This may shred one organ, but will most likely scatter a decent amount of damage across several.
+		Xeno acid can melt steel beams, and y'all just spilled it in his thoracic cavity.
+		You're also right there with the ribs cracked to fix it, so you can use the 3-9 seconds you spend on that to think about using the PICT next time.*/
+		for(var/I in 1 to rand(2,6))
+			var/datum/internal_organ/O = pick(surgery.affected_limb.internal_organs)
+			O.take_damage(5, I == 1)
 
 	log_interact(user, target, "[key_name(user)] cut the roots of a larva in [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], starting [surgery].")
 
