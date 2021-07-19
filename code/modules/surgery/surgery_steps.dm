@@ -187,7 +187,7 @@ datum/surgery_step/proc/repeat_step_criteria(mob/user, mob/living/carbon/target,
 			surgery.status += 2
 		else
 			surgery.status++
-		if(surgery.status > surgery.steps.len)
+		if(surgery.status > length(surgery.steps))
 			complete(target, surgery)
 
 	else if(surgery.status == 1) //Aborting or unproductively failing the first step cancels the surgery.
