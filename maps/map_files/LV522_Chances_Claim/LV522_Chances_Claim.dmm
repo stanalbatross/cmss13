@@ -55,6 +55,12 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
+"ar" = (
+/obj/structure/prop/dam/truck/mining,
+/turf/open/floor/plating{
+	icon_state = "platebot"
+	},
+/area/lv522/colony_streets)
 "as" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 1;
@@ -109,16 +115,9 @@
 	},
 /area/lv522/buildings/A_Block)
 "aF" = (
-/obj/structure/prop/invuln/minecart_tracks,
-/obj/structure/closet/crate/miningcar{
-	layer = 3.1;
-	name = "\improper materials storage bin";
-	pixel_y = 8
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
-/obj/structure/prop/invuln/minecart_tracks/bumper{
-	dir = 1
-	},
-/turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "aG" = (
 /obj/item/tool/pickaxe,
@@ -142,6 +141,17 @@
 /obj/item/tool/screwdriver,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/A_Block)
+"aS" = (
+/obj/structure/prop/invuln/minecart_tracks,
+/obj/structure/closet/crate/miningcar{
+	layer = 3.1;
+	name = "\improper materials storage bin";
+	pixel_y = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/A_Block)
 "aX" = (
@@ -440,8 +450,7 @@
 	pixel_y = -10
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue3"
 	},
 /area/lv522/buildings/A_Block)
 "cS" = (
@@ -515,6 +524,10 @@
 	icon_state = "fake_wood"
 	},
 /area/lv522/buildings/A_Block)
+"di" = (
+/obj/structure/surface/rack,
+/turf/open/gm/dirt2,
+/area/lv522/colony_streets)
 "dj" = (
 /obj/structure/machinery/bioprinter,
 /turf/open/floor/strata{
@@ -532,7 +545,19 @@
 /obj/item/tool/weldingtool{
 	pixel_x = -4
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
+"dm" = (
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	dir = 1;
+	name = "\improper Cargo Bay Storage";
+	req_one_access = null
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
 /area/lv522/buildings/A_Block)
 "dn" = (
 /turf/closed/shuttle/ert{
@@ -556,13 +581,12 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "ds" = (
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 8
+/obj/structure/platform_decoration{
+	dir = 4
 	},
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 9
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
-/turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "du" = (
 /obj/structure/surface/table/almayer,
@@ -577,6 +601,14 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/B_Block)
+"dx" = (
+/obj/item/clothing/shoes/veteran/PMC{
+	name = "steel toe boots"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "dz" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -692,6 +724,10 @@
 /obj/structure/platform,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"ed" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/plating,
+/area/lv522/colony_streets)
 "eg" = (
 /obj/structure/machinery/disposal,
 /turf/open/floor/strata{
@@ -707,6 +743,12 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_Block)
+"ej" = (
+/turf/open/floor/plating{
+	dir = 8;
+	icon_state = "warnplate"
+	},
+/area/lv522/colony_streets)
 "ek" = (
 /obj/structure/machinery/computer/operating{
 	dir = 1
@@ -793,10 +835,25 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/A_Block)
+"eH" = (
+/obj/structure/prop/invuln/minecart_tracks,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "eI" = (
 /obj/structure/platform_decoration/shiva/catwalk,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"eJ" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -10;
+	tag = "icon-W"
+	},
+/obj/structure/blocker/invisible_wall,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "eL" = (
 /obj/structure/pipes/standard/manifold/visible,
 /turf/open/floor/strata{
@@ -870,10 +927,27 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"fl" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 2,0";
+	tag = "icon-WY 0,0"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "fr" = (
 /obj/structure/largecrate/random/barrel/green,
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
+"fu" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "fv" = (
 /turf/open/space/basic,
 /area/space)
@@ -911,12 +985,20 @@
 	dir = 8;
 	icon_state = "p_stair_ew_full_cap"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
 "fH" = (
 /obj/structure/closet/crate/trashcart,
 /turf/open/floor/plating{
 	icon_state = "platebot"
+	},
+/area/lv522/buildings/A_Block)
+"fJ" = (
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/A_Block)
 "fM" = (
@@ -974,6 +1056,16 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_Block)
+"fY" = (
+/obj/structure/machinery/door/airlock/almayer/maint{
+	dir = 1;
+	req_one_access_txt = "100"
+	},
+/obj/structure/blocker/invisible_wall,
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/A_Block)
 "fZ" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
@@ -991,6 +1083,19 @@
 /obj/structure/machinery/colony_floodlight,
 /turf/open/floor/plating,
 /area/lv522/buildings/A_Block)
+"ge" = (
+/obj/item/clothing/shoes/jackboots{
+	pixel_x = -5;
+	pixel_y = -6
+	},
+/obj/item/clothing/shoes/jackboots{
+	pixel_x = 4;
+	pixel_y = 9
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "gf" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "102"
@@ -1006,7 +1111,9 @@
 /obj/structure/surface/rack,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /obj/item/weapon/gun/shotgun/double,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "gi" = (
 /obj/structure/closet,
@@ -1038,7 +1145,9 @@
 /area/lv522/buildings/A_Block)
 "gl" = (
 /obj/structure/closet/secure_closet/engineering_welding,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "gm" = (
 /obj/structure/surface/table/almayer,
@@ -1081,6 +1190,18 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/B_Block)
+"gD" = (
+/obj/structure/surface/rack,
+/obj/item/ore/silver,
+/obj/item/ore/silver,
+/obj/item/ore/silver,
+/obj/structure/barricade/handrail/strata{
+	dir = 4
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/A_Block)
 "gE" = (
 /obj/structure/prop/invuln/ice_prefab{
 	icon_state = "fab_2"
@@ -1172,6 +1293,16 @@
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
+"hi" = (
+/obj/structure/machinery/washing_machine,
+/obj/structure/machinery/washing_machine{
+	layer = 3.5;
+	pixel_y = 15
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "hj" = (
 /obj/structure/machinery/power/monitor{
 	name = "Main Power Grid Monitoring"
@@ -1189,6 +1320,15 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"hl" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 2,0";
+	tag = "icon-WY 0,0"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "hm" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
@@ -1210,8 +1350,7 @@
 	pixel_y = 16
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "ho" = (
@@ -1224,6 +1363,12 @@
 	icon_state = "plate"
 	},
 /area/lv522/colony_streets)
+"hs" = (
+/obj/structure/machinery/portable_atmospherics/canister/empty/oxygen,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "ht" = (
 /obj/structure/stairs/perspective{
 	dir = 10;
@@ -1305,6 +1450,15 @@
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"hN" = (
+/obj/structure/machinery/washing_machine{
+	density = 0;
+	pixel_x = -9
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "hO" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
@@ -1324,6 +1478,14 @@
 	icon_state = "24"
 	},
 /area/lv522/colony_streets)
+"hS" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/A_Block)
 "hT" = (
 /obj/structure/machinery/conveyor{
 	dir = 5;
@@ -1486,6 +1648,15 @@
 	icon_state = "white_cyan1"
 	},
 /area/lv522/buildings/B_Block)
+"iR" = (
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_full"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "iS" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/strata{
@@ -1505,6 +1676,15 @@
 /obj/structure/barricade/wooden,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"iZ" = (
+/obj/structure/surface/rack{
+	pixel_x = 7
+	},
+/obj/item/tool/pickaxe,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "jb" = (
 /obj/structure/reagent_dispensers/peppertank{
 	pixel_x = 32
@@ -1536,7 +1716,9 @@
 	dir = 8;
 	pixel_y = 4
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "jj" = (
 /obj/structure/machinery/door/airlock/almayer/generic,
@@ -1591,6 +1773,16 @@
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
+	},
+/area/lv522/buildings/A_Block)
+"jG" = (
+/obj/structure/surface/rack,
+/obj/item/ore/gold,
+/obj/item/ore/gold,
+/obj/item/ore/gold,
+/obj/item/ore/gold,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/A_Block)
 "jN" = (
@@ -1695,6 +1887,16 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"kC" = (
+/turf/open/floor/plating{
+	dir = 9;
+	icon_state = "warnplate"
+	},
+/area/lv522/colony_streets)
+"kE" = (
+/obj/structure/prop/dam/truck,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "kG" = (
 /obj/item/ammo_magazine/rifle{
 	current_rounds = 0
@@ -1749,6 +1951,19 @@
 /obj/item/weapon/gun/pistol/holdout,
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/plating,
+/area/lv522/buildings/A_Block)
+"kY" = (
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/B_Block)
+"la" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "lb" = (
 /turf/closed/shuttle/dropship2{
@@ -1805,6 +2020,15 @@
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
 /area/lv522/colony_streets)
+"lE" = (
+/obj/structure/machinery/conveyor{
+	dir = 8;
+	id = "cargo_container"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "lF" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
 	icon_state = "white_trim"
@@ -1981,6 +2205,15 @@
 	},
 /turf/open/floor/carpet,
 /area/lv522/buildings/A_Block)
+"mM" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	dir = 9;
+	icon_state = "blue3"
+	},
+/area/lv522/buildings/A_Block)
 "mP" = (
 /turf/closed/wall/shiva/prefabricated/reinforced,
 /area/lv522/colony_streets)
@@ -2068,6 +2301,17 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"ns" = (
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 8
+	},
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 5
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "nv" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/drinks/cans/souto{
@@ -2077,11 +2321,10 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "nw" = (
-/obj/structure/prop/invuln/minecart_tracks,
-/obj/structure/prop/invuln/minecart_tracks/bumper{
-	dir = 1
+/obj/structure/machinery/floodlight,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
-/turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "nz" = (
 /obj/structure/bed/chair/dropship/passenger{
@@ -2153,9 +2396,17 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
+"nS" = (
+/obj/structure/surface/table/reinforced/prison,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "nV" = (
 /obj/structure/surface/rack,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "nX" = (
 /obj/structure/surface/table/almayer,
@@ -2221,6 +2472,18 @@
 	dir = 8
 	},
 /turf/open/floor/strata,
+/area/lv522/buildings/A_Block)
+"ow" = (
+/obj/structure/largecrate/random/barrel,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
+"oy" = (
+/obj/structure/bed/chair{
+	dir = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "oB" = (
 /obj/structure/barricade/handrail,
@@ -2345,14 +2608,26 @@
 	},
 /area/lv522/buildings/A_Block)
 "pb" = (
-/obj/structure/foamedmetal,
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_full"
+	},
+/obj/structure/platform,
 /turf/open/floor/plating,
-/area/lv522/buildings/A_Block)
+/area/lv522/buildings/B_Block)
 "pi" = (
 /obj/structure/toilet{
 	dir = 4
 	},
 /turf/open/floor/plating,
+/area/lv522/buildings/A_Block)
+"pk" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/head/hardhat,
+/obj/item/clothing/head/hardhat,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "pl" = (
 /obj/structure/platform_decoration{
@@ -2376,6 +2651,12 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"pw" = (
+/obj/structure/barricade/handrail,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "py" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "3"
@@ -2504,7 +2785,9 @@
 	pixel_x = 9;
 	pixel_y = 13
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "qn" = (
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -2555,6 +2838,14 @@
 	icon_state = "fake_wood"
 	},
 /area/lv522/buildings/B_Block)
+"qy" = (
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 6
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "qA" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 3.1;
@@ -2614,6 +2905,14 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
+"qT" = (
+/obj/structure/surface/rack,
+/obj/item/storage/bag/ore,
+/obj/item/storage/bag/ore,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "qW" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "49"
@@ -2664,6 +2963,12 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_Block)
+"ro" = (
+/obj/structure/largecrate/random,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "rp" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -2680,15 +2985,15 @@
 "rr" = (
 /obj/structure/surface/table/almayer,
 /obj/item/hardpoint/locomotion/van_wheels,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "rs" = (
-/obj/structure/cargo_container{
-	icon_state = "gorg 0,0";
-	tag = "icon-gorg 0,0"
-	},
-/turf/open/floor/strata,
-/area/lv522/buildings/A_Block)
+/obj/structure/prop/dam/drill,
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/gm/dirt2,
+/area/lv522/colony_streets)
 "ru" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/computer/operating,
@@ -2838,9 +3143,8 @@
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
 "si" = (
-/obj/structure/prop/dam/drill,
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "sj" = (
 /obj/structure/machinery/cm_vending/sorted/medical/chemistry,
 /turf/open/floor/strata{
@@ -2856,6 +3160,16 @@
 	},
 /obj/structure/platform_decoration{
 	dir = 9
+	},
+/turf/open/gm/dirt2,
+/area/lv522/colony_streets)
+"sm" = (
+/obj/structure/stairs/perspective{
+	dir = 10;
+	icon_state = "p_stair_full"
+	},
+/obj/structure/platform_decoration{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
@@ -2890,6 +3204,9 @@
 	},
 /obj/structure/platform{
 	dir = 8
+	},
+/obj/structure/platform_decoration{
+	dir = 5
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -2926,6 +3243,17 @@
 "sO" = (
 /obj/structure/closet/cabinet,
 /turf/open/floor/plating,
+/area/lv522/buildings/A_Block)
+"sP" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = -10;
+	tag = "icon-E-corner"
+	},
+/obj/structure/barricade/wooden{
+	dir = 1
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "sQ" = (
 /obj/item/storage/surgical_tray,
@@ -3052,7 +3380,9 @@
 /obj/structure/surface/rack,
 /obj/item/hardpoint/locomotion/van_wheels,
 /obj/effect/decal/cleanable/blood/oil,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "tH" = (
 /obj/structure/cargo_container{
@@ -3292,12 +3622,27 @@
 /area/lv522/colony_streets)
 "uS" = (
 /obj/structure/window,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/A_Block)
+"vc" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -10;
+	tag = "icon-W"
+	},
+/obj/structure/barricade/wooden{
+	dir = 1
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "vi" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "vk" = (
 /obj/structure/closet/fireaxecabinet{
@@ -3323,6 +3668,14 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"vp" = (
+/obj/structure/surface/rack,
+/obj/item/tank/emergency_oxygen/double,
+/obj/item/tank/emergency_oxygen/double,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "vq" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "25"
@@ -3373,6 +3726,17 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/A_Block)
+"vC" = (
+/obj/structure/machinery/suit_storage_unit{
+	pixel_x = -9
+	},
+/obj/structure/machinery/suit_storage_unit{
+	pixel_x = 16
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "vD" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "36"
@@ -3404,6 +3768,14 @@
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan3"
+	},
+/area/lv522/buildings/A_Block)
+"vN" = (
+/obj/structure/prop/invuln/minecart_tracks/bumper{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/A_Block)
 "vP" = (
@@ -3598,11 +3970,33 @@
 	icon_state = "blue3"
 	},
 /area/lv522/buildings/A_Block)
+"wz" = (
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 5
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "wB" = (
 /turf/open/floor/strata{
 	icon_state = "red2"
 	},
 /area/lv522/buildings/A_Block)
+"wC" = (
+/obj/structure/surface/rack,
+/obj/item/tank/oxygen,
+/obj/item/tank/oxygen,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
+"wE" = (
+/turf/open/floor/plating{
+	dir = 1;
+	icon_state = "warnplate"
+	},
+/area/lv522/colony_streets)
 "wG" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating,
@@ -3671,6 +4065,12 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
+"xa" = (
+/obj/structure/largecrate/random,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "xg" = (
 /obj/structure/machinery/cryo_cell,
 /turf/open/floor/strata{
@@ -3720,6 +4120,13 @@
 "xt" = (
 /obj/structure/stairs/perspective{
 	icon_state = "p_stair_full"
+	},
+/turf/open/floor/plating,
+/area/lv522/colony_streets)
+"xu" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 2,0";
+	tag = "icon-WY 0,0"
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
@@ -3819,6 +4226,12 @@
 	icon_state = "warning"
 	},
 /area/lv522/colony_streets)
+"xY" = (
+/obj/structure/surface/table/almayer,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "yb" = (
 /obj/structure/closet/crate/freezer,
 /turf/open/floor/strata{
@@ -3957,6 +4370,15 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"yT" = (
+/obj/structure/machinery/conveyor{
+	dir = 8;
+	id = "cargo_container"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "yX" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -4259,6 +4681,14 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"AH" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "AI" = (
 /obj/structure/largecrate/random/barrel,
 /turf/open/floor/plating{
@@ -4276,6 +4706,12 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/A_Block)
+"AP" = (
+/obj/vehicle/train/cargo/engine,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "AR" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/xenoautopsy/tank/hugger{
@@ -4286,6 +4722,15 @@
 	icon_state = "platebotc"
 	},
 /area/lv522/buildings/B_Block)
+"AS" = (
+/obj/structure/machinery/door/poddoor/almayer{
+	dir = 8;
+	id = "E_B_Door";
+	name = "\improper Emergency Blast Door";
+	unacidable = 1
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "AX" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -4364,17 +4809,21 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
-"Br" = (
-/obj/structure/window/framed/shiva,
-/turf/open/floor/strata{
-	icon_state = "white_cyan2"
-	},
-/area/lv522/buildings/B_Block)
 "Bt" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan5"
 	},
 /area/lv522/colony_streets)
+"Bw" = (
+/obj/structure/blocker/invisible_wall,
+/obj/structure/prop/invuln{
+	desc = "big pile energy.";
+	icon = 'icons/obj/structures/props/ice_colony/barrel_yard.dmi';
+	icon_state = "pile_0";
+	name = "barrel pile"
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "Bx" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,1";
@@ -4401,6 +4850,15 @@
 "BE" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/dirt2,
+/area/lv522/colony_streets)
+"BH" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 0,0";
+	tag = "icon-gorg 0,0"
+	},
+/turf/open/floor/plating{
+	icon_state = "platebot"
+	},
 /area/lv522/colony_streets)
 "BJ" = (
 /obj/structure/stairs/perspective{
@@ -4439,11 +4897,16 @@
 /turf/closed/wall/r_wall/biodome/biodome_unmeltable,
 /area/lv522/colony_streets)
 "BU" = (
-/obj/structure/cargo_container{
-	icon_state = "gorg 2,0";
-	tag = "icon-WY 0,0"
+/obj/structure/desertdam/decals/road_edge{
+	icon_state = "road_edge_decal5"
 	},
-/turf/open/floor/strata,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
+"BW" = (
+/obj/structure/desertdam/decals/road_edge{
+	icon_state = "road_edge_decal2"
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "BZ" = (
 /obj/structure/surface/table/almayer,
@@ -4496,6 +4959,19 @@
 	icon_state = "platebotc"
 	},
 /area/lv522/buildings/B_Block)
+"Cp" = (
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 8
+	},
+/obj/structure/closet/crate/miningcar{
+	layer = 3.1;
+	name = "\improper materials storage bin";
+	pixel_y = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Cr" = (
 /obj/structure/fence,
 /turf/open/floor/plating,
@@ -4571,6 +5047,12 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/A_Block)
+"CR" = (
+/obj/structure/prop/dam/truck/damaged,
+/turf/open/floor/plating{
+	icon_state = "platebot"
+	},
+/area/lv522/colony_streets)
 "CT" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -4603,6 +5085,18 @@
 	icon_state = "fake_wood"
 	},
 /area/lv522/buildings/B_Block)
+"Da" = (
+/obj/structure/platform{
+	dir = 8
+	},
+/obj/structure/stairs/perspective{
+	dir = 5;
+	icon_state = "p_stair_full"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Db" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "27"
@@ -4618,6 +5112,12 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"Dd" = (
+/obj/structure/desertdam/decals/road_edge{
+	icon_state = "road_edge_decal6"
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "Df" = (
 /obj/structure/platform{
 	dir = 8
@@ -4644,12 +5144,6 @@
 	icon_state = "white_cyan1"
 	},
 /area/lv522/buildings/B_Block)
-"Dm" = (
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 8
-	},
-/turf/open/floor/strata,
-/area/lv522/buildings/A_Block)
 "Dn" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/corsat,
@@ -4700,6 +5194,15 @@
 	tag = "icon-rasputin8"
 	},
 /area/lv522/colony_streets)
+"DH" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/under/overalls,
+/obj/item/clothing/under/overalls,
+/obj/item/clothing/under/overalls,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "DI" = (
 /obj/effect/decal/cleanable/blood,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -4731,6 +5234,12 @@
 	icon_state = "8,3"
 	},
 /area/lv522/colony_streets)
+"DQ" = (
+/obj/vehicle/train/cargo/trolley,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "DR" = (
 /obj/item/stack/sheet/metal,
 /obj/item/stack/rods,
@@ -4890,6 +5399,12 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/A_Block)
+"ED" = (
+/obj/structure/surface/table/gamblingtable,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "EF" = (
 /obj/structure/surface/table/almayer{
 	dir = 1;
@@ -4987,6 +5502,12 @@
 /obj/structure/prop/dam/truck/mining,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"Fl" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Fm" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
 /obj/item/reagent_container/food/snacks/meatpizzaslice,
@@ -5001,6 +5522,15 @@
 	icon_state = "warning"
 	},
 /area/lv522/colony_streets)
+"Fu" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/mask/gas,
+/obj/item/clothing/mask/gas,
+/obj/item/clothing/mask/gas,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Fv" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -5085,6 +5615,14 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
+"Ga" = (
+/obj/structure/barricade/handrail/strata{
+	dir = 8
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/A_Block)
 "Gb" = (
 /obj/structure/bed/sofa/vert/grey,
 /turf/open/floor/strata{
@@ -5104,6 +5642,18 @@
 	opacity = 0
 	},
 /area/lv522/colony_streets)
+"Gh" = (
+/obj/structure/stairs/perspective{
+	dir = 6;
+	icon_state = "p_stair_full"
+	},
+/obj/structure/platform{
+	dir = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Gi" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/adv{
@@ -5150,6 +5700,13 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/A_Block)
+"Gw" = (
+/obj/vehicle/train/cargo/trolley,
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "GD" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin{
@@ -5161,7 +5718,17 @@
 	pixel_x = -9;
 	pixel_y = 10
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
+"GE" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = -10;
+	tag = "icon-E-corner"
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "GG" = (
 /obj/structure/stairs/perspective{
@@ -5173,6 +5740,12 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"GI" = (
+/obj/structure/ore_box,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "GL" = (
 /obj/structure/prop/dam/van,
 /turf/open/floor/plating{
@@ -5667,6 +6240,14 @@
 	icon_state = "stan1"
 	},
 /area/lv522/colony_streets)
+"Jg" = (
+/obj/structure/barricade/handrail/strata{
+	dir = 4
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/A_Block)
 "Jh" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "86"
@@ -5684,12 +6265,18 @@
 	dir = 4
 	},
 /obj/structure/window,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
 /area/lv522/buildings/A_Block)
 "Jk" = (
-/obj/structure/prop/dam/truck/damaged,
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
+/obj/structure/platform{
+	dir = 8
+	},
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/A_Block)
 "Jn" = (
 /turf/open/floor{
 	dir = 4;
@@ -5781,8 +6368,7 @@
 /obj/item/key/cargo_train,
 /obj/structure/surface/rack,
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/A_Block)
 "JQ" = (
@@ -5886,6 +6472,10 @@
 	icon_state = "blue4"
 	},
 /area/lv522/buildings/A_Block)
+"Ks" = (
+/obj/structure/blocker/invisible_wall,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "Kt" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/strata{
@@ -5912,6 +6502,12 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"KF" = (
+/obj/structure/dispenser/oxygen,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "KG" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/item/ammo_magazine/rifle/l42a/ap{
@@ -5998,6 +6594,25 @@
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"Ln" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 10;
+	tag = "icon-N"
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
+"Lo" = (
+/obj/structure/surface/rack,
+/obj/item/ore/uranium,
+/obj/item/ore/uranium,
+/obj/structure/barricade/handrail/strata{
+	dir = 4
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/A_Block)
 "Lp" = (
 /obj/structure/bed/chair/dropship/passenger{
 	dir = 8
@@ -6008,17 +6623,6 @@
 	tag = "icon-rasputin15"
 	},
 /area/lv522/colony_streets)
-"Lq" = (
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 8
-	},
-/obj/structure/closet/crate/miningcar{
-	layer = 3.1;
-	name = "\improper materials storage bin";
-	pixel_y = 8
-	},
-/turf/open/floor/strata,
-/area/lv522/buildings/A_Block)
 "Lr" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/hardhat,
@@ -6039,6 +6643,22 @@
 	icon_state = "fake_wood"
 	},
 /area/lv522/buildings/B_Block)
+"Lt" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	pixel_y = 10;
+	tag = "icon-S"
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
+"Lw" = (
+/obj/structure/barricade/handrail{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Lz" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -6194,10 +6814,13 @@
 /turf/closed/shuttle/ert,
 /area/lv522/colony_streets)
 "Mo" = (
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 9
+/obj/structure/platform{
+	dir = 1;
+	layer = 2
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "Ms" = (
 /turf/open/shuttle/dropship{
@@ -6229,7 +6852,19 @@
 /obj/item/clothing/mask/cigarette/cigar{
 	pixel_x = -5
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
+"MC" = (
+/obj/structure/surface/rack,
+/obj/item/ore/osmium,
+/obj/item/ore/osmium,
+/obj/item/ore/osmium,
+/obj/item/ore/osmium,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "MD" = (
 /obj/structure/surface/table/woodentable/fancy,
@@ -6241,6 +6876,12 @@
 /obj/structure/pipes/vents/pump,
 /turf/open/floor{
 	icon_state = "wood"
+	},
+/area/lv522/buildings/A_Block)
+"ME" = (
+/obj/structure/barricade/handrail/strata,
+/turf/open/floor/corsat{
+	icon_state = "marked"
 	},
 /area/lv522/buildings/A_Block)
 "MG" = (
@@ -6273,6 +6914,15 @@
 /obj/item/reagent_container/glass/bucket,
 /turf/open/floor/strata,
 /area/lv522/colony_streets)
+"MU" = (
+/obj/structure/platform{
+	dir = 1;
+	layer = 2
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "MV" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/corsat{
@@ -6303,6 +6953,12 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_Block)
+"Nn" = (
+/obj/structure/barricade/wooden{
+	dir = 1
+	},
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "No" = (
 /obj/structure/filingcabinet{
 	pixel_x = 7
@@ -6310,7 +6966,15 @@
 /obj/structure/filingcabinet{
 	pixel_x = -9
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
+"Np" = (
+/obj/structure/surface/table/reinforced/prison,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "Ns" = (
 /obj/structure/stairs/perspective{
@@ -6336,7 +7000,9 @@
 /obj/structure/window{
 	dir = 4
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
 /area/lv522/buildings/A_Block)
 "Ny" = (
 /obj/structure/stairs/perspective{
@@ -6354,15 +7020,24 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/A_Block)
-"NC" = (
-/obj/structure/prop/invuln/minecart_tracks,
-/turf/open/floor/strata,
+"NA" = (
+/obj/structure/desertdam/decals/road_edge{
+	icon_state = "road_edge_decal2";
+	pixel_x = -4
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "ND" = (
 /obj/structure/bed/chair{
 	dir = 8
 	},
 /turf/open/floor/plating,
+/area/lv522/buildings/A_Block)
+"NI" = (
+/obj/structure/barricade/handrail,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "NK" = (
 /obj/structure/surface/rack,
@@ -6391,7 +7066,7 @@
 	dir = 6
 	},
 /obj/structure/fence,
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/colony_streets)
 "NR" = (
 /obj/structure/platform_decoration{
@@ -6416,8 +7091,7 @@
 "NX" = (
 /obj/structure/curtain/red,
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "NY" = (
@@ -6427,15 +7101,13 @@
 	pixel_y = 9
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/A_Block)
 "NZ" = (
-/obj/structure/prop/invuln/minecart_tracks{
-	dir = 6
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
-/turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "Od" = (
 /obj/structure/platform{
@@ -6479,6 +7151,14 @@
 	},
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"Oi" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Oj" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "22"
@@ -6512,6 +7192,14 @@
 	icon_state = "squares"
 	},
 /area/lv522/colony_streets)
+"Or" = (
+/obj/structure/platform{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/A_Block)
 "Ov" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/CICmap,
@@ -6539,6 +7227,12 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/A_Block)
+"OA" = (
+/obj/structure/bed/chair,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "OE" = (
 /obj/structure/window_frame/shiva,
 /obj/effect/decal/cleanable/blood,
@@ -6556,8 +7250,7 @@
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "OJ" = (
@@ -6571,7 +7264,9 @@
 	pixel_x = -9;
 	pixel_y = 10
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "ON" = (
 /obj/structure/bed/chair{
@@ -6687,6 +7382,14 @@
 	icon_state = "red1"
 	},
 /area/lv522/buildings/A_Block)
+"Pr" = (
+/obj/structure/machinery/suit_storage_unit{
+	pixel_x = -2
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Ps" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -6777,6 +7480,9 @@
 /area/lv522/buildings/B_Block)
 "PS" = (
 /obj/structure/prop/invuln/minecart_tracks,
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 10
+	},
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -6831,6 +7537,15 @@
 	icon_state = "99"
 	},
 /area/lv522/colony_streets)
+"Qh" = (
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_full"
+	},
+/turf/open/floor/strata{
+	icon_state = "blue1"
+	},
+/area/lv522/buildings/A_Block)
 "Qi" = (
 /turf/closed/shuttle/elevator{
 	dir = 5
@@ -6865,9 +7580,17 @@
 /obj/item/key,
 /obj/structure/surface/rack,
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "orange_cover"
 	},
+/area/lv522/buildings/A_Block)
+"QA" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = -10;
+	tag = "icon-E-corner"
+	},
+/obj/structure/blocker/invisible_wall,
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "QB" = (
 /obj/structure/cargo_container{
@@ -6991,6 +7714,16 @@
 	icon_state = "white_cyan4"
 	},
 /area/lv522/buildings/B_Block)
+"Ri" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 0,0";
+	layer = 2.9;
+	tag = "icon-gorg 0,0"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Rj" = (
 /turf/open/floor/coagulation{
 	icon_state = "8,0"
@@ -7031,8 +7764,7 @@
 	dir = 4
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "RA" = (
@@ -7067,6 +7799,12 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/B_Block)
+"RD" = (
+/obj/structure/reagent_dispensers/water_cooler/stacks,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "RF" = (
 /obj/structure/bed/chair{
 	dir = 8
@@ -7157,6 +7895,14 @@
 /obj/structure/machinery/cm_vending/sorted/medical/blood,
 /turf/open/floor/strata{
 	icon_state = "white_cyan3"
+	},
+/area/lv522/buildings/A_Block)
+"Si" = (
+/obj/structure/surface/rack,
+/obj/item/ore/coal,
+/obj/item/ore/coal,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/A_Block)
 "Sj" = (
@@ -7381,8 +8127,7 @@
 "Th" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "Tj" = (
@@ -7419,7 +8164,9 @@
 	pixel_y = 3
 	},
 /obj/item/newspaper,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "Tt" = (
 /obj/structure/surface/table/almayer,
@@ -7447,6 +8194,11 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"TE" = (
+/obj/item/pamphlet/skill/powerloader,
+/obj/structure/blocker/invisible_wall,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "TJ" = (
 /turf/open/floor/coagulation{
 	icon_state = "0,0"
@@ -7478,22 +8230,37 @@
 	pixel_y = -8
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "TP" = (
 /obj/structure/machinery/smartfridge/chemistry,
 /turf/open/floor/strata{
-	icon_state = "white_cyan2"
+	dir = 4;
+	icon_state = "white_cyan1"
 	},
 /area/lv522/buildings/B_Block)
+"TR" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	dir = 8;
+	icon_state = "blue3"
+	},
+/area/lv522/buildings/A_Block)
 "TS" = (
 /obj/structure/machinery/colony_floodlight{
 	pixel_y = 9
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
+"TU" = (
+/obj/structure/surface/rack,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "TV" = (
 /turf/closed/shuttle/ert{
 	icon_state = "rightengine_3"
@@ -7523,6 +8290,15 @@
 "Uf" = (
 /turf/closed/wall/r_wall/bunker,
 /area/lv522/colony_streets)
+"Um" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 0,0";
+	tag = "icon-gorg 0,0"
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Uo" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -7632,7 +8408,9 @@
 /area/lv522/buildings/A_Block)
 "Vd" = (
 /obj/structure/closet/secure_closet/quartermaster,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "Ve" = (
 /obj/structure/platform{
@@ -7650,6 +8428,15 @@
 /obj/structure/platform/shiva/catwalk,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"Vh" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/suit/storage/hazardvest,
+/obj/item/clothing/suit/storage/hazardvest,
+/obj/item/clothing/suit/storage/hazardvest,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "Vi" = (
 /turf/open/floor/strata{
 	dir = 6;
@@ -7689,7 +8476,10 @@
 /obj/structure/mirror{
 	pixel_y = 32
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	dir = 1;
+	icon_state = "blue3"
+	},
 /area/lv522/buildings/A_Block)
 "Vz" = (
 /turf/open/floor/strata{
@@ -7719,7 +8509,9 @@
 /area/lv522/buildings/A_Block)
 "VI" = (
 /obj/structure/machinery/vending/cigarette/colony,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "VJ" = (
 /obj/structure/machinery/power/port_gen/pacman{
@@ -7771,6 +8563,15 @@
 "Wd" = (
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata,
+/area/lv522/buildings/A_Block)
+"We" = (
+/obj/item/storage/bag/ore,
+/obj/structure/surface/rack,
+/obj/item/storage/bag/ore,
+/obj/item/storage/bag/ore,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/A_Block)
 "Wf" = (
 /obj/structure/cargo_container{
@@ -7925,8 +8726,8 @@
 	pixel_x = 4
 	},
 /turf/open/floor/strata{
-	dir = 8;
-	icon_state = "white_cyan2"
+	dir = 4;
+	icon_state = "white_cyan1"
 	},
 /area/lv522/buildings/A_Block)
 "WW" = (
@@ -7947,6 +8748,12 @@
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/floor/plating,
 /area/lv522/colony_streets)
+"Xd" = (
+/obj/structure/ore_box,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "Xe" = (
 /turf/closed/shuttle/ert{
 	icon_state = "stan27"
@@ -7964,6 +8771,14 @@
 /turf/open/floor/prison{
 	icon_state = "darkyellowfull2"
 	},
+/area/lv522/buildings/A_Block)
+"Xh" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -10;
+	tag = "icon-W"
+	},
+/turf/open/asphalt,
 /area/lv522/buildings/A_Block)
 "Xi" = (
 /turf/open/floor/strata{
@@ -8024,8 +8839,7 @@
 "XF" = (
 /obj/structure/machinery/disposal,
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/A_Block)
 "XL" = (
@@ -8047,8 +8861,7 @@
 	pixel_y = 6
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/A_Block)
 "XO" = (
@@ -8088,6 +8901,14 @@
 	icon_state = "warning"
 	},
 /area/lv522/colony_streets)
+"XW" = (
+/obj/structure/desertdam/decals/road_edge{
+	icon_state = "road_edge_decal2";
+	pixel_x = -4
+	},
+/obj/structure/prop/dam/truck,
+/turf/open/asphalt,
+/area/lv522/buildings/A_Block)
 "XX" = (
 /obj/item/clothing/head/beret/sec/hos,
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -8138,14 +8959,23 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_Block)
 "Yj" = (
-/obj/structure/fence,
-/turf/open/gm/dirt2,
-/area/lv522/colony_streets)
+/obj/structure/sink{
+	dir = 1;
+	pixel_y = -10
+	},
+/turf/open/floor/strata{
+	dir = 8;
+	icon_state = "blue4"
+	},
+/area/lv522/buildings/A_Block)
 "Yk" = (
 /obj/structure/machinery/light/double/blue{
 	dir = 8;
 	pixel_x = -10;
 	pixel_y = 13
+	},
+/obj/structure/prop/invuln/minecart_tracks{
+	dir = 8
 	},
 /turf/open/floor/corsat{
 	icon_state = "plate"
@@ -8252,7 +9082,9 @@
 /obj/item/clothing/head/welding{
 	pixel_y = 7
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
 /area/lv522/buildings/A_Block)
 "YS" = (
 /obj/structure/prop/invuln/ice_prefab{
@@ -8319,7 +9151,7 @@
 	dir = 4;
 	icon_state = "p_stair_full"
 	},
-/turf/open/gm/dirt2,
+/turf/open/floor/plating,
 /area/lv522/buildings/B_Block)
 "Zw" = (
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -8369,8 +9201,7 @@
 	icon_state = "p_stair_full"
 	},
 /turf/open/floor/strata{
-	dir = 4;
-	icon_state = "floor3"
+	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_Block)
 "ZI" = (
@@ -8411,6 +9242,14 @@
 	icon_state = "blue4"
 	},
 /area/lv522/buildings/A_Block)
+"ZS" = (
+/obj/structure/barricade/handrail{
+	dir = 1
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/A_Block)
 "ZT" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
@@ -8419,6 +9258,15 @@
 /obj/structure/platform,
 /turf/open/gm/dirt2,
 /area/lv522/colony_streets)
+"ZW" = (
+/turf/open/floor/strata,
+/area/lv522/buildings/B_Block)
+"ZX" = (
+/obj/structure/machinery/floodlight,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/A_Block)
 "ZY" = (
 /obj/item/prop{
 	anchored = 1;
@@ -8979,7 +9827,7 @@ cj
 cj
 cj
 cj
-Bl
+cj
 Bl
 cj
 cj
@@ -14483,8 +15331,8 @@ gC
 gC
 Re
 yc
-Br
-Br
+iP
+iP
 TP
 iP
 Di
@@ -21317,9 +22165,9 @@ yc
 yc
 fE
 Zp
-gC
-gC
-Re
+Zp
+Zp
+pb
 yc
 yc
 yc
@@ -21422,7 +22270,7 @@ Bl
 Bl
 Bl
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -21632,9 +22480,9 @@ Tm
 Tm
 Tm
 Tm
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
 Tm
 Tm
 Tm
@@ -21650,7 +22498,7 @@ Tm
 Bl
 Bl
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -21849,36 +22697,36 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-Xn
-SS
-SS
-ze
+aF
+aF
+pw
+lE
+lE
+ZS
 Tm
 cz
 fH
 Ig
 Tm
-gQ
-gQ
-gQ
+aF
+aF
+aF
 Tm
 nV
 nV
 nV
 Tm
-Xn
-SS
-SS
-ze
+pw
+lE
+lE
+ZS
 gG
 GD
 Tm
 Tm
 Bl
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -22076,38 +22924,38 @@ mP
 mP
 Tm
 Tm
-gQ
-gQ
-gQ
-Xn
-SS
-SS
-ze
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-Xn
-SS
-SS
-ze
+aF
+NZ
+NZ
+NI
+yT
+yT
+Lw
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NI
+yT
+yT
+Lw
 gG
 vi
-ai
+Oi
 Tm
 Tm
-Yj
-cj
-cj
+Cr
+Cr
+mP
 cj
 Wb
 fv
@@ -22283,8 +23131,8 @@ cg
 mS
 me
 Tm
-Tm
-Tm
+Hh
+Hh
 Tm
 Tm
 Bl
@@ -22304,7 +23152,7 @@ wg
 wg
 Tm
 fH
-gQ
+NZ
 gQ
 gQ
 Tm
@@ -22330,11 +23178,11 @@ SS
 ze
 gG
 Yi
-gQ
+NZ
 gh
 Tm
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -22511,10 +23359,10 @@ mS
 me
 Tm
 Tm
-pb
+gQ
+gQ
 Tm
-Tm
-Bl
+ZA
 Bl
 Bl
 Bl
@@ -22532,7 +23380,7 @@ mP
 mP
 Tm
 fH
-gQ
+NZ
 Xn
 gs
 vP
@@ -22558,11 +23406,11 @@ SS
 ze
 mo
 gQ
-gQ
-gQ
+NZ
+aF
 Tm
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -22738,11 +23586,11 @@ QH
 QH
 QH
 Tm
-pb
-pb
-Tm
-Bl
-Bl
+gQ
+gQ
+gQ
+Hh
+SD
 Bl
 Bl
 Bl
@@ -22760,7 +23608,7 @@ Bl
 Bl
 Tm
 fH
-gQ
+NZ
 Xn
 gs
 vP
@@ -22790,7 +23638,7 @@ Vd
 No
 Tm
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -22966,29 +23814,29 @@ ii
 ii
 ii
 Tm
-pb
-pb
-Tm
-Jk
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Tm
-Tm
 gQ
+gQ
+gQ
+Hh
+SD
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Tm
+Tm
+NZ
 gQ
 Xu
 Tm
@@ -23018,8 +23866,8 @@ Tm
 Tm
 Tm
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -23194,11 +24042,11 @@ yj
 yj
 yk
 Tm
-pb
-pb
+gQ
+gQ
+gQ
 Tm
-Bl
-Bl
+pp
 Bl
 Bl
 Bl
@@ -23215,8 +24063,8 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
+aF
+NZ
 gQ
 gQ
 yk
@@ -23242,12 +24090,12 @@ Fv
 yk
 gQ
 gQ
-gQ
-gQ
+NZ
+aF
 Hh
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -23422,10 +24270,10 @@ dh
 dh
 yk
 Tm
-pb
+gQ
+gQ
+gQ
 Tm
-Tm
-Bl
 Bl
 Bl
 Bl
@@ -23443,8 +24291,8 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
+aF
+NZ
 gQ
 gQ
 hE
@@ -23470,12 +24318,12 @@ hE
 hE
 gQ
 gQ
-gQ
-gQ
+NZ
+aF
 Hh
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -23650,10 +24498,10 @@ dh
 dh
 yk
 Tm
+gQ
+gQ
+gQ
 Tm
-Tm
-Bl
-Bl
 Bl
 Bl
 Bl
@@ -23671,8 +24519,8 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
+aF
+NZ
 gQ
 gQ
 hE
@@ -23698,12 +24546,12 @@ hE
 hE
 gQ
 gQ
-gQ
-gQ
+NZ
+aF
 Hh
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -23871,13 +24719,16 @@ gQ
 gQ
 Ew
 me
-ht
+KV
 Ih
 xA
 xA
 xA
 yk
 Tm
+gQ
+gQ
+Tm
 Tm
 Bl
 Bl
@@ -23895,12 +24746,9 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
 Hh
-gQ
-gQ
+aF
+NZ
 gQ
 gQ
 yk
@@ -23910,13 +24758,13 @@ gQ
 gQ
 gQ
 gQ
+yk
+hE
+yk
+hE
 yk
 hE
 yk
-hE
-yk
-hE
-yk
 gQ
 gQ
 gQ
@@ -23926,12 +24774,12 @@ yk
 yk
 gQ
 gQ
-gQ
-gQ
+NZ
+aF
 Hh
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -24106,9 +24954,9 @@ Ih
 Ih
 yk
 Tm
-Fk
-Bl
-Bl
+gQ
+Tm
+Tm
 Bl
 Bl
 Bl
@@ -24158,8 +25006,8 @@ Tm
 Tm
 Tm
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -24334,8 +25182,8 @@ Ih
 Ih
 yk
 Tm
-Bl
-Bl
+Tm
+Tm
 Bl
 Bl
 Bl
@@ -24355,8 +25203,8 @@ Bl
 Bl
 Bl
 Tm
-je
-gQ
+fu
+NZ
 TK
 TK
 Dp
@@ -24379,15 +25227,15 @@ gQ
 Tm
 Tm
 dG
-yk
+gQ
 iB
-yk
+gQ
 Ig
 Ig
 Tm
 Bl
-cj
-cj
+Bl
+Bl
 cj
 Wb
 fv
@@ -24562,7 +25410,7 @@ Ih
 Ih
 yk
 Tm
-Bl
+Tm
 Bl
 Bl
 Bl
@@ -24583,8 +25431,8 @@ Bl
 Bl
 Bl
 Tm
-Dg
-ai
+ED
+la
 TK
 TK
 TK
@@ -24604,17 +25452,17 @@ gQ
 gQ
 gQ
 gQ
-wY
-yk
-yk
-yk
-yk
-yk
-yk
-yk
+dm
+gQ
+gQ
+gQ
+gQ
+gQ
+NZ
+aF
 Tm
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -24760,8 +25608,8 @@ Kz
 Kz
 bT
 mP
-Yj
-Yj
+Cr
+Cr
 Tm
 rB
 iC
@@ -24783,7 +25631,7 @@ PE
 PE
 DB
 me
-zH
+zO
 Ih
 Ih
 Ih
@@ -24811,8 +25659,8 @@ Bl
 Bl
 Bl
 Tm
-nG
-gQ
+oy
+NZ
 TK
 TK
 eo
@@ -24832,17 +25680,17 @@ gQ
 gQ
 gQ
 gQ
-wY
-yk
-yk
-yk
-yk
-yk
+dm
+gQ
+gQ
+gQ
+gQ
+gQ
 QN
 qK
 Tm
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -25040,22 +25888,22 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
 Tm
 QN
 Ig
 Ra
 Ra
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
 Ig
 Ra
 Ra
@@ -25063,15 +25911,15 @@ Ra
 Tm
 Ig
 Ig
-yk
+NZ
 AI
-yk
+NZ
 qK
 Tm
 Tm
-Yj
-cj
-cj
+Cr
+Cr
+mP
 cj
 Wb
 fv
@@ -25269,21 +26117,21 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
+aF
 Tm
 QN
 dG
 aX
 bl
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
+aF
 Ig
 Ra
 Ig
@@ -25291,14 +26139,14 @@ Ig
 Tm
 Ig
 Ig
-yk
+aF
 AI
-yk
+aF
 Tm
 Tm
 Bl
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -25424,7 +26272,7 @@ FT
 FT
 FT
 FT
-ZA
+sm
 Bl
 Bl
 Bl
@@ -25444,8 +26292,8 @@ Kz
 Kz
 mq
 mP
-Yj
-Yj
+Cr
+Cr
 Tm
 nH
 iC
@@ -25485,12 +26333,12 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
+aF
+aF
 Tm
 Tm
 Bl
@@ -25500,8 +26348,8 @@ Tm
 Tm
 Tm
 Tm
-gQ
-gQ
+NZ
+NZ
 Tm
 Tm
 Tm
@@ -25526,7 +26374,7 @@ Tm
 Bl
 Bl
 Bl
-cj
+Bl
 cj
 cj
 Wb
@@ -25712,14 +26560,14 @@ Bl
 Bl
 Bl
 gG
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 gG
 Bl
 Bl
@@ -25740,7 +26588,7 @@ dE
 dE
 dE
 ho
-Bl
+di
 Bl
 Bl
 Bl
@@ -25748,13 +26596,13 @@ Tm
 Tm
 Tm
 Tm
+di
+di
 Bl
 Bl
 Bl
 Bl
 Bl
-Bl
-cj
 cj
 cj
 Wb
@@ -25940,14 +26788,14 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -25968,7 +26816,7 @@ dE
 dE
 dE
 ho
-Bl
+di
 Bl
 Bl
 Bl
@@ -26168,14 +27016,14 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -26396,14 +27244,14 @@ Bl
 Bl
 Bl
 gG
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 gG
 Bl
 Bl
@@ -26625,12 +27473,12 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
+aF
+aF
 Tm
 Tm
 Bl
@@ -27244,20 +28092,20 @@ Bl
 Bl
 yc
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
 yc
 yc
 mi
@@ -27471,22 +28319,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
+kY
 yc
 Mb
 cC
@@ -27572,11 +28420,11 @@ gE
 Bl
 Bl
 Bl
-Yj
+Cr
 ci
 ci
 Yn
-Yj
+Cr
 Bl
 cj
 cj
@@ -27699,22 +28547,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 kS
 cC
@@ -27764,13 +28612,13 @@ Bl
 Tm
 Tm
 XF
-yk
-yk
-gQ
-gQ
-gQ
-je
-je
+aF
+aF
+NZ
+NZ
+NZ
+fu
+fu
 Tm
 Tm
 Bl
@@ -27800,11 +28648,11 @@ SY
 Bl
 Bl
 Bl
-Yj
+Cr
 ci
 ci
 ci
-Yj
+Cr
 Bl
 cj
 cj
@@ -27927,22 +28775,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 ZC
 rm
@@ -27990,15 +28838,15 @@ Bl
 Bl
 Bl
 gG
-Th
+xY
+NZ
+NZ
+NZ
+NZ
+NZ
 gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
 VI
 Tm
 Bl
@@ -28028,11 +28876,11 @@ SY
 Bl
 Bl
 Bl
-Yj
+Cr
 ci
 ci
 ci
-Yj
+Cr
 Bl
 cj
 cj
@@ -28155,22 +29003,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 mi
 gN
@@ -28219,15 +29067,15 @@ Bl
 Bl
 gG
 NY
-gQ
-gQ
+NZ
+NZ
 Tr
 MB
 gQ
 gQ
 gQ
-gQ
-ai
+NZ
+Oi
 Tm
 Bl
 Bl
@@ -28256,11 +29104,11 @@ pY
 Bl
 Bl
 Bl
-Yj
-Yj
+Cr
+Cr
 Bl
-Yj
-Yj
+Cr
+Cr
 Bl
 cj
 cj
@@ -28383,22 +29231,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Mb
 cC
@@ -28446,16 +29294,16 @@ Bl
 Bl
 Bl
 gG
-yk
-gQ
-gQ
-Bn
+aF
+NZ
+NZ
+OA
 qj
+NZ
 gQ
 gQ
-gQ
-gQ
-ai
+NZ
+Oi
 Tm
 Bl
 Bl
@@ -28611,22 +29459,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 kS
 cC
@@ -28679,11 +29527,11 @@ JP
 Qz
 XN
 OJ
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
+NZ
 Tm
 Bl
 Bl
@@ -28839,22 +29687,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 ZC
 rm
@@ -28908,7 +29756,7 @@ gG
 gG
 Tm
 Tm
-Nt
+RD
 gQ
 gQ
 gQ
@@ -29067,22 +29915,22 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 mP
 VJ
@@ -29173,7 +30021,7 @@ Bl
 Bl
 Bl
 Bl
-Bl
+di
 cj
 cj
 cj
@@ -29295,23 +30143,23 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
+kY
 yc
 yc
 yc
@@ -29331,18 +30179,18 @@ Bl
 Bl
 Tm
 Tm
-PE
-PE
-ai
-gQ
-gQ
+Th
+Th
+hS
+me
+me
 uS
-jW
-gQ
-gQ
-ET
-gQ
-yk
+Or
+me
+me
+Po
+me
+me
 Tm
 Tm
 Tm
@@ -29394,14 +30242,14 @@ IN
 cC
 cC
 SY
+di
 Bl
 Bl
 Bl
 Bl
 Bl
 Bl
-Bl
-Bl
+di
 cj
 cj
 cj
@@ -29523,27 +30371,27 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
+kY
+kY
+kY
+kY
 yc
 yc
 Bl
@@ -29558,20 +30406,20 @@ Bl
 Bl
 Tm
 Tm
-gQ
+me
 nG
 nG
 gQ
 gQ
 gQ
 uS
-jW
-gQ
-gQ
-gQ
-gQ
-yk
-yk
+Or
+me
+me
+me
+me
+me
+me
 Tm
 Tm
 Tm
@@ -29622,7 +30470,7 @@ IN
 Dc
 cC
 SY
-Bl
+di
 Bl
 Bl
 Bl
@@ -29751,28 +30599,28 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
+kY
 yc
 Bl
 Bl
@@ -29785,7 +30633,7 @@ Bl
 Bl
 Tm
 Tm
-gQ
+me
 gQ
 gQ
 gQ
@@ -29793,13 +30641,13 @@ gQ
 gQ
 gQ
 uS
-jW
-gQ
-gQ
-gQ
-gQ
-gQ
-yk
+Or
+kN
+bm
+bm
+bm
+il
+me
 Tm
 Jb
 Pg
@@ -29979,28 +30827,28 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Cx
 Bl
@@ -30015,19 +30863,19 @@ Tm
 Nw
 Nw
 Nw
-gQ
-gQ
+me
+me
 Nw
 Nw
 Nw
 Jj
-jW
+Or
+aZ
 gQ
 gQ
 gQ
-gQ
-gQ
-yk
+Ew
+me
 Tm
 Jb
 Pg
@@ -30079,12 +30927,12 @@ cC
 cC
 cC
 SY
-Yj
-Yj
-Yj
-Yj
-Yj
-Yj
+Cr
+Bl
+Cr
+Cr
+Cr
+Cr
 cj
 cj
 cj
@@ -30207,28 +31055,28 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Od
 Oh
@@ -30239,23 +31087,23 @@ Tm
 Tm
 Tm
 Tm
-ii
-ii
-ii
+Jk
+Jk
+Jk
 OG
-qS
-qS
+Qh
+Qh
 ZF
-ii
-ii
-ii
+Jk
+Jk
+Jk
 Rz
+aZ
 gQ
 gQ
 gQ
-gQ
-gQ
-yk
+Ew
+me
 Tm
 gi
 Pg
@@ -30436,27 +31284,27 @@ Bl
 Bl
 yc
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 op
 FT
 FT
@@ -30464,26 +31312,26 @@ dE
 dE
 dE
 Hh
-yk
-yk
-yk
-yk
-gQ
-gQ
-gQ
-gQ
-gQ
+me
+me
+me
+me
+kN
+bm
+bm
+bm
+bm
+TR
+bm
+bm
+bm
+bm
+mM
 je
 gQ
 gQ
-gQ
-gQ
-je
-je
-gQ
-gQ
-gQ
-yk
+Ew
+me
 Tm
 Jb
 Pg
@@ -30507,7 +31355,7 @@ tB
 nV
 gQ
 gQ
-gQ
+NZ
 gl
 Tm
 Bl
@@ -30673,18 +31521,18 @@ yc
 yc
 yc
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 op
 FT
 FT
@@ -30692,11 +31540,11 @@ dE
 dE
 dE
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
+me
+me
+me
+me
+aZ
 gQ
 gQ
 gQ
@@ -30710,8 +31558,8 @@ PE
 PE
 ai
 gQ
-gQ
-yk
+Ew
+me
 Tm
 Jb
 Pg
@@ -30730,12 +31578,12 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
+Fl
 gQ
 gQ
-LR
-gQ
-gQ
-gQ
+NZ
 gl
 Tm
 Bl
@@ -30902,17 +31750,17 @@ Bl
 Bl
 yc
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 op
 FT
 FT
@@ -30920,17 +31768,11 @@ dE
 dE
 dE
 Hh
-yk
-yk
-yk
-yk
-gQ
-gQ
-gQ
-Bn
-PE
-PE
-ai
+me
+me
+me
+me
+aZ
 gQ
 gQ
 Bn
@@ -30939,7 +31781,13 @@ PE
 ai
 gQ
 gQ
-yk
+Bn
+PE
+PE
+ai
+gQ
+Ew
+me
 Tm
 gi
 Pg
@@ -30959,11 +31807,11 @@ Bl
 Bl
 gG
 dk
+NZ
 gQ
 gQ
 gQ
-gQ
-gQ
+NZ
 nV
 Tm
 Bl
@@ -31130,17 +31978,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 SE
 cJ
@@ -31151,9 +31999,9 @@ Tm
 Tm
 wh
 Tm
-yk
-gQ
-gQ
+me
+lj
+Va
 gQ
 Bn
 PE
@@ -31166,8 +32014,8 @@ nG
 nG
 gQ
 gQ
-gQ
-yk
+Ew
+me
 Hh
 Pg
 Pg
@@ -31187,11 +32035,11 @@ Bl
 Bl
 gG
 rr
-je
+AH
+NZ
 gQ
 gQ
-gQ
-gQ
+NZ
 nV
 Tm
 Bl
@@ -31358,17 +32206,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 KC
 Bl
@@ -31376,12 +32224,12 @@ Bl
 Qv
 Tm
 GS
-yk
+me
 gQ
 Tm
-yk
-yk
-gQ
+me
+me
+aZ
 gQ
 gQ
 nG
@@ -31394,8 +32242,8 @@ gQ
 ET
 gQ
 gQ
-gQ
-yk
+Ew
+me
 Hh
 Pg
 Pg
@@ -31419,7 +32267,7 @@ ji
 YQ
 gQ
 LR
-gQ
+NZ
 nV
 Tm
 Bl
@@ -31586,17 +32434,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -31604,16 +32452,16 @@ Bl
 Bl
 Tm
 GS
-yk
+me
 gQ
 Tm
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
+aZ
+cg
+we
+we
+Va
 gQ
 gQ
 gQ
@@ -31622,8 +32470,8 @@ gQ
 gQ
 gQ
 je
-gQ
-yk
+Ew
+me
 Tm
 Tm
 Tm
@@ -31814,17 +32662,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -31832,16 +32680,16 @@ Bl
 Bl
 Tm
 GS
-yk
+me
 gQ
 Tm
 uq
 NX
-gQ
-yk
-yk
-yk
-gQ
+aZ
+Ew
+me
+me
+aZ
 gQ
 gQ
 je
@@ -31850,8 +32698,8 @@ gQ
 gQ
 Bn
 PE
-ai
-yk
+DB
+me
 Tm
 Jb
 Pg
@@ -32042,17 +32890,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -32060,7 +32908,7 @@ Bl
 Bl
 Tm
 GS
-yk
+me
 gQ
 Tm
 Tm
@@ -32068,8 +32916,8 @@ Tm
 Vy
 cQ
 Tm
-yk
-gQ
+me
+aZ
 gQ
 Bn
 PE
@@ -32078,8 +32926,8 @@ ai
 gQ
 Bn
 PE
-ai
-yk
+DB
+me
 Tm
 Jb
 Pg
@@ -32270,17 +33118,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -32293,11 +33141,11 @@ wh
 Tm
 uq
 NX
-gQ
+aZ
 cQ
 Tm
-yk
-gQ
+me
+aZ
 gQ
 Bn
 PE
@@ -32306,8 +33154,8 @@ ai
 gQ
 gQ
 nG
-gQ
-yk
+Ew
+me
 Tm
 gi
 Pg
@@ -32498,17 +33346,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -32516,7 +33364,7 @@ Bl
 Bl
 Tm
 QJ
-yk
+me
 gQ
 Tm
 Tm
@@ -32524,8 +33372,8 @@ Tm
 Vy
 cQ
 Tm
-yk
-gQ
+me
+aZ
 gQ
 Bn
 PE
@@ -32534,8 +33382,8 @@ ai
 gQ
 gQ
 gQ
-gQ
-yk
+Ew
+me
 Tm
 Jb
 Pg
@@ -32580,12 +33428,12 @@ Bl
 Bl
 Tm
 Tm
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 Tm
 Tm
 Bl
@@ -32726,17 +33574,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -32744,16 +33592,16 @@ Bl
 Bl
 Tm
 QJ
-yk
+me
 gQ
 Tm
 uq
 NX
-gQ
+aZ
 cQ
 Tm
-yk
-gQ
+me
+aZ
 gQ
 gQ
 nG
@@ -32762,8 +33610,8 @@ gQ
 gQ
 gQ
 gQ
-gQ
-yk
+Ew
+me
 Tm
 Jb
 Pg
@@ -32807,14 +33655,14 @@ KC
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -32954,17 +33802,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
 yc
 Bl
 Bl
@@ -32972,7 +33820,7 @@ Bl
 Bl
 Tm
 QJ
-yk
+me
 gQ
 Tm
 Tm
@@ -32980,18 +33828,18 @@ Tm
 Vy
 cQ
 Tm
-yk
+me
+lj
+we
+we
+we
+Va
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-yk
+Ew
+me
 Tm
 gi
 Pg
@@ -33035,14 +33883,14 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -33182,17 +34030,17 @@ Bl
 Bl
 Bl
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+ZW
+kY
+kY
 yc
 Bl
 Bl
@@ -33205,21 +34053,21 @@ gQ
 Tm
 uq
 NX
-gQ
-cQ
+lj
+Yj
 Tm
-yk
-yk
-yk
-yk
-yk
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-yk
+me
+me
+me
+me
+me
+lj
+we
+we
+we
+we
+mS
+me
 Hh
 Pg
 Pg
@@ -33263,14 +34111,14 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -33411,15 +34259,15 @@ Bl
 Bl
 yc
 yc
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
-FT
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
+kY
 yc
 yc
 Bl
@@ -33440,14 +34288,14 @@ Hh
 Hh
 Tm
 Tm
-yk
-yk
-yk
-yk
-yk
-yk
-yk
-yk
+me
+me
+me
+me
+me
+me
+me
+me
 Hh
 Pg
 Pg
@@ -33491,14 +34339,14 @@ Bl
 Bl
 Bl
 gG
+aF
+NZ
 gQ
 gQ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 gG
 Bl
 Bl
@@ -33656,17 +34504,17 @@ Bl
 Bl
 Bl
 Tm
-yk
-yk
-yk
-yk
-yk
-yk
-yk
-yk
+me
+me
+me
+me
+me
+me
+me
+me
 gQ
 gQ
-gQ
+me
 Tm
 Tm
 AM
@@ -33720,12 +34568,12 @@ Bl
 Bl
 Tm
 Tm
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 Tm
 Tm
 Bl
@@ -33894,7 +34742,7 @@ TN
 Tm
 gQ
 gQ
-gQ
+me
 Tm
 SE
 cJ
@@ -34112,16 +34960,16 @@ Bl
 Bl
 Bl
 Tm
-yk
+me
 IU
 IU
 IU
 IU
 IU
-yk
+me
 Tm
 gQ
-gQ
+me
 Tm
 Tm
 Bp
@@ -34340,15 +35188,15 @@ Bl
 Bl
 Bl
 Tm
-yk
-yk
-yk
-yk
-yk
-yk
-yk
+me
+me
+me
+me
+me
+me
+me
 Tm
-gQ
+me
 Tm
 Tm
 Bl
@@ -34866,8 +35714,8 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
+cj
+cj
 cj
 cj
 cj
@@ -35088,14 +35936,14 @@ Bl
 Tm
 Tm
 Tm
+Hh
+Hh
+Hh
 Tm
 Tm
 Tm
 Tm
-Tm
-Tm
-Tm
-Tm
+cj
 cj
 cj
 cj
@@ -35314,15 +36162,15 @@ Le
 Le
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+GI
+Tm
+aF
+NZ
+aF
+Tm
+Vh
+Fu
+Tm
 Tm
 cj
 cj
@@ -35541,16 +36389,16 @@ iU
 Bd
 Bd
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+Pr
+NZ
+gG
+aF
+NZ
+aF
+gG
+DH
+NZ
+ge
 Tm
 cj
 cj
@@ -35769,16 +36617,16 @@ Bd
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+vC
+NZ
+gG
+aF
+NZ
+aF
+gG
+hi
+NZ
+dx
 Tm
 cj
 cj
@@ -35997,16 +36845,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+iZ
+NZ
+Tm
+aF
+NZ
+aF
+Tm
+hN
+NZ
+aF
 Tm
 cj
 cj
@@ -36225,16 +37073,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+Hh
+NZ
+NZ
+NZ
+Hh
+NZ
+NZ
+NZ
 Tm
 cj
 cj
@@ -36453,16 +37301,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+Tm
+aF
+NZ
+aF
+Tm
+Tm
+Tm
+Hh
 Tm
 cj
 cj
@@ -36681,16 +37529,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+gG
+aF
+NZ
+aF
+gG
+KF
+NZ
+NZ
 Tm
 cj
 cj
@@ -36909,16 +37757,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+gG
+aF
+NZ
+aF
+gG
+hs
+NZ
+vp
 Tm
 cj
 cj
@@ -37137,16 +37985,16 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+qT
+pk
+Tm
+aF
+NZ
+aF
+Tm
+hs
+aF
+wC
 Tm
 cj
 cj
@@ -37368,9 +38216,9 @@ Tm
 Tm
 Tm
 Tm
-gQ
-gQ
-gQ
+Hh
+Hh
+Hh
 Tm
 Tm
 Tm
@@ -37592,17 +38440,17 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+nw
+nw
+MU
+aF
+aF
+NZ
+aF
+aF
+xa
+GI
+GI
 Tm
 cj
 cj
@@ -37808,10 +38656,10 @@ Tm
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
 nV
 Tm
 Bl
@@ -37819,18 +38667,18 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+nw
+ZX
+NZ
+Mo
+NZ
+NZ
+NZ
+NZ
+NZ
+We
+ro
+Xd
 Tm
 cj
 cj
@@ -38037,9 +38885,9 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
 nV
 Tm
 Bl
@@ -38047,18 +38895,18 @@ Bl
 Bl
 Tm
 nw
-NC
-NC
-NC
+NZ
+NZ
+NZ
 Mo
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+ro
+Xd
 Tm
 cj
 cj
@@ -38265,28 +39113,28 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
 nV
 Tm
 Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-Dm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+nw
+NZ
+NZ
+NZ
+Mo
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+jG
+Um
 Tm
 cj
 cj
@@ -38493,28 +39341,28 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
 nV
 Tm
 Bl
 Bl
 Bl
 Tm
-nw
-NC
-NC
-NC
+Da
+iR
+iR
+Gh
 ds
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+Si
+hl
 Tm
 cj
 cj
@@ -38721,28 +39569,28 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
 nV
 Tm
 Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-Dm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+NZ
+wz
+eH
+eH
+eH
+vN
+NZ
+NZ
+MC
 Tm
 cj
 cj
@@ -38948,10 +39796,10 @@ Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+aF
 nV
 Tm
 Bl
@@ -38959,18 +39807,18 @@ Bl
 Bl
 Tm
 aF
-NC
-NC
-NC
-ds
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+ns
+eH
+eH
+aS
+aS
+vN
+NZ
+Xd
 Tm
 cj
 cj
@@ -39186,18 +40034,18 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-Dm
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+fJ
 Tm
 Tm
-Hh
-Hh
-Hh
-Hh
+Jg
+Jg
+Lo
+gD
 Tm
 Tm
 cj
@@ -39413,13 +40261,13 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-Dm
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+fJ
 Tm
 Vv
 Qc
@@ -39641,14 +40489,14 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-Lq
-gQ
-Hh
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+Cp
+ME
 sU
 Yk
 fC
@@ -39850,15 +40698,15 @@ Bl
 Bl
 Bl
 Bl
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
 Bl
 Bl
 Bl
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
 Bl
 Bl
 Bl
@@ -39869,13 +40717,13 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
 NZ
-NC
+NZ
+NZ
+NZ
+NZ
+NZ
+qy
 hG
 Cz
 PS
@@ -40077,17 +40925,17 @@ Bl
 Bl
 Bl
 Bl
-Tm
-Tm
-nV
-nV
-nV
-gQ
-Tm
-Tm
 Bl
 Bl
 Bl
+Tm
+Tm
+nV
+TU
+TU
+aF
+Tm
+Tm
 Bl
 Bl
 Bl
@@ -40097,13 +40945,13 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+Gw
+NZ
+NZ
 Hh
 Ox
 Ox
@@ -40305,17 +41153,17 @@ Cr
 Cr
 Bl
 Bl
+Bl
+Bl
+Bl
 Tm
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 Tm
-Bl
-Bl
-Bl
 Bl
 Bl
 Bl
@@ -40325,13 +41173,13 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+DQ
+DQ
+NZ
+NZ
 Hh
 Ox
 JN
@@ -40533,13 +41381,16 @@ ZB
 Cr
 Bl
 Bl
+Bl
+Bl
+Bl
 Hh
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 Tm
 Bl
 Bl
@@ -40549,17 +41400,14 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+Gw
+NZ
+NZ
+NZ
 Hh
 rM
 rM
@@ -40761,17 +41609,17 @@ ZB
 Cr
 Bl
 Bl
+Bl
+Bl
+Bl
 Tm
+aF
+NZ
 gQ
 gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+aF
 Tm
-Bl
-Bl
-Bl
 Bl
 Bl
 Pl
@@ -40781,14 +41629,14 @@ Bl
 Bl
 Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-Hh
+NZ
+NZ
+NZ
+AP
+NZ
+NZ
+NZ
+ME
 sU
 Ax
 Qq
@@ -40989,17 +41837,17 @@ ZB
 Cr
 Bl
 Bl
-Tm
-Tm
-nV
-nV
-nV
-gQ
-Tm
-Tm
 Bl
 Bl
 Bl
+Tm
+Tm
+nV
+TU
+TU
+aF
+Tm
+Tm
 Bl
 Bl
 Bl
@@ -41010,12 +41858,12 @@ Bl
 Bl
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
 Tm
 Qi
 Qc
@@ -41218,38 +42066,38 @@ Cr
 Bl
 Bl
 Bl
+Bl
+Bl
+Bl
+Tm
 Tm
 Tm
 Tm
 Tm
 Tm
+Bl
+Bl
+Bl
+kC
+ej
+ej
+ej
+ej
+ej
+ej
 Tm
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+Um
+NZ
+NZ
+NZ
+NZ
 Tm
 Tm
-Hh
-Hh
-Hh
-Hh
+Ga
+Ga
+Ga
+Ga
 Tm
 Tm
 cj
@@ -41458,27 +42306,27 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-si
-Bl
+wE
+DO
+DO
+ZB
+ZB
+DO
+ar
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+Ri
+hl
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
 Tm
 cj
 cj
@@ -41686,27 +42534,27 @@ Bl
 Bl
 Pl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+wE
+DO
+BH
+ZB
+ZB
+DO
+DO
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+fl
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
+aF
+aF
+aF
+aF
+aF
+aF
 Tm
 cj
 cj
@@ -41914,27 +42762,27 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+wE
+ZB
+xu
+ZB
+ZB
+ZB
+ZB
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+NZ
+NZ
+NZ
+aF
+aF
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
 Tm
 cj
 cj
@@ -42139,30 +42987,30 @@ Bl
 Bl
 Bl
 Bl
-si
 Bl
 Bl
 Bl
-Pl
-Bl
-Bl
-Bl
-Bl
+wE
+ed
+ZB
+DO
+CR
+ZB
 Tm
 Tm
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+aF
+Tm
+Tm
+aF
+aF
+aF
+aF
+aF
 Tm
 cj
 cj
@@ -42370,27 +43218,27 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+wE
+ZB
+ZB
+DO
+DO
 Tm
 Tm
-gQ
+aF
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+aF
+Tm
+aF
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
 cj
 cj
@@ -42589,36 +43437,36 @@ Bl
 Bl
 Bl
 Bl
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
+Bl
 Bl
 Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+aF
+NZ
+Hh
+aF
+NZ
+NZ
+NZ
+aF
+gG
+aF
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
 cj
 cj
@@ -42817,36 +43665,36 @@ Bl
 Bl
 Bl
 Bl
-Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-Tm
-Tm
+Bl
 Bl
 Bl
 Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+Tm
+aF
+aF
+aF
+aF
+aF
+aF
+aF
+aF
+aF
+NZ
+NZ
+Hh
+NZ
+NZ
+NZ
+NZ
+NZ
+Hh
+NZ
+NZ
+NZ
+Np
+NZ
+aF
 Tm
 cj
 cj
@@ -43045,36 +43893,36 @@ Bl
 Bl
 Bl
 Bl
-Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-Tm
 Bl
 Bl
-cj
+Bl
+Bl
 Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+Hh
+aF
+NZ
+NZ
+NZ
+aF
+gG
+aF
+NZ
+NZ
+Np
+NZ
+aF
 Tm
 cj
 cj
@@ -43273,35 +44121,35 @@ Bl
 Bl
 Bl
 Bl
+Bl
+Bl
+Bl
+Bl
 Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
-Bl
-Bl
-cj
+aF
+aF
+aF
+aF
+aF
 Tm
-gQ
-gQ
-Tm
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+aF
+aF
+aF
+nS
+nS
 Tm
 Tm
 cj
@@ -43501,22 +44349,22 @@ Bl
 Bl
 Bl
 Bl
-Hh
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-Tm
 Bl
-cj
-cj
-Tm
-Tm
+Bl
+Bl
+Bl
+Hh
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
 Tm
 Tm
@@ -43729,23 +44577,23 @@ Bl
 Bl
 Bl
 Bl
+Bl
+Bl
+Bl
+Bl
+Hh
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
-gQ
-rs
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
 Tm
-cj
-cj
-cj
-cj
-cj
-cj
 cj
 cj
 cj
@@ -43957,22 +44805,22 @@ Bl
 Bl
 Bl
 Bl
-Tm
-gQ
-BU
-gQ
-gQ
-gQ
-gQ
-gQ
-gQ
+Bl
+Bl
+Bl
+Bl
 Tm
 Tm
-cj
-cj
-cj
-cj
-cj
+aF
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
+Tm
 cj
 cj
 cj
@@ -44185,22 +45033,22 @@ Bl
 Bl
 Bl
 Bl
+Bl
+Bl
+Bl
+Bl
+Bl
 Tm
 Tm
 Tm
+aF
+NZ
+NZ
+NZ
+NZ
+NZ
+aF
 Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-Tm
-cj
-cj
-cj
-cj
-cj
-cj
 cj
 cj
 cj
@@ -44420,15 +45268,15 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+Tm
+aF
+aF
+aF
+aF
+aF
+aF
+Tm
 cj
 cj
 cj
@@ -44649,24 +45497,24 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
 cj
 cj
 cj
@@ -44876,36 +45724,36 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+si
+Dd
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+XW
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
 cj
 cj
 cj
@@ -45103,37 +45951,37 @@ Bl
 Bl
 Bl
 Bl
-Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+si
+ow
+ow
+Ks
+Ks
+Bw
+Nn
+si
+si
+si
+si
+Tm
 cj
 cj
 cj
@@ -45331,37 +46179,37 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+si
+GE
+si
+si
+GE
+si
+si
+GE
+si
+si
+GE
+si
+si
+GE
+si
+si
+GE
+si
+si
+GE
+si
+ow
+QA
+Ks
+Ks
+sP
+si
+si
+si
+si
+Tm
 cj
 cj
 cj
@@ -45559,37 +46407,37 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+si
+Xh
+si
+si
+Xh
+si
+si
+Xh
+si
+si
+Xh
+si
+si
+Xh
+si
+si
+Xh
+si
+si
+Xh
+si
+si
+eJ
+Ks
+TE
+vc
+si
+si
+si
+si
+Tm
 cj
 cj
 cj
@@ -45787,37 +46635,37 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+BU
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+BW
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+kE
+Lt
+Ln
+Tm
 cj
 cj
 cj
@@ -46015,37 +46863,37 @@ Bl
 Bl
 Bl
 Bl
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
+Tm
 cj
 cj
 cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+si
+si
+si
+Tm
 cj
 cj
 cj
@@ -46236,12 +47084,12 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
 Bl
 Bl
 Bl
 Bl
+Bl
+Bl
 cj
 cj
 cj
@@ -46269,11 +47117,11 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
+Tm
+si
+si
+si
+Tm
 cj
 cj
 cj
@@ -46462,13 +47310,13 @@ Cr
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
 Bl
 Bl
 Bl
+Bl
+Bl
+Pl
+Bl
 cj
 cj
 cj
@@ -46497,11 +47345,11 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
+Tm
+si
+Lt
+Ln
+Tm
 cj
 cj
 cj
@@ -46692,10 +47540,12 @@ Bl
 Bl
 Bl
 Bl
-cj
-cj
-cj
-cj
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
 Bl
 cj
 cj
@@ -46721,17 +47571,15 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+Tm
+Tm
+si
+si
+si
+Tm
+Tm
+Tm
 cj
 Wb
 fv
@@ -46919,6 +47767,15 @@ Bl
 Bl
 cj
 cj
+Pl
+Bl
+Bl
+Bl
+Bl
+Bl
+rs
+Bl
+Bl
 cj
 cj
 cj
@@ -46942,24 +47799,15 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+fY
+Hh
+fY
+Hh
+Hh
+Hh
+fY
+Hh
+fY
 cj
 Wb
 fv
@@ -47140,6 +47988,22 @@ Bl
 Bl
 Bl
 Bl
+mP
+mP
+mP
+cj
+cj
+cj
+Bl
+Bl
+rs
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
+Bl
 cj
 cj
 cj
@@ -47163,31 +48027,15 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+Tm
+Tm
+si
+si
+si
+Tm
+Tm
+Tm
 cj
 Wb
 fv
@@ -47374,6 +48222,15 @@ cj
 cj
 cj
 cj
+Bl
+Bl
+Bl
+Bl
+Pl
+Bl
+Bl
+Bl
+Bl
 cj
 cj
 cj
@@ -47400,20 +48257,11 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+si
+Lt
+Ln
+Tm
 cj
 cj
 cj
@@ -47602,6 +48450,11 @@ cj
 cj
 cj
 cj
+Bl
+Bl
+Bl
+Bl
+Bl
 cj
 cj
 cj
@@ -47632,16 +48485,11 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+AS
+AS
+AS
+Tm
 cj
 cj
 cj
@@ -47830,6 +48678,7 @@ cj
 cj
 cj
 cj
+Bl
 cj
 cj
 cj
@@ -47864,12 +48713,11 @@ cj
 cj
 cj
 cj
-cj
-cj
-cj
-cj
-cj
-cj
+Tm
+Tm
+Tm
+Tm
+Tm
 cj
 cj
 cj
