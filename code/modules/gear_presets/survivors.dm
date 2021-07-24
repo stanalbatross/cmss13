@@ -1385,3 +1385,219 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/full(H), WEAR_R_STORE)
 
 	..()
+///*****************************LV-522 Force Recon Survivors*******************************************************/
+
+/datum/equipment_preset/survivor/FORCON_Standard/lv522
+	name = "Survivor - USCM Reconnaissance Marine"
+	assignment = "FORCON Marine"
+	paygrade = "E3"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR
+	faction = FACTION_MARINE
+	skills = /datum/skills/SL
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Standard/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Tech/lv522
+	name = "Survivor - USCM Reconnaissance Support Technician"
+	assignment = "FORCON Technician"
+	paygrade = "E3"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/SL
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Tech/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Marksman/lv522
+	name = "Survivor - USCM Reconnaissance Designated Marksman"
+	assignment = "FORCON Marksman"
+	paygrade = "E5"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/SL
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Marksman/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Machinegunner/lv522
+	name = "Survivor - USCM Reconnaissance Machinegunner"
+	assignment = "FORCON Specialist"
+	paygrade = "E5"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/specialist
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Machinegunner/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+	
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Grenadier/lv522
+	name = "Survivor - USCM Reconnaissance Grenadier"
+	assignment = "FORCON Specialist"
+	paygrade = "E5"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/specialist
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Grenadier/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/launcher/grenade/m81(H), WEAR_L_HAND)
+
+	..()
+	
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Squad_Leader/lv522
+	name = "Survivor - USCM Reconnaissance Squad Leader"
+	assignment = "FORCON Squad Leader"
+	paygrade = "E6"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/SL
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Squad_Leader/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+	
+///*****************************//
+
+/datum/equipment_preset/survivor/FORCON_Officer/lv522
+	name = "Survivor - USCM Reconnaissance Officer"
+	assignment = "FORCON Overwatch Officer"
+	paygrade = "O2"
+	role_comm_title = "FORCON"
+	idtype = /obj/item/card/id/dogtag
+	rank = JOB_SURVIVOR	
+	faction = FACTION_MARINE
+	skills = /datum/skills/SL
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC,
+		ACCESS_CIVILIAN_ENGINEERING,
+		ACCESS_CIVILIAN_LOGISTICS
+	)
+/datum/equipment_preset/survivor/FORCON_Officer/lv522/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/FORCON = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	FORCON.attach_accessory(H, W)
+	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+
+	..()
+
+///*****************************//
