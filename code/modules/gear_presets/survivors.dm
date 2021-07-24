@@ -1535,6 +1535,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/launcher/grenade/m81(H), WEAR_L_HAND)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/grenade(H), WEAR_WAIST)
 
 	..()
 	
