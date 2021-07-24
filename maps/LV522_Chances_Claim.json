@@ -3,13 +3,13 @@
 	"map_path": "map_files/LV522_Chances_Claim",
 	"map_file": "LV522_Chances_Claim.dmm",
     "survivor_types": [
-        "Survivor - LV-624 Archeologist",
-        "Survivor - LV-624 Emergency Medical Technician",
-        "Survivor - LV-624 Priest",
-        "Survivor - LV-624 Engineer",
-        "Survivor - LV-624 Cargo Technician",
-        "Survivor - LV-624 Security Guard",
-        "Survivor - LV-624 Head of Security"
+        "Survivor - USCM Reconnaissance Marine",
+        "Survivor - USCM Reconnaissance Support Technician",
+        "Survivor - USCM Reconnaissance Designated Marksman",
+        "Survivor - USCM Reconnaissance Machinegunner",
+        "Survivor - USCM Reconnaissance Grenadier",
+        "Survivor - USCM Reconnaissance Squad Leader",
+        "Survivor - USCM Reconnaissance Officer"
     ],
     "defcon_triggers": [
         3300,
@@ -18,7 +18,7 @@
         580,
         0.0
     ],
-    "survivor_message": "FORECON",
+    "survivor_message": "You are USCM Force Reconnaissance (FORCON) marine, stranded on this planet after your team was wiped out while investigating the distress signal. With your pilot dead along with the majority of your unit you and your team have been running and gunning to survive..until now",
     "announce_text": "Yo",
     "monkey_types": [
         "neaera",
