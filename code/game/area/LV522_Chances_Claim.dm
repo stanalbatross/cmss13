@@ -17,8 +17,9 @@
 /area/lv522/landing_zone_1
 	name = "Chances Claim - Landing Zone One"
 	icon_state = "explored"
+	is_resin_allowed =  "FALSE"
 
-/area/lv522/landing_zone_1/drop1
+/area/lv522/shuttle/drop1
 	name = "Chances Claim - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
 	icon = 'icons/turf/area_shiva.dmi'
@@ -34,7 +35,7 @@
 /area/lv522/landing_zone_2
 	name = "Chances Claim - Landing Zone Two"
 	icon_state = "explored"
-/area/lv522/landing_zone_2/drop2
+/area/lv522/shuttle/drop2
 	name = "Chances Claim - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
 	icon = 'icons/turf/area_shiva.dmi'
@@ -45,17 +46,36 @@
 	icon_state = "tcomsatcham"
 	requires_power = FALSE
 
+/area/lv522/landing_zone_2/UD6_Typhoon
+	name = "Chances Claim - UD6 Typhoon"
+	icon_state = "shuttle"
+	ceiling =  CEILING_METAL
+	requires_power = FALSE
+
 //Colony Streets
-/area/lv522/colony_streets
+/area/lv522/buildings/colony_streets
 	name = "Colony Streets"
 	icon_state = "green"
-	always_unpowered = 1
 	ceiling = CEILING_NONE
 
 /area/lv522/buildings/colony_streets/engineering
-	name = "Emergancy Engineering"
+	name = "Emergency Engineering"
 	icon_state = "engine_smes"
 	ceiling = CEILING_METAL
+
+area/lv522/buildings/colony_streets/West_LZ_Storage
+	name = "West LZ1 Storage"
+	icon_state = ""
+	ceiling = CEILING_METAL
+
+area/lv522/buildings/colony_streets/West_LZ_House
+	name = "West LZ1 House"
+	icon_state = ""
+	ceiling = CEILING_METAL
+
+area/lv522/buildings/colony_streets/South_Cargo_Buildings
+	name = "South Cargo Buildings"
+	icon_state = ""
 
 //A Block
 /area/lv522/buildings/A_block
@@ -90,6 +110,10 @@
 	icon_state = "red"
 	ceiling = CEILING_METAL
 
+/area/lv522/buildings/B_Block/Science_Lab
+	name = "Science Lab"
+	icon_state = "purple"
+
 //C Block
 
 /area/lv522/buildings/C_Block
@@ -100,14 +124,11 @@
 /area/lv522/buildings/C_Block/Cargo
 	name = "C-Block Cargo"
 	icon_state = "primarystorage"
-	ceiling = CEILING_METAL
 
 /area/lv522/buildings/C_Block/Mining
 	name = "C-Block Mining"
 	icon_state = "orange"
-	ceiling = CEILING_METAL
 
 /area/lv522/buildings/C_Block/Garage
 	name = "C-Block Garage"
 	icon_state = "storage"
-	ceiling = CEILING_METAL
