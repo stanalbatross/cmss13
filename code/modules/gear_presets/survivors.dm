@@ -1389,7 +1389,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Standard/lv522
 	name = "Survivor - USCM Reconnaissance Marine"
-	assignment = "FORCON Marine"
+	assignment = "Reconnaissance Squad Marine"
 	paygrade = "E3"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1407,9 +1407,10 @@
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
 	FORCON.attach_accessory(H, W)
 	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
-	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
-	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
 
@@ -1419,7 +1420,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Tech/lv522
 	name = "Survivor - USCM Reconnaissance Support Technician"
-	assignment = "FORCON Technician"
+	assignment = "Reconnaissance Squad Support Technician"
 	paygrade = "E3"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1449,7 +1450,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Marksman/lv522
 	name = "Survivor - USCM Reconnaissance Designated Marksman"
-	assignment = "FORCON Marksman"
+	assignment = "Reconnaissance Squad Marksman"
 	paygrade = "E5"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1480,7 +1481,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Machinegunner/lv522
 	name = "Survivor - USCM Reconnaissance Machinegunner"
-	assignment = "FORCON Specialist"
+	assignment = "Reconnaissance Squad Specialist"
 	paygrade = "E5"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1511,7 +1512,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Grenadier/lv522
 	name = "Survivor - USCM Reconnaissance Grenadier"
-	assignment = "FORCON Specialist"
+	assignment = "Reconnaissance Squad Specialist"
 	paygrade = "E5"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1543,7 +1544,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Squad_Leader/lv522
 	name = "Survivor - USCM Reconnaissance Squad Leader"
-	assignment = "FORCON Squad Leader"
+	assignment = "Reconnaissance Squad Leader"
 	paygrade = "E6"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
@@ -1574,7 +1575,7 @@
 
 /datum/equipment_preset/survivor/FORCON_Officer/lv522
 	name = "Survivor - USCM Reconnaissance Officer"
-	assignment = "FORCON Overwatch Officer"
+	assignment = "Reconnaissance Squad Overwatch Officer"
 	paygrade = "O2"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
