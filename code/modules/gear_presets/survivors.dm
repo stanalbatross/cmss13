@@ -1409,12 +1409,10 @@
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
 	FORCON.attach_accessory(H, W)
 	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
-	//
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	//
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
