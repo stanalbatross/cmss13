@@ -13223,7 +13223,6 @@
 	},
 /area/lv522/buildings/colony_streets)
 "JH" = (
-/obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/CICmap,
 /obj/item/reagent_container/food/drinks/coffee{
 	pixel_x = -4;
@@ -30348,7 +30347,7 @@ NU
 jX
 xS
 zS
-Ux
+Ck
 xB
 Bl
 Bl
