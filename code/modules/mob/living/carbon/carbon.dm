@@ -154,7 +154,7 @@
 /mob/living/carbon/attack_hand(mob/M as mob)
 	if(!istype(M, /mob/living/carbon)) return
 
-	if(skillcheck(M, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC) && M.a_intent & (INTENT_HELP|INTENT_DISARM))
+	if(M.mob_flags & SURGERY_MODE_ON && M.a_intent & (INTENT_HELP|INTENT_DISARM))
 		var/datum/surgery/current_surgery = active_surgeries[M.zone_selected]
 		if(current_surgery)
 			if(current_surgery.attempt_next_step(M, null))

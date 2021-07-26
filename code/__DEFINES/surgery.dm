@@ -13,11 +13,9 @@
 ///Deep incision - opened ribcage/skull.
 #define SURGERY_DEPTH_DEEP "deep"
 
-///List of possible incision depths.
-var/global/list/surgery_invasiveness_levels = list(SURGERY_DEPTH_SURFACE, SURGERY_DEPTH_SHALLOW, SURGERY_DEPTH_DEEP)
-
 /*Duration multipliers for patients on surfaces. Used if directly buckled to it, otherwise the shortest mult of the items on the turf is used.
-Only used by complex surgeries; simple field surgeries don't care.*/
+Only used by complex surgeries; simple field surgeries don't care.
+If you change these, remember to update the GLOB.surgery_invasiveness_levels list as well*/
 ///A surface that's utterly unsuitable for complex surgery. Worst possible case.
 #define SURGERY_SURFACE_MULT_AWFUL 2
 ///A surface unsuited for surgery, but better than nothing.
@@ -57,8 +55,7 @@ unless the surgical tool is completely unsuited to what it's being used for.*/
 //	 	SURGICAL TOOLS	   //
 /////////////////////////////
 
-/*Lists of tools and surgery time multipliers when using them.  Even a near-duplicate list or one only holding one tool should be included
-here instead of copying things in in New() or w/e, so that all surgery tools and time mods are in one place.*/
+//Lists of tools and surgery time multipliers when using them. These are shared lists - a number of steps have their own individual lists.
 
 ///Tools routinely used to hit people, which wouldn't make sense to give 'you can't open an incision with xyz' messages.
 #define SURGERY_TOOLS_NO_INIT_MSG list(\
@@ -72,8 +69,6 @@ here instead of copying things in in New() or w/e, so that all surgery tools and
 	/obj/item/tool/pen,\
 	/obj/item/stack/rods\
 	)
-
-
 
 /////////////////////////////
 //	 	CUT AND SEAL	   //
@@ -122,12 +117,9 @@ See also /datum/surgery_step/cut_larval_pseudoroots, /datum/surgery_step/retract
 	/obj/item/tool/wirecutters = SURGERY_TOOL_MULT_BAD_SUBSTITUTE\
 	)
 
-
 /////////////////////////////
 //       FLESH TEARS	   //
 /////////////////////////////
-
-//Clamping bleeders uses these same tools for ligation.
 
 ///Tools used to patch damaged bloodvessels. Same tools as SUTURE, but fixovein exists specifically for this work and is best at it.
 #define SURGERY_TOOLS_MEND_BLOODVESSEL list(\
@@ -144,7 +136,6 @@ See also /datum/surgery_step/cut_larval_pseudoroots, /datum/surgery_step/retract
 	/obj/item/stack/cable_coil = SURGERY_TOOL_MULT_SUBSTITUTE,\
 	/obj/item/clothing/head/headband = SURGERY_TOOL_MULT_BAD_SUBSTITUTE\
 	)
-
 
 /////////////////////////////
 //		BONES SHATTER	   //
