@@ -1390,12 +1390,12 @@
 /datum/equipment_preset/survivor/FORCON_Standard/lv522
 	name = "Survivor - USCM Reconnaissance Marine"
 	assignment = "Reconnaissance Squad Marine"
-	paygrade = "E3"
+	paygrade = "E5"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR
 	faction = FACTION_MARINE
-	skills = /datum/skills/SL
+	skills = /datum/skills/military/Survivor/FORCON_Standard
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1403,17 +1403,56 @@
 		ACCESS_CIVILIAN_LOGISTICS
 	)
 /datum/equipment_preset/survivor/FORCON_Standard/lv522/load_gear(mob/living/carbon/human/H)
+	var/random_head = rand(1,6)
+	var/random_gun = rand(1,3)
 	var/obj/item/clothing/under/marine/FORCON = new()
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
 	FORCON.attach_accessory(H, W)
 	H.equip_to_slot_or_del(FORCON, WEAR_BODY)
+	//
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	//
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/facepaint/sniper(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/box/matches(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/attachable/suppressor(H), WEAR_R_HAND)
 
+	switch(random_head)
+		if(1)
+
+		if(2)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap(H), WEAR_HEAD)
+		if(3)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie/gray(H), WEAR_HEAD)
+		if(4)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)			
+		if(5)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
+		if(6)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+
+	switch(random_gun)
+		if(1)
+			H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(H), WEAR_L_HAND)
+			H.equip_to_slot_or_del(new /obj/item/storage/belt/marine(H), WEAR_WAIST)
+			H.equip_to_slot_or_del(new/obj/item/ammo_magazine/rifle(H), WEAR_IN_BELT)
+			H.equip_to_slot_or_del(new/obj/item/ammo_magazine/rifle(H), WEAR_IN_BELT)
+		if(2)
+			H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
+			H.equip_to_slot_or_del(new /obj/item/storage/belt/marine(H), WEAR_WAIST)
+			H.equip_to_slot_or_del(new/obj/item/ammo_magazine/rifle/l42a(H), WEAR_IN_BELT)
+			H.equip_to_slot_or_del(new/obj/item/ammo_magazine/rifle/l42a(H), WEAR_IN_BELT)
+		if(3)
+			H.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/m39(H), WEAR_L_HAND)
+			H.equip_to_slot_or_del(new /obj/item/storage/belt/marine(H), WEAR_WAIST)
+			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39(H), WEAR_IN_BELT)
+			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/m39(H), WEAR_IN_BELT)
 	..()
 
 ///*****************************//
@@ -1426,7 +1465,7 @@
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/SL
+	skills = /datum/skills/military/Survivor/FORCON_Tech
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1442,7 +1481,6 @@
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
 
 	..()
 
@@ -1456,7 +1494,7 @@
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/SL
+	skills = /datum/skills/military/Survivor/FORCON_Marksman
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1473,7 +1511,6 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
 
 	..()
 
@@ -1487,7 +1524,7 @@
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/specialist
+	skills = /datum/skills/military/Survivor/FORCON_Machinegunner
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1504,7 +1541,6 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
 
 	..()
 	
@@ -1518,7 +1554,7 @@
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/specialist
+	skills = /datum/skills/military/Survivor/FORCON_Grenadier
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1550,7 +1586,7 @@
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/SL
+	skills = /datum/skills/military/Survivor/FORCON_Squad_Lead
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1575,13 +1611,13 @@
 
 /datum/equipment_preset/survivor/FORCON_Officer/lv522
 	name = "Survivor - USCM Reconnaissance Officer"
-	assignment = "Reconnaissance Squad Overwatch Officer"
-	paygrade = "O2"
+	assignment = "Reconnaissance Captain"
+	paygrade = "O5"
 	role_comm_title = "FORCON"
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR	
 	faction = FACTION_MARINE
-	skills = /datum/skills/SL
+	skills = /datum/skills/commander
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	access = list(
 		ACCESS_CIVILIAN_PUBLIC,
@@ -1598,7 +1634,6 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/l42a(H), WEAR_L_HAND)
 
 	..()
 
