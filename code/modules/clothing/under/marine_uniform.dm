@@ -375,6 +375,39 @@
 	name = "\improper Provost Chief Marshal Uniform"
 	desc = "The crisp uniform of the Provost Chief Marshal."
 
+//=========================//USCM Survivors\\================================\\
+//=======================================================================\\
+
+/obj/item/clothing/under/marine/random
+	name = "USCM reconnaissance uniform"
+	desc = "Primarily used during reconnaissance."
+
+/obj/item/clothing/under/marine/random/Initialize(mapload)
+    . = ..()
+    var/R = rand(1,4)
+    switch(R) //This is some ripe fucking shitcode, get a real coder to rewrite it PLEASE - Trii PS it breaks the verbs 
+        if(1)
+            return
+        if(2)
+            flags_jumpsuit = UNIFORM_SLEEVE_ROLLED
+            update_rollsuit_status()
+            item_state_slots[WEAR_BODY] = "[worn_state]_d"
+            update_clothing_icon()
+        if(3)
+            flags_jumpsuit = UNIFORM_JACKET_REMOVED
+            update_removejacket_status()
+            item_state_slots[WEAR_BODY] = "[worn_state]_dj"
+            update_clothing_icon()
+        if(4)
+            flags_jumpsuit &= ~(UNIFORM_SLEEVE_ROLLABLE|UNIFORM_SLEEVE_CUTTABLE)
+            flags_jumpsuit |= UNIFORM_SLEEVE_CUT
+
+            item_state_slots[WEAR_BODY] = "[worn_state]_df"
+            update_clothing_icon()
+            update_rollsuit_status()
+            update_removejacket_status()
+
+
 //=========================//RESPONDERS\\================================\\
 //=======================================================================\\
 
