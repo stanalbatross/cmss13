@@ -470,6 +470,9 @@
 	pixel_x = 6;
 	pixel_y = -1
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "bl" = (
@@ -595,6 +598,9 @@
 /obj/structure/prop/invuln/ice_prefab/roof_greeble{
 	dir = 1
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "bC" = (
@@ -634,6 +640,12 @@
 	tag = "icon-rasputin15"
 	},
 /area/lv522/buildings/colony_streets)
+"bG" = (
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "bH" = (
 /turf/open/floor/plating,
 /area/lv522/shuttle/drop1)
@@ -1527,6 +1539,9 @@
 	dir = 6
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "eg" = (
@@ -2470,6 +2485,9 @@
 /area/lv522/buildings/colony_streets)
 "gB" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
+	dir = 4
+	},
+/obj/structure/prop/structure_lattice{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
@@ -3519,6 +3537,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "jx" = (
@@ -4456,6 +4477,9 @@
 	pixel_x = 6;
 	pixel_y = -1
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "lP" = (
@@ -5259,6 +5283,21 @@
 /obj/structure/prop/dam/truck/damaged,
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
+"nU" = (
+/obj/structure/surface/table/almayer,
+/obj/item/weapon/gun/flamer{
+	current_mag = null;
+	layer = 3.1
+	},
+/obj/item/tool/weldpack{
+	layer = 3.1;
+	pixel_x = -4;
+	pixel_y = 12
+	},
+/turf/open/floor/plating{
+	icon_state = "warnplate"
+	},
+/area/lv522/buildings/colony_streets)
 "nV" = (
 /obj/structure/surface/rack,
 /turf/open/floor/strata{
@@ -5308,6 +5347,9 @@
 	icon_state = "windsock";
 	pixel_x = 6;
 	pixel_y = -1
+	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -6200,13 +6242,6 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_block/Admin)
-"qu" = (
-/obj/structure/prop/invuln/ice_prefab/trim{
-	dir = 4
-	},
-/obj/structure/largecrate/random,
-/turf/open/gm/dirt2,
-/area/lv522/buildings/colony_streets)
 "qv" = (
 /obj/structure/machinery/light/double{
 	dir = 1;
@@ -6297,6 +6332,9 @@
 "qI" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
+	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
@@ -7158,6 +7196,9 @@
 	dir = 1
 	},
 /obj/structure/prop/invuln/ice_prefab/trim{
+	dir = 4
+	},
+/obj/structure/prop/structure_lattice{
 	dir = 4
 	},
 /turf/open/floor/plating,
@@ -8938,15 +8979,8 @@
 	},
 /area/lv522/buildings/C_Block/Mining)
 "xz" = (
-/obj/structure/surface/table/almayer,
-/obj/item/tool/weldpack{
-	layer = 3.1;
-	pixel_x = -4;
-	pixel_y = 12
-	},
-/obj/item/weapon/gun/flamer{
-	current_mag = null;
-	layer = 3.1
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -11351,8 +11385,8 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
 	},
-/obj/structure/fence{
-	layer = 2.9
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -12702,6 +12736,9 @@
 /obj/structure/prop/invuln/ice_prefab/roof_greeble{
 	dir = 1
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
 "Hf" = (
@@ -12783,6 +12820,9 @@
 	icon_state = "windsock";
 	pixel_x = 6;
 	pixel_y = -1
+	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
@@ -13014,8 +13054,8 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
-/obj/structure/fence{
-	layer = 2.9
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -13110,8 +13150,8 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
 	},
-/obj/structure/fence{
-	layer = 2.9
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -13352,6 +13392,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "IO" = (
@@ -13516,6 +13559,12 @@
 /turf/closed/shuttle/ert{
 	icon_state = "stan1"
 	},
+/area/lv522/buildings/colony_streets)
+"Jf" = (
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
+/turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "Jg" = (
 /obj/structure/barricade/handrail/strata{
@@ -14665,6 +14714,12 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/landing_zone_2)
+"Mg" = (
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
+/turf/open/gm/dirt2,
+/area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "Mh" = (
 /turf/open/floor/plating,
 /area/lv522/buildings/A_block/Security)
@@ -15253,7 +15308,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
-/obj/structure/fence,
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "NP" = (
@@ -15893,6 +15950,9 @@
 	},
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
+	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
@@ -16805,6 +16865,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 8
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "RO" = (
@@ -16878,6 +16941,15 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/C_Block/Mining)
+"RX" = (
+/obj/structure/platform{
+	dir = 1
+	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets)
 "RY" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 0,0";
@@ -16970,7 +17042,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 4
 	},
-/obj/structure/largecrate/random/barrel/yellow,
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets)
 "Sl" = (
@@ -18526,6 +18600,9 @@
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
 	},
+/obj/structure/prop/structure_lattice{
+	dir = 4
+	},
 /turf/open/gm/dirt2,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "Wt" = (
@@ -19448,6 +19525,15 @@
 	icon_state = "p_stair_full"
 	},
 /obj/structure/platform_decoration{
+	dir = 4
+	},
+/turf/open/gm/dirt2,
+/area/lv522/buildings/colony_streets)
+"YM" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
+/obj/structure/prop/structure_lattice{
 	dir = 4
 	},
 /turf/open/gm/dirt2,
@@ -20970,7 +21056,7 @@ DE
 Pm
 qH
 WH
-vn
+IN
 oJ
 cC
 cC
@@ -21426,13 +21512,13 @@ Ii
 qa
 pY
 Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+Jf
+Jf
+Jf
+Jf
+Jf
+Jf
+Jf
 Bl
 za
 Bl
@@ -21651,8 +21737,8 @@ Bl
 Bl
 Bl
 za
-iq
-Bl
+Jf
+Jf
 Bl
 Bl
 Bl
@@ -24628,10 +24714,10 @@ oH
 rA
 GR
 UH
-SR
+RX
 xz
-ZB
-nE
+xz
+nU
 Bl
 Bl
 Bl
@@ -34658,7 +34744,7 @@ AM
 Bk
 qF
 qF
-qu
+Sk
 qa
 pY
 Bl
@@ -34886,9 +34972,9 @@ qF
 qF
 qF
 bY
-iq
-Bl
-Bl
+Jf
+Jf
+Jf
 Bl
 Bl
 Bl
@@ -38075,7 +38161,7 @@ FT
 FT
 ec
 SD
-ZI
+Sk
 rm
 rm
 rm
@@ -38303,13 +38389,13 @@ FT
 FT
 ec
 SD
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
-Bl
+Jf
+Jf
+Jf
+Jf
+Jf
+Jf
+Jf
 Bl
 Bl
 Bl
@@ -39081,12 +39167,12 @@ CN
 EW
 kX
 kX
-kX
-zP
+Mg
+bG
 ci
 ci
 Yn
-zP
+bG
 kX
 cj
 cj
@@ -39989,8 +40075,8 @@ yC
 Ph
 kX
 kX
-kX
-kX
+Mg
+Mg
 kX
 kX
 kX
@@ -42269,9 +42355,9 @@ xT
 UM
 kX
 kX
-kX
-kX
-kX
+Mg
+Mg
+Mg
 kX
 kX
 kX
@@ -49285,11 +49371,11 @@ Bl
 Bl
 Bl
 Bl
-ZI
+Sk
 rm
 rm
 Jw
-Bl
+Jf
 Bl
 Bl
 Bl
@@ -49514,9 +49600,9 @@ Bl
 Bl
 Bl
 Bl
-Bl
-Bl
-Tz
+Jf
+Jf
+YM
 Bl
 Bl
 Bl
