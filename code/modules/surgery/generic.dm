@@ -414,7 +414,7 @@ datum/surgery_step/saw_encased/skip_step_criteria(mob/user, mob/living/carbon/ta
 
 //------------------------------------
 
-//This step can be skipped. In rib-opening surgery, it can be skipped to abort the operation.
+//This step can be skipped, and ends the surgery when completed. In rib-opening surgery, it can be skipped to abort the operation.
 //In rib-closing surgery, it can be skipped to finish closing the ribcage, or completed to abort the operation.
 /datum/surgery_step/open_encased_step
 	name = "Open Bone"
@@ -442,7 +442,7 @@ datum/surgery_step/open_encased_step/skip_step_criteria(mob/user, mob/living/car
 		SPAN_NOTICE("[user] uses \the [tool] to hold [target]'s [surgery.affected_limb.encased] open, exposing \his [brain ? "brain" : "vital organs"]."))
 
 	target.incision_depths[target_zone] = SURGERY_DEPTH_DEEP
-	surgery.status += 1 //This finishes the surgery.
+	complete(target, surgery) //This finishes the surgery.
 
 	if(prob(10)) //RNG slip chance.
 		surgery.affected_limb.fracture(100)

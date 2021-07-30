@@ -111,6 +111,7 @@ datum/surgery_step/abort_amputation/skip_step_criteria(mob/user, mob/living/carb
 		SPAN_NOTICE("[user] has reconnected the muscles in your [surgery.affected_limb.display_name]."),
 		SPAN_NOTICE("[user] has reconnected the muscles in [target]'s [surgery.affected_limb.display_name]."))
 
+	complete(target, surgery)
 	log_interact(user, target, "[key_name(user)] successfully aborted an amputation on [key_name(target)]'s [surgery.affected_limb.display_name] with \the [tool], ending [surgery].")
 
 /datum/surgery_step/abort_amputation/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)

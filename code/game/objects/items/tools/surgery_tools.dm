@@ -52,6 +52,7 @@
 	matter = list("metal" = 5000, "glass" = 2500)
 	flags_atom = FPRINT|CONDUCT
 	w_class = SIZE_TINY
+	flags_item = ANIMATED_SURGICAL_TOOL
 
 	attack_verb = list("burnt")
 
@@ -59,6 +60,7 @@
 	name = "cauterizer"
 	desc = "This stops bleeding."
 	icon_state = "predator_cautery"
+	flags_item = NO_FLAGS
 
 /*
  * Surgical Drill
@@ -110,25 +112,26 @@
  * Researchable Scalpels
  */
 /obj/item/tool/surgery/scalpel/laser
-	name = "laser scalpel"
+	name = "prototype laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks like an unreliable early model."
-	icon_state = "scalpel_laser1_on"
+	icon_state = "scalpel_laser"
 	damtype = "fire"
+	flags_item = ANIMATED_SURGICAL_TOOL
 	///The likelihood an incision made with this will be bloodless.
 	var/bloodlessprob = 60
 
 /obj/item/tool/surgery/scalpel/laser/improved
 	name = "laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks trustworthy, though it could be better."
-	icon_state = "scalpel_laser2_on"
+	icon_state = "scalpel_laser_2"
 	damtype = "fire"
 	force = 12.0
 	bloodlessprob = 80
 
 /obj/item/tool/surgery/scalpel/laser/advanced
-	name = "laser scalpel"
+	name = "advanced laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for controlling bleeding as the incision is made. Also functions as a cautery. This one looks to be the pinnacle of precision energy cutlery!"
-	icon_state = "scalpel_laser3_on"
+	icon_state = "scalpel_laser_3"
 	damtype = "fire"
 	force = 15.0
 	bloodlessprob = 100
@@ -147,8 +150,9 @@
 /obj/item/tool/surgery/scalpel/manager
 	name = "incision management system"
 	desc = "A true extension of the surgeon's body, this marvel instantly and completely prepares an incision allowing for the immediate commencement of therapeutic steps."
-	icon_state = "scalpel_manager_on"
+	icon_state = "scalpel_manager"
 	force = 7.5
+	flags_item = ANIMATED_SURGICAL_TOOL
 
 /*
  * Circular Saw
@@ -158,7 +162,7 @@
 /obj/item/tool/surgery/circular_saw
 	name = "circular saw"
 	desc = "For heavy duty cutting."
-	icon_state = "saw3"
+	icon_state = "saw"
 	hitsound = 'sound/weapons/circsawhit.ogg'
 	flags_atom = FPRINT|CONDUCT
 	force = 0
@@ -167,6 +171,7 @@
 	throw_speed = SPEED_VERY_FAST
 	throw_range = 5
 	matter = list("metal" = 20000,"glass" = 10000)
+	flags_item = ANIMATED_SURGICAL_TOOL
 
 	attack_verb = list("attacked", "slashed", "sawed", "cut")
 	sharp = IS_SHARP_ITEM_BIG
@@ -176,6 +181,7 @@
 	name = "bone saw"
 	desc = "For heavy duty cutting."
 	icon_state = "predator_bonesaw"
+	flags_item = NO_FLAGS
 
 /*
  * Bone Gel
@@ -231,7 +237,7 @@
 
 /obj/item/tool/surgery/bonesetter
 	name = "bone setter"
-	icon_state = "bone setter"
+	icon_state = "bonesetter"
 	force = 0
 	throwforce = 9.0
 	throw_speed = SPEED_VERY_FAST
@@ -274,9 +280,10 @@ t. optimisticdude
 /obj/item/tool/surgery/WYautopsy
 	name = "Weyland Brand Automatic Autopsy System(TM)"
 	desc = "Putting the FUN back in Autopsy.  This little gadget performs an entire autopsy of whatever strange life form you've found in about 30 seconds."
-	icon_state = "scalpel_laser2_on"
+	icon_state = "scalpel_laser_2"
 	damtype = "fire"
 	force = 0
+	flags_item = ANIMATED_SURGICAL_TOOL
 	var/active = 0
 	var/resetting = 0//For the reset, to prevent macro-spam abuse
 
