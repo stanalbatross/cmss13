@@ -194,16 +194,6 @@
 	icon_state = "predator_bone-gel"
 
 /*
- * Cell Gel
- * May or may not actually be used.
- */
-
-/obj/item/tool/surgery/cell_gel
-	name = "CellGro"
-	desc = "A gel with regenerative properties, used to accelerate natural healing. Sadly, it does not cure baldness"
-	icon_state = "cell-gel"
-
-/*
  * Fix-o-Vein
  * Usual substitutes: surgical line, cable coil, headbands.
  */
