@@ -155,7 +155,7 @@ datum/surgery_step/proc/repeat_step_criteria(mob/user, mob/living/carbon/target,
 			while patient has only [target.pain.reduction_pain], pain failure chance = [pain_failure_chance]%")
 	#endif
 
-	if(tool.flags_item & ANIMATED_SURGICAL_TOOL) //If we have an animated tool sprite, run it while we do any do_afters.
+	if(tool?.flags_item & ANIMATED_SURGICAL_TOOL) //If we have an animated tool sprite, run it while we do any do_afters.
 		tool.icon_state += "_on"
 
 	if(try_to_fail)
@@ -185,7 +185,7 @@ datum/surgery_step/proc/repeat_step_criteria(mob/user, mob/living/carbon/target,
 		else if(surgery.status != 1 && failure(user, target, target_zone, tool, tool_type, surgery)) //Failing the first step while on help intent doesn't risk harming the patient.
 			advance = TRUE
 
-	if(tool.flags_item & ANIMATED_SURGICAL_TOOL) //Don't want to reset sprites on things like lighters, welding torches etc.
+	if(tool?.flags_item & ANIMATED_SURGICAL_TOOL) //Don't want to reset sprites on things like lighters, welding torches etc.
 		tool.icon_state = initial(tool.icon_state)
 
 	if(advance)
