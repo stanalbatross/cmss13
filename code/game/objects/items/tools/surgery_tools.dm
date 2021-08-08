@@ -224,7 +224,7 @@
 
 /obj/item/tool/surgery/surgical_line
 	name = "surgical line"
-	desc = "A roll of military grade surgical line, able to seamlessly seal and tend any wound. Also works as a robust fishing line for maritime deployments."
+	desc = "A roll of military-grade surgical line, able to seamlessly seal and tend any wound. Also works as a robust fishing line for maritime deployments."
 	icon_state = "line"
 	force = 0
 	throwforce = 1.0
