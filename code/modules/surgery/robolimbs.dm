@@ -104,6 +104,7 @@
 	desc = "calibrate the prosthesis"
 	accept_hand = TRUE
 	time = 2.5 SECONDS
+	tools = SURGERY_TOOLS_PINCH
 
 /datum/surgery_step/calibrate_prosthesis/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	var/nerves = (target.species && (target.species.flags & IS_SYNTHETIC)) ? "control wiring" : "nervous system"
