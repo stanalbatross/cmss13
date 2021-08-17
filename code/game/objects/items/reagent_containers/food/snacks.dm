@@ -1275,17 +1275,6 @@
 	reagents.add_reagent("potato", 2)
 	bitesize = 2
 
-/obj/item/reagent_container/food/snacks/fortunecookie
-	name = "Fortune cookie"
-	desc = "A true prophecy in each cookie!"
-	icon_state = "fortune_cookie"
-	filling_color = "#E8E79E"
-
-/obj/item/reagent_container/food/snacks/fortunecookie/Initialize()
-	. = ..()
-	reagents.add_reagent("bread", 3)
-	bitesize = 2
-
 /obj/item/reagent_container/food/snacks/badrecipe
 	name = "Burned mess"
 	desc = "Someone should be demoted from chef for this."
@@ -1575,7 +1564,6 @@
 			I.take_damage(rand(I.min_bruised_damage, I.min_broken_damage+1))
 		if (!E.hidden && prob(60)) //set it snuggly
 			E.hidden = surprise
-			E.cavity = 0
 		else 		//someone is having a bad day
 			E.createwound(CUT, 30)
 			E.embed(surprise)
