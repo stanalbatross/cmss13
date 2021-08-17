@@ -1635,7 +1635,7 @@
 ///*****************************//
 
 /datum/equipment_preset/survivor/FORCON_Officer/lv522
-	name = "Survivor - USCM Reconnaissance Officer"
+	name = "Survivor - USCM Reconnaissance Captain"
 	assignment = "Reconnaissance Captain"
 	paygrade = "O5"
 	role_comm_title = "FORCON"
@@ -1649,7 +1649,7 @@
 		ACCESS_CIVILIAN_ENGINEERING,
 		ACCESS_CIVILIAN_LOGISTICS
 	)
-/datum/equipment_preset/survivor/FORCON_Officer/lv522/load_gear(mob/living/carbon/human/H)
+/datum/equipment_preset/survivor/FORCON_Captain/lv522/load_gear(mob/living/carbon/human/H)
 	var/obj/item/clothing/under/marine/FORCON = new()
 	var/obj/item/clothing/accessory/storage/webbing/W = new()
 	FORCON.attach_accessory(H, W)

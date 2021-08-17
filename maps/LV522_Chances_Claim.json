@@ -3,13 +3,7 @@
 	"map_path": "map_files/LV522_Chances_Claim",
 	"map_file": "LV522_Chances_Claim.dmm",
     "survivor_types": [
-        "Survivor - USCM Reconnaissance Marine",
-        "Survivor - USCM Reconnaissance Support Technician",
-        "Survivor - USCM Reconnaissance Designated Marksman",
-        "Survivor - USCM Reconnaissance Machinegunner",
-        "Survivor - USCM Reconnaissance Grenadier",
-        "Survivor - USCM Reconnaissance Squad Leader",
-        "Survivor - USCM Reconnaissance Officer"
+        "Survivor - USCM Reconnaissance Marine"
     ],
     "defcon_triggers": [
         3300,
