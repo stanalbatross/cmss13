@@ -58,3 +58,23 @@
 	roundstart_damage_max = 10
 	roundstart_damage_times = 2
 	make_objective = 1
+
+//LV_522 FORCON Specials
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_support_Tech
+	equipment = "Survivor - USCM Reconnaissance Support Technician"
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_marksman
+	equipment = "Survivor - USCM Reconnaissance Designated Marksman"
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_machinegunner
+	equipment = "Survivor - USCM Reconnaissance Machinegunner"
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_grenadier
+	equipment = "Survivor - USCM Reconnaissance Grenadier"
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_squad_leader
+	equipment = "Survivor - USCM Reconnaissance Squad Leader"
+
+obj/effect/landmark/survivor_spawner/Forcon/FORCON_captain
+	equipment = "Survivor - USCM Reconnaissance Captain"

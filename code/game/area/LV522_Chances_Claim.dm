@@ -19,7 +19,7 @@
 	icon_state = "explored"
 	is_resin_allowed =  "FALSE"
 
-/area/lv522/shuttle/drop1
+/area/shuttle/drop1/lv522
 	name = "Chances Claim - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
 	icon = 'icons/turf/area_shiva.dmi'
@@ -35,7 +35,7 @@
 /area/lv522/landing_zone_2
 	name = "Chances Claim - Landing Zone Two"
 	icon_state = "explored"
-/area/lv522/shuttle/drop2
+/area/shuttle/drop2/lv522
 	name = "Chances Claim - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
 	icon = 'icons/turf/area_shiva.dmi'
