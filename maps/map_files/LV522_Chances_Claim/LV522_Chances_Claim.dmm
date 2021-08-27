@@ -1,4 +1,16 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"aab" = (
+/obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/drinks/bottle/sake{
+	pixel_x = 6;
+	pixel_y = 10
+	},
+/obj/item/device/cassette_tape/pop1{
+	pixel_x = -7;
+	pixel_y = 1
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "aag" = (
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
@@ -495,6 +507,10 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
+"auc" = (
+/obj/effect/spawner/random/technology_scanner,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "aul" = (
 /turf/open/floor/strata{
 	dir = 4;
@@ -548,7 +564,6 @@
 "avy" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -664,7 +679,7 @@
 /area/lv522/buildings/C_Block/Garage)
 "aAM" = (
 /obj/structure/bed/chair,
-/turf/open/floor/plating/plating_catwalk/shiva,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "aBz" = (
 /obj/structure/bed/chair/comfy,
@@ -1055,7 +1070,7 @@
 "aNp" = (
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/snacks/meatsteak,
-/turf/open/floor/strata,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "aOt" = (
 /turf/closed/shuttle/dropship2{
@@ -1744,7 +1759,6 @@
 /area/lv522/buildings/B_Block/Science_Lab)
 "bvC" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -2367,6 +2381,13 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Cargo)
+"bXw" = (
+/obj/structure/sign/safety/rad_haz,
+/obj/structure/sign/safety/restrictedarea{
+	pixel_x = 15
+	},
+/turf/closed/wall/r_wall/bunker,
+/area/lv522/buildings/colony_streets)
 "bXz" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,2";
@@ -3180,6 +3201,13 @@
 	icon_state = "squares"
 	},
 /area/lv522/buildings/colony_streets)
+"cNh" = (
+/obj/structure/sign/safety/coffee,
+/obj/structure/sign/safety/one{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Cargo)
 "cNr" = (
 /obj/effect/decal/cleanable/blood/oil,
 /obj/item/device/m2c_gun{
@@ -3274,6 +3302,15 @@
 "cPd" = (
 /turf/open/floor/corsat,
 /area/lv522/buildings/colony_streets)
+"cPA" = (
+/obj/structure/barricade/handrail{
+	dir = 4
+	},
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "cPU" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "95"
@@ -3304,6 +3341,13 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"cQR" = (
+/obj/item/trash/candle{
+	pixel_x = 8;
+	pixel_y = -6
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "cRu" = (
 /turf/open/floor/plating{
 	dir = 8;
@@ -3502,6 +3546,7 @@
 	layer = 4.2;
 	pixel_y = 21
 	},
+/obj/structure/sign/safety/high_voltage,
 /turf/open/floor/plating{
 	dir = 5;
 	icon_state = "warnplate";
@@ -3678,6 +3723,16 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/landing_zone_2)
+"ded" = (
+/obj/structure/machinery/light/double{
+	dir = 1;
+	pixel_y = 9
+	},
+/obj/item/tool/crowbar/red,
+/obj/structure/surface/rack,
+/obj/item/tool/wrench,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "dfy" = (
 /obj/item/ammo_magazine/smartgun{
 	current_rounds = 0
@@ -3770,7 +3825,6 @@
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -4190,7 +4244,6 @@
 /area/lv522/buildings/colony_streets)
 "dDe" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -4234,6 +4287,18 @@
 /obj/structure/machinery/conveyor,
 /obj/structure/plasticflaps,
 /turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
+"dEV" = (
+/obj/structure/barricade/handrail{
+	dir = 4
+	},
+/obj/structure/surface/table/almayer,
+/obj/structure/machinery/prop/almayer/computer/PC{
+	desc = "A small desktop computer. Someone has switched to personal emails and disabled the inventory sort system.";
+	icon_state = "alert:2";
+	name = "inventory computer"
+	},
+/turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Cargo)
 "dFK" = (
 /obj/structure/closet/secure_closet/engineering_welding,
@@ -4707,6 +4772,12 @@
 "dXu" = (
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Admin)
+"dXB" = (
+/obj/item/stack/sheet/metal,
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/landing_zone_1)
 "dXX" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/plating,
@@ -4841,7 +4912,6 @@
 "efP" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -5014,6 +5084,13 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_block/Admin)
+"eoy" = (
+/obj/item/paper{
+	pixel_x = -4;
+	pixel_y = 21
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "eoZ" = (
 /obj/structure/toilet{
 	pixel_y = 16
@@ -5126,6 +5203,21 @@
 	},
 /turf/open/asphalt,
 /area/lv522/buildings/colony_streets)
+"euL" = (
+/obj/structure/largecrate/random/case/small,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
+"eve" = (
+/obj/structure/sign/safety/storage,
+/obj/structure/sign/safety/three{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Cargo)
+"evk" = (
+/obj/item/paper,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "evl" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -5472,7 +5564,6 @@
 /area/lv522/buildings/A_block/Dorms)
 "eHe" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -5868,7 +5959,7 @@
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "eYq" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/turf/open/floor/plating/plating_catwalk/shiva,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "eYF" = (
 /obj/item/stool,
@@ -6307,6 +6398,13 @@
 /obj/item/tool/weldpack,
 /turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Garage)
+"fxI" = (
+/obj/structure/largecrate/random/mini/med{
+	pixel_x = -12;
+	pixel_y = 6
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "fyf" = (
 /obj/item/lightstick/red/spoke/planted{
 	layer = 2.99;
@@ -6493,7 +6591,6 @@
 "fEM" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -6772,7 +6869,9 @@
 /area/lv522/buildings/B_Block/Science_Lab)
 "fSg" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/prop/almayer/computer/PC,
+/obj/structure/machinery/prop/almayer/computer/PC{
+	pixel_y = 5
+	},
 /turf/open/floor/strata{
 	icon_state = "orange_tile"
 	},
@@ -6883,6 +6982,13 @@
 	icon_state = "platebot"
 	},
 /area/lv522/buildings/colony_streets)
+"fZw" = (
+/obj/item/paper{
+	pixel_x = 10;
+	pixel_y = 14
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "gaW" = (
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
@@ -8079,7 +8185,7 @@
 /obj/item/storage/beer_pack{
 	pixel_y = 8
 	},
-/turf/open/floor/strata,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "hbj" = (
 /obj/item/ammo_magazine/pistol/m1911{
@@ -8170,7 +8276,6 @@
 "hht" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -8292,6 +8397,13 @@
 	icon_state = "cement9"
 	},
 /area/lv522/landing_zone_1)
+"hqK" = (
+/obj/item/stack/rods,
+/turf/open/floor/plating{
+	dir = 1;
+	icon_state = "warnplate"
+	},
+/area/lv522/landing_zone_1)
 "hqS" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/structure/machinery/door_control/brbutton/alt{
@@ -8319,7 +8431,6 @@
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -8900,7 +9011,6 @@
 "hUG" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -9514,7 +9624,6 @@
 "iCI" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -9792,7 +9901,6 @@
 "iLK" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -10195,7 +10303,6 @@
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -10227,7 +10334,6 @@
 "jcD" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -10459,6 +10565,13 @@
 "jmS" = (
 /turf/open/asphalt/cement,
 /area/lv522/landing_zone_1)
+"jmU" = (
+/obj/structure/sign/safety/bulkhead_door,
+/obj/structure/sign/safety/two{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/landing_zone_2)
 "jnf" = (
 /obj/structure/prop/server_equipment/broken,
 /turf/open/floor/corsat{
@@ -10888,6 +11001,9 @@
 /area/lv522/buildings/colony_streets)
 "jIV" = (
 /obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/drinks/cans/souto/blue{
+	pixel_x = -9
+	},
 /turf/open/floor/carpet,
 /area/lv522/buildings/C_Block/Cargo)
 "jIW" = (
@@ -10976,7 +11092,6 @@
 "jNB" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -11068,6 +11183,11 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"jRW" = (
+/obj/structure/surface/rack,
+/obj/item/tool/hand_labeler,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "jSl" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/corsat{
@@ -11177,7 +11297,7 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Dorms)
 "jWn" = (
-/turf/open/floor/plating/plating_catwalk/shiva,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "jWY" = (
 /obj/structure/surface/table/almayer,
@@ -11356,6 +11476,13 @@
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/West_LZ_Storage)
+"kdH" = (
+/obj/structure/sign/safety/security,
+/obj/structure/sign/safety/ammunition{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced/hull,
+/area/lv522/buildings/A_block)
 "keN" = (
 /turf/closed/shuttle/dropship2{
 	icon_state = "3"
@@ -11578,6 +11705,12 @@
 /obj/structure/largecrate/random,
 /turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Cargo)
+"kph" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/landing_zone_1)
 "kpl" = (
 /turf/closed/wall/shiva/prefabricated/reinforced,
 /area/lv522/buildings/A_block/Medical)
@@ -11868,7 +12001,6 @@
 "kCm" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -12337,7 +12469,6 @@
 /area/lv522/landing_zone_2)
 "kWt" = (
 /obj/structure/machinery/landinglight/ds1{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -12469,6 +12600,10 @@
 /obj/structure/machinery/light/double{
 	dir = 4;
 	pixel_y = -5
+	},
+/obj/structure/largecrate/random/mini/chest/b{
+	pixel_x = 7;
+	pixel_y = 8
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Cargo)
@@ -12751,6 +12886,12 @@
 	icon_state = "fake_wood"
 	},
 /area/lv522/buildings/A_block/Security)
+"loO" = (
+/obj/item/stack/rods,
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/landing_zone_1)
 "loY" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
 /turf/open/floor/strata{
@@ -13053,6 +13194,19 @@
 	icon_state = "22"
 	},
 /area/lv522/landing_zone_2/UD6_Typhoon)
+"lDX" = (
+/obj/item/fuelCell{
+	layer = 3.1;
+	pixel_x = 3;
+	pixel_y = 15
+	},
+/obj/item/fuelCell{
+	layer = 3.1;
+	pixel_x = -10;
+	pixel_y = 18
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "lEG" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/green,
 /turf/open/floor/strata{
@@ -13672,7 +13826,6 @@
 /area/lv522/landing_zone_1)
 "miy" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -14289,7 +14442,6 @@
 /area/lv522/buildings/colony_streets)
 "mKw" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -14335,6 +14487,13 @@
 	icon_state = "blue3"
 	},
 /area/lv522/buildings/A_block/Dorms)
+"mNA" = (
+/obj/structure/sign/safety/one{
+	pixel_x = 15
+	},
+/obj/structure/sign/safety/coffee,
+/turf/closed/wall/shiva/prefabricated,
+/area/lv522/buildings/C_Block/Cargo)
 "mOi" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/bed/chair{
@@ -15059,7 +15218,6 @@
 "nsB" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -15449,7 +15607,6 @@
 "nIA" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -15925,7 +16082,6 @@
 "ocL" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -16021,6 +16177,10 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/B_Block)
+"ojb" = (
+/obj/structure/largecrate/random/case/double,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "oji" = (
 /obj/item/hardpoint/locomotion/van_wheels,
 /turf/open/floor/plating,
@@ -16144,6 +16304,13 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
+"oqD" = (
+/obj/structure/sign/safety/storage,
+/obj/structure/sign/safety/two{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated,
+/area/lv522/buildings/C_Block/Cargo)
 "oqN" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -16514,6 +16681,20 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Security)
+"oIJ" = (
+/obj/item/book/manual/marine_law{
+	pixel_x = 7
+	},
+/obj/item/book/manual/marine_law{
+	pixel_x = 6;
+	pixel_y = 3
+	},
+/obj/item/book/manual/marine_law{
+	pixel_x = 7;
+	pixel_y = 6
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "oIN" = (
 /obj/structure/machinery/door/poddoor/almayer/closed{
 	dir = 4;
@@ -16669,7 +16850,6 @@
 /area/lv522/buildings/colony_streets)
 "oSj" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -16838,6 +17018,10 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
+/area/lv522/buildings/C_Block/Cargo)
+"oYC" = (
+/obj/effect/decal/cleanable/blood/oil/streak,
+/turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Cargo)
 "oYV" = (
 /obj/structure/barricade/wooden{
@@ -17374,7 +17558,6 @@
 "pwl" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -17420,7 +17603,6 @@
 "pzk" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -17489,6 +17671,10 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/B_Block)
+"pDq" = (
+/obj/effect/decal/cleanable/greenglow,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "pDE" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/asphalt/cement{
@@ -17556,6 +17742,12 @@
 	icon_state = "warnplate"
 	},
 /area/lv522/buildings/A_block)
+"pGi" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/plating{
+	icon_state = "warnplate"
+	},
+/area/lv522/landing_zone_1)
 "pGl" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC,
@@ -17902,6 +18094,25 @@
 	icon_state = "darkyellowfull2"
 	},
 /area/lv522/buildings/colony_streets/engineering)
+"pWo" = (
+/obj/item/tool/lighter/random{
+	pixel_x = -4;
+	pixel_y = 13
+	},
+/obj/structure/surface/table/almayer,
+/obj/item/ashtray/plastic{
+	icon_state = "ashtray_full_bl";
+	pixel_x = 5;
+	pixel_y = 1
+	},
+/obj/item/trash/cigbutt{
+	pixel_x = 4
+	},
+/obj/item/paper/crumpled/bloody{
+	pixel_x = -9
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "pWC" = (
 /obj/item/tool/shovel,
 /obj/structure/closet/crate,
@@ -18091,6 +18302,18 @@
 	icon_state = "cement4"
 	},
 /area/lv522/buildings/colony_streets)
+"qgM" = (
+/obj/structure/sign/safety/bulkhead_door,
+/obj/structure/sign/safety/one{
+	pixel_x = 15;
+	pixel_y = 8
+	},
+/obj/structure/sign/safety/south{
+	pixel_x = 15;
+	pixel_y = -8
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/landing_zone_1)
 "qhA" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/strata,
@@ -18135,7 +18358,6 @@
 "qjQ" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -18420,7 +18642,6 @@
 "qwI" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -18584,6 +18805,19 @@
 /area/lv522/buildings/colony_streets/West_LZ_House)
 "qDE" = (
 /obj/structure/surface/table/gamblingtable,
+/obj/item/card/id/visa{
+	desc = "A United Americas entry visa. A rare commodity out here on the rim.";
+	pixel_x = 9;
+	pixel_y = -2
+	},
+/obj/item/spacecash/c500{
+	pixel_x = -7;
+	pixel_y = 10
+	},
+/obj/item/reagent_container/food/drinks/bottle/sake{
+	pixel_x = 6;
+	pixel_y = 14
+	},
 /turf/open/floor/strata{
 	icon_state = "orange_cover"
 	},
@@ -18791,6 +19025,13 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"qLu" = (
+/obj/structure/sign/safety/storage,
+/obj/structure/sign/safety/two{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Cargo)
 "qMD" = (
 /obj/structure/stairs/perspective{
 	dir = 5;
@@ -18812,6 +19053,10 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"qMV" = (
+/obj/structure/largecrate/random/case,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "qNk" = (
 /obj/structure/reagent_dispensers/water_cooler/stacks,
 /turf/open/floor/strata{
@@ -20307,7 +20552,6 @@
 "scw" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -20484,6 +20728,12 @@
 	icon_state = "brown"
 	},
 /area/lv522/buildings/colony_streets)
+"sqO" = (
+/obj/item/tool/wet_sign,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/C_Block/Cargo)
 "srn" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -21153,7 +21403,6 @@
 "sZK" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -21446,7 +21695,6 @@
 "tod" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -22102,6 +22350,12 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/A_block/Admin)
+"tXh" = (
+/obj/structure/bed/chair{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "tXr" = (
 /obj/structure/platform_decoration{
 	dir = 1
@@ -22507,7 +22761,6 @@
 /area/lv522/buildings/colony_streets)
 "uqM" = (
 /obj/structure/machinery/landinglight/ds1{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -22849,6 +23102,13 @@
 	icon_state = "white_cyan4"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"uLj" = (
+/obj/structure/sign/safety/bulkhead_door,
+/obj/structure/sign/safety/one{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/landing_zone_1)
 "uLN" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 9
@@ -23258,7 +23518,7 @@
 	pixel_x = -5;
 	pixel_y = 16
 	},
-/turf/open/floor/plating/plating_catwalk/shiva,
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "vaV" = (
 /obj/structure/prop/invuln/minecart_tracks{
@@ -23360,6 +23620,13 @@
 	icon_state = "cement12"
 	},
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
+"veZ" = (
+/obj/structure/sign/safety/exhaust,
+/obj/structure/sign/safety/rad_shield{
+	pixel_x = 15
+	},
+/turf/closed/wall/r_wall/biodome/biodome_unmeltable,
+/area/lv522/buildings/colony_streets)
 "vfm" = (
 /obj/structure/platform{
 	dir = 4
@@ -23825,7 +24092,6 @@
 "vxE" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -23987,6 +24253,12 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/B_Block)
+"vHj" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/plating/plating_catwalk/strata,
+/area/lv522/buildings/C_Block/Cargo)
 "vHw" = (
 /obj/structure/stairs/perspective{
 	dir = 6;
@@ -24131,6 +24403,14 @@
 	icon_state = "gorg 0,0";
 	tag = "icon-gorg 0,0"
 	},
+/obj/structure/flora/pottedplant{
+	desc = "It is made of Fiberbush(tm). It contains asbestos. Studies say that greenery calms the mind due to some sort evolved mechanism in the brain. This plant is not calming.";
+	icon_state = "pottedplant_21";
+	layer = 3.1;
+	name = "synthethic potted plant";
+	pixel_y = 28;
+	tag = "icon-plant-10"
+	},
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
@@ -24171,6 +24451,10 @@
 	icon_state = "red1"
 	},
 /area/lv522/buildings/A_block/Security)
+"vSz" = (
+/obj/effect/decal/cleanable/greenglow,
+/turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
 "vSM" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/prop/almayer/computer/PC{
@@ -24418,7 +24702,10 @@
 	pixel_x = 6;
 	pixel_y = 2
 	},
-/turf/open/floor/strata,
+/obj/item/storage/box/drinkingglasses{
+	pixel_x = -11
+	},
+/turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
 "wgz" = (
 /obj/structure/machinery/light/double{
@@ -24502,6 +24789,12 @@
 	icon_state = "cement3"
 	},
 /area/lv522/buildings/colony_streets)
+"wlh" = (
+/obj/item/stack/rods,
+/turf/open/floor/plating{
+	icon_state = "warnplate"
+	},
+/area/lv522/landing_zone_1)
 "wlx" = (
 /obj/structure/largecrate/random/barrel/red,
 /turf/open/floor/plating,
@@ -24705,7 +24998,6 @@
 "wuO" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -25234,6 +25526,10 @@
 	icon_state = "warnplate"
 	},
 /area/lv522/buildings/colony_streets)
+"wUo" = (
+/obj/structure/machinery/photocopier,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "wUI" = (
 /obj/item/shard{
 	icon_state = "medium"
@@ -25409,7 +25705,6 @@
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -25856,6 +26151,13 @@
 /obj/structure/largecrate/cow,
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Cargo)
+"xze" = (
+/obj/structure/sign/safety/bulkhead_door,
+/obj/structure/sign/safety/storage{
+	pixel_x = 15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced/hull,
+/area/lv522/buildings/A_block)
 "xzn" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -26015,6 +26317,10 @@
 /obj/item/weapon/gun/rifle/hunting,
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/West_LZ_House)
+"xGN" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "xHm" = (
 /obj/structure/closet/crate/miningcar,
 /obj/item/folder/black_random,
@@ -26108,7 +26414,6 @@
 "xNv" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -26254,7 +26559,6 @@
 "xTN" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -26309,6 +26613,11 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_block/Admin)
+"xXB" = (
+/obj/structure/blocker/invisible_wall,
+/obj/effect/decal/cleanable/greenglow,
+/turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
 "xXQ" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/plating/plating_catwalk/shiva,
@@ -30678,11 +30987,11 @@ vVs
 vVs
 rkI
 vVs
-eKE
+kdH
 aPV
 aPV
 aPV
-eKE
+xze
 vVs
 vVs
 vVs
@@ -32243,12 +32552,13 @@ jmS
 qfs
 qfs
 qfs
-qfs
+uLj
 bxy
 bxy
 bxy
 bxy
 bxy
+uLj
 qfs
 qfs
 qfs
@@ -32259,14 +32569,13 @@ qfs
 qfs
 qfs
 qfs
-qfs
-qfs
+uLj
 bxy
 bxy
 bxy
 bxy
 bxy
-qfs
+uLj
 qfs
 qfs
 qfs
@@ -33378,7 +33687,7 @@ esC
 rkI
 rkI
 feV
-qfs
+uLj
 qfs
 qfs
 egL
@@ -33836,7 +34145,7 @@ rkI
 wzg
 xGm
 aMy
-hAj
+wlh
 oPM
 ptk
 ptk
@@ -34063,7 +34372,7 @@ rkI
 rkI
 wzg
 xGm
-npC
+dXB
 hAj
 ptk
 ptk
@@ -34519,7 +34828,7 @@ rkI
 rkI
 wzg
 xGm
-npC
+loO
 hAj
 ptk
 ptk
@@ -34746,8 +35055,8 @@ esC
 rkI
 rkI
 wzg
-xGm
-npC
+hqK
+kph
 hAj
 ptk
 ptk
@@ -34975,7 +35284,7 @@ rkI
 rkI
 wzg
 xGm
-npC
+dXB
 nHP
 ptk
 ptk
@@ -35203,7 +35512,7 @@ rkI
 rkI
 wzg
 rqv
-npC
+loO
 hAj
 ptk
 ptk
@@ -35431,8 +35740,8 @@ rkI
 rkI
 wzg
 rqv
-npC
-hAj
+dXB
+pGi
 ptk
 ptk
 ptk
@@ -35886,7 +36195,7 @@ esC
 rkI
 rkI
 feV
-qfs
+uLj
 qfs
 qfs
 npC
@@ -36116,7 +36425,7 @@ rkI
 wzg
 qfs
 qfs
-qfs
+qgM
 ptk
 jBR
 uup
@@ -36798,7 +37107,7 @@ esC
 rkI
 rkI
 feV
-qfs
+uLj
 qfs
 qfs
 npC
@@ -37482,7 +37791,7 @@ esC
 rkI
 rkI
 wzg
-xGm
+hqK
 aMy
 sjA
 ptk
@@ -37711,7 +38020,7 @@ rkI
 rkI
 wzg
 tBz
-npC
+dXB
 hAj
 ptk
 ptk
@@ -38167,7 +38476,7 @@ rkI
 rkI
 wzg
 xGm
-npC
+dXB
 hAj
 oPM
 ptk
@@ -38395,8 +38704,8 @@ rkI
 rkI
 wzg
 rqv
-npC
-hAj
+kph
+wlh
 ptk
 ptk
 ptk
@@ -39306,7 +39615,7 @@ esC
 rkI
 rkI
 feV
-qfs
+uLj
 qfs
 qfs
 egL
@@ -39784,7 +40093,7 @@ bqa
 bqa
 bqa
 bqa
-bqa
+qLu
 eWe
 eWe
 eWe
@@ -42279,7 +42588,7 @@ rkI
 rkI
 rkI
 qgj
-bqa
+qLu
 bqa
 bqa
 bqa
@@ -42309,7 +42618,7 @@ bqa
 bqa
 bqa
 bqa
-bqa
+qLu
 jSS
 bTH
 bTH
@@ -42510,7 +42819,7 @@ qgj
 bqa
 qve
 eWe
-hMe
+xXB
 hnZ
 lwO
 oKy
@@ -42741,7 +43050,7 @@ iWZ
 hMe
 hMe
 hMe
-oKy
+vSz
 oKy
 aZE
 oKy
@@ -42967,7 +43276,7 @@ bqa
 qXC
 eWe
 hMe
-hMe
+xXB
 vAD
 wuf
 gYd
@@ -43196,10 +43505,10 @@ bqa
 bnU
 eWe
 eWe
-eWe
+sqO
 jeT
 eWe
-bqa
+eve
 vXP
 nJx
 iPH
@@ -43888,7 +44197,7 @@ kpc
 bPz
 gum
 yjD
-nGD
+oqD
 jAG
 jAG
 nZU
@@ -44112,11 +44421,11 @@ nGD
 nZU
 jAG
 nGD
-kpc
-jAG
-jAG
-jAG
-nGD
+jRW
+fxI
+cQR
+oIJ
+mNA
 jAG
 jAG
 nZU
@@ -44341,8 +44650,8 @@ jSy
 bAK
 bqa
 jAG
-jAG
-kpc
+pDq
+pWo
 bqa
 bqa
 iFT
@@ -44791,10 +45100,10 @@ qOt
 qOt
 qOt
 bqa
-nrG
+ded
 jAG
 nZU
-jAG
+oYC
 jAG
 jAG
 jAG
@@ -45252,7 +45561,7 @@ jAG
 jAG
 jAG
 jAG
-jAG
+xGN
 jAG
 nZU
 eGF
@@ -45702,11 +46011,11 @@ mPs
 mPs
 mPs
 mPs
-bqa
+eve
 jAG
 jAG
-jAG
-jAG
+evk
+fZw
 jAG
 jAG
 jAG
@@ -45933,11 +46242,11 @@ pPf
 mTX
 nrG
 jAG
+wUo
+eoy
 jAG
-jAG
-jAG
-jAG
-jAG
+aab
+tXh
 nZU
 eGF
 aul
@@ -46160,11 +46469,11 @@ rkI
 qgj
 mTX
 bqa
+auc
+dEV
+cPA
 jAG
-xiS
-xiS
-jAG
-xiS
+dEV
 xiS
 nZU
 eGF
@@ -46388,7 +46697,7 @@ rkI
 trk
 fpJ
 bqa
-jAG
+euL
 iPH
 snj
 jAG
@@ -46616,10 +46925,10 @@ rkI
 rkI
 qgj
 bqa
-jAG
+qMV
 iPH
 nxv
-jAG
+lDX
 iPH
 vQO
 nZU
@@ -46844,7 +47153,7 @@ rkI
 rkI
 qgj
 bqa
-jAG
+ojb
 iPH
 pug
 lcD
@@ -48901,7 +49210,7 @@ oKy
 aAM
 wgd
 aNp
-aMN
+vHj
 wuf
 cWX
 gYd
@@ -49588,7 +49897,7 @@ eGF
 eGF
 eGF
 nHi
-bqa
+cNh
 iFT
 jSy
 bqa
@@ -50343,14 +50652,14 @@ vUj
 vUj
 vUj
 vUj
-sOX
+bXw
 aWe
 aWe
 aWe
 aWe
 aWe
 aWe
-sOX
+bXw
 vUj
 vUj
 vUj
@@ -53975,7 +54284,7 @@ vwt
 vwt
 orN
 vUj
-sOX
+bXw
 sOX
 aco
 vUj
@@ -54014,7 +54323,7 @@ vPv
 vUj
 vUj
 sOX
-sOX
+bXw
 vUj
 cYT
 vwt
@@ -55571,7 +55880,7 @@ vwt
 sEK
 orN
 vUj
-sOX
+bXw
 sOX
 vUj
 vUj
@@ -55610,7 +55919,7 @@ vPv
 vUj
 vUj
 sOX
-sOX
+bXw
 vUj
 cYT
 vwt
@@ -59235,14 +59544,14 @@ vUj
 vUj
 vUj
 vUj
-sOX
+bXw
 aWe
 aWe
 aWe
 aWe
 aWe
 aWe
-sOX
+bXw
 vUj
 vUj
 vUj
@@ -60500,14 +60809,14 @@ uJC
 edk
 uJC
 uJC
-lNW
+jmU
 uJC
 uJC
 uJC
 uJC
 uJC
 tol
-lNW
+jmU
 mTX
 rav
 gpm
@@ -61950,7 +62259,7 @@ rkI
 rkI
 trk
 fpJ
-gTM
+veZ
 efp
 gTM
 vUj
@@ -63692,14 +64001,14 @@ jcj
 edk
 jcj
 jcj
-lNW
+jmU
 jcj
 jcj
 jcj
 jcj
 jcj
 jcj
-lNW
+jmU
 mTX
 bLA
 bah
