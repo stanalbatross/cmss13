@@ -231,3 +231,21 @@
 /turf/open/auto_turf/snow/layer4
 	icon_state = "snow_4" //Add sorokyne rock decals to this one
 	bleed_layer = 4
+
+//Chance's Claim / Hadley Shale dirt
+
+/turf/open/auto_turf/shale
+	layer_name = list("wind blown dirt", "volcanic plate rock", "this layer does not exist", "this layer does not exist")
+	icon = 'icons/turf/floors/auto_shale.dmi'
+	icon_prefix = "shale"
+
+/turf/open/auto_turf/shale/get_dirt_type()
+	return DIRT_TYPE_SHALE
+
+/turf/open/auto_turf/shale/layer0
+	icon_state = "shale_0"
+	bleed_layer = 0
+
+/turf/open/auto_turf/shale/layer1
+	icon_state = "shale_1"
+	bleed_layer = 1
