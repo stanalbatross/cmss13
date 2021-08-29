@@ -141,7 +141,7 @@
 	overlays.Cut()
 	. = ..()
 
-overlays += "+defense"
+	overlays += "+defense"
 
 /obj/item/engi_upgrade_kit/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	if(!ishuman(user))
