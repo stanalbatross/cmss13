@@ -194,12 +194,13 @@ GLOBAL_LIST_INIT(comp2table, list(
 //When you drop a light source it should keep a running total of your actual luminosity and set it accordingly.
 /mob/SetLuminosity(new_luminosity, trueLum, atom/source)
 	LAZYREMOVE(luminosity_sources, source)
-	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+	if(source)
+		UnregisterSignal(source, COMSIG_PARENT_QDELETING)
 	var/highest_luminosity = 0
-	for(var/luminocity_source in luminosity_sources)
-		var/lumonicity_rating = luminosity_sources[luminocity_source]
-		if(highest_luminosity < lumonicity_rating)
-			highest_luminosity = lumonicity_rating
+	for(var/luminosity_source in luminosity_sources)
+		var/lumonisity_rating = luminosity_sources[luminosity_source]
+		if(highest_luminosity < lumonisity_rating)
+			highest_luminosity = lumonisity_rating
 	if(source && new_luminosity > 0)
 		LAZYSET(luminosity_sources, source, new_luminosity)
 		RegisterSignal(source, COMSIG_PARENT_QDELETING, .proc/remove_luminosity_source)
