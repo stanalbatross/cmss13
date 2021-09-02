@@ -193,9 +193,8 @@ GLOBAL_LIST_INIT(comp2table, list(
 //This slightly modifies human luminosity. Source of light do NOT stack.
 //When you drop a light source it should keep a running total of your actual luminosity and set it accordingly.
 /mob/SetLuminosity(new_luminosity, trueLum, atom/source)
-	if(LAZYLEN(luminosity_sources))
-		luminosity_sources -= source
-		UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+	LAZYREMOVE(luminosity_sources, source)
+	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
 	var/highest_luminosity = 0
 	for(var/luminocity_source in luminosity_sources)
 		var/lumonicity_rating = luminosity_sources[luminocity_source]
@@ -204,7 +203,6 @@ GLOBAL_LIST_INIT(comp2table, list(
 	if(source && new_luminosity > 0)
 		LAZYSET(luminosity_sources, source, new_luminosity)
 		RegisterSignal(source, COMSIG_PARENT_QDELETING, .proc/remove_luminosity_source)
-	UNSETEMPTY(luminosity_sources)
 	if(new_luminosity < highest_luminosity)
 		new_luminosity = highest_luminosity
 	return ..()
