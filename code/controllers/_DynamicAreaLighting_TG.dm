@@ -195,6 +195,7 @@ GLOBAL_LIST_INIT(comp2table, list(
 /mob/SetLuminosity(new_luminosity, trueLum, atom/source)
 	if(LAZYLEN(luminosity_sources))
 		luminosity_sources -= source
+		UnregisterSignal(source, COMSIG_PARENT_QDELETING)
 	var/highest_luminosity = 0
 	for(var/luminocity_source in luminosity_sources)
 		var/lumonicity_rating = luminosity_sources[luminocity_source]
@@ -202,10 +203,14 @@ GLOBAL_LIST_INIT(comp2table, list(
 			highest_luminosity = lumonicity_rating
 	if(source && new_luminosity > 0)
 		LAZYSET(luminosity_sources, source, new_luminosity)
+		RegisterSignal(source, COMSIG_PARENT_QDELETING, .proc/remove_luminosity_source)
 	UNSETEMPTY(luminosity_sources)
 	if(new_luminosity < highest_luminosity)
 		new_luminosity = highest_luminosity
 	return ..()
+
+/mob/proc/remove_luminosity_source(var/atom/source)
+	SetLuminosity(0, FALSE, source)
 
 /area/SetLuminosity(new_luminosity)			//we don't want dynamic lighting for areas
 	luminosity = !!new_luminosity
