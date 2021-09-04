@@ -144,7 +144,7 @@
 			M.show_message(SPAN_DANGER("[src] makes an odd warbling noise, fizzles, and explodes."))
 	explosion(get_turf(loc), -1, -1, 3, 5)
 	eject_brain()
-	death(cause)
+	death(create_cause_data(cause))
 
 /mob/living/simple_animal/spiderbot/proc/update_icon()
 	if(mmi)
@@ -178,7 +178,7 @@
 
 	..()
 
-/mob/living/simple_animal/spiderbot/death()
+/mob/living/simple_animal/spiderbot/death(datum/cause_data/cause_data, gibbed)
 
 	GLOB.alive_mob_list -= src
 	GLOB.dead_mob_list += src

@@ -50,7 +50,7 @@
 			L.KnockDown(3)
 			L.visible_message(SPAN_DANGER("\the [src] knocks down \the [L]!"))
 
-/mob/living/simple_animal/hostile/tree/death()
-	..(null,"is hacked into pieces!")
+/mob/living/simple_animal/hostile/tree/death(datum/cause_data/cause_data, gibbed)
+	. = ..(null,"is hacked into pieces!")
 	new /obj/item/stack/sheet/wood(loc)
 	qdel(src)

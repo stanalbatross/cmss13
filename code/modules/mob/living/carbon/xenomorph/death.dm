@@ -1,8 +1,8 @@
 #define DELETE_TIME	1800
 
-/mob/living/carbon/Xenomorph/death(var/cause, var/gibbed)
+/mob/living/carbon/Xenomorph/death(datum/cause_data/cause_data, var/gibbed)
 	var/msg = "lets out a waning guttural screech, green blood bubbling from its maw."
-	. = ..(cause, gibbed, msg)
+	. = ..(cause_data, gibbed, msg)
 	if(!.)
 		return //If they're already dead, it will return.
 
@@ -115,7 +115,7 @@
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_DEATH, src, gibbed)
 
-/mob/living/carbon/Xenomorph/gib(var/cause = "gibbing")
+/mob/living/carbon/Xenomorph/gib(datum/cause_data/cause)
 	var/obj/effect/decal/remains/xeno/remains = new(get_turf(src))
 	remains.icon = icon
 	remains.pixel_x = pixel_x //For 2x2.
@@ -139,7 +139,7 @@
 
 	check_blood_splash(35, BURN, 65, 2) //Some testing numbers. 35 burn, 65 chance.
 
-	..(cause)
+	return ..()
 
 /mob/living/carbon/Xenomorph/gib_animation()
 	var/to_flick = "gibbed-a"

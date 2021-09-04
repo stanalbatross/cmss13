@@ -41,7 +41,7 @@
 		else if(isliving(object))
 			var/mob/living/M = object
 			if(gib_on_land)
-				M.gib(create_cause_data("[src]", null))
+				M.gib(create_cause_data("[src]"))
 			else
 				M.apply_damage(land_damage, BRUTE)
 

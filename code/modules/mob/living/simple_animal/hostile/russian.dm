@@ -89,7 +89,7 @@
 	casingtype = null
 
 
-/mob/living/simple_animal/hostile/russian/death()
+/mob/living/simple_animal/hostile/russian/death(datum/cause_data/cause_data, gibbed)
 	..()
 	if(corpse)
 		new corpse (src.loc)

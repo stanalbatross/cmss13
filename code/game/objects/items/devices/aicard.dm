@@ -26,7 +26,7 @@
 	if (!istype (M, /mob/living/silicon/decoy))
 		return ..()
 	else
-		M.death()
+		M.death(create_cause_data("AI malfunction", user))
 		to_chat(user, "<b>ERROR ERROR ERROR</b>")
 
 /obj/item/device/aicard/attack_self(mob/user)

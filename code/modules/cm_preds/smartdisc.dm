@@ -189,19 +189,16 @@
 	apply_damage(Proj.damage, BRUTE)
 	return 1
 
-/mob/living/simple_animal/hostile/smartdisc/death()
+/mob/living/simple_animal/hostile/smartdisc/death(datum/cause_data/cause_data)
 	visible_message("\The [src] stops whirring and spins out onto the floor.")
 	new /obj/item/explosive/grenade/spawnergrenade/smartdisc(src.loc)
-	..()
+	. = ..()
 	spawn(1)
 		if(src) qdel(src)
 
-/mob/living/simple_animal/hostile/smartdisc/gib(var/cause = "gibbing")
+/mob/living/simple_animal/hostile/smartdisc/gib(datum/cause_data/cause)
 	visible_message("\The [src] explodes!")
-	..(cause, icon_gib,1)
-	spawn(1)
-		if(src)
-			qdel(src)
+	return ..()
 
 /mob/living/simple_animal/hostile/smartdisc/FindTarget()
 	var/atom/T = null

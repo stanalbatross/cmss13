@@ -552,8 +552,9 @@
 	var/turf/T = get_turf(victim)
 	if(istype(T) && exploding)
 		victim.apply_damage(50,BRUTE,"chest")
-		if(victim) victim.gib() //Let's make sure they actually gib.
 		var/datum/cause_data/cause_data = create_cause_data("yautja self destruct", victim)
+		if(victim)
+			victim.gib(cause_data) //Let's make sure they actually gib.
 		if(explosion_type == 0 && is_ground_level(z))
 			cell_explosion(T, 600, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data) //Dramatically BIG explosion.
 		else

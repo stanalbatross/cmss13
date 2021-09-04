@@ -99,7 +99,7 @@
 		gibs(M.loc, M.viruses)
 		return
 
-	M.gib()
+	M.gib(create_cause_data("[usr.key]"))
 
 /client/proc/cmd_admin_rejuvenate(mob/living/M as mob in GLOB.living_mob_list)
 	set category = null

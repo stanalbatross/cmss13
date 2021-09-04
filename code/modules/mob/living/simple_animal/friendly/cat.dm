@@ -53,11 +53,11 @@
 	if(!stat && !resting && !buckled)
 		handle_movement_target()
 
-/mob/living/simple_animal/cat/death()
+/mob/living/simple_animal/cat/death(datum/cause_data/cause_data, gibbed)
 	. = ..()
 	if(!.)	return //was already dead
-	if(last_damage_data)
-		var/mob/user = last_damage_data.resolve_mob()
+	if(cause_data)
+		var/mob/user = cause_data.resolve_mob()
 		if(user)
 			user.count_niche_stat(STATISTICS_NICHE_CAT)
 

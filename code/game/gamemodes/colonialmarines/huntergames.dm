@@ -108,7 +108,7 @@ var/waiting_for_drop_votes = 0
 	votable = FALSE // borked
 
 /obj/effect/step_trigger/hell_hound_blocker/Trigger(mob/living/carbon/hellhound/H)
-	if(istype(H)) H.gib() //No mercy.
+	if(istype(H)) H.gib(create_cause_data("gibbing")) //No mercy.
 
 /datum/game_mode/huntergames/announce()
 	return TRUE

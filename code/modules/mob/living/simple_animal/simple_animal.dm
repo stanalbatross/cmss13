@@ -204,19 +204,19 @@
 			..()
 
 
-/mob/living/simple_animal/death()
+/mob/living/simple_animal/death(datum/cause_data/cause_data, gibbed)
 	. = ..()
 	if(!.)	return //was already dead
 	SSmob.living_misc_mobs -= src
 	icon_state = icon_dead
 
 
-/mob/living/simple_animal/gib(var/cause = "gibbing")
+/mob/living/simple_animal/gib(datum/cause_data/cause, gibbed)
 	SSmob.living_misc_mobs -= src
 	if(meat_amount && meat_type)
 		for(var/i = 0; i < meat_amount; i++)
 			new meat_type(src.loc)
-	..(cause)
+	return ..()
 
 /mob/living/simple_animal/gib_animation()
 	if(icon_gib)
@@ -298,7 +298,7 @@
 			if(prob(95))
 				qdel(src)
 			else
-				gib()
+				gib(create_cause_data("butchering", user))
 			return
 	..()
 
@@ -310,13 +310,16 @@
 	move_delay = .
 
 
-/mob/living/simple_animal/ex_act(severity, direction)
+/mob/living/simple_animal/ex_act(severity, direction, datum/cause_data/cause_data)
 
 	if(severity >= 30)
 		flash_eyes()
 
+	if(!cause_data)
+		cause_data = create_cause_data("explosion")
+
 	if(severity >= health && severity >= EXPLOSION_THRESHOLD_GIB)
-		gib()
+		gib(cause_data)
 		return
 
 	apply_damage(severity, BRUTE)

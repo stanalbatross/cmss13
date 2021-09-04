@@ -47,7 +47,7 @@
 	weapon1 = /obj/item/weapon/gun/
 
 
-/mob/living/simple_animal/hostile/pirate/death()
+/mob/living/simple_animal/hostile/pirate/death(datum/cause_data/cause_data, gibbed)
 	..()
 	if(corpse)
 		new corpse (src.loc)

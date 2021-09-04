@@ -88,11 +88,11 @@
 					setDir(i)
 					sleep(1)
 
-/mob/living/simple_animal/corgi/death()
+/mob/living/simple_animal/corgi/death(datum/cause_data/cause_data, gibbed)
 	. = ..()
 	if(!.)	return //was already dead
-	if(last_damage_data)
-		var/mob/user = last_damage_data.resolve_mob()
+	if(cause_data)
+		var/mob/user = cause_data.resolve_mob()
 		if(user)
 			user.count_niche_stat(STATISTICS_NICHE_CORGI)
 

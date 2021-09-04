@@ -1,4 +1,4 @@
-/mob/living/carbon/human/gib(var/cause = "gibbing")
+/mob/living/carbon/human/gib(datum/cause_data/cause)
 	var/is_a_synth = isSynth(src)
 	for(var/obj/limb/E in limbs)
 		if(istype(E, /obj/limb/chest))
@@ -37,7 +37,7 @@
 /mob/living/carbon/human/dust_animation()
 	new /obj/effect/overlay/temp/dust_animation(loc, src, "dust-h")
 
-/mob/living/carbon/human/death(var/cause, var/gibbed)
+/mob/living/carbon/human/death(datum/cause_data/cause_data, var/gibbed)
 	if(stat == DEAD)
 		return
 	GLOB.alive_human_list -= src
@@ -75,4 +75,4 @@
 			if(last_living_human.client)
 				to_chat(last_living_human, SPAN_ANNOUNCEMENT_HEADER_BLUE("Panic creeps up your spine. You realize that you are the last survivor."))
 
-	return ..(cause, gibbed, species.death_message)
+	return ..(cause_data, gibbed, species.death_message)
