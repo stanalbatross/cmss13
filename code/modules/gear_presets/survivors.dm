@@ -1413,7 +1413,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -1438,7 +1437,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 
 	switch(random_gun)
 		if(1)
@@ -1508,7 +1507,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 
 	..()
 
@@ -1539,7 +1538,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -1567,7 +1565,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/scout(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 	..()
 
 ///*****************************//
@@ -1597,7 +1595,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -1622,7 +1619,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/specrag(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 
 	..()
 	
@@ -1653,7 +1650,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -1678,7 +1674,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/grenadier(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 
 	..()
 	
@@ -1709,7 +1705,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/pills(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -1735,7 +1730,7 @@
 		if(5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/leader(H), WEAR_HEAD)
 		if(6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/booniehat/tan(H), WEAR_HEAD)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 
 	..()
 	
