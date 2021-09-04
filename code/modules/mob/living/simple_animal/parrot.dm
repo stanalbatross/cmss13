@@ -100,7 +100,7 @@
 	if (PF)
 		PF.flags_pass = PASS_OVER|PASS_FLAGS_CRAWLER
 
-/mob/living/simple_animal/parrot/death()
+/mob/living/simple_animal/parrot/death(datum/cause_data/cause_data, gibbed)
 	if(held_item)
 		held_item.forceMove(src.loc)
 		held_item = null

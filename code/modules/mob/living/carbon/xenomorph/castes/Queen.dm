@@ -698,11 +698,11 @@
 
 		attack_log += text("\[[time_stamp()]\] <font color='red'>gibbed [key_name(victim)]</font>")
 		victim.attack_log += text("\[[time_stamp()]\] <font color='orange'>was gibbed by [key_name(src)]</font>")
-		victim.gib(initial(name)) //Splut
+		victim.gib(create_cause_data("queen execution", src)) //Splut
 
 		stop_pulling()
 
-/mob/living/carbon/Xenomorph/Queen/death(var/cause, var/gibbed)
+/mob/living/carbon/Xenomorph/Queen/death(datum/cause_data/cause_data, var/gibbed)
 	if(hive.living_xeno_queen == src)
 		hive.xeno_queen_timer = world.time + XENO_QUEEN_DEATH_DELAY
 	return ..()
@@ -842,6 +842,6 @@
 		return FALSE // can't range plant while not in ovi... but who the fuck cares, we can't plant anyways
 	return get_dist(src, T) <= egg_planting_range
 
-/mob/living/carbon/Xenomorph/Queen/gib(var/cause = "gibbing")
-	death(cause, 1)
+/mob/living/carbon/Xenomorph/Queen/gib(datum/cause_data/cause)
+	death(cause, TRUE)
 

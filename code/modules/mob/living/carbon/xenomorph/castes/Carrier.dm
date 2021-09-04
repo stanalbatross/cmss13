@@ -68,8 +68,8 @@
 	icon_xeno = get_icon_from_source(CONFIG_GET(string/alien_carrier))
 	. = ..()
 
-/mob/living/carbon/Xenomorph/Carrier/death(var/cause, var/gibbed)
-	. = ..(cause, gibbed)
+/mob/living/carbon/Xenomorph/Carrier/death(datum/cause_data/cause_data, var/gibbed)
+	. = ..()
 	if(.)
 		var/chance = 75
 

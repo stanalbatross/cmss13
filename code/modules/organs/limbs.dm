@@ -708,7 +708,7 @@ This function completely restores a damaged organ to perfect condition.
 	owner.limbs_to_process -= src
 
 //Handles dismemberment
-/obj/limb/proc/droplimb(amputation, var/delete_limb = 0, var/cause, surgery_in_progress)
+/obj/limb/proc/droplimb(amputation, var/delete_limb = 0, datum/cause_data/cause, surgery_in_progress)
 	if(!owner)
 		return
 	if(status & LIMB_DESTROYED)
@@ -1273,7 +1273,7 @@ This function completely restores a damaged organ to perfect condition.
 				incisions++
 			if(SURGERY_DEPTH_DEEP) //Only the head itself can be cut this deeply.
 				. = "a massive surgical incision"
-	
+
 	switch(incisions)
 		if(1)
 			if(.)
@@ -1290,7 +1290,7 @@ This function completely restores a damaged organ to perfect condition.
 	for(var/zone in list("head", "eyes", "mouth"))
 		if(owner.active_surgeries[zone])
 			.++
-	
+
 	switch(.)
 		if(1)
 			return "an incomplete surgical operation"

@@ -687,7 +687,7 @@
 	log_attack("[key_name(usr)] battlefield executed [key_name(H)] at [A.name].")
 
 	if(explosive)
-		H.gib()
+		H.gib(create_cause_data("explosive execution", user))
 
 /datum/ammo/bullet/revolver/mateba/highimpact/explosive //if you ever put this in normal gameplay, i am going to scream
 	name = ".454 heavy explosive revolver bullet"

@@ -48,7 +48,7 @@
 		if(M.loc == input_plate
 		)
 			M.forceMove(src)
-			M.gib()
+			M.gib(create_cause_data("gibber"))
 
 
 /obj/structure/machinery/gibber/New()

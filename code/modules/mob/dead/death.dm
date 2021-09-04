@@ -1,5 +1,2 @@
-/mob/dead/dust()	//ghosts can't be vaporised.
-	return
-
-/mob/dead/gib()		//ghosts can't be gibbed.
+/mob/dead/gib(datum/cause_data/cause)		//ghosts can't be gibbed.
 	return

@@ -139,7 +139,7 @@
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
 	if(bound_xeno.client && bound_xeno.hive)
 		addtimer(CALLBACK(bound_xeno.hive, /datum/hive_status.proc/free_respawn, bound_xeno.client), 5 SECONDS)
-	bound_xeno.gib()
+	bound_xeno.gib(create_cause_data("acid runner explosion"))
 
 /mob/living/carbon/Xenomorph/Runner/can_ventcrawl()
 	var/datum/behavior_delegate/runner_acider/BD = behavior_delegate

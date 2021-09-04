@@ -97,7 +97,7 @@
 			M << 'sound/effects/mousesqueek.ogg'
 	..()
 
-/mob/living/simple_animal/mouse/death()
+/mob/living/simple_animal/mouse/death(datum/cause_data/cause_data, gibbed)
 	layer = ABOVE_LYING_MOB_LAYER
 	if(client)
 		client.time_died_as_mouse = world.time

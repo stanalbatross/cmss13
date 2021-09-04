@@ -157,7 +157,7 @@
 	hostile_drone = 0
 	walk(src,0)
 
-/mob/living/simple_animal/hostile/retaliate/malf_drone/death()
+/mob/living/simple_animal/hostile/retaliate/malf_drone/death(datum/cause_data/cause_data, gibbed)
 	..(null,"suddenly breaks apart.")
 	qdel(src)
 

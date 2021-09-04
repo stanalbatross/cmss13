@@ -20,7 +20,7 @@
 
 
 		if (health <= HEALTH_THRESHOLD_DEAD)
-			death()
+			death(create_cause_data("shutdown"))
 			return
 
 		if (interactee)

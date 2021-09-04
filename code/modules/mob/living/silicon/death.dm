@@ -14,9 +14,9 @@
 	new /obj/effect/overlay/temp/dust_animation(loc, src, "dust-r")
 
 
-/mob/living/silicon/death(var/cause, var/gibbed, var/deathmessage)
+/mob/living/silicon/death(datum/cause_data/cause_data, var/gibbed, var/deathmessage)
 	SSmob.living_misc_mobs -= src
 	if(in_contents_of(/obj/structure/machinery/recharge_station))//exit the recharge station
 		var/obj/structure/machinery/recharge_station/RC = loc
 		RC.go_out()
-	return ..(cause, gibbed, deathmessage)
+	return ..(cause_data, gibbed, deathmessage)

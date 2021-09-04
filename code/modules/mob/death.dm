@@ -1,7 +1,7 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(var/cause = "gibbing")
-	death(create_cause_data(cause), 1)
+/mob/proc/gib(datum/cause_data/cause)
+	death(cause, TRUE)
 	gib_animation()
 	if (!SSticker?.mode?.hardcore)
 		spawn_gibs()
@@ -17,20 +17,6 @@
 
 /mob/proc/spawn_gibs()
 	hgibs(loc, viruses, src)
-
-
-
-
-
-//This is the proc for turning a mob into ash. Mostly a copy of gib code (above).
-//Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
-//Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
-/mob/proc/dust(var/cause = "dusting")
-	death(cause, 1)
-	dust_animation()
-	spawn_dust_remains()
-	qdel(src)
-
 
 /mob/proc/spawn_dust_remains()
 	new /obj/effect/decal/cleanable/ash(loc)

@@ -68,7 +68,7 @@
 	damage = 30
 	icon_state = "toxin"
 
-/mob/living/simple_animal/hostile/alien/death(cause, gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
+/mob/living/simple_animal/hostile/alien/death(datum/cause_data/cause_data, gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
 	playsound(src, 'sound/voice/alien_death.ogg', 50, 1)

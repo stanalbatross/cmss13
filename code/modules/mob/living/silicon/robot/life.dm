@@ -76,7 +76,7 @@
 		KnockDown(5)
 
 	if(health < HEALTH_THRESHOLD_DEAD && stat != DEAD) //die only once
-		death()
+		death(create_cause_data("malfunction"))
 
 	if (stat != DEAD) //Alive.
 		if (knocked_out || stunned || knocked_down || !has_power) //Stunned etc.
@@ -269,7 +269,7 @@
 				to_chat(src, SPAN_DANGER("<B>Killswitch Activated"))
 			killswitch = 0
 			spawn(5)
-				gib()
+				gib(create_cause_data("killswitch"))
 
 /mob/living/silicon/robot/proc/process_locks()
 	if(weapon_lock)

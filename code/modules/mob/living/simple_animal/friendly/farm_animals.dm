@@ -129,11 +129,11 @@
 		if(udder && prob(5))
 			udder.add_reagent("milk", rand(5, 10))
 
-/mob/living/simple_animal/cow/death()
+/mob/living/simple_animal/cow/death(datum/cause_data/cause_data, gibbed)
 	. = ..()
 	if(!.)	return //was already dead
-	if(last_damage_data)
-		var/mob/user = last_damage_data.resolve_mob()
+	if(cause_data)
+		var/mob/user = cause_data.resolve_mob()
 		if(user)
 			user.count_niche_stat(STATISTICS_NICHE_COW)
 
@@ -239,11 +239,11 @@ var/global/chicken_count = 0
 	if (PF)
 		PF.flags_pass = PASS_UNDER
 
-/mob/living/simple_animal/chicken/death()
+/mob/living/simple_animal/chicken/death(datum/cause_data/cause_data)
 	..()
 	chicken_count -= 1
-	if(last_damage_data)
-		var/mob/user = last_damage_data.resolve_mob()
+	if(cause_data)
+		var/mob/user = cause_data.resolve_mob()
 		if(user)
 			user.count_niche_stat(STATISTICS_NICHE_CHICKEN)
 

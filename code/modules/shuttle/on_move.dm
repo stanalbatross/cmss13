@@ -35,7 +35,7 @@ All ShuttleMove procs go here
 					M.pulledby.stop_pulling()
 				M.stop_pulling()
 				M.visible_message("<span class='warning'>[shuttle] slams into [M]!</span>")
-				M.gib()
+				M.gib(create_cause_data("shuttle landing"))
 
 		else //non-living mobs shouldn't be affected by shuttles, which is why this is an else
 			qdel(thing)

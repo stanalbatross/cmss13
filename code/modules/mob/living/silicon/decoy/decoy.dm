@@ -24,7 +24,7 @@
 	if(stat == DEAD)
 		return FALSE
 	if(health <= HEALTH_THRESHOLD_DEAD && stat != DEAD)
-		death()
+		death(create_cause_data("shutdown"))
 
 /mob/living/silicon/decoy/updatehealth()
 	if(status_flags & GODMODE)
@@ -33,7 +33,7 @@
 	else
 		health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
 
-/mob/living/silicon/decoy/death(cause, gibbed, deathmessage = "sparks up and falls silent...")
+/mob/living/silicon/decoy/death(datum/cause_data/cause_data, gibbed, deathmessage = "sparks up and falls silent...")
 	if(stat == DEAD)
 		return FALSE
 	icon_state = "hydra-off"

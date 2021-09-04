@@ -155,7 +155,7 @@
 /mob/living/silicon/robot/drone/proc/shut_down()
 	if(stat != 2)
 		to_chat(src, SPAN_DANGER("You feel a system kill order percolate through your tiny brain, and you obediently destroy yourself."))
-		death()
+		death(create_cause_data("shutdown"))
 
 //Reboot procs.
 

@@ -188,7 +188,10 @@
 	..()
 	SSmob.living_misc_mobs += src
 
-/mob/living/silicon/ex_act(severity)
+/mob/living/silicon/ex_act(severity, direction, datum/cause_data/cause_data)
+	if(!cause_data)
+		cause_data = create_cause_data("explosion")
+
 	flash_eyes()
 
 	switch(severity)
@@ -204,6 +207,6 @@
 				apply_damage(100, BRUTE)
 				apply_damage(100, BURN)
 				if(!anchored)
-					gib()
+					gib(cause_data)
 
 	updatehealth()

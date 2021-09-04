@@ -1,4 +1,4 @@
-/mob/living/silicon/ai/death(cause, gibbed)
+/mob/living/silicon/ai/death(datum/cause_data/cause_data, gibbed)
 
 	if(stat == DEAD)
 		return
@@ -37,4 +37,4 @@
 		if (istype(loc, /obj/item/device/aicard))
 			loc.icon_state = "aicard-404"
 
-	return ..(cause, gibbed,"gives one shrill beep before falling lifeless.")
+	return ..(cause_data, gibbed,"gives one shrill beep before falling lifeless.")
