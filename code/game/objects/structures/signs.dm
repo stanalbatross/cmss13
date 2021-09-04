@@ -512,7 +512,7 @@
 /obj/structure/sign/safety/landingzone
 	name = "\improper landing zone semiotic"
 	desc = "Semiotic Standard denoting the presecense of a landing zone nearby."
-	icon_state = "luggageclaim"
+	icon_state = "landingzone"
 
 /obj/structure/sign/safety/zero
 	name = "zero semiotic"

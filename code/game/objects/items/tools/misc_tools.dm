@@ -306,3 +306,8 @@
 /obj/item/tool/stamp/centcomm
 	name = "centcomm rubber stamp"
 	icon_state = "stamp-cent"
+
+/obj/item/tool/barricade_hammer//doesn't do anything, yet
+	name = "carpenter's hammer"
+	icon_state = "carpenters_hammer"
+	desc = "Can be used to thwack nails or wooden objects to hammer or even repair them."

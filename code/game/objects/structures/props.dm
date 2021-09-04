@@ -698,6 +698,36 @@
 	icon = 'icons/obj/structures/props/ice_colony/Tiger_Rugs.dmi'
 	icon_state = "Bengal" //instanceable, lots of variants!
 
+/obj/structure/prop/vehicles/
+	name = "van"
+	desc = "An old van, seems to be broken down."
+	icon = 'icons/obj/structures/props/vehicles.dmi'
+	icon_state = "van"
+	bound_height = 64
+	bound_width = 64
+	unslashable = TRUE
+	unacidable = TRUE
+
+/obj/structure/prop/vehicles/crawler
+	name = "colony crawler"
+	desc = "It is a tread bound crawler used in harsh conditions. Supplied by Orbital Blue International; 'Your friends, in the Aerospace business.' A subsidiary of Weyland Yutani."
+	icon_state = "crawler"
+
+//overhead prop sets
+
+/obj/structure/prop/invuln/overhead
+	layer = ABOVE_FLY_LAYER
+	icon = 'icons/obj/structures/props/overhead_ducting.dmi'
+	icon_state = "flammable_pipe_1"
+
+/obj/structure/prop/invuln/overhead/flammable_pipe
+	name = "dense fuel line"
+	desc = "Likely to be incredibly flammable."
+	density = TRUE
+
+/obj/structure/prop/invuln/overhead/flammable_pipe/fly
+	density = FALSE
+
 
 //INVULNERABLE PROPS
 
