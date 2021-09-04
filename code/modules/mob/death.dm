@@ -85,7 +85,7 @@
 
 	track_death_calculations()
 
-	INVOKE_ASYNC(src, .proc/handle_death_cause, cause_data, get_turf(src))
+	INVOKE_ASYNC(src, .proc/handle_death_cause, cause_data)
 
 	med_hud_set_health()
 	med_hud_set_armor()
@@ -95,8 +95,8 @@
 	SEND_SIGNAL(src, COMSIG_MOB_DEATH)
 	return 1
 
-/mob/proc/handle_death_cause(var/datum/cause_data/cause_data, var/turf/death_loc)
-	track_mob_death(cause_data, death_loc)
+/mob/proc/handle_death_cause(var/datum/cause_data/cause_data)
+	track_mob_death(cause_data)
 	if(cause_data)
 		var/mob/cause_mob = cause_data.resolve_mob()
 		if(cause_mob)
