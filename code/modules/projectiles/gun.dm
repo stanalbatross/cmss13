@@ -1117,7 +1117,7 @@ and you're good to go.
 			target = targloc
 		else
 			target = original_target
-			targloc = get_turf(target)	
+			targloc = get_turf(target)
 
 		projectile_to_fire.original = target
 		target = simulate_scatter(projectile_to_fire, target, curloc, targloc, user, bullets_fired)
@@ -1433,6 +1433,9 @@ and you're good to go.
 			return
 
 		if((flags_gun_features & GUN_WY_RESTRICTED) && !wy_allowed_check(user))
+			return
+
+		if(flags_gun_features & GUN_CANNOT_FIRE)
 			return
 
 		//Has to be on the bottom of the stack to prevent delay when failing to fire the weapon for the first time.
