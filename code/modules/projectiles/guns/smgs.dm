@@ -448,7 +448,7 @@
 	flags_gun_features = GUN_AUTO_EJECTOR
 	gun_category = GUN_CATEGORY_SMG
 
-/obj/item/weapon/gun/boltaction/able_to_fire(mob/user)
-	if(..())
+/obj/item/weapon/gun/boltaction/able_to_fire(mob/living/user)
+	. = ..()
 		click_empty(user)
-		return FALSE
+		return 0
