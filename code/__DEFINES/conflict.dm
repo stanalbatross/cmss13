@@ -57,6 +57,7 @@
 #define GUN_INTERNAL_SILENCED	(1<<19) //suppressor doesnt override sound
 /// Whether the gun has been fired by its current user (reset upon `dropped()`)
 #define GUN_FIRED_BY_USER		(1<<20)
+#define GUN_CANNOT_FIRE			(1<<21) //for guns that can't fire, ever
 
 //Gun attachable related flags.
 #define ATTACH_REMOVABLE	1
