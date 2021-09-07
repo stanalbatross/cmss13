@@ -11817,18 +11817,11 @@
 	},
 /area/whiskey_outpost/inside/supply)
 "KF" = (
-/obj/structure/platform{
-	dir = 8
-	},
 /obj/structure/machinery/power/apc/almayer{
 	dir = 4
 	},
-/turf/open/floor{
-	dir = 1;
-	icon_state = "asteroidfloor";
-	tag = "icon-asteroidfloor (NORTH)"
-	},
-/area/whiskey_outpost/outside/north/platform)
+/turf/closed/wall/r_wall,
+/area/whiskey_outpost/inside/bunker)
 "Ld" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/wo{
 	vend_x_offset = -1;
@@ -33020,7 +33013,7 @@ kB
 fj
 Jl
 gI
-aj
+KF
 aj
 fj
 hx
@@ -33424,7 +33417,7 @@ fb
 hV
 hV
 hV
-KF
+hV
 hV
 hV
 hV
