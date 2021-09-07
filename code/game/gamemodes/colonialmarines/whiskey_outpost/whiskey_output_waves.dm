@@ -33,7 +33,7 @@
 		xeno_type = pick(wave_data.wave_castes)
 		new_xeno = new xeno_type(picked)
 		new_xeno.away_timer = 300 //So ghosts can join instantly
-		new_xeno.pass_flags.flags_pass = list()
+		//new_xeno.pass_flags.flags_pass = list()
 		new_xeno.nocrit(wave_data.wave_number)
 
 /datum/whiskey_outpost_wave
@@ -42,7 +42,7 @@
 	var/wave_type = WO_SCALED_WAVE
 	var/scaling_factor = 1.0
 	var/number_of_xenos = 0 // not used for scaled waves
-	var/wave_delay = 100
+	var/wave_delay = 3 MINUTES
 	var/list/sound_effect = list('sound/voice/alien_distantroar_3.ogg','sound/voice/xenos_roaring.ogg', 'sound/voice/4_xeno_roars.ogg')
 	var/list/command_announcement = list()
 
@@ -50,9 +50,9 @@
 	wave_number = 1
 	wave_castes = list(/mob/living/carbon/Xenomorph/Runner)
 	sound_effect = list('sound/effects/siren.ogg')
-	command_announcement = list("We're tracking the creatures that wiped out our patrols heading towards your outpost.. Stand-by while we attempt to establish a signal with the USS Alistoun to alert them of these creatures.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+	command_announcement = list("We're tracking the creatures that wiped out our patrols heading towards your outpost, Multiple small life-signs detected enroute to the outpost.. Stand-by while we attempt to establish a signal with the USS Alistoun to alert them of these creatures.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
 	scaling_factor = 0.3
-	wave_delay = 50 //Early, quick waves
+	wave_delay = 1 MINUTES //Early, quick waves
 
 /datum/whiskey_outpost_wave/wave2
 	wave_number = 2
@@ -64,7 +64,7 @@
 					/mob/living/carbon/Xenomorph/Sentinel,
 					/mob/living/carbon/Xenomorph/Sentinel)
 	scaling_factor = 0.4
-	wave_delay = 50 //Early, quick waves
+	wave_delay = 1 MINUTES //Early, quick waves
 
 /datum/whiskey_outpost_wave/wave3 //Tier II versions added, but rare
 	wave_number = 3
@@ -76,7 +76,7 @@
 					/mob/living/carbon/Xenomorph/Spitter,
 					/mob/living/carbon/Xenomorph/Defender)
 	scaling_factor = 0.6
-	wave_delay = 50 //Early, quick waves
+	wave_delay = 1 MINUTES //Early, quick waves
 
 /datum/whiskey_outpost_wave/wave4 //Tier II more common
 	wave_number = 4
