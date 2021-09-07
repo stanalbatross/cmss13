@@ -445,5 +445,10 @@
 	wield_delay = WIELD_DELAY_VERY_FAST
 	attachable_allowed = list()
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CANNOT_FIRE
+	flags_gun_features = GUN_AUTO_EJECTOR
 	gun_category = GUN_CATEGORY_SMG
+
+/obj/item/weapon/gun/smg/nailgun/compact
+able_to_fire(mob/user)
+	if(..())
+		click_empty(user)
