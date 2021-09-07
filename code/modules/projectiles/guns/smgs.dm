@@ -448,6 +448,5 @@
 	flags_gun_features = GUN_AUTO_EJECTOR
 	gun_category = GUN_CATEGORY_SMG
 
-/obj/item/weapon/gun/smg/nailgun/compact/proc/fire
 if(able_to_fire(user))
 	click_empty(user)
