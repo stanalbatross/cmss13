@@ -449,6 +449,5 @@
 	gun_category = GUN_CATEGORY_SMG
 
 /obj/item/weapon/gun/smg/nailgun/compact/able_to_fire(mob/living/user)
-	. = ..()
-		click_empty(user)
-		return 0
+	click_empty(user)
+	return 0
