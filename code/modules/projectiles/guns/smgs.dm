@@ -431,22 +431,6 @@
 	desc = "A carpentry tool, used to drive nails into tough surfaces. Cannot fire nails offensively due to a lack of a gas seal around the nail, meaning it cannot build up the pressure to fire."
 	icon_state = "cnailgun"
 	item_state = "cnailgun"
-	current_mag = /obj/item/ammo_magazine/smg/nailgun
-
-	reload_sound = 'sound/weapons/handling/smg_reload.ogg'
-	unload_sound = 'sound/weapons/handling/smg_unload.ogg'
-	cocked_sound = 'sound/weapons/gun_cocked2.ogg'
-
-	fire_sound = 'sound/weapons/nailgun_fire.ogg'
-	force = 5
-	w_class = SIZE_SMALL
-	movement_onehanded_acc_penalty_mult = 4
-	aim_slowdown = SLOWDOWN_ADS_QUICK
-	wield_delay = WIELD_DELAY_VERY_FAST
-	attachable_allowed = list()
-
-	flags_gun_features = GUN_AUTO_EJECTOR
-	gun_category = GUN_CATEGORY_SMG
 
 /obj/item/weapon/gun/smg/nailgun/compact/able_to_fire(mob/living/user)
 	click_empty(user)
