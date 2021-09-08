@@ -235,7 +235,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 	listed_products = list(
 		list("Compact Defibrillator", 15, /obj/item/device/defibrillator/compact, null, VENDOR_ITEM_REGULAR),
 
-		list("Compact Nailgun kit", 15, /obj/item/weapon/gun/smg/nailgun/compact, /obj/item/ammo_magazine/smg/nailgun, /obj/item/ammo_magazine/smg/nailgun, null, VENDOR_ITEM_REGULAR),
+		list("Compact Nailgun Kit", 15, /obj/item/weapon/gun/smg/nailgun/compact, /obj/item/ammo_magazine/smg/nailgun, /obj/item/ammo_magazine/smg/nailgun, null, VENDOR_ITEM_REGULAR),
 
 		list("Crew Monitor", 15, /obj/item/tool/crew_monitor, null, VENDOR_ITEM_REGULAR),
 
