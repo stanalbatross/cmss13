@@ -432,6 +432,8 @@
 	icon_state = "cnailgun"
 	item_state = "cnailgun"
 
+	w_class = SIZE_SMALL
+
 /obj/item/weapon/gun/smg/nailgun/compact/able_to_fire(mob/living/user)
 	click_empty(user)
 	return 0
