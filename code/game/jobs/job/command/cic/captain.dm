@@ -3,7 +3,7 @@
 	title = JOB_CO
 	supervisors = "USCM high command"
 	selection_class = "job_co"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_MODE|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED
+	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED
 	flags_whitelist = WHITELIST_COMMANDER
 	gear_preset = "USCM Captain (CO)"
 	entry_message_body = "Your job is HEAVY ROLE PLAY and requires you to stay IN CHARACTER at all times. While you support Weyland-Yutani, you report to the USCM High Command, not the corporate office. Your primary task is the safety of the ship and her crew, and ensuring the survival and success of the marines. Your first order of business should be briefing the marines on the mission they are about to undertake. If you require any help, use adminhelp to talk to game staff about what you're supposed to do. Godspeed, captain!"
@@ -29,9 +29,8 @@
 		return get_desired_status(player.prefs.commander_status, WHITELIST_NORMAL)
 
 /datum/job/command/commander/announce_entry_message(mob/living/carbon/human/H)
-	if(flags_startup_parameters & ROLE_ADD_TO_MODE && SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST)
-		addtimer(CALLBACK(src, .proc/do_announce_entry_message, H), 1.5 SECONDS)
-	..()
+	addtimer(CALLBACK(src, .proc/do_announce_entry_message, H), 1.5 SECONDS)
+	return ..()
 
 /datum/job/command/commander/generate_entry_conditions(mob/living/M, whitelist_status)
 	. = ..()

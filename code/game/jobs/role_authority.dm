@@ -101,20 +101,6 @@ var/global/marines_assigned = 0
 		roles_by_path[J.type] = J
 		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
 			roles_by_name[J.title] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_MODE)
-			roles_for_mode[J.title] = J
-
-	//TODO Come up with some dynamic method of doing this.
-	//added exception for WO, so appropriate roles would appear in prefs for WO.
-	var/list/MODE_ROLES = ROLES_REGULAR_ALL
-
-	/*var/list/L = new()
-	for(var/role in MODE_ROLES) //We're going to re-arrange the list for mode to look better, starting with the officers.
-		var/datum/job/J = roles_for_mode[role]
-		if(J)
-			L[J.title] = J
-	roles_for_mode = L
-	*/
 
 	squads = list()
 	for(var/squad in squads_all) //Setting up our squads.
@@ -188,8 +174,8 @@ var/global/marines_assigned = 0
 		return //Can't start if this doesn't exist.
 
 	var/datum/game_mode/G = SSticker.mode
-	for(var/role_path as anything in G.roles_for_mode)
-		var/mapped_title = G.roles_for_mode[role_path]
+	for(var/role_path as anything in G.role_mappings)
+		var/mapped_title = G.role_mappings[role_path]
 		var/datum/job/J = roles_by_path[role_path]
 		if(mapped_title)
 			roles_for_mode[mapped_title] = J

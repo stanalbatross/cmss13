@@ -12,7 +12,8 @@
 	required_players 		= 0
 	xeno_bypass_timer 		= 1
 	flags_round_type = MODE_NEW_SPAWN
-	roles_for_mode = list(/datum/job/command/commander/whiskey = JOB_CO,
+	role_mappings = list(
+					/datum/job/command/commander/whiskey = JOB_CO,
 					/datum/job/command/executive/whiskey = JOB_XO,
 					/datum/job/civilian/synthetic/whiskey = JOB_SYNTH,
 					/datum/job/command/warrant/whiskey = JOB_CHIEF_POLICE,
@@ -34,7 +35,7 @@
 					/datum/job/marine/medic/equipped/whiskey = JOB_SQUAD_MEDIC,
 					/datum/job/marine/engineer/equipped/whiskey = JOB_SQUAD_ENGI,
 					/datum/job/marine/standard/equipped/whiskey = JOB_SQUAD_MARINE
-)
+	)
 
 
 	latejoin_larva_drop = 0 //You never know
@@ -73,6 +74,10 @@
 
 	hardcore = TRUE
 	votable = FALSE // not fun
+
+/datum/game_mode/whiskey_outpost/New()
+	. = ..()
+	role_list = ROLES_WO
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1

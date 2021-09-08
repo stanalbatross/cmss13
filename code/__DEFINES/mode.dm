@@ -90,7 +90,6 @@ var/list/be_special_flags = list(
 #define ROLE_ADMIN_NOTIFY			1
 #define ROLE_ADD_TO_SQUAD			2
 #define ROLE_ADD_TO_DEFAULT			4
-#define ROLE_ADD_TO_MODE			8
 #define ROLE_WHITELISTED			16
 #define ROLE_NO_ACCOUNT				32
 #define ROLE_CUSTOM_SPAWN			64
