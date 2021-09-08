@@ -733,9 +733,10 @@
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/north)
 "bX" = (
-/obj/structure/curtain,
-/obj/structure/window/reinforced{
-	dir = 1
+/obj/structure/bed,
+/obj/structure/machinery/light/small{
+	dir = 8;
+	tag = "icon-bulb1 (WEST)"
 	},
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/living)
@@ -933,8 +934,7 @@
 	},
 /area/whiskey_outpost/inside/hospital)
 "cC" = (
-/obj/structure/sign/poster,
-/turf/closed/wall/r_wall,
+/turf/closed/wall/rock/brown,
 /area/whiskey_outpost/inside/living)
 "cD" = (
 /obj/structure/largecrate/supply/explosives/mortar_incend,
@@ -1618,13 +1618,11 @@
 	},
 /area/whiskey_outpost/outside/north/platform)
 "ee" = (
-/obj/item/storage/toolbox/emergency,
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "floor_plate";
-	tag = "icon-floor_plate (SOUTHWEST)"
+/obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
+	name = "\improper Bunker"
 	},
-/area/whiskey_outpost/inside/engineering)
+/turf/open/floor/prison,
+/area/whiskey_outpost/inside/living)
 "eh" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
 	name = "\improper Generator Hatch"
@@ -1723,13 +1721,12 @@
 	},
 /area/whiskey_outpost/inside/supply)
 "eq" = (
-/obj/structure/bed,
-/obj/structure/machinery/light/small{
-	dir = 8;
-	tag = "icon-bulb1 (WEST)"
+/obj/item/storage/toolbox/mechanical,
+/turf/open/floor{
+	icon_state = "cafeteria"
 	},
-/turf/open/floor/prison,
-/area/whiskey_outpost/inside/living)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/whiskey_outpost/inside/engineering)
 "eu" = (
 /obj/structure/bed/chair/office/dark{
 	dir = 8;
@@ -4734,9 +4731,12 @@
 /turf/open/gm/river,
 /area/whiskey_outpost/outside/river)
 "mB" = (
-/obj/structure/closet/crate/ammo,
-/turf/open/floor/prison,
-/area/whiskey_outpost/inside/supply)
+/obj/item/storage/toolbox/emergency,
+/turf/open/floor{
+	icon_state = "cafeteria"
+	},
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/whiskey_outpost/inside/engineering)
 "mC" = (
 /turf/open/floor/plating{
 	icon_state = "warnplate"
@@ -6298,9 +6298,12 @@
 /turf/open/gm/dirt,
 /area/whiskey_outpost/inside/caves/caverns)
 "qn" = (
-/obj/effect/landmark/whiskey_outpost/supplydrops,
-/turf/open/floor/prison,
-/area/whiskey_outpost/inside/caves)
+/obj/structure/surface/rack,
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
+	},
+/area/whiskey_outpost/inside/bunker)
 "qo" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor/prison,
@@ -6738,9 +6741,6 @@
 /obj/structure/flora/bush/ausbushes/var3/leafybush,
 /turf/open/gm/grass,
 /area/whiskey_outpost/outside/north/northwest)
-"rw" = (
-/turf/closed/wall/r_wall,
-/area/whiskey_outpost/inside/caves)
 "rx" = (
 /obj/structure/machinery/door/airlock/almayer/engineering{
 	name = "Engineering";
@@ -6763,10 +6763,6 @@
 	tag = "icon-rampbottom (EAST)"
 	},
 /area/whiskey_outpost/outside/north/platform)
-"rz" = (
-/obj/structure/closet/crate/ammo,
-/turf/open/floor/prison,
-/area/whiskey_outpost/inside/caves)
 "rA" = (
 /obj/structure/barricade/sandbags/wired{
 	dir = 8;
@@ -6929,14 +6925,6 @@
 	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/whiskey_outpost/outside/north/platform)
-"rR" = (
-/obj/vehicle/powerloader,
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "floor_marked";
-	tag = "icon-floor_marked (SOUTHWEST)"
-	},
-/area/whiskey_outpost/inside/caves)
 "rS" = (
 /obj/structure/barricade/metal/wired,
 /turf/open/floor/prison{
@@ -8130,7 +8118,7 @@
 	dir = 8;
 	icon_state = "pipe-c"
 	},
-/obj/structure/machinery/cm_vending/sorted/uniform_supply/squad_prep/wo,
+/obj/structure/surface/rack,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -11894,10 +11882,9 @@
 	},
 /area/whiskey_outpost/outside/north/beach)
 "Ul" = (
-/obj/structure/closet/crate/ammo,
 /obj/structure/machinery/light/small,
 /turf/open/floor/prison,
-/area/whiskey_outpost/inside/caves)
+/area/whiskey_outpost/inside/supply)
 "Up" = (
 /obj/structure/platform_decoration{
 	dir = 4
@@ -11920,7 +11907,7 @@
 /obj/effect/landmark/whiskey_outpost/supplydrops,
 /obj/structure/machinery/light/small,
 /turf/open/floor/prison,
-/area/whiskey_outpost/inside/caves)
+/area/whiskey_outpost/inside/supply)
 "XM" = (
 /obj/effect/landmark/whiskey_outpost/supplydrops,
 /obj/structure/machinery/light/small{
@@ -24722,8 +24709,8 @@ mT
 mT
 bq
 bt
-km
-ee
+eq
+cr
 km
 gC
 bq
@@ -24733,7 +24720,7 @@ ic
 bq
 ma
 ma
-qn
+ma
 sd
 fy
 fy
@@ -24935,7 +24922,7 @@ ls
 bq
 ma
 ma
-qn
+ma
 sd
 mY
 fy
@@ -25126,7 +25113,7 @@ af
 fA
 bq
 bB
-km
+mB
 cr
 km
 gC
@@ -25339,7 +25326,7 @@ bq
 bq
 bZ
 mp
-rw
+bZ
 sd
 fV
 fy
@@ -25539,7 +25526,7 @@ gR
 qR
 lx
 bq
-mB
+jB
 cO
 Ul
 sd
@@ -25741,9 +25728,9 @@ gg
 qR
 ly
 bq
-mB
+iv
 cO
-rz
+cO
 sd
 fy
 iL
@@ -25943,7 +25930,7 @@ gk
 qR
 jS
 bq
-mB
+iv
 cO
 Ul
 sd
@@ -26145,9 +26132,9 @@ kC
 qR
 lB
 bq
-mB
+iv
 cO
-rR
+cO
 sd
 fy
 iL
@@ -26349,8 +26336,8 @@ lJ
 bq
 iv
 cO
+cO
 kT
-mT
 fy
 iL
 iL
@@ -29189,7 +29176,7 @@ hW
 oK
 fj
 fj
-kB
+qn
 fj
 fj
 Ax
@@ -29390,9 +29377,9 @@ ed
 hW
 oL
 fj
-iE
+qn
 ss
-iE
+qn
 fj
 AM
 rQ
@@ -30968,7 +30955,7 @@ aA
 aO
 bR
 bR
-bR
+ad
 ad
 ad
 ad
@@ -31169,9 +31156,9 @@ ad
 aN
 aO
 aO
-aO
 nQ
 ad
+aO
 cg
 ad
 ad
@@ -31372,8 +31359,8 @@ aO
 aO
 aO
 aO
-aO
 cb
+aO
 bw
 fh
 bF
@@ -31574,8 +31561,8 @@ be
 bG
 bG
 bG
-bX
 ad
+aO
 aO
 aO
 aO
@@ -31777,8 +31764,8 @@ ad
 bV
 ad
 ad
-ad
 bv
+aO
 aO
 aO
 ad
@@ -31977,9 +31964,9 @@ ad
 aF
 aF
 aF
-aF
-eq
+bX
 ad
+aO
 aO
 aO
 ad
@@ -32180,8 +32167,8 @@ bv
 aO
 aO
 aO
-aO
 ce
+aO
 aO
 aO
 ad
@@ -32382,8 +32369,8 @@ uP
 uP
 aF
 aF
-aF
 ad
+aO
 aO
 aO
 ad
@@ -32585,8 +32572,8 @@ ad
 ad
 ad
 ad
-ad
 bv
+aO
 aO
 ad
 eF
@@ -32785,13 +32772,13 @@ ad
 aF
 aF
 aF
-aF
-eq
+bX
 ad
 aO
 aO
-ad
-ad
+aO
+ee
+aO
 bv
 fw
 fQ
@@ -32988,12 +32975,12 @@ bv
 aO
 aO
 aO
-aO
 ce
 aO
 aO
-cC
-ad
+aO
+aO
+aO
 aO
 fQ
 fQ
@@ -33190,8 +33177,8 @@ uP
 uP
 aF
 aF
-aF
 ad
+aO
 aO
 aO
 ad
@@ -33393,8 +33380,8 @@ ad
 ad
 ad
 ad
-ad
 bv
+aO
 aO
 ad
 fi
@@ -33593,9 +33580,9 @@ ad
 aF
 aF
 aF
-aF
-eq
+bX
 ad
+aO
 aO
 aO
 ad
@@ -33634,7 +33621,7 @@ GX
 ue
 uU
 ss
-iE
+qn
 fj
 sL
 rQ
@@ -33796,8 +33783,8 @@ bv
 aO
 aO
 aO
-aO
 ce
+aO
 aO
 aO
 ad
@@ -33835,7 +33822,7 @@ hW
 oK
 rN
 fj
-iE
+qn
 fj
 fj
 Ax
@@ -33998,7 +33985,7 @@ uP
 uP
 aF
 aF
-aF
+ad
 ad
 ad
 ad
@@ -34201,7 +34188,7 @@ ad
 ad
 ad
 ad
-ad
+cC
 mT
 mT
 ad
@@ -34427,9 +34414,9 @@ dY
 hW
 oL
 fj
-iE
+qS
 ss
-iE
+qS
 fj
 AM
 rQ
@@ -34630,7 +34617,7 @@ hW
 oK
 rN
 fj
-kB
+qS
 fj
 fj
 Ax

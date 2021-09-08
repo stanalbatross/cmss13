@@ -11,6 +11,7 @@
 	gear_preset = "USCM PFC (Pulse Rifle)"
 
 /datum/job/marine/standard/equipped/whiskey
+	title = JOB_WO_SQUAD_MARINE
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = "WO Dust Raider Squad Marine (PFC)"
 

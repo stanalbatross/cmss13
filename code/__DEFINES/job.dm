@@ -112,6 +112,13 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_WO_CORPORATE_LIAISON		"Combat Reporter"
 #define JOB_WO_SYNTH					"Support Synthetic"
 
+#define JOB_WO_SQUAD_MARINE				"Dust Raider Squad Marine"
+#define JOB_WO_SQUAD_MEDIC				"Dust Raider Squad Medic"
+#define JOB_WO_SQUAD_ENGINEER			"Dust Raider Squad Engineer"
+#define JOB_WO_SQUAD_SMARTGUNNER		"Dust Raider Squad Smartgunner"
+#define JOB_WO_SQUAD_SPECIALIST			"Dust Raider Squad Specialist"
+#define JOB_WO_SQUAD_LEADER				"Dust Raider Squad Leader"
+
 //------------------------------------
 
 //-------- PMC --------//

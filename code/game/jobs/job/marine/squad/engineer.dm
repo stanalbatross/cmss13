@@ -32,6 +32,7 @@
 	gear_preset = "USCM Cryo Engineer (Equipped)"
 
 /datum/job/marine/engineer/equipped/whiskey
+	title = JOB_WO_SQUAD_ENGINEER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = "WO Dust Raider Squad Engineer"
 

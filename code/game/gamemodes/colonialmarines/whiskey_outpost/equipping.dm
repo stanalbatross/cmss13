@@ -224,42 +224,6 @@ You just gotta get out of this jungle to tell the tale!"}
 //N O T H I N G.
 
 
-//Stupid dumb snowflake job code doesn't work well when jobs have the same title, so unlike the neat things we did above,
-//We gotta do this BS for squaddies, because equipping checks job titles and nothing else.
-
-/datum/game_mode/whiskey_outpost/proc/spawn_player(var/mob/M)
-	set waitfor = 0 //Doing this before hand.
-	var/mob/living/carbon/human/H
-	var/list/spawns = list()
-	H = M
-	for(var/i in GLOB.whiskey_start)
-		var/obj/effect/landmark/start/whiskey/W = i
-		if(W.name == "Marine")
-			spawns += get_turf(W)
-	for(var/L in GLOB.latewhiskey)
-		spawns += get_turf(L)
-	var/turf/T = SAFEPICK(spawns)
-	if(!T)
-		CRASH("Failed to find spawn for [M] in WO mode")
-	H.forceMove(T)
-	H.key = M.key
-	if(H.client) H.client.change_view(world_view_size)
-	if(!H.mind)
-		H.mind = new(H.key)
-		H.mind_initialize()
-
-	//Give them some information
-	sleep(40)
-	to_chat(H, "________________________")
-	to_chat(H, SPAN_BOLDNOTICE("You are the [H.job]!"))
-	to_chat(H, "Gear up, prepare defenses, work as a team. Protect your doctors and commander!")
-	to_chat(H, "Motion trackers have detected movement from local creatures, and they are heading towards the outpost!")
-	to_chat(H, "Hold the outpost for one hour until the signal can be established!")
-	to_chat(H, "Ensure the Dust Raiders don't lose their foothold on LV-624 so you can alert the main forces.")
-	to_chat(H, "________________________")
-
-	return 1
-
 //this calls  self-setting headsets for marines AFTER they are assigned squads
 /datum/game_mode/whiskey_outpost/proc/self_set_headset(var/mob/living/carbon/human/H)
 	if(!istype(H))

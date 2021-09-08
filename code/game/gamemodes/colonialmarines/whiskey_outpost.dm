@@ -11,29 +11,29 @@
 	config_tag = "Whiskey Outpost"
 	required_players 		= 0
 	xeno_bypass_timer 		= 1
-	role_instruction		= 1
-	roles_for_mode = list(/datum/job/command/commander/whiskey,
-					/datum/job/command/executive/whiskey,
-					/datum/job/civilian/synthetic/whiskey,
-					/datum/job/command/warrant/whiskey,
-					/datum/job/command/bridge/whiskey,
-					/datum/job/command/tank_crew/whiskey,
-					/datum/job/command/police/whiskey,
-					/datum/job/command/pilot/whiskey,
-					/datum/job/logistics/requisition/whiskey,
-					/datum/job/civilian/professor/whiskey,
-					/datum/job/civilian/doctor/whiskey,
-					/datum/job/civilian/researcher/whiskey,
-					/datum/job/logistics/engineering/whiskey,
-					/datum/job/logistics/tech/maint/whiskey,
-					/datum/job/logistics/tech/cargo/whiskey,
-					/datum/job/civilian/liaison/whiskey,
-					/datum/job/marine/leader/equipped/whiskey,
-					/datum/job/marine/specialist/equipped/whiskey,
-					/datum/job/marine/smartgunner/equipped/whiskey,
-					/datum/job/marine/medic/equipped/whiskey,
-					/datum/job/marine/engineer/equipped/whiskey,
-					/datum/job/marine/standard/equipped/whiskey
+	flags_round_type = MODE_NEW_SPAWN
+	roles_for_mode = list(/datum/job/command/commander/whiskey = JOB_CO,
+					/datum/job/command/executive/whiskey = JOB_XO,
+					/datum/job/civilian/synthetic/whiskey = JOB_SYNTH,
+					/datum/job/command/warrant/whiskey = JOB_CHIEF_POLICE,
+					/datum/job/command/bridge/whiskey = JOB_SO,
+					/datum/job/command/tank_crew/whiskey = JOB_CREWMAN,
+					/datum/job/command/police/whiskey = JOB_POLICE,
+					/datum/job/command/pilot/whiskey = JOB_PILOT,
+					/datum/job/logistics/requisition/whiskey = JOB_CHIEF_REQUISITION,
+					/datum/job/civilian/professor/whiskey = JOB_CMO,
+					/datum/job/civilian/doctor/whiskey = JOB_DOCTOR,
+					/datum/job/civilian/researcher/whiskey = JOB_RESEARCHER,
+					/datum/job/logistics/engineering/whiskey = JOB_CHIEF_ENGINEER,
+					/datum/job/logistics/tech/maint/whiskey = JOB_MAINT_TECH,
+					/datum/job/logistics/tech/cargo/whiskey = JOB_CARGO_TECH,
+					/datum/job/civilian/liaison/whiskey = JOB_CORPORATE_LIAISON,
+					/datum/job/marine/leader/equipped/whiskey = JOB_SQUAD_LEADER,
+					/datum/job/marine/specialist/equipped/whiskey = JOB_SQUAD_SPECIALIST,
+					/datum/job/marine/smartgunner/equipped/whiskey = JOB_SQUAD_SMARTGUN,
+					/datum/job/marine/medic/equipped/whiskey = JOB_SQUAD_MEDIC,
+					/datum/job/marine/engineer/equipped/whiskey = JOB_SQUAD_ENGI,
+					/datum/job/marine/standard/equipped/whiskey = JOB_SQUAD_MARINE
 )
 
 
@@ -105,12 +105,6 @@
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 
-	for(var/i in GLOB.human_mob_list)
-		var/mob/living/carbon/human/H = i
-		if(H.client)
-			players += H
-			if(H.job in ROLES_MARINES)
-				spawn_player(H)
 	sleep(10)
 	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
 	to_world(SPAN_ROUNDBODY("It is the year [game_year - 5] on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))

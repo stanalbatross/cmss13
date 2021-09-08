@@ -78,7 +78,6 @@ Additional game mode variables.
 	var/latejoin_larva_drop = LATEJOIN_MARINES_PER_LATEJOIN_LARVA //A larva will spawn in once the tally reaches this level. If set to 0, no latejoin larva drop
 
 	//Role Authority set up.
-	var/role_instruction 	= 0 // 1 is to replace, 2 is to add, 3 is to remove.
 	var/roles_for_mode[] //Won't have a list if the instruction is set to 0.
 
 	//Bioscan related.

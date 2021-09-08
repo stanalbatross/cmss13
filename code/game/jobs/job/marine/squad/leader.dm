@@ -12,6 +12,7 @@
 	gear_preset = "USCM Cryo Squad Leader (Equipped)"
 
 /datum/job/marine/leader/equipped/whiskey
+	title = JOB_WO_SQUAD_LEADER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = "WO Dust Raider Squad Leader"
 

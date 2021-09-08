@@ -107,15 +107,14 @@ var/global/marines_assigned = 0
 	//TODO Come up with some dynamic method of doing this.
 	//added exception for WO, so appropriate roles would appear in prefs for WO.
 	var/list/MODE_ROLES = ROLES_REGULAR_ALL
-	if(Check_WO())
-		MODE_ROLES = ROLES_WO + ROLES_MARINES + JOB_XENOMORPH
 
-	var/list/L = new()
+	/*var/list/L = new()
 	for(var/role in MODE_ROLES) //We're going to re-arrange the list for mode to look better, starting with the officers.
 		var/datum/job/J = roles_for_mode[role]
 		if(J)
 			L[J.title] = J
 	roles_for_mode = L
+	*/
 
 	squads = list()
 	for(var/squad in squads_all) //Setting up our squads.
@@ -189,20 +188,14 @@ var/global/marines_assigned = 0
 		return //Can't start if this doesn't exist.
 
 	var/datum/game_mode/G = SSticker.mode
-	switch(G.role_instruction)
-		if(1) //Replacing the entire list.
-			roles_for_mode = new
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(2) //Adding a role, or multiple roles, to the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(3) //Subtracting from the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode -= J.title
+	for(var/role_path as anything in G.roles_for_mode)
+		var/mapped_title = G.roles_for_mode[role_path]
+		var/datum/job/J = roles_by_path[role_path]
+		if(mapped_title)
+			roles_for_mode[mapped_title] = J
+		else
+			roles_for_mode[J.title] = J
+
 
 	/*===============================================================*/
 

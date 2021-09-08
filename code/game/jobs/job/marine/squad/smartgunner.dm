@@ -28,6 +28,7 @@
 	gear_preset = "USCM Smartgunner"
 
 /datum/job/marine/smartgunner/equipped/whiskey
+	title = JOB_WO_SQUAD_SMARTGUNNER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
 	gear_preset = "WO Dust Raider Squad Smartgunner"
 

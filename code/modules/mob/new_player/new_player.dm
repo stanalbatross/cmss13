@@ -249,8 +249,6 @@
 	EquipCustomItems(character)
 
 	GLOB.data_core.manifest_inject(character)
-	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
-		call(/datum/game_mode/whiskey_outpost/proc/spawn_player)(character)
 	SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 	SSticker.mode.latejoin_tally++
 
