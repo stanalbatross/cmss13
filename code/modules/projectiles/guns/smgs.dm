@@ -438,4 +438,4 @@
 	. = ..()
 	if(.)
 		click_empty(user)
-	return 0
+	return FALSE
