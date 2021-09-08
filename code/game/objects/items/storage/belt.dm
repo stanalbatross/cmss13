@@ -73,7 +73,7 @@
 		/obj/item/device/t_scanner,
 		/obj/item/device/analyzer,
 		/obj/item/tool/shovel/etool,
-		/obj/item/weapon/gun/smg/nailgun/compact,
+		/obj/item/weapon/gun/smg/nailgun/compact
 	)
 	bypass_w_limit = list(/obj/item/tool/shovel/etool)
 
