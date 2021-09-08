@@ -427,7 +427,7 @@
 	return //Yeah no.
 
 /obj/item/weapon/gun/smg/nailgun/compact
-	name = "Compact nailgun"
+	name = "compact nailgun"
 	desc = "A carpentry tool, used to drive nails into tough surfaces. Cannot fire nails offensively due to a lack of a gas seal around the nail, meaning it cannot build up the pressure to fire."
 	icon_state = "cnailgun"
 	item_state = "cnailgun"
