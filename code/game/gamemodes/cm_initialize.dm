@@ -80,8 +80,6 @@ Additional game mode variables.
 	//Role Authority set up.
 	/// List of role titles to override to different roles when starting game
 	var/list/role_mappings
-	/// List of available roles for pre-round-start selection
-	var/list/role_list
 
 	//Bioscan related.
 	var/bioscan_current_interval = 5 MINUTES//5 minutes in
@@ -97,6 +95,9 @@ Additional game mode variables.
 	var/evolution_ovipositor_threshold = FALSE
 
 	var/flags_round_type = NO_FLAGS
+
+/datum/game_mode/proc/get_roles_list()
+	return ROLES_REGULAR_ALL
 
 //===================================================\\
 

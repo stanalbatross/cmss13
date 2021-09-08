@@ -475,6 +475,9 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/datum/job/lastJob
 	for(var/role_name as anything in active_role_names)
 		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+		if(!job)
+			debug_log("Missing job for prefs: [role_name]")
+			continue
 		index += 1
 		if((index >= limit) || (job.title in splitJobs))
 			if((index < limit) && (lastJob != null))

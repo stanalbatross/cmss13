@@ -75,9 +75,8 @@
 	hardcore = TRUE
 	votable = FALSE // not fun
 
-/datum/game_mode/whiskey_outpost/New()
-	. = ..()
-	role_list = ROLES_WO
+/datum/game_mode/whiskey_outpost/get_roles_list()
+	return ROLES_WO
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1
