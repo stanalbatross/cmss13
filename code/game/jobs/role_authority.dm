@@ -43,6 +43,7 @@ var/global/marines_assigned = 0
 
 	/// List of mapped roles that should be used in place of usual ones
 	var/list/role_mappings
+	var/list/default_roles
 
 	var/list/unassigned_players
 	var/list/squads
@@ -174,6 +175,7 @@ var/global/marines_assigned = 0
 
 	// Also register game mode specific mappings to standard roles
 	role_mappings = list()
+	default_roles = list()
 	if(G.role_mappings)
 		for(var/role_path in G.role_mappings)
 			var/mapped_title = G.role_mappings[role_path]
@@ -181,6 +183,7 @@ var/global/marines_assigned = 0
 			if(!J || !roles_by_name[mapped_title])
 				continue
 			role_mappings[mapped_title] = J
+			default_roles[J.title] = mapped_title
 
 	/*===============================================================*/
 

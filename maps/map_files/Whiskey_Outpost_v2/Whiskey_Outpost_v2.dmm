@@ -993,6 +993,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/prison,
@@ -1029,6 +1030,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/prison,
@@ -1087,6 +1089,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/prison,
@@ -1683,6 +1686,7 @@
 /area/whiskey_outpost/inside/cic)
 "el" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -2154,6 +2158,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/prison,
@@ -2455,6 +2460,7 @@
 /area/whiskey_outpost/inside/engineering)
 "gl" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -2888,6 +2894,7 @@
 /area/whiskey_outpost/outside/mortar_pit)
 "hx" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/prison,
@@ -3157,6 +3164,7 @@
 	tag = "icon-tube1 (EAST)"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -3357,6 +3365,7 @@
 /area/whiskey_outpost)
 "iL" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -3699,6 +3708,10 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/floor{
 	dir = 1;
 	icon_state = "asteroidfloor";
@@ -3789,6 +3802,7 @@
 	tag = "icon-tube1 (EAST)"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -4516,6 +4530,7 @@
 	dir = 5
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -4538,6 +4553,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -4640,6 +4656,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -4701,6 +4718,7 @@
 "mw" = (
 /obj/structure/flora/bush/ausbushes/grassybush,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -5113,6 +5131,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -5269,6 +5288,7 @@
 /area/whiskey_outpost/outside/lane/one_north)
 "oc" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5283,6 +5303,7 @@
 	icon_state = "pipe-c"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5468,6 +5489,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5481,6 +5503,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5628,6 +5651,10 @@
 /turf/open/gm/grass,
 /area/whiskey_outpost/outside/north/northwest)
 "oH" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/floor{
 	dir = 8;
 	icon_state = "asteroidwarning";
@@ -5635,6 +5662,10 @@
 	},
 /area/whiskey_outpost/outside/north/northeast)
 "oI" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/floor{
 	dir = 4;
 	icon_state = "asteroidwarning";
@@ -5653,6 +5684,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -5663,6 +5695,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -5687,6 +5720,7 @@
 	icon_state = "pipe-c"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5948,6 +5982,7 @@
 	icon_state = "pipe-c"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -5996,6 +6031,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -6099,6 +6135,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -6242,6 +6279,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -6359,6 +6397,7 @@
 	icon_state = "pipe-c"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6419,6 +6458,7 @@
 "qD" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6473,6 +6513,7 @@
 	luminosity = 2
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -6501,6 +6542,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -6516,6 +6558,7 @@
 "qN" = (
 /obj/structure/barricade/sandbags/wired,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6721,6 +6764,7 @@
 /obj/structure/barricade/sandbags/wired,
 /obj/structure/disposalpipe/segment,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6788,6 +6832,7 @@
 	icon_state = "pipe-c"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6819,6 +6864,7 @@
 	sortType = "Eastern Platform"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6868,6 +6914,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -6984,6 +7031,7 @@
 	dir = 1
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -7067,6 +7115,7 @@
 	sortType = "Western Platform"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -7146,6 +7195,7 @@
 	name = "Marine"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -7273,6 +7323,7 @@
 	name = "Marine"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -7380,6 +7431,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -7405,6 +7457,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -7743,6 +7796,13 @@
 	tag = "icon-floor_plate (SOUTHWEST)"
 	},
 /area/whiskey_outpost/inside/bunker/pillbox/three)
+"tY" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/two_north)
 "tZ" = (
 /obj/structure/machinery/disposal,
 /obj/structure/disposalpipe/trunk{
@@ -7922,6 +7982,7 @@
 	},
 /obj/structure/disposalpipe/segment,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -8061,6 +8122,7 @@
 	sortType = "South-Eastern Platform"
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -8181,6 +8243,7 @@
 "vc" = (
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/gm/dirt,
@@ -8602,6 +8665,10 @@
 	dir = 2;
 	icon_state = "pipe-c"
 	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/floor{
 	dir = 1;
 	icon_state = "asteroidfloor";
@@ -9016,6 +9083,10 @@
 /area/whiskey_outpost/outside/lane/two_south)
 "xw" = (
 /obj/structure/machinery/colony_floodlight,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/gm/dirtgrassborder{
 	dir = 4;
 	icon_state = "grassdirt_corner2"
@@ -9704,6 +9775,10 @@
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/lane/three_north)
 "zO" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/gm/dirtgrassborder{
 	dir = 1;
 	icon_state = "grassdirt_corner2"
@@ -9821,6 +9896,10 @@
 	icon_state = "lightstick_red1";
 	luminosity = 2
 	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/lane/two_north)
 "As" = (
@@ -9854,6 +9933,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -9864,6 +9944,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -9872,6 +9953,7 @@
 "Ax" = (
 /obj/structure/barricade/metal/wired,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -9998,6 +10080,7 @@
 "AM" = (
 /obj/structure/barricade/plasteel/wired,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -10251,6 +10334,10 @@
 /area/whiskey_outpost/outside/lane/three_north)
 "BF" = (
 /obj/item/storage/box/explosive_mines,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/jungle{
 	bushes_spawn = 0;
 	icon_state = "grass_impenetrable"
@@ -10335,6 +10422,16 @@
 	icon_state = "floor7"
 	},
 /area/whiskey_outpost/outside/lane/four_north)
+"BZ" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/jungle{
+	bushes_spawn = 0;
+	icon_state = "grass_impenetrable"
+	},
+/area/whiskey_outpost/outside/lane/one_north)
 "Ca" = (
 /turf/closed/shuttle/dropship{
 	icon_state = "rasputin6";
@@ -10391,6 +10488,7 @@
 /area/whiskey_outpost/outside/lane/one_north)
 "Ci" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /obj/item/lightstick/red{
@@ -10919,6 +11017,7 @@
 /area/whiskey_outpost/outside/north/beach)
 "Eb" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -11187,10 +11286,18 @@
 /area/whiskey_outpost/outside/lane/three_north)
 "Fs" = (
 /obj/structure/barricade/plasteel/wired,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/lane/two_south)
 "Fu" = (
 /obj/structure/barricade/plasteel/wired,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/lane/three_south)
 "Fw" = (
@@ -11481,6 +11588,7 @@
 /obj/structure/machinery/defenses/sentry/premade,
 /obj/structure/barricade/sandbags/wired,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor{
@@ -11733,6 +11841,7 @@
 	},
 /obj/structure/disposalpipe/segment,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -11746,6 +11855,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /turf/open/floor/plating,
@@ -11754,6 +11864,7 @@
 "HY" = (
 /obj/structure/flora/bush/ausbushes/var3/sparsegrass,
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /obj/item/lightstick/red{
@@ -11776,6 +11887,7 @@
 /area/whiskey_outpost/outside/north/platform)
 "IU" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /obj/structure/machinery/light{
@@ -11794,6 +11906,26 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/bunker)
+"Kh" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	icon_state = "grassdirt_corner2"
+	},
+/area/whiskey_outpost/outside/lane/three_south)
+"Kp" = (
+/obj/item/storage/box/m94,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/jungle{
+	bushes_spawn = 0;
+	icon_state = "grass_impenetrable"
+	},
+/area/whiskey_outpost/outside/lane/one_north)
 "Kq" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/wo{
 	vend_x_offset = -1;
@@ -11804,12 +11936,37 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/supply)
+"Ks" = (
+/obj/structure/flora/bush/ausbushes/grassybush,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/medic/equipped/whiskey;
+	name = "Medic"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/north/beach)
 "KF" = (
 /obj/structure/machinery/power/apc/almayer{
 	dir = 4
 	},
 /turf/closed/wall/r_wall,
 /area/whiskey_outpost/inside/bunker)
+"KM" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 8
+	},
+/area/whiskey_outpost/outside/lane/three_north)
+"KY" = (
+/obj/structure/disposalpipe/segment,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/leader/equipped/whiskey;
+	name = "Squad Leader"
+	},
+/turf/open/floor/prison,
+/area/whiskey_outpost/inside/living)
 "Ld" = (
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/wo{
 	vend_x_offset = -1;
@@ -11820,8 +11977,16 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/supply)
+"Lg" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/south)
 "Lh" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /obj/structure/machinery/power/apc/almayer{
@@ -11829,6 +11994,13 @@
 	},
 /turf/open/gm/dirt,
 /area/whiskey_outpost/inside/caves/tunnel)
+"Lw" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/jungle,
+/area/whiskey_outpost/outside/lane/one_north)
 "LB" = (
 /obj/structure/machinery/light/small{
 	dir = 1
@@ -11837,6 +12009,56 @@
 	dir = 1;
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning (WEST)"
+	},
+/area/whiskey_outpost/outside/north/platform)
+"Ma" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 1;
+	icon_state = "grassdirt_corner2"
+	},
+/area/whiskey_outpost/outside/south)
+"Mf" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 4;
+	icon_state = "grassdirt_corner"
+	},
+/area/whiskey_outpost/outside/south)
+"Mj" = (
+/obj/structure/barricade/metal/wired,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/two_south)
+"Mz" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/leader/equipped/whiskey;
+	name = "Squad Leader"
+	},
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
+	},
+/area/whiskey_outpost/outside/north/platform)
+"MB" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/smartgunner/equipped/whiskey;
+	name = "Smartgunner"
+	},
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/whiskey_outpost/outside/north/platform)
 "MI" = (
@@ -11850,6 +12072,45 @@
 	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/whiskey_outpost/outside/north/platform)
+"MJ" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/two_south)
+"MP" = (
+/obj/item/lightstick/red{
+	anchored = 1;
+	icon_state = "lightstick_red1";
+	luminosity = 2
+	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/medic/equipped/whiskey;
+	name = "Medic"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/north/beach)
+"MV" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
+	},
+/area/whiskey_outpost/outside/north/northeast)
+"NS" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/whiskey_outpost/outside/lane/three_south)
 "Oi" = (
 /obj/structure/machinery/optable,
 /obj/item/storage/surgical_tray,
@@ -11857,6 +12118,13 @@
 	icon_state = "white"
 	},
 /area/whiskey_outpost/inside/hospital/triage)
+"OM" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/three_south)
 "PO" = (
 /obj/structure/surface/rack,
 /obj/effect/landmark/wo_supplies/ammo/box/m41a,
@@ -11866,8 +12134,69 @@
 	tag = "icon-floor_plate (SOUTHWEST)"
 	},
 /area/whiskey_outpost/inside/bunker/pillbox/three)
+"PY" = (
+/obj/structure/barricade/metal/wired,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/three_south)
+"Qg" = (
+/obj/structure/disposalpipe/segment,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
+	},
+/area/whiskey_outpost/outside/north/northeast)
+"Rs" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
+	},
+/area/whiskey_outpost/outside/north/beach)
+"RB" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/medic/equipped/whiskey;
+	name = "Medic"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/north/beach)
+"RD" = (
+/obj/item/lightstick/red{
+	anchored = 1;
+	icon_state = "lightstick_red1";
+	luminosity = 2
+	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/south)
+"Sz" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/three_north)
 "SD" = (
 /obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
 /obj/item/lightstick/red{
@@ -11881,6 +12210,23 @@
 	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/whiskey_outpost/outside/north/beach)
+"Tb" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/jungle,
+/area/whiskey_outpost/outside/south)
+"Tq" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 8;
+	icon_state = "grassdirt_corner"
+	},
+/area/whiskey_outpost/outside/south)
 "Ul" = (
 /obj/structure/machinery/light/small,
 /turf/open/floor/prison,
@@ -11891,6 +12237,22 @@
 	},
 /turf/open/gm/coast,
 /area/whiskey_outpost/outside/lane/four_north)
+"UN" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/engineer/equipped/whiskey;
+	name = "Engineer"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/north/beach)
+"Vg" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 8
+	},
+/area/whiskey_outpost/outside/south)
 "VF" = (
 /obj/structure/machinery/cm_vending/sorted/medical/wall_med{
 	name = "Emergency NanoMed";
@@ -11903,11 +12265,41 @@
 	tag = "icon-floor_plate (SOUTHWEST)"
 	},
 /area/whiskey_outpost/inside/bunker/pillbox/one)
+"Wk" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/whiskey_outpost/outside/south)
+"Xe" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 8;
+	icon_state = "grassdirt_corner2"
+	},
+/area/whiskey_outpost/outside/south)
 "Xp" = (
 /obj/effect/landmark/whiskey_outpost/supplydrops,
 /obj/structure/machinery/light/small,
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/supply)
+"Xv" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/lane/three_south)
 "XM" = (
 /obj/effect/landmark/whiskey_outpost/supplydrops,
 /obj/structure/machinery/light/small{
@@ -11915,6 +12307,14 @@
 	},
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/supply)
+"Yo" = (
+/obj/structure/flora/bush/ausbushes/grassybush,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/engineer/equipped/whiskey;
+	name = "Engineer"
+	},
+/turf/open/gm/dirt,
+/area/whiskey_outpost/outside/north/beach)
 "Ys" = (
 /obj/structure/machinery/recharge_station,
 /turf/open/floor{
@@ -11933,6 +12333,16 @@
 	tag = "icon-asteroidwarning (WEST)"
 	},
 /area/whiskey_outpost/outside/north/platform)
+"YU" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/jungle{
+	bushes_spawn = 0;
+	icon_state = "grass_impenetrable"
+	},
+/area/whiskey_outpost/outside/lane/three_south)
 "Zj" = (
 /obj/structure/surface/rack,
 /obj/item/ammo_magazine/sentry,
@@ -11941,6 +12351,16 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/supply)
+"Zy" = (
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/marine/standard/equipped/whiskey;
+	name = "Marine"
+	},
+/turf/open/gm/dirtgrassborder{
+	dir = 1;
+	icon_state = "grassdirt_corner2"
+	},
+/area/whiskey_outpost/outside/lane/three_south)
 
 (1,1,1) = {"
 aa
@@ -21535,16 +21955,16 @@ xp
 nT
 nT
 zZ
-wR
-wU
-wU
-wR
-wR
-wR
-wR
-wR
-wR
-wR
+BZ
+Lw
+Lw
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
 BF
 wa
 CU
@@ -21737,17 +22157,17 @@ xp
 nT
 ob
 zZ
-wR
-wR
-wU
-wU
-wR
-wU
-wR
-wR
-wR
-wR
-wR
+BZ
+BZ
+Lw
+Lw
+BZ
+Lw
+BZ
+BZ
+BZ
+BZ
+BZ
 wa
 CU
 GJ
@@ -21939,17 +22359,17 @@ xp
 nT
 nT
 zZ
-wR
-wR
-wR
-wR
-wU
-wS
-wU
-wU
-wR
-wR
-wR
+BZ
+BZ
+BZ
+BZ
+Lw
+Kp
+Lw
+Lw
+BZ
+BZ
+BZ
 wa
 CU
 sr
@@ -22141,17 +22561,17 @@ xt
 nT
 nT
 zZ
-wR
-wR
-wR
-wR
-wU
-wR
-wR
-wU
-wR
-wR
-wR
+BZ
+BZ
+BZ
+BZ
+Lw
+BZ
+BZ
+Lw
+BZ
+BZ
+BZ
 wa
 GH
 Gj
@@ -22343,17 +22763,17 @@ xp
 nT
 xS
 zZ
-wR
-wR
-wU
-wU
-wR
-wU
-wU
-wR
-wR
-wR
-wR
+BZ
+BZ
+Lw
+Lw
+BZ
+Lw
+Lw
+BZ
+BZ
+BZ
+BZ
 wa
 CU
 Gj
@@ -22545,17 +22965,17 @@ xp
 nT
 nT
 zZ
-wR
-wR
-wU
-wR
-wU
-wU
-wR
-wU
-wR
-wR
-wR
+BZ
+BZ
+Lw
+BZ
+Lw
+Lw
+BZ
+Lw
+BZ
+BZ
+BZ
 wa
 CU
 sr
@@ -22747,17 +23167,17 @@ mT
 nT
 nT
 zZ
-wR
-wU
-wR
-wR
-wR
-wR
-wR
-wR
-wR
-wR
-wR
+BZ
+Lw
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
+BZ
 wa
 CU
 GJ
@@ -22949,17 +23369,17 @@ mT
 ob
 nT
 zZ
-wU
-wU
-wR
-wU
-wU
-wU
-wR
-wU
-wR
-wR
-wR
+Lw
+Lw
+BZ
+Lw
+Lw
+Lw
+BZ
+Lw
+BZ
+BZ
+BZ
 wa
 CU
 sr
@@ -25545,9 +25965,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 fy
@@ -25747,9 +26167,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 fy
@@ -25949,9 +26369,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 mT
 mT
@@ -26151,9 +26571,9 @@ iL
 iL
 iL
 fy
-gd
-fy
-fy
+Yo
+UN
+UN
 jU
 mT
 mT
@@ -26353,9 +26773,9 @@ iL
 vc
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 mT
@@ -26555,9 +26975,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 vu
@@ -26757,9 +27177,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 mU
@@ -26959,9 +27379,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 fV
@@ -27161,9 +27581,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 sx
 fy
 fy
@@ -27363,9 +27783,9 @@ iL
 iL
 Ci
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 uO
 fy
 fy
@@ -27565,9 +27985,9 @@ iL
 iL
 iL
 fy
-fy
-fy
-fy
+UN
+UN
+UN
 jU
 fy
 fy
@@ -28604,48 +29024,48 @@ CR
 mg
 Fp
 mg
-mg
-mg
+tY
+tY
 Ar
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-kx
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+MJ
 Fs
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kn
-kn
-kn
-kn
-kn
-kn
-kn
-kn
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
 lm
 lv
 kV
@@ -28806,51 +29226,51 @@ CR
 mg
 uT
 mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-kx
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+MJ
 Fs
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kn
-kn
-kn
-kn
-kn
-kn
-kn
-kn
-lm
-lv
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
+Lg
+Xe
+Tq
 yi
 kn
 FO
@@ -29008,51 +29428,51 @@ CR
 mg
 uT
 mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-mg
-kx
-yC
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kx
-kn
-kn
-kn
-kn
-Eo
-kn
-kn
-kn
-kn
-lm
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+tY
+MJ
+Mj
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+MJ
+Lg
+Lg
+Lg
+Lg
+RD
+Lg
+Lg
+Lg
+Lg
+Xe
 yj
 kn
 FN
@@ -29252,9 +29672,9 @@ mJ
 mJ
 yr
 kn
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 FW
 FN
@@ -29454,9 +29874,9 @@ lf
 kV
 yw
 yr
-kn
-kn
-yp
+Lg
+Lg
+Ma
 yF
 kn
 FN
@@ -29574,8 +29994,8 @@ pz
 dF
 rL
 dX
-ed
-ed
+MB
+MB
 hW
 oK
 rN
@@ -29656,9 +30076,9 @@ lf
 lf
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FN
@@ -29776,8 +30196,8 @@ fj
 aj
 aj
 dX
-ed
-ed
+MB
+MB
 po
 aj
 aj
@@ -29858,9 +30278,9 @@ lf
 kV
 kV
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yG
 mJ
 FP
@@ -29978,8 +30398,8 @@ fj
 fj
 Ax
 dX
-ed
-ed
+MB
+MB
 hW
 jE
 aj
@@ -30060,9 +30480,9 @@ lf
 kV
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yh
 mH
 FQ
@@ -30262,9 +30682,9 @@ kV
 lf
 lf
 Ex
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FN
@@ -30464,9 +30884,9 @@ xZ
 lg
 lf
 yi
-kn
-kn
-lm
+Lg
+Lg
+Xe
 yj
 kn
 FN
@@ -30666,9 +31086,9 @@ kA
 lM
 kV
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 FN
@@ -30868,9 +31288,9 @@ kA
 lM
 lf
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 Eo
 kn
 FO
@@ -31070,9 +31490,9 @@ kA
 lM
 kV
 yi
-kn
-kn
-yp
+Lg
+Lg
+Ma
 yr
 kn
 FN
@@ -31272,9 +31692,9 @@ wI
 lM
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FN
@@ -31369,8 +31789,8 @@ cm
 bF
 cz
 bF
-bF
-bF
+KY
+KY
 bF
 ck
 uA
@@ -31474,9 +31894,9 @@ DY
 lM
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 FW
 FN
@@ -31571,8 +31991,8 @@ fk
 aO
 bw
 it
-bF
-bF
+KY
+KY
 bF
 ey
 bI
@@ -31676,9 +32096,9 @@ DY
 lM
 lf
 Ex
-kn
-kn
-lm
+Lg
+Lg
+Xe
 yj
 kn
 Fx
@@ -31878,9 +32298,9 @@ ya
 lM
 lf
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 Fx
@@ -32080,9 +32500,9 @@ DY
 lM
 lf
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 Fx
@@ -32282,9 +32702,9 @@ DY
 lM
 lf
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 Fx
@@ -32484,9 +32904,9 @@ wI
 lM
 lf
 yi
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 Fx
@@ -32686,9 +33106,9 @@ kA
 lM
 lf
 yi
-Eo
-kn
-yp
+RD
+Lg
+Ma
 yF
 kn
 FN
@@ -32888,9 +33308,9 @@ kA
 lM
 kV
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 FW
 FN
@@ -33008,8 +33428,8 @@ fj
 aj
 aj
 dX
-ed
-ed
+Mz
+Mz
 hW
 ju
 aj
@@ -33090,9 +33510,9 @@ kA
 lM
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FN
@@ -33210,8 +33630,8 @@ pM
 dF
 sj
 dX
-ed
-ed
+Mz
+Mz
 po
 aj
 aj
@@ -33292,9 +33712,9 @@ yd
 yg
 lf
 yi
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FN
@@ -33412,8 +33832,8 @@ hV
 hV
 hV
 dY
-ed
-ed
+Mz
+Mz
 hW
 oK
 fj
@@ -33494,9 +33914,9 @@ kV
 yh
 mH
 yj
-kn
-kn
-ll
+Lg
+Lg
+Wk
 yi
 kn
 FO
@@ -33696,9 +34116,9 @@ lf
 yi
 kn
 kn
-kn
-kn
-lm
+Lg
+Lg
+Xe
 yj
 kn
 FN
@@ -33898,9 +34318,9 @@ of
 yj
 kn
 kn
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 FW
 FN
@@ -34100,9 +34520,9 @@ ka
 kn
 kn
 kn
-kn
-kn
-kn
+Lg
+Lg
+Lg
 kn
 kn
 FN
@@ -34295,16 +34715,16 @@ ka
 ka
 ka
 my
-Em
-ka
-ka
-ka
-ka
-kn
-yp
-mJ
-mJ
-mJ
+Kh
+OM
+OM
+OM
+OM
+Lg
+Ma
+Vg
+Vg
+Vg
 yr
 kn
 FN
@@ -34461,49 +34881,49 @@ tX
 Fn
 mD
 Fq
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-ka
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+OM
 Fu
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-mj
-mJ
-yq
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+Zy
+Vg
+Mf
 kV
 lf
 kV
@@ -34663,49 +35083,49 @@ uz
 Fn
 mD
 Fq
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-ka
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+OM
 Fu
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-mk
-mq
-lf
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+NS
+YU
+Tb
 lf
 kV
 lf
@@ -34866,41 +35286,41 @@ Fn
 mD
 yo
 zO
-rT
+KM
 xw
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-mD
-ka
-Ad
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
-ka
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+Sz
+OM
+PY
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+OM
+Xv
 ka
 ka
 ka
@@ -35232,11 +35652,11 @@ ed
 ed
 kI
 fI
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 fy
 fy
@@ -35434,11 +35854,11 @@ jr
 jr
 qq
 fI
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 fy
 fy
@@ -35636,11 +36056,11 @@ pD
 to
 qF
 fI
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 fy
 fy
@@ -35838,11 +36258,11 @@ fS
 fS
 fS
 fL
-fy
-fy
-hJ
-fy
-fy
+RB
+RB
+MP
+RB
+RB
 fy
 hJ
 fy
@@ -36040,11 +36460,11 @@ fy
 fy
 fy
 fy
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 fy
 fy
@@ -36242,11 +36662,11 @@ fy
 fy
 fy
 fy
-fy
-fy
-gd
-fy
-fy
+RB
+RB
+Ks
+RB
+RB
 fy
 fy
 fU
@@ -36444,11 +36864,11 @@ fy
 fy
 fy
 fy
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 iw
 iw
@@ -36646,11 +37066,11 @@ fy
 fU
 fy
 fy
-fy
-fy
-fy
-fy
-fy
+RB
+RB
+RB
+RB
+RB
 fy
 iw
 iw
@@ -36848,11 +37268,11 @@ fy
 fy
 fy
 fy
-fy
-hJ
-fy
-fy
-fy
+RB
+MP
+RB
+RB
+RB
 fy
 AR
 iw
@@ -37258,9 +37678,9 @@ fC
 fC
 kJ
 sM
-iw
-iw
-kc
+Eb
+Eb
+Rs
 tc
 Dr
 fC
@@ -37460,9 +37880,9 @@ eK
 eK
 lz
 sM
-iw
-iw
-kc
+Eb
+Eb
+Rs
 tc
 Ds
 eK
@@ -37662,9 +38082,9 @@ eK
 eK
 lz
 sM
-iw
-iw
-kc
+Eb
+Eb
+Rs
 tc
 Ds
 eK
@@ -37864,8 +38284,8 @@ eK
 eK
 lz
 rV
-hu
-hu
+MV
+MV
 jJ
 th
 Ds
@@ -38066,8 +38486,8 @@ eK
 eK
 lz
 rV
-hu
-hu
+MV
+MV
 jJ
 th
 Ds
@@ -38268,8 +38688,8 @@ eK
 eK
 nw
 rV
-hu
-hu
+MV
+MV
 jJ
 th
 Dt
@@ -38470,8 +38890,8 @@ eK
 eK
 hy
 gH
-hu
-hu
+MV
+MV
 jJ
 gH
 tn
@@ -38672,8 +39092,8 @@ eK
 eK
 hy
 gH
-hu
-hu
+MV
+MV
 jJ
 gH
 gH
@@ -38874,8 +39294,8 @@ fD
 eK
 hy
 gH
-hu
-hu
+MV
+MV
 jJ
 gH
 gH
@@ -39076,24 +39496,24 @@ eK
 eK
 hy
 gH
-hu
-hu
+MV
+MV
 jJ
 hu
 hu
 hu
 hu
 hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
 np
 Fz
 qd
@@ -39278,24 +39698,24 @@ eK
 eK
 hy
 gH
-hu
-hu
+MV
+MV
 wk
 wl
 wl
 wl
 wl
 wl
-wl
-wl
-wl
-wl
-wl
-wl
-wl
-wl
-wl
-wl
+Qg
+Qg
+Qg
+Qg
+Qg
+Qg
+Qg
+Qg
+Qg
+Qg
 oe
 tq
 qd
@@ -39480,24 +39900,24 @@ eK
 eK
 hy
 gH
+MV
+MV
+MV
 hu
 hu
 hu
 hu
 hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
-hu
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
+MV
 np
 FA
 qd
