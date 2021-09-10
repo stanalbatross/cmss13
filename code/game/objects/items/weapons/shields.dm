@@ -70,6 +70,14 @@
 	..()
 	toggle_shield(user)
 
+/obj/item/weapon/shield/proc/raise_shield(mob/user as mob)
+	user.visible_message(SPAN_BLUE("[user] deploys and extends the [src]."))
+	H.FF_hit_evade = 1000
+
+/obj/item/weapon/shield/proc/lower_shield(mob/user as mob)
+	user.visible_message(SPAN_BLUE("[user] collapses the [src]."))
+	H.FF_hit_evade = 0
+
 /obj/item/weapon/shield/riot/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/melee/baton) || istype(W, /obj/item/weapon/melee/claymore) || istype(W, /obj/item/weapon/melee/baseballbat) || istype(W, /obj/item/weapon/melee/katana) || istype(W, /obj/item/weapon/melee/twohanded/fireaxe) || istype(W, /obj/item/weapon/melee/chainofcommand))
 		if(cooldown < world.time - 25)
@@ -95,3 +103,40 @@
 
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
+
+/obj/item/weapon/shield/phalanx
+	name = "phalanx shield"
+	desc = "A heavy shield adept at blocking blunt objects from connecting with the torso of the shield wielder. Ineffective when not deployed."
+	icon = 'icons/obj/items/weapons/weapons.dmi'
+	icon_state = "riot"
+	item_state = "riot"
+	base_icon_state = "riot"
+	flags_equip_slot = SLOT_BACK
+	force = 15
+	passive_block = 5
+	readied_block = 70
+	readied_slowdown = SLOWDOWN_ARMOR_HEAVY
+	throwforce = 5.0
+	throw_speed = SPEED_FAST
+	throw_range = 4
+	w_class = SIZE_LARGE
+	matter = list("glass" = 7500, "metal" = 1000)
+
+	attack_verb = list("shoved", "bashed")
+	var/cooldown = 0 //shield bash cooldown. based on world.time
+
+/obj/item/weapon/shield/riot/IsShield()
+	return 1
+
+/obj/item/weapon/shield/phalanx/attack_self(var/mob/user)
+	..()
+	toggle_shield(user)
+
+/obj/item/weapon/shield/phalanx/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/melee/baton) || istype(W, /obj/item/weapon/melee/claymore) || istype(W, /obj/item/weapon/melee/baseballbat) || istype(W, /obj/item/weapon/melee/katana) || istype(W, /obj/item/weapon/melee/twohanded/fireaxe) || istype(W, /obj/item/weapon/melee/chainofcommand))
+		if(cooldown < world.time - 25)
+			user.visible_message(SPAN_WARNING("[user] bashes [src] with [W]!"))
+			playsound(user.loc, 'sound/effects/shieldbash.ogg', 25, 1)
+			cooldown = world.time
+	else
+		..()
