@@ -434,6 +434,7 @@
 		lasing = TRUE
 		lasertarget.icon_state = "las_r"
 		las_r = 2
+		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
 		if(SS != get_turf(src)) //Don't move.
 			lasing = FALSE
@@ -470,6 +471,7 @@
 		lasing = TRUE
 		lasertarget.icon_state = "laz_b"
 		las_b = 2
+		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
 		if(SS != get_turf(src)) //Don't move.
 			lasing = FALSE
