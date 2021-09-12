@@ -121,3 +121,15 @@
 	dat += "</table>"
 	dat += "<br><hr>"
 	return dat
+
+obj/item/tool/omnitool
+	name = "omnitool"
+	desc = "A tool that can switch between a screwdriver, wrench, wirecutters, crowbar, and multitool."
+	icon = 'icons/obj/items/experimental_tools.dmi'
+	icon_state = "crew_monitor"
+	flags_equip_slot = SLOT_WAIST
+	w_class = SIZE_SMALL
+
+obj/item/tool/omnitool/verb/set_tooltype()
+	set name = "Change active tool"
+	set category = "Object"
