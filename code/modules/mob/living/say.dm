@@ -17,6 +17,7 @@ var/list/department_radio_keys = list(
 	  ":u" = "Req",			"#u" = "Req",			".u" = "Req",
 	  ":j" = "JTAC",		"#j" = "JTAC",			".j" = "JTAC",
 	  ":t" = "Tactics",		"#t" = "Tactics",		".t" = "Tactics",
+	  ":i" = "Tactics",     "#i" = "Tactics",       ".i" = "Tactics",
 	  ":y" = "WY",			"#y" = "WY",			".y" = "WY",
 
 	  ":R" = "right ear",	"#R" = "right ear",		".R" = "right ear",

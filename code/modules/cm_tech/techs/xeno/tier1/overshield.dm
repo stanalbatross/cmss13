@@ -5,7 +5,7 @@
 
 	flags = TREE_FLAG_XENO
 
-	required_points = 5
+	required_points = 6
 	var/shield_amount = 200
 
 /datum/tech/xeno/powerup/overshield/ui_static_data(mob/user)

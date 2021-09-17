@@ -38,6 +38,7 @@
 
 	if(istype(spawner) && spawner.story_text)
 		story_text = spawner.story_text
+	new /datum/cm_objective/move_mob/almayer/survivor(H)
 
 /datum/job/civilian/survivor/generate_entry_message(var/mob/living/carbon/human/H)
 	if(intro_text)

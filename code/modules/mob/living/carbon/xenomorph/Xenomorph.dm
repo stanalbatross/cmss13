@@ -635,6 +635,9 @@
 	return ..()
 
 /mob/living/carbon/Xenomorph/pull_response(mob/puller)
+	if(stat == DEAD && has_species(puller,"Human") && (world.time < (timeofdeath + 2 MINUTES)))
+		puller.visible_message(SPAN_WARNING("Can't pull this Xeno yet! It just died and the acid is way too hot! Wait a minute or two!"))
+		return FALSE
 	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
 		if(H.ally_of_hivenumber(hivenumber))

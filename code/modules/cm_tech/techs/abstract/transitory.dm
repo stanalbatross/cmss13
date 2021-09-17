@@ -26,14 +26,11 @@
 	. = ..()
 	if(!next)
 		return
+	var/datum/tier/previous_tier = holder.tier
 	var/datum/tier/next_tier = holder.tree_tiers[next]
 	if(next_tier)
 		holder.tier = next_tier
-		/*
-		for(var/a in next_tier.tier_turfs)
-			var/turf/T = a
-			T.color = next_tier.color
-		*/
+		holder.on_tier_change(previous_tier)
 
 /datum/tech/transitory/get_tier_overlay()
 	if(!next)
@@ -62,13 +59,13 @@
 
 /datum/tech/transitory/tier2/xeno
 	techs_to_unlock = 1
-	required_points = 10
+	required_points = 15
 
 	flags = TREE_FLAG_XENO
 
 /datum/tech/transitory/tier2/marine
 	techs_to_unlock = 2
-	required_points = 10
+	required_points = 15
 
 	flags = TREE_FLAG_MARINE
 
@@ -81,13 +78,13 @@
 
 /datum/tech/transitory/tier3/xeno
 	techs_to_unlock = 1
-	required_points = 15
+	required_points = 20
 
 	flags = TREE_FLAG_XENO
 
 /datum/tech/transitory/tier3/marine
 	techs_to_unlock = 2
-	required_points = 15
+	required_points = 20
 
 	flags = TREE_FLAG_MARINE
 

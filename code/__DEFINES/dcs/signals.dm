@@ -19,6 +19,8 @@
 ///from /mob/living/carbon/Xenomorph/death
 #define COMSIG_GLOB_XENO_DEATH "!xeno_death"
 
+#define COMSIG_GLOB_CORPSE_CONSUMED "!corpse_consumed"
+
 ///from /mob/living/carbon/Xenomorph/Initialize
 #define COMSIG_GLOB_XENO_SPAWN "!xeno_spawn"
 

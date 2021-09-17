@@ -11,7 +11,7 @@
 
 // Trees
 
-#define TREE_NONE ""
+#define TREE_NONE "Undefined"
 #define TREE_MARINE "Marine Tech Tree"
 #define TREE_XENO "Xenomorph Tech Tree"
 
@@ -24,7 +24,7 @@
 // Resource
 #define RESOURCE_HEALTH 200
 
-#define RESOURCE_PER_SECOND AMOUNT_PER_TIME(1, 60 SECONDS) // 1 per 60 seconds
+#define RESOURCE_PER_SECOND AMOUNT_PER_TIME(0.1, 60 SECONDS) // 1 per 60 seconds
 
 /// Controls the passive increase amount.
 #define PASSIVE_INCREASE_AMOUNT RESOURCE_PER_SECOND // Increases by RESOURCE_PER_SECOND every second.

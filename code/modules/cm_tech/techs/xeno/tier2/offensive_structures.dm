@@ -4,7 +4,7 @@
 
 	flags = TREE_FLAG_XENO
 
-	required_points = 20
+	required_points = 30
 	tier = /datum/tier/two
 	constructions_to_add = list(
 		/datum/resin_construction/resin_obj/shield_dispenser,

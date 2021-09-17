@@ -602,6 +602,7 @@ var/list/datum/mob_hud/huds = list(
 			if(JOB_CO) marine_rk = "co"
 			if(JOB_ADMIRAL) marine_rk = "admiral"
 			if(JOB_PILOT) marine_rk = "po"
+			if(JOB_INTEL) marine_rk = "io"
 			if(JOB_CREWMAN) marine_rk = "tc"
 		if(assigned_squad.squad_leader == src)
 			marine_rk = "leader"
@@ -651,6 +652,8 @@ var/list/datum/mob_hud/huds = list(
 				border_rk = "command"
 			if(JOB_PILOT)
 				marine_rk = "po"
+			if(JOB_INTEL)
+				marine_rk = "io"
 			if(JOB_CREWMAN)
 				marine_rk = "tc"
 			if("Provost Officer")

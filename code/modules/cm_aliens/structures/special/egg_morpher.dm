@@ -22,6 +22,8 @@
 	range_bounds = RECT(x, y, EGGMORPG_RANGE, EGGMORPG_RANGE)
 
 /obj/effect/alien/resin/special/eggmorph/Destroy()
+	if(captured_mob)
+		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 	if (stored_huggers && linked_hive)
 		//Hugger explosion, like a carrier
 		var/obj/item/clothing/mask/facehugger/F
@@ -53,7 +55,10 @@
 				return
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
-				if(H.is_revivable())
+				if(isSynth(H))
+					to_chat(user, SPAN_XENOWARNING("This one is not suitable!"))
+					return
+				if(H.is_revivable() && H.check_tod())
 					to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
 					return
 			if(isXeno(M))
@@ -70,6 +75,7 @@
 			playsound(src, "alien_drool", 25)
 			if(captured_mob)
 				//Get rid of what we have there, we're overwriting it
+				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 				qdel(captured_mob)
 			captured_mob = M
 			captured_mob.setDir(SOUTH)
@@ -124,6 +130,7 @@
 		if(huggers_to_grow <= 0)
 			visible_message(SPAN_DANGER("\The [src] groans as its contents are reduced to nothing!"))
 			vis_contents.Cut()
+			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 			QDEL_NULL(captured_mob)
 			update_icon()
 

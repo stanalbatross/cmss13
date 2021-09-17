@@ -110,3 +110,8 @@
 		X.flick_heal_overlay(2 SECONDS, "#00FF00")
 		X.gain_health(xeno_heal_amount)
 	last_heal = world.time + 3 SECONDS // Every 3 second
+
+/datum/techtree/xenomorph/on_tier_change(datum/tier/oldtier)
+	xeno_message(SPAN_XENOANNOUNCE("The hive is growing and thriving ! Technologies of tier [tier.tier] are now available !"), 3)
+	var/datum/techtree/MT = GET_TREE(TREE_MARINE)
+	MT.points_mult += (0.25 * oldtier.tier)

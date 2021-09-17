@@ -9,7 +9,7 @@
 
 	flags = TREE_FLAG_MARINE
 
-	required_points = 10
+	required_points = 16
 	tier = /datum/tier/one
 
 	droppod_input_message = "Choose a plate to retrieve from the droppod."

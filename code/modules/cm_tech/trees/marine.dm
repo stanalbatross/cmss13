@@ -302,3 +302,10 @@ GLOBAL_LIST_EMPTY(tech_controls_marine)
 	var/datum/techtree/marine/M = GET_TREE(TREE_MARINE)
 	M.remove_dead_leader()
 	M.remove_leader()
+
+/datum/techtree/marine/on_tier_change(datum/tier/oldtier)
+	var/name = "ALMAYER TECH LEVEL UPGRADED"
+	var/input = "THREAT ASSESSMENT LEVEL INCREASED TO TIER [tier.tier].\n\nTech Implements of tier [tier.tier] have been authorised to handle the situation."
+	marine_announcement(input, name, 'sound/AI/commandreport.ogg')
+	var/datum/techtree/XT = GET_TREE(TREE_XENO)
+	XT.points_mult += (0.25 * oldtier.tier)

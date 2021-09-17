@@ -4,7 +4,7 @@
 
 	flags = TREE_FLAG_XENO
 
-	required_points = 15
+	required_points = 20
 	tier = /datum/tier/one
 	var/list/constructions_to_add = list(
 		/datum/resin_construction/resin_turf/wall/reflective,

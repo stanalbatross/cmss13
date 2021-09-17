@@ -5,7 +5,7 @@
 
 	flags = TREE_FLAG_MARINE
 
-	required_points = 20
+	required_points = 25
 	tier = /datum/tier/three
 
 /datum/tech/xeno_handler/on_unlock()

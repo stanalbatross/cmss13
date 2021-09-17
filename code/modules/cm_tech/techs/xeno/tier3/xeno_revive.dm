@@ -8,7 +8,7 @@
 
 	flags = TREE_FLAG_XENO
 
-	required_points = 15
+	required_points = 20
 	var/amount_to_give = 6
 	tier = /datum/tier/three
 

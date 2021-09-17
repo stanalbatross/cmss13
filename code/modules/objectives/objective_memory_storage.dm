@@ -53,34 +53,31 @@
 		return TRUE
 	return FALSE
 
-/datum/objective_memory_storage/proc/view_objective_memories(mob/recipient, var/real_name)
+/datum/objective_memory_storage/proc/view_objective_memories(mob/recipient, tree = TREE_NONE, var/real_name)
 	synchronize_objectives()
 	var/output
 
-	// Do we have DEFCON?
-	output += "<b>DEFCON [defcon_controller.current_defcon_level]:</b> [defcon_controller.check_defcon_percentage()]%"
-
-	output += format_objective_list(folders, "FOLDERS")
-	output += format_objective_list(progress_reports, "PROGRESS REPORTS")
-	output += format_objective_list(technical_manuals, "TECHNICAL MANUALS")
-	output += format_objective_list(disks, "DISKS")
-	output += format_objective_list(terminals, "TERMINALS")
-	output += format_objective_list(retrieve_items, "RETRIEVE ITEMS")
-	output += format_objective_list(other, "OTHER")
+	// Item and body retrieval %, power, etc.
+	output = SSobjectives.get_objectives_progress(tree)
+	var/window_name = "objective clues"
+	if(real_name)
+		window_name = "[real_name]'s objective clues"
 
 	output += "<br>"
 	output += "<hr>"
 	output += "<br>"
 
-	// Item and body retrieval %, power, etc.
-	output += SSobjectives.get_objectives_progress()
-	var/window_name = "objective clues"
-	if(real_name)
-		window_name = "[real_name]'s objective clues"
+	output += format_objective_list(folders, tree, "FOLDERS")
+	output += format_objective_list(progress_reports, tree, "PROGRESS REPORTS")
+	output += format_objective_list(technical_manuals, tree, "TECHNICAL MANUALS")
+	output += format_objective_list(disks, tree, "DISKS")
+	output += format_objective_list(terminals, tree, "TERMINALS")
+	output += format_objective_list(retrieve_items, tree, "RETRIEVE ITEMS")
+	output += format_objective_list(other, tree, "OTHER")
 
 	show_browser(recipient, output, window_name, "objectivesmemory")
 
-/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, var/category)
+/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, var/category, tree = TREE_NONE)
 	var/output = ""
 	if (!os || !os.len)
 		return output
@@ -88,6 +85,8 @@
 	var/something_to_display = FALSE
 	for(var/datum/cm_objective/O in os)
 		if(!O)
+			continue
+		if(!O.observable_by_faction(tree))
 			continue
 		if(!O.is_prerequisites_completed() || !O.is_active())
 			continue

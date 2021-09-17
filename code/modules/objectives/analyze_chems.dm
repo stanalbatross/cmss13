@@ -1,7 +1,8 @@
 datum/cm_objective/analyze_chems
 	name = "Analyze chems"
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_PROCESS_ON_DEMAND
+	objective_flags = OBJ_DO_NOT_TREE | OBJ_CONTROL_EXCLUSIVE
 	display_category = "Analyze chems"
+	controller = TREE_MARINE
 
 /datum/cm_objective/analyze_chems/total_point_value()
 	var/total_points = 0

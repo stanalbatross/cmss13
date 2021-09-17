@@ -53,7 +53,7 @@
 		if(H.is_revivable())
 			to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
 			return
-		if(H.spawned_corpse)
+		if(H.spawned_corpse || !H.chestburst)
 			to_chat(user, SPAN_XENOWARNING("This one does not look suitable!"))
 			return
 
@@ -132,6 +132,7 @@
 	playsound(src, 'sound/bullets/acid_impact1.ogg', 25)
 	iterations -= 1
 	if(!iterations)
+		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, melting_body, linked_hive)
 		vis_contents.Cut()
 		QDEL_NULL(melting_body)
 	else
@@ -165,6 +166,8 @@
 	return FALSE
 
 /obj/effect/alien/resin/special/pool/Destroy()
+	if(melting_body)
+		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, melting_body, linked_hive)
 	linked_hive.spawn_pool = null
 	vis_contents.Cut()
 	QDEL_NULL(melting_body)

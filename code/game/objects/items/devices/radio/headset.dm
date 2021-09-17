@@ -203,7 +203,6 @@
 	var/headset_hud_on = 1
 	var/locate_setting = TRACKER_SL
 
-/*
 /obj/item/device/radio/headset/almayer/verb/enter_tree()
 	set name = "Enter Techtree"
 	set desc = "Enter the Marine techtree"
@@ -212,7 +211,6 @@
 
 	var/datum/techtree/T = GET_TREE(TREE_MARINE)
 	T.enter_mob(usr)
-*/
 
 /obj/item/device/radio/headset/almayer/equipped(mob/living/carbon/human/user, slot)
 	if(slot == WEAR_L_EAR || slot == WEAR_R_EAR)

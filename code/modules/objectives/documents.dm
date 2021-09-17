@@ -8,8 +8,9 @@
 	var/area/initial_area
 	var/important = 0
 	priority = OBJECTIVE_LOW_VALUE
-	objective_flags = OBJ_PROCESS_ON_DEMAND | OBJ_FAILABLE
+	objective_flags = OBJ_PROCESS_ON_DEMAND | OBJ_FAILABLE | OBJ_CONTROL_EXCLUSIVE
 	display_flags = OBJ_DISPLAY_HIDDEN
+	controller = TREE_MARINE
 	prerequisites_required = PREREQUISITES_NONE
 	display_category = "Documents"
 
@@ -115,6 +116,7 @@
 		to_chat(user, SPAN_NOTICE("You don't notice anything useful."))
 
 /obj/item/document_objective/attack_self(mob/living/carbon/human/user)
+	. = ..()
 	if(!objective.is_active())
 		objective.activate() //Trying to rejig it just in case
 	to_chat(user, SPAN_NOTICE("You start reading \the [src]."))

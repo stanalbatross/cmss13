@@ -5,7 +5,8 @@
 	var/obj/target_item
 	var/list/area/target_areas
 	var/area/initial_location
-	objective_flags = OBJ_CAN_BE_UNCOMPLETED | OBJ_FAILABLE
+	objective_flags = OBJ_CAN_BE_UNCOMPLETED | OBJ_FAILABLE | OBJ_CONTROL_EXCLUSIVE
+	controller = TREE_MARINE
 	display_category = "Item Retrieval"
 
 /datum/cm_objective/retrieve_item/New(var/T)
@@ -53,9 +54,10 @@
 // --------------------------------------------
 /datum/cm_objective/communications
 	name = "Restore Colony Communications"
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED
+	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED | OBJ_CONTROL_EXCLUSIVE
 	display_flags = OBJ_DISPLAY_AT_END
 	priority = OBJECTIVE_ABSOLUTE_VALUE
+	controller = TREE_MARINE
 	var/last_contact_time = NONE // Time of last loss of comms to notify of
 
 /datum/cm_objective/communications/get_completion_status()

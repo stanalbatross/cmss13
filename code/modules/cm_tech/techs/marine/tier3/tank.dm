@@ -5,7 +5,7 @@
 
 	flags = TREE_FLAG_MARINE
 
-	required_points = 30
+	required_points = 32
 	tier = /datum/tier/three
 
 	var/list/to_order

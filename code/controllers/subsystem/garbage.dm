@@ -326,4 +326,5 @@ SUBSYSTEM_DEF(garbage)
 				I.no_hint++
 				SSgarbage.Queue(D)
 	else if(D.gc_destroyed == GC_CURRENTLY_BEING_QDELETED)
-		CRASH("[D.type] destroy proc was called multiple times, likely due to a qdel loop in the Destroy logic")
+		pass()
+		//CRASH("[D.type] destroy proc was called multiple times, likely due to a qdel loop in the Destroy logic")

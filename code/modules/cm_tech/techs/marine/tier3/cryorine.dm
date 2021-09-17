@@ -6,7 +6,7 @@
 	announce_name = "Wake up additional troops"
 	announce_message = "Additional troops are being taken out of cryo."
 
-	required_points = 10
+	required_points = 15
 	increase_per_purchase = 10
 
 	flags = TREE_FLAG_MARINE

@@ -6,7 +6,7 @@
 
 	flags = TREE_FLAG_MARINE
 
-	required_points = 15
+	required_points = 20
 	tier = /datum/tier/one
 
 /datum/tech/droppod/item/medic_czsp/pre_item_stats(mob/user)

@@ -279,6 +279,8 @@
 /mob/living/carbon/human/is_xeno_grabbable()
 	if(stat != DEAD || chestburst || spawned_corpse)
 		return TRUE
+	if(stat == DEAD && !isSynth(src) && (!check_tod() || !is_revivable()))
+		return TRUE
 
 	if(status_flags & XENO_HOST)
 		for(var/obj/item/alien_embryo/AE in contents)

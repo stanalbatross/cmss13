@@ -7,7 +7,7 @@
 
 	flags = TREE_FLAG_MARINE
 
-	required_points = 25
+	required_points = 32
 	tier = /datum/tier/two
 
 	droppod_input_message = "Choose a combat implant to retrieve from the droppod."

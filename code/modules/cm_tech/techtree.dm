@@ -11,6 +11,9 @@
 
 	var/points = INITIAL_STARTING_POINTS
 
+	/// Factor for point gain
+	var/points_mult = 1.0
+
 	var/background_icon = "background"
 	var/background_icon_locked = "marine"
 	var/turf/entrance
@@ -103,7 +106,10 @@
 	points = max(number, 0)
 
 /datum/techtree/proc/add_points(var/number)
-	set_points(points + number)
+	set_points(points + (number * points_mult))
+
+/datum/techtree/proc/spend_points(var/number)
+	set_points(points - number)
 
 /datum/techtree/proc/can_use_points(var/number)
 	if(number <= points)
@@ -115,7 +121,7 @@
 	if(!can_use_points(number))
 		return FALSE
 
-	add_points(-number)
+	spend_points(number)
 	return TRUE
 
 /datum/techtree/proc/has_access(var/mob/M, var/access_required)
@@ -177,3 +183,7 @@
 
 /datum/techtree/proc/can_attack(var/mob/living/carbon/H)
 	return TRUE
+
+/// Triggered just after a tier change
+/datum/techtree/proc/on_tier_change(datum/tier/oldtier)
+	return

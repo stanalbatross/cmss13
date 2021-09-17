@@ -7,7 +7,6 @@
 	var/mob/dead/observer/ghost_mob = null // If we're in a ghost, a reference to it
 	var/active = FALSE
 	var/roundstart_picked = FALSE
-
 	var/memory
 
 	var/datum/entity/player_entity/player_entity = null
@@ -15,10 +14,18 @@
 	//put this here for easier tracking ingame
 	var/datum/money_account/initial_account
 
+	/// List of objectives you have knowledge about
+	var/datum/objective_memory_storage/objective_memory
+
 /datum/mind/New(var/key, var/ckey)
 	src.key = key
 	src.ckey = ckey
 	player_entity = setup_player_entity(ckey)
+	objective_memory = new()
+
+/datum/mind/Destroy()
+	QDEL_NULL(objective_memory)
+	return ..()
 
 /datum/mind/proc/transfer_to(mob/living/new_character, var/force = FALSE)
 	if(QDELETED(new_character))
@@ -111,3 +118,19 @@
 		. = 1 //successfully created a new mind
 	if(!mind.name)	mind.name = real_name
 	mind.current = src
+
+//this is an objective that the player has just completed
+//and we want to store the objective clues generated based on it -spookydonut
+/datum/mind/proc/store_objective(datum/cm_objective/O)
+	if(objective_memory)
+		objective_memory.store_objective(O)
+
+/datum/mind/proc/view_objective_memories(mob/recipient)
+	if(objective_memory)
+		// TODOIO refactor this properly
+		if(isHumanSynthStrict(current))
+			objective_memory.view_objective_memories(recipient, TREE_MARINE, current.real_name)
+		else if(isXeno(current))
+			objective_memory.view_objective_memories(recipient, TREE_XENO, current.real_name)
+		else // basically observer
+			objective_memory.view_objective_memories(recipient, TREE_NONE, null)

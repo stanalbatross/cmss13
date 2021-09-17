@@ -5,7 +5,7 @@
 	droppod_name = "Stimulants"
 	flags = TREE_FLAG_MARINE
 
-	required_points = 25
+	required_points = 35
 	tier = /datum/tier/three
 
 	droppod_input_message = "Choose a stimulant to retrieve from the droppod."

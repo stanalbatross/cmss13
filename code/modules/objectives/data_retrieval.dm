@@ -7,7 +7,8 @@
 	var/data_retrieved = 0
 	var/data_transfer_rate = 10
 	var/area/initial_location
-	objective_flags = OBJ_FAILABLE
+	objective_flags = OBJ_FAILABLE | OBJ_CONTROL_EXCLUSIVE
+	controller = TREE_MARINE
 	var/decryption_password
 	display_category = "Data Retrieval"
 	number_of_clues_to_generate = 2
@@ -52,8 +53,9 @@
 /datum/cm_objective/retrieve_data/terminal
 	var/obj/structure/machinery/computer/objective/data_source
 	priority = OBJECTIVE_HIGH_VALUE
-	objective_flags = OBJ_FAILABLE | OBJ_REQUIRES_POWER | OBJ_REQUIRES_COMMS
+	objective_flags = OBJ_FAILABLE | OBJ_REQUIRES_POWER | OBJ_REQUIRES_COMMS | OBJ_CONTROL_EXCLUSIVE
 	prerequisites_required = PREREQUISITES_MAJORITY
+	controller = TREE_MARINE
 
 /datum/cm_objective/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
 	. = ..()

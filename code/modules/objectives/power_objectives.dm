@@ -7,9 +7,10 @@
 	name = "Restore Colony Power"
 	var/minimum_power_required = MINIMUM_POWER_OUTPUT
 	var/last_power_output = 0 // for displaying progress
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED
+	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED | OBJ_CONTROL_EXCLUSIVE
 	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_WHEN_COMPLETE
 	priority = OBJECTIVE_ABSOLUTE_VALUE
+	controller = TREE_MARINE
 
 /datum/cm_objective/establish_power/get_completion_status()
 	return "[last_power_output]W, [minimum_power_required]W required."
@@ -48,12 +49,13 @@
 // --------------------------------------------
 /datum/cm_objective/repair_apcs
 	name = "Repair APCs to fully restore power"
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED
+	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED | OBJ_CONTROL_EXCLUSIVE
 	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_WHEN_COMPLETE
 	var/total_apcs = 0
 	var/last_functioning = 0
 	var/points_per_apc = 5
 	priority = OBJECTIVE_LOW_VALUE
+	controller = TREE_MARINE
 
 /datum/cm_objective/repair_apcs/pre_round_start()
 	for(var/obj/structure/machinery/power/apc/colony_apc in machines)

@@ -1,44 +1,104 @@
 SUBSYSTEM_DEF(objectives)
 	name = "objectives"
 	init_order = SS_INIT_OBJECTIVES
-	flags = SS_NO_FIRE
+	wait = 5.5 SECONDS
 	var/list/objectives = list()
 	var/list/active_objectives = list()
 	var/list/inactive_objectives = list()
 	var/list/non_processing_objectives = list()
+	var/datum/cm_objective/communications/comms
 	var/datum/cm_objective/establish_power/power
-	var/datum/cm_objective/recover_corpses/marines/marines
-	var/datum/cm_objective/recover_corpses/xenos/xenos
+	var/datum/cm_objective/recover_corpses/corpsewar
 	var/datum/cm_objective/contain/contain
 	var/datum/cm_objective/analyze_chems/chems
 	var/bonus_admin_points = 0 //bonus points given by admins, doesn't increase the point cap, but does increase points for easier rewards
-
-	var/nextDChatAnnouncement = 5 MINUTES //5 minutes in
-
+	var/next_sitrep = 5 MINUTES
 	var/corpses = 15
+
+	// Controller runtime
+	var/list/datum/cm_objective/current_inactive_run = list()
+	var/list/datum/cm_objective/current_active_run = list()
 
 /datum/controller/subsystem/objectives/Initialize(start_timeofday)
 	. = ..()
-	generate_objectives()
-	clear_objective_landmarks()
-	connect_objectives()
 	// Setup some global objectives
-	power = new /datum/cm_objective/establish_power
-	marines = new /datum/cm_objective/recover_corpses/marines
-	xenos = new /datum/cm_objective/recover_corpses/xenos
-	contain = new /datum/cm_objective/contain
-	chems = new /datum/cm_objective/analyze_chems
-	//objectives_controller.add_objective(new /datum/cm_objective/minimise_losses/squad_marines)
-	add_objective(new /datum/cm_objective/recover_corpses/colonists)
+	power = new
+	comms = new
+	corpsewar = new
+	contain = new
+	chems = new
 	active_objectives += power
 
-	generate_corpses(corpses)
+	initialize_objectives()
 
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/pre_round_start)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/post_round_start)
 
+/datum/controller/subsystem/objectives/fire(resumed = FALSE)
+	if(!resumed)
+		current_inactive_run = inactive_objectives.Copy()
+		current_active_run = active_objectives.Copy()
+
+		if(world.time > next_sitrep)
+			next_sitrep = world.time + 5 MINUTES + round(rand() * (5 MINUTES))
+			announce_stats()
+			if(MC_TICK_CHECK)
+				return
+
+	while(length(current_inactive_run))
+		var/datum/cm_objective/O = current_inactive_run[length(current_inactive_run)]
+		current_inactive_run.len--
+		if(O.can_be_activated())
+			O.activate()
+		if(MC_TICK_CHECK)
+			return
+
+	while(length(current_active_run))
+		var/datum/cm_objective/O = current_active_run[length(current_active_run)]
+		current_active_run.len--
+		O.process()
+		O.check_completion()
+		O.award_points() // TODOIO group objectives for scoring
+		if(O.is_complete())
+			O.deactivate()
+		if(MC_TICK_CHECK)
+			return
+
+/datum/controller/subsystem/objectives/proc/announce_stats()
+	var/scored_points
+	var/total_points
+	var/datum/techtree/tree
+
+	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
+
+	total_points = get_total_points(TREE_MARINE)
+	scored_points = get_scored_points(TREE_MARINE)
+	tree = GET_TREE(TREE_MARINE)
+
+	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
+	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
+	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":i", TRUE)
+	message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+	to_chat(GLOB.observer_list, "Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+
+	total_points = get_total_points(TREE_XENO)
+	scored_points = get_scored_points(TREE_XENO)
+	tree = GET_TREE(TREE_XENO)
+
+	xeno_message(SPAN_XENOANNOUNCE("The hive recollects having achieved [scored_points] / [total_points] points of its current objectives."), 2)
+	message_staff("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+	to_chat(GLOB.observer_list, "Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+
+/// Allows to perform objective initialization later on in case of map changes
+/datum/controller/subsystem/objectives/proc/initialize_objectives()
+	SHOULD_NOT_SLEEP(TRUE)
+	generate_objectives()
+	connect_objectives()
+	generate_corpses(corpses)
+
 /datum/controller/subsystem/objectives/proc/generate_objectives()
-	if(objective_spawn_close.len == 0 || objective_spawn_medium.len == 0 || objective_spawn_far.len == 0 || objective_spawn_science.len == 0)
+	if(!length(GLOB.objective_landmarks_close) || !length(GLOB.objective_landmarks_medium) \
+	|| !length(GLOB.objective_landmarks_far)   || !length(GLOB.objective_landmarks_science))
 		//The map doesn't have the correct landmarks, so we generate nothing, hoping the map has normal objectives
 		return
 
@@ -60,10 +120,30 @@ SUBSYSTEM_DEF(objectives)
 		experimental_devices = 20
 
 	//Calculating document ratios so we don't end up with filing cabinets holding 10 documents because there are few filing cabinets
-	var/relative_document_ratio_close = objective_spawn_close_documents.len / objective_spawn_close.len
-	var/relative_document_ratio_medium = objective_spawn_medium_documents.len / objective_spawn_medium.len
-	var/relative_document_ratio_far = objective_spawn_far_documents.len / objective_spawn_far.len
-	var/relative_document_ratio_science = objective_spawn_science_documents.len / objective_spawn_science.len
+	// TODO: use less dumb structuring than legacy one
+	var/relative_document_ratio_close = 0
+	for(var/key in GLOB.objective_landmarks_close)
+		if(GLOB.objective_landmarks_close[key])
+			relative_document_ratio_close++
+	relative_document_ratio_close /= length(GLOB.objective_landmarks_close)
+
+	var/relative_document_ratio_medium = 0
+	for(var/key in GLOB.objective_landmarks_medium)
+		if(GLOB.objective_landmarks_medium[key])
+			relative_document_ratio_medium++
+	relative_document_ratio_medium /= length(GLOB.objective_landmarks_medium)
+
+	var/relative_document_ratio_far = 0
+	for(var/key in GLOB.objective_landmarks_far)
+		if(GLOB.objective_landmarks_far[key])
+			relative_document_ratio_far++
+	relative_document_ratio_far /= length(GLOB.objective_landmarks_far)
+
+	var/relative_document_ratio_science = 0
+	for(var/key in GLOB.objective_landmarks_science)
+		if(GLOB.objective_landmarks_science[key])
+			relative_document_ratio_science++
+	relative_document_ratio_science /= length(GLOB.objective_landmarks_science)
 
 	//Intel
 	for(var/i=0;i<paper_scraps;i++)
@@ -112,55 +192,60 @@ SUBSYSTEM_DEF(objectives)
 			arm_equipment(M, "Corpse - [spawner.name]", TRUE, FALSE)
 		objective_spawn_corpse.Remove(spawner)
 
-/datum/controller/subsystem/objectives/proc/clear_objective_landmarks()
-	//Don't need them anymore, so we remove them
-	objective_spawn_close = null
-	objective_spawn_medium = null
-	objective_spawn_far = null
-	objective_spawn_science = null
-	objective_spawn_close_documents = null
-	objective_spawn_medium_documents = null
-	objective_spawn_far_documents = null
-	objective_spawn_science_documents = null
-
 /datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(var/dest, var/obj/item/it)
-	var/picked_locaton
+	var/picked_location
 	switch(dest)
 		if("close")
-			picked_locaton = pick(objective_spawn_close)
+			picked_location = pick(GLOB.objective_landmarks_close)
 		if("medium")
-			picked_locaton = pick(objective_spawn_medium)
+			picked_location = pick(GLOB.objective_landmarks_medium)
 		if("far")
-			picked_locaton = pick(objective_spawn_far)
+			picked_location = pick(GLOB.objective_landmarks_far)
 		if("science")
-			picked_locaton = pick(objective_spawn_science)
+			picked_location = pick(GLOB.objective_landmarks_science)
 
 		if("close_documents")
-			if(objective_spawn_close_documents.len)
-				picked_locaton = pick(objective_spawn_close_documents)
-			if(!picked_locaton)
-				picked_locaton = pick(objective_spawn_close)
-		if("medium_documents")
-			if(objective_spawn_medium_documents.len)
-				picked_locaton = pick(objective_spawn_medium_documents)
-			if(!picked_locaton)
-				picked_locaton = pick(objective_spawn_medium)
-		if("far_documents")
-			if(objective_spawn_far_documents.len)
-				picked_locaton = pick(objective_spawn_far_documents)
-			if(!picked_locaton)
-				picked_locaton = pick(objective_spawn_far)
-		if("science_documents")
-			if(objective_spawn_science_documents.len)
-				picked_locaton = pick(objective_spawn_science_documents)
-			if(!picked_locaton)
-				picked_locaton = pick(objective_spawn_science)
+			var/list/candidates = list()
+			for(var/key in GLOB.objective_landmarks_close)
+				if(GLOB.objective_landmarks_close[key])
+					candidates += key
+			picked_location = SAFEPICK(candidates)
+			if(!picked_location)
+				picked_location = pick(GLOB.objective_landmarks_close)
 
-	if(!picked_locaton)
+		if("medium_documents")
+			var/list/candidates = list()
+			for(var/key in GLOB.objective_landmarks_medium)
+				if(GLOB.objective_landmarks_medium[key])
+					candidates += key
+			picked_location = SAFEPICK(candidates)
+			if(!picked_location)
+				picked_location = pick(GLOB.objective_landmarks_medium)
+
+		if("far_documents")
+			var/list/candidates = list()
+			for(var/key in GLOB.objective_landmarks_far)
+				if(GLOB.objective_landmarks_far[key])
+					candidates += key
+			picked_location = SAFEPICK(candidates)
+			if(!picked_location)
+				picked_location = pick(GLOB.objective_landmarks_far)
+
+		if("science_documents")
+			var/list/candidates = list()
+			for(var/key in GLOB.objective_landmarks_science)
+				if(GLOB.objective_landmarks_science[key])
+					candidates += key
+			picked_location = SAFEPICK(candidates)
+			if(!picked_location)
+				picked_location = pick(GLOB.objective_landmarks_science)
+
+	picked_location = get_turf(picked_location)
+	if(!picked_location)
 		CRASH("Unable to pick a location at [dest] for [it]")
 
 	var/generated = FALSE
-	for(var/obj/O in picked_locaton)
+	for(var/obj/O in picked_location)
 		if(istype(O, /obj/structure/closet) || istype(O, /obj/structure/safe) || istype(O, /obj/structure/filingcabinet))
 			if(istype(O, /obj/structure/closet))
 				var/obj/structure/closet/c = O
@@ -172,8 +257,7 @@ SUBSYSTEM_DEF(objectives)
 			break
 
 	if(!generated)
-		new it(picked_locaton)
-
+		new it(picked_location)
 
 /datum/controller/subsystem/objectives/proc/connect_objectives()
 	for(var/datum/cm_objective/C in objectives)
@@ -197,31 +281,33 @@ SUBSYSTEM_DEF(objectives)
 	for(var/datum/cm_objective/O in objectives)
 		O.post_round_start()
 
-/datum/controller/subsystem/objectives/proc/get_objectives_progress()
+/datum/controller/subsystem/objectives/proc/get_objectives_progress(tree = TREE_NONE)
 	var/point_total = 0
 	var/complete = 0
 
 	var/list/categories = list()
 	var/list/notable_objectives = list()
 
-	for(var/datum/cm_objective/C in objectives)
+	for(var/datum/cm_objective/C as anything in objectives)
+		if(!C.observable_by_faction(tree))
+			continue
 		if(C.display_category)
 			if(!(C.display_category in categories))
 				categories += C.display_category
 				categories[C.display_category] = list("count" = 0, "total" = 0, "complete" = 0)
 			categories[C.display_category]["count"]++
-			categories[C.display_category]["total"] += C.total_point_value()
-			categories[C.display_category]["complete"] += C.get_point_value()
+			categories[C.display_category]["total"] += C.total_point_value(tree)
+			categories[C.display_category]["complete"] += C.get_point_value(tree)
 
 		if(C.display_flags & OBJ_DISPLAY_AT_END)
 			notable_objectives += C
 
-		point_total += C.total_point_value()
-		complete += C.get_point_value()
+		point_total += C.total_point_value(tree)
+		complete += C.get_point_value(tree)
 
 	var/dat = ""
 	if(objectives.len) // protect against divide by zero
-		dat = "<b>Total Objectives:</b> [complete]pts completed ([round(100.0*complete/point_total)]%)<br>"
+		dat = "<b>Total Objectives:</b> [complete]pts achieved<br>"
 		if(categories.len)
 			var/total = 1 //To avoid divide by zero errors, just in case...
 			var/compl
@@ -230,10 +316,12 @@ SUBSYSTEM_DEF(objectives)
 				compl = categories[cat]["complete"]
 				if(total == 0)
 					total = 1 //To avoid divide by zero errors, just in case...
-				dat += "<b>[cat]: </b> [compl]pts completed ([round(100.0*compl/total)]%)<br>"
+				dat += "<b>[cat]: </b> [compl]pts achieved<br>"
 
-		for(var/datum/cm_objective/O in notable_objectives)
-			dat += O.get_readable_progress()
+		for(var/datum/cm_objective/O as anything in notable_objectives)
+			if(!O.observable_by_faction(tree))
+				continue
+			dat += O.get_readable_progress(tree)
 
 	return dat
 
@@ -386,38 +474,22 @@ SUBSYSTEM_DEF(objectives)
 	inactive_objectives -= O
 	active_objectives -= O
 
-/datum/controller/subsystem/objectives/proc/get_total_points()
+/datum/controller/subsystem/objectives/proc/get_total_points(tree = TREE_NONE)
 	var/total_points = 0
 
-	for(var/datum/cm_objective/L in objectives)
-		total_points += L.total_point_value()
+	for(var/datum/cm_objective/L as anything in objectives)
+		if(!L.observable_by_faction(tree))
+			continue
+		total_points += L.total_point_value(tree)
 
 	return total_points
 
-/datum/controller/subsystem/objectives/proc/get_scored_points()
+/datum/controller/subsystem/objectives/proc/get_scored_points(tree = TREE_NONE)
 	var/scored_points = 0 + bonus_admin_points//bonus points only apply to scored points, not to total, to make admin lives easier
 
 	for(var/datum/cm_objective/L in objectives)
-		scored_points += L.get_point_value()
+		if(!L.observable_by_faction(tree))
+			continue
+		scored_points += L.get_point_value(tree)
 
 	return scored_points
-
-/datum/controller/subsystem/objectives/proc/get_objective_completion_stats()
-	var/total_points = get_total_points()
-	var/scored_points = get_scored_points()
-
-	var/list/answer = list()
-	answer["scored_points"] = scored_points
-	answer["total_points"] = total_points
-
-	if(world.time > nextDChatAnnouncement)
-		nextDChatAnnouncement += 5 MINUTES //5 minutes
-
-		for(var/i in GLOB.observer_list)
-			var/mob/M = i
-			//Announce the numbers to deadchat
-			to_chat(M, SPAN_WARNING("Objectives status: [scored_points] / [total_points] ([scored_points/total_points*100]%)."))
-
-		message_staff("Objectives status: [scored_points] / [total_points] ([scored_points/total_points*100]%).", 1)
-
-	return answer

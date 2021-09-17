@@ -367,6 +367,12 @@ obj/item/storage/backpack/proc/compare_id(var/mob/living/carbon/human/H)
 	desc = "A heavy-duty chestrig used by some USCM technicians."
 	icon_state = "marinesatch_techi"
 
+/obj/item/storage/backpack/marine/satchel/intel
+	name = "\improper USCM lightweight expedition pack"
+	desc = "A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to USCM intelligence officers."
+	icon_state = "marinesatch_io"
+	max_storage_space = 20
+
 GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/rto)
 
 /obj/item/storage/backpack/marine/satchel/rto
