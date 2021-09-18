@@ -77,7 +77,7 @@
 
 	show_browser(recipient, output, window_name, "objectivesmemory")
 
-/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, var/category, tree = TREE_NONE)
+/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, tree = TREE_NONE, var/category)
 	var/output = ""
 	if (!os || !os.len)
 		return output

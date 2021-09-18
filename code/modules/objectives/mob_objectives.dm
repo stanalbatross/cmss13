@@ -52,13 +52,6 @@
 	priority = OBJECTIVE_EXTREME_VALUE
 	display_category = "Rescue the Survivors"
 
-/datum/cm_objective/move_mob/almayer/vip
-	name = "Rescue the VIP"
-	mob_can_die = MOB_FAILS_ON_DEATH
-	priority = OBJECTIVE_ABSOLUTE_VALUE
-	display_category = "Rescue the VIP"
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_FAILABLE | OBJ_CAN_BE_UNCOMPLETED | OBJ_CONTROL_EXCLUSIVE | OBJ_CONTROL_FLAG
-
 // --------------------------------------------
 // *** Recover the dead ***
 // --------------------------------------------
@@ -117,44 +110,37 @@
 		LAZYDISTINCTADD(corpses[TREE_XENO], X)
 
 /// Get score value for a given corpse
-/datum/cm_objective/recover_corpses/proc/score_corpse(mob/target, owner = TREE_NONE, scorer = TREE_NONE)
+/datum/cm_objective/recover_corpses/proc/score_corpse(mob/target)
 	// TODOIO standardize points
 	var/value = 0
 
 	if(isYautja(target))
-		value = 100
+		value = 80
 
 	else if(isXeno(target))
 		var/mob/living/carbon/Xenomorph/X = target
 		switch(X.tier)
 			if(1)
 				if(isXenoPredalien(X))
-					value = 100
-				else value = 25
+					value = 80
+				else value = 20
 			if(2)
-				value = 50
+				value = 40
 			if(3)
-				value = 75
+				value = 65
 			else
 				if(isXenoQueen(X)) //Queen is Tier 0 for some reason...
-					value = 100
-
-		if(owner == scorer)
-			value *= 2
+					value = 80
 
 	else if(isHumanSynthStrict(target))
-		switch(owner)
-			if(TREE_NONE) // Survivors
-				value = 60
-			if(TREE_MARINE)
-				value = 10
+		return 12
 
 	return value
 
 /// Handle consumption of a corpse by a spawn pool or eggmorpher and addition to base point pool
 /datum/cm_objective/recover_corpses/proc/handle_corpse_consumption(datum/source, mob/target, target_hive)
 	var/current = LAZYACCESS(points_base, TREE_XENO) // TODO handle mapping the day techtrees support multi hive
-	current += score_corpse(target, TREE_XENO, TREE_XENO)
+	current += score_corpse(target)
 	LAZYSET(points_base, TREE_XENO, current)
 	for(var/F as anything in corpses)
 		LAZYREMOVE(corpses[F], target)
@@ -178,21 +164,20 @@
 				continue
 
 			// Get the corpse value
-			var/marine_value = score_corpse(target, F, TREE_MARINE)
-			points_potential[TREE_MARINE] += marine_value
-			var/xeno_value   = score_corpse(target, F, TREE_XENO)
-			points_potential[TREE_XENO] += xeno_value
+			var/corpse_val = score_corpse(target)
+			points_potential[TREE_MARINE] += corpse_val
+			points_potential[TREE_XENO] += corpse_val
 
 			// Add points depending on who controls it
 			var/turf/T = get_turf(target)
 			var/area/A = get_area(T)
 			if(istype(A, /area/almayer/medical/morgue) || istype(A, /area/almayer/medical/containment))
-				points_cache[TREE_MARINE] += marine_value
+				points_cache[TREE_MARINE] += corpse_val
 			else
 				var/obj/effect/alien/weeds/weed = locate() in T
 				if(weed)
 					if(weed?.weed_strength >= WEED_LEVEL_HIVE)
-						points_cache[TREE_XENO] += xeno_value
+						points_cache[TREE_XENO] += corpse_val
 
 /// Update awarded points to the controlling tech-faction
 /datum/cm_objective/recover_corpses/award_points()
@@ -204,6 +189,8 @@
 			awarded_points[F] = 0
 		var/diff = current - awarded_points[F]
 		if(diff > 0)
+			if(F == TREE_XENO)
+				diff *= 2 // Duh
 			var/datum/techtree/TT = GET_TREE(F)
 			if(TT)
 				TT.add_points(diff * OBJ_VALUE_TO_TECHPOINTS)
@@ -216,7 +203,7 @@
 
 /datum/cm_objective/recover_corpses/get_completion_status(tree = TREE_NONE)
 	if(tree == TREE_NONE) // Observer mode
-		return "[points_cache[TREE_MARINE]]pts controlled by Marines (awarded [awarded_points[TREE_MARINE]]/[points_potential[TREE_MARINE]]pts), [points_cache[TREE_XENO]]pts controlled by Xenos (awarded [awarded_points[TREE_XENO]]/[points_potential[TREE_XENO]]pts)"
+		return "[points_cache[TREE_MARINE]]pts controlled by Marines (awarded [awarded_points[TREE_MARINE]]pts out of [points_potential[TREE_MARINE]] in play), [points_cache[TREE_XENO]]pts controlled by Xenos (awarded [awarded_points[TREE_XENO]]pts out of [points_potential[TREE_XENO]] in play)"
 
 	var/enemy_points = 0
 	var/claimable_points = points_potential[tree] - points_cache[tree]

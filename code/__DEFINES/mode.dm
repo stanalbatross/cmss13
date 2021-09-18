@@ -153,11 +153,11 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // Objective priorities
 #define OBJECTIVE_NO_VALUE 0
-#define OBJECTIVE_LOW_VALUE 10
-#define OBJECTIVE_MEDIUM_VALUE 20
-#define OBJECTIVE_HIGH_VALUE 30
-#define OBJECTIVE_EXTREME_VALUE 50
-#define OBJECTIVE_ABSOLUTE_VALUE 100
+#define OBJECTIVE_LOW_VALUE 6
+#define OBJECTIVE_MEDIUM_VALUE 12
+#define OBJECTIVE_HIGH_VALUE 20
+#define OBJECTIVE_EXTREME_VALUE 40
+#define OBJECTIVE_ABSOLUTE_VALUE 60
 
 //=================================================
 
@@ -199,7 +199,7 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // TW / DEFCON balancing factors
 /// Scale from objective value to given out tech points
-#define OBJ_VALUE_TO_TECHPOINTS 0.15
+#define OBJ_VALUE_TO_TECHPOINTS 0.10
 
 
 //=================================================

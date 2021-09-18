@@ -21,6 +21,7 @@ SUBSYSTEM_DEF(objectives)
 
 /datum/controller/subsystem/objectives/Initialize(start_timeofday)
 	. = ..()
+
 	// Setup some global objectives
 	power = new
 	comms = new
@@ -28,8 +29,6 @@ SUBSYSTEM_DEF(objectives)
 	contain = new
 	chems = new
 	active_objectives += power
-
-	initialize_objectives()
 
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/pre_round_start)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/post_round_start)
@@ -69,8 +68,6 @@ SUBSYSTEM_DEF(objectives)
 	var/total_points
 	var/datum/techtree/tree
 
-	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
-
 	total_points = get_total_points(TREE_MARINE)
 	scored_points = get_scored_points(TREE_MARINE)
 	tree = GET_TREE(TREE_MARINE)
@@ -79,7 +76,7 @@ SUBSYSTEM_DEF(objectives)
 	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
 	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":i", TRUE)
 	message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
-	to_chat(GLOB.observer_list, "Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+	to_chat(GLOB.observer_list, SPAN_WARNING("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent."))
 
 	total_points = get_total_points(TREE_XENO)
 	scored_points = get_scored_points(TREE_XENO)
@@ -87,7 +84,7 @@ SUBSYSTEM_DEF(objectives)
 
 	xeno_message(SPAN_XENOANNOUNCE("The hive recollects having achieved [scored_points] / [total_points] points of its current objectives."), 2)
 	message_staff("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
-	to_chat(GLOB.observer_list, "Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+	to_chat(GLOB.observer_list, SPAN_WARNING("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent."))
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/objectives/proc/initialize_objectives()
@@ -273,6 +270,7 @@ SUBSYSTEM_DEF(objectives)
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
+	initialize_objectives()
 	for(var/datum/cm_objective/O in objectives)
 		O.pre_round_start()
 

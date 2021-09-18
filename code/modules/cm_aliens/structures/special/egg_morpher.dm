@@ -22,8 +22,6 @@
 	range_bounds = RECT(x, y, EGGMORPG_RANGE, EGGMORPG_RANGE)
 
 /obj/effect/alien/resin/special/eggmorph/Destroy()
-	if(captured_mob)
-		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 	if (stored_huggers && linked_hive)
 		//Hugger explosion, like a carrier
 		var/obj/item/clothing/mask/facehugger/F
@@ -63,7 +61,7 @@
 					return
 			if(isXeno(M))
 				return
-			if(M == captured_mob)
+			if(captured_mob)
 				to_chat(user, SPAN_XENOWARNING("[src] is already digesting [M]!"))
 				return
 			if(huggers_to_grow + stored_huggers >= huggers_to_grow_max)
@@ -73,11 +71,8 @@
 				return
 			visible_message(SPAN_DANGER("\The [src] churns as it begins digest \the [M], spitting out foul smelling fumes!"))
 			playsound(src, "alien_drool", 25)
-			if(captured_mob)
-				//Get rid of what we have there, we're overwriting it
-				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
-				qdel(captured_mob)
 			captured_mob = M
+			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 			captured_mob.setDir(SOUTH)
 			captured_mob.moveToNullspace()
 			var/matrix/MX = matrix()
@@ -130,7 +125,6 @@
 		if(huggers_to_grow <= 0)
 			visible_message(SPAN_DANGER("\The [src] groans as its contents are reduced to nothing!"))
 			vis_contents.Cut()
-			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_CONSUMED, captured_mob, linked_hive)
 			QDEL_NULL(captured_mob)
 			update_icon()
 

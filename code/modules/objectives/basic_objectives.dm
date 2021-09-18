@@ -56,7 +56,7 @@
 	name = "Restore Colony Communications"
 	objective_flags = OBJ_DO_NOT_TREE | OBJ_CAN_BE_UNCOMPLETED | OBJ_CONTROL_EXCLUSIVE
 	display_flags = OBJ_DISPLAY_AT_END
-	priority = OBJECTIVE_ABSOLUTE_VALUE
+	priority = OBJECTIVE_EXTREME_VALUE
 	controller = TREE_MARINE
 	var/last_contact_time = NONE // Time of last loss of comms to notify of
 
