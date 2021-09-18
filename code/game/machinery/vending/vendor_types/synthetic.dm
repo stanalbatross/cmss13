@@ -249,7 +249,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 //------------EXPERIMENTAL TOOL KITS---------------
 /obj/effect/essentials_set/cnailgun
 	spawned_gear_list = list(
-		/obj/item/weapon/gun/smg/nailgun/compact
-		/obj/item/ammo_magazine/smg/nailgun
-		/obj/item/ammo_magazine/smg/nailgun
+		/obj/item/weapon/gun/smg/nailgun/compact,
+		/obj/item/ammo_magazine/smg/nailgun,
+		/obj/item/ammo_magazine/smg/nailgun,
 	)
