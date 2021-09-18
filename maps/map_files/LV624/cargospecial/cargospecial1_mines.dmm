@@ -6,6 +6,10 @@
 /obj/structure/largecrate/random/barrel/blue,
 /turf/open/floor/vault,
 /area/lv624/lazarus/quartstorage)
+"d" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/vault,
+/area/lv624/lazarus/quartstorage)
 "n" = (
 /turf/closed/wall,
 /area/lv624/lazarus/quartstorage)
@@ -49,6 +53,7 @@
 "I" = (
 /obj/item/defenses/handheld/sentry/flamer,
 /obj/structure/closet/crate,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/vault,
 /area/lv624/lazarus/quartstorage)
 
@@ -63,21 +68,21 @@ I
 a
 p
 b
-r
+d
 r
 "}
 (3,1,1) = {"
 a
 p
 s
-r
+d
 r
 "}
 (4,1,1) = {"
 a
 p
 t
-r
+d
 v
 "}
 (5,1,1) = {"

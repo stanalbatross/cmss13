@@ -29,6 +29,10 @@
 	icon_state = "grassdirt_corner"
 	},
 /area/lv624/ground/jungle/south_west_jungle)
+"eM" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/south_west_jungle)
 "eV" = (
 /obj/structure/flora/grass/tallgrass/jungle/corner{
 	dir = 5
@@ -518,7 +522,7 @@ rK
 oD
 oD
 Gi
-NU
+eM
 XG
 NU
 RS

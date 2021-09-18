@@ -14,6 +14,12 @@
 	icon_state = "platingdmg1"
 	},
 /area/lv624/lazarus/medbay)
+"ay" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "platingdmg1"
+	},
+/area/lv624/lazarus/medbay)
 "aO" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor{
@@ -26,6 +32,13 @@
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
+	},
+/area/lv624/lazarus/medbay)
+"ct" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor{
+	dir = 8;
+	icon_state = "damaged5"
 	},
 /area/lv624/lazarus/medbay)
 "cQ" = (
@@ -117,9 +130,9 @@
 "kh" = (
 /obj/structure/surface/table,
 /obj/item/clothing/glasses/hud/health,
-
 /obj/effect/landmark/crap_item,
 /obj/item/reagent_container/spray/cleaner,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -140,6 +153,7 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -158,6 +172,7 @@
 	pixel_x = 0;
 	pixel_y = 28
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -177,6 +192,7 @@
 /turf/open/gm/dirt,
 /area/lv624/ground/colony/south_medbay_road)
 "ok" = (
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "whiteblue";
@@ -191,7 +207,6 @@
 /area/lv624/lazarus/medbay)
 "pp" = (
 /obj/structure/closet/wardrobe,
-
 /obj/structure/machinery/light{
 	dir = 8
 	},
@@ -208,7 +223,7 @@
 	pixel_x = 5;
 	pixel_y = 4
 	},
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -243,6 +258,12 @@
 	icon_state = "damaged3"
 	},
 /area/lv624/lazarus/medbay)
+"vk" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
+/area/lv624/lazarus/medbay)
 "vm" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
@@ -262,6 +283,7 @@
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -299,8 +321,8 @@
 /area/lv624/lazarus/medbay)
 "zD" = (
 /obj/structure/surface/table,
-
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -343,6 +365,10 @@
 	tag = "icon-whitebluefull"
 	},
 /area/lv624/lazarus/medbay)
+"Cu" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/colony/south_medbay_road)
 "Df" = (
 /obj/item/stack/sheet/metal{
 	amount = 1
@@ -359,6 +385,21 @@
 /turf/open/floor{
 	dir = 8;
 	icon_state = "damaged5"
+	},
+/area/lv624/lazarus/medbay)
+"Dz" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor{
+	icon_state = "white"
+	},
+/area/lv624/lazarus/medbay)
+"DZ" = (
+/obj/item/stack/sheet/metal{
+	amount = 1
+	},
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
 	},
 /area/lv624/lazarus/medbay)
 "Ed" = (
@@ -382,7 +423,7 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -440,6 +481,7 @@
 /area/lv624/lazarus/medbay)
 "JO" = (
 /obj/effect/landmark/crap_item,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
 	},
@@ -455,6 +497,12 @@
 /obj/structure/flora/bush/ausbushes/reedbush,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_west_jungle)
+"Lb" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "white"
+	},
+/area/lv624/lazarus/medbay)
 "Lk" = (
 /obj/structure/machinery/light{
 	dir = 1
@@ -499,13 +547,20 @@
 	pixel_y = 3
 	},
 /obj/item/clothing/mask/surgical,
-
 /obj/structure/machinery/light{
 	dir = 1
 	},
 /obj/item/storage/belt/medical/full,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
+	},
+/area/lv624/lazarus/medbay)
+"Or" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 8;
+	icon_state = "damaged5"
 	},
 /area/lv624/lazarus/medbay)
 "Os" = (
@@ -514,7 +569,7 @@
 	pixel_y = 4
 	},
 /obj/item/tool/pen,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -545,15 +600,16 @@
 /area/lv624/lazarus/medbay)
 "Px" = (
 /obj/structure/surface/table,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
 /area/lv624/lazarus/medbay)
 "PE" = (
 /obj/structure/filingcabinet,
-
 /obj/structure/machinery/light,
+/obj/effect/landmark/objective_landmark/medium,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "damaged5"
@@ -588,8 +644,8 @@
 "TC" = (
 /obj/structure/surface/table,
 /obj/item/reagent_container/spray,
-
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -603,6 +659,7 @@
 /area/lv624/lazarus/medbay)
 "Uq" = (
 /obj/effect/decal/cleanable/blood/drip,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -709,7 +766,7 @@ XJ
 XJ
 XJ
 gp
-am
+DZ
 Df
 gp
 Fk
@@ -748,7 +805,7 @@ YV
 jW
 EZ
 JK
-QR
+ay
 Pk
 aw
 Uq
@@ -763,7 +820,7 @@ XA
 XJ
 XJ
 hW
-YV
+Dz
 Gh
 UH
 Pk
@@ -775,7 +832,7 @@ mz
 Fk
 Jc
 og
-og
+Cu
 "}
 (8,1,1) = {"
 XA
@@ -807,7 +864,7 @@ Fk
 ok
 Ed
 YJ
-Ed
+ct
 UG
 ot
 ot
@@ -819,7 +876,7 @@ og
 XA
 XJ
 ih
-YV
+Lb
 YV
 Il
 yU
@@ -828,7 +885,7 @@ QR
 YJ
 vm
 uV
-fX
+vk
 Ed
 YV
 og
@@ -843,7 +900,7 @@ Xv
 Iy
 UH
 QR
-YV
+Dz
 it
 UG
 iq
@@ -865,7 +922,7 @@ JY
 YV
 uV
 Ed
-Ed
+Or
 PE
 yU
 fX
@@ -900,7 +957,7 @@ Cq
 Fk
 Fk
 MT
-Ed
+ct
 Ed
 lD
 FJ
@@ -926,7 +983,7 @@ BL
 BL
 Fk
 nG
-og
+Cu
 og
 "}
 (16,1,1) = {"
@@ -945,7 +1002,7 @@ Bn
 Bn
 Bn
 nG
-og
+Cu
 og
 "}
 (17,1,1) = {"

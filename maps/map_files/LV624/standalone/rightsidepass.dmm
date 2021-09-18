@@ -164,6 +164,10 @@
 	dir = 8
 	},
 /area/lv624/ground/jungle/east_jungle)
+"Eb" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/east_jungle)
 "Ek" = (
 /turf/open/gm/river,
 /area/lv624/ground/river/east_river)
@@ -234,6 +238,10 @@
 /area/lv624/ground/jungle/east_jungle)
 "Ov" = (
 /turf/open/gm/dirtgrassborder,
+/area/lv624/ground/barrens/south_eastern_jungle_barrens)
+"OV" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
 "Pb" = (
 /obj/structure/flora/grass/tallgrass/jungle/corner{
@@ -391,7 +399,7 @@ kf
 "}
 (4,1,1) = {"
 Ov
-cG
+OV
 cG
 cG
 cG
@@ -440,7 +448,7 @@ cG
 cG
 cG
 Wq
-cG
+OV
 tN
 PV
 PV
@@ -472,7 +480,7 @@ PV
 WK
 DA
 VF
-tT
+Eb
 tT
 Pr
 Pr

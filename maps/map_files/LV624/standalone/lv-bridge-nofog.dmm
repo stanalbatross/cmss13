@@ -144,6 +144,13 @@
 	dir = 1
 	},
 /area/lv624/ground/river/central_river)
+"qn" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating{
+	dir = 1;
+	icon_state = "asteroidwarning"
+	},
+/area/lv624/ground/river/central_river)
 "qL" = (
 /obj/effect/spawner/gibspawner/human,
 /obj/effect/decal/cleanable/blood,
@@ -152,6 +159,12 @@
 	icon_state = "asteroidfloor"
 	},
 /area/lv624/ground/river/central_river)
+"uM" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/lv624/ground/jungle/north_jungle)
 "xB" = (
 /obj/effect/landmark/crap_item,
 /turf/open/gm/dirtgrassborder{
@@ -169,6 +182,7 @@
 /area/lv624/ground/jungle/north_jungle)
 "BW" = (
 /obj/effect/decal/cleanable/blood,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating{
 	dir = 1;
 	icon_state = "asteroidfloor"
@@ -318,7 +332,7 @@ aj
 ak
 "}
 (8,1,1) = {"
-Yw
+qn
 DX
 DX
 DX
@@ -328,7 +342,7 @@ al
 qL
 lY
 ai
-lS
+uM
 aj
 aj
 "}

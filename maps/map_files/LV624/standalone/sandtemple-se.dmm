@@ -60,6 +60,10 @@
 /obj/structure/flora/jungle/planttop1,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/south_east_jungle)
+"kT" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/south_east_jungle)
 "lV" = (
 /obj/structure/flora/jungle/vines/heavy{
 	icon_state = "heavy_6";
@@ -112,6 +116,10 @@
 	},
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/south_east_jungle)
+"uA" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/jungle/south_east_jungle)
 "wQ" = (
 /obj/structure/flora/jungle/vines/heavy{
 	pixel_x = -28
@@ -152,10 +160,29 @@
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/gm/dirt,
 /area/lv624/ground/jungle/south_east_jungle)
+"Dh" = (
+/obj/structure/flora/jungle/vines/heavy{
+	icon_state = "heavy_6";
+	pixel_x = 0;
+	pixel_y = 26
+	},
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/jungle/south_east_jungle)
 "EZ" = (
 /obj/structure/flora/jungle/vines{
 	icon_state = "light_3"
 	},
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/jungle/south_east_jungle)
+"KS" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/jungle/south_east_jungle)
 "LV" = (
@@ -375,7 +402,7 @@ EZ
 Xl
 Xy
 Xy
-EZ
+KS
 Wl
 Yz
 aK
@@ -388,7 +415,7 @@ qo
 qo
 Wl
 Uc
-Xy
+uA
 Xy
 Xy
 un
@@ -468,7 +495,7 @@ qo
 qo
 Wp
 EZ
-Xy
+uA
 Xy
 EZ
 uk
@@ -484,9 +511,9 @@ aK
 qo
 Wp
 NU
-yg
+Dh
 EZ
-Xl
+kT
 Ze
 wQ
 qo

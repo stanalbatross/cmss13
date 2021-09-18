@@ -50,15 +50,19 @@
 /area/lv624/lazarus/research)
 "aj" = (
 /obj/structure/surface/table,
-
+/obj/effect/landmark/objective_landmark/medium,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/research)
 "ak" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
-	icon_state = "white"
+	dir = 5;
+	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/research)
 "al" = (
@@ -131,7 +135,7 @@
 /obj/structure/surface/table,
 /obj/item/clipboard,
 /obj/item/paper/research_notes,
-
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -148,6 +152,9 @@
 /turf/open/gm/grass,
 /area/lv624/ground/colony/south_medbay_road)
 "ay" = (
+/obj/structure/surface/table,
+/obj/item/storage/fancy/vials/random,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -209,7 +216,8 @@
 	pixel_y = 12
 	},
 /obj/structure/machinery/light,
-
+/obj/effect/landmark/objective_landmark/medium,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -220,7 +228,6 @@
 	layer = 2.5
 	},
 /obj/item/clothing/glasses/regular,
-
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -280,6 +287,7 @@
 	dir = 4;
 	icon_state = "tube1"
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -318,7 +326,6 @@
 	pixel_x = 11;
 	pixel_y = 0
 	},
-
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -334,7 +341,7 @@
 	dir = 1
 	},
 /obj/structure/surface/table,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -344,7 +351,6 @@
 /obj/structure/surface/table,
 /obj/structure/machinery/cell_charger,
 /obj/item/tool/crowbar,
-
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -382,14 +388,17 @@
 /area/lv624/lazarus/research)
 "bm" = (
 /obj/structure/surface/table,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
 /area/lv624/lazarus/research)
 "bn" = (
+/obj/effect/landmark/corpsespawner/scientist,
+/obj/effect/decal/cleanable/blood/splatter,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
-	icon_state = "freezerfloor"
+	icon_state = "white"
 	},
 /area/lv624/lazarus/research)
 "bp" = (
@@ -419,7 +428,6 @@
 /obj/item/storage/box/beakers,
 /obj/structure/surface/table,
 /obj/structure/sign/safety/biohazard,
-
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -431,8 +439,22 @@
 "bF" = (
 /turf/closed/wall/strata_ice/jungle,
 /area/lv624/ground/jungle/central_jungle)
+"fa" = (
+/obj/structure/machinery/light,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
 "ky" = (
-
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
+"pE" = (
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
@@ -441,16 +463,31 @@
 "qs" = (
 /obj/structure/surface/table,
 /obj/item/storage/fancy/vials/random,
-
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
+"sE" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/research)
 "wY" = (
-
 /turf/open/floor{
 	icon_state = "freezerfloor"
+	},
+/area/lv624/lazarus/research)
+"Ad" = (
+/obj/structure/surface/table,
+/obj/item/paper/research_notes,
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
 	},
 /area/lv624/lazarus/research)
 "DC" = (
@@ -475,18 +512,28 @@
 	},
 /area/lv624/lazarus/research)
 "Mu" = (
-
 /turf/open/floor{
 	icon_state = "white"
+	},
+/area/lv624/lazarus/research)
+"Nx" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "freezerfloor"
 	},
 /area/lv624/lazarus/research)
 "Tz" = (
 /obj/structure/surface/table,
 /obj/item/paper/research_notes,
-
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
+"TS" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "white"
 	},
 /area/lv624/lazarus/research)
 
@@ -516,7 +563,7 @@ ao
 ab
 qs
 Jv
-ay
+ky
 ab
 ao
 ao
@@ -531,7 +578,7 @@ aj
 as
 aF
 au
-Tz
+Ad
 aV
 aJ
 au
@@ -546,14 +593,14 @@ aa
 ai
 al
 at
-ay
+ky
 aL
-ay
-ak
-ay
+ky
+Mu
+pE
 aL
-bn
-bn
+Nx
+wY
 wY
 ac
 aa
@@ -562,15 +609,15 @@ aa
 aa
 ai
 ap
-ay
+ky
 aG
 au
-ay
-ak
-ay
+ky
+Mu
+ky
 au
 aO
-bn
+wY
 aR
 ac
 aa
@@ -595,52 +642,52 @@ ab
 (7,1,1) = {"
 ac
 Tz
-aj
-ay
-ay
+ak
+ky
+ky
 au
 aQ
 Kl
 Mu
 au
 bp
-ay
+ky
 bz
 Tz
 ac
 "}
 (8,1,1) = {"
 ad
-ak
-ak
-Jv
-ak
+Mu
+Mu
+bn
+Mu
 az
-ak
-ak
+Mu
+Mu
 Kl
 az
-ak
+Mu
 Jv
-ak
-ak
+Mu
+Mu
 ad
 "}
 (9,1,1) = {"
 ac
-ay
+ky
 aq
-ay
-ay
+ky
+ky
 au
 aA
-ak
+TS
 aM
 au
 bq
-ay
-ay
-ay
+ky
+ky
+ky
 ac
 "}
 (10,1,1) = {"
@@ -663,17 +710,17 @@ ab
 (11,1,1) = {"
 ae
 ai
-qs
 ay
-aJ
+ky
+fa
 ab
-ay
-ak
+ky
+Mu
 ky
 ab
 aP
-ay
-aj
+ky
+sE
 ac
 bE
 "}
@@ -682,13 +729,13 @@ ae
 ai
 av
 aD
-ay
+ky
 aL
-ay
+ky
 Kl
-ay
+ky
 aL
-ay
+ky
 bx
 qs
 ac
@@ -703,11 +750,11 @@ aK
 ab
 aS
 bb
-ay
+ky
 ab
-Tz
-Tz
-aj
+Ad
+Ad
+sE
 ac
 bE
 "}
@@ -719,7 +766,7 @@ ao
 ao
 ab
 aT
-ak
+Mu
 DC
 ab
 ao

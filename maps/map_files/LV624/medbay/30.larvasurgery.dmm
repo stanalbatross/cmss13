@@ -36,9 +36,9 @@
 "an" = (
 /obj/structure/surface/table,
 /obj/item/clothing/glasses/hud/health,
-
 /obj/effect/landmark/crap_item,
 /obj/item/reagent_container/spray/cleaner,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -51,11 +51,11 @@
 	pixel_y = 3
 	},
 /obj/item/clothing/mask/surgical,
-
 /obj/structure/machinery/light{
 	dir = 1
 	},
 /obj/item/storage/belt/medical/full,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "whiteblue";
@@ -102,6 +102,7 @@
 /area/lv624/lazarus/medbay)
 "at" = (
 /obj/structure/surface/table/reinforced,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -196,6 +197,7 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "whiteblue";
@@ -315,7 +317,7 @@
 	pixel_y = 4
 	},
 /obj/item/tool/pen,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -364,6 +366,10 @@
 	tag = "icon-whiteblue (NORTH)"
 	},
 /area/lv624/lazarus/medbay)
+"lq" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/colony/south_medbay_road)
 "mA" = (
 /obj/structure/window/framed/colony,
 /turf/open/floor{
@@ -381,8 +387,9 @@
 "qr" = (
 /obj/structure/surface/table,
 /obj/item/reagent_container/spray,
-
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/obj/effect/landmark/objective_landmark/science,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -424,7 +431,6 @@
 /area/lv624/lazarus/medbay)
 "us" = (
 /obj/structure/filingcabinet,
-
 /obj/structure/machinery/light,
 /turf/open/floor{
 	icon_state = "whiteblue";
@@ -437,9 +443,18 @@
 	icon_state = "white"
 	},
 /area/lv624/lazarus/medbay)
+"uL" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 1;
+	icon_state = "whiteblue";
+	tag = "icon-whiteblue (NORTH)"
+	},
+/area/lv624/lazarus/medbay)
 "vC" = (
 /obj/item/frame/table,
 /obj/effect/decal/cleanable/blood/xeno,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -458,6 +473,12 @@
 	dir = 6;
 	icon_state = "whiteblue";
 	tag = "icon-whitehall (WEST)"
+	},
+/area/lv624/lazarus/medbay)
+"yt" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "white"
 	},
 /area/lv624/lazarus/medbay)
 "zE" = (
@@ -492,7 +513,7 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "whiteblue";
@@ -508,7 +529,7 @@
 	pixel_x = 5;
 	pixel_y = 4
 	},
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -523,7 +544,6 @@
 /area/lv624/ground/colony/south_medbay_road)
 "Gu" = (
 /obj/structure/closet/wardrobe,
-
 /obj/structure/machinery/light{
 	dir = 8
 	},
@@ -542,6 +562,7 @@
 	pixel_x = 8;
 	pixel_y = 6
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -571,6 +592,7 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -593,8 +615,8 @@
 /area/lv624/lazarus/medbay)
 "QQ" = (
 /obj/structure/surface/table,
-
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -608,7 +630,7 @@
 /area/lv624/lazarus/medbay)
 "Vq" = (
 /obj/structure/surface/table,
-
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whiteblue";
 	tag = "icon-whiteblue"
@@ -736,7 +758,7 @@ av
 tr
 af
 io
-aq
+yt
 aq
 aY
 aq
@@ -801,18 +823,18 @@ aq
 aq
 TK
 bF
-bF
+lq
 "}
 (10,1,1) = {"
 ac
 ae
 ap
-aq
+yt
 aq
 aJ
 af
 bk
-aq
+yt
 JK
 ar
 aq
@@ -845,7 +867,7 @@ bF
 ac
 ae
 ae
-ar
+uL
 aA
 AO
 aq
@@ -853,7 +875,7 @@ aq
 aq
 aq
 aq
-aq
+yt
 us
 af
 af
@@ -895,7 +917,7 @@ DR
 bA
 mA
 ES
-bF
+lq
 bF
 "}
 (15,1,1) = {"

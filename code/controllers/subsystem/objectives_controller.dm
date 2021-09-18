@@ -72,10 +72,10 @@ SUBSYSTEM_DEF(objectives)
 	scored_points = get_scored_points(TREE_MARINE)
 	tree = GET_TREE(TREE_MARINE)
 
-	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
 	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
 	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved. Tier [tree.tier.tier] assets active, [round(tree.points, 0.1)] tech points available.", ":i", TRUE)
 	message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent.")
+	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
 	to_chat(GLOB.observer_list, SPAN_WARNING("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] unspent."))
 
 	total_points = get_total_points(TREE_XENO)

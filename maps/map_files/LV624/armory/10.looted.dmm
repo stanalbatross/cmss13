@@ -144,6 +144,7 @@
 	pixel_x = -28;
 	start_charge = 0
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -165,6 +166,7 @@
 /obj/item/ammo_magazine/revolver/cmb,
 /obj/item/ammo_magazine/revolver/cmb,
 /obj/item/ammo_magazine/revolver/cmb,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "red"
@@ -205,6 +207,13 @@
 	icon_state = "cult"
 	},
 /area/lv624/lazarus/armory)
+"U" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor{
+	dir = 2;
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/armory)
 
 (1,1,1) = {"
 a
@@ -237,7 +246,7 @@ k
 i
 i
 A
-p
+U
 u
 T
 i
@@ -251,7 +260,7 @@ w
 p
 p
 p
-p
+U
 i
 "}
 (5,1,1) = {"

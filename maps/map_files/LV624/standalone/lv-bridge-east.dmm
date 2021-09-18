@@ -305,6 +305,13 @@
 	icon_state = "beachcorner2"
 	},
 /area/lv624/ground/river/central_river)
+"mX" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating{
+	dir = 1;
+	icon_state = "asteroidfloor"
+	},
+/area/lv624/ground/river/central_river)
 "oa" = (
 /turf/open/gm/dirt,
 /area/lv624/ground/jungle/north_jungle)
@@ -558,12 +565,12 @@ bK
 ad
 am
 am
+mX
 am
 am
 am
 am
-am
-am
+mX
 am
 aW
 oa
@@ -577,7 +584,7 @@ am
 am
 Bv
 am
-am
+mX
 am
 am
 am

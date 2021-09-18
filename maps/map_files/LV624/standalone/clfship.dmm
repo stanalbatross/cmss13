@@ -12,6 +12,7 @@
 /obj/item/ammo_magazine/m60{
 	pixel_x = 1
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/plating/plating_catwalk,
 /area/lv624/lazarus/crashed_ship)
 "at" = (
@@ -21,6 +22,10 @@
 	},
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_west_caves)
+"aw" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/plating/plating_catwalk,
+/area/lv624/lazarus/crashed_ship)
 "aC" = (
 /obj/structure/machinery/door/poddoor/almayer{
 	id = "clf_umbilical_1";
@@ -127,6 +132,14 @@
 	},
 /obj/structure/surface/table/reinforced/prison,
 /turf/open/gm/dirt,
+/area/lv624/lazarus/crashed_ship)
+"eo" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "greencorner";
+	tag = "icon-greencorner (EAST)"
+	},
 /area/lv624/lazarus/crashed_ship)
 "eG" = (
 /obj/structure/largecrate/random/barrel/red,
@@ -237,6 +250,7 @@
 /obj/item/ammo_magazine/rifle/m16{
 	pixel_x = -4
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "bluecorner";
@@ -244,6 +258,7 @@
 	},
 /area/lv624/lazarus/crashed_ship)
 "gF" = (
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	icon_state = "emeraldcorner";
 	tag = "icon-emeraldcorner"
@@ -257,6 +272,7 @@
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/paper_bin,
 /obj/item/tool/pen,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 10;
 	icon_state = "emerald";
@@ -287,6 +303,12 @@
 /turf/open/floor/plating{
 	dir = 5;
 	icon_state = "warnplate"
+	},
+/area/lv624/lazarus/crashed_ship)
+"if" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
 	},
 /area/lv624/lazarus/crashed_ship)
 "iq" = (
@@ -332,9 +354,16 @@
 	},
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_west_caves)
+"jD" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor{
+	icon_state = "platingdmg1"
+	},
+/area/lv624/lazarus/crashed_ship)
 "jH" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/storage/firstaid/adv,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv624/lazarus/crashed_ship)
 "jI" = (
@@ -346,6 +375,7 @@
 /obj/structure/machinery/cm_vending/sorted/medical/wall_med{
 	pixel_y = 25
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "emerald";
@@ -572,6 +602,10 @@
 	icon_state = "stan2"
 	},
 /area/lv624/lazarus/crashed_ship)
+"pu" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/plating,
+/area/lv624/lazarus/crashed_ship)
 "pK" = (
 /obj/structure/largecrate/random/barrel/white,
 /turf/open/floor/almayer,
@@ -651,6 +685,7 @@
 "sI" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/effect/spawner/random/toolbox,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	icon_state = "orangecorner";
 	tag = "icon-orangecorner"
@@ -902,6 +937,7 @@
 	pixel_x = 1;
 	pixel_y = 2
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/plating/plating_catwalk,
 /area/lv624/lazarus/crashed_ship)
 "zb" = (
@@ -1012,6 +1048,7 @@
 	pixel_y = 6
 	},
 /obj/item/ammo_magazine/shotgun/incendiary,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv624/lazarus/crashed_ship)
 "BC" = (
@@ -1130,6 +1167,7 @@
 	pixel_y = 5
 	},
 /obj/item/storage/firstaid/regular,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv624/lazarus/crashed_ship)
 "DY" = (
@@ -1200,6 +1238,7 @@
 /obj/item/attachable/attached_gun/flamer,
 /obj/item/attachable/bayonet,
 /obj/item/attachable/bayonet,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "bluecorner";
@@ -1237,6 +1276,7 @@
 	dir = 1;
 	pixel_y = 20
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "emerald";
@@ -1250,6 +1290,7 @@
 	pixel_x = -3;
 	pixel_y = 4
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv624/lazarus/crashed_ship)
 "GQ" = (
@@ -1315,6 +1356,7 @@
 	pixel_y = 11
 	},
 /obj/item/clothing/glasses/welding,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "orange";
@@ -1339,6 +1381,7 @@
 /obj/item/ammo_casing/shell{
 	icon_state = "shell_3_1"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/plating,
 /area/lv624/lazarus/crashed_ship)
 "IP" = (
@@ -1546,6 +1589,7 @@
 	pixel_x = 18;
 	pixel_y = 6
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "bluecorner";
@@ -1559,6 +1603,12 @@
 	dir = 8;
 	icon_state = "emeraldcorner";
 	tag = "icon-emeraldcorner (EAST)"
+	},
+/area/lv624/lazarus/crashed_ship)
+"Oo" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/plating{
+	icon_state = "platingdmg3"
 	},
 /area/lv624/lazarus/crashed_ship)
 "Op" = (
@@ -1637,6 +1687,7 @@
 	pixel_y = 4
 	},
 /obj/item/storage/firstaid/regular,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "emerald";
@@ -1734,6 +1785,7 @@
 /obj/item/attachable/bayonet,
 /obj/item/attachable/bayonet,
 /obj/item/attachable/attached_gun/flamer,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	icon_state = "bluecorner";
 	tag = "icon-bluecorner"
@@ -1836,6 +1888,13 @@
 /obj/structure/largecrate/random/barrel/blue,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_west_caves)
+"Uy" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/almayer{
+	icon_state = "bluecorner";
+	tag = "icon-bluecorner"
+	},
+/area/lv624/lazarus/crashed_ship)
 "UD" = (
 /obj/structure/barricade/plasteel/wired{
 	icon_state = "plasteel_2"
@@ -1968,6 +2027,8 @@
 "Xa" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/storage/firstaid/regular,
+/obj/effect/landmark/objective_landmark/far,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "emerald";
@@ -2041,6 +2102,7 @@
 /obj/item/paper/prison_station/pirate_note{
 	info = "<p>We're hit!</p><p>MAYDAY! MAYDAY! We have been hit by the -... .</p><p>We're on a planet somewhere, seems there is a colony to our south. Might head on over there and see if there is any USCM presence. Our ship is fucking busted beyond normal means of repair, still waiting for a damage assessment tho.</p><p>Coby and Ryan died today from their wounds... \"Fucking USCM.\" I'll have my revenge someday...</p><p>And the colonies will be freed one day from the oppressive regime of Wey-Yu and USCM henchmen."
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	icon_state = "emerald";
 	tag = "icon-emerald"
@@ -2492,7 +2554,7 @@ sI
 Xq
 Qj
 lr
-lr
+aw
 Yz
 Xq
 Tx
@@ -2624,7 +2686,7 @@ DZ
 ll
 ro
 Bc
-Qf
+jD
 Qf
 lr
 lr
@@ -2674,7 +2736,7 @@ ug
 dN
 Xq
 of
-lr
+aw
 lr
 Vh
 Xq
@@ -2716,7 +2778,7 @@ Bc
 Qf
 Xq
 Bc
-Qf
+jD
 mS
 wr
 Xq
@@ -2732,7 +2794,7 @@ QE
 DZ
 JG
 Uv
-mS
+if
 qu
 zz
 wr
@@ -2916,12 +2978,12 @@ Xq
 xI
 yX
 NI
-jr
+Uy
 vO
-dN
+pu
 Xx
 rX
-mS
+Oo
 oO
 ro
 Qf
@@ -3046,7 +3108,7 @@ xl
 Xq
 Sx
 RS
-lr
+aw
 lr
 xF
 lr
@@ -3108,7 +3170,7 @@ jr
 zb
 dN
 ok
-Qf
+jD
 qU
 Bc
 yK
@@ -3149,7 +3211,7 @@ Qd
 Qd
 DZ
 MO
-lr
+aw
 bL
 QQ
 Xq
@@ -3286,7 +3348,7 @@ Ab
 Ns
 AD
 Dw
-Nk
+eo
 ZV
 Xq
 kY

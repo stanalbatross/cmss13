@@ -76,6 +76,7 @@
 /obj/item/ammo_magazine/shotgun/slugs,
 /obj/item/ammo_magazine/shotgun/flechette,
 /obj/item/ammo_magazine/shotgun/incendiary,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -98,6 +99,7 @@
 /obj/item/reagent_container/hypospray/autoinjector/tricord,
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/crap_item,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -132,6 +134,7 @@
 /obj/item/explosive/grenade/flashbang,
 /obj/item/explosive/grenade/flashbang,
 /obj/item/ammo_magazine/shotgun/beanbag,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -151,6 +154,7 @@
 /obj/effect/landmark/crap_item,
 /obj/item/ammo_magazine/smg/m39/extended,
 /obj/item/weapon/gun/smg/m39,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -199,6 +203,7 @@
 /obj/effect/landmark/crap_item,
 /obj/item/ammo_magazine/smg/m39/extended,
 /obj/item/weapon/gun/smg/m39,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -252,6 +257,14 @@
 	pixel_x = -26;
 	range = 200
 	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor{
+	dir = 2;
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/armory)
+"Q" = (
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 2;
 	icon_state = "cult"
@@ -300,7 +313,7 @@ a
 a
 i
 k
-p
+Q
 p
 p
 A

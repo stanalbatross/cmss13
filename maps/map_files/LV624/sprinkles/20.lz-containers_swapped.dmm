@@ -6,6 +6,7 @@
 	},
 /area/lv624/lazarus/landing_zones/lz1)
 "b" = (
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "bot"
@@ -31,6 +32,12 @@
 	dir = 8;
 	icon_state = "loadingarea";
 	tag = "loading"
+	},
+/area/lv624/lazarus/landing_zones/lz1)
+"i" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor{
+	icon_state = "warning"
 	},
 /area/lv624/lazarus/landing_zones/lz1)
 "j" = (
@@ -91,6 +98,18 @@
 	icon_state = "bot"
 	},
 /area/lv624/lazarus/landing_zones/lz1)
+"v" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor{
+	dir = 8;
+	icon_state = "loadingarea";
+	tag = "loading"
+	},
+/area/lv624/lazarus/landing_zones/lz1)
+"A" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor,
+/area/lv624/lazarus/landing_zones/lz1)
 "C" = (
 /obj/structure/largecrate/random/barrel/red,
 /turf/open/floor{
@@ -110,7 +129,14 @@
 	},
 /area/lv624/lazarus/landing_zones/lz1)
 "L" = (
-
+/turf/open/floor{
+	dir = 1;
+	icon_state = "bot"
+	},
+/area/lv624/lazarus/landing_zones/lz1)
+"N" = (
+/obj/effect/landmark/objective_landmark/close,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "bot"
@@ -178,19 +204,19 @@ d
 p
 "}
 (2,1,1) = {"
-L
+b
 c
 g
 c
-c
+v
 k
-b
+L
 p
-b
+L
 m
 U
 m
-L
+b
 m
 p
 "}
@@ -204,11 +230,11 @@ d
 m
 p
 O
-d
+A
 F
+A
 d
-d
-d
+A
 p
 "}
 (4,1,1) = {"
@@ -219,7 +245,7 @@ d
 m
 d
 L
-p
+i
 O
 d
 U
@@ -235,18 +261,18 @@ X
 f
 b
 d
-b
+L
 p
 O
 d
 P
 d
 d
-d
+A
 p
 "}
 (6,1,1) = {"
-b
+L
 d
 b
 d
@@ -254,8 +280,8 @@ b
 d
 b
 p
-b
-b
+N
+L
 b
 t
 K

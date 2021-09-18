@@ -80,6 +80,10 @@
 "V" = (
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_central_caves)
+"W" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/gm/dirt,
+/area/lv624/ground/barrens/north_east_barrens)
 
 (1,1,1) = {"
 f
@@ -790,7 +794,7 @@ m
 k
 k
 k
-k
+W
 k
 p
 "}
@@ -832,7 +836,7 @@ k
 l
 k
 k
-k
+W
 k
 k
 k

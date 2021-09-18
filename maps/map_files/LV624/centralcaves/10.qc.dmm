@@ -60,6 +60,10 @@
 "C" = (
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_central_caves)
+"E" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/gm/dirt,
+/area/lv624/ground/caves/south_central_caves)
 "O" = (
 /obj/effect/landmark/hunter_primary,
 /turf/open/gm/dirt,
@@ -69,6 +73,10 @@
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_membrane,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/south_central_caves)
+"V" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/gm/dirt,
+/area/lv624/ground/barrens/north_east_barrens)
 "Y" = (
 /turf/open/gm/dirt,
 /area/lv624/ground/barrens/west_barrens)
@@ -594,7 +602,7 @@ C
 C
 n
 C
-C
+E
 C
 C
 C
@@ -782,7 +790,7 @@ k
 k
 k
 k
-k
+V
 k
 r
 "}
@@ -826,7 +834,7 @@ k
 k
 k
 k
-k
+V
 k
 k
 k

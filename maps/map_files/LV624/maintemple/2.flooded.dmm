@@ -21,6 +21,7 @@
 	desc = "A powerful, shoulder-mounted energy weapon. This one is damaged beyond use.";
 	name = "damaged plasma caster"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "ax" = (
@@ -45,6 +46,7 @@
 	dir = 8;
 	health = 80
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "aN" = (
@@ -74,6 +76,23 @@
 	icon_state = "whiteyellowfull"
 	},
 /area/lv624/ground/caves/sand_temple)
+"bB" = (
+/obj/structure/stairs/perspective{
+	color = "#6b675e";
+	icon_state = "p_stair_full"
+	},
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/corsat{
+	dir = 1;
+	icon_state = "squareswood"
+	},
+/area/lv624/ground/caves/sand_temple)
+"bC" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/shuttle{
+	icon_state = "floor6"
+	},
+/area/lv624/ground/caves/sand_temple)
 "bP" = (
 /obj/structure/flora/jungle/vines{
 	icon_state = "light_3"
@@ -83,6 +102,10 @@
 "bZ" = (
 /obj/structure/blocker/forcefield/vehicles,
 /turf/closed/wall/mineral/sandstone/runed,
+/area/lv624/ground/caves/sand_temple)
+"ce" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "ci" = (
 /turf/open/gm/coast{
@@ -212,6 +235,10 @@
 	},
 /turf/open/gm/dirtgrassborder,
 /area/lv624/ground/caves/sand_temple)
+"fa" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/gm/dirt,
+/area/lv624/ground/caves/sand_temple)
 "fl" = (
 /turf/open/gm/dirtgrassborder{
 	dir = 1;
@@ -244,6 +271,21 @@
 /turf/open/gm/coast{
 	dir = 8
 	},
+/area/lv624/ground/caves/sand_temple)
+"gv" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/structure/window/reinforced{
+	dir = 8;
+	health = 80
+	},
+/obj/structure/window/reinforced{
+	dir = 4;
+	health = 80
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "gw" = (
 /turf/open/gm/dirtgrassborder{
@@ -409,6 +451,13 @@
 	icon_state = "beachcorner"
 	},
 /area/lv624/ground/caves/sand_temple)
+"kV" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/corsat{
+	dir = 1;
+	icon_state = "squareswood"
+	},
+/area/lv624/ground/caves/sand_temple)
 "lm" = (
 /turf/open/gm/coast{
 	dir = 8
@@ -418,6 +467,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "lI" = (
@@ -713,6 +763,7 @@
 	color = "#6b675e"
 	},
 /obj/item/stack/yautja_rope,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "ts" = (
@@ -873,6 +924,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "wt" = (
@@ -887,6 +939,7 @@
 	dir = 4;
 	health = 80
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "wx" = (
@@ -898,6 +951,13 @@
 /obj/structure/platform/mineral/sandstone/runed,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/barrens/south_eastern_barrens)
+"wF" = (
+/obj/structure/curtain/red,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/shuttle{
+	icon_state = "floor6"
+	},
+/area/lv624/ground/caves/sand_temple)
 "wP" = (
 /turf/open/gm/coast{
 	dir = 1;
@@ -982,6 +1042,13 @@
 	dir = 8;
 	icon_state = "grassdirt_corner"
 	},
+/area/lv624/ground/caves/sand_temple)
+"ye" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "yf" = (
 /obj/effect/landmark/yautja_teleport,
@@ -1099,6 +1166,13 @@
 	dir = 4
 	},
 /turf/open/floor/sandstone/runed,
+/area/lv624/ground/caves/sand_temple)
+"AX" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#6b675e"
+	},
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "Ba" = (
 /obj/structure/stairs/perspective{
@@ -1688,6 +1762,7 @@
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
 "MK" = (
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "desert_dug"
 	},
@@ -1736,6 +1811,12 @@
 	icon_state = "grass1"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
+"OL" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirtgrassborder{
+	icon_state = "desert"
+	},
+/area/lv624/ground/barrens/south_eastern_barrens)
 "OP" = (
 /obj/structure/barricade/handrail/strata,
 /turf/open/gm/dirtgrassborder/weedable{
@@ -1746,6 +1827,10 @@
 /obj/structure/blocker/forcefield/vehicles,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
+"Pb" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/barrens/south_eastern_barrens)
 "Ps" = (
 /obj/structure/platform/mineral/sandstone/runed{
 	dir = 1
@@ -1823,6 +1908,7 @@
 	dir = 5;
 	icon_state = "p_stair_full"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	dir = 1;
 	icon_state = "squareswood"
@@ -1853,6 +1939,13 @@
 	dir = 8;
 	tag = "icon-comfychair (EAST)"
 	},
+/turf/open/floor/sandstone/runed,
+/area/lv624/ground/caves/sand_temple)
+"Ry" = (
+/obj/structure/bed/alien{
+	color = "#aba9a9"
+	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/sandstone/runed,
 /area/lv624/ground/caves/sand_temple)
 "RV" = (
@@ -1896,6 +1989,7 @@
 /obj/item/stack/sheet/mineral/sandstone{
 	amount = 50
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/gm/dirt,
 /area/lv624/ground/caves/sand_temple)
 "Tn" = (
@@ -1931,6 +2025,7 @@
 /obj/structure/surface/table/reinforced/prison{
 	color = "#6b675e"
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/gm/dirtgrassborder{
 	icon_state = "grassdirt_corner2"
 	},
@@ -1993,6 +2088,10 @@
 	icon_state = "grassdirt_corner"
 	},
 /area/lv624/ground/barrens/south_eastern_barrens)
+"Xo" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/dirt,
+/area/lv624/ground/caves/sand_temple)
 "XV" = (
 /obj/structure/bed/chair/comfy/black{
 	dir = 1;
@@ -2205,7 +2304,7 @@ Jm
 rL
 Dg
 Ge
-we
+bB
 rL
 xO
 GT
@@ -2289,7 +2388,7 @@ xO
 rL
 Ge
 Ge
-Ge
+kV
 rL
 xO
 GT
@@ -2372,7 +2471,7 @@ xO
 ue
 ow
 Jc
-Jc
+bC
 Jc
 gL
 wS
@@ -2455,9 +2554,9 @@ GT
 Jm
 ue
 gL
+bC
 Jc
-Jc
-Jc
+bC
 gL
 wS
 if
@@ -2592,7 +2691,7 @@ po
 ci
 vY
 Ai
-Ai
+Xo
 Ai
 GT
 Ai
@@ -2625,7 +2724,7 @@ Mq
 He
 gA
 gA
-gA
+wF
 He
 Mq
 OC
@@ -2750,7 +2849,7 @@ Dl
 DH
 vN
 mv
-mv
+ce
 mv
 wU
 po
@@ -2841,7 +2940,7 @@ vY
 MX
 jZ
 Ai
-mv
+ce
 mv
 mv
 Ai
@@ -2873,7 +2972,7 @@ OR
 PA
 Ai
 Ai
-mv
+ce
 mv
 eM
 Ge
@@ -2894,14 +2993,14 @@ Rg
 uE
 uE
 uE
-uE
+Pb
 uE
 uE
 dJ
 dF
 UK
 MK
-UK
+OL
 hi
 OP
 zO
@@ -2942,7 +3041,7 @@ xx
 iW
 dF
 ZG
-UK
+OL
 wZ
 hi
 Ix
@@ -3177,8 +3276,8 @@ gZ
 Mq
 GT
 ma
-Ai
-Ai
+Xo
+Xo
 Ai
 GT
 GT
@@ -3346,7 +3445,7 @@ zA
 QX
 OC
 Ai
-Ai
+Xo
 Ai
 Ai
 Wz
@@ -3460,7 +3559,7 @@ GT
 OC
 wk
 Ai
-UX
+ye
 Ai
 Rx
 Ai
@@ -3638,7 +3737,7 @@ rd
 wP
 MB
 mv
-wt
+gv
 if
 GT
 GT
@@ -3674,7 +3773,7 @@ mv
 mv
 Ai
 MX
-Ai
+Xo
 Ai
 Ai
 ax
@@ -3752,12 +3851,12 @@ ZX
 ZX
 GT
 if
-Ai
+fa
 Ai
 mv
 tn
 OC
-qz
+Ry
 mv
 qz
 xO
@@ -3799,7 +3898,7 @@ XV
 Ai
 lt
 OC
-qz
+Ry
 mv
 qz
 xO
@@ -3839,13 +3938,13 @@ GT
 SW
 Ai
 Br
-UX
+AX
 Mq
 Zi
 mv
 qz
 xO
-UX
+ye
 MX
 Es
 fP
@@ -3880,7 +3979,7 @@ GT
 GT
 GT
 PN
-Ai
+fa
 GT
 GT
 GT
