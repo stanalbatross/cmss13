@@ -115,25 +115,25 @@
 	var/value = 0
 
 	if(isYautja(target))
-		value = 80
+		value = 50
 
 	else if(isXeno(target))
 		var/mob/living/carbon/Xenomorph/X = target
 		switch(X.tier)
 			if(1)
 				if(isXenoPredalien(X))
-					value = 80
-				else value = 20
+					value = 50
+				else value = 12
 			if(2)
-				value = 40
+				value = 20
 			if(3)
-				value = 65
+				value = 30
 			else
 				if(isXenoQueen(X)) //Queen is Tier 0 for some reason...
-					value = 80
+					value = 50
 
 	else if(isHumanSynthStrict(target))
-		return 12
+		return 8
 
 	return value
 

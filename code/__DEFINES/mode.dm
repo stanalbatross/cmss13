@@ -199,7 +199,7 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // TW / DEFCON balancing factors
 /// Scale from objective value to given out tech points
-#define OBJ_VALUE_TO_TECHPOINTS 0.10
+#define OBJ_VALUE_TO_TECHPOINTS 0.08
 
 
 //=================================================
