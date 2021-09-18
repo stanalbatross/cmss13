@@ -1746,8 +1746,8 @@
 "ew" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/landmark/start/whiskey{
-	job = /datum/job/civilian/synthetic/whiskey;
-	name = "Support Synthetic"
+	job = /datum/job/command/police/whiskey;
+	name = "Honor Guard"
 	},
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/cic)
@@ -11771,6 +11771,14 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/bunker)
+"JT" = (
+/obj/structure/sign/prop1,
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/command/police/whiskey;
+	name = "Honor Guard"
+	},
+/turf/closed/wall/r_wall,
+/area/whiskey_outpost/inside/cic)
 "Kc" = (
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
@@ -25179,7 +25187,7 @@ eX
 qx
 dN
 qC
-cQ
+JT
 bm
 dk
 aw
@@ -25586,7 +25594,7 @@ cs
 aE
 dQ
 dD
-dQ
+ev
 ek
 ev
 dQ
