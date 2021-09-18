@@ -1,4 +1,4 @@
-
+//these are the companion turfs to the auto-turf used on chances claim, since I (triiodine) fucked up the layer system
 /turf/open/shale
     icon = 'icons/turf/floors/auto_shale.dmi'
     icon_state = "shale_0"
