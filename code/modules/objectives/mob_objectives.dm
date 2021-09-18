@@ -89,7 +89,7 @@
 //TODOIO PROPER DELETION HANDLING
 /datum/cm_objective/recover_corpses/proc/handle_marine_deaths(datum/source, mob/living/carbon/human/H, gibbed)
 	SIGNAL_HANDLER
-	if(gibbed || !istype(H) || !istype(H.assigned_squad))
+	if(gibbed || !istype(H) || !isSpeciesHuman(H))
 		return
 	LAZYDISTINCTADD(corpses[TREE_MARINE], H)
 	RegisterSignal(H, list(

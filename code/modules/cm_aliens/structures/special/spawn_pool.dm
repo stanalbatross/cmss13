@@ -50,10 +50,7 @@
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.is_revivable())
-			to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
-			return
-		if(H.spawned_corpse || !H.chestburst)
+		if(H.is_revivable() || H.spawned_corpse || !H.chestburst)
 			to_chat(user, SPAN_XENOWARNING("This one does not look suitable!"))
 			return
 
