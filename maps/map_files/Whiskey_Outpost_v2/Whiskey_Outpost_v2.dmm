@@ -2525,6 +2525,10 @@
 	dir = 8;
 	icon_state = "pipe-c"
 	},
+/obj/effect/landmark/start/whiskey{
+	job = /datum/job/civilian/liaison/whiskey;
+	name = "Combat Reporter"
+	},
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
