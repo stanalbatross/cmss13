@@ -986,9 +986,6 @@
 	},
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/living)
-"cO" = (
-/turf/open/floor/prison,
-/area/whiskey_outpost/inside/supply)
 "cP" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -1690,7 +1687,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "em" = (
@@ -1727,7 +1723,6 @@
 /area/whiskey_outpost/inside/supply)
 "eq" = (
 /obj/item/storage/toolbox/mechanical,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "eu" = (
@@ -2172,13 +2167,6 @@
 	},
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/living)
-"fs" = (
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "floor_marked";
-	tag = "icon-floor_marked (SOUTHWEST)"
-	},
-/area/whiskey_outpost/inside/supply)
 "ft" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/machinery/light/small{
@@ -3582,7 +3570,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "jn" = (
@@ -3629,7 +3616,6 @@
 	icon_state = "pipe-c";
 	tag = "icon-pipe-c (NORTH)"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "ju" = (
@@ -3647,10 +3633,6 @@
 	dir = 1
 	},
 /area/whiskey_outpost/outside/lane/four_north)
-"jw" = (
-/turf/open/space/basic,
-/turf/open/floor/plating/plating_catwalk/prison,
-/area/whiskey_outpost/inside/supply)
 "jx" = (
 /obj/structure/machinery/door/poddoor{
 	desc = "A podlock that leads to the main Marine base on LV-624. It requires power from the outpost to stay shut. Better not let anything get through this...";
@@ -3920,7 +3902,6 @@
 /obj/structure/machinery/power/terminal{
 	dir = 1
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "kk" = (
@@ -3935,10 +3916,6 @@
 	icon_state = "whiteyellowfull"
 	},
 /area/whiskey_outpost/inside/caves/caverns)
-"km" = (
-/turf/open/space/basic,
-/turf/open/floor/plating/plating_catwalk/prison,
-/area/whiskey_outpost/inside/engineering)
 "kn" = (
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/south)
@@ -4151,7 +4128,6 @@
 /obj/item/tool/shovel/etool,
 /obj/item/tool/shovel/etool,
 /obj/item/device/lightreplacer,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "kT" = (
@@ -4171,7 +4147,6 @@
 /obj/item/tool/shovel/etool,
 /obj/item/tool/shovel/etool,
 /obj/item/tool/hand_labeler,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "kV" = (
@@ -4364,7 +4339,6 @@
 /obj/item/tool/shovel/etool,
 /obj/item/tool/shovel/etool,
 /obj/item/tool/shovel/etool,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "lx" = (
@@ -4743,7 +4717,6 @@
 /area/whiskey_outpost/outside/river)
 "mB" = (
 /obj/item/storage/toolbox/emergency,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/engineering)
 "mC" = (
@@ -4894,7 +4867,6 @@
 /turf/open/gm/dirt,
 /area/whiskey_outpost/outside/mortar_pit)
 "nd" = (
-/turf/open/space/basic,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "floor_marked";
@@ -5481,7 +5453,6 @@
 	},
 /area/whiskey_outpost/inside/supply)
 "oE" = (
-/turf/open/space/basic,
 /turf/open/floor/prison,
 /area/whiskey_outpost/inside/supply)
 "oF" = (
@@ -5598,7 +5569,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "oL" = (
@@ -5609,7 +5579,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "oM" = (
@@ -5945,7 +5914,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "pA" = (
@@ -6049,7 +6017,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "pN" = (
@@ -6198,7 +6165,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "qi" = (
@@ -6461,7 +6427,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "qM" = (
@@ -6489,7 +6454,6 @@
 	icon_state = "towergun";
 	tag = ""
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "qP" = (
@@ -7111,7 +7075,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "sx" = (
@@ -7239,7 +7202,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "sM" = (
@@ -9471,7 +9433,6 @@
 	icon_state = "towergun";
 	tag = ""
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "zh" = (
@@ -9849,7 +9810,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "Aw" = (
@@ -9860,7 +9820,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "Ax" = (
@@ -9869,7 +9828,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "Ay" = (
@@ -9996,7 +9954,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "AO" = (
@@ -11735,17 +11692,14 @@
 "GT" = (
 /obj/structure/barricade/metal/wired,
 /obj/structure/disposalpipe/segment,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "GU" = (
 /obj/structure/barricade/plasteel/wired,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "GW" = (
 /obj/structure/machinery/m56d_hmg/mg_turret,
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "GX" = (
@@ -11757,7 +11711,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "GY" = (
@@ -11771,7 +11724,6 @@
 	job = /datum/job/marine/standard/equipped/whiskey;
 	name = "Marine"
 	},
-/turf/open/space/basic,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/whiskey_outpost/inside/bunker)
 "HY" = (
@@ -11819,6 +11771,9 @@
 	tag = "icon-floor_plate"
 	},
 /area/whiskey_outpost/inside/bunker)
+"Kc" = (
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/whiskey_outpost/inside/engineering)
 "Kh" = (
 /obj/effect/landmark/start/whiskey{
 	job = /datum/job/marine/standard/equipped/whiskey;
@@ -24835,7 +24790,7 @@ bq
 ab
 kj
 dn
-km
+Kc
 gB
 bq
 gO
@@ -25037,7 +24992,7 @@ bq
 bt
 eq
 cr
-km
+Kc
 gC
 bq
 gO
@@ -25239,7 +25194,7 @@ bq
 ab
 kj
 cr
-km
+Kc
 gB
 bq
 gO
@@ -25441,7 +25396,7 @@ bq
 bB
 mB
 cr
-km
+Kc
 gC
 bq
 gO
@@ -28070,7 +28025,7 @@ an
 fK
 iQ
 ep
-cO
+oE
 nd
 oE
 nd
@@ -28271,12 +28226,12 @@ iK
 iF
 fM
 hq
-cO
-cO
-fs
-cO
-fs
-cO
+oE
+oE
+nd
+oE
+nd
+oE
 pS
 nr
 kT
@@ -28474,11 +28429,11 @@ iG
 ho
 Ld
 Kq
-cO
-cO
-cO
-cO
-cO
+oE
+oE
+oE
+oE
+oE
 nr
 nr
 mT
@@ -28675,11 +28630,11 @@ iK
 iG
 fK
 kr
-cO
-cO
-cO
-cO
-cO
+oE
+oE
+oE
+oE
+oE
 na
 nr
 mT
@@ -28879,10 +28834,10 @@ fK
 gL
 hr
 iv
-cO
-cO
-cO
-cO
+oE
+oE
+oE
+oE
 nr
 mT
 ed
@@ -29081,10 +29036,10 @@ fK
 ih
 hr
 iv
-cO
-cO
-cO
-cO
+oE
+oE
+oE
+oE
 nr
 dX
 ed
@@ -29283,9 +29238,9 @@ fK
 ij
 hr
 iv
-cO
-cO
-cO
+oE
+oE
+oE
 nu
 nr
 dX
@@ -29483,12 +29438,12 @@ iM
 cn
 dg
 Zj
-cO
+oE
 iv
-cO
-cO
-cO
-cO
+oE
+oE
+oE
+oE
 nr
 dX
 ed
@@ -29685,10 +29640,10 @@ an
 dt
 bZ
 gL
-cO
+oE
 gL
-jw
-jw
+mp
+mp
 gL
 gL
 nr
@@ -29887,10 +29842,10 @@ bS
 bZ
 bZ
 gK
-cO
+oE
 gL
-jw
-jw
+mp
+mp
 lh
 nt
 nr
@@ -30089,10 +30044,10 @@ bZ
 gK
 gL
 gL
-cO
+oE
 jB
-jw
-jw
+mp
+mp
 gL
 nr
 bZ
@@ -30288,13 +30243,13 @@ aj
 oO
 oO
 bZ
-cO
-jw
-jw
-jw
-cO
-jw
-jw
+oE
+mp
+mp
+mp
+oE
+mp
+mp
 gL
 nr
 kB
@@ -30490,10 +30445,10 @@ aj
 dG
 oR
 bZ
-cO
-jw
-jw
-jw
+oE
+mp
+mp
+mp
 lG
 qK
 qK
