@@ -5,6 +5,11 @@
 	icon_state = "mortar_ammo_cas"
 	w_class = SIZE_HUGE
 	flags_atom = FPRINT|CONDUCT
+
+	var/ceiling_piercing = CEILING_PROTECTION_TIER_2 /// Will pierce through ceilings up to but not including this level
+	var/pylon_bypass = FALSE /// Will pierce through hive pylons, but not hive cores if set to TRUE
+
+	var/shell_calibre = MORTAR_SHELL_80MM
 	var/source_mob
 
 /obj/item/mortar_shell/proc/detonate(var/turf/T)
@@ -55,6 +60,25 @@
 	new /obj/item/device/flashlight/flare/on/illumination(T)
 	playsound(T, 'sound/weapons/gun_flare.ogg', 50, 1, 4)
 	deploy_camera(T)
+
+/obj/item/mortar_shell/breaching
+	name = "\improper 60mm LY-AP mortar shell"
+	desc = "An 60mm armor piercing mortar shell, loaded with a low yield charge."
+	icon_state = "mortar_ammo_breaching"
+
+	ceiling_piercing = CEILING_PROTECTION_TIER_4
+	pylon_bypass = TRUE
+	shell_calibre = MORTAR_SHELL_60MM
+
+// specializes in destroying hive structures
+/obj/item/mortar_shell/breaching/detonate(var/turf/T)
+	explosion(T, light_impact_range = 2, explosion_cause_data = create_cause_data(initial(name), source_mob))
+	var/list/things_in_range = range(2, T)
+	for(var/obj/effect/alien/resin/R in things_in_range)
+		R.health -= XENO_PYLON_HEALTH / 3 // three kills a pylon
+		R.healthcheck()
+	for(var/turf/closed/wall/W in things_in_range)
+		W.take_damage(HEALTH_WALL_XENO / 2)
 
 /obj/item/mortar_shell/custom
 	name = "\improper 80mm custom mortar shell"

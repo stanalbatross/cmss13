@@ -34,6 +34,28 @@
 
 	var/obj/structure/machinery/computer/security/mortar/internal_camera
 
+	var/undeploy_time = 4 SECONDS
+
+	var/minimum_range = 10
+	var/maximum_range
+
+	var/kit_type = /obj/item/mortar_kit
+	var/shell_calibre = MORTAR_SHELL_80MM
+
+/obj/structure/mortar/breaching
+	name = "\improper M420 breaching mortar"
+	desc = "A manual, crew-operated mortar system intended to breach through enemy defenses with low yield 60mm shells. Uses an advanced targeting computer. Insert round to fire."
+	icon = 'icons/obj/structures/mortar.dmi'
+	icon_state = "mortar_m402"
+
+	undeploy_time = 2 SECONDS
+	travel_time = 2 SECONDS
+	minimum_range = 6
+	maximum_range = 12
+
+	kit_type = /obj/item/mortar_kit/breaching
+	shell_calibre = MORTAR_SHELL_60MM
+
 /obj/structure/mortar/Initialize()
 	. = ..()
 	// Makes coords appear as 0 in UI
@@ -172,6 +194,9 @@
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
 			to_chat(user, SPAN_WARNING("You don't have the training to fire [src]."))
 			return
+		if(mortar_shell.shell_calibre != shell_calibre)
+			to_chat(user, SPAN_WARNING("\The [mortar_shell] doesn't fit into \the [src]!"))
+			return
 		if(busy)
 			to_chat(user, SPAN_WARNING("Someone else is currently using [src]."))
 			return
@@ -186,7 +211,10 @@
 			to_chat(user, SPAN_WARNING("You cannot fire [src] to this target."))
 			return
 		var/area/A = get_area(T)
-		if((istype(A) && CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_2)) || protected_by_pylon(TURF_PROTECTION_MORTAR, T))
+		if(istype(A) && CEILING_IS_PROTECTED(A.ceiling, mortar_shell.ceiling_piercing))
+			to_chat(user, SPAN_WARNING("You cannot hit the target. It is probably underground."))
+			return
+		if((!mortar_shell.pylon_bypass && protected_by_pylon(TURF_PROTECTION_MORTAR, T)) || protected_by_pylon(TURF_PROTECTION_OB, T))
 			to_chat(user, SPAN_WARNING("You cannot hit the target. It is probably underground."))
 			return
 
@@ -237,12 +265,12 @@
 		playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 		user.visible_message(SPAN_NOTICE("[user] starts undeploying [src]."), \
 				SPAN_NOTICE("You start undeploying [src]."))
-		if(do_after(user, 4 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+		if(do_after(user, undeploy_time, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			user.visible_message(SPAN_NOTICE("[user] undeploys [src]."), \
 				SPAN_NOTICE("You undeploy [src]."))
 			playsound(loc, 'sound/items/Deconstruct.ogg', 25, 1)
-			var/obj/item/mortar_kit/M = new /obj/item/mortar_kit(loc)
-			M.name = src.name
+			var/obj/item/mortar_kit/M = new kit_type(loc)
+			M.set_name_label(name_label)
 			qdel(src)
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER))
@@ -258,7 +286,7 @@
 			qdel(src)
 
 /obj/structure/mortar/proc/handle_shell(var/turf/target, var/obj/item/mortar_shell/shell)
-	if(protected_by_pylon(TURF_PROTECTION_MORTAR, target))
+	if((!shell.pylon_bypass && protected_by_pylon(TURF_PROTECTION_MORTAR, target)) || protected_by_pylon(TURF_PROTECTION_OB, target))
 		firing = FALSE
 		return
 
@@ -279,7 +307,7 @@
 		)
 	sleep(2 SECONDS) // Wait out the rest of the landing time
 	target.ceiling_debris_check(2)
-	if(!protected_by_pylon(TURF_PROTECTION_MORTAR, target))
+	if(!protected_by_pylon(TURF_PROTECTION_MORTAR, target) || (shell.pylon_bypass && !protected_by_pylon(TURF_PROTECTION_OB, target)))
 		shell.detonate(target)
 	qdel(shell)
 	firing = FALSE
@@ -295,8 +323,11 @@
 	if(test_dial_y + test_targ_y > world.maxy || test_dial_y + test_targ_y < 0)
 		to_chat(user, SPAN_WARNING("You cannot [dialing ? "dial to" : "aim at"] this coordinate, it is outside of the area of operations."))
 		return FALSE
-	if(get_dist(src, locate(test_targ_x + test_dial_x, test_targ_y + test_dial_y, z)) < 10)
+	if(minimum_range && get_dist(src, locate(test_targ_x + test_dial_x, test_targ_y + test_dial_y, z)) < minimum_range)
 		to_chat(user, SPAN_WARNING("You cannot [dialing ? "dial to" : "aim at"] this coordinate, it is too close to your mortar."))
+		return FALSE
+	if(maximum_range && get_dist(src, locate(test_targ_x + test_dial_x, test_targ_y + test_dial_y, z)) > maximum_range)
+		to_chat(user, SPAN_WARNING("You cannot [dialing ? "dial to" : "aim at"] this coordinate, it is too far from your mortar."))
 		return FALSE
 	if(busy)
 		to_chat(user, SPAN_WARNING("Someone else is currently using this mortar."))
@@ -314,11 +345,23 @@
 //The portable mortar item
 /obj/item/mortar_kit
 	name = "\improper M402 mortar portable kit"
-	desc = "A manual, crew-operated mortar system intended to rain down 80mm goodness on anything it's aimed at. Needs to be set down first"
+	desc = "A manual, crew-operated mortar system intended to rain down 80mm goodness on anything it's aimed at. Needs to be set down first."
 	icon = 'icons/obj/structures/mortar.dmi'
 	icon_state = "mortar_m402_carry"
 	unacidable = TRUE
 	w_class = SIZE_HUGE //No dumping this in a backpack. Carry it, fatso
+
+	var/ceiling_deploy_blocker = CEILING_PROTECTION_TIER_1 /// Able to be deployed under ceilings up to but not including this level
+	var/deploy_type = 4 SECONDS
+	var/mortar_type = /obj/structure/mortar
+
+/obj/item/mortar_kit/breaching
+	name = "\improper M420 breaching mortar portable kit"
+	desc = "A manual, crew-operated mortar system intended intended to breach through enemy defenses with low yield 60mm shells. Needs to be set down first."
+
+	ceiling_deploy_blocker = CEILING_PROTECTION_TIER_4
+	deploy_type = 2 SECONDS
+	mortar_type = /obj/structure/mortar/breaching
 
 /obj/item/mortar_kit/ex_act(severity)
 	switch(severity)
@@ -337,17 +380,17 @@
 		to_chat(user, SPAN_WARNING("You cannot deploy [src] here."))
 		return
 	var/area/A = get_area(deploy_turf)
-	if(CEILING_IS_PROTECTED(A.ceiling, CEILING_PROTECTION_TIER_1))
+	if(CEILING_IS_PROTECTED(A.ceiling, ceiling_deploy_blocker))
 		to_chat(user, SPAN_WARNING("You probably shouldn't deploy [src] indoors."))
 		return
 	user.visible_message(SPAN_NOTICE("[user] starts deploying [src]."), \
 		SPAN_NOTICE("You start deploying [src]."))
 	playsound(deploy_turf, 'sound/items/Deconstruct.ogg', 25, 1)
-	if(do_after(user, 4 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+	if(do_after(user, deploy_type, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		user.visible_message(SPAN_NOTICE("[user] deploys [src]."), \
 			SPAN_NOTICE("You deploy [src]."))
 		playsound(deploy_turf, 'sound/weapons/gun_mortar_unpack.ogg', 25, 1)
-		var/obj/structure/mortar/M = new /obj/structure/mortar(deploy_turf)
-		M.name = src.name
+		var/obj/structure/mortar/M = new mortar_type(deploy_turf)
+		M.set_name_label(name_label)
 		M.setDir(user.dir)
 		qdel(src)
