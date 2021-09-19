@@ -427,25 +427,15 @@
 	return //Yeah no.
 
 /obj/item/weapon/gun/smg/nailgun/compact
-	name = "Compact nailgun"
+	name = "compact nailgun"
 	desc = "A carpentry tool, used to drive nails into tough surfaces. Cannot fire nails offensively due to a lack of a gas seal around the nail, meaning it cannot build up the pressure to fire."
-	icon_state = "nailgun"
-	item_state = "nailgun"
-	current_mag = /obj/item/ammo_magazine/smg/nailgun
+	icon_state = "cnailgun"
+	item_state = "cnailgun"
 
-	reload_sound = 'sound/weapons/handling/smg_reload.ogg'
-	unload_sound = 'sound/weapons/handling/smg_unload.ogg'
-	cocked_sound = 'sound/weapons/gun_cocked2.ogg'
-
-	fire_sound = 'sound/weapons/nailgun_fire.ogg'
-	force = 5
 	w_class = SIZE_SMALL
-	movement_onehanded_acc_penalty_mult = 4
-	aim_slowdown = SLOWDOWN_ADS_QUICK
-	wield_delay = WIELD_DELAY_VERY_FAST
-	attachable_allowed = list()
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CANNOT_FIRE
-	gun_category = GUN_CATEGORY_SMG
-	var/nailing_speed = 2 SECONDS //Time to apply a sheet for patching. Also haha name. Try to keep sync with soundbyte duration
-	var/repair_sound = 'sound/weapons/nailgun_repair_long.ogg'
+/obj/item/weapon/gun/smg/nailgun/compact/able_to_fire(mob/living/user)
+	. = ..()
+	if(.)
+		click_empty(user)
+	return FALSE
