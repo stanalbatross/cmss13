@@ -2695,11 +2695,11 @@
 /area/whiskey_outpost/inside/engineering)
 "gP" = (
 /obj/effect/landmark/ert_spawns/distress_wo,
-/obj/effect/landmark/latewhiskey,
 /obj/structure/machinery/light{
 	dir = 8;
 	tag = "icon-tube1 (EAST)"
 	},
+/obj/effect/landmark/late_join,
 /turf/open/gm/dirt,
 /area/whiskey_outpost/inside/caves/tunnel)
 "gQ" = (
@@ -2719,7 +2719,7 @@
 /area/whiskey_outpost/inside/engineering)
 "gS" = (
 /obj/effect/landmark/ert_spawns/distress_wo,
-/obj/effect/landmark/latewhiskey,
+/obj/effect/landmark/late_join,
 /turf/open/gm/dirt,
 /area/whiskey_outpost/inside/caves/tunnel)
 "gT" = (
@@ -2837,10 +2837,10 @@
 /area/whiskey_outpost/inside/bunker)
 "hl" = (
 /obj/effect/landmark/ert_spawns/distress_wo,
-/obj/effect/landmark/latewhiskey,
 /obj/structure/machinery/light{
 	dir = 4
 	},
+/obj/effect/landmark/late_join,
 /turf/open/gm/dirt,
 /area/whiskey_outpost/inside/caves/tunnel)
 "hm" = (
