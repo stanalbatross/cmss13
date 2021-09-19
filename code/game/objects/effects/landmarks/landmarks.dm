@@ -286,6 +286,45 @@
 /obj/effect/landmark/start/whiskey/executive
 	job = /datum/job/command/executive/whiskey
 
+/obj/effect/landmark/start/whiskey/bridge
+	job = /datum/job/command/bridge/whiskey
+
+//****************************************** AUXILIARY - SUPPORT ************************************************/
+/obj/effect/landmark/start/whiskey/synthetic
+	job = /datum/job/civilian/synthetic/whiskey
+
+/obj/effect/landmark/start/whiskey/senior
+	job = /datum/job/command/senior  //Need to create a WO variant in the future
+
+/obj/effect/landmark/start/whiskey/pilot
+	job = /datum/job/command/pilot/whiskey
+
+/obj/effect/landmark/start/whiskey/tank_crew
+	job = /datum/job/command/tank_crew/whiskey
+
+/obj/effect/landmark/start/whiskey/intel
+	job = /datum/job/command/intel //Need to create a WO variant in the future
+
+/obj/effect/landmark/start/whiskey/chef
+	job = /datum/job/civilian/chef //Need to create a WO variant in the future
+
+//****************************************** CIVILLIANS & MEDBAY ************************************************/
+
+/obj/effect/landmark/start/whiskey/liaison
+	job = /datum/job/civilian/liaison/whiskey
+
+/obj/effect/landmark/start/whiskey/cmo
+	job = /datum/job/civilian/professor/whiskey
+
+/obj/effect/landmark/start/whiskey/researcher
+	job = /datum/job/civilian/researcher/whiskey
+
+/obj/effect/landmark/start/whiskey/doctor
+	job = /datum/job/civilian/doctor/whiskey
+
+/obj/effect/landmark/start/whiskey/nurse
+	job = /datum/job/civilian/nurse //Need to create a WO variant in the future
+
 //****************************************** LATE JOIN ************************************************/
 
 /obj/effect/landmark/late_join
