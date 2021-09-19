@@ -1793,11 +1793,6 @@
 /obj/effect/landmark/start/whiskey/marine,
 /turf/open/gm/dirtgrassborder,
 /area/whiskey_outpost/outside/lane/one_north)
-"hL" = (
-/obj/structure/sign/prop1,
-/obj/effect/landmark/start/whiskey/police,
-/turf/closed/wall/r_wall,
-/area/whiskey_outpost/inside/cic)
 "hM" = (
 /turf/open/floor{
 	dir = 1;
@@ -20173,7 +20168,7 @@ aQ
 dV
 ge
 hb
-hL
+ia
 is
 iY
 cJ
