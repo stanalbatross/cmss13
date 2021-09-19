@@ -232,17 +232,19 @@
 	if (H.client && H.client.prefs && (H.client.prefs.backbag == 1))
 		backItem = /obj/item/storage/backpack/marine
 
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/eng(H), WEAR_HEAD)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(H), WEAR_L_EAR)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/engineer(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(H), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(H), WEAR_WAIST)
-	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
-	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
-	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range(H), WEAR_L_STORE)
-	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), WEAR_L_HAND)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret/eng, WEAR_HEAD)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine/mortar, WEAR_L_EAR)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/engineer, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife, WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black, WEAR_HANDS)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88, WEAR_WAIST)
+	H.equip_to_slot_or_del(new backItem, WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large, WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/device/binoculars/range, WEAR_IN_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight, WEAR_IN_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/tool/screwdriver, WEAR_IN_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/mortar, WEAR_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses, WEAR_IN_BACK)
 
 //*****************************************************************************************************/
 
