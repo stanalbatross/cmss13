@@ -1,0 +1,6 @@
+{
+    "map_name": "Blank",
+    "map_path": "map_files/Blank",
+    "map_file": "blank.dmm",
+    "traits": [{"Marine Main Ship": true}]
+}

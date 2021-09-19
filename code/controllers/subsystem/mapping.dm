@@ -152,6 +152,9 @@ SUBSYSTEM_DEF(mapping)
 	INIT_ANNOUNCE("Loading [ground_map.map_name]...")
 	Loadground(FailedZs, ground_map.map_name, ground_map.map_path, ground_map.map_file, ground_map.traits, ZTRAITS_GROUND)
 
+	if(ground_map.force_shipmap && config.maplist[SHIP_MAP][ground_map.force_shipmap])
+		configs[SHIP_MAP] = config.maplist[SHIP_MAP][ground_map.force_shipmap]
+
 	var/datum/map_config/ship_map = configs[SHIP_MAP]
 	INIT_ANNOUNCE("Loading [ship_map.map_name]...")
 	Loadship(FailedZs, ship_map.map_name, ship_map.map_path, ship_map.map_file, ship_map.traits, ZTRAITS_MAIN_SHIP)
