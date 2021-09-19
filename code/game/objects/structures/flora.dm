@@ -353,10 +353,18 @@ ICE GRASS
 	icon_tag = "sparsegrass"
 	layer = BELOW_MOB_LAYER
 
+/obj/structure/flora/bush/ausbushes/var3/sparsegrass/random/Initialize()
+	. = ..()
+	icon_state = "sparsegrass_" + rand(1,3)
+
 /obj/structure/flora/bush/ausbushes/var3/fullgrass
 	icon_state =  "fullgrass_1"
 	icon_tag = "fullgrass"
 	layer = BELOW_MOB_LAYER
+
+/obj/structure/flora/bush/ausbushes/var3/fullgrass/random/Initialize()
+	. = ..()
+	icon_state = "fullgrass_" + rand(1,3)
 
 /*
 
