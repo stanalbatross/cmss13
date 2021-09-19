@@ -431,7 +431,7 @@
 	stat = 2
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "aoi" = (
@@ -1022,7 +1022,7 @@
 	dir = 4
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_tile"
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "aKs" = (
@@ -1374,7 +1374,7 @@
 /obj/structure/prop/invuln/ice_prefab/standalone{
 	icon_state = "white"
 	},
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "aYK" = (
 /turf/open/floor/plating/plating_catwalk/strata,
@@ -1430,6 +1430,7 @@
 /area/lv522/buildings/colony_streets)
 "baq" = (
 /obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/snacks/sliceable/chocolatecake,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
@@ -1528,6 +1529,29 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/B_Block)
+"bdo" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/item/prop{
+	desc = "A jerry can. In space! Or maybe a colony.";
+	icon = 'icons/obj/items/tank.dmi';
+	icon_state = "canister";
+	item_state = "caution";
+	name = "fuel can";
+	pixel_x = 14;
+	pixel_y = 15
+	},
+/obj/item/prop{
+	desc = "A jerry can. In space! Or maybe a colony.";
+	icon = 'icons/obj/items/tank.dmi';
+	icon_state = "canister";
+	item_state = "caution";
+	name = "fuel can";
+	pixel_x = 8;
+	pixel_y = 7
+	},
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "bdH" = (
 /obj/structure/surface/rack,
 /obj/item/ammo_magazine/smg/mp5,
@@ -1983,6 +2007,15 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/A_block/Security)
+"btW" = (
+/obj/effect/spawner/random/toolbox,
+/obj/structure/surface/table/almayer,
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "bvr" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -2435,7 +2468,11 @@
 	pixel_x = 7;
 	pixel_y = 9
 	},
-/turf/open/floor/strata,
+/obj/structure/window,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "bNV" = (
 /obj/structure/prop/invuln/ice_prefab{
@@ -2869,6 +2906,12 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/C_Block/Mining)
+"ceU" = (
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "cfa" = (
 /obj/structure/largecrate/random/case/double,
 /obj/structure/largecrate/random/case{
@@ -3090,7 +3133,7 @@
 	dir = 8
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_tile"
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "coW" = (
@@ -3142,6 +3185,10 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_block/Medical)
+"cqS" = (
+/obj/item/tool/barricade_hammer,
+/turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Garage)
 "crd" = (
 /obj/structure/shuttle/engine/heater{
 	dir = 8
@@ -3160,7 +3207,9 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "csz" = (
 /obj/effect/decal/cleanable/blood/gibs/xeno/body,
@@ -3642,6 +3691,13 @@
 	icon_state = "warnplate"
 	},
 /area/lv522/buildings/A_block)
+"cKV" = (
+/obj/item/stack/tile/plasteel{
+	pixel_x = 5;
+	pixel_y = 10
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "cLL" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper_bin{
@@ -3785,6 +3841,10 @@
 /area/lv522/buildings/colony_streets)
 "cPd" = (
 /turf/open/floor/corsat,
+/area/lv522/buildings/colony_streets)
+"cPw" = (
+/obj/item/stack/cable_coil/cut,
+/turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "cPA" = (
 /obj/structure/barricade/handrail{
@@ -4244,7 +4304,9 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "ddx" = (
 /obj/structure/pipes/vents/pump,
@@ -4423,6 +4485,17 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/landing_zone_2)
+"dmb" = (
+/obj/structure/largecrate/random/mini{
+	pixel_x = 9;
+	pixel_y = 12
+	},
+/obj/structure/largecrate/random/mini{
+	pixel_x = 9;
+	pixel_y = -4
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "dmn" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/structure/window/reinforced{
@@ -4635,6 +4708,15 @@
 /obj/structure/machinery/light/double{
 	dir = 1;
 	pixel_y = 9
+	},
+/obj/structure/surface/rack,
+/obj/item/clothing/head/hardhat/dblue{
+	pixel_x = 4;
+	pixel_y = 1
+	},
+/obj/item/clothing/head/hardhat/dblue{
+	pixel_x = -2;
+	pixel_y = 17
 	},
 /turf/open/floor/strata{
 	icon_state = "orange_cover"
@@ -5113,7 +5195,8 @@
 	pixel_y = 9
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "dNB" = (
@@ -5967,6 +6050,14 @@
 /obj/structure/blocker/invisible_wall,
 /turf/open/asphalt,
 /area/lv522/buildings/colony_streets)
+"evo" = (
+/obj/item/lightstick/red/spoke/planted{
+	layer = 3.1;
+	pixel_x = -13;
+	pixel_y = 25
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "evJ" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -6024,7 +6115,9 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "exR" = (
 /obj/structure/closet/crate/trashcart,
@@ -6564,7 +6657,7 @@
 "eRx" = (
 /obj/structure/closet/secure_closet/atmos_personal,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "eRJ" = (
@@ -7301,7 +7394,7 @@
 	pixel_x = -13;
 	pixel_y = 28
 	},
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "fyi" = (
 /obj/effect/decal/warning_stripes{
@@ -7565,6 +7658,12 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/B_Block)
+"fHj" = (
+/obj/structure/pipes/standard/manifold/hidden/green,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "fHl" = (
 /obj/structure/machinery/cryo_cell,
 /turf/open/floor/strata{
@@ -7859,6 +7958,13 @@
 /obj/item/device/flashlight/lamp/tripod,
 /turf/open/asphalt/cement,
 /area/lv522/buildings/colony_streets)
+"fVE" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "fVX" = (
 /obj/structure/surface/table/almayer,
 /turf/open/floor/corsat{
@@ -7935,10 +8041,7 @@
 	},
 /area/lv522/buildings/colony_streets)
 "gbB" = (
-/obj/structure/prop/structure_lattice{
-	dir = 4
-	},
-/turf/open/auto_turf/shale/layer1,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "gbD" = (
 /obj/structure/surface/table/reinforced/prison,
@@ -7988,7 +8091,10 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/item/stack/tile/plasteel,
+/obj/item/stack/tile/plasteel{
+	pixel_x = 5;
+	pixel_y = 10
+	},
 /obj/structure/cable/heavyduty{
 	icon_state = "4-8"
 	},
@@ -8039,6 +8145,7 @@
 "geG" = (
 /obj/structure/surface/rack,
 /obj/structure/machinery/light/double,
+/obj/effect/spawner/random/tool,
 /turf/open/floor/strata{
 	icon_state = "orange_cover"
 	},
@@ -8133,8 +8240,10 @@
 /area/lv522/landing_zone_2/UD6_Typhoon)
 "gki" = (
 /obj/structure/surface/table/almayer,
+/obj/item/clipboard,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "gkv" = (
@@ -8470,6 +8579,12 @@
 	},
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
+"gvD" = (
+/turf/open/floor/strata{
+	dir = 8;
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Cargo)
 "gwc" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
@@ -8965,6 +9080,10 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"gTo" = (
+/obj/effect/spawner/random/tool,
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "gTq" = (
 /obj/item/clothing/head/helmet/riot,
 /obj/item/clothing/suit/armor/bulletproof/badge,
@@ -9898,6 +10017,10 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_block/Dorms)
+"hJa" = (
+/obj/effect/spawner/random/tool,
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "hJv" = (
 /obj/structure/machinery/vending/cigarette/colony,
 /turf/open/floor/strata{
@@ -9948,6 +10071,20 @@
 	icon_state = "warnplate"
 	},
 /area/lv522/buildings/colony_streets)
+"hLV" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/head/hardhat/dblue{
+	pixel_x = -2;
+	pixel_y = 1
+	},
+/obj/item/clothing/head/hardhat/dblue{
+	pixel_x = 3;
+	pixel_y = 9
+	},
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "hMe" = (
 /obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata,
@@ -10137,18 +10274,18 @@
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "hTk" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
 /obj/structure{
 	desc = "A lightweight support lattice.";
 	dir = 1;
 	icon = 'icons/obj/structures/props/smoothlattice.dmi';
-	icon_state = "lattice-simple";
+	icon_state = "lattice3";
 	layer = 5.1;
 	name = "overhead lattice";
 	pixel_x = 16;
 	pixel_y = -15
-	},
-/obj/structure/pipes/standard/simple/hidden/green{
-	dir = 4
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
@@ -10255,6 +10392,15 @@
 "hXA" = (
 /obj/structure/tunnel,
 /turf/open/asphalt/cement,
+/area/lv522/buildings/colony_streets)
+"hYz" = (
+/obj/structure/surface/rack,
+/obj/effect/spawner/random/tool,
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "hZn" = (
 /obj/structure/stairs/perspective{
@@ -10423,7 +10569,9 @@
 /turf/open/floor/strata,
 /area/lv522/landing_zone_2)
 "ihf" = (
-/obj/structure/prop/dam/van{
+/obj/structure/prop/vehicles/crawler{
+	dir = 1;
+	icon_state = "crawler_crate_alt2";
 	layer = 3.1
 	},
 /turf/open/asphalt/cement{
@@ -10605,6 +10753,12 @@
 /area/lv522/buildings/colony_streets)
 "inK" = (
 /obj/structure/surface/table/almayer,
+/obj/item/prop{
+	desc = "A ThinkPad Systems Game-Bro Handheld (TSGBH, shortened). It can play chess, checkers, tri-d chess, and it also runs Byond! Except this one is out of batteries.";
+	icon_state = "game_kit";
+	item_state = "scrapbook";
+	name = "portable game kit"
+	},
 /turf/open/floor/strata{
 	icon_state = "orange_tile"
 	},
@@ -10768,7 +10922,8 @@
 	pixel_y = 9
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "iyk" = (
@@ -11479,12 +11634,13 @@
 "iWw" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
+	dir = 1;
 	icon = 'icons/obj/structures/props/smoothlattice.dmi';
 	icon_state = "lattice1";
 	layer = 5.1;
 	name = "overhead lattice";
 	pixel_x = 16;
-	pixel_y = -8
+	pixel_y = -15
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
@@ -11496,6 +11652,18 @@
 	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/C_Block/Cargo)
+"iXc" = (
+/obj/structure/surface/table/almayer,
+/obj/item/stack/tile/plasteel{
+	pixel_x = 1;
+	pixel_y = 9
+	},
+/obj/item/reagent_container/food/drinks/bottle/sake{
+	pixel_x = 8;
+	pixel_y = 9
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "iXr" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -12232,6 +12400,9 @@
 /area/lv522/landing_zone_1)
 "jCc" = (
 /obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/snacks/sliceable/plaincake{
+	pixel_y = 4
+	},
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "cyan1"
@@ -12284,7 +12455,8 @@
 /obj/item/key,
 /obj/structure/surface/rack,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 8;
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "jDO" = (
@@ -15365,6 +15537,12 @@
 	icon_state = "platebot"
 	},
 /area/lv522/buildings/C_Block/Cargo)
+"mao" = (
+/obj/structure/largecrate/random/barrel,
+/turf/open/asphalt/cement{
+	icon_state = "cement12"
+	},
+/area/lv522/buildings/colony_streets)
 "mbe" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -15868,7 +16046,8 @@
 	pixel_y = 9
 	},
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "muq" = (
@@ -16294,7 +16473,11 @@
 	pixel_x = -9;
 	pixel_y = 10
 	},
-/turf/open/floor/strata,
+/obj/structure/window,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "mJN" = (
 /obj/structure/desertdam/decals/road_edge{
@@ -16356,6 +16539,10 @@
 /obj/structure/sign/safety/coffee,
 /turf/closed/wall/shiva/prefabricated,
 /area/lv522/buildings/C_Block/Cargo)
+"mNL" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "mOi" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/bed/chair{
@@ -16584,8 +16771,12 @@
 /obj/item/reagent_container/food/drinks/cans/beer{
 	pixel_x = 8
 	},
+/obj/structure/window{
+	dir = 8
+	},
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 8;
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "mYL" = (
@@ -16727,6 +16918,11 @@
 	icon_state = "warnplate"
 	},
 /area/lv522/buildings/colony_streets)
+"ndx" = (
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "neg" = (
 /obj/structure/platform{
 	dir = 4
@@ -17938,7 +18134,9 @@
 /area/lv522/buildings/colony_streets)
 "nVF" = (
 /obj/item/trash/hotdog,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	icon_state = "orange_tile"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "nVQ" = (
 /obj/structure/largecrate/random/barrel,
@@ -17985,6 +18183,14 @@
 /turf/closed/shuttle/ert{
 	icon_state = "stan9"
 	},
+/area/lv522/buildings/colony_streets)
+"nXR" = (
+/obj/item/stack/cable_coil,
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "nYe" = (
 /obj/structure/prop/ice_colony/soil_net,
@@ -18177,6 +18383,10 @@
 /area/lv522/buildings/A_block/Admin)
 "ofA" = (
 /obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/snacks/plaincakeslice{
+	pixel_x = 4;
+	pixel_y = 2
+	},
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
@@ -19450,6 +19660,29 @@
 	},
 /turf/open/asphalt/cement,
 /area/lv522/buildings/colony_streets)
+"plg" = (
+/obj/item/prop{
+	desc = "A jerry can. In space! Or maybe a colony.";
+	dir = 4;
+	icon = 'icons/obj/items/tank.dmi';
+	icon_state = "canister";
+	item_state = "caution";
+	name = "fuel can";
+	pixel_x = 7;
+	pixel_y = 10
+	},
+/obj/item/prop{
+	desc = "A jerry can. In space! Or maybe a colony.";
+	dir = 4;
+	icon = 'icons/obj/items/tank.dmi';
+	icon_state = "canister";
+	item_state = "caution";
+	name = "fuel can";
+	pixel_x = 6;
+	pixel_y = 2
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "pln" = (
 /obj/structure/platform_decoration{
 	dir = 4
@@ -20007,7 +20240,7 @@
 /area/lv522/buildings/A_block/Security)
 "pFx" = (
 /obj/structure/prop/vehicles/crawler{
-	icon_state = "crawler_crate_alt";
+	icon_state = "crawler_crate_alt2";
 	layer = 3.1
 	},
 /turf/open/floor/strata{
@@ -20453,8 +20686,17 @@
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
 "pUV" = (
 /obj/structure/surface/table/almayer,
-/obj/item/reagent_container/food/snacks/hotdog,
-/turf/open/floor/strata,
+/obj/item/reagent_container/food/snacks/hotdog{
+	pixel_x = -2;
+	pixel_y = 8
+	},
+/obj/structure/window{
+	dir = 8
+	},
+/obj/structure/window,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "pUX" = (
 /obj/structure/closet/secure_closet/engineering_welding,
@@ -20636,6 +20878,13 @@
 /area/lv522/buildings/colony_streets)
 "qcs" = (
 /obj/structure/pipes/vents/pump,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/C_Block/Garage)
+"qcE" = (
+/obj/structure/surface/rack,
+/obj/item/tool/barricade_hammer,
 /turf/open/floor/strata{
 	icon_state = "orange_cover"
 	},
@@ -20891,8 +21140,9 @@
 	pixel_x = -9;
 	pixel_y = 10
 	},
+/obj/structure/window,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "qoc" = (
@@ -20934,8 +21184,12 @@
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 4
 	},
+/obj/structure/window{
+	dir = 8
+	},
 /turf/open/floor/strata{
-	icon_state = "orange_tile"
+	dir = 8;
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "qpZ" = (
@@ -20990,6 +21244,19 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/B_Block)
+"qrA" = (
+/obj/structure{
+	desc = "A lightweight support lattice.";
+	dir = 1;
+	icon = 'icons/obj/structures/props/smoothlattice.dmi';
+	icon_state = "lattice3";
+	layer = 5.1;
+	name = "overhead lattice";
+	pixel_x = 16;
+	pixel_y = -15
+	},
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Garage)
 "qss" = (
 /obj/structure/cargo_container{
 	icon_state = "HD_blue 0,1";
@@ -21027,6 +21294,19 @@
 	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
+"qsJ" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
+/obj/item/stack/tile/plasteel{
+	pixel_x = 2;
+	pixel_y = 2
+	},
+/obj/structure/cable/heavyduty{
+	icon_state = "4-8"
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "qsW" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/chem_dispenser/soda{
@@ -21183,6 +21463,13 @@
 	dir = 1;
 	icon_state = "brown"
 	},
+/area/lv522/buildings/colony_streets)
+"qyv" = (
+/obj/item/lightstick/red/spoke/planted{
+	pixel_x = 12;
+	pixel_y = 25
+	},
+/turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "qyJ" = (
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -22027,6 +22314,14 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_block/Dorms)
+"rbv" = (
+/obj/structure/surface/table/almayer,
+/obj/item/reagent_container/food/snacks/plaincakeslice,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "white_cyan1"
+	},
+/area/lv522/buildings/A_block/Admin)
 "rcc" = (
 /obj/structure/surface/rack,
 /obj/item/storage/bag/ore,
@@ -22272,18 +22567,9 @@
 "rjH" = (
 /obj/structure{
 	desc = "A lightweight support lattice.";
-	icon = 'icons/obj/structures/props/smoothlattice.dmi';
-	icon_state = "lattice2";
-	layer = 5.1;
-	name = "overhead lattice";
-	pixel_x = 16;
-	pixel_y = 16
-	},
-/obj/structure{
-	desc = "A lightweight support lattice.";
 	dir = 1;
 	icon = 'icons/obj/structures/props/smoothlattice.dmi';
-	icon_state = "lattice-simple";
+	icon_state = "lattice3";
 	layer = 5.1;
 	name = "overhead lattice";
 	pixel_x = 16;
@@ -23401,6 +23687,17 @@
 	icon_state = "plate"
 	},
 /area/lv522/buildings/colony_streets)
+"sdi" = (
+/obj/item/stack/tile/plasteel{
+	pixel_x = 3;
+	pixel_y = 5
+	},
+/obj/item/stack/tile/plasteel{
+	pixel_x = 5;
+	pixel_y = 7
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "sdA" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 8
@@ -23722,7 +24019,8 @@
 	},
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 8;
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "svi" = (
@@ -23939,6 +24237,11 @@
 	tag = "icon-rasputin15"
 	},
 /area/lv522/landing_zone_2/UD6_Typhoon)
+"sHE" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "sHN" = (
 /obj/structure/window_frame/shiva{
 	anchored = 0
@@ -24158,8 +24461,10 @@
 	pixel_x = 9;
 	pixel_y = 13
 	},
+/obj/structure/window,
 /turf/open/floor/strata{
-	icon_state = "orange_tile"
+	dir = 6;
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "sRp" = (
@@ -25496,6 +25801,14 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/B_Block)
+"tTB" = (
+/obj/structure/prop/vehicles/crawler{
+	dir = 8;
+	icon_state = "crawler_crate_alt2";
+	layer = 3.1
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "tUa" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 4
@@ -25540,6 +25853,14 @@
 	tag = "icon-warnplate (EAST)"
 	},
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
+"tUP" = (
+/obj/item/stack/cable_coil/cut,
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "tVV" = (
 /obj/structure/prop/dam/crane/damaged,
 /turf/open/floor/plating{
@@ -25612,6 +25933,13 @@
 	icon_state = "plate"
 	},
 /area/lv522/buildings/colony_streets)
+"tYF" = (
+/obj/structure/surface/rack,
+/obj/effect/spawner/random/tool,
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "tYG" = (
 /obj/item/clothing/shoes/jackboots{
 	pixel_x = -5;
@@ -26017,7 +26345,7 @@
 /area/lv522/landing_zone_2)
 "uqS" = (
 /obj/structure/prop/vehicles/crawler{
-	icon_state = "crawler_crate_wy"
+	icon_state = "crawler_crate_alt2"
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/A_block)
@@ -26515,6 +26843,13 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/A_block/Medical)
+"uQg" = (
+/obj/item/lightstick/red/spoke/planted{
+	pixel_x = 12;
+	pixel_y = 25
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "uQk" = (
 /obj/structure/surface/rack,
 /obj/item/reagent_container/food/snacks/sliceable/cheesewheel{
@@ -26779,6 +27114,14 @@
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
+"uXZ" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Garage)
 "uYa" = (
 /obj/structure/barricade/handrail{
 	dir = 1
@@ -27025,7 +27368,10 @@
 /area/lv522/buildings/colony_streets)
 "vhe" = (
 /obj/item/tool/wirecutters,
-/turf/open/floor/strata,
+/turf/open/floor/strata{
+	dir = 8;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Cargo)
 "vhk" = (
 /obj/structure/computerframe,
@@ -27091,7 +27437,8 @@
 "vjH" = (
 /obj/structure/closet,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "vjU" = (
@@ -27597,6 +27944,13 @@
 	icon_state = "marked"
 	},
 /area/lv522/landing_zone_2)
+"vEJ" = (
+/obj/item/stack/tile/plasteel{
+	pixel_x = 2;
+	pixel_y = 2
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "vFx" = (
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
@@ -27651,7 +28005,7 @@
 "vGY" = (
 /obj/structure/surface/rack,
 /obj/item/device/radio,
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "vGZ" = (
 /turf/open/floor{
@@ -27711,7 +28065,7 @@
 	pixel_x = 12;
 	pixel_y = 28
 	},
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "vKh" = (
 /obj/structure/barricade/wooden{
@@ -27807,6 +28161,13 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/C_Block/Garage)
+"vNT" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "vNY" = (
 /obj/structure/prop/ice_colony/soil_net,
 /obj/structure/barricade/handrail/wire{
@@ -29253,7 +29614,11 @@
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 4
 	},
-/turf/open/floor,
+/obj/item/tool/lighter/random{
+	pixel_x = 12;
+	pixel_y = 19
+	},
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "xbW" = (
 /obj/structure/bed/chair,
@@ -29511,7 +29876,7 @@
 	pixel_x = 12;
 	pixel_y = 25
 	},
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "xlZ" = (
 /obj/structure/ore_box,
@@ -29634,7 +29999,7 @@
 	pixel_x = -13;
 	pixel_y = 25
 	},
-/turf/open/floor,
+/turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
 "xrJ" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -29755,6 +30120,16 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Mining)
+"xvQ" = (
+/obj/structure/surface/rack,
+/obj/item/clothing/ears/earmuffs,
+/obj/item/clothing/ears/earmuffs{
+	icon_state = "earmuffs2";
+	item_state = "earmuffs2";
+	pixel_y = -4
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/colony_streets)
 "xwp" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -30317,8 +30692,10 @@
 /area/lv522/buildings/A_block/Admin)
 "xVM" = (
 /obj/structure/surface/rack,
+/obj/effect/spawner/random/tool,
 /turf/open/floor/strata{
-	icon_state = "orange_cover"
+	dir = 4;
+	icon_state = "floor3"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "xWn" = (
@@ -30987,11 +31364,11 @@ vVs
 vVs
 vVs
 vVs
+gTM
 vVs
 vVs
 vVs
-vVs
-vVs
+gTM
 vVs
 vVs
 vVs
@@ -31215,11 +31592,11 @@ vVs
 vVs
 vVs
 vVs
-vqB
 gTM
 gTM
 gTM
-vVs
+gTM
+gTM
 vVs
 vVs
 vVs
@@ -32115,7 +32492,7 @@ qCO
 vqB
 qCO
 qCO
-qCO
+fSn
 qCO
 vqB
 vqB
@@ -32588,7 +32965,7 @@ gTM
 gTM
 gTM
 wjp
-wjp
+fSn
 wjp
 wjp
 wjp
@@ -33280,10 +33657,10 @@ wyr
 wyr
 lam
 lam
-wyr
+bdo
 mwD
 cHc
-cHc
+sHE
 cHc
 wyr
 mwD
@@ -33494,7 +33871,7 @@ vqB
 qCO
 fSn
 vqB
-qCO
+vqB
 vqB
 fwi
 ezS
@@ -33508,10 +33885,10 @@ qCO
 qCO
 vVs
 vVs
-vVs
+tTB
 qCO
 wjp
-wjp
+gTo
 wjp
 wjp
 wjp
@@ -33722,8 +34099,8 @@ vVs
 fSn
 qCO
 vqB
-fSn
-qCO
+vqB
+vqB
 fwi
 ezS
 mtK
@@ -33736,9 +34113,9 @@ qCO
 fSn
 vVs
 vVs
-vVs
-vVs
 qCO
+wat
+hJa
 qCO
 wjp
 wjp
@@ -33951,11 +34328,11 @@ vVs
 vVs
 vVs
 vVs
-vVs
 gTM
 gTM
 gTM
-wjp
+gTM
+gTM
 wjp
 wjp
 wjp
@@ -34179,11 +34556,11 @@ vVs
 vVs
 vVs
 vVs
+gTM
 vVs
 vVs
 vVs
-vVs
-fSn
+gTM
 qCO
 wjp
 wjp
@@ -34412,7 +34789,7 @@ vVs
 vVs
 vVs
 vVs
-qCO
+fSn
 wjp
 wjp
 wjp
@@ -46123,7 +46500,7 @@ ofx
 ofx
 eYJ
 ofA
-ofA
+rbv
 ofx
 mCU
 iYf
@@ -48203,7 +48580,7 @@ qCO
 qgj
 tcr
 eRx
-wXE
+ndx
 aag
 eeB
 jel
@@ -48431,8 +48808,8 @@ qCO
 qgj
 nOE
 eRx
-wXE
-aag
+ndx
+cqS
 aag
 jel
 aag
@@ -48659,7 +49036,7 @@ qCO
 qgj
 nOE
 eRx
-wXE
+ndx
 aag
 aag
 eah
@@ -48887,7 +49264,7 @@ qCO
 qgj
 nOE
 eRx
-wXE
+ndx
 aag
 aag
 jel
@@ -48910,9 +49287,9 @@ jAG
 goy
 bqa
 aul
-oKy
+gvD
 jWn
-oKy
+gvD
 jSx
 bqa
 cWW
@@ -49115,12 +49492,12 @@ vLP
 fpJ
 jZl
 dwO
-wXE
+hLV
 aag
 aag
 jel
 nVF
-aag
+sku
 tcr
 gcM
 gcM
@@ -49366,9 +49743,9 @@ jAG
 nZU
 eGF
 aul
-oKy
+gvD
 jWn
-oKy
+gvD
 jSx
 eGF
 jSS
@@ -49583,7 +49960,7 @@ nyS
 nyS
 lQj
 uTL
-jAG
+iFT
 jAG
 jAG
 jAG
@@ -49798,9 +50175,9 @@ vLP
 fpJ
 nOE
 xVM
-wXE
-wXE
-aag
+ndx
+ndx
+ceU
 aag
 jel
 wXE
@@ -50026,9 +50403,9 @@ qgj
 jZl
 jZl
 dNd
-wXE
-aag
-aag
+ndx
+ndx
+ceU
 aag
 jel
 wXE
@@ -50050,9 +50427,9 @@ tXh
 nZU
 eGF
 aul
-oKy
+gvD
 jWn
-oKy
+gvD
 jSx
 eGF
 cCf
@@ -50253,10 +50630,10 @@ qCO
 qgj
 nOE
 gki
-wXE
-wXE
+ndx
+ndx
 csp
-nUq
+fVE
 nUq
 orS
 wXE
@@ -50481,8 +50858,8 @@ qCO
 qgj
 cmp
 mum
-wXE
-aag
+ndx
+ndx
 dde
 bNG
 aag
@@ -50506,10 +50883,10 @@ iPH
 nZU
 bqa
 aul
-oKy
+gvD
 jWn
 vhe
-gcQ
+qsJ
 bqa
 kdc
 aIX
@@ -50709,8 +51086,8 @@ qCO
 xqN
 nOE
 vjH
-wXE
-wXE
+ndx
+ndx
 aKe
 sRk
 wXE
@@ -51190,9 +51567,9 @@ bqa
 bqa
 bqa
 aul
-oKy
+gvD
 jWn
-oKy
+gvD
 jSx
 eGF
 jSS
@@ -51398,7 +51775,7 @@ uvY
 qVT
 fpJ
 jZl
-jZl
+qrA
 rjH
 hTk
 iWw
@@ -51646,9 +52023,9 @@ qfe
 xaD
 bqa
 nqR
-oKy
+gvD
 jWn
-oKy
+gvD
 oYa
 bqa
 jSS
@@ -52766,10 +53143,10 @@ qgj
 jZl
 jZl
 xul
-xVM
-aag
-jel
-wXE
+tYF
+ceU
+uXZ
+ceU
 hWP
 jZl
 bah
@@ -52995,9 +53372,9 @@ nOE
 qcs
 oxg
 lSg
-nUq
-orS
-wXE
+fVE
+fHj
+ceU
 dFK
 jZl
 bah
@@ -53223,10 +53600,10 @@ nOE
 tux
 faB
 aag
-aag
-jel
-wXE
-xVM
+ceU
+uXZ
+ceU
+qcE
 jZl
 bah
 vqB
@@ -53451,10 +53828,10 @@ nOE
 typ
 khW
 wXE
-aag
-jel
-wXE
-xVM
+ceU
+uXZ
+ceU
+tYF
 jZl
 bah
 qCO
@@ -53679,9 +54056,9 @@ jZl
 jZl
 qsw
 pAa
-aag
+ceU
 exu
-wXE
+ceU
 geG
 jZl
 bah
@@ -65714,7 +66091,7 @@ wjp
 wjp
 wjp
 wjp
-wjp
+kpq
 wjp
 qgj
 kca
@@ -66848,12 +67225,12 @@ wwp
 wwp
 wwp
 gTM
-fpJ
+vWD
 lni
 qCO
 wjp
 wjp
-wjp
+kpq
 wjp
 wjp
 qgj
@@ -67076,7 +67453,7 @@ uTL
 uTL
 uTL
 gTM
-bah
+mao
 qCO
 wjp
 wjp
@@ -67304,7 +67681,7 @@ eWK
 uTL
 uTL
 gTM
-bah
+mao
 wjp
 qCO
 wjp
@@ -67532,8 +67909,8 @@ uTL
 uTL
 gTM
 gTM
-bah
-wjp
+mao
+nVQ
 wjp
 wjp
 wjp
@@ -67762,7 +68139,7 @@ gTM
 vMt
 lcZ
 lvr
-wjp
+evo
 wjp
 wjp
 qCO
@@ -67990,7 +68367,7 @@ gTM
 bDI
 fYN
 wjp
-wjp
+qyv
 qCO
 qCO
 wjp
@@ -68214,13 +68591,13 @@ uTL
 uTL
 gTM
 gTM
-mqO
+btW
 wjQ
-gbB
+ljd
 ljd
 wjp
 qCO
-qCO
+cPw
 wjp
 wjp
 qCO
@@ -68441,10 +68818,10 @@ uTL
 uTL
 uTL
 gTM
-aFu
-mqO
+sdi
+vNT
 leO
-wjp
+cKV
 wjp
 wjp
 wjp
@@ -68669,11 +69046,11 @@ uTL
 uTL
 gTM
 gTM
-aFu
-mqO
+iXc
+vNT
 oMm
 wjp
-wjp
+vEJ
 wjp
 wjp
 wjp
@@ -68897,8 +69274,8 @@ uTL
 gTM
 gTM
 uWu
-aFu
-mqO
+gbB
+vNT
 oMm
 qCO
 wjp
@@ -69125,16 +69502,16 @@ gTM
 gTM
 xaG
 rZi
-aFu
-mqO
+mNL
+vNT
 oMm
-qCO
-wjp
+cPw
+kpq
 wjp
 fSn
 vVs
 vVs
-qCO
+plg
 qCO
 qgj
 lNW
@@ -69351,10 +69728,10 @@ gTM
 gTM
 gTM
 vGY
-aFu
-aFu
-aFu
-mqO
+gbB
+gbB
+gbB
+tUP
 oMm
 fSn
 wjp
@@ -69580,9 +69957,9 @@ tkB
 fyf
 aYC
 xrC
-aFu
-aFu
-mqO
+mNL
+gbB
+nXR
 oqN
 qCO
 fSn
@@ -69806,15 +70183,15 @@ gTM
 vVs
 vVs
 vJO
-aFu
+gbB
 xlY
-aFu
-aFu
-mqO
+gbB
+gbB
+vNT
 ldM
 txV
 rGP
-wjp
+evo
 wjp
 wjp
 axg
@@ -70036,13 +70413,13 @@ vVs
 vVs
 vVs
 vVs
-aFu
-aFu
-mqO
+dmb
+xvQ
+hYz
 nkN
 ygL
 qCO
-qCO
+uQg
 fSn
 vVs
 vVs
