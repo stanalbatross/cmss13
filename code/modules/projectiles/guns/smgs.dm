@@ -439,4 +439,3 @@
 	if(.)
 		click_empty(user)
 	return FALSE
-
