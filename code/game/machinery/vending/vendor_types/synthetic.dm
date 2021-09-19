@@ -245,8 +245,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("Telescopic Baton", 15, /obj/item/weapon/melee/telebaton, null, VENDOR_ITEM_REGULAR),
 	)
 
-	)
-
 //------------EXPERIMENTAL TOOL KITS---------------
 /obj/effect/essentials_set/cnailgun
 	spawned_gear_list = list(
