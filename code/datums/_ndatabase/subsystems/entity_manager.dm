@@ -198,17 +198,6 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 	var/datum/entity/ET = meta.make_new(id)
 	return ET
 
-/datum/controller/subsystem/entity_manager/proc/select_now(entity_type, id = null)
-	var/datum/entity_meta/meta = tables[entity_type]
-	if(!meta)
-		return null
-	var/datum/entity/ET = meta.make_new(id)
-	. = ET
-	if(id)
-		var/list/ids = list(id)
-		var/list/et = list(ET)
-		adapter.read_table(meta.table_name, ids, CALLBACK(src, /datum/controller/subsystem/entity_manager.proc/after_select, meta, et), TRUE)
-
 /datum/controller/subsystem/entity_manager/proc/filter_then(entity_type, var/datum/db/filter, var/datum/callback/CB, sync = FALSE)
 	var/datum/entity_meta/meta = tables[entity_type]
 	if(!meta)
