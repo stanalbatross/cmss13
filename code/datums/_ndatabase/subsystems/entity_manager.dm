@@ -170,7 +170,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 		IE.status = DB_ENTITY_STATE_BROKEN
 		meta.on_delete(IE)
 
-/datum/controller/subsystem/entity_manager/proc/do_select(var/datum/entity_meta/meta)
+/datum/controller/subsystem/entity_manager/proc/do_select(var/datum/entity_meta/meta, sync = FALSE)
 	var/list/datum/entity/to_select = meta.to_read
 	if(!length(to_select))
 		return
@@ -179,7 +179,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 	for(var/datum/entity/item in to_select)
 		ids += item.id
 
-	adapter.read_table(meta.table_name, ids, CALLBACK(src, /datum/controller/subsystem/entity_manager.proc/after_select, meta, to_select))
+	adapter.read_table(meta.table_name, ids, CALLBACK(src, /datum/controller/subsystem/entity_manager.proc/after_select, meta, to_select), sync)
 
 /datum/controller/subsystem/entity_manager/proc/after_select(var/datum/entity_meta/meta, var/list/datum/entity/selected_entities, uqid, var/list/results)
 	for(var/list/IE in results)
@@ -191,11 +191,13 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 			meta.on_read(ET)
 			meta.on_action(ET)
 
-/datum/controller/subsystem/entity_manager/proc/select(entity_type, id = null)
+/datum/controller/subsystem/entity_manager/proc/select(entity_type, id = null, sync = FALSE)
 	var/datum/entity_meta/meta = tables[entity_type]
 	if(!meta)
 		return null
 	var/datum/entity/ET = meta.make_new(id)
+	if(sync)
+		do_select(meta, TRUE)
 	return ET
 
 /datum/controller/subsystem/entity_manager/proc/filter_then(entity_type, var/datum/db/filter, var/datum/callback/CB, sync = FALSE)
