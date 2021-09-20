@@ -78,7 +78,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 			adapter.prepare_view(view)
 
 	ready = TRUE
-	..()
+	return ..()
 
 /datum/controller/subsystem/entity_manager/proc/prepare_tables()
 	adapter.sync_table_meta()
@@ -253,7 +253,7 @@ var/datum/controller/subsystem/entity_manager/SSentity_manager
 	var/datum/entity/ET = meta.make_new_by_key(key)
 	if(!ET.__key_synced)
 		ET.__key_synced = TRUE
-		adapter.read_filter(meta.table_name, DB_COMP(meta.key_field, DB_EQUALS, key), CALLBACK(src, /datum/controller/subsystem/entity_manager.proc/after_select_by_key, ET, meta), sync)
+		adapter.read_filter(meta.table_name, DB_COMP(meta.key_field, DB_EQUALS, key), CALLBACK(src, .proc/after_select_by_key, ET, meta), sync)
 	return ET
 
 /datum/controller/subsystem/entity_manager/proc/after_select_by_key(var/datum/entity/ET, var/datum/entity_meta/meta, quid, var/list/results)
