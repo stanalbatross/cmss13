@@ -151,6 +151,9 @@ var/datum/controller/subsystem/database_query_manager/SSdatabase
 
 // Do not use this if you don't know why this exists
 /datum/controller/subsystem/database_query_manager/proc/create_query_sync(query_text, success_callback, fail_callback)
+	set waitfor = 0
+	while(!connection || connection.status != DB_CONNECTION_READY)
+		stoplag()
 	var/datum/db/query_response/qr = new()
 	qr.query = connection.query(query_text)
 	qr.query_text = query_text
@@ -160,6 +163,9 @@ var/datum/controller/subsystem/database_query_manager/SSdatabase
 	return qr
 
 /datum/controller/subsystem/database_query_manager/proc/create_parametric_query_sync(query_text, parameters, success_callback, fail_callback)
+	set waitfor = 0
+	while(!connection || connection.status != DB_CONNECTION_READY)
+		stoplag()
 	var/datum/db/query_response/qr = new()
 	var/list/prs = list()
 	prs += query_text

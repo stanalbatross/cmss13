@@ -50,7 +50,9 @@
 
 #define SS_INIT_TICKER_SPAWN       999
 #define SS_INIT_INPUT              85
-#define SS_INIT_RUST               26
+#define SS_INIT_RUST               30
+#define SS_INIT_DATABASE		   29
+#define SS_INIT_ENTITYMANAGER	   28
 #define SS_INIT_SUPPLY_SHUTTLE     25
 #define SS_INIT_GARBAGE            24
 #define SS_INIT_JOB                23
@@ -86,8 +88,7 @@
 #define SS_INIT_FINISH            -24
 #define SS_INIT_MINIMAP           -25
 #define SS_INIT_ADMIN             -26
-#define SS_INIT_DATABASE		  -27
-#define SS_INIT_ENTITYMANAGER	  -28
+
 #define SS_INIT_PLAYTIME    	  -29
 #define SS_INIT_PREDSHIPS         -30
 #define SS_INIT_OBJECTIVES        -31
