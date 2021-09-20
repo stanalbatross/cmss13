@@ -405,9 +405,8 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	var/safe_key = ckey(key)
 	if(!safe_key)
 		return null
-	var/datum/entity/player/P = DB_EKEY(/datum/entity/player, safe_key)
+	var/datum/entity/player/P = DB_EKEY(/datum/entity/player, safe_key, TRUE)
 	P.save()
-	P.sync()
 	return P
 
 /client/var/datum/entity/player/player_data
