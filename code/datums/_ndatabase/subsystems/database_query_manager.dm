@@ -32,7 +32,7 @@ var/datum/controller/subsystem/database_query_manager/SSdatabase
 	var/datum/db/connection_settings/settings
 
 	/// Maximum amount of queries that can be ran concurrently
-	var/max_concurrent_queries = 99999
+	var/max_concurrent_queries = 25
 	/// Queries currently being handled by database driver
 	var/list/datum/db/query_response/queries_active
 	/// Queries left to handle during controller firing
