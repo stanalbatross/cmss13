@@ -8,7 +8,7 @@
 	icon_state = "platform"
 	climbable = TRUE
 	anchored = TRUE
-	density = TRUE
+	density = 1
 	throwpass = TRUE //You can throw objects over this, despite its density.
 	layer = OBJ_LAYER
 	breakable = FALSE
@@ -18,7 +18,7 @@
 
 /obj/structure/platform/stair_cut
 	icon_state = "platform_stair"
-	density = FALSE//otherwise instanced icons via dir cause incorrect behavior
+	density = 0//otherwise instanced icons via dir cause incorrect behavior
 
 /obj/structure/platform/Initialize()
 	. = ..()
