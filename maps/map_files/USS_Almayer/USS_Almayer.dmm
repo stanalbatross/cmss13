@@ -83904,7 +83904,7 @@
 	icon_state = "red";
 	tag = "icon-red (WEST)"
 	},
-/area/space)
+/area/almayer/hallways/starboard_hallway)
 "yiC" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/flora/pottedplant{
