@@ -79531,7 +79531,7 @@
 	pixel_y = 32
 	},
 /turf/open/floor/wood/ship,
-/area/space)
+/area/almayer/medical/medical_science)
 "wom" = (
 /obj/structure/disposalpipe/segment{
 	dir = 2;

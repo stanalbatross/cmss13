@@ -24517,12 +24517,6 @@
 	tag = "icon-sterile_white (SOUTHWEST)"
 	},
 /area/fiorina/station/medbay)
-"oYB" = (
-/obj/structure/machinery/door/airlock/prison_hatch/autoname{
-	dir = 1
-	},
-/turf/closed/wall/prison,
-/area/fiorina/maintenance)
 "oYH" = (
 /obj/structure/monorail{
 	name = "launch track"
@@ -62511,7 +62505,7 @@ uGM
 uGM
 uGM
 lzX
-oYB
+liA
 cME
 cME
 cME
