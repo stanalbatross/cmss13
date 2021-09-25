@@ -28734,7 +28734,6 @@
 /area/almayer/hallways/port_hallway)
 "bRg" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
-/obj/effect/landmark/thunderdome/observer,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
