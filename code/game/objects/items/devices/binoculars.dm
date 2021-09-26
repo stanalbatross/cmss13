@@ -392,21 +392,10 @@
 			return
 	return
 
-/obj/item/device/binoculars/designator/attack_self(mob/living/carbon/human/user)
-	. = ..()
-
-	if(!.)
-		return
-
-	if(!FAC)
-		FAC = user
-		return
-	else
-		FAC = null
-		return
 
 /obj/item/device/binoculars/designator/proc/lasering(var/mob/living/carbon/human/user, var/atom/A, var/params)
-	if(!FAC || FAC != user || istype(A,/obj/screen))
+	if(istype(A,/obj/screen))
+		to_chat(user, SPAN_WARNING("bruh"))
 		return FALSE
 	if(user.stat)
 		zoom(user)
@@ -414,15 +403,18 @@
 		return FALSE
 	if(lasing)
 		return FALSE
+
 	target = A
+
 	if(!istype(target))
 		return FALSE
-	if(target.z != FAC.z || target.z == 0 || FAC.z == 0 || QDELETED(FAC.loc))
+	if(target.z != user.z)
 		return FALSE
 
 	var/list/modifiers = params2list(params) //Only single clicks.
 	if(modifiers["middle"] || modifiers["shift"] || modifiers["alt"] || modifiers["ctrl"])
 		return FALSE
+
 
 	var/turf/SS = get_turf(src) //Stand Still, not what you're thinking.
 	var/turf/T = get_turf(A)
@@ -442,6 +434,7 @@
 		lasing = TRUE
 		lasertarget.icon_state = "las_r"
 		las_r = 2
+		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
 		if(SS != get_turf(src)) //Don't move.
 			lasing = FALSE
@@ -478,6 +471,7 @@
 		lasing = TRUE
 		lasertarget.icon_state = "laz_b"
 		las_b = 2
+		playsound(src, 'sound/effects/nightvision.ogg', 35)
 		sleep(50)
 		if(SS != get_turf(src)) //Don't move.
 			lasing = FALSE
@@ -511,6 +505,7 @@
 /obj/item/device/binoculars/designator/afterattack(atom/A as mob|obj|turf, mob/user as mob, params) // This is actually WAY better, espically since its fucken already in the code.
 	lasering(user, A, params)
 	return
+
 
 /obj/effect/las_target
 	name = "laser"

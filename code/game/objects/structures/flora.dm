@@ -466,12 +466,13 @@ ICE GRASS
 	health = rand(50,75)
 	if(prob(75))
 		opacity = 1
+	setDir(pick(NORTH,EAST,SOUTH,WEST))
 
-	//Randomise a bit
-	var/matrix/M = matrix()
-	M.Turn(rand(1,360))
-	M.Scale(pick(0.7,0.8,0.9,1,1.1,1.2),pick(0.7,0.8,0.9,1,1.1,1.2))
-	src.apply_transform(M)
+	//Randomise a bit //Holy fuck fuck you abby this is so horrible looking
+	//var/matrix/M = matrix()
+	//M.Turn(rand(1,360))
+	//M.Scale(pick(0.7,0.8,0.9,1,1.1,1.2),pick(0.7,0.8,0.9,1,1.1,1.2))
+	//src.apply_transform(M)
 
 
 /obj/structure/flora/jungle/thickbush/Collided(M as mob)

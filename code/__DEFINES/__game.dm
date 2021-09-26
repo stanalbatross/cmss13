@@ -441,3 +441,16 @@
 /// `time` - The time period in which to gain this amount
 /// To be used with delta_time. Multiplied by 10 to convert from deciseconds to seconds
 #define AMOUNT_PER_TIME(amount, time) ((amount / (time))*10)
+
+
+// Performance toggle flags
+/// Set conservative MC timings on game start
+#define PERF_TOGGLE_LAZYSS (1<<0)
+/// Disable bloody footprints
+#define PERF_TOGGLE_NOBLOODPRINTS (1<<1)
+/// Disable file-based attacklogs
+#define PERF_TOGGLE_ATTACKLOGS (1<<2)
+/// Disables loading/ticking shuttle controllers
+#define PERF_TOGGLE_SHUTTLES (1<<3)
+/// Disables loading Techwebs and additional Z-Levels
+#define PERF_TOGGLE_TECHWEBS (1<<4)

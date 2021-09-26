@@ -533,6 +533,13 @@
 	keyslot2 = new /obj/item/device/encryptionkey/med
 */
 
+/obj/item/device/radio/headset/almayer/marine/mortar
+	name = "mortar crew radio headset"
+	desc = "This is used by the dust raider's bunker mortar crew to get feedback on how good the hits of that 80mm rain turned out. Comes with access to the engineering channel with :e, JTAC for coordinating with :j, Tactics with :t, and request more shells supply with :u - this ain't Winchester Outpost !"
+	icon_state = "ce_headset"
+	initial_keys = list(/obj/item/device/encryptionkey/mortar)
+	volume = RADIO_VOLUME_RAISED
+
 //*************************************
 //-----SELF SETTING MARINE HEADSET-----
 //*************************************/

@@ -52,6 +52,12 @@
 
 	var/force_mode
 
+	var/force_shipmap
+
+	var/skip_shipmap
+
+	var/perf_mode
+
 	var/list/monkey_types = list(/mob/living/carbon/human/monkey)
 
 	var/list/xvx_hives = list(XENO_HIVE_ALPHA = 0, XENO_HIVE_BRAVO = 0)
@@ -86,6 +92,7 @@
 		if(delete_after)
 			fdel(filename)
 		configs[i] = config
+
 	return configs
 
 #define CHECK_EXISTS(X) if(!istext(json[X])) { log_world("[##X] missing from json!"); return; }
@@ -214,6 +221,15 @@
 
 	if(json["force_mode"])
 		force_mode = json["force_mode"]
+
+	if(json["skip_shipmap"])
+		skip_shipmap = json["skip_shipmap"]
+
+	if(json["perf_mode"])
+		perf_mode = json["perf_mode"]
+
+	if(json["force_shipmap"])
+		force_shipmap = json["force_shipmap"]
 
 	if(json["announce_text"])
 		announce_text = json["announce_text"]

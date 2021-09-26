@@ -52,6 +52,5 @@ map sorokyne_strata
 endmap
 
 map whiskey_outpost_v2
-	minplayers 130
-	disabled
+	voteweight 0
 endmap

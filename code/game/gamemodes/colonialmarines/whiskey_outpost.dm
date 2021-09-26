@@ -2,7 +2,7 @@
 
 //Global proc for checking if the game is whiskey outpost so I dont need to type if(gamemode == whiskey outpost) 50000 times
 /proc/Check_WO()
-	if(SSticker.mode == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
+	if(SSticker.mode == "Whiskey Outpost" || GLOB.master_mode == "Whiskey Outpost")
 		return 1
 	return 0
 
@@ -11,30 +11,31 @@
 	config_tag = "Whiskey Outpost"
 	required_players 		= 0
 	xeno_bypass_timer 		= 1
-	role_instruction		= 1
-	roles_for_mode = list(/datum/job/command/commander/whiskey,
-					/datum/job/command/executive/whiskey,
-					/datum/job/civilian/synthetic/whiskey,
-					/datum/job/command/warrant/whiskey,
-					/datum/job/command/bridge/whiskey,
-					/datum/job/command/tank_crew/whiskey,
-					/datum/job/command/police/whiskey,
-					/datum/job/command/pilot/whiskey,
-					/datum/job/logistics/requisition/whiskey,
-					/datum/job/civilian/professor/whiskey,
-					/datum/job/civilian/doctor/whiskey,
-					/datum/job/civilian/researcher/whiskey,
-					/datum/job/logistics/engineering/whiskey,
-					/datum/job/logistics/tech/maint/whiskey,
-					/datum/job/logistics/cargo/whiskey,
-					/datum/job/civilian/liaison/whiskey,
-					/datum/job/marine/leader/equipped/whiskey,
-					/datum/job/marine/specialist/equipped/whiskey,
-					/datum/job/marine/smartgunner/equipped/whiskey,
-					/datum/job/marine/medic/equipped/whiskey,
-					/datum/job/marine/engineer/equipped/whiskey,
-					/datum/job/marine/standard/equipped/whiskey
-)
+	flags_round_type = MODE_NEW_SPAWN
+	role_mappings = list(
+					/datum/job/command/commander/whiskey = JOB_CO,
+					/datum/job/command/executive/whiskey = JOB_XO,
+					/datum/job/civilian/synthetic/whiskey = JOB_SYNTH,
+					/datum/job/command/warrant/whiskey = JOB_CHIEF_POLICE,
+					/datum/job/command/bridge/whiskey = JOB_SO,
+					/datum/job/command/tank_crew/whiskey = JOB_CREWMAN,
+					/datum/job/command/police/whiskey = JOB_POLICE,
+					/datum/job/command/pilot/whiskey = JOB_PILOT,
+					/datum/job/logistics/requisition/whiskey = JOB_CHIEF_REQUISITION,
+					/datum/job/civilian/professor/whiskey = JOB_CMO,
+					/datum/job/civilian/doctor/whiskey = JOB_DOCTOR,
+					/datum/job/civilian/researcher/whiskey = JOB_RESEARCHER,
+					/datum/job/logistics/engineering/whiskey = JOB_CHIEF_ENGINEER,
+					/datum/job/logistics/tech/maint/whiskey = JOB_MAINT_TECH,
+					/datum/job/logistics/cargo/whiskey = JOB_CARGO_TECH,
+					/datum/job/civilian/liaison/whiskey = JOB_CORPORATE_LIAISON,
+					/datum/job/marine/leader/equipped/whiskey = JOB_SQUAD_LEADER,
+					/datum/job/marine/specialist/equipped/whiskey = JOB_SQUAD_SPECIALIST,
+					/datum/job/marine/smartgunner/equipped/whiskey = JOB_SQUAD_SMARTGUN,
+					/datum/job/marine/medic/equipped/whiskey = JOB_SQUAD_MEDIC,
+					/datum/job/marine/engineer/equipped/whiskey = JOB_SQUAD_ENGI,
+					/datum/job/marine/standard/equipped/whiskey = JOB_SQUAD_MARINE
+	)
 
 
 	latejoin_larva_drop = 0 //You never know
@@ -45,7 +46,7 @@
 	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
-	var/spawn_next_wave = 10 MINUTES //Spawn first batch at ~10 minutes (we divide it by the game ticker time of 2 seconds)
+	var/spawn_next_wave = 12 MINUTES //Spawn first batch at ~12 minutes (we divide it by the game ticker time of 2 seconds)
 	var/xeno_wave = 1 //Which wave is it
 
 	var/wave_ticks_passed = 0 //Timer for xeno waves
@@ -59,12 +60,12 @@
 		//The more entires with same path, the more chances there are to pick it
 			//This will get populated with spawn_xenos() proc
 	var/list/spawnxeno = list()
+	var/list/xeno_pool = list()
 
 	var/next_supply = 1 MINUTES //At which wave does the next supply drop come?
 
 	var/ticks_passed = 0
 	var/lobby_time = 0 //Lobby time does not count for marine 1h win condition
-	var/wave_times_delayed = 0 //How many time was the current wave delayed due to pop limit?
 
 	var/map_locale = 0 // 0 is Jungle Whiskey Outpost, 1 is Big Red Whiskey Outpost, 2 is Ice Colony Whiskey Outpost, 3 is space
 	var/spawn_next_wo_wave = FALSE
@@ -73,6 +74,9 @@
 
 	hardcore = TRUE
 	votable = FALSE // not fun
+
+/datum/game_mode/whiskey_outpost/get_roles_list()
+	return ROLES_WO
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1
@@ -105,15 +109,9 @@
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 
-	for(var/i in GLOB.human_mob_list)
-		var/mob/living/carbon/human/H = i
-		if(H.client)
-			players += H
-			if(H.job in ROLES_MARINES)
-				spawn_player(H)
 	sleep(10)
 	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
-	to_world(SPAN_ROUNDBODY("It is the year [game_year - 5] on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
+	to_world(SPAN_ROUNDBODY("It is the year 2177 on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
 	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
 	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [SSmapping.configs[GROUND_MAP].map_name] must survive for an hour to alert the rest of their battalion in the sector"))
@@ -151,12 +149,8 @@
 	wave_ticks_passed++
 
 	if(wave_ticks_passed >= (spawn_next_wave/(delta_time SECONDS)))
-		if(count_xenos() < 50)//Checks braindead too, so we don't overpopulate! Also make sure its less than twice us in the world, so we advance waves/get more xenos the more marines survive.
-			wave_ticks_passed = 0
-			spawn_next_wo_wave = TRUE
-		else
-			wave_ticks_passed -= 50 //Wait 50 ticks and try again
-			wave_times_delayed++
+		wave_ticks_passed = 0
+		spawn_next_wo_wave = TRUE
 
 	if(spawn_next_wo_wave)
 		spawn_next_xeno_wave()
@@ -199,13 +193,20 @@
 
 	if(C[1] == 0)
 		finished = 1 //Alien win
-	else if(world.time > 1 HOURS + 20 MINUTES + lobby_time + initial(spawn_next_wave) + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
+	else if(world.time > 1 HOURS  + lobby_time + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
 		finished = 2 //Marine win
 
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
-	enter_allowed = 0
+	for(var/i in RoleAuthority.roles_by_name)
+		var/datum/job/J = RoleAuthority.roles_by_name[i]
+
+		// If the job has unlimited job slots, We set the amount of slots to the amount it has at the moment this is called
+		if (J.spawn_positions < 0)
+			J.spawn_positions = J.current_positions
+			J.total_positions = J.current_positions
+		J.current_positions = J.get_total_positions(TRUE)
 	to_world("<B>New players may no longer join the game.</B>")
-	message_staff("Wave one has begun. Disabled new player game joining.")
+	message_staff("Wave one has begun. Disabled new player game joining except for replacement of cryoed marines.")
 	world.update_status()
 
 /datum/game_mode/whiskey_outpost/count_xenos()//Counts braindead too
