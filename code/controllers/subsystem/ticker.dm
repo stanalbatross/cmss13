@@ -198,6 +198,9 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	mode.announce()
 
+	if(GLOB.perf_flags & PERF_TOGGLE_LAZYSS)
+		apply_lazy_timings()
+
 	if(CONFIG_GET(flag/autooocmute))
 		ooc_allowed = FALSE
 
@@ -236,7 +239,7 @@ SUBSYSTEM_DEF(ticker)
 
 	setup_economy()
 
-	shuttle_controller.setup_shuttle_docks()
+	shuttle_controller?.setup_shuttle_docks()
 
 	PostSetup()
 	return TRUE
@@ -333,7 +336,7 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/load_mode()
 	var/mode = trim(file2text("data/mode.txt"))
 	if(mode)
-		GLOB.master_mode = mode
+		GLOB.master_mode = SSmapping.configs[GROUND_MAP].force_mode ? SSmapping.configs[GROUND_MAP].force_mode : mode
 	else
 		GLOB.master_mode = "Extended"
 	log_game("Saved mode is '[GLOB.master_mode]'")
@@ -448,3 +451,20 @@ SUBSYSTEM_DEF(ticker)
 		return TRUE
 	else
 		return FALSE
+
+/// Placeholder proc to apply slower SS timings for performance. Should be refactored to be included in Master/SS probably. Note we can't change prios after MC init.
+/datum/controller/subsystem/ticker/proc/apply_lazy_timings()
+	/* Notes:
+	 * SSsound: lowering SSsound freq probably won't help because it's just a worker for the sound queue, same amount of work gets queued anyway
+	 * SSmob/SShuman/SSxeno: you don't want to touch these, because several systems down the line rely on the timing (2 SECONDS) for gameplay logic
+	 * SSchat/SSinput: these are perf intensive but need to be SS_TICKER, changing wait would be troublesome and/or inconsequential for perf
+	 * SScellauto: can't touch this because it would directly affect explosion spread speed
+	 */
+
+	SSquadtree?.wait           = 0.8 SECONDS // From 0.5, relevant based on player movement speed (higher = more error in sound location, motion detector pings, sentries target acquisition)
+	SSlighting?.wait           = 0.6 SECONDS // From 0.4, same but also heavily scales on player/scene density (higher = less frequent lighting updates which is very noticeable as you move)
+	SSstatpanels?.wait         = 1.5 SECONDS // From 0.6, refresh rate mainly matters for ALT+CLICK turf contents (which gens icons, intensive)
+	SSsoundscape?.wait         =   2 SECONDS // From 1, soudscape triggering checks, scales on player count
+	SStgui?.wait               = 1.2 SECONDS // From 0.9, UI refresh rate
+
+	log_debug("Switching to lazy Subsystem timings for performance")

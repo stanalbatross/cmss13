@@ -41,6 +41,10 @@ var/global/marines_assigned = 0
 	var/list/castes_by_path //Master list generated when role aithority is created, listing every caste by path.
 	var/list/castes_by_name //Master list generated when role authority is created, listing every default caste by name.
 
+	/// List of mapped roles that should be used in place of usual ones
+	var/list/role_mappings
+	var/list/default_roles
+
 	var/list/unassigned_players
 	var/list/squads
 
@@ -99,23 +103,7 @@ var/global/marines_assigned = 0
 			continue
 
 		roles_by_path[J.type] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
-			roles_by_name[J.title] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_MODE)
-			roles_for_mode[J.title] = J
-
-	//TODO Come up with some dynamic method of doing this.
-	//added exception for WO, so appropriate roles would appear in prefs for WO.
-	var/list/MODE_ROLES = ROLES_REGULAR_ALL
-	if(Check_WO())
-		MODE_ROLES = ROLES_WO + ROLES_MARINES + JOB_XENOMORPH
-
-	var/list/L = new()
-	for(var/role in MODE_ROLES) //We're going to re-arrange the list for mode to look better, starting with the officers.
-		var/datum/job/J = roles_for_mode[role]
-		if(J)
-			L[J.title] = J
-	roles_for_mode = L
+		roles_by_name[J.title] = J
 
 	squads = list()
 	for(var/squad in squads_all) //Setting up our squads.
@@ -123,15 +111,6 @@ var/global/marines_assigned = 0
 		squads += S
 
 	load_whitelist()
-
-
-/datum/authority/branch/role/proc/replace_jobs(var/list/jobs)
-	//Replaces one set of jobs with another - used for WO
-	for(var/i in jobs)
-		var/datum/job/J = new i
-		roles_for_mode[J.title] = J
-		roles_by_name[J.title] = J
-
 
 /datum/authority/branch/role/proc/load_whitelist(filename = "config/role_whitelist.txt")
 	var/L[] = file2list(filename)
@@ -184,25 +163,27 @@ var/global/marines_assigned = 0
 
 /datum/authority/branch/role/proc/setup_candidates_and_roles(var/list/overwritten_roles_for_mode)
 	//===============================================================\\
-	//PART I: Initializing starting lists and such.
-	if(!roles_for_mode && !overwritten_roles_for_mode || !length(roles_for_mode) && !length(overwritten_roles_for_mode))
-		return //Can't start if this doesn't exist.
-
+	//PART I: Get roles relevant to the mode
 	var/datum/game_mode/G = SSticker.mode
-	switch(G.role_instruction)
-		if(1) //Replacing the entire list.
-			roles_for_mode = new
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(2) //Adding a role, or multiple roles, to the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(3) //Subtracting from the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode -= J.title
+
+	roles_for_mode = list()
+	for(var/role_name in G.get_roles_list())
+		var/datum/job/J = roles_by_name[role_name]
+		if(!J)
+			continue
+		roles_for_mode[role_name] = J
+
+	// Also register game mode specific mappings to standard roles
+	role_mappings = list()
+	default_roles = list()
+	if(G.role_mappings)
+		for(var/role_path in G.role_mappings)
+			var/mapped_title = G.role_mappings[role_path]
+			var/datum/job/J = roles_by_path[role_path]
+			if(!J || !roles_by_name[mapped_title])
+				continue
+			role_mappings[mapped_title] = J
+			default_roles[J.title] = mapped_title
 
 	/*===============================================================*/
 
@@ -274,7 +255,8 @@ var/global/marines_assigned = 0
 			if(GET_RANDOM_JOB)
 				roles_left = assign_random_role(M, roles_left) //We want to keep the list between assignments.
 			if(BE_MARINE)
-				assign_role(M, temp_roles_for_mode[JOB_SQUAD_MARINE]) //Should always be available, in all game modes, as a candidate. Even if it may not be a marine.
+				var/datum/job/marine_job = GET_MAPPED_ROLE(JOB_SQUAD_MARINE)
+				assign_role(M, marine_job.title) //Should always be available, in all game modes, as a candidate. Even if it may not be a marine.
 			if(BE_XENOMORPH)
 				assign_role(M, temp_roles_for_mode[JOB_XENOMORPH])
 			if(RETURN_TO_LOBBY)
@@ -381,7 +363,8 @@ var/global/marines_assigned = 0
 				return roles_to_iterate
 
 	//If they fail the two passes, or no regular roles are available, they become a marine regardless.
-	assign_role(M,roles_for_mode[JOB_SQUAD_MARINE])
+	var/datum/job/marine_job = GET_MAPPED_ROLE(JOB_SQUAD_MARINE)
+	assign_role(M, marine_job)
 
 /datum/authority/branch/role/proc/assign_role(mob/new_player/M, datum/job/J, latejoin = FALSE)
 	if(ismob(M) && istype(J))
@@ -543,7 +526,7 @@ var/global/marines_assigned = 0
 	if(J.flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
 		randomize_squad(H)
 
-	if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
+	if(Check_WO() && job_squad_roles.Find(GET_DEFAULT_ROLE(H.job)))	//activates self setting proc for marine headsets for WO
 		var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
 		WO.self_set_headset(H)
 
@@ -725,6 +708,46 @@ var/global/marines_assigned = 0
 			to_chat(H, "Something went wrong with randomize_squad()! Tell a coder!")
 			return
 		given_squad.put_marine_in_squad(H) //Found one, finish up
+
+/datum/authority/branch/role/proc/get_caste_by_text(var/name)
+	var/mob/living/carbon/Xenomorph/M
+	switch(name) //ADD NEW CASTES HERE!
+		if(XENO_CASTE_LARVA)
+			M = /mob/living/carbon/Xenomorph/Larva
+		if(XENO_CASTE_RUNNER)
+			M = /mob/living/carbon/Xenomorph/Runner
+		if(XENO_CASTE_DRONE)
+			M = /mob/living/carbon/Xenomorph/Drone
+		if(XENO_CASTE_CARRIER)
+			M = /mob/living/carbon/Xenomorph/Carrier
+		if(XENO_CASTE_HIVELORD)
+			M = /mob/living/carbon/Xenomorph/Hivelord
+		if(XENO_CASTE_BURROWER)
+			M = /mob/living/carbon/Xenomorph/Burrower
+		if(XENO_CASTE_PRAETORIAN)
+			M = /mob/living/carbon/Xenomorph/Praetorian
+		if(XENO_CASTE_RAVAGER)
+			M = /mob/living/carbon/Xenomorph/Ravager
+		if(XENO_CASTE_SENTINEL)
+			M = /mob/living/carbon/Xenomorph/Sentinel
+		if(XENO_CASTE_SPITTER)
+			M = /mob/living/carbon/Xenomorph/Spitter
+		if(XENO_CASTE_LURKER)
+			M = /mob/living/carbon/Xenomorph/Lurker
+		if(XENO_CASTE_WARRIOR)
+			M = /mob/living/carbon/Xenomorph/Warrior
+		if(XENO_CASTE_DEFENDER)
+			M = /mob/living/carbon/Xenomorph/Defender
+		if(XENO_CASTE_QUEEN)
+			M = /mob/living/carbon/Xenomorph/Queen
+		if(XENO_CASTE_CRUSHER)
+			M = /mob/living/carbon/Xenomorph/Crusher
+		if(XENO_CASTE_BOILER)
+			M = /mob/living/carbon/Xenomorph/Boiler
+		if(XENO_CASTE_PREDALIEN)
+			M =	/mob/living/carbon/Xenomorph/Predalien
+
+	return M
 
 /proc/get_desired_status(var/desired_status, var/status_limit)
 	var/found_desired = FALSE
