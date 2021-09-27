@@ -2,24 +2,16 @@
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
 	icon = 'icons/obj/structures/closet.dmi'
-	icon_state = "extinguisher"
+	icon_state = "extinguisher_closed"
 	anchored = 1
 	density = 0
 	var/obj/item/tool/extinguisher/has_extinguisher = new/obj/item/tool/extinguisher
 	var/opened = 0
-	var/base_icon
-
-/obj/structure/extinguisher_cabinet/Initialize()
-	. = ..()
-	base_icon = initial(icon_state)
 
 /obj/structure/extinguisher_cabinet/lifeboat
 	name = "extinguisher cabinet"
 	icon = 'icons/obj/structures/machinery/lifeboat.dmi'
-	icon_state = "extinguisher"
-
-/obj/structure/extinguisher_cabinet/alt
-	icon_state = "extinguisher_alt"
+	icon_state = "extinguisher_closed"
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
 	if(isrobot(user))
@@ -52,12 +44,12 @@
 
 /obj/structure/extinguisher_cabinet/update_icon()
 	if(!opened)
-		icon_state = base_icon + "_closed"
+		icon_state = "extinguisher_closed"
 		return
 	if(has_extinguisher)
 		if(istype(has_extinguisher, /obj/item/tool/extinguisher/mini))
-			icon_state = base_icon + "_mini"
+			icon_state = "extinguisher_mini"
 		else
-			icon_state = base_icon + "_full"
+			icon_state = "extinguisher_full"
 	else
-		icon_state = base_icon + "_empty"
+		icon_state = "extinguisher_empty"

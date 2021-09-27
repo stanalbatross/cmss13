@@ -193,10 +193,7 @@
 		density = 1
 	else
 		if(M.loc != src.loc)
-			step_towards(M, src) //buckle if you're right next to it
-			if(M.loc != src.loc)
-				return
-			. = buckle_mob(M)
+			return
 	if (M.mob_size <= MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
 		do_buckle(M, user)
 		return

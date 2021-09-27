@@ -656,7 +656,7 @@
 	group = "Ammo"
 
 /datum/supply_packs/ammo_mortar_flare
-	name = "M402 mortar shells crate (x6 Flare/Camera)"
+	name = "M402 mortar shells crate (x6 Flare)"
 	cost = RO_PRICE_VERY_CHEAP
 	contains = list(
 					/obj/item/mortar_shell/flare,

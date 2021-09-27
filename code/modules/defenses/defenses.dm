@@ -20,7 +20,6 @@
 	var/defense_type = "Normal"
 	var/static = FALSE
 	var/locked = FALSE
-	var/composite_icon = TRUE
 
 	var/defense_check_range = 2
 	var/can_be_near_defense = FALSE
@@ -28,7 +27,6 @@
 
 /obj/structure/machinery/defenses/Initialize(var/mapload, var/faction)
 	. = ..()
-	update_icon()
 	if(!isnull(faction))
 		if(islist(faction))
 			faction_group = faction
@@ -36,13 +34,10 @@
 			faction_group = list(faction)
 
 /obj/structure/machinery/defenses/update_icon()
-	if(!composite_icon)
-		icon_state = null
-	else if(turned_on)
+	if(turned_on)
 		icon_state = "defense_base"
 	else
 		icon_state = "defense_base_off"
-
 
 /obj/structure/machinery/defenses/examine(mob/user)
 	. = ..()
