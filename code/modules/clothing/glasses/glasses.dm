@@ -254,19 +254,14 @@
 	obj_glass_overlay.color = onmob_colors["base"]
 	mob_glass_overlay.color = onmob_colors["base"]
 
-/obj/item/clothing/glasses/disco_fever/equipped(mob/living/carbon/human/user, slot)
+/obj/item/clothing/glasses/disco_fever/equipped(mob/user, slot)
 	. = ..()
 
-	if(!ishuman(user) || slot != WEAR_EYES && slot != WEAR_FACE)
+	if(slot != WEAR_EYES && slot != WEAR_FACE)
 		return
 
 	RegisterSignal(user, COMSIG_MOB_RECALCULATE_CLIENT_COLOR, .proc/apply_discovision_handler)
 	apply_discovision_handler(user)
-
-	//Add the onmob overlay. Normal onmob images are handled by static overlays.
-	//It's added to the head object so that glasses/mask overlays on the mob render above it, since vis_contents and overlays appear to use different layerings.
-	var/obj/limb/head/user_head = user.get_limb("head")
-	user_head?.vis_contents += mob_glass_overlay
 
 ///Ends existing animations in preparation for the funny. Looping animations don't seem to properly end if a new one is started on the same tick.
 /obj/item/clothing/glasses/disco_fever/proc/apply_discovision_handler(mob/user)
@@ -337,17 +332,28 @@
 /obj/item/clothing/glasses/disco_fever/dropped(mob/living/carbon/human/user)
 	. = ..()
 
-	if(!ishuman(user))
-		return
-
 	UnregisterSignal(user, COMSIG_MOB_RECALCULATE_CLIENT_COLOR)
 
 	animate(obj_glass_overlay, color = onmob_colors["base"], time = 0.3 SECONDS)
 	animate(mob_glass_overlay, color = onmob_colors["base"], time = 0.3 SECONDS)
 
 	user.update_client_color_matrices(0.3 SECONDS)
-	var/obj/limb/head/user_head = user.get_limb("head")
-	user_head?.vis_contents -= mob_glass_overlay
+
+/obj/item/clothing/glasses/disco_fever/get_mob_overlay(mob/living/carbon/human/user_mob, slot)
+	. = ..()
+
+	if(!ishuman(user_mob))
+		return
+
+	var/obj/limb/head/user_head = user_mob.get_limb("head")
+
+	if(slot != WEAR_EYES && slot != WEAR_FACE)
+		user_head.vis_contents -= mob_glass_overlay
+		return
+
+	//Add the onmob overlay. Normal onmob images are handled by static overlays.
+	//It's added to the head object so that glasses/mask overlays on the mob render above it, since vis_contents and overlays appear to use different layerings.
+	user_head.vis_contents += mob_glass_overlay
 
 
 //welding goggles

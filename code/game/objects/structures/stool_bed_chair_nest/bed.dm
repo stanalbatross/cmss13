@@ -24,8 +24,6 @@
 	var/accepts_bodybag = FALSE //Whether you can buckle bodybags to this bed
 	var/base_bed_icon //Used by beds that change sprite when something is buckled to them
 	var/hit_bed_sound = 'sound/effects/metalhit.ogg' //sound player when attacked by a xeno
-	/// Sound when buckled to a bed/chair/stool
-	var/buckling_sound = 'sound/effects/buckle.ogg' 
 	surgery_duration_multiplier = SURGERY_SURFACE_MULT_UNSUITED
 
 /obj/structure/bed/initialize_pass_flags(var/datum/pass_flags_container/PF)
@@ -102,8 +100,7 @@ obj/structure/bed/Destroy()
 	if(buckled_bodybag)
 		return
 	..()
-	if(M.loc == src.loc && buckling_sound)
-		playsound(src, buckling_sound, 20)
+
 
 /obj/structure/bed/Move(NewLoc, direct)
 	. = ..()

@@ -47,7 +47,6 @@
 	disassemble_time = 0.75 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/mini
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer/mini
-	composite_icon = FALSE
 
 
 /obj/structure/machinery/defenses/sentry/flamer/mini/destroyed_action()
