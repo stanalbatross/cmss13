@@ -1622,18 +1622,12 @@
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
-	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed
+	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
 
 	accurate_range = 12
 	damage = 35
 	penetration= ARMOR_PENETRATION_TIER_10 //Bumped the penetration to serve a different role from sentries, MGs are a bit more offensive
 	accuracy = HIT_ACCURACY_TIER_3
-
-/datum/ammo/bullet/machinegun/set_bullet_traits()
-	. = ..()
-	LAZYADD(traits_to_give, list(
-		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff)
-	))
 
 /datum/ammo/bullet/machinegun/auto // for M2C, automatic variant for M56D, stats for bullet should always be moderately overtuned to fulfill its ultra-offense + flank-push purpose
 	name = "heavy machinegun bullet"
@@ -1646,9 +1640,6 @@
 	max_range = 14
 	effective_range_max = 7
 	damage_falloff = DAMAGE_FALLOFF_TIER_7
-
-/datum/ammo/bullet/machinegun/auto/set_bullet_traits()
-	return
 
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
