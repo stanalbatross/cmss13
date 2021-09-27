@@ -416,8 +416,8 @@
 /turf/open/floor,
 /area/bigredv2/outside/filtration_plant)
 "bD" = (
-/obj/structure/window/framed/colony/reinforced/hull,
-/turf/closed/wall/solaris/reinforced,
+/obj/structure/window/framed/solaris/reinforced/hull,
+/turf/open/floor/plating,
 /area/bigredv2/outside/filtration_plant)
 "bE" = (
 /obj/structure/cryofeed/right{
