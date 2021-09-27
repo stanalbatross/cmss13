@@ -370,7 +370,10 @@
 /area/bigredv2/outside/filtration_plant)
 "bq" = (
 /obj/structure/window_frame/solaris/reinforced,
-/obj/item/shard,
+/obj/item/shard{
+	icon_state = "small";
+	tag = "icon-small"
+	},
 /turf/open/floor/plating,
 /area/bigredv2/outside/filtration_plant)
 "br" = (
