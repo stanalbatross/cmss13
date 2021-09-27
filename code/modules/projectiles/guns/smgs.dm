@@ -426,6 +426,9 @@
 /obj/item/weapon/gun/smg/nailgun/unique_action(mob/user)
 	return //Yeah no.
 
+/obj/item/weapon/gun/smg/nailgun/unload_chamber(mob/user)
+	return //Can't remove nails from mags or gun.
+
 /obj/item/weapon/gun/smg/nailgun/compact
 	name = "compact nailgun"
 	desc = "A carpentry tool, used to drive nails into tough surfaces. Cannot fire nails offensively due to a lack of a gas seal around the nail, meaning it cannot build up the pressure to fire."
