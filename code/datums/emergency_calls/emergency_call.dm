@@ -225,8 +225,8 @@
 			if(M.client)
 				to_chat(M, SPAN_NOTICE("Distress beacon: [src.name] finalized."))
 
-		var/datum/shuttle/ferry/shuttle = shuttle_controller.shuttles[shuttle_id]
-		if(!shuttle || !istype(shuttle))
+		var/datum/shuttle/ferry/shuttle = shuttle_controller?.shuttles[shuttle_id]
+		if(!istype(shuttle))
 			if(shuttle_id) //Cryo distress doesn't have a shuttle
 				message_staff("Warning: Distress shuttle not found. Aborting.")
 				return
