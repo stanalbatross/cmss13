@@ -467,4 +467,8 @@ SUBSYSTEM_DEF(ticker)
 	SSsoundscape?.wait         =   2 SECONDS // From 1, soudscape triggering checks, scales on player count
 	SStgui?.wait               = 1.2 SECONDS // From 0.9, UI refresh rate
 
+	// More aggressive item cleanup
+	SSitem_cleanup?.percentage_of_garbage_to_delete = 1.0
+	SSitem_cleanup?.wait = 2 MINUTES
+
 	log_debug("Switching to lazy Subsystem timings for performance")

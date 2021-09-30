@@ -44,12 +44,12 @@
 	//No longer relevant to the game mode, since supply drops are getting changed.
 	var/checkwin_counter = 0
 	var/finished = 0
-	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
+
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
-	var/spawn_next_wave = 12 MINUTES //Spawn first batch at ~12 minutes (we divide it by the game ticker time of 2 seconds)
 	var/xeno_wave = 1 //Which wave is it
 
-	var/wave_ticks_passed = 0 //Timer for xeno waves
+	/// Time at which to send the next wave
+	var/next_wave_at = 9999 MINUTES // Inited on game start. Sorting this out later.
 
 	var/list/players = list()
 
@@ -68,9 +68,8 @@
 	var/lobby_time = 0 //Lobby time does not count for marine 1h win condition
 
 	var/map_locale = 0 // 0 is Jungle Whiskey Outpost, 1 is Big Red Whiskey Outpost, 2 is Ice Colony Whiskey Outpost, 3 is space
-	var/spawn_next_wo_wave = FALSE
 
-	var/list/whiskey_outpost_waves = list()
+	var/list/datum/whiskey_outpost_wave/whiskey_outpost_waves = list()
 
 	hardcore = TRUE
 	votable = FALSE // not fun
@@ -102,65 +101,73 @@
 
 /datum/game_mode/whiskey_outpost/post_setup()
 	set waitfor = 0
-	update_controllers()
+
 	initialize_post_marine_gear_list()
 	lobby_time = world.time
 	randomovertime = pickovertime()
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 
+	next_wave_at = world.time + 10 MINUTES
 	sleep(10)
 	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
-	to_world(SPAN_ROUNDBODY("It is the year 2177 on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
-	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
-	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
-	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [SSmapping.configs[GROUND_MAP].map_name] must survive for an hour to alert the rest of their battalion in the sector"))
-	to_world(SPAN_ROUNDBODY("Hold out for as long as you can."))
-	world << sound('sound/effects/siren.ogg')
 
-	sleep(10)
-	switch(map_locale) //Switching it up.
-		if(0)
-			marine_announcement("This is Captain Hans Naiche, commander of the 3rd Battalion 'Dust Raiders' forces here on LV-624. In our attempts to establish a base on this planet, several of our patrols were wiped out by hostile creatures.  We're setting up a distress call, but we need you to hold [SSmapping.configs[GROUND_MAP].map_name] in order for our engineers to set up the relay. We're prepping several M402 mortar units to provide fire support. If they overrun your positon, we will be wiped out with no way to call for help. Hold the line or we all die.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+	addtimer(CALLBACK(src, .proc/early_fluff_announce), 15 SECONDS) // After game setup actually fully done and people got a breather
 
 	return ..()
 
-/datum/game_mode/whiskey_outpost/proc/update_controllers()
-	//Update controllers while we're on this mode
-	if(SSitem_cleanup)
-		//Cleaning stuff more aggresively
-		SSitem_cleanup.start_processing_time = 0
-		SSitem_cleanup.percentage_of_garbage_to_delete = 1.0
-		SSitem_cleanup.wait = 1 MINUTES
-		SSitem_cleanup.next_fire = 1 MINUTES
-		spawn(0)
-			//Deleting Almayer, for performance!
-			SSitem_cleanup.delete_almayer()
-	if(SSxenocon)
-		//Don't need XENOCON
-		SSxenocon.wait = 30 MINUTES
+// i'm lazy, quick fix to start flow
 
+/datum/game_mode/whiskey_outpost/proc/fluff_siren(volume = 80)
+	var/sound/S = sound('sound/effects/siren.ogg', volume = volume)
+	S.echo = list(-2500, -6000, 800, 0, 0, 0.1, 0, 0.4, 5, 3)
+	world << S
+
+/datum/game_mode/whiskey_outpost/proc/early_fluff_announce()
+	to_world(SPAN_ROUNDBODY("It is the year 2177 on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
+	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
+	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces...."))
+	addtimer(CALLBACK(src, .proc/late_fluff_announce), 7 SECONDS) // Give em some time to read
+
+/datum/game_mode/whiskey_outpost/proc/late_fluff_announce()
+	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [SSmapping.configs[GROUND_MAP].map_name] must survive for an hour to alert the rest of their battalion in the sector"))
+	addtimer(CALLBACK(src, .proc/fluff_siren), 7 SECONDS)
+	addtimer(CALLBACK(src, .proc/uhoh_fluff_announce), 10 SECONDS)
+
+/datum/game_mode/whiskey_outpost/proc/uhoh_fluff_announce()
+	to_world(SPAN_ROUNDBODY("Hold out for as long as you can."))
+	addtimer(CALLBACK(src, .proc/story1_fluff_announce), 60 SECONDS)
+
+/datum/game_mode/whiskey_outpost/proc/story1_fluff_announce()
+	marine_announcement("This is Captain Hans Niache, Commander of the 3rd Bataillion, 'Dust Raiders' forces on LV-624. As you already know, several of our patrols have gone missing and likely wiped out by hostile local creatures as we've attempted to set our base up.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+	addtimer(CALLBACK(src, .proc/story2_fluff_announce), 90 SECONDS)
+
+/datum/game_mode/whiskey_outpost/proc/story2_fluff_announce()
+	marine_announcement("Our scouts report increased activity in the area and given our intel, we're already preparing for the worst. We're setting up a comms relay to send out a distress call, but we're going to need time while our engineers get everything ready. All other stations should prepare accordingly and maximize combat readiness, effective immediately.", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+	addtimer(CALLBACK(src, .proc/siren_loop), 8 SECONDS) // WAIT DONT FALL ASLEEP YET I SWEAR THEY'RE COMING
+	addtimer(CALLBACK(src, .proc/story3_fluff_announce), 90 SECONDS)
+
+/datum/game_mode/whiskey_outpost/proc/story3_fluff_announce()
+	marine_announcement("Captian Naich here. We've tracked the bulk of enemy forces on the move and [SSmapping.configs[GROUND_MAP].map_name] is likely to be hit before they reach the base. We need you to hold them off while we finish sending the distress call. Expect incoming within a few minutes. Godspeed, [SSmapping.configs[GROUND_MAP].map_name].", "Captain Naich, 3rd Battalion Command, LV-624 Garrison")
+
+/datum/game_mode/whiskey_outpost/proc/siren_loop()
+	if(xeno_wave > 1)
+		return
+	fluff_siren(70)
+	addtimer(CALLBACK(src, .proc/siren_loop), 24 SECONDS) // using repeat=TRUE and a dedicated channel with selective muting??? who do you take me for, a sensible person?
 
 //PROCCESS
 /datum/game_mode/whiskey_outpost/process(delta_time)
 	. = ..()
 	checkwin_counter++
 	ticks_passed++
-	wave_ticks_passed++
 
-	if(wave_ticks_passed >= (spawn_next_wave/(delta_time SECONDS)))
-		wave_ticks_passed = 0
-		spawn_next_wo_wave = TRUE
-
-	if(spawn_next_wo_wave)
+	if(world.time > next_wave_at)
 		spawn_next_xeno_wave()
-
-	if(has_started_timer > 0) //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
-		has_started_timer--
 
 	if(world.time > next_supply)
 		place_whiskey_outpost_drop()
-		next_supply += 2 MINUTES
+		next_supply += 100 SECONDS
 
 	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
 		if(!finished && round_should_check_for_win)
@@ -169,11 +176,15 @@
 	return 0
 
 /datum/game_mode/whiskey_outpost/proc/spawn_next_xeno_wave()
-	spawn_next_wo_wave = FALSE
-	var/wave = pick(whiskey_outpost_waves[xeno_wave])
+	set waitfor = 0 // TODO PROB FLATTEN THIS
+
+	var/datum/whiskey_outpost_wave/wave = pick(whiskey_outpost_waves[xeno_wave])
+	next_wave_at = world.time + wave.wave_delay
+	message_staff("Now engaging WO wave [xeno_wave]")
+
 	spawn_whiskey_outpost_xenos(wave)
 	announce_xeno_wave(wave)
-	if(xeno_wave == 7)
+	if(xeno_wave == 7) // TODO MOVE THIS TO WAVES
 		//Wave when Marines get reinforcements!
 		get_specific_call("Marine Reinforcements (Squad)", TRUE, FALSE)
 	xeno_wave = min(xeno_wave + 1, WO_MAX_WAVE)

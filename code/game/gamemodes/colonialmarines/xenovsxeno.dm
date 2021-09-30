@@ -60,25 +60,8 @@
 
 	round_time_sd = (time_until_sd + world.time)
 
-	update_controllers()
-
 	..()
 	return TRUE
-
-/datum/game_mode/xenovs/proc/update_controllers()
-	//Update controllers while we're on this mode
-	if(SSitem_cleanup)
-		//Cleaning stuff more aggresively
-		SSitem_cleanup.start_processing_time = 0
-		SSitem_cleanup.percentage_of_garbage_to_delete = 1.0
-		SSitem_cleanup.wait = 1 MINUTES
-		SSitem_cleanup.next_fire = 1 MINUTES
-		spawn(0)
-			//Deleting Almayer, for performance!
-			SSitem_cleanup.delete_almayer()
-	if(SSxenocon)
-		//Don't need XENOCON
-		SSxenocon.wait = 30 MINUTES
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
