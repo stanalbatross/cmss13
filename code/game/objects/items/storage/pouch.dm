@@ -43,7 +43,7 @@
 
 /obj/item/storage/pouch/general
 	name = "light general pouch"
-	desc = "A general-purpose pouch used to carry small items and ammo magazines."
+	desc = "A general-purpose pouch used to carry a small item, or two tiny ones."
 	icon_state = "small_drop"
 	storage_slots = null
 	max_storage_space = 2
@@ -51,12 +51,16 @@
 
 /obj/item/storage/pouch/general/medium
 	name = "medium general pouch"
+	desc = "A general-purpose pouch used to carry a variety of differently sized items."
+	max_w_class = SIZE_MEDIUM
 	max_storage_space = 4
 	icon_state = "medium_drop"
 	storage_flags = STORAGE_FLAGS_POUCH
 
 /obj/item/storage/pouch/general/large
 	name = "large general pouch"
+	desc = "A general-purpose pouch used to carry a variety of differently sized items."
+	max_w_class = SIZE_MEDIUM
 	max_storage_space = 6
 	icon_state = "large_drop"
 	storage_flags = STORAGE_FLAGS_POUCH
