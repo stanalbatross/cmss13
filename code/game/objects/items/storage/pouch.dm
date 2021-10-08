@@ -45,6 +45,8 @@
 	name = "light general pouch"
 	desc = "A general-purpose pouch used to carry small items and ammo magazines."
 	icon_state = "small_drop"
+	storage_slots = null
+	max_storage_space = 2
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 	bypass_w_limit = list(
 		/obj/item/ammo_magazine/rifle,
@@ -69,13 +71,13 @@
 
 /obj/item/storage/pouch/general/medium
 	name = "medium general pouch"
-	storage_slots = 2
+	max_storage_space = 4
 	icon_state = "medium_drop"
 	storage_flags = STORAGE_FLAGS_POUCH
 
 /obj/item/storage/pouch/general/large
 	name = "large general pouch"
-	storage_slots = 3
+	max_storage_space = 6
 	icon_state = "large_drop"
 	storage_flags = STORAGE_FLAGS_POUCH
 
