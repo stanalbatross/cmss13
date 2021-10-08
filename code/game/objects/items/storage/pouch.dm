@@ -48,6 +48,10 @@
 	storage_slots = null
 	max_storage_space = 2
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
+	cant_hold = list(
+		/obj/item/storage/firstaid,
+		/obj/item/storage/bible
+	)
 
 /obj/item/storage/pouch/general/medium
 	name = "medium general pouch"
@@ -59,7 +63,7 @@
 
 /obj/item/storage/pouch/general/large
 	name = "large general pouch"
-	desc = "A general-purpose pouch used to carry a variety of differently sized items."
+	desc = "A general-purpose pouch used to carry more differently sized items."
 	max_w_class = SIZE_MEDIUM
 	max_storage_space = 6
 	icon_state = "large_drop"
