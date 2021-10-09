@@ -331,6 +331,22 @@
 	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
+"aiI" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 0,0";
+	tag = "icon-gorg 0,0"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "ajJ" = (
 /obj/item/stack/rods,
 /obj/item/shard{
@@ -753,6 +769,18 @@
 /obj/structure/bed/chair,
 /turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/C_Block/Cargo)
+"aAZ" = (
+/obj/structure/machinery/power/smes/buildable{
+	capacity = 1e+006;
+	dir = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets/engineering)
 "aBz" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/carpet,
@@ -1073,6 +1101,18 @@
 	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Garage)
+"aKi" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "aKs" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
@@ -1287,6 +1327,21 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_block/Admin)
+"aSE" = (
+/obj/structure/machinery/power/terminal{
+	dir = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets/engineering)
 "aTe" = (
 /obj/effect/decal/cleanable/blood/oil/streak,
 /turf/open/asphalt,
@@ -1393,6 +1448,11 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/colony_streets)
+"aXn" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/structure/largecrate/random,
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "aXM" = (
 /obj/structure/prop/invuln/ice_prefab{
 	dir = 1;
@@ -1470,13 +1530,12 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Mining)
 "aZE" = (
-/obj/structure/machinery/door/airlock/almayer/engineering{
-	dir = 1;
-	name = "\improper Cargo Bay Storage";
-	req_one_access = null
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
 	},
-/turf/open/floor/strata,
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/auto_turf/shale/layer2,
+/area/lv522/buildings/colony_streets)
 "aZK" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "66";
@@ -1657,8 +1716,8 @@
 /obj/structure/prop/vehicles/crawler{
 	icon_state = "crawler_covered_bed"
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "bfa" = (
@@ -1701,7 +1760,8 @@
 /area/lv522/buildings/C_Block/Mining)
 "bgd" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 9
+	dir = 9;
+	layer = 2.9
 	},
 /obj/structure/barricade/wooden{
 	dir = 1
@@ -2026,8 +2086,8 @@
 /area/lv522/buildings/colony_streets)
 "bsE" = (
 /obj/structure/prop/dam/crane,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "bsO" = (
@@ -2238,14 +2298,12 @@
 	},
 /area/lv522/buildings/colony_streets)
 "bAK" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	dir = 1;
-	name = "\improper Container Storage"
+/obj/effect/decal/warning_stripes{
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
-/turf/open/floor/corsat{
-	icon_state = "marked"
-	},
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "bBv" = (
 /obj/structure/surface/rack,
 /obj/item/explosive/plastic,
@@ -2837,6 +2895,8 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 5
 	},
+/obj/structure/surface/rack,
+/obj/item/tool/hand_labeler,
 /turf/open/floor/plating,
 /area/lv522/buildings/C_Block/Cargo)
 "bVD" = (
@@ -2949,6 +3009,13 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Mining)
+"cas" = (
+/obj/structure/machinery/light/double{
+	dir = 1;
+	pixel_y = 9
+	},
+/turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
 "caE" = (
 /obj/item/stack/sheet/metal,
 /obj/effect/landmark/survivor_spawner/Forcon/FORCON_grenadier,
@@ -3124,6 +3191,11 @@
 /area/lv522/buildings/colony_streets)
 "cgG" = (
 /obj/structure/tunnel,
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "chi" = (
@@ -3309,7 +3381,8 @@
 /area/lv522/landing_zone_2)
 "cmA" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 10
+	dir = 10;
+	layer = 2.9
 	},
 /obj/structure/barricade/wooden{
 	dir = 1
@@ -3429,6 +3502,10 @@
 /obj/structure/surface/rack,
 /obj/item/tool/minihoe,
 /obj/item/tool/crowbar,
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "cqw" = (
@@ -4061,6 +4138,19 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_block/Admin)
+"cNW" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "cNZ" = (
 /obj/structure/barricade/handrail{
 	dir = 8
@@ -4189,7 +4279,8 @@
 /area/lv522/buildings/B_Block)
 "cRG" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 9
+	dir = 9;
+	layer = 2.9
 	},
 /obj/structure/barricade/wooden{
 	dir = 8
@@ -4425,7 +4516,7 @@
 "cXz" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/glasses/welding,
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "cXC" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -4979,11 +5070,12 @@
 	},
 /area/lv522/buildings/A_block/Admin)
 "dwG" = (
-/obj/structure/pipes/standard/simple/hidden/green{
-	dir = 5
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
 	},
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Garage)
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "dwO" = (
 /obj/structure/machinery/light/double{
 	dir = 1;
@@ -5007,7 +5099,10 @@
 /obj/item/pipe{
 	dir = 6
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "dxJ" = (
 /obj/structure/bed/chair/comfy{
@@ -6068,6 +6163,15 @@
 	icon_state = "white_cyan3"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"ehF" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Cargo)
 "ehU" = (
 /obj/item/stack/rods,
 /turf/open/floor/strata{
@@ -6245,6 +6349,14 @@
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
+/area/lv522/buildings/colony_streets)
+"enw" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer2,
 /area/lv522/buildings/colony_streets)
 "enH" = (
 /obj/effect/decal/warning_stripes{
@@ -6467,7 +6579,10 @@
 /obj/structure/platform{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "ewp" = (
 /obj/structure/pipes/vents/pump,
@@ -6622,7 +6737,10 @@
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "eAz" = (
 /turf/open/floor/strata,
@@ -6907,7 +7025,10 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "eKi" = (
 /obj/effect/decal/cleanable/blood/xeno{
@@ -7808,7 +7929,10 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "fvO" = (
 /obj/structure/cargo_container{
@@ -7855,7 +7979,7 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/surface/table/almayer,
 /obj/item/tool/weldpack,
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "fwS" = (
 /obj/effect/decal/cleanable/blood/oil,
@@ -7864,6 +7988,15 @@
 	layer = 3.1
 	},
 /turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
+"fxb" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	pixel_x = 1;
+	pixel_y = 1;
+	tag = "icon-NE-out"
+	},
+/turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "fxx" = (
 /obj/item/ammo_casing/shell{
@@ -9050,6 +9183,10 @@
 	dir = 8;
 	pixel_y = -5
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "gql" = (
@@ -9362,8 +9499,8 @@
 /obj/structure/barricade/handrail{
 	layer = 3.7
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "gDa" = (
@@ -9545,7 +9682,10 @@
 /area/lv522/landing_zone_2)
 "gMQ" = (
 /obj/effect/decal/cleanable/blood/oil,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "gNi" = (
 /obj/structure/largecrate/random/case/double,
@@ -9608,9 +9748,7 @@
 	pixel_y = 1;
 	tag = "icon-NW-out"
 	},
-/obj/structure/fence{
-	layer = 2.9
-	},
+/obj/structure/fence,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
@@ -9810,7 +9948,10 @@
 /area/lv522/buildings/B_Block)
 "gVm" = (
 /obj/structure/pipes/standard/manifold/hidden/green,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "gVU" = (
 /obj/item/lightstick/red/spoke/planted{
@@ -10618,6 +10759,14 @@
 	icon_state = "white_cyan2"
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
+"hFQ" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "hFW" = (
 /turf/open/floor/strata{
 	dir = 4;
@@ -10982,6 +11131,11 @@
 /obj/item/seeds/riceseed{
 	pixel_y = 15
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NW-out";
+	pixel_y = 1;
+	tag = "icon-NW-out"
+	},
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "hTk" = (
@@ -11256,8 +11410,8 @@
 	dir = 8;
 	pixel_y = -5
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "ifH" = (
@@ -11727,6 +11881,10 @@
 	pixel_y = -5
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "izM" = (
@@ -12416,7 +12574,10 @@
 /area/lv522/buildings/A_block/Admin)
 "iUX" = (
 /obj/structure/pipes/standard/simple/hidden/green,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "iVG" = (
 /obj/structure/cargo_container{
@@ -12536,6 +12697,13 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
+"jaa" = (
+/obj/structure/sign/safety/three{
+	pixel_x = 15
+	},
+/obj/structure/sign/safety/storage,
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Cargo)
 "jag" = (
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "91"
@@ -12778,9 +12946,11 @@
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "jiT" = (
-/turf/open/floor/plating{
-	icon_state = "warnplate"
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "jiY" = (
 /obj/structure/platform{
@@ -12942,9 +13112,11 @@
 /obj/structure/machinery/power/geothermal{
 	fail_rate = 5
 	},
-/turf/open/floor/plating{
-	icon_state = "warnplate"
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "joU" = (
 /obj/structure/machinery/door/poddoor/almayer/closed{
@@ -13342,7 +13514,10 @@
 /obj/structure/platform_decoration{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "jET" = (
 /obj/effect/landmark/xeno_spawn,
@@ -13453,12 +13628,13 @@
 	},
 /area/lv522/buildings/colony_streets)
 "jJj" = (
-/obj/structure/machinery/light/double{
-	dir = 4;
-	pixel_y = -5
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
 	},
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Garage)
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "jJw" = (
 /obj/item/stack/sheet/metal,
 /obj/item/stack/rods,
@@ -13656,10 +13832,13 @@
 	},
 /area/lv522/buildings/B_Block/Science_Lab)
 "jRW" = (
-/obj/structure/surface/rack,
-/obj/item/tool/hand_labeler,
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Cargo)
+/obj/effect/decal/warning_stripes{
+	icon_state = "NW-out";
+	pixel_y = 1;
+	tag = "icon-NW-out"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "jSl" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/corsat{
@@ -13826,8 +14005,8 @@
 /obj/structure/barricade/handrail{
 	layer = 3.7
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "jYg" = (
@@ -14193,7 +14372,8 @@
 /area/lv522/buildings/colony_streets)
 "kmP" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 10
+	dir = 10;
+	layer = 2.9
 	},
 /obj/item/weapon/gun/rifle/hunting{
 	pixel_x = -10;
@@ -14251,9 +14431,20 @@
 	},
 /area/lv522/buildings/C_Block/Cargo)
 "kpc" = (
-/obj/structure/largecrate/random,
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Cargo)
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = null
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/obj/structure/fence,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
+/area/lv522/buildings/colony_streets)
 "kph" = (
 /obj/effect/decal/cleanable/blood/oil,
 /turf/open/floor/corsat{
@@ -14816,6 +15007,16 @@
 	icon_state = "plate"
 	},
 /area/lv522/buildings/colony_streets)
+"kIM" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 5
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "kIX" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -15208,6 +15409,14 @@
 /obj/item/weapon/gun/revolver/cmb,
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
+"kWO" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "NW-out";
+	pixel_y = 1;
+	tag = "icon-NW-out"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "kXa" = (
 /obj/structure/surface/table/almayer,
 /obj/effect/spawner/random/tool,
@@ -15517,7 +15726,7 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/surface/table/almayer,
 /obj/item/stack/cable_coil,
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "liX" = (
 /turf/open/floor/corsat{
@@ -15930,7 +16139,7 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "lwx" = (
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -16152,8 +16361,8 @@
 /area/lv522/buildings/colony_streets)
 "lFm" = (
 /obj/vehicle/powerloader,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "lFp" = (
@@ -17238,8 +17447,8 @@
 	dir = 4;
 	pixel_y = -5
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "msP" = (
@@ -17559,6 +17768,12 @@
 	icon_state = "red2"
 	},
 /area/lv522/buildings/A_block/Security)
+"mDk" = (
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/C_Block/Cargo)
 "mDr" = (
 /obj/structure/cargo_container/horizontal{
 	icon_state = "0,0";
@@ -17671,11 +17886,13 @@
 	},
 /area/lv522/buildings/colony_streets)
 "mHa" = (
-/obj/structure/pipes/standard/simple/hidden/green{
-	dir = 10
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	pixel_x = 1;
+	tag = "icon-SE-out"
 	},
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Garage)
+/turf/open/shale/underlayer/puddle,
+/area/lv522/buildings/colony_streets)
 "mHj" = (
 /obj/structure/bed/chair{
 	dir = 8;
@@ -17925,6 +18142,13 @@
 	icon_state = "floor2"
 	},
 /area/lv522/buildings/A_block/Admin)
+"mQp" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "mQr" = (
 /obj/structure/prop/invuln/ice_prefab/trim{
 	dir = 6
@@ -18179,6 +18403,19 @@
 	icon_state = "floor2"
 	},
 /area/lv522/buildings/A_block/Admin)
+"nbD" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "nbE" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -18871,6 +19108,14 @@
 	icon_state = "plate"
 	},
 /area/lv522/buildings/colony_streets)
+"nvT" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "nwg" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/asphalt/cement,
@@ -19016,12 +19261,8 @@
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
 "nCc" = (
-/obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	dir = 1;
-	name = "\improper Cargo Storage"
-	},
-/turf/open/floor/corsat{
-	icon_state = "marked"
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
 	},
 /area/lv522/buildings/C_Block/Cargo)
 "nCj" = (
@@ -19237,11 +19478,12 @@
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "nJx" = (
-/obj/structure/largecrate/random,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "nJF" = (
 /obj/structure/barricade/wooden,
 /obj/structure/pipes/standard/simple/hidden/green,
@@ -19536,12 +19778,12 @@
 /turf/open/asphalt/cement,
 /area/lv522/buildings/colony_streets)
 "nUN" = (
-/obj/structure/machinery/light/double{
-	dir = 1;
-	pixel_y = 9
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
-/turf/open/floor/strata,
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/shale/underlayer,
+/area/lv522/buildings/colony_streets)
 "nVi" = (
 /turf/open/floor/plating{
 	dir = 8;
@@ -20065,7 +20307,10 @@
 	dir = 8;
 	pixel_y = -5
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "orE" = (
 /obj/item/prop/helmetgarb/helmet_nvg,
@@ -20165,6 +20410,17 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/A_block/Admin)
+"oww" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	dir = 1;
+	name = "\improper Cargo Bay Storage";
+	req_one_access = null
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
+/area/lv522/buildings/C_Block/Cargo)
 "owJ" = (
 /obj/structure/coatrack{
 	pixel_x = 9;
@@ -20442,14 +20698,14 @@
 	},
 /area/lv522/buildings/A_block/Medical)
 "oIh" = (
-/obj/vehicle/multitile/apc/decrepit{
-	dir = 8
-	},
 /obj/effect/decal/cleanable/blood/oil/streak,
 /obj/effect/decal/cleanable/blood{
 	layer = 4.2;
 	pixel_x = -7;
 	pixel_y = 9
+	},
+/obj/vehicle/multitile/apc/decrepit{
+	dir = 8
 	},
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
@@ -20730,7 +20986,7 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "oUU" = (
 /obj/structure/barricade/deployable{
@@ -21080,7 +21336,10 @@
 	dir = 4
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "pix" = (
 /turf/open/floor/plating,
@@ -21458,12 +21717,13 @@
 /turf/open/asphalt,
 /area/lv522/buildings/colony_streets)
 "pwi" = (
-/obj/structure/machinery/light/double{
-	dir = 8;
-	pixel_y = -5
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	pixel_x = 1;
+	tag = "icon-SE-out"
 	},
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "pwl" = (
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 8;
@@ -22283,7 +22543,10 @@
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "pXg" = (
 /obj/structure/pipes/standard/simple/hidden/green{
@@ -22332,6 +22595,23 @@
 	icon_state = "67"
 	},
 /area/lv522/landing_zone_2/UD6_Typhoon)
+"qaN" = (
+/obj/structure/cargo_container{
+	icon_state = "gorg 0,0";
+	layer = 3.1;
+	tag = "icon-gorg 0,0"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "qbi" = (
 /turf/open/floor/corsat{
 	dir = 4;
@@ -23103,7 +23383,7 @@
 /obj/structure/prop/vehicles/crawler{
 	layer = 3.1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "qBD" = (
 /obj/structure/barricade/handrail/strata,
@@ -24169,7 +24449,10 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "rja" = (
 /obj/structure/prop/invuln/ice_prefab{
@@ -24271,8 +24554,8 @@
 	layer = 3;
 	pixel_y = 6
 	},
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "rmR" = (
@@ -24547,10 +24830,16 @@
 /area/lv522/buildings/A_block/Dorms)
 "ryI" = (
 /obj/structure/machinery/light/double,
-/turf/open/floor/plating{
-	dir = 6;
-	icon_state = "warnplate"
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
 	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "ryT" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
@@ -24612,10 +24901,12 @@
 /area/lv522/buildings/colony_streets)
 "rAr" = (
 /obj/item/clothing/head/welding,
-/turf/open/floor/plating{
-	dir = 4;
-	icon_state = "warnplate"
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
 	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "rAx" = (
 /obj/structure/platform{
@@ -24772,6 +25063,19 @@
 	dir = 4;
 	icon_state = "floor3"
 	},
+/area/lv522/buildings/colony_streets)
+"rFa" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer2,
 /area/lv522/buildings/colony_streets)
 "rFp" = (
 /obj/effect/decal/warning_stripes{
@@ -25338,11 +25642,17 @@
 	},
 /area/lv522/buildings/colony_streets)
 "saT" = (
-/obj/structure/closet/crate/trashcart,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
-/area/lv522/buildings/C_Block/Cargo)
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "sbh" = (
 /obj/structure/barricade/deployable,
 /turf/open/auto_turf/shale/layer1,
@@ -25381,7 +25691,7 @@
 	icon_state = "gorg 0,0";
 	tag = "icon-gorg 0,0"
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "scw" = (
 /obj/structure/machinery/landinglight/ds1/delaytwo{
@@ -25782,6 +26092,15 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Dorms)
+"sxc" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	pixel_x = 1;
+	pixel_y = 1;
+	tag = "icon-NE-out"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "sxh" = (
 /obj/structure/stairs/perspective{
 	dir = 1;
@@ -26063,7 +26382,10 @@
 /obj/structure/platform_decoration{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 6;
+	icon_state = "multi_tiles"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "sKj" = (
 /obj/effect/decal/warning_stripes{
@@ -26149,7 +26471,10 @@
 /area/lv522/buildings/A_block)
 "sNc" = (
 /obj/structure/pipes/vents/pump,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "sNp" = (
 /turf/closed/shuttle/dropship2{
@@ -26880,6 +27205,10 @@
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
 /turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
+"tnQ" = (
+/obj/structure/window/framed/shiva,
+/turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
 "tnZ" = (
 /obj/item/storage/firstaid/o2,
 /turf/open/floor/strata{
@@ -27038,6 +27367,19 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/A_block/Admin)
+"ttz" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	pixel_x = 1;
+	pixel_y = 1;
+	tag = "icon-NE-out"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "tuh" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/structure/platform_decoration{
@@ -27290,6 +27632,10 @@
 	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/C_Block/Mining)
+"tDs" = (
+/obj/structure/sign/safety/storage,
+/turf/closed/wall/shiva/prefabricated/reinforced,
+/area/lv522/buildings/C_Block/Cargo)
 "tDy" = (
 /obj/item/stack/cable_coil/cut,
 /turf/open/floor/plating,
@@ -27553,8 +27899,8 @@
 /obj/structure/surface/table/almayer,
 /obj/item/reagent_container/food/snacks/cheeseburger,
 /obj/item/trash/burger,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "tPe" = (
@@ -28419,8 +28765,21 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 6
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
+"uBl" = (
+/obj/item/lightstick/red/spoke/planted{
+	layer = 2.99;
+	pixel_x = 11;
+	pixel_y = 20
+	},
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/effect/decal/warning_stripes{
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "uBz" = (
 /obj/structure/prop/dam/crane/cargo{
 	dir = 1
@@ -28579,6 +28938,17 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/colony_streets/South_Cargo_Buildings)
+"uIC" = (
+/obj/item/lightstick/red/spoke/planted{
+	pixel_x = -11;
+	pixel_y = 20
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "uIK" = (
 /turf/open/floor/strata{
 	icon_state = "blue1"
@@ -28676,8 +29046,16 @@
 	},
 /area/lv522/buildings/B_Block)
 "uMd" = (
-/turf/open/floor/plating,
-/area/lv522/buildings/C_Block/Garage)
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "uMt" = (
 /obj/item/clipboard,
 /turf/open/floor/corsat{
@@ -28961,10 +29339,13 @@
 	},
 /area/lv522/buildings/colony_streets)
 "uVq" = (
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	pixel_x = 1;
+	tag = "icon-SE-out"
 	},
-/area/lv522/buildings/C_Block/Garage)
+/turf/open/auto_turf/shale/layer1,
+/area/lv522/buildings/colony_streets)
 "uVu" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/suit/storage/hazardvest,
@@ -29413,14 +29794,12 @@
 	},
 /area/lv522/buildings/C_Block/Garage)
 "vjU" = (
-/obj/structure/machinery/door/airlock/almayer/engineering{
-	dir = 1;
-	name = "\improper Cargo Bay Storage";
-	req_one_access = null
+/obj/effect/decal/warning_stripes{
+	icon_state = "SW-out";
+	tag = "icon-SW-out"
 	},
-/obj/structure/pipes/standard/simple/hidden/green,
-/turf/open/floor/strata,
-/area/lv522/buildings/C_Block/Cargo)
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "vjX" = (
 /obj/structure/window/reinforced{
 	dir = 4;
@@ -29748,6 +30127,11 @@
 	icon_state = "gorg 2,0";
 	layer = 3.1;
 	tag = "icon-WY 0,0"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NW-out";
+	pixel_y = 1;
+	tag = "icon-NW-out"
 	},
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
@@ -30542,7 +30926,8 @@
 /area/lv522/buildings/colony_streets)
 "wbH" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 9
+	dir = 9;
+	layer = 2.9
 	},
 /obj/structure/barricade/wooden{
 	dir = 8
@@ -30627,7 +31012,10 @@
 /obj/structure/platform_decoration{
 	dir = 8
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "wfS" = (
 /obj/effect/decal/warning_stripes{
@@ -30734,7 +31122,8 @@
 /area/lv522/buildings/colony_streets)
 "wkl" = (
 /obj/structure/prop/invuln/ice_prefab{
-	dir = 10
+	dir = 10;
+	layer = 2.9
 	},
 /obj/structure/barricade/wooden,
 /turf/open/asphalt/cement{
@@ -30761,9 +31150,7 @@
 	capacity = 1e+006;
 	dir = 1
 	},
-/turf/open/floor/plating{
-	icon_state = "platebotc"
-	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "wmH" = (
 /obj/structure/platform{
@@ -30861,15 +31248,6 @@
 	icon_state = "blue1"
 	},
 /area/lv522/buildings/A_block/Admin)
-"wrr" = (
-/obj/structure/machinery/power/geothermal{
-	fail_rate = 5
-	},
-/turf/open/floor/plating{
-	dir = 4;
-	icon_state = "warnplate"
-	},
-/area/lv522/buildings/colony_streets/engineering)
 "wrw" = (
 /obj/item/tool/kitchen/knife,
 /obj/effect/decal/cleanable/blood/drip,
@@ -31086,7 +31464,7 @@
 	icon_state = "gorg 2,0";
 	tag = "icon-WY 0,0"
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Garage)
 "wzS" = (
 /obj/structure/pipes/standard/manifold/fourway/hidden/green,
@@ -31257,6 +31635,14 @@
 	icon_state = "floor2"
 	},
 /area/lv522/buildings/A_block/Admin)
+"wGV" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "wHc" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/box/cups{
@@ -31358,6 +31744,10 @@
 /obj/structure/machinery/light/double{
 	dir = 8;
 	pixel_y = -5
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
 	},
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/buildings/colony_streets)
@@ -31693,6 +32083,14 @@
 	icon_state = "floor3"
 	},
 /area/lv522/buildings/colony_streets)
+"wUl" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "wUo" = (
 /obj/structure/machinery/photocopier,
 /turf/open/floor/plating,
@@ -31709,10 +32107,17 @@
 "wUL" = (
 /obj/structure/surface/table/almayer,
 /obj/item/tool/weldingtool/hugetank,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
+"wVO" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
+	},
+/turf/open/auto_turf/shale/layer0,
+/area/lv522/buildings/colony_streets)
 "wWo" = (
 /turf/open/floor/strata{
 	dir = 8;
@@ -31770,10 +32175,11 @@
 /obj/structure/machinery/power/terminal{
 	dir = 1
 	},
-/turf/open/floor{
-	icon_state = "platebot";
-	tag = "icon-platebot"
+/obj/effect/decal/warning_stripes{
+	icon_state = "S";
+	tag = "icon-S"
 	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "wZY" = (
 /obj/item/stool,
@@ -31909,8 +32315,8 @@
 /area/lv522/buildings/B_Block/Science_Lab)
 "xeZ" = (
 /obj/structure/powerloader_wreckage,
-/turf/open/floor/plating{
-	icon_state = "platebot"
+/turf/open/floor/strata{
+	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Garage)
 "xfa" = (
@@ -32114,6 +32520,14 @@
 	icon_state = "orange_cover"
 	},
 /area/lv522/buildings/C_Block/Mining)
+"xmu" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/turf/open/auto_turf/shale/layer2,
+/area/lv522/buildings/colony_streets)
 "xmM" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 2,0";
@@ -32296,10 +32710,12 @@
 	},
 /area/lv522/buildings/A_block)
 "xtY" = (
-/turf/open/floor/plating{
-	dir = 4;
-	icon_state = "warnplate"
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	pixel_x = 1;
+	tag = "icon-SE-out"
 	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets/engineering)
 "xul" = (
 /obj/structure/surface/rack,
@@ -32602,7 +33018,10 @@
 /area/lv522/buildings/A_block/Admin)
 "xBQ" = (
 /obj/item/tool/wrench,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "xBT" = (
 /obj/item/storage/bag/ore,
@@ -32644,7 +33063,10 @@
 	dir = 8
 	},
 /obj/structure/pipes/vents/pump,
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "xEW" = (
 /turf/open/floor/strata,
@@ -32757,6 +33179,13 @@
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Cargo)
+"xLc" = (
+/obj/structure/machinery/light/double{
+	dir = 8;
+	pixel_y = -5
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/C_Block/Cargo)
 "xLh" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -32835,6 +33264,15 @@
 	},
 /obj/structure/pipes/vents/pump,
 /turf/open/floor/strata,
+/area/lv522/buildings/C_Block/Cargo)
+"xON" = (
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	name = "\improper Cargo Bay Storage";
+	req_one_access = null
+	},
+/turf/open/floor/corsat{
+	icon_state = "marked"
+	},
 /area/lv522/buildings/C_Block/Cargo)
 "xOO" = (
 /obj/structure/prop/invuln/overhead/flammable_pipe/fly{
@@ -33221,7 +33659,10 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/turf/open/floor/plating,
+/turf/open/floor/strata{
+	dir = 4;
+	icon_state = "floor3"
+	},
 /area/lv522/buildings/C_Block/Garage)
 "ygy" = (
 /obj/structure/closet/crate/miningcar,
@@ -34481,7 +34922,7 @@ vVs
 vVs
 vVs
 qCO
-qCO
+uVq
 cgG
 vVs
 vVs
@@ -34625,13 +35066,13 @@ vVs
 vVs
 vVs
 vVs
-fSn
+aZE
 mTX
 nWk
 mTX
 nWk
 mTX
-qCO
+jJj
 qCO
 xvq
 vqB
@@ -34709,13 +35150,13 @@ wjp
 wjp
 qCO
 fSn
-qCO
+nJx
 mTX
 mTX
 mTX
 mTX
 mTX
-wjp
+wUl
 wjp
 wjp
 qCO
@@ -34853,13 +35294,13 @@ fSn
 fSn
 fSn
 fSn
-qCO
-qCO
-qCO
-qCO
-qCO
-qCO
-qCO
+bAK
+dwG
+dwG
+dwG
+dwG
+dwG
+jRW
 vqB
 pvn
 fSn
@@ -34901,7 +35342,7 @@ xxn
 vKK
 fFO
 roD
-wrr
+cWl
 xtY
 rAr
 ryI
@@ -34937,13 +35378,13 @@ wjp
 qCO
 fSn
 qCO
-qCO
+nJx
 mTX
 lsB
 mTX
 lsB
 mTX
-qCO
+jJj
 wjp
 wjp
 wjp
@@ -35160,18 +35601,18 @@ aKQ
 aKQ
 aKQ
 lJc
-wjp
-qCO
-fSn
-qCO
-fSn
-qCO
+pwi
+nvT
+enw
+nvT
+enw
+ttz
 mTX
 nWk
 mTX
 nWk
 mTX
-qCO
+jJj
 fSn
 wjp
 wjp
@@ -35357,8 +35798,8 @@ nVQ
 eNJ
 rzw
 qxw
-wmk
-wZX
+aAZ
+aSE
 xEW
 xEW
 fhM
@@ -35388,18 +35829,18 @@ aKQ
 mnr
 aKQ
 lJc
-wjp
+wVO
 rtZ
 rtZ
 rtZ
 rtZ
-qCO
+aKi
 gpN
-wjp
+mQp
 wKB
-wjp
+mQp
 wKB
-wjp
+kWO
 qCO
 qCO
 wjp
@@ -35616,13 +36057,13 @@ kpq
 wjp
 wjp
 lJc
-wjp
+wVO
 rtZ
 gwc
 qDr
 rtZ
-fSn
-qCO
+rFa
+fxb
 wjp
 wjp
 wjp
@@ -35844,13 +36285,13 @@ wjp
 kpq
 wjp
 lJc
-wjp
+wVO
 rtZ
 dWb
 xGC
 rtZ
 rtZ
-qCO
+jJj
 wjp
 wjp
 llh
@@ -36072,26 +36513,26 @@ wjp
 wjp
 wjp
 lJc
-wjp
+wVO
 rtZ
 cyL
 cwg
 cwg
 rtZ
-wjp
+wUl
 wjp
 wjp
 mQM
-rnf
+brf
 wnU
 wjp
-wjp
-wjp
-wjp
-wjp
-wjp
-wjp
-wjp
+pwi
+wGV
+wGV
+wGV
+wGV
+wGV
+sxc
 wjp
 bHQ
 srZ
@@ -36300,26 +36741,26 @@ wjp
 wjp
 wjp
 lJc
-wjp
+wVO
 rBR
 xZz
 tfq
 cwg
 rtZ
-wjp
+wUl
 wjp
 wjp
 lva
 aYz
 jnh
 wjp
-wjp
+wVO
 srZ
 srZ
 srZ
 srZ
 srZ
-wjp
+wUl
 wjp
 qgj
 cmP
@@ -36528,26 +36969,26 @@ wjp
 wjp
 wjp
 lJc
-wjp
+wVO
 rBR
 iuU
 cwg
 cwg
 rtZ
+wUl
 wjp
 wjp
 wjp
 wjp
 wjp
 wjp
-wjp
-wjp
+wVO
 srZ
 hzE
 nkb
 hzE
 srZ
-wjp
+wUl
 wjp
 qgj
 cmP
@@ -36756,26 +37197,26 @@ wjp
 wjp
 mwq
 imT
-cVQ
+uIC
 rtZ
 rtZ
 pkJ
 rtZ
 rtZ
+wUl
 wjp
 wjp
 wjp
 wjp
 wjp
 wjp
-wjp
-wjp
+wVO
 srZ
 hzE
 kLL
 hzE
 srZ
-wjp
+wUl
 wjp
 bHQ
 srZ
@@ -36984,26 +37425,26 @@ cHc
 cHc
 oLe
 xan
-pmg
-cHc
+uBl
+hFQ
 izi
-gdJ
+kIM
 wKB
+mQp
+kWO
 wjp
 wjp
 wjp
 wjp
 wjp
 wjp
-wjp
-wjp
-wjp
+wVO
 iKf
 jJw
 sPb
 iSr
 srZ
-wjp
+wUl
 wjp
 trk
 fpJ
@@ -37225,13 +37666,13 @@ wjp
 wjp
 wjp
 wjp
-wjp
+wVO
 srZ
 sPb
 iEf
 sPb
 srZ
-wjp
+wUl
 wjp
 wjp
 trk
@@ -37453,13 +37894,13 @@ wjp
 wjp
 wjp
 wjp
-wjp
+wVO
 srZ
 srZ
 nQc
 srZ
 srZ
-wjp
+wUl
 wjp
 wjp
 wjp
@@ -37681,13 +38122,13 @@ wjp
 wjp
 qCO
 qCO
-wjp
-wjp
+vjU
+mQp
 wKB
-wjp
+mQp
 wKB
-wjp
-wjp
+mQp
+kWO
 wjp
 wjp
 wjp
@@ -39425,7 +39866,7 @@ aFu
 aFu
 qSq
 lJN
-tJl
+kpc
 fpJ
 fpJ
 oPj
@@ -44301,7 +44742,7 @@ ptk
 pwl
 pwl
 qwI
-ptk
+xTN
 xTN
 pwl
 qwI
@@ -47261,7 +47702,7 @@ qfs
 qfs
 qfs
 bqa
-saT
+bkB
 jeT
 oKy
 oKy
@@ -47489,7 +47930,7 @@ qfs
 qfs
 qfs
 bqa
-saT
+bkB
 jeT
 dwi
 szK
@@ -47717,7 +48158,7 @@ uje
 uje
 jmS
 bqa
-saT
+bkB
 jeT
 dwi
 szK
@@ -48113,14 +48554,14 @@ wpG
 wjp
 qCO
 qCO
-qCO
-qCO
-qCO
-qCO
-qCO
-qCO
-qCO
-qCO
+uVq
+nvT
+nvT
+nvT
+nvT
+nvT
+nvT
+fxb
 qCO
 wjp
 wjp
@@ -48340,16 +48781,16 @@ tKk
 wpG
 kpq
 wjp
-wjp
-qCO
+pwi
+saT
 mTX
 mTX
 efp
 akc
 mTX
 mTX
-qCO
-wjp
+nbD
+sxc
 wjp
 wjp
 wjp
@@ -48567,8 +49008,8 @@ qCO
 sKw
 ahv
 wjp
-kpq
-qCO
+mHa
+saT
 mTX
 mTX
 krd
@@ -48577,8 +49018,8 @@ oZC
 krd
 mTX
 mTX
-wjp
-wjp
+cNW
+sxc
 wjp
 wjp
 qCO
@@ -48795,7 +49236,7 @@ qCO
 vBE
 ahv
 qCO
-qCO
+nJx
 mTX
 mTX
 dDS
@@ -48806,7 +49247,7 @@ esz
 jud
 mTX
 mTX
-wjp
+wUl
 qCO
 qCO
 vLP
@@ -48864,7 +49305,7 @@ oKy
 aul
 aul
 oKy
-oXQ
+gLq
 oKy
 oKy
 oKy
@@ -49023,7 +49464,7 @@ ixv
 ixv
 ikl
 kkK
-qCO
+nJx
 mTX
 rIy
 uND
@@ -49034,7 +49475,7 @@ dve
 uND
 rIy
 mTX
-qCO
+jJj
 qCO
 vLP
 fpJ
@@ -49089,11 +49530,11 @@ bqa
 bqa
 bqa
 bqa
+tDs
+tnQ
+xON
+tnQ
 bqa
-bqa
-bqa
-gLq
-oKy
 oKy
 oKy
 oKy
@@ -49251,7 +49692,7 @@ vqB
 vqB
 vqB
 ahv
-qCO
+nJx
 mTX
 rIy
 uND
@@ -49262,7 +49703,7 @@ dve
 uND
 rIy
 mTX
-qCO
+jJj
 vLP
 fpJ
 ofx
@@ -49319,10 +49760,10 @@ xXB
 hnZ
 lwO
 oKy
-bqa
-bqa
-nUN
 oKy
+oKy
+bqa
+cas
 oKy
 uBz
 oKy
@@ -49479,7 +49920,7 @@ vqB
 vqB
 vqB
 oMC
-qCO
+nJx
 mTX
 lpy
 mqc
@@ -49490,7 +49931,7 @@ hFW
 qMA
 woz
 mTX
-qCO
+jJj
 qgj
 ofx
 ofx
@@ -49548,8 +49989,8 @@ hMe
 hMe
 vSz
 oKy
-aZE
 oKy
+uCQ
 oKy
 oKy
 oKy
@@ -49707,7 +50148,7 @@ vqB
 qCO
 vqB
 oMC
-vqB
+nUN
 mTX
 hyT
 sil
@@ -49718,7 +50159,7 @@ dve
 dve
 kpm
 mTX
-rAP
+pQi
 rAP
 ofx
 aJj
@@ -49776,8 +50217,8 @@ xXB
 vAD
 wuf
 gYd
-vjU
 gYd
+oww
 gYd
 gYd
 gYd
@@ -49935,7 +50376,7 @@ vqB
 qCO
 fSn
 oMC
-vqB
+nUN
 mTX
 lhL
 mZT
@@ -49946,7 +50387,7 @@ jFg
 iFk
 dUS
 mTX
-qCO
+jJj
 qgj
 ofx
 lcP
@@ -50004,20 +50445,20 @@ eWe
 sqO
 jeT
 eWe
-eve
-vXP
+eWe
+jaa
 pED
-bnU
-bnU
+vXP
+vXP
 eWe
 eWe
 eWe
 jeT
 eWe
-nJx
-iPH
-iPH
-iPH
+pED
+bnU
+bnU
+bnU
 bqa
 pED
 pED
@@ -50163,7 +50604,7 @@ vqB
 fSn
 qCO
 oMC
-vqB
+nUN
 mTX
 rIy
 uND
@@ -50174,7 +50615,7 @@ dve
 uND
 rIy
 mTX
-qCO
+jJj
 qgj
 ofx
 lVz
@@ -50232,8 +50673,8 @@ mrM
 trz
 qEN
 bnU
+bnU
 bqa
-vXP
 rha
 oaS
 mad
@@ -50242,10 +50683,10 @@ bnU
 bnU
 rDm
 kDG
-nJx
-iPH
-nJx
-nJx
+pED
+bnU
+pED
+pED
 bqa
 pED
 pED
@@ -50391,7 +50832,7 @@ vqB
 qCO
 vqB
 oMC
-qCO
+nJx
 mTX
 rIy
 uND
@@ -50402,7 +50843,7 @@ dve
 uND
 rIy
 mTX
-rAP
+pQi
 rAP
 ofx
 ccX
@@ -50458,9 +50899,9 @@ bqa
 bqa
 bqa
 bqa
-jeT
-eWe
-bqa
+jSy
+iFT
+iFT
 bqa
 bqa
 bqa
@@ -50619,7 +51060,7 @@ vqB
 vqB
 vqB
 oMC
-qCO
+nJx
 mTX
 mTX
 jma
@@ -50630,7 +51071,7 @@ dve
 cQP
 mTX
 mTX
-fSn
+xmu
 qgj
 ofx
 lub
@@ -50686,17 +51127,17 @@ fpJ
 fpJ
 fpJ
 bqa
-jSy
+ehF
 nCc
+mDk
 bqa
-kpc
 bPz
 gum
 yjD
 oqD
-jAG
-jAG
-nZU
+mDk
+nCc
+ehF
 nGD
 bIU
 jft
@@ -50847,8 +51288,8 @@ vqB
 vqB
 vqB
 ahv
-qCO
-qCO
+bAK
+uMd
 mTX
 mTX
 lrQ
@@ -50857,8 +51298,8 @@ nKM
 lrQ
 mTX
 mTX
-qLp
-wjp
+qaN
+kWO
 qgj
 ofx
 vbX
@@ -50914,17 +51355,17 @@ wWL
 fpJ
 fpJ
 nGD
-nZU
-jAG
+ehF
+nCc
+mDk
 nGD
-jRW
 fxI
 cQR
 oIJ
 mNA
-jAG
-jAG
-nZU
+mDk
+nCc
+ehF
 nGD
 bIU
 jSS
@@ -51076,15 +51517,15 @@ vqB
 vqB
 ahv
 qCO
-qCO
-qCO
+bAK
+uMd
 mTX
 mTX
 efp
 akc
 mTX
 mTX
-fnt
+aiI
 vvE
 wjp
 qgj
@@ -51143,9 +51584,9 @@ fpJ
 bqa
 bqa
 jSy
-bAK
+iFT
+iFT
 bqa
-jAG
 pDq
 pWo
 bqa
@@ -51305,12 +51746,12 @@ wYY
 hUV
 fSn
 kpq
-wjp
-qCO
-wjp
-wjp
-wjp
-wjp
+vjU
+dwG
+mQp
+mQp
+mQp
+mQp
 cqc
 hTd
 xup
@@ -51372,8 +51813,8 @@ bqa
 bQO
 dXX
 jAG
-pwi
 jAG
+xLc
 jAG
 mdg
 bqa
@@ -51830,7 +52271,7 @@ yle
 abR
 abR
 abR
-abR
+aXn
 bVz
 eGF
 aul
@@ -53140,7 +53581,7 @@ osS
 vqB
 ahv
 mQM
-rnf
+brf
 iqU
 qbm
 nbE
@@ -54780,7 +55221,7 @@ kWH
 vTe
 onB
 jEt
-eKh
+uXZ
 sKe
 onB
 bah
@@ -55007,9 +55448,9 @@ vLP
 qUI
 wNi
 onB
-uMd
-eKh
-uMd
+ceU
+uXZ
+ceU
 onB
 fpJ
 nUv
@@ -56831,9 +57272,9 @@ trk
 uvY
 fpJ
 onB
-uMd
-eKh
-uMd
+ceU
+uXZ
+ceU
 onB
 fpJ
 lni
@@ -57059,9 +57500,9 @@ qCO
 qCO
 qgj
 onB
-uMd
-eKh
-uMd
+ceU
+uXZ
+ceU
 onB
 bah
 fSn
@@ -57515,9 +57956,9 @@ qCO
 qCO
 qgj
 onB
-uMd
-eKh
-uMd
+ceU
+uXZ
+ceU
 onB
 bah
 qCO
@@ -57743,9 +58184,9 @@ qCO
 vLP
 fpJ
 onB
-uMd
-eKh
-uMd
+ceU
+uXZ
+ceU
 onB
 fpJ
 nUv
@@ -58198,8 +58639,8 @@ jZl
 jZl
 jZl
 jZl
-uMd
-uMd
+ghJ
+ghJ
 eAx
 iUX
 sNc
@@ -58426,19 +58867,19 @@ xeZ
 gkA
 gCz
 tUq
-uMd
-uMd
-eKh
-uMd
-uMd
-uMd
+ghJ
+aag
+jel
+aag
+ghJ
+ghJ
 ifC
-uVq
-uMd
-uVq
+sku
+ghJ
+sku
 ifC
-uMd
-uVq
+ghJ
+sku
 beL
 oqT
 jZl
@@ -58654,22 +59095,22 @@ aag
 aag
 xWn
 tUq
-uMd
-uMd
-mHa
-iUX
-iUX
-dwG
-uVq
-uVq
-uMd
+aag
+aag
+mbX
+nUq
+nUq
+aAH
+sku
+sku
+aag
 wUL
-uVq
-uMd
-uVq
-uVq
-uMd
-uMd
+sku
+aag
+sku
+sku
+ghJ
+ghJ
 msb
 jSS
 qiX
@@ -58877,26 +59318,26 @@ qCO
 mvt
 qgj
 jZl
-uVq
+sku
 aag
 aag
 xWn
 ntN
-uMd
-uMd
-uMd
-uMd
-uMd
-eAx
-iUX
-iUX
+aag
+aag
+aag
+aag
+aag
+eah
+nUq
+nUq
 liE
 fwu
-iUX
-iUX
-iUX
-iUX
-iUX
+nUq
+nUq
+nUq
+nUq
+nUq
 iUX
 eeS
 sCW
@@ -59110,22 +59551,22 @@ aag
 aag
 aag
 cEu
-uMd
-uMd
-uMd
-uMd
-uMd
-eKh
-uMd
-uMd
+aag
+aag
+aag
+aag
+aag
+jel
+aag
+aag
 cXz
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+aag
+aag
+aag
+aag
+aag
+ghJ
+ghJ
 msb
 jSS
 qiX
@@ -59338,21 +59779,21 @@ gyb
 atC
 atC
 kQP
-uMd
-uMd
-uMd
-uMd
-uMd
-eKh
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
+aag
+aag
+aag
+aag
+aag
+jel
+sku
+sku
+aag
+sku
+sku
+aag
+sku
+sku
+ghJ
 jZl
 jZl
 ves
@@ -59563,24 +60004,24 @@ pDE
 emp
 kNA
 pie
+nUq
+nUq
+nUq
+nUq
 iUX
 iUX
 iUX
-iUX
-iUX
-iUX
-iUX
-iUX
-gVm
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
+nUq
+orS
+sku
+sku
+aag
+sku
+sku
+aag
 bsE
-uVq
-uMd
+sku
+ghJ
 jZl
 jft
 qto
@@ -59790,15 +60231,15 @@ aNa
 qCO
 hCP
 msb
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+ghJ
+aag
+aag
+aag
+aag
+ghJ
 qAg
-uMd
-uMd
+ghJ
+aag
 ygu
 ewf
 ewf
@@ -60018,15 +60459,15 @@ qCO
 qCO
 qgj
 msb
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+ghJ
+aag
+aag
+aag
+aag
+ghJ
 mDZ
 xBQ
-uMd
+aag
 fvs
 paT
 msb
@@ -60246,15 +60687,15 @@ qCO
 qCO
 hCP
 msb
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+ghJ
+aag
+aag
+aag
+aag
+ghJ
 kCd
 dxu
-uMd
+aag
 pWV
 riA
 riA
@@ -60475,24 +60916,24 @@ vLP
 lGk
 vNJ
 wfO
-uMd
-uMd
-uMd
-uMd
-uMd
+aag
+aag
+aag
+aag
+ghJ
 gMQ
-uMd
-uMd
-eKh
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
+ghJ
+aag
+jel
+sku
+sku
+aag
+sku
+sku
+aag
+sku
+sku
+ghJ
 jZl
 jft
 qUV
@@ -60706,21 +61147,21 @@ fTG
 yfJ
 yfJ
 bwv
-uMd
-uMd
-uMd
-uMd
-uMd
-eKh
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
-uVq
-uVq
-uMd
+aag
+aag
+aag
+aag
+aag
+jel
+sku
+sku
+aag
+sku
+sku
+aag
+sku
+sku
+ghJ
 jZl
 jZl
 jmt
@@ -60934,22 +61375,22 @@ aag
 aag
 aag
 cEu
-uMd
-uMd
-uMd
-uMd
-uMd
-eKh
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+aag
+aag
+aag
+aag
+aag
+jel
+aag
+aag
+aag
+aag
+aag
+aag
+aag
+aag
+ghJ
+ghJ
 msb
 aFu
 gXg
@@ -61162,22 +61603,22 @@ aag
 aag
 xWn
 vHw
-uMd
-uMd
-uMd
-uMd
-uMd
-eKh
-uMd
-uMd
+aag
+aag
+aag
+aag
+aag
+jel
+aag
+aag
 qBp
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
-uMd
+aag
+aag
+aag
+aag
+aag
+aag
+ghJ
 msb
 aFu
 aFu
@@ -61396,16 +61837,16 @@ oUS
 oUS
 oUS
 lwe
-uVq
+sku
 bsE
-uMd
+aag
 tOl
 rmL
-uMd
-uVq
-uVq
-uMd
-uMd
+aag
+sku
+sku
+ghJ
+ghJ
 msb
 aFu
 aFu
@@ -61614,25 +62055,25 @@ qCO
 qgj
 jZl
 jZl
-uVq
+sku
 qji
 jXV
 tUq
 wzx
-eKh
-uMd
-uMd
-uMd
-uMd
+jel
+aag
+aag
+ghJ
+ghJ
 msg
-uVq
-uMd
-uVq
+sku
+ghJ
+sku
 msg
-uMd
-uVq
-uVq
-jJj
+ghJ
+sku
+sku
+qji
 jZl
 jZl
 foF
@@ -61848,9 +62289,9 @@ jZl
 jZl
 sNc
 gVm
-uMd
-uMd
-uMd
+ghJ
+ghJ
+ghJ
 jZl
 jZl
 jZl
@@ -62304,8 +62745,8 @@ pHr
 fpJ
 onB
 eKh
-uMd
-uMd
+ndx
+ceU
 onB
 fpJ
 fpJ
@@ -62532,8 +62973,8 @@ pHr
 qgj
 onB
 eKh
-uMd
-uMd
+ndx
+ceU
 onB
 fpJ
 fpJ
@@ -67201,7 +67642,7 @@ vwt
 ehb
 ehb
 ehb
-ehb
+vwt
 ehb
 vwt
 vwt
@@ -67428,9 +67869,9 @@ vwt
 vwt
 vwt
 ehb
-ehb
-ehb
-ehb
+vwt
+vwt
+vwt
 vwt
 vwt
 vwt
