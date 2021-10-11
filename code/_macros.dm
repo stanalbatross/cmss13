@@ -72,6 +72,9 @@
 
 #define IS_DIAGONAL_DIR(dir) (dir & ~(NORTH|SOUTH))
 
+///Returns true if the dir is diagonal, false otherwise, delete if above works already
+//#define ISDIAGONALDIR(d) (d&(d-1))
+
 // Inverse direction, taking into account UP|DOWN if necessary.
 #define REVERSE_DIR(dir) ( ((dir & 85) << 1) | ((dir & 170) >> 1) )
 
