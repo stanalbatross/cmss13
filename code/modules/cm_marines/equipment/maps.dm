@@ -117,6 +117,11 @@
 	html_link = "images/0/0d/Kutjevo_a1.jpg"
 	color = "red"
 
+/obj/item/map/new_varadero//to-do actually finish this map
+	name = "\improper New Varadero map"
+	desc = "The blueprint and readout of the UA outpost New Varadero"
+	html_link = "images/0/0d/Kutjevo_a1.jpg"//replace later
+	color = "red"
 
 //used by marine equipment machines to spawn the correct map.
 /obj/item/map/current_map
@@ -174,6 +179,12 @@
 			desc = "An orbital scan of Kutjevo Refinery"
 			html_link = "images/0/0d/Kutjevo_a1.jpg"
 			color = "red"
+		if (MAP_NEW_VARADERO)
+			name = "\improper New Varadero map"
+			desc = "The blueprint and readout of the UA outpost New Varadero"
+			html_link = "images/0/0d/Kutjevo_a1.jpg"//replace later
+			color = "red"
+
 		else
 			return INITIALIZE_HINT_QDEL
 
