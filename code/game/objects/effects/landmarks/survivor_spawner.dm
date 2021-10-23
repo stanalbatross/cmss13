@@ -37,6 +37,13 @@
 	roundstart_damage_times = 2
 	make_objective = 0
 
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist
+	equipment = "Lesser Cultist"
+	intro_text = list("<h2>You were once a survivor</h2>",\
+	"<span class='notice'>You aided the xenomorph threat in overtaking the colony.</span>",\
+	"<span class='danger'>Your gods have tasked you to stockpile equipment and gather worthy sacrifices in their name.</span>")
+	story_text = "You were just your average employee living and working on the colony.. before the whispers started.. before the great one enlightened you. The gods will attempt to test your faith but you must remain steadfast."
+
 /obj/effect/landmark/survivor_spawner/bigred_crashed_pmc
 	equipment = "Survivor - PMC"
 	intro_text = list("<h2>You are a survivor of a crash landing!</h2>",\

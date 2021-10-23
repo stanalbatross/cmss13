@@ -379,3 +379,9 @@
 /area/lv624/lazarus/crashed_ship_containers
 	name = "\improper Crashed Ship Containers"
 	icon_state = "syndie-ship"
+
+/area/lv624/lazarus/cult_bunker
+	name = "\improper Emergency Bunker"
+	icon_state = "storage"
+	is_resin_allowed = FALSE
+	flags_area = AREA_NOTUNNEL

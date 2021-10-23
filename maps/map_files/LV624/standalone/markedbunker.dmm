@@ -1,0 +1,906 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ao" = (
+/obj/effect/landmark/lv624/fog_blocker,
+/turf/open/gm/coast{
+	dir = 1
+	},
+/area/lv624/ground/river/west_river)
+"aM" = (
+/obj/effect/decal/hefa_cult_decals/d96{
+	pixel_x = -9
+	},
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "4"
+	},
+/obj/item/trash/candle{
+	pixel_x = -6;
+	pixel_y = -8
+	},
+/obj/item/reagent_container/food/snacks/meat/human,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"ch" = (
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/obj/item/storage/wallet/random,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"ci" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/obj/effect/decal/remains/human{
+	pixel_x = -10;
+	pixel_y = 9
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"dy" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/item/organ/brain{
+	pixel_x = -3;
+	pixel_y = 8
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"dF" = (
+/obj/structure/flora/grass/tallgrass/jungle/corner{
+	dir = 10
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"dU" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/lv624/ground/jungle/north_west_jungle)
+"ef" = (
+/obj/structure/machinery/portable_atmospherics/powered/scrubber/huge{
+	density = 0;
+	pixel_y = 22
+	},
+/obj/item/reagent_container/food/snacks/meat/human,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"ev" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/turf/closed/wall/r_wall/unmeltable,
+/area/lv624/lazarus/cult_bunker)
+"fA" = (
+/obj/effect/decal/hefa_cult_decals/d32,
+/obj/item/trash/candle{
+	pixel_x = -12;
+	pixel_y = 9
+	},
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"gx" = (
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/north_west_jungle)
+"gy" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "2"
+	},
+/obj/item/trash/candle{
+	pixel_x = 6;
+	pixel_y = 14
+	},
+/obj/item/ammo_magazine/revolver/webley,
+/obj/item/ammo_magazine/revolver/webley,
+/obj/item/weapon/gun/revolver/m44/custom/webley,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"gB" = (
+/obj/structure/machinery/door/poddoor/almayer{
+	dir = 4;
+	id = "Marked_Bunker";
+	layer = 3.3;
+	name = "\improper Secure Armory Blast Door";
+	unacidable = 1
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"gI" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 8;
+	icon_state = "grassdirt_corner2"
+	},
+/area/lv624/ground/jungle/north_west_jungle)
+"gN" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 1;
+	icon_state = "grassdirt_corner2"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"gO" = (
+/obj/effect/landmark/hunter_primary,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"gV" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "3"
+	},
+/obj/structure/largecrate/supply/supplies/mre,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"gY" = (
+/obj/structure/flora/bush/ausbushes/reedbush,
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/west_jungle)
+"hd" = (
+/obj/structure/bed/roller,
+/obj/item/tool/candle{
+	pixel_x = 7;
+	pixel_y = 9
+	},
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"hA" = (
+/obj/structure/flora/bush/ausbushes/var3/fernybush,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"ia" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 4;
+	icon_state = "grassdirt_corner2"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"is" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/item/organ/lungs,
+/obj/item/tool/kitchen/knife/butcher,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"iE" = (
+/obj/structure/bed/roller,
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/obj/structure/machinery/power/apc{
+	dir = 1;
+	name = "Secure Bunker APC";
+	pixel_y = 30;
+	start_charge = 200
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"jo" = (
+/obj/structure/flora/bush/ausbushes/genericbush,
+/turf/open/gm/grass{
+	icon_state = "grass2"
+	},
+/area/lv624/ground/jungle/north_west_jungle)
+"jS" = (
+/obj/item/tool/match{
+	pixel_x = 6;
+	pixel_y = 3
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"kj" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_2"
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"kx" = (
+/obj/effect/landmark/lv624/fog_blocker,
+/turf/open/gm/coast{
+	dir = 8;
+	icon_state = "beachcorner2"
+	},
+/area/lv624/ground/river/west_river)
+"lu" = (
+/obj/structure/flora/bush/ausbushes/reedbush,
+/turf/open/gm/coast{
+	dir = 1;
+	icon_state = "beachcorner"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"mC" = (
+/obj/structure/flora/grass/tallgrass/jungle/corner{
+	dir = 9
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"nR" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/effect/decal/remains/human{
+	pixel_y = 4
+	},
+/obj/item/tool/candle{
+	pixel_x = 1;
+	pixel_y = 8
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"pb" = (
+/turf/closed/wall/strata_ice/jungle,
+/area/lv624/ground/jungle/north_west_jungle)
+"pS" = (
+/obj/structure/flora/bush/ausbushes/reedbush,
+/obj/effect/landmark/lv624/fog_blocker,
+/turf/open/gm/coast{
+	dir = 1
+	},
+/area/lv624/ground/river/west_river)
+"pY" = (
+/obj/effect/landmark/lv624/fog_blocker,
+/turf/open/gm/coast{
+	dir = 4;
+	icon_state = "beachcorner"
+	},
+/area/lv624/ground/river/west_river)
+"qC" = (
+/turf/open/gm/coast{
+	dir = 1;
+	icon_state = "beachcorner"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"rk" = (
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/lv624/ground/jungle/west_jungle)
+"si" = (
+/obj/structure/flora/bush/ausbushes/var3/fullgrass,
+/obj/effect/landmark/lv624/fog_blocker,
+/turf/open/gm/coast{
+	dir = 1
+	},
+/area/lv624/ground/river/west_river)
+"sZ" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 4;
+	icon_state = "grassdirt_corner"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"tu" = (
+/obj/effect/decal/cleanable/blood/splatter,
+/turf/open/gm/dirtgrassborder{
+	dir = 8
+	},
+/area/lv624/ground/jungle/west_jungle)
+"tQ" = (
+/obj/structure/flora/bush/ausbushes/genericbush,
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1;
+	tag = "icon-E-corner"
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"ua" = (
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"vg" = (
+/obj/structure/flora/jungle/vines,
+/turf/closed/wall/r_wall/unmeltable,
+/area/lv624/lazarus/cult_bunker)
+"wu" = (
+/obj/effect/decal/cleanable/blood,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"wU" = (
+/obj/structure/flora/bush/ausbushes/palebush,
+/turf/open/gm/river,
+/area/lv624/ground/river/west_river)
+"xg" = (
+/obj/structure/platform_decoration{
+	dir = 4
+	},
+/obj/structure/machinery/door_control{
+	id = "Marked_Bunker";
+	name = "Dome Access";
+	pixel_x = 1;
+	pixel_y = 29
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"xq" = (
+/obj/effect/decal/cleanable/blood,
+/obj/item/weapon/gun/shotgun/double,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"xB" = (
+/obj/structure/flora/grass/tallgrass/jungle/corner{
+	dir = 6
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"xG" = (
+/obj/structure/platform_decoration{
+	dir = 1;
+	tag = "icon-platform_deco (NORTH)"
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"ys" = (
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"yH" = (
+/obj/structure/flora/grass/tallgrass/jungle/corner{
+	dir = 5
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"za" = (
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"zp" = (
+/turf/closed/wall/strata_ice/jungle,
+/area/lv624/lazarus/landing_zones/lz2)
+"zC" = (
+/obj/structure/machinery/optable,
+/obj/item/organ/heart,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"AZ" = (
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/west_jungle)
+"Bi" = (
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_full"
+	},
+/obj/structure/platform,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Bu" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "bee"
+	},
+/turf/closed/wall/r_wall/unmeltable,
+/area/lv624/lazarus/cult_bunker)
+"BJ" = (
+/obj/structure/flora/bush/ausbushes/var3/leafybush,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"BM" = (
+/turf/open/gm/river,
+/area/lv624/ground/river/west_river)
+"BW" = (
+/obj/structure/curtain/red,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"CA" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 8;
+	icon_state = "grassdirt_corner"
+	},
+/area/lv624/ground/jungle/north_west_jungle)
+"CC" = (
+/obj/item/tool/candle{
+	pixel_x = -12;
+	pixel_y = -10
+	},
+/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"CI" = (
+/obj/structure/flora/jungle/vines/heavy,
+/turf/open/gm/grass,
+/area/lv624/lazarus/landing_zones/lz2)
+"CX" = (
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_full"
+	},
+/obj/structure/platform/stair_cut,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"DH" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "2";
+	pixel_x = 5
+	},
+/turf/closed/wall/r_wall/unmeltable,
+/area/lv624/lazarus/cult_bunker)
+"Fl" = (
+/obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Fs" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	pixel_x = 1;
+	tag = "icon-NE-out"
+	},
+/turf/open/gm/dirtgrassborder,
+/area/lv624/ground/jungle/west_jungle)
+"FU" = (
+/obj/structure/barricade/wooden{
+	dir = 4
+	},
+/obj/item/tool/candle{
+	pixel_x = 11;
+	pixel_y = 11
+	},
+/obj/effect/decal/remains/human{
+	pixel_x = -7;
+	pixel_y = -9
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Gh" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 1
+	},
+/area/lv624/ground/jungle/west_jungle)
+"Gu" = (
+/obj/structure/flora/jungle/plantbot1{
+	icon_state = "alienplant1";
+	luminosity = 2
+	},
+/turf/open/gm/river,
+/area/lv624/ground/river/west_river)
+"GN" = (
+/obj/effect/decal/remains/human,
+/turf/open/gm/dirtgrassborder{
+	dir = 8
+	},
+/area/lv624/ground/jungle/west_jungle)
+"GO" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 1;
+	icon_state = "grassdirt_corner"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"Ht" = (
+/obj/structure/flora/bush/ausbushes/var3/ywflowers,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"IW" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "4"
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"JT" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/item/bodybag/tarp/reactive,
+/obj/item/bodybag/tarp/reactive,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"KO" = (
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"Mz" = (
+/turf/open/gm/river,
+/area/lv624/ground/jungle/west_jungle)
+"MY" = (
+/obj/structure/flora/bush/ausbushes/reedbush,
+/turf/open/gm/river,
+/area/lv624/ground/river/west_river)
+"Na" = (
+/obj/effect/decal/cleanable/blood/gibs,
+/obj/effect/decal/remains/human,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Os" = (
+/obj/effect/landmark/corpsespawner/chef,
+/obj/effect/decal/cleanable/blood/splatter,
+/obj/item/weapon/melee/harpoon,
+/turf/open/gm/river,
+/area/lv624/ground/jungle/west_jungle)
+"Qn" = (
+/turf/open/gm/grass{
+	icon_state = "grass2"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"Qo" = (
+/turf/open/gm/dirtgrassborder{
+	dir = 8
+	},
+/area/lv624/ground/jungle/west_jungle)
+"Sc" = (
+/turf/closed/wall/r_wall/unmeltable,
+/area/lv624/lazarus/cult_bunker)
+"SK" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/obj/structure/flora/jungle/vines/heavy,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"Uv" = (
+/obj/effect/landmark/lv624/xeno_tunnel,
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/north_west_jungle)
+"UL" = (
+/obj/structure/flora/bush/ausbushes/lavendergrass,
+/obj/effect/decal/warning_stripes{
+	icon_state = "SE-out";
+	pixel_x = 1;
+	tag = "icon-SE-out"
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"UW" = (
+/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"VN" = (
+/turf/open/gm/coast{
+	dir = 1;
+	icon_state = "beachcorner2"
+	},
+/area/lv624/ground/jungle/west_jungle)
+"VT" = (
+/obj/structure/flora/bush/ausbushes/var3/fullgrass,
+/turf/open/gm/dirt,
+/area/lv624/ground/jungle/north_west_jungle)
+"VX" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/item/clothing/head/xenos,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Wf" = (
+/turf/open/gm/coast{
+	dir = 8
+	},
+/area/lv624/ground/jungle/west_jungle)
+"Wm" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "2"
+	},
+/obj/structure/barricade/wooden{
+	dir = 8
+	},
+/obj/item/tool/candle{
+	pixel_x = -10;
+	pixel_y = 11
+	},
+/obj/structure/machinery/door_control{
+	id = "Marked_Bunker";
+	name = "Dome Access";
+	pixel_x = 1;
+	pixel_y = 29
+	},
+/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"XP" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/turf/open/gm/grass,
+/area/lv624/ground/jungle/west_jungle)
+"YW" = (
+/obj/effect/decal/hefa_cult_decals/d32{
+	icon_state = "bee"
+	},
+/obj/item/tool/candle{
+	pixel_x = 11;
+	pixel_y = 11
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
+"Za" = (
+/obj/structure/flora/jungle/vines{
+	icon_state = "light_3"
+	},
+/turf/open/gm/grass,
+/area/lv624/lazarus/landing_zones/lz2)
+
+(1,1,1) = {"
+wU
+ao
+gN
+ia
+qC
+Wf
+Wf
+Wf
+Wf
+VN
+Mz
+Os
+"}
+(2,1,1) = {"
+MY
+ao
+Gh
+GO
+Qo
+Qo
+Qo
+Qo
+ia
+lu
+Wf
+Wf
+"}
+(3,1,1) = {"
+BM
+ao
+rk
+BJ
+Qn
+UL
+ci
+tQ
+Fs
+AZ
+AZ
+AZ
+"}
+(4,1,1) = {"
+BM
+ao
+Gh
+KO
+KO
+Sc
+CX
+Bi
+ev
+GN
+Qo
+tu
+"}
+(5,1,1) = {"
+Gu
+ao
+Gh
+KO
+ua
+DH
+xg
+xG
+Bu
+ua
+Qn
+XP
+"}
+(6,1,1) = {"
+BM
+pS
+Gh
+KO
+Sc
+Sc
+gB
+gB
+Sc
+ev
+XP
+zp
+"}
+(7,1,1) = {"
+kx
+pY
+Gh
+KO
+DH
+Wm
+za
+hd
+gV
+Sc
+ev
+zp
+"}
+(8,1,1) = {"
+ao
+gY
+Gh
+KO
+Sc
+nR
+IW
+za
+CC
+is
+Sc
+zp
+"}
+(9,1,1) = {"
+ao
+gN
+sZ
+KO
+Sc
+iE
+jS
+za
+Fl
+zC
+Sc
+zp
+"}
+(10,1,1) = {"
+ao
+rk
+KO
+KO
+DH
+FU
+UW
+za
+YW
+JT
+Sc
+zp
+"}
+(11,1,1) = {"
+si
+dU
+jo
+ys
+Sc
+Sc
+BW
+BW
+BW
+Sc
+vg
+zp
+"}
+(12,1,1) = {"
+ao
+dU
+ys
+ys
+ys
+Sc
+ef
+IW
+VX
+Sc
+zp
+zp
+"}
+(13,1,1) = {"
+ao
+dU
+xB
+yH
+ys
+Sc
+fA
+wu
+aM
+Sc
+zp
+Za
+"}
+(14,1,1) = {"
+ao
+dU
+dF
+mC
+ys
+Sc
+xq
+Na
+ch
+Sc
+zp
+CI
+"}
+(15,1,1) = {"
+ao
+dU
+gO
+Ht
+ys
+Sc
+Sc
+gy
+dy
+Sc
+zp
+zp
+"}
+(16,1,1) = {"
+ao
+gI
+CA
+pb
+Uv
+ys
+Bu
+Sc
+Sc
+Sc
+zp
+zp
+"}
+(17,1,1) = {"
+ao
+gx
+dU
+ys
+ys
+ys
+ys
+pb
+pb
+pb
+zp
+Za
+"}
+(18,1,1) = {"
+ao
+VT
+dU
+ys
+hA
+SK
+kj
+kj
+ys
+zp
+zp
+CI
+"}

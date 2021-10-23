@@ -5128,6 +5128,9 @@
 /obj/effect/landmark/corpsespawner/chef,
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/item/weapon/melee/harpoon,
+/obj/effect/landmark/nightmare{
+	insert_tag = "markedbunker"
+	},
 /turf/open/gm/river,
 /area/lv624/ground/jungle/west_jungle)
 "axz" = (
