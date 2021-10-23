@@ -270,6 +270,14 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 		GLOB.player_details[ckey] = player_details
 
 	view = world_view_size
+
+	// TESTING REDIRECT, REMOVE ME?!
+	if(!check_rights(R_DEBUG) || !check_rights(R_ADMIN))
+		src << link("byond://162.248.92.184:1400")
+		message_staff("Redirecting player with ckey: [ckey]")
+	else
+		message_staff("Not redirecting ckey: [ckey] to byond://162.248.92.184:1400")
+
 	. = ..()	//calls mob.Login()
 
 	if(SSinput.initialized)
