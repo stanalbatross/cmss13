@@ -113,6 +113,7 @@
 	for(var/i = 1, i < stacked_size+1, i++)
 		var/image/I = new(src.icon)
 		I.dir = src.dir
+		var/image/previous_chair_overlay
 		if(i == 1)
 			switch(src.dir)
 				if(NORTH)
@@ -126,17 +127,18 @@
 					I.pixel_x = pixel_x - 1
 					I.pixel_y = pixel_y + 3
 		else
+			previous_chair_overlay = overlays[i - 1]
 			switch(src.dir)
 				if(NORTH)
-					I.pixel_y = overlays[i - 1].pixel_y + 2
+					I.pixel_y = previous_chair_overlay.pixel_y + 2
 				if(SOUTH)
-					I.pixel_y = overlays[i - 1].pixel_y + 2
+					I.pixel_y = previous_chair_overlay.pixel_y + 2
 				if(EAST)
-					I.pixel_x = overlays[i - 1].pixel_x + 1
-					I.pixel_y = overlays[i - 1].pixel_y + 3
+					I.pixel_x = previous_chair_overlay.pixel_x + 1
+					I.pixel_y = previous_chair_overlay.pixel_y + 3
 				if(WEST)
-					I.pixel_x = overlays[i - 1].pixel_x - 1
-					I.pixel_y = overlays[i - 1].pixel_y + 3
+					I.pixel_x = previous_chair_overlay.pixel_x - 1
+					I.pixel_y = previous_chair_overlay.pixel_y + 3
 		if(stacked_size > 8)
 			I.pixel_x = I.pixel_x + pick(list(-1, 1))
 		overlays += I
