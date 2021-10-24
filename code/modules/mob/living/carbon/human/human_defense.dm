@@ -270,6 +270,9 @@ Contains most of the procs that are called when a mob is attacked by something
 		toggle_throw_mode(THROW_MODE_OFF)
 		return
 
+	if(istype(O, /obj/item/weapon/melee/twohanded/folded_metal_chair))
+		playsound(get_turf(src), 'sound/weapons/metal_chair_slam.ogg', 50, 1)
+
 	var/dtype = BRUTE
 	if (istype(O, /obj/item/weapon))
 		var/obj/item/weapon/W = O
