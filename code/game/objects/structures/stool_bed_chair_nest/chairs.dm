@@ -44,8 +44,8 @@
 	else if(H.put_in_inactive_hand(FMC))
 		qdel(src)
 	else
-		new created_object(get_turf(src))
-		qdel(src)
+		to_chat(H, SPAN_NOTICE("You need a free hand to fold up the chair."))
+		qdel(FMC)
 
 /obj/structure/bed/chair/attack_hand(mob/user)
 	. = ..()
@@ -458,7 +458,7 @@
 		var/turf/T = target
 		if(!T.density)
 			for(var/atom/movable/AM in T.contents)
-				if(AM.density)
+				if(AM.density || istype(AM, /obj/structure))
 					to_chat(user, SPAN_WARNING("You can't unfold the chair here, [AM] blocks the way."))
 					return
 			var/obj/O = new created_object(T)
