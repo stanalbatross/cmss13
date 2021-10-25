@@ -91,9 +91,9 @@
 		stacked_size--
 		update_overlays()
 
-		var/list/canidate_target_turfs = range(round(stacked_size/2), starting_turf)
-		canidate_target_turfs -= starting_turf
-		var/turf/target_turf = canidate_target_turfs[rand(1, length(canidate_target_turfs))]
+		var/list/candidate_target_turfs = range(round(stacked_size/2), starting_turf)
+		candidate_target_turfs -= starting_turf
+		var/turf/target_turf = candidate_target_turfs[rand(1, length(candidate_target_turfs))]
 
 		falling_chair.forceMove(starting_turf)
 		falling_chair.pixel_x = rand(-8, 8)
@@ -111,7 +111,7 @@
 		return
 	name = "A stack of folding chairs."
 	desc = "There seems to be [stacked_size + 1] in the stack, wow!"
-	for(var/i = 1, i < stacked_size+1, i++)
+	for(var/i in 1 to stacked_size)
 		var/image/I = new(src.icon)
 		I.dir = src.dir
 		var/image/previous_chair_overlay
@@ -459,7 +459,7 @@
 		var/turf/T = target
 		if(!T.density)
 			for(var/atom/movable/AM in T.contents)
-				if(AM.density || istype(AM, /obj/structure))
+				if(AM.density || istype(AM, /obj/structure/bed))
 					to_chat(user, SPAN_WARNING("You can't unfold the chair here, [AM] blocks the way."))
 					return
 			var/obj/O = new created_object(T)
