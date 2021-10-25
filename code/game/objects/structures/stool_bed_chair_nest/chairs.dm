@@ -84,6 +84,7 @@
 				stack_collapse(user)
 
 /obj/structure/bed/chair/proc/stack_collapse(var/mob/user)
+	user.visible_message(SPAN_HIGHDANGER("The stack of chairs collapses!!!"))
 	var/turf/starting_turf = get_turf(src)
 	playsound(starting_turf, 'sound/weapons/metal_chair_crash.ogg', 30, 1, 30)
 	for(var/obj/item/weapon/melee/twohanded/folded_metal_chair/falling_chair in src.contents)
