@@ -56,10 +56,12 @@
 			update_overlays()
 			break
 		if(!stacked_size)
-			can_buckle = TRUE
-			density = FALSE
 			layer = OBJ_LAYER
 			unslashable = FALSE
+			can_buckle = TRUE
+			density = FALSE
+			pass_flags.flags_can_pass_all = PASS_OVER|PASS_AROUND|PASS_UNDER
+			projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	return
 
 /obj/structure/bed/chair/attack_alien(mob/living/carbon/Xenomorph/M)
@@ -74,6 +76,8 @@
 		unslashable = TRUE
 		can_buckle = FALSE
 		density = TRUE
+		pass_flags.flags_can_pass_all = PASS_OVER_FIRE
+		projectile_coverage = PROJECTILE_COVERAGE_HIGH
 		user.drop_inv_item_to_loc(I, src)
 		stacked_size++
 		update_overlays()
@@ -82,6 +86,19 @@
 			to_chat(user, SPAN_WARNING("The stack of chairs looks unstable!"))
 			if(prob(Clamp(((stacked_size * stacked_size)/100), 0, 100)))
 				stack_collapse(user)
+
+/obj/structure/bed/chair/hitby(atom/movable/AM)
+	. = ..()
+	if(istype(AM, /mob/living) && stacked_size)
+		var/mob/living/M = AM
+		stack_collapse(M)
+		M.Stun(2)
+		M.KnockDown(2)
+
+/obj/structure/bed/chair/ex_act(power)
+	. = ..()
+	if(stacked_size)
+		stack_collapse()
 
 /obj/structure/bed/chair/proc/stack_collapse(var/mob/user)
 	user.visible_message(SPAN_HIGHDANGER("The stack of chairs collapses!!!"))
@@ -465,3 +482,7 @@
 			var/obj/O = new created_object(T)
 			O.dir = user.dir
 			qdel(src)
+
+/obj/item/weapon/melee/twohanded/folded_metal_chair/mob_launch_collision(var/mob/living/L)
+		playsound(get_turf(src), 'sound/weapons/metal_chair_slam.ogg', 50, 1)
+		..()
