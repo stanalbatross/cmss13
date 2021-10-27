@@ -17,6 +17,12 @@
 		verbs -= /atom/movable/verb/pull
 	handle_rotation()
 
+/obj/structure/bed/initialize_pass_flags(var/datum/pass_flags_container/PF)
+	..()
+	if (PF)
+		PF.flags_can_pass_all = PASS_AROUND|PASS_UNDER
+	flags_can_pass_all_temp = PASS_OVER
+
 /obj/structure/bed/chair/handle_rotation() //Making this into a seperate proc so office chairs can call it on Move()
 	if(src.dir == NORTH)
 		src.layer = FLY_LAYER
@@ -60,7 +66,7 @@
 			unslashable = FALSE
 			can_buckle = TRUE
 			density = FALSE
-			pass_flags.flags_can_pass_all = PASS_OVER|PASS_AROUND|PASS_UNDER
+			flags_can_pass_all_temp |= PASS_OVER
 			projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	return
 
@@ -82,7 +88,7 @@
 			unslashable = TRUE
 			can_buckle = FALSE
 			density = TRUE
-			pass_flags.flags_can_pass_all = PASS_OVER_FIRE
+			flags_can_pass_all_temp -= PASS_OVER
 			projectile_coverage = PROJECTILE_COVERAGE_HIGH
 
 		if(stacked_size > 8)
@@ -97,7 +103,7 @@
 		stack_collapse(M)
 		M.Stun(2)
 		M.KnockDown(2)
-	else if(stacked_size > 8)
+	else if(stacked_size > 8 && prob(50))
 		stack_collapse(AM)
 
 /obj/structure/bed/chair/ex_act(power)
