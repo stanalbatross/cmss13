@@ -71,16 +71,19 @@
 /obj/structure/bed/chair/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/melee/twohanded/folded_metal_chair) && created_object)
 		if(I.flags_item & WIELDED)
-			return
-		layer = ABOVE_MOB_LAYER
-		unslashable = TRUE
-		can_buckle = FALSE
-		density = TRUE
-		pass_flags.flags_can_pass_all = PASS_OVER_FIRE
-		projectile_coverage = PROJECTILE_COVERAGE_HIGH
+			return ..()
+
 		user.drop_inv_item_to_loc(I, src)
 		stacked_size++
 		update_overlays()
+
+		if(stacked_size == 1)
+			layer = ABOVE_MOB_LAYER
+			unslashable = TRUE
+			can_buckle = FALSE
+			density = TRUE
+			pass_flags.flags_can_pass_all = PASS_OVER_FIRE
+			projectile_coverage = PROJECTILE_COVERAGE_HIGH
 
 		if(stacked_size > 8)
 			to_chat(user, SPAN_WARNING("The stack of chairs looks unstable!"))
@@ -94,6 +97,8 @@
 		stack_collapse(M)
 		M.Stun(2)
 		M.KnockDown(2)
+	else if(stacked_size > 8)
+		stack_collapse(AM)
 
 /obj/structure/bed/chair/ex_act(power)
 	. = ..()
