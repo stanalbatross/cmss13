@@ -93,7 +93,7 @@
 
 		if(stacked_size > 8)
 			to_chat(user, SPAN_WARNING("The stack of chairs looks unstable!"))
-			if(prob(Clamp(((stacked_size * stacked_size)/100), 0, 100)))
+			if(prob(sqrt(50 * stacked_size)))
 				stack_collapse(user)
 
 /obj/structure/bed/chair/hitby(atom/movable/AM)
