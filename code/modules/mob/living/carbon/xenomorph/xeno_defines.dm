@@ -617,7 +617,7 @@
 		),
 	)
 
-	var/pooled_factor = min(stored_larva, sqrt(4*stored_larva))
+	var/pooled_factor = min(max(stored_larva, 0), sqrt(4*max(stored_larva, 0)))
 	pooled_factor = round(pooled_factor)
 
 	var/used_tier_2_slots = length(tier_2_xenos)

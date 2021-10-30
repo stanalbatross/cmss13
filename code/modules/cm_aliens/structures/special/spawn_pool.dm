@@ -141,7 +141,9 @@
 	if(linked_hive.hardcore)
 		return FALSE
 
-	return linked_hive.stored_larva
+	if (linked_hive.stored_larva > 0)
+		return linked_hive.stored_larva
+	return FALSE
 
 /obj/effect/alien/resin/special/pool/proc/spawn_pooled_larva(var/mob/xeno_candidate)
 	if(can_spawn_larva() && xeno_candidate)

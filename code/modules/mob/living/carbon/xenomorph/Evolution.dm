@@ -352,7 +352,7 @@
 	if(free_slots)
 		return TRUE
 
-	var/pooled_factor = min(hive.stored_larva, sqrt(4*hive.stored_larva))
+	var/pooled_factor = min(max(hive.stored_larva, 0), sqrt(4*max(hive.stored_larva, 0)))
 	pooled_factor = round(pooled_factor)
 
 	var/used_tier_2_slots = length(hive.tier_2_xenos)

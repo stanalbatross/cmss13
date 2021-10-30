@@ -239,7 +239,7 @@ var/global/marines_assigned = 0
 	marines_assigned = do_assignment_count(temp_roles_for_mode - (temp_roles_for_mode & ROLES_XENO), unassigned_players)
 
 	// Set the xeno starting amount based on marines assigned
-	var/datum/job/XJ = temp_roles_for_mode[JOB_XENOMORPH]
+	var/datum/job/antag/xenos/XJ = temp_roles_for_mode[JOB_XENOMORPH]
 	if(istype(XJ))
 		XJ.set_spawn_positions(marines_assigned)
 
@@ -289,6 +289,7 @@ var/global/marines_assigned = 0
 	var/datum/hive_status/hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
 	if(istype(hive) && istype(XJ))
 		hive.stored_larva += max(0, (XJ.total_positions - XJ.current_positions))
+		hive.stored_larva -= XJ.get_burrowed_credit()
 
 	/*===============================================================*/
 

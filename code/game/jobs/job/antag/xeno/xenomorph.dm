@@ -1,5 +1,13 @@
 
 #define XENO_TO_MARINES_SPAWN_RATIO 1/3
+/* This is a ratio of extra slots xenos get as a credit paid by future burrowed.
+*  Those values should be as high as possible as long as they don't cause xenos to
+*  have a negative burrowed credit score at the deployment time.
+*/
+#define BURROWED_CREDIT_RATIO 0.20
+// But no more credit slots than this.
+#define BURROWED_CREDIT_MAX 4
+
 
 /datum/job/antag/xenos
 	title = JOB_XENOMORPH
@@ -9,8 +17,15 @@
 	selection_class = "job_xeno"
 
 /datum/job/antag/xenos/set_spawn_positions(var/count)
-	spawn_positions = max((round(count * XENO_TO_MARINES_SPAWN_RATIO)), 1)
-	total_positions = spawn_positions
+	total_positions = max((round(count * XENO_TO_MARINES_SPAWN_RATIO)), 1)
+	total_positions += min(
+		round(total_positions * BURROWED_CREDIT_RATIO), BURROWED_CREDIT_MAX)
+	spawn_positions = total_positions
+
+/datum/job/antag/xenos/proc/get_burrowed_credit()
+	return min(
+		round(total_positions - (total_positions / (
+			1 +  BURROWED_CREDIT_RATIO))), BURROWED_CREDIT_MAX)
 
 /datum/job/antag/xenos/spawn_in_player(var/mob/new_player/NP)
 	. = ..()
