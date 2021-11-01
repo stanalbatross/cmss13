@@ -748,11 +748,17 @@
 	recalculate_tackle()
 
 /mob/living/carbon/Xenomorph/proc/recalculate_tackle()
-	tackle_min = caste.tackle_min
-	tackle_max = caste.tackle_max
+	if (hive.mutators.tackle_strength_bonus > 0)
+		tackle_min = min(1, caste.tackle_min - hive.mutators.tackle_strength_bonus)
+		tackle_max = min(1, caste.tackle_max - hive.mutators.tackle_strength_bonus)
+		tacklestrength_min = 5
+		tacklestrength_max = 5
+	else
+		tackle_min = caste.tackle_min
+		tackle_max = caste.tackle_max
+		tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus
+		tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus
 	tackle_chance = caste.tackle_chance + tackle_chance_modifier
-	tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
-	tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
 
 /mob/living/carbon/Xenomorph/proc/recalculate_health()
 	var/new_max_health = health_modifier + caste.max_health

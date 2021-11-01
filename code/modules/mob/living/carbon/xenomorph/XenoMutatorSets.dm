@@ -94,8 +94,6 @@
 		log_mutator("[hive.living_xeno_queen.name] purchased Hive Mutator '[m]'")
 
 /datum/mutator_set/hive_mutators/can_purchase_mutator(var/mutator_name)
-	if (..() == FALSE)
-		return FALSE //Can't buy it regardless
 	var/datum/xeno_mutator/XM = GLOB.xeno_mutator_list[mutator_name]
 	if(XM.individual_only)
 		return FALSE //We can't buy individual mutators on a Hive level

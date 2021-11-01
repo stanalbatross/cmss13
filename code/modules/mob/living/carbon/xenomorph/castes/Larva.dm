@@ -37,6 +37,7 @@
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/watch_xeno,
 		/datum/action/xeno_action/onclick/xenohide,
+		/datum/action/xeno_action/activable/reesearch,
 		)
 	inherent_verbs = list(
 		/mob/living/carbon/Xenomorph/proc/vent_crawl
@@ -158,3 +159,39 @@
 	L.set_hive_and_update(hivenumber)
 
 	return L
+
+/datum/action/xeno_action/activable/reesearch
+	name = "Reesearch"
+	action_icon_state = "rav_enrage"
+	ability_name = "reesearch"
+	macro_path = /datum/action/xeno_action/verb/verb_reesearch
+	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_1
+	plasma_cost = 0
+	xeno_cooldown = 5 SECONDS
+
+/datum/action/xeno_action/verb/verb_reesearch()
+	set category = "Reesearch"
+	set name = "Reesearch"
+	set hidden = 1
+	var/action_name = "Reesearch"
+	handle_xeno_macro(src, action_name)
+
+
+/datum/action/xeno_action/activable/reesearch/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	if(!X.check_state())
+		return
+
+	if(!action_cooldown_check())
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+
+	X.hive.mutators.remaining_points += 1
+	X.emote("hiss")
+	X.visible_message(SPAN_NOTICE("[X] rhythmically nudges her little head."), \
+		SPAN_NOTICE("Good work, brave noodle, the hive now has [X.hive.mutators.remaining_points] points."), null, 5)
+	apply_cooldown()
+	return ..()
