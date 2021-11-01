@@ -1,5 +1,5 @@
 /datum/xeno_mutator/instant_tackle
-	name = "Instant tackle"
+	name = "Instant Tackle"
 	description = "Every caste now always tackles on the first attempt and for 5 seconds."
 	flavor_description = null
 	cost = 200
