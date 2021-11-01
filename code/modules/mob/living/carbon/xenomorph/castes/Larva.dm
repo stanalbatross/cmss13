@@ -189,7 +189,7 @@
 	if (!check_and_use_plasma_owner())
 		return
 
-	X.hive.mutators.remaining_points += 1
+	X.hive.mutators.remaining_points++
 	X.emote("hiss")
 	X.visible_message(SPAN_NOTICE("[X] rhythmically nudges her little head."), \
 		SPAN_NOTICE("Good work, brave noodle, the hive now has [X.hive.mutators.remaining_points] points."), null, 5)
