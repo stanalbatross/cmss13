@@ -72,7 +72,8 @@
 
 /obj/structure/bed/chair/attack_alien(mob/living/carbon/Xenomorph/M)
 	. = ..()
-	stack_collapse(M)
+	if(stacked_size)
+		stack_collapse(M)
 
 /obj/structure/bed/chair/attackby(obj/item/I, mob/user)
 	if(HAS_TRAIT(I, TRAIT_TOOL_WRENCH) && stacked_size)
