@@ -33,10 +33,10 @@
 
 /obj/structure/bed/chair/MouseDrop(atom/over)
 	. = ..()
-	if(!istype(over, /mob/living/carbon/human) || !picked_up_item)
+	if(!picked_up_item)
 		return
 	var/mob/living/carbon/human/H = over
-	if(!H.Adjacent(src) || H.handcuffed)
+	if(!CAN_PICKUP(H, src))
 		return
 	if(buckled_mob)
 		to_chat(H, SPAN_NOTICE("You cannot fold the chair while [buckled_mob.name] is buckled to it!"))
@@ -44,7 +44,7 @@
 	if(stacked_size)
 		to_chat(H, SPAN_NOTICE("You cannot fold a chair while its stacked!"))
 		return
-	var/obj/item/weapon/melee/twohanded/folded_metal_chair/FMC = new picked_up_item
+	var/obj/item/weapon/melee/twohanded/folded_metal_chair/FMC = new picked_up_item(loc)
 	if(H.put_in_active_hand(FMC))
 		qdel(src)
 	else if(H.put_in_inactive_hand(FMC))
@@ -56,11 +56,10 @@
 /obj/structure/bed/chair/attack_hand(mob/user)
 	. = ..()
 	if(stacked_size)
-		for(var/obj/item/weapon/melee/twohanded/folded_metal_chair/F in src.contents)
-			user.put_in_active_hand(F)
-			Clamp(stacked_size--,0 ,100)
-			update_overlays()
-			break
+		var/obj/item/weapon/melee/twohanded/folded_metal_chair/F = locate() in contents
+		user.put_in_active_hand(F)
+		stacked_size--
+		update_overlays()
 		if(!stacked_size)
 			layer = OBJ_LAYER
 			unslashable = FALSE
@@ -68,7 +67,6 @@
 			density = FALSE
 			flags_can_pass_all_temp |= PASS_OVER
 			projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
-	return
 
 /obj/structure/bed/chair/attack_alien(mob/living/carbon/Xenomorph/M)
 	. = ..()
@@ -77,7 +75,7 @@
 /obj/structure/bed/chair/attackby(obj/item/I, mob/user)
 	if(HAS_TRAIT(I, TRAIT_TOOL_WRENCH) && stacked_size)
 		to_chat(user, SPAN_NOTICE("You'll need to unstack the chairs before you can take one apart."))
-		return null
+		return FALSE
 	if(istype(I, /obj/item/weapon/melee/twohanded/folded_metal_chair) && picked_up_item)
 		if(I.flags_item & WIELDED)
 			return ..()
@@ -93,14 +91,14 @@
 			density = TRUE
 			flags_can_pass_all_temp -= PASS_OVER
 			projectile_coverage = PROJECTILE_COVERAGE_HIGH
-			return null
+			return FALSE
 
 		if(stacked_size > 8)
 			to_chat(user, SPAN_WARNING("The stack of chairs looks unstable!"))
 			if(prob(sqrt(50 * stacked_size)))
 				stack_collapse(user)
-				return null
-		return null
+				return FALSE
+		return FALSE
 	return ..()
 
 /obj/structure/bed/chair/hitby(atom/movable/AM)
@@ -144,7 +142,7 @@
 		name = initial(name)
 		desc = initial(desc)
 		return
-	name = "A stack of folding chairs."
+	name = "stack of folding chairs"
 	desc = "There seems to be [stacked_size + 1] in the stack, wow!"
 	for(var/i in 1 to stacked_size)
 		var/image/I = new(src.icon)
@@ -205,7 +203,7 @@
 	buildstacktype = /obj/item/stack/sheet/wood
 	debris = list(/obj/item/stack/sheet/wood)
 	hit_bed_sound = 'sound/effects/woodhit.ogg'
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/structure/bed/chair/wood/normal
 	icon_state = "wooden_chair"
@@ -224,7 +222,7 @@
 	color = rgb(255,255,255)
 	hit_bed_sound = 'sound/weapons/bladeslice.ogg'
 	debris = list()
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/structure/bed/chair/comfy/orange
 	icon_state = "comfychair_orange"
@@ -247,7 +245,7 @@
 /obj/structure/bed/chair/office
 	anchored = 0
 	drag_delay = 1 //Pulling something on wheels is easy
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/structure/bed/chair/office/Collide(atom/A)
 	..()
@@ -282,7 +280,7 @@
 	anchored = 0
 
 /obj/structure/bed/chair/dropship
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/structure/bed/chair/dropship/pilot
 	icon_state = "pilot_chair"
@@ -459,7 +457,7 @@
 	unslashable = TRUE
 	unacidable = TRUE
 	dir = WEST
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/structure/bed/chair/hunter
 	name = "hunter chair"
@@ -469,7 +467,7 @@
 	color = rgb(255,255,255)
 	hit_bed_sound = 'sound/weapons/bladeslice.ogg'
 	debris = list()
-	picked_up_item = FALSE
+	picked_up_item = null
 
 /obj/item/weapon/melee/twohanded/folded_metal_chair //used for when someone picks up the chair
 	name = "metal folding chair"
@@ -510,5 +508,5 @@
 			qdel(src)
 
 /obj/item/weapon/melee/twohanded/folded_metal_chair/mob_launch_collision(var/mob/living/L)
-		playsound(get_turf(src), 'sound/weapons/metal_chair_slam.ogg', 50, 1)
-		..()
+	playsound(get_turf(src), 'sound/weapons/metal_chair_slam.ogg', 50, 1)
+	..()
