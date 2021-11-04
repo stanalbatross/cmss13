@@ -211,13 +211,11 @@
 	icon_state = "wooden_chair"
 	name = "wooden chair"
 	desc = "Old is never too old to not be in fashion."
-	picked_up_item = FALSE
 
 /obj/structure/bed/chair/wood/wings
 	icon_state = "wooden_chair_wings"
 	name = "wooden chair"
 	desc = "Old is never too old to not be in fashion."
-	picked_up_item = FALSE
 
 /obj/structure/bed/chair/comfy
 	name = "comfy chair"

@@ -271,6 +271,7 @@
 	var/image/chairbar = null
 	var/broken = FALSE
 	buildstacktype = 0
+	picked_up_item = FALSE
 
 	unslashable = FALSE
 	unacidable = TRUE
