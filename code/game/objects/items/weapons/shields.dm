@@ -5,6 +5,7 @@
 	var/readied_block = 30
 	var/readied_slowdown = SLOWDOWN_ARMOR_VERY_LIGHT // Walking around in a readied shield stance slows you! The armor defs are a useful existing reference point.
 	var/shield_readied = FALSE
+	var/lower_on_drop = 1
 
 // Toggling procs
 /obj/item/weapon/shield/proc/raise_shield(mob/user as mob) // Prepare for an attack. Slows you down slightly, but increases chance to block.
@@ -33,12 +34,12 @@
 
 // Making sure that debuffs don't stay
 /obj/item/weapon/shield/dropped(mob/user as mob)
-	if(shield_readied)
+	if(shield_readied && lower_on_drop)
 		lower_shield(user)
 	..()
 
 /obj/item/weapon/shield/equipped(mob/user, slot)
-	if(shield_readied)
+	if(shield_readied && lower_on_drop)
 		lower_shield(user)
 	..()
 
@@ -70,14 +71,6 @@
 	..()
 	toggle_shield(user)
 
-/obj/item/weapon/shield/proc/raise_shield(mob/user as mob)
-	user.visible_message(SPAN_BLUE("[user] deploys and extends the [src]."))
-	H.FF_hit_evade = 1000
-
-/obj/item/weapon/shield/proc/lower_shield(mob/user as mob)
-	user.visible_message(SPAN_BLUE("[user] collapses the [src]."))
-	H.FF_hit_evade = 0
-
 /obj/item/weapon/shield/riot/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/melee/baton) || istype(W, /obj/item/weapon/melee/claymore) || istype(W, /obj/item/weapon/melee/baseballbat) || istype(W, /obj/item/weapon/melee/katana) || istype(W, /obj/item/weapon/melee/twohanded/fireaxe) || istype(W, /obj/item/weapon/melee/chainofcommand))
 		if(cooldown < world.time - 25)
@@ -106,37 +99,47 @@
 
 /obj/item/weapon/shield/phalanx
 	name = "phalanx shield"
-	desc = "A heavy shield adept at blocking blunt objects from connecting with the torso of the shield wielder. Ineffective when not deployed."
+	desc = "A heavy shield adept at blocking blunt objects from connecting with the of the shield wielder. Ineffective when not deployed. Allows other people of the same faction to shoot around the shield user when it is deployed, effectively giving them IFF."
 	icon = 'icons/obj/items/weapons/weapons.dmi'
-	icon_state = "riot"
-	item_state = "riot"
-	base_icon_state = "riot"
+	icon_state = "phalanx0"
+	item_state = "phalanx0"
 	flags_equip_slot = SLOT_BACK
-	force = 15
-	passive_block = 5
+	force = 5
+	passive_block = 0
 	readied_block = 70
 	readied_slowdown = SLOWDOWN_ARMOR_HEAVY
 	throwforce = 5.0
 	throw_speed = SPEED_FAST
-	throw_range = 4
+	throw_range = 6
 	w_class = SIZE_LARGE
 	matter = list("glass" = 7500, "metal" = 1000)
+	shield_readied = TRUE
 
 	attack_verb = list("shoved", "bashed")
-	var/cooldown = 0 //shield bash cooldown. based on world.time
+	var/active = 0
+	lower_on_drop = 0
 
-/obj/item/weapon/shield/riot/IsShield()
-	return 1
-
-/obj/item/weapon/shield/phalanx/attack_self(var/mob/user)
+/obj/item/weapon/shield/phalanx/dropped(mob/user as mob)
+	var/mob/living/carbon/human/H = user
+	H.shield_slowdown = 0
+	H.recalculate_move_delay = TRUE
+	H.FF_hit_evade = 0
 	..()
-	toggle_shield(user)
 
-/obj/item/weapon/shield/phalanx/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/melee/baton) || istype(W, /obj/item/weapon/melee/claymore) || istype(W, /obj/item/weapon/melee/baseballbat) || istype(W, /obj/item/weapon/melee/katana) || istype(W, /obj/item/weapon/melee/twohanded/fireaxe) || istype(W, /obj/item/weapon/melee/chainofcommand))
-		if(cooldown < world.time - 25)
-			user.visible_message(SPAN_WARNING("[user] bashes [src] with [W]!"))
-			playsound(user.loc, 'sound/effects/shieldbash.ogg', 25, 1)
-			cooldown = world.time
+/obj/item/weapon/shield/phalanx/equipped(mob/user, slot)
+	if(slot == WEAR_BACK)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = 0
+		H.recalculate_move_delay = TRUE
+		H.FF_hit_evade = 0
+	if(active == 0)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = 0
+		H.recalculate_move_delay = TRUE
+		H.FF_hit_evade = 0
 	else
-		..()
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = readied_slowdown
+		H.recalculate_move_delay = TRUE
+		H.FF_hit_evade = 1000
+	..()

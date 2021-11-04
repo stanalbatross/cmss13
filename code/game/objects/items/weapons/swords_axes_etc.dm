@@ -115,3 +115,43 @@
 
 	add_fingerprint(user)
 	return
+
+/obj/item/weapon/shield/phalanx/IsShield()
+	return active
+
+/obj/item/weapon/shield/phalanx/attack_self(mob/living/user)
+	..()
+
+	active = !active
+	if (active)
+		force = 20
+		icon_state = "phalanx1"
+		item_state = "phalanx1"
+		w_class = SIZE_MASSIVE
+		flags_equip_slot = 0
+		to_chat(user, SPAN_NOTICE(" [src] is now expanded. You crouch behind it, allowing others to shoot around you."))
+		playsound(src.loc, 'sound/weapons/gun_empty.ogg', 25, 1)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = readied_slowdown
+		H.recalculate_move_delay = TRUE
+		H.FF_hit_evade = 1000
+
+	else
+		force = 5
+		icon_state = "phalanx0"
+		item_state = "phalanx0"
+		w_class = SIZE_LARGE
+		flags_equip_slot = SLOT_BACK
+		to_chat(user, SPAN_NOTICE(" [src] is now collapsed. Other peoples' bullets will now hit you."))
+		playsound(src, 'sound/handling/combistick_close.ogg', 25, 1)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = 0
+		H.recalculate_move_delay = TRUE
+		H.FF_hit_evade = 0
+
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand(0)
+		H.update_inv_r_hand()
+	return
+
