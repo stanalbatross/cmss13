@@ -44,6 +44,9 @@
 	// Weather
 	var/weather_enabled = TRUE	// Manual override for weather if set to false
 
+	// Fishing
+	var/fishing_loot = /datum/fish_loot_table
+
 	// Ambience sounds
 	var/ambience_exterior 	= null //The sound that plays as ambience
 	var/sound_environment 	= 2 //Reverberation applied to ALL sounds that a client in this area hears
