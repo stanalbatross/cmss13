@@ -36,7 +36,7 @@
 	if(!istype(over, /mob/living/carbon/human) || !picked_up_item)
 		return
 	var/mob/living/carbon/human/H = over
-	if(!H.Adjacent(src))
+	if(!H.Adjacent(src) || H.handcuffed)
 		return
 	if(buckled_mob)
 		to_chat(H, SPAN_NOTICE("You cannot fold the chair while [buckled_mob.name] is buckled to it!"))
