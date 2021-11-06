@@ -271,3 +271,44 @@
 	siemens_coefficient = 2.0
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
 	anti_hug = 10 //Lel
+
+/obj/item/clothing/head/gyrostabiliser
+    name = "experimental gyro-stabilising head rig"
+    icon_state = "gyrostab0"
+    item_state = "gyrostab0"
+    desc = "An experimental set of gyroscopes and motor stabilisers, calibrated to interface with a synthetic and fully motion-correct its camera feed, resulting in clear, consistent, unmoving vision 100% of the time even when subjected to intense physical forces."
+    var/stabiliser_on = FALSE
+    actions_types = list(/datum/action/item_action/toggle)
+/obj/item/clothing/head/gyrostabiliser/attack_self(mob/user)
+    ..()
+    var/mob/living/carbon/human/H = usr
+    if(H.head != src)
+        to_chat(usr, "The gyrostabiliser rig needs to be on your head to activate.")
+        return
+    toggle()
+/obj/item/clothing/head/gyrostabiliser/verb/toggle()
+    set category = "Object"
+    set name = "Toggle Gyrostabiliser"
+    set src in usr
+    if(!isSynth(usr))
+        to_chat(usr, "The gyrostabiliser rig cannot interface with non-synthetics. It refuses to turn on.")
+        return
+    if(usr.canmove && !usr.stat && !usr.is_mob_restrained())
+        if(stabiliser_on)
+            icon_state = "gyrostab0"
+            item_state = "gyrostab0"
+            flags_item = initial(flags_item)
+            REMOVE_TRAIT(usr, TRAIT_NOSCREENSHAKE, TRAIT_SOURCE_EQUIPMENT(WEAR_HEAD))
+            to_chat(usr, "You <b>deactivate</b> the [src]'s gyro-stabiliser. It unlocks from your head, and you can now take it off.")
+        else
+            icon_state = "gyrostab1"
+            item_state = "gyrostab1"
+            flags_item = NODROP
+            ADD_TRAIT(usr, TRAIT_NOSCREENSHAKE, TRAIT_SOURCE_EQUIPMENT(WEAR_HEAD))
+            to_chat(usr, "You <b>activate</b> the [src]'s gyro-stabiliser. It locks to your head, preventing you from taking it off.")
+            playsound(src.loc, 'sound/effects/nightvision.ogg', 15, 1)
+        stabiliser_on = !stabiliser_on
+        update_clothing_icon()  //so our mob-overlays update
+        for(var/X in actions)
+            var/datum/action/A = X
+            A.update_button_icon()

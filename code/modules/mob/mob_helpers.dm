@@ -233,6 +233,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!M?.client || (M.shakecamera > world.time))
 		return
 
+    if (HAS_TRAIT(M, TRAIT_NOSCREENSHAKE))
+        return
+
 	M.shakecamera = world.time + steps * time_per_step
 	strength = abs(strength)*PIXELS_PER_STRENGTH_VAL
 	var/old_X = M.client.pixel_x
@@ -408,7 +411,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 			if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_EXPERT))
 				return 0.6 //Synths are 40% faster. In the same conditions they work almost twice as quickly, and can perform surgeries in rough conditions or with improvised tools at full speed.
 			if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_TRAINED))
-				return 1 			
+				return 1
 			else if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_NOVICE))
 				return 1.2 //Medic/nurse.
 		//if(SKILL_RESEARCH)

@@ -97,7 +97,6 @@
 		: FALSE)
 #define HAS_TRAIT_NOT_FROM(target, trait, source) (target.status_traits ? (target.status_traits[trait] ? (length(target.status_traits[trait] - source) > 0) : FALSE) : FALSE)
 
-
 /// Example trait
 // #define TRAIT_X "t_x"
 //-- mob traits --
@@ -110,11 +109,9 @@
 #define TRAIT_FOREIGN_BIO "t_foreign_bio"
  /// Eye color changes on intent. (G1 Synths)
 #define TRAIT_INTENT_EYES "t_intent_eyes"
-
 // HIVE TRAITS
  /// If the Hive is a Xenonid Hive
 #define TRAIT_XENONID "t_xenonid"
-
 // MISC MOB TRAITS
  /// If the mob is nested.
 #define TRAIT_NESTED "t_nested"
@@ -124,6 +121,8 @@
 #define TRAIT_SIMPLE_DESC "t_simple_desc"
  /// If the mob can handle the superheavy two-bore rifle and speaks its fluff lines when landing hits with it.
 #define TRAIT_TWOBORE_TRAINING "t_twobore"
+ /// If the mob doesn't experience screenshake
+#define TRAIT_NOSCREENSHAKE "t_noscreenshake"
  /// If the mob has equipment that alleviates nearsightedness
 #define TRAIT_NEARSIGHTED_EQUIPMENT "t_nearsighted_eq"
 
@@ -136,22 +135,20 @@
 #define TRAIT_TOOL_WIRECUTTERS "t_tool_wirecutters"
 #define TRAIT_TOOL_WRENCH "t_tool_wrench"
 #define TRAIT_TOOL_MULTITOOL "t_tool_multitool"
-
 //If an item with this trait is in an ear slot, no other item with this trait can fit in the other ear slot
 #define TRAIT_ITEM_EAR_EXCLUSIVE "t_item_ear_exclusive"
-
 //List of all traits
 GLOBAL_LIST_INIT(mob_traits, list(
-	TRAIT_YAUTJA_TECH,
-	TRAIT_SUPER_STRONG,
-	TRAIT_FOREIGN_BIO,
-	TRAIT_INTENT_EYES,
-	TRAIT_NESTED,
-	TRAIT_CRAWLER,
-	TRAIT_SIMPLE_DESC,
-	TRAIT_TWOBORE_TRAINING
+    TRAIT_YAUTJA_TECH,
+    TRAIT_SUPER_STRONG,
+    TRAIT_FOREIGN_BIO,
+    TRAIT_INTENT_EYES,
+    TRAIT_NESTED,
+    TRAIT_CRAWLER,
+    TRAIT_SIMPLE_DESC,
+    TRAIT_TWOBORE_TRAINING,
+    TRAIT_NOSCREENSHAKE
 ))
-
 //trait SOURCES
 /// Example trait source
 // #define TRAIT_SOURCE_Y "t_s_y"
