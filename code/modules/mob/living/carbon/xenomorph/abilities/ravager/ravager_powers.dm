@@ -562,3 +562,45 @@
 		return TRUE
 	else
 		return FALSE
+
+////////// REAPER POWERS
+/datum/action/xeno_action/activable/blood_sacrifice/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	var/datum/behavior_delegate/ravager_reaper/BD = X.behavior_delegate
+	if(!X.check_state())
+		return
+
+	if(X.mutation_type != RAVAGER_REAPER)
+		return
+
+	if(!action_cooldown_check())
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+	X.emote("roar")
+	X.visible_message(SPAN_XENODANGER("[X] cuts himself in anger!"), SPAN_XENODANGER("You sacrifice some of your blood to reach the higher state of being!"))
+	BD.blood_sacrifice()
+	apply_cooldown()
+	return ..()
+
+/datum/action/xeno_action/activable/repose/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	var/datum/behavior_delegate/ravager_reaper/BD = X.behavior_delegate
+	if(!X.check_state())
+		return
+
+	if(X.mutation_type != RAVAGER_REAPER)
+		return
+
+	if(!action_cooldown_check())
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+	X.visible_message(SPAN_XENODANGER("[X] makes a weird circular gesture with its claws."), SPAN_XENODANGER("You brace yourself. For the hour is yet to come."))
+	X.emote("tail")
+	X.create_empower()
+	BD.repose()
+	apply_cooldown()
+	return ..()

@@ -156,4 +156,41 @@
 	var/shrapnel_amount = 40
 
 
+////// REAPER ABILITIES
+/datum/action/xeno_action/activable/pounce/leap
+	name = "Leap"
+	action_icon_state = "charge"
+	ability_name = "Leap"
+	macro_path = /datum/action/xeno_action/verb/verb_charge_rav
+	action_type = XENO_ACTION_CLICK
+	ability_primacy = XENO_PRIMARY_ACTION_1
+	xeno_cooldown = 14 SECONDS
+	plasma_cost = 0
 
+	// Pounce config
+	distance = 5
+	knockdown = TRUE				// Should we knock down the target?
+	knockdown_duration = 1.2
+	slash = FALSE					// Do we slash upon reception?
+	freeze_self = FALSE				// Should we freeze ourselves after the lunge?
+	should_destroy_objects = TRUE   // Only used for ravager charge
+
+/datum/action/xeno_action/activable/blood_sacrifice
+	name = "Blood sacrifice"
+	action_icon_state = "rav_enrage"
+	ability_name = "blood sacrifice"
+	macro_path = /datum/action/xeno_action/verb/verb_blood_sacrifice
+	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_2
+	plasma_cost = 0
+	xeno_cooldown = 0
+
+/datum/action/xeno_action/activable/repose
+	name = "Repose"
+	action_icon_state = "empower"
+	ability_name = "repose"
+	macro_path = /datum/action/xeno_action/verb/verb_repose
+	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_3
+	plasma_cost = 0
+	xeno_cooldown = 16 SECONDS

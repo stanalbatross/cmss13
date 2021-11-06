@@ -329,6 +329,7 @@
 #define RAVAGER_NORMAL 		"Normal"
 #define RAVAGER_HEDGEHOG 	"Hedgehog"
 #define RAVAGER_BERSERKER   "Berserker"
+#define RAVAGER_REAPER   "Reaper"
 
 // Defender strain flags
 #define DEFENDER_NORMAL 	"Normal"
