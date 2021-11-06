@@ -233,8 +233,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!M?.client || (M.shakecamera > world.time))
 		return
 
-    if (HAS_TRAIT(M, TRAIT_NOSCREENSHAKE))
-        return
+	if(HAS_TRAIT(M, TRAIT_NOSCREENSHAKE))
+		return
 
 	M.shakecamera = world.time + steps * time_per_step
 	strength = abs(strength)*PIXELS_PER_STRENGTH_VAL

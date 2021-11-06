@@ -244,6 +244,8 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 
 		list("Experimental Meson Goggles", 15, /obj/item/clothing/glasses/night/experimental_mesons, null, VENDOR_ITEM_REGULAR),
 
+		list("Gyrostabiliser head rig", 15, /obj/item/clothing/head/gyrostabiliser, null, VENDOR_ITEM_REGULAR),
+
 		list("Telescopic Baton", 15, /obj/item/weapon/melee/telebaton, null, VENDOR_ITEM_REGULAR),
 	)
 
