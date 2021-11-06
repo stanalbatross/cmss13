@@ -1215,4 +1215,32 @@
 
 	..()
 
+//Hostile Cultist Survivor/
+//Not to be confused with xenomorph allied event cultists/
+
+/datum/equipment_preset/survivor/Lesser_Cultist
+	name = "Survivor - Lesser Cultist"
+	assignment = "Lesser Cultist"
+	skills = /datum/skills/civilian/survivor
+	flags = EQUIPMENT_PRESET_START_OF_ROUND
+	access = list(
+		ACCESS_CIVILIAN_PUBLIC
+		)
+
+/datum/equipment_preset/survivor/Lesser_Cultist/load_gear(mob/living/carbon/human/H)
+//Clothing
+	H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/plaguedoctor(H), WEAR_FACE)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/cult(H), WEAR_FEET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran(H), WEAR_HANDS)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/color/black(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/cultist_hoodie(H), WEAR_JACKET)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/cultist_hood(H), WEAR_HEAD)
+//items
+	H.equip_to_slot_or_del(new /obj/item/attachable/bayonet(H.back), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_L_STORE)
+
+	..()
+
 //*****************************************************************************************************/

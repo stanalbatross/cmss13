@@ -5,6 +5,13 @@
 	dir = 1
 	},
 /area/lv624/ground/river/west_river)
+"aG" = (
+/obj/structure/surface/table/woodentable/poor,
+/obj/item/stack/sheet/mineral/gold/small_stack,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
 "aM" = (
 /obj/effect/decal/hefa_cult_decals/d96{
 	pixel_x = -9
@@ -45,6 +52,10 @@
 /obj/item/organ/brain{
 	pixel_x = -3;
 	pixel_y = 8
+	},
+/obj/item/tool/lighter/zippo/gold{
+	pixel_x = 6;
+	pixel_y = 5
 	},
 /turf/open/floor{
 	icon_state = "cult"
@@ -291,6 +302,16 @@
 	dir = 8
 	},
 /area/lv624/ground/jungle/west_jungle)
+"tw" = (
+/obj/structure/largecrate/guns/merc,
+/obj/structure/largecrate/guns/merc{
+	pixel_x = -6;
+	pixel_y = 20
+	},
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
 "tQ" = (
 /obj/structure/flora/bush/ausbushes/genericbush,
 /obj/effect/decal/warning_stripes{
@@ -334,7 +355,10 @@
 /area/lv624/lazarus/cult_bunker)
 "xq" = (
 /obj/effect/decal/cleanable/blood,
-/obj/item/weapon/gun/shotgun/double,
+/obj/structure/largecrate/guns/merc{
+	pixel_x = 6;
+	pixel_y = 2
+	},
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -524,6 +548,12 @@
 "KO" = (
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/west_jungle)
+"Lh" = (
+/obj/structure/surface/table/woodentable/poor,
+/turf/open/floor{
+	icon_state = "cult"
+	},
+/area/lv624/lazarus/cult_bunker)
 "Mz" = (
 /turf/open/gm/river,
 /area/lv624/ground/jungle/west_jungle)
@@ -595,7 +625,7 @@
 /area/lv624/ground/jungle/north_west_jungle)
 "VX" = (
 /obj/structure/surface/table/woodentable/poor,
-/obj/item/clothing/head/xenos,
+/obj/item/storage/backpack/cultpack,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -854,8 +884,8 @@ dU
 gO
 Ht
 ys
-Sc
-Sc
+Bu
+tw
 gy
 dy
 Sc
@@ -868,10 +898,10 @@ gI
 CA
 pb
 Uv
-ys
-Bu
 Sc
 Sc
+Lh
+aG
 Sc
 zp
 zp
@@ -883,10 +913,10 @@ dU
 ys
 ys
 ys
-ys
-pb
-pb
-pb
+Sc
+Bu
+Sc
+Sc
 zp
 Za
 "}

@@ -38,7 +38,7 @@
 	make_objective = 0
 
 /obj/effect/landmark/survivor_spawner/lv624_Hostile_Cultist
-	equipment = "Lesser Cultist"
+	equipment = "Survivor - Lesser Cultist"
 	intro_text = list("<h2>You were once a survivor</h2>",\
 	"<span class='notice'>You aided the xenomorph threat in overtaking the colony.</span>",\
 	"<span class='danger'>Your gods have tasked you to stockpile equipment and gather worthy sacrifices in their name.</span>")

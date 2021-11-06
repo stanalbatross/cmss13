@@ -9,7 +9,7 @@
 	{
 		"type": "map_insert",
 		"landmark": "markedbunker",
-		"chance": 0.100,
+		"chance": 0.5,
 		"path": "map_files/LV624/standalone/markedbunker.dmm",
 		"when": { "lvevent": "markedbunker"}
 	},
