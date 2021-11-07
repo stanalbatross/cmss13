@@ -1,0 +1,25 @@
+{
+    "map_name": "Leucanth Labs",
+    "map_path": "map_files/LeucanthLabs",
+    "map_file": "LeucanthLabs.dmm",
+    "survivor_types": [
+        "Survivor - Kutjevo Doctor",
+        "Survivor - Chaplain",
+        "Survivor - Kutjevo Engineer",
+        "Survivor - Trucker",
+        "Survivor - Kutjevo Security Guard"
+    ],
+    "defcon_triggers": [
+        4250,
+        2950,
+        1650,
+        1000,
+        0.0
+    ],
+    "map_item_type": "/obj/item/map/leucanth_map",
+    "announce_text": "An automated distress signal has been received from Weyland-Yutani research site Leucanth Labs, known for advanced alien biological research. The ###SHIPNAME### has been dispatched to investigate.",
+    "monkey_types": [
+        "stok"
+	],
+	"traits": [{ "Ground": true }]
+}

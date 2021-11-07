@@ -117,6 +117,12 @@
 	html_link = "images/0/0d/Kutjevo_a1.jpg"
 	color = "red"
 
+/obj/item/map/leucanth_map
+	name = "\improper Leucanth Labs map"
+	desc = "A topological survey of Leucanth Labs and the surrounding area."
+	html_link = "images/0/0d/Kutjevo_a1.jpg"
+	color = "yellow"
+
 
 //used by marine equipment machines to spawn the correct map.
 /obj/item/map/current_map
