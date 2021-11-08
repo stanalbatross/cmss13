@@ -11,59 +11,12 @@
 	lighting_use_dynamic = 1
 	var/list/greater_area_glamour_list = list()
 
-/area/leucanth/proc/check_for_turf_in_greater_area_glamour_list(turf/T)
-	for(var/datum/area_glamour_list/AGL in greater_area_glamour_list)
-		var/found_turf = locate(T) in AGL.turf_list
-		if(T == found_turf)
-			return AGL
-		else
-			return null
-
 /area/leucanth/Initialize(mapload, ...)
 	. = ..()
 	if(SSticker.current_state > GAME_STATE_SETTING_UP)
 		add_thunder()
 	else
 		LAZYADD(GLOB.thunder_setup_areas, src)
-
-	var/list/big_chungus_list = get_area_turfs(src)
-	for(var/turf/T in big_chungus_list)
-		var/datum/area_glamour_list/AGL = check_for_turf_in_greater_area_glamour_list(T)
-		var/list/adjacent_turfs = range(1,T)
-		for(var/turf/AT in adjacent_turfs)
-			var/doodle = locate(get_dir(T, AT)) in diagonals
-			if(get_area(AT) != src || AT == T || doodle)
-				adjacent_turfs -= AT
-		if(AGL)
-			//its alrady in the great list, now lets check its adjacents and add them in if they arent already!
-			for(var/turf/AT in adjacent_turfs)
-				var/datum/area_glamour_list/ATAGL = check_for_turf_in_greater_area_glamour_list(AT)
-				if(ATAGL)
-					if(ATAGL != AGL)
-						message_admins("something terrible has happened, WHY ARE THERE TWO AGL RIGHT NEXT TO EACHOTHER!?!?")
-						AGL.turf_list |= ATAGL.turf_list
-						for(var/obj/effect/glamour/GGG in ATAGL.glamour_list)
-							GGG.glamour_parent = AGL
-						AGL.glamour_list |= ATAGL.glamour_list
-						qdel(ATAGL)
-					// else if(ATAGL == AGL) message_admins("Good job, they match")
-				else
-					AGL.turf_list += AT
-		else
-			//its not in the great list, lets check if any of its adjacents are and add it to their great list if they are in one.
-			for(var/turf/AT in adjacent_turfs)
-				var/datum/area_glamour_list/ATAGL = check_for_turf_in_greater_area_glamour_list(AT)
-				if(ATAGL)
-					ATAGL.turf_list += T
-				else
-					var/datum/area_glamour_list/nAGL = new /datum/area_glamour_list
-					greater_area_glamour_list += nAGL
-					nAGL.turf_list += T
-					nAGL.turf_list |= adjacent_turfs
-		for(var/datum/area_glamour_list/ATAGL in greater_area_glamour_list)
-			for(var/obj/effect/glamour/G in ATAGL)
-				message_admins("NAME:[G.name] ==> [G.loc] ==> [G.glamour_parent]")
-
 /area/shuttle/drop1/leucanth
 	name = "Leucanth Labs - Dropship Alamo Landing Zone"
 	icon_state = "shuttle"
