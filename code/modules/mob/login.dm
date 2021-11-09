@@ -41,6 +41,8 @@
 	//updating atom HUD
 	refresh_huds()
 
+	add_all_glamours()
+
 	if(isnewplayer(src))
 		check_event_info()
 	else if(isXeno(src))

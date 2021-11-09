@@ -18,9 +18,18 @@
 		else
 			return null
 */
+/mob/proc/add_all_glamours()
+	if(!client)
+		return
+	for(var/datum/area_glamour_list/AGL in GLOB.greater_area_glamour_list)
+		for(var/obj/effect/glamour/G in AGL.glamour_list)
+			client.images += G.glamour_image
+
 /obj/effect/glamour
 	icon = 'icons/turf/walls/leucanth.dmi'
 	icon_state = "stupid"
+	anchored = TRUE
+	opacity = FLASE
 	var/datum/area_glamour_list/glamour_parent = null
 	var/image/glamour_image
 	var/glamour_icon = null
@@ -94,7 +103,11 @@
 
 /obj/effect/glamour/proc/readd_images(mob/living/carbon/M, datum/area_glamour_list/GL)
 	for(var/obj/effect/glamour/GGGG in GL.glamour_list)
-		M.client.images |= GGGG.glamour_image
+		if(M in (get_turf(GGGG)).contents)
+			addtimer(CALLBACK(src, .proc/readd_images, M, glamour_parent), 5 SECONDS, TIMER_UNIQUE)
+			return
+	for(var/obj/effect/glamour/GGGG in GL.glamour_list)
+		M.client.images += GGGG.glamour_image
 		message_admins("[GGGG.name] added to [M.name]")
 
 /obj/effect/glamour/fake_rock
