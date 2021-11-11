@@ -29,7 +29,7 @@
 	icon = 'icons/turf/walls/leucanth.dmi'
 	icon_state = "stupid"
 	anchored = TRUE
-	opacity = FLASE
+	opacity = FALSE
 	var/datum/area_glamour_list/glamour_parent = null
 	var/image/glamour_image
 	var/glamour_icon = null
