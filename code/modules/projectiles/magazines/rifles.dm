@@ -290,3 +290,13 @@
 	max_rounds = 10
 	gun_type = /obj/item/weapon/gun/boltaction
 	w_class = SIZE_SMALL
+
+//XM42A Magazine
+/obj/item/ammo_magazine/rifle/xm42a
+	name = "\improper XM42A magazine (10x99mm)"
+	desc = "A magazine of caseless 10x99mm anti-material rounds."
+	max_rounds = 5
+	caliber = "10x99mm"
+	icon_state = "m42c"
+	default_ammo = /datum/ammo/bullet/anti_materiel_a
+	gun_type = /obj/item/weapon/gun/rifle/XM42A

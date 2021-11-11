@@ -448,3 +448,16 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/storage/pouch/general/large(src)
 	new /obj/item/ammo_magazine/shotgun/buckshot(src)
 	new /obj/item/ammo_magazine/shotgun/buckshot(src)
+
+
+/obj/item/storage/box/kit/xm42a
+	name = "\improper XM42A Anti-Materiel Rifle Kit"
+	pro_case_overlay = "jtac"
+
+/obj/item/storage/box/kit/xm42a/fill_preset_inventory()
+	new /obj/item/weapon/gun/rifle/XM42A(src)
+	new /obj/item/ammo_magazine/rifle/xm42a(src)
+	new /obj/item/ammo_magazine/rifle/xm42a(src)
+	new /obj/item/ammo_magazine/rifle/xm42a(src)
+	new /obj/item/ammo_magazine/rifle/xm42a(src)
+	new /obj/item/ammo_magazine/rifle/xm42a(src)

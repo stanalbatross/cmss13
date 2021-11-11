@@ -121,6 +121,7 @@
 #include "code\__HELPERS\BSQL\includes.dm"
 #include "code\__HELPERS\sorts\_Main.dm"
 #include "code\__HELPERS\sorts\TimSort.dm"
+#include "code\_globalvars\_typecaches.dm"
 #include "code\_globalvars\combat_defines.dm"
 #include "code\_globalvars\configuration.dm"
 #include "code\_globalvars\global_lists.dm"

@@ -85,6 +85,7 @@
 		list("M56D Defense Gunner Kit", 1 + round(scale), /obj/item/storage/box/kit/defensegunner, VENDOR_ITEM_REGULAR),
 		list("M39 Point Man Kit", round(scale * 4), /obj/item/storage/box/kit/pursuit, VENDOR_ITEM_REGULAR),
 		list("M-OU53 Field Test Kit", round(scale * 3), /obj/item/storage/box/kit/mou53_sapper, VENDOR_ITEM_REGULAR),
+		list("XM42A Anti Materiel Rifle Kit", round(scale * 4), /obj/item/storage/box/kit/xm42a, VENDOR_ITEM_REGULAR),
 
 		list("EXPLOSIVES", -1, null, null),
 		list("M15 Fragmentation Grenade", round(scale * 2), /obj/item/explosive/grenade/HE/m15, VENDOR_ITEM_REGULAR),
@@ -193,6 +194,7 @@
 		list("M56D Defense Gunner Kit", Ceiling(scale), /obj/item/storage/box/kit/defensegunner, VENDOR_ITEM_REGULAR),
 		list("M39 Point Man Kit", round(scale * 1), /obj/item/storage/box/kit/pursuit, VENDOR_ITEM_REGULAR),
 		list("M-OU53 Field Test Kit", round(scale / 3), /obj/item/storage/box/kit/mou53_sapper, VENDOR_ITEM_REGULAR),
+		list("XM42A Anti Materiel Rifle Kit", round(scale * 1), /obj/item/storage/box/kit/xm42a, VENDOR_ITEM_REGULAR),
 
 		list("EXPLOSIVES", -1, null, null),
 		list("M15 Fragmentation Grenade", round(scale * 2), /obj/item/explosive/grenade/HE/m15, VENDOR_ITEM_REGULAR),
@@ -261,6 +263,7 @@
 		list("M4A3 HP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smartpistol Magazine (.45)", round(scale * 6), /obj/item/ammo_magazine/pistol/smart, VENDOR_ITEM_REGULAR),
 		list("VP78 Magazine", round(scale * 6), /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR),
+		list("XM42A Magazine (10x99mm)", round(scale * 2), /obj/item/ammo_magazine/rifle/xm42a, VENDOR_ITEM_REGULAR),
 
 		list("AMMUNITION BOXES", -1, null, null),
 		list("Rifle Ammunition Box (10x24mm)", round(scale * 0.9), /obj/item/ammo_box/rounds, VENDOR_ITEM_REGULAR),
@@ -365,7 +368,8 @@
 		list("M44 Marksman Speed Loader (.44)", round(scale * 2), /obj/item/ammo_magazine/revolver/marksman, VENDOR_ITEM_REGULAR),
 		list("M4A3 HP Magazine (9mm)", round(scale * 2), /obj/item/ammo_magazine/pistol/hp, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smartpistol Magazine (.45)", round(scale * 3), /obj/item/ammo_magazine/pistol/smart, VENDOR_ITEM_REGULAR),
-		list("VP78 Magazine", round(scale * 3), /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR)
+		list("VP78 Magazine", round(scale * 3), /obj/item/ammo_magazine/pistol/vp78, VENDOR_ITEM_REGULAR),
+		list("XM42A Magazine (10x99mm)", round(scale * 2), /obj/item/ammo_magazine/rifle/xm42a, VENDOR_ITEM_REGULAR)
 		)
 
 //------------ATTACHMENTS VENDOR---------------

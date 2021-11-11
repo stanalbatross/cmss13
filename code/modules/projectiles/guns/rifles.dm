@@ -1234,3 +1234,41 @@
 	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_6
 	recoil_unwielded = RECOIL_AMOUNT_TIER_4
 	damage_falloff_mult = 0
+
+// XM42A
+/obj/item/weapon/gun/rifle/XM42A
+	name = "\improper XM42A anti-material rifle"
+	desc = "Older design anti-materiel rifle. Recently pushed into frontline service by the USCM for reason unknown. Chambered in 10x99mm Caseless."
+	icon_state = "xm42b"
+	item_state = "xm42a"
+
+	fire_sound = 'sound/weapons/sniper_heavy.ogg'
+	current_mag = /obj/item/ammo_magazine/rifle/xm42a
+	force = 12
+	wield_delay = WIELD_DELAY_HORRIBLE //Ends up being 1.6 seconds due to scope
+	zoomdevicename = "scope"
+	attachable_allowed = list(/obj/item/attachable/bipod)
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER
+	gun_category = GUN_CATEGORY_HANDGUN
+	starting_attachment_types = list(/obj/item/attachable/sniperbarrel)
+
+/obj/item/weapon/gun/rifle/XM42A/handle_starting_attachment()
+	..()
+	var/obj/item/attachable/scope/S = new(src)
+	S.icon_state = "pmcscope"
+	S.attach_icon = "pmcscope"
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
+	update_attachable(S.slot)
+
+/obj/item/weapon/gun/rifle/XM42A/set_gun_attachment_offsets()
+	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 18,"rail_x" = 15, "rail_y" = 19, "under_x" = 20, "under_y" = 15, "stock_x" = 20, "stock_y" = 15)
+
+/obj/item/weapon/gun/rifle/XM42A/set_gun_config_values()
+	..()
+	fire_delay = FIRE_DELAY_TIER_4 * 8 //Big boy damage, but it takes a lot of time to fire a shot.
+	burst_amount = BURST_AMOUNT_TIER_1
+	accuracy_mult = BASE_ACCURACY_MULT + 2*HIT_ACCURACY_MULT_TIER_10
+	scatter = SCATTER_AMOUNT_TIER_10
+	damage_mult = BASE_BULLET_DAMAGE_MULT
+	recoil = RECOIL_AMOUNT_TIER_1

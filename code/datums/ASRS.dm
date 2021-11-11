@@ -96,6 +96,11 @@
 	buyable = 0
 	group = "Munition"
 
+/datum/supply_packs/ammo_xm42a
+	buyable = 0
+	group = "Munition"
+	cost = ASRS_VERY_LOW_WEIGHT
+
 /datum/supply_packs/ammo_sentry/asrs
 	buyable = 0
 	group = "Munition"

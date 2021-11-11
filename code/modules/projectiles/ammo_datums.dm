@@ -1539,6 +1539,23 @@
 /datum/ammo/bullet/sniper/svd
 	name = "crude sniper bullet"
 
+/datum/ammo/bullet/anti_materiel_a
+	name = "anti-material sniper bullet"
+
+	shrapnel_chance = 0 // This isn't leaving any shrapnel.
+	accuracy = HIT_ACCURACY_TIER_8
+	damage = 40
+	damage_falloff = 0
+	penetration = 30
+	shell_speed = AMMO_SPEED_TIER_6
+
+/datum/ammo/bullet/anti_materiel_a/set_bullet_traits()
+	. = ..()
+	LAZYADD(traits_to_give, list(
+		BULLET_TRAIT_ENTRY_ID("breaching", /datum/element/bullet_trait_damage_boost, 16, GLOB.damage_boost_breaching),
+		BULLET_TRAIT_ENTRY_ID("pylons", /datum/element/bullet_trait_damage_boost, 16, GLOB.damage_boost_pylons),
+	))
+
 /datum/ammo/bullet/sniper/anti_tank
 	name = "anti-tank sniper bullet"
 

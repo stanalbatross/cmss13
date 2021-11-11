@@ -529,6 +529,20 @@
 	containername = "\improper incendiary sniper ammo crate"
 	group = "Ammo"
 
+/datum/supply_packs/ammo_anti_materiel_a
+	name = "XM42A anti-material rifle magazines crate (x5)"
+	contains = list(
+					/obj/item/ammo_magazine/rifle/xm42a,
+					/obj/item/ammo_magazine/rifle/xm42a,
+					/obj/item/ammo_magazine/rifle/xm42a,
+					/obj/item/ammo_magazine/rifle/xm42a,
+					/obj/item/ammo_magazine/rifle/xm42a,
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "\improper anti-material ammo crate"
+	group = "Ammo"
+
 //M4RA
 
 /datum/supply_packs/ammo_scout_mix
