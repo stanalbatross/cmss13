@@ -166,3 +166,15 @@
 	icon_state = "ichor_hotsprings_cove"
 
 /area/leucanth/exterior/cove/ichor_hotsprings/varient
+
+/area/leucanth/exterior/cove/cave_east
+	name = "Leucanth Labs - Eastern Caves"
+	icon_state = "e_caves"
+
+/area/leucanth/exterior/cove/cave_north
+	name = "Leucanth Labs - Northern Caves"
+	icon_state = "n_caves"
+
+/area/leucanth/exterior/cove/cave_west
+	name = "Leucanth Labs - Western Caves"
+	icon_state = "w_caves"

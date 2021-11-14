@@ -59,9 +59,9 @@ GLOBAL_LIST_EMPTY_TYPED(ghost_images_default, /image)
 	set name = "Toggle Glamour Vision"
 	set desc = "Toggles your ability to see into coves"
 	set category = "Ghost.Settings"
-	ghostvision = !(ghostvision)
-	updateghostimages()
-	to_chat(usr, SPAN_NOTICE("You [(ghostvision?"now":"no longer")] have ghost vision."))
+	glamourvision = !(glamourvision)
+	updateghostglamours()
+	to_chat(usr, SPAN_NOTICE("You [(ghostvision?"now":"no longer")] have glamour vision."))
 
 /mob/dead/observer/proc/updateghostimages()
 	if (!client)
@@ -70,6 +70,19 @@ GLOBAL_LIST_EMPTY_TYPED(ghost_images_default, /image)
 	if(!ghostvision)
 		return
 	client.images |= GLOB.ghost_images_default-ghostimage_default
+
+/mob/dead/observer/proc/updateghostglamours()
+	if (!client)
+		return
+	for(var/datum/area_glamour_list/AGL in GLOB.greater_area_glamour_list)
+		for(var/obj/effect/glamour/G in AGL.glamour_list)
+			client.images -= G.glamour_image
+	if(!glamourvision)
+		return
+	for(var/datum/area_glamour_list/AGL in GLOB.greater_area_glamour_list)
+		for(var/obj/effect/glamour/G in AGL.glamour_list)
+			client.images |= G.glamour_image
+
 
 /mob/dead/observer/New(mob/body)
 	sight |= SEE_TURFS|SEE_MOBS|SEE_OBJS|SEE_SELF

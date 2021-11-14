@@ -30,6 +30,18 @@ turf/open/cobaltite_wall/top_2
 	icon_state = "cobaltite_wall_3rd_2"
 	opacity = TRUE
 
+turf/open/cobaltite_wall/cave_base
+	icon_state = "cobaltite_cave_1st"
+
+turf/open/cobaltite_wall/cave_top
+	icon_state = "cobaltite_cave_2nd"
+	opacity = TRUE
+
+turf/open/cobaltite_wall/cave_top_2
+	icon_state = "cobaltite_cave_2nd_2"
+	opacity = TRUE
+
+
 turf/open/gm/river/ichor
 	name = "ichor"
 	desc = "A substance poorly understood, known to cause acid burns and be slightly toxic to humans."
