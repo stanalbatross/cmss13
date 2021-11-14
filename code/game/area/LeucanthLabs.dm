@@ -34,6 +34,13 @@
 	icon_state = "int"
 	requires_power = 1
 
+/area/leucanth/interior/oob
+	name = "Leucanth Labs - Out Of Bounds"
+	ceiling = CEILING_MAX
+	icon_state = "oob"
+	is_resin_allowed = FALSE
+	flags_area = AREA_NOTUNNEL
+
 /area/leucanth/exterior/lz_pad
 	name = "Leucanth Labs Landing Zone"
 	icon_state = "lz1_pad"
@@ -106,13 +113,13 @@
 
 /area/leucanth/exterior/jungle/great_ferns
 	name = "Leucanth Labs - Great Fern Land"
-	icon_state = "great_fern"
+	icon_state = "great_ferns"
 
 /area/leucanth/exterior/jungle/bulb_land
 	name = "Leucanth Labs - Bulb Land"
 	icon_state = "bulb_land"
 
-/area/kutjleucanthevo/exterior/jungle/grassy_matts
+/area/leucanth/exterior/jungle/grassy_matts
 	name = "Leucanth Labs - Grassy Matts Land"
 	icon_state = "grassy_matts"
 
@@ -129,22 +136,33 @@
 	name = "Leucanth Labs - Fungal Flats Cove"
 	icon_state = "fungal_flats_cove"
 
+/area/leucanth/exterior/cove/fungal_flats/varient
 /area/leucanth/exterior/cove/arid_cractus
 	name = "Leucanth Labs - Arid Cractus Cove"
 	icon_state = "arid_cractus_cove"
+
+/area/leucanth/exterior/cove/arid_cractus/varient
 
 /area/leucanth/exterior/cove/great_ferns
 	name = "Leucanth Labs - Great Fern Cove"
 	icon_state = "great_fern_cove"
 
+/area/leucanth/exterior/cove/great_ferns/varient
+
 /area/leucanth/exterior/cove/bulb_land
 	name = "Leucanth Labs - Bulb Cove"
 	icon_state = "bulb_land_cove"
+
+/area/leucanth/exterior/cove/bulb_land/varient
 
 /area/kutjleucanthevo/exterior/cove/grassy_matts
 	name = "Leucanth Labs - Grassy Matts Cove"
 	icon_state = "grassy_matts_cove"
 
+/area/kutjleucanthevo/exterior/cove/grassy_matts/varient
+
 /area/leucanth/exterior/cove/ichor_hotsprings
 	name = "Leucanth Labs - Ichor Hot Cove"
 	icon_state = "ichor_hotsprings_cove"
+
+/area/leucanth/exterior/cove/ichor_hotsprings/varient

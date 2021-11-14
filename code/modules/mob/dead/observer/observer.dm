@@ -24,6 +24,7 @@ GLOBAL_LIST_EMPTY_TYPED(ghost_images_default, /image)
 	stat = DEAD
 	var/adminlarva = 0
 	var/ghostvision = 1
+	var/glamourvision = 1
 	var/image/ghostimage_default = null
 	var/can_reenter_corpse
 	var/started_as_observer //This variable is set to 1 when you enter the game as an observer.
@@ -49,6 +50,14 @@ GLOBAL_LIST_EMPTY_TYPED(ghost_images_default, /image)
 /mob/dead/observer/verb/toggle_ghostsee()
 	set name = "Toggle Ghost Vision"
 	set desc = "Toggles your ability to see things only ghosts can see, like other ghosts"
+	set category = "Ghost.Settings"
+	ghostvision = !(ghostvision)
+	updateghostimages()
+	to_chat(usr, SPAN_NOTICE("You [(ghostvision?"now":"no longer")] have ghost vision."))
+
+/mob/dead/observer/verb/toggle_glamoursee()
+	set name = "Toggle Glamour Vision"
+	set desc = "Toggles your ability to see into coves"
 	set category = "Ghost.Settings"
 	ghostvision = !(ghostvision)
 	updateghostimages()

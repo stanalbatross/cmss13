@@ -36,10 +36,19 @@ turf/open/gm/river/ichor
 	icon = 'icons/turf/leucanth.dmi'
 	icon_state = "ichor"
 	icon_overlay = "ichor_overlay"
+	cover_icon = 'icons/turf/leucanth.dmi'
+	cover_icon_state = "ichor_solid"
 	baseturfs = /turf/open/gm/river/ichor
 
-/turf/open/gm/river/ichor/Entered(mob/living/M as mob)
-	..()
+
+/turf/open/gm/river/ichor/Entered(atom/A)
+	. = ..()
+	if(istype(A, /obj/effect/particle_effect/water))
+		covered = TRUE
+		update_overlays()
+		return
+
+	var/mob/M = A
 
 	if(!iscarbon(M) || M.throwing)
 		return
@@ -108,17 +117,21 @@ turf/open/gm/river/ichor/proc/cause_damage(mob/living/M)
 	else
 		var/dam_amount = 1
 		if(M.lying)
-			M.apply_damage(dam_amount,TOX)
-			M.apply_damage(dam_amount,TOX)
-			M.apply_damage(dam_amount,TOX)
-			M.apply_damage(dam_amount,TOX)
-			M.apply_damage(dam_amount,TOX)
+			M.apply_damage(dam_amount,BURN)
+			M.apply_damage(dam_amount,BURN)
+			M.apply_damage(dam_amount,BURN)
+			M.apply_damage(dam_amount,BURN)
+			M.apply_damage(dam_amount,BURN)
 		else
-			M.apply_damage(dam_amount,TOX,"l_leg")
-			M.apply_damage(dam_amount,TOX,"l_foot")
-			M.apply_damage(dam_amount,TOX,"r_leg")
-			M.apply_damage(dam_amount,TOX,"r_foot")
-			M.apply_damage(dam_amount,TOX,"groin")
+			M.apply_damage(dam_amount,BURN,"l_leg")
+			M.apply_damage(dam_amount,BURN,"l_foot")
+			M.apply_damage(dam_amount,BURN,"r_leg")
+			M.apply_damage(dam_amount,BURN,"r_foot")
+			M.apply_damage(dam_amount,BURN,"groin")
 		M.apply_effect(20,IRRADIATE,0)
 		if(!isSynth(M) ) to_chat(M, SPAN_DANGER("The ichor feels like needles on your skin!"))
 	playsound(M, 'sound/effects/toxic_ichor_geiger.ogg', 10, 1)
+
+
+
+
