@@ -159,6 +159,13 @@
 	glamour_icon_state = "cobaltite_wall_surface"
 	opacity = TRUE
 
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cavewall_top
+	icon_state = "cobaltite_cave_2nd"
+	glamour_icon_state = "cobaltite_cave_2nd"
+
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cavewall_top_2
+	icon_state = "cobaltite_cave_2nd_2"
+	glamour_icon_state = "cobaltite_cave_2nd_2"
 /obj/structure/prop/leucanth/shadow
 	icon = 'icons/turf/leucanth.dmi'
 	icon_state = "shade"

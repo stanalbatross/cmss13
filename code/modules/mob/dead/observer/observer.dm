@@ -61,7 +61,7 @@ GLOBAL_LIST_EMPTY_TYPED(ghost_images_default, /image)
 	set category = "Ghost.Settings"
 	glamourvision = !(glamourvision)
 	updateghostglamours()
-	to_chat(usr, SPAN_NOTICE("You [(ghostvision?"now":"no longer")] have glamour vision."))
+	to_chat(usr, SPAN_NOTICE("You [(glamourvision?"now":"no longer")] have glamour vision."))
 
 /mob/dead/observer/proc/updateghostimages()
 	if (!client)

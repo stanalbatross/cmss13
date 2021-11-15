@@ -58,6 +58,7 @@ turf/open/gm/river/ichor
 	if(istype(A, /obj/effect/particle_effect/water))
 		covered = TRUE
 		update_overlays()
+		qdel(A)
 		return
 
 	var/mob/M = A

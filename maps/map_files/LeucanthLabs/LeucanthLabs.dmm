@@ -1,7 +1,49 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
-"ah" = (
-/turf/closed/mineral,
-/area/leucanth/exterior/e_caves)
+"ab" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"ai" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/w_caves)
+"al" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
+"am" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
+"ao" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"ar" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "aw" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 6
@@ -11,14 +53,17 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
-"aB" = (
-/turf/open/cobaltite_wall/base{
-	dir = 1
-	},
-/area/leucanth/exterior/e_caves)
-"aE" = (
-/turf/open/space/basic,
+"az" = (
+/turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/cave_west)
+"aA" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_north)
 "aI" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
@@ -30,7 +75,7 @@
 	},
 /area/leucanth/exterior/nw_barrens)
 "aK" = (
-/turf/open/cobaltite_wall/mid{
+/turf/open/cobaltite_wall/cave_base{
 	dir = 4
 	},
 /area/leucanth/exterior/e_caves)
@@ -50,22 +95,51 @@
 "aT" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"aW" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_north)
+"aY" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_north)
 "aZ" = (
 /turf/open/cobaltite_wall/covecorner{
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"bf" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_north)
 "bg" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/ne_barrens)
 "bh" = (
-/turf/open/space/basic,
+/turf/open/void,
 /area/leucanth/exterior/nw_barrens)
 "bj" = (
 /turf/open/cobaltite_wall/top{
 	dir = 5
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"bm" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "bp" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_base,
@@ -81,8 +155,16 @@
 	dir = 4
 	},
 /area/leucanth/exterior/nw_barrens)
+"by" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "bA" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 4
 	},
 /area/leucanth/exterior/n_caves)
@@ -92,18 +174,28 @@
 	},
 /area/leucanth/exterior/sw_barrens)
 "bG" = (
-/turf/open/cobaltite_wall/top{
-	dir = 1
+/turf/open/void,
+/area/leucanth/exterior/n_caves)
+"bK" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
 	},
-/area/space)
+/area/leucanth/interior/oob)
 "bL" = (
-/turf/open/cobaltite_wall/top{
-	dir = 9
-	},
-/area/leucanth/exterior/w_caves)
+/turf/open/void,
+/area/leucanth/exterior/ne_barrens)
 "bR" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/jungle/arid_cractus)
+"bT" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "bU" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 9
@@ -118,23 +210,51 @@
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"cr" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 10
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "cu" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 6
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"cE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_east)
 "cF" = (
 /obj/structure/machinery/landinglight/ds1{
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"cH" = (
+/turf/open/cobaltite_wall/top,
+/area/leucanth/exterior/n_caves)
 "cI" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
 	},
 /area/space)
+"cJ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
 "cP" = (
 /turf/open/cobaltite_wall/top_2,
 /area/leucanth/exterior/ne_barrens)
@@ -143,8 +263,32 @@
 	dir = 9
 	},
 /area/leucanth/exterior/jungle/great_ferns)
-"cV" = (
+"cU" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 1
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
 /turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"cV" = (
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/n_caves)
+"cW" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"cY" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
 /area/leucanth/exterior/cove/cave_west)
 "cZ" = (
 /turf/open/cobaltite_wall/covecorner{
@@ -157,11 +301,6 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
-"de" = (
-/turf/open/cobaltite_wall/top_2{
-	dir = 5
-	},
-/area/leucanth/exterior/w_caves)
 "dg" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
 	dir = 4
@@ -171,6 +310,26 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"dk" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"dl" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/jungle/grassy_matts)
+"do" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_east)
 "ds" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/jungle/fungal_flats)
@@ -188,6 +347,12 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"dy" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
 "dC" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/jungle/great_ferns)
@@ -216,6 +381,13 @@
 	},
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"dU" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "dV" = (
 /turf/open/cobaltite_wall/top{
 	dir = 10
@@ -226,6 +398,27 @@
 	dir = 9
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
+"ea" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"ec" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2,
+/area/leucanth/exterior/cove/cave_east)
+"ed" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "ef" = (
 /turf/open/cobaltite_wall/top{
 	dir = 9
@@ -236,6 +429,13 @@
 	dir = 8
 	},
 /area/leucanth/interior/oob)
+"ej" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "ek" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/nw_barrens)
@@ -265,13 +465,9 @@
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/se_barrens)
 "eC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 10
-	},
-/area/leucanth/exterior/cove/cave_west)
-"eG" = (
-/turf/open/cobaltite_wall/cave_top{
-	dir = 1
 	},
 /area/leucanth/exterior/cove/cave_west)
 "eH" = (
@@ -287,6 +483,14 @@
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"eL" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "eP" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
@@ -295,12 +499,15 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
 "eV" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
 /turf/open/cobaltite_wall/cave_top{
 	dir = 4
 	},
-/area/leucanth/exterior/nw_barrens)
+/area/leucanth/exterior/cove/cave_west)
 "eW" = (
-/turf/open/space/basic,
+/turf/open/void,
 /area/leucanth/exterior/w_caves)
 "eX" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
@@ -309,16 +516,30 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"fc" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_north)
 "fg" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
 	},
 /area/leucanth/exterior/ne_barrens)
 "fh" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 5
 	},
-/area/leucanth/exterior/e_caves)
+/area/leucanth/exterior/cove/cave_east)
+"fo" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_north)
 "fp" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/jungle/fungal_flats)
@@ -352,6 +573,31 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"fS" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
+"fV" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 8
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"fX" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
 "gb" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 4
@@ -378,10 +624,15 @@
 	},
 /area/leucanth/exterior/sw_barrens)
 "gy" = (
-/turf/closed/wall/almayer/white,
-/area/space)
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
 "gA" = (
-/turf/open/cobaltite_wall/mid{
+/turf/open/cobaltite_wall/cave_base{
 	dir = 8
 	},
 /area/leucanth/exterior/e_caves)
@@ -406,6 +657,15 @@
 	dir = 8
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"gM" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "gN" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 6
@@ -440,7 +700,7 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
 "hh" = (
-/turf/open/cobaltite_wall/top_2,
+/turf/open/cobaltite_wall/cave_top_2,
 /area/leucanth/exterior/e_caves)
 "hm" = (
 /turf/open/cobaltite_wall/cave_base{
@@ -453,6 +713,12 @@
 	dir = 8
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"hs" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
 "ht" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
@@ -469,15 +735,15 @@
 	},
 /area/leucanth/exterior/w_caves)
 "hH" = (
-/turf/open/cobaltite_wall/base{
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/n_caves)
+"hM" = (
+/turf/open/cobaltite_wall/cave_base{
 	dir = 8
 	},
-/area/leucanth/exterior/e_caves)
-"hM" = (
-/turf/open/cobaltite_wall/top{
-	dir = 6
-	},
-/area/space)
+/area/leucanth/exterior/n_caves)
 "hN" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/jungle/grassy_matts)
@@ -513,7 +779,21 @@
 	dir = 6
 	},
 /area/leucanth/exterior/sw_barrens)
+"ik" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"il" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
 "in" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
 /turf/open/cobaltite_wall/cave_base{
 	dir = 8
 	},
@@ -528,11 +808,33 @@
 	dir = 8
 	},
 /area/leucanth/exterior/se_barrens)
+"ix" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
 "iz" = (
 /turf/open/cobaltite_wall/top{
 	dir = 6
 	},
 /area/leucanth/interior/oob)
+"iA" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_north)
+"iE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top_2,
+/area/leucanth/exterior/cove/cave_west)
 "iF" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 5
@@ -560,10 +862,19 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "iU" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 5
 	},
 /area/leucanth/exterior/cove/cave_west)
+"iW" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_east)
 "iY" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
@@ -574,6 +885,20 @@
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"ja" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"je" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "jh" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
@@ -588,13 +913,21 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"jj" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
 "jo" = (
 /turf/open/cobaltite_wall/top{
 	dir = 6
 	},
 /area/leucanth/exterior/w_caves)
 "jq" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 6
 	},
 /area/leucanth/exterior/n_caves)
@@ -605,16 +938,34 @@
 /obj/structure/prop/leucanth/shadow_f,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
-"jx" = (
-/turf/open/cobaltite_wall/base{
+"jC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 4
 	},
-/area/leucanth/exterior/n_caves)
+/turf/open/cobaltite_wall/cave_base{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_east)
+"jE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
 "jF" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 8
 	},
 /area/leucanth/exterior/sw_barrens)
+"jQ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "jW" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/jungle/grassy_matts)
@@ -636,6 +987,11 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"kh" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "kl" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
 	dir = 10
@@ -674,6 +1030,9 @@
 	dir = 4
 	},
 /area/leucanth/interior/oob)
+"kI" = (
+/turf/open/void,
+/area/leucanth/exterior/jungle/bulb_land)
 "kK" = (
 /turf/open/cobaltite_wall/base{
 	dir = 4
@@ -698,6 +1057,17 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"lk" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"lp" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 1
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "lq" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
 	dir = 6
@@ -709,6 +1079,14 @@
 "lr" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/interior/oob)
+"ls" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "lt" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
 	dir = 4
@@ -728,8 +1106,24 @@
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
+"lz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"lD" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "lF" = (
-/turf/open/space/basic,
+/turf/open/void,
 /area/leucanth/exterior/jungle/arid_cractus)
 "lG" = (
 /turf/open/cobaltite_wall/top{
@@ -746,9 +1140,18 @@
 	dir = 8
 	},
 /area/leucanth/exterior/w_caves)
+"lT" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "lU" = (
 /turf/open/cobaltite_wall/top_2,
 /area/leucanth/exterior/jungle/great_ferns)
+"lZ" = (
+/turf/open/void,
+/area/leucanth/exterior/jungle/ichor_hotsprings)
 "me" = (
 /turf/open/cobaltite_wall/top{
 	dir = 9
@@ -759,6 +1162,11 @@
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"ml" = (
+/obj/structure/prop/leucanth/shadow,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "mm" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 1
@@ -772,18 +1180,49 @@
 	dir = 5
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"ms" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "mx" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 6
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"mD" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/jungle/grassy_matts)
 "mE" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
 /turf/open/cobaltite_wall/mid{
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"mJ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
+"mM" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "mN" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 6
@@ -799,6 +1238,19 @@
 	dir = 9
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"mP" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
+"mQ" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
 "mU" = (
 /turf/open/cobaltite_wall/top{
 	dir = 1
@@ -809,6 +1261,17 @@
 	dir = 8
 	},
 /area/leucanth/exterior/ne_barrens)
+"na" = (
+/turf/open/cobaltite_wall/cave_top_2,
+/area/leucanth/interior/oob)
+"nh" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
 "nl" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
 	dir = 6
@@ -847,6 +1310,15 @@
 /obj/structure/prop/leucanth/shadow_f,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"nB" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 1
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "nD" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/jungle/bulb_land)
@@ -894,6 +1366,20 @@
 	dir = 5
 	},
 /area/leucanth/exterior/w_caves)
+"oh" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
+"om" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "os" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 4
@@ -918,6 +1404,12 @@
 	dir = 9
 	},
 /area/leucanth/exterior/ichor/anther)
+"oE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "oN" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
@@ -928,6 +1420,13 @@
 	dir = 4
 	},
 /area/leucanth/exterior/sw_barrens)
+"oY" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "oZ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 5
@@ -957,16 +1456,54 @@
 	dir = 5
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"pz" = (
+/turf/open/cobaltite_wall/top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
+"pA" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_east)
 "pD" = (
 /turf/open/cobaltite_wall/base{
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"pE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"pG" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 8
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "pJ" = (
 /turf/open/cobaltite_wall/base{
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"pN" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 1
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "pO" = (
 /turf/open/floor/plating,
 /area/leucanth/exterior/lz_pad)
@@ -975,11 +1512,26 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"pV" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "qc" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 10
 	},
 /area/leucanth/exterior/n_caves)
+"qd" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "qh" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top,
@@ -1003,10 +1555,20 @@
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
 "qp" = (
-/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
-/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_north)
+"qq" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 10
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 8
+	},
 /turf/open/floor/cobaltite,
-/area/leucanth/exterior/cove/fungal_flats)
+/area/leucanth/exterior/cove/cave_east)
 "qr" = (
 /turf/open/cobaltite_wall/top{
 	dir = 5
@@ -1041,30 +1603,56 @@
 	dir = 10
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"qC" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "qE" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
 	},
 /area/leucanth/exterior/e_caves)
+"qG" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "qL" = (
 /turf/open/cobaltite_wall/base{
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"qM" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/cobaltite_wall/mid{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "qN" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
 /turf/open/cobaltite_wall/mid{
 	dir = 8
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
-"qV" = (
-/turf/open/cobaltite_wall/cave_top,
-/area/leucanth/exterior/cove/cave_west)
 "qX" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"qY" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
 "qZ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 9
@@ -1095,6 +1683,22 @@
 "rj" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/ne_barrens)
+"rm" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"rq" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_north)
+"rt" = (
+/turf/open/space/basic,
+/area/leucanth/exterior/jungle/great_ferns)
 "rv" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 9
@@ -1123,6 +1727,15 @@
 	dir = 4
 	},
 /area/leucanth/exterior/w_caves)
+"rF" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "rJ" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 5
@@ -1160,6 +1773,14 @@
 /obj/structure/prop/leucanth/shadow_f,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"sb" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "sd" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
@@ -1171,10 +1792,10 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
 "sl" = (
-/turf/open/cobaltite_wall/top,
+/turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/n_caves)
 "sq" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 9
 	},
 /area/leucanth/exterior/e_caves)
@@ -1189,6 +1810,22 @@
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"sw" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_north)
+"sy" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
 "sA" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 1
@@ -1197,6 +1834,12 @@
 "sB" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/nw_barrens)
+"sO" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
 "sQ" = (
 /turf/open/cobaltite_wall/base{
 	dir = 4
@@ -1213,6 +1856,12 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"sT" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_east)
 "sX" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -1225,8 +1874,8 @@
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
 "th" = (
-/turf/open/space/basic,
-/area/space)
+/turf/open/void,
+/area/leucanth/interior/oob)
 "tj" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 4
@@ -1235,6 +1884,20 @@
 "to" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/sw_barrens)
+"tq" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"tr" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "tt" = (
 /turf/open/cobaltite_wall/base{
 	dir = 8
@@ -1243,6 +1906,14 @@
 "tw" = (
 /turf/open/cobaltite_wall/top_2,
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"tA" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
 "tB" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 6
@@ -1259,6 +1930,20 @@
 	dir = 1
 	},
 /area/leucanth/exterior/se_barrens)
+"tK" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
+"tL" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
 "tM" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
 	dir = 4
@@ -1281,7 +1966,7 @@
 /turf/open/cobaltite_wall/cave_top{
 	dir = 9
 	},
-/area/leucanth/exterior/jungle/grassy_matts)
+/area/leucanth/exterior/cove/cave_west)
 "ug" = (
 /turf/open/cobaltite_wall/top{
 	dir = 6
@@ -1292,13 +1977,31 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"uj" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "uk" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 9
 	},
 /area/leucanth/exterior/se_barrens)
+"ul" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"un" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
 "uo" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 9
 	},
 /area/leucanth/exterior/e_caves)
@@ -1306,11 +2009,21 @@
 /obj/structure/machinery/camera/autoname/lz_camera,
 /turf/open/floor/plating,
 /area/leucanth/exterior/lz_pad)
+"uw" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "uy" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"uB" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "uD" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 5
@@ -1369,6 +2082,9 @@
 "vi" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/nw_barrens)
+"vn" = (
+/turf/open/cobaltite_wall/cave_top_2,
+/area/leucanth/exterior/jungle/great_ferns)
 "vx" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 9
@@ -1379,6 +2095,15 @@
 	dir = 9
 	},
 /area/leucanth/exterior/se_barrens)
+"vz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_east)
+"vG" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "vQ" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /obj/structure/prop/leucanth/shadow_f,
@@ -1414,9 +2139,6 @@
 	dir = 8
 	},
 /area/leucanth/exterior/nw_barrens)
-"wf" = (
-/turf/open/cobaltite_wall/base,
-/area/leucanth/exterior/n_caves)
 "wg" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 10
@@ -1429,12 +2151,46 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"wo" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/jungle/great_ferns)
+"wu" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_north)
 "ww" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
 /turf/open/cobaltite_wall/mid{
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"wx" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
+"wA" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"wB" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "wC" = (
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
@@ -1445,17 +2201,42 @@
 	dir = 1
 	},
 /area/leucanth/interior/oob)
+"wH" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"wK" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_west)
 "wM" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/top{
 	dir = 5
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
-"wX" = (
-/turf/open/cobaltite_wall/top_2{
-	dir = 9
+"wN" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
 	},
-/area/leucanth/exterior/w_caves)
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"wX" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_north)
 "wZ" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 8
@@ -1485,6 +2266,13 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"xv" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "xw" = (
 /turf/open/cobaltite_wall/top{
 	dir = 8
@@ -1495,6 +2283,11 @@
 	dir = 10
 	},
 /area/leucanth/exterior/ne_barrens)
+"xy" = (
+/turf/open/cobaltite_wall/top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/n_caves)
 "xC" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
@@ -1512,11 +2305,30 @@
 	},
 /area/leucanth/exterior/cove/fungal_flats)
 "xK" = (
-/turf/open/space/basic,
+/turf/open/void,
 /area/leucanth/exterior/jungle/grassy_matts)
-"xO" = (
-/turf/open/cobaltite_wall/cave_top_2,
+"xL" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/cave_west)
+"xN" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"xO" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_north)
 "xQ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
@@ -1530,6 +2342,24 @@
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"xY" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 9
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"ya" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "ye" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 6
@@ -1550,10 +2380,14 @@
 	},
 /area/leucanth/exterior/jungle/bulb_land)
 "yq" = (
-/turf/open/cobaltite_wall/top{
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base{
 	dir = 8
 	},
-/area/space)
+/area/leucanth/exterior/cove/cave_north)
+"ys" = (
+/turf/open/void,
+/area/leucanth/exterior/cove/cave_west)
 "yw" = (
 /turf/open/cobaltite_wall/base{
 	dir = 8
@@ -1564,13 +2398,19 @@
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"yz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
 "yI" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
 "yQ" = (
-/turf/open/cobaltite_wall/mid,
+/turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/e_caves)
 "yU" = (
 /turf/open/cobaltite_wall/base,
@@ -1586,19 +2426,53 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"za" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"zc" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "zj" = (
 /turf/open/cobaltite_wall/top{
 	dir = 4
 	},
 /area/leucanth/exterior/ne_barrens)
+"zo" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"zu" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_east)
 "zv" = (
-/turf/open/cobaltite_wall/top_2,
+/turf/open/cobaltite_wall/cave_top_2,
 /area/leucanth/exterior/n_caves)
 "zx" = (
-/turf/open/cobaltite_wall/top,
+/turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/e_caves)
+"zy" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "zB" = (
-/turf/open/space/basic,
+/turf/open/void,
 /area/leucanth/exterior/sw_barrens)
 "zD" = (
 /obj/structure/prop/leucanth/shadow_2{
@@ -1616,6 +2490,14 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"zF" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "zG" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/ne_barrens)
@@ -1625,6 +2507,15 @@
 	},
 /turf/open/floor/plating,
 /area/leucanth/exterior/lz_pad)
+"zL" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "zM" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
@@ -1638,11 +2529,28 @@
 	dir = 6
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"zP" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_east)
 "zR" = (
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 9
 	},
-/area/leucanth/exterior/jungle/grassy_matts)
+/area/leucanth/exterior/cove/cave_west)
+"zS" = (
+/turf/open/cobaltite_wall/mid{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
+"zV" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_west)
 "zW" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 8
@@ -1655,7 +2563,7 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/w_caves)
 "Ab" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 6
 	},
 /area/leucanth/exterior/e_caves)
@@ -1664,19 +2572,77 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"Ag" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Ah" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Ak" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"Al" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Ao" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 10
 	},
-/area/leucanth/exterior/e_caves)
+/area/leucanth/exterior/cove/cave_east)
 "Ap" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"At" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Au" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/ne_barrens)
+"Av" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"AF" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_north)
+"AH" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "AO" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 5
@@ -1727,14 +2693,36 @@
 	dir = 4
 	},
 /area/leucanth/exterior/sw_barrens)
-"Bn" = (
-/turf/open/floor/plating,
-/area/leucanth/exterior/jungle/fungal_flats)
-"Br" = (
-/turf/open/cobaltite_wall/top{
+"Bj" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 8
+	},
+/area/leucanth/exterior/jungle/great_ferns)
+"Bk" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Bl" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"Bo" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
 	dir = 10
 	},
-/area/space)
+/area/leucanth/exterior/cove/cave_north)
+"Br" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_north)
 "BA" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 5
@@ -1745,11 +2733,27 @@
 	dir = 8
 	},
 /area/leucanth/interior/oob)
+"BI" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "BQ" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"BW" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Ca" = (
 /mob/living/simple_animal/bunny{
 	desc = ":o)";
@@ -1757,13 +2761,29 @@
 	name = "Big Chungus"
 	},
 /turf/open/floor/cobaltite,
-/area/space)
+/area/leucanth/interior/oob)
+"Ci" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
 "Cn" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Cs" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Cx" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
@@ -1784,8 +2804,22 @@
 	dir = 8
 	},
 /area/leucanth/exterior/w_caves)
+"CI" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/cobaltite_wall/mid{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
+"CK" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_east)
 "CM" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 8
 	},
 /area/leucanth/exterior/e_caves)
@@ -1796,11 +2830,29 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"CQ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "CT" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"CU" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "CV" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 6
@@ -1809,12 +2861,50 @@
 	dir = 1
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"CX" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"Da" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_east)
 "Dc" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/jungle/bulb_land)
 "Dp" = (
 /turf/open/cobaltite_wall/top_2,
 /area/leucanth/exterior/jungle/fungal_flats)
+"Dt" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_north)
+"Dv" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Dy" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"DC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"DE" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/interior/oob)
 "DG" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
@@ -1841,9 +2931,14 @@
 	dir = 5
 	},
 /area/leucanth/exterior/w_caves)
+"DN" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "DS" = (
-/turf/open/cobaltite_wall/base,
-/area/leucanth/exterior/e_caves)
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "DV" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/jungle/great_ferns)
@@ -1872,11 +2967,25 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
-"Eu" = (
-/turf/open/cobaltite_wall/base{
-	dir = 1
+"Em" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
 	},
-/area/leucanth/exterior/n_caves)
+/area/leucanth/exterior/cove/cave_east)
+"Et" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Eu" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/ne_barrens)
 "Ey" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
@@ -1919,10 +3028,35 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
 "EN" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 4
 	},
 /area/leucanth/exterior/n_caves)
+"ER" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"ET" = (
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/jungle/great_ferns)
+"EU" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_west)
+"EX" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "EZ" = (
 /obj/effect/decal/warning_stripes,
 /obj/structure/machinery/landinglight/ds1{
@@ -1939,8 +3073,26 @@
 	dir = 4
 	},
 /area/leucanth/exterior/se_barrens)
+"Fd" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"Fe" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/w_caves)
 "Fl" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
 	},
 /area/leucanth/exterior/n_caves)
@@ -1958,11 +3110,29 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/great_ferns)
-"Fx" = (
-/turf/open/cobaltite_wall/base{
+"Ft" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Fw" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 4
 	},
+/turf/open/cobaltite_wall/cave_top_2,
+/area/leucanth/exterior/cove/cave_east)
+"Fy" = (
+/turf/open/void,
 /area/leucanth/exterior/e_caves)
+"Fz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/cobaltite_wall/mid{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_north)
 "FB" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
@@ -1970,11 +3140,25 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"FL" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_east)
 "FO" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 9
 	},
-/area/leucanth/exterior/cove/cave_west)
+/area/leucanth/exterior/n_caves)
+"FS" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "FZ" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/se_barrens)
@@ -1993,6 +3177,17 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Gj" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
+"Gq" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_east)
 "Gr" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 4
@@ -2009,6 +3204,12 @@
 	dir = 8
 	},
 /area/leucanth/exterior/nw_barrens)
+"GN" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/top{
+	dir = 10
+	},
+/area/leucanth/exterior/jungle/grassy_matts)
 "GP" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -2016,10 +3217,23 @@
 	},
 /area/leucanth/exterior/cove/fungal_flats)
 "GQ" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 1
 	},
 /area/leucanth/exterior/e_caves)
+"GR" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
+"GW" = (
+/obj/structure/prop/leucanth/shadow,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Hb" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 6
@@ -2028,6 +3242,15 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Hd" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 8
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "He" = (
 /turf/open/cobaltite_wall/cave_base{
 	dir = 4
@@ -2054,6 +3277,13 @@
 "Hr" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/se_barrens)
+"Hs" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Hx" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
@@ -2067,22 +3297,55 @@
 "HC" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/se_barrens)
+"HE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
+"HH" = (
+/turf/open/cobaltite_wall/top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
 "HJ" = (
 /turf/open/cobaltite_wall/top{
 	dir = 10
 	},
 /area/leucanth/interior/oob)
+"HP" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_north)
 "HT" = (
 /turf/open/cobaltite_wall/top{
 	dir = 8
 	},
 /area/leucanth/exterior/se_barrens)
+"HX" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_west)
 "HY" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 1
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"HZ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Ic" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 8
@@ -2096,6 +3359,18 @@
 	dir = 1
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Ii" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/mid{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_west)
+"In" = (
+/obj/structure/prop/leucanth/shadow,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "Is" = (
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/interior/oob)
@@ -2104,6 +3379,18 @@
 	dir = 9
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"Iv" = (
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"Iw" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_east)
 "Ix" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
@@ -2129,6 +3416,13 @@
 "Jd" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/e_caves)
+"Jg" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "Jk" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/sw_barrens)
@@ -2140,6 +3434,20 @@
 "Ju" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/w_caves)
+"Jy" = (
+/obj/structure/prop/leucanth/shadow,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"Jz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 1
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "JA" = (
 /turf/open/cobaltite_wall/top{
 	dir = 5
@@ -2171,6 +3479,15 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"JZ" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Kb" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
@@ -2178,6 +3495,17 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"Kc" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"Kj" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Kq" = (
 /turf/open/cobaltite_wall/cave_top_2,
 /area/leucanth/exterior/w_caves)
@@ -2186,21 +3514,46 @@
 	dir = 5
 	},
 /area/leucanth/exterior/ne_barrens)
-"Kw" = (
-/turf/open/cobaltite_wall/cave_top_2{
-	dir = 10
-	},
-/area/leucanth/exterior/jungle/grassy_matts)
-"Ky" = (
+"Ku" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 8
 	},
-/area/leucanth/exterior/jungle/grassy_matts)
+/area/leucanth/exterior/e_caves)
+"Kw" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/n_caves)
+"Ky" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/n_caves)
+"KC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 5
+	},
+/obj/structure/prop/leucanth/shadow{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"KD" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_north)
+"KH" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/obj/structure/prop/leucanth/shadow,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/w_caves)
 "KL" = (
 /turf/open/cobaltite_wall/cave_top_2{
-	dir = 9
+	dir = 5
 	},
-/area/leucanth/exterior/cove/cave_west)
+/area/leucanth/exterior/n_caves)
 "KQ" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -2213,11 +3566,34 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"KU" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"KX" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/e_caves)
+"KZ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_north)
 "Lb" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"Lc" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "Ld" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
 	dir = 8
@@ -2240,6 +3616,9 @@
 	dir = 9
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"Lh" = (
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/interior/oob)
 "Lj" = (
 /turf/open/cobaltite_wall/base{
 	dir = 8
@@ -2252,7 +3631,7 @@
 /area/leucanth/interior/oob)
 "Lr" = (
 /turf/open/cobaltite_wall/cave_top,
-/area/leucanth/exterior/jungle/grassy_matts)
+/area/leucanth/exterior/cove/cave_west)
 "Lu" = (
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
@@ -2260,6 +3639,11 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"Lw" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/jungle/ichor_hotsprings)
 "LA" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
 	dir = 8
@@ -2267,11 +3651,26 @@
 /obj/structure/prop/leucanth/shadow,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"LC" = (
+/turf/closed/shuttle{
+	dir = 1;
+	icon_state = "pwall"
+	},
+/area/leucanth/interior/oob)
 "LE" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"LF" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "LH" = (
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/jungle/grassy_matts)
@@ -2301,6 +3700,17 @@
 	dir = 4
 	},
 /area/leucanth/exterior/ne_barrens)
+"Mh" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
+"Ml" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_east)
 "Mq" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 8
@@ -2316,14 +3726,35 @@
 	dir = 10
 	},
 /area/leucanth/interior/oob)
+"Mw" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
 "MB" = (
-/turf/open/cobaltite_wall/top{
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
 	dir = 1
 	},
-/area/leucanth/exterior/w_caves)
+/area/leucanth/exterior/cove/cave_west)
 "MH" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_north)
+"MQ" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
 /turf/open/floor/cobaltite,
-/area/space)
+/area/leucanth/exterior/cove/cave_east)
 "MR" = (
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/cove/cave_west)
@@ -2352,19 +3783,41 @@
 "Ng" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/jungle/grassy_matts)
+"Nh" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 1
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Np" = (
 /turf/open/cobaltite_wall/top{
 	dir = 10
 	},
 /area/leucanth/exterior/ne_barrens)
+"Nr" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "Nu" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
 /turf/open/cobaltite_wall/cave_top{
 	dir = 10
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"NE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_west)
 "NG" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 6
 	},
 /area/leucanth/exterior/n_caves)
@@ -2373,6 +3826,12 @@
 	dir = 5
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"NO" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
 "NP" = (
 /obj/effect/decal/warning_stripes,
 /turf/open/floor/cobaltite,
@@ -2383,16 +3842,59 @@
 	dir = 1
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Oc" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
+"Of" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "Og" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 1
 	},
 /area/leucanth/exterior/e_caves)
+"Oh" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"Oj" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"Ok" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_east)
 "Om" = (
 /turf/open/cobaltite_wall/base{
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"Os" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_north)
 "OD" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 5
@@ -2402,6 +3904,15 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"OF" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 8
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "OL" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 9
@@ -2416,13 +3927,19 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"ON" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_east)
 "OP" = (
 /turf/open/cobaltite_wall/top{
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
 "OR" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 4
 	},
 /area/leucanth/exterior/e_caves)
@@ -2436,6 +3953,14 @@
 	dir = 10
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
+"Pa" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
 "Pc" = (
 /turf/open/cobaltite_wall/base{
 	dir = 1
@@ -2474,6 +3999,15 @@
 "Pt" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/nw_barrens)
+"Pw" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 9
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 9
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "Pz" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 9
@@ -2483,11 +4017,25 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"PB" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/obj/structure/prop/leucanth/shadow,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "PC" = (
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
 	},
 /area/leucanth/exterior/cove/cave_west)
+"PD" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 5
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "PE" = (
 /turf/open/cobaltite_wall/top{
 	dir = 4
@@ -2514,7 +4062,7 @@
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "PQ" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 6
 	},
 /area/leucanth/exterior/e_caves)
@@ -2537,20 +4085,27 @@
 /turf/closed/mineral,
 /area/leucanth/exterior/n_caves)
 "Qo" = (
-/turf/open/cobaltite_wall/base{
-	dir = 8
-	},
-/area/leucanth/exterior/n_caves)
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "Qw" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
 "Qy" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 1
 	},
 /area/leucanth/exterior/n_caves)
+"Qz" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "QB" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 9
@@ -2562,7 +4117,7 @@
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "QH" = (
 /turf/closed/wall/almayer/white,
-/area/leucanth/exterior/jungle/fungal_flats)
+/area/leucanth/interior)
 "QI" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_base{
@@ -2576,7 +4131,7 @@
 	},
 /area/leucanth/exterior/cove/fungal_flats)
 "QP" = (
-/turf/open/cobaltite_wall/top_2{
+/turf/open/cobaltite_wall/cave_top_2{
 	dir = 8
 	},
 /area/leucanth/exterior/n_caves)
@@ -2592,6 +4147,15 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"QY" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "Ra" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 8
@@ -2600,11 +4164,56 @@
 	dir = 10
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Rc" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"Rd" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
+"Rh" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/e_caves)
+"Rm" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
+"Rn" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "Rp" = (
 /turf/open/cobaltite_wall/top{
 	dir = 1
 	},
 /area/leucanth/exterior/jungle/grassy_matts)
+"Rr" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Rt" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/e_caves)
 "Rw" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 8
@@ -2616,21 +4225,38 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/lz_pad)
+"Ry" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_east)
 "RD" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 4
 	},
 /area/leucanth/exterior/ne_barrens)
 "RE" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 5
 	},
-/area/leucanth/exterior/e_caves)
+/area/leucanth/exterior/cove/cave_east)
 "RF" = (
-/turf/open/cobaltite_wall/top{
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
 	dir = 5
 	},
-/area/space)
+/area/leucanth/exterior/cove/cave_north)
+"RH" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_north)
 "RO" = (
 /turf/open/cobaltite_wall/top{
 	dir = 9
@@ -2701,6 +4327,23 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"SE" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 10
+	},
+/turf/open/cobaltite_wall/top{
+	dir = 8
+	},
+/area/leucanth/exterior/se_barrens)
+"SG" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "SH" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/top{
@@ -2709,7 +4352,7 @@
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "SJ" = (
 /turf/open/floor/plating,
-/area/space)
+/area/leucanth/interior)
 "SP" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
@@ -2720,11 +4363,26 @@
 	dir = 9
 	},
 /area/leucanth/exterior/ne_barrens)
+"ST" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/jungle/ichor_hotsprings)
 "SV" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
+"SZ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_west)
 "Td" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
 /obj/structure/prop/leucanth/shadow_f,
@@ -2736,10 +4394,10 @@
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
 "To" = (
-/turf/open/cobaltite_wall/top{
-	dir = 4
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
 	},
-/area/space)
+/area/leucanth/exterior/n_caves)
 "Tq" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
@@ -2751,20 +4409,49 @@
 	},
 /area/leucanth/exterior/sw_barrens)
 "Tv" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top_2{
-	dir = 8
+	dir = 5
 	},
-/area/leucanth/exterior/cove/cave_west)
+/area/leucanth/exterior/cove/cave_north)
 "Ty" = (
 /turf/open/cobaltite_wall/base{
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/ichor_hotsprings)
 "TB" = (
-/turf/open/cobaltite_wall/mid{
+/turf/open/cobaltite_wall/cave_base{
 	dir = 1
 	},
 /area/leucanth/exterior/e_caves)
+"TG" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
+"TJ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 1
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_west)
+"TK" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_west)
+"TS" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/mid{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
 "TU" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
@@ -2786,6 +4473,17 @@
 	dir = 6
 	},
 /area/leucanth/exterior/ne_barrens)
+"Ud" = (
+/turf/open/cobaltite_wall/mid{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
+"Uf" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/cave_east)
 "Ug" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -2798,6 +4496,14 @@
 	dir = 5
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Ul" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 4
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Um" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
@@ -2806,8 +4512,20 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
 "Uw" = (
-/turf/open/cobaltite_wall/top,
-/area/space)
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_north)
+"Uz" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_north)
 "UD" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 8
@@ -2832,6 +4550,19 @@
 	dir = 10
 	},
 /area/leucanth/exterior/jungle/great_ferns)
+"UK" = (
+/turf/open/cobaltite_wall/top{
+	dir = 6
+	},
+/area/leucanth/exterior/n_caves)
+"UL" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 9
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_east)
 "UM" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 5
@@ -2850,6 +4581,14 @@
 	dir = 8
 	},
 /area/leucanth/interior/oob)
+"UR" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 6
+	},
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 5
+	},
+/area/leucanth/exterior/cove/cave_west)
 "UZ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
@@ -2864,10 +4603,16 @@
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
 "Vk" = (
-/turf/open/cobaltite_wall/mid{
+/turf/open/cobaltite_wall/cave_base{
 	dir = 1
 	},
 /area/leucanth/exterior/n_caves)
+"Vt" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/cave_east)
 "VB" = (
 /turf/open/cobaltite_wall/top{
 	dir = 4
@@ -2882,15 +4627,18 @@
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "VG" = (
-/turf/open/cobaltite_wall/cave_top_2{
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 4
 	},
-/area/leucanth/exterior/cove/cave_west)
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_north)
 "VH" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 8
 	},
-/area/leucanth/exterior/e_caves)
+/area/leucanth/exterior/cove/cave_east)
 "VP" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 4
@@ -2898,11 +4646,31 @@
 /obj/structure/prop/leucanth/shadow_f,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"VQ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/cave_north)
+"VT" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_west)
 "VX" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"Wq" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Wu" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 6
@@ -2919,16 +4687,38 @@
 	dir = 5
 	},
 /area/leucanth/interior/oob)
+"WC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
+	dir = 5
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/cave_east)
 "WD" = (
 /turf/open/cobaltite_wall/top{
 	dir = 10
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"WF" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 4
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "WG" = (
 /turf/open/cobaltite_wall/top{
 	dir = 9
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"WH" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "WI" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 5
@@ -2954,9 +4744,9 @@
 /area/leucanth/exterior/sw_barrens)
 "WP" = (
 /turf/open/cobaltite_wall/top{
-	dir = 9
+	dir = 4
 	},
-/area/space)
+/area/leucanth/exterior/n_caves)
 "WQ" = (
 /turf/open/cobaltite_wall/top{
 	dir = 5
@@ -2972,6 +4762,17 @@
 	dir = 5
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"WU" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
+"WY" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/jungle/great_ferns)
 "Xb" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 1
@@ -3026,6 +4827,11 @@
 "Xu" = (
 /turf/open/gm/river/ichor,
 /area/leucanth/exterior/ichor/pistil)
+"Xv" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "Xz" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
@@ -3034,6 +4840,7 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "XC" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 5
 	},
@@ -3053,6 +4860,13 @@
 	dir = 1
 	},
 /area/leucanth/exterior/nw_barrens)
+"XT" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "XU" = (
 /turf/open/cobaltite_wall/top{
 	dir = 8
@@ -3063,8 +4877,14 @@
 	dir = 10
 	},
 /area/leucanth/exterior/se_barrens)
+"XY" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/cave_north)
 "Ya" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 4
 	},
 /area/leucanth/exterior/e_caves)
@@ -3078,13 +4898,18 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"YB" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
 "YD" = (
 /turf/open/cobaltite_wall/top{
 	dir = 8
 	},
 /area/leucanth/interior/oob)
 "YI" = (
-/turf/open/cobaltite_wall/top{
+/turf/open/cobaltite_wall/cave_top{
 	dir = 8
 	},
 /area/leucanth/exterior/n_caves)
@@ -3093,11 +4918,38 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"YO" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
+	dir = 6
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
 "YR" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 4
+	},
 /turf/open/cobaltite_wall/cave_top{
 	dir = 6
 	},
-/area/leucanth/exterior/jungle/grassy_matts)
+/area/leucanth/exterior/cove/cave_west)
+"YY" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_2nd{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/jungle/ichor_hotsprings)
+"YZ" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_west)
 "Zb" = (
 /turf/open/cobaltite_wall/top{
 	dir = 1
@@ -3121,6 +4973,15 @@
 	dir = 1
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"Zr" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 8
+	},
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_east)
 "ZA" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/se_barrens)
@@ -3146,11 +5007,37 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"ZI" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 6
+	},
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"ZJ" = (
+/obj/structure/prop/leucanth/shadow,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/cave_west)
+"ZL" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/cave_west)
 "ZR" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
 	},
 /area/leucanth/exterior/sw_barrens)
+"ZS" = (
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
+	dir = 8
+	},
+/turf/open/cobaltite_wall/cave_top{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/cave_east)
 "ZW" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/jungle/grassy_matts)
@@ -3432,7 +5319,6 @@ ek
 ek
 ek
 ek
-ek
 hY
 hY
 hY
@@ -3498,74 +5384,75 @@ hY
 hY
 hY
 hY
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-WP
-yq
-yq
-yq
-yq
-yq
-yq
-yq
-Br
+hY
+hY
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Lk
+YD
+YD
+YD
+YD
+YD
+YD
+YD
+HJ
 nr
 "}
 (3,1,1) = {"
@@ -3634,51 +5521,34 @@ bw
 bw
 BA
 ek
-bh
-eW
-eW
-eW
-eW
-eW
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
 eW
 eW
 eW
 eW
 eW
 eW
-eW
-eW
-eW
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
 hY
 hY
 hY
@@ -3696,78 +5566,95 @@ eW
 eW
 eW
 eW
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+hY
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
 eW
 eW
 eW
 hY
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-WP
-yq
-yq
-yq
-yq
-yq
-Br
-Uw
+hY
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Lk
+YD
+YD
+YD
+YD
+YD
+HJ
+lr
 nr
 "}
 (4,1,1) = {"
@@ -3837,21 +5724,12 @@ vi
 lG
 bw
 eV
-gb
-gb
-DM
+tK
+tK
+XC
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
 hY
 hY
 hY
@@ -3875,17 +5753,11 @@ eW
 eW
 eW
 eW
-hG
-gb
-gb
-gb
-DM
 eW
 eW
 eW
-hY
-hY
-hY
+eW
+eW
 eW
 eW
 eW
@@ -3894,6 +5766,21 @@ hG
 gb
 gb
 gb
+DM
+eW
+eW
+eW
+hY
+hY
+hY
+eW
+eW
+eW
+eW
+hG
+gb
+gb
+gb
 gb
 gb
 DM
@@ -3902,74 +5789,74 @@ eW
 eW
 eW
 eW
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-bG
-WP
-yq
-yq
-yq
-Br
-Uw
-Uw
+hY
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Fn
+Lk
+YD
+YD
+YD
+HJ
+lr
+lr
 nr
 "}
 (5,1,1) = {"
@@ -4038,11 +5925,11 @@ vi
 vi
 vi
 vi
-vi
-Aa
-Aa
-og
-DM
+ER
+xL
+uB
+iU
+XC
 eW
 eW
 eW
@@ -4060,16 +5947,16 @@ eW
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
 eW
 eW
 eW
@@ -4086,7 +5973,7 @@ DM
 eW
 eW
 eW
-hY
+eW
 eW
 eW
 eW
@@ -4104,74 +5991,74 @@ eW
 eW
 eW
 eW
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-bG
-bG
-WP
-yq
-Br
-Uw
-Uw
-Uw
+hY
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Fn
+Fn
+Lk
+YD
+HJ
+lr
+lr
+lr
 nr
 "}
 (6,1,1) = {"
@@ -4241,10 +6128,10 @@ vi
 vi
 vi
 vi
-Aa
-Aa
-Aa
-og
+cU
+uB
+za
+zV
 DM
 eW
 eW
@@ -4263,14 +6150,14 @@ eW
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
+eW
+eW
+eW
 eW
 eW
 eW
@@ -4306,74 +6193,74 @@ DM
 eW
 eW
 eW
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-bG
-bG
-bG
+eW
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Fn
+Fn
+Fn
 Ca
-Uw
-Uw
-Uw
-Uw
+lr
+lr
+lr
+lr
 nr
 "}
 (7,1,1) = {"
@@ -4443,10 +6330,10 @@ vi
 vi
 vi
 vi
-Aa
-Aa
-Aa
-Aa
+ER
+xL
+ik
+uw
 og
 DM
 eW
@@ -4466,13 +6353,13 @@ eW
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
+eW
+eW
 eW
 hG
 gb
@@ -4508,74 +6395,74 @@ og
 DM
 eW
 eW
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-bG
-bG
-RF
-To
-hM
-Uw
-Uw
-Uw
+eW
+hY
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Fn
+Fn
+Wy
+PE
+iz
+lr
+lr
+lr
 nr
 "}
 (8,1,1) = {"
@@ -4645,11 +6532,11 @@ vi
 vi
 vi
 vi
-Aa
-Aa
-Aa
-Aa
-Aa
+vi
+cU
+ik
+uw
+PB
 og
 gb
 gb
@@ -4669,11 +6556,11 @@ eW
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
 eW
 eW
 uK
@@ -4710,24 +6597,24 @@ Aa
 og
 DM
 eW
-th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+eW
+eW
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -4745,39 +6632,39 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-bG
-RF
-To
-To
-To
-hM
-Uw
-Uw
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Fn
+Wy
+PE
+PE
+PE
+iz
+lr
+lr
 nr
 "}
 (9,1,1) = {"
@@ -4847,11 +6734,11 @@ vi
 vi
 vi
 vi
-Aa
-Aa
-Aa
-Aa
-Aa
+vi
+cU
+ik
+uw
+PB
 Aa
 Aa
 Aa
@@ -4871,11 +6758,11 @@ DM
 eW
 eW
 eW
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
 eW
 eW
 uK
@@ -4912,24 +6799,24 @@ Aa
 Aa
 XD
 eW
+eW
+eW
 th
-th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -4947,39 +6834,39 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-bG
-RF
-To
-To
-To
-To
-To
-hM
-Uw
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Fn
+Wy
+PE
+PE
+PE
+PE
+PE
+iz
+lr
 nr
 "}
 (10,1,1) = {"
@@ -5049,11 +6936,11 @@ vi
 vi
 vi
 vi
-Aa
-Aa
-Aa
-Aa
-Aa
+vi
+cU
+ik
+uw
+PB
 Aa
 Aa
 Aa
@@ -5073,11 +6960,11 @@ og
 DM
 eW
 eW
-hY
-hY
-hY
-hY
-hY
+eW
+eW
+eW
+eW
+eW
 eW
 hG
 ye
@@ -5114,24 +7001,24 @@ Aa
 Aa
 og
 DM
+eW
+eW
 th
-th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -5149,39 +7036,39 @@ go
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-RF
-To
-To
-To
-To
-To
-To
-To
-hM
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+Wy
+PE
+PE
+PE
+PE
+PE
+PE
+PE
+iz
 nr
 "}
 (11,1,1) = {"
@@ -5251,11 +7138,11 @@ vi
 vi
 vi
 vi
-bL
-lM
-dL
-Nb
-Aa
+ef
+GR
+eC
+in
+PB
 Aa
 Aa
 Aa
@@ -5277,9 +7164,9 @@ DM
 eW
 eW
 eW
-hY
-hY
-hY
+eW
+eW
+eW
 eW
 uK
 AU
@@ -5316,24 +7203,24 @@ Aa
 Aa
 Aa
 XD
+eW
+eW
 th
-th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 ib
@@ -5351,39 +7238,39 @@ WL
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-nr
-nr
-nr
-nr
-nr
-nr
-nr
-nr
-nr
-nr
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+LC
+LC
+LC
+LC
+LC
+LC
+LC
+LC
+LC
+LC
 nr
 "}
 (12,1,1) = {"
@@ -5453,10 +7340,10 @@ vi
 vi
 vi
 ef
-wX
+Ms
 eW
-wC
-lM
+Et
+cY
 dL
 Nb
 Aa
@@ -5479,9 +7366,9 @@ XD
 eW
 eW
 eW
-hY
-hY
-hY
+eW
+eW
+eW
 eW
 wC
 dL
@@ -5516,21 +7403,21 @@ Aa
 Aa
 Aa
 Aa
-Aa
-XD
+rF
+MB
+eW
+eW
 th
-th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -5574,18 +7461,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (13,1,1) = {"
@@ -5655,7 +7542,7 @@ vi
 ef
 GI
 Ms
-hY
+ek
 eW
 eW
 eW
@@ -5681,9 +7568,9 @@ XD
 eW
 eW
 eW
-hY
-hY
-hY
+eW
+eW
+eW
 eW
 hG
 ye
@@ -5717,22 +7604,22 @@ Aa
 Aa
 Aa
 Aa
-Aa
-cV
+rF
+Pw
 iU
 XC
+eW
 th
-th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -5776,18 +7663,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (14,1,1) = {"
@@ -5857,7 +7744,7 @@ vi
 vU
 ek
 ek
-hY
+ek
 eW
 eW
 eW
@@ -5883,9 +7770,9 @@ XD
 eW
 eW
 eW
-hY
-hY
-hY
+eW
+eW
+eW
 eW
 uK
 AU
@@ -5918,23 +7805,23 @@ dL
 Nb
 Aa
 Aa
-cV
-cV
-cV
-cV
-iU
-XC
+rF
+Pw
+Rn
+dk
+zV
+go
 th
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -5978,18 +7865,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (15,1,1) = {"
@@ -6059,7 +7946,7 @@ vi
 lG
 BA
 ek
-hY
+ek
 eW
 eW
 eW
@@ -6118,25 +8005,25 @@ eW
 eW
 uK
 AU
-cV
-cV
-cV
-cV
-cV
-cV
-cV
-eG
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+az
+rF
+Pw
+Rn
+ja
+bm
+ZI
+WL
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 Fa
 Fa
 Fa
@@ -6180,18 +8067,18 @@ go
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (16,1,1) = {"
@@ -6261,7 +8148,7 @@ vi
 vi
 vU
 ek
-eW
+bh
 eW
 eW
 hG
@@ -6318,14 +8205,14 @@ eW
 eW
 eW
 eW
-qV
+Lr
 MR
-cV
-cV
-cV
-cV
-cV
-xT
+rF
+Pw
+Rn
+ja
+bm
+ZI
 xT
 WQ
 go
@@ -6382,18 +8269,18 @@ WQ
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (17,1,1) = {"
@@ -6521,12 +8408,12 @@ eW
 eW
 eW
 PC
-eC
-in
-cV
-cV
-cV
-xT
+YZ
+jj
+Rn
+ja
+bm
+ZI
 xT
 xT
 xT
@@ -6584,18 +8471,18 @@ xT
 WQ
 go
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (18,1,1) = {"
@@ -6722,12 +8609,12 @@ eW
 eW
 eW
 eW
-aE
-PC
-eC
-in
-cV
-xT
+ys
+NO
+tL
+Ci
+CQ
+ZI
 xT
 xT
 xT
@@ -6786,18 +8673,18 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (19,1,1) = {"
@@ -6924,11 +8811,11 @@ eW
 eW
 eW
 eW
-zB
-ib
-eu
-to
-xT
+ys
+pz
+HH
+pV
+pE
 xT
 xT
 xT
@@ -6988,18 +8875,18 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (20,1,1) = {"
@@ -7190,18 +9077,18 @@ xT
 xT
 WQ
 go
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (21,1,1) = {"
@@ -7393,17 +9280,17 @@ xT
 xT
 WQ
 go
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (22,1,1) = {"
@@ -7595,17 +9482,17 @@ xT
 xT
 xT
 WL
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (23,1,1) = {"
@@ -7797,17 +9684,17 @@ xT
 xT
 bE
 Tr
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (24,1,1) = {"
@@ -7999,17 +9886,17 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (25,1,1) = {"
@@ -8201,17 +10088,17 @@ xT
 bE
 Tr
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (26,1,1) = {"
@@ -8402,18 +10289,18 @@ xT
 bE
 Tr
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (27,1,1) = {"
@@ -8604,18 +10491,18 @@ bE
 Tr
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (28,1,1) = {"
@@ -8806,18 +10693,18 @@ Tr
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (29,1,1) = {"
@@ -8936,9 +10823,9 @@ Aa
 Aa
 Aa
 Aa
-cV
-iU
-XC
+rF
+Bk
+UR
 jo
 ir
 kK
@@ -9008,18 +10895,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (30,1,1) = {"
@@ -9138,9 +11025,9 @@ Aa
 Aa
 Aa
 Aa
-cV
-cV
-eG
+cU
+uB
+HX
 pu
 ql
 tE
@@ -9210,18 +11097,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (31,1,1) = {"
@@ -9339,11 +11226,11 @@ Aa
 Aa
 Aa
 Aa
-cV
-cV
-cV
-VG
-gG
+rF
+Pw
+YO
+om
+Ud
 Ti
 tE
 tE
@@ -9412,18 +11299,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (32,1,1) = {"
@@ -9493,16 +11380,16 @@ vi
 lG
 BA
 ek
-xK
-xK
-xK
-Lr
-LH
-hN
-hN
-hN
-hN
-Rp
+eW
+eW
+eW
+wK
+TK
+OF
+OF
+OF
+OF
+MB
 eW
 uK
 AU
@@ -9541,11 +11428,11 @@ Aa
 Aa
 Aa
 Aa
-cV
-cV
-cV
-MV
-MV
+cU
+YO
+BI
+bm
+ZI
 MV
 tE
 tE
@@ -9614,18 +11501,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (33,1,1) = {"
@@ -9698,14 +11585,14 @@ ZW
 ZW
 ZW
 ZW
-Ng
-jW
-hN
-hN
-hN
-hN
-dO
-de
+NE
+ZL
+uB
+uB
+uB
+uB
+iU
+XC
 uK
 AU
 Aa
@@ -9741,12 +11628,12 @@ Aa
 Aa
 Aa
 Aa
-Aa
-cV
-cV
-cV
-cV
-MV
+rF
+OF
+wH
+BI
+bm
+ZI
 MV
 tE
 tE
@@ -9816,18 +11703,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (34,1,1) = {"
@@ -9899,15 +11786,15 @@ dO
 NJ
 ZW
 ZW
-oN
-HB
-jW
-hN
-hN
-hN
-hN
-hN
-MB
+SZ
+hs
+Ah
+uB
+uB
+uB
+uB
+uB
+Dv
 uK
 AU
 Aa
@@ -9943,11 +11830,11 @@ Aa
 Aa
 Aa
 Aa
-Aa
-cV
-cV
-cV
-MV
+cU
+Rn
+BI
+bm
+ZI
 MV
 MV
 tE
@@ -10018,18 +11905,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (35,1,1) = {"
@@ -10101,16 +11988,16 @@ hN
 dO
 NJ
 ZW
-Ng
-jW
-hN
-hN
-hN
-hN
-hN
-CC
-OL
-Kw
+NE
+ZL
+uB
+uB
+uB
+uB
+uB
+Ag
+lk
+wC
 dL
 Nb
 Aa
@@ -10145,10 +12032,10 @@ Aa
 Aa
 Aa
 Aa
-Tv
-in
-cV
-cV
+TJ
+yz
+uw
+ZJ
 MV
 MV
 MV
@@ -10220,18 +12107,18 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (36,1,1) = {"
@@ -10303,16 +12190,16 @@ hN
 hN
 dO
 VB
-HB
-eH
-gs
-hN
-hN
-hN
-hN
-Rp
-ZW
-xK
+YR
+sb
+qC
+qC
+qC
+qC
+zL
+Dv
+eW
+eW
 wC
 Kq
 nV
@@ -10347,9 +12234,9 @@ Aa
 Aa
 Aa
 Xh
-PC
+tA
 eC
-aI
+zS
 tt
 MV
 MV
@@ -10422,18 +12309,18 @@ go
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (37,1,1) = {"
@@ -10511,14 +12398,14 @@ hN
 hN
 hN
 hN
-sd
-OL
-ZW
-xK
-Lr
-LH
-hN
-hN
+EU
+Ft
+eW
+eW
+uK
+AU
+Aa
+Aa
 Aa
 Aa
 Aa
@@ -10624,18 +12511,18 @@ WL
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (38,1,1) = {"
@@ -10715,12 +12602,12 @@ hN
 hN
 hN
 dO
-oN
-VB
-YR
-eH
-qL
-hN
+mJ
+tK
+al
+uj
+Aa
+Aa
 Aa
 Aa
 Aa
@@ -10824,20 +12711,20 @@ xT
 xT
 WQ
 go
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (39,1,1) = {"
@@ -10917,14 +12804,14 @@ hN
 hN
 hN
 hN
-Pf
-eH
-qL
-hN
-hN
-hN
-hN
-hN
+ls
+VT
+ik
+Oj
+ai
+Aa
+Aa
+Aa
 Aa
 Aa
 Aa
@@ -11026,20 +12913,20 @@ xT
 xT
 xT
 WL
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (40,1,1) = {"
@@ -11120,13 +13007,13 @@ hN
 hN
 hN
 hN
-hN
-hN
-hN
-hN
-hN
-hN
-hN
+cU
+oY
+Oh
+Fe
+ai
+Aa
+Aa
 Xh
 lM
 lM
@@ -11228,20 +13115,20 @@ xT
 xT
 bE
 Tr
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (41,1,1) = {"
@@ -11322,19 +13209,19 @@ hN
 hN
 hN
 hN
-hN
-hN
-hN
-hN
-hN
-ud
-Ky
-zR
-xK
-xK
-xK
-xK
-xK
+ER
+xL
+ik
+uw
+KH
+Xh
+lM
+Xp
+eW
+eW
+eW
+eW
+eW
 eW
 uK
 AU
@@ -11430,20 +13317,20 @@ bE
 iI
 Tr
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (42,1,1) = {"
@@ -11525,17 +13412,17 @@ hN
 hN
 hN
 hN
-hN
-hN
-hN
+cU
+ik
+uw
 ud
-zR
-xK
-xK
-xK
-xK
-xK
-xK
+Xp
+eW
+eW
+eW
+eW
+eW
+eW
 hG
 gb
 ye
@@ -11632,20 +13519,20 @@ Tr
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (43,1,1) = {"
@@ -11669,11 +13556,11 @@ vi
 vi
 vi
 vi
-ek
-ek
-ek
-ek
-ek
+ef
+qy
+GI
+GI
+GI
 Ne
 QQ
 wd
@@ -11727,15 +13614,15 @@ hN
 hN
 hN
 hN
-hN
-CC
-xh
-OL
+cU
+il
+wx
+zR
 xK
 xK
-xK
-xK
-xK
+eW
+eW
+eW
 eW
 hG
 ye
@@ -11834,20 +13721,20 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (44,1,1) = {"
@@ -11871,12 +13758,12 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
 ek
 ek
-ek
-ek
+qy
 JU
 Ge
 XS
@@ -11929,15 +13816,15 @@ hN
 hN
 hN
 hN
-CC
-OL
-ZW
-ZW
+Rr
+zR
 xK
 xK
 xK
 xK
-xK
+eW
+eW
+eW
 hG
 ye
 He
@@ -12036,20 +13923,20 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (45,1,1) = {"
@@ -12073,12 +13960,12 @@ vi
 vi
 vi
 vi
+lG
+BA
 ek
 ek
 ek
-ek
-ek
-ek
+pb
 sB
 Pt
 vi
@@ -12132,9 +14019,9 @@ hN
 hN
 hN
 Rp
-ZW
-ZW
-ZW
+xK
+xK
+xK
 xK
 xK
 xK
@@ -12238,20 +14125,20 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (46,1,1) = {"
@@ -12276,11 +14163,11 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
 ek
-ek
-ek
+pb
 sB
 Pt
 vi
@@ -12334,10 +14221,10 @@ hN
 hN
 hN
 Rp
-ZW
-ZW
-ZW
-ZW
+xK
+xK
+xK
+xK
 xK
 xK
 xK
@@ -12437,23 +14324,23 @@ WQ
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (47,1,1) = {"
@@ -12478,11 +14365,11 @@ vi
 vi
 vi
 vi
-ek
+vU
 ek
 ek
 ZW
-ZW
+qw
 gY
 eK
 pJ
@@ -12492,10 +14379,10 @@ hN
 hN
 hN
 hN
-ZW
-ZW
-ZW
-ZW
+CC
+xh
+xh
+qw
 gY
 eK
 pJ
@@ -12537,9 +14424,9 @@ hN
 hN
 dO
 NJ
-ZW
-ZW
-ZW
+xK
+xK
+xK
 xK
 xK
 xK
@@ -12639,23 +14526,23 @@ xT
 WL
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (48,1,1) = {"
@@ -12680,12 +14567,12 @@ vi
 vi
 vi
 vi
-ek
+vU
 ek
 ek
 ZW
 ZW
-ZW
+qw
 gY
 eK
 pJ
@@ -12694,11 +14581,11 @@ hN
 hN
 hN
 sd
+OL
 ZW
 ZW
 ZW
-ZW
-ZW
+qw
 gY
 eK
 pJ
@@ -12841,23 +14728,23 @@ xT
 WL
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (49,1,1) = {"
@@ -12882,13 +14769,13 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
-ek
 ZW
 ZW
 ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -12896,12 +14783,12 @@ hN
 hN
 hN
 hN
+dO
+NJ
 ZW
 ZW
-ZW
-ZW
-ZW
-ZW
+oN
+HB
 eH
 qL
 hN
@@ -13043,23 +14930,23 @@ xT
 WQ
 go
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (50,1,1) = {"
@@ -13084,13 +14971,13 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
-ek
 ZW
 ZW
 ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -13099,10 +14986,10 @@ hN
 hN
 hN
 hN
+Rp
 ZW
-ZW
-ZW
-ZW
+oN
+HB
 eH
 qL
 hN
@@ -13245,23 +15132,23 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (51,1,1) = {"
@@ -13286,13 +15173,13 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
-ek
 ZW
 ZW
 ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -13300,10 +15187,10 @@ hN
 hN
 hN
 hN
+CC
+OL
 ZW
-ZW
-ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -13447,23 +15334,23 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (52,1,1) = {"
@@ -13488,13 +15375,13 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
-ek
 ZW
 ZW
 ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -13502,11 +15389,11 @@ hN
 hN
 hN
 hN
+Rp
 ZW
 ZW
-ZW
-ZW
-ZW
+qw
+gY
 eK
 pJ
 hN
@@ -13649,23 +15536,23 @@ xT
 xT
 WL
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (53,1,1) = {"
@@ -13690,13 +15577,13 @@ vi
 vi
 vi
 vi
+vU
 ek
 ek
-ek
 ZW
 ZW
 ZW
-ZW
+qw
 gY
 eK
 pJ
@@ -13704,11 +15591,11 @@ hN
 hN
 hN
 hN
+dO
+NJ
 ZW
-ZW
-ZW
-ZW
-ZW
+oN
+HB
 eH
 qL
 hN
@@ -13854,20 +15741,20 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (54,1,1) = {"
@@ -13891,15 +15778,15 @@ vi
 vi
 vi
 vi
+ef
+Ms
 ek
 ek
-ek
-ek
 ZW
 ZW
 ZW
 ZW
-ZW
+Ng
 jW
 tV
 hN
@@ -13907,9 +15794,9 @@ hN
 hN
 hN
 hN
-ZW
-ZW
-ZW
+dO
+VB
+HB
 eH
 qL
 hN
@@ -13964,9 +15851,9 @@ uK
 AU
 Aa
 Aa
-cV
-FO
-KL
+rF
+ea
+ao
 xK
 Ng
 LH
@@ -14056,20 +15943,20 @@ go
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (55,1,1) = {"
@@ -14092,8 +15979,8 @@ vi
 vi
 vi
 vi
-ek
-ek
+At
+Ms
 ek
 ek
 ek
@@ -14101,7 +15988,7 @@ ZW
 ZW
 ZW
 ZW
-ZW
+qw
 gY
 eK
 pJ
@@ -14161,12 +16048,12 @@ hN
 hN
 hN
 Rp
-hG
-ye
-He
-cV
-cV
-cV
+SZ
+cJ
+eL
+OF
+OF
+Pw
 iU
 XC
 oN
@@ -14258,20 +16145,20 @@ WQ
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (56,1,1) = {"
@@ -14293,18 +16180,18 @@ vi
 vi
 vi
 vi
-vi
-ek
-ek
-ek
-ek
-ek
-ZW
-ZW
-ZW
-ZW
-ZW
-ZW
+LF
+MH
+bG
+bG
+bG
+bG
+bG
+xK
+xK
+xK
+xK
+qw
 gY
 eK
 pJ
@@ -14363,17 +16250,17 @@ hN
 hN
 hN
 Rp
-qV
-MR
-cV
-cV
-cV
-cV
-cV
-iU
+NE
+ZL
+uB
+uB
+YO
+zo
+lD
+zV
 HB
 eH
-hN
+qL
 hN
 hN
 hN
@@ -14462,18 +16349,18 @@ Bi
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (57,1,1) = {"
@@ -14494,21 +16381,21 @@ vi
 vi
 vi
 vi
-vi
-vi
-ek
-ek
-ek
-ek
-ek
-Qm
-Qm
-Qm
-Qm
-Qm
-ZW
-ZW
-ZW
+LF
+wB
+HP
+bG
+bG
+bG
+bG
+NG
+EN
+EN
+EN
+EN
+dl
+qw
+xh
 gY
 eK
 pJ
@@ -14565,13 +16452,13 @@ hN
 hN
 hN
 Rp
-qV
-MR
-cV
-cV
-cV
-cV
-hN
+NE
+ZL
+uB
+YO
+BI
+bm
+ZI
 hN
 hN
 hN
@@ -14665,17 +16552,17 @@ WQ
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (58,1,1) = {"
@@ -14694,24 +16581,24 @@ vi
 vi
 vi
 vi
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Qm
+LF
+fV
+wB
+Qo
+HP
+bG
+bG
+bG
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
-Qm
-ZW
-ZW
-ZW
+Ps
+Ky
+dl
+xK
+qw
 gY
 eK
 pJ
@@ -14767,12 +16654,12 @@ hN
 hN
 hN
 Rp
-PC
-eC
-in
-cV
-cV
-hN
+NO
+oh
+sy
+BI
+bm
+ZI
 hN
 hN
 hN
@@ -14867,17 +16754,17 @@ xT
 WQ
 go
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (59,1,1) = {"
@@ -14892,29 +16779,29 @@ ek
 qy
 GI
 GI
-qc
-UD
+sw
+RH
+fV
+fV
+wB
 Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
+Qo
+Qo
+HP
+bG
+bG
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-ZW
-ZW
+Ps
+Ky
+KL
+xK
+qw
 kv
 gI
 gs
@@ -14970,9 +16857,9 @@ hN
 hN
 Rp
 xK
-PC
-xO
-gI
+Pa
+iE
+Ii
 gs
 hN
 hN
@@ -15071,52 +16958,52 @@ WQ
 go
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (60,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+Uw
+XY
+Os
+Qo
+Qo
+Qo
+SG
+tr
+tr
+fc
+bG
 NG
 jq
-Pi
-jx
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
+Ps
+Kw
+xK
+Ng
 jW
 tV
 hN
@@ -15273,42 +17160,41 @@ xT
 WQ
 go
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (61,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 NG
 EN
+VG
+Cs
+tr
+tr
+tr
+tr
+ed
+Ps
+Ps
+Kw
+NG
 jq
-Pi
-jx
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -15316,9 +17202,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
+Ps
+Kw
+xK
+Ng
 jW
 tV
 hN
@@ -15481,23 +17368,22 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
+Vc
+Vc
+Vc
 nr
 "}
 (62,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -15506,10 +17392,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -15518,9 +17404,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
+Ps
+Kw
+xK
+Ng
 jW
 tV
 hN
@@ -15683,22 +17570,21 @@ Fa
 Fa
 Fa
 Fa
-eq
-eq
-eq
+Vc
+Vc
+Vc
 nr
 "}
 (63,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -15707,10 +17593,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+FO
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -15719,10 +17605,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
-HB
+Ps
+FO
+mD
+Uw
+aY
 eH
 qL
 hN
@@ -15885,21 +17772,20 @@ go
 Fa
 Fa
 Fa
-eq
-eq
-eq
+Vc
+Vc
+Vc
 nr
 "}
 (64,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -15909,9 +17795,9 @@ Ps
 Ps
 Ps
 Ps
-jq
-Pi
-jx
+Ps
+bA
+hH
 Ps
 Ps
 Ps
@@ -15920,13 +17806,14 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-ZW
-HB
-eH
-qL
-hN
+Ps
+FO
+To
+Uw
+XY
+Kj
+kh
+GW
 hN
 hN
 hN
@@ -16088,20 +17975,20 @@ Bi
 go
 Fa
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (65,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
+Ps
 Ps
 Ps
 Ps
@@ -16111,8 +17998,8 @@ Ps
 Ps
 Ps
 QP
-eI
-wf
+cV
+Ps
 Ps
 Ps
 Ps
@@ -16122,14 +18009,14 @@ Ps
 Ps
 Ps
 Qy
-Qm
-Qm
-HB
-eH
-qL
-hN
-hN
-hN
+NG
+EN
+iA
+Os
+KU
+Rc
+wA
+cr
 hN
 hN
 hN
@@ -16290,19 +18177,18 @@ xT
 WQ
 go
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (66,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -16311,10 +18197,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+FO
 jq
-Pi
-jx
+hH
+Ps
 Ps
 Ps
 Ps
@@ -16325,13 +18212,13 @@ Ps
 Ps
 Ps
 bA
-Pi
-qL
-hN
-hN
-hN
-hN
-hN
+hH
+Nh
+Qo
+Qo
+CX
+kh
+GW
 hN
 hN
 hN
@@ -16492,18 +18379,17 @@ xT
 xT
 WL
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (67,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -16512,10 +18398,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+FO
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -16529,12 +18415,13 @@ Ps
 Ps
 Ps
 Ps
-hN
-hN
-hN
-hN
-hN
-hN
+pN
+Qo
+Qo
+KU
+Rc
+wA
+cr
 hN
 hN
 hN
@@ -16694,29 +18581,28 @@ xT
 xT
 WL
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (68,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+FO
+YI
+YI
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -16731,12 +18617,13 @@ Ps
 Ps
 Ps
 Ps
-Ps
-hN
-hN
-hN
-hN
-hN
+zc
+JZ
+Qo
+Qo
+CX
+kh
+GW
 hN
 hN
 hN
@@ -16896,32 +18783,27 @@ xT
 xT
 WL
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (69,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
-Ps
+Kw
+bG
+sl
+cV
 Ps
 Ps
 Ps
@@ -16935,8 +18817,13 @@ Ps
 Ps
 Ps
 Ps
-ZW
-gY
+Ps
+Ps
+Ps
+pN
+Qo
+VQ
+GN
 eK
 pJ
 hN
@@ -17098,33 +18985,27 @@ xT
 xT
 WL
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (70,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
-Ps
-Ps
+Kw
+bG
+sl
+cV
 Ps
 Ps
 Ps
@@ -17136,8 +19017,14 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
+Ps
+Ps
+Ps
+Ps
+Ps
+pN
+VQ
+bf
 ZW
 gY
 eK
@@ -17300,28 +19187,27 @@ xT
 bE
 Tr
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (71,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+FO
+To
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -17335,10 +19221,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+FO
+YI
+HZ
+bf
 ZW
 ZW
 ZW
@@ -17502,27 +19389,26 @@ xT
 WL
 Fa
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (72,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+FO
+To
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -17536,16 +19422,17 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+FO
+To
+bG
+bG
+xK
 ZW
 ZW
-ZW
-ZW
+HB
 eH
-qL
+hN
 hN
 hN
 hN
@@ -17704,26 +19591,25 @@ bE
 Tr
 Fa
 Fa
-eq
-eq
+Vc
+Vc
 nr
 "}
 (73,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -17738,15 +19624,16 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+bG
+bG
+xK
 ZW
-ZW
-ZW
+Ng
 jW
-tV
+hN
 hN
 hN
 hN
@@ -17905,26 +19792,25 @@ bE
 Tr
 Fa
 Fa
-eq
-eq
-eq
+Vc
+Vc
+Vc
 nr
 "}
 (74,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -17941,15 +19827,16 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
-ZW
+Ps
+Kw
+xK
+xK
+xK
 ZW
 ZW
 gY
 eK
-pJ
+hN
 hN
 hN
 bZ
@@ -18106,26 +19993,25 @@ bE
 Tr
 Fa
 Fa
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (75,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
+Ps
 Ps
 Ps
 Ps
 bA
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -18143,18 +20029,19 @@ Ps
 Ps
 Ps
 Ps
-Qm
-ZW
-ZW
-ZW
+Ps
+Kw
+xK
+xK
+xK
 ZW
 ZW
 ZW
 gY
 eK
-pJ
 hN
-ZW
+hN
+qw
 gY
 eK
 pJ
@@ -18307,21 +20194,21 @@ bE
 Tr
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (76,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
+Ps
 Ps
 Ps
 Ps
@@ -18333,8 +20220,7 @@ Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -18344,18 +20230,19 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+FO
+To
+xK
+xK
+xK
+xK
 ZW
 ZW
 ZW
-ZW
-ZW
-ZW
-ZW
-ZW
-ZW
-ZW
+xh
+xh
+xh
 ZW
 ZW
 jW
@@ -18509,20 +20396,19 @@ Tr
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (77,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -18533,26 +20419,27 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+FO
+sl
+cV
+Ps
 Ps
 Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+FO
+To
+bG
+bG
+bG
+bG
+bG
+bG
 Qm
 Qm
 Qm
@@ -18710,21 +20597,20 @@ Tr
 Fa
 Fa
 Fa
-eq
-eq
-eq
-eq
-eq
-eq
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 nr
 "}
 (78,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -18734,30 +20620,31 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
+Ps
+FO
+To
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+FO
+Fl
+YI
+YI
+YI
+To
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 uW
 uW
 uW
@@ -18909,25 +20796,24 @@ Vc
 Vc
 Vc
 QH
-gy
-gy
-gy
-gy
-gy
-gy
-gy
-gy
+QH
+QH
+QH
+QH
+QH
+QH
+QH
+QH
 eq
 nr
 "}
 (79,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -18935,33 +20821,34 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+Ps
+FO
+To
+bG
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-uW
-uW
+Ps
+Ky
+KL
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+kI
+kI
 uW
 rx
 qX
@@ -19118,18 +21005,17 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (80,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -19137,33 +21023,34 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+Ps
+Ky
+EN
+KL
+sl
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-uW
-uW
+Ps
+Kw
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+Uw
+oE
+oE
+HE
 rx
 qX
 Pe
@@ -19320,54 +21207,54 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (81,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 Fl
 qc
-UD
+hM
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ky
+jq
+hH
+Ps
+Ps
+Ps
+Ps
+Ps
+Ky
+EN
+KL
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+NG
+EN
+EN
+iA
+Os
 Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-jq
-Pi
-jx
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-jq
-Pi
-Pe
-nD
-nD
-nD
+CX
+kh
+GW
 nD
 nD
 nD
@@ -19522,20 +21409,19 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (82,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
 Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -19553,23 +21439,24 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+bG
+bG
+bG
+bG
+NG
+EN
 jq
-Pi
-jx
+hH
 Ps
-Ps
-nD
-nD
-nD
-nD
+pN
+Qo
+Qo
+CX
+kh
+GW
 nD
 nD
 nD
@@ -19724,23 +21611,22 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (83,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
 Fl
 YI
 YI
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -19756,22 +21642,23 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+bG
+bG
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
-Ps
-nD
-nD
-nD
-nD
+pN
+Qo
+Qz
+Dy
+Al
+ya
 nD
 nD
 nD
@@ -19926,25 +21813,24 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (84,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 Fl
 YI
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -19959,20 +21845,21 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
 Ps
-Ps
-nD
-nD
-nD
+pN
+Qo
+CX
+kh
+GW
 nD
 nD
 nD
@@ -20128,53 +22015,53 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (85,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 Fl
 qc
-UD
+hM
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+Ps
+pN
 Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-nD
-nD
-nD
+CX
+kh
+GW
 nD
 nD
 nD
@@ -20330,27 +22217,26 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (86,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -20364,18 +22250,19 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Ky
+sl
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-WD
-Ey
+Ps
+aW
+Wq
+AF
+Fz
 Lj
 nD
 nD
@@ -20532,27 +22419,27 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (87,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 sl
-eI
-wf
+cV
+Ps
 Ps
 Ps
 Ps
@@ -20568,15 +22455,15 @@ Ps
 Ps
 Ps
 bA
-Pi
-jx
+hH
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-uW
+Ps
+Kw
+bG
+Pr
 Dc
 Xf
 nD
@@ -20721,7 +22608,7 @@ aL
 PT
 qA
 QI
-qp
+Jt
 xI
 uY
 Vc
@@ -20734,27 +22621,26 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (88,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -20776,9 +22662,10 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-uW
+Ps
+Ky
+KL
+Pr
 Dc
 Xf
 nD
@@ -20936,26 +22823,25 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (89,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -20979,8 +22865,9 @@ Ps
 Ps
 Ps
 Ps
-Qm
-uW
+Ps
+Kw
+Pr
 Dc
 Xf
 nD
@@ -21138,26 +23025,25 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (90,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -21181,8 +23067,9 @@ Ps
 Ps
 Ps
 Ps
-Qm
-uW
+Ps
+Kw
+Ix
 WD
 Ey
 Lj
@@ -21335,32 +23222,32 @@ Vc
 QH
 SJ
 SJ
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (91,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 NG
 EN
 EN
 zv
 Vk
-Eu
+Ps
 Ps
 Ps
 Ps
@@ -21372,8 +23259,7 @@ Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -21382,10 +23268,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-uW
-uW
+Ps
+FO
+To
+kI
+VX
 Gh
 sA
 wc
@@ -21537,29 +23424,28 @@ Vc
 QH
 SJ
 SJ
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (92,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
+bG
 NG
 EN
 EN
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -21573,20 +23459,21 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-uW
+Ps
+FO
+To
+bG
+VX
 rx
 qX
 Pe
@@ -21739,26 +23626,25 @@ Vc
 QH
 SJ
 SJ
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (93,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -21775,20 +23661,21 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-uW
+Ps
+FO
+To
+bG
+bG
+Pr
 Dc
 Xf
 nD
@@ -21946,20 +23833,19 @@ SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (94,1,1) = {"
 nr
-Qm
-Qm
-Qm
-Qm
+bG
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -21977,20 +23863,21 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Ky
+sl
+cV
+Ps
 Ps
 Ps
 Ps
 Ps
 Qy
-Qm
-Qm
-Qm
-Qm
-uW
+To
+bG
+bG
+bG
+Pr
 Dc
 Xf
 nD
@@ -22143,24 +24030,23 @@ PE
 QH
 SJ
 SJ
-gy
-gy
+QH
+QH
 SJ
 SJ
-gy
-gy
+QH
+QH
 eq
 nr
 "}
 (95,1,1) = {"
 nr
-Qm
-Qm
-Qm
+bG
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -22180,19 +24066,20 @@ Ps
 Ps
 Ps
 Ps
-Qm
-eI
-wf
+Ps
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-uW
+Ps
+Kw
+bG
+bG
+bG
+Pr
 Dc
 Xf
 nD
@@ -22342,34 +24229,33 @@ aL
 aL
 aL
 aL
-Bn
-SJ
-SJ
-gy
 SJ
 SJ
 SJ
+QH
 SJ
-gy
+SJ
+SJ
+SJ
+QH
 eq
 nr
 "}
 (96,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 NG
 jq
-Pi
-jx
+hH
+Ps
 Ps
 Ps
 Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -22382,20 +24268,21 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-rx
-qX
+Ps
+Ky
+KL
+bG
+Uw
+aY
+qM
 Pe
 nD
 nD
@@ -22547,33 +24434,32 @@ aL
 QH
 SJ
 SJ
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (97,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+YI
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -22584,22 +24470,23 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-jq
-qX
-Pe
-nD
-nD
+Ps
+Kw
+Uw
+XY
+by
+dU
+wA
+cr
 nD
 nD
 nD
@@ -22746,37 +24633,36 @@ aL
 aL
 aL
 aL
-Bn
-SJ
-SJ
-gy
 SJ
 SJ
 SJ
+QH
 SJ
-gy
+SJ
+SJ
+SJ
+QH
 eq
 nr
 "}
 (98,1,1) = {"
 nr
-Qm
-Qm
+bG
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -22786,23 +24672,24 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-Xf
-nD
-nD
-nD
-nD
+Ps
+Kw
+rq
+Cs
+Hs
+ab
+dU
+wA
+cr
 nD
 nD
 nD
@@ -22951,34 +24838,21 @@ aL
 QH
 SJ
 SJ
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (99,1,1) = {"
 nr
-Qm
+bG
 NG
 jq
-Pi
-jx
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+hH
 Ps
 Ps
 Ps
@@ -22986,25 +24860,38 @@ Ps
 Ps
 Ps
 Ps
+Kw
+bG
+bG
+sl
+cV
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ky
+KL
+Fl
 zv
 Vk
-Eu
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 jq
-Pi
-Pe
-nD
-nD
-nD
-nD
+hH
+FS
+Qo
+Rm
+kh
+GW
 nD
 nD
 nD
@@ -23151,23 +25038,22 @@ aL
 aL
 aL
 QH
-gy
-gy
-gy
+QH
+QH
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (100,1,1) = {"
 nr
-Qm
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -23175,13 +25061,13 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+bG
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -23191,21 +25077,22 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
-Qm
+Ps
+FO
 jq
-Pi
-jx
-nD
-nD
-nD
-Ic
+hH
+Ps
+KC
+Uz
+KU
+aA
 Ey
 Lj
 nD
@@ -23355,35 +25242,20 @@ So
 So
 So
 So
-gy
+QH
 SJ
 SJ
 SJ
 SJ
-gy
+QH
 eq
 nr
 "}
 (101,1,1) = {"
 nr
-Qm
+bG
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -23392,22 +25264,37 @@ Ps
 Ps
 Ps
 Ps
-Ps
-Qm
-Qm
-eI
-wf
-Ps
-Ps
-Qm
-Qm
-eI
-wf
+Ky
+KL
+bG
+bG
+sl
+cV
 Ps
 Ps
 Ps
-nD
-uW
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+sl
+cV
+Ps
+Ps
+Ps
+FO
+sl
+cV
+Ps
+Ps
+Ps
+KC
+ms
+wu
 Dc
 Xf
 nD
@@ -23557,35 +25444,20 @@ PH
 Fo
 NP
 So
-gy
-gy
-gy
-gy
-gy
-gy
+QH
+QH
+QH
+QH
+QH
+QH
 eq
 nr
 "}
 (102,1,1) = {"
 nr
-Qm
+bG
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
@@ -23595,22 +25467,37 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Pi
-jx
+Ky
+KL
+bG
+sl
+cV
 Ps
 Ps
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
-nD
-uW
-uW
+Kw
+jq
+hH
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+WD
 Ey
 Lj
 nD
@@ -23772,8 +25659,7 @@ nr
 nr
 NG
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -23783,11 +25669,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
+Ps
+Kw
+bG
+sl
+cV
 Ps
 Ps
 Ps
@@ -23797,22 +25683,23 @@ Ps
 Ps
 Ps
 Ps
-Qm
-eI
-wf
 Ps
-Ps
-Ps
-Qm
-eI
-wf
+sl
+cV
 Ps
 Ps
 Ps
 Ps
-nD
-uW
-uW
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+rx
 qX
 Pe
 nD
@@ -23973,49 +25860,49 @@ nr
 (104,1,1) = {"
 nr
 sl
-eI
-wf
+cV
+Ps
 Ps
 Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
+Ky
+KL
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-eI
-wf
-Ps
-Ps
-Ps
-Qm
-eI
-wf
 Ps
 Ps
 Ps
 Ps
-uW
-uW
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+Ps
+FO
+UK
 qX
-Pe
+nD
 nD
 nD
 nD
@@ -24175,48 +26062,48 @@ nr
 (105,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Qm
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Pi
-jx
+Ps
+Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-eI
-wf
 Ps
 Ps
 Ps
-Qm
-uW
+Ps
+Ps
+Ps
+NG
+jq
+hH
+Ps
+Ps
+Ps
+Ps
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+FO
+cH
 Dc
-Xf
+nD
 nD
 nD
 nD
@@ -24377,23 +26264,22 @@ nr
 (106,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Qm
-Qm
-Pi
-jx
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
+FO
+sl
+hH
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
@@ -24401,25 +26287,26 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+FO
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+FO
+sl
+cV
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 uW
 WD
 Ey
-Lj
+nD
 nD
 nD
 Ic
@@ -24579,50 +26466,50 @@ nr
 (107,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Qm
-Qm
-Pi
-jx
+cV
 Ps
 Ps
 Ps
-Ps
-Ps
-Qm
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-eI
-wf
-Ps
-Ps
-Ps
-Qm
+FO
 jq
-Pi
-jx
+hH
 Ps
 Ps
 Ps
-Qm
+Ps
+Ps
+Ps
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ky
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+NG
+jq
+hH
+Ps
+Ps
+Ps
+Ps
+Kw
 uW
 uW
 WD
 Ey
-Lj
+nD
 nD
 uW
 WD
@@ -24781,45 +26668,45 @@ nr
 (108,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
+sl
+cV
 Ps
 Ps
-Qm
+Ps
+Ps
+Ps
+Ps
+FO
 jq
-Pi
-jx
+hH
+Ps
 Ps
 Ps
 Ps
 QP
-UD
-Qo
+hM
+Ps
 Ps
 Ps
 Ps
 bA
-Pi
-jx
+hH
 Ps
 Ps
 Ps
-Qm
+Ps
+sl
 eI
-wf
 Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 uW
 uW
 uW
@@ -24983,31 +26870,12 @@ nr
 (109,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Ps
-Ps
-bA
-Pi
-jx
-Ps
-Ps
-Ps
-Ps
-Qm
-eI
-wf
-Ps
-Ps
-Ps
+sl
+cV
 Ps
 Ps
 Ps
@@ -25015,13 +26883,32 @@ Ps
 Ps
 Ps
 bA
+hH
+Ps
+Ps
+Ps
+Ps
+Ps
+sl
+cV
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+bA
 Pi
-jx
 Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 uW
 uW
 uW
@@ -25185,28 +27072,13 @@ nr
 (110,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
-Qm
+Ps
+Fl
 qc
-UD
-Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-eI
-wf
+hM
 Ps
 Ps
 Ps
@@ -25218,12 +27090,27 @@ Ps
 Ps
 Ps
 Ps
+FO
+sl
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+FO
+To
 uW
 uW
 uW
@@ -25387,16 +27274,13 @@ nr
 (111,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
-Qm
-Qm
-eI
-wf
 Ps
-Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
@@ -25404,12 +27288,14 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+FO
+To
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -25424,7 +27310,8 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 Qm
 uW
 uW
@@ -25589,16 +27476,13 @@ nr
 (112,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
-Qm
-Qm
-eI
-wf
 Ps
-Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
@@ -25606,13 +27490,15 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+Ky
+EN
+EN
+KL
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -25625,8 +27511,9 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+FO
+To
 Qm
 uW
 uW
@@ -25791,15 +27678,14 @@ nr
 (113,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
-Qm
-Qm
+Ps
+Ky
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -25811,11 +27697,11 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Ky
+KL
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -25826,8 +27712,9 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+FO
+To
 Qm
 Qm
 uW
@@ -25993,16 +27880,15 @@ nr
 (114,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -26014,12 +27900,12 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Ky
+Fl
+YI
 zv
 Vk
-Eu
 Ps
 Ps
 Ps
@@ -26028,7 +27914,8 @@ Ps
 Ps
 Ps
 Ps
-Qm
+Ps
+Kw
 Qm
 Qm
 Qm
@@ -26195,19 +28082,15 @@ nr
 (115,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
+Ky
+KL
+sl
+cV
 Ps
 Ps
 Ps
@@ -26217,10 +28100,13 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-eI
-wf
+Ps
+Ps
+Ps
+Ps
+Kw
+sl
+cV
 Ps
 Ps
 Ps
@@ -26229,8 +28115,9 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+FO
+To
 Qm
 Yc
 Yc
@@ -26356,12 +28243,12 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 aL
 aL
@@ -26397,17 +28284,32 @@ nr
 (116,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+Fl
+qc
+hM
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+FO
+To
+Fl
 qc
 UD
-Qo
 Ps
 Ps
 Ps
@@ -26415,23 +28317,8 @@ Ps
 Ps
 Ps
 Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-qc
-UD
-Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
+FO
+To
 Qm
 Qm
 Yc
@@ -26556,16 +28443,16 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 JA
 SD
@@ -26599,40 +28486,40 @@ nr
 (117,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
-Ps
+Kw
+bG
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+bG
+bG
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+FO
+To
 Qm
 Qm
 Qm
@@ -26758,16 +28645,16 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 aL
 aL
@@ -26801,39 +28688,39 @@ nr
 (118,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-eI
-wf
 Ps
-Ps
-Ps
-Ps
+Ky
+KL
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+bG
+bG
+bG
+Fl
+YI
+YI
 qc
-UD
-Qo
-Qm
-Qm
+hM
+Ps
+FO
+To
 Qm
 Qm
 Qm
@@ -26960,16 +28847,16 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 aL
 aL
@@ -27003,18 +28890,17 @@ nr
 (119,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
+Ps
+Kw
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -27024,18 +28910,19 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+bG
+bG
+bG
+bG
+bG
+Fl
+YI
+YI
+To
+bG
 Qm
 Qm
 Qm
@@ -27162,16 +29049,16 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 aL
 aL
@@ -27205,38 +29092,38 @@ nr
 (120,1,1) = {"
 nr
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
+Ky
+KL
+sl
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ky
+KL
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 Qm
 Qm
 Qm
@@ -27364,16 +29251,16 @@ aL
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 aL
 aL
 aL
@@ -27407,20 +29294,19 @@ nr
 (121,1,1) = {"
 nr
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
+Ps
+Kw
+Fl
+YI
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
@@ -27430,14 +29316,15 @@ Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 Qm
 Qm
 Qm
@@ -27566,16 +29453,16 @@ ov
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 Ap
 CT
 ov
@@ -27610,34 +29497,34 @@ nr
 nr
 Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+bG
+Fl
+YI
+YI
+YI
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+Ky
+KL
+bG
+bG
+bG
+bG
 Qm
 Yc
 Yc
@@ -27768,16 +29655,16 @@ fp
 aL
 aL
 aL
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
-MH
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
+aL
 UZ
 xw
 xw
@@ -27810,35 +29697,35 @@ nr
 "}
 (123,1,1) = {"
 nr
-Qm
+bG
 sl
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
+Ps
+FO
+To
+bG
+bG
+bG
+bG
+bG
+bG
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+bG
+bG
 Qm
 Qm
 Yc
@@ -28012,35 +29899,35 @@ nr
 "}
 (124,1,1) = {"
 nr
-Qm
+bG
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
+FO
+To
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+sl
+cV
 Ps
-Qm
-Qm
-Qm
-Yc
+Ps
+Ps
+Ps
+Ps
+Ps
+Kw
+bG
+bG
+lZ
 Yc
 Yc
 yy
@@ -28214,37 +30101,37 @@ nr
 "}
 (125,1,1) = {"
 nr
-Qm
-sl
-eI
-wf
+bG
+qp
+KZ
+AH
+AH
+AH
+AH
+MH
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+bG
+NG
+jq
+hH
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Pi
-jx
 Ps
 Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
+FO
+To
+bG
+bG
+lZ
 Yc
-Yc
-Yc
+JF
 EI
 Ty
 aT
@@ -28416,38 +30303,38 @@ nr
 "}
 (126,1,1) = {"
 nr
-Qm
+bG
+xO
+Dt
+Qo
+Qo
+Qo
+Qo
+RF
+Tv
+bG
+bG
+bG
+bG
+bG
+bG
+bG
 sl
-eI
-wf
-Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-eI
-wf
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
+Ps
+Kw
+bG
+bG
+bG
+lZ
 Yc
 Yc
-Yc
-Yc
+rP
 SV
 rw
 aT
@@ -28618,38 +30505,38 @@ nr
 "}
 (127,1,1) = {"
 nr
-Qm
-Fl
-qc
-UD
-Qo
+bG
+fo
+wX
+yq
+jQ
+rm
+lT
+ms
+Ul
+WP
+xy
+bG
+bG
+bG
+bG
+bG
+sl
+cV
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-eI
-wf
 Ps
 Ps
 Ps
-Ps
-Ps
-Qm
-Qm
-Qm
-Qm
-Yc
-Yc
-Yc
-Yc
+Kw
+bG
+bG
+bG
+lZ
+lZ
+lZ
+JF
 Zl
 ZY
 aT
@@ -28820,38 +30707,38 @@ nr
 "}
 (128,1,1) = {"
 nr
-Qf
-Qf
-Au
-rj
-zG
+bG
+bG
+xO
+Br
+je
+ar
+BW
 bg
 bg
 bg
-bg
-bg
-Qf
-Qf
-Qf
-Qf
-Qf
-Qm
-Qm
-eI
-wf
+pk
+zj
+Kt
+bL
+bL
+bG
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Qm
-Qm
-Yc
-Yc
-Yc
-Yc
-Yc
+Ps
+Kw
+EN
+EN
+zF
+oE
+Tv
+lZ
+JF
 Zl
 ZY
 aT
@@ -29022,37 +30909,37 @@ nr
 "}
 (129,1,1) = {"
 nr
-Qf
-Qf
-Au
-rj
-zG
+bL
+bL
+rq
+KD
+CU
+BW
 bg
 bg
 bg
 bg
 bg
 bg
-bg
-Qf
-Qf
+pk
+Kt
 Qf
 Qm
-Qm
-eI
-wf
+sl
+cV
 Ps
 Ps
 Ps
 Ps
 Ps
-Qm
-Pi
-jx
-aT
-aT
-Yc
-Yc
+Ps
+bA
+hH
+Ps
+pN
+Qo
+RF
+HE
 yy
 EI
 Ty
@@ -29227,8 +31114,7 @@ nr
 Qf
 TU
 Uc
-SP
-Mg
+Eu
 bg
 bg
 bg
@@ -29237,26 +31123,27 @@ bg
 bg
 bg
 bg
+bg
+pk
+Kt
 Qf
-Qf
-Qf
-Qm
+Fl
 qc
-UD
+hM
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+Ps
+pN
 Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-Ps
-aT
-aT
-aT
-aT
-aT
-aT
+Qz
+Dy
+YY
+ST
 aT
 aT
 aT
@@ -29440,24 +31327,24 @@ bg
 bg
 bg
 bg
-Qf
-Qf
+pk
+Kt
 Qm
-Qm
+Fl
 qc
-UD
-Qo
+hM
 Ps
 Ps
 Ps
 Ps
 Ps
 Ps
-aT
-aT
-aT
-aT
-aT
+LF
+wB
+Qz
+Dy
+YY
+ST
 aT
 aT
 aT
@@ -29643,22 +31530,22 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
-Qf
-Qm
+Fl
 qc
-UD
+hM
+Ps
+Ps
+Ps
+Ps
+Ps
+pN
 Qo
-Ps
-Ps
-Ps
-Ps
-Ps
-aT
-aT
-aT
-aT
+CX
+Kc
+Jy
 aT
 aT
 aT
@@ -29845,22 +31732,22 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Qf
 Qm
-Qm
+Fl
 qc
-UD
+hM
+Ps
+Ps
+Ps
+Ps
+pN
 Qo
-Ps
-Ps
-Ps
-Ps
-aT
-aT
-aT
-aT
+CX
+Kc
+Jy
 aT
 aT
 aT
@@ -30047,22 +31934,22 @@ bg
 bg
 bg
 bg
+pk
+Kt
 Qf
-Qf
-Qf
 Qm
 Qm
-Qm
-Qm
+Fl
+YI
 qc
-UD
+hM
+Ps
+Ps
+pN
 Qo
-Ps
-Ps
-aT
-aT
-aT
-aT
+CX
+Kc
+Jy
 aT
 aT
 aT
@@ -30250,19 +32137,19 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
 Qf
-Qf
 Qm
 Qm
-Qm
-Qm
-Qm
-Qm
-Qm
-Yc
-rP
+Fl
+YI
+YI
+YI
+HZ
+Wq
+Bo
 SV
 rw
 aT
@@ -30452,10 +32339,10 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
 Qf
-Qf
 Yc
 Yc
 Yc
@@ -30464,7 +32351,7 @@ Yc
 Yc
 Yc
 Yc
-Yc
+JF
 Zl
 ZY
 aT
@@ -30654,10 +32541,10 @@ bg
 bg
 bg
 bg
+pk
+Kt
 Qf
 Qf
-Qf
-Qf
 Yc
 Yc
 Yc
@@ -30666,7 +32553,7 @@ Yc
 Yc
 Yc
 Yc
-Yc
+JF
 Zl
 ZY
 aT
@@ -30857,9 +32744,9 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
-Qf
 Yc
 Yc
 Yc
@@ -30867,8 +32754,8 @@ Yc
 Yc
 Yc
 Yc
-Yc
-Yc
+Ad
+yy
 EI
 Ty
 aT
@@ -31059,16 +32946,16 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
-Qf
 Yc
 Yc
 Yc
 Yc
 Yc
 Yc
-Yc
+yy
 EI
 Ty
 aT
@@ -31261,15 +33148,15 @@ bg
 bg
 bg
 bg
+pk
+Kt
 Qf
-Qf
-Qf
 Yc
 Yc
 Yc
 Yc
 Yc
-Yc
+JF
 Zl
 ZY
 aT
@@ -31464,14 +33351,14 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
+Qf
 Yc
 Yc
 Yc
-Yc
-Yc
-Yc
+JF
 Zl
 ZY
 aT
@@ -31666,10 +33553,10 @@ bg
 bg
 bg
 bg
+pk
+Kt
 Qf
 Qf
-Yc
-Yc
 Yc
 Yc
 Yc
@@ -31869,9 +33756,9 @@ bg
 bg
 bg
 bg
+pk
+Kt
 Qf
-Yc
-Yc
 Yc
 Yc
 Yc
@@ -32072,18 +33959,18 @@ bg
 bg
 bg
 bg
+uU
+Qf
+Qf
 Yc
 Yc
 Yc
 Yc
 Yc
 Yc
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
+EH
+EH
+EH
 rP
 SV
 rw
@@ -32274,9 +34161,9 @@ bg
 bg
 bg
 bg
-Yc
-Yc
-Yc
+pk
+Kt
+Qf
 Yc
 Yc
 Yc
@@ -32476,9 +34363,9 @@ bg
 bg
 bg
 bg
-aT
-Yc
-Yc
+bg
+pk
+Kt
 Yc
 Yc
 Yc
@@ -32678,11 +34565,11 @@ bg
 bg
 bg
 bg
-aT
-aT
-Yc
-Yc
-Yc
+bg
+bg
+uU
+Qf
+Qf
 Yc
 Yc
 Yc
@@ -32880,11 +34767,11 @@ bg
 bg
 bg
 bg
-aT
-aT
-Yc
-Yc
-Yc
+bg
+bg
+pk
+Kt
+Qf
 Yc
 Yc
 Yc
@@ -33085,8 +34972,8 @@ bg
 bg
 bg
 bg
-Qf
-Qf
+pk
+Kt
 Qf
 Qf
 Yc
@@ -33147,8 +35034,8 @@ aT
 aT
 me
 fO
-Yc
-Yc
+Vc
+Vc
 LE
 tw
 uy
@@ -33165,8 +35052,8 @@ aT
 aT
 aT
 aT
-mo
-AO
+tq
+Av
 Yc
 JF
 dC
@@ -33288,7 +35175,7 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Qf
 Yc
@@ -33348,8 +35235,8 @@ aT
 aT
 me
 fO
-Yc
-Yc
+Vc
+Vc
 Qw
 yy
 EI
@@ -33368,8 +35255,8 @@ aT
 aT
 aT
 aT
-mo
-AO
+tq
+Av
 JF
 dC
 qm
@@ -33490,7 +35377,7 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Qf
 Yc
@@ -33549,9 +35436,9 @@ aT
 aT
 me
 fO
-Yc
-Yc
-Yc
+Vc
+Vc
+Vc
 JF
 Zl
 ZY
@@ -33562,16 +35449,16 @@ aT
 aT
 me
 EH
-rP
-SV
-rw
+ul
+mQ
 aT
 aT
 aT
 aT
 aT
 aT
-OP
+aT
+Bl
 LE
 UJ
 jh
@@ -33692,7 +35579,7 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Qf
 Yc
@@ -33750,10 +35637,10 @@ aT
 aT
 me
 fO
-Yc
-Yc
-Yc
-Yc
+Vc
+Vc
+Vc
+Vc
 LE
 rP
 SV
@@ -33763,18 +35650,18 @@ aT
 aT
 aT
 OP
-Yc
-LE
-rP
-SV
-rw
+th
+qY
+ul
+mQ
 aT
 aT
 aT
 aT
 aT
-mo
-AO
+aT
+tq
+Av
 Eh
 UJ
 jh
@@ -33894,11 +35781,11 @@ bg
 bg
 bg
 bg
-Qf
-Qf
-Qf
-Yc
-Yc
+pk
+zj
+zj
+Ad
+AO
 Yc
 Yc
 rP
@@ -33951,12 +35838,12 @@ aT
 aT
 aT
 OP
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 LE
 rP
 SV
@@ -33965,19 +35852,19 @@ aT
 aT
 me
 fO
-Yc
-Yc
-LE
-rP
-SV
-rw
+th
+th
+qY
+ul
+mQ
 aT
 aT
 aT
 aT
 aT
-mo
-gS
+aT
+tq
+Av
 Wv
 dC
 qm
@@ -34100,7 +35987,7 @@ bg
 bg
 bg
 aT
-Yc
+mo
 Yc
 Yc
 Yc
@@ -34153,33 +36040,33 @@ aT
 aT
 aT
 OP
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
+th
+th
+th
+th
+th
+th
+th
 LE
 rP
 SV
 rw
 me
 fO
-Yc
-Yc
-Yc
-Yc
-LE
-rP
-SV
-rw
+th
+th
+th
+th
+qY
+ul
+mQ
 aT
 aT
 aT
 aT
 aT
-bj
+aT
+tq
 Wv
 dC
 qm
@@ -34303,7 +36190,7 @@ bg
 bg
 aT
 aT
-Yc
+mo
 Yc
 Yc
 Yc
@@ -34354,36 +36241,36 @@ aT
 aT
 aT
 aT
-mo
-Ad
-Ad
-Ad
-AO
-Yc
-Yc
-Yc
-Yc
-qE
-Ya
-Ya
-Ya
-Ya
-Ya
-Ya
-Ya
-Ya
-ah
+Ok
+am
+am
+am
+pA
+th
+th
+th
+th
 LE
-EH
-Ao
-gA
-hH
-Jd
-Jd
-Jd
-Jd
-bj
-lU
+Lw
+Lw
+Ab
+Ya
+Ya
+Ya
+Ya
+Ya
+Rt
+qY
+Lw
+ul
+mQ
+aT
+aT
+aT
+aT
+aT
+EX
+vn
 uT
 xU
 ko
@@ -34506,7 +36393,7 @@ bg
 aT
 aT
 aT
-Yc
+mo
 Yc
 Yc
 Yc
@@ -34556,34 +36443,34 @@ aT
 aT
 aT
 aT
-aT
-aT
-aT
-aT
-RE
+nB
+Iv
+XT
+MQ
+Iw
 Ya
 Ab
 Ya
 Ya
+Ya
+Ya
+Ya
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-RE
-ah
-Ab
-PQ
-aK
-Fx
-Jd
-Jd
-Jd
-Jd
+KX
+Rt
+Gq
+iW
+nh
+Hd
+qq
+aT
+aT
+aT
 ko
 ko
 ko
@@ -34709,7 +36596,7 @@ aT
 aT
 aT
 aT
-Yc
+mo
 Yc
 Yc
 Yc
@@ -34757,16 +36644,15 @@ aT
 aT
 aT
 aT
-aT
-aT
-aT
-aT
-aT
-Jd
+mM
+gM
+XT
+Jg
+Fd
+qG
 Jd
 OR
 aK
-Fx
 Jd
 Jd
 Jd
@@ -34777,15 +36663,16 @@ Jd
 Jd
 Jd
 Jd
-RE
-zx
-yQ
-DS
 Jd
-Jd
-Jd
-Jd
-Jd
+KX
+zP
+vz
+DC
+lz
+Nr
+Hd
+qq
+aT
 ko
 ko
 ko
@@ -34912,7 +36799,7 @@ aT
 aT
 aT
 aT
-Yc
+mo
 Yc
 yy
 EI
@@ -34959,11 +36846,11 @@ aT
 aT
 aT
 aT
-aT
-aT
-aT
-aT
-aT
+nB
+XT
+Jg
+Fd
+qG
 Jd
 Jd
 Jd
@@ -34980,14 +36867,14 @@ Jd
 Jd
 Jd
 Jd
-RE
-hh
-TB
-aB
-Jd
-Jd
-Jd
-CM
+KX
+Fw
+jC
+Ak
+DC
+lz
+Zr
+jE
 jh
 Om
 ko
@@ -35160,12 +37047,11 @@ aT
 aT
 aT
 aT
-DZ
-SV
-rw
-aT
-aT
-aT
+Oc
+Rd
+DN
+Xv
+ml
 Jd
 Jd
 Jd
@@ -35186,10 +37072,11 @@ Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-zx
+PD
+WF
+WF
+Ak
+Da
 dC
 qm
 ko
@@ -35307,7 +37194,7 @@ bg
 bg
 bg
 bg
-Qf
+xx
 Np
 mV
 vT
@@ -35362,11 +37249,11 @@ aT
 aT
 aT
 aT
-OP
-rP
-SV
-rw
-Jd
+ix
+fX
+gy
+Fd
+qG
 Jd
 Jd
 Jd
@@ -35377,9 +37264,8 @@ Jd
 Jd
 Jd
 GQ
-Ao
+Rh
 gA
-hH
 Jd
 Jd
 Jd
@@ -35390,31 +37276,32 @@ Jd
 Jd
 Jd
 Jd
-sq
-qE
-UJ
+Jd
+Ry
+YB
+WY
 jh
 Om
+ko
+Bj
+jh
+Om
+ko
+ko
+ko
+ko
+ko
+ko
+ko
+ko
+ko
+ko
+ko
+ko
 ko
 Mq
 jh
-Om
 ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
-Mq
-jh
-Om
 ko
 ko
 RS
@@ -35509,8 +37396,8 @@ bg
 bg
 bg
 bg
-Qf
-Qf
+pk
+xx
 Np
 mV
 rw
@@ -35565,25 +37452,24 @@ aT
 aT
 Lb
 fO
-LE
-rP
-SV
-hH
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-RE
-VH
+YB
 Ao
+Gj
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+KX
+Ku
+Rh
 gA
-hH
 Jd
 Jd
 Jd
@@ -35592,13 +37478,14 @@ Jd
 Jd
 Jd
 Jd
-RE
-fh
-Eh
-su
-su
-su
-Eh
+Jd
+KX
+Rt
+WH
+Of
+Of
+Of
+wo
 UJ
 jh
 Om
@@ -35613,11 +37500,11 @@ ko
 ko
 ko
 ko
-ko
+cQ
 Eh
 UJ
 jh
-Om
+ko
 ko
 RS
 RS
@@ -35712,8 +37599,8 @@ bg
 bg
 bg
 bg
-Qf
-Qf
+pk
+xx
 Np
 SV
 rw
@@ -35768,11 +37655,11 @@ aT
 aT
 mo
 AO
-LE
-EH
-Ao
+YB
+VH
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -35785,7 +37672,6 @@ Jd
 Og
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -35795,18 +37681,18 @@ Jd
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
-ah
-Ab
-mi
-zM
-pD
-ko
-ko
-ko
+Jd
+KX
+Rt
+th
+th
+th
+Gq
+iW
+TS
+fS
+Hd
+WU
 ko
 ko
 ko
@@ -35817,10 +37703,11 @@ ko
 ko
 cQ
 It
+rt
 Eh
 lU
 uT
-xU
+ko
 ko
 RS
 RS
@@ -35915,12 +37802,12 @@ bg
 bg
 bg
 bg
-Qf
-Qf
-Yc
-Yc
-Yc
-Yc
+pk
+xx
+EH
+EH
+EH
+LE
 rP
 SV
 rw
@@ -35965,17 +37852,17 @@ aT
 aT
 DZ
 SV
-rw
+aT
 aT
 aT
 aT
 mo
 AO
-Yc
+Vc
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -35986,10 +37873,10 @@ Jd
 Jd
 Og
 qE
-VH
-Ao
+Ku
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -35999,24 +37886,24 @@ Jd
 Jd
 Jd
 Og
-ah
-ah
-ah
-zx
-dC
-qm
+th
+th
+th
+zP
+vz
+zy
+ej
+cW
+Nr
+Hd
+WU
+DS
 ko
 ko
 ko
 ko
 ko
-ko
-ko
-ko
-ko
-ko
-ko
-ko
+bj
 xQ
 Fr
 mi
@@ -36118,13 +38005,13 @@ bg
 bg
 bg
 bg
-Qf
+pk
 Qf
 Qf
 Qf
 Yc
-Yc
-Yc
+LE
+EH
 rP
 SV
 rw
@@ -36168,31 +38055,31 @@ me
 LE
 rP
 SV
-rw
+aT
 aT
 aT
 aT
 OP
-Yc
-ah
+Vc
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 CM
 gA
-hH
 Jd
 Jd
-RE
+Jd
+KX
 Ya
-ah
+Rt
 qE
 hh
 TB
-aB
+Jd
 Jd
 Jd
 Jd
@@ -36201,22 +38088,22 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-qE
-lU
-uT
-xU
+th
+th
+th
+Mw
+ec
+zu
+zy
+zy
+ej
+cW
+bT
+pG
+cE
+bK
+Lc
 ko
-ko
-ko
-ko
-ko
-Lk
-HJ
-jh
-Om
 ko
 ko
 xn
@@ -36321,13 +38208,13 @@ bg
 bg
 bg
 bg
+uU
 Qf
 Qf
-Qf
 Yc
 Yc
 Yc
-Yc
+LE
 rP
 SV
 rw
@@ -36367,25 +38254,25 @@ aT
 aT
 Lb
 AO
-Yc
+Vc
 LE
 rP
 SV
-rw
+aT
 aT
 me
 fO
-Yc
-ah
-ah
+Vc
+th
+th
 qE
-VH
-VH
-VH
-VH
+Ku
+Ku
+Ku
+Ku
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -36393,7 +38280,7 @@ Jd
 Og
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -36402,23 +38289,23 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-zx
-dC
-qm
+th
+th
+th
+th
+Uf
+Ml
+WF
+WF
+WF
+Ak
+zy
+zy
+zy
+Vt
+Lh
+ET
 ko
-ko
-ko
-ko
-ko
-ko
-Fn
-lr
-dC
-qm
 ko
 ko
 ko
@@ -36523,14 +38410,14 @@ bg
 bg
 bg
 bg
+pk
 Qf
 Qf
-Qf
 Yc
 Yc
 Yc
 Yc
-Yc
+JF
 Zl
 ZY
 aT
@@ -36569,32 +38456,32 @@ aT
 aT
 aT
 OP
-Yc
-Yc
+Vc
+Vc
 LE
 EH
 EH
 EH
 fO
-Yc
-Yc
-ah
-ah
-ah
-ah
-ah
-ah
+Vc
+Vc
+th
+th
+th
+th
+th
+th
 Ab
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
 Jd
 OR
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -36603,25 +38490,25 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
+th
+th
+th
+th
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
-Jd
-Jd
-Lk
-qZ
-Mv
-dG
-uT
-xU
+PD
+WF
+wN
+ON
+sT
+DE
+na
+lp
+ko
 ko
 ko
 ko
@@ -36726,12 +38613,12 @@ bg
 bg
 bg
 bg
+uU
 Qf
-Qf
 Yc
 Yc
-Yc
-Yc
+Qw
+Ad
 yy
 EI
 Ty
@@ -36771,24 +38658,24 @@ aT
 aT
 aT
 OP
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
-Yc
-ah
-ah
-ah
-ah
-ah
-ah
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+th
+th
+th
+th
+th
+th
 Ab
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -36804,25 +38691,25 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
+th
+th
+th
 Ab
 Ya
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
 Jd
 Jd
-Lk
-qZ
-Vc
-lr
-dC
-qm
+Jd
+Ry
+sT
+th
+Lh
+ET
+ko
 ko
 ko
 ko
@@ -36928,10 +38815,10 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Yc
-Yc
+Qw
 yy
 EI
 Ty
@@ -36973,23 +38860,23 @@ aT
 aT
 aT
 mo
-Ad
-AO
-Yc
-Yc
-Yc
-Yc
-Yc
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+WC
+pA
+Vc
+Vc
+Vc
+Vc
+Vc
+th
+th
+th
+th
+th
+th
+th
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -37005,13 +38892,12 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
+th
+th
+th
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -37019,9 +38905,10 @@ Jd
 Jd
 Jd
 Jd
-Fn
-Vc
-Vc
+Jd
+Og
+th
+th
 Mv
 HJ
 jh
@@ -37130,7 +39017,7 @@ bg
 bg
 bg
 bg
-Qf
+uU
 Qf
 Qf
 Qf
@@ -37174,24 +39061,24 @@ aT
 aT
 aT
 aT
-Jd
-Jd
-RE
+aT
+nB
+do
 fh
 Ab
-Ad
-Ad
-Ad
 Ya
 Ya
-fh
-ah
-ah
-ah
-ah
+Ya
+Ya
+Ya
+Rt
+th
+th
+th
+th
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -37206,13 +39093,12 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
+th
+th
+th
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -37220,10 +39106,11 @@ Jd
 Jd
 Jd
 Jd
-Cx
-qZ
-Vc
-Vc
+Jd
+GQ
+uo
+th
+th
 Vc
 Mv
 HJ
@@ -37332,7 +39219,7 @@ bg
 bg
 bg
 bg
-Qf
+pk
 Qf
 Qf
 Qf
@@ -37376,24 +39263,23 @@ aT
 aT
 aT
 aT
-Jd
-Jd
-Jd
+aT
+nB
+DN
 RE
-PQ
+FL
 aK
-Fx
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
-ah
+Jd
+KX
+Rt
+th
+th
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -37406,15 +39292,15 @@ Jd
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
-ah
-ah
+Jd
+KX
+Rt
+th
+th
+th
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -37423,10 +39309,11 @@ Jd
 Jd
 Jd
 Jd
-Wy
-dt
-Vc
-Vc
+Jd
+KX
+Rt
+th
+th
 Vc
 Mv
 HJ
@@ -37569,33 +39456,32 @@ aT
 aT
 DZ
 SV
-rw
+aT
 DZ
 SV
-rw
 aT
 aT
 aT
 aT
 aT
+aT
+aT
+nB
+DN
+Xv
+ml
 Jd
 Jd
 Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-RE
-fh
-ah
-ah
+KX
+Rt
+th
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -37609,15 +39495,15 @@ Jd
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
-ah
+Jd
+KX
+Rt
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
 Jd
 Jd
 Jd
@@ -37626,9 +39512,10 @@ Jd
 Jd
 Jd
 Jd
-Fn
-Vc
-Vc
+Jd
+Og
+th
+th
 Vc
 Vc
 Mv
@@ -37737,7 +39624,7 @@ bg
 bg
 bg
 bg
-Qf
+pk
 Qf
 Qf
 Qf
@@ -37776,8 +39663,15 @@ LE
 EH
 rP
 SV
-rw
 aT
+aT
+aT
+aT
+mM
+gM
+DN
+Xv
+ml
 Jd
 Jd
 Jd
@@ -37785,19 +39679,11 @@ Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-RE
-fh
-ah
+KX
+Rt
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -37812,26 +39698,27 @@ Jd
 Jd
 Jd
 Jd
-RE
+Jd
+KX
 Ya
 Ya
-fh
-ah
+Rt
+th
 qE
 hh
 TB
-aB
 Jd
 Jd
 Jd
 Jd
 Jd
 Jd
-Cx
-qZ
-Vc
-Vc
-Vc
+Jd
+GQ
+uo
+th
+th
+th
 Vc
 Vc
 Mv
@@ -37941,7 +39828,7 @@ bg
 bg
 bg
 bg
-Qf
+pk
 Qf
 Uc
 SP
@@ -37980,7 +39867,13 @@ LE
 EH
 rP
 SV
-hH
+aT
+aT
+nB
+XT
+Jg
+Fd
+qG
 Jd
 Jd
 Jd
@@ -37989,17 +39882,10 @@ Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-RE
+KX
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -38017,11 +39903,11 @@ Jd
 Jd
 Jd
 Jd
-RE
+Jd
+KX
 Ya
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -38030,10 +39916,11 @@ Jd
 Jd
 Jd
 Jd
-Wy
-dt
-Vc
-Vc
+Jd
+KX
+Rt
+th
+th
 Vc
 Vc
 Vc
@@ -38144,7 +40031,7 @@ bg
 bg
 bg
 bg
-Qf
+Au
 rj
 zG
 AV
@@ -38182,12 +40069,12 @@ Yc
 Yc
 LE
 rP
-gA
-hH
-Jd
-Jd
-Jd
-Jd
+SV
+aT
+nB
+DN
+Xv
+ml
 Jd
 Jd
 Jd
@@ -38200,7 +40087,6 @@ Jd
 Jd
 OR
 aK
-Fx
 Jd
 Jd
 Jd
@@ -38233,10 +40119,11 @@ Jd
 Jd
 Jd
 Jd
-Fn
-Vc
-Vc
-Vc
+Jd
+Og
+th
+th
+th
 Vc
 Vc
 Vc
@@ -38382,63 +40269,63 @@ Yc
 Yc
 Yc
 Yc
-ah
-qE
-VH
-VH
-VH
-VH
+Yc
+LE
+EH
+EH
+mP
+un
 Ao
+Gj
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Rh
 gA
-hH
 Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-CM
-gA
-hH
-Jd
-Jd
-Jd
-Fn
-Vc
-Vc
-Vc
+Og
+th
+th
+th
 Vc
 Vc
 Vc
@@ -38584,16 +40471,16 @@ Yc
 Yc
 Yc
 Yc
-ah
-ah
-ah
-ah
-ah
-ah
+Yc
+Yc
+Yc
+Yc
+Fy
+Fy
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -38632,16 +40519,16 @@ Jd
 Jd
 Jd
 Og
-Ao
+Rh
 gA
-hH
 Jd
 Jd
-Fn
-Vc
-Vc
-Vc
-Vc
+Jd
+Og
+th
+th
+th
+th
 Vc
 Vc
 Mv
@@ -38788,15 +40675,15 @@ Yc
 TU
 zj
 zj
-Ya
-Ya
-Ya
-fh
-ah
+zj
+zj
+zj
+Kt
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -38836,15 +40723,15 @@ sq
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
-Wy
-dt
-Vc
-Vc
-Vc
-Vc
+Jd
+KX
+Rt
+th
+th
+th
+th
 Vc
 Vc
 lr
@@ -38994,12 +40881,12 @@ bg
 bg
 bg
 pk
-fh
-ah
+Kt
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -39012,9 +40899,9 @@ Jd
 Jd
 Jd
 sq
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -39037,22 +40924,22 @@ sq
 uo
 zx
 yQ
-DS
 Jd
 Jd
 Jd
 Jd
-Fn
-Vc
-Vc
-Vc
-Vc
-Vc
+Jd
+Og
+th
+th
+th
+th
+th
 Vc
 Mv
 HJ
-gA
-hH
+iw
+aM
 RS
 RS
 RS
@@ -39198,11 +41085,11 @@ bg
 bg
 pk
 Kt
-ah
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -39215,9 +41102,9 @@ Jd
 sq
 uo
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -39236,27 +41123,27 @@ Jd
 Jd
 sq
 uo
-ah
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
 Jd
-Wy
-PE
-PE
-PE
-dt
-Vc
-Vc
+Jd
+KX
+Ya
+Ya
+Ya
+Rt
+th
+th
 Hx
 iz
-aK
-Fx
-Jd
-Jd
+Fc
+sQ
+Hr
+Hr
 RS
 RS
 RS
@@ -39400,33 +41287,11 @@ bg
 bg
 bg
 uU
-ah
-ah
+th
+th
 qE
-Ao
+Rh
 gA
-hH
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-sq
-uo
-ah
-ah
-qE
-Ao
-gA
-hH
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
 Jd
 Jd
 Jd
@@ -39437,11 +41302,32 @@ Jd
 Jd
 sq
 uo
-ah
+th
+th
+qE
+Rh
+gA
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+sq
+uo
+th
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -39450,16 +41336,17 @@ Jd
 Jd
 Jd
 Jd
-Wy
-PE
-Hx
+Jd
+KX
+WC
+CK
 iz
-aK
-Fx
-Jd
-Jd
-Jd
-Jd
+Fc
+sQ
+Hr
+Hr
+Hr
+Hr
 RS
 RS
 RS
@@ -39602,29 +41489,29 @@ bg
 bg
 bg
 uU
-ah
-ah
-ah
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
 Jd
 Jd
 Jd
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
-ah
+Jd
+KX
+Rt
+th
+th
+th
 qE
-VH
+Ku
 hh
 TB
-aB
+Jd
 Jd
 Jd
 Jd
@@ -39638,11 +41525,10 @@ Jd
 Jd
 sq
 uo
-ah
+th
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -39654,15 +41540,16 @@ Jd
 Jd
 Jd
 Jd
-tj
-aK
-Fx
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
+nB
+dy
+CI
+sQ
+Hr
+Hr
+Hr
+Hr
+Hr
+Hr
 RS
 RS
 RS
@@ -39806,12 +41693,12 @@ bg
 pk
 Kt
 Qf
-ah
-ah
+th
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -39819,13 +41706,12 @@ Jd
 Jd
 Jd
 Og
-ah
-ah
-ah
-ah
+th
+th
+th
+th
 zx
 yQ
-DS
 Jd
 Jd
 Jd
@@ -39838,12 +41724,12 @@ Jd
 Jd
 Jd
 Jd
-RE
-fh
+Jd
+KX
+Rt
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -39856,16 +41742,17 @@ Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
+nB
+DC
+xv
+xN
+qq
+Hr
+Hr
+Hr
+Hr
+Hr
+Hr
 RS
 RS
 RS
@@ -40008,26 +41895,25 @@ bg
 bg
 uU
 Qf
-Qf
-Qf
-ah
+th
+th
+th
 qE
-VH
-Ao
+Ku
+Rh
 gA
-hH
 Jd
 Jd
 Jd
 Jd
-RE
-fh
-ah
-ah
+Jd
+KX
+Rt
+th
+th
 Ab
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -40041,10 +41927,10 @@ Jd
 Jd
 Jd
 Jd
-RE
+Jd
+KX
 PQ
 aK
-Fx
 Jd
 Jd
 Jd
@@ -40058,17 +41944,18 @@ Jd
 Jd
 Jd
 Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
+nB
+zy
+DC
+xv
+xN
+qq
+Hr
+Hr
+Hr
+Hr
+Hr
+Hr
 RS
 RS
 RS
@@ -40210,59 +42097,24 @@ bg
 bg
 uU
 Qf
-Qf
-Qf
-ah
-ah
-ah
+th
+th
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
 Jd
 Jd
 Jd
 Jd
-RE
+Jd
+KX
 Ya
-fh
+Rt
 zx
 yQ
-DS
-Jd
-Jd
-Jd
-Jd
-Jd
-CM
-gA
-hH
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
 Jd
 Jd
 Jd
@@ -40271,7 +42123,42 @@ Jd
 Jd
 CM
 gA
-hH
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+nB
+zy
+zy
+vG
+Xv
+ml
+Hr
+Hr
+Hr
+Hr
+RV
+iw
+aM
 RS
 RS
 RS
@@ -40412,68 +42299,68 @@ bg
 bg
 pk
 Kt
-Qf
-Qf
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
 Jd
 Jd
 Jd
 Jd
 Jd
-RE
+Jd
+KX
 PQ
 aK
-Fx
-Jd
-Jd
-Jd
-Jd
-sq
-qE
-VH
-VH
-Ao
-gA
-hH
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
-Jd
 Jd
 Jd
 Jd
 Jd
 Jd
 sq
-VH
 qE
-Ao
+Ku
+Ku
+Rh
 gA
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
+nB
+zy
+zy
+DC
+xv
+xN
+qq
+Hr
+vy
+HT
+Tq
+XV
+iw
 aM
 RS
 RS
@@ -40614,16 +42501,16 @@ bg
 bg
 bg
 uU
-Qf
-Qf
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
+th
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -40638,13 +42525,13 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -40661,21 +42548,21 @@ Jd
 Jd
 Jd
 sq
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-uo
-ah
-ah
-qE
-Ao
+Ku
+Ku
+mP
+sO
+sO
+sO
+SE
+HT
+HT
+HT
+uk
+HC
+HC
+Tq
+XV
 iw
 aM
 RS
@@ -40815,17 +42702,17 @@ bg
 bg
 bg
 bg
-pk
-Kt
-Qf
-ah
-ah
-ah
-ah
-ah
+Ok
+pA
+th
+th
+th
+th
+th
+th
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -40839,16 +42726,16 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
 qE
-VH
-Ao
+Ku
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -40863,21 +42750,21 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-qE
+th
+th
+Vc
+Vc
+Vc
+Vc
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+Tq
 XV
 iw
 aM
@@ -41017,17 +42904,17 @@ bg
 bg
 bg
 bg
-bg
-pk
-Kt
-ah
-ah
-ah
-ah
+Jz
+Em
+pA
+th
+th
+th
+th
 Ab
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -41040,18 +42927,18 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -41064,22 +42951,22 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+HC
 Tq
 XV
 iw
@@ -41218,17 +43105,17 @@ bg
 bg
 bg
 bg
-bg
-bg
-bg
-pk
-Ya
-fh
-ah
-ah
+xY
+gM
+XT
+Iw
+Mh
+Rt
+th
+th
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -41241,20 +43128,20 @@ Jd
 Jd
 Jd
 Og
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -41265,23 +43152,23 @@ Jd
 Jd
 Jd
 Og
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+HC
+HC
 HC
 FZ
 ex
@@ -41419,18 +43306,18 @@ bg
 bg
 bg
 bg
-bg
-bg
-bg
-bg
-bg
-bg
-pk
-Kt
+xY
+gM
+XT
+qd
+Fd
+QY
+KX
+Rt
 Ab
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -41443,21 +43330,21 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
 qE
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 Jd
 Jd
@@ -41467,14 +43354,14 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -41620,18 +43507,18 @@ bg
 bg
 bg
 bg
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-uU
+xY
+gM
+XT
+qd
+Fd
+qG
+Jd
+Jd
+Og
 zx
 yQ
-DS
+Jd
 Jd
 Jd
 Jd
@@ -41644,39 +43531,39 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
 qE
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-VH
-VH
+Ku
+Ku
+Ku
+Ku
+Ku
+Ku
+Ku
+Ku
+Ku
 uo
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -41821,64 +43708,64 @@ bg
 bg
 bg
 bg
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-uU
+xY
+gM
+XT
+qd
+Fd
+qG
+Jd
+Jd
+Jd
+Og
 PQ
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
 Jd
 sq
-Ao
+Rh
 gA
-hH
+Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -42022,19 +43909,19 @@ XU
 XU
 XU
 XU
-Np
-mV
-vT
-bg
-bg
-bg
-bg
-bg
-bg
-bg
-RD
+ZS
+UL
+XT
+qd
+Fd
+qG
+Jd
+Jd
+Jd
+Jd
+OR
 aK
-Fx
+Jd
 Jd
 Jd
 Jd
@@ -42042,45 +43929,45 @@ Jd
 sq
 uo
 qE
-VH
-VH
-VH
+Ku
+Ku
+Ku
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -42223,18 +44110,18 @@ Qf
 Qf
 Qf
 Qf
-Qf
-xx
-XU
-Np
-mV
-vT
-bg
-bg
-bg
-bg
-bg
-bg
+th
+Mw
+sO
+TG
+Gj
+In
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
 Jd
 Jd
 Jd
@@ -42242,47 +44129,47 @@ Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -42425,66 +44312,66 @@ Qf
 Qf
 Qf
 Qf
-Qf
-Qf
-Qf
-xx
-Np
-mV
-vT
-bg
-bg
-bg
-bg
-bg
+th
+th
+th
+YB
+Ao
+gA
+Jd
+Jd
+Jd
+Jd
+Jd
+Jd
 Jd
 Jd
 Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -42627,66 +44514,66 @@ Qf
 Qf
 Qf
 Qf
-Qf
-Qf
-Qf
-Qf
-xx
-Np
-mV
-vT
-bg
-bg
-bg
-bg
+th
+th
+th
+th
+qE
+Rh
+gA
+Jd
+Jd
+Jd
+Jd
+Jd
 Jd
 Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -42829,66 +44716,66 @@ Qf
 Qf
 Qf
 Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-xx
-Np
-mV
-vT
-bg
-bg
-bg
+th
+th
+th
+th
+th
+qE
+Rh
+gA
+Jd
+Jd
+Jd
+Jd
 Jd
 Jd
 sq
 uo
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -43031,66 +44918,66 @@ Qf
 Qf
 Qf
 Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-xx
-XU
-Np
-mV
-vT
-bg
+th
+th
+th
+th
+th
+th
+qE
+Ku
+Rh
+gA
+Jd
+Jd
 Jd
 sq
 uo
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
@@ -43233,66 +45120,66 @@ Qf
 Qf
 Qf
 Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-Qf
-xx
-XU
-XU
-XU
-VH
+th
+th
+th
+th
+th
+th
+th
+th
+qE
+Ku
+Ku
+Ku
+Ku
 uo
-ah
-ah
-ah
-ah
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
-eq
+th
+th
+th
+th
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
+Vc
 eq
 eq
 eq
