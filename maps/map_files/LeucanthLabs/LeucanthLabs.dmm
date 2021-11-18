@@ -353,6 +353,11 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/cave_east)
+"dz" = (
+/turf/open/cobaltite_wall/top_2{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "dC" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/exterior/jungle/great_ferns)
@@ -381,6 +386,11 @@
 	},
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"dS" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "dU" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 10
@@ -636,6 +646,12 @@
 	dir = 8
 	},
 /area/leucanth/exterior/e_caves)
+"gC" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "gD" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/jungle/fungal_flats)
@@ -959,6 +975,11 @@
 	dir = 8
 	},
 /area/leucanth/exterior/sw_barrens)
+"jM" = (
+/turf/open/cobaltite_wall/top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "jQ" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
 	dir = 6
@@ -1003,6 +1024,11 @@
 "ko" = (
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/jungle/great_ferns)
+"kp" = (
+/turf/open/cobaltite_wall/top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "kq" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
 /turf/open/cobaltite_wall/cave_top{
@@ -1043,6 +1069,11 @@
 	dir = 4
 	},
 /area/leucanth/exterior/jungle/arid_cractus)
+"kQ" = (
+/turf/open/cobaltite_wall/mid{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "la" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 10
@@ -1051,6 +1082,11 @@
 	dir = 8
 	},
 /turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats/varient)
+"lb" = (
+/turf/open/cobaltite_wall/top_2{
+	dir = 8
+	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
 "lf" = (
 /turf/open/cobaltite_wall/top_2{
@@ -1331,6 +1367,12 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"nN" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "nV" = (
 /turf/open/cobaltite_wall/cave_base{
 	dir = 1
@@ -1643,6 +1685,10 @@
 	dir = 8
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"qV" = (
+/obj/structure/prop/leucanth/shadow_f,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "qX" = (
 /turf/open/cobaltite_wall/mid{
 	dir = 4
@@ -1868,6 +1914,11 @@
 	dir = 8
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"sY" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 6
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "td" = (
 /turf/open/cobaltite_wall/base{
 	dir = 1
@@ -1962,6 +2013,11 @@
 "tV" = (
 /turf/open/cobaltite_wall/base,
 /area/leucanth/exterior/jungle/grassy_matts)
+"uc" = (
+/turf/open/cobaltite_wall/top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "ud" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 9
@@ -2040,6 +2096,9 @@
 "uK" = (
 /turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/w_caves)
+"uM" = (
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "uN" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 4
@@ -2216,6 +2275,11 @@
 	},
 /turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/cove/cave_west)
+"wL" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 1
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "wM" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/top{
@@ -2463,6 +2527,9 @@
 "zv" = (
 /turf/open/cobaltite_wall/cave_top_2,
 /area/leucanth/exterior/n_caves)
+"zw" = (
+/turf/open/cobaltite_wall/cave_base,
+/area/leucanth/exterior/cove/fungal_flats)
 "zx" = (
 /turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/e_caves)
@@ -2679,6 +2746,11 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats)
+"Be" = (
+/turf/open/cobaltite_wall/cave_top_2{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "Bg" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
 	dir = 4
@@ -2728,6 +2800,12 @@
 	dir = 5
 	},
 /area/leucanth/exterior/nw_barrens)
+"BB" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 5
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "BG" = (
 /turf/open/cobaltite_wall/cave_base{
 	dir = 8
@@ -2745,6 +2823,11 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats)
+"BT" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "BW" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st{
 	dir = 4
@@ -2755,11 +2838,6 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/cave_north)
 "Ca" = (
-/mob/living/simple_animal/bunny{
-	desc = ":o)";
-	mob_size = 5;
-	name = "Big Chungus"
-	},
 /turf/open/floor/cobaltite,
 /area/leucanth/interior/oob)
 "Ci" = (
@@ -3091,6 +3169,11 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/w_caves)
+"Fh" = (
+/turf/open/cobaltite_wall/cave_base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "Fl" = (
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 10
@@ -3140,6 +3223,11 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"FC" = (
+/turf/open/cobaltite_wall/cave_top{
+	dir = 9
+	},
+/area/leucanth/exterior/cove/fungal_flats)
 "FL" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 6
@@ -3234,6 +3322,11 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_1st,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/cave_north)
+"GZ" = (
+/turf/open/cobaltite_wall/top_2{
+	dir = 10
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "Hb" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 6
@@ -3326,6 +3419,11 @@
 	dir = 8
 	},
 /area/leucanth/exterior/se_barrens)
+"HU" = (
+/turf/open/cobaltite_wall/base{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "HX" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd,
 /turf/open/cobaltite_wall/cave_top{
@@ -3396,6 +3494,9 @@
 	dir = 10
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"IP" = (
+/turf/open/cobaltite_wall/cave_top,
+/area/leucanth/exterior/cove/fungal_flats)
 "IW" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 10
@@ -3453,6 +3554,9 @@
 	dir = 5
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"JB" = (
+/turf/open/cobaltite_wall/top_2,
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "JE" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/sw_barrens)
@@ -3679,6 +3783,11 @@
 	dir = 5
 	},
 /area/leucanth/exterior/se_barrens)
+"LS" = (
+/turf/open/cobaltite_wall/top{
+	dir = 8
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "LU" = (
 /turf/open/cobaltite_wall/top{
 	dir = 5
@@ -4071,6 +4180,11 @@
 	dir = 9
 	},
 /area/leucanth/exterior/jungle/fungal_flats)
+"Qb" = (
+/turf/open/cobaltite_wall/mid{
+	dir = 4
+	},
+/area/leucanth/exterior/cove/fungal_flats/varient)
 "Qf" = (
 /turf/closed/mineral,
 /area/leucanth/exterior/ne_barrens)
@@ -4128,6 +4242,11 @@
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top_2{
 	dir = 5
+	},
+/area/leucanth/exterior/cove/fungal_flats)
+"QO" = (
+/turf/open/cobaltite_wall/mid{
+	dir = 4
 	},
 /area/leucanth/exterior/cove/fungal_flats)
 "QP" = (
@@ -4665,6 +4784,10 @@
 	dir = 6
 	},
 /area/leucanth/exterior/jungle/bulb_land)
+"Wp" = (
+/obj/structure/prop/leucanth/shadow,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "Wq" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -4850,6 +4973,12 @@
 	dir = 1
 	},
 /area/leucanth/exterior/w_caves)
+"XL" = (
+/obj/structure/prop/leucanth/shadow_2{
+	dir = 10
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "XQ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 5
@@ -4894,6 +5023,12 @@
 "Ye" = (
 /turf/open/cobaltite_wall/mid,
 /area/leucanth/interior/oob)
+"Yp" = (
+/obj/structure/prop/leucanth/shadow{
+	dir = 1
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "Yr" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_base,
@@ -20335,10 +20470,10 @@ nD
 nD
 Zb
 uW
-VX
-yi
-UH
-wa
+dS
+BT
+sY
+QO
 ot
 aL
 aL
@@ -20537,11 +20672,11 @@ nD
 WG
 vx
 uW
-Pr
-Dc
-fp
-aL
-aL
+IP
+zw
+qV
+qV
+Wp
 aL
 aL
 aL
@@ -20739,11 +20874,11 @@ DG
 WT
 uW
 uW
-Pr
-Xi
-fp
-aL
-aL
+IP
+zw
+qV
+qV
+Wp
 aL
 aL
 aL
@@ -20940,12 +21075,12 @@ nD
 nD
 qr
 WT
-VX
-rx
-wa
-ot
-aL
-aL
+dS
+sY
+Fh
+qV
+qV
+Wp
 aL
 aL
 aL
@@ -21142,13 +21277,13 @@ nD
 nD
 nD
 qr
-rx
-qX
-ot
-aL
-aL
-aL
-aL
+sY
+Fh
+qV
+qV
+qV
+XL
+gC
 aL
 aL
 aL
@@ -21344,13 +21479,13 @@ nD
 nD
 nD
 nD
-nD
-nD
-aL
-aL
-aL
-aL
-aL
+nN
+BB
+qV
+qV
+qV
+qV
+Wp
 aL
 aL
 aL
@@ -21547,13 +21682,13 @@ nD
 nD
 nD
 nD
-nD
-aL
-aL
-aL
-aL
-aL
-aL
+nN
+BB
+qV
+qV
+qV
+XL
+gC
 aL
 aL
 aL
@@ -21750,10 +21885,10 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-PT
+Yp
+qV
+qV
+FC
 dV
 CT
 ov
@@ -21952,10 +22087,10 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-iJ
+nN
+BB
+qV
+wL
 UZ
 Dp
 nt
@@ -22155,9 +22290,9 @@ nD
 nD
 nD
 nD
-nD
-WG
-fz
+Yp
+FC
+Be
 UH
 wa
 ot
@@ -22357,8 +22492,8 @@ nD
 nD
 nD
 nD
-WG
-vx
+FC
+Be
 Pr
 Xi
 fp
@@ -22762,10 +22897,10 @@ nD
 nD
 nD
 nD
-Zb
-yi
-Gh
-nt
+uc
+jM
+JB
+kQ
 td
 aL
 aL
@@ -22964,11 +23099,11 @@ nD
 nD
 nD
 nD
-YJ
-qX
-Pe
-aL
-aL
+dz
+Qb
+HU
+uM
+uM
 aL
 aL
 aL
@@ -23166,11 +23301,11 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-aL
-aL
+uM
+uM
+uM
+uM
+uM
 aL
 aL
 aL
@@ -23368,11 +23503,11 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-aL
-aL
+uM
+uM
+uM
+uM
+uM
 aL
 aL
 aL
@@ -23570,11 +23705,11 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-aL
-aL
+uM
+uM
+uM
+uM
+uM
 aL
 aL
 aL
@@ -23772,11 +23907,11 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-aL
-aL
+uM
+uM
+uM
+uM
+uM
 aL
 aL
 aL
@@ -23974,10 +24109,10 @@ nD
 nD
 nD
 nD
-nD
-nD
-nD
-Ap
+uM
+uM
+uM
+lb
 CT
 ov
 aL
@@ -24176,10 +24311,10 @@ nD
 nD
 nD
 nD
-WG
-UP
-UP
-UZ
+kp
+LS
+LS
+GZ
 xw
 xw
 xw
