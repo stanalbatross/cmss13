@@ -11,8 +11,8 @@
 	layer = BELOW_FULLSCREEN_LAYER
 
 /obj/item/device/motiondetector
-	name = "motion detector"
-	desc = "A device that detects movement, but ignores marines."
+	name = "Spirit Stone"
+	desc = "A stone set in silver that detects evil movement, but ignores righteous man."
 	icon = 'icons/obj/items/marine-items.dmi'
 	icon_state = "detector"
 	item_state = "motion_detector"

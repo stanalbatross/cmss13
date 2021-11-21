@@ -893,9 +893,10 @@ IN_USE						used for vending/denying
 
 	stat |= IN_USE
 	if(LAZYLEN(L))
+		flick("[initial(icon_state)]_vend", src)
 		if(vend_delay)
 			overlays.Cut()
-			icon_state = "[initial(icon_state)]_vend"
+
 			if(vend_sound)
 				playsound(loc, vend_sound, 25, 1, 2)	//heard only near vendor
 			sleep(vend_delay)

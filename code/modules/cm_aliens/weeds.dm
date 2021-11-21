@@ -1,6 +1,6 @@
 /obj/effect/alien/weeds
-	name = "weeds"
-	desc = "Weird black weeds..."
+	name = "Bewitched Ground"
+	desc = "The foul witch has hexxed the earth itself, woe!."
 	icon = 'icons/mob/hostiles/weeds.dmi'
 	icon_state = "base"
 

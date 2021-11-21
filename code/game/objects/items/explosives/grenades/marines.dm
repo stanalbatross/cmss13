@@ -89,8 +89,8 @@
 //================================================
 */
 /obj/item/explosive/grenade/HE/frag
-	name = "\improper M40 HEFA grenade"
-	desc = "High-Explosive Fragmenting-Antipersonnel. A small, but deceptively strong fragmentation grenade that has been phasing out the M15 fragmentation grenades alongside the M40 HEDP. Capable of being loaded in the M92 Launcher, or thrown by hand."
+	name = "\improper Boom stick"
+	desc = "Ye ol boom stick. Light and throw it!"
 	icon_state = "grenade_hefa"
 	item_state = "grenade_hefa"
 	explosion_power = 40
@@ -100,8 +100,8 @@
 
 
 /obj/item/explosive/grenade/HE/m15
-	name = "\improper M15 fragmentation grenade"
-	desc = "An outdated USCM Fragmentation Grenade. With decades of service in the USCM, the old M15 Fragmentation Grenade is slowly being replaced by the slightly safer M40-series grenades. It is set to detonate in 4 seconds."
+	name = "\improper Bomb"
+	desc = "An object containing tremendous explosive power. Light and throw it!"
 	icon_state = "grenade_ex"
 	item_state = "grenade_ex"
 	throw_speed = SPEED_FAST
@@ -180,8 +180,8 @@
 */
 
 /obj/item/explosive/grenade/incendiary
-	name = "\improper M40 HIDP incendiary grenade"
-	desc = "The M40 HIDP is a small, but deceptively strong incendiary grenade. It is set to detonate in 4 seconds."
+	name = "\improper Firey Boom Stick"
+	desc = "This boom stick contains volitile compounds that will set a large area on fire when exploded. Light and throw it!"
 	icon_state = "grenade_fire"
 	det_time = 40
 	item_state = "grenade_fire"

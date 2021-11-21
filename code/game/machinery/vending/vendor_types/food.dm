@@ -1,7 +1,7 @@
 //------------CANTEEN MRE VENDOR---------------
 /obj/structure/machinery/cm_vending/sorted/marine_food
-	name = "\improper ColMarTech Food Vendor"
-	desc = "USCM Food Vendor, containing standard military Prepared Meals."
+	name = "\improper Ye ol Food Barrel"
+	desc = "Stores various foods, for your pleasure."
 	icon_state = "marine_food"
 	vend_delay = 3
 	hackable = TRUE
