@@ -1374,7 +1374,7 @@
 
 //Enormous shell for Van Bandolier's superheavy double-barreled hunting gun.
 /datum/ammo/bullet/shotgun/twobore
-	name = "two bore bullet"
+	name = "silver bullet"
 	icon_state 	= "autocannon"
 	handful_state = "twobore"
 

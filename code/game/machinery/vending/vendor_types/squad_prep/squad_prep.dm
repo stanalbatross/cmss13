@@ -14,7 +14,7 @@
 		list("Ye ol Two-Bore Rifle", round(scale * 15), /obj/item/weapon/gun/shotgun/double/twobore, VENDOR_ITEM_REGULAR),
 
 		list("AMMO", -1, null, null),
-		list("Two-Bore Ammo Box", round(scale * 40), /obj/item/storage/box/twobore, VENDOR_ITEM_REGULAR),//They already get these as on-spawns, might as well formalize some spares.
+		list("Two-Bore Ammo Box", round(scale * 40), /obj/item/ammo_magazine/shotgun/twobore, VENDOR_ITEM_REGULAR),//They already get these as on-spawns, might as well formalize some spares.
 
 		list("UTILITIES", -1, null, null),
 		list("M5 Bayonet", round(scale * 25), /obj/item/attachable/bayonet, VENDOR_ITEM_REGULAR),

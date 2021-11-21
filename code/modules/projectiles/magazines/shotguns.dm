@@ -63,6 +63,18 @@ one type of shotgun ammo, but I think it helps in referencing it. ~N
 	default_ammo = /datum/ammo/bullet/shotgun/beanbag
 	handful_state = "beanbag_slug"
 	caliber = "20g"
+
+
+/obj/item/ammo_magazine/shotgun/twobore
+	name = "bag of silver bullets"
+	desc = "holy bullets crafted by the saints of undun, will damage any unholy monster greatly."
+	icon_state = "twobore"
+	item_state = "twobore"
+	default_ammo = /datum/ammo/bullet/shotgun/twobore
+	handful_state = "twobore"
+	transfer_handful_amount = 3
+	caliber = "2 bore"
+
 //-------------------------------------------------------
 
 /*
