@@ -39,50 +39,12 @@
 		if(0 to 50)
 			shake_camera(buckled_mob, 3, 1)
 		if(51 to 500)
-			var/bingus = rand(-2, 2)
-			var/blumpus = rand(-2, 2)
-			var/new_pixel_x
-			var/new_pixel_y
-
-			var/list/adjacentturfslist = range(1, get_turf(src))
-			var/adj_turf_north
-			var/adj_turf_south
-			var/adj_turf_east
-			var/adj_turf_west
-
-			new_pixel_x = pixel_x + bingus
-			new_pixel_y = pixel_y + blumpus
-			playsound(get_turf(src), 'sound/effects/chair_screech.ogg', 20, rand(-2, 2), 10, falloff = 0.5)
-
-			for(var/turf/T in adjacentturfslist)
-				var/funnydirection = get_dir(get_turf(src), T)
-				if(funnydirection == NORTH)
-					adj_turf_north = T
-				else if(funnydirection == SOUTH)
-					adj_turf_south = T
-				else if(funnydirection == EAST)
-					adj_turf_east = T
-				else if(funnydirection == WEST)
-					adj_turf_west = T
-			if(new_pixel_x > 16)
-				src.forceMove(adj_turf_east)
-				new_pixel_x = -16
-			else if(new_pixel_x < -16)
-				src.forceMove(adj_turf_west)
-				new_pixel_x = 16
-			if(new_pixel_y > 16)
-				src.forceMove(adj_turf_north)
-				new_pixel_y = -16
-			else if(new_pixel_y < -16)
-				src.forceMove(adj_turf_south)
-				new_pixel_y = 16
-
-			pixel_x = new_pixel_x
-			pixel_y = new_pixel_y
-			buckled_mob.pixel_x = pixel_x
-			buckled_mob.pixel_y = pixel_y
-
+			beyblade()
 		if(501 to 1020)
+			beyblade()
+			if(prob(10))
+				buckled_mob.IgniteMob(TRUE)
+		if(1021 to 2000)
 			explosion(get_turf(src), 1, 2, 3, 3, , , , create_cause_data(src.name, buckled_mob))
 		else
 			buckled_mob.gib()
@@ -91,6 +53,74 @@
 /obj/structure/bed/chair/proc/reset_spin_count()
 	spin_count = 0
 	message_admins("Spooky ghost scares you!")
+
+/obj/structure/bed/chair/proc/beyblade()
+	var/bingus = rand(-2, 2)
+	var/blumpus = rand(-2, 2)
+	var/new_pixel_x
+	var/new_pixel_y
+
+	var/list/adjacentturfslist = range(1, get_turf(src))
+	var/adj_turf_north
+	var/adj_turf_south
+	var/adj_turf_east
+	var/adj_turf_west
+
+	new_pixel_x = pixel_x + bingus
+	new_pixel_y = pixel_y + blumpus
+	playsound(get_turf(src), 'sound/effects/chair_screech.ogg', 20, rand(-2, 2), 10, falloff = 0.5)
+
+	for(var/turf/T in adjacentturfslist)
+		var/funnydirection = get_dir(get_turf(src), T)
+		if(funnydirection == NORTH)
+			adj_turf_north = T
+		else if(funnydirection == SOUTH)
+			adj_turf_south = T
+		else if(funnydirection == EAST)
+			adj_turf_east = T
+		else if(funnydirection == WEST)
+			adj_turf_west = T
+	if(new_pixel_x > 16 && check_turf_for_beybladers(adj_turf_east))
+		src.forceMove(adj_turf_east)
+		new_pixel_x = -16
+	else if(new_pixel_x < -16)
+		src.forceMove(adj_turf_west)
+		new_pixel_x = 16
+	if(new_pixel_y > 16)
+		src.forceMove(adj_turf_north)
+		new_pixel_y = -16
+	else if(new_pixel_y < -16)
+		src.forceMove(adj_turf_south)
+		new_pixel_y = 16
+
+	pixel_x = new_pixel_x
+	pixel_y = new_pixel_y
+	buckled_mob.pixel_x = pixel_x
+	buckled_mob.pixel_y = pixel_y
+
+/obj/structure/bed/chair/proc/check_turf_for_beybladers(var/turf/T) //returns true if there is a beyblader, false if you can move into that turf as a beyblader
+	for(var/obj/structure/bed/chair/Ch in T)
+		if(Ch.buckled_mob)
+			if(Ch.spin_count)
+				if(prob(50)) //YOU WIN THEY LOOSE!!!
+					Ch.beyblade_loose()
+				else
+					beyblade_loose()
+			else
+				Ch.beyblade_loose()
+
+/obj/structure/bed/chair/proc/beyblade_loose()
+	var/turf/T = get_turf(src)
+	if(prob(60) && !buckled_mob.stat && buckled_mob.pain.feels_pain)
+		INVOKE_ASYNC(buckled_mob, /mob.proc/emote, "scream")
+	var/list/bigchungus = range(3, T)
+	var/turf/target_for_throw = bigchungus[rand(1, length(bigchungus))]
+	var/mob/M = buckled_mob
+	unbuckle()
+	M.Stun(2)
+	M.throw_atom(target_for_throw, 3, SPEED_AVERAGE, M, TRUE)
+	M.update_icons()
+
 
 
 /obj/structure/bed/chair/MouseDrop(atom/over)
