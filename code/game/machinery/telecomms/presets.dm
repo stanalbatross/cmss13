@@ -142,6 +142,10 @@
 		return
 	toggle_state(user) // just flip dat switch
 
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms
+	use_power = 1000
+	idle_power_usage = 100
+
 /obj/structure/machinery/telecomms/relay/preset/telecomms
 	id = "Telecomms Relay"
 	autolinkers = list("relay")
