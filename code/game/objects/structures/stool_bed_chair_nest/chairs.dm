@@ -10,6 +10,7 @@
 	var/propelled = 0 //Check for fire-extinguisher-driven chairs
 	var/picked_up_item = /obj/item/weapon/melee/twohanded/folded_metal_chair
 	var/stacked_size = 0
+	var/spin_count = 0
 
 /obj/structure/bed/chair/Initialize()
 	. = ..()
@@ -30,6 +31,67 @@
 		src.layer = OBJ_LAYER
 	if(buckled_mob)
 		buckled_mob.setDir(dir)
+	if(!istype(src, /obj/structure/bed/chair) || !buckled_mob)
+		return
+	spin_count++
+	addtimer(CALLBACK(src, .proc/reset_spin_count), 1 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
+	switch(spin_count)
+		if(0 to 50)
+			shake_camera(buckled_mob, 3, 1)
+		if(51 to 500)
+			var/bingus = rand(-2, 2)
+			var/blumpus = rand(-2, 2)
+			var/new_pixel_x
+			var/new_pixel_y
+
+			var/list/adjacentturfslist = range(1, get_turf(src))
+			var/adj_turf_north
+			var/adj_turf_south
+			var/adj_turf_east
+			var/adj_turf_west
+
+			new_pixel_x = pixel_x + bingus
+			new_pixel_y = pixel_y + blumpus
+			playsound(get_turf(src), 'sound/effects/chair_screech.ogg', 20, rand(-2, 2), 10, falloff = 0.5)
+
+			for(var/turf/T in adjacentturfslist)
+				var/funnydirection = get_dir(get_turf(src), T)
+				if(funnydirection == NORTH)
+					adj_turf_north = T
+				else if(funnydirection == SOUTH)
+					adj_turf_south = T
+				else if(funnydirection == EAST)
+					adj_turf_east = T
+				else if(funnydirection == WEST)
+					adj_turf_west = T
+			if(new_pixel_x > 16)
+				src.forceMove(adj_turf_east)
+				new_pixel_x = -16
+			else if(new_pixel_x < -16)
+				src.forceMove(adj_turf_west)
+				new_pixel_x = 16
+			if(new_pixel_y > 16)
+				src.forceMove(adj_turf_north)
+				new_pixel_y = -16
+			else if(new_pixel_y < -16)
+				src.forceMove(adj_turf_south)
+				new_pixel_y = 16
+
+			pixel_x = new_pixel_x
+			pixel_y = new_pixel_y
+			buckled_mob.pixel_x = pixel_x
+			buckled_mob.pixel_y = pixel_y
+
+		if(501 to 1020)
+			explosion(get_turf(src), 1, 2, 3, 3, , , , create_cause_data(src.name, buckled_mob))
+		else
+			buckled_mob.gib()
+			unbuckle()
+
+/obj/structure/bed/chair/proc/reset_spin_count()
+	spin_count = 0
+	message_admins("Spooky ghost scares you!")
+
 
 /obj/structure/bed/chair/MouseDrop(atom/over)
 	. = ..()
