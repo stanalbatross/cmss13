@@ -143,8 +143,36 @@
 	toggle_state(user) // just flip dat switch
 
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms
-	use_power = 1000
-	idle_power_usage = 100
+	name = "TC-3T static telecommunications tower"
+	desc = "A static heavy-duty TC-3T telecommunications tower. Used to set up subspace communications lines between planetary and extra-planetary locations."
+	use_power = 0
+	idle_power_usage = 10000
+	toggled = FALSE
+	var/ispowered = 0
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/attack_hand(mob/user)
+	if(ishighersilicon(user))
+		return ..()
+	if(!ispowered)
+		to_chat(user, SPAN_WARNING("The TC-3T tower makes a small plaintful beep, and nothing happens. It seems to be out of power."))
+		return 0
+	if(!on)
+		use_power = 1
+	else
+		use_power = 0
+	toggle_state(user) // just flip dat switch
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/power_change()
+	..()
+	if((stat & NOPOWER))
+		if(on)
+			toggle_state()
+		ispowered = 0
+		on = 0
+		update_icon()
+	else
+		ispowered = 1
+		update_icon()
 
 /obj/structure/machinery/telecomms/relay/preset/telecomms
 	id = "Telecomms Relay"
