@@ -258,7 +258,7 @@
 		overlays += image("icon"=src.cover_icon,"icon_state"=cover_icon_state,"layer"=CATWALK_LAYER,"dir" = dir)
 	else
 		name = default_name
-		overlays += image("icon"=src.icon,"icon_state"=icon_overlay,"layer"=ABOVE_MOB_LAYER,"dir" = dir)
+		overlays += image("icon"=src.icon,"icon_state"=icon_overlay,"layer"=ABOVE_XENO_LAYER,"dir" = dir)
 
 /turf/open/gm/river/ex_act(severity)
 	if(covered & severity >= EXPLOSION_THRESHOLD_LOW)

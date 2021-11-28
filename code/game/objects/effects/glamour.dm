@@ -102,6 +102,8 @@
 		addtimer(CALLBACK(src, .proc/readd_images, M, glamour_parent), 5 SECONDS, TIMER_UNIQUE)
 
 /obj/effect/glamour/proc/readd_images(mob/living/carbon/M, datum/area_glamour_list/GL)
+	if(!M.client)
+		return FALSE
 	for(var/obj/effect/glamour/GGGG in GL.glamour_list)
 		if(M in (get_turf(GGGG)).contents)
 			addtimer(CALLBACK(src, .proc/readd_images, M, glamour_parent), 5 SECONDS, TIMER_UNIQUE)

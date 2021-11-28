@@ -48,6 +48,8 @@
 	unlimited_power = 1//ds computer
 	is_resin_allowed = FALSE
 
+//-------------------------------------------------
+
 /area/leucanth/exterior/ichor
 	name = "Leucanth Labs - Ichor River"
 	icon_state = "ext"
@@ -56,17 +58,43 @@
 	name = "Leucanth Labs - The Pistil Ichor River"
 	icon_state = "ichor_pistil"
 
+/area/leucanth/exterior/ichor/pistil/deep1
+
+/area/leucanth/exterior/ichor/pistil/deep2
+
+/area/leucanth/exterior/ichor/pistil/eruptionZone
+
 /area/leucanth/exterior/ichor/stamen
 	name = "Leucanth Labs - The Stamen Ichor River"
 	icon_state = "ichor_stamen"
+
+/area/leucanth/exterior/ichor/stamen/deep1
+
+/area/leucanth/exterior/ichor/stamen/deep2
+
+/area/leucanth/exterior/ichor/stamen/eruptionZone
 
 /area/leucanth/exterior/ichor/stigma
 	name = "Leucanth Labs - The Stigma Ichor River"
 	icon_state = "ichor_stigma"
 
+/area/leucanth/exterior/ichor/stigma/deep1
+
+/area/leucanth/exterior/ichor/stigma/deep2
+
+/area/leucanth/exterior/ichor/stigma/eruptionZone
+
 /area/leucanth/exterior/ichor/anther
 	name = "Leucanth Labs - The Anther Ichor River"
 	icon_state = "ichor_anther"
+
+/area/leucanth/exterior/ichor/anther/deep1
+
+/area/leucanth/exterior/ichor/anther/deep2
+
+/area/leucanth/exterior/ichor/anther/eruptionZone
+
+//-----------------------------------------
 
 /area/leucanth/exterior/se_barrens
 	name = "Leucanth Labs - South East Barrens"
@@ -145,7 +173,7 @@
 
 /area/leucanth/exterior/cove/great_ferns
 	name = "Leucanth Labs - Great Fern Cove"
-	icon_state = "great_fern_cove"
+	icon_state = "great_ferns_cove"
 
 /area/leucanth/exterior/cove/great_ferns/varient
 
@@ -155,11 +183,11 @@
 
 /area/leucanth/exterior/cove/bulb_land/varient
 
-/area/kutjleucanthevo/exterior/cove/grassy_matts
+/area/leucanth/exterior/cove/grassy_matts
 	name = "Leucanth Labs - Grassy Matts Cove"
 	icon_state = "grassy_matts_cove"
 
-/area/kutjleucanthevo/exterior/cove/grassy_matts/varient
+/area/leucanth/exterior/cove/grassy_matts/varient
 
 /area/leucanth/exterior/cove/ichor_hotsprings
 	name = "Leucanth Labs - Ichor Hot Cove"
