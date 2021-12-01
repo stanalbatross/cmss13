@@ -5792,6 +5792,9 @@
 /obj/structure/bed/chair{
 	dir = 4
 	},
+/obj/effect/landmark/nightmare{
+	insert_tag = harvest
+	},
 /turf/open/floor/kutjevo/tan,
 /area/kutjevo/interior/complex/botany)
 "sY" = (
@@ -6577,9 +6580,6 @@
 /obj/item/stack/cable_coil,
 /obj/structure/cable/heavyduty{
 	icon_state = "1-4"
-	},
-/obj/effect/landmark/nightmare{
-	insert_tag = harvest
 	},
 /turf/open/floor/plating/kutjevo,
 /area/kutjevo/interior/complex/botany)
