@@ -5793,7 +5793,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/nightmare{
-	insert_tag = harvest
+	insert_tag = "harvest"
 	},
 /turf/open/floor/kutjevo/tan,
 /area/kutjevo/interior/complex/botany)
