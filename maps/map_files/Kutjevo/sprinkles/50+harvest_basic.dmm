@@ -1,13 +1,17 @@
-"a" = (/turf/open/space/basic,/area/space)
-"g" = (/obj/item/reagent_container/glass/bucket,/turf/open/space/basic,/area/space)
-"B" = (/obj/item/storage/bag/plants,/turf/open/space/basic,/area/space)
+"a" = (/turf/open/floor/plating/kutjevo,/area/space)
+"b" = (/obj/item/storage/bag/plants,/turf/open/floor/plating/kutjevo,/area/space)
+"n" = (/obj/item/reagent_container/glass/bucket,/turf/open/floor/kutjevo/tan,/area/space)
+"z" = (/obj/item/storage/bag/plants,/turf/open/floor/kutjevo/tan,/area/space)
+"B" = (/turf/open/floor/kutjevo/tan,/area/space)
+"I" = (/turf/open/floor/kutjevo/colors/green,/area/space)
+"K" = (/turf/open/floor/greengrid,/area/space)
 
 (1,1,1) = {"
-aaaaaaaaaa
-aaaaagaaaB
-aaaaaaaaaa
-gaaaBaaaaa
-aaaaaaaBaa
-aaaagaaaaa
-aBaaaaaaaa
+aaBBBBBBBB
+naIIBBIIIB
+BaKBbaBKnB
+BIIIBnIIIB
+zBKBBBBKBB
+BIIIznIIIB
+BBBBBBBBBz
 "}
