@@ -1,17 +1,17 @@
-"a" = (/turf/open/floor/plating/kutjevo,/area/space)
-"b" = (/obj/item/storage/bag/plants,/turf/open/floor/plating/kutjevo,/area/space)
-"n" = (/obj/item/reagent_container/glass/bucket,/turf/open/floor/kutjevo/tan,/area/space)
-"z" = (/obj/item/storage/bag/plants,/turf/open/floor/kutjevo/tan,/area/space)
-"B" = (/turf/open/floor/kutjevo/tan,/area/space)
-"I" = (/turf/open/floor/kutjevo/colors/green,/area/space)
-"K" = (/turf/open/floor/greengrid,/area/space)
+"a" = (/turf/open/floor/plating/kutjevo,/area/kutjevo/interior/complex/botany)
+"t" = (/turf/open/floor/kutjevo/colors/green,/area/kutjevo/interior/complex/botany)
+"B" = (/turf/open/floor/kutjevo/tan,/area/kutjevo/interior/complex/botany)
+"M" = (/obj/item/reagent_container/glass/bucket,/turf/open/floor/kutjevo/tan,/area/kutjevo/interior/complex/botany)
+"Q" = (/obj/item/storage/bag/plants,/turf/open/floor/kutjevo/tan,/area/kutjevo/interior/complex/botany)
+"T" = (/obj/item/storage/bag/plants,/turf/open/floor/plating/kutjevo,/area/kutjevo/interior/complex/botany)
+"U" = (/turf/open/floor/greengrid,/area/kutjevo/interior/complex/botany)
 
 (1,1,1) = {"
 aaBBBBBBBB
-naIIBBIIIB
-BaKBbaBKnB
-BIIIBnIIIB
-zBKBBBBKBB
-BIIIznIIIB
-BBBBBBBBBz
+MattBBtttB
+BaUBTaBUMB
+BtttBMtttB
+QBUBBBBUBB
+BtttQMtttB
+BBBBBBBBBQ
 "}
