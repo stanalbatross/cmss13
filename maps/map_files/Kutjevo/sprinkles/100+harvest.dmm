@@ -1,12 +1,13 @@
 "a" = (/turf/open/space/basic,/area/space)
 "g" = (/obj/item/reagent_container/glass/bucket,/turf/open/space/basic,/area/space)
+"B" = (/obj/item/storage/bag/plants,/turf/open/space/basic,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaa
+aaaaagaaaB
 aaaaaaaaaa
-aaaaaaaaaa
-gaaaaaaaaa
-aaaaaaaaaa
-aaaaaaaaaa
-aaaaaaaaaa
+gaaaBaaaaa
+aaaaaaaBaa
+aaaagaaaaa
+aBaaaaaaaa
 "}
