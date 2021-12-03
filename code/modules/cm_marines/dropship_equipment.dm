@@ -158,6 +158,7 @@
 	point_cost = 500
 	var/deployment_cooldown
 	var/obj/structure/machinery/defenses/sentry/premade/dropship/deployed_turret
+	var/obj/structure/machinery/camera/camera
 
 /obj/structure/dropship_equipment/sentry_holder/Initialize()
 	. = ..()
@@ -165,6 +166,9 @@
 	if(!deployed_turret)
 		deployed_turret = new(src)
 		deployed_turret.deployment_system = src
+	camera = new /obj/structure/machinery/camera(src)
+	camera.c_tag = "[src]"
+	camera.network = list()
 
 /obj/structure/dropship_equipment/sentry_holder/examine(mob/user)
 	..()
@@ -242,6 +246,15 @@
 
 	icon_state = "sentry_system_deployed"
 
+	if(linked_shuttle.name == "Alamo")
+		camera.network.Add("almayer", "dropship1")
+		message_admins("sentry linked to Alamo")
+	if(linked_shuttle.name == "Normandy")
+		message_admins("sentry linked to Normandy")
+		camera.network.Add("almayer", "dropship2")
+	else
+		camera.network.Add("containment") //for testing purposes
+
 	for(var/mob/M in deployed_turret.loc)
 		if(deployed_turret.loc == src.loc)
 			step(M, deployed_turret.dir)
@@ -262,6 +275,7 @@
 	deployed_turret.stop_processing()
 	deployed_turret.unset_range()
 	icon_state = "sentry_system_installed"
+	camera.network.Remove("almayer","dropship1", "dropship2")
 
 
 
