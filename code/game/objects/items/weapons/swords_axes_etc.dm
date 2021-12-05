@@ -116,6 +116,8 @@
 	add_fingerprint(user)
 	return
 
+//collapsible shield
+
 /obj/item/weapon/shield/collapsible/IsShield()
 	return active
 
@@ -124,13 +126,9 @@
 
 	active = !active
 	if(active)
-		var/mob/living/carbon/human/H = user
-		H.shield_slowdown = readied_slowdown
-		H.recalculate_move_delay = TRUE
+		add_active_shield_effects(user)
 	else
-		var/mob/living/carbon/human/H = user
-		H.shield_slowdown = unreadied_slowdown
-		H.recalculate_move_delay = TRUE
+		add_inactive_shield_effects(user)
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
