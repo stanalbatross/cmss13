@@ -58,6 +58,8 @@
 	name = "Leucanth Labs - The Pistil Ichor River"
 	icon_state = "ichor_pistil"
 
+/area/leucanth/exterior/ichor/pistil/ford
+
 /area/leucanth/exterior/ichor/pistil/deep1
 
 /area/leucanth/exterior/ichor/pistil/deep2
@@ -67,6 +69,8 @@
 /area/leucanth/exterior/ichor/stamen
 	name = "Leucanth Labs - The Stamen Ichor River"
 	icon_state = "ichor_stamen"
+
+/area/leucanth/exterior/ichor/stamen/ford
 
 /area/leucanth/exterior/ichor/stamen/deep1
 
@@ -78,6 +82,8 @@
 	name = "Leucanth Labs - The Stigma Ichor River"
 	icon_state = "ichor_stigma"
 
+/area/leucanth/exterior/ichor/stigma/ford
+
 /area/leucanth/exterior/ichor/stigma/deep1
 
 /area/leucanth/exterior/ichor/stigma/deep2
@@ -87,6 +93,8 @@
 /area/leucanth/exterior/ichor/anther
 	name = "Leucanth Labs - The Anther Ichor River"
 	icon_state = "ichor_anther"
+
+/area/leucanth/exterior/ichor/anther/ford
 
 /area/leucanth/exterior/ichor/anther/deep1
 
