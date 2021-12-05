@@ -4,7 +4,9 @@
 	var/passive_block = 15 // Percentage chance used in prob() to block incoming attack
 	var/readied_block = 30
 	var/readied_slowdown = SLOWDOWN_ARMOR_VERY_LIGHT // Walking around in a readied shield stance slows you! The armor defs are a useful existing reference point.
+	var/unreadied_slowdown = 0
 	var/shield_readied = FALSE
+	var/collapsible_shield = FALSE
 
 // Toggling procs
 /obj/item/weapon/shield/proc/raise_shield(mob/user as mob) // Prepare for an attack. Slows you down slightly, but increases chance to block.
@@ -45,12 +47,12 @@
 
 // Making sure that debuffs don't stay
 /obj/item/weapon/shield/dropped(mob/user as mob)
-	if(shield_readied)
+	if(shield_readied && !collapsible_shield)
 		lower_shield(user)
 	..()
 
 /obj/item/weapon/shield/equipped(mob/user, slot)
-	if(shield_readied)
+	if(shield_readied && !collapsible_shield)
 		lower_shield(user)
 	..()
 
@@ -107,3 +109,30 @@
 
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
+
+/obj/item/weapon/shield/collapsible
+	name = "collapsible shield"
+	shield_readied = TRUE
+	collapsible_shield = TRUE
+	var/active = 0
+
+/obj/item/weapon/shield/collapsible/dropped(mob/user as mob)
+	var/mob/living/carbon/human/H = user
+	H.shield_slowdown = 0
+	H.recalculate_move_delay = TRUE
+	..()
+
+/obj/item/weapon/shield/collapsible/equipped(mob/user, slot)
+	if(slot == WEAR_BACK)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = 0
+		H.recalculate_move_delay = TRUE
+	if(active == 0)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = 0
+		H.recalculate_move_delay = TRUE
+	else
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = readied_slowdown
+		H.recalculate_move_delay = TRUE
+	..()

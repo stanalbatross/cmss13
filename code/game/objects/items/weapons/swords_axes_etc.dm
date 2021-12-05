@@ -115,3 +115,25 @@
 
 	add_fingerprint(user)
 	return
+
+/obj/item/weapon/shield/collapsible/IsShield()
+	return active
+
+/obj/item/weapon/shield/collapsible/attack_self(mob/living/user)
+	..()
+
+	active = !active
+	if(active)
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = readied_slowdown
+		H.recalculate_move_delay = TRUE
+	else
+		var/mob/living/carbon/human/H = user
+		H.shield_slowdown = unreadied_slowdown
+		H.recalculate_move_delay = TRUE
+
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand(0)
+		H.update_inv_r_hand()
+	return
