@@ -3,9 +3,13 @@
 	var/base_icon_state = "shield"
 	var/passive_block = 15 // Percentage chance used in prob() to block incoming attack
 	var/readied_block = 30
+	var/passive_armour
+	var/active_armour
+	var/shield_health
 	var/readied_slowdown = SLOWDOWN_ARMOR_VERY_LIGHT // Walking around in a readied shield stance slows you! The armor defs are a useful existing reference point.
 	var/shield_readied = FALSE
 	var/collapsible_shield = FALSE
+	var/use_health = FALSE
 
 // Toggling procs
 /obj/item/weapon/shield/proc/raise_shield(mob/user as mob) // Prepare for an attack. Slows you down slightly, but increases chance to block.
