@@ -342,3 +342,9 @@
 	BD.clear_head--
 	if(BD.clear_head<=0)
 		BD.clear_head = 0
+
+/datum/behavior_delegate/knight
+	name = "Knight Warrior Behavior Delegate"
+
+	var/max_self_shield = 5 SECONDS
+	var/shield_delay = 3

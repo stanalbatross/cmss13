@@ -159,10 +159,10 @@
 	var/S = pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg')
 	playsound(H,S, 50, 1)
 
-	if (X.mutation_type != WARRIOR_BOXER)
-		do_base_warrior_punch(H, L)
+	if (X.mutation_type == WARRIOR_BOXER)
+		do_boxer_punch(H, L)
 	else
-		do_boxer_punch(H,L)
+		do_base_warrior_punch(H, L)
 
 	apply_cooldown()
 	..()
@@ -360,3 +360,124 @@
 
 	apply_cooldown()
 	..()
+
+/datum/action/xeno_action/onclick/hard_carapace/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+
+	if (!action_cooldown_check())
+		return
+
+	if (!istype(X) || !X.check_state())
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+
+	if (!do_after(X, 3 SECONDS, INTERRUPT_MOVED , BUSY_ICON_MEDICAL))
+		return
+
+	to_chat(X, SPAN_XENODANGER("You generate an extra layer of chitin on top of your armor."))
+	X.add_xeno_shield(350, XENO_SHIELD_SOURCE_GENERIC, max_shield = 350)
+
+	apply_cooldown()
+	..()
+	return
+
+/datum/action/xeno_action/activable/knight_crush/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	
+	if (!action_cooldown_check())
+		return
+
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
+		return
+
+	if (!X.check_state() || X.agility)
+		return
+
+	var/distance = get_dist(X, A)
+
+	var/mob/living/carbon/H = A
+	
+	if (distance > 1)
+		step_towards(X, H, 1)
+
+	if (!X.Adjacent(H))
+		return
+
+	if(H.stat == DEAD) return
+	if(HAS_TRAIT(H, TRAIT_NESTED)) return
+
+	if (!check_and_use_plasma_owner())
+		return
+
+	H.last_damage_data = create_cause_data(initial(X.caste_type), X)
+
+	if(H.mob_size >= MOB_SIZE_BIG)
+		to_chat(X, SPAN_XENOWARNING("[H] is too big for you to crush!"))
+		return
+		
+	var/damage = rand(knight_crush_damage, knight_crush_damage + damage_variance)
+
+	H.KnockDown(knight_crush_knockdown)
+	H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE)
+	shake_camera(H, 2, 3)
+	playsound(H, 'sound/effects/bang.ogg', 10, 1)
+	
+	apply_cooldown()
+	..()
+	return
+
+
+/datum/action/xeno_action/activable/knight_bash/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+
+	if (!action_cooldown_check())
+		return
+
+	if (!isXenoOrHuman(A) || X.can_not_harm(A))
+		return
+
+	if (!X.check_state() || X.agility)
+		return
+
+	if (!X.Adjacent(A))
+		return
+
+	var/mob/living/carbon/H = A
+	if(H.stat == DEAD) return
+	if(HAS_TRAIT(H, TRAIT_NESTED))
+		return
+
+	if(H == X.pulling)
+		X.stop_pulling()
+
+	if(H.mob_size >= MOB_SIZE_BIG)
+		to_chat(X, SPAN_XENOWARNING("Your bash proves ineffective due to [H]'s size!"))
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+
+	X.visible_message(SPAN_XENOWARNING("\The [X] bashes [H] away!"), SPAN_XENOWARNING("You bash [H] away!"))
+	playsound(H,'sound/weapons/alien_claw_block.ogg', 75, 1)
+	H.apply_effect(get_xeno_stun_duration(H, bash_stun_power), STUN)
+	H.apply_effect(bash_weaken_power, WEAKEN)
+	H.last_damage_data = create_cause_data(initial(X.caste_type), X)
+	shake_camera(H, 2, 1)
+
+	var/facing = get_dir(X, H)
+	var/turf/T = X.loc
+	var/turf/temp = X.loc
+
+	for (var/x in 0 to bash_distance-1)
+		temp = get_step(T, facing)
+		if (!temp)
+			break
+		T = temp
+
+	H.throw_atom(T, bash_distance, SPEED_VERY_FAST, X, FALSE)
+
+	apply_cooldown()
+	..()
+	return

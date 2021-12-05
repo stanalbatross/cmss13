@@ -40,3 +40,24 @@
 	set hidden = 1
 	var/action_name = "Toggle Agility"
 	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_hard_carapace()
+	set category = "Alien"
+	set name = "Harden Carapace"
+	set hidden = 1
+	var/action_name = "Harden Carapace"
+	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_knight_bash()
+	set category = "Alien"
+	set name = "Crush"
+	set hidden = 1
+	var/action_name = "Crush"
+	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_knight_crush()
+	set category = "Alien"
+	set name = "Crush"
+	set hidden = 1
+	var/action_name = "Crush"
+	handle_xeno_macro(src, action_name)
