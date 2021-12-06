@@ -1,25 +1,26 @@
 /datum/area_ichor_list
 	var/list/ichors_eruptors = list()
-	var/list/ichors_deep = list()
-	var/list/ichors_shallow = list()
+	var/list/ichors_deep = list(null)
+	var/list/ichors_shallow = list(null)
 	var/obj/effect/landmark/ichor_eruptor/parent_eruptor = null
 
 /datum/area_ichor_list/proc/populate_lists(var/turf/T)
 	find_all_ichors_eruptors()
 	find_all_ichors_deep()
+	find_all_ichors_shallow()
 
 /datum/area_ichor_list/proc/find_all_ichors_eruptors()
-	for(var/i = 0, i < 40, i++)
+	for(var/i = 0, i < 40, i++) // 40 is the maxium check number, very arbitrary :o)
 		if(check_ichors_eruptors_neighbors())
-			break
+			break				//it always breaks before it gets to that number anyways
 
 /datum/area_ichor_list/proc/check_ichors_eruptors_neighbors()
 	var/completed_turf_check = 0
 	var/parent_eruptor_turf = get_turf(parent_eruptor)
 	var/parent_eruptor_area = get_area(parent_eruptor)
 	for(var/turf/T in ichors_eruptors)
-		for(var/i = 1, i <= 4, i++)
-			var/checking_turf = get_step(T, cardinal[i])
+		for(var/i = 1, i <= 8, i++)
+			var/checking_turf = get_step(T, alldirs[i])
 			if(istype(checking_turf, parent_eruptor_turf) && istype(get_area(checking_turf), parent_eruptor_area))
 				ichors_eruptors |= checking_turf
 		completed_turf_check++
@@ -30,44 +31,67 @@
 /datum/area_ichor_list/proc/find_all_ichors_deep()
 	for(var/i = 0, i < 40, i++)
 		if(check_ichors_deep_neighbors())
-			funny_proc()
 			break
 
-/datum/area_ichor_list/proc/funny_proc()
-	for(var/turf/T in ichors_deep)
-		new /obj/item/device/flashlight/flare/on(T)
-
-/datum/area_ichor_list/proc/check_ichors_deep_neighbors() //NONE OF THIS WOOOORKSSSSS >:C
-	var/bingusBongus = length(ichors_deep)
+/datum/area_ichor_list/proc/check_ichors_deep_neighbors()
 	var/completed_turf_check = 0
 	var/parent_eruptor_turf = get_turf(parent_eruptor)
-	var/deep_ichor_area = null
-	var/searching_turf = parent_eruptor_turf
-	if(length(ichors_deep) < 1)	//we have no starting turf, go east until you find one -- THIS MUST BE MAPPED IN LIKE THIS SO NOTHING WILL BREAK HAHHAHAHAHA
+	var/deep_ichor_area = get_area(ichors_deep[1])
+	var/searching_turf = ichors_deep[1]
+	if(ichors_deep[1] == null)	//we have no starting turf, go east until you find one -- THIS MUST BE MAPPED IN LIKE THIS SO NOTHING WILL BREAK HAHHAHAHAHA
+		searching_turf = parent_eruptor_turf
 		for(var/i, i < 20, i++)
 			searching_turf = get_step(searching_turf, EAST)
 			if(get_area(searching_turf) == get_area(parent_eruptor_turf))
 				continue
 			else
-				ichors_deep += searching_turf
+				ichors_deep[1] = searching_turf
 				deep_ichor_area = get_area(searching_turf)
-				new /obj/structure/machinery/bodyscanner(parent_eruptor_turf)
-				new /obj/structure/machinery/autolathe(searching_turf)
-				message_admins("bingus")
 				break
 	for(var/turf/T in ichors_deep)
-		message_admins("bongus - [length(ichors_deep)]")
 		for(var/i = 1, i <= 8, i++)
 			var/checking_turf = get_step(T, alldirs[i])
 			if(istype(checking_turf, searching_turf) && istype(get_area(checking_turf), deep_ichor_area))
-				message_admins("[checking_turf], [searching_turf] && [get_area(checking_turf)], [deep_ichor_area]")
-				new /obj/structure/girder(checking_turf)
 				ichors_deep |= checking_turf
 		completed_turf_check++
-	message_admins("[bingusBongus] --> [length(ichors_deep)]")
 	if(completed_turf_check == length(ichors_deep))
 		return TRUE
 	return FALSE
+
+/datum/area_ichor_list/proc/find_all_ichors_shallow()
+	var/funnnycolor = pipe_colors[rand(1, length(pipe_colors))]
+	check_ichors_shallow_neighbors()
+	for(var/turf/T in ichors_shallow)
+		var/obj/structure/bookcase/bigchungus = new /obj/structure/bookcase(T)
+		bigchungus.color =  funnnycolor
+
+/datum/area_ichor_list/proc/check_ichors_shallow_neighbors()
+	for(var/turf/T in ichors_deep)
+		for(var/turf/TT in range(4, T))
+			if(!istype(get_area(TT), /area/leucanth/exterior/ichor) || ichors_shallow.Find(TT))
+				break
+			var/area/leucanth/exterior/ichor/checking_area = get_area(TT)
+			if(!get_area(TT) == checking_area.ford_area_type) //FOUND A FORD!!!! - theses will break if either eruption zone beside them erupts
+				var/list/ford_turfs = list(TT)
+				for(var/ii = 1, ii <= 10, ii++)
+					var/initial_ford_turf_length = length(ford_turfs)
+					for(var/turf/TTT in ford_turfs)
+						for(var/i = 1, i <= 8, i++)
+							var/checking_turf = get_step(TT, alldirs[i])
+							if(get_area(checking_turf) == get_area(TT))
+								ford_turfs |= checking_turf
+					if(length(ford_turfs) == initial_ford_turf_length)
+						ii == 11
+				ichors_shallow |= ford_turfs
+				for(var/turf/gogogo in ford_turfs)
+					new /obj/structure/bed(gogogo)
+			if(get_area(TT) == (get_area(parent_eruptor)).shallow_area_type)
+				if(!ichors_eruptors.Find(TT) && !ichors_deep.Find(TT))
+					ichors_shallow |= TT
+
+
+
+
 
 //====================================================Landmark time :o)
 
