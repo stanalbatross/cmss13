@@ -56,13 +56,21 @@
 	var/ford_area_type = null
 	var/shallow_area_type  = null
 
+/area/leucanth/exterior/ichor/ford
+
+/area/leucanth/exterior/ichor/shallow
+
 /area/leucanth/exterior/ichor/pistil
 	name = "Leucanth Labs - The Pistil Ichor River"
 	icon_state = "ichor_pistil"
-	ford_area_type = /area/leucanth/exterior/ichor/pistil/ford
-	shallow_area_type = /area/leucanth/exterior/ichor/pistil
 
-/area/leucanth/exterior/ichor/pistil/ford
+/area/leucanth/exterior/ichor/ford/pistil
+	name = "Leucanth Labs - The Pistil Ichor River"
+	icon_state = "ichor_pistil"
+
+/area/leucanth/exterior/ichor/shallow/pistil
+	name = "Leucanth Labs - The Pistil Ichor River"
+	icon_state = "ichor_pistil"
 
 /area/leucanth/exterior/ichor/pistil/deep1
 
@@ -73,10 +81,14 @@
 /area/leucanth/exterior/ichor/stamen
 	name = "Leucanth Labs - The Stamen Ichor River"
 	icon_state = "ichor_stamen"
-	ford_area_type = /area/leucanth/exterior/ichor/stamen/ford
-	shallow_area_type = /area/leucanth/exterior/ichor/stamen
 
-/area/leucanth/exterior/ichor/stamen/ford
+/area/leucanth/exterior/ichor/ford/stamen
+	name = "Leucanth Labs - The Stamen Ichor River"
+	icon_state = "ichor_stamen"
+
+/area/leucanth/exterior/ichor/shallow/stamen
+	name = "Leucanth Labs - The Stamen Ichor River"
+	icon_state = "ichor_stamen"
 
 /area/leucanth/exterior/ichor/stamen/deep1
 
@@ -87,10 +99,14 @@
 /area/leucanth/exterior/ichor/stigma
 	name = "Leucanth Labs - The Stigma Ichor River"
 	icon_state = "ichor_stigma"
-	ford_area_type = /area/leucanth/exterior/ichor/stigma/ford
-	shallow_area_type = /area/leucanth/exterior/ichor/stigma
 
-/area/leucanth/exterior/ichor/stigma/ford
+/area/leucanth/exterior/ichor/ford/stigma
+	name = "Leucanth Labs - The Stigma Ichor River"
+	icon_state = "ichor_stigma"
+
+/area/leucanth/exterior/ichor/shallow/stigma
+	name = "Leucanth Labs - The Stigma Ichor River"
+	icon_state = "ichor_stigma"
 
 /area/leucanth/exterior/ichor/stigma/deep1
 
@@ -101,10 +117,14 @@
 /area/leucanth/exterior/ichor/anther
 	name = "Leucanth Labs - The Anther Ichor River"
 	icon_state = "ichor_anther"
-	ford_area_type = /area/leucanth/exterior/ichor/anther/ford
-	shallow_area_type = /area/leucanth/exterior/ichor/anther
 
-/area/leucanth/exterior/ichor/anther/ford
+/area/leucanth/exterior/ichor/ford/anther
+	name = "Leucanth Labs - The Anther Ichor River"
+	icon_state = "ichor_anther"
+
+/area/leucanth/exterior/ichor/shallow/anther
+	name = "Leucanth Labs - The Anther Ichor River"
+	icon_state = "ichor_anther"
 
 /area/leucanth/exterior/ichor/anther/deep1
 
