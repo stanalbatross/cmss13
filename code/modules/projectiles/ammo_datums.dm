@@ -753,7 +753,7 @@
 
 /datum/ammo/bullet/smg
 	name = "submachinegun bullet"
-	damage = 35
+	damage = 34
 	accurate_range = 4
 	effective_range_max = 4
 	penetration = ARMOR_PENETRATION_TIER_1
@@ -768,7 +768,7 @@
 /datum/ammo/bullet/smg/ap
 	name = "armor-piercing submachinegun bullet"
 
-	damage = 25
+	damage = 24
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_4
 
