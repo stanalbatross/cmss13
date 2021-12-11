@@ -129,6 +129,8 @@
 #define TRAIT_NOSCREENSHAKE "t_noscreenshake"
  /// If the mob has equipment that alleviates nearsightedness
 #define TRAIT_NEARSIGHTED_EQUIPMENT "t_nearsighted_eq"
+ /// If the mob is affected by drag delay.area
+#define TRAIT_DEXTROUS "t_dextrous"
 
 
 
@@ -152,6 +154,7 @@ GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_CRAWLER,
 	TRAIT_SIMPLE_DESC,
 	TRAIT_TWOBORE_TRAINING,
+	TRAIT_DEXTROUS
 	TRAIT_NOSCREENSHAKE
 ))
 

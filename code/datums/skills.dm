@@ -264,6 +264,20 @@ CIVILIAN
 		SKILL_VEHICLE = SKILL_VEHICLE_SMALL
 	)
 
+/datum/skills/civilian/survivor/pmc
+	name = "Survivor PMC"
+	skills = list(
+		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
+		SKILL_MELEE = SKILL_MELEE_TRAINED,
+		SKILL_CONSTRUCTION = SKILL_CONSTRUCTION_ENGI,
+		SKILL_POLICE = SKILL_POLICE_SKILLED,
+		SKILL_MEDICAL = SKILL_MEDICAL_TRAINED,
+		SKILL_ENDURANCE = SKILL_ENDURANCE_SURVIVOR,
+		SKILL_FIREARMS = SKILL_FIREARMS_TRAINED,
+		SKILL_MELEE_WEAPONS = SKILL_MELEE_TRAINED,
+		SKILL_VEHICLE = SKILL_VEHICLE_SMALL
+	)
+
 /datum/skills/civilian/survivor/doctor
 	name = "Survivor Doctor"
 	skills = list(
@@ -474,6 +488,14 @@ COMMAND STAFF
 		SKILL_VEHICLE = SKILL_VEHICLE_LARGE,
 		SKILL_JTAC = SKILL_JTAC_EXPERT
 	)
+
+/datum/skills/SEA/New(var/mob/skillset_owner)
+	..()
+	give_action(skillset_owner, /datum/action/looc_toggle)
+
+/datum/skills/SEA/Destroy()
+	remove_action(owner, /datum/action/looc_toggle)
+	return ..()
 
 /datum/skills/CMO
 	name = "CMO"
