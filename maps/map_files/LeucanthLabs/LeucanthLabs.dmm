@@ -371,8 +371,8 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/bulb_land/varient)
 "bJ" = (
-/turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/anther/eruptionZone)
+/turf/open/gm/river/ichor/chasm,
+/area/leucanth/exterior/ichor/anther/eruptionzone1)
 "bK" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 8
@@ -506,7 +506,7 @@
 /area/leucanth/exterior/cove/arid_cractus)
 "co" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stamen/eruptionZone)
+/area/leucanth/exterior/ichor/stamen/eruptionzone3)
 "cp" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
@@ -1546,8 +1546,8 @@
 /area/leucanth/exterior/e_caves)
 "gB" = (
 /obj/effect/landmark/ichor_eruptor,
-/turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/anther/eruptionZone)
+/turf/open/gm/river/ichor/chasm,
+/area/leucanth/exterior/ichor/anther/eruptionzone1)
 "gC" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 9
@@ -1942,7 +1942,7 @@
 /area/leucanth/exterior/cove/grassy_matts)
 "ih" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/pistil/deep1)
+/area/leucanth/exterior/ichor/pistil/eruptionzone1)
 "ii" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 6
@@ -2887,6 +2887,9 @@
 	dir = 6
 	},
 /area/leucanth/exterior/cove/fungal_flats/varient)
+"mg" = (
+/turf/open/gm/river/ichor/shallow,
+/area/leucanth/exterior/ichor/anther/eruptionzone1)
 "mi" = (
 /turf/open/cobaltite_wall/top{
 	dir = 6
@@ -3132,7 +3135,7 @@
 	},
 /area/leucanth/exterior/cove/cave_east)
 "ni" = (
-/turf/open/gm/river/ichor,
+/turf/open/gm/river/ichor/shallow,
 /area/leucanth/exterior/ichor/ford/anther)
 "nl" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd_2{
@@ -4117,7 +4120,7 @@
 /area/leucanth/exterior/cove/cave_north)
 "rt" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stigma/deep2)
+/area/leucanth/exterior/ichor/stigma/eruptionzone2)
 "ru" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 5
@@ -4226,8 +4229,8 @@
 	},
 /area/leucanth/exterior/cove/grassy_matts/varient)
 "rX" = (
-/turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/anther/deep2)
+/turf/open/gm/river/ichor/deep,
+/area/leucanth/exterior/ichor/anther/eruptionzone2)
 "rY" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -4593,8 +4596,8 @@
 /turf/open/cobaltite_wall/cave_base,
 /area/leucanth/exterior/cove/bulb_land)
 "tE" = (
-/turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/anther)
+/turf/open/gm/river/ichor/shallow,
+/area/leucanth/exterior/ichor/anther/eruptionzone2)
 "tG" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
@@ -5809,7 +5812,7 @@
 /area/leucanth/exterior/jungle/great_ferns)
 "zf" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stamen/deep2)
+/area/leucanth/exterior/ichor/stamen/eruptionzone2)
 "zi" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
 /turf/open/cobaltite_wall/cave_base{
@@ -6562,7 +6565,7 @@
 /area/leucanth/exterior/cove/great_ferns/varient)
 "Cf" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/pistil/eruptionZone)
+/area/leucanth/exterior/ichor/pistil/eruptionzone3)
 "Ci" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 6
@@ -6799,7 +6802,7 @@
 /area/leucanth/exterior/cove/bulb_land/varient)
 "Di" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stamen/deep1)
+/area/leucanth/exterior/ichor/stamen/eruptionzone1)
 "Dj" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 9
@@ -8205,7 +8208,7 @@
 "Jh" = (
 /obj/effect/landmark/ichor_eruptor,
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/pistil/eruptionZone)
+/area/leucanth/exterior/ichor/pistil/eruptionzone3)
 "Jj" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 6
@@ -8540,6 +8543,10 @@
 	dir = 9
 	},
 /area/leucanth/exterior/cove/grassy_matts)
+"KJ" = (
+/obj/effect/landmark/ichor_eruptor,
+/turf/open/gm/river/ichor/chasm,
+/area/leucanth/exterior/ichor/anther/eruptionzone2)
 "KK" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 5
@@ -8560,7 +8567,7 @@
 "KN" = (
 /obj/effect/landmark/ichor_eruptor,
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stamen/eruptionZone)
+/area/leucanth/exterior/ichor/stamen/eruptionzone3)
 "KO" = (
 /obj/structure/prop/leucanth/shadow_2{
 	dir = 6
@@ -9005,7 +9012,7 @@
 /area/leucanth/exterior/cove/ichor_hotsprings)
 "MF" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stigma/deep1)
+/area/leucanth/exterior/ichor/stigma/eruptionzone1)
 "MG" = (
 /obj/structure/prop/leucanth/shadow{
 	dir = 4
@@ -9784,7 +9791,7 @@
 /area/leucanth/exterior/cove/bulb_land)
 "PY" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stigma/eruptionZone)
+/area/leucanth/exterior/ichor/stigma/eruptionzone3)
 "Qa" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top{
@@ -9870,7 +9877,7 @@
 /area/leucanth/exterior/cove/bulb_land)
 "Qs" = (
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/pistil/deep2)
+/area/leucanth/exterior/ichor/pistil/eruptionzone2)
 "Qt" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 8
@@ -10712,6 +10719,9 @@
 	dir = 4
 	},
 /area/leucanth/exterior/cove/bulb_land)
+"TZ" = (
+/turf/open/gm/river/ichor/chasm,
+/area/leucanth/exterior/ichor/anther/eruptionzone2)
 "Ua" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd_2{
 	dir = 9
@@ -10995,8 +11005,8 @@
 	},
 /area/leucanth/exterior/cove/great_ferns)
 "UY" = (
-/turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/anther/deep1)
+/turf/open/gm/river/ichor/deep,
+/area/leucanth/exterior/ichor/anther/eruptionzone1)
 "UZ" = (
 /turf/open/cobaltite_wall/top_2{
 	dir = 10
@@ -11793,7 +11803,7 @@
 "YH" = (
 /obj/effect/landmark/ichor_eruptor,
 /turf/open/gm/river/ichor,
-/area/leucanth/exterior/ichor/stigma/eruptionZone)
+/area/leucanth/exterior/ichor/stigma/eruptionzone3)
 "YI" = (
 /turf/open/cobaltite_wall/cave_top{
 	dir = 8
@@ -16680,8 +16690,8 @@ th
 Ju
 pu
 to
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -16882,9 +16892,9 @@ fJ
 jo
 ir
 oP
-tE
-tE
-tE
+mg
+mg
+mg
 xT
 xT
 xT
@@ -17083,10 +17093,10 @@ fJ
 jo
 ir
 kK
-tE
+mg
 UY
 UY
-tE
+mg
 xT
 xT
 xT
@@ -17284,12 +17294,12 @@ th
 Ju
 pu
 ql
-tE
+mg
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -17486,12 +17496,12 @@ fJ
 jo
 ir
 kK
-tE
+mg
 UY
 UY
 UY
 UY
-tE
+mg
 xT
 xT
 xT
@@ -17687,13 +17697,13 @@ th
 Ju
 pu
 ql
-tE
+mg
 UY
 UY
 UY
 bJ
 UY
-tE
+mg
 xT
 xT
 xT
@@ -17889,14 +17899,14 @@ UR
 jo
 ir
 kK
-tE
+mg
 UY
 UY
 bJ
 bJ
 UY
 UY
-tE
+mg
 xT
 xT
 xT
@@ -18090,16 +18100,16 @@ uB
 HX
 pu
 ql
-tE
-tE
+mg
+mg
 UY
 UY
 bJ
 bJ
 bJ
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -18292,8 +18302,8 @@ YO
 om
 Ud
 Ti
-tE
-tE
+mg
+mg
 UY
 bJ
 bJ
@@ -18301,8 +18311,8 @@ bJ
 bJ
 UY
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -18494,8 +18504,8 @@ BI
 bm
 ZI
 MV
-tE
-tE
+mg
+mg
 UY
 bJ
 bJ
@@ -18504,8 +18514,8 @@ bJ
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -18695,9 +18705,9 @@ BI
 bm
 ZI
 MV
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 bJ
 bJ
@@ -18706,8 +18716,8 @@ bJ
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -18897,9 +18907,9 @@ bm
 ZI
 MV
 MV
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 UY
 gB
@@ -18908,8 +18918,8 @@ bJ
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 xT
 xT
 xT
@@ -19099,10 +19109,10 @@ ZJ
 MV
 MV
 MV
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 UY
 bJ
 bJ
@@ -19110,7 +19120,7 @@ bJ
 bJ
 UY
 UY
-tE
+mg
 jF
 gv
 yw
@@ -19301,18 +19311,18 @@ tt
 MV
 MV
 MV
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 UY
 bJ
 bJ
 bJ
 UY
 UY
-tE
-tE
+mg
+mg
 OS
 iI
 iI
@@ -19503,17 +19513,17 @@ Ti
 MV
 MV
 MV
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 UY
 bJ
 bJ
 UY
 UY
-tE
-tE
+mg
+mg
 oB
 Tr
 th
@@ -19706,15 +19716,15 @@ MV
 BL
 WZ
 IQ
-tE
-tE
+mg
+mg
 UY
 UY
 UY
 bJ
 UY
 UY
-tE
+mg
 rL
 kP
 OW
@@ -19908,15 +19918,15 @@ yO
 iS
 Lx
 QX
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 UY
 UY
 UY
 UY
-tE
+mg
 MV
 MV
 Vs
@@ -20111,14 +20121,14 @@ pK
 cp
 sU
 IQ
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 UY
 UY
 UY
-tE
+mg
 tE
 MV
 Vs
@@ -20315,11 +20325,11 @@ cp
 sU
 IQ
 MV
-tE
-tE
+mg
+mg
 UY
 UY
-UY
+rX
 tE
 tE
 MV
@@ -20518,9 +20528,9 @@ Gx
 nJ
 mk
 DR
-tE
+mg
 UY
-UY
+rX
 rX
 tE
 tE
@@ -21128,7 +21138,7 @@ tE
 rX
 rX
 rX
-bJ
+TZ
 rX
 tE
 tE
@@ -21329,9 +21339,9 @@ tE
 tE
 rX
 rX
-bJ
-bJ
-bJ
+TZ
+TZ
+TZ
 rX
 tE
 tE
@@ -21532,9 +21542,9 @@ tE
 tE
 rX
 rX
-bJ
-gB
-bJ
+TZ
+KJ
+TZ
 rX
 tE
 tE
@@ -21735,9 +21745,9 @@ tE
 tE
 rX
 rX
-bJ
-bJ
-bJ
+TZ
+TZ
+TZ
 rX
 tE
 tE
@@ -21938,8 +21948,8 @@ tE
 tE
 rX
 rX
-bJ
-bJ
+TZ
+TZ
 rX
 tE
 tE
@@ -23767,8 +23777,8 @@ MV
 MV
 MV
 MV
-tE
-tE
+mg
+mg
 PG
 oZ
 th
@@ -23960,18 +23970,18 @@ tE
 tE
 rX
 rX
-bJ
+TZ
 rX
 rX
 tE
 tE
 tE
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
 PG
 oZ
 th
@@ -24161,20 +24171,20 @@ tE
 tE
 rX
 rX
-bJ
-gB
-bJ
+TZ
+KJ
+TZ
 rX
 rX
 tE
 tE
-tE
-tE
+mg
+mg
 UY
 UY
-tE
-tE
-tE
+mg
+mg
+mg
 uX
 th
 th
@@ -24363,9 +24373,9 @@ rX
 rX
 rX
 rX
-bJ
-bJ
-bJ
+TZ
+TZ
+TZ
 rX
 rX
 rX
@@ -24374,9 +24384,9 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
+mg
+mg
+mg
 PG
 kP
 oZ
@@ -24565,8 +24575,8 @@ rX
 rX
 rX
 rX
-bJ
-bJ
+TZ
+TZ
 rX
 rX
 rX
@@ -24579,8 +24589,8 @@ UY
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 PG
 ly
 ug
@@ -24782,8 +24792,8 @@ UY
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 Cz
 gG
 oP
@@ -24985,17 +24995,17 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
 xT
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 xT
 xT
 ht
@@ -25172,12 +25182,12 @@ tE
 tE
 rX
 rX
-rX
 tE
 tE
 tE
 tE
-tE
+mg
+mg
 UY
 UY
 UY
@@ -25189,20 +25199,20 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
 WQ
 go
 th
@@ -25377,11 +25387,11 @@ tE
 TX
 aI
 tt
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
 UY
 UY
 UY
@@ -25393,19 +25403,19 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 UY
 UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 JA
 XQ
 th
@@ -25581,10 +25591,10 @@ SC
 OX
 aI
 tt
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 UY
 UY
 UY
@@ -25605,9 +25615,9 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
+mg
+mg
+mg
 aL
 JA
 XQ
@@ -25784,10 +25794,10 @@ Sm
 OX
 aI
 tt
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
 UY
 UY
 UY
@@ -25807,8 +25817,8 @@ bJ
 bJ
 bJ
 UY
-tE
-tE
+mg
+mg
 aL
 aL
 aL
@@ -25987,9 +25997,9 @@ Sm
 OX
 aI
 tt
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 bJ
 bJ
@@ -26009,7 +26019,7 @@ bJ
 bJ
 UY
 UY
-tE
+mg
 aL
 aL
 aL
@@ -26189,9 +26199,9 @@ th
 ds
 Xi
 fp
-tE
-tE
-tE
+mg
+mg
+mg
 UY
 UY
 UY
@@ -26210,7 +26220,7 @@ UY
 UY
 UY
 UY
-tE
+mg
 aL
 aL
 aL
@@ -26391,8 +26401,8 @@ th
 ds
 Xi
 fp
-tE
-tE
+mg
+mg
 UY
 UY
 UY
@@ -26400,18 +26410,18 @@ UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
 UY
 UY
 UY
 UY
 UY
-tE
-tE
+mg
+mg
 Ap
 CT
 ov
@@ -26593,26 +26603,26 @@ th
 ds
 Xi
 fp
-tE
-tE
+mg
+mg
 UY
 UY
 UY
 UY
 UY
 UY
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
 PT
 UZ
 dV
@@ -26796,22 +26806,22 @@ UZ
 dV
 CT
 ov
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
 bU
 wZ
 dv
-tE
+mg
 PT
 xw
 xw
@@ -26999,16 +27009,16 @@ UH
 wa
 ot
 aL
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
-tE
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
+mg
 aL
 rJ
 OD

@@ -41,7 +41,6 @@ turf/open/cobaltite_wall/cave_top_2
 	icon_state = "cobaltite_cave_2nd_2"
 	opacity = TRUE
 
-
 turf/open/gm/river/ichor
 	name = "ichor"
 	desc = "A substance poorly understood, known to cause acid burns and be slightly toxic to humans."
@@ -51,7 +50,6 @@ turf/open/gm/river/ichor
 	cover_icon = 'icons/turf/leucanth.dmi'
 	cover_icon_state = "ichor_solid"
 	baseturfs = /turf/open/gm/river/ichor
-
 
 /turf/open/gm/river/ichor/Entered(atom/A)
 	. = ..()
@@ -145,6 +143,13 @@ turf/open/gm/river/ichor/proc/cause_damage(mob/living/M)
 		if(!isSynth(M) ) to_chat(M, SPAN_DANGER("The ichor feels like needles on your skin!"))
 	playsound(M, 'sound/effects/toxic_ichor_geiger.ogg', 10, 1)
 
+turf/open/gm/river/ichor/shallow
+	icon_state = "ichor_shallow"
 
+turf/open/gm/river/ichor/deep
+	icon_state = "ichor_deep"
+
+turf/open/gm/river/ichor/chasm
+	icon_state = "ichor_chasm"
 
 
