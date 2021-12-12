@@ -10,6 +10,8 @@
 	for(var/i=0,i<40,i++)
 		var/initial_zone_ichor_turfs_length = length(zone_ichor_turfs)
 		for(var/turf/bangusBongus in zone_ichor_turfs)
+			if(istype(get_area(bangusBongus), /area/leucanth/exterior/ichor/ford))
+				continue
 			for(var/ii=1,ii<=8,ii++)
 				var/checking_turf = get_step(bangusBongus, alldirs[ii])
 				var/checking_area = get_area(checking_turf)
@@ -32,24 +34,28 @@
 							break
 		if(initial_zone_ichor_turfs_length == length(zone_ichor_turfs))
 			break
-
+	var/fooooorrrrrtnite = rand(0,999)
 	for(var/turf/TT in zone_ichor_turfs)
 		if(istype(TT, /turf/open/gm/river/ichor/shallow))
 			ichors_shallow |= TT
-			new /obj/item/tool/shovel(TT)
+			var/obj/chinguos = new /obj/item/tool/shovel(TT)
+			chinguos.name += "[fooooorrrrrtnite]"
 
 		else if(istype(TT, /turf/open/gm/river/ichor/deep))
 			ichors_deep |= TT
-			new /obj/item/tool/wrench(TT)
+			var/obj/chinguos = new /obj/item/tool/wrench(TT)
+			chinguos.name += "[fooooorrrrrtnite]"
 
 		else if(istype(TT, /turf/open/gm/river/ichor/chasm))
 			ichors_chasm |= TT
-			new /obj/item/tool/warning_cone(TT)
+			var/obj/chinguos = new /obj/item/tool/warning_cone(TT)
+			chinguos.name += "[fooooorrrrrtnite]"
 
 //====================================================Landmark time :o)
 
 /obj/effect/landmark/ichor_eruptor
 	var/datum/area_ichor_list/associated_area_ichor_list = null
+	invisibility = 0
 
 /obj/effect/landmark/ichor_eruptor/Initialize(mapload, ...)
 	. = ..()
