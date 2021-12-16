@@ -46,6 +46,7 @@
 	icon_state = "vest_acid_black"
 	hold = /obj/item/storage/internal/accessory/black_vest/acid_harness
 	var/obj/item/reagent_container/glass/beaker/bottle
+	var/obj/item/cell/battery
 	var/obj/structure/machinery/acid_core/acid_core
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/brown
@@ -66,6 +67,7 @@
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/Destroy()
 	QDEL_NULL(bottle)
+	QDEL_NULL(battery)
 	QDEL_NULL(acid_core)
 	. = ..()
 
@@ -193,6 +195,7 @@
 
 	//Current status
 	var/boot_status = FALSE
+	var/battery_level = FALSE
 	var/rechecking = FALSE
 
 /obj/structure/machinery/acid_core/Initialize(mapload, ...)
@@ -204,11 +207,14 @@
 	start_processing()
 
 /obj/structure/machinery/acid_core/proc/boot_sequence()
-	if(!user)
+	if(!user || !acid_harness.battery)
 		return
 	var/text = SPAN_HELPFUL("A.C.I.D. states: ")
 	switch(boot_status)
 		if(0)
+			if(acid_harness.battery.charge <= 100)
+				to_chat(user, SPAN_HELPFUL("A.C.I.D. states: ") + SPAN_WARNING("Insufficient power, booting sequence aborted."))
+				return
 			text += SPAN_NOTICE("Welcome, to the Automated Chemical Integrated Delivery harness.")
 		if(1)
 			text += SPAN_NOTICE("Core systems, initialized.")
@@ -265,9 +271,11 @@
 	to_chat(user, text)
 
 /obj/structure/machinery/acid_core/process()
-	if(!check_user() || !check_inventory())
+	if(!check_user() || !check_inventory() || acid_harness.battery.charge <= 0)
 		boot_status = FALSE
+		battery_level = FALSE
 		return
+	check_battery(acid_harness.battery)
 	if(boot_status < 6)
 		addtimer(CALLBACK(src, .proc/boot_sequence, boot_status), 2 SECONDS)
 		return
@@ -281,11 +289,21 @@
 	return FALSE
 
 /obj/structure/machinery/acid_core/proc/check_inventory()
+	acid_harness.battery = null
 	acid_harness.bottle = null
 	for(var/item in acid_harness.hold.contents)
 		if(istype(item, /obj/item/reagent_container/glass/bottle))
 			acid_harness.bottle = item
+		else if(istype(item, /obj/item/cell))
+			acid_harness.battery = item
+	if(acid_harness.battery)
+		return TRUE
 	return FALSE
+
+/obj/structure/machinery/acid_core/proc/check_battery(var/obj/item/cell/battery)
+	var/charge = battery.charge / battery.maxcharge * 100
+	if(charge + 20 < battery_level || charge > battery_level)
+		battery_level = charge
 
 /obj/structure/machinery/acid_core/proc/recheck_conditions()
 	rechecking = TRUE
