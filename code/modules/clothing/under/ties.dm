@@ -547,7 +547,6 @@
 	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
 		var/components = 0
 		var/obj/item/reagent_container/glass/beaker/vial
-		var/obj/item/cell/battery
 		for(var/obj/item in hold.contents)
 			if(istype(item, /obj/item/device/radio) || istype(item, /obj/item/stack/cable_coil) || istype(item, /obj/item/device/healthanalyzer))
 				components++
@@ -555,9 +554,6 @@
 				var/obj/item/reagent_container/hypospray/H = item
 				if(H.mag)
 					vial = H.mag
-				components++
-			else if(istype(item, /obj/item/cell))
-				battery = item
 				components++
 			else
 				components--
@@ -570,8 +566,6 @@
 			if(vial)
 				AH.vial = vial
 				AH.hold.handle_item_insertion(vial)
-			AH.battery = battery
-			AH.hold.handle_item_insertion(battery)
 			qdel(src)
 			return
 	. = ..()
