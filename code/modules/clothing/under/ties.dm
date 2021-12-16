@@ -546,14 +546,14 @@
 /obj/item/clothing/accessory/storage/black_vest/attackby(obj/item/W, mob/living/user)
 	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
 		var/components = 0
-		var/obj/item/reagent_container/glass/beaker/vial
+		var/obj/item/reagent_container/glass/bottle
 		for(var/obj/item in hold.contents)
 			if(istype(item, /obj/item/device/radio) || istype(item, /obj/item/stack/cable_coil) || istype(item, /obj/item/device/healthanalyzer))
 				components++
 			else if(istype(item, /obj/item/reagent_container/hypospray) && !istype(item, /obj/item/reagent_container/hypospray/autoinjector))
 				var/obj/item/reagent_container/hypospray/H = item
 				if(H.mag)
-					vial = H.mag
+					bottle = H.mag
 				components++
 			else
 				components--
@@ -563,9 +563,9 @@
 				AH = new /obj/item/clothing/accessory/storage/black_vest/acid_harness/brown(get_turf(loc))
 			else
 				AH = new /obj/item/clothing/accessory/storage/black_vest/acid_harness(get_turf(loc))
-			if(vial)
-				AH.vial = vial
-				AH.hold.handle_item_insertion(vial)
+			if(bottle)
+				AH.bottle = bottle
+				AH.hold.handle_item_insertion(bottle)
 			qdel(src)
 			return
 	. = ..()
