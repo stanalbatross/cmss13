@@ -45,7 +45,7 @@
 	desc = "Automated Chemical Integrated Delivery Harness, or really just a franken webbing made by a researcher with poor tailoring skills."
 	icon_state = "vest_acid_black"
 	hold = /obj/item/storage/internal/accessory/black_vest/acid_harness
-	var/obj/item/reagent_container/glass/beaker/vial/vial
+	var/obj/item/reagent_container/glass/beaker/bottle
 	var/obj/structure/machinery/acid_core/acid_core
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/brown
@@ -65,7 +65,7 @@
 	. = ..()
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness/Destroy()
-	QDEL_NULL(vial)
+	QDEL_NULL(bottle)
 	QDEL_NULL(acid_core)
 	. = ..()
 
@@ -281,10 +281,10 @@
 	return FALSE
 
 /obj/structure/machinery/acid_core/proc/check_inventory()
-	acid_harness.vial = null
+	acid_harness.bottle = null
 	for(var/item in acid_harness.hold.contents)
-		if(istype(item, /obj/item/reagent_container/glass/beaker/vial))
-			acid_harness.vial = item
+		if(istype(item, /obj/item/reagent_container/glass/bottle))
+			acid_harness.bottle = item
 	return FALSE
 
 /obj/structure/machinery/acid_core/proc/recheck_conditions()
@@ -429,17 +429,17 @@
 		inject()
 
 /obj/structure/machinery/acid_core/proc/inject()
-	if(!acid_harness.vial || !acid_harness.vial.reagents)
+	if(!acid_harness.bottle || !acid_harness.bottle.reagents)
 		voice("Warning: Medicinal capsule missing.")
 		return
-	for(var/datum/reagent/R in acid_harness.vial.reagents.reagent_list)
+	for(var/datum/reagent/R in acid_harness.bottle.reagents.reagent_list)
 		if(user.reagents.get_reagent_amount(R.id) + inject_amount > R.overdose) //Don't overdose our boi
 			voice("Notice: Injection trigger cancelled to avoid overdose.")
 			addtimer(CALLBACK(src, .proc/recheck_conditions), 20 SECONDS * inject_amount)
 			return
-	if(acid_harness.vial.reagents.trans_to(user, inject_amount))
+	if(acid_harness.bottle.reagents.trans_to(user, inject_amount))
 		playsound_client(user.client, 'sound/items/hypospray.ogg', null, ITEM_EQUIP_VOLUME)
-		voice("Medicine administered. [acid_harness.vial.reagents.total_volume] units remaining.")
+		voice("Medicine administered. [acid_harness.bottle.reagents.total_volume] units remaining.")
 		addtimer(CALLBACK(src, .proc/recheck_conditions), 20 SECONDS * inject_amount)
-	if(!acid_harness.vial.reagents.total_volume)
+	if(!acid_harness.bottle.reagents.total_volume)
 		voice("Warning: Medicinal capsule is empty, resupply required.")
