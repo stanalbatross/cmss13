@@ -38,7 +38,7 @@
 #define ACID_VITALS_DEAD							64
 
 /obj/item/storage/internal/accessory/black_vest/acid_harness
-	storage_slots = 1
+	storage_slots = 2
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness
 	name = "A.C.I.D. Harness"
