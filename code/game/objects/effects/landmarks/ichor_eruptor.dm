@@ -38,24 +38,18 @@
 	for(var/turf/TT in zone_ichor_turfs)
 		if(istype(TT, /turf/open/gm/river/ichor/shallow))
 			ichors_shallow |= TT
-			var/obj/chinguos = new /obj/item/tool/shovel(TT)
-			chinguos.name += "[fooooorrrrrtnite]"
 
 		else if(istype(TT, /turf/open/gm/river/ichor/deep))
 			ichors_deep |= TT
-			var/obj/chinguos = new /obj/item/tool/wrench(TT)
-			chinguos.name += "[fooooorrrrrtnite]"
 
 		else if(istype(TT, /turf/open/gm/river/ichor/chasm))
 			ichors_chasm |= TT
-			var/obj/chinguos = new /obj/item/tool/warning_cone(TT)
-			chinguos.name += "[fooooorrrrrtnite]"
 
 //====================================================Landmark time :o)
 
 /obj/effect/landmark/ichor_eruptor
 	var/datum/area_ichor_list/associated_area_ichor_list = null
-	invisibility = 0
+	var/eruption_chance = 1  // 0 to 100 used in rumble() to see if it will make eruption :o)
 
 /obj/effect/landmark/ichor_eruptor/Initialize(mapload, ...)
 	. = ..()
@@ -68,4 +62,40 @@
 
 	associated_area_ichor_list.populate_lists(get_turf(src))
 
+	var/dead_time = ((rand(1,5) * 5) + rand(-1,1)) MINUTES
+	addtimer(CALLBACK(src, .proc/rumble, 1), dead_time, TIMER_UNIQUE)
 
+/obj/effect/landmark/ichor_eruptor/proc/get_solidified_ichor_count()
+	var/solid_count = 0
+	for(var/turf/open/gm/river/ichor/T in associated_area_ichor_list.ichors_shallow)
+		if(T.covered)
+			solid_count++
+	return solid_count
+
+
+/obj/effect/landmark/ichor_eruptor/proc/rumble(rumble_counter)
+	//if eruption fails how soon until next rumble?
+	var/rumble_timing = Clamp(rand(5, 25) - (rumble_counter * (1 + (10/eruption_chance))), 1, 15) MINUTES
+
+	message_admins("RUMBBBBLEEEE - [rumble_timing/600]")
+	rumble_counter++
+	if(prob(eruption_chance))
+		//ITS HAPPENING
+		playsound(src, 'sound/effects/rumble.ogg', 20, 1, 30, falloff = 2) //quiet before the storm
+		addtimer(CALLBACK(src, .proc/erupt, rumble_counter), 1 MINUTES, TIMER_UNIQUE)
+		return
+	//eruption failed we try again soon
+	playsound(src, 'sound/effects/rumble.ogg', 80, 1, 30, falloff = 2)
+	eruption_chance = Clamp(eruption_chance + rand(-5,20), 1, 100)
+	addtimer(CALLBACK(src, .proc/rumble, rumble_counter), rumble_timing, TIMER_UNIQUE)
+
+/obj/effect/landmark/ichor_eruptor/proc/erupt(rumble_counter) //take rumble counter as influence in how big eruption is
+	var/eruption_power = (50 - (30 * (1/rumble_counter))) + (eruption_chance / 2) // 0 to 100 baby!
+
+	message_admins(" !!!eruption!!! --> [eruption_power]")
+	for(var/turf/open/gm/river/ichor/T in associated_area_ichor_list.ichors_shallow)
+		T.covered = FALSE
+		T.update_icon()
+
+	var/dead_time = ((rand(1,5) * 5) + (20 * (100/eruption_power))) MINUTES
+	addtimer(CALLBACK(src, .proc/rumble, 0), dead_time, TIMER_UNIQUE)

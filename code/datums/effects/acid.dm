@@ -71,3 +71,8 @@
 		var/obj/O = affected_atom
 		O.update_icon()
 	return ..()
+
+/datum/effects/acid/ichor
+	effect_name = "ichor"
+	obj_icon_state_path = "+ichor"
+	mob_icon_state_path = "human_ichor"
