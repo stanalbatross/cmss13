@@ -411,11 +411,13 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 /obj/structure/machinery/defenses/sentry/premade/dropship
 	density = TRUE
 	var/obj/structure/dropship_equipment/sentry_holder/deployment_system
+	var/obj/structure/machinery/camera/camera
 
 /obj/structure/machinery/defenses/sentry/premade/dropship/Destroy()
 	if(deployment_system)
 		deployment_system.deployed_turret = null
 		deployment_system = null
+	qdel(camera)
 	. = ..()
 
 #define SENTRY_SNIPER_RANGE 20
@@ -495,6 +497,21 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	omni_directional = TRUE
 	immobile = TRUE
 	static = TRUE
+	var/obj/structure/machinery/camera/camera
+
+/obj/structure/machinery/defenses/sentry/launchable/Initialize()
+	. = ..()
+
+	var/turf/L = get_turf(src)
+	camera = new /obj/structure/machinery/camera/invisible(L)
+	var/area/area = get_area(src)
+	camera.c_tag = "[src] in [area]"
+	camera.network = list(CAMERA_NET_ALMAYER)
+
+/obj/structure/machinery/defenses/sentry/launchable/destroy()
+	. = ..()
+
+	qdel(camera)
 
 /obj/structure/machinery/defenses/sentry/launchable/handle_empty()
 	visible_message("[icon2html(src, viewers(src))] <span class='warning'>The [name] beeps steadily and its ammo light blinks red. It rapidly deconstructs itself!</span>")

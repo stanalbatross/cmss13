@@ -67,6 +67,14 @@
 		status = FALSE
 	kick_viewers()
 
+// Generic invisible camera
+
+/obj/structure/machinery/camera/invisible
+	invuln = TRUE
+	mouse_opacity = 0
+	invisibility = 101 //fuck you init()
+
+
 // AUTONAME
 
 /obj/structure/machinery/camera/autoname
@@ -85,6 +93,13 @@
 				if(C.number)
 					number = max(number, C.number+1)
 		c_tag = "[A.name] #[number]"
+
+//generic invisible autoname camera
+
+/obj/structure/machinery/camera/autoname/invisible
+	invuln = TRUE
+	mouse_opacity = 0
+	invisibility = 101 //fuck you init()
 
 //cameras installed inside the dropships, accessible via both cockpit monitor and Almayer camera computers
 /obj/structure/machinery/camera/autoname/almayer/dropship_one
