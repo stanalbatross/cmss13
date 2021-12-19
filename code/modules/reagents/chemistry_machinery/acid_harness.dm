@@ -38,7 +38,7 @@
 #define ACID_VITALS_DEAD							64
 
 /obj/item/storage/internal/accessory/black_vest/acid_harness
-	storage_slots = 2
+	storage_slots = 1
 
 /obj/item/clothing/accessory/storage/black_vest/acid_harness
 	name = "A.C.I.D. Harness"
@@ -194,7 +194,7 @@
 	var/vitals_improving = TRUE 				//We don't need to inject if we're still improving
 
 	//Current status
-	var/boot_status = FALSE
+	var/boot_status = 0
 	var/rechecking = FALSE
 
 /obj/structure/machinery/acid_core/Initialize(mapload, ...)
