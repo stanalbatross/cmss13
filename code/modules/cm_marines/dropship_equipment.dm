@@ -245,11 +245,10 @@
 	var/turf/L = get_turf(src)
 	deployed_turret.camera = new /obj/structure/machinery/camera/invisible(L)
 	deployed_turret.camera.c_tag = "[src]"
-	deployed_turret.camera.network.Add(CAMERA_NET_ALMAYER)
-	if(linked_shuttle.name == "Alamo")
-		deployed_turret.camera.network.Add(CAMERA_NET_ALAMO)
-	else
-		deployed_turret.camera.network.Add(CAMERA_NET_NORMANDY)
+	var/camera_network = CAMERA_NET_ALAMO
+	if(linked_shuttle.name == "Normandy")
+		camera_network = CAMERA_NET_NORMANDY
+	deployed_turret.camera.network.Add(CAMERA_NET_ALMAYER, camera_network)
 
 	for(var/mob/M in deployed_turret.loc)
 		if(deployed_turret.loc == src.loc)
