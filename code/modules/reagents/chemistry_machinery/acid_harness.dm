@@ -265,7 +265,7 @@
 	to_chat(user, text)
 
 /obj/structure/machinery/acid_core/process()
-	if(!check_user() || !check_inventory())
+	if(!check_user())
 		boot_status = FALSE
 		return
 	if(boot_status < 5)
@@ -280,12 +280,12 @@
 	user = null
 	return FALSE
 
-/obj/structure/machinery/acid_core/proc/check_inventory()
-	acid_harness.bottle = null
-	for(var/item in acid_harness.hold.contents)
-		if(istype(item, /obj/item/reagent_container/glass/bottle))
-			acid_harness.bottle = item
-			return TRUE
+// /obj/structure/machinery/acid_core/proc/check_inventory()
+// 	acid_harness.bottle = null
+// 	for(var/item in acid_harness.hold.contents)
+// 		if(istype(item, /obj/item/reagent_container/glass/bottle))
+// 			acid_harness.bottle = item
+//  			return TRUE
 
 /obj/structure/machinery/acid_core/proc/recheck_conditions()
 	rechecking = TRUE
@@ -429,6 +429,10 @@
 		inject()
 
 /obj/structure/machinery/acid_core/proc/inject()
+	acid_harness.bottle = null
+	for(var/item in acid_harness.hold.contents)
+		if(istype(item, /obj/item/reagent_container/glass/bottle))
+			acid_harness.bottle = item
 	if(!acid_harness.bottle || !acid_harness.bottle.reagents)
 		voice("Warning: Medicinal capsule missing.")
 		return
