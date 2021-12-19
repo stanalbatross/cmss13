@@ -566,6 +566,9 @@
 			if(bottle)
 				AH.bottle = bottle
 				AH.hold.handle_item_insertion(bottle)
+			AH.battery = battery
+			AH.hold.handle_item_insertion(battery)
+
 			qdel(src)
 			return
 	. = ..()
