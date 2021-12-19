@@ -505,7 +505,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	var/turf/L = get_turf(src)
 	camera = new /obj/structure/machinery/camera/invisible(L)
 	var/area/area = get_area(src)
-	camera.c_tag = "[src] in [area]"
+	camera.c_tag = "UA 571-O Sentry | ([area])"
 	camera.network = list(CAMERA_NET_ALMAYER)
 
 /obj/structure/machinery/defenses/sentry/launchable/destroy()
