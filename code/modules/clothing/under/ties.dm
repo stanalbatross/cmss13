@@ -547,9 +547,8 @@
 	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
 		var/components = 0
 		var/obj/item/reagent_container/glass/bottle
-		var/obj/item/cell
 		for(var/obj/item in hold.contents)
-			if(istype(item, /obj/item/device/radio) || istype(item, /obj/item/stack/cable_coil) || istype(item, /obj/item/device/healthanalyzer))
+			if(istype(item, /obj/item/device/radio) || istype(item, /obj/item/stack/cable_coil) || istype(item, /obj/item/device/healthanalyzer) || istype(item, /obj/item/cell))
 				components++
 			else if(istype(item, /obj/item/reagent_container/hypospray) && !istype(item, /obj/item/reagent_container/hypospray/autoinjector))
 				var/obj/item/reagent_container/hypospray/H = item
@@ -567,9 +566,6 @@
 			if(bottle)
 				AH.bottle = bottle
 				AH.hold.handle_item_insertion(bottle)
-			AH.battery = battery
-			AH.hold.handle_item_insertion(battery)
-
 			qdel(src)
 			return
 	. = ..()
