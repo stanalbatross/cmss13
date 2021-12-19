@@ -195,7 +195,6 @@
 
 	//Current status
 	var/boot_status = FALSE
-	var/battery_level = FALSE
 	var/rechecking = FALSE
 
 /obj/structure/machinery/acid_core/Initialize(mapload, ...)
@@ -207,27 +206,22 @@
 	start_processing()
 
 /obj/structure/machinery/acid_core/proc/boot_sequence()
-	if(!user || !acid_harness.battery)
+	if(!user)
 		return
 	var/text = SPAN_HELPFUL("A.C.I.D. states: ")
 	switch(boot_status)
 		if(0)
-			if(acid_harness.battery.charge <= 100)
-				to_chat(user, SPAN_HELPFUL("A.C.I.D. states: ") + SPAN_WARNING("Insufficient power, booting sequence aborted."))
-				return
-			text += SPAN_NOTICE("Welcome, to the Automated Chemical Integrated Delivery harness.")
-		if(1)
 			text += SPAN_NOTICE("Core systems, initialized.")
-		if(2)
+		if(1)
 			text += SPAN_NOTICE("Communication interface, online.")
 			playsound_client(user.client, 'sound/handling/toggle_nv1.ogg', null, ITEM_EQUIP_VOLUME)
-		if(3)
+		if(2)
 			text += SPAN_NOTICE("Vital signs monitoring, activated.")
 			playsound_client(user.client, 'sound/items/detector_turn_on.ogg', null, ITEM_EQUIP_VOLUME)
-		if(4)
+		if(3)
 			text += SPAN_NOTICE("Automated medical systems, engaged.")
 			playsound_client(user.client, 'sound/items/healthanalyzer.ogg', null, ITEM_EQUIP_VOLUME)
-		if(5)
+		if(4)
 			text += SPAN_NOTICE("Bootup sequence finalized. Have a very healthy operation.")
 		else
 			return
@@ -271,12 +265,10 @@
 	to_chat(user, text)
 
 /obj/structure/machinery/acid_core/process()
-	if(!check_user() || !check_inventory() || acid_harness.battery.charge <= 0)
+	if(!check_user() || !check_inventory())
 		boot_status = FALSE
-		battery_level = FALSE
 		return
-	check_battery(acid_harness.battery)
-	if(boot_status < 6)
+	if(boot_status < 5)
 		addtimer(CALLBACK(src, .proc/boot_sequence, boot_status), 2 SECONDS)
 		return
 	scan()
@@ -289,21 +281,11 @@
 	return FALSE
 
 /obj/structure/machinery/acid_core/proc/check_inventory()
-	acid_harness.battery = null
 	acid_harness.bottle = null
 	for(var/item in acid_harness.hold.contents)
 		if(istype(item, /obj/item/reagent_container/glass/bottle))
 			acid_harness.bottle = item
-		else if(istype(item, /obj/item/cell))
-			acid_harness.battery = item
-	if(acid_harness.battery)
-		return TRUE
-	return FALSE
-
-/obj/structure/machinery/acid_core/proc/check_battery(var/obj/item/cell/battery)
-	var/charge = battery.charge / battery.maxcharge * 100
-	if(charge + 20 < battery_level || charge > battery_level)
-		battery_level = charge
+			return TRUE
 
 /obj/structure/machinery/acid_core/proc/recheck_conditions()
 	rechecking = TRUE
