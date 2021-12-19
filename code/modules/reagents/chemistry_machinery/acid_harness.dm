@@ -45,7 +45,7 @@
 	desc = "Automated Chemical Integrated Delivery Harness, or really just a franken webbing made by a researcher with poor tailoring skills."
 	icon_state = "vest_acid_black"
 	hold = /obj/item/storage/internal/accessory/black_vest/acid_harness
-	var/obj/item/reagent_container/glass/beaker/bottle
+	var/obj/item/reagent_container/glass/bottle/bottle
 	var/obj/item/cell/battery
 	var/obj/structure/machinery/acid_core/acid_core
 
