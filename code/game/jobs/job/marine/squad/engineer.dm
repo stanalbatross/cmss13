@@ -3,12 +3,9 @@
 	total_positions = 12
 	spawn_positions = 12
 	allow_additional = 1
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_MODE|ROLE_ADD_TO_SQUAD
-	gear_preset = "USCM (Cryo) Squad Engineer"
-
-/datum/job/marine/engineer/generate_entry_message()
+	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_SQUAD
+	gear_preset = /datum/equipment_preset/uscm/engineer
 	entry_message_body = "You have the equipment and skill to build fortifications, reroute power lines, and bunker down. Your squaddies will look to you when it comes to construction in the field of battle."
-	return ..()
 
 /datum/job/marine/engineer/set_spawn_positions(var/count)
 	for(var/datum/squad/sq in RoleAuthority.squads)
@@ -32,11 +29,12 @@
 
 /datum/job/marine/engineer/equipped
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
-	gear_preset = "USCM Cryo Engineer (Equipped)"
+	gear_preset = /datum/equipment_preset/uscm/engineer_equipped
 
 /datum/job/marine/engineer/equipped/whiskey
+	title = JOB_WO_SQUAD_ENGINEER
 	flags_startup_parameters = ROLE_ADD_TO_SQUAD
-	gear_preset = "WO Dust Raider Squad Engineer"
+	gear_preset = /datum/equipment_preset/wo/marine/engineer
 
 AddTimelock(/datum/job/marine/engineer, list(
 	JOB_SQUAD_ROLES = 1 HOURS
@@ -46,4 +44,3 @@ AddTimelock(/datum/job/marine/engineer, list(
 	name = JOB_SQUAD_ENGI
 	icon_state = "engi_spawn"
 	job = /datum/job/marine/engineer
-

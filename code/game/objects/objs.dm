@@ -1,6 +1,8 @@
 /obj
 	//Used to store information about the contents of the object.
 	var/list/matter
+	//determines whether or not the object can be destroyed by an explosion
+	var/indestructible = FALSE
 	var/health = null
 	var/reliability = 100	//Used by SOME devices to determine how reliable they are.
 	var/crit_fail = 0
@@ -12,6 +14,9 @@
 	var/mob/living/buckled_mob
 	var/buckle_lying = FALSE //Is the mob buckled in a lying position
 	var/can_buckle = FALSE
+	/**Applied to surgery times for mobs buckled prone to it or lying on the same tile, if the surgery
+	cares about surface conditions. The lowest multiplier of objects on the tile is used.**/
+	var/surgery_duration_multiplier = SURGERY_SURFACE_MULT_AWFUL
 
 	var/projectile_coverage = 0 //an object's "projectile_coverage" var indicates the maximum probability of blocking a projectile, assuming density and throwpass. Used by barricades, tables and window frames
 	var/garbage = FALSE //set to true if the item is garbage and should be deleted after awhile
@@ -19,6 +24,8 @@
 	var/list/req_one_access = null
 	var/req_access_txt = null
 	var/req_one_access_txt = null
+
+	var/flags_obj = NO_FLAGS
 
 /obj/Initialize(mapload, ...)
 	. = ..()
@@ -186,7 +193,10 @@
 		density = 1
 	else
 		if(M.loc != src.loc)
-			return
+			step_towards(M, src) //buckle if you're right next to it
+			if(M.loc != src.loc)
+				return
+			. = buckle_mob(M)
 	if (M.mob_size <= MOB_SIZE_XENO && M.stat == DEAD && istype(src, /obj/structure/bed/roller))
 		do_buckle(M, user)
 		return
@@ -202,15 +212,18 @@
 	if (src && src.loc)
 		target.buckled = src
 		target.forceMove(src.loc)
-		target.dir = src.dir
+		target.setDir(dir)
 		target.update_canmove()
 		src.buckled_mob = target
 		src.add_fingerprint(user)
 		afterbuckle(target)
 		if(buckle_lying) // Make sure buckling to beds/nests etc only turns, and doesn't give a random offset
 			var/matrix/M = matrix()
+			var/matrix/L = matrix() //Counterrotation for langchat text.
 			M.Turn(90)
+			L.Turn(270)
 			target.apply_transform(M)
+			target.langchat_image.transform = L
 		return TRUE
 
 /obj/proc/send_buckling_message(mob/M, mob/user)
@@ -229,7 +242,7 @@
 	. = ..()
 	handle_rotation()
 	if(. && buckled_mob && !handle_buckled_mob_movement(loc,direct)) //movement fails if buckled mob's move fails.
-		. = 0
+		. = FALSE
 
 /obj/forceMove(atom/dest)
 	. = ..()
@@ -239,17 +252,16 @@
 		buckled_mob.forceMove(dest)
 
 /obj/proc/handle_buckled_mob_movement(NewLoc, direct)
-	if(!(direct & (direct - 1))) //not diagonal move. the obj's diagonal move is split into two cardinal moves and those moves will handle the buckled mob's movement.
-		if(!buckled_mob.Move(NewLoc, direct))
-			forceMove(buckled_mob.loc)
-			last_move_dir = buckled_mob.last_move_dir
-			buckled_mob.inertia_dir = last_move_dir
-			return 0
+	if(!buckled_mob.Move(NewLoc, direct))
+		forceMove(buckled_mob.loc)
+		last_move_dir = buckled_mob.last_move_dir
+		buckled_mob.inertia_dir = last_move_dir
+		return FALSE
 
 	// Even if the movement is entirely managed by the object, notify the buckled mob that it's moving for its handler.
 	//It won't be called otherwise because it's a function of client_move or pulled mob, neither of which accounts for this.
 	buckled_mob.on_movement()
-	return 1
+	return TRUE
 
 /obj/BlockedPassDirs(atom/movable/mover, target_dir)
 	if(mover == buckled_mob) //can't collide with the thing you're buckled to

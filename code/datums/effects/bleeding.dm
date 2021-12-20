@@ -37,6 +37,10 @@
 		qdel(src)
 		return FALSE
 
+	var/mob/living/carbon/human/affected_mob = affected_atom
+	if(affected_mob.status_flags & NO_PERMANENT_DAMAGE)
+		return FALSE
+
 	return TRUE
 
 /datum/effects/bleeding/proc/add_on(var/damage)
@@ -47,7 +51,7 @@
 /datum/effects/bleeding/Destroy()
 	if(limb)
 		limb.bleeding_effects_list -= src
-	..()
+	return ..()
 
 
 /datum/effects/bleeding/external
@@ -62,9 +66,12 @@
 
 	var/mob/living/carbon/affected_mob = affected_atom
 	if(duration % 3 == 0) //Do it every third tick
-		if(affected_mob.reagents && affected_mob.reagents.get_reagent_amount("quickclot")) // Annoying QC check
-			buffer_blood_loss = 0
-			return FALSE
+		if(affected_mob.reagents) // Annoying QC check
+			if(affected_mob.reagents.get_reagent_amount("thwei"))
+				blood_loss -= THWEI_BLOOD_REDUCTION
+			if(affected_mob.reagents.get_reagent_amount("quickclot"))
+				buffer_blood_loss = 0
+				return FALSE
 		affected_mob.drip(buffer_blood_loss)
 		buffer_blood_loss = 0
 
@@ -91,8 +98,11 @@
 	if(bicaridine > REAGENTS_OVERDOSE && affected_mob.getBruteLoss() <= 0)
 		blood_loss -= BICAOD_BLOOD_REDUCTION
 
-	if(affected_mob.reagents && affected_mob.reagents.get_reagent_amount("quickclot")) // Annoying QC check
-		return FALSE
+	if(affected_mob.reagents) // Annoying QC check
+		if(affected_mob.reagents.get_reagent_amount("thwei"))
+			blood_loss -= THWEI_BLOOD_REDUCTION
+		if(affected_mob.reagents.get_reagent_amount("quickclot"))
+			return FALSE
 
 	affected_mob.blood_volume = max(affected_mob.blood_volume - blood_loss, 0)
 

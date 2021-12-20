@@ -116,7 +116,7 @@
 			to_chat(user, SPAN_WARNING("You need more barbed wire to repair [src]."))
 			return
 
-	if(istype(W, /obj/item/tool/wirecutters) && cut)
+	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && cut)
 		user.visible_message(SPAN_NOTICE("[user] starts cutting away the remains of [src] with [W]."),
 		SPAN_NOTICE("You start cutting away the remains of [src] with [W]."))
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
@@ -159,7 +159,7 @@
 
 	if(W.flags_item & NOBLUDGEON) return
 
-	if(istype(W, /obj/item/tool/wirecutters))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		user.visible_message(SPAN_NOTICE("[user] starts cutting through [src] with [W]."),
 		SPAN_NOTICE("You start cutting through [src] with [W]."))
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
@@ -188,8 +188,9 @@
 	. = ..()
 
 	if(start_dir)
-		dir = start_dir
+		setDir(start_dir)
 
+	healthcheck()
 	update_nearby_icons()
 
 /obj/structure/fence/Destroy()
@@ -200,7 +201,7 @@
 /obj/structure/fence/Move()
 	var/ini_dir = dir
 	. = ..()
-	dir = ini_dir
+	setDir(ini_dir)
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/fence/proc/update_nearby_icons()

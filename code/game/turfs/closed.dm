@@ -4,12 +4,15 @@
 /turf/closed
 	density = 1
 	opacity = 1
-	var/sound_muffling = MUFFLE_LOW
 
 /turf/closed/get_explosion_resistance()
 	return 1000000
 
-
+/turf/closed/void
+	name = "void"
+	icon = 'icons/turf/floors/space.dmi'
+	icon_state = "black"
+	mouse_opacity = FALSE
 
 /turf/closed/mineral //mineral deposits
 	name = "Rock"
@@ -33,12 +36,13 @@
 	icon = 'icons/turf/ground_map.dmi'
 	icon_state = "wall2"
 	desc = "Some thick jungle."
+	baseturfs = /turf/open/gm/grass
 
 	//Not yet
 /turf/closed/gm/ex_act(severity)
 	switch(severity)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			ChangeTurf(/turf/open/gm/grass)
+			ScrapeAway()
 
 
 /turf/closed/gm/dense
@@ -164,28 +168,28 @@
 
 /turf/closed/ice_rock/northWall/Initialize(mapload)
 	. = ..()
-	dir = pick(NORTH,SOUTH,EAST,WEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST))
 
 /turf/closed/ice_rock/southWall
 	icon_state = "south_wall"
 
 /turf/closed/ice_rock/southWall/Initialize(mapload)
 	. = ..()
-	dir = pick(NORTH,SOUTH,EAST,WEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST))
 
 /turf/closed/ice_rock/westWall
 	icon_state = "west_wall"
 
 /turf/closed/ice_rock/westWall/Initialize(mapload)
 	. = ..()
-	dir = pick(NORTH,SOUTH,EAST,WEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST))
 
 /turf/closed/ice_rock/eastWall
 	icon_state = "east_wall"
 
 /turf/closed/ice_rock/eastWall/Initialize(mapload)
 	. = ..()
-	dir = pick(NORTH,SOUTH,EAST,WEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST))
 /turf/closed/ice_rock/cornerOverlay
 	icon_state = "corner_overlay"
 
@@ -233,8 +237,19 @@
 	icon = 'icons/turf/escapepods.dmi'
 	icon_state = "wall0"
 
+/turf/closed/shuttle/lifeboat
+	name = "Lifeboat"
+	desc = "Separates you from certain death."
+	icon = 'icons/turf/lifeboat.dmi'
+	icon_state = "2,0"
 
+/turf/closed/shuttle/lifeboat/transparent
+	icon_state = "window1"
+	opacity = 0
 
+//INSERT EXPLOSION CODE
+/turf/closed/shuttle/lifeboat/proc/transform_crash()
+	new /turf/open/shuttle/lifeboat(src)
 
 // Elevator walls (directional)
 /turf/closed/shuttle/elevator

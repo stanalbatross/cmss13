@@ -175,7 +175,7 @@
 	to_chat(user, SPAN_NOTICE("You start adding cable to the [src]."))
 	if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		terminal = new /obj/structure/machinery/power/terminal(tempLoc)
-		terminal.dir = tempDir
+		terminal.setDir(tempDir)
 		terminal.master = src
 		return 0
 	return 1
@@ -200,7 +200,7 @@
 
 
 /obj/structure/machinery/power/smes/attackby(var/obj/item/W as obj, var/mob/user as mob)
-	if(istype(W, /obj/item/tool/screwdriver))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(!open_hatch)
 			open_hatch = 1
 			to_chat(user, SPAN_NOTICE("You open the maintenance hatch of [src]."))
@@ -233,7 +233,7 @@
 		stat = 0
 		return 0
 
-	else if(istype(W, /obj/item/tool/wirecutters) && terminal && !building_terminal)
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && terminal && !building_terminal)
 		building_terminal = 1
 		var/turf/tempTDir = terminal.loc
 		if (istype(tempTDir))
@@ -306,12 +306,14 @@
 
 	if( href_list["cmode"] )
 		chargemode = !chargemode
+		message_admins("[key_name(usr)] toggled \the [src]'s input [chargemode ? "On" : "Off"].")
 		if(!chargemode)
 			charging = 0
 		updateicon()
 
 	else if( href_list["online"] )
 		online = !online
+		message_admins("[key_name(usr)] toggled \the [src]'s output [online ? "On" : "Off"].")
 		updateicon()
 	else if( href_list["input"] )
 		switch( href_list["input"] )
@@ -322,6 +324,7 @@
 			if("set")
 				chargelevel = input(usr, "Enter new input level (0-[input_level_max])", "SMES Input Power Control", chargelevel) as num
 		chargelevel = max(0, min(input_level_max, chargelevel))	// clamp to range
+		message_admins("[key_name(usr)] set [src]'s input level to [chargelevel].")
 
 	else if( href_list["output"] )
 		switch( href_list["output"] )
@@ -332,8 +335,7 @@
 			if("set")
 				output = input(usr, "Enter new output level (0-[output_level_max])", "SMES Output Power Control", output) as num
 		output = max(0, min(output_level_max, output))	// clamp to range
-
-	investigate_log("input/output; [chargelevel>output?"<font color='green'>":"<font color='red'>"][chargelevel]/[output]</font>|Output-mode: [online?"<font color='green'>on</font>":"<font color='red'>off</font>"]|Input-mode: [chargemode?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [usr.key]","singulo")
+		message_admins("[key_name(usr)] set [src]'s output level to [chargelevel].")
 
 	return 1
 

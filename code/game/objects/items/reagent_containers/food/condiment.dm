@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////////Condiments
 //Notes by Darem: The condiments food-subtype is for stuff you don't actually eat but you use to modify existing food. They all
 //	leave empty containers when used up and can be filled/re-filled with other items. Formatting for first section is identical
@@ -15,34 +14,25 @@
 	center_of_mass = "x=16;y=6"
 	volume = 50
 
-/obj/item/reagent_container/food/condiment/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_container/food/condiment/attackby(obj/item/W, mob/user)
 	return
 
-/obj/item/reagent_container/food/condiment/attack_self(mob/user as mob)
-	return
-
-/obj/item/reagent_container/food/condiment/attack(mob/M as mob, mob/user as mob, def_zone)
-	var/datum/reagents/R = src.reagents
-
-	if(!R || !R.total_volume)
+/obj/item/reagent_container/food/condiment/attack(mob/M, mob/user)
+	if(!reagents?.total_volume)
 		to_chat(user, SPAN_DANGER("The [src.name] is empty!"))
-		return 0
+		return FALSE
 
 	if(M == user)
 		to_chat(M, SPAN_NOTICE(" You swallow some of contents of the [src]."))
-		if(reagents.total_volume)
-			reagents.set_source_mob(user)
-			reagents.trans_to_ingest(M, 10)
 
-		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-		return 1
 	else if(istype(M, /mob/living/carbon/human))
 		user.affected_message(M,
 			SPAN_HELPFUL("You <b>start feeding</b> [user == M ? "yourself" : "[M]"] <b>[src]</b>."),
 			SPAN_HELPFUL("[user] <b>starts feeding</b> you <b>[src]</b>."),
 			SPAN_NOTICE("[user] starts feeding [user == M ? "themselves" : "[M]"] [src]."))
 
-		if(!do_after(user, 30, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, M)) return
+		if(!do_after(user, 30, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, M))
+			return FALSE
 		user.affected_message(M,
 			SPAN_HELPFUL("You <b>fed</b> [user == M ? "yourself" : "[M]"] <b>[src]</b>."),
 			SPAN_HELPFUL("[user] <b>fed</b> you <b>[src]</b>."),
@@ -53,14 +43,14 @@
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: [rgt_list_text]</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [src.name] by [M.name] ([M.ckey]) Reagents: [rgt_list_text]</font>")
 		msg_admin_attack("[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] (REAGENTS: [rgt_list_text]) (INTENT: [uppertext(intent_text(user.a_intent))]) in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
+	else
+		return FALSE
 
-		if(reagents.total_volume)
-			reagents.set_source_mob(user)
-			reagents.trans_to_ingest(M, 10)
-
-		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-		return 1
-	return 0
+	if(reagents.total_volume)
+		reagents.set_source_mob(user)
+		reagents.trans_to_ingest(M, 10)
+	playsound(M.loc,'sound/items/drink.ogg', 15, 1)
+	return TRUE
 
 /obj/item/reagent_container/food/condiment/attackby(obj/item/I as obj, mob/user as mob)
 	return
@@ -96,7 +86,7 @@
 		to_chat(user, SPAN_NOTICE(" You transfer [trans] units of the condiment to [target]."))
 
 /obj/item/reagent_container/food/condiment/on_reagent_change()
-	if(icon_state == "saltshakersmall" || icon_state == "peppermillsmall")
+	if(icon_state == "saltshakersmall" || icon_state == "peppermillsmall" || icon_state == "hotsauce_cholula" || icon_state == "hotsauce_franks" || icon_state == "hotsauce_sriracha" || icon_state == "hotsauce_tabasco")
 		return
 	if(reagents.reagent_list.len > 0)
 		switch(reagents.get_master_reagent_id())
@@ -104,11 +94,6 @@
 				name = "Ketchup"
 				desc = "You feel more American already."
 				icon_state = "ketchup"
-				center_of_mass = "x=16;y=6"
-			if("capsaicin")
-				name = "Hotsauce"
-				desc = "You can almost TASTE the stomach ulcers now!"
-				icon_state = "hotsauce"
 				center_of_mass = "x=16;y=6"
 			if("enzyme")
 				name = "Universal Enzyme"
@@ -197,3 +182,37 @@
 /obj/item/reagent_container/food/condiment/peppermill/Initialize()
 	. = ..()
 	reagents.add_reagent("blackpepper", 20)
+
+/obj/item/reagent_container/food/condiment/hotsauce
+	icon = 'icons/obj/items/food.dmi'
+	name = "hotsauce parent object"
+	possible_transfer_amounts = list(1,5,60) //60 allows marines to chug the bottle in one go.
+	volume = 60
+
+/obj/item/reagent_container/food/condiment/hotsauce/Initialize()
+	. = ..()
+	reagents.add_reagent("hotsauce", 60)
+
+/obj/item/reagent_container/food/condiment/hotsauce/cholula
+	name = "\improper Cholula bottle"
+	desc = "A bottle of Weyland-Yutani brand Cholula hot sauce."
+	icon_state = "hotsauce_cholula"
+	item_state = "hotsauce_cholula"
+
+/obj/item/reagent_container/food/condiment/hotsauce/franks
+	name = "\improper Frank's Red Hot bottle"
+	desc = "A bottle of Weyland-Yutani brand Frank's Red Hot hot sauce."
+	icon_state = "hotsauce_franks"
+	item_state = "hotsauce_franks"
+
+/obj/item/reagent_container/food/condiment/hotsauce/sriracha
+	name = "\improper Sriracha bottle"
+	desc = "A bottle of Weyland-Yutani brand Sriracha hot sauce."
+	icon_state = "hotsauce_sriracha"
+	item_state = "hotsauce_sriracha"
+
+/obj/item/reagent_container/food/condiment/hotsauce/tabasco
+	name = "\improper Tabasco bottle"
+	desc = "A bottle of Weyland-Yutani brand Tabasco hot sauce."
+	icon_state = "hotsauce_tabasco"
+	item_state = "hotsauce_tabasco"

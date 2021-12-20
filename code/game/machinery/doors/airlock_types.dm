@@ -180,8 +180,6 @@
 	icon = 'icons/obj/structures/doors/Doorphoron.dmi'
 	mineral = "phoron"
 
-
-
 /obj/structure/machinery/door/airlock/sandstone
 	name = "\improper Sandstone Airlock"
 	icon = 'icons/obj/structures/doors/Doorsand.dmi'
@@ -216,10 +214,6 @@
 		/obj/structure/window/framed/strata,
 		/obj/structure/machinery/door/airlock)
 
-/obj/structure/machinery/door/airlock/strata/New()
-	addtimer(CALLBACK(src, /atom.proc/relativewall_neighbours), 10)
-	..()
-
 /obj/structure/machinery/door/airlock/strata/autoname
 	autoname = TRUE
 
@@ -244,6 +238,21 @@
 /obj/structure/machinery/door/airlock/strata/mining/autoname
 	autoname = TRUE
 
+//FIORINA PENITENTIARY (PRISON_FOP) MAINTENANCE HATCHES
+
+/obj/structure/machinery/door/airlock/prison_hatch
+	name = "\improper Maintenance Hatch"
+	icon = 'icons/obj/structures/doors/prison_FOP/prison_hatches.dmi'
+	openspeed = 5
+	req_access = null
+	req_one_access = null
+	tiles_with = list(
+		/obj/structure/window/framed/prison,
+		/obj/structure/machinery/door/airlock)
+
+/obj/structure/machinery/door/airlock/prison_hatch/autoname
+	autoname = TRUE
+
 //ALMAYER AIRLOCKS
 
 /obj/structure/machinery/door/airlock/almayer
@@ -266,8 +275,6 @@
 	var/damage_check = max(0, damage + dam)
 	if(damage_check >= damage_cap && M && is_mainship_level(z))
 		SSclues.create_print(get_turf(M), M, "The fingerprint contains bits of wire and metal specks.")
-		if(M.detectable_by_ai())
-			ai_silent_announcement("DAMAGE REPORT: Structural damage detected at [get_area(src)], requesting Military Police supervision.")
 
 	..()
 
@@ -414,7 +421,7 @@
 	name = "\improper Alpha Squad Leader Preparations"
 	req_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_ALPHA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -422,7 +429,7 @@
 	name = "\improper Alpha Squad Specialist Preparations"
 	req_access = list(ACCESS_MARINE_SPECPREP, ACCESS_MARINE_ALPHA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -430,7 +437,7 @@
 	name = "\improper Alpha Squad Engineer Preparations"
 	req_access = list(ACCESS_MARINE_ENGPREP, ACCESS_MARINE_ALPHA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -438,7 +445,7 @@
 	name = "\improper Alpha Squad Medic Preparations"
 	req_access = list(ACCESS_MARINE_MEDPREP, ACCESS_MARINE_ALPHA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -446,7 +453,7 @@
 	name = "\improper Alpha Squad Smartgunner Preparations"
 	req_access = list(ACCESS_MARINE_SMARTPREP, ACCESS_MARINE_ALPHA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -462,7 +469,7 @@
 	name = "\improper Bravo Squad Leader Preparations"
 	req_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_BRAVO)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -470,7 +477,7 @@
 	name = "\improper Bravo Squad Specialist Preparations"
 	req_access = list(ACCESS_MARINE_SPECPREP, ACCESS_MARINE_BRAVO)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -478,7 +485,7 @@
 	name = "\improper Bravo Squad Engineer Preparations"
 	req_access = list(ACCESS_MARINE_ENGPREP, ACCESS_MARINE_BRAVO)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -486,7 +493,7 @@
 	name = "\improper Bravo Squad Medic Preparations"
 	req_access = list(ACCESS_MARINE_MEDPREP, ACCESS_MARINE_BRAVO)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -494,7 +501,7 @@
 	name = "\improper Bravo Squad Smartgunner Preparations"
 	req_access = list(ACCESS_MARINE_SMARTPREP, ACCESS_MARINE_BRAVO)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -510,7 +517,7 @@
 	name = "\improper Charlie Squad Leader Preparations"
 	req_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_CHARLIE)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -518,7 +525,7 @@
 	name = "\improper Charlie Squad Specialist Preparations"
 	req_access = list(ACCESS_MARINE_SPECPREP, ACCESS_MARINE_CHARLIE)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -526,7 +533,7 @@
 	name = "\improper Charlie Squad Engineer Preparations"
 	req_access = list(ACCESS_MARINE_ENGPREP, ACCESS_MARINE_CHARLIE)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -534,7 +541,7 @@
 	name = "\improper Charlie Squad Medic Preparations"
 	req_access = list(ACCESS_MARINE_MEDPREP, ACCESS_MARINE_CHARLIE)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -542,7 +549,7 @@
 	name = "\improper Charlie Squad Smartgunner Preparations"
 	req_access = list(ACCESS_MARINE_SMARTPREP, ACCESS_MARINE_CHARLIE)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -558,7 +565,7 @@
 	name = "\improper Delta Squad Leader Preparations"
 	req_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_DELTA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -566,7 +573,7 @@
 	name = "\improper Delta Squad Specialist Preparations"
 	req_access = list(ACCESS_MARINE_SPECPREP, ACCESS_MARINE_DELTA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -574,7 +581,7 @@
 	name = "\improper Delta Squad Engineer Preparations"
 	req_access = list(ACCESS_MARINE_ENGPREP, ACCESS_MARINE_DELTA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -582,7 +589,7 @@
 	name = "\improper Delta Squad Medic Preparations"
 	req_access = list(ACCESS_MARINE_MEDPREP, ACCESS_MARINE_DELTA)
 	req_one_access = list()
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
@@ -590,11 +597,61 @@
 	name = "\improper Delta Squad Smartgunner Preparations"
 	req_access = list()
 	req_one_access = list(ACCESS_MARINE_SMARTPREP)
-	dir = 2
+	dir = SOUTH
 	opacity = 0
 	glass = 1
 
+//RTO doors, yes this is stupid
 
+/obj/structure/machinery/door/airlock/almayer/marine/alpha/rto
+	name = "\improper Alpha Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/bravo/rto
+	name = "\improper Bravo Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/charlie/rto
+	name = "\improper Charlie Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+/obj/structure/machinery/door/airlock/almayer/marine/delta/rto
+	name = "\improper Delta Squad Radio Telephone Operator Preparations"
+	req_access = list()
+	req_one_access = list(ACCESS_MARINE_RTO_PREP)
+	dir = SOUTH
+
+//SQUAD PREP SHARED DOORS
+
+/obj/structure/machinery/door/airlock/almayer/marine/shared
+	name = "\improper Squads Preparations"
+	icon = 'icons/obj/structures/doors/prepdoor.dmi'
+	req_access = list(ACCESS_MARINE_PREP)
+	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_CARGO, ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)
+	opacity = 0
+	glass = 1
+
+/obj/structure/machinery/door/airlock/almayer/marine/shared/alpha_bravo
+	name = "\improper Alpha-Bravo Squads Preparations"
+	icon = 'icons/obj/structures/doors/prepdoor_alpha.dmi'
+	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_CARGO, ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO)
+
+/obj/structure/machinery/door/airlock/almayer/marine/shared/alpha_bravo/yellow
+	icon = 'icons/obj/structures/doors/prepdoor_bravo.dmi'
+
+/obj/structure/machinery/door/airlock/almayer/marine/shared/charlie_delta/
+	name = "\improper Charlie-Delta Squads Preparations"
+	icon = 'icons/obj/structures/doors/prepdoor_charlie.dmi'
+	req_one_access = list(ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_CARGO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)
+
+/obj/structure/machinery/door/airlock/almayer/marine/shared/charlie_delta/blue
+	icon = 'icons/obj/structures/doors/prepdoor_delta.dmi'
 
 //DROPSHIP SIDE AIRLOCKS
 
@@ -610,16 +667,6 @@
 
 /obj/structure/machinery/door/airlock/dropship_hatch/ex_act(severity)
 	return
-
-/obj/structure/machinery/door/airlock/dropship_hatch/close(var/forced=0)
-	if(forced)
-		for(var/mob/living/L in loc)
-			step(L, pick(EAST,WEST)) // bump them off the tile
-		safe = 0 // in case anyone tries to run into the closing door~
-		..()
-		safe = 1 // without having to rewrite closing proc~spookydonut
-	else
-		..()
 
 /obj/structure/machinery/door/airlock/dropship_hatch/unlock()
 	if(is_loworbit_level(z)) // in flight
@@ -655,4 +702,4 @@
 	glass = 0
 
 /obj/structure/machinery/door/airlock/prison/horizontal
-	dir = 2
+	dir = SOUTH

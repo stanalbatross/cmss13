@@ -83,7 +83,7 @@ obj/structure/pipes/binary/passive_gate
 		icon_state = "circ-run"
 
 /obj/structure/pipes/binary/circulator/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/wrench))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		anchored = !anchored
 		to_chat(user, SPAN_NOTICE(" You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor."))
 
@@ -103,7 +103,7 @@ obj/structure/pipes/binary/passive_gate
 	if (usr.stat || usr.is_mob_restrained() || anchored)
 		return
 
-	src.dir = turn(src.dir, 90)
+	src.setDir(turn(src.dir, 90))
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 
 /obj/structure/pipes/binary/circulator/verb/rotate_anticlockwise()
@@ -114,5 +114,5 @@ obj/structure/pipes/binary/passive_gate
 	if (usr.stat || usr.is_mob_restrained() || anchored)
 		return
 
-	src.dir = turn(src.dir, -90)
+	src.setDir(turn(src.dir, -90))
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."

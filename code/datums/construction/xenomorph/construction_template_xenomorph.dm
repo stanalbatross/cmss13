@@ -5,12 +5,10 @@
 	build_type = /obj/effect/alien/resin/special
 	crystals_required = 45 * XENO_STRUCTURE_PLASMA_MULTIPLIER
 	var/datum/hive_status/hive_ref //Who gets what we build
-	var/requires_node = TRUE
-
 	var/block_range = 1
 
 /datum/construction_template/xenomorph/set_structure_image()
-	build_icon = get_icon_from_source(CONFIG_GET(string/alien_structures_64x64))
+	build_icon = 'icons/mob/hostiles/structures64x64.dmi'
 
 /datum/construction_template/xenomorph/complete() //Override because we need to pass the hive ref
 	if(!owner || !get_turf(owner))
@@ -29,14 +27,14 @@
 	build_type = /obj/effect/alien/resin/special/pylon/core
 	build_icon_state = "core"
 	crystals_required = 100 * XENO_STRUCTURE_PLASMA_MULTIPLIER
-	requires_node = FALSE
+	block_range = 0
 
 /datum/construction_template/xenomorph/pylon
 	name = XENO_STRUCTURE_PYLON
 	build_type = /obj/effect/alien/resin/special/pylon
 	build_icon_state = "pylon"
 	crystals_required = 100 * XENO_STRUCTURE_PLASMA_MULTIPLIER
-	requires_node = FALSE
+	block_range = 0
 
 /datum/construction_template/xenomorph/pool
 	name = XENO_STRUCTURE_POOL
@@ -71,4 +69,4 @@
 	pixel_x = -8
 
 /datum/construction_template/xenomorph/nest/set_structure_image()
-	build_icon = get_icon_from_source(CONFIG_GET(string/alien_structures))
+	build_icon = 'icons/mob/hostiles/structures.dmi'

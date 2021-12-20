@@ -1,16 +1,16 @@
+#define TIMER_MINIMUM_TIME (3 SECONDS)
+#define TIMER_MAXIMUM_TIME (120 SECONDS)
+
 /obj/item/device/assembly/timer
 	name = "timer"
 	desc = "Used to time things. Works well with contraptions which has to count down. Tick tock."
 	icon_state = "timer"
 	matter = list("metal" = 500, "glass" = 50, "waste" = 10)
-
-
-	wires = WIRE_PULSE
-
-	secured = 0
+	wires = WIRE_ASSEMBLY_PULSE
+	secured = FALSE
 
 	var/timing = 0
-	var/time = 4 SECONDS
+	var/time = 3 SECONDS
 
 /obj/item/device/assembly/timer/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -19,6 +19,7 @@
 /obj/item/device/assembly/timer/activate()
 	if(!..())	return 0//Cooldown check
 
+	time = clamp(round(time), TIMER_MINIMUM_TIME, TIMER_MAXIMUM_TIME)
 	timing = !timing
 	if(timing)
 		START_PROCESSING(SSobj, src)
@@ -86,8 +87,6 @@
 		ui.open()
 		ui.set_autoupdate(timing)
 
-#define TIMER_MINIMUM_TIME (2 SECONDS)
-#define TIMER_MAXIMUM_TIME (120 SECONDS)
 
 /obj/item/device/assembly/timer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -118,10 +117,10 @@
 
 /obj/item/device/assembly/timer/ui_data(mob/user)
 	. = list()
-	.["current_time"] = time SECONDS_TO_DECISECONDS
+	.["current_time"] = time *0.1
 	.["is_timing"] = timing
 
 /obj/item/device/assembly/timer/ui_static_data(mob/user)
 	. = list()
-	.["min_time"] = TIMER_MINIMUM_TIME SECONDS_TO_DECISECONDS
-	.["max_time"] = TIMER_MAXIMUM_TIME SECONDS_TO_DECISECONDS
+	.["min_time"] = TIMER_MINIMUM_TIME * 0.1
+	.["max_time"] = TIMER_MAXIMUM_TIME * 0.1

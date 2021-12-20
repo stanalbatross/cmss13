@@ -85,7 +85,7 @@
 		if(mob.control_object.density)
 			step(mob.control_object,direct)
 			if(!mob.control_object)	return
-			mob.control_object.dir = direct
+			mob.control_object.setDir(direct)
 		else
 			mob.control_object.forceMove(get_step(mob.control_object,direct))
 	return
@@ -98,7 +98,13 @@
 	if(world.time < next_movement)
 		return
 
+	next_move_dir_add = 0
+	next_move_dir_sub = 0
+
 	next_movement = world.time + world.tick_lag
+
+	if(!direct)
+		return FALSE
 
 	if(mob.control_object)
 		next_movement = world.time + MINIMAL_MOVEMENT_INTERVAL
@@ -127,12 +133,6 @@
 
 	if(!mob.canmove || mob.is_mob_incapacitated(TRUE) || !mob.on_movement())
 		return
-
-	// run mob move event if it is carbon
-	if(istype(mob,/mob/living/carbon))
-		var/mob/living/carbon/carbon_mob = mob
-		if(!carbon_mob.on_movement())
-			return //something blocked us from moving
 
 	//Check if you are being grabbed and if so attemps to break it
 	if(mob.pulledby)
@@ -267,9 +267,3 @@
 
 /mob/proc/on_movement()
 	return TRUE
-
-/mob/Move(NewLoc, direction)
-	SEND_SIGNAL(src, COMSIG_MOB_MOVE, NewLoc, direction)
-	. = ..()
-	if(.)
-		SEND_SIGNAL(src, COMSIG_MOB_POST_MOVE, NewLoc, direction)

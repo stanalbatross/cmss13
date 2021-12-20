@@ -101,7 +101,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 			to_chat(user, SPAN_WARNING("There is nothing to recover from storage."))
 			return
 
-		var/obj/item/I = input(usr, "Please choose which object to retrieve.", "Object recovery",null) as null|anything in frozen_items_for_type
+		var/obj/item/I = tgui_input_list(usr, "Please choose which object to retrieve.", "Object recovery", frozen_items_for_type)
 		if(!I)
 			return
 
@@ -172,7 +172,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 
 	var/mob/living/occupant = null //Person waiting to be despawned.
 	var/orient_right = null // Flips the sprite.
-	var/time_till_despawn = MINUTES_10 //10 minutes-ish safe period before being despawned.
+	var/time_till_despawn = 10 MINUTES //10 minutes-ish safe period before being despawned.
 	var/time_entered = 0 //Used to keep track of the safe period.
 	var/obj/item/device/radio/intercom/announce //Intercom for cryo announcements
 
@@ -188,8 +188,8 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 /obj/structure/machinery/cryopod/process()
 	if(occupant)
 		//if occupant ghosted, time till despawn is severely shorter
-		if(!occupant.key && time_till_despawn == MINUTES_10)
-			time_till_despawn -= MINUTES_8
+		if(!occupant.key && time_till_despawn == 10 MINUTES)
+			time_till_despawn -= 8 MINUTES
 		//Allow a ten minute gap between entering the pod and actually despawning.
 		if(world.time - time_entered < time_till_despawn)
 			return
@@ -216,11 +216,11 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/H = occupant
 		switch(H.job)
-			if("Military Police","Chief MP")
+			if(JOB_POLICE_CADET, JOB_POLICE, JOB_WARDEN, JOB_CHIEF_POLICE)
 				dept_console = GLOB.frozen_items["MP"]
-			if("Doctor","Researcher","Chief Medical Officer")
+			if("Nurse", "Doctor","Researcher","Chief Medical Officer")
 				dept_console = GLOB.frozen_items["Med"]
-			if("Ordnance Techician","Chief Engineer")
+			if("Maintenance Technician", "Ordnance Technician","Chief Engineer")
 				dept_console = GLOB.frozen_items["Eng"]
 			if("Predator")
 				dept_console = GLOB.frozen_items["Yautja"]
@@ -316,7 +316,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 		var/mob/living/carbon/human/H = occupant
 		if(H.assigned_squad)
 			var/datum/squad/S = H.assigned_squad
-			if(H.job == JOB_SQUAD_SPECIALIST)
+			if(GET_MAPPED_ROLE(H.job) == JOB_SQUAD_SPECIALIST)
 				//we make the set this specialist took if any available again
 				if(H.skills)
 					var/set_name
@@ -339,19 +339,20 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	SSticker.mode.latejoin_tally-- //Cryoing someone out removes someone from the Marines, blocking further larva spawns until accounted for
 
 	//Handle job slot/tater cleanup.
-	RoleAuthority.free_role(RoleAuthority.roles_for_mode[occupant.job], TRUE)
+	RoleAuthority.free_role(GET_MAPPED_ROLE(occupant.job), TRUE)
 
+	var/occupant_ref = WEAKREF(occupant)
 	//Delete them from datacore.
 	for(var/datum/data/record/R in GLOB.data_core.medical)
-		if((R.fields["name"] == occupant.real_name))
+		if((R.fields["ref"] == occupant_ref))
 			GLOB.data_core.medical -= R
 			qdel(R)
 	for(var/datum/data/record/T in GLOB.data_core.security)
-		if((T.fields["name"] == occupant.real_name))
+		if((T.fields["ref"] == occupant_ref))
 			GLOB.data_core.security -= T
 			qdel(T)
 	for(var/datum/data/record/G in GLOB.data_core.general)
-		if((G.fields["name"] == occupant.real_name))
+		if((G.fields["ref"] == occupant_ref))
 			GLOB.data_core.general -= G
 			qdel(G)
 
@@ -491,7 +492,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_NAME_1 = list(), SQUAD_NAME_2 = list()
 	time_entered = world.time
 	start_processing()
 	var/area/location = get_area(src)
-	if(M.job != JOB_SQUAD_MARINE)
+	if(M.job != GET_MAPPED_ROLE(JOB_SQUAD_MARINE))
 		message_staff("[key_name_admin(M)], [M.job], has entered a [src] at [location] after playing for [duration2text(world.time - M.life_time_start)].")
 
 	playsound(src, 'sound/machines/hydraulics_3.ogg', 30)

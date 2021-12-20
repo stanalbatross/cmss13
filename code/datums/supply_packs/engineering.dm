@@ -5,8 +5,7 @@
 
 /datum/supply_packs/sandbags
 	name = "empty sandbags crate (x50)"
-	contains = list(/obj/item/stack/sandbags_empty)
-	amount = 50
+	contains = list(/obj/item/stack/sandbags_empty/full)
 	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "empty sandbags crate"
@@ -24,30 +23,34 @@
 	containername = "sandbags construction kit"
 	group = "Engineering"
 
-/datum/supply_packs/metal50
-	name = "50 metal sheets (x50)"
-	contains = list(/obj/item/stack/sheet/metal)
-	amount = 50
+/datum/supply_packs/metal
+	name = "metal sheets (x50)"
+	contains = list(/obj/item/stack/sheet/metal/large_stack)
 	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "metal sheets crate"
 	group = "Engineering"
 
-
-/datum/supply_packs/plas50
-	name = "plasteel sheets (x30)"
-	contains = list(/obj/item/stack/sheet/plasteel)
-	amount = 30
-	cost = RO_PRICE_NORMAL
+/datum/supply_packs/plas
+	name = "plasteel sheets (x40)"
+	contains = list(/obj/item/stack/sheet/plasteel/med_large_stack)
+	cost = RO_PRICE_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "plasteel sheets crate"
 	group = "Engineering"
 
+/datum/supply_packs/plas_metal
+	name = "mixed metal sheets (x30 metal, x20 plasteel)"
+	contains = list(/obj/item/stack/sheet/plasteel/med_small_stack,
+					/obj/item/stack/sheet/metal/medium_stack,)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/supply
+	containername = "mixed metal sheet crate"
+	group = "Engineering"
 
-/datum/supply_packs/glass50
-	name = "50 glass sheets (x50)"
-	contains = list(/obj/item/stack/sheet/glass)
-	amount = 50
+/datum/supply_packs/glass
+	name = "glass sheets (x50)"
+	contains = list(/obj/item/stack/sheet/glass/large_stack)
 	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "glass sheets crate"
@@ -55,8 +58,7 @@
 
 /datum/supply_packs/wood50
 	name = "wooden planks (x50)"
-	contains = list(/obj/item/stack/sheet/wood)
-	amount = 50
+	contains = list(/obj/item/stack/sheet/wood/large_stack)
 	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "wooden planks crate"
@@ -64,21 +66,31 @@
 
 /datum/supply_packs/folding_barricades
 	contains = list(
-					/obj/item/folding_barricade,
-					/obj/item/folding_barricade,
-					/obj/item/folding_barricade,
-					/obj/item/folding_barricade
+					/obj/item/stack/folding_barricade/three
 					)
-	name = "Folding Barricades (x4)"
-	cost = RO_PRICE_VERY_PRICY
+	name = "Folding Barricades (x3)"
+	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/supply
 	containername = "\improper folding barricades crate"
 	group = "Engineering"
 
+/datum/supply_packs/binocs
+	name = "Mixed Binoculars Crate (x2 per, x4 total)"
+	cost = RO_PRICE_VERY_CHEAP
+	containertype = /obj/structure/closet/crate/green
+	containername = "Mixed Binoculars Crate"
+	group = "Engineering"
+	contains = list(
+		/obj/item/device/binoculars/range/designator,
+		/obj/item/device/binoculars/range/designator,
+		/obj/item/device/binoculars,
+		/obj/item/device/binoculars
+	)
+
 /datum/supply_packs/smescoil
 	name = "superconducting magnetic coil crate (x1)"
 	contains = list(/obj/item/stock_parts/smes_coil)
-	cost = RO_PRICE_PRICY
+	cost = RO_PRICE_CHEAP
 	containertype = /obj/structure/closet/crate/construction
 	containername = "superconducting magnetic coil crate"
 	group = "Engineering"

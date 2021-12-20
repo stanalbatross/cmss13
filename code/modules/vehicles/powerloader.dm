@@ -1,7 +1,7 @@
 /obj/vehicle/powerloader
 	name = "\improper Caterpillar P-5000 Work Loader"
 	icon = 'icons/obj/vehicles/powerloader.dmi'
-	desc = "The Caterpillar P-5000 Work Loader is a commercial mechanized exoskeleton used for lifting heavy materials and objects, first designed in January 29, 2025 by Weston Corporation. An old but trusted design used in warehouses, constructions and military ships everywhere."
+	desc = "The Caterpillar P-5000 Work Loader is a commercial mechanized exoskeleton used for lifting heavy materials and objects, first designed in January 29, 2025 by Weyland Corporation. An old but trusted design used in warehouses, constructions and military ships everywhere."
 	icon_state = "powerloader_open"
 	layer = POWERLOADER_LAYER //so the top appears above windows and wall mounts
 	anchored = 1
@@ -13,6 +13,10 @@
 	maxhealth = 200
 	pixel_x = -16
 	pixel_y = -2
+	var/base_state = "powerloader"
+	var/open_state = "powerloader_open"
+	var/overlay_state = "powerloader_overlay"
+	var/wreckage = /obj/structure/powerloader_wreckage
 
 /obj/vehicle/powerloader/Initialize()
 	cell = new /obj/item/cell/apc
@@ -26,7 +30,7 @@
 	if(world.time > l_move_time + move_delay)
 		if(dir != direction)
 			l_move_time = world.time
-			dir = direction
+			setDir(direction)
 			handle_rotation()
 			pick(playsound(src.loc, 'sound/mecha/powerloader_turn.ogg', 25, 1), playsound(src.loc, 'sound/mecha/powerloader_turn2.ogg', 25, 1))
 			. = TRUE
@@ -60,8 +64,8 @@
 	overlays.Cut()
 	playsound(loc, 'sound/mecha/powerloader_buckle.ogg', 25)
 	if(.)
-		icon_state = "powerloader"
-		overlays += image(icon_state= "powerloader_overlay", layer = MOB_LAYER + 0.1)
+		icon_state = base_state
+		overlays += image(icon_state = overlay_state, layer = MOB_LAYER + 0.1)
 		if(M.mind && M.skills)
 			move_delay = max(4, move_delay - 2 * M.skills.get_skill_level(SKILL_POWERLOADER))
 		var/clamp_equipped = 0
@@ -71,7 +75,7 @@
 		if(clamp_equipped != 2) unbuckle() //can't use the powerloader without both clamps equipped
 	else
 		move_delay = initial(move_delay)
-		icon_state = "powerloader_open"
+		icon_state = open_state
 		M.drop_held_items() //drop the clamp when unbuckling
 
 /obj/vehicle/powerloader/buckle_mob(mob/M, mob/user)
@@ -95,19 +99,19 @@
 
 /obj/vehicle/powerloader/handle_rotation()
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 		switch(dir)
 			if(EAST) buckled_mob.pixel_x = 7
 			if(WEST) buckled_mob.pixel_x = -7
 			else buckled_mob.pixel_x = 0
 
 /obj/vehicle/powerloader/explode()
-	new /obj/structure/powerloader_wreckage(loc)
+	new wreckage(loc)
 	playsound(loc, 'sound/effects/metal_crash.ogg', 75)
 	..()
 
 /obj/item/powerloader_clamp
-	name = "\improper Caterpillar P-5000 Work Loader Hydraulic Claw"
+	name = "\improper Power Loader Hydraulic Claw"
 	icon = 'icons/obj/vehicles/vehicles.dmi'
 	icon_state = "loader_clamp"
 	force = 20
@@ -125,10 +129,10 @@
 		linked_powerloader.unbuckle() //drop a clamp, you auto unbuckle from the powerloader.
 
 
-/obj/item/powerloader_clamp/attack(mob/living/M, mob/living/user, def_zone)
+/obj/item/powerloader_clamp/attack(mob/living/M, mob/living/user)
 	if(M == linked_powerloader.buckled_mob)
 		unbuckle() //if the pilot clicks themself with the clamp, it unbuckles them.
-		return 1
+		return TRUE
 	else
 		return ..()
 
@@ -162,6 +166,10 @@
 						if(AM.density)
 							to_chat(user, SPAN_WARNING("You can't drop [loaded] here, [AM] blocks the way."))
 							return
+				if(istype(loaded, /obj/structure/bed/chair))
+					var/obj/structure/bed/chair/unloading_chair = loaded
+					unloading_chair.dir = user.dir
+					unloading_chair.update_overlays()
 				user.visible_message(SPAN_NOTICE("[user] drops [loaded] on [T] with [src]."),
 				SPAN_NOTICE("You drop [loaded] on [T] with [src]."))
 				loaded.forceMove(T)
@@ -199,11 +207,24 @@
 		else
 			to_chat(user, SPAN_WARNING("Can't grab [loaded]."))
 
+	else if(istype(target, /obj/structure/bed/chair))
+		var/obj/structure/bed/chair/CS = target
+		if(!CS.stacked_size)
+			return
+		if(linked_powerloader)
+			CS.forceMove(linked_powerloader)
+			loaded = CS
+			playsound(src, 'sound/machines/hydraulics_2.ogg', 40, 1)
+			update_icon()
+			user.visible_message(SPAN_NOTICE("[user] grabs [loaded] with [src]."),
+			SPAN_NOTICE("You grab [loaded] with [src]."))
+
 /obj/item/powerloader_clamp/update_icon()
 	if(loaded) icon_state = "loader_clamp_full"
 	else icon_state = "loader_clamp"
 
 /obj/item/powerloader_clamp/attack_self(mob/user)
+	..()
 	if(linked_powerloader)
 		linked_powerloader.unbuckle()
 
@@ -217,3 +238,17 @@
 	opacity = 0
 	pixel_x = -18
 	pixel_y = -5
+
+/obj/structure/powerloader_wreckage/jd
+	name = "\improper John Deere 4300 Power Loader wreckage"
+	icon_state = "wreck_jd"
+
+/obj/vehicle/powerloader/jd
+	name = "\improper John Deere 4300 Power Loader"
+	desc = "John Deere 4300 Work Loader is a commercial mechanized exoskeleton used for lifting heavy materials and objects based on the Caterpillar P-5000, first designed in January 29, 2025 by Weyland Corporation. An old but trusted design used in warehouses, constructions and military ships everywhere. This one has a signature green and yellow livery."
+	icon_state = "powerloader_open_jd"
+	base_state = "powerloader_jd"
+	open_state = "powerloader_open_jd"
+	overlay_state = "powerloader_overlay_jd"
+	wreckage = /obj/structure/powerloader_wreckage/jd
+

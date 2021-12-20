@@ -209,18 +209,29 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 				manifest_inject(H)
 		return
 
-/obj/effect/datacore/proc/manifest_modify(name, assignment, rank)
+/obj/effect/datacore/proc/manifest_modify(name, ref, assignment, rank, p_stat)
 	var/datum/data/record/foundrecord
 
+	var/use_name = isnull(ref)
 	for(var/datum/data/record/t in GLOB.data_core.general)
-		if (t)
+		if(use_name)
 			if(t.fields["name"] == name)
+				foundrecord = t
+				break
+		else
+			if(t.fields["ref"] == ref)
 				foundrecord = t
 				break
 
 	if(foundrecord)
-		foundrecord.fields["rank"] = assignment
-		foundrecord.fields["real_rank"] = rank
+		if(assignment)
+			foundrecord.fields["rank"] = assignment
+		if (rank)
+			foundrecord.fields["real_rank"] = rank
+		if (p_stat)
+			foundrecord.fields["p_stat"] = p_stat
+		return TRUE
+	return FALSE
 
 /obj/effect/datacore/proc/manifest_inject(var/mob/living/carbon/human/H)
 	var/assignment
@@ -250,6 +261,7 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 	G.fields["faction"]		= H.personal_faction
 	G.fields["mob_faction"]	= H.faction
 	G.fields["religion"]	= H.religion
+	G.fields["ref"]			= WEAKREF(H)
 	//G.fields["photo_front"]	= front
 	//G.fields["photo_side"]	= side
 
@@ -261,21 +273,22 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 
 	//Medical Record
 	var/datum/data/record/M = new()
-	M.fields["id"]			= id
-	M.fields["name"]		= H.real_name
-	M.fields["b_type"]		= H.blood_type
-	M.fields["mi_dis"]		= "None"
-	M.fields["mi_dis_d"]	= "No minor disabilities have been declared."
-	M.fields["ma_dis"]		= "None"
-	M.fields["ma_dis_d"]	= "No major disabilities have been diagnosed."
-	M.fields["alg"]			= "None"
-	M.fields["alg_d"]		= "No allergies have been detected in this patient."
-	M.fields["cdi"]			= "None"
-	M.fields["cdi_d"]		= "No diseases have been diagnosed at the moment."
+	M.fields["id"]					= id
+	M.fields["name"]				= H.real_name
+	M.fields["b_type"]				= H.blood_type
+	M.fields["mi_dis"]				= "None"
+	M.fields["mi_dis_d"]			= "No minor disabilities have been declared."
+	M.fields["ma_dis"]				= "None"
+	M.fields["ma_dis_d"]			= "No major disabilities have been diagnosed."
+	M.fields["alg"]					= "None"
+	M.fields["alg_d"]				= "No allergies have been detected in this patient."
+	M.fields["cdi"]					= "None"
+	M.fields["cdi_d"]				= "No diseases have been diagnosed at the moment."
 	M.fields["last_scan_time"]		= null
-	M.fields["last_scan_result"]		= "No scan data on record" // body scanner results
-	M.fields["autodoc_data"] = list()
-	M.fields["autodoc_manual"] = list()
+	M.fields["last_scan_result"]	= "No scan data on record" // body scanner results
+	M.fields["autodoc_data"]		= list()
+	M.fields["autodoc_manual"]		= list()
+	M.fields["ref"]					= WEAKREF(H)
 
 	if(H.med_record && !jobban_isbanned(H, "Records"))
 		M.fields["notes"] = H.med_record
@@ -289,6 +302,7 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 	S.fields["name"]		= H.real_name
 	S.fields["criminal"]	= "None"
 	S.fields["incident"]	= ""
+	S.fields["ref"]			= WEAKREF(H)
 	security += S
 
 	//Locked Record
@@ -304,6 +318,7 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 	L.fields["citizenship"]	= H.citizenship
 	L.fields["faction"]		= H.personal_faction
 	L.fields["religion"]	= H.religion
+	L.fields["ref"]			= WEAKREF(H)
 
 	if(H.exploit_record && !jobban_isbanned(H, "Records"))
 		L.fields["exploit_record"] = H.exploit_record
@@ -361,13 +376,13 @@ proc/get_id_photo(var/mob/living/carbon/human/H)
 
 	eyes_s.Blend(rgb(H.r_eyes, H.g_eyes, H.b_eyes), ICON_ADD)
 
-	var/datum/sprite_accessory/hair_style = hair_styles_list[H.h_style]
+	var/datum/sprite_accessory/hair_style = GLOB.hair_styles_list[H.h_style]
 	if(hair_style)
 		var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 		hair_s.Blend(rgb(H.r_hair, H.g_hair, H.b_hair), ICON_ADD)
 		eyes_s.Blend(hair_s, ICON_OVERLAY)
 
-	var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[H.f_style]
+	var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[H.f_style]
 	if(facial_hair_style)
 		var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 		facial_s.Blend(rgb(H.r_facial, H.g_facial, H.b_facial), ICON_ADD)

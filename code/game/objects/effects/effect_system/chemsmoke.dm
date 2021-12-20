@@ -155,7 +155,7 @@
 
 
 	//distance between each smoke cloud
-	var/const/arcLength = 2.3559
+#define arcLength 2.3559
 
 
 	//calculate positions for smoke coverage - then spawn smoke
@@ -182,6 +182,9 @@
 			if(T in targetTurfs)
 				INVOKE_ASYNC(src, .proc/spawnSmoke, T, I, range)
 
+#undef arcLength
+
+
 //------------------------------------------
 // Randomizes and spawns the smoke effect.
 // Also handles deleting the smoke once the effect is finished.
@@ -192,7 +195,7 @@
 		chemholder.reagents.copy_to(smoke, chemholder.reagents.total_volume / dist, safety = 1)	//copy reagents to the smoke so mob/breathe() can handle inhaling the reagents
 	smoke.icon = I
 	smoke.layer = FLY_LAYER
-	smoke.dir = pick(cardinal)
+	smoke.setDir(pick(cardinal))
 	smoke.pixel_x = -32 + rand(-8,8)
 	smoke.pixel_y = -32 + rand(-8,8)
 	walk_to(smoke, T)

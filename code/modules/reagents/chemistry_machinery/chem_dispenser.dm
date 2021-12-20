@@ -151,18 +151,20 @@
 	attack_hand(usr)
 	return TRUE // update UIs attached to this object
 
-/obj/structure/machinery/chem_dispenser/attackby(var/obj/item/reagent_container/B as obj, var/mob/user as mob)
+/obj/structure/machinery/chem_dispenser/attackby(obj/item/reagent_container/B, mob/user)
 	if(isrobot(user))
-		return
-	if(src.beaker)
-		to_chat(user, "Something is already loaded into the machine.")
 		return
 	if(istype(B, /obj/item/reagent_container/glass) || istype(B, /obj/item/reagent_container/food))
 		if(!accept_glass && istype(B,/obj/item/reagent_container/food))
 			to_chat(user, SPAN_NOTICE("This machine only accepts beakers"))
 		if(user.drop_inv_item_to_loc(B, src))
-			beaker =  B
-			to_chat(user, "You set [B] on the machine.")
+			var/obj/item/old_beaker = beaker
+			beaker = B
+			if(old_beaker)
+				to_chat(user, SPAN_NOTICE("You swap out \the [old_beaker] for \the [B]."))
+				user.put_in_hands(old_beaker)
+			else
+				to_chat(user, SPAN_NOTICE("You set \the [B] on the machine."))
 			nanomanager.update_uis(src) // update all UIs attached to src
 		return
 
@@ -185,13 +187,14 @@
 	req_skill = null
 	req_skill_level = null
 	accept_glass = 1
+	wrenchable = TRUE
 	network = "Misc"
 	dispensable_reagents = list("water","ice","coffee","cream","tea","icetea","cola","spacemountainwind","dr_gibb","space_up","tonic","sodawater","lemon_lime","sugar","orangejuice","limejuice","watermelonjuice")
 	var/hackedcheck = 0
 
 /obj/structure/machinery/chem_dispenser/soda/attackby(var/obj/item/B as obj, var/mob/user as mob)
 	..()
-	if(istype(B, /obj/item/device/multitool))
+	if(HAS_TRAIT(B, TRAIT_TOOL_MULTITOOL))
 		if(hackedcheck == 0)
 			to_chat(user, "You change the mode from 'McNano' to 'Pizza King'.")
 			dispensable_reagents += list("thirteenloko","grapesoda")
@@ -211,6 +214,7 @@
 	req_skill = null
 	req_skill_level = null
 	accept_glass = 1
+	wrenchable = TRUE
 	network = "Misc"
 	desc = "A technological marvel, supposedly able to mix just the mixture you'd like to drink the moment you ask for one."
 	dispensable_reagents = list("lemon_lime","sugar","orangejuice","limejuice","sodawater","tonic","beer","kahlua","whiskey","sake","wine","vodka","gin","rum","tequilla","vermouth","cognac","ale","mead")
@@ -219,15 +223,15 @@
 /obj/structure/machinery/chem_dispenser/beer/attackby(var/obj/item/B as obj, var/mob/user as mob)
 	..()
 
-	if(istype(B, /obj/item/device/multitool))
+	if(HAS_TRAIT(B, TRAIT_TOOL_MULTITOOL))
 		if(hackedcheck == 0)
-			to_chat(user, "You disable the 'nanotrasen-are-cheap-bastards' lock, enabling hidden and very expensive boozes.")
+			to_chat(user, "You disable the 'Weyland-Yutani-are-cheap-bastards' lock, enabling hidden and very expensive boozes.")
 			dispensable_reagents += list("goldschlager","patron","watermelonjuice","berryjuice")
 			hackedcheck = 1
 			return
 
 		else
-			to_chat(user, "You re-enable the 'nanotrasen-are-cheap-bastards' lock, disabling hidden and very expensive boozes.")
+			to_chat(user, "You re-enable the 'Weyland-Yutani-are-cheap-bastards' lock, disabling hidden and very expensive boozes.")
 			dispensable_reagents -= list("goldschlager","patron","watermelonjuice","berryjuice")
 			hackedcheck = 0
 			return

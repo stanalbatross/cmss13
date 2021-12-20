@@ -7,6 +7,8 @@
 	name="beam"
 	icon='icons/effects/beam.dmi'
 	icon_state="b_beam"
+	mouse_opacity = FALSE
+
 	var/tmp/atom/BeamSource
 	New()
 		..()
@@ -38,6 +40,8 @@
 	icon = 'icons/obj/items/weapons/grenade.dmi'
 	icon_state = "danger"
 	layer = ABOVE_FLY_LAYER
+
+	appearance_flags = RESET_COLOR|KEEP_APART
 
 /obj/effect/overlay/temp
 	anchored = 1
@@ -75,17 +79,23 @@
 
 		pixel_x = dist_x * 32
 		pixel_y = dist_y * 32
-		
+
 		animate(src, pixel_x = 0, pixel_y = 0, time = glide_time, easing = QUAD_EASING)
-	
+
 	QDEL_IN(src, effect_duration + glide_time)
 
 /obj/effect/overlay/temp/point/big
 	icon_state = "big_arrow"
-	effect_duration = SECONDS_4
+	effect_duration = 4 SECONDS
+
+/obj/effect/overlay/temp/point/big/greyscale
+	icon_state = "big_arrow_grey"
+
+/obj/effect/overlay/temp/point/big/greyscale
+	icon_state = "big_arrow_grey"
 
 /obj/effect/overlay/temp/point/big/queen
-	icon_state = "big_arrow_queen"
+	icon_state = "big_arrow_grey"
 	invisibility = INVISIBILITY_MAXIMUM
 
 	var/list/client/clients
@@ -119,10 +129,10 @@
 	for(var/i in clients)
 		var/client/C = i
 		if(!C) continue
-		
+
 		C.images -= self_icon
 		LAZYREMOVE(clients, C)
-	
+
 	clients = null
 	self_icon = null
 
@@ -222,7 +232,7 @@
 	effect_duration = 10
 
 	New(loc)
-		dir = pick(cardinal)
+		setDir(pick(cardinal))
 		..()
 
 /obj/effect/overlay/temp/emp_pulse
@@ -256,13 +266,12 @@
 
 
 /obj/effect/overlay/temp/gib_animation/xeno
+	icon = 'icons/mob/hostiles/Effects.dmi'
 	effect_duration = 10
 
 /obj/effect/overlay/temp/gib_animation/xeno/Initialize(mapload, mob/source_mob, gib_icon, new_icon)
 	. = ..()
-	if(!new_icon)
-		icon = get_icon_from_source(CONFIG_GET(string/alien_effects))
-	else
+	if(new_icon)
 		icon = new_icon
 
 //dust animation
@@ -281,9 +290,6 @@
 
 /obj/effect/overlay/temp/acid_pool_splash
 	name = "acid splash"
+	icon = 'icons/mob/hostiles/Effects.dmi'
 	icon_state = "acidpoolsplash"
-	effect_duration = SECONDS_10
-
-/obj/effect/overlay/temp/acid_pool_splash/Initialize(mapload, ...)
-	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_effects))
+	effect_duration = 10 SECONDS

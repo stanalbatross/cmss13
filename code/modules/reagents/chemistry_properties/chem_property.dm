@@ -10,7 +10,13 @@
 	var/value //how much value per level? Negative properties should have a high negative value, neutral should have a value near zero, and positive ones should have a high value
 	var/starter = FALSE //whether or not this is a starter property and should be added to the property database on startup
 	var/updates_stats = FALSE //should the property change other variables in the reagent when added or removed?
-	var/deleted = FALSE
+	/// Should reagent with this property explode/start fire when mixed more than overdose threshold at once?
+	var/volatile = FALSE 
+
+/datum/chem_property/Destroy()
+	holder = null
+	. = ..()
+	return QDEL_HINT_IWILLGC
 
 /datum/chem_property/proc/reagent_added(atom/A, datum/reagent/R, var/amount)
 	return
@@ -19,29 +25,28 @@
 	return
 
 /datum/chem_property/proc/on_delete(mob/living/M) //used for properties that do something on delete
-	deleted = TRUE
-
+	qdel(src)
 	return
 
-/datum/chem_property/process(mob/living/M, var/potency = 1)
-	if(deleted)
-		return FALSE
+/datum/chem_property/process(mob/living/M, var/potency = 1, var/delta_time)
+	if(QDELETED(src))
+		CRASH("Attempted to process a deleted chemical property: [name], type=[type]")
 
 	return TRUE
 
-/datum/chem_property/proc/process_overdose(mob/living/M, var/potency = 1)
-	if(deleted)
-		return FALSE
+/datum/chem_property/proc/process_overdose(mob/living/M, var/potency = 1, var/delta_time)
+	if(QDELETED(src))
+		CRASH("Attempted to process_overdose a deleted chemical property: [name], type=[type]")
 
 	return TRUE
 
-/datum/chem_property/proc/process_critical(mob/living/M, var/potency = 1)
-	if(deleted)
-		return FALSE
+/datum/chem_property/proc/process_critical(mob/living/M, var/potency = 1, var/delta_time)
+	if(QDELETED(src))
+		CRASH("Attempted to process_critical a deleted chemical property: [name], type=[type]")
 
 	return TRUE
 
-/datum/chem_property/proc/process_dead(mob/living/M, var/potency = 1)
+/datum/chem_property/proc/process_dead(mob/living/M, var/potency = 1, var/delta_time)
 	return FALSE // By default, chemicals don't process in dead personnel.
 
 /datum/chem_property/proc/trigger(var/A) //used for properties that needs something to trigger outside of where process is usually called
@@ -51,6 +56,9 @@
 	return
 
 /datum/chem_property/proc/update_reagent() //used for changing other variables in the reagent, set update to FALSE to remove the update
+	return
+
+/datum/chem_property/proc/post_update_reagent()
 	return
 
 /datum/chem_property/proc/categories_to_string()

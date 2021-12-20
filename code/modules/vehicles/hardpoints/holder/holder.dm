@@ -90,12 +90,12 @@
 	update_icon()
 
 /obj/item/hardpoint/holder/attackby(var/obj/item/O, var/mob/user)
-	if(iscrowbar(O))
+	if(HAS_TRAIT(O, TRAIT_TOOL_CROWBAR))
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(user, SPAN_WARNING("You don't know what to do with \the [O] on \the [src]."))
 			return
 
-		var/chosen_hp = input("Select a hardpoint to remove") in (hardpoints + "Cancel")
+		var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Vehicle Hardpoint Removal", (hardpoints + "Cancel"))
 		if(chosen_hp == "Cancel")
 			return
 		var/obj/item/hardpoint/old = chosen_hp

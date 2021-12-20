@@ -10,7 +10,7 @@ bugfix: Jones is now a cat again.
 
 /:cl:
 
-<!-- Valid Prefixes: 
+<!-- Valid Prefixes:
 bugfix tweak
 rscadd rscdel
 imageadd imagedel
@@ -20,11 +20,15 @@ experiment wip
 -->
 
 ## Details
-<!-- Put more details about your changes below as needed or just anything you don't want in the changelog. -->
+<!--
+	Put more details about your changes below as needed or just anything you don't want in the changelog.
+-->
 
 
 ## Related Issues
-<!-- Mention the issue(s) this MR closes or is related to -->
-Closes 
+<!--
+	 Mention the issue(s) this MR closes or is related to
+-->
+Closes
 
 /assign me

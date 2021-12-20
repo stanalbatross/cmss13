@@ -8,12 +8,7 @@
 		if(!I)
 			to_chat(H, SPAN_NOTICE("You are not holding anything to equip."))
 			return
-		if(H.equip_to_appropriate_slot(I, 0))
-			if(hand)
-				update_inv_l_hand(0)
-			else
-				update_inv_r_hand(0)
-		else
+		if(!H.equip_to_appropriate_slot(I, 0))
 			to_chat(H, SPAN_DANGER("You are unable to equip that."))
 
 /mob/living/carbon/human/proc/equip_in_one_of_slots(obj/item/W, list/slots, del_on_fail = 1)
@@ -49,13 +44,17 @@
 			return has_limb("chest")
 		if(WEAR_ID)
 			return 1
-		if(WEAR_EAR)
+		if(WEAR_L_EAR)
+			return has_limb("head")
+		if(WEAR_R_EAR)
 			return has_limb("head")
 		if(WEAR_EYES)
 			return has_limb("head")
 		if(WEAR_HANDS)
 			return has_limb("l_hand") && has_limb("r_hand")
 		if(WEAR_HEAD)
+			return has_limb("head")
+		if(WEAR_IN_HELMET)
 			return has_limb("head")
 		if(WEAR_FEET)
 			return has_limb("r_foot") && has_limb("l_foot")
@@ -157,8 +156,11 @@
 		update_tint()
 		update_glass_vision(I)
 		update_inv_glasses()
-	else if (I == wear_ear)
-		wear_ear = null
+	else if (I == wear_l_ear)
+		wear_l_ear = null
+		update_inv_ears()
+	else if (I == wear_r_ear)
+		wear_r_ear = null
 		update_inv_ears()
 	else if (I == shoes)
 		shoes = null
@@ -213,22 +215,28 @@
 	if(!has_limb_for_slot(slot)) return
 
 	if(W == l_hand)
+		if(W.flags_item & NODROP)
+			return
 		l_hand = null
 		update_inv_l_hand()
 		//removes item's actions, may be readded once re-equipped to the new slot
 		for(var/X in W.actions)
 			var/datum/action/A = X
-			A.remove_action(src)
+			A.remove_from(src)
 
 	else if(W == r_hand)
+		if(W.flags_item & NODROP)
+			return
 		r_hand = null
 		update_inv_r_hand()
 		//removes item's actions, may be readded once re-equipped to the new slot
 		for(var/X in W.actions)
 			var/datum/action/A = X
-			A.remove_action(src)
+			A.remove_from(src)
 
 	W.screen_loc = null
+	if(W.loc != src)
+		W.pickup(src)
 	W.forceMove(src)
 	W.layer = ABOVE_HUD_LAYER
 
@@ -269,8 +277,12 @@
 			hud_set_squad()
 			update_inv_wear_id()
 			name = get_visible_name()
-		if(WEAR_EAR)
-			wear_ear = W
+		if(WEAR_L_EAR)
+			wear_l_ear = W
+			W.equipped(src, slot)
+			update_inv_ears()
+		if(WEAR_R_EAR)
+			wear_r_ear = W
 			W.equipped(src, slot)
 			update_inv_ears()
 		if(WEAR_EYES)
@@ -332,6 +344,7 @@
 					C.attach_accessory(src, A)
 					break
 			update_inv_w_uniform()
+			update_inv_wear_suit()
 		if(WEAR_J_STORE)
 			s_store = W
 			W.equipped(src, slot)
@@ -350,6 +363,13 @@
 			if(istype(S) && S.pockets.storage_slots)
 				wear_suit.attackby(W, src)
 				wear_suit.update_icon()
+
+		if(WEAR_IN_HELMET)
+			var/obj/item/clothing/head/helmet/marine/HM = src.head
+			if(istype(HM) && HM.pockets.storage_slots)
+				HM.pockets.attackby(W, src)
+				HM.update_icon()
+
 		if(WEAR_IN_ACCESSORY)
 			var/obj/item/clothing/accessory/A = W
 			if(istype(A))
@@ -360,6 +380,7 @@
 			else
 				w_uniform.attackby(W,src)
 			update_inv_w_uniform()
+
 		if(WEAR_IN_BELT)
 			belt.attackby(W,src)
 			belt.update_icon()
@@ -376,6 +397,8 @@
 		else
 			to_chat(src, SPAN_DANGER("You are trying to eqip this item to an unsupported inventory slot. How the heck did you manage that? Stop it..."))
 			return
+
+	SEND_SIGNAL(src, COMSIG_HUMAN_EQUIPPED_ITEM, W, slot)
 	recalculate_move_delay = TRUE
 	return 1
 
@@ -392,8 +415,10 @@
 			return belt
 		if(WEAR_ID)
 			return wear_id
-		if(WEAR_EAR)
-			return wear_ear
+		if(WEAR_L_EAR)
+			return wear_l_ear
+		if(WEAR_R_EAR)
+			return wear_r_ear
 		if(WEAR_EYES)
 			return glasses
 		if(WEAR_HANDS)
@@ -421,7 +446,42 @@
 		if(WEAR_LEGCUFFS)
 			return legcuffed
 
-
+/mob/living/carbon/human/get_slot_by_item(obj/item/I)
+	if(I == back)
+		return WEAR_BACK
+	if(I == wear_mask)
+		return WEAR_FACE
+	if(I == belt)
+		return WEAR_WAIST
+	if(I == wear_id)
+		return WEAR_ID
+	if(I == wear_l_ear)
+		return WEAR_L_EAR
+	if(I == wear_r_ear)
+		return WEAR_R_EAR
+	if(I == glasses)
+		return WEAR_EYES
+	if(I == gloves)
+		return WEAR_HANDS
+	if(I == head)
+		return WEAR_HEAD
+	if(I == shoes)
+		return WEAR_FEET
+	if(I == wear_suit)
+		return WEAR_JACKET
+	if(I == w_uniform)
+		return WEAR_BODY
+	if(I == l_store)
+		return WEAR_L_STORE
+	if(I == r_store)
+		return WEAR_R_STORE
+	if(I == s_store)
+		return WEAR_J_STORE
+	if(I == handcuffed)
+		return WEAR_HANDCUFFS
+	if(I == legcuffed)
+		return WEAR_LEGCUFFS
+	return ..()
 
 
 
@@ -436,6 +496,7 @@
 		return
 	M.attack_log += "\[[time_stamp()]\] <font color='orange'>Has had their [I.name] ([slot_to_process]) attempted to be removed by [key_name(src)]</font>"
 	attack_log += "\[[time_stamp()]\] <font color='red'>Attempted to remove [key_name(M)]'s [I.name] ([slot_to_process])</font>"
+	log_interact(src, M, "[key_name(src)] tried to remove [key_name(M)]'s [I.name] ([slot_to_process]).")
 
 	M.visible_message(SPAN_DANGER("[src] tries to remove [M]'s [I.name]."), \
 					SPAN_DANGER("You are trying to remove [M]'s [I.name]."), null, 5)
@@ -443,6 +504,7 @@
 	if(do_after(src, HUMAN_STRIP_DELAY * src.get_skill_duration_multiplier(), INTERRUPT_ALL, BUSY_ICON_GENERIC, M, INTERRUPT_MOVED, BUSY_ICON_GENERIC))
 		if(I && Adjacent(M) && I == M.get_item_by_slot(slot_to_process))
 			M.drop_inv_item_on_ground(I)
+			log_interact(src, M, "[key_name(src)] removed [key_name(M)]'s [I.name] ([slot_to_process]) successfully.")
 
 	if(M)
 		if(interactee == M && Adjacent(M))

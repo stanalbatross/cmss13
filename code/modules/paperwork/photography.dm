@@ -33,6 +33,7 @@
 	var/photo_size = 3
 
 /obj/item/photo/attack_self(mob/user)
+	..()
 	examine(user)
 
 /obj/item/photo/attackby(obj/item/P as obj, mob/user as mob)
@@ -104,7 +105,7 @@
 			return
 		if(over_object == usr && in_range(src, usr) || usr.contents.Find(src))
 			if(usr.s_active)
-				usr.s_active.close(usr)
+				usr.s_active.storage_close(usr)
 			show_to(usr)
 			return
 	return
@@ -133,24 +134,24 @@
 	set name = "Set Photo Focus"
 	set src in usr
 	set category = "Object"
-	var/nsize = input("Photo Size","Pick a size of resulting photo.") as null|anything in list(1,3,5,7)
+	var/nsize = tgui_input_list(usr, "Photo Size","Pick a size of resulting photo.", list(1,3,5,7))
 	if(nsize)
 		size = nsize
 		to_chat(usr, SPAN_NOTICE("Camera will now take [size]x[size] photos."))
 
-/obj/item/device/camera/attack(mob/living/carbon/human/M as mob, mob/user as mob)
+/obj/item/device/camera/attack(mob/living/carbon/human/M, mob/user)
 	return
 
-/obj/item/device/camera/attack_self(mob/user as mob)
+/obj/item/device/camera/attack_self(mob/user)
+	..()
 	on = !on
 	if(on)
 		src.icon_state = icon_on
 	else
 		src.icon_state = icon_off
 	to_chat(user, "You switch the camera [on ? "on" : "off"].")
-	return
 
-/obj/item/device/camera/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/device/camera/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/device/camera_film))
 		if(pictures_left)
 			to_chat(user, SPAN_NOTICE("[src] still has some film in it!"))
@@ -207,11 +208,13 @@
 				res.Blend(IM, blendMode2iconMode(A.blend_mode),  A.pixel_x + xoff, A.pixel_y + yoff)
 
 	// Lastly, render any contained effects on top.
-	for(var/turf/the_turf in turfs)
+	for(var/turf/the_turf as anything in turfs)
 		// Calculate where we are relative to the center of the photo
 		var/xoff = (the_turf.x - center.x) * 32 + center_offset
 		var/yoff = (the_turf.y - center.y) * 32 + center_offset
-		res.Blend(getFlatIcon(the_turf.loc), blendMode2iconMode(the_turf.blend_mode),xoff,yoff)
+		var/image/IM = getFlatIcon(the_turf.loc)
+		if(IM)
+			res.Blend(IM, blendMode2iconMode(the_turf.blend_mode),xoff,yoff)
 	return res
 
 
@@ -235,7 +238,8 @@
 	return mob_detail
 
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-	if(!on || !pictures_left || ismob(target.loc)) return
+	if(!on || !pictures_left || ismob(target.loc) || isstorage(target.loc)) return
+	if(user.contains(target) || istype(target, /obj/screen)) return
 	captureimage(target, user, flag)
 
 	playsound(loc, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 15, 1)
@@ -249,33 +253,11 @@
 		icon_state = icon_on
 		on = 1
 
-/obj/item/device/camera/proc/can_capture_turf(turf/T, mob/user)
-	var/mob/dummy = new(T)	//Go go visibility check dummy
-	var/viewer = user
-	if(user.client)		//To make shooting through security cameras possible
-		viewer = user.client.eye
-	var/can_see = (dummy in viewers(world_view_size, viewer)) != null
-
-	dummy.moveToNullspace()
-	dummy = null	//Alas, nameless creature	//garbage collect it instead
-	return can_see
-
 /obj/item/device/camera/proc/captureimage(atom/target, mob/user, flag)
-	var/x_c = target.x - (size-1)/2
-	var/y_c = target.y + (size-1)/2
-	var/z_c	= target.z
-	var/list/turfs = list()
 	var/mobs = ""
-	for(var/i = 1; i <= size; i++)
-		for(var/j = 1; j <= size; j++)
-			var/turf/T = locate(x_c, y_c, z_c)
-			if(can_capture_turf(T, user))
-				turfs.Add(T)
-				mobs += get_mobs(T)
-			x_c++
-		y_c--
-		x_c = x_c - size
-
+	var/list/turf/turfs = RANGE_TURFS(size-1, target) & view(world_view_size, user.client)
+	for(var/turf/T as anything in turfs)
+		mobs += get_mobs(T)
 	var/datum/picture/P = createpicture(target, user, turfs, mobs, flag)
 	printpicture(user, P)
 

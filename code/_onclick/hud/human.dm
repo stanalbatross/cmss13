@@ -10,10 +10,11 @@
 	gear = list(
 		"i_clothing" =   list("loc" = ui_datum.ui_iclothing, "slot" = WEAR_BODY, 		"state" = "center", "toggle" = 1, "dir" = SOUTH),
 		"o_clothing" =   list("loc" = ui_datum.ui_oclothing, "slot" = WEAR_JACKET, 		"state" = "equip",  "toggle" = 1),
-		"mask" =         list("loc" = ui_datum.ui_mask,      "slot" = WEAR_FACE, 		"state" = "mask",  "toggle" = 1),
+		"mask" =         list("loc" = ui_datum.ui_mask,      "slot" = WEAR_FACE, 		"state" = "mask",  	"toggle" = 1),
 		"gloves" =       list("loc" = ui_datum.ui_gloves,    "slot" = WEAR_HANDS,    	"state" = "gloves", "toggle" = 1),
 		"eyes" =         list("loc" = ui_datum.ui_glasses,   "slot" = WEAR_EYES,   		"state" = "glasses","toggle" = 1),
-		"wear_ear" =     list("loc" = ui_datum.ui_wear_ear,  "slot" = WEAR_EAR,     		"state" = "ears",   "toggle" = 1),
+		"wear_l_ear" =   list("loc" = ui_datum.ui_wear_l_ear,  "slot" = WEAR_L_EAR,     	"state" = "ears",   "toggle" = 1),
+		"wear_r_ear" =   list("loc" = ui_datum.ui_wear_r_ear,  "slot" = WEAR_R_EAR,     	"state" = "ears",   "toggle" = 1),
 		"head" =         list("loc" = ui_datum.ui_head,      "slot" = WEAR_HEAD,      	"state" = "hair",   "toggle" = 1),
 		"shoes" =        list("loc" = ui_datum.ui_shoes,     "slot" = WEAR_FEET,     	"state" = "shoes",  "toggle" = 1),
 		"suit storage" = list("loc" = ui_datum.ui_sstore1,   "slot" = WEAR_J_STORE,   	"state" = "suit_storage"),
@@ -58,6 +59,9 @@
 	if(WEAR_JACKET in equip_slots)
 		equip_slots |= WEAR_IN_JACKET
 
+	if(WEAR_HEAD in equip_slots)
+		equip_slots |= WEAR_IN_HELMET
+
 	if(WEAR_FEET in equip_slots)
 		equip_slots |= WEAR_IN_SHOES
 
@@ -84,9 +88,9 @@
 	draw_oxygen(ui_datum)
 	draw_healths(ui_datum)
 	draw_bodytemp(ui_datum)
-	
+
 	draw_status_effects(ui_datum)
-	
+
 	if(!iszombie(owner))
 		draw_nutrition(ui_datum)
 	draw_locator_spot(ui_datum)
@@ -107,13 +111,13 @@
 		hud_used.hotkey_ui_hidden = 1
 
 /datum/hud/human/hidden_inventory_update()
-	if(!mymob || !ui_datum) 
+	if(!mymob || !ui_datum)
 		return
 	var/mob/living/carbon/human/H = mymob
 	if(!gear.len)
 		inventory_shown = FALSE
 		return //species without inv slots don't show items.
-		
+
 	if(inventory_shown && hud_shown)
 		if(H.shoes)
 			H.shoes.screen_loc = ui_datum.ui_shoes
@@ -121,9 +125,12 @@
 		if(H.gloves)
 			H.gloves.screen_loc = ui_datum.ui_gloves
 			H.client.screen += H.gloves
-		if(H.wear_ear)
-			H.wear_ear.screen_loc = ui_datum.ui_wear_ear
-			H.client.screen += H.wear_ear
+		if(H.wear_l_ear)
+			H.wear_l_ear.screen_loc = ui_datum.ui_wear_l_ear
+			H.client.screen += H.wear_l_ear
+		if(H.wear_r_ear)
+			H.wear_r_ear.screen_loc = ui_datum.ui_wear_r_ear
+			H.client.screen += H.wear_r_ear
 		if(H.glasses)
 			H.glasses.screen_loc = ui_datum.ui_glasses
 			H.client.screen += H.glasses
@@ -144,8 +151,10 @@
 			H.shoes.screen_loc = null
 		if(H.gloves)
 			H.gloves.screen_loc = null
-		if(H.wear_ear)
-			H.wear_ear.screen_loc = null
+		if(H.wear_l_ear)
+			H.wear_l_ear.screen_loc = null
+		if(H.wear_r_ear)
+			H.wear_r_ear.screen_loc = null
 		if(H.glasses)
 			H.glasses.screen_loc = null
 		if(H.w_uniform)
@@ -158,31 +167,32 @@
 			H.head.screen_loc = null
 
 /datum/hud/human/persistant_inventory_update()
-	if(!mymob || !ui_datum) 
+	if(!mymob || !ui_datum)
 		return
 
 	var/mob/living/carbon/human/H = mymob
+
 	if(hud_shown)
 		if(!gear.len) //species without inv slots don't show items.
 			return
 
 		if(H.s_store)
-			H.s_store.screen_loc = ui_datum.ui_sstore1
+			H.s_store.screen_loc = ui_datum.hud_slot_offset(H.s_store, ui_datum.ui_sstore1)
 			H.client.screen += H.s_store
 		if(H.wear_id)
-			H.wear_id.screen_loc = ui_datum.ui_id
+			H.wear_id.screen_loc = ui_datum.hud_slot_offset(H.wear_id, ui_datum.ui_id)
 			H.client.screen += H.wear_id
 		if(H.belt)
-			H.belt.screen_loc = ui_datum.ui_belt
+			H.belt.screen_loc = ui_datum.hud_slot_offset(H.belt, ui_datum.ui_belt)
 			H.client.screen += H.belt
 		if(H.back)
-			H.back.screen_loc = ui_datum.ui_back
+			H.back.screen_loc = ui_datum.hud_slot_offset(H.back, ui_datum.ui_back)
 			H.client.screen += H.back
 		if(H.l_store)
-			H.l_store.screen_loc = ui_datum.ui_storage1
+			H.l_store.screen_loc = ui_datum.hud_slot_offset(H.l_store, ui_datum.ui_storage1)
 			H.client.screen += H.l_store
 		if(H.r_store)
-			H.r_store.screen_loc = ui_datum.ui_storage2
+			H.r_store.screen_loc = ui_datum.hud_slot_offset(H.r_store, ui_datum.ui_storage2)
 			H.client.screen += H.r_store
 	else
 		if(H.s_store)
@@ -200,10 +210,10 @@
 
 	if(hud_version != HUD_STYLE_NOHUD)
 		if(H.r_hand)
-			H.r_hand.screen_loc = ui_datum.ui_rhand
+			H.r_hand.screen_loc = ui_datum.hud_slot_offset(H.r_hand, ui_datum.ui_rhand)
 			H.client.screen += H.r_hand
 		if(H.l_hand)
-			H.l_hand.screen_loc = ui_datum.ui_lhand
+			H.l_hand.screen_loc = ui_datum.hud_slot_offset(H.l_hand, ui_datum.ui_lhand)
 			H.client.screen += H.l_hand
 	else
 		if(H.r_hand)
@@ -226,7 +236,7 @@
 		inv_box.icon_state =  slot_data["state"]
 
 		if(slot_data["dir"])
-			inv_box.dir = slot_data["dir"]
+			inv_box.setDir(slot_data["dir"])
 
 		if(slot_data["toggle"])
 			toggleable_inventory += inv_box
@@ -358,6 +368,16 @@
 	shrapnel_icon.icon = ui_datum.ui_style_icon
 	shrapnel_icon.icon_state = "status_0"
 	infodisplay += shrapnel_icon
+
+	tethering_icon = new /obj/screen()
+	tethering_icon.icon = ui_datum.ui_style_icon
+	tethering_icon.icon_state = "status_0"
+	infodisplay += tethering_icon
+
+	tethered_icon = new /obj/screen()
+	tethered_icon.icon = ui_datum.ui_style_icon
+	tethered_icon.icon_state = "status_0"
+	infodisplay += tethered_icon
 
 
 /mob/living/carbon/human/create_hud()

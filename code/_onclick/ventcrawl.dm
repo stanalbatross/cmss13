@@ -2,11 +2,13 @@
 	return FALSE
 
 /mob/living/proc/ventcrawl_carry()
-	for(var/atom/A in src.contents)
+	. = TRUE
+	if(HAS_TRAIT(src, TRAIT_CRAWLER))
+		return
+	for(var/atom/A as anything in src)
 		if(!(is_type_in_list(A, canEnterVentWith)))
 			to_chat(src, SPAN_WARNING("You can't be carrying items or have items equipped when vent crawling!"))
 			return FALSE
-	return TRUE
 
 /mob/living/click(var/atom/A, var/list/mods)
 	if(..())
@@ -28,7 +30,7 @@
 	if(pipes.len == 1)
 		pipe = pipes[1]
 	else
-		pipe = input("Crawl Through Vent", "Pick a pipe") as null|anything in pipes
+		pipe = tgui_input_list(usr, "Crawl Through Vent", "Pick a pipe", pipes)
 	if(!is_mob_incapacitated() && pipe)
 		return pipe
 
@@ -42,7 +44,7 @@
 	if(stat)
 		to_chat(src, SPAN_WARNING("You must be conscious to do this!"))
 		return
-	
+
 	if(lying)
 		to_chat(src, SPAN_WARNING("You can't vent crawl while you're stunned!"))
 		return
@@ -63,7 +65,7 @@
 	if(vent_found.welded)
 		to_chat(src, SPAN_WARNING("This vent is closed off, you cannot climb through it."))
 		return
-	
+
 	var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in vent_found.loc
 	if(W)
 		var/mob/living/carbon/Xenomorph/X = src
@@ -105,7 +107,7 @@
 		if(!next_pipe.pipe_vision_img)
 			next_pipe.pipe_vision_img = image(next_pipe, next_pipe.loc, layer = BELOW_MOB_LAYER, dir = next_pipe.dir)
 			next_pipe.pipe_vision_img.alpha = 180
-		
+
 		addToListNoDupe(pipes_shown, next_pipe.pipe_vision_img)
 		client.images |= next_pipe.pipe_vision_img
 
@@ -116,7 +118,7 @@
 		return
 
 	for(var/image/pipe_image in pipes_shown)
-		client.images -= pipe_image 
+		client.images -= pipe_image
 	reset_view()
 
 	pipes_shown = list()
@@ -127,4 +129,4 @@
 
 	var/image/pipe_image = P.pipe_vision_img
 	if(pipe_image in pipes_shown)
-		client.images -= pipe_image 
+		client.images -= pipe_image

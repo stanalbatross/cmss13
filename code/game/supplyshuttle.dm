@@ -69,11 +69,11 @@ var/datum/controller/supply/supply_controller = new()
 	if(collide_message_busy > world.time)
 		return
 
-	collide_message_busy = world.time + SECONDS_3
+	collide_message_busy = world.time + 3 SECONDS
 	C.visible_message(SPAN_NOTICE("[C] tries to go through \the [src]."), \
 	SPAN_NOTICE("You try to go through \the [src]."))
 
-	if(do_after(C, SECONDS_2, INTERRUPT_ALL, BUSY_ICON_GENERIC))
+	if(do_after(C, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		C.forceMove(get_turf(src))
 
 /obj/structure/plasticflaps/ex_act(severity)
@@ -94,7 +94,7 @@ var/datum/controller/supply/supply_controller = new()
 
 /obj/structure/machinery/computer/supplycomp
 	name = "ASRS console"
-	desc = "A console for an Automated Storage and Retrieval System"
+	desc = "A console for the Automated Storage Retrieval System"
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "supply"
 	density = TRUE
@@ -168,7 +168,7 @@ var/datum/controller/supply/supply_controller = new()
 	dat += "<BR><BR>----------------------<br>"
 	dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a><br>"
 
-	show_browser(user, dat, "Supply Drop Console Console", "overwatch", "size=550x550")
+	show_browser(user, dat, "Supply Drop Console", "overwatch", "size=550x550")
 	return
 
 /obj/structure/machinery/computer/supply_drop_console/Topic(href, href_list)
@@ -184,7 +184,7 @@ var/datum/controller/supply/supply_controller = new()
 					if(S.usable)
 						squad_list += S.name
 
-				var/name_sel = input("Which squad would you like to claim for Overwatch?") as null|anything in squad_list
+				var/name_sel = tgui_input_list(usr, "Which squad would you like to claim for Overwatch?", "Overwatch", squad_list)
 				if(!name_sel) return
 				var/datum/squad/selected = get_squad_by_name(name_sel)
 				if(selected)
@@ -297,6 +297,7 @@ var/datum/controller/supply/supply_controller = new()
 //Can't pick squads, drops less often
 //Uses Echo squad as a placeholder to access its own drop pad
 /obj/structure/machinery/computer/supply_drop_console/limited
+	circuit = /obj/item/circuitboard/computer/supply_drop_console/limited
 	drop_cooldown = 5 MINUTES //higher cooldown than usual
 	can_pick_squad = FALSE//Can't pick squads
 
@@ -346,7 +347,6 @@ var/datum/controller/supply/supply_controller = new()
 	var/list/random_supply_packs = list()
 	//shuttle movement
 	var/datum/shuttle/ferry/supply/shuttle
-	var/datum/shuttle/ferry/supply/vehicle/vehicle_elevator
 
 	//dropship part fabricator's points, so we can reference them globally (mostly for DEFCON)
 	var/dropship_points = 10000 //gains roughly 18 points per minute | Original points of 5k doubled due to removal of prespawned ammo.
@@ -476,69 +476,122 @@ var/datum/controller/supply/supply_controller = new()
 
 //Buyin
 /datum/controller/supply/proc/buy()
-	if(!shoppinglist.len) return
+	var/area/area_shuttle = shuttle?.get_location_area()
+	if(!area_shuttle || !shoppinglist.len)
+		return
 
-	var/area/area_shuttle = shuttle.get_location_area()
-	if(!area_shuttle)	return
-
-	var/list/clear_turfs = list()
-
+	// Try to find an available turf to place our package
+	var/list/turf/clear_turfs = list()
 	for(var/turf/T in area_shuttle)
-		if(T.density || T.contents.len)	continue
+		if(T.density || T.contents?.len)
+			continue
 		clear_turfs += T
 
-	for(var/S in shoppinglist)
-		if(!clear_turfs.len)	break
-		var/i = rand(1,clear_turfs.len)
-		var/turf/pickedloc = clear_turfs[i]
-		clear_turfs.Cut(i,i+1)
+	for(var/datum/supply_order/order in shoppinglist)
+		// No space! Forget buying, it's no use.
+		if(!clear_turfs.len)
+			shoppinglist.Cut()
+			return
 
-		var/datum/supply_order/SO = S
-		var/datum/supply_packs/SP = SO.object
+		// Container generation
+		var/turf/target_turf = pick(clear_turfs)
+		clear_turfs.Remove(target_turf)
+		var/atom/container = target_turf
+		var/datum/supply_packs/package = order.object
+		if(package.containertype)
+			container = new package.containertype(target_turf)
+			if(package.containername)
+				container.name = package.containername
 
-		var/atom/A = new SP.containertype(pickedloc)
-		if(istype(A, /obj/structure/closet))
-			A.name = "[SP.containername]"
+		// Lock it up if it's something that can be
+		if(isobj(container) && package.access)
+			var/obj/lockable = container
+			lockable.req_access = list(package.access)
 
-			//supply manifest generation begin
+		// Contents generation
+		var/list/content_names = list()
+		var/list/content_types = package.contains
+		if(package.randomised_num_contained)
+			content_types = list()
+			for(var/i in 1 to package.randomised_num_contained)
+				content_types += pick(package.contains)
+		for(var/typepath in content_types)
+			var/atom/item = new typepath(container)
+			content_names += item.name
 
-			var/obj/item/paper/manifest/slip = new /obj/item/paper/manifest(A)
-			slip.info = "<h3>Automatic Storage Retrieval Manifest</h3><hr><br>"
-			slip.info +="Order #[SO.ordernum]<br>"
-			slip.info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
-			slip.info +="CONTENTS:<br><ul>"
-
-			//spawn the stuff, finish generating the manifest while you're at it
-			if(SP.access)
-				A:req_access = list()
-				A:req_access += text2num(SP.access)
-
-			var/list/contains
-			if(SP.randomised_num_contained)
-				contains = list()
-				if(SP.contains.len)
-					for(var/j=1,j<=SP.randomised_num_contained,j++)
-						contains += pick(SP.contains)
-			else
-				contains = SP.contains
-
-			for(var/typepath in contains)
-				if(!typepath)	continue
-				var/atom/B2 = new typepath(A)
-				if(SP.amount && B2:amount) B2:amount = SP.amount
-				slip.info += "<li>[B2.name]</li>" //add the item to the manifest
-
-			//manifest finalisation
-			slip.info += "</ul><br>"
-			slip.info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
-			if (SP.contraband) slip.moveToNullspace()	//we are out of blanks for Form #44-D Ordering Illicit Drugs.
-
+		// Manifest generation
+		var/obj/item/paper/manifest/slip
+		if(!package.contraband) // I'm sorry boss i misplaced it...
+			slip = new /obj/item/paper/manifest(container)
+			slip.ordername = package.name
+			slip.ordernum = order.ordernum
+			slip.orderedby = order.orderedby
+			slip.approvedby = order.approvedby
+			slip.packages = content_names
+			slip.generate_contents()
+			slip.update_icon()
 	shoppinglist.Cut()
-	return
 
 /obj/item/paper/manifest
 	name = "Supply Manifest"
+	var/ordername
+	var/ordernum
+	var/orderedby
+	var/approvedby
+	var/list/packages
 
+
+/obj/item/paper/manifest/read_paper(mob/user)
+	// Tossing ref in widow id as this allows us to read multiple manifests at same time
+	show_browser(user, "<BODY class='paper'>[info][stamps]</BODY>", null, "manifest\ref[src]", "size=550x650")
+	onclose(user, "manifest\ref[src]")
+
+/obj/item/paper/manifest/proc/generate_contents()
+	// You don't tell anyone this is inspired from player-made fax layouts,
+	// or else, capiche ? Yes this is long, it's 80 col standard
+	info = "                                                                  \
+        <style>                                                               \
+            #container { width: 500px; min-height: 500px; margin: 25px auto;  \
+                    font-family: monospace; padding: 0; font-size: 130% }     \
+            #title { font-size: 250%; letter-spacing: 8px;                    \
+                    font-weight: bolder; margin: 20px auto }                  \
+            .header { font-size: 130%; text-align: center; }                  \
+            .important { font-variant: small-caps; font-size = 130%;          \
+                         font-weight: bolder; }                               \
+            .tablelabel { width: 150px; }                                     \
+            .field { font-style: italic; }                                    \
+            li { list-style-type: disc; list-style-position: inside; }        \
+            table { table-layout: fixed }                                     \
+        </style><div id='container'>                                          \
+        <div class='header'>                                                  \
+            <p id='title' class='important'>A.S.R.S.</p>                      \
+            <p class='important'>Automatic Storage Retrieval System</p>       \
+            <p class='field'>Order #[ordernum]</p>                            \
+        </div><hr><table>                                                     \
+        <colgroup>                                                            \
+            <col class='tablelabel important'>                                \
+            <col class='field'>                                               \
+        </colgroup>                                                           \
+        <tr><td>Shipment:</td>                                                \
+        <td>[ordername]</td></tr>                                             \
+        <tr><td>Ordered by:</td>                                              \
+        <td>[orderedby]</td></tr>                                             \
+        <tr><td>Approved by:</td>                                             \
+        <td>[approvedby]</td></tr>                                            \
+        <tr><td># packages:</td>                                              \
+        <td class='field'>[packages.len]</td></tr>                            \
+        </table><hr><p class='header important'>Contents</p>                  \
+        <ul class='field'>"
+
+	for(var/packagename in packages)
+		info += "<li>[packagename]</li>"
+
+	info += "                                                                 \
+        </ul><br/><hr><br/><p class='important header'>                       \
+            Please stamp below and return to confirm receipt of shipment      \
+        </p></div>"
+
+	name = "[name] - [ordername]"
 
 /obj/structure/machinery/computer/ordercomp/attack_remote(var/mob/user as mob)
 	return attack_hand(user)
@@ -602,6 +655,9 @@ var/datum/controller/supply/supply_controller = new()
 		//Find the correct supply_pack datum
 		var/datum/supply_packs/P = supply_controller.supply_packs[href_list["doorder"]]
 		if(!istype(P))	return
+
+		if(P.hidden || P.contraband || !P.buyable)
+			return
 
 		var/timeout = world.time + 600
 		var/reason = strip_html(input(usr,"Reason:","Why do you require this item?","") as null|text)
@@ -799,7 +855,11 @@ var/datum/controller/supply/supply_controller = new()
 
 		//Find the correct supply_pack datum
 		var/datum/supply_packs/P = supply_controller.supply_packs[href_list["doorder"]]
+
 		if(!istype(P))	return
+
+		if((P.hidden && !hacked) || (P.contraband && !can_order_contraband) || !P.buyable)
+			return
 
 		var/timeout = world.time + 600
 		//var/reason = copytext(sanitize(input(usr,"Reason:","Why do you require this item?","") as null|text),1,MAX_MESSAGE_LEN)
@@ -944,23 +1004,57 @@ var/datum/controller/supply/supply_controller = new()
 	req_access = list(ACCESS_MARINE_CREWMAN)
 	// Can only retrieve one vehicle per round
 	var/spent = FALSE
-	var/tank_unlocked = TRUE
+	var/tank_unlocked = FALSE
 	var/list/allowed_roles = list(JOB_CREWMAN)
+
+	var/list/vehicles
+
+/datum/vehicle_order
+	var/name = "vehicle order"
+
+	var/obj/vehicle/ordered_vehicle
+	var/unlocked = TRUE
+	var/failure_message = "<font color=\"red\"><b>Not enough resources were allocated to repair this vehicle during this operation.</b></font><br>"
+
+/datum/vehicle_order/proc/has_vehicle_lock()
+	return FALSE
+
+/datum/vehicle_order/proc/on_created(var/obj/vehicle/V)
+	return
+
+/datum/vehicle_order/tank
+	name = "M34A2 Longstreet Light Tank"
+	ordered_vehicle = /obj/vehicle/multitile/tank/decrepit
+
+/datum/vehicle_order/tank/has_vehicle_lock()
+	return
+
+/datum/vehicle_order/tank/on_created(var/obj/vehicle/multitile/tank/decrepit/tank)
+	tank.req_one_access = list()
+
+/datum/vehicle_order/apc
+	name = "M577 Armored Personnel Carrier"
+	ordered_vehicle = /obj/vehicle/multitile/apc/decrepit
+
+/datum/vehicle_order/apc/med
+	name = "M577-MED Armored Personnel Carrier"
+	ordered_vehicle = /obj/vehicle/multitile/apc/medical/decrepit
+
+/datum/vehicle_order/apc/cmd
+	name = "M577-CMD Armored Personnel Carrier"
+	ordered_vehicle = /obj/vehicle/multitile/apc/command/decrepit
 
 /obj/structure/machinery/computer/supplycomp/vehicle/Initialize()
 	. = ..()
+
+	vehicles = list(
+		new/datum/vehicle_order/apc(),
+		new/datum/vehicle_order/apc/med(),
+		new/datum/vehicle_order/apc/cmd()
+	)
+
 	if(!VehicleElevatorConsole)
 		VehicleElevatorConsole = src
-	else
-		check_vehicle_lock()
-
-/obj/structure/machinery/computer/supplycomp/vehicle/proc/check_vehicle_lock()
-	if(!SSticker.mode || istype(SSticker.mode, /datum/game_mode/extended))
-		return
-	var/datum/game_mode/GM = SSticker.mode
-
-	if(GM.marine_starting_num < TANK_POPLOCK)
-		tank_unlocked = FALSE
 
 /obj/structure/machinery/computer/supplycomp/vehicle/attack_hand(var/mob/living/carbon/human/H as mob)
 	if(inoperable())
@@ -977,41 +1071,33 @@ var/datum/controller/supply/supply_controller = new()
 	H.set_interaction(src)
 	post_signal("supply_vehicle")
 
-	var/datum/shuttle/ferry/supply/elevator = supply_controller.vehicle_elevator
 	var/dat = ""
 
-	if(!elevator)
+	if(!SSshuttle.vehicle_elevator)
 		return
 
-	if(elevator)
-		dat += "Platform position: "
-		if (elevator.has_arrive_time())
-			dat += "Moving"
+	dat += "Platform position: "
+	if (SSshuttle.vehicle_elevator.timeLeft())
+		dat += "Moving"
+	else
+		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
+			dat += "Raised"
 		else
-			if(elevator.at_station())
-				if(elevator.docking_controller)
-					switch(elevator.docking_controller.get_docking_status())
-						if ("docked") dat += "Raised"
-						if ("undocked") dat += "Lowered"
-						if ("docking") dat += "Raising"
-						if ("undocking") dat += "Lowering"
-				else
-					dat += "Raised"
-			else
-				dat += "Lowered"
-		dat += "<br><hr>"
+			dat += "Lowered"
+	dat += "<br><hr>"
 
 	if(spent)
 		dat += "No vehicles are available for retrieval."
 	else
 		dat += "Available vehicles:<br>"
-		if(tank_unlocked)
-			dat += "<a href='?src=\ref[src];get_vehicle=tank'>M34A2 Longstreet Light Tank</a><br>"
-		else
-			dat += "<font color=\"red\"><b>Not enough resources were allocated to repair M34A2 Longstreet Light Tank during this operation.</b></font><br>"
-		dat += {"<a href='?src=\ref[src];get_vehicle=apc'>M577 Armored Personnel Carrier</a><br>
-		<a href='?src=\ref[src];get_vehicle=med_apc'>M577-MED Armored Personnel Carrier</a><br>
-		<a href='?src=\ref[src];get_vehicle=cmd_apc'>M577-CMD Armored Personnel Carrier</a><br>"}
+
+		for(var/d in vehicles)
+			var/datum/vehicle_order/VO = d
+
+			if(VO.has_vehicle_lock())
+				dat += VO.failure_message
+			else
+				dat += "<a href='?src=\ref[src];get_vehicle=\ref[VO]'>[VO.name]</a><br>"
 
 	show_browser(H, dat, "Automated Storage and Retrieval System", "computer", "size=575x450")
 
@@ -1026,9 +1112,12 @@ var/datum/controller/supply/supply_controller = new()
 	if(!supply_controller)
 		world.log << "## ERROR: Eek. The supply_controller controller datum is missing somehow."
 		return
-	var/datum/shuttle/ferry/supply/vehicle/elevator = supply_controller.vehicle_elevator
-	if (!elevator)
+
+	if (!SSshuttle.vehicle_elevator)
 		world.log << "## ERROR: Eek. The supply/elevator datum is missing somehow."
+		return
+
+	if(!is_admin_level(SSshuttle.vehicle_elevator.z))
 		return
 
 	if(ismaintdrone(usr))
@@ -1038,45 +1127,22 @@ var/datum/controller/supply/supply_controller = new()
 		usr.set_interaction(src)
 
 	if(href_list["get_vehicle"])
-		var/area/area_elevator = elevator.get_location_area()
-		if(!area_elevator)
+		if(is_mainship_level(SSshuttle.vehicle_elevator.z))
 			return
-
-		var/min_x = world.maxx+1
-		var/max_x = 0
-		var/min_y = world.maxx+1
-		var/max_y = 0
-		for(var/turf/T in area_elevator)
-			if(T.x < min_x)
-				min_x = T.x
-			if(T.y < min_y)
-				min_y = T.y
-			if(T.x > max_x)
-				max_x = T.x
-			if(T.y > max_y)
-				max_y = T.y
-
-		var/z_coord = SSmapping.levels_by_trait(ZTRAIT_ADMIN)
-		if(length(z_coord))
-			z_coord = z_coord[1]
-		else
-			z_coord = 1 //fuck it
-
 		// dunno why the +1 is needed but the vehicles spawn off-center
-		var/turf/middle_turf = locate(min_x + Ceiling((max_x-min_x)/2) + 1, min_y + Ceiling((max_y-min_y)/2) + 1, z_coord)
+		var/turf/middle_turf = get_turf(SSshuttle.vehicle_elevator)
 
 		var/obj/vehicle/multitile/ordered_vehicle
-		switch(href_list["get_vehicle"])
-			if("tank")
-				ordered_vehicle = new /obj/vehicle/multitile/tank/decrepit(middle_turf)
-			if("apc")
-				ordered_vehicle = new /obj/vehicle/multitile/apc/decrepit(middle_turf)
-			if("med_apc")
-				ordered_vehicle = new /obj/vehicle/multitile/apc/medical/decrepit(middle_turf)
-			if("cmd_apc")
-				ordered_vehicle = new /obj/vehicle/multitile/apc/command/decrepit(middle_turf)
 
-		elevator.launch(src)
+		var/datum/vehicle_order/VO = locate(href_list["get_vehicle"])
+
+		if(!VO) return
+		if(VO.has_vehicle_lock()) return
+
+		ordered_vehicle = new VO.ordered_vehicle(middle_turf)
+		SSshuttle.vehicle_elevator.request(SSshuttle.getDock("almayer vehicle"))
+
+		VO.on_created(ordered_vehicle)
 
 		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_VEHICLE_ORDERED, ordered_vehicle)
 		spent = TRUE

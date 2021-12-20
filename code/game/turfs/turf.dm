@@ -30,6 +30,7 @@
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 	var/can_bloody = TRUE //Can blood spawn on this turf?
 	var/list/linked_pylons = list()
+	var/obj/effect/alien/weeds/weeds
 
 	var/list/datum/automata_cell/autocells = list()
 	/**
@@ -40,10 +41,13 @@
 	 * on the turf, it can simply be for handling how the
 	 * overlays or placing new cleanables of the same type work
 	 */
-	var/list/cleanables
+	var/list/obj/effect/decal/cleanable/cleanables
 
 	var/list/baseturfs = /turf/baseturf_bottom
 	var/changing_turf = FALSE
+	var/chemexploded = FALSE // Prevents explosion stacking
+
+	var/flags_turf = NO_FLAGS
 
 /turf/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE) // this doesn't parent call for optimisation reasons
@@ -128,7 +132,8 @@
 	if (!mover || !isturf(mover.loc))
 		return FALSE
 
-	var/override = SEND_SIGNAL(mover, COMSIG_TURF_ENTER, src)
+	var/override = SEND_SIGNAL(mover, COMSIG_MOVABLE_TURF_ENTER, src)
+	override |= SEND_SIGNAL(src, COMSIG_TURF_ENTER, mover)
 	if(override)
 		return override & COMPONENT_TURF_ALLOW_MOVEMENT
 
@@ -167,9 +172,7 @@
 	// if we are thrown, moved, dragged, or in any other way abused by code - check our diagonals
 	if(!mover.move_intentionally)
 		// Check objects in adjacent turf EAST/WEST
-		if(mover.diagonal_movement == DIAG_MOVE_DEFAULT && \
-			fd1 && fd1 != fdir
-		)
+		if(fd1 && fd1 != fdir)
 			T = get_step(mover, fd1)
 			if (T.BlockedExitDirs(mover, fd2) || T.BlockedPassDirs(mover, fd1))
 				blocking_dir |= fd1
@@ -189,9 +192,7 @@
 						return FALSE
 
 		// Check for borders in adjacent turf NORTH/SOUTH
-		if(mover.diagonal_movement == DIAG_MOVE_DEFAULT && \
-			fd2 && fd2 != fdir
-		)
+		if(fd2 && fd2 != fdir)
 			T = get_step(mover, fd2)
 			if (T.BlockedExitDirs(mover, fd1) || T.BlockedPassDirs(mover, fd2))
 				blocking_dir |= fd2
@@ -233,6 +234,8 @@
 	if(!istype(A))
 		return
 
+	SEND_SIGNAL(A, COMSIG_MOVABLE_TURF_ENTERED, src)
+
 	// Let explosions know that the atom entered
 	for(var/datum/automata_cell/explosion/E in autocells)
 		E.on_turf_entered(A)
@@ -255,6 +258,8 @@
 	return 0
 
 /turf/proc/inertial_drift(atom/movable/A as mob|obj)
+	if(A.anchored)
+		return
 	if(!(A.last_move_dir))	return
 	if((istype(A, /mob/) && src.x > 2 && src.x < (world.maxx - 1) && src.y > 2 && src.y < (world.maxy-1)))
 		var/mob/M = A
@@ -345,6 +350,10 @@
 	changing_turf = TRUE
 	qdel(src)	//Just get the side effects and call Destroy
 	var/turf/W = new path(src)
+
+	for(var/i in W.contents)
+		var/datum/A = i
+		SEND_SIGNAL(A, COMSIG_ATOM_TURF_CHANGE, src)
 
 	if(new_baseturfs)
 		W.baseturfs = new_baseturfs
@@ -465,29 +474,33 @@
 	if (linked_pylons.len > 0)
 		switch(get_pylon_protection_level())
 			if(TURF_PROTECTION_MORTAR)
-				to_chat(user, "The ceiling above is made of light resin.")
+				to_chat(user, "The ceiling above is made of light resin. Doesn't look like it's going to stop much.")
 				return
 			if(TURF_PROTECTION_CAS)
-				to_chat(user, "The ceiling above is made of resin.")
+				to_chat(user, "The ceiling above is made of resin. Seems about as strong as a cavern roof.")
 				return
 			if(TURF_PROTECTION_OB)
-				to_chat(user, "The ceiling above is made of thick resin. Nothing is getting through that")
+				to_chat(user, "The ceiling above is made of thick resin. Nothing is getting through that.")
 				return
 
 	var/area/A = get_area(src)
 	switch(A.ceiling)
 		if(CEILING_GLASS)
-			to_chat(user, "The ceiling above is glass.")
+			to_chat(user, "The ceiling above is glass. That's not going stop anything.")
 		if(CEILING_METAL)
-			to_chat(user, "The ceiling above is metal.")
-		if(CEILING_UNDERGROUND_ALLOW_CAS, CEILING_UNDERGROUND_BLOCK_CAS)
-			to_chat(user, "It is underground. The cavern roof lies above.")
-		if(CEILING_UNDERGROUND_METAL_ALLOW_CAS, CEILING_UNDERGROUND_METAL_BLOCK_CAS)
-			to_chat(user, "It is underground. The ceiling above is metal.")
+			to_chat(user, "The ceiling above is metal. You can't see through it with a camera from above, but that's not going to stop anything.")
+		if(CEILING_UNDERGROUND_ALLOW_CAS)
+			to_chat(user, "It is underground. A thin cavern roof lies above. Doesn't look like it's going to stop much.")
+		if(CEILING_UNDERGROUND_BLOCK_CAS)
+			to_chat(user, "It is underground. The cavern roof lies above. Can probably stop most ordnance.")
+		if(CEILING_UNDERGROUND_METAL_ALLOW_CAS)
+			to_chat(user, "It is underground. The ceiling above is made of thin metal. Doesn't look like it's going to stop much.")
+		if(CEILING_UNDERGROUND_METAL_BLOCK_CAS)
+			to_chat(user, "It is underground. The ceiling above is made of metal.  Can probably stop most ordnance.")
 		if(CEILING_DEEP_UNDERGROUND)
-			to_chat(user, "It is deep underground. The cavern roof lies above.")
+			to_chat(user, "It is deep underground. The cavern roof lies above. Nothing is getting through that.")
 		if(CEILING_DEEP_UNDERGROUND_METAL)
-			to_chat(user, "It is deep underground. The ceiling above is metal.")
+			to_chat(user, "It is deep underground. The ceiling above is made of thick metal. Nothing is getting through that.")
 		if(CEILING_REINFORCED_METAL)
 			to_chat(user, "The ceiling above is heavy reinforced metal. Nothing is getting through that.")
 		else
@@ -683,9 +696,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		change_type = new_baseturfs
 	return ChangeTurf(change_type, null, flags)
 
+/// Remove all atoms except observers, landmarks, docking ports - clearing up the turf contents
 /turf/proc/empty(turf_type=/turf/open/space, baseturf_type, list/ignore_typecache, flags)
-	// Remove all atoms except observers, landmarks, docking ports
-	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark)) // shuttle TODO:
+	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark, /obj/docking_port))
 	var/list/allowed_contents = typecache_filter_list_reverse(GetAllContentsIgnoring(ignore_typecache), ignored_atoms)
 	allowed_contents -= src
 	for(var/i in 1 to allowed_contents.len)
@@ -694,3 +707,46 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	if(turf_type)
 		ChangeTurf(turf_type, baseturf_type, flags)
+
+// Copy an existing turf and put it on top
+// Returns the new turf
+/turf/proc/CopyOnTop(turf/copytarget, ignore_bottom=1, depth=INFINITY, copy_air = FALSE)
+	var/list/new_baseturfs = list()
+	new_baseturfs += baseturfs
+	new_baseturfs += type
+
+	if(depth)
+		var/list/target_baseturfs
+		if(length(copytarget.baseturfs))
+			// with default inputs this would be Copy(clamp(2, -INFINITY, baseturfs.len))
+			// Don't forget a lower index is lower in the baseturfs stack, the bottom is baseturfs[1]
+			target_baseturfs = copytarget.baseturfs.Copy(clamp(1 + ignore_bottom, 1 + copytarget.baseturfs.len - depth, copytarget.baseturfs.len))
+		else if(!ignore_bottom)
+			target_baseturfs = list(copytarget.baseturfs)
+		if(target_baseturfs)
+			target_baseturfs -= new_baseturfs & GLOB.blacklisted_automated_baseturfs
+			new_baseturfs += target_baseturfs
+
+	var/turf/newT = copytarget.copyTurf(src, copy_air)
+	newT.baseturfs = new_baseturfs
+	return newT
+
+/turf/proc/copyTurf(turf/T)
+	if(T.type != type)
+		var/obj/O
+		if(underlays.len)	//we have underlays, which implies some sort of transparency, so we want to a snapshot of the previous turf as an underlay
+			O = new()
+			O.underlays.Add(T)
+		T.ChangeTurf(type)
+		if(underlays.len)
+			T.underlays = O.underlays
+	if(T.icon_state != icon_state)
+		T.icon_state = icon_state
+	if(T.icon != icon)
+		T.icon = icon
+	//if(color)
+	//	T.atom_colours = atom_colours.Copy()
+	//	T.update_atom_colour()
+	if(T.dir != dir)
+		T.setDir(dir)
+	return T

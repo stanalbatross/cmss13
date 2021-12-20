@@ -25,7 +25,7 @@
 	H.apply_wy_rank_code(load_rank(), assignment, role_comm_title)
 
 /datum/equipment_preset/wy/load_gear(mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/PMC(H), WEAR_EAR)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/PMC(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/centcom(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel(H), WEAR_BACK)
@@ -84,26 +84,6 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp78(H), WEAR_WAIST)
 	..()
 
-/datum/equipment_preset/wy/manager/survivor
-	name = "Survivor - Corporate Supervisor"
-	flags = EQUIPMENT_PRESET_EXTRA
-	paygrade = "WY-5G"
-	skills = /datum/skills/civilian/manager_survivor
-	assignment = "Colony Supervisor"
-	role_comm_title = "Supervisor"
-
-/datum/equipment_preset/wy/manager/survivor/load_gear(mob/living/carbon/human/H)
-	. = ..()
-	if(SSmapping.configs[GROUND_MAP].environment_traits[MAP_COLD])
-		add_ice_colony_survivor_equipment(H)
-	else
-		H.equip_to_slot_or_del(new /obj/item/attachable/bayonet(H.back), WEAR_IN_BACK)
-
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/full(H), WEAR_R_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_L_STORE)
-
-	add_survivor_weapon(H)
-
 /datum/equipment_preset/wy/manager/assistant_manager
 	name = "Corporate - G - Assistant Manager"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -123,6 +103,7 @@
 	name = "Corporate - J - Director"
 	flags = EQUIPMENT_PRESET_EXTRA
 	paygrade = "WY-XJ"
+	skills = /datum/skills/civilian/manager/director
 
 /datum/equipment_preset/wy/manager/director/load_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket/director(H), WEAR_BODY)

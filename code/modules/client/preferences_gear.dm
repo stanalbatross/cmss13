@@ -87,13 +87,25 @@ var/global/list/gear_datums = list()
 
 /datum/gear/booniehat
 	display_name = "USCM Boonie Hat (Olive)"
-	path = /obj/item/clothing/head/booniehat
+	path = /obj/item/clothing/head/cmcap/boonie
 	cost = 3
 	slot = WEAR_HEAD
 
 /datum/gear/booniehattan
 	display_name = "USCM Boonie Hat (Tan)"
-	path = /obj/item/clothing/head/booniehat/tan
+	path = /obj/item/clothing/head/cmcap/boonie/tan
+	cost = 3
+	slot = WEAR_HEAD
+
+/datum/gear/durag
+	display_name = "Durag (Mission Specific)"
+	path = /obj/item/clothing/head/durag
+	cost = 3
+	slot = WEAR_HEAD
+
+/datum/gear/duragblack
+	display_name = "Durag (Black)"
+	path = /obj/item/clothing/head/durag/black
 	cost = 3
 	slot = WEAR_HEAD
 
@@ -116,10 +128,16 @@ var/global/list/gear_datums = list()
 	slot = WEAR_EYES
 
 /datum/gear/cigar
-	display_name = "Cigar"
+	display_name = "Premium Cigar"
 	path = /obj/item/clothing/mask/cigarette/cigar
 	slot = WEAR_FACE
 	cost = 2
+
+/datum/gear/classic_cigar
+	display_name = "Classic Cigar"
+	path = /obj/item/clothing/mask/cigarette/cigar/classic
+	slot = WEAR_FACE
+	cost = 3
 
 /datum/gear/cigarette
 	display_name = "Cigarette"
@@ -263,31 +281,25 @@ var/global/list/gear_datums = list()
 
 /datum/gear/type_80_Bayonet
 	display_name = "Type 80 Bayonet"
-	path = /obj/item/attachable/bayonet/upp
+	path = /obj/item/attachable/bayonet/upp_replica
 	slot = WEAR_IN_BACK
 	cost = 4
 
-/datum/gear/pamphlet_russian
-	display_name = "Russian Language Pamphlet"
-	path = /obj/item/pamphlet/language/russian
+/datum/gear/m8_cartridge_bayonet
+	display_name = "M8 Cartridge Bayonet"
+	path = /obj/item/storage/box/c02_knife
 	slot = WEAR_IN_BACK
-	cost = 3
+	cost = 4
 
-/datum/gear/pamphlet_japanese
-	display_name = "Japanese Language Pamphlet"
-	path = /obj/item/pamphlet/language/japanese
+/datum/gear/m43pistol
+	display_name = "M43 Holdout Pistol"
+	path = /obj/item/storage/box/m43
 	slot = WEAR_IN_BACK
-	cost = 3
+	cost = 4
 
-/datum/gear/pamphlet_german
-	display_name = "German Language Pamphlet"
-	path = /obj/item/pamphlet/language/german
-	slot = WEAR_IN_BACK
-	cost = 3
-
-/datum/gear/pamphlet_spanish
-	display_name = "Spanish Language Pamphlet"
-	path = /obj/item/pamphlet/language/spanish
+/datum/gear/jungle_boots
+	display_name = "Jungle Pattern Combat Boots"
+	path = /obj/item/clothing/shoes/marine/jungle
 	slot = WEAR_IN_BACK
 	cost = 3
 
@@ -424,8 +436,38 @@ var/global/list/gear_datums = list()
 	slot = WEAR_IN_BACK
 
 /datum/gear/lucky_feather
-	display_name = "Lucky Feather"
+	display_name = "Lucky Feather - Red"
 	path = /obj/item/prop/helmetgarb/lucky_feather
+	cost = 1
+	slot = WEAR_IN_BACK
+
+/datum/gear/lucky_feather/blue
+	display_name = "Lucky Feather - Blue"
+	path = /obj/item/prop/helmetgarb/lucky_feather/blue
+
+/datum/gear/lucky_feather/purple
+	display_name = "Lucky Feather - Purple"
+	path = /obj/item/prop/helmetgarb/lucky_feather/purple
+
+/datum/gear/lucky_feather/yellow
+	display_name = "Lucky Feather - Yellow"
+	path = /obj/item/prop/helmetgarb/lucky_feather/yellow
+
+/datum/gear/helmet_gasmask
+	display_name = "M5 integrated gasmask"
+	path = /obj/item/prop/helmetgarb/helmet_gasmask
+	cost = 2
+	slot = WEAR_IN_BACK
+
+/datum/gear/trimmed_wire
+	display_name = "Trimmed Barbed Wire"
+	path = /obj/item/prop/helmetgarb/trimmed_wire
+	cost = 2
+	slot = WEAR_IN_BACK
+
+/datum/gear/bullet_pipe
+	display_name = "10x99mm XM42B casing pipe"
+	path = /obj/item/prop/helmetgarb/bullet_pipe
 	cost = 1
 	slot = WEAR_IN_BACK
 
@@ -450,6 +492,12 @@ var/global/list/gear_datums = list()
 /datum/gear/flair_uscm
 	display_name = "USCM Flair"
 	path = /obj/item/prop/helmetgarb/flair_uscm
+	cost = 1
+	slot = WEAR_IN_BACK
+
+/datum/gear/broken_nvgs
+	display_name = "Broken Night Vision Goggles"
+	path = /obj/item/prop/helmetgarb/helmet_nvg
 	cost = 1
 	slot = WEAR_IN_BACK
 

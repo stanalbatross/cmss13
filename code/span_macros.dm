@@ -13,6 +13,7 @@
 #define SPAN_XENOQUEEN(X) "<span class='xenoqueen'>[X]</span>"
 #define SPAN_XENOANNOUNCE(X) "<span class='xenoannounce'>[X]</span>"
 #define SPAN_XENONOTICE(X) "<span class='xenonotice'>[X]</span>"
+#define SPAN_XENOBOLDNOTICE(X) "<span class='xenoboldnotice'>[X]</span>"
 #define SPAN_XENODANGER(X) "<span class='xenodanger'>[X]</span>"
 #define SPAN_XENOHIGHDANGER(X) "<span class='xenohighdanger'>[X]</span>"
 #define SPAN_XENOWARNING(X) "<span class='xenowarning'>[X]</span>"
@@ -25,7 +26,8 @@
 // Announcements
 #define SPAN_ANNOUNCEMENT_HEADER(X) "<span class='announce_header'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_HEADER_BLUE(X) "<span class='announce_header_blue'>[X]</span>"
-#define SPAN_ANNOUNCEMENT_BODY(X) "<span class='announce_body'>[X]</span>"
+#define SPAN_ANNOUNCEMENT_HEADER_ADMIN(X) "<span class='announce_header_admin'>[X]</span>"
+#define SPAN_ANNOUNCEMENT_BODY(X) "<span class='announce_body linkify'>[X]</span>"
 
 // Round and roles
 #define SPAN_ROUNDHEADER(X) "<span class='round_header'>[X]</span>"
@@ -66,7 +68,6 @@
 
 #define SPAN_HELPFUL(X) "<span class='helpful'>[X]</span>"
 
-#define SPAN_EMOTE(X) "<span class='emote'>[X]</span>"
 #define SPAN_LOCALSAY(X) "<span class='say'>[X]</span>"
 #define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
 
@@ -79,3 +80,4 @@
 #define SPAN_GREEN(X) "<span class='green'>[X]</span>"
 #define SPAN_RED(X) "<span class='red'>[X]</span>"
 #define SPAN_ORANGE(X) "<span class='orange'>[X]</span>"
+#define SPAN_PURPLE(X) "<span class='purple'>[X]</span>"

@@ -273,8 +273,7 @@ a.popt {
 
 
 .italic,
-.italics,
-.emote {
+.italics {
   font-style: italic;
 }
 
@@ -406,10 +405,6 @@ em {
 
 h1.alert, h2.alert {
   color: #000000;
-}
-
-.emote {
-  font-style: italic;
 }
 
 .userdanger {
@@ -921,6 +916,7 @@ h1.alert, h2.alert {
 .bravoradio				{color: #C68610;}
 .charlieradio			{color: #AA55AA;}
 .deltaradio				{color: #007FCF;}
+.echoradio				{color: #3a7e65;}
 
 .medium					{					font-size: 110%}
 .big					{					font-size: 115%}
@@ -950,6 +946,7 @@ h1.alert, h2.alert {
 .debuginfo				{color: #493D26;	font-style: italic;}
 
 .xenonotice				{color: #2a623d;}
+.xenoboldnotice		{color: #2a623d;	font-style: italic;}
 
 .xenowarning			{color: #2a623d;	font-style: italic;}
 .xenominorwarning		{color: #2a623d;	font-weight: bold; font-style: italic;}
@@ -974,16 +971,16 @@ h1.alert, h2.alert {
 .xenoqueen				{color: #730d73; 	font-style: italic; font-weight: bold; font-size: 125%;}
 .newscaster				{color: #800000;}
 
-.role_header			{color: #db0000;	display: block; text-align: center; font-weight: bold; font-family: trebuchet-ms; font-size: 170%;}
-.role_body				{color: #000099;	display: block; text-align: center; font-size: 120%;}
+.role_header			{color: #db0000;	display: block; text-align: center; font-weight: bold; font-family: trebuchet-ms; font-size: 150%;}
+.role_body				{color: #000099;	display: block; text-align: center; font-size: 125%;}
 
-.round_header			{color: #db0000; 	display: block; text-align: center; font-family: courier; font-weight: bold; font-size: 250%;}
-.round_body				{color: #001427; 	display: block; text-align: center; font-family: trebuchet-ms; font-weight: bold; font-size: 180%;}
-.event_announcement		{color: #600d48; 	font-family: arial-narrow; font-weight: bold; font-size: 140%;}
+.round_header			{color: #db0000; 	display: block; text-align: center; font-family: courier; font-weight: bold; font-size: 180%;}
+.round_body				{color: #001427; 	display: block; text-align: center; font-family: trebuchet-ms; font-weight: bold; font-size: 125%;}
+.event_announcement		{color: #600d48; 	font-family: arial-narrow; font-weight: bold; font-size: 125%;}
 
-.announce_header		{color: #000000;	font-weight: bold; font-size: 180%;}
-.announce_header_blue	{color: #000099;	font-weight: bold; font-size: 180%;}
-.announce_body			{color: #ff0000;	font-weight: normal; font-size: 140%;}
+.announce_header		{color: #000000;	font-weight: bold; font-size: 150%;}
+.announce_header_blue	{color: #000099;	font-weight: bold; font-size: 150%;}
+.announce_body			{color: #ff0000;	font-weight: normal; font-size: 125%;}
 
 .centerbold				{						display: block; text-align: center; font-weight: bold;}
 
@@ -1002,6 +999,7 @@ h1.alert, h2.alert {
 .german					{color: #858F1E;	 font-family: 'Times New Roman', Times, serif;}
 .spanish				{color: #CF982B;}
 .japanese				{color: #be0029}
+.zombie					{color: #216163; font-style: italic;}
 .commando				{color: #FE9B24; font-style: bold;}
 .rough					{font-family: trebuchet-ms, cursive, sans-serif;}
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
@@ -1009,3 +1007,36 @@ h1.alert, h2.alert {
 .admin .message         {color: #314cad;}
 .admin .prefix          {font-weight: bolder;}
 .pm                     {font-size: 110%;}
+
+.retro_translator {
+  font-weight: bold;
+}
+
+.yautja_translator {
+  color: #aa0000;
+  font-weight: bold;
+
+  /*Animation*/
+  animation: glitch 0.5s infinite;
+}
+
+/*Keyframes*/
+
+@keyframes glitch {
+  25% {
+    color: #aa0000;
+    transform: translate(-2px, -1px);
+  }
+  50% {
+    color: #be0000;
+    transform: translate(1px, -2px);
+  }
+  75% {
+    color: #8d0000;
+    transform: translate(-1px, 2px);
+  }
+  100% {
+    color: #830000;
+    transform: translate(1px, 1px);
+  }
+}

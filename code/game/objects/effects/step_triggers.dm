@@ -5,6 +5,8 @@
 	var/stopper = 1 // stops throwers
 	invisibility = 101 // nope cant see this shit
 	anchored = 1
+	icon = 'icons/landmarks.dmi'
+	icon_state = "trigger"
 
 /obj/effect/step_trigger/proc/Trigger(var/atom/movable/A)
 	return 0
@@ -76,7 +78,7 @@
 			var/predir = AM.dir
 			step(AM, direction)
 			if(!facedir)
-				AM.dir = predir
+				AM.setDir(predir)
 
 
 
@@ -92,6 +94,9 @@
 /obj/effect/step_trigger/stopper
 
 /* Deletes any clones related to the atom */
+
+/obj/effect/step_trigger/clone_cleaner
+	icon_state = "cleaner"
 
 /obj/effect/step_trigger/clone_cleaner/Trigger(var/atom/movable/A)
 	if(A.clone)
@@ -186,7 +191,7 @@
 /obj/effect/step_trigger/teleporter/yautja_ship/Trigger(atom/movable/A)
 	var/turf/destination
 	if(length(GLOB.yautja_teleports))	//We have some possible locations.
-		var/pick = input("Where do you want to go today?", "Locations") as null|anything in GLOB.yautja_teleport_descs	//Pick one of them in the list.
+		var/pick = tgui_input_list(usr, "Where do you want to go today?", "Locations", GLOB.yautja_teleport_descs)	//Pick one of them in the list.)
 		destination = GLOB.yautja_teleport_descs[pick]
 	if(!destination || (A.loc != loc))
 		return

@@ -1,4 +1,5 @@
 /datum/species/monkey
+	group = SPECIES_MONKEY
 	name = "Monkey"
 	name_plural = "Monkeys"
 	icobase = 'icons/mob/humans/species/monkeys/r_monkey.dmi'
@@ -31,7 +32,7 @@
 	..()
 
 /datum/species/monkey/handle_post_spawn(var/mob/living/carbon/human/H)
-	H.set_languages(list("Primitive"))
+	H.set_languages(list(LANGUAGE_MONKEY))
 	if(H.real_name == "unknown")
 		var/random_name = "[lowertext(name)] ([rand(1, 999)])"
 		H.change_real_name(H, random_name)
@@ -50,7 +51,7 @@
 	if(held && prob(1))
 		var/turf/T = get_random_turf_in_range(H, 7, 2)
 		if(T)
-			if(istype(held, /obj/item/weapon/gun) && prob(80))
+			if(isgun(held) && prob(80))
 				var/obj/item/weapon/gun/G = held
 				G.Fire(T, H)
 			else if(prob(80) && H.equip_to_appropriate_slot(held, 0))

@@ -74,17 +74,22 @@
 		return
 
 	var/roles[] = new
-	var/i
 	var/datum/job/J
-	var/datum/job/K
-	for (i in RoleAuthority.roles_for_mode) //All the roles in the game.
-		K = RoleAuthority.roles_for_mode[i]
-		if(K.allow_additional)
-			roles += i
+
+	var/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
+	if(!active_role_names)
+		active_role_names = ROLES_REGULAR_ALL
+
+	for(var/role_name as anything in active_role_names)
+		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+		if(!job)
+			continue
+		roles += role_name
+
 	var/role = input("Please select role slot to modify", "Modify amount of slots")  as null|anything in roles
 	if(!role)
 		return
-	J = RoleAuthority.roles_for_mode[role]
+	J = RoleAuthority.roles_by_name[role]
 	var/tpos = J.spawn_positions
 	var/num = input("How many slots role [J.title] should have?\nCurrently taken slots: [J.current_positions]\nTotal amount of slots opened this round: [J.total_positions_so_far]","Number:", tpos) as num|null
 	if(!num)
@@ -148,18 +153,11 @@
 			[SPAN_CENTERBOLD("Staff-Only Alert: <EM>[usr.key]</EM> [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"]")]
 			<hr>"})
 		return
-
-	going = !(going)
-	if (!going)
-		to_world("<hr>")
-		to_world("<span class='centerbold'>The game start has been delayed.</span>")
-		to_world("<hr>")
-		log_admin("[key_name(usr)] delayed the game.")
 	else
-		to_world("<hr>")
-		to_world("<span class='centerbold'>The game will start soon!</span>")
-		to_world("<hr>")
-		log_admin("[key_name(usr)] removed the delay.")
+		SSticker.delay_start = !SSticker.delay_start
+		message_staff("[SPAN_NOTICE("[key_name(usr)] [SSticker.delay_start ? "delayed the round start" : "has made the round start normally"].")]")
+		to_chat(world, SPAN_CENTERBOLD("The game start has been [SSticker.delay_start ? "delayed" : "continued"]."))
+		return
 
 /datum/admins/proc/startnow()
 	set name = "Start Round"
@@ -172,7 +170,7 @@
 	if (alert("Are you sure you want to start the round early?",,"Yes","No") != "Yes")
 		return
 	if (SSticker.current_state == GAME_STATE_PREGAME)
-		SSticker.current_state = GAME_STATE_SETTING_UP
+		SSticker.request_start()
 		message_staff(SPAN_BLUE("[usr.key] has started the game."))
 
 		return TRUE

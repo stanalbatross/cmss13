@@ -19,9 +19,8 @@
 	var/locked = 0.0
 //	req_access = list(access_maint_tunnels)
 
-/obj/structure/machinery/deployable/barrier/New()
-	..()
-
+/obj/structure/machinery/deployable/barrier/Initialize(mapload, ...)
+	. = ..()
 	src.icon_state = "barrier[src.locked]"
 
 /obj/structure/machinery/deployable/barrier/initialize_pass_flags(var/datum/pass_flags_container/PF)
@@ -42,7 +41,7 @@
 				to_chat(user, "Barrier lock toggled off.")
 				return
 		return
-	else if (istype(W, /obj/item/tool/wrench))
+	else if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		if (src.health < src.maxhealth)
 			src.health = src.maxhealth
 			src.req_access = list(ACCESS_MARINE_PREP)

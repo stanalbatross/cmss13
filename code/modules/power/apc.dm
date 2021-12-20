@@ -128,7 +128,7 @@
 	//This allows the APC to be embedded in a wall, yet still inside an area
 
 	if(building)
-		dir = ndir
+		setDir(ndir)
 
 	set_pixel_location()
 
@@ -136,7 +136,6 @@
 		init()
 	else
 		area = loc.loc:master
-		area.apc |= src
 		opened = APC_COVER_OPEN
 		operating = 0
 		name = "\improper [area.name] APC"
@@ -151,7 +150,7 @@
 
 /obj/structure/machinery/power/apc/set_pixel_location()
 	tdir = dir //To fix Vars bug
-	dir = SOUTH
+	setDir(SOUTH)
 
 	pixel_x = (tdir & 3) ? 0 : (tdir == 4 ? 24 : -24)
 	pixel_y = (tdir & 3) ? (tdir == 1 ? 24 : -24) : 0
@@ -171,7 +170,7 @@
 	//Create a terminal object at the same position as original turf loc
 	//Wires will attach to this
 	terminal = new/obj/structure/machinery/power/terminal(src.loc)
-	terminal.dir = tdir
+	terminal.setDir(tdir)
 	terminal.master = src
 
 /obj/structure/machinery/power/apc/proc/init()
@@ -191,7 +190,6 @@
 		area = get_area_name(areastring)
 		name = "\improper [area.name] APC"
 
-	area.apc |= src
 	update_icon()
 	make_terminal()
 
@@ -383,7 +381,7 @@
 	if(isRemoteControlling(user) && get_dist(src, user) > 1)
 		return attack_hand(user)
 	add_fingerprint(user)
-	if(iscrowbar(W) && opened)
+	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR) && opened)
 		if(has_electronics == 1)
 			if(user.action_busy) return
 			if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
@@ -410,7 +408,7 @@
 		else if(opened != APC_COVER_REMOVED) //Cover isn't removed
 			opened = APC_COVER_CLOSED
 			update_icon()
-	else if(iscrowbar(W) && !((stat & BROKEN)))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR) && !(stat & BROKEN))
 		if(coverlocked && !(stat & MAINT))
 			to_chat(user, SPAN_WARNING("The cover is locked and cannot be opened."))
 			return
@@ -434,7 +432,7 @@
 					SPAN_NOTICE("You insert [W] into [src]!"))
 				chargecount = 0
 				update_icon()
-	else if(isscrewdriver(W)) //Haxing
+	else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER)) //Haxing
 		if(opened)
 			if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 				to_chat(user, SPAN_WARNING("[src]'s wiring confuses you."))
@@ -510,7 +508,7 @@
 				SPAN_NOTICE("You wire [src]'s frame."))
 				make_terminal()
 				terminal.connect_to_network()
-	else if(iswirecutter(W) && terminal && opened && has_electronics != 2)
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && terminal && opened && has_electronics != 2)
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(user, SPAN_WARNING("You have no idea what to do with [W]."))
 			return
@@ -602,7 +600,7 @@
 		else
 			if(isRemoteControlling(user))
 				return attack_hand(user)
-			if(!opened && wiresexposed && (ismultitool(W) || iswirecutter(W)))
+			if(!opened && wiresexposed && (HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL) || HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS)))
 				return attack_hand(user)
 			user.visible_message(SPAN_DANGER("[user] hits [src] with [W]!"), \
 			SPAN_DANGER("You hit [src] with [W]!"))
@@ -652,24 +650,26 @@
 				to_chat(user, SPAN_WARNING("There is no charge to draw from that APC."))
 			return
 		else if(H.species.can_shred(H))
+			var/allcut = TRUE
+			for(var/wire = 1; wire < length(get_wire_descriptions()); wire++)
+				if(!isWireCut(wire))
+					allcut = FALSE
+					break
+			if(allcut)
+				to_chat(user, SPAN_NOTICE("[src] is already broken!"))
+				return
 			user.visible_message(SPAN_WARNING("[user.name] slashes [src]!"),
 			SPAN_WARNING("You slash [src]!"))
 			playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1)
-			var/allcut = 1
-			for(var/wire = 1; wire < length(get_wire_descriptions()); wire++)
-				if(!isWireCut(wire))
-					allcut = 0
-					break
-			if(beenhit >= pick(3, 4) && wiresexposed != 1)
-				wiresexposed = 1
-				update_icon()
-				visible_message(SPAN_WARNING("[src]'s cover flies open, exposing the wires!"))
-
-			else if(wiresexposed == 1 && allcut == 0)
+			if(wiresexposed)
 				for(var/wire = 1; wire < length(get_wire_descriptions()); wire++)
 					cut(wire, user)
 				update_icon()
 				visible_message(SPAN_WARNING("[src]'s wires are shredded!"))
+			else if(beenhit >= pick(3, 4))
+				wiresexposed = TRUE
+				update_icon()
+				visible_message(SPAN_WARNING("[src]'s cover flies open, exposing the wires!"))
 			else
 				beenhit += 1
 			return
@@ -824,7 +824,7 @@
 		if(APC_WIRE_IDSCAN) //Unlocks the APC for 30 seconds, if you have a better way to hack an APC I'm all ears
 			locked = 0
 			visible_message(SPAN_NOTICE("\The [src] emits a click."))
-			spawn(SECONDS_30)
+			spawn(30 SECONDS)
 				locked = 1
 				visible_message(SPAN_NOTICE("\The [src] emits a slight thunk."))
 
@@ -894,7 +894,8 @@
 	if(href_list["apcwire"])
 		var/wire = text2num(href_list["apcwire"])
 
-		if(!iswirecutter(usr.get_active_hand()))
+		var/obj/item/held_item = usr.get_held_item()
+		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 			to_chat(usr, SPAN_WARNING("You need wirecutters!"))
 			return 0
 
@@ -906,7 +907,8 @@
 	else if(href_list["pulse"])
 		var/wire = text2num(href_list["pulse"])
 
-		if(!ismultitool(usr.get_active_hand()))
+		var/obj/item/held_item = usr.get_held_item()
+		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 			to_chat(usr, SPAN_WARNING("You need a multitool!"))
 			return 0
 
@@ -1187,7 +1189,7 @@
 	lighting = 0
 	equipment = 0
 	environ = 0
-	spawn(MINUTES_1)
+	spawn(1 MINUTES)
 		equipment = 3
 		environ = 3
 	..()

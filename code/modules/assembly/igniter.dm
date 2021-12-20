@@ -3,16 +3,15 @@
 	desc = "A small electronic device able to ignite combustable substances."
 	icon_state = "igniter"
 	matter = list("metal" = 500, "glass" = 50, "waste" = 10)
-
+	wires = WIRE_ASSEMBLY_RECEIVE
+	secured = FALSE
 	heat_source = 1000 //Can ignite Thermite.
-	secured = 1
-	wires = WIRE_RECEIVE
 
 /obj/item/device/assembly/igniter/activate()
 	if(!..())
 		return FALSE//Cooldown check
 
-	if(holder) 
+	if(holder)
 		if(istype(holder.loc,/obj/item/explosive))
 			var/obj/item/explosive/explosive = holder.loc
 			explosive.prime()
@@ -23,7 +22,7 @@
 			if(tank && !tank.exploding)
 				playsound(get_turf(tank), 'sound/machines/twobeep.ogg', 75, 1)
 				tank.exploding = TRUE
-				addtimer(CALLBACK(tank, /obj/structure/reagent_dispensers/fueltank/.proc/explode), SECONDS_3)
+				addtimer(CALLBACK(tank, /obj/structure/reagent_dispensers/fueltank/.proc/explode), 3 SECONDS)
 
 				tank.update_icon()
 
@@ -34,6 +33,6 @@
 	return TRUE
 
 /obj/item/device/assembly/igniter/attack_self(mob/user as mob)
+	..()
 	activate()
 	add_fingerprint(user)
-	return

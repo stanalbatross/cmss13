@@ -16,6 +16,8 @@
 	var/map_name = "LV624"
 	var/map_path = "map_files/LV624"
 	var/map_file = "LV624.dmm"
+	/// Hash of nightmare parser types to config file paths
+	var/list/nightmare
 
 	var/traits = null
 	var/space_empty_levels = 1
@@ -33,13 +35,13 @@
 	var/weather_holder
 
 	var/list/survivor_types = list(
-		"Survivor - Scientist",
-		"Survivor - Doctor",
-		"Survivor - Chef",
-		"Survivor - Chaplain",
-		"Survivor - Miner",
-		"Survivor - Colonial Marshall",
-		"Survivor - Engineer"
+		/datum/equipment_preset/survivor/scientist,
+		/datum/equipment_preset/survivor/doctor,
+		/datum/equipment_preset/survivor/chef,
+		/datum/equipment_preset/survivor/chaplain,
+		/datum/equipment_preset/survivor/miner,
+		/datum/equipment_preset/survivor/colonial_marshal,
+		/datum/equipment_preset/survivor/engineer
 	)
 
 	var/list/defcon_triggers = list(5150, 4225, 2800, 1000, 0.0)
@@ -50,7 +52,13 @@
 
 	var/force_mode
 
+	var/perf_mode
+
+	var/disable_ship_map = FALSE
+
 	var/list/monkey_types = list(/mob/living/carbon/human/monkey)
+
+	var/list/xvx_hives = list(XENO_HIVE_ALPHA = 0, XENO_HIVE_BRAVO = 0)
 
 /proc/load_map_config(filename, default, delete_after, error_if_missing = TRUE)
 	var/datum/map_config/config = new
@@ -68,7 +76,10 @@
 	var/list/configs = list()
 
 	for(var/i in maptypes)
-		var/filename = MAP_TO_FILENAME[i]
+		var/filename
+		if(CONFIG_GET(flag/ephemeral_map_mode) && i == GROUND_MAP)
+			filename = CONFIG_GET(string/ephemeral_ground_map)
+		else filename = MAP_TO_FILENAME[i]
 		var/datum/map_config/config = new
 		if(default)
 			configs[i] = config
@@ -141,6 +152,14 @@
 		log_world("map_config survivor_types is not a list!")
 		return
 
+	var/list/pathed_survivor_types = list()
+	for(var/surv_type in survivor_types)
+		if(!ispath(surv_type))
+			log_world("[surv_type] isn't a proper typepath, removing from survivor_types list")
+			survivor_types -= surv_type
+		pathed_survivor_types += text2path(surv_type)
+	survivor_types = pathed_survivor_types.Copy()
+
 	if (islist(json["monkey_types"]))
 		monkey_types = list()
 		for(var/monkey in json["monkey_types"])
@@ -160,6 +179,12 @@
 					return
 	else if ("monkey_types" in json)
 		log_world("map_config monkey_types is not a list!")
+		return
+
+	if (islist(json["xvx_hives"]))
+		xvx_hives = json["xvx_hives"]
+	else if ("xvx_hives" in json)
+		log_world("map_config xvx_hives is not a list!")
 		return
 
 	if (islist(json["defcon_triggers"]))
@@ -202,8 +227,14 @@
 	if(json["force_mode"])
 		force_mode = json["force_mode"]
 
+	if(json["disable_ship_map"])
+		disable_ship_map = json["disable_ship_map"]
+
+	if(json["perf_mode"])
+		perf_mode = json["perf_mode"]
+
 	if(json["announce_text"])
-		announce_text = replacetext(json["announce_text"], "###SHIPNAME###", MAIN_SHIP_NAME)
+		announce_text = json["announce_text"]
 
 	if(json["weather_holder"])
 		weather_holder = text2path(json["weather_holder"])
@@ -216,6 +247,12 @@
 		if(!map_item_type)
 			log_world("map_config map_item_type is not a proper typepath!")
 			return
+
+	if(json["nightmare"])
+		if(!islist(json["nightmare"]))
+			log_world("map_config nightmare is not a list!")
+			return
+		nightmare = json["nightmare"]
 
 	if(islist(json["environment_traits"]))
 		environment_traits = json["environment_traits"]
@@ -258,6 +295,9 @@
 
 
 /datum/map_config/proc/MakeNextMap(maptype = GROUND_MAP)
+	if(CONFIG_GET(flag/ephemeral_map_mode))
+		message_staff("NOTICE: Running in ephemeral mode - map change request ignored")
+		return TRUE
 	if(maptype == GROUND_MAP)
 		return config_filename == "data/next_map.json" || fcopy(config_filename, "data/next_map.json")
 	else if(maptype == SHIP_MAP)

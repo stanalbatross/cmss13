@@ -1,6 +1,3 @@
-#define INJECTOR_USES 3
-#define INJECTOR_PERCENTAGE_OF_OD 0.5
-
 /obj/item/reagent_container/hypospray/autoinjector
 	name = "inaprovaline autoinjector"
 	var/chemname = "inaprovaline"
@@ -14,6 +11,7 @@
 	possible_transfer_amounts = null
 	volume = (HIGH_REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD) * INJECTOR_USES
 	magfed = FALSE
+	starting_vial = null
 	var/uses_left = 3
 	var/mixed_chem = FALSE
 
@@ -32,12 +30,6 @@
 		return
 	uses_left--
 	update_icon()
-
-
-/obj/item/reagent_container/hypospray/autoinjector/attackby(obj/item/W, mob/user)
-	if(isstorage(W))
-		..(W, user)
-	return
 
 /obj/item/reagent_container/hypospray/autoinjector/update_icon()
 	overlays.Cut()
@@ -58,6 +50,9 @@
 	desc = "An autoinjector loaded with 3 uses of Tricordrazine, a weak general use medicine for treating damage."
 	amount_per_transfer_from_this = REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD
 	volume = (REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD) * INJECTOR_USES
+
+/obj/item/reagent_container/hypospray/autoinjector/tricord/skillless
+	skilllock = SKILL_MEDICAL_DEFAULT
 
 /obj/item/reagent_container/hypospray/autoinjector/quickclot
 	name = "quick clot autoinjector"
@@ -101,6 +96,9 @@
 	amount_per_transfer_from_this = REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD
 	volume = (REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD) * INJECTOR_USES
 
+/obj/item/reagent_container/hypospray/autoinjector/tramadol/skillless
+	skilllock = SKILL_MEDICAL_DEFAULT
+
 /obj/item/reagent_container/hypospray/autoinjector/oxycodone
 	name = "oxycodone autoinjector (EXTREME PAINKILLER)"
 	chemname = "oxycodone"
@@ -115,12 +113,18 @@
 	amount_per_transfer_from_this = REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD
 	volume = (REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD) * INJECTOR_USES
 
+/obj/item/reagent_container/hypospray/autoinjector/kelotane/skillless
+	skilllock = SKILL_MEDICAL_DEFAULT
+
 /obj/item/reagent_container/hypospray/autoinjector/bicaridine
 	name = "bicaridine autoinjector"
 	chemname = "bicaridine"
 	desc = "An auto-injector loaded with 3 uses of Bicaridine, a common brute and circulatory damage medicine."
 	amount_per_transfer_from_this = REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD
 	volume = (REAGENTS_OVERDOSE * INJECTOR_PERCENTAGE_OF_OD) * INJECTOR_USES
+
+/obj/item/reagent_container/hypospray/autoinjector/bicaridine/skillless
+	skilllock = SKILL_MEDICAL_DEFAULT
 
 /obj/item/reagent_container/hypospray/autoinjector/inaprovaline
 	name = "inaprovaline autoinjector"
@@ -140,6 +144,9 @@
 	injectSFX = 'sound/items/air_release.ogg'
 	injectVOL = 70//limited-supply emergency injector with v.large injection of drugs. Variable sfx freq sometimes rolls too quiet.
 
+/obj/item/reagent_container/hypospray/autoinjector/emergency/skillless
+	skilllock = SKILL_MEDICAL_DEFAULT
+
 /obj/item/reagent_container/hypospray/autoinjector/emergency/Initialize()
 	. = ..()
 	reagents.add_reagent("bicaridine", REAGENTS_OVERDOSE-1)
@@ -151,6 +158,7 @@
 	name = "unusual crystal"
 	chemname = "thwei"
 	desc = "A strange glowing crystal with a spike at one end."
+	icon = 'icons/obj/items/hunter/pred_gear.dmi'
 	icon_state = "crystal"
 	amount_per_transfer_from_this = REAGENTS_OVERDOSE
 	volume = REAGENTS_OVERDOSE
@@ -169,7 +177,7 @@
 	icon_state = "tricord"
 	amount_per_transfer_from_this = 15
 	volume = 15
-	skilllock = 0
+	skilllock = SKILL_MEDICAL_DEFAULT
 	uses_left = 1
 
 /obj/item/reagent_container/hypospray/autoinjector/skillless/attack(mob/M as mob, mob/user as mob)
@@ -242,7 +250,7 @@
 	chemname = "custom_ez"
 	icon_state = "empty_ez"
 	item_state = "empty_ez"
-	skilllock = 0
+	skilllock = SKILL_MEDICAL_DEFAULT
 	amount_per_transfer_from_this = 15
 	uses_left = 0
 
@@ -266,7 +274,3 @@
 	name = "Medic Autoinjector (M-L)"
 	volume = 180
 	amount_per_transfer_from_this = 30
-
-
-#undef INJECTOR_USES
-#undef INJECTOR_PERCENTAGE_OF_OD

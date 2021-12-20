@@ -7,7 +7,7 @@
 	matter = list("metal" = 1000, "glass" = 500, "waste" = 100)
 
 
-	wires = WIRE_PULSE
+	wires = WIRE_ASSEMBLY_PULSE
 
 	secured = 0
 
@@ -61,7 +61,7 @@
 		var/obj/effect/beam/i_beam/I = new /obj/effect/beam/i_beam((holder ? holder.loc : loc) )
 		I.master = src
 		I.density = 1
-		I.dir = dir
+		I.setDir(dir)
 		step(I, I.dir)
 		if(I)
 			I.density = 0
@@ -85,7 +85,7 @@
 /obj/item/device/assembly/infra/Move()
 	var/t = dir
 	. = ..()
-	dir = t
+	setDir(t)
 	QDEL_NULL(first)
 	return
 
@@ -166,7 +166,7 @@
 	set category = "Object"
 	set src in usr
 
-	dir = turn(dir, 90)
+	setDir(turn(dir, 90))
 	return
 
 
@@ -223,7 +223,7 @@
 	var/obj/effect/beam/i_beam/I = new /obj/effect/beam/i_beam(loc)
 	I.master = master
 	I.density = 1
-	I.dir = dir
+	I.setDir(dir)
 	step(I, I.dir)
 
 	if(I)

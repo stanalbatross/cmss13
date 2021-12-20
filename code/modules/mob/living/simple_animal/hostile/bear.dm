@@ -35,7 +35,7 @@
 	minbodytemp = 0
 	var/stance_step = 0
 
-	faction = "russian"
+	faction = FACTION_UPP
 
 //SPACE BEARS! SQUEEEEEEEE~     OW! FUCK! IT BIT MY HAND OFF!!
 /mob/living/simple_animal/hostile/bear/Hudson
@@ -45,7 +45,7 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "pokes"
 
-/mob/living/simple_animal/hostile/bear/Life()
+/mob/living/simple_animal/hostile/bear/Life(delta_time)
 	. =..()
 	if(!.)
 		return
@@ -74,12 +74,12 @@
 					stance_step = max(0, stance_step) //If we have not seen a mob in a while, the stance_step will be negative, we need to reset it to 0 as soon as we see a mob again.
 					stance_step++
 					found_mob = 1
-					src.dir = get_dir(src,target_mob)	//Keep staring at the mob
+					src.setDir(get_dir(src,target_mob))	//Keep staring at the mob
 
 					if(stance_step in list(1,4,7)) //every 3 ticks
 						var/action = pick( list( "growls at [target_mob]", "stares angrily at [target_mob]", "prepares to attack [target_mob]", "closely watches [target_mob]" ) )
 						if(action)
-							custom_emote(1,action)
+							INVOKE_ASYNC(src, .proc/custom_emote,1,action)
 			if(!found_mob)
 				stance_step--
 
@@ -90,7 +90,7 @@
 
 		if(HOSTILE_STANCE_ATTACKING)
 			if(stance_step >= 20)	//attacks for 20 ticks, then it gets tired and needs to rest
-				custom_emote(1, "is worn out and needs to rest" )
+				INVOKE_ASYNC(src, .proc/custom_emote,1, "is worn out and needs to rest" )
 				stance = HOSTILE_STANCE_TIRED
 				stance_step = 0
 				walk(src, 0) //This stops the bear's walking
@@ -134,7 +134,7 @@
 	if(ishuman(target_mob))
 		var/mob/living/carbon/human/H = target_mob
 		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
-		var/obj/limb/affecting = H.get_limb(ran_zone(dam_zone))
+		var/obj/limb/affecting = H.get_limb(rand_zone(dam_zone))
 		H.apply_damage(damage, BRUTE, affecting, sharp=1, edge=1)
 		return H
 	else if(isliving(target_mob))

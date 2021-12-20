@@ -18,6 +18,7 @@
 
 	attack_icon = image("icon" = 'icons/effects/attacks.dmi',"icon_state" = "", "layer" = 0)
 
+	initialize_incision_depths()
 	initialize_pain()
 	initialize_stamina()
 	GLOB.living_mob_list += src
@@ -26,14 +27,14 @@
 	GLOB.living_mob_list -= src
 	pipes_shown = null
 
-	QDEL_NULL(attack_icon)
+	. = ..()
+
+	attack_icon = null
+	QDEL_NULL(fire_reagent)
 	QDEL_NULL(event_movement)
 	QDEL_NULL(pain)
 	QDEL_NULL(stamina)
-
-	. = ..()
-
-	QDEL_NULL_LIST(actions)
+	QDEL_NULL(hallucinations)
 
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
@@ -45,6 +46,10 @@
 
 /mob/living/proc/initialize_stamina()
 	stamina = new /datum/stamina(src)
+
+/mob/living/proc/initialize_incision_depths()
+	for(var/location in incision_depths)
+		incision_depths[location] = SURGERY_DEPTH_SURFACE
 
 /mob/living/proc/apply_stamina_damage(var/damage, var/def_zone, var/armor_type)
 	if(!stamina)
@@ -64,6 +69,7 @@
 				H.UpdateDamageIcon()
 		H.updatehealth()
 		return 1
+
 	else if(isAI(src))
 		return 0
 
@@ -140,7 +146,7 @@
 
 
 /mob/living/proc/get_limbzone_target()
-	return ran_zone(zone_selected)
+	return rand_zone(zone_selected)
 
 
 
@@ -163,13 +169,12 @@
 
 	return
 
-
 /mob/living/Move(NewLoc, direct)
 	if (buckled && buckled.loc != NewLoc) //not updating position
 		if (!buckled.anchored)
 			return buckled.Move(NewLoc, direct)
 		else
-			return 0
+			return FALSE
 
 	var/atom/movable/pullee = pulling
 	if(pullee && get_dist(src, pullee) > 1) //Is the pullee adjacent?
@@ -178,7 +183,8 @@
 	var/turf/T = loc
 	. = ..()
 	if(. && pulling && pulling == pullee) //we were pulling a thing and didn't lose it during our move.
-		if(pulling.anchored)
+		var/data = SEND_SIGNAL(pulling, COMSIG_MOVABLE_PULLED, src)
+		if(!(data & COMPONENT_IGNORE_ANCHORED) && pulling.anchored)
 			stop_pulling()
 			return
 
@@ -211,18 +217,20 @@
 				if(istype(pmob))
 					pmob.on_movement()
 				if(!(flags_atom & DIRLOCK))
-					dir = turn(direct, 180) //face the pullee
+					setDir(turn(direct, 180)) //face the pullee
 
 	if(pulledby && get_dist(src, pulledby) > 1)//separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()
 
-
 	if (s_active && !( s_active in contents ) && get_turf(s_active) != get_turf(src))	//check !( s_active in contents ) first so we hopefully don't have to call get_turf() so much.
-		s_active.close(src)
+		s_active.storage_close(src)
 
 	// Check if we're still pulling something
 	if(pulling)
 		SEND_SIGNAL(pulling, COMSIG_MOB_DRAGGED, src)
+
+	if(back && (back.flags_item & ITEM_OVERRIDE_NORTHFACE))
+		update_inv_back()
 
 
 
@@ -266,7 +274,7 @@
 			if(GRAB_CHOKE)
 				grab_level_delay = 9
 
-		. += max(pull_speed + pull_delay + grab_level_delay, 0) //harder grab makes you slower
+		. += max(pull_speed + (pull_delay + reagent_move_delay_modifier) + grab_level_delay, 0) //harder grab makes you slower
 	move_delay = .
 
 
@@ -288,15 +296,13 @@
 
 //whether we are slowed when dragging things
 /mob/living/proc/get_pull_miltiplier()
-	if(grab_level == GRAB_CARRY)
-		return 0.1
+	if(!HAS_TRAIT(src, TRAIT_DEXTROUS))
+		if(grab_level == GRAB_CARRY)
+			return 0.1
+		else
+			return 1.0
 	else
-		return 1.0
-
-/mob/living/carbon/human/get_pull_miltiplier()
-	if(has_species(src,"Yautja"))
-		return 0//Predators aren't slowed when pulling their prey.
-	return ..()
+		return 0
 
 /mob/living/forceMove(atom/destination)
 	stop_pulling()
@@ -325,8 +331,7 @@
 	now_pushing = TRUE
 	var/mob/living/L = AM
 
-	// For now a kind of hacky check for if you are performing an action that stops you from being pushed by teammates
-	if(L.status_flags & IMMOBILE_ACTION && areSameSpecies(src, L) && src.mob_size <= L.mob_size)
+	if(L.status_flags & IMMOBILE_ACTION && src.faction == L.faction && src.mob_size <= L.mob_size)
 		now_pushing = FALSE
 		return
 
@@ -425,7 +430,7 @@
 	var/old_icon = attack_icon.icon_state
 	var/old_pix_x = attack_icon.pixel_x
 	var/old_pix_y = attack_icon.pixel_y
-	addtimer(CALLBACK(src, /mob/living/proc/finish_attack_overlay, target, old_icon, old_pix_x, old_pix_y), 4)
+	addtimer(CALLBACK(istype(target, /mob/living) ? target : src, /mob/living/proc/finish_attack_overlay, target, old_icon, old_pix_x, old_pix_y), 4)
 
 /mob/living/proc/finish_attack_overlay(atom/target, old_icon, old_pix_x, old_pix_y)
 	if(!attack_icon || !target)
@@ -450,10 +455,10 @@
 /mob/proc/flash_eyes()
 	return
 
-/mob/living/flash_eyes(intensity = 1, bypass_checks, type = /obj/screen/fullscreen/flash)
-	if( bypass_checks || (get_eye_protection() < intensity && !(disabilities & BLIND)) )
+/mob/living/flash_eyes(intensity = 1, bypass_checks, type = /obj/screen/fullscreen/flash, var/flash_timer = 40)
+	if( bypass_checks || (get_eye_protection() < intensity && !(sdisabilities & DISABILITY_BLIND)))
 		overlay_fullscreen("flash", type)
-		spawn(40)
+		spawn(flash_timer)
 			clear_fullscreen("flash", 20)
 		return 1
 
@@ -538,14 +543,12 @@
 		for(var/obj/limb/org in H.limbs)
 			var/brute_treated = TRUE
 			var/burn_treated = TRUE
-			var/open_incision = TRUE
-			if(org.surgery_open_stage == 0)
-				open_incision = FALSE
+			var/open_incision = org.get_incision_depth() ? " <span class='scanner'>Open surgical incision</span>" : ""
+
 			if((org.brute_dam > 0 && !org.is_bandaged()) || open_incision)
 				brute_treated = FALSE
 			if(org.burn_dam > 0 && !org.is_salved())
 				burn_treated = FALSE
-
 			if(org.status & LIMB_DESTROYED)
 				dat += "\t\t [capitalize(org.display_name)]: <span class='scannerb'>Missing!</span>\n"
 				continue
@@ -556,7 +559,14 @@
 				break
 			var/show_limb = (org.burn_dam > 0 || org.brute_dam > 0 || (org.status & LIMB_SPLINTED) || open_incision || bleeding_check)
 
-			var/org_name = "[capitalize(org.display_name)][org.status & LIMB_ROBOT ? " (Cybernetic)" : ""]"
+			var/org_name = "[capitalize(org.display_name)]"
+			if(org.status & LIMB_ROBOT)
+				if(org.status & LIMB_UNCALIBRATED_PROSTHETIC)
+					org_name += " (Nonfunctional Cybernetic)]"
+					show_limb = TRUE
+				else
+					org_name += " (Cybernetic)"
+
 			var/burn_info = org.burn_dam > 0 ? "<span class='scannerburnb'> [round(org.burn_dam)]</span>" : "<span class='scannerburn'>0</span>"
 			burn_info += "[burn_treated ? "" : "{B}"]"
 			var/brute_info =  org.brute_dam > 0 ? "<span class='scannerb'> [round(org.brute_dam)]</span>" : "<span class='scanner'>0</span>"
@@ -570,7 +580,6 @@
 			if(bleeding_check)
 				org_bleed = "<span class='scannerb'>(Bleeding)</span>"
 
-			var/org_incision = (open_incision?" <span class='scanner'>Open surgical incision</span>":"")
 			var/org_advice = ""
 			if(!skillcheck(user, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))
 				switch(org.name)
@@ -590,8 +599,10 @@
 							org_advice = " Possible Groin Fracture."
 							show_limb = 1
 			if(show_limb)
-				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] [fracture_info][org_bleed][org_incision][org_advice]"
-				if(org.status & LIMB_SPLINTED)
+				dat += "\t\t [org_name]: \t [burn_info] - [brute_info] [fracture_info][org_bleed][open_incision][org_advice]"
+				if(org.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+					dat += "(Nanosplinted)"
+				else if(org.status & LIMB_SPLINTED)
 					dat += "(Splinted)"
 				dat += "\n"
 
@@ -648,7 +659,7 @@
 				var/datum/reagent/R = A
 				reagents_in_body["[R.id]"] = R.volume
 				if(R.flags & REAGENT_SCANNABLE)
-					reagentdata["[R.id]"] = "[R.overdose != 0 && R.volume >= R.overdose && !(R.flags & REAGENT_CANNOT_OVERDOSE) ? SPAN_WARNING("<b>OD: </b>") : ""] <font color='#9773C4'><b>[round(R.volume, 1)]u [R.name]</b></font>"
+					reagentdata["[R.id]"] = "[R.overdose != 0 && R.volume > R.overdose && !(R.flags & REAGENT_CANNOT_OVERDOSE) ? SPAN_WARNING("<b>OD: </b>") : ""] <font color='#9773C4'><b>[round(R.volume, 1)]u [R.name]</b></font>"
 				else
 					unknown++
 			if(reagentdata.len)
@@ -687,9 +698,9 @@
 				advice += "<span class='scanner'>Administer food or recommend the patient eat.</span>\n"
 			if(internal_bleed_detected && reagents_in_body["quickclot"] < 5)
 				advice += "<span class='scanner'>Administer a single dose of quickclot.</span>\n"
-			if(H.getToxLoss() > 10 && reagents_in_body["anti_toxin"] < 5 && !reagents_in_body["synaptizine"])
+			if(H.getToxLoss() > 10 && reagents_in_body["anti_toxin"] < 5)
 				advice += "<span class='scanner'>Administer a single dose of dylovene.</span>\n"
-			if((H.getToxLoss() > 50 || (H.getOxyLoss() > 50 && blood_volume > 400) || H.getBrainLoss() >= 10) && reagents_in_body["peridaxon"] < 5 && !reagents_in_body["hyperzine"])
+			if((H.getToxLoss() > 50 || (H.getOxyLoss() > 50 && blood_volume > 400) || H.getBrainLoss() >= 10) && reagents_in_body["peridaxon"] < 5)
 				advice += "<span class='scanner'>Administer a single dose of peridaxon.</span>\n"
 			if(H.getOxyLoss() > 50 && reagents_in_body["dexalin"] < 5)
 				advice += "<span class='scanner'>Administer a single dose of dexalin.</span>\n"
@@ -711,10 +722,6 @@
 				dat += "\t<span class='scanner'> <b>Medication Advice:</b></span>\n"
 				dat += advice
 			advice = ""
-			if(reagents_in_body["synaptizine"])
-				advice += "<span class='scanner'>DO NOT administer dylovene.</span>\n"
-			if(reagents_in_body["hyperzine"])
-				advice += "<span class='scanner'>DO NOT administer peridaxon.</span>\n"
 			if(reagents_in_body["paracetamol"])
 				advice += "<span class='scanner'>DO NOT administer tramadol.</span>\n"
 			if(advice != "")
@@ -732,6 +739,8 @@
 		show_browser(user, dat, name, "handscanner", "size=500x400")
 	else
 		user.show_message(dat, 1)
+
+	return dat
 
 /mob/living/create_clone_movable(shift_x, shift_y)
 	..()

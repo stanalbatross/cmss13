@@ -1,4 +1,3 @@
-
 //Space santa outfit suit
 /obj/item/clothing/head/helmet/space/santahat
 	name = "Santa's hat"
@@ -14,7 +13,7 @@
 	icon_state = "santa"
 	item_state = "santa"
 	slowdown = 0
-	allowed = list(/obj/item) //for stuffing exta special presents
+	allowed = list(/obj/item) //for stuffing extra special presents
 
 //Space pirate outfit
 /obj/item/clothing/head/helmet/space/pirate
@@ -84,12 +83,24 @@
 	armor_rad = CLOTHING_ARMOR_ULTRAHIGH
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUMLOW
 
+/obj/item/clothing/head/helmet/space/compression/uscm
+	name = "\improper MK.50 compression helmet"
+	desc = "A heavy space helmet, designed to be coupled with the MK.50 compression suit, it bears USCM styling. Feels like you could hotbox in here."
+	item_state = "compression"
+	icon_state = "compression_uscm"
+
+/obj/item/clothing/suit/space/compression/uscm
+	name = "\improper MK.50 compression suit"
+	desc = "A heavy, bulky civilian space suit, fitted with armored plates. This specific suit has found its way into the ragtag inventory of the USCM's patrol boat requisitions system."
+	item_state = "compression"
+	icon_state = "compression_uscm"
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/handcuffs,/obj/item/tank)
 
 // Souto man
 
 /obj/item/clothing/suit/space/souto
 	name = "\improper Souto Man tank top"
-	desc = "The tank top worn by Souto Man. At first glance it appears the wearer has great abs. But they are actually drawn on."
+	desc = "The tank top worn by Souto Man. As fresh as a nice can of Souto Classic!"
 	item_state = "souto_man"
 	icon_state = "souto_man"
 	armor_melee = CLOTHING_ARMOR_HARDCORE
@@ -100,7 +111,6 @@
 	armor_bio = CLOTHING_ARMOR_HARDCORE
 	armor_rad = CLOTHING_ARMOR_HARDCORE
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
-	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP|BLOCKSHARPOBJ
 	unacidable = TRUE
 	flags_inv_hide = null
@@ -108,7 +118,7 @@
 
 /obj/item/clothing/head/helmet/space/souto
 	name = "\improper Souto Man hat"
-	desc = "The hat worn by Souto Man. So cool."
+	desc = "The hat worn by Souto Man. As tall as the new 24oz cans of Souto Lime!"
 	item_state = "souto_man"
 	icon_state = "souto_man"
 	armor_melee = CLOTHING_ARMOR_HARDCORE
@@ -119,7 +129,6 @@
 	armor_bio = CLOTHING_ARMOR_HARDCORE
 	armor_rad = CLOTHING_ARMOR_HARDCORE
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
-	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP|COVEREYES|COVERMOUTH|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT|ALLOWCPR|BLOCKSHARPOBJ
 	unacidable = TRUE
 	flags_inv_hide = null

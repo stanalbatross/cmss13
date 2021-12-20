@@ -5,7 +5,7 @@
 	icon = 'icons/obj/structures/doors/rapid_pdoor.dmi'
 	icon_state = "pdoor"
 	id = 1.0
-	dir = 1
+	dir = NORTH
 	unslashable = TRUE
 	health = 0
 	layer = PODDOOR_CLOSED_LAYER
@@ -48,10 +48,10 @@
 
 /obj/structure/machinery/door/poddoor/attack_alien(mob/living/carbon/Xenomorph/X)
 	if((stat & NOPOWER) && density && !operating && !unacidable)
-		pry_open(X)
+		INVOKE_ASYNC(src, .proc/pry_open, X)
+		return XENO_ATTACK_ACTION
 
-
-/obj/structure/machinery/door/poddoor/proc/pry_open(var/mob/living/carbon/Xenomorph/X, var/time = SECONDS_4)
+/obj/structure/machinery/door/poddoor/proc/pry_open(var/mob/living/carbon/Xenomorph/X, var/time = 4 SECONDS)
 	X.visible_message(SPAN_DANGER("[X] begins prying [src] open."),\
 	SPAN_XENONOTICE("You start prying [src] open."), max_distance = 3)
 
@@ -65,6 +65,7 @@
 	SPAN_XENONOTICE("You pry open [src]."), max_distance = 3)
 
 	open()
+	return TRUE
 
 
 /obj/structure/machinery/door/poddoor/try_to_activate_door(mob/user)
@@ -279,7 +280,6 @@
 
 /obj/structure/machinery/door/poddoor/almayer/open
 	density = FALSE
-
 /obj/structure/machinery/door/poddoor/almayer/blended
 	icon_state = "almayer_pdoor"
 
@@ -292,7 +292,7 @@
 	unacidable = TRUE
 
 /obj/structure/machinery/door/poddoor/almayer/locked/attackby(obj/item/C as obj, mob/user as mob)
-	if(iscrowbar(C))
+	if(HAS_TRAIT(C, TRAIT_TOOL_CROWBAR))
 		return
 	..()
 

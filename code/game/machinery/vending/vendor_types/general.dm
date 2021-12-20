@@ -1,6 +1,6 @@
 /obj/structure/machinery/cm_vending/sorted/walkman
 	name = "\improper Rec-Vend"
-	desc = "Contains Weston-Yamada approved recreational items, like Walkmans and Cards."
+	desc = "Contains Weyland-Yutani approved recreational items, like Walkmans and Cards."
 	icon_state = "walkman"
 	wrenchable = TRUE
 	hackable = TRUE
@@ -20,6 +20,7 @@
 		list("Red Striped Cassette", 10, /obj/item/device/cassette_tape/hairmetal, VENDOR_ITEM_REGULAR),
 		list("Rising Sun Cassette", 10, /obj/item/device/cassette_tape/indie, VENDOR_ITEM_REGULAR),
 		list("Walkman", 50, /obj/item/device/walkman, VENDOR_ITEM_REGULAR),
+		list("Cassette Pouch", 15, /obj/item/storage/pouch/cassette, VENDOR_ITEM_REGULAR),
 
 		list("CARDS", -1, null, null),
 		list("Deck of Cards", 5, /obj/item/toy/deck, VENDOR_ITEM_REGULAR),

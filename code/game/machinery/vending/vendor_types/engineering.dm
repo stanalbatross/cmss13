@@ -29,7 +29,7 @@
 		list("EQUIPMENT", -1, null, null),
 		list("Combat Flashlight", round(scale * 2), /obj/item/device/flashlight/combat, VENDOR_ITEM_REGULAR),
 		list("Hardhat", round(scale * 2), /obj/item/clothing/head/hardhat, VENDOR_ITEM_REGULAR),
-		list("Isolated Gloves", round(scale * 2), /obj/item/clothing/gloves/yellow, VENDOR_ITEM_REGULAR),
+		list("Insulated Gloves", round(scale * 2), /obj/item/clothing/gloves/yellow, VENDOR_ITEM_REGULAR),
 		list("Utility Tool Belt", round(scale * 2), /obj/item/storage/belt/utility, VENDOR_ITEM_REGULAR),
 		list("Welding Goggles", round(scale * 2), /obj/item/clothing/glasses/welding, VENDOR_ITEM_REGULAR),
 		list("Welding Helmet", round(scale * 2), /obj/item/clothing/head/welding, VENDOR_ITEM_REGULAR),
@@ -107,7 +107,7 @@
 //------COLONY-SPECIFIC VENDORS-------
 
 /obj/structure/machinery/cm_vending/sorted/tech/science
-	name = "\improper W-Y SciVend"
+	name = "\improper Wey-Yu SciVend"
 	desc = "Vendor containing basic equipment for your experiments."
 	icon_state = "robotics"
 	req_access = list(ACCESS_MARINE_RESEARCH)

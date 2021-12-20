@@ -301,7 +301,7 @@
 			if(toxic_reagents[R.id])
 				toxins += toxic_reagents[R.id]         * reagent_total
 			if(weedkiller_reagents[R.id])
-				weedlevel -= weedkiller_reagents[R.id] * reagent_total
+				weedlevel += weedkiller_reagents[R.id] * reagent_total
 			if(pestkiller_reagents[R.id])
 				pestlevel += pestkiller_reagents[R.id] * reagent_total
 
@@ -513,7 +513,7 @@
 	if (O.is_open_container())
 		return 0
 
-	if(istype(O, /obj/item/tool/wirecutters) || istype(O, /obj/item/tool/surgery/scalpel) || istype(O, /obj/item/tool/kitchen/knife) || istype(O, /obj/item/attachable/bayonet))
+	if(HAS_TRAIT(O, TRAIT_TOOL_WIRECUTTERS) || istype(O, /obj/item/tool/surgery/scalpel) || istype(O, /obj/item/tool/kitchen/knife) || istype(O, /obj/item/attachable/bayonet))
 
 		if(!seed)
 			to_chat(user, "There is nothing to take a sample from in \the [src].")
@@ -633,7 +633,7 @@
 		check_level_sanity()
 		update_icon()
 
-	else if(istype(O, /obj/item/tool/wrench))
+	else if(HAS_TRAIT(O, TRAIT_TOOL_WRENCH))
 
 		//If there's a connector here, the portable_atmospherics setup can handle it.
 		if(locate(/obj/structure/pipes/portables_connector) in loc)

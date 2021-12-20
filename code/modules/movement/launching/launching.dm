@@ -28,7 +28,9 @@
 
 	for (var/path in collision_callbacks)
 		if (ispath(path) && istype(A, path))
-			if (isnull(highest_matching) || path > highest_matching)
+			// A is going to be of type `path` and `highest_matching`, so check whether
+			// `highest_matching` is a parent of `path` (lower in the type tree)
+			if (isnull(highest_matching) || !ispath(highest_matching, path))
 				highest_matching = path
 			matching += path
 
@@ -40,7 +42,7 @@
 		if (length(matching) == 0)
 			return null
 		var/list/matching_procs = list()
-		for (var/path in matching)
+		for(var/path in matching)
 			matching_procs += collision_callbacks[path]
 		return matching_procs
 
@@ -53,8 +55,8 @@
 
 	var/list/collision_callbacks = launch_metadata.get_collision_callbacks(hit_atom)
 	if (islist(collision_callbacks))
-		for (var/datum/callback/CB in collision_callbacks)
-			if (istype(CB, /datum/callback/dynamic))
+		for(var/datum/callback/CB in collision_callbacks)
+			if(istype(CB, /datum/callback/dynamic))
 				CB.Invoke(src, hit_atom)
 			else
 				CB.Invoke(hit_atom)
@@ -101,9 +103,13 @@
 		LM.target = get_step(src, turn(dir, 180))
 		LM.range = 1
 		LM.speed = launched_speed
-		LM.pass_flags = PASS_UNDER|PASS_OVER
+		LM.pass_flags = PASS_UNDER
+		LM.pass_flags |= (ismob(src) ? PASS_OVER_THROW_MOB : PASS_OVER_THROW_ITEM)
 
 		launch_towards(LM)
+
+/atom/movable/proc/try_to_throw(var/mob/living/user)
+	return TRUE
 
 // Proc for throwing items (should only really be used for throw)
 /atom/movable/proc/throw_atom(var/atom/target, var/range, var/speed = 0, var/atom/thrower, var/spin, var/launch_type = NORMAL_LAUNCH, var/pass_flags = NO_FLAGS)

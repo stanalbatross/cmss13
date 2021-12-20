@@ -14,9 +14,9 @@
 		to_chat(user, SPAN_WARNING("This player's faction must equal '[FACTION_MARINE]' to make them a mutineer."))
 		return
 
-	var/datum/equipment_preset/preset = gear_presets_list["Mutineer"]
+	var/datum/equipment_preset/preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/mutineer]
 	if(params["leader"])
-		preset = gear_presets_list["Mutineer Leader"]
+		preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/mutineer/leader]
 
 
 	preset.load_status(H)
@@ -37,9 +37,6 @@
 	if(!isXeno(target))
 		return
 
-	if(params["hivenumber"] > length(GLOB.hive_datum))
-		return
-
 	var/mob/living/carbon/Xenomorph/X = target
 
 	X.set_hive_and_update(params["hivenumber"])
@@ -58,14 +55,11 @@
 	if(!ishuman(target))
 		return
 
-	if(params["hivenumber"] > length(GLOB.hive_datum))
-		return
-
 	var/mob/living/carbon/human/H = target
-	var/datum/equipment_preset/preset = gear_presets_list["Cultist - Xeno Cultist"]
+	var/datum/equipment_preset/preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/xeno_cultist]
 
 	if(params["leader"])
-		preset = gear_presets_list["Cultist - Xeno Cultist Leader"]
+		preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/xeno_cultist/leader]
 
 
 	preset.load_race(H, params["hivenumber"])

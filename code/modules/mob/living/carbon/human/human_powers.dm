@@ -19,7 +19,7 @@
 			choices += M
 	choices -= src
 
-	var/mob/living/T = input(src,"Who do you wish to tackle?") as null|anything in choices
+	var/mob/living/T = tgui_input_list(src,"Who do you wish to tackle?", "Tackle", choices)
 
 	if(!T || !src || stat || !Adjacent(T))
 		return
@@ -66,7 +66,7 @@
 			choices += M
 	choices -= src
 
-	var/mob/living/T = input(src,"Who do you wish to leap at?") as null|anything in choices
+	var/mob/living/T = tgui_input_list(src,"Who do you wish to leap at?", "Leap", choices)
 
 	if(!T || !src || stat || get_dist(get_turf(T), get_turf(src)) > 6)
 		return
@@ -86,7 +86,7 @@
 	throw_atom(target, 5, SPEED_VERY_FAST, src)
 	playsound(loc, 'sound/voice/shriek1.ogg', 25, 1)
 
-	addtimer(CALLBACK(src, /mob/living/carbon/human/proc/finish_leap, T), 5)
+	addtimer(CALLBACK(src, .proc/finish_leap, T), 5)
 
 /mob/living/carbon/human/proc/finish_leap(mob/living/T)
 	if(status_flags & LEAPING) status_flags &= ~LEAPING
@@ -131,14 +131,14 @@
 		var/mob/living/carbon/human/H = G.grabbed_thing
 		H.apply_damage(50,BRUTE)
 		if(H.stat == 2)
-			H.gib(H.last_damage_source)
+			H.gib(create_cause_data("gutting", usr))
 	else
 		var/mob/living/M = G.grabbed_thing
 		if(!istype(M))
 			return //wut
 		M.apply_damage(50,BRUTE)
 		if(M.stat == 2)
-			M.gib(M.last_damage_source)
+			M.gib(create_cause_data("gutting", usr))
 
 /mob/living/carbon/human/proc/commune()
 	set category = "Abilities"
@@ -150,7 +150,7 @@
 	var/text = null
 
 	targets += getmobs() //Fill list, prompt user with list
-	target = input("Select a creature!", "Speak to creature", null, null) as null|anything in targets
+	target = tgui_input_list(usr, "Select a creature!", "Speak to creature", targets)
 
 	if(!target)
 		return
@@ -207,7 +207,7 @@
 		return
 
 	if(!order)
-		order = input(src, "Choose an order") in list(COMMAND_ORDER_MOVE, COMMAND_ORDER_HOLD, COMMAND_ORDER_FOCUS, "help", "cancel")
+		order = tgui_input_list(src, "Choose an order", "Order to send", list(COMMAND_ORDER_MOVE, COMMAND_ORDER_HOLD, COMMAND_ORDER_FOCUS, "help", "cancel"))
 		if(order == "help")
 			to_chat(src, SPAN_NOTICE("<br>Orders give a buff to nearby soldiers for a short period of time, followed by a cooldown, as follows:<br><B>Move</B> - Increased mobility and chance to dodge projectiles.<br><B>Hold</B> - Increased resistance to pain and combat wounds.<br><B>Focus</B> - Increased gun accuracy and effective range.<br>"))
 			return
@@ -270,14 +270,14 @@
 	switch(order)
 		if(COMMAND_ORDER_MOVE)
 			mobility_aura_count++
-			mobility_aura = max(mobility_aura, strength)
+			mobility_aura = Clamp(mobility_aura, strength, ORDER_MOVE_MAX_LEVEL)
 		if(COMMAND_ORDER_HOLD)
 			protection_aura_count++
-			protection_aura = max(protection_aura, strength)
+			protection_aura = Clamp(protection_aura, strength, ORDER_HOLD_MAX_LEVEL)
 			pain.apply_pain_reduction(protection_aura * PAIN_REDUCTION_AURA)
 		if(COMMAND_ORDER_FOCUS)
 			marksman_aura_count++
-			marksman_aura = max(marksman_aura, strength)
+			marksman_aura = Clamp(marksman_aura, strength, ORDER_FOCUS_MAX_LEVEL)
 
 	hud_set_order()
 
@@ -309,7 +309,7 @@
 
 	hud_set_order()
 
-/mob/living/carbon/human/verb/lay_down()
+/mob/living/verb/lay_down()
 	set name = "Rest"
 	set category = "IC"
 
@@ -328,7 +328,7 @@
 	if(!isSynth(usr) || usr.is_mob_incapacitated())
 		return
 
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD", null) as null|anything in list("Medical HUD", "Security HUD")
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD", list("Medical HUD", "Security HUD"))
 	if(usr.is_mob_incapacitated())
 		return
 

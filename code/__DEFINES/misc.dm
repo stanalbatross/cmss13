@@ -24,14 +24,16 @@
 
 // What kind of function to use for Explosions falling off.
 
-#define EXPLOSION_FALLOFF_SHAPE_LINEAR          0
-#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL     1
+#define EXPLOSION_FALLOFF_SHAPE_LINEAR              0
+#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL         1
+#define EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF    2
 
 //area flags
 
-#define AREA_AVOID_BIOSCAN      1 //used to make mobs skip bioscans
-#define AREA_NOTUNNEL           4 //makes it so the area can not be tunneled to
-#define AREA_ALLOW_XENO_JOIN    8 //xenos can join whilst in this area (for admin zlevel)
+#define AREA_AVOID_BIOSCAN (1<<0) //used to make mobs skip bioscans
+#define AREA_NOTUNNEL (1<<1) //makes it so the area can not be tunneled to
+#define AREA_ALLOW_XENO_JOIN (1<<2) //xenos can join whilst in this area (for admin zlevel)
+#define AREA_CONTAINMENT (1<<3) // Flags the area as a containment area
 
 // Default number of ticks for do_after
 #define DA_DEFAULT_NUM_TICKS 5
@@ -61,7 +63,7 @@
 #define INTERRUPT_RESIST            (1<<6)  // Allows timed actions to be cancelled upon hitting resist, on by default
 #define INTERRUPT_DIFF_SELECT_ZONE  (1<<7)  // By default not in INTERRUPT_ALL (too niche)
 #define INTERRUPT_OUT_OF_RANGE      (1<<8)  // By default not in INTERRUPT_ALL, should not be used in conjunction with INTERRUPT_DIFF_TURF
-#define INTERRUPT_DIFF_INTENT       (1<<9)  // By default not in INTERRUPT_ALL (too niche)
+#define INTERRUPT_DIFF_INTENT       (1<<9)  // By default not in INTERRUPT_ALL (too niche) (Doesn't actually exist.)
 #define INTERRUPT_LCLICK            (1<<10)  // Mainly for boiler globs
 #define INTERRUPT_RCLICK            (1<<11)
 #define INTERRUPT_SHIFTCLICK        (1<<12)
@@ -87,10 +89,6 @@
 //           END DO_AFTER FLAGS            //
 // *************************************** //
 
-#define PAYGRADES_MARINE list("C","E1","E2","E3","E4","E5","E6","E7","E8","E9","E9E","O1","O2","O3","O4","O5","O5E","O6","O7","O8","O9","O9E")
-#define PAYGRADES_OFFICER list("O1","O2","O3","O4","O5","O5E","O6","O7","O8","O9","O9E")
-#define PAYGRADES_ENLISTED list("C","E1","E2","E3","E4","E5","E6","E7","E8","E9","E9E")
-
 // MATERIALS
 #define MATERIAL_METAL     "metal"
 #define MATERIAL_PLASTEEL  "plasteel"
@@ -111,6 +109,9 @@
 #define STACK_20		20
 #define STACK_25		25
 #define STACK_30		30
+#define STACK_35		35
+#define STACK_40		40
+#define STACK_45		45
 #define STACK_50		50
 
 // Assembly Stages
@@ -206,3 +207,14 @@
 #define SHELLEO_ERRORLEVEL 1
 #define SHELLEO_STDOUT 2
 #define SHELLEO_STDERR 3
+
+// Shuttles
+#define isshuttleturf(T) (length(T.baseturfs) && (/turf/baseturf_skipover/shuttle in T.baseturfs))
+
+//Luma coefficients suggested for HDTVs. If you change these, make sure they add up to 1.
+#define LUMA_R 0.213
+#define LUMA_G 0.715
+#define LUMA_B 0.072
+
+//Automatic punctuation
+#define ENDING_PUNCT list(".", "-", "?", "!")

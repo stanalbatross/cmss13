@@ -1,11 +1,15 @@
-/mob/living/simple_animal/hostile/alien
-	name = "alien hunter"
+/mob/living/simple_animal/hostile/alien/lurker
+	name = "alien lurker"
+	icon = 'icons/mob/hostiles/lurker.dmi'
+	icon_state = "Normal Lurker Running"
+	icon_living = "Normal Lurker Running"
+	icon_dead = "Normal Lurker Dead"
 	icon_gib = "syndicate_gib"
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
 	speed = -1
-	meat_type = /obj/item/reagent_container/food/snacks/xenomeat
+	meat_type = /obj/item/reagent_container/food/snacks/meat/xenomeat
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -31,11 +35,16 @@
 	stop_automated_movement_when_pulled = 1
 	break_stuff_probability = 90
 
+/mob/living/simple_animal/hostile/alien/lurker/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	icon = get_icon_from_source(CONFIG_GET(string/alien_lurker))
+	. = ..()
+
 /mob/living/simple_animal/hostile/alien/drone
 	name = "alien drone"
-	icon_state = "Drone Running"
-	icon_living = "Drone Running"
-	icon_dead = "Drone Dead"
+	icon = 'icons/mob/hostiles/drone.dmi'
+	icon_state = "Normal Drone Running"
+	icon_living = "Normal Drone Running"
+	icon_dead = "Normal Drone Dead"
 	health = 60
 	melee_damage_lower = 15
 	melee_damage_upper = 15
@@ -55,17 +64,14 @@
 
 /mob/living/simple_animal/hostile/alien/ravager
 	name = "alien ravager"
-	icon_state = "Ravager Running"
-	icon_living = "Ravager Running"
-	icon_dead = "Ravager Dead"
+	icon = 'icons/mob/hostiles/ravager.dmi'
+	icon_state = "Normal Ravager Running"
+	icon_living = "Normal Ravager Running"
+	icon_dead = "Normal Ravager Dead"
 	melee_damage_lower = 25
 	melee_damage_upper = 35
 	maxHealth = 200
 	health = 200
-
-/mob/living/simple_animal/hostile/alien/ravager/Initialize()
-	. = ..()
-	icon = get_icon_from_source(CONFIG_GET(string/alien_ravager))
 
 /obj/item/projectile/neurotox
 	damage = 30

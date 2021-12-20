@@ -23,10 +23,6 @@
 	..()
 	unwield(user)
 
-/obj/item/weapon/melee/twohanded/pickup(mob/user)
-	. = ..()
-	unwield(user)
-
 /obj/item/proc/wield(var/mob/user)
 	if( !(flags_item & TWOHANDED) || flags_item & WIELDED ) return
 
@@ -120,8 +116,9 @@
 	..()
 	//This hand should be holding the main weapon. If everything worked correctly, it should not be wielded.
 	//If it is, looks like we got our hand torn off or something.
-	var/obj/item/main_hand = user.get_active_hand()
-	if(main_hand) main_hand.unwield(user)
+	if(!QDESTROYING(src))
+		var/obj/item/main_hand = user.get_active_hand()
+		if(main_hand) main_hand.unwield(user)
 
 /*
  * Fireaxe
@@ -203,7 +200,7 @@
 	if((flags_item & WIELDED) && prob(50))
 		spawn(0)
 			for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2))
-				user.dir = i
+				user.setDir(i)
 				sleep(1)
 
 /obj/item/weapon/melee/twohanded/dualsaber/IsShield()
@@ -233,57 +230,6 @@
 	flags_item = NOSHIELD|TWOHANDED
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "stabbed", "jabbed", "torn", "gored")
-
-
-
-/obj/item/weapon/melee/twohanded/glaive
-	name = "war glaive"
-	icon = 'icons/obj/items/weapons/predator.dmi'
-	icon_state = "glaive"
-	item_state = "glaive"
-	desc = "A huge, powerful blade on a metallic pole. Mysterious writing is carved into the weapon."
-	force = MELEE_FORCE_TIER_3
-	w_class = SIZE_LARGE
-	flags_equip_slot = SLOT_BACK
-	force_wielded = MELEE_FORCE_TIER_9
-	throwforce = MELEE_FORCE_TIER_6
-	embeddable = FALSE //so predators don't lose their glaive when thrown.
-	throw_speed = SPEED_VERY_FAST
-	edge = 1
-	sharp = IS_SHARP_ITEM_BIG
-	flags_atom = FPRINT|CONDUCT
-	flags_item = NOSHIELD|TWOHANDED|ITEM_PREDATOR
-	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb = list("sliced", "slashed", "carved", "diced", "gored")
-	unacidable = TRUE
-	attack_speed = 14 //Default is 7.
-
-/obj/item/weapon/melee/twohanded/glaive/Destroy()
-	remove_from_missing_pred_gear(src)
-	return ..()
-
-/obj/item/weapon/melee/twohanded/glaive/dropped(mob/living/user)
-	add_to_missing_pred_gear(src)
-	..()
-
-/obj/item/weapon/melee/twohanded/glaive/pickup(mob/living/user)
-	if(isYautja(user))
-		remove_from_missing_pred_gear(src)
-	..()
-
-/obj/item/weapon/melee/twohanded/glaive/attack(mob/living/target, mob/living/carbon/human/user)
-	. = ..()
-	if(!.)
-		return
-	if(isYautja(user) && isXeno(target))
-		var/mob/living/carbon/Xenomorph/X = target
-		X.interference = 30
-
-/obj/item/weapon/melee/twohanded/glaive/damaged
-	name = "war glaive"
-	desc = "A huge, powerful blade on a metallic pole. Mysterious writing is carved into the weapon. This one is ancient and has suffered serious acid damage, making it near-useless."
-	force = MELEE_FORCE_NORMAL
-	force_wielded = MELEE_FORCE_STRONG
 
 /obj/item/weapon/melee/twohanded/lungemine
 	name = "lunge mine"
@@ -345,13 +291,13 @@
 
 	var/turf/epicenter = get_turf(target)
 	target.ex_act(400, null, src, user, 100)
-	cell_explosion(epicenter, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, src, user)
+	cell_explosion(epicenter, 150, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name), user))
 	qdel(src)
 
 
 /obj/item/weapon/melee/twohanded/breacher
-	name = "Breach B5"
-	desc = "An extremely heavy tool, used to smash things. The top piece is specially designed to take down walls."
+	name = "B5 Breaching Hammer"
+	desc = "An extremely heavy tool, used to smash things. The top piece is specially designed to take down walls, but looks way too heavy for a human to use."
 	icon = 'icons/obj/items/experimental_tools.dmi'
 	icon_state = "breacher"
 	item_state = "breacher"
@@ -360,6 +306,8 @@
 	w_class = SIZE_LARGE
 	flags_item = TWOHANDED
 	flags_equip_slot = SLOT_BACK
+
+	attack_verb = list("pulverised", "smashed", "thwacked", "crushed")
 
 /obj/item/weapon/melee/twohanded/breacher/afterattack(var/atom/A, var/mob/user, var/proximity)
 	if(!(flags_item & WIELDED))
@@ -376,19 +324,18 @@
 		var/time_to_destroy = 50
 		if(istype(W, /turf/closed/wall/r_wall))
 			time_to_destroy = 100
+		if(!user.Adjacent(A))
+			return
 
 		breach_action(W, user, time_to_destroy)
-
-		W.take_damage(W.damage_cap)
-		return
 
 	if(istype(A, /obj/structure/girder))
 		var/obj/structure/girder/G = A
 
-		breach_action(G, user, 30)
+		if(!user.Adjacent(A))
+			return
 
-		G.dismantle()
-		return
+		breach_action(G, user, 30)
 
 	..()
 
@@ -397,8 +344,20 @@
 		return
 
 	to_chat(user, SPAN_NOTICE("You start taking down the [A.name]."))
-	if(!do_after(user, time_to_destroy, INTERRUPT_ALL, BUSY_ICON_BUILD))
+
+	if(!do_after(user, time_to_destroy, INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_BUILD))
+		to_chat(user, SPAN_NOTICE("You stop taking down the [A.name]."))
 		return
 
 	to_chat(user, SPAN_NOTICE("You tear down the [A.name]."))
-	playsound(user, 'sound/effects/woodhit.ogg', 40, 1)
+
+	if(istype(A, /turf/closed/wall))
+		var/turf/closed/wall/W = A
+		W.take_damage(W.damage_cap)
+		playsound(user, 'sound/effects/meteorimpact.ogg', 40, 1)
+		playsound(user, 'sound/effects/ceramic_shatter.ogg', 40, 1)
+
+	if(istype(A, /obj/structure/girder))
+		var/obj/structure/girder/G = A
+		G.dismantle()
+		playsound(user, 'sound/effects/metal_shatter.ogg', 40, 1)

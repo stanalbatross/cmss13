@@ -367,7 +367,7 @@
 				<body>
 				<center>
 				<br>
-				<b style='font-size: 12px;'>Weston-Yamada - Building Better Worlds</b>
+				<b style='font-size: 12px;'>Weyland-Yutani - Building Better Worlds</b>
 				<h1>Autonomous Power Loader Unit \"Ripley\"</h1>
 				</center>
 				<h2>Specifications:</h2>
@@ -401,10 +401,10 @@
 					<li>Secure the mainboard with a screwdriver.</li>
 					<li>Install the peripherals control module (Not included. Use supplied datadisk to create one).</li>
 					<li>Secure the peripherals control module with a screwdriver.</li>
-					<li>Install the internal armor plating (Not included due to NanoTrasen regulations. Can be made using 5 metal sheets).</li>
+					<li>Install the internal armor plating (Not included due to Weyland-Yutani regulations. Can be made using 5 metal sheets).</li>
 					<li>Secure the internal armor plating with a wrench.</li>
 					<li>Weld the internal armor plating to the chassis.</li>
-					<li>Install the external reinforced armor plating (Not included due to NanoTrasen regulations. Can be made using 5 reinforced metal sheets).</li>
+					<li>Install the external reinforced armor plating (Not included due to Weyland-Yutani regulations. Can be made using 5 reinforced metal sheets).</li>
 					<li>Secure the external reinforced armor plating with a wrench.</li>
 					<li>Weld the external reinforced armor plating to the chassis.</li>
 				</ol>
@@ -416,7 +416,7 @@
 					<li>Internal armor is plasteel for additional strength.</li>
 					<li>External armor must be installed in 2 parts, totalling 10 sheets.</li>
 					<li>Completed mech is more resilient against fire, and is a bit more durable overall.</li>
-					<li>NanoTrasen is determined to ensure the safety of its <s>investments</s> employees.</li>
+					<li>Weyland-Yutani is determined to ensure the safety of its <s>investments</s> employees.</li>
 				</ul>
 				</body>
 			</html>
@@ -535,7 +535,7 @@
 				This useful piece of equipment will suck power out of the power systems to charge a cyborg's power cell back up to full charge.
 
 				<h3>Robotics Control Console</h3>
-				This useful piece of equipment can be used to immobilize or destroy a cyborg. A word of warning: Cyborgs are expensive pieces of equipment, do not destroy them without good reason, or NanoTrasen may see to it that it never happens again.
+				This useful piece of equipment can be used to immobilize or destroy a cyborg. A word of warning: Cyborgs are expensive pieces of equipment, do not destroy them without good reason, or Weyland-Yutani may see to it that it never happens again.
 
 
 				<h2><a name="Modules">Cyborg Modules</h2>
@@ -682,7 +682,7 @@
 					<li>Expose the cyborg's internal wiring</li>
 					<li>Check to make sure the LawSync and AI Sync lights are lit</li>
 					<li>If they are not lit, pulse the LawSync wire using a multitool to enable the cyborg's LawSync</li>
-					<li>Proceed to a cyborg upload console. NanoTrasen usually places these in the same location as AI upload consoles.</li>
+					<li>Proceed to a cyborg upload console. Weyland-Yutani usually places these in the same location as AI upload consoles.</li>
 					<li>Use a "Reset" upload moduleto reset the cyborg's laws</li>
 					<li>Proceed to a Robotics Control console</li>
 					<li>Remove the lockdown on the cyborg</li>
@@ -690,7 +690,7 @@
 
 				<h3>As a last resort</h3>
 				If all else fails in a case of cyborg-related emergency, there may be only one option. Using a Robotics Control console, you may have to remotely detonate the cyborg.
-				<h3>WARNING:</h3> Do not detonate a borg without an explicit reason for doing so. Cyborgs are expensive pieces of NanoTrasen equipment, and you may be punished for detonating them without reason.
+				<h3>WARNING:</h3> Do not detonate a borg without an explicit reason for doing so. Cyborgs are expensive pieces of Weyland-Yutani equipment, and you may be punished for detonating them without reason.
 
 				</body>
 			</html>
@@ -698,11 +698,11 @@
 
 
 /obj/item/book/manual/security_space_law
-	name = "Corporate Regulations"
-	desc = "A set of NanoTrasen guidelines for keeping law and order on their space stations."
+	name = "Standard Operating Procedure"
+	desc = "A set of USCM guidelines for keeping law and order on their vessels."
 	icon_state = "bookSpaceLaw"
-	author = "NanoTrasen"
-	title = "Corporate Regulations"
+	author = "USCM High Command"
+	title = "Standard Operating Procedure"
 
 	dat = {"
 
@@ -721,7 +721,7 @@
 	name = "Marine Law"
 	desc = "A set of guidelines for keeping law and order on military vessels."
 	icon_state = "bookSpaceLaw"
-	author = "The Company"
+	author = "USCM High Command"
 	title = "Marine Law"
 
 	dat = {"
@@ -742,7 +742,7 @@
 	name = "Surgical Reference Manual"
 	desc = "A quick reference manual for surgical procedures."
 	icon_state = "bookMedical"
-	author = "Weston-Yamada Medicine Department"
+	author = "Weyland-Yutani Medicine Department"
 	title = "Surgical Reference Manual"
 
 	dat = {"
@@ -763,7 +763,7 @@
 	name = "WY Medical Diagnostics Manual"
 	desc = "First, do no harm. A detailed medical practitioner's guide."
 	icon_state = "bookMedical"
-	author = "Weston-Yamada Medicine Department"
+	author = "Weyland-Yutani Medicine Department"
 	title = "WY Medical Diagnostics Manual"
 
 	dat = {"<html>
@@ -781,7 +781,7 @@
 				<br>
 				<h1>The Oath</h1>
 
-				<i>The Medical Oath sworn by recognised medical practitioners in the employ of Weston-Yamada</i><br>
+				<i>The Medical Oath sworn by recognised medical practitioners in the employ of Weyland-Yutani</i><br>
 
 				<ol>
 					<li>Now, as a new doctor, I solemnly promise that I will, to the best of my ability, serve humanity-caring for the sick, promoting good health, and alleviating pain and suffering.</li>
@@ -941,7 +941,7 @@
 /obj/item/book/manual/detective
 	name = "The Film Noir: Proper Procedures for Investigations"
 	icon_state ="bookDetective"
-	author = "NanoTrasen"
+	author = "Weyland-Yutani"
 	title = "The Film Noir: Proper Procedures for Investigations"
 
 	dat = {"<html>
@@ -984,7 +984,7 @@
 /obj/item/book/manual/nuclear
 	name = "Fission Mailed: Nuclear Sabotage 101"
 	icon_state ="bookNuclear"
-	author = "Syndicate"
+	author = "The Colonial Liberation Front"
 	title = "Fission Mailed: Nuclear Sabotage 101"
 
 	dat = {"<html>
@@ -1000,7 +1000,7 @@
 				</head>
 				<body>
 				<h1>Nuclear Explosives 101</h1>
-				Hello and thank you for choosing the Syndicate for your nuclear information needs. Today's crash course will deal with the operation of a Fusion Class NanoTrasen made Nuclear Device.<br><br>
+				Hello and thank you for choosing the CLF for your nuclear information needs. Today's crash course will deal with the operation of a Fusion Class Weyland-Yutani made Nuclear Device.<br><br>
 
 				First and foremost, DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE. Pressing any button on the compacted bomb will cause it to extend and bolt itself into place. If this is done, to unbolt it, one must completely log in, which at this time may not be possible.<br>
 
@@ -1025,7 +1025,7 @@
 
 				Remember the order:<br>
 				<b>Disk, Code, Safety, Timer, Disk, RUN!</b><br><br>
-				Intelligence Analysts believe that normal NanoTrasen procedure is for the Captain to secure the nuclear authentication disk.<br><br>
+				Intelligence Analysts believe that normal Weyland-Yutani procedure is for the Commanding Officer, or Captain, to secure the nuclear authentication disk.<br><br>
 
 				Good luck!
 				</body>
@@ -1275,7 +1275,7 @@
 					<li>Open the Orbital Cannon Console's interface.</li>
 					<li>Load the Tray into the Cannon.</li>
 					<li>Chamber the Tray's content into the cannon barrel. <b>(can't be undone!)</b></li>
-					<li>Staff Officers can now fire the Orbital Cannon from their console.</li>
+					<li>The CIC staff can now fire the Orbital Cannon from any overwatch console.</li>
 					<li>After firing, unload the Tray from the Orbital Cannon.</li>
 					<li>Inspect the Tray to make sure it is empty and operational.</li>
 				</ol>

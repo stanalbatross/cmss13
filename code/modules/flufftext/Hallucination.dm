@@ -163,7 +163,7 @@ mob/living/carbon/proc/handle_hallucinations()
 						possible_points += F
 					if(possible_points.len)
 						var/turf/open/floor/target = pick(possible_points)
-						switch(rand(1,4))
+						switch(rand(1,3))
 							if(1)
 								halbody = image('icons/mob/humans/human.dmi',target,"husk_l",TURF_LAYER)
 							if(2,3)
@@ -267,7 +267,7 @@ proc/check_panel(mob/M)
 
 /obj/effect/fake_attacker/New()
 	..()
-	spawn(SECONDS_30)
+	spawn(30 SECONDS)
 		if(my_target)
 			my_target.hallucinations -= src
 		qdel(src)
@@ -279,27 +279,22 @@ proc/check_panel(mob/M)
 		my_target.hallucinations -= src
 		my_target = null
 	weap = null
-	QDEL_NULL(currentimage)
-	QDEL_NULL(left)
-	QDEL_NULL(right)
-	QDEL_NULL(up)
-	QDEL_NULL(down)
+	currentimage = null
+	left = null
+	up = null
+	down = null
 	return ..()
 
 /obj/effect/fake_attacker
 	proc/updateimage()
 
 		if(src.dir == NORTH)
-			qdel(src.currentimage)
 			src.currentimage = new /image(up,src)
 		else if(src.dir == SOUTH)
-			qdel(src.currentimage)
 			src.currentimage = new /image(down,src)
 		else if(src.dir == EAST)
-			qdel(src.currentimage)
 			src.currentimage = new /image(right,src)
 		else if(src.dir == WEST)
-			qdel(src.currentimage)
 			src.currentimage = new /image(left,src)
 		my_target << currentimage
 
@@ -311,7 +306,7 @@ proc/check_panel(mob/M)
 				collapse()
 				continue
 			if(get_dist(src,my_target) > 1)
-				src.dir = get_dir(src,my_target)
+				setDir(get_dir(src,my_target))
 				step_towards(src,my_target)
 				updateimage()
 			else
@@ -344,7 +339,7 @@ proc/check_panel(mob/M)
 	O.name = "blood"
 	var/image/I = image('icons/effects/blood.dmi',O,"floor[rand(1,7)]",O.dir,1)
 	target << I
-	QDEL_IN(O, SECONDS_30)
+	QDEL_IN(O, 30 SECONDS)
 	return
 
 var/list/non_fakeattack_weapons = list(/obj/item/device/aicard,\

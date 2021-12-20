@@ -1,4 +1,10 @@
-/mob/living/carbon/Life()
+/mob/living/carbon/Initialize()
+	. = ..()
+	hunter_data = new /datum/huntdata
+	hunter_data.name = "[src.real_name]'s Hunter Data"
+	hunter_data.owner = src
+
+/mob/living/carbon/Life(delta_time)
 	..()
 
 	handle_fire() //Check if we're on fire
@@ -6,18 +12,18 @@
 /mob/living/carbon/Destroy()
 	QDEL_NULL_LIST(internal_organs)
 
-	for(var/datum/disease/virus in viruses)
-		virus.cure()
-
 	. = ..()
 
-	if(handcuffed)
-		QDEL_NULL(handcuffed)
+	QDEL_NULL(handcuffed)
+	QDEL_NULL(legcuffed)
+	QDEL_NULL(halitem)
 
-	if(legcuffed)
-		QDEL_NULL(legcuffed)
+	hunter_data?.clean_data()
+	hunter_data = null
+	stomach_contents?.Cut()
+	halimage = null
+	halbody = null
 
-	stomach_contents.Cut() //movable atom's Dispose() deletes all content, we clear stomach_contents to be safe.
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
@@ -54,14 +60,13 @@
 			playsound(user.loc, 'sound/effects/attackblob.ogg', 25, 1)
 
 			if(prob(max(4*(100*getBruteLoss()/maxHealth - 75),0))) //4% at 24% health, 80% at 5% health
-				last_damage_source = "chestbursting"
-				last_damage_mob = user
-				gib("chestbursting")
+				last_damage_data = create_cause_data("chestbursting", user)
+				gib(last_damage_data)
 	else if(!chestburst && (status_flags & XENO_HOST) && isXenoLarva(user))
 		var/mob/living/carbon/Xenomorph/Larva/L = user
 		L.chest_burst(src)
 
-/mob/living/carbon/ex_act(var/severity, var/direction, var/source, var/source_mob)
+/mob/living/carbon/ex_act(var/severity, var/direction, var/datum/cause_data/cause_data)
 
 	if(lying)
 		severity *= EXPLOSION_PRONE_MULTIPLIER
@@ -69,13 +74,10 @@
 	if(severity >= 30)
 		flash_eyes()
 
-	if(source)
-		last_damage_source = source
-	if(source_mob)
-		last_damage_mob = source_mob
+	last_damage_data = cause_data
 
 	if(severity >= health && severity >= EXPLOSION_THRESHOLD_GIB)
-		gib(source)
+		gib(cause_data)
 		return
 
 	apply_damage(severity, BRUTE)
@@ -118,9 +120,49 @@
 	recalculate_move_delay = TRUE
 	..()
 
+/mob/living/carbon/human/attackby(obj/item/W, mob/living/user)
+	if(user.mob_flags & SURGERY_MODE_ON)
+		switch(user.a_intent)
+			if(INTENT_HELP)
+				//Attempt to dig shrapnel first, if any. dig_out_shrapnel_check() will fail if user is not human, which may be possible in future.
+				if(W.flags_item & CAN_DIG_SHRAPNEL && (locate(/obj/item/shard) in src.embedded_items) && W.dig_out_shrapnel_check(src, user))
+					return TRUE
+				var/datum/surgery/current_surgery = active_surgeries[user.zone_selected]
+				if(current_surgery)
+					if(current_surgery.attempt_next_step(user, W))
+						return TRUE //Cancel attack.
+				else
+					var/obj/limb/affecting = get_limb(check_zone(user.zone_selected))
+					if(initiate_surgery_moment(W, src, affecting, user))
+						return TRUE
+
+			if(INTENT_DISARM) //Same as help but without the shrapnel dig attempt.
+				var/datum/surgery/current_surgery = active_surgeries[user.zone_selected]
+				if(current_surgery)
+					if(current_surgery.attempt_next_step(user, W))
+						return TRUE
+				else
+					var/obj/limb/affecting = get_limb(check_zone(user.zone_selected))
+					if(initiate_surgery_moment(W, src, affecting, user))
+						return TRUE
+
+	else if(W.flags_item & CAN_DIG_SHRAPNEL && W.dig_out_shrapnel_check(src, user))
+		return TRUE
+
+	. = ..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
 	if(!istype(M, /mob/living/carbon)) return
+
+	if(M.mob_flags & SURGERY_MODE_ON && M.a_intent & (INTENT_HELP|INTENT_DISARM))
+		var/datum/surgery/current_surgery = active_surgeries[M.zone_selected]
+		if(current_surgery)
+			if(current_surgery.attempt_next_step(M, null))
+				return TRUE
+		else
+			var/obj/limb/affecting = get_limb(check_zone(M.zone_selected))
+			if(initiate_surgery_moment(null, src, affecting, M))
+				return TRUE
 
 	for(var/datum/disease/D in viruses)
 		if(D.spread_by_touch())
@@ -130,7 +172,7 @@
 		if(D.spread_by_touch())
 			contract_disease(D, 0, 1, CONTACT_HANDS)
 
-	next_move += 7 //Adds some lag to the 'attack'
+	M.next_move += 7 //Adds some lag to the 'attack'. Adds up to 11 in combination with click_adjacent.
 	return
 
 /mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0, var/def_zone = null)
@@ -155,9 +197,9 @@
 		else
 			Stun(6)//This should work for now, more is really silly and makes you lay there forever
 			KnockDown(6)
-		
+
 		count_niche_stat(STATISTICS_NICHE_SHOCK)
-		
+
 	else
 		src.visible_message(
 			SPAN_DANGER("[src] was mildly shocked by the [source]."), \
@@ -179,7 +221,7 @@
 		if(offhand && (offhand.flags_item & WIELDED))
 			to_chat(src, SPAN_WARNING("Your other hand is too busy holding \the [offhand.name]")) //So it's an offhand.
 			return
-		else 
+		else
 			wielded_item.unwield(src) //Get rid of it.
 	if(wielded_item && wielded_item.zoom) //Adding this here while we're at it
 		wielded_item.zoom(src)
@@ -255,7 +297,7 @@
 		if(hud_used && hud_used.throw_icon)
 			hud_used.throw_icon.icon_state = "act_throw_off"
 		return
-	
+
 	throw_mode = type
 	if(!hud_used || !hud_used.throw_icon)
 		return
@@ -312,8 +354,13 @@
 	else //real item in hand, not a grab
 		thrown_thing = I
 
+
+
 	//actually throw it!
 	if(thrown_thing)
+
+		if(!(thrown_thing.try_to_throw(src)))
+			return
 		visible_message(SPAN_WARNING("[src] has thrown [thrown_thing]."), null, null, 5)
 
 		if(!lastarea)
@@ -324,7 +371,7 @@
 
 		if(throw_type == THROW_MODE_HIGH)
 			to_chat(src, SPAN_NOTICE("You prepare to perform a high toss."))
-			if(!do_after(src, SECONDS_1, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+			if(!do_after(src, 1 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 				to_chat(src, SPAN_WARNING("You need to set up the high toss!"))
 				return
 			drop_inv_item_on_ground(I, TRUE)
@@ -431,10 +478,7 @@
 		SPAN_NOTICE("You extinguished the fire on [src]."), null, 5)
 
 /mob/living/carbon/resist_buckle()
-	if(istype(buckled, /obj/structure/bed/nest))
-		buckled.manual_unbuckle(src)
-		return
-		
+
 	if(handcuffed)
 		next_move = world.time + 100
 		last_special = world.time + 100
@@ -448,3 +492,27 @@
 			buckled.manual_unbuckle(src)
 	else
 		buckled.manual_unbuckle(src)
+
+/mob/living/carbon/examine(mob/user)
+	. = ..()
+	if(isYautja(user))
+		to_chat(user, SPAN_BLUE("[src] is worth [max(life_kills_total, 1)] honor."))
+		if(src.hunter_data.hunted)
+			to_chat(user, SPAN_ORANGE("[src] is being hunted by [src.hunter_data.hunter.real_name]."))
+
+		if(src.hunter_data.dishonored)
+			to_chat(user, SPAN_RED("[src] was marked as dishonorable for '[src.hunter_data.dishonored_reason]'."))
+		else if(src.hunter_data.honored)
+			to_chat(user, SPAN_GREEN("[src] was honored for '[src.hunter_data.honored_reason]'."))
+
+		if(src.hunter_data.thralled)
+			to_chat(user, SPAN_GREEN("[src] was thralled by [src.hunter_data.thralled_set.real_name] for '[src.hunter_data.thralled_reason]'."))
+		else if(src.hunter_data.gear)
+			to_chat(user, SPAN_RED("[src] was marked as carrying gear by [src.hunter_data.gear_set]."))
+
+/mob/living/carbon/get_vv_options()
+	. = ..()
+	. += "<option value>-----CARBON-----</option>"
+	. += "<option value='?_src_=vars;changehivenumber=\ref[src]'>Change Hivenumber</option>"
+	. += "<option value='?_src_=vars;addtrait=\ref[src]'>Add Trait</option>"
+	. += "<option value='?_src_=vars;removetrait=\ref[src]'>Remove Trait</option>"

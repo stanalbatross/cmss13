@@ -31,14 +31,14 @@
 	if (PF)
 		PF.flags_pass = PASS_FLAGS_CRAWLER
 
-/mob/living/simple_animal/cat/Life()
+/mob/living/simple_animal/cat/Life(delta_time)
 	//MICE!
 	if((src.loc) && isturf(src.loc))
 		if(!stat && !resting && !buckled)
 			for(var/mob/living/simple_animal/mouse/M in view(1,src))
 				if(!M.stat)
 					M.splat()
-					emote(pick("bites \the [M]!","toys with \the [M].","chomps on \the [M]!"))
+					INVOKE_ASYNC(src, .proc/emote, pick("bites \the [M]!","toys with \the [M].","chomps on \the [M]!"))
 					movement_target = null
 					stop_automated_movement = 0
 					break
@@ -47,7 +47,7 @@
 
 	for(var/mob/living/simple_animal/mouse/snack in oview(src, 3))
 		if(prob(15))
-			emote(pick("hisses and spits!","mrowls fiercely!","eyes [snack] hungrily."))
+			INVOKE_ASYNC(src, .proc/emote, pick("hisses and spits!","mrowls fiercely!","eyes [snack] hungrily."))
 		break
 
 	if(!stat && !resting && !buckled)
@@ -56,9 +56,10 @@
 /mob/living/simple_animal/cat/death()
 	. = ..()
 	if(!.)	return //was already dead
-	if(last_damage_mob)
-		var/mob/user = last_damage_mob
-		user.count_niche_stat(STATISTICS_NICHE_CAT)
+	if(last_damage_data)
+		var/mob/user = last_damage_data.resolve_mob()
+		if(user)
+			user.count_niche_stat(STATISTICS_NICHE_CAT)
 
 /mob/living/simple_animal/cat/proc/handle_movement_target()
 	turns_since_scan++
@@ -121,3 +122,14 @@
 	icon_living = "kitten"
 	icon_dead = "kitten_dead"
 	gender = NEUTER
+
+/mob/living/simple_animal/cat/George
+	name = "George"
+	desc = "A caracal with very floppy ears. Its mere presence inspires fear."
+	icon_state = "floppa"
+	icon_living = "floppa"
+	icon_dead = "floppa_dead"
+	health = 200
+	maxHealth = 200
+	holder_type = /obj/item/holder/George
+	//I love it when you call me big floppa! Put ya hands in the air if you's a true playa!

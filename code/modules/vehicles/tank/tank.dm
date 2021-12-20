@@ -1,5 +1,5 @@
 /obj/vehicle/multitile/tank
-	name = "\improper M34A2 Longstreet Light Tank"
+	name = "M34A2 Longstreet Light Tank"
 	desc = "A giant piece of armor with a big gun, you know what to do. Entrance in the back."
 
 	icon = 'icons/obj/vehicles/tank.dmi'
@@ -14,6 +14,13 @@
 	bound_y = -32
 
 	interior_map = "tank"
+
+	//tank always has 1 crewmen slot reserved and 1 general slot for other roles.
+	passengers_slots = 1
+	//this is done in case VCs die inside the tank, so that someone else can come in and take them out.
+	revivable_dead_slots = 2
+	xenos_slots = 4
+
 	entrances = list(
 		"back" = list(0, 2)
 	)
@@ -23,7 +30,11 @@
 
 	required_skill = SKILL_VEHICLE_LARGE
 
-	max_momentum = 3
+	vehicle_flags = VEHICLE_CLASS_MEDIUM
+
+	move_max_momentum = 3
+	move_momentum_build_factor = 1.8
+	move_turn_momentum_loss_factor = 0.6
 
 	luminosity = 7
 
@@ -65,12 +76,23 @@
 	explosive_resistance = 400
 
 /obj/vehicle/multitile/tank/initialize_cameras(var/change_tag = FALSE)
-	if(!camera_int)
-		camera_int = new /obj/structure/machinery/camera/vehicle(src)
+	if(!camera)
+		camera = new /obj/structure/machinery/camera/vehicle(src)
 	if(change_tag)
-		camera_int.c_tag = "#[rand(1,100)] M34A2 \"[nickname]\" Tank" //this fluff allows it to be at the start of cams list
+		camera.c_tag = "#[rand(1,100)] M34A2 \"[nickname]\" Tank" //this fluff allows it to be at the start of cams list
+		if(camera_int)
+			camera_int.c_tag = camera.c_tag + " interior" //this fluff allows it to be at the start of cams list
 	else
-		camera_int.c_tag = "#[rand(1,100)] M34A2 Tank"
+		camera.c_tag = "#[rand(1,100)] M34A2 Tank"
+		if(camera_int)
+			camera_int.c_tag = camera.c_tag + " interior" //this fluff allows it to be at the start of cams list
+
+/obj/vehicle/multitile/tank/load_role_reserved_slots()
+	var/datum/role_reserved_slots/RRS = new
+	RRS.category_name = "Crewmen"
+	RRS.roles = list(JOB_CREWMAN, JOB_UPP_CREWMAN)
+	RRS.total = 1
+	role_reserved_slots += RRS
 
 /obj/vehicle/multitile/tank/load_hardpoints()
 	add_hardpoint(new /obj/item/hardpoint/holder/tank_turret)

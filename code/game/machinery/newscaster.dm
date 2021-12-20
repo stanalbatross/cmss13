@@ -52,7 +52,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 /obj/structure/machinery/newscaster
 	name = "newscaster"
-	desc = "A standard Nanotrasen-licensed newsfeed handler for use in commercial space stations. All the news you absolutely have no use for, in one place!"
+	desc = "A standard Weyland-Yutani-licensed newsfeed handler for use in commercial space stations. All the news you absolutely have no use for, in one place!"
 	icon = 'icons/obj/structures/machinery/terminals.dmi'
 	icon_state = "newscaster_normal"
 	var/isbroken = 0  //1 if someone banged it with something heavy
@@ -185,7 +185,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		switch(screen)
 			if(0)
 				dat += "Welcome to Newscasting Unit #[src.unit_no].<BR> Interface & News networks Operational."
-				dat += "<BR><FONT SIZE=1>Property of Weston-Yamada</FONT>"
+				dat += "<BR><FONT SIZE=1>Property of Weyland-Yutani</FONT>"
 				if(news_network.wanted_issue)
 					dat+= "<HR><A href='?src=\ref[src];view_wanted=1'>Read Wanted Issue</A>"
 				dat+= "<HR><BR><A href='?src=\ref[src];create_channel=1'>Create Feed Channel</A>"
@@ -202,7 +202,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 					dat+="<HR><B>Feed Security functions:</B><BR>"
 					dat+="<BR><A href='?src=\ref[src];menu_wanted=1'>[(wanted_already) ? ("Manage") : ("Publish")] \"Wanted\" Issue</A>"
 					dat+="<BR><A href='?src=\ref[src];menu_censor_story=1'>Censor Feed Stories</A>"
-					dat+="<BR><A href='?src=\ref[src];menu_censor_channel=1'>Mark Feed Channel with Nanotrasen D-Notice</A>"
+					dat+="<BR><A href='?src=\ref[src];menu_censor_channel=1'>Mark Feed Channel with Weyland-Yutani D-Notice</A>"
 				dat+="<BR><HR>The newscaster recognises you as: <FONT COLOR='green'>[src.scanned_user]</FONT>"
 			if(1)
 				dat+= "Station Feed Channels<HR>"
@@ -293,7 +293,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 			if(9)
 				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[created by: <FONT COLOR='maroon'>[src.viewing_channel.author]</FONT>\]</FONT><HR>"
 				if(src.viewing_channel.censored)
-					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a Nanotrasen D-Notice.<BR>"
+					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a Weyland-Yutani D-Notice.<BR>"
 					dat+="No further feed story additions are allowed while the D-Notice is in effect.</FONT><BR><BR>"
 				else
 					if(!length(src.viewing_channel.messages) )
@@ -310,7 +310,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 				dat+="<BR><HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[1]'>Back</A>"
 			if(10)
-				dat+="<B>Nanotrasen Feed Censorship Tool</B><BR>"
+				dat+="<B>Weyland-Yutani Feed Censorship Tool</B><BR>"
 				dat+="<FONT SIZE=1>NOTE: Due to the nature of news Feeds, total deletion of a Feed Story is not possible.<BR>"
 				dat+="Keep in mind that users attempting to view a censored feed will instead see the \[REDACTED\] tag above it.</FONT>"
 				dat+="<HR>Select Feed channel to get Stories from:<BR>"
@@ -321,7 +321,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 						dat+="<A href='?src=\ref[src];pick_censor_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A> [(CHANNEL.censored) ? ("<FONT COLOR='red'>***</FONT>") : null]<BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A>"
 			if(11)
-				dat+="<B>Nanotrasen D-Notice Handler</B><HR>"
+				dat+="<B>Weyland-Yutani D-Notice Handler</B><HR>"
 				dat+="<FONT SIZE=1>A D-Notice is to be bestowed upon the channel if the handling Authority deems it as harmful for the station's"
 				dat+="morale, integrity or disciplinary behaviour. A D-Notice will render a channel unable to be updated by anyone, without deleting any feed"
 				dat+="stories it might contain at the time. You can lift a D-Notice if you have the required access at any time.</FONT><HR>"
@@ -348,7 +348,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[ created by: <FONT COLOR='maroon'>[src.viewing_channel.author]</FONT> \]</FONT><BR>"
 				dat+="Channel messages listed below. If you deem them dangerous to the station, you can <A href='?src=\ref[src];toggle_d_notice=\ref[src.viewing_channel]'>Bestow a D-Notice upon the channel</A>.<HR>"
 				if(src.viewing_channel.censored)
-					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a Nanotrasen D-Notice.<BR>"
+					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the station, and marked with a Weyland-Yutani D-Notice.<BR>"
 					dat+="No further feed story additions are allowed while the D-Notice is in effect.</FONT><BR><BR>"
 				else
 					if(!length(src.viewing_channel.messages) )
@@ -481,7 +481,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 			for(var/datum/feed_channel/F in news_network.network_channels)
 				if( (!F.locked || F.author == scanned_user) && !F.censored)
 					available_channels += F.channel_name
-			src.channel_name = strip_html(input(usr, "Choose receiving Feed Channel", "Network Channel Handler") in available_channels )
+			src.channel_name = strip_html(tgui_input_list(usr, "Choose receiving Feed Channel", "Network Channel Handler", available_channels ))
 			src.updateUsrDialog()
 
 		else if(href_list["set_new_message"])
@@ -584,7 +584,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 						src.screen = 15
 					else
 						if(news_network.wanted_issue.is_admin_message)
-							alert("The wanted issue has been distributed by a Nanotrasen higherup. You cannot edit it.","Ok")
+							alert("The wanted issue has been distributed by a Weyland-Yutani higherup. You cannot edit it.","Ok")
 							return
 						news_network.wanted_issue.author = src.channel_name
 						news_network.wanted_issue.body = src.msg
@@ -597,7 +597,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 		else if(href_list["cancel_wanted"])
 			if(news_network.wanted_issue.is_admin_message)
-				alert("The wanted issue has been distributed by a Nanotrasen higherup. You cannot take it down.","Ok")
+				alert("The wanted issue has been distributed by a Weyland-Yutani higherup. You cannot take it down.","Ok")
 				return
 			var/choice = alert("Please confirm Wanted Issue removal","Network Security Handler","Confirm","Cancel")
 			if(choice=="Confirm")
@@ -613,7 +613,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		else if(href_list["censor_channel_author"])
 			var/datum/feed_channel/FC = locate(href_list["censor_channel_author"])
 			if(FC.is_admin_channel)
-				alert("This channel was created by a Nanotrasen Officer. You cannot censor it.","Ok")
+				alert("This channel was created by a Weyland-Yutani Officer. You cannot censor it.","Ok")
 				return
 			if(FC.author != "<B>\[REDACTED\]</B>")
 				FC.backup_author = FC.author
@@ -625,7 +625,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		else if(href_list["censor_channel_story_author"])
 			var/datum/feed_message/MSG = locate(href_list["censor_channel_story_author"])
 			if(MSG.is_admin_message)
-				alert("This message was created by a Nanotrasen Officer. You cannot censor its author.","Ok")
+				alert("This message was created by a Weyland-Yutani Officer. You cannot censor its author.","Ok")
 				return
 			if(MSG.author != "<B>\[REDACTED\]</B>")
 				MSG.backup_author = MSG.author
@@ -637,7 +637,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		else if(href_list["censor_channel_story_body"])
 			var/datum/feed_message/MSG = locate(href_list["censor_channel_story_body"])
 			if(MSG.is_admin_message)
-				alert("This channel was created by a Nanotrasen Officer. You cannot censor it.","Ok")
+				alert("This channel was created by a Weyland-Yutani Officer. You cannot censor it.","Ok")
 				return
 			if(MSG.img != null)
 				MSG.backup_img = MSG.img
@@ -660,7 +660,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 		else if(href_list["toggle_d_notice"])
 			var/datum/feed_channel/FC = locate(href_list["toggle_d_notice"])
 			if(FC.is_admin_channel)
-				alert("This channel was created by a Nanotrasen Officer. You cannot place a D-Notice upon it.","Ok")
+				alert("This channel was created by a Weyland-Yutani Officer. You cannot place a D-Notice upon it.","Ok")
 				return
 			FC.censored = !FC.censored
 			src.updateUsrDialog()
@@ -752,7 +752,7 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 
 /obj/item/newspaper
 	name = "newspaper"
-	desc = "An issue of The Griffon, the newspaper circulating aboard Nanotrasen Space Stations."
+	desc = "An issue of The Griffon, the newspaper circulating aboard Weyland-Yutani Space Stations."
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "newspaper"
 	w_class = SIZE_TINY	//Let's make it fit in trashbags!
@@ -766,83 +766,85 @@ var/list/obj/structure/machinery/newscaster/allCasters = list() //Global list th
 	var/scribble_page = null
 
 obj/item/newspaper/attack_self(mob/user as mob)
-	if(ishuman(user))
-		var/mob/living/carbon/human/human_user = user
-		var/dat
-		src.pages = 0
-		switch(screen)
-			if(0) //Cover
-				dat+="<DIV ALIGN='center'><B><FONT SIZE=6>The Griffon</FONT></B></div>"
-				dat+="<DIV ALIGN='center'><FONT SIZE=2>Nanotrasen-standard newspaper, for use on Nanotrasen� Space Facilities</FONT></div><HR>"
-				if(!length(src.news_content))
-					if(src.important_message)
-						dat+="Contents:<BR><ul><B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR></ul>"
-					else
-						dat+="<I>Other than the title, the rest of the newspaper is unprinted...</I>"
+	..()
+	if(!ishuman(user))
+		to_chat(user, "The paper is full of intelligible symbols!")
+		return
+
+	var/mob/living/carbon/human/human_user = user
+	var/dat
+	src.pages = 0
+	switch(screen)
+		if(0) //Cover
+			dat+="<DIV ALIGN='center'><B><FONT SIZE=6>The Griffon</FONT></B></div>"
+			dat+="<DIV ALIGN='center'><FONT SIZE=2>Weyland-Yutani-standard newspaper, for use on Weyland-Yutani� Space Facilities</FONT></div><HR>"
+			if(!length(src.news_content))
+				if(src.important_message)
+					dat+="Contents:<BR><ul><B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR></ul>"
 				else
-					dat+="Contents:<BR><ul>"
-					for(var/datum/feed_channel/NP in src.news_content)
-						src.pages++
-					if(src.important_message)
-						dat+="<B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR>"
-					var/temp_page=0
-					for(var/datum/feed_channel/NP in src.news_content)
-						temp_page++
-						dat+="<B>[NP.channel_name]</B> <FONT SIZE=2>\[page [temp_page+1]\]</FONT><BR>"
-					dat+="</ul>"
-				if(scribble_page==curr_page)
-					dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
-				dat+= "<HR><DIV STYLE='float:right;'><A href='?src=\ref[src];next_page=1'>Next Page</A></DIV> <div style='float:left;'><A href='?src=\ref[human_user];mach_close=newspaper_main'>Done reading</A></DIV>"
-			if(1) // X channel pages inbetween.
-				for(var/datum/feed_channel/NP in src.news_content)
-					src.pages++ //Let's get it right again.
-				var/datum/feed_channel/C = src.news_content[src.curr_page]
-				dat+="<FONT SIZE=4><B>[C.channel_name]</B></FONT><FONT SIZE=1> \[created by: <FONT COLOR='maroon'>[C.author]</FONT>\]</FONT><BR><BR>"
-				if(C.censored)
-					dat+="This channel was deemed dangerous to the general welfare of the station and therefore marked with a <B><FONT COLOR='red'>D-Notice</B></FONT>. Its contents were not transferred to the newspaper at the time of printing."
-				else
-					if(!length(C.messages))
-						dat+="No Feed stories stem from this channel..."
-					else
-						dat+="<ul>"
-						var/i = 0
-						for(var/datum/feed_message/MESSAGE in C.messages)
-							i++
-							dat+="-[MESSAGE.body] <BR>"
-							if(MESSAGE.img)
-								user << browse_rsc(MESSAGE.img, "tmp_photo[i].png")
-								dat+="<img src='tmp_photo[i].png' width = '180'><BR>"
-							dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR><BR>"
-						dat+="</ul>"
-				if(scribble_page==curr_page)
-					dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
-				dat+= "<BR><HR><DIV STYLE='float:left;'><A href='?src=\ref[src];prev_page=1'>Previous Page</A></DIV> <DIV STYLE='float:right;'><A href='?src=\ref[src];next_page=1'>Next Page</A></DIV>"
-			if(2) //Last page
+					dat+="<I>Other than the title, the rest of the newspaper is unprinted...</I>"
+			else
+				dat+="Contents:<BR><ul>"
 				for(var/datum/feed_channel/NP in src.news_content)
 					src.pages++
-				if(src.important_message!=null)
-					dat+="<DIV STYLE='float:center;'><FONT SIZE=4><B>Wanted Issue:</B></FONT SIZE></DIV><BR><BR>"
-					dat+="<B>Criminal name</B>: <FONT COLOR='maroon'>[important_message.author]</FONT><BR>"
-					dat+="<B>Description</B>: [important_message.body]<BR>"
-					dat+="<B>Photo:</B>: "
-					if(important_message.img)
-						user << browse_rsc(important_message.img, "tmp_photow.png")
-						dat+="<BR><img src='tmp_photow.png' width = '180'>"
-					else
-						dat+="None"
-				else
-					dat+="<I>Apart from some uninteresting Classified ads, there's nothing on this page...</I>"
-				if(scribble_page==curr_page)
-					dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
-				dat+= "<HR><DIV STYLE='float:left;'><A href='?src=\ref[src];prev_page=1'>Previous Page</A></DIV>"
+				if(src.important_message)
+					dat+="<B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR>"
+				var/temp_page=0
+				for(var/datum/feed_channel/NP in src.news_content)
+					temp_page++
+					dat+="<B>[NP.channel_name]</B> <FONT SIZE=2>\[page [temp_page+1]\]</FONT><BR>"
+				dat+="</ul>"
+			if(scribble_page==curr_page)
+				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
+			dat+= "<HR><DIV STYLE='float:right;'><A href='?src=\ref[src];next_page=1'>Next Page</A></DIV> <div style='float:left;'><A href='?src=\ref[human_user];mach_close=newspaper_main'>Done reading</A></DIV>"
+		if(1) // X channel pages inbetween.
+			for(var/datum/feed_channel/NP in src.news_content)
+				src.pages++ //Let's get it right again.
+			var/datum/feed_channel/C = src.news_content[src.curr_page]
+			dat+="<FONT SIZE=4><B>[C.channel_name]</B></FONT><FONT SIZE=1> \[created by: <FONT COLOR='maroon'>[C.author]</FONT>\]</FONT><BR><BR>"
+			if(C.censored)
+				dat+="This channel was deemed dangerous to the general welfare of the station and therefore marked with a <B><FONT COLOR='red'>D-Notice</B></FONT>. Its contents were not transferred to the newspaper at the time of printing."
 			else
-				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
+				if(!length(C.messages))
+					dat+="No Feed stories stem from this channel..."
+				else
+					dat+="<ul>"
+					var/i = 0
+					for(var/datum/feed_message/MESSAGE in C.messages)
+						i++
+						dat+="-[MESSAGE.body] <BR>"
+						if(MESSAGE.img)
+							user << browse_rsc(MESSAGE.img, "tmp_photo[i].png")
+							dat+="<img src='tmp_photo[i].png' width = '180'><BR>"
+						dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR><BR>"
+					dat+="</ul>"
+			if(scribble_page==curr_page)
+				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
+			dat+= "<BR><HR><DIV STYLE='float:left;'><A href='?src=\ref[src];prev_page=1'>Previous Page</A></DIV> <DIV STYLE='float:right;'><A href='?src=\ref[src];next_page=1'>Next Page</A></DIV>"
+		if(2) //Last page
+			for(var/datum/feed_channel/NP in src.news_content)
+				src.pages++
+			if(src.important_message!=null)
+				dat+="<DIV STYLE='float:center;'><FONT SIZE=4><B>Wanted Issue:</B></FONT SIZE></DIV><BR><BR>"
+				dat+="<B>Criminal name</B>: <FONT COLOR='maroon'>[important_message.author]</FONT><BR>"
+				dat+="<B>Description</B>: [important_message.body]<BR>"
+				dat+="<B>Photo:</B>: "
+				if(important_message.img)
+					user << browse_rsc(important_message.img, "tmp_photow.png")
+					dat+="<BR><img src='tmp_photow.png' width = '180'>"
+				else
+					dat+="None"
+			else
+				dat+="<I>Apart from some uninteresting Classified ads, there's nothing on this page...</I>"
+			if(scribble_page==curr_page)
+				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
+			dat+= "<HR><DIV STYLE='float:left;'><A href='?src=\ref[src];prev_page=1'>Previous Page</A></DIV>"
+		else
+			dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
-		dat+="<BR><HR><div align='center'>[src.curr_page+1]</div>"
-		human_user << browse(dat, "window=newspaper_main;size=300x400")
-		onclose(human_user, "newspaper_main")
-	else
-		to_chat(user, "The paper is full of intelligible symbols!")
+	dat+="<BR><HR><div align='center'>[src.curr_page+1]</div>"
+	human_user << browse(dat, "window=newspaper_main;size=300x400")
+	onclose(human_user, "newspaper_main")
 
 
 obj/item/newspaper/Topic(href, href_list)
@@ -934,7 +936,7 @@ obj/item/newspaper/attackby(obj/item/W as obj, mob/user as mob)
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"Breaking news from [channel]!\"</span>",2)
 		src.alert = 1
 		src.update_icon()
-		spawn(SECONDS_30)
+		spawn(30 SECONDS)
 			src.alert = 0
 			src.update_icon()
 		playsound(src.loc, 'sound/machines/twobeep.ogg', 25, 1)

@@ -93,7 +93,7 @@ Implant Specifics:<BR>"}
 				if(prob(60))
 					meltdown()
 			if(2)
-				delay = rand(MINUTES_5, MINUTES_15)	//from 5 to 15 minutes of free time
+				delay = rand(5 MINUTES, 15 MINUTES)	//from 5 to 15 minutes of free time
 
 		spawn(delay)
 			malfunction--
@@ -335,7 +335,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	get_data()
 		var/dat = {"
 <b>Implant Specifications:</b><BR>
-<b>Name:</b> Weston-Yamada Employee Management Implant<BR>
+<b>Name:</b> Weyland-Yutani Employee Management Implant<BR>
 <b>Life:</b> Ten years.<BR>
 <b>Important Notes:</b> Personnel injected are marked as WY property and are subject to WY overwatch.<BR>
 <HR>
@@ -397,7 +397,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	get_data()
 		var/dat = {"
 <b>Implant Specifications:</b><BR>
-<b>Name:</b> NanoTrasen \"Profit Margin\" Class Employee Lifesign Sensor<BR>
+<b>Name:</b> Weyland-Yutani \"Profit Margin\" Class Employee Lifesign Sensor<BR>
 <b>Life:</b> Activates upon death.<BR>
 <b>Important Notes:</b> Alerts crew to crewmember death.<BR>
 <HR>
@@ -464,7 +464,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	get_data()
 		var/dat = {"
 <b>Implant Specifications:</b><BR>
-<b>Name:</b> NanoTrasen \"Profit Margin\" Class Employee Lifesign Sensor<BR>
+<b>Name:</b> Weyland-Yutani \"Profit Margin\" Class Employee Lifesign Sensor<BR>
 <b>Life:</b> Activates upon death.<BR>
 <b>Important Notes:</b> Alerts crew to crewmember death.<BR>
 <HR>
@@ -491,7 +491,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		qdel(src)
 
 	implanted(mob/source as mob)
-		src.activation_emote = input("Choose activation emote:") in list("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink")
+		src.activation_emote = tgui_input_list(usr, "Choose activation emote:", "Emote", list("blink", "blink_r", "eyebrow", "chuckle", "twitch_s", "frown", "nod", "blush", "giggle", "grin", "groan", "shrug", "smile", "pale", "sniff", "whimper", "wink"))
 		if (source.mind)
 			source.mind.store_memory("Compressed matter implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
 		to_chat(source, "The implanted compressed matter implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.")

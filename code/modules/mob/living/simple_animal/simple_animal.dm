@@ -55,12 +55,12 @@
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
-	living_misc_mobs += src
+	SSmob.living_misc_mobs += src
 	remove_verb(src, /mob/verb/observe)
 
 /mob/living/simple_animal/Destroy()
-	..()
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
+	return ..()
 
 /mob/living/simple_animal/Login()
 	if(src && src.client)
@@ -70,7 +70,7 @@
 /mob/living/simple_animal/updatehealth()
 	return
 
-/mob/living/simple_animal/Life()
+/mob/living/simple_animal/Life(delta_time)
 
 	//Health
 	if(stat == DEAD)
@@ -116,27 +116,27 @@
 						length += emote_see.len
 					var/randomValue = rand(1,length)
 					if(randomValue <= speak.len)
-						say(pick(speak))
+						INVOKE_ASYNC(src, .proc/say, pick(speak))
 					else
 						randomValue -= speak.len
 						if(emote_see && randomValue <= emote_see.len)
-							emote(pick(emote_see),1)
+							INVOKE_ASYNC(src, .proc/emote, pick(emote_see),1)
 						else
-							emote(pick(emote_hear),2)
+							INVOKE_ASYNC(src, .proc/emote, pick(emote_hear),2)
 				else
-					say(pick(speak))
+					INVOKE_ASYNC(src, .proc/say, pick(speak))
 			else
 				if(!(emote_hear && emote_hear.len) && (emote_see && emote_see.len))
-					emote(pick(emote_see),1)
+					INVOKE_ASYNC(src, .proc/emote, pick(emote_see),1)
 				if((emote_hear && emote_hear.len) && !(emote_see && emote_see.len))
-					emote(pick(emote_hear),2)
+					INVOKE_ASYNC(src, .proc/emote, pick(emote_hear),2)
 				if((emote_hear && emote_hear.len) && (emote_see && emote_see.len))
 					var/length = emote_hear.len + emote_see.len
 					var/pick = rand(1,length)
 					if(pick <= emote_see.len)
-						emote(pick(emote_see),1)
+						INVOKE_ASYNC(src, .proc/emote, pick(emote_see),1)
 					else
-						emote(pick(emote_hear),2)
+						INVOKE_ASYNC(src, .proc/emote, pick(emote_hear),2)
 
 
 	//Atmos
@@ -207,12 +207,12 @@
 /mob/living/simple_animal/death()
 	. = ..()
 	if(!.)	return //was already dead
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 	icon_state = icon_dead
 
 
 /mob/living/simple_animal/gib(var/cause = "gibbing")
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 	if(meat_amount && meat_type)
 		for(var/i = 0; i < meat_amount; i++)
 			new meat_type(src.loc)
@@ -242,8 +242,7 @@
 			playsound(loc, M.attack_sound, 25, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(SPAN_DANGER("<B>[M]</B> [M.attacktext] [src]!"), 1)
-		last_damage_source = initial(M.name)
-		last_damage_mob = M
+		last_damage_data = create_cause_data(initial(M.name), M)
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -356,7 +355,8 @@
 		return
 
 	if(copytext(message,1,2) == "*")
-		return emote(copytext(message,2))
+		INVOKE_ASYNC(src, .proc/emote, copytext(message,2))
+		return
 
 	if(stat)
 		return

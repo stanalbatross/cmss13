@@ -5,6 +5,11 @@
 
 /////////////////////// Hand Labeler ////////////////////////////////
 
+/atom/proc/set_name_label(var/new_label)
+	name_label = new_label
+	name = initial(name)
+	if(name_label)
+		name += " ([name_label])"
 
 /obj/item/tool/hand_labeler
 	name = "hand labeler"
@@ -14,6 +19,9 @@
 	var/label = null
 	var/labels_left = 50
 	var/mode = 0	//off or on.
+	var/label_sound = 'sound/items/component_pickup.ogg'
+	var/remove_label_sound = 'sound/items/paper_ripped.ogg'
+
 	matter = list("metal" = 125)
 
 /obj/item/tool/hand_labeler/afterattack(atom/A, mob/user as mob, proximity)
@@ -26,9 +34,6 @@
 	if(!labels_left)
 		to_chat(user, SPAN_NOTICE("No labels left."))
 		return
-	if(!label || !length(label))
-		to_chat(user, SPAN_NOTICE("No text set."))
-		return
 	if(length(A.name) + length(label) > 64)
 		to_chat(user, SPAN_NOTICE("Label too big."))
 		return
@@ -38,31 +43,44 @@
 	if(istype(A, /obj/item/reagent_container/glass))
 		to_chat(user, SPAN_NOTICE("The label will not stick to [A]. Use a pen instead."))
 		return
-	if(istype(A, /obj/item/tool/surgery))
+	if(istype(A, /obj/item/tool/surgery) || istype(A, /obj/item/reagent_container/pill))
 		to_chat(user, SPAN_NOTICE("That wouldn't be sanitary."))
 		return
-	if(istype(A, /obj/vehicle/multitile))
+	if((istype(A, /obj/vehicle/multitile)) || (istype(A, /obj/structure))) // disallow naming structures
 		to_chat(user, SPAN_NOTICE("The label won't stick to that."))
 		return
 	if(isturf(A))
 		to_chat(user, SPAN_NOTICE("The label won't stick to that."))
 		return
+	if(!label || !length(label))
+		remove_label(A, user)
+		return
+	if(A.name_label == label)
+		to_chat(user, SPAN_NOTICE("It already has the same label."))
+		return
 
 	user.visible_message(SPAN_NOTICE("[user] labels [A] as \"[label]\"."), \
 						 SPAN_NOTICE("You label [A] as \"[label]\"."))
+
 	log_admin("[user] has labeled [A.name] with label \"[label]\". (CKEY: ([user.ckey]))")
-	A.name = "[A.name] ([label])"
+
+	A.set_name_label(label)
+
+	playsound(A, label_sound, 20, TRUE)
+
 	labels_left--
 
-/obj/item/tool/hand_labeler/attack_self(mob/user as mob)
+/obj/item/tool/hand_labeler/attack_self(mob/user)
+	..()
 	mode = !mode
 	icon_state = "labeler[mode]"
 	if(mode)
 		to_chat(user, SPAN_NOTICE("You turn on \the [src]."))
-		//Now let them chose the text.
+		//Now let them choose the text.
 		var/str = copytext(reject_bad_text(input(user,"Label text?", "Set label", "")), 1, MAX_NAME_LEN)
 		if(!str || !length(str))
-			to_chat(user, SPAN_NOTICE("Invalid text."))
+			to_chat(user, SPAN_NOTICE("Label text cleared. You can now remove labels."))
+			label = null
 			return
 		label = str
 		to_chat(user, SPAN_NOTICE("You set the text to '[str]'."))
@@ -71,6 +89,50 @@
 
 
 
+/*
+	Allow the user of the labeler to remove a label, if there is no text set
+	@A object trying to remove the label
+	@user the player using the labeler
+
+*/
+
+/obj/item/tool/hand_labeler/proc/remove_label(var/atom/A, var/mob/user)
+	if(A.name == initial(A.name))
+		to_chat(user, SPAN_NOTICE("There is no label to remove."))
+		return
+	user.visible_message(SPAN_NOTICE("[user] removes label from [A]."), \
+						 SPAN_NOTICE("You remove the label from [A]."))
+
+	log_admin("[user] has removed label from [A.name]. (CKEY: ([user.ckey]))")
+
+	A.set_name_label(null)
+
+	playsound(A, remove_label_sound, 20, TRUE)
+
+/**
+    Allow the user to refill the labeller
+    @I what is the item trying to be used
+    @user what is using paper on the handler
+*/
+
+/obj/item/tool/hand_labeler/attackby(obj/item/I, mob/user)
+	. = ..()
+	if(istype(I, /obj/item/paper))
+		if(labels_left != initial(labels_left))
+			to_chat(user, SPAN_NOTICE("You insert [I] into [src]."))
+			qdel(I) //delete the paper item
+			labels_left = initial(labels_left)
+		else
+			to_chat(user, SPAN_NOTICE("The [src] is already full."))
+
+/*
+    Instead of updating labels_left to user every label used,
+    Have the user examine it to show them.
+*/
+/obj/item/tool/hand_labeler/examine(mob/user)
+    . = ..()
+    to_chat(user, SPAN_NOTICE("It has [labels_left] out of [initial(labels_left)] labels left."))
+    to_chat(user, SPAN_HELPFUL("Use paper to refill it."))
 
 
 /*
@@ -93,6 +155,7 @@
 	var/clicky = FALSE
 
 /obj/item/tool/pen/attack_self(mob/living/carbon/human/user)
+	..()
 	on = !on
 	to_chat(user, SPAN_WARNING("You click the pen [on? "on": "off"]."))
 	if(clicky)
@@ -139,8 +202,7 @@
 		return
 	to_chat(user, SPAN_WARNING("You stab [M] with the pen."))
 //	to_chat(M, SPAN_WARNING("You feel a tiny prick!")) //That's a whole lot of meta!
-	M.last_damage_source = initial(name)
-	M.last_damage_mob = user
+	M.last_damage_data = create_cause_data(initial(name), user)
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stabbed with [name] by [key_name(user)]</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [name] to stab [key_name(M)]</font>")
 	msg_admin_attack("[key_name(user)] Used the [name] to stab [key_name(M)] in [get_area(user)] ([user.loc.x],[user.loc.y],[user.loc.z]).", user.loc.x, user.loc.y, user.loc.z)
@@ -184,10 +246,10 @@
 
 
 /obj/item/tool/pen/paralysis/attack(mob/living/M as mob, mob/user as mob)
-	if(!(istype(M,/mob)))
+	if(!(istype(M)))
 		return
 	..()
-	if(M.can_inject(user,1))
+	if(M.can_inject(user, TRUE))
 		if(reagents.total_volume)
 			if(M.reagents) reagents.trans_to(M, 50)
 

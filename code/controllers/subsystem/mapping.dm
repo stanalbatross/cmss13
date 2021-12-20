@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(mapping)
 
 	var/list/map_templates = list()
 
+	var/list/shuttle_templates = list()
+
 	var/list/areas_in_z = list()
 
 	var/list/turf/unused_turfs = list()				//Not actually unused turfs they're unused but reserved for use for whatever requests them. "[zlevel_of_turf]" = list(turfs)
@@ -58,6 +60,10 @@ SUBSYSTEM_DEF(mapping)
 	initialize_reserved_level(transit.z_value)
 	GLOB.interior_manager = new
 	repopulate_sorted_areas()
+	for(var/maptype as anything in configs)
+		var/datum/map_config/MC = configs[maptype]
+		if(MC.perf_mode)
+			GLOB.perf_flags |= MC.perf_mode
 	return ..()
 
 /datum/controller/subsystem/mapping/proc/wipe_reservations(wipe_safety_delay = 100)
@@ -150,9 +156,10 @@ SUBSYSTEM_DEF(mapping)
 	INIT_ANNOUNCE("Loading [ground_map.map_name]...")
 	Loadground(FailedZs, ground_map.map_name, ground_map.map_path, ground_map.map_file, ground_map.traits, ZTRAITS_GROUND)
 
-	var/datum/map_config/ship_map = configs[SHIP_MAP]
-	INIT_ANNOUNCE("Loading [ship_map.map_name]...")
-	Loadship(FailedZs, ship_map.map_name, ship_map.map_path, ship_map.map_file, ship_map.traits, ZTRAITS_MAIN_SHIP)
+	if(!ground_map.disable_ship_map)
+		var/datum/map_config/ship_map = configs[SHIP_MAP]
+		INIT_ANNOUNCE("Loading [ship_map.map_name]...")
+		Loadship(FailedZs, ship_map.map_name, ship_map.map_path, ship_map.map_file, ship_map.traits, ZTRAITS_MAIN_SHIP)
 
 	if(LAZYLEN(FailedZs))	//but seriously, unless the server's filesystem is messed up this will never happen
 		var/msg = "RED ALERT! The following map files failed to load: [FailedZs[1]]"
@@ -189,6 +196,8 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/map_template/T = new(path = "[path][map]", rename = "[map]")
 		map_templates[T.name] = T
 
+	preloadShuttleTemplates()
+
 /proc/generateMapList(filename)
 	. = list()
 	var/list/Lines = file2list(filename)
@@ -218,6 +227,15 @@ SUBSYSTEM_DEF(mapping)
 			continue
 
 		. += t
+
+/datum/controller/subsystem/mapping/proc/preloadShuttleTemplates()
+	for(var/item in subtypesof(/datum/map_template/shuttle))
+		var/datum/map_template/shuttle/shuttle_type = item
+
+		var/datum/map_template/shuttle/S = new shuttle_type()
+
+		shuttle_templates[S.shuttle_id] = S
+		map_templates[S.shuttle_id] = S
 
 /datum/controller/subsystem/mapping/proc/RequestBlockReservation(width, height, z, type = /datum/turf_reservation, turf_type_override)
 	UNTIL(initialized && !clearing_reserved_turfs)
@@ -298,3 +316,12 @@ SUBSYSTEM_DEF(mapping)
 	for(var/B in areas)
 		var/area/A = B
 		A.reg_in_areas_in_z()
+
+/// Gets a name for the marine ship as per the enabled ship map configuration
+/datum/controller/subsystem/mapping/proc/get_main_ship_name()
+	if(!configs)
+		return MAIN_SHIP_DEFAULT_NAME
+	var/datum/map_config/MC = configs[SHIP_MAP]
+	if(!MC)
+		return MAIN_SHIP_DEFAULT_NAME
+	return MC.map_name

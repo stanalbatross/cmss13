@@ -114,7 +114,7 @@
 	if(last_reduction_update > world.time || amount <= reduction_pain) // Needed so pain meds cant spam us, neccesary evil.
 		return
 
-	last_reduction_update = world.time + SECONDS_10
+	last_reduction_update = world.time + 10 SECONDS
 	reduction_pain = amount
 
 	update_pain_level()
@@ -286,7 +286,10 @@
 /datum/pain/proc/oxyloss_drag(mob/living/source, mob/puller)
 	SIGNAL_HANDLER
 	if(isXeno(puller) && source.stat == UNCONSCIOUS)
-		source.apply_damage(20, OXY)
+		if(source.get_species())
+			var/mob/living/carbon/human/H = source
+			if(H.species.flags & HAS_HARDCRIT)
+				source.apply_damage(20, OXY)
 
 /datum/pain/proc/handle_devour(mob/living/source)
 	SIGNAL_HANDLER
@@ -297,7 +300,7 @@
 
 /datum/pain/proc/oxy_kill(mob/living/source)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(source, /mob/proc.death)
+	INVOKE_ASYNC(source, /mob.proc/death, source.last_damage_data)
 
 /datum/pain/Destroy()
 	. = ..()

@@ -17,7 +17,7 @@
 
 
 	var/list/target_turfs = list()
-	var/facing = get_dir(X, A)
+	var/facing = Get_Compass_Dir(X, A)
 	var/turf/T = X.loc
 	var/turf/temp = X.loc
 
@@ -60,7 +60,7 @@
 		if (!isXenoOrHuman(H) || X.can_not_harm(H))
 			continue
 
-		if (H.stat)
+		if (H.stat == DEAD)
 			continue
 
 		X.flick_attack_overlay(H, "slash")
@@ -82,8 +82,9 @@
 
 	if(!activated_once)
 		. = ..()
-		activated_once = TRUE
-		addtimer(CALLBACK(src, .proc/timeout), time_until_timeout)
+		if(.)
+			activated_once = TRUE
+			addtimer(CALLBACK(src, .proc/timeout), time_until_timeout)
 	else
 		damage_nearby_targets()
 
@@ -169,7 +170,7 @@
 
 		X.visible_message(SPAN_XENODANGER("[X] smashes [A] with its claws, pinning them to the ground!"), SPAN_XENOHIGHDANGER("You smash [A] with your claws, pinning them to the ground!"))
 
-		H.frozen = 1
+		H.frozen = TRUE
 		H.update_canmove()
 
 		if (ishuman(H))
@@ -207,11 +208,8 @@
 	if(!X.check_state())
 		return
 
-	if(!check_and_use_plasma_owner())
+	if(!check_plasma_owner())
 		return
-
-	X.visible_message(SPAN_XENODANGER("[X] prepares to fire its resin spurs at [A]!"), SPAN_XENODANGER("You prepare to fire your resin spurs at [A]!"))
-	X.emote("roar")
 
 	// Build our turflist
 	var/list/turf/turflist = list()
@@ -221,6 +219,12 @@
 	var/turf/temp = X.loc
 	for(var/x in 0 to max_distance)
 		temp = get_step(T, facing)
+		if(facing in diagonals) // check if it goes through corners
+			var/reverse_face = reverse_dir[facing]
+			var/turf/back_left = get_step(temp, turn(reverse_face, 45))
+			var/turf/back_right = get_step(temp, turn(reverse_face, -45))
+			if((!back_left || back_left.density) && (!back_right || back_right.density))
+				break
 		if(!temp || temp.density || temp.opacity)
 			break
 
@@ -239,25 +243,36 @@
 
 		turflist += T
 		facing = get_dir(T, A)
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(T, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/abduct_hook(T, windup)
+
+	if(!length(turflist))
+		to_chat(X, SPAN_XENOWARNING("You don't have any room to do your abduction!"))
+		return
+
+	X.visible_message(SPAN_XENODANGER("[X] prepares to fire its resin spurs at [A]!"), SPAN_XENODANGER("You prepare to fire your resin spurs at [A]!"))
+	X.emote("roar")
 
 	var/throw_target_turf = get_step(X.loc, facing)
 
-	X.frozen = 1
+	X.frozen = TRUE
 	X.update_canmove()
 	if(!do_after(X, windup, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE, null, null, FALSE, 1, FALSE, 1))
 		to_chat(X, SPAN_XENOWARNING("You cancel your abduct."))
+		apply_cooldown()
 
 		for (var/obj/effect/xenomorph/xeno_telegraph/XT in telegraph_atom_list)
 			telegraph_atom_list -= XT
 			qdel(XT)
 
-		X.frozen = 0
+		X.frozen = FALSE
 		X.update_canmove()
 
 		return
 
-	X.frozen = 0
+	if(!check_and_use_plasma_owner())
+		return
+
+	X.frozen = FALSE
 	X.update_canmove()
 
 	playsound(get_turf(X), 'sound/effects/bang.ogg', 25, 0)
@@ -286,7 +301,7 @@
 			new /datum/effects/xeno_slow(H, X, , ,25)
 		else if (LAZYLEN(targets) == 2)
 
-			H.frozen = 1
+			H.frozen = TRUE
 			H.update_canmove()
 			if (ishuman(H))
 				var/mob/living/carbon/human/Hu = H
@@ -334,8 +349,7 @@
 	if (!check_and_use_plasma_owner())
 		return
 
-	H.last_damage_mob = X
-	H.last_damage_source = initial(X.caste_name)
+	H.last_damage_data = create_cause_data(X.caste_type, X)
 
 	X.visible_message(SPAN_XENOWARNING("\The [X] hits [H] in the [L? L.display_name : "chest"] with a devastatingly powerful punch!"), \
 	SPAN_XENOWARNING("You hit [H] in the [L? L.display_name : "chest"] with a devastatingly powerful punch!"))
@@ -344,7 +358,7 @@
 
 	if (H.frozen || H.slowed || H.knocked_down)
 		H.apply_damage(get_xeno_damage_slash(H, damage), BRUTE, L? L.name : "chest")
-		H.frozen = 1
+		H.frozen = TRUE
 		H.update_canmove()
 
 		if (ishuman(H))
@@ -360,42 +374,13 @@
 			SFA.reduce_cooldown(50)
 		if(SFB && SFB.action_cooldown_check())
 			SFB.reduce_cooldown(50)
-		else
-			H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
+	else
+		H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, L? L.name : "chest")
 		step_away(H, X, 2)
 
 
 	shake_camera(H, 2, 1)
 
-
-
-	apply_cooldown()
-	..()
-	return
-
-/datum/action/xeno_action/onclick/crush/use_ability(atom/A)
-	var/mob/living/carbon/Xenomorph/X = owner
-
-	if (!istype(X))
-		return
-
-	if (!action_cooldown_check())
-		return
-
-	if (!check_and_use_plasma_owner())
-		return
-
-	// This one is more tightly coupled than I'd like
-	// but as it stands, everything to do with slashes is bound up onto the behavior datums.
-	if (X.mutation_type != PRAETORIAN_OPPRESSOR)
-		return
-
-	var/datum/behavior_delegate/oppressor_praetorian/BD = X.behavior_delegate
-	if (istype(BD))
-		BD.next_slash_buffed = TRUE
-
-	X.next_move = world.time + 1 // Autoattack reset
-	to_chat(X, SPAN_XENOHIGHDANGER("Your click delay has been reset and your next slash will deal additional damage!"))
 
 
 	apply_cooldown()
@@ -411,7 +396,7 @@
 	if(!A || A.layer >= FLY_LAYER || !isturf(X.loc))
 		return
 
-	if (!check_and_use_plasma_owner())
+	if (!check_plasma_owner())
 		return
 
 	// Transient turf list
@@ -423,11 +408,15 @@
 	var/turf/root = get_turf(X)
 	var/facing = Get_Compass_Dir(X, A)
 	var/turf/infront = get_step(root, facing)
+	var/turf/left = get_step(root, turn(facing, 90))
+	var/turf/right = get_step(root, turn(facing, -90))
 	var/turf/infront_left = get_step(root, turn(facing, 45))
 	var/turf/infront_right = get_step(root, turn(facing, -45))
 	temp_turfs += infront
-	temp_turfs += infront_left
-	temp_turfs += infront_right
+	if(!(!infront || infront.density) && !(!left || left.density))
+		temp_turfs += infront_left
+	if(!(!infront || infront.density) && !(!right || right.density))
+		temp_turfs += infront_right
 
 	for(var/turf/T in temp_turfs)
 		if (!istype(T))
@@ -437,14 +426,18 @@
 			continue
 
 		target_turfs += T
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(T, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/lash(T, windup)
 
 		var/turf/next_turf = get_step(T, facing)
 		if (!istype(next_turf) || next_turf.density)
 			continue
 
 		target_turfs += next_turf
-		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown(next_turf, windup)
+		telegraph_atom_list += new /obj/effect/xenomorph/xeno_telegraph/brown/lash(next_turf, windup)
+
+	if(!length(target_turfs))
+		to_chat(X, SPAN_XENOWARNING("You don't have any room to do your tail lash!"))
+		return
 
 	if(!do_after(X, windup, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
 		to_chat(X, SPAN_XENOWARNING("You cancel your tail lash."))
@@ -454,7 +447,7 @@
 			qdel(XT)
 		return
 
-	if (!action_cooldown_check())
+	if(!action_cooldown_check() || !check_and_use_plasma_owner())
 		return
 
 	apply_cooldown()
@@ -553,8 +546,7 @@
 	X.animation_attack_on(A)
 	X.flick_attack_overlay(A, "slash")
 
-	H.last_damage_mob = X
-	H.last_damage_source = initial(X.caste_name)
+	H.last_damage_data = create_cause_data(initial(X.caste_type), X)
 	H.apply_armoured_damage(damage, ARMOR_MELEE, BRUTE, "chest", 10)
 	playsound(get_turf(A), "alien_claw_flesh", 30, 1)
 
@@ -732,10 +724,10 @@
 	to_chat(X, SPAN_XENOWARNING("You lob a compressed ball of acid into the air!"))
 
 	var/obj/item/explosive/grenade/xeno_acid_grenade/grenade = new /obj/item/explosive/grenade/xeno_acid_grenade
-	grenade.source_mob = X
+	grenade.cause_data = create_cause_data(initial(X.caste_type), X)
 	grenade.forceMove(get_turf(X))
 	grenade.throw_atom(A, 5, SPEED_SLOW, X, TRUE)
-	addtimer(CALLBACK(grenade, /obj/item/explosive/proc/prime), prime_delay)
+	addtimer(CALLBACK(grenade, /obj/item/explosive.proc/prime), prime_delay)
 
 	..()
 	return
@@ -765,12 +757,20 @@
 
 	var/mob/living/carbon/Xenomorph/targetXeno = A
 
+	if(targetXeno.stat == DEAD)
+		to_chat(X, SPAN_WARNING("[targetXeno] is already dead!"))
+		return
+
 	if (!check_plasma_owner())
 		return
 
 	var/use_plasma = FALSE
 
 	if (curr_effect_type == WARDEN_HEAL_SHIELD)
+		if (SEND_SIGNAL(targetXeno, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			to_chat(X, SPAN_XENOWARNING("You cannot heal bolster the defenses of this xeno!"))
+			return
+
 		var/bonus_shield = 0
 
 		if (X.mutation_type == PRAETORIAN_WARDEN)
@@ -781,7 +781,7 @@
 			if (!BD.use_internal_hp_ability(shield_cost))
 				return
 
-			bonus_shield = BD.internal_hitpoints/2
+			bonus_shield = BD.internal_hitpoints*0.5
 			if (!BD.use_internal_hp_ability(bonus_shield))
 				bonus_shield = 0
 
@@ -795,17 +795,21 @@
 			targetXeno.visible_message(SPAN_BOLDNOTICE("[X] points at [targetXeno], and it shudders as its exoskeleton shimmers for a second!")) //this one is a bit less important than healing and rejuvenating
 		to_chat(X, SPAN_XENODANGER("You bolster the defenses of [targetXeno]!"))	//but i imagine it'll be useful for predators, survivors and for battle flavor
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You feel your defenses bolstered by [X]!"))
-		targetXeno.add_xeno_shield(total_shield_amount, XENO_SHIELD_SOURCE_WARDEN_PRAE)
-		targetXeno.xeno_jitter(SECONDS_1)
-		targetXeno.flick_heal_overlay(SECONDS_3, "#FFA800") //D9F500
+
+		targetXeno.add_xeno_shield(total_shield_amount, XENO_SHIELD_SOURCE_WARDEN_PRAE, duration = shield_duration, decay_amount_per_second = shield_decay)
+		targetXeno.xeno_jitter(1 SECONDS)
+		targetXeno.flick_heal_overlay(3 SECONDS, "#FFA800") //D9F500
+		X.add_xeno_shield(total_shield_amount*0.5, XENO_SHIELD_SOURCE_WARDEN_PRAE, duration = shield_duration, decay_amount_per_second = shield_decay) // X is the prae itself
+		X.xeno_jitter(1 SECONDS)
+		X.flick_heal_overlay(3 SECONDS, "#FFA800") //D9F500
 		use_plasma = TRUE
 
 	else if (curr_effect_type == WARDEN_HEAL_HP)
 		if (!X.Adjacent(A))
 			to_chat(X, SPAN_XENODANGER("You must be within touching distance of [targetXeno]!"))
 			return
-		if (targetXeno.on_fire)
-			to_chat(X, SPAN_XENOWARNING("You cannot heal sisters that are on fire!"))
+		if (SEND_SIGNAL(targetXeno, COMSIG_XENO_PRE_HEAL) & COMPONENT_CANCEL_XENO_HEAL)
+			to_chat(X, SPAN_XENOWARNING("You cannot heal this xeno!"))
 			return
 
 		var/bonus_heal = 0
@@ -818,7 +822,7 @@
 			if (!BD.use_internal_hp_ability(heal_cost))
 				return
 
-			bonus_heal = BD.internal_hitpoints/2
+			bonus_heal = BD.internal_hitpoints*0.5
 			if (!BD.use_internal_hp_ability(bonus_heal))
 				bonus_heal = 0
 
@@ -826,8 +830,10 @@
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You are healed by [X]!"))
 		targetXeno.gain_health(heal_amount + bonus_heal)
 		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] places its claws on [targetXeno], and its wounds are quickly sealed!"))	//marines probably should know if a xeno gets healed
+		X.gain_health(heal_amount*0.5 + bonus_heal*0.5)
+		X.flick_heal_overlay(3 SECONDS, "#00B800")
 		use_plasma = TRUE	//it's already hard enough to gauge health without hp showing on the mob
-		targetXeno.flick_heal_overlay(SECONDS_3, "#00B800")//so the visible_message and recovery overlay will warn marines and possibly predators that the xenomorph has been healed!
+		targetXeno.flick_heal_overlay(3 SECONDS, "#00B800")//so the visible_message and recovery overlay will warn marines and possibly predators that the xenomorph has been healed!
 
 	else if (curr_effect_type == WARDEN_HEAL_DEBUFFS)
 		if (X.observed_xeno != null)
@@ -845,8 +851,8 @@
 		to_chat(X, SPAN_XENODANGER("You rejuvenate [targetXeno]!"))
 		to_chat(targetXeno, SPAN_XENOHIGHDANGER("You are rejuvenated by [X]!"))
 		targetXeno.visible_message(SPAN_BOLDNOTICE("[X] points at [targetXeno], and it spasms as it recuperates unnaturally quickly!"))	//marines probably should know if a xeno gets rejuvenated
-		targetXeno.xeno_jitter(SECONDS_1) //it might confuse them as to why the queen got up half a second after being AT rocketed, and give them feedback on the Praetorian rejuvenating
-		targetXeno.flick_heal_overlay(SECONDS_3, "#F5007A") //therefore making the Praetorian a priority target
+		targetXeno.xeno_jitter(1 SECONDS) //it might confuse them as to why the queen got up half a second after being AT rocketed, and give them feedback on the Praetorian rejuvenating
+		targetXeno.flick_heal_overlay(3 SECONDS, "#F5007A") //therefore making the Praetorian a priority target
 		targetXeno.SetKnockedout(0)
 		targetXeno.SetStunned(0)
 		targetXeno.SetKnockeddown(0)

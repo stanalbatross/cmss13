@@ -4,17 +4,24 @@
 	icon = 'icons/landmarks.dmi'
 	icon_state = "x3"
 	var/spawn_nothing_percentage = 0 // this variable determines the likelyhood that this random object will not spawn anything
-
+	var/spawn_on_roundstart = FALSE
 
 // creates a new object and deletes itself
 /obj/effect/spawner/random/Initialize()
-	. = ..()
+	..()
 
-	if (!prob(spawn_nothing_percentage))
-		spawn_item()
+	if(!prob(spawn_nothing_percentage))
+		if(spawn_on_roundstart)
+			alpha = 0
+			return INITIALIZE_HINT_ROUNDSTART
+		else
+			spawn_item()
 
 	return INITIALIZE_HINT_QDEL
 
+/obj/effect/spawner/random/LateInitialize()
+	spawn_item()
+	qdel(src)
 
 // this function should return a specific item to spawn
 /obj/effect/spawner/random/proc/item_to_spawn()
@@ -82,6 +89,7 @@
 	item_to_spawn()
 		return pick(prob(3);/obj/item/storage/toolbox/mechanical,\
 					prob(2);/obj/item/storage/toolbox/electrical,\
+					prob(2);/obj/item/storage/toolbox/mechanical/green,\
 					prob(1);/obj/item/storage/toolbox/emergency)
 
 
@@ -111,7 +119,6 @@
 	item_to_spawn()
 		return pick(prob(3);/obj/item/attachable/flashlight,\
 					prob(3);/obj/item/attachable/reddot,\
-					prob(3);/obj/item/attachable/quickfire,\
 					prob(3);/obj/item/attachable/extended_barrel,\
 					prob(3);/obj/item/attachable/magnetic_harness,\
 					prob(2);/obj/item/attachable/flashlight/grip,\
@@ -132,15 +139,26 @@
 					prob(3);/obj/item/storage/box/kit/mini_intel,\
 					prob(3);/obj/item/storage/box/kit/mini_jtac,\
 					prob(2);/obj/item/storage/box/kit/mou53_sapper,\
-					prob(1);/obj/item/storage/box/kit/heavy_support)
+					prob(1);/obj/item/storage/box/kit/heavy_support,\
+					prob(1);/obj/item/storage/box/kit/r4t_scout)
+
+GLOBAL_VAR_INIT(spawn_ob, TRUE)
 
 /obj/effect/spawner/random/warhead
-	name = "Random orbital warhead"
+	name = "random orbital warhead"
 	desc = "This is a random orbital warhead."
 	icon = 'icons/obj/items/new_assemblies.dmi'
 	icon = 'icons/obj/structures/props/almayer_props.dmi'
 	icon_state = "ob_warhead_1"
-	item_to_spawn()
-		return pick(/obj/structure/ob_ammo/warhead/explosive,\
-					/obj/structure/ob_ammo/warhead/incendiary,\
-					/obj/structure/ob_ammo/warhead/cluster)
+	spawn_on_roundstart = TRUE
+
+/obj/effect/spawner/random/warhead/item_to_spawn()
+	if(!GLOB.spawn_ob)
+		return /obj/item/paper/warhead_recycle
+
+	var/list/spawnables = list(
+		/obj/structure/ob_ammo/warhead/explosive,
+		/obj/structure/ob_ammo/warhead/incendiary,
+		/obj/structure/ob_ammo/warhead/cluster
+	)
+	return pick(spawnables)

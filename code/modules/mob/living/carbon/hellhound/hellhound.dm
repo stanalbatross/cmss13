@@ -18,7 +18,7 @@
 /mob/living/carbon/hellhound/Initialize()
 	create_reagents(1000)
 
-	add_language("Sainja") //They can only understand it though.
+	add_language(LANGUAGE_YAUTJA) //They can only understand it though.
 
 	if(name == initial(name))
 		var/random_name = "[name] ([rand(1, 1000)])"
@@ -26,14 +26,14 @@
 
 	radio = new /obj/item/device/radio/headset/yautja(src)
 	camera = new /obj/structure/machinery/camera(src)
-	camera.network = list("PRED")
+	camera.network = list(CAMERA_NET_YAUTJA)
 	camera.c_tag = src.real_name
 	..()
 
 	sight |= SEE_MOBS
 	see_invisible = SEE_INVISIBLE_MINIMUM
 	see_in_dark = 8
-	living_misc_mobs += src
+	SSmob.living_misc_mobs += src
 	GLOB.hellhound_list += src
 
 	for(var/mob/dead/observer/M in GLOB.observer_list)
@@ -43,7 +43,7 @@
 
 /mob/living/carbon/hellhound/Destroy()
 	GLOB.hellhound_list -= src
-	living_misc_mobs -= src
+	SSmob.living_misc_mobs -= src
 	return ..()
 
 /mob/living/carbon/hellhound/Login()
@@ -65,18 +65,6 @@
 			visible_message("[src] licks [H].", "You slobber on [H].")
 		else
 			visible_message("[src] sniffs at [H].", "You sniff at [H].")
-		return
-	else if(a_intent == INTENT_DISARM)
-		if(isYautja(H))
-			visible_message("[src] shoves [H].", "You shove [H].")
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
-		else
-			if (!(H.knocked_out ))
-				H.KnockOut(3)
-				playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
-				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
-						O.show_message(SPAN_DANGER("<B>[src] knocks down [H]!</B>"), 1)
 		return
 	else if(a_intent == INTENT_GRAB)
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
@@ -101,15 +89,6 @@
 	if(a_intent == INTENT_HELP)
 		visible_message("[src] growls at [X].", "You growl at [X].")
 		return
-	else if(a_intent == INTENT_DISARM)
-		if (!(X.knocked_out ) && X.mob_size < MOB_SIZE_BIG)
-			if(prob(40))
-				X.KnockOut(4)
-				playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
-				visible_message(SPAN_DANGER("[src] knocks down [X]!"),SPAN_DANGER("You knock down [X]!"))
-				return
-		visible_message(SPAN_DANGER("[src] shoves at [X]!"),SPAN_DANGER("You shove at [X]!"))
-		return
 	else if(a_intent == INTENT_GRAB)
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
 		visible_message(SPAN_DANGER("<B>[src] grabs [X] in their jaws!</B>"),SPAN_DANGER("<B>You grab [X] in your jaws!</b>"))
@@ -129,8 +108,6 @@
 		visible_message("[src] growls at [H].", "You growl at [H].")
 		return
 	else if(a_intent == INTENT_DISARM)
-		if(istype(H,/mob/living/carbon/hellhound))
-			return
 		visible_message(SPAN_DANGER("[src] shoves at [H]!"),SPAN_DANGER("You shove at [H]!"))
 		return
 	else if(a_intent == INTENT_GRAB)
@@ -169,8 +146,7 @@
 
 				apply_damage(damage, BRUTE)
 
-				M.last_damage_source = initial(name)
-				M.last_damage_mob = src
+				M.last_damage_data = create_cause_data(initial(name), src)
 				M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [src.name] ([src.ckey])</font>")
 				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey])</font>")
 				msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)] in [get_area(M)] ([M.loc.x],[M.loc.y],[M.loc.z]).", M.loc.x, M.loc.y, M.loc.z)
@@ -259,4 +235,4 @@
 /mob/living/carbon/hellhound/rejuvenate()
 	..()
 	GLOB.hellhound_list += src
-	living_misc_mobs += src
+	SSmob.living_misc_mobs += src

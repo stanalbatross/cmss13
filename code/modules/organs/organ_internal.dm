@@ -127,7 +127,9 @@
 
 /datum/internal_organ/lungs/process()
 	..()
-	if(is_bruised() && !owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+	if(owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+		return
+	if(is_bruised())
 		if(prob(2))
 			spawn owner.emote("me", 1, "coughs up blood!")
 			owner.drip(10)
@@ -164,7 +166,7 @@
 			else
 				var/datum/internal_organ/O = pick(owner.internal_organs)
 				if(O)
-					O.damage += 0.2  * PROCESS_ACCURACY
+					O.damage += 0.2 * PROCESS_ACCURACY
 
 		//Detox can heal small amounts of damage
 		if (src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))
@@ -175,28 +177,28 @@
 
 		// Get the effectiveness of the liver.
 		var/filter_effect = 3
-		if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+		if(!(owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS))
 			if(is_bruised())
 				filter_effect -= 1
 			if(is_broken())
 				filter_effect -= 2
 
 		// Do some reagent filtering/processing.
-		for(var/datum/reagent/R in owner.reagents.reagent_list)
+		for(var/datum/reagent/ethanol/R in owner.reagents.reagent_list)
 			// Damaged liver means some chemicals are very dangerous
 			// The liver is also responsible for clearing out alcohol and toxins.
 			// Ethanol and all drinks are bad.K
-			if(istype(R, /datum/reagent/ethanol))
-				if(filter_effect < 3)
-					owner.apply_damage(0.1 * PROCESS_ACCURACY, TOX)
-				owner.reagents.remove_reagent(R.id, R.custom_metabolism*filter_effect)
+			if(filter_effect < 3)
+				owner.apply_damage(0.1 * PROCESS_ACCURACY, TOX)
+			owner.reagents.remove_reagent(R.id, R.custom_metabolism*filter_effect)
 
 		//Deal toxin damage if damaged
-		if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
-			if(is_bruised() && prob(25))
-				owner.apply_damage(0.1 * (damage/2), TOX)
-			else if(is_broken() && prob(50))
-				owner.apply_damage(0.3 * (damage/2), TOX)
+		if(owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+			return
+		if(is_bruised() && prob(25))
+			owner.apply_damage(0.1 * (damage/2), TOX)
+		else if(is_broken() && prob(50))
+			owner.apply_damage(0.3 * (damage/2), TOX)
 
 /datum/internal_organ/liver/prosthetic
 	robotic = ORGAN_ROBOT
@@ -211,11 +213,12 @@
 /datum/internal_organ/kidneys/process()
 	..()
 	//Deal toxin damage if damaged
-	if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
-		if(is_bruised() && prob(25))
-			owner.apply_damage(0.1 * (damage/3), TOX)
-		else if(is_broken() && prob(50))
-			owner.apply_damage(0.2 * (damage/3), TOX)
+	if(owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+		return
+	if(is_bruised() && prob(25))
+		owner.apply_damage(0.1 * (damage/3), TOX)
+	else if(is_broken() && prob(50))
+		owner.apply_damage(0.2 * (damage/3), TOX)
 
 /datum/internal_organ/kidneys/prosthetic
 	robotic = ORGAN_ROBOT
@@ -246,11 +249,12 @@
 
 /datum/internal_organ/eyes/process() //Eye damage replaces the old eye_stat var.
 	..()
-	if(!owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
-		if(is_bruised())
-			owner.eye_blurry = 20
-		if(is_broken())
-			owner.eye_blind = 20
+	if(owner.chem_effect_flags & CHEM_EFFECT_ORGAN_STASIS)
+		return
+	if(is_bruised())
+		owner.eye_blurry = 20
+	if(is_broken())
+		owner.eye_blind = 20
 
 /datum/internal_organ/eyes/prosthetic
 	robotic = ORGAN_ROBOT

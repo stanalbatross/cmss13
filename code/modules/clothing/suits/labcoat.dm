@@ -32,6 +32,8 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUMLOW
 	armor_rad = CLOTHING_ARMOR_NONE
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 	var/buttoned = TRUE
 
 	verb/toggle()
@@ -131,16 +133,11 @@
 	icon_state = "sciencecoat"
 	item_state = "sciencecoat"
 
-
-
-
-
-
 /obj/item/clothing/suit/storage/snow_suit
 	name = "snow suit"
 	desc = "A standard snow suit. It can protect the wearer from extreme cold."
 	icon = 'icons/obj/items/clothing/suits.dmi'
-	icon_state = "snowsuit_alpha"
+	icon_state = "snowsuit"
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS
 	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
 	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
@@ -154,27 +151,130 @@
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
 	blood_overlay_type = "armor"
 	siemens_coefficient = 0.7
+	valid_accessory_slots = list(ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
 
 /obj/item/clothing/suit/storage/snow_suit/doctor
 	name = "doctor's snow suit"
-	icon_state = "snowsuit_doctor"
-	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
-	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
-	armor_laser = CLOTHING_ARMOR_LOW
-	armor_energy = CLOTHING_ARMOR_LOW
-	armor_bomb = CLOTHING_ARMOR_NONE
-	armor_bio = CLOTHING_ARMOR_NONE
-	armor_rad = CLOTHING_ARMOR_NONE
-	armor_internaldamage = CLOTHING_ARMOR_LOW
 
-/obj/item/clothing/suit/storage/snow_suit/engineer
-	name = "engineer's snow suit"
-	icon_state = "snowsuit_engineer"
+/obj/item/clothing/suit/storage/snow_suit/synth
+	name = "synthetic's snow suit"
+	desc = "A snow suit designed for keeping synthetic units within acceptable temperature ranges in extremely cold environments to prevent power supply inefficiency. Due to advancements made in synthetic insulation, they are not required for most cold environments."
+	armor_melee = CLOTHING_ARMOR_NONE //no free armour for synths
+	armor_bullet = CLOTHING_ARMOR_NONE
+	armor_laser = CLOTHING_ARMOR_NONE
+	armor_energy = CLOTHING_ARMOR_NONE
+	armor_internaldamage = CLOTHING_ARMOR_NONE
+	allowed = list(
+		/obj/item/device/analyzer,
+		/obj/item/device/multitool,
+		/obj/item/device/pipe_painter,
+		/obj/item/device/t_scanner,
+		/obj/item/tool/screwdriver,
+		/obj/item/tool/weldingtool,
+		/obj/item/tool/wirecutters,
+		/obj/item/tool/wrench,
+		/obj/item/clothing/mask/gas,
+
+		/obj/item/device/flashlight,
+		/obj/item/device/healthanalyzer,
+		/obj/item/device/radio,
+		/obj/item/tank/emergency_oxygen,
+		/obj/item/tool/crowbar,
+		/obj/item/tool/pen,
+		/obj/item/device/binoculars,
+		/obj/item/tool/crew_monitor,
+		/obj/item/reagent_container/hypospray,
+	)
+
+/obj/item/clothing/suit/storage/snow_suit/survivor
+	name = "robust snow suit"
+	icon_state = "snowsuit" //needs new cool sprite
+	desc = "A snow suit. It can protect the wearer from extreme cold. This one seems to have been modified somewhat, and can both holster a gun and fit magazines."
 	armor_melee = CLOTHING_ARMOR_MEDIUMLOW
-	armor_bullet = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
 	armor_laser = CLOTHING_ARMOR_LOW
 	armor_energy = CLOTHING_ARMOR_LOW
 	armor_bomb = CLOTHING_ARMOR_NONE
-	armor_bio = CLOTHING_ARMOR_NONE
+	armor_bio = CLOTHING_ARMOR_LOW //<- this one is different
 	armor_rad = CLOTHING_ARMOR_NONE
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	allowed = list(/obj/item/weapon/gun,
+		/obj/item/tank/emergency_oxygen,
+		/obj/item/device/flashlight,
+		/obj/item/ammo_magazine,
+		/obj/item/explosive/grenade,
+		/obj/item/device/binoculars,
+		/obj/item/attachable/bayonet,
+		/obj/item/storage/sparepouch,
+		/obj/item/storage/large_holster/machete,
+		/obj/item/weapon/melee/baseballbat,
+		/obj/item/weapon/melee/baseballbat/metal,
+		/obj/item/device/motiondetector,
+		/obj/item/device/walkman)
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/Initialize()
+	. = ..()
+	pockets.max_w_class = SIZE_SMALL //Can contain small items AND rifle magazines.
+	pockets.bypass_w_limit = list(
+		/obj/item/ammo_magazine/rifle,
+		/obj/item/ammo_magazine/smg,
+		/obj/item/ammo_magazine/sniper,
+	)
+	pockets.max_storage_space = 8
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka
+	name = "Parent Parka"
+	desc = "A winter coat made to withstand the frigged cold weather of the arctic deserts. WY branded Parka"
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka/red
+	name = "Security Parka"
+	icon_state = "redpark"
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka/navy
+	name = "Navy Parka"
+	icon_state = "navypark"
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka/yellow
+	name = "yellow Parka"
+	icon_state = "yellowpark"
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka/green
+	name = "Green Parka"
+	icon_state = "greenpark"
+
+/obj/item/clothing/suit/storage/snow_suit/survivor/parka/purple
+	name = "Purple Parka"
+	icon_state = "purplepark"
+
+/obj/item/clothing/suit/storage/snow_suit/soviet
+	name = "soviet snowcoat"
+	desc = "A winter coat made in some desolate snowplanet. This wintercoat was made from the fur of local wildlife which donated their fur for the greater good of UPP!"
+	icon_state = "sovietcoat"
+	item_state = "sovietcoat"
+	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS
+	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_LOW
+	armor_energy = CLOTHING_ARMOR_LOW
+	armor_bomb = CLOTHING_ARMOR_NONE
+	armor_bio = CLOTHING_ARMOR_LOW
+	armor_rad = CLOTHING_ARMOR_NONE
+	armor_internaldamage = CLOTHING_ARMOR_LOW
+	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
+	blood_overlay_type = "armor"
+	siemens_coefficient = 0.7
+	allowed = list(/obj/item/weapon/gun,
+		/obj/item/tank/emergency_oxygen,
+		/obj/item/device/flashlight,
+		/obj/item/ammo_magazine,
+		/obj/item/explosive/grenade,
+		/obj/item/device/binoculars,
+		/obj/item/attachable/bayonet,
+		/obj/item/storage/sparepouch,
+		/obj/item/storage/large_holster/machete,
+		/obj/item/weapon/melee/baseballbat,
+		/obj/item/weapon/melee/baseballbat/metal,
+		/obj/item/device/motiondetector,
+		/obj/item/device/walkman)
+

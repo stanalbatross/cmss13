@@ -5,6 +5,7 @@
 	required_players = 0 //otherwise... no zambies
 	latejoin_larva_drop = 0
 	flags_round_type = MODE_INFECTION //Apparently without this, the game mode checker ignores this as a potential legit game mode.
+	votable = FALSE // infection borked
 
 /datum/game_mode/infection/announce()
 	to_world("<B>The current game mode is - ZOMBIES!</B>")
@@ -13,17 +14,15 @@
 	to_world("<B>Don't ahelp asking for specific details, you won't get them.</B>")
 
 /datum/game_mode/infection/pre_setup()
-	setup_round_stats()
 	return ..()
 
 /datum/game_mode/infection/post_setup()
 	initialize_post_survivor_list()
 	initialize_post_marine_gear_list()
-	initialize_map_resource_list()
 	for(var/mob/new_player/np in GLOB.new_player_list)
 		np.new_player_panel_proc()
 	spawn(50)
-		marine_announcement("We've lost contact with the Weston-Yamada's research facility, [name]. The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
+		marine_announcement("We've lost contact with the Weyland-Yutani's research facility, [name]. The [MAIN_SHIP_NAME] has been dispatched to assist.", "[MAIN_SHIP_NAME]")
 	return ..()
 
 /datum/game_mode/infection/can_start()

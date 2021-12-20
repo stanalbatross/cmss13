@@ -137,7 +137,7 @@
 	if(message)
 		if(!check_rights(R_SERVER,0))
 			message = adminscrub(message,500)
-		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ANNOUNCEMENT_HEADER_BLUE(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
+		to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, html = SPAN_ANNOUNCEMENT_HEADER_ADMIN(" <b>[usr.client.admin_holder.fakekey ? "Administrator" : usr.key] Announces:</b>\n \t [message]"))
 		log_admin("Announce: [key_name(usr)] : [message]")
 
 /datum/admins/proc/player_notes_show(var/key as text)
@@ -240,6 +240,10 @@
 			if(R_ADMIN & C.admin_holder.rights)
 				to_chat(C, msg)
 
+/client/proc/get_admin_say()
+	var/msg = input(src, null, "asay \"text\"") as text|null
+	cmd_admin_say(msg)
+
 /client/proc/cmd_mod_say(msg as text)
 	set name = "Msay"
 	set category = "Admin"
@@ -264,6 +268,10 @@
 	for(var/client/C in GLOB.admins)
 		if((R_ADMIN|R_MOD) & C.admin_holder.rights)
 			to_chat(C, "<span class='[color]'><span class='prefix'>[channel]</span> <EM>[key_name(src,1)]</EM> (<A HREF='?src=\ref[C.admin_holder];adminplayerobservejump=\ref[mob]'>JMP</A>): <span class='message'>[msg]</span></span>")
+
+/client/proc/get_mod_say()
+	var/msg = input(src, null, "msay \"text\"") as text|null
+	cmd_mod_say(msg)
 
 /client/proc/cmd_mentor_say(msg as text)
 	set name = "MentorSay"
@@ -290,6 +298,9 @@
 		if((R_ADMIN|R_MOD|R_MENTOR) & C.admin_holder.rights)
 			to_chat(C, "<span class='[color]'><span class='prefix'>[channel]</span> <EM>([usr.key])</EM>: <span class='message'>[msg]</span></span>")
 
+/client/proc/get_mentor_say()
+	var/msg = input(src, null, "mentorsay \"text\"") as text|null
+	cmd_mentor_say(msg)
 
 /client/proc/enable_admin_mob_verbs()
 	set name = "Mob Admin Verbs - Show"
@@ -422,9 +433,10 @@
 		return
 
 	var/dat = {"
-		<A href='?src=\ref[src];vehicle=remove_clamp'>Remove Clamp from Tank</A><BR>
-		<A href='?src=\ref[src];vehicle=remove_players'>Eject Players from Tank</A><BR>
-		<BR>
+		<A href='?src=\ref[src];vehicle=remove_clamp'>Remove Vehicle Clamp</A><BR>
+		Forcibly removes vehicle clamp from vehicle selected from a list. Drops it under the vehicle.<BR>
+		<A href='?src=\ref[src];vehicle=repair_vehicle'>Repair Vehicle</A><BR>
+		Fully restores vehicle modules and hull health.<BR>
 		"}
 
 	show_browser(usr, dat, "Vehicle Panel", "vehicles")
@@ -463,3 +475,92 @@
 		return
 
 	admin_holder.in_view_panel()
+
+/client/proc/toggle_lz_resin()
+	set name = "Toggle LZ Weeding"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	set_lz_resin_allowed(!GLOB.resin_lz_allowed)
+	message_staff("[src] has [GLOB.resin_lz_allowed ? "allowed xenos to weed" : "disallowed from weeding"] near the LZ.")
+
+/proc/set_lz_resin_allowed(var/allowed = TRUE)
+	if(allowed)
+		for(var/area/A in all_areas)
+			A.is_resin_allowed = TRUE
+		msg_admin_niche("Areas close to landing zones are now weedable.")
+	else
+		for(var/area/A in all_areas)
+			A.is_resin_allowed = initial(A.is_resin_allowed)
+		msg_admin_niche("Areas close to landing zones cannot be weeded now.")
+	GLOB.resin_lz_allowed = allowed
+
+/client/proc/toggle_ob_spawn() // not really a flag but i'm cheating here
+	set name = "Toggle OB Spawn"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	GLOB.spawn_ob = !GLOB.spawn_ob
+	message_staff("[src] has [GLOB.spawn_ob ? "allowed OBs to spawn" : "prevented OBs from spawning"] at roundstart.")
+
+/client/proc/toggle_sniper_upgrade()
+	set name = "Toggle Engi Sniper Upgrade"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	if(!SSticker.mode)
+		to_chat(usr, SPAN_WARNING("A mode hasn't been selected yet!"))
+		return
+
+	SSticker.mode.toggleable_flags ^= MODE_NO_SNIPER_SENTRY
+	message_staff("[src] has [MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_SNIPER_SENTRY) ? "disallowed engineers from picking" : "allowed engineers to pick"] long range sentry upgrades.")
+
+/client/proc/toggle_attack_dead()
+	set name = "Toggle Attack Dead"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	if(!SSticker.mode)
+		to_chat(usr, SPAN_WARNING("A mode hasn't been selected yet!"))
+		return
+
+	SSticker.mode.toggleable_flags ^= MODE_NO_ATTACK_DEAD
+	message_staff("[src] has [MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_ATTACK_DEAD) ? "prevented dead mobs from being" : "allowed dead mobs to be"] attacked.")
+
+/client/proc/toggle_strip_drag()
+	set name = "Toggle Strip/Drag Dead"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	if(!SSticker.mode)
+		to_chat(usr, SPAN_WARNING("A mode hasn't been selected yet!"))
+		return
+
+	SSticker.mode.toggleable_flags ^= MODE_NO_STRIPDRAG_ENEMY
+	message_staff("[src] has [MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) ? "prevented dead humans from being" : "allowed dead humans to be"] stripped and dragged around by non-matching IFF players.")
+
+/client/proc/toggle_uniform_strip()
+	set name = "Toggle Uniform Strip Dead"
+	set category = "Admin.Flags"
+
+	if(!admin_holder || !check_rights(R_MOD, FALSE))
+		return
+
+	if(!SSticker.mode)
+		to_chat(usr, SPAN_WARNING("A mode hasn't been selected yet!"))
+		return
+
+	SSticker.mode.toggleable_flags ^= MODE_STRIP_NONUNIFORM_ENEMY
+	message_staff("[src] has [MODE_HAS_TOGGLEABLE_FLAG(MODE_STRIP_NONUNIFORM_ENEMY) ? "allowed dead humans to be stripped of everything but their uniform, boots, armor, helmet, and ID" : "prevented dead humans from being stripped of anything"].")
+	if(!MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY))
+		message_staff("WARNING: Dead enemy players can still be stripped of everything, as the Strip/Drag toggle flag isn't active.")

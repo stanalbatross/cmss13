@@ -29,9 +29,7 @@
 	var/use_me = 1 //Allows all mobs to use the me verb by default, will have to manually specify they cannot
 	var/damageoverlaytemp = 0
 	var/computer_id = null //to track the players
-	var/lastattacker = null
-	var/lastattacked = null
-	var/attack_log = list( )
+	var/list/attack_log = list( )
 	var/atom/movable/interactee //the thing that the mob is currently interacting with (e.g. a computer, another mob (stripping a mob), manning a hmg)
 	var/sdisabilities = 0	//Carbon
 	var/disabilities = 0	//Carbon
@@ -73,7 +71,8 @@
 
 	var/name_archive //For admin things like possession
 
-	var/luminosity_total = 0 //For max luminosity stuff.
+	/// List of active luminosity sources for handling of light stacking
+	var/list/atom/luminosity_sources
 
 	var/statistic_exempt = FALSE
 	var/statistic_tracked = FALSE //So we don't repeat log the same data on death/ghost/cryo
@@ -131,16 +130,14 @@
 
 	var/inertia_dir = 0
 
-	var/const/blindness = 1//Carbon
-	var/const/deafness = 2//Carbon
-	var/const/muteness = 4//Carbon
-
 	var/voice_name = "unidentifiable voice"
 
 	var/job = null					// Internal job title used when mob is spawned. Preds are "Predator", Xenos are "Xenomorph", Marines have their actual job title
 	var/comm_title = ""
-	var/faction = FACTION_NEUTRAL //Used for checking whether hostile simple animals will attack you, possibly more stuff later
+	var/faction = FACTION_NEUTRAL
 	var/faction_group
+
+	var/looc_overhead = FALSE
 
 	var/datum/skills/skills = null //the knowledge you have about certain abilities and actions (e.g. do you how to do surgery?)
 									//see skills.dm in #define folder and code/datums/skills.dm for more info
@@ -153,14 +150,9 @@
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
-	var/status_flags = CANSTUN|CANKNOCKDOWN|CANKNOCKOUT|CANPUSH|CANDAZE|CANSLOW	//bitflags defining which status effects can be inflicted (replaces canweaken, canstun, etc)
+	var/status_flags = CANKNOCKDOWN|CANPUSH|STATUS_FLAGS_DEBILITATE	//bitflags defining which status effects can be inflicted (replaces canweaken, canstun, etc)
 
 	var/area/lastarea = null
-
-	var/list/radar_blips = list() // list of screen objects, radar blips
-	var/radar_open = 0 	// nonzero is radar is open
-
-
 	var/obj/control_object //Used by admins to possess objects. All mobs should have this var
 
 	//Whether or not mobs can understand other mobtypes. These stay in /mob so that ghosts can hear everything.
@@ -178,6 +170,9 @@
 
 	var/recently_pointed_to = 0 //used as cooldown for the pointing verb.
 
+	///Colour matrices to be applied to the client window. Assoc. list.
+	var/list/client_color_matrices
+
 	var/list/image/hud_list //This mob's HUD (med/sec, etc) images. Associative list.
 
 	var/list/hud_possible //HUD images that this mob can provide.
@@ -187,10 +182,7 @@
 	var/clicked_something 	// a list of booleans for if a mob did a specific click
 							// only left click, shift click, right click, and middle click
 
-	var/last_damage_source // for tracking whatever damaged us last, mainly for stat tracking
-	var/last_damage_mob // for tracking last hits on mob death, for kill stat tracking and moderation
-
-	var/ambience_playing = FALSE
+	var/datum/cause_data/last_damage_data // for tracking whatever damaged us last
 
 	var/noclip = FALSE
 
@@ -203,10 +195,20 @@
 	can_block_movement = TRUE
 
 	appearance_flags = TILE_BOUND
+	var/mouse_icon = null
 
 	var/datum/player_panel/mob_panel
+
+	var/datum/focus
 
 	///the current turf being examined in the stat panel
 	var/turf/listed_turf = null
 
 	var/list/list/item_verbs = list()
+
+	var/max_implants = 2
+	var/list/implants
+
+	var/move_on_shuttle = TRUE // Can move on the shuttle.
+
+	var/list/important_radio_channels = list()

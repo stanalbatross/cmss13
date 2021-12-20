@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(human)
 
 	var/list/currentrun = list()
 
+	var/list/processable_human_list = list()
+
 
 /datum/controller/subsystem/human/stat_entry(msg)
 	msg = "P:[processable_human_list.len]"
@@ -22,7 +24,7 @@ SUBSYSTEM_DEF(human)
 		if (!M || QDELETED(M))
 			continue
 
-		M.Life()
+		M.Life(wait * 0.1)
 
 		if (MC_TICK_CHECK)
 			return

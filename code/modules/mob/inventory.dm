@@ -14,29 +14,41 @@
 
 //Puts the item into your l_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(var/obj/item/W)
-	if(lying)			return 0
-	if(!istype(W))		return 0
+	if(lying)
+		return FALSE
+	if(!istype(W))
+		return FALSE
 	if(!l_hand)
+		if(W.loc == src && !(W.flags_item & DELONDROP))
+			W.dropped(src)
+
 		W.forceMove(src)
 		l_hand = W
 		W.layer = ABOVE_HUD_LAYER
+		W.pickup(src)
 		W.equipped(src,WEAR_L_HAND)
 		update_inv_l_hand()
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 //Puts the item into your r_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(var/obj/item/W)
-	if(lying)			return 0
-	if(!istype(W))		return 0
+	if(lying)
+		return FALSE
+	if(!istype(W))
+		return FALSE
 	if(!r_hand)
+		if(W.loc == src && !(W.flags_item & DELONDROP))
+			W.dropped(src)
+
 		W.forceMove(src)
 		r_hand = W
 		W.layer = ABOVE_HUD_LAYER
+		W.pickup(src)
 		W.equipped(src,WEAR_R_HAND)
 		update_inv_r_hand()
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 //Puts the item into our active hand if possible. returns 1 on success.
 /mob/proc/put_in_active_hand(var/obj/item/W)
@@ -53,40 +65,36 @@
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(var/obj/item/W)
 	if(!W)
-		return 0
+		return FALSE
 	if(put_in_active_hand(W))
-		update_inv_l_hand(0)
-		update_inv_r_hand()
-		return 1
+		return TRUE
 	else if(put_in_inactive_hand(W))
-		update_inv_l_hand(0)
-		update_inv_r_hand()
-		return 1
+		return TRUE
 	else
 		W.forceMove(get_turf(src))
 		W.layer = initial(W.layer)
 		W.dropped(src)
-		return 0
+		return FALSE
 
 
 
 /mob/proc/drop_item_v()		//this is dumb.
 	if(stat == CONSCIOUS && isturf(loc))
 		return drop_held_item()
-	return 0
+	return FALSE
 
 
 //Drops the item in our left hand
 /mob/proc/drop_l_hand()
 	if(l_hand)
 		return drop_inv_item_on_ground(l_hand)
-	return 0
+	return FALSE
 
 //Drops the item in our right hand
 /mob/proc/drop_r_hand()
 	if(r_hand)
 		return drop_inv_item_on_ground(r_hand)
-	return 0
+	return FALSE
 
 //Drops the item in our active hand. If passed with an item, it will check each hand for the item and drop the right one.
 /mob/proc/drop_held_item(var/obj/item/I)
@@ -121,7 +129,7 @@
 
 	if((I.flags_item & NODROP) && !force)
 		return FALSE //u_equip() only fails if item has NODROP
-
+	var/slot = get_slot_by_item(I)
 	if (I == r_hand)
 		r_hand = null
 		update_inv_r_hand()
@@ -137,6 +145,7 @@
 			I.forceMove(newloc)
 		else
 			I.forceMove(newloc)
+	I.unequipped(src, slot)
 	I.dropped(src)
 	if(I.unequip_sounds.len)
 		playsound_client(client, pick(I.unequip_sounds), null, ITEM_EQUIP_VOLUME)
@@ -155,7 +164,8 @@
 
 	if(hasvar(src,"back")) if(src:back) items += src:back
 	if(hasvar(src,"belt")) if(src:belt) items += src:belt
-	if(hasvar(src,"wear_ear")) if(src:wear_ear) items += src:wear_ear
+	if(hasvar(src,"wear_l_ear")) if(src:wear_l_ear) items += src:wear_l_ear
+	if(hasvar(src,"wear_r_ear")) if(src:wear_r_ear) items += src:wear_r_ear
 	if(hasvar(src,"glasses")) if(src:glasses) items += src:glasses
 	if(hasvar(src,"gloves")) if(src:gloves) items += src:gloves
 	if(hasvar(src,"head")) if(src:head) items += src:head
@@ -215,9 +225,13 @@
 			if(!src.wear_id /* && src.w_uniform */)
 				src.wear_id = W
 				equipped = 1
-		if(WEAR_EAR)
-			if(!wear_ear)
-				wear_ear = W
+		if(WEAR_L_EAR)
+			if(!wear_l_ear)
+				wear_l_ear = W
+				equipped = 1
+		if(WEAR_R_EAR)
+			if(!wear_r_ear)
+				wear_r_ear = W
 				equipped = 1
 		if(WEAR_EYES)
 			if(!src.glasses)
@@ -287,6 +301,11 @@
 			if(istype(S) && S.pockets.storage_slots)
 				W.forceMove(S.pockets)
 				equipped = 1
+		if(WEAR_IN_HELMET)
+			var/obj/item/clothing/head/helmet/marine/HM = src.head
+			if(istype(HM) && HM.pockets.storage_slots)
+				W.forceMove(HM.pockets)
+				equipped = TRUE
 		if(WEAR_IN_BELT)
 			if(src.belt && isstorage(src.belt))
 				var/obj/item/storage/B = src.belt
@@ -338,3 +357,10 @@
 //returns the item in a given slot
 /mob/proc/get_item_by_slot(slot_id)
 	return
+
+//Returns the slot occupied by a given item.
+/mob/proc/get_slot_by_item(obj/item/I)
+	if(I == l_hand)
+		return WEAR_L_HAND
+	if(I == r_hand)
+		return WEAR_R_HAND

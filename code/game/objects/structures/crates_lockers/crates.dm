@@ -108,7 +108,7 @@
 			user.drop_held_item()
 			W.forceMove(src)
 			return
-	else if(istype(W, /obj/item/tool/wirecutters))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(rigged)
 			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 25, 1)
@@ -145,10 +145,31 @@
 
 /obj/structure/closet/crate/ammo
 	name = "ammunitions crate"
-	desc = "A ammunitions crate"
+	desc = "An ammunitions crate"
 	icon_state = "closed_ammo"
 	icon_opened = "open_ammo"
 	icon_closed = "closed_ammo"
+
+/obj/structure/closet/crate/ammo/alt
+	name = "ammunitions crate"
+	desc = "A crate that contains ammunition, this one is black."
+	icon_state = "closed_ammo_alt"
+	icon_opened = "open_ammo_alt"
+	icon_closed = "closed_ammo_alt"
+
+/obj/structure/closet/crate/ammo/alt/flame
+	name = "ammunitions crate"
+	desc = "An black crate. Warning, contents are flammable!"
+	icon_state = "closed_ammo_alt2"
+	icon_opened = "open_ammo_alt"//does not have its own unique icon
+	icon_closed = "closed_ammo_alt2"
+
+/obj/structure/closet/crate/green
+	name = "green crate"
+	desc = "A standard green storage crate employed by the USCM. These things are so common, just about anything could be inside."
+	icon_state = "closed_green"
+	icon_opened = "open_green"
+	icon_closed = "closed_green"
 
 /obj/structure/closet/crate/bravo
 	name = "bravo squad crate"
@@ -294,15 +315,15 @@
 	icon_closed = "closed_supply"
 
 /obj/structure/closet/crate/trashcart
-	name = "Trash Cart"
+	name = "\improper trash cart"
 	desc = "A heavy, metal trashcart with wheels."
 	icon_state = "closed_trashcart"
 	icon_opened = "open_trashcart"
 	icon_closed = "closed_trashcart"
 
 /obj/structure/closet/crate/wayland
-	name = "Wayland crate"
-	desc = "A crate with a Wayland insignia on it."
+	name = "Weyland Yutani crate"
+	desc = "A crate with a Weyland Yutani insignia on it."
 	icon_state = "closed_wayland"
 	icon_opened = "open_wayland"
 	icon_closed = "closed_wayland"
@@ -313,14 +334,88 @@
 	icon_state = "closed_weapons"
 	icon_opened = "open_weapons"
 	icon_closed = "closed_weapons"
+	var/obj/item/weapon_type
+	var/obj/item/ammo_type
+	var/ammo_count = 5
 
+/obj/structure/closet/crate/weapon/Initialize()
+	. = ..()
+	if(ammo_type)
+		for(var/t=0,t<ammo_count,t++)
+			new ammo_type(src)
+	if(weapon_type)
+		new weapon_type(src)
+
+/obj/structure/closet/crate/empexplosives
+	name = "electromagnetic explosives crate"
+	desc = "An explosives crate, containing EMP grenades"
+	icon_state = "closed_explosives"
+	icon_opened = "open_explosives"
+	icon_closed = "closed_explosives"
+
+/obj/structure/closet/crate/empexplosives/Initialize()
+	. = ..()
+	new /obj/item/explosive/grenade/empgrenade(src)
+	new /obj/item/explosive/grenade/empgrenade(src)
+	new /obj/item/explosive/grenade/empgrenade(src)
+	new /obj/item/explosive/grenade/empgrenade(src)
+	new /obj/item/explosive/grenade/empgrenade(src)
+	new /obj/item/explosive/grenade/empgrenade(src)
+
+	/* * * * * * * * * * * * * *
+	 * Training weapon crates. *
+	 * * * * * * * * * * * * * */
+
+/obj/structure/closet/crate/weapon/training/m41a
+	name = "training M41A MK2 crate"
+	desc = "A crate with an M41A MK2 rifle and nonlethal ammunition for it. Intended for use in combat exercises."
+	weapon_type = /obj/item/weapon/gun/rifle/m41a/training
+	ammo_type = /obj/item/ammo_magazine/rifle/rubber
+
+/obj/structure/closet/crate/weapon/training/l42a
+	name = "training L42A crate"
+	desc = "A crate with an L42A battle rifle and nonlethal ammunition for it. Intended for use in combat exercises."
+	weapon_type = /obj/item/weapon/gun/rifle/l42a/training
+	ammo_type = /obj/item/ammo_magazine/rifle/l42a/rubber
+
+/obj/structure/closet/crate/weapon/training/m39
+	name = "training M39 crate"
+	desc = "A crate with an M39 submachine gun and nonlethal ammunition for it. Intended for use in combat exercises."
+	weapon_type = /obj/item/weapon/gun/smg/m39/training
+	ammo_type = /obj/item/ammo_magazine/smg/m39/rubber
+
+/obj/structure/closet/crate/weapon/training/m4a3
+	name = "training M4A3 crate"
+	desc = "A crate with an M4A3 pistol and nonlethal ammunition for it. Intended for use in combat exercises."
+	weapon_type = /obj/item/weapon/gun/pistol/m4a3/training
+	ammo_type = /obj/item/ammo_magazine/pistol/rubber
+
+/obj/structure/closet/crate/weapon/training/mod88
+	name = "training 88 mod 4 crate"
+	desc = "A crate with an 88 mod 4 pistol and nonlethal ammunition for it. Intended for use in combat exercises."
+	weapon_type = /obj/item/weapon/gun/pistol/mod88/training
+	ammo_type = /obj/item/ammo_magazine/pistol/mod88/rubber
+
+/obj/structure/closet/crate/weapon/training/grenade
+	name = "rubber pellet M15 grenades crate"
+	desc = "A crate with multiple nonlethal M15 grenades. Intended for use in combat exercises and riot control."
+	ammo_type = /obj/item/explosive/grenade/HE/m15/rubber
+	ammo_count = 6
 
 
 /obj/structure/closet/crate/miningcar
-	desc = "A mining car. This one doesn't work on rails, but has to be dragged."
-	name = "Mining car (not for rails)"
-	icon_state = "miningcar"
+	name = "\improper minecart"
+	desc = "Essentially a big metal bucket on wheels. This one has a modern plastic shroud."
+	icon_state = "closed_mcart"
 	density = 1
-	icon_opened = "miningcaropen"
-	icon_closed = "miningcar"
+	icon_opened = "open_mcart"
+	icon_closed = "closed_mcart"
+
+/obj/structure/closet/crate/miningcar/yellow
+	name = "\improper minecart"
+	desc = "Essentially a big metal bucket on wheels. This one has a modern plastic shroud."
+	icon_state = "closed_mcart_y"
+	density = 1
+	icon_opened = "open_mcart_y"
+	icon_closed = "closed_mcart_y"
 

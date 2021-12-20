@@ -10,11 +10,12 @@
 						//also useful for items with many icon_state values when you don't want to make an inhand sprite for each value.
 	var/r_speed = 1.0
 	var/force = 0
-	var/damtype = "brute"
+	var/damtype = BRUTE
 	var/embeddable = TRUE //FALSE if unembeddable
 	var/embedded_organ = null
 	var/attack_speed = 11  //+3, Adds up to 10.  Added an extra 4 removed from /mob/proc/do_click()
-	var/list/attack_verb = list() //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	 ///Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	var/list/attack_verb
 
 	health = null
 
@@ -27,6 +28,8 @@
 
 	var/hitsound = null
 	var/center_of_mass = "x=16;y=16"
+	///Adjusts the item's position in the HUD, currently only by guns with stock/barrel attachments.
+	var/hud_offset = 0
 	var/w_class = SIZE_MEDIUM
 	var/storage_cost = null
 	flags_atom = FPRINT
@@ -47,7 +50,7 @@
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by flags_cold_protection flags
 
 	var/list/actions //list of /datum/action's that this item has.
-	var/list/actions_types = list() //list of paths of action datums to give to the item on New().
+	var/list/actions_types //list of paths of action datums to give to the item on New().
 
 	//var/heat_transfer_coefficient = 1 //0 prevents all transfers, 1 is invisible
 	var/gas_transfer_coefficient = 1 // for leaking gas from turf to mask and vice-versa (for masks right now, but at some point, i'd like to include space helmets)
@@ -76,6 +79,12 @@
 	var/list/equip_sounds = list() //Sounds played when this item is equipped
 	var/list/unequip_sounds = list() //Same but when unequipped
 
+	 ///Vision impairing effect if worn on head/mask/glasses.
+	var/vision_impair = VISION_IMPAIR_NONE
+
+	 ///Used for stepping onto flame and seeing how much dmg you take and if you're ignited.
+	var/fire_intensity_resistance
+
 	var/map_specific_decoration = FALSE
 	var/blood_color = "" //color of the blood on us if there's any.
 	appearance_flags = KEEP_TOGETHER //taken from blood.dm
@@ -89,6 +98,8 @@
 		new path(src)
 	if(w_class <= SIZE_MEDIUM) //pulling small items doesn't slow you down much
 		drag_delay = 1
+	if(isstorage(loc))
+		appearance_flags |= NO_CLIENT_COLOR //It's spawned in an inventory item, so saturation/desaturation etc. effects shouldn't affect it.
 
 /obj/item/Destroy()
 	flags_item &= ~DELONDROP //to avoid infinite loop of unequip, delete, unequip, delete.
@@ -168,13 +179,13 @@ cases. Override_icon_state should be a list.*/
 		if(override_protection && override_protection.len)
 			new_protection = override_protection[SSmapping.configs[GROUND_MAP].map_name]
 		switch(SSmapping.configs[GROUND_MAP].map_name) // maploader TODO: json
-			if(MAP_ICE_COLONY, MAP_CORSAT, MAP_SOROKYNE_STRATA)
+			if(MAP_ICE_COLONY, MAP_ICE_COLONY_V3, MAP_CORSAT, MAP_SOROKYNE_STRATA)
 				icon_state = new_icon_state ? new_icon_state : "s_" + icon_state
 				item_state = new_item_state ? new_item_state : "s_" + item_state
 			if(MAP_WHISKEY_OUTPOST, MAP_DESERT_DAM, MAP_BIG_RED, MAP_KUTJEVO)
 				icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
 				item_state = new_item_state ? new_item_state : "d_" + item_state
-			if(MAP_PRISON_STATION)
+			if(MAP_PRISON_STATION, MAP_PRISON_STATION_V3)
 				icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
 				item_state = new_item_state ? new_item_state : "c_" + item_state
 		if(new_protection)
@@ -203,7 +214,8 @@ cases. Override_icon_state should be a list.*/
 		to_chat(user, desc)
 
 /obj/item/attack_hand(mob/user)
-	if (!user) return
+	if (!user)
+		return
 
 	if(anchored)
 		to_chat(user, "[src] is anchored to the ground.")
@@ -213,7 +225,7 @@ cases. Override_icon_state should be a list.*/
 		if(src.clone && !src.clone.Adjacent(user)) // Is the clone adjacent?
 			return
 
-	if(istype(loc, /obj/item/weapon/gun)) // more alt-click hijinx
+	if(isgun(loc)) // more alt-click hijinx
 		return
 
 	if(isstorage(loc))
@@ -228,7 +240,6 @@ cases. Override_icon_state should be a list.*/
 	else
 		user.next_move = max(user.next_move+2,world.time + 2)
 	if(!QDELETED(src)) //item may have been qdel'd by the drop above.
-		pickup(user)
 		add_fingerprint(user)
 		if(!user.put_in_active_hand(src))
 			dropped(user)
@@ -240,15 +251,11 @@ cases. Override_icon_state should be a list.*/
 		var/obj/item/storage/S = W
 		if(S.storage_flags & STORAGE_CLICK_GATHER && isturf(loc))
 			if(S.storage_flags & STORAGE_GATHER_SIMULTAENOUSLY) //Mode is set to collect all items on a tile and we clicked on a valid one.
-				var/list/rejections = list()
 				var/success = 0
 				var/failure = 0
 
 				for(var/obj/item/I in src.loc)
-					if(I.type in rejections) // To limit bag spamming: any given type only complains once
-						continue
-					if(!S.can_be_inserted(I))	// Note can_be_inserted still makes noise when the answer is no
-						rejections += I.type	// therefore full bags are still a little spammy
+					if(!S.can_be_inserted(I, TRUE))
 						failure = 1
 						continue
 					success = 1
@@ -280,26 +287,31 @@ cases. Override_icon_state should be a list.*/
 
 	for(var/X in actions)
 		var/datum/action/A = X
-		A.remove_action(user)
+		A.remove_from(user)
 
 	if(flags_item & DELONDROP)
 		qdel(src)
 
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
 
+	appearance_flags &= ~NO_CLIENT_COLOR //So saturation/desaturation etc. effects affect it.
+
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_PICKUP, user)
-	src.dir = SOUTH//Always rotate it south. This resets it to default position, so you wouldn't be putting things on backwards
+	setDir(SOUTH)//Always rotate it south. This resets it to default position, so you wouldn't be putting things on backwards
+	return
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
 /obj/item/proc/on_exit_storage(obj/item/storage/S as obj)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	appearance_flags &= ~NO_CLIENT_COLOR
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
 /obj/item/proc/on_enter_storage(obj/item/storage/S as obj)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	appearance_flags |= NO_CLIENT_COLOR //It's in an inventory item, so saturation/desaturation etc. effects shouldn't affect it.
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
 /obj/item/proc/on_found(mob/finder as mob)
@@ -324,6 +336,8 @@ cases. Override_icon_state should be a list.*/
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
 	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	if((flags_item & MOB_LOCK_ON_EQUIP) && !locked_to_mob)
 		locked_to_mob = user
 
@@ -334,17 +348,25 @@ cases. Override_icon_state should be a list.*/
 	else
 		remove_item_verbs(user)
 
-	src.dir = SOUTH//Always rotate it south. This resets it to default position, so you wouldn't be putting things on backwards
+	setDir(SOUTH)//Always rotate it south. This resets it to default position, so you wouldn't be putting things on backwards
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(user, slot)) //some items only give their actions buttons when in a specific slot.
-			A.give_action(user)
+			A.give_to(user)
+
+	appearance_flags |= NO_CLIENT_COLOR //So that saturation/desaturation etc. effects don't hit inventory.
+
+// Called after the item is removed from equipment slot.
+/obj/item/proc/unequipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_UNEQUIPPED, user, slot)
 
 //sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(mob/user, slot)
 	return TRUE
 
-// The mob M is attempting to equip this item into the slot passed through as 'slot'. Return 1 if it can do this and 0 if it can't.
+// The mob M is attempting to equip this item into the slot passed through as 'slot'. return TRUE if it can do this and 0 if it can't.
 // If you are making custom procs but would like to retain partial or complete functionality of this one, include a 'return ..()' to where you want this to happen.
 // Set disable_warning to 1 if you wish it to not give you outputs.
 // warning_text is used in the case that you want to provide a specific warning for why the item cannot be equipped.
@@ -377,41 +399,41 @@ cases. Override_icon_state should be a list.*/
 			if(WEAR_L_HAND)
 				if(H.l_hand)
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_R_HAND)
 				if(H.r_hand)
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_FACE)
 				if(H.wear_mask)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_FACE))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_BACK)
 				if(H.back)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_BACK))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_JACKET)
 				if(H.wear_suit)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_OCLOTHING))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_HANDS)
 				if(H.gloves)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_HANDS))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_FEET)
 				if(H.shoes)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_FEET))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_WAIST)
 				if(H.belt)
 					return FALSE
@@ -421,37 +443,53 @@ cases. Override_icon_state should be a list.*/
 					return FALSE
 				if(!(flags_equip_slot & SLOT_WAIST))
 					return
-				return 1
+				return TRUE
 			if(WEAR_EYES)
 				if(H.glasses)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_EYES))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_HEAD)
 				if(H.head)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_HEAD))
 					return FALSE
-				return 1
-			if(WEAR_EAR)
-				if(H.wear_ear)
+				return TRUE
+			if(WEAR_L_EAR)
+				if(H.wear_l_ear)
 					return FALSE
+				if(HAS_TRAIT(src, TRAIT_ITEM_EAR_EXCLUSIVE))
+					if(H.wear_r_ear && HAS_TRAIT(H.wear_r_ear, TRAIT_ITEM_EAR_EXCLUSIVE))
+						if(!disable_warning)
+							to_chat(H, SPAN_WARNING("You can't wear [src] while you have [H.wear_r_ear] in your right ear!"))
+						return FALSE
 				if(!(flags_equip_slot & SLOT_EAR))
 					return FALSE
-				return 1
+				return TRUE
+			if(WEAR_R_EAR)
+				if(H.wear_r_ear)
+					return FALSE
+				if(HAS_TRAIT(src, TRAIT_ITEM_EAR_EXCLUSIVE))
+					if(H.wear_l_ear && HAS_TRAIT(H.wear_l_ear, TRAIT_ITEM_EAR_EXCLUSIVE))
+						if(!disable_warning)
+							to_chat(H, SPAN_WARNING("You can't wear [src] while you have [H.wear_l_ear] in your left ear!"))
+						return FALSE
+				if(!(flags_equip_slot & SLOT_EAR))
+					return FALSE
+				return TRUE
 			if(WEAR_BODY)
 				if(H.w_uniform)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_ICLOTHING))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_ID)
 				if(H.wear_id)
 					return FALSE
 				if(!(flags_equip_slot & SLOT_ID))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_L_STORE)
 				if(H.l_store)
 					return FALSE
@@ -462,7 +500,7 @@ cases. Override_icon_state should be a list.*/
 				if(flags_equip_slot & SLOT_NO_STORE)
 					return FALSE
 				if(w_class <= SIZE_SMALL || (flags_equip_slot & SLOT_STORE))
-					return 1
+					return TRUE
 			if(WEAR_R_STORE)
 				if(H.r_store)
 					return FALSE
@@ -473,7 +511,12 @@ cases. Override_icon_state should be a list.*/
 				if(flags_equip_slot & SLOT_NO_STORE)
 					return FALSE
 				if(w_class <= SIZE_SMALL || (flags_equip_slot & SLOT_STORE))
-					return 1
+					return TRUE
+				return FALSE
+			if(WEAR_ACCESSORY)
+				for(var/obj/item/clothing/C in H.contents)
+					if(C.can_attach_accessory(src))
+						return TRUE
 				return FALSE
 			if(WEAR_J_STORE)
 				if(H.s_store)
@@ -487,26 +530,31 @@ cases. Override_icon_state should be a list.*/
 						to_chat(usr, "You somehow have a suit with no defined allowed items for suit storage, stop that.")
 					return FALSE
 				if(istype(src, /obj/item/tool/pen) ||(H.wear_suit && is_type_in_list(src, H.wear_suit.allowed)))
-					return 1
+					return TRUE
 				return FALSE
 			if(WEAR_HANDCUFFS)
 				if(H.handcuffed)
 					return FALSE
 				if(!istype(src, /obj/item/handcuffs))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_LEGCUFFS)
 				if(H.legcuffed)
 					return FALSE
 				if(!istype(src, /obj/item/legcuffs))
 					return FALSE
-				return 1
+				return TRUE
 			if(WEAR_IN_ACCESSORY)
 				if(H.w_uniform)
-					for(var/obj/item/clothing/accessory/storage/T in H.w_uniform.accessories)
-						var/obj/item/storage/internal/I = T.hold
-						if(I.can_be_inserted(src, 1))
-							return 1
+					for(var/A in H.w_uniform.accessories)
+						if(istype(A, /obj/item/clothing/accessory/storage))
+							var/obj/item/clothing/accessory/storage/S = A
+							if(S.hold.can_be_inserted(src, TRUE))
+								return TRUE
+						else if(istype(A, /obj/item/clothing/accessory/holster))
+							var/obj/item/clothing/accessory/holster/AH = A
+							if(!(AH.holstered) && AH.can_holster(src))
+								return TRUE
 				return FALSE
 			if(WEAR_IN_JACKET)
 				if(H.wear_suit)
@@ -514,13 +562,20 @@ cases. Override_icon_state should be a list.*/
 					if(istype(S) && S.pockets)//not all suits have pockits
 						var/obj/item/storage/internal/I = S.pockets
 						if(I.can_be_inserted(src,1))
-							return 1
+							return TRUE
 				return FALSE
+			if(WEAR_IN_HELMET)
+				if(H.head)
+					var/obj/item/clothing/head/helmet/marine/HM = H.head
+					if(istype(HM) && HM.pockets)//not all helmuts have pockits
+						var/obj/item/storage/internal/I = HM.pockets
+						if(I.can_be_inserted(src,TRUE))
+							return TRUE
 			if(WEAR_IN_BACK)
 				if (H.back && isstorage(H.back))
 					var/obj/item/storage/B = H.back
 					if(B.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 			if(WEAR_IN_SHOES)
 				if(H.shoes && istype(H.shoes, /obj/item/clothing/shoes))
@@ -528,40 +583,72 @@ cases. Override_icon_state should be a list.*/
 					if(!S.stored_item && S.items_allowed && S.items_allowed.len)
 						for (var/i in S.items_allowed)
 							if(istype(src, i))
-								return 1
+								return TRUE
 				return FALSE
 			if(WEAR_IN_SCABBARD)
 				if(H.back && istype(H.back, /obj/item/storage/large_holster))
 					var/obj/item/storage/large_holster/B = H.back
 					if(B.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 			if(WEAR_IN_BELT)
 				if(H.belt &&  isstorage(H.belt))
 					var/obj/item/storage/B = H.belt
 					if(B.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 			if(WEAR_IN_J_STORE)
 				if(H.s_store && isstorage(H.s_store))
 					var/obj/item/storage/B = H.s_store
 					if(B.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 			if(WEAR_IN_L_STORE)
 				if(H.l_store && istype(H.l_store, /obj/item/storage/pouch))
 					var/obj/item/storage/pouch/P = H.l_store
 					if(P.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 			if(WEAR_IN_R_STORE)
 				if(H.r_store && istype(H.r_store, /obj/item/storage/pouch))
 					var/obj/item/storage/pouch/P = H.r_store
 					if(P.can_be_inserted(src, 1))
-						return 1
+						return TRUE
 				return FALSE
 		return FALSE //Unsupported slot
 		//END HUMAN
+
+///Checks if an item can be put in a slot (string) based on their slot flags (bit flags)
+/obj/item/proc/is_valid_slot(slot, ignore_non_flags)
+	switch(slot)
+		if(WEAR_FACE)
+			return flags_equip_slot & SLOT_FACE
+		if(WEAR_BACK)
+			return flags_equip_slot & SLOT_BACK
+		if(WEAR_JACKET)
+			return flags_equip_slot & SLOT_OCLOTHING
+		if(WEAR_HANDS)
+			return flags_equip_slot & SLOT_HANDS
+		if(WEAR_FEET)
+			return flags_equip_slot & SLOT_FEET
+		if(WEAR_WAIST)
+			return flags_equip_slot & SLOT_WAIST
+		if(WEAR_EYES)
+			return flags_equip_slot & SLOT_EYES
+		if(WEAR_HEAD)
+			return flags_equip_slot & SLOT_HEAD
+		if(WEAR_L_EAR, WEAR_R_EAR)
+			return flags_equip_slot & SLOT_EAR
+		if(WEAR_BODY)
+			return flags_equip_slot & SLOT_ICLOTHING
+		if(WEAR_ID)
+			return flags_equip_slot & SLOT_ID
+		if(WEAR_L_STORE, WEAR_R_STORE)
+			if((flags_equip_slot & SLOT_NO_STORE) || !(flags_equip_slot & SLOT_STORE))
+				return FALSE
+			return TRUE
+		else
+			return !ignore_non_flags
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
@@ -570,12 +657,11 @@ cases. Override_icon_state should be a list.*/
 
 	if(!(usr)) //BS12 EDIT
 		return
+	if(ismob(src))
+		return
 	if(!usr.canmove || usr.stat || usr.is_mob_restrained() || !Adjacent(usr))
 		return
 	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/brain)))//Is humanoid, and is not a brain
-		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
-		return
-	if( usr.stat || usr.is_mob_restrained() )//Is not asleep/dead and is not restrained
 		to_chat(usr, SPAN_DANGER("You can't pick things up!"))
 		return
 	if(src.anchored) //Object isn't anchored
@@ -607,7 +693,7 @@ cases. Override_icon_state should be a list.*/
 
 
 /obj/item/proc/IsShield()
-	return 0
+	return FALSE
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc
@@ -697,7 +783,7 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 		qdel(zoom_event_handler)
 	//General reset in case anything goes wrong, the view will always reset to default unless zooming in.
 	if(user.client)
-		user.client.change_view(world_view_size)
+		user.client.change_view(world_view_size, src)
 		user.client.pixel_x = 0
 		user.client.pixel_y = 0
 
@@ -711,7 +797,7 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 	user.zoom_cooldown = world.time + 20
 
 	if(user.client)
-		user.client.change_view(viewsize)
+		user.client.change_view(viewsize, src)
 
 		if(zoom_event_handler)
 			qdel(zoom_event_handler)

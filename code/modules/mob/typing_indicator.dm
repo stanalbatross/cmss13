@@ -8,9 +8,11 @@ mob/var/last_typed_time
 var/global/image/typing_indicator
 
 /mob/proc/set_typing_indicator(var/state)
+	SHOULD_NOT_SLEEP(TRUE)
 
 	if(!typing_indicator)
 		typing_indicator = image('icons/mob/hud/talk.dmi',null,"typing")
+		typing_indicator.appearance_flags = NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 
 	if(client)
 		if(client.prefs.toggles_chat & SHOW_TYPING)
@@ -30,11 +32,11 @@ var/global/image/typing_indicator
 	set name = ".Say"
 	set hidden = 1
 
-	set_typing_indicator(1)
-	hud_typing = 1
+	set_typing_indicator(TRUE)
+	hud_typing = -1
 	var/message = input("","say (text)") as text
-	hud_typing = 0
-	set_typing_indicator(0)
+	hud_typing = NONE
+	set_typing_indicator(FALSE)
 	if(message)
 		say_verb(message)
 
@@ -42,13 +44,33 @@ var/global/image/typing_indicator
 	set name = ".Me"
 	set hidden = 1
 
-	set_typing_indicator(1)
-	hud_typing = 1
+	set_typing_indicator(TRUE)
+	hud_typing = -1
 	var/message = input("","me (text)") as text
-	hud_typing = 0
-	set_typing_indicator(0)
+	hud_typing = NONE
+	set_typing_indicator(FALSE)
 	if(message)
 		me_verb(message)
+
+/// Sets typing indicator for a couple seconds, for use with client-side comm verbs
+/mob/verb/timed_typing()
+	set name = ".typing"
+	set hidden = TRUE
+	set instant = TRUE
+
+	// Don't override wrapper's indicators
+	if(hud_typing == -1)
+		return
+	set_typing_indicator(TRUE)
+	hud_typing = addtimer(CALLBACK(src, .proc/timed_typing_clear), 5 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE|TIMER_STOPPABLE)
+
+/// Clears timed typing indicators
+/mob/proc/timed_typing_clear()
+	// Check it's one of ours
+	if(hud_typing == -1)
+		return
+	hud_typing = NONE
+	set_typing_indicator(FALSE)
 
 /mob/proc/handle_typing_indicator()
 	if(client)

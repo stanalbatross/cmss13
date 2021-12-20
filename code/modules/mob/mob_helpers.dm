@@ -1,9 +1,4 @@
-#define isdeaf(A) (ismob(A) && ((A?:sdisabilities & DEAF) || A?:ear_deaf))
-#define areSameSpecies(A, B) 	(isliving(A) && isliving(B) && \
-									((isXeno(A) && isXeno(B)) || \
-										(ishuman(A) && ishuman(B) && !(isYautja(A) ^ isYautja(B))) \
-									) \
-								)
+#define isdeaf(A) (ismob(A) && ((A?:sdisabilities & DISABILITY_DEAF) || A?:ear_deaf))
 #define xeno_hivenumber(A) (isXeno(A) ? A?:hivenumber : FALSE)
 
 /mob/proc/can_use_hands()
@@ -83,7 +78,8 @@ var/global/list/limb_types_by_name = list(
 )
 
 /proc/check_zone(zone)
-	if(!zone)	return "chest"
+	if(!zone)
+		return "chest"
 	switch(zone)
 		if("eyes")
 			zone = "head"
@@ -93,16 +89,15 @@ var/global/list/limb_types_by_name = list(
 
 // Returns zone with a certain probability. If the probability fails, or no zone is specified, then a random body part is chosen.
 // Do not use this if someone is intentionally trying to hit a specific body part.
-// Use get_zone_with_miss_chance() for that.
-/proc/ran_zone(zone, probability)
+/proc/rand_zone(zone, probability)
 	if (zone)
 		zone = check_zone(zone)
 		if (prob(probability))
 			return zone
 
-	var/ran_zone = zone
-	while (ran_zone == zone)
-		ran_zone = pick (
+	var/rand_zone = zone
+	while (rand_zone == zone)
+		rand_zone = pick (
 			organ_rel_size["head"]; "head",
 			organ_rel_size["chest"]; "chest",
 			organ_rel_size["groin"]; "groin",
@@ -116,27 +111,7 @@ var/global/list/limb_types_by_name = list(
 			organ_rel_size["r_foot"]; "r_foot",
 		)
 
-	return ran_zone
-
-// Emulates targetting a specific body part, and miss chances
-// May return null if missed
-// miss_chance_mod may be negative.
-/proc/get_zone_with_miss_chance(zone, var/mob/target, var/miss_chance_mod = 0)
-	zone = check_zone(zone)
-
-	// you can only miss if your target is standing and not restrained
-	if(!target.buckled && !target.lying)
-		var/miss_chance = 10
-		if (zone in base_miss_chance)
-			miss_chance = base_miss_chance[zone]
-		miss_chance = max(miss_chance + miss_chance_mod, 0)
-		if(prob(miss_chance))
-			if(prob(70))
-				return null
-			return pick(base_miss_chance)
-
-	return zone
-
+	return rand_zone
 
 /proc/stars(n, pr)
 	if (pr == null)
@@ -255,7 +230,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 #define PIXELS_PER_STRENGTH_VAL 24
 
 /proc/shake_camera(var/mob/M, var/steps = 1, var/strength = 1, var/time_per_step = 1)
-	if(!M || !M.client || (M.shakecamera > world.time))
+	if(!M?.client || (M.shakecamera > world.time))
 		return
 
 	M.shakecamera = world.time + steps * time_per_step
@@ -263,7 +238,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	var/old_X = M.client.pixel_x
 	var/old_y = M.client.pixel_y
 
-	animate(M.client, pixel_x = old_X + rand(-(strength), strength), pixel_y = old_y + rand(-(strength), strength), easing = JUMP_EASING, time = time_per_step)
+	animate(M.client, pixel_x = old_X + rand(-(strength), strength), pixel_y = old_y + rand(-(strength), strength), easing = JUMP_EASING, time = time_per_step, flags = ANIMATION_PARALLEL)
 	var/i = 1
 	while(i < steps)
 		animate(pixel_x = old_X + rand(-(strength), strength), pixel_y = old_y + rand(-(strength), strength), easing = JUMP_EASING, time = time_per_step)
@@ -310,25 +285,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 	if(hud_used && hud_used.action_intent)
 		hud_used.action_intent.icon_state = "intent_[intent_text(a_intent)]"
-
-//can the mob be operated on?
-/mob/proc/can_be_operated_on()
-	return FALSE
-
-//check if mob is lying down on something we can operate him on.
-/mob/living/carbon/can_be_operated_on()
-	if(!lying) return FALSE
-	if(locate(/obj/structure/machinery/optable, loc) || locate(/obj/structure/bed/roller, loc))
-		return TRUE
-	var/obj/structure/surface/table/T = locate(/obj/structure/surface/table, loc)
-	if(T && !T.flipped) return TRUE
-
-/mob/living/carbon/hellhound/can_be_operated_on()
-	return FALSE
-
-/mob/living/carbon/Xenomorph/can_be_operated_on()
-	return FALSE
-
 
 /mob/proc/is_mob_restrained()
 	return
@@ -427,7 +383,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		if(SKILL_CQC)
 			if(skillcheck(src, SKILL_CQC, SKILL_CQC_MASTER))
 				return DURATION_MULTIPLIER_TIER_3
-			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_MP))
+			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_SKILLED))
 				return DURATION_MULTIPLIER_TIER_2
 			else if(skillcheck(src, SKILL_CQC, SKILL_CQC_TRAINED))
 				return DURATION_MULTIPLIER_TIER_1
@@ -448,14 +404,21 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 			else if(skillcheck(src, SKILL_MEDICAL, SKILL_MEDICAL_DOCTOR))
 				return DURATION_MULTIPLIER_TIER_1
 
-		if(SKILL_SURGERY)
+		if(SKILL_SURGERY) //Surgeons are the baseline.
 			if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_EXPERT))
-				return DURATION_MULTIPLIER_TIER_3
+				return 0.6 //Synths are 40% faster. In the same conditions they work almost twice as quickly, and can perform surgeries in rough conditions or with improvised tools at full speed.
+			if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_TRAINED))
+				return 1 			
+			else if(skillcheck(src, SKILL_SURGERY, SKILL_SURGERY_NOVICE))
+				return 1.2 //Medic/nurse.
 		//if(SKILL_RESEARCH)
 		//if(SKILL_PILOT)
 		//if(SKILL_POLICE)
 		//if(SKILL_POWERLOADER)
 		//if(SKILL_VEHICLE)
-		else
-			if(isYautja(src) || (isSynth(src) && !isEarlySynthetic(src)))
-				return DURATION_MULTIPLIER_TIER_3 //Acceleration for things that don't fall under skills
+
+/mob/proc/check_view_change(var/new_size, var/atom/source)
+	return new_size
+
+/mob/proc/can_be_pulled_by(var/mob/M)
+	return TRUE

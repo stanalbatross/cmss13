@@ -1,5 +1,6 @@
 /datum/species/zombie
-	name= "Zombie"
+	group = SPECIES_HUMAN
+	name = "Zombie"
 	name_plural = "Zombies"
 	slowdown = 1
 	blood_color = "#333333"
@@ -8,7 +9,8 @@
 	pain_type = /datum/pain/zombie
 	stamina_type = /datum/stamina/none
 	death_message = "seizes up and falls limp..."
-	flags = NO_BREATHE|NO_SCAN|NO_POISON|NO_NEURO|NO_SHRAPNEL
+	flags = NO_BREATHE|NO_CLONE_LOSS|NO_POISON|NO_NEURO|NO_SHRAPNEL
+	mob_inherent_traits = list(TRAIT_FOREIGN_BIO)
 	brute_mod = 0.25 //EXTREME BULLET RESISTANCE
 	burn_mod = 0.8 //Lowered burn damage since it would 1-shot zombies from 2 to 0.8.
 	speech_chance  = 5
@@ -45,13 +47,13 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/zombie_eyes(H), WEAR_EYES, TRUE)
 
 	var/datum/disease/D
-	
+
 	for(var/datum/disease/black_goo/DD in H.viruses)
 		D = DD
 
-	if(!D) 
+	if(!D)
 		D = H.AddDisease(new /datum/disease/black_goo())
-	
+
 	D.stage = 5
 
 	var/datum/mob_hud/Hu = huds[MOB_HUD_MEDICAL_OBSERVER]
@@ -61,10 +63,8 @@
 
 
 /datum/species/zombie/post_species_loss(mob/living/carbon/human/H)
-	if(H in to_revive)
-		deltimer(to_revive[H])
-		to_revive -= H
-	
+	..()
+	remove_from_revive(H)
 	var/datum/mob_hud/Hu = huds[MOB_HUD_MEDICAL_OBSERVER]
 	Hu.remove_hud_from(H)
 
@@ -77,19 +77,18 @@
 
 /datum/species/zombie/handle_death(var/mob/living/carbon/human/H, gibbed)
 	set waitfor = 0
-	if(gibbed) return
+
+	if(gibbed)
+		remove_from_revive(H)
+		return
 
 	if(H)
 		to_chat(H, SPAN_XENOWARNING("You fall... but your body is slowly regenerating itself."))
-		prepare_to_revive(H, MINUTES_1)
+		to_revive[H] = addtimer(CALLBACK(src, .proc/revive_from_death, H), 1 MINUTES, TIMER_STOPPABLE|TIMER_OVERRIDE|TIMER_UNIQUE)
 
-/datum/species/zombie/proc/prepare_to_revive(var/mob/living/carbon/human/H, var/time)
-	to_revive.Add(H)
-	to_revive[H] = addtimer(CALLBACK(src, .proc/revive_from_death, H), time, TIMER_STOPPABLE | TIMER_OVERRIDE|TIMER_UNIQUE)
-
-/datum/species/zombie/proc/remove_from_revive(var/mob/living/carbon/human/H)
-	if(H in to_revive)
-		deltimer(to_revive[H])
+/datum/species/zombie/handle_dead_death(var/mob/living/carbon/human/H, gibbed)
+	if(gibbed)
+		remove_from_revive(H)
 
 /datum/species/zombie/proc/revive_from_death(var/mob/living/carbon/human/H)
 	if(H && H.loc && H.stat == DEAD)
@@ -98,6 +97,11 @@
 
 		H.make_jittery(500)
 		H.visible_message(SPAN_WARNING("[H] rises from the ground!"))
-		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(H), WEAR_FEET, TRUE)
+		remove_from_revive(H)
 
-		addtimer(CALLBACK(H, /mob/.proc/remove_jittery), SECONDS_3)
+		addtimer(CALLBACK(H, /mob/.proc/remove_jittery), 3 SECONDS)
+
+/datum/species/zombie/proc/remove_from_revive(var/mob/living/carbon/human/H)
+	if(H in to_revive)
+		deltimer(to_revive[H])
+		to_revive -= H

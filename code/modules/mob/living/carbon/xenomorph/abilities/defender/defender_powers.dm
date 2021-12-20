@@ -1,4 +1,4 @@
-/datum/action/xeno_action/onclick/toggle_crest_defense/use_ability(atom/A)
+/datum/action/xeno_action/onclick/toggle_crest/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner
 	if (!istype(X))
 		return
@@ -17,14 +17,14 @@
 
 	if(X.crest_defense)
 		to_chat(X, SPAN_XENOWARNING("You lower your crest."))
-		X.armor_deflection_buff += armor_buff
 		X.ability_speed_modifier += speed_debuff
+		X.armor_deflection_buff += armor_buff
 		X.mob_size = MOB_SIZE_BIG //knockback immune
 		X.update_icons()
 	else
 		to_chat(X, SPAN_XENOWARNING("You raise your crest."))
-		X.armor_deflection_buff -= armor_buff
 		X.ability_speed_modifier -= speed_debuff
+		X.armor_deflection_buff -= armor_buff
 		X.mob_size = MOB_SIZE_XENO //no longer knockback immune
 		X.update_icons()
 
@@ -60,12 +60,12 @@
 
 	var/distance = get_dist(X, H)
 
-	var/max_distance = 1 + (X.crest_defense * 2)
+	var/max_distance = 3 - (X.crest_defense * 2)
 
 	if(distance > max_distance)
 		return
 
-	if(X.crest_defense)
+	if(!X.crest_defense)
 		X.throw_atom(get_step_towards(H, X), 3, SPEED_SLOW, X)
 
 	if(!X.Adjacent(H))
@@ -73,17 +73,16 @@
 
 	apply_cooldown()
 
-	H.last_damage_mob = X
-	H.last_damage_source = initial(X.caste_name)
+	H.last_damage_data = create_cause_data(X.caste_type, X)
 	X.visible_message(SPAN_XENOWARNING("[X] rams [H] with its armored crest!"), \
 	SPAN_XENOWARNING("You ram [H] with your armored crest!"))
 
-	if(H.stat != DEAD && (!(H.status_flags & XENO_HOST) || !istype(H.buckled, /obj/structure/bed/nest)) )
-		var/h_damage = 20 + (X.crest_defense * 10) + (X.steelcrest * 7.5) //20 or 30, plus 7.5
+	if(H.stat != DEAD && (!(H.status_flags & XENO_HOST) || !HAS_TRAIT(H, TRAIT_NESTED)) )
+		var/h_damage = 30 - (X.crest_defense * 10) + (X.steelcrest * 7.5) //30 if crest up, 20 if down, plus 7.5
 		H.apply_armoured_damage(get_xeno_damage_slash(H, h_damage), ARMOR_MELEE, BRUTE, "chest", 5)
 
 	var/facing = get_dir(X, H)
-	var/headbutt_distance = 3 - (X.crest_defense * 2) - (X.fortify * 2)
+	var/headbutt_distance = 1 + (X.crest_defense * 2) + (X.fortify * 2)
 	var/turf/T = get_turf(X)
 	var/turf/temp = get_turf(X)
 
@@ -132,10 +131,9 @@
 	for(var/mob/living/carbon/H in orange(sweep_range, get_turf(X)))
 		if (!isXenoOrHuman(H) || X.can_not_harm(H)) continue
 		if(H.stat == DEAD) continue
-		if(istype(H.buckled, /obj/structure/bed/nest)) continue
+		if(HAS_TRAIT(H, TRAIT_NESTED)) continue
 		step_away(H, X, sweep_range, 2)
-		H.last_damage_mob = X
-		H.last_damage_source = initial(X.caste_name)
+		H.last_damage_data = create_cause_data(X.caste_type, X)
 		H.apply_armoured_damage(get_xeno_damage_slash(H, 15), ARMOR_MELEE, BRUTE)
 		shake_camera(H, 2, 1)
 
@@ -172,14 +170,29 @@
 	playsound(get_turf(X), 'sound/effects/stonedoor_openclose.ogg', 30, 1)
 
 	if(!X.fortify)
+		RegisterSignal(owner, COMSIG_MOB_DEATH, .proc/death_check)
+		fortify_switch(X, TRUE)
+	else
+		UnregisterSignal(owner, COMSIG_MOB_DEATH)
+		fortify_switch(X, FALSE)
+
+	apply_cooldown()
+	..()
+	return
+
+/datum/action/xeno_action/activable/fortify/proc/fortify_switch(var/mob/living/carbon/Xenomorph/X, var/fortify_state)
+	if(X.fortify == fortify_state)
+		return
+
+	if(fortify_state)
 		to_chat(X, SPAN_XENOWARNING("You tuck yourself into a defensive stance."))
 		if(X.steelcrest)
-			X.armor_deflection_buff += 15
+			X.armor_deflection_buff += 10
 			X.armor_explosive_buff += 60
 			X.ability_speed_modifier += 3
 			X.damage_modifier -= XENO_DAMAGE_MOD_SMALL
 		else
-			X.armor_deflection_buff += 35
+			X.armor_deflection_buff += 30
 			X.armor_explosive_buff += 60
 			X.frozen = TRUE
 			X.anchored = TRUE
@@ -194,12 +207,12 @@
 		X.frozen = FALSE
 		X.anchored = FALSE
 		if(X.steelcrest)
-			X.armor_deflection_buff -= 15
+			X.armor_deflection_buff -= 10
 			X.armor_explosive_buff -= 60
 			X.ability_speed_modifier -= 3
 			X.damage_modifier += XENO_DAMAGE_MOD_SMALL
 		else
-			X.armor_deflection_buff -= 35
+			X.armor_deflection_buff -= 30
 			X.armor_explosive_buff -= 60
 			X.small_explosives_stun = TRUE
 		X.mob_size = MOB_SIZE_XENO //no longer knockback immune
@@ -208,6 +221,8 @@
 		X.update_icons()
 		X.fortify = FALSE
 
-	apply_cooldown()
-	..()
-	return
+/datum/action/xeno_action/activable/fortify/proc/death_check()
+	SIGNAL_HANDLER
+
+	UnregisterSignal(owner, COMSIG_MOB_DEATH)
+	fortify_switch(owner, FALSE)

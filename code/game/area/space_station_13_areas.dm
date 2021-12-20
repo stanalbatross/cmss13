@@ -22,18 +22,26 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_light = FALSE
 	power_equip = FALSE
 	power_environ = FALSE
-	ambience = list('sound/ambience/ambispace.ogg')
 	temperature = TCMB
 	pressure = 0
-	flags_atom = AREA_NOTUNNEL
+	flags_area = AREA_NOTUNNEL
 	test_exemptions = MAP_TEST_EXEMPTION_SPACE
 
 /area/engine
-	ambience = list('sound/ambience/ambisin1.ogg','sound/ambience/ambisin2.ogg','sound/ambience/ambisin3.ogg','sound/ambience/ambisin4.ogg')
+	//ambience = list('sound/ambience/ambisin1.ogg','sound/ambience/ambisin2.ogg','sound/ambience/ambisin3.ogg','sound/ambience/ambisin4.ogg')
 
 /area/admin
 	name = "\improper Admin room"
 	icon_state = "start"
+
+/area/admin/droppod
+	lighting_use_dynamic = FALSE
+
+/area/admin/droppod/holding
+	name = "\improper Admin Supply Drops Droppod"
+
+/area/admin/droppod/loading
+	name = "\improper Admin Supply Drops Loading"
 
 //Defined for fulton recovery storage
 /area/space/highalt
@@ -68,7 +76,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "\improper abandoned  Thunderdome"
 	icon_state = "thunder"
 	requires_power = 0
-	flags_atom = AREA_NOTUNNEL
+	flags_area = AREA_NOTUNNEL
 	statistic_exempt = TRUE
 
 /area/tdome/tdome1

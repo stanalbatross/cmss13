@@ -1,6 +1,6 @@
 /obj/item/device/tracker
 	name = "OoI tracker"
-	desc = "A tracker that tracks Objects of Interest, it is not widely avaliable."
+	desc = "A tracker that tracks Objects of Interest, it is not widely available."
 	icon_state = "tracker"
 	item_state = "tracker"
 	var/active = FALSE
@@ -15,9 +15,9 @@
 		overlays += icon(icon, "+tracker_arrow", get_dir(src, tracked_object))
 
 /obj/item/device/tracker/attack_self(var/mob/user)
-	if(!skillcheck(user, SKILL_ANTAG, SKILL_ANTAG_TRAINED))
+	if(!skillcheckexplicit(user, SKILL_ANTAG, SKILL_ANTAG_AGENT))
 		return ..()
-	
+
 	if(isnull(tracked_object))
 		select_object(user)
 		return
@@ -36,7 +36,7 @@
 	update_icon()
 
 /obj/item/device/tracker/clicked(mob/user, list/mods)
-	if(!ishuman(user) || !skillcheck(user, SKILL_ANTAG, SKILL_ANTAG_TRAINED))
+	if(!ishuman(user) || !skillcheckexplicit(user, SKILL_ANTAG, SKILL_ANTAG_AGENT))
 		return ..()
 
 	if(mods["alt"])
@@ -58,12 +58,12 @@
 
 		if(z_level_to_compare_from == user.z)
 			object_choices += O
-	
+
 	if(!length(object_choices))
 		to_chat(user, SPAN_WARNING("There are nothing of interest to track."))
 		return
 
-	tracked_object = input("What Object of Interest do you want to track?", "Object type", null) in object_choices
+	tracked_object = tgui_input_list(usr, "What Object of Interest do you want to track?", "Object type", object_choices)
 
 	to_chat(user, SPAN_WARNING("New interest to track selected as [tracked_object.name]."))
 

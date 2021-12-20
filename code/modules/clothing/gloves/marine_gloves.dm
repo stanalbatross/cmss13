@@ -1,6 +1,4 @@
 
-
-
 //marine gloves
 
 /obj/item/clothing/gloves/marine
@@ -23,6 +21,13 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_NONE
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	var/adopts_squad_color = TRUE
+
+/obj/item/clothing/gloves/marine/get_mob_overlay(mob/living/carbon/human/H, slot)
+	var/image/ret = ..()
+	if(adopts_squad_color && slot == WEAR_HANDS && istype(H) && H.assigned_squad)
+		ret.overlays += glovemarkings[H.assigned_squad.color]
+	return ret
 
 /obj/item/clothing/gloves/marine/insulated
 	name = "marine insulated gloves"
@@ -31,45 +36,9 @@
 	item_state = "lightbrowngloves"
 	siemens_coefficient = 0
 
-/obj/item/clothing/gloves/marine/alpha
-	name = "alpha squad gloves"
-	icon_state = "red"
-	item_state = "redgloves"
-
-/obj/item/clothing/gloves/marine/alpha/insulated
-	name = "insulated alpha squad gloves"
-	desc = "Insulated marine tactical gloves that protects against electrical shocks."
-	siemens_coefficient = 0
-
-/obj/item/clothing/gloves/marine/bravo
-	name = "bravo squad gloves"
-	icon_state = "yellow"
-	item_state = "ygloves"
-
-/obj/item/clothing/gloves/marine/bravo/insulated
-	name = "insulated bravo squad gloves"
-	desc = "Insulated marine tactical gloves that protects against electrical shocks."
-	siemens_coefficient = 0
-
-/obj/item/clothing/gloves/marine/charlie
-	name = "charlie squad gloves"
-	icon_state = "purple"
-	item_state = "purplegloves"
-
-/obj/item/clothing/gloves/marine/charlie/insulated
-	name = "insulated charlie squad gloves"
-	desc = "Insulated marine tactical gloves that protects against electrical shocks."
-	siemens_coefficient = 0
-
-/obj/item/clothing/gloves/marine/delta
-	name = "delta squad gloves"
-	icon_state = "blue"
-	item_state = "bluegloves"
-
-/obj/item/clothing/gloves/marine/delta/insulated
-	name = "insulated delta squad gloves"
-	desc = "Insulated marine tactical gloves that protects against electrical shocks."
-	siemens_coefficient = 0
+/obj/item/clothing/gloves/marine/black
+	name = "marine black combat gloves"
+	adopts_squad_color = FALSE
 
 /obj/item/clothing/gloves/marine/officer
 	name = "officer gloves"
@@ -124,11 +93,11 @@
 	unacidable = TRUE
 	flags_item = MOB_LOCK_ON_EQUIP|NO_CRYO_STORE
 
-/obj/item/clothing/gloves/marine/veteran/PMC
+/obj/item/clothing/gloves/marine/veteran
 	name = "armored gloves"
-	desc = "Armored gloves used in special operations. They are also insulated against electrical shock."
-	icon_state = "black"
-	item_state = "bgloves"
+	desc = "Non-standard kevlon fiber gloves. They're insulated and heavily armored."
+	icon_state = "veteran"
+	item_state = "veteran"
 	siemens_coefficient = 0
 	armor_melee = CLOTHING_ARMOR_HIGH
 	armor_bullet = CLOTHING_ARMOR_HIGH
@@ -137,7 +106,19 @@
 	armor_bomb = CLOTHING_ARMOR_MEDIUM
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_MEDIUM
-	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	armor_internaldamage = CLOTHING_ARMOR_HIGH
+
+/obj/item/clothing/gloves/marine/veteran/insulated
+	name = "insulated armored gloves"
+	desc = "Non-standard kevlon fiber gloves. These are apparently ESPECIALLY insulated."
+	icon_state = "insulated"
+	item_state = "insulated"
+
+/obj/item/clothing/gloves/marine/veteran/PMC
+	name = "\improper WY PMC gloves"
+	icon_state = "pmc"
+	item_state = "pmc"
+	desc = "Standard issue kevlon fiber gloves manufactured for and by Weyland-Yutani PMC dispatch division. They are insulated against electrical shock."
 
 /obj/item/clothing/gloves/marine/veteran/PMC/commando
 	name = "\improper M5X gauntlets"
@@ -163,10 +144,9 @@
 
 /obj/item/clothing/gloves/marine/veteran/souto
 	name = "\improper Souto Man gloves"
-	desc = "The gloves worn by Souto Man. White as sugar."
+	desc = "The gloves worn by Souto Man. A grip stronger than the taste of Souto Cherry!"
 	icon_state = "souto_man"
 	item_state = "souto_man"
-	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP
 	armor_melee = CLOTHING_ARMOR_HARDCORE
 	armor_bullet = CLOTHING_ARMOR_HARDCORE
@@ -177,3 +157,7 @@
 	armor_rad = CLOTHING_ARMOR_HARDCORE
 	armor_internaldamage = CLOTHING_ARMOR_HARDCORE
 	unacidable = TRUE
+
+/obj/item/clothing/gloves/marine/veteran/insulated/van_bandolier
+	name = "custom shooting gloves"
+	desc = "Highly protective against injury, temperature, and electric shock. Cool in the summer, warm in the winter, and a secure grip on any surface. You could buy a lot for the price of these, and they're worth every penny."

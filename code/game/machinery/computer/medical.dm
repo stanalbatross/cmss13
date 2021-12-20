@@ -363,7 +363,7 @@
 					src.temp = "Record Not Found!"
 					return
 				for(var/datum/data/record/E in GLOB.data_core.medical)
-					if ((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+					if ((E.fields["ref"] == R.fields["ref"] || E.fields["id"] == R.fields["id"]))
 						M = E
 					else
 						//Foreach continue //goto(2540)
@@ -471,7 +471,7 @@
 					sleep(40)
 					var/obj/item/paper/P = new /obj/item/paper( src.loc )
 					P.name = text("Scan: [], []",record.fields["name"],worldtime2text())
-					P.info += text("<center><img src = wylogo.png><HR><I><B>Official Weston-Yamada Document</B><BR>Scan Record</I><HR><H2>[]</H2>\n</center>",record.fields["name"])
+					P.info += text("<center><img src = wylogo.png><HR><I><B>Official Weyland-Yutani Document</B><BR>Scan Record</I><HR><H2>[]</H2>\n</center>",record.fields["name"])
 					for(var/datum/data/record/R in GLOB.data_core.medical)
 						if (R.fields["name"] ==  record.fields["name"])
 							if(R.fields["last_scan_time"] && R.fields["last_scan_result"])
@@ -520,6 +520,6 @@
 
 /obj/structure/machinery/computer/med_data/laptop
 	name = "Medical Laptop"
-	desc = "Cheap Weston-Yamada Laptop."
+	desc = "Cheap Weyland-Yutani Laptop."
 	icon_state = "medlaptop"
 	density = 0

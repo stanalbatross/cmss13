@@ -19,50 +19,56 @@
 		to_chat(src, SPAN_XENOWARNING("You can't burrow here!"))
 		return
 
+	if(caste_type && GLOB.xeno_datum_list[caste_type])
+		caste = GLOB.xeno_datum_list[caste_type]
+
 	used_burrow = TRUE
 
-	if(!burrow)
-		to_chat(src, SPAN_XENOWARNING("You begin burrowing yourself into the ground."))
-		if(!do_after(src, 15, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
-			addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : SECONDS_5))
-			return
-		// TODO Make immune to all damage here.
-		to_chat(src, SPAN_XENOWARNING("You burrow yourself into the ground."))
-		burrow = TRUE
-		frozen = TRUE
-		invisibility = 101
-		anchored = TRUE
-		density = FALSE
-		update_canmove()
-		update_icons()
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : SECONDS_5))
-		burrow_timer = world.time + 90		// How long we can be burrowed
-		process_burrow()
+	to_chat(src, SPAN_XENOWARNING("You begin burrowing yourself into the ground."))
+	if(!do_after(src, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		addtimer(CALLBACK(src, .proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : 5 SECONDS))
 		return
-
-	burrow_off()
+	// TODO Make immune to all damage here.
+	to_chat(src, SPAN_XENOWARNING("You burrow yourself into the ground."))
+	burrow = TRUE
+	frozen = TRUE
+	invisibility = 101
+	anchored = TRUE
+	density = FALSE
+	if(caste.fire_immunity == FIRE_IMMUNITY_NONE)
+		RegisterSignal(src, COMSIG_LIVING_PREIGNITION, .proc/fire_immune)
+		RegisterSignal(src, COMSIG_LIVING_FLAMER_CROSSED, .proc/flamer_crossed_immune)
+	update_canmove()
+	update_icons()
+	addtimer(CALLBACK(src, .proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : 5 SECONDS))
+	burrow_timer = world.time + 90		// How long we can be burrowed
+	process_burrow()
 
 /mob/living/carbon/Xenomorph/proc/process_burrow()
 	if(!burrow)
 		return
 	if(world.time > burrow_timer && !tunnel)
-		burrow = FALSE
 		burrow_off()
 	if(observed_xeno)
 		overwatch(observed_xeno, TRUE)
 	if(burrow)
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/process_burrow), SECONDS_1)
+		addtimer(CALLBACK(src, .proc/process_burrow), 1 SECONDS)
 
 /mob/living/carbon/Xenomorph/proc/burrow_off()
-
+	if(caste_type && GLOB.xeno_datum_list[caste_type])
+		caste = GLOB.xeno_datum_list[caste_type]
 	to_chat(src, SPAN_NOTICE("You resurface."))
+	burrow = FALSE
+	if(caste.fire_immunity == FIRE_IMMUNITY_NONE)
+		UnregisterSignal(src, COMSIG_LIVING_PREIGNITION)
+		UnregisterSignal(src, COMSIG_LIVING_FLAMER_CROSSED)
 	frozen = FALSE
 	invisibility = FALSE
 	anchored = FALSE
 	density = TRUE
 	for(var/mob/living/carbon/human/H in loc)
 		H.KnockDown(2)
-	addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : SECONDS_5))
+	addtimer(CALLBACK(src, .proc/do_burrow_cooldown), (caste ? caste.burrow_cooldown : 5 SECONDS))
 	update_canmove()
 	update_icons()
 
@@ -91,12 +97,16 @@
 		to_chat(src, SPAN_XENOWARNING("You can't tunnel into a solid wall!"))
 		return
 
+	if(istype(T, /turf/open/space))
+		to_chat(src, SPAN_XENOWARNING("You make tunnels, not wormholes!"))
+		return
+
 	if(clone) //Prevents tunnels in Z transition areas
 		to_chat(src, SPAN_XENOWARNING("You make tunnels, not wormholes!"))
 		return
 
 	var/area/A = get_area(T)
-	if(A.flags_atom & AREA_NOTUNNEL)
+	if(A.flags_area & AREA_NOTUNNEL)
 		to_chat(src, SPAN_XENOWARNING("There's no way to tunnel over there."))
 		return
 
@@ -111,7 +121,7 @@
 		tunnel = FALSE
 		to_chat(src, SPAN_NOTICE("You stop tunneling."))
 		used_tunnel = TRUE
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/do_tunnel_cooldown), (caste ? caste.tunnel_cooldown : SECONDS_5))
+		addtimer(CALLBACK(src, .proc/do_tunnel_cooldown), (caste ? caste.tunnel_cooldown : 5 SECONDS))
 		return
 
 	if(!T || T.density)
@@ -127,15 +137,14 @@
 		tunnel = FALSE
 		do_tunnel(T)
 	if(tunnel && T)
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/process_tunnel, T), SECONDS_1)
+		addtimer(CALLBACK(src, .proc/process_tunnel, T), 1 SECONDS)
 
 /mob/living/carbon/Xenomorph/proc/do_tunnel(var/turf/T)
 	to_chat(src, SPAN_NOTICE("You tunnel to your destination."))
 	anchored = FALSE
-	frozen = FALSE
-	update_canmove()
+	unfreeze()
 	forceMove(T)
-	burrow = FALSE
+	UnregisterSignal(src, COMSIG_LIVING_FLAMER_FLAMED)
 	burrow_off()
 
 /mob/living/carbon/Xenomorph/proc/do_tunnel_cooldown()

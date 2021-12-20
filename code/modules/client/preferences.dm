@@ -2,10 +2,10 @@
 
 var/list/preferences_datums = list()
 
-var/global/list/stylesheets = list(
-	"Modern" = 'html/browser/common.css',
-	"Legacy" = 'html/browser/legacy.css'
-)
+GLOBAL_LIST_INIT(stylesheets, list(
+	"Modern" = "common.css",
+	"Legacy" = "legacy.css"
+))
 
 var/const/MAX_SAVE_SLOTS = 10
 
@@ -28,12 +28,14 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	//game-preferences
 	var/lastchangelog = ""				// Saved changlog filesize to detect if there was a change
-	var/ooccolor = "#b82e00"
+	var/ooccolor
 	var/be_special = 0				// Special role selection
 	var/toggle_prefs = TOGGLE_MIDDLE_MOUSE_CLICK|TOGGLE_DIRECTIONAL_ATTACK // flags in #define/mode.dm
 	var/UI_style = "midnight"
 	var/toggles_chat = TOGGLES_CHAT_DEFAULT
 	var/toggles_sound = TOGGLES_SOUND_DEFAULT
+	var/toggles_flashing = TOGGLES_FLASHING_DEFAULT
+	var/toggles_ghost = TOGGLES_GHOST_DEFAULT
 	var/chat_display_preferences = CHAT_TYPE_ALL
 	var/UI_style_color = "#ffffff"
 	var/UI_style_alpha = 255
@@ -53,10 +55,15 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/predator_name = "Undefined"
 	var/predator_gender = MALE
 	var/predator_age = 100
+	var/predator_translator_type = "Modern"
 	var/predator_mask_type = 1
 	var/predator_armor_type = 1
 	var/predator_boot_type = 1
-
+	var/predator_armor_material = "ebony"
+	//CO-specific preferences
+	var/commander_sidearm = "Mateba"
+	//SEA specific preferences
+	var/sea_path = "Command"
 
 	//WL Council preferences.
 	var/yautja_status = WHITELIST_NORMAL
@@ -143,25 +150,47 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	var/lang_chat_disabled = FALSE
 
-	var/swap_hand_default = "Ctrl+X"
-	var/swap_hand_hotkeymode = "X"
+	var/show_permission_errors = TRUE
+
 	var/key_buf // A buffer for setting macro keybinds
 	var/list/key_mod_buf // A buffer for macro modifiers
+
+	var/hotkeys = TRUE
+	var/list/key_bindings = list()
+
+	var/datum/tgui_macro/macros
 
 	var/tgui_fancy = TRUE
 	var/tgui_lock = FALSE
 
+	var/hear_vox = TRUE
+
+	var/hide_statusbar
+
+	//Byond membership status
+
+	var/unlock_content = 0
+
 /datum/preferences/New(client/C)
+	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key) // give them default keybinds and update their movement keys
+	macros = new(C, src)
 	if(istype(C))
 		owner = C
 		if(!IsGuestKey(C.key))
+			unlock_content = C.IsByondMember()
 			load_path(C.ckey)
 			if(load_preferences())
 				if(load_character())
 					return
+	if(!ooccolor)
+		ooccolor = CONFIG_GET(string/ooc_color_default)
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender)
 	gear = list()
+
+/datum/preferences/proc/client_reconnected(var/client/C)
+	owner = C
+	macros.owner = C
 
 /datum/preferences/Del()
 	. = ..()
@@ -183,13 +212,13 @@ var/const/MAX_SAVE_SLOTS = 10
 		return
 	update_preview_icon()
 
-	var/dat = "<html><head><style>"
+	var/dat = "<style>"
 	dat += "#wrapper 		{position: relative; margin: 0 auto;}"
 	dat += "#column1			{width: 30%; float: left;}"
 	dat += "#column2			{width: 30%; float: left;}"
 	dat += "#column3			{width: 40%; float: left;}"
 	dat += ".square			{width: 15px; height: 15px; display: inline-block;}"
-	dat += "</style></head>"
+	dat += "</style>"
 	dat += "<body onselectstart='return false;'>"
 
 	if(path)
@@ -253,7 +282,7 @@ var/const/MAX_SAVE_SLOTS = 10
 
 		switch(role_name)
 			if("Xenomorph after<br>unrevivably dead")
-				ban_check_name = "Alien"
+				ban_check_name = JOB_XENOMORPH
 
 			if("Agent")
 				ban_check_name = "Agent"
@@ -269,6 +298,9 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += "<b>Be [role_name]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'><b>[be_special & (1<<n) ? "Yes" : "No"]</b></a><br>"
 
 		n++
+
+	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_MENTOR)
+		dat += "<b>SEA Grade Path:</b><a href='?_src_=prefs;preference=grade_path;task=input'>[sea_path]</a><br>"
 
 	dat += "<br>"
 	dat += "\t<a href='?_src_=prefs;preference=job;task=menu'><b>Set Role Preferences</b></a>"
@@ -298,8 +330,8 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "</a>"
 	dat += "<br><br>"
 	dat += "<h2><b><u>Background Information:</u></b></h2>"
-	dat += "<b>Citizenship</b>: <a href='byond://?src=\ref[user];preference=citizenship;task=input'>[citizenship]</a><br/>"
-	dat += "<b>Religion</b>: <a href='byond://?src=\ref[user];preference=religion;task=input'>[religion]</a><br/>"
+	dat += "<b>Citizenship</b>: <a href='?_src_=prefs;preference=citizenship;task=input'>[citizenship]</a><br/>"
+	dat += "<b>Religion</b>: <a href='?_src_=prefs;preference=religion;task=input'>[religion]</a><br/>"
 
 	dat += "<b>Corporate Relation:</b> <a href ='?_src_=prefs;preference=nt_relation;task=input'><b>[nanotrasen_relation]</b></a><br>"
 	dat += "<b>Preferred Squad:</b> <a href ='?_src_=prefs;preference=prefsquad;task=input'><b>[preferred_squad]</b></a><br>"
@@ -310,6 +342,8 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<b><a href=\"byond://?src=\ref[user];preference=records;record=1\">Character Records</a></b><br>"
 
 	dat += "<a href='byond://?src=\ref[user];preference=flavor_text;task=open'><b>Character Description</b></a>"
+
+	dat += "<a href='byond://?src=\ref[user];preference=traits;task=open'><b>Character Traits</b></a>"
 
 	dat += "<br><br>"
 
@@ -345,6 +379,12 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += " <a href='byond://?src=\ref[user];preference=loadout;task=input'>Add</a>"
 		if(gear && gear.len)
 			dat += " <a href='byond://?src=\ref[user];preference=loadout;task=clear'>Clear</a>"
+
+	dat += "<br><br>"
+	dat += "<h2><b><u>Input Settings:</u></b></h2>"
+	dat += "<b>Mode</b> <a href='?_src_=prefs;preference=hotkeys'>[(hotkeys) ? "Hotkeys mode" : "Send to chat"]</a><br>"
+	dat += "<a href='?_src_=prefs;preference=viewmacros'><b>View Keybinds</b></a><br>"
+
 	dat += "</div>"
 
 	dat += "<div id='column3'>"
@@ -353,12 +393,11 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>tgui Window Placement:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(tgui_lock) ? "Primary monitor" : "Free (default)"]</a><br>"
 	dat += "<b>Play Admin Midis:</b> <a href='?_src_=prefs;preference=hear_midis'><b>[(toggles_sound & SOUND_MIDI) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'><b>[(toggles_sound & SOUND_LOBBY) ? "Yes" : "No"]</b></a><br>"
+	dat += "<b>Play VOX Announcements:</b> <a href='?_src_=prefs;preference=sound_vox'><b>[(hear_vox) ? "Yes" : "No"]</b></a><br>"
 	dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'><b>[(toggles_chat & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</b></a><br>"
 	dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'><b>[(toggles_chat & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</b></a><br>"
 	dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'><b>[(toggles_chat & CHAT_GHOSTRADIO) ? "All Chatter" : "Nearest Speakers"]</b></a><br>"
 	dat += "<b>Ghost Hivemind:</b> <a href='?_src_=prefs;preference=ghost_hivemind'><b>[(toggles_chat & CHAT_GHOSTHIVEMIND) ? "Show Hivemind" : "Hide Hivemind"]</b></a><br>"
-	dat += "<b>Swap Hand Macro (default mode):</b> <a href='?_src_=prefs;preference=swap_hand_default'><b>[swap_hand_default]</b></a><br>"
-	dat += "<b>Swap Hand Macro (hotkey mode):</b> <a href='?_src_=prefs;preference=swap_hand_hotkeymode'><b>[swap_hand_hotkeymode]</b></a><br>"
 	dat += "<b>Toggle Being Able to Hurt Yourself: \
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_IGNORE_SELF]'><b>[toggle_prefs & TOGGLE_IGNORE_SELF ? "On" : "Off"]</b></a><br>"
 	dat += "<b>Toggle Help Intent Safety: \
@@ -375,6 +414,10 @@ var/const/MAX_SAVE_SLOTS = 10
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_EJECT_MAGAZINE_TO_HAND]'><b>[toggle_prefs & TOGGLE_EJECT_MAGAZINE_TO_HAND ? "On" : "Off"]</b></a><br>"
 	dat += "<b>Toggle Automatic Punctuation: \
 			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_AUTOMATIC_PUNCTUATION]'><b>[toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION ? "On" : "Off"]</b></a><br>"
+	dat += "<b>Toggle Combat Click-Drag Override: \
+			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_COMBAT_CLICKDRAG_OVERRIDE]'><b>[toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE ? "On" : "Off"]</b></a><br>"
+	dat += "<b>Toggle Alternate-Fire Dual Wielding: \
+			</b> <a href='?_src_=prefs;preference=toggle_prefs;flag=[TOGGLE_ALTERNATING_DUAL_WIELD]'><b>[toggle_prefs & TOGGLE_ALTERNATING_DUAL_WIELD ? "On" : "Off"]</b></a><br>"
 
 	if(CONFIG_GET(flag/allow_Metadata))
 		dat += "<b>OOC Notes:</b> <a href='?_src_=prefs;preference=metadata;task=input'> Edit </a><br>"
@@ -385,6 +428,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	dat += "<b>Color</b>: <a href='?_src_=prefs;preference=UIcolor'><b>[UI_style_color]</b> <table style='display:inline;' bgcolor='[UI_style_color]'><tr><td>__</td></tr></table></a><br>"
 	dat += "<b>Alpha</b>: <a href='?_src_=prefs;preference=UIalpha'><b>[UI_style_alpha]</b></a><br><br>"
 	dat += "<b>Stylesheet</b>: <a href='?_src_=prefs;preference=stylesheet'><b>[stylesheet]</b></a><br>"
+	dat += "<b>Hide Statusbar</b>: <a href='?_src_=prefs;preference=hide_statusbar'><b>[hide_statusbar ? "TRUE" : "FALSE"]</b></a><br>"
 	if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
 		dat += "<b>View Master Controller Tab: <a href='?_src_=prefs;preference=ViewMC'><b>[View_MC ? "TRUE" : "FALSE"]</b></a>"
 	dat += "</div>"
@@ -393,6 +437,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<div id='column1'>"
 		dat += "<h2><b><u>Commander Settings:</u></b></h2>"
 		dat += "<b>Commander whitelist status:</b><a href='?_src_=prefs;preference=commander_status;task=input'>[commander_status]</a><br>"
+		dat += "<b>Commander sidearm:</b><a href='?_src_=prefs;preference=co_sidearm;task=input'>[commander_sidearm]</a><br>"
 		dat += "</div>"
 
 	if(RoleAuthority.roles_whitelist[user.ckey] & WHITELIST_PREDATOR)
@@ -401,9 +446,11 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<b>Yautja name:</b> <a href='?_src_=prefs;preference=pred_name;task=input'>[predator_name]</a><br>"
 		dat += "<b>Yautja gender:</b> <a href='?_src_=prefs;preference=pred_gender;task=input'>[predator_gender == MALE ? "Male" : "Female"]</a><br>"
 		dat += "<b>Yautja age:</b> <a href='?_src_=prefs;preference=pred_age;task=input'>[predator_age]</a><br>"
+		dat += "<b>Translator Type:</b> <a href='?_src_=prefs;preference=pred_trans_type;task=input'>[predator_translator_type]</a><br><br>"
 		dat += "<b>Mask style:</b> <a href='?_src_=prefs;preference=pred_mask_type;task=input'>([predator_mask_type])</a><br>"
 		dat += "<b>Armor style:</b> <a href='?_src_=prefs;preference=pred_armor_type;task=input'>([predator_armor_type])</a><br>"
 		dat += "<b>Greave style:</b> <a href='?_src_=prefs;preference=pred_boot_type;task=input'>([predator_boot_type])</a><br><br>"
+		dat += "<b>Armor Material:</b> <a href='?_src_=prefs;preference=pred_armor_mat;task=input'>[predator_armor_material]</a><br><br>"
 		dat += "<b>Yautja whitelist status:</b> <a href='?_src_=prefs;preference=yautja_status;task=input'>[yautja_status]</a><br>"
 		dat += "</div>"
 
@@ -415,10 +462,13 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "<b>Synthetic whitelist status:</b> <a href='?_src_=prefs;preference=synth_status;task=input'>[synth_status]</a><br>"
 		dat += "</div>"
 
-	dat += "</div></body></html>"
+	if(unlock_content)
+		dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'><b>[(toggle_prefs & MEMBER_PUBLIC) ? "Public" : "Hidden"]</b></a><br>"
+
+	dat += "</div></body>"
 
 	winshow(user, "preferencewindow", TRUE)
-	show_browser(user, dat, "Preferences", "preferencebrowser", "size=640x770")
+	show_browser(user, dat, "Preferences", "preferencebrowser")
 	onclose(user, "preferencewindow", src)
 
 //limit 	 	- The amount of jobs allowed per column. Defaults to 13 to make it look nice.
@@ -438,9 +488,17 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/index = -1
 
 	//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
+
+	var/list/active_role_names = GLOB.gamemode_roles[GLOB.master_mode]
+	if(!active_role_names)
+		active_role_names = ROLES_REGULAR_ALL
+
 	var/datum/job/lastJob
-	for(var/i in RoleAuthority.roles_for_mode)
-		var/datum/job/job = RoleAuthority.roles_for_mode[i]
+	for(var/role_name as anything in active_role_names)
+		var/datum/job/job = RoleAuthority.roles_by_name[role_name]
+		if(!job)
+			debug_log("Missing job for prefs: [role_name]")
+			continue
 		index += 1
 		if((index >= limit) || (job.title in splitJobs))
 			if((index < limit) && (lastJob != null))
@@ -563,7 +621,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	return
 
 /datum/preferences/proc/SetJob(mob/user, role, priority)
-	var/datum/job/job = RoleAuthority.roles_for_mode[role]
+	var/datum/job/job = RoleAuthority.roles_by_name[role]
 	if(!job)
 		close_browser(user, "mob_occupation")
 		ShowChoices(user)
@@ -615,8 +673,6 @@ var/const/MAX_SAVE_SLOTS = 10
 	return TRUE
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
-	if(!istype(user, /mob/new_player) && !istype(user, /mob/dead/observer)) return
-
 	var/whitelist_flags = RoleAuthority.roles_whitelist[user.ckey]
 
 	switch(href_list["preference"])
@@ -654,7 +710,7 @@ var/const/MAX_SAVE_SLOTS = 10
 							continue
 						valid_gear_choices += gear_name
 
-					var/choice = input(user, "Select gear to add: ") as null|anything in valid_gear_choices
+					var/choice = tgui_input_list(user, "Select gear to add: ", "Gear to add", valid_gear_choices)
 
 					if(choice && gear_datums[choice])
 
@@ -745,6 +801,39 @@ var/const/MAX_SAVE_SLOTS = 10
 						gen_record = genmsg
 						SetRecords(user)
 
+		if("hotkeys")
+			hotkeys = !hotkeys
+			if(hotkeys)
+				winset(user, null, "input.focus=true")
+			else
+				winset(user, null, "input.focus=false")
+
+		if("traits")
+			switch(href_list["task"])
+				if("open")
+					open_character_traits(user)
+				if("change_slot")
+					var/trait_group = text2path(href_list["trait_group"])
+					if(!GLOB.character_trait_groups[trait_group])
+						trait_group = null
+					open_character_traits(user, trait_group)
+				if("give_trait")
+					var/trait_group = text2path(href_list["trait_group"])
+					if(!GLOB.character_trait_groups[trait_group])
+						trait_group = null
+					var/trait = text2path(href_list["trait"])
+					var/datum/character_trait/CT = GLOB.character_traits[trait]
+					CT?.try_give_trait(src)
+					open_character_traits(user, trait_group)
+				if("remove_trait")
+					var/trait_group = text2path(href_list["trait_group"])
+					if(!GLOB.character_trait_groups[trait_group])
+						trait_group = null
+					var/trait = text2path(href_list["trait"])
+					var/datum/character_trait/CT = GLOB.character_traits[trait]
+					CT?.try_remove_trait(src)
+					open_character_traits(user, trait_group)
+
 	switch (href_list["task"])
 		if ("random")
 			switch (href_list["preference"])
@@ -806,7 +895,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						if(new_name) synthetic_name = new_name
 						else to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
 				if("synth_type")
-					var/new_synth_type = input(user, "Choose your model of synthetic:", "Make and Model") as null|anything in synth_types
+					var/new_synth_type = tgui_input_list(user, "Choose your model of synthetic:", "Make and Model", synth_types)
 					if(new_synth_type) synthetic_type = new_synth_type
 				if("pred_name")
 					var/raw_name = input(user, "Choose your Predator's name:", "Character Preference")  as text|null
@@ -819,15 +908,26 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("pred_age")
 					var/new_predator_age = input(user, "Choose your Predator's age(20 to 10000):", "Character Preference") as num|null
 					if(new_predator_age) predator_age = max(min( round(text2num(new_predator_age)), 10000),20)
+				if("pred_trans_type")
+					var/new_translator_type = tgui_input_list(user, "Choose your translator type.", "Translator Type", list("Modern", "Retro", "Combo"))
+					if(!new_translator_type)
+						return
+					predator_translator_type = new_translator_type
 				if("pred_mask_type")
-					var/new_predator_mask_type = input(user, "Choose your mask type:\n(1-11)", "Mask Selection") as num|null
+					var/new_predator_mask_type = input(user, "Choose your mask type:\n(1-12)", "Mask Selection") as num|null
 					if(new_predator_mask_type) predator_mask_type = round(text2num(new_predator_mask_type))
 				if("pred_armor_type")
-					var/new_predator_armor_type = input(user, "Choose your armor type:\n(1-6)", "Armor Selection") as num|null
+					var/new_predator_armor_type = input(user, "Choose your armor type:\n(1-7)", "Armor Selection") as num|null
 					if(new_predator_armor_type) predator_armor_type = round(text2num(new_predator_armor_type))
 				if("pred_boot_type")
-					var/new_predator_boot_type = input(user, "Choose your greaves type:\n(1-3)", "Greave Selection") as num|null
+					var/new_predator_boot_type = input(user, "Choose your greaves type:\n(1-4)", "Greave Selection") as num|null
 					if(new_predator_boot_type) predator_boot_type = round(text2num(new_predator_boot_type))
+				if("pred_armor_mat")
+					var/list/options = list("ebony", "silver", "bronze")
+					var/new_pred_armor_mat = tgui_input_list(user, "Choose your armour material:", "Armor Material", options)
+					if(!new_pred_armor_mat)
+						return
+					predator_armor_material = new_pred_armor_mat
 
 				if("commander_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
@@ -837,12 +937,32 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(whitelist_flags & WHITELIST_COMMANDER_LEADER)
 						options += list("Leader" = WHITELIST_LEADER)
 
-					var/new_commander_status = input(user, "Choose your new Commander Whitelist Status.", "Commander Status") in options
+					var/new_commander_status = tgui_input_list(user, "Choose your new Commander Whitelist Status.", "Commander Status", options)
 
 					if(!new_commander_status)
 						return
 
 					commander_status = options[new_commander_status]
+
+				if("co_sidearm")
+					var/list/options = list("Mateba","Desert Eagle")
+
+					if(whitelist_flags & WHITELIST_COMMANDER_COUNCIL)
+						options += list("Commodore's Mateba","Golden Desert Eagle")
+					else
+						options -= list("Commodore's Mateba","Golden Desert Eagle") //This is weird and should not be necessary but it wouldn't remove these from the list otherwise
+
+					var/new_co_sidearm = tgui_input_list(user, "Choose your preferred sidearm.", "Commanding Officer's Sidearm", options)
+					if(!new_co_sidearm)
+						return
+					commander_sidearm = new_co_sidearm
+
+				if("grade_path")
+					var/list/options = list("Command", "Technical")
+					var/new_path = tgui_input_list(user, "Choose your preferred promotion path.", "Promotion Paths", options)
+					if(!new_path)
+						return
+					sea_path = new_path
 
 				if("yautja_status")
 					var/list/options = list("Normal" = WHITELIST_NORMAL)
@@ -852,7 +972,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(whitelist_flags & WHITELIST_YAUTJA_LEADER)
 						options += list("Leader" = WHITELIST_LEADER)
 
-					var/new_yautja_status = input(user, "Choose your new Yautja Whitelist Status.", "Yautja Status") in options
+					var/new_yautja_status = tgui_input_list(user, "Choose your new Yautja Whitelist Status.", "Yautja Status", options)
 
 					if(!new_yautja_status)
 						return
@@ -867,7 +987,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(whitelist_flags & WHITELIST_SYNTHETIC_LEADER)
 						options += list("Leader" = WHITELIST_LEADER)
 
-					var/new_synth_status = input(user, "Choose your new Synthetic Whitelist Status.", "Synthetic Status") in options
+					var/new_synth_status = tgui_input_list(user, "Choose your new Synthetic Whitelist Status.", "Synthetic Status", options)
 
 					if(!new_synth_status)
 						return
@@ -892,7 +1012,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					if(prefix_length==3)
 						var/playtime = user.client.get_total_xeno_playtime()
 						if(playtime < 124 HOURS)
-							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [Ceiling((124 HOURS - playtime)/HOURS_1)] more hours to unlock xeno three letter prefix.")))
+							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(124 HOURS, playtime, 1 HOURS)] more hours to unlock xeno three letter prefix.")))
 							return
 						if(xeno_postfix)
 							to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You can't use three letter prefix with any postfix.")))
@@ -921,7 +1041,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						return
 					var/playtime = user.client.get_total_xeno_playtime()
 					if(playtime < 24 HOURS)
-						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [Ceiling((24 HOURS - playtime)/HOURS_1)] more hours to unlock xeno postfix.")))
+						to_chat(user, SPAN_WARNING(FONT_SIZE_BIG("You need to play [time_left_until(24 HOURS, playtime, 1 HOURS)] more hours to unlock xeno postfix.")))
 						return
 
 					if(length(xeno_prefix)==3)
@@ -977,14 +1097,14 @@ var/const/MAX_SAVE_SLOTS = 10
 
 				if("h_style")
 					var/list/valid_hairstyles = list()
-					for(var/hairstyle in hair_styles_list)
-						var/datum/sprite_accessory/S = hair_styles_list[hairstyle]
+					for(var/hairstyle in GLOB.hair_styles_list)
+						var/datum/sprite_accessory/S = GLOB.hair_styles_list[hairstyle]
 						if( !(species in S.species_allowed))
 							continue
 						if(!S.selectable)
 							continue
 
-						valid_hairstyles[hairstyle] = hair_styles_list[hairstyle]
+						valid_hairstyles[hairstyle] = GLOB.hair_styles_list[hairstyle]
 					valid_hairstyles = sortList(valid_hairstyles)
 
 					var/new_h_style = input(user, "Choose your character's hair style:", "Character Preference")  as null|anything in valid_hairstyles
@@ -992,13 +1112,13 @@ var/const/MAX_SAVE_SLOTS = 10
 						h_style = new_h_style
 
 				if ("ethnicity")
-					var/new_ethnicity = input(user, "Choose your character's ethnicity:", "Character Preferences") as null|anything in GLOB.ethnicities_list
+					var/new_ethnicity = tgui_input_list(user, "Choose your character's ethnicity:", "Character Preferences", GLOB.ethnicities_list)
 
 					if (new_ethnicity)
 						ethnicity = new_ethnicity
 
 				if ("body_type")
-					var/new_body_type = input(user, "Choose your character's body type:", "Character Preferences") as null|anything in GLOB.body_types_list
+					var/new_body_type = tgui_input_list(user, "Choose your character's body type:", "Character Preferences", GLOB.body_types_list)
 
 					if (new_body_type)
 						body_type = new_body_type
@@ -1012,8 +1132,8 @@ var/const/MAX_SAVE_SLOTS = 10
 
 				if("f_style")
 					var/list/valid_facialhairstyles = list()
-					for(var/facialhairstyle in facial_hair_styles_list)
-						var/datum/sprite_accessory/S = facial_hair_styles_list[facialhairstyle]
+					for(var/facialhairstyle in GLOB.facial_hair_styles_list)
+						var/datum/sprite_accessory/S = GLOB.facial_hair_styles_list[facialhairstyle]
 						if(gender == MALE && S.gender == FEMALE)
 							continue
 						if(gender == FEMALE && S.gender == MALE)
@@ -1023,7 +1143,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						if(!S.selectable)
 							continue
 
-						valid_facialhairstyles[facialhairstyle] = facial_hair_styles_list[facialhairstyle]
+						valid_facialhairstyles[facialhairstyle] = GLOB.facial_hair_styles_list[facialhairstyle]
 					valid_facialhairstyles = sortList(valid_facialhairstyles)
 
 					var/new_f_style = input(user, "Choose your character's facial-hair style:", "Character Preference")  as null|anything in valid_facialhairstyles
@@ -1046,7 +1166,7 @@ var/const/MAX_SAVE_SLOTS = 10
 					var/list/undershirt_options
 					undershirt_options = undershirt_t
 
-					var/new_undershirt = input(user, "Choose your character's undershirt:", "Character Preference") as null|anything in undershirt_options
+					var/new_undershirt = tgui_input_list(user, "Choose your character's undershirt:", "Character Preference", undershirt_options)
 					if (new_undershirt)
 						undershirt = undershirt_options.Find(new_undershirt)
 					ShowChoices(user)
@@ -1070,7 +1190,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						backbag = backbaglist.Find(new_backbag)
 
 				if("nt_relation")
-					var/new_relation = input(user, "Choose your relation to the Weston-Yamada company. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
+					var/new_relation = input(user, "Choose your relation to the Weyland-Yutani company. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
 					if(new_relation)
 						nanotrasen_relation = new_relation
 
@@ -1080,7 +1200,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						preferred_squad = new_pref_squad
 
 				if("limbs")
-					var/limb_name = input(user, "Which limb do you want to change?") as null|anything in list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand")
+					var/limb_name = tgui_input_list(user, "Which limb do you want to change?", list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand"))
 					if(!limb_name) return
 
 					var/limb = null
@@ -1112,7 +1232,7 @@ var/const/MAX_SAVE_SLOTS = 10
 							limb = "r_hand"
 							third_limb = "r_arm"
 
-					var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in list("Normal","Prothesis") //"Amputated"
+					var/new_state = tgui_input_list(user, "What state do you wish the limb to be in?", list("Normal","Prothesis")) //"Amputated")
 					if(!new_state) return
 
 					switch(new_state)
@@ -1127,7 +1247,7 @@ var/const/MAX_SAVE_SLOTS = 10
 							if(third_limb && organ_data[third_limb] == "amputated")
 								organ_data[third_limb] = null
 				if("organs")
-					var/organ_name = input(user, "Which internal function do you want to change?") as null|anything in list("Heart", "Eyes")
+					var/organ_name = tgui_input_list(user, "Which internal function do you want to change?", list("Heart", "Eyes"))
 					if(!organ_name) return
 
 					var/organ = null
@@ -1137,7 +1257,7 @@ var/const/MAX_SAVE_SLOTS = 10
 						if("Eyes")
 							organ = "eyes"
 
-					var/new_state = input(user, "What state do you wish the organ to be in?") as null|anything in list("Normal","Assisted","Mechanical")
+					var/new_state = tgui_input_list(user, "What state do you wish the organ to be in?", "Organ state", list("Normal","Assisted","Mechanical"))
 					if(!new_state) return
 
 					switch(new_state)
@@ -1149,16 +1269,16 @@ var/const/MAX_SAVE_SLOTS = 10
 							organ_data[organ] = "mechanical"
 
 				if("skin_style")
-					var/skin_style_name = input(user, "Select a new skin style") as null|anything in list("default1", "default2", "default3")
+					var/skin_style_name = tgui_input_list(user, "Select a new skin style", "Skin style", list("default1", "default2", "default3"))
 					if(!skin_style_name) return
 
 				if("citizenship")
-					var/choice = input(user, "Please choose your current citizenship.") as null|anything in citizenship_choices
+					var/choice = tgui_input_list(user, "Please choose your current citizenship.", "Citizenship selection", citizenship_choices)
 					if(choice)
 						citizenship = choice
 
 				if("religion")
-					var/choice = input(user, "Please choose a religion.") as null|anything in religion_choices + list("None","Other")
+					var/choice = tgui_input_list(user, "Please choose a religion.", "Religion choice", religion_choices + list("None","Other"))
 					if(!choice)
 						return
 					if(choice == "Other")
@@ -1169,6 +1289,10 @@ var/const/MAX_SAVE_SLOTS = 10
 					religion = choice
 		else
 			switch(href_list["preference"])
+				if("publicity")
+					if(unlock_content)
+						toggle_prefs ^= MEMBER_PUBLIC
+
 				if("gender")
 					if(gender == MALE)
 						gender = FEMALE
@@ -1202,12 +1326,18 @@ var/const/MAX_SAVE_SLOTS = 10
 
 				if("UIalpha")
 					var/UI_style_alpha_new = input(user, "Select a new alpha(transparence) parametr for UI, between 50 and 255") as num
-					if(!UI_style_alpha_new|!(UI_style_alpha_new <= 255 && UI_style_alpha_new >= 50)) return
+					if(!UI_style_alpha_new || !(UI_style_alpha_new <= 255 && UI_style_alpha_new >= 50))
+						return
 					UI_style_alpha = UI_style_alpha_new
 
 				if("stylesheet")
-					var/stylesheet_new = input(user, "Select a stylesheet to use (affects non-NanoUI interfaces)") in stylesheets
+					var/stylesheet_new = tgui_input_list(user, "Select a stylesheet to use (affects non-NanoUI interfaces)", "Select a stylesheet", GLOB.stylesheets)
 					stylesheet = stylesheet_new
+
+				if("hide_statusbar")
+					hide_statusbar = !hide_statusbar
+					if(hide_statusbar)
+						winset(owner, "atom_name", "text=\"\"")
 
 				if("ViewMC")
 					if(user.client.admin_holder && user.client.admin_holder.rights & R_DEBUG)
@@ -1236,6 +1366,9 @@ var/const/MAX_SAVE_SLOTS = 10
 					else
 						user << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)
 
+				if("sound_vox")
+					hear_vox = !hear_vox
+
 				if("ghost_ears")
 					toggles_chat ^= CHAT_GHOSTEARS
 
@@ -1248,23 +1381,8 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("ghost_hivemind")
 					toggles_chat ^= CHAT_GHOSTHIVEMIND
 
-				if("swap_hand_default")
-					owner.runtime_macro_remove(swap_hand_default, "default")
-
-					swap_hand_default = read_key()
-					if (!swap_hand_default)
-						swap_hand_default = "CTRL+X"
-
-					owner.runtime_macro_insert(swap_hand_default, "default", ".SwapMobHand")
-
-				if("swap_hand_hotkeymode")
-					owner.runtime_macro_remove(swap_hand_hotkeymode, "hotkeymode")
-
-					swap_hand_hotkeymode = read_key()
-					if (!swap_hand_hotkeymode)
-						swap_hand_hotkeymode = "X"
-
-					owner.runtime_macro_insert(swap_hand_hotkeymode, "hotkeymode", ".SwapMobHand")
+				if("viewmacros")
+					macros.tgui_interact(usr)
 
 				if("toggle_prefs")
 					var/flag = text2num(href_list["flag"])
@@ -1578,8 +1696,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	RegisterSignal(owner, COMSIG_CLIENT_KEY_DOWN, .proc/parse_key_down)
 	RegisterSignal(owner, COMSIG_CLIENT_KEY_UP, .proc/set_key_buf)
 	winset(owner, null, "mainwindow.macro=keyreader")
-	while (!key_buf)
-		stoplag()
+	UNTIL(key_buf)
 	winset(owner, null, "mainwindow.macro=[old]")
 	UnregisterSignal(owner, list(
 		COMSIG_CLIENT_KEY_DOWN,
@@ -1588,3 +1705,48 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	alert("The key sequence is [key_buf].")
 	return key_buf
+
+/datum/preferences/proc/open_character_traits(mob/user, character_trait_group)
+	if(!read_traits)
+		read_traits = TRUE
+		for(var/trait in traits)
+			var/datum/character_trait/CT = GLOB.character_traits[trait]
+			trait_points -= CT.cost
+	var/dat = "<body onselectstart='return false;'>"
+	dat += "<center>"
+	var/datum/character_trait_group/current_trait_group
+	var/i = 1
+	for(var/trait_group in GLOB.character_trait_groups)
+		var/datum/character_trait_group/CTG = GLOB.character_trait_groups[trait_group]
+		if(!CTG.group_visible)
+			continue
+		var/button_class = ""
+		if(!character_trait_group && i == 1 || character_trait_group == trait_group)
+			button_class = "class='linkOn'"
+			current_trait_group = CTG
+		dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=traits;task=change_slot;trait_group=[trait_group]' [button_class]>"
+		dat += CTG.trait_group_name
+		dat += "</a>"
+		i++
+	dat += "</center>"
+	dat += "<table>"
+	for(var/trait in current_trait_group.traits)
+		var/datum/character_trait/CT = trait
+		if(!CT.applyable)
+			continue
+		var/has_trait = (CT.type in traits)
+		var/task = has_trait ? "remove_trait" : "give_trait"
+		var/button_class = has_trait ? "class='linkOn'" : ""
+		dat += "<tr><td width='40%'>"
+		if(has_trait || CT.can_give_trait(src))
+			dat += "<a href='?_src_=prefs;preference=traits;task=[task];trait=[CT.type];trait_group=[current_trait_group.type]' [button_class]>"
+			dat += "[CT.trait_name]"
+			dat += "</a>"
+		else
+			dat += "<i>[CT.trait_name]</i>"
+		var/cost_text = CT.cost ? " ([CT.cost] points)" : ""
+		dat += "</td><td>[CT.trait_desc][cost_text]</td></tr>"
+		dat += ""
+	dat += "</table>"
+	dat += "</body>"
+	show_browser(user, dat, "Character Traits", "character_traits")

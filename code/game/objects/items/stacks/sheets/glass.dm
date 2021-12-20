@@ -16,17 +16,27 @@
 	singular_name = "glass sheet"
 	icon_state = "sheet-glass"
 	matter = list("glass" = 3750)
-	
+
 	stack_id = "glass sheet"
 	var/created_window = /obj/structure/window
 	var/created_full_window = /obj/structure/window/full
 	var/is_reinforced = 0
 	var/list/construction_options = list("One Direction", "Full Window")
 
+/obj/item/stack/sheet/glass/small_stack
+	amount = STACK_10
+
+/obj/item/stack/sheet/glass/medium_stack
+	amount = STACK_25
+
+/obj/item/stack/sheet/glass/large_stack
+	amount = STACK_50
+
 /obj/item/stack/sheet/glass/cyborg
 	matter = null
 
-/obj/item/stack/sheet/glass/attack_self(mob/user as mob)
+/obj/item/stack/sheet/glass/attack_self(mob/user)
+	..()
 	construct_window(user)
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user)
@@ -70,7 +80,14 @@
 		return 0
 	var/title = "Sheet-[name]"
 	title += " ([src.amount] sheet\s left)"
-	switch(input(title, "What would you like to construct?") as null|anything in construction_options)
+	var/to_build = tgui_input_list(user, title, "What would you like to construct?", construction_options)
+	if(!to_build)
+		return
+	var/turf/open/T = user.loc
+	if(!(istype(T) && T.allow_construction))
+		to_chat(user, SPAN_WARNING("Windows must be constructed on a proper surface!"))
+		return
+	switch(to_build)
 		if("One Direction")
 			if(!src)	return 1
 			if(src.loc != user)	return 1
@@ -146,7 +163,7 @@
 	stack_id = "reinf glass sheet"
 
 	matter = list("metal" = 1875,"glass" = 3750)
-	
+
 
 	created_window = /obj/structure/window/reinforced
 	created_full_window = /obj/structure/window/reinforced/full
@@ -165,7 +182,7 @@
 	singular_name = "phoron glass sheet"
 	icon_state = "sheet-phoronglass"
 	matter = list("glass" = 7500)
-	
+
 	created_window = /obj/structure/window/phoronbasic
 	created_full_window = /obj/structure/window/phoronbasic/full
 
@@ -196,7 +213,7 @@
 	icon_state = "sheet-phoronrglass"
 	matter = list("glass" = 7500,"metal" = 1875)
 
-	
+
 	created_window = /obj/structure/window/phoronreinforced
 	created_full_window = /obj/structure/window/phoronreinforced/full
 	is_reinforced = 1

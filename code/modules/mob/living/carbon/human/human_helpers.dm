@@ -167,8 +167,11 @@
 		L.icon_name = get_limb_icon_name(species, b_icon, gender, L.display_name, e_icon)
 
 /mob/living/carbon/human/can_inject(var/mob/user, var/error_msg, var/target_zone)
-	. = 1
-
+	if(species?.flags & IS_SYNTHETIC)
+		if(user && error_msg)
+			to_chat(user, SPAN_WARNING("[src] has no flesh to inject."))
+		return FALSE
+	. = TRUE
 	if(!user)
 		target_zone = pick("chest","chest","chest","left leg","right leg","left arm", "right arm", "head")
 	else if(!target_zone)
@@ -207,8 +210,8 @@
 	if (istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
 		return 1
 
-	if (istype(buckled, /obj/structure/bed/nest))
-		return 1
+	if (HAS_TRAIT(src, TRAIT_NESTED))
+		return TRUE
 
 	return 0
 
@@ -295,8 +298,8 @@
 
 
 /mob/living/carbon/human/a_intent_change(intent as num)
-	. = ..(intent)
-	if(isEarlySynthetic(src)) //1st gen synths change eye colour based on intent
+	. = ..()
+	if(HAS_TRAIT(src, TRAIT_INTENT_EYES)) //1st gen synths change eye colour based on intent
 		switch(a_intent)
 			if(INTENT_HELP) //Green, defalt
 				r_eyes = 0
@@ -354,3 +357,48 @@
 	for(var/obj/item/alien_embryo/A in contents)
 		return TRUE
 	return FALSE
+
+/mob/living/carbon/human/proc/is_tethering()
+	for (var/datum/effects/tethering/TR in effects_list)
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/human/proc/is_tethered()
+	for (var/datum/effects/tethered/TD in effects_list)
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/human/get_role_name()
+	return get_actual_job_name(src)
+
+/mob/living/carbon/human/check_fire_intensity_resistance()
+	return clothing_fire_intensity_resistance()
+
+/mob/living/carbon/human/proc/clothing_fire_intensity_resistance()
+	var/fire_intensity_resistance
+
+	if(head && head.fire_intensity_resistance)
+		fire_intensity_resistance += head.fire_intensity_resistance
+
+	if(wear_suit && wear_suit.fire_intensity_resistance)
+		fire_intensity_resistance += wear_suit.fire_intensity_resistance
+
+	if(shoes && shoes.fire_intensity_resistance)
+		fire_intensity_resistance += shoes.fire_intensity_resistance
+
+	return fire_intensity_resistance
+
+/mob/living/carbon/human/proc/get_type_in_ears(item_type)
+	if(istype(wear_l_ear, item_type))
+		return wear_l_ear
+	if(istype(wear_r_ear, item_type))
+		return wear_r_ear
+
+/mob/living/carbon/human/proc/has_item_in_ears(item)
+	return (item == wear_l_ear) || (item == wear_r_ear)
+
+/mob/living/carbon/human/can_be_pulled_by(var/mob/M)
+	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_STRIPDRAG_ENEMY) && (stat == DEAD || health < HEALTH_THRESHOLD_CRIT) && !get_target_lock(M.faction_group))
+		to_chat(M, SPAN_WARNING("You can't pull a crit or dead member of another faction!"))
+		return FALSE
+	return TRUE

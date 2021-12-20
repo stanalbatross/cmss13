@@ -20,7 +20,7 @@
 	var/spray_warning = FALSE //whether spraying that reagent creates an admin message.
 	//var/list/viruses = list()
 	var/color = "#000000" // rgb: 0, 0, 0 (does not support alpha channels - yet!)
-	var/last_source_mob
+	var/datum/weakref/last_source_mob
 	// For explosions
 	var/explosive = FALSE
 	var/power = 0
@@ -33,17 +33,18 @@
 	// For chemical fire from flamethrowers
 	var/intensityfire = 0
 	var/durationfire = 0
-	var/rangefire = -1 // Keep at -1 if you want an infinite range
+	var/rangefire = 0 // Set to -1 if you want an infinite range
 	var/flameshape = FLAMESHAPE_LINE
 	var/fire_penetrating = FALSE // Whether it can damage fire-immune xenos
 	// For both chemical fires
+	var/burn_sprite = "dynamic"
 	var/burncolor = "#f88818"
 	var/burncolormod = 1
 	// Chem generator and research stuff
 	var/chemclass = CHEM_CLASS_NONE //Decides how rare the chem in the generation process
 	var/gen_tier = 0 //Decides the chance of the chem being good during generation
 	var/objective_value // How valuable it is to identify the chemical. (Only works on chemclass SPECIAL or ULTRA)
-	var/list/properties = list() //Decides properties
+	var/list/datum/chem_property/properties = list() //Decides properties
 	var/original_id //For tracing back
 	var/flags = 0 // Flags for misc. stuff
 
@@ -54,6 +55,13 @@
 		properties = properties_to_datums()
 	recalculate_variables()
 
+/datum/reagent/Destroy()
+	QDEL_NULL_LIST(properties)
+	data_properties = null
+	holder = null
+	last_source_mob = null
+	return ..()
+
 /datum/reagent/proc/recalculate_variables()
 	for(var/datum/chem_property/P in properties)
 		P.holder = src
@@ -61,6 +69,9 @@
 
 	for(var/datum/chem_property/P in properties)
 		P.update_reagent()
+
+	for(var/datum/chem_property/P in properties)
+		P.post_update_reagent()
 
 /datum/reagent/proc/reaction_mob(var/mob/M, var/method=TOUCH, var/volume) //By default we have a chance to transfer some
 	if(!istype(M, /mob/living))	return 0
@@ -105,11 +116,10 @@
 	src = null
 	return
 
-/datum/reagent/proc/on_mob_life(mob/living/M, alien)
+/datum/reagent/proc/on_mob_life(mob/living/M, alien, var/delta_time)
 	if(alien == IS_HORROR || !holder)
 		return
-	holder.remove_reagent(id, custom_metabolism) //By default it slowly disappears.
-
+	
 	var/list/mods = handle_pre_processing(M)
 
 	if(mods[REAGENT_CANCEL])
@@ -118,7 +128,8 @@
 	if((!isliving(M) || alien == IS_YAUTJA) && !mods[REAGENT_FORCE])
 		return
 
-	handle_processing(M, mods)
+	handle_processing(M, mods, delta_time)
+	holder.remove_reagent(id, custom_metabolism * delta_time)
 
 	return TRUE
 
@@ -140,39 +151,38 @@
 	return mods
 
 //Main Processing
-/datum/reagent/proc/handle_processing(mob/living/M, var/list/mods)
+/datum/reagent/proc/handle_processing(mob/living/M, var/list/mods, var/delta_time)
 	for(var/datum/chem_property/P in properties)
 		//A level of 1 == 0.5 potency, which is equal to REM (0.2/0.4) in the old system
 		//That means the level of the property by default is the number of REMs the effect had in the old system
 		var/potency = mods[REAGENT_EFFECT] * ((P.level+mods[REAGENT_BOOST]) * 0.5)
 		if(potency <= 0)
 			continue
-		P.process(M, potency)
+		P.process(M, potency, delta_time)
 		if(flags & REAGENT_CANNOT_OVERDOSE)
 			continue
-		if(overdose && volume >= overdose)
-			P.process_overdose(M, potency)
+		if(overdose && volume > overdose)
+			P.process_overdose(M, potency, delta_time)
 			if(overdose_critical && volume > overdose_critical)
-				P.process_critical(M, potency)
-			var/overdose_message = "[name] overdose"
-			M.last_damage_source = overdose_message
-			M.last_damage_mob = last_source_mob
+				P.process_critical(M, potency, delta_time)
+			var/overdose_message = "[istype(src, /datum/reagent/generated) ? "custom chemical" : initial(name)] overdose"
+			M.last_damage_data = create_cause_data(overdose_message, last_source_mob?.resolve())
 
 	if(mods[REAGENT_PURGE])
-		holder.remove_all_type(/datum/reagent,2*mods[REAGENT_PURGE])
+		holder.remove_all_type(/datum/reagent,mods[REAGENT_PURGE] * delta_time)
 
 //Dead Processing, see /mob/living/carbon/human/proc/handle_necro_chemicals_in_body()
-/datum/reagent/proc/handle_dead_processing(mob/living/M, var/list/mods)
+/datum/reagent/proc/handle_dead_processing(mob/living/M, var/list/mods, var/delta_time)
 	var/processing_in_dead = FALSE
 	for(var/datum/chem_property/P in properties)
 		var/potency = mods[REAGENT_EFFECT] * ((P.level+mods[REAGENT_BOOST]) * 0.5)
 		if(potency <= 0)
 			continue
-		if(P.process_dead(M, potency))
+		if(P.process_dead(M, potency, delta_time))
 			processing_in_dead = TRUE
 
 	if(processing_in_dead && !mods[REAGENT_FORCE]) // mods[REAGENT_FORCE] will force the reagent removal anyhow.
-		holder.remove_reagent(id, custom_metabolism)
+		holder.remove_reagent(id, custom_metabolism *delta_time)
 
 /datum/reagent/proc/on_delete()
 	if(!holder || !holder.my_atom || !isliving(holder.my_atom))

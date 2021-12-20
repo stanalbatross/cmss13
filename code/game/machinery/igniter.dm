@@ -30,8 +30,8 @@
 //			location.hotspot_expose(1000,500,1)
 	return 1
 
-/obj/structure/machinery/igniter/New()
-	..()
+/obj/structure/machinery/igniter/Initialize(mapload, ...)
+	. = ..()
 	icon_state = "igniter[on]"
 
 /obj/structure/machinery/igniter/power_change()
@@ -65,7 +65,7 @@
 //		src.sd_SetLuminosity(0)
 
 /obj/structure/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/tool/screwdriver))
+	if (HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		add_fingerprint(user)
 		src.disable = !src.disable
 		if (src.disable)

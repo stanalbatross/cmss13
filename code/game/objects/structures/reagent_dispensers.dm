@@ -1,5 +1,4 @@
 
-
 /obj/structure/reagent_dispensers
 	name = "dispenser"
 	desc = "..."
@@ -10,7 +9,7 @@
 	flags_atom = CAN_BE_SYRINGED
 
 	var/amount_per_transfer_from_this = 10
-	var/possible_transfer_amounts = list(5,10,20,30,40,50,60,100)
+	var/possible_transfer_amounts = list(5,10,20,30,40,50,60,100,200,300)
 	var/chemical = ""
 	var/dispensing = TRUE
 
@@ -51,7 +50,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -94,7 +93,7 @@
 	if(!reagents || reagents.locked)
 		return
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[src]", possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
@@ -134,6 +133,13 @@
 	icon_state = "pacidtank"
 	chemical = "pacid"
 
+/obj/structure/reagent_dispensers/ethanoltank
+	name = "ethanol tank"
+	desc = "An ethanol tank."
+	icon = 'icons/obj/objects.dmi'
+	icon_state = "ethanoltank"
+	chemical = "ethanol"
+
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
 	desc = "A fueltank"
@@ -145,7 +151,7 @@
 	var/obj/item/device/assembly_holder/rig = null
 	var/exploding = 0
 	var/reinforced = FALSE
-	var/source_mob
+	var/datum/weakref/source_mob
 
 /obj/structure/reagent_dispensers/fueltank/examine(mob/user)
 	..()
@@ -175,7 +181,7 @@
 		to_chat(user, SPAN_WARNING("You're already peforming an action!"))
 		return
 
-	/*if (istype(W,/obj/item/tool/wrench))
+	/*if (HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		user.visible_message("[user] wrenches [src]'s faucet [modded ? "closed" : "open"].", \
 			"You wrench [src]'s faucet [modded ? "closed" : "open"]")
 		modded = modded ? 0 : 1
@@ -219,7 +225,7 @@
 		user.visible_message(SPAN_NOTICE("[user] begins reinforcing the exterior of [src] with [M]."),\
 		SPAN_NOTICE("You begin reinforcing [src] with [M]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || reinforced)
 			return
 
 		if(!M.use(STACK_10))
@@ -232,12 +238,12 @@
 		reinforced = TRUE
 		update_icon()
 
-	else if(istype(W, /obj/item/tool/crowbar))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 
 		user.visible_message(SPAN_DANGER("[user] begins to remove the shielding from [src]."),\
 		SPAN_NOTICE("You begin to remove the shielding from [src]."))
 
-		if(!do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
+		if(!do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src, INTERRUPT_ALL) || !reinforced)
 			return
 
 		user.visible_message(SPAN_DANGER("[user] removes the shielding from [src]."),\
@@ -253,15 +259,14 @@
 /obj/structure/reagent_dispensers/fueltank/bullet_act(var/obj/item/projectile/Proj)
 	if(exploding) return 0
 	if(ismob(Proj.firer))
-		source_mob = Proj.firer
+		source_mob = WEAKREF(Proj.firer)
 
 	if(Proj.damage > 10 && prob(60) && !reinforced)
-		exploding = TRUE
-		explode()
-
 		if(Proj.firer)
 			message_staff("[key_name_admin(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>).")
 			log_game("[key_name(Proj.firer)] fired a projectile at [name] in [loc.loc.name] ([loc.x],[loc.y],[loc.z]).")
+		exploding = TRUE
+		explode()
 
 	return TRUE
 
@@ -279,6 +284,7 @@
 		return ..()
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode(var/force)
+	reagents.source_mob = source_mob
 	if(reagents.handle_volatiles() || force)
 		qdel(src)
 		return
@@ -322,8 +328,9 @@
 	reagents.remove_reagent(chemical,amount)
 	new /obj/effect/decal/cleanable/liquid_fuel(src.loc, amount)
 
-/obj/structure/reagent_dispensers/fueltank/flamer_fire_act()
+/obj/structure/reagent_dispensers/fueltank/flamer_fire_act(damage, datum/cause_data/flame_cause_data)
 	if(!reinforced)
+		reagents.source_mob = flame_cause_data.weak_mob
 		explode()
 
 /obj/structure/reagent_dispensers/fueltank/gas

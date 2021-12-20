@@ -25,27 +25,26 @@
 	return t
 
 //Removes a few problematic characters
-/proc/sanitize_simple(var/t, var/list/repl_chars = list("\n"=" ","\t"=" ","�"="�"))
+/proc/sanitize_simple(var/t, var/list/repl_chars = list("\n"=" ","\t"=" ","�"=" "))
 	for(var/char in repl_chars)
-		var/index = findtext(t, char)
-		while(index)
-			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
-			index = findtext(t, char)
+		t = replacetext(t, char, repl_chars[char])
 	return t
 
 /proc/readd_quotes(var/t)
 	var/list/repl_chars = list("&#34;" = "\"", "&#39;" = "'")
 	for(var/char in repl_chars)
-		var/index = findtext(t, char)
-		while(index)
-			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+5)
-			index = findtext(t, char)
+		t = replacetext(t, char, repl_chars[char])
 	return t
 
 //Runs byond's sanitization proc along-side sanitize_simple
-/proc/sanitize(var/t,var/list/repl_chars = list("\n"=" ","\t"=" ","�"="�"))
+/proc/sanitize(var/t,var/list/repl_chars = list("\n"=" ","\t"=" ","�"=" "))
 	var/msg = html_encode(sanitize_simple(t, repl_chars))
 	return readd_quotes(msg)
+
+//Removes control chars like "\n"
+/proc/sanitize_control_chars(var/stuff)
+	var/static/regex/whitelistedWords = regex(@{"([^\u0020-\u8000]+)"}, "g")
+	return whitelistedWords.Replace(stuff, "")
 
 //Runs sanitize and strip_html_simple
 //I believe strip_html_simple() is required to run first to prevent '<' from displaying as '&lt;' after sanitize() calls byond's html_encode()
@@ -305,3 +304,47 @@ proc/strip_improper(input_text)
 	else
 		message = "[get_area(A)] ([A.x], [A.y], [A.z])"
 	return message
+
+//Adds 'char' ahead of 'text' until there are 'count' characters total
+/proc/add_leading(text, count, char = " ")
+	var/charcount = count - length_char(text)
+	var/list/chars_to_add[max(charcount + 1, 0)]
+	return jointext(chars_to_add, char) + text
+
+/// Finds the first letter of each word in the provided string and capitalize them
+/proc/capitalize_first_letters(var/string)
+	var/list/text = splittext_char(string, " ")
+	var/list/finalized_text = list()
+	for(var/word in text)
+		finalized_text += capitalize(word)
+	return jointext(finalized_text, " ")
+
+// Aurorastation Markup System
+// For processing simple markup, similar to what Skype and Discord use.
+// Enabled from a config setting.
+/proc/process_chat_markup(var/message, var/list/ignore_tags = list())
+	if (!message)
+		return ""
+
+	// ---Begin URL caching.
+	var/list/urls = list()
+	var/i = 1
+	while (url_find_lazy.Find_char(message))
+		urls["\ref[urls]-[i]"] = url_find_lazy.match
+		i++
+
+	for (var/ref in urls)
+		message = replacetextEx_char(message, urls[ref], ref)
+	// ---End URL caching
+
+	var/regex/tag_markup
+	for (var/tag in (markup_tags - ignore_tags))
+		tag_markup = markup_regex[tag]
+		message = tag_markup.Replace_char(message, "$2[markup_tags[tag][1]]$3[markup_tags[tag][2]]$5")
+
+	// ---Unload URL cache
+	for (var/ref in urls)
+		message = replacetextEx_char(message, ref, urls[ref])
+
+	return message
+

@@ -4,8 +4,12 @@
 /obj/item/explosive
 	var/active = FALSE
 	var/customizable = FALSE
-	var/source_mob
+	var/datum/cause_data/cause_data
 	var/creator
+	//Is it harmful? Are they banned for synths?
+	var/harmful
+	//Should it be checked by antigrief?
+	var/has_iff
 	//Below is used for customization
 	var/obj/item/device/assembly_holder/detonator = null
 	var/list/containers = new/list()
@@ -34,11 +38,26 @@
 		reagents.vars[limit] = reaction_limits[limit]
 
 /obj/item/explosive/Destroy()
-	source_mob = null
+	cause_data = null
 	creator = null
 	. = ..()
 
-/obj/item/explosive/attack_self(mob/user as mob)
+/obj/item/explosive/clicked(mob/user, list/mods)
+	if(Adjacent(user) && mods["alt"])
+		if(!has_blast_wave_dampener)
+			to_chat(user, SPAN_WARNING("\The [src] doesn't have blast wave dampening."))
+			return
+		toggle_blast_dampener(user)
+		return
+	return ..()
+
+/obj/item/explosive/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	if(proximity_flag && (istype(target, /obj/item/device/assembly_holder) || is_type_in_list(target, allowed_sensors) || is_type_in_list(target, allowed_containers)))
+		return attackby(target, user)
+	return ..()
+
+/obj/item/explosive/attack_self(mob/user)
+	..()
 	if(customizable && assembly_stage <= ASSEMBLY_UNLOCKED)
 		if(detonator)
 			detonator.detached()
@@ -54,7 +73,7 @@
 			current_container_volume = 0
 		desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 		return
-	source_mob = user
+	cause_data = create_cause_data(initial(name), user)
 	return TRUE
 
 /obj/item/explosive/update_icon()
@@ -77,7 +96,7 @@
 /obj/item/explosive/attackby(obj/item/W as obj, mob/user as mob)
 	if(!customizable || active)
 		return
-	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
+	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_MASTER))
 		to_chat(user, SPAN_WARNING("You do not know how to tinker with [name]."))
 		return
 	if(istype(W,/obj/item/device/assembly_holder) && (!assembly_stage || assembly_stage == ASSEMBLY_UNLOCKED))
@@ -102,7 +121,7 @@
 		assembly_stage = ASSEMBLY_UNLOCKED
 		desc = initial(desc) + "\n Contains [containers.len] containers[detonator?" and detonator":""]"
 		update_icon()
-	else if(istype(W,/obj/item/tool/screwdriver))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(assembly_stage == ASSEMBLY_UNLOCKED)
 			if(containers.len)
 				to_chat(user, SPAN_NOTICE("You lock the assembly."))
@@ -110,6 +129,7 @@
 				to_chat(user, SPAN_NOTICE("You lock the empty assembly."))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 25, 0, 6)
 			creator = user
+			cause_data = create_cause_data(initial(name), user)
 			assembly_stage = ASSEMBLY_LOCKED
 		else if(assembly_stage == ASSEMBLY_LOCKED)
 			to_chat(user, SPAN_NOTICE("You unlock the assembly."))
@@ -126,7 +146,7 @@
 				if(W.reagents.maximum_volume + current_container_volume > max_container_volume)
 					to_chat(user, SPAN_DANGER("\the [W] is too large for [name]."))
 					return
-				if(user.drop_held_item())
+				if(user.temp_drop_inv_item(W))
 					to_chat(user, SPAN_NOTICE("You add \the [W] to the assembly."))
 					W.forceMove(src)
 					containers += W
@@ -175,9 +195,10 @@
 			reagent_list_text += " [R.volume] [R.name], "
 		i++
 
-	if(source_mob)//so we don't message for simulations
-		msg_admin_niche("[key_name(source_mob)] detonated custom explosive by [key_name(creator)]: [name] (REAGENTS: [reagent_list_text]) in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)", loc.x, loc.y, loc.z)
-		reagents.source_mob = source_mob
+	var/mob/cause_mob = cause_data?.resolve_mob()
+	if(cause_mob) //so we don't message for simulations
+		reagents.source_mob = WEAKREF(cause_mob)
+		msg_admin_niche("[key_name(cause_mob)] detonated custom explosive by [key_name(creator)]: [name] (REAGENTS: [reagent_list_text]) in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)", loc.x, loc.y, loc.z)
 
 	if(containers.len < 2)
 		reagents.trigger_volatiles = TRUE //Explode on the first transfer
@@ -207,6 +228,7 @@
 		QDEL_IN(src, 50) //To make sure all reagents can work correctly before deleting the grenade.
 
 /obj/item/explosive/proc/make_copy_of(var/obj/item/explosive/other)
+	cause_data = other.cause_data
 	assembly_stage = other.assembly_stage
 	falloff_mode = other.falloff_mode
 	for(var/obj/item/reagent_container/other_container in other.containers)
@@ -214,19 +236,22 @@
 		other_container.reagents.copy_to(new_container, other_container.reagents.total_volume, TRUE, TRUE, TRUE)
 		containers += new_container
 
-/obj/item/explosive/proc/toggle_blast_dampener()
+/obj/item/explosive/proc/toggle_blast_dampener_verb()
 	set category = "Weapons"
 	set	name = "Toggle Blast Wave Dampener"
 	set desc = "Enable/Disable the Explosive Blast Wave Dampener"
+	set src in usr
 
-	if(!ishuman(usr))
+	toggle_blast_dampener(usr)
+
+/obj/item/explosive/proc/toggle_blast_dampener(var/mob/living/carbon/human/H)
+	if(!istype(H))
 		to_chat(usr, SPAN_DANGER("This is beyond your understanding..."))
 		return
 
-	var/mob/living/carbon/human/H = usr
 	if(!skillcheck(H, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 		to_chat(usr, SPAN_DANGER("You have no idea how to use this..."))
-		return;
+		return
 
 	if(falloff_mode == EXPLOSION_FALLOFF_SHAPE_LINEAR)
 		falloff_mode = EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL

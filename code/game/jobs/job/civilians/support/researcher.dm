@@ -8,8 +8,9 @@
 	scaled = 1
 	supervisors = "chief medical officer"
 	selection_class = "job_researcher"
-	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_MODE
-	gear_preset = "USCM Researcher"
+	flags_startup_parameters = ROLE_ADD_TO_DEFAULT
+	gear_preset = /datum/equipment_preset/uscm_ship/uscm_medical/researcher
+	entry_message_body = "You are a civilian, and are not subject to follow military chain of command, but you do work for the USCM. You are tasked with researching and developing new medical treatments, helping your fellow doctors, and generally learning new things. Your role involves a lot of roleplaying, but you can perform the function of a regular doctor. Do not hand out things to marines without getting permission from your supervisor."
 
 /datum/job/civilian/researcher/set_spawn_positions(var/count)
 	spawn_positions = rsc_slot_formula(count)
@@ -22,12 +23,9 @@
 			positions = total_positions_so_far
 		else
 			total_positions_so_far = positions
+	else
+		total_positions_so_far = positions
 	return positions
-
-
-/datum/job/civilian/researcher/generate_entry_message(mob/living/carbon/human/H)
-	entry_message_body = "You are a civilian, and are not subject to follow military chain of command, but you do work for the USCM. You are tasked with researching and developing new medical treatments, helping your fellow doctors, and generally learning new things. Your role involves a lot of roleplaying, but you can perform the function of a regular doctor. Do not hand out things to marines without getting permission from your supervisor."
-	return ..()
 
 AddTimelock(/datum/job/civilian/researcher, list(
 	JOB_MEDIC_ROLES = 5 HOURS

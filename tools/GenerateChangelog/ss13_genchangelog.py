@@ -36,9 +36,8 @@ import argparse
 from datetime import datetime, date, timedelta
 from time import time
 
-today = date.today()
-
 dateformat = "%d %B %Y"
+today = date.today()
 
 opt = argparse.ArgumentParser()
 opt.add_argument('-d', '--dry-run', dest='dryRun', default=False, action='store_true', help='Only parse changelogs and, if needed, the targetFile. (A .dry_changelog.yml will be output for debugging purposes.)')
@@ -76,7 +75,7 @@ failed_cache_read = True
 if os.path.isfile(changelog_cache):
     try:
         with open(changelog_cache) as f:
-            (_, all_changelog_entries) = yaml.load_all(f)
+            (_, all_changelog_entries) = yaml.load_all(f, Loader=yaml.FullLoader)
             failed_cache_read = False
 
             # Convert old timestamps to newer format.
@@ -103,7 +102,7 @@ if failed_cache_read and os.path.isfile(args.targetFile):
     from bs4.element import NavigableString
     print(' Generating cache...')
     with open(args.targetFile, 'r') as f:
-        soup = BeautifulSoup(f)
+        soup = BeautifulSoup(f, 'html.parser')
         for e in soup.find_all('div', {'class': 'commit'}):
             entry = {}
             date = datetime.strptime(e.h2.string.strip(), dateformat).date()  # key
@@ -148,11 +147,20 @@ for fileName in glob.glob(os.path.join(args.ymlDir, "*.yml")):
     print(' Reading {}...'.format(fileName))
     cl = {}
     with open(fileName, 'r') as f:
-        cl = yaml.load(f)
+        cl = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
-    if today not in all_changelog_entries:
-        all_changelog_entries[today] = {}
-    author_entries = all_changelog_entries[today].get(cl['author'], [])
+
+    try:
+        datematcher = re.compile(r'@([0-9]{2}-[0-9]{2}-[0-9]{4})$')
+        match_data  = datematcher.search(name)
+        datestr     = match_data.group(1)
+        target_date = datetime.strptime(datestr, "%d-%m-%Y").date()
+    except Exception:
+        target_date = today
+
+    if target_date not in all_changelog_entries:
+        all_changelog_entries[target_date] = {}
+    author_entries = all_changelog_entries[target_date].get(cl['author'], [])
     if len(cl['changes']):
         new = 0
         for change in cl['changes']:
@@ -163,7 +171,7 @@ for fileName in glob.glob(os.path.join(args.ymlDir, "*.yml")):
                     print('  {0}: Invalid prefix {1}'.format(fileName, change_type), file=sys.stderr)
                 author_entries += [change]
                 new += 1
-        all_changelog_entries[today][cl['author']] = author_entries
+        all_changelog_entries[target_date][cl['author']] = author_entries
         if new > 0:
             print('  Added {0} new changelog entries.'.format(new))
 

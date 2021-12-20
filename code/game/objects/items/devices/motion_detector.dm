@@ -2,15 +2,20 @@
 #define MOTION_DETECTOR_LONG	0
 #define MOTION_DETECTOR_SHORT	1
 
+#define MOTION_DETECTOR_RANGE_LONG	14
+#define MOTION_DETECTOR_RANGE_SHORT	7
 
 /obj/effect/detector_blip
 	icon = 'icons/obj/items/marine-items.dmi'
 	icon_state = "detector_blip"
 	layer = BELOW_FULLSCREEN_LAYER
 
+/obj/effect/detector_blip/m717
+	icon_state = "tracker_blip"
+
 /obj/item/device/motiondetector
 	name = "motion detector"
-	desc = "A device that detects movement, but ignores marines. The screen will show the amount of unidentified movement detected (up to 9). You can switch modes with Alt+Click."
+	desc = "A device that detects movement, but ignores marines."
 	icon = 'icons/obj/items/marine-items.dmi'
 	icon_state = "detector"
 	item_state = "motion_detector"
@@ -29,28 +34,50 @@
 	actions_types = list(/datum/action/item_action)
 	var/scanning = FALSE // controls if MD is in process of scan
 	var/datum/shape/rectangle/range_bounds
+	var/long_range_locked = FALSE //only long-range MD
+	var/ping_overlay
+
+/obj/item/device/motiondetector/examine()
+	. = ..()
+	var/msg = "Blue bubble-like indicators on your HUD will show pings locations or direction to them. The device screen will show the amount of unidentified movements detected (up to 9). Has two modes: slow long-range [SPAN_HELPFUL("([MOTION_DETECTOR_RANGE_LONG] tiles)")] and fast short-range [SPAN_HELPFUL("([MOTION_DETECTOR_RANGE_SHORT] tiles)")]. Use [SPAN_HELPFUL("Alt + Click")] on the device to switch between modes. Using the device on the adjacent multitile vehicle will start the process of recalibrating and scanning vehicle interior for unidentified movements inside."
+	to_chat(usr, SPAN_INFO(msg))
 
 /obj/item/device/motiondetector/New()
 	range_bounds = new //Just creating a rectangle datum
+	update_icon()
 	..()
 
 /obj/item/device/motiondetector/update_icon()
-	if(ping_count > 8)
-		icon_state = "detector_on_9_b"
-		spawn(10)
-			if(active)
-				icon_state = "detector_on_9"
+	//clear overlays
+	if(overlays)
+		overlays.Cut()
 	else
-		icon_state = "detector_on_[ping_count]_b"
-		spawn(10)
-			if(active)
-				icon_state = "detector_on_[ping_count]"
+		overlays = list()
+
+	if(blood_overlay)
+		overlays += blood_overlay
+	//add ping overlay
+	if(ping_count > 8)
+		ping_overlay = "+[initial(icon_state)]_on_9"
+	else
+		ping_overlay = "+[initial(icon_state)]_on_[ping_count]"
+	var/image/ping_overlay_image = ping_overlay
+	if(active)
+		overlays += ping_overlay_image
+	//add toggle switch overlay
+	if(detector_mode)
+		overlays += "+[initial(icon_state)]_long_switch"
+	else
+		overlays += "+[initial(icon_state)]_short_switch"
 
 /obj/item/device/motiondetector/verb/toggle_range_mode()
 	set name = "Toggle Range Mode"
 	set category = "Object"
 	set src in usr
-	toggle_mode(usr)
+	if(!long_range_locked)
+		toggle_mode(usr)
+	else
+		to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
 
 /obj/item/device/motiondetector/proc/toggle_mode(mob/user)
 	if(isobserver(user) || isXeno(user) || !Adjacent(user))
@@ -63,38 +90,49 @@
 	else
 		to_chat(user, SPAN_NOTICE("You switch [src] to long range mode."))
 		detector_range = 14
-	if(active)
-		update_icon()
+	update_icon()
+	playsound(usr,'sound/machines/click.ogg', 15, TRUE)
 
 /obj/item/device/motiondetector/clicked(mob/user, list/mods)
 	if (isobserver(user) || isXeno(user)) return
 
 	if (mods["alt"])
-		toggle_mode(user)
-		return 1
+		if(!long_range_locked)
+			toggle_mode(usr)
+		else
+			to_chat(usr, SPAN_WARNING("ERROR: 'SHORT-RANGE' MODE NOT LOCATED."))
+		return TRUE
 
 	return ..()
 
 /obj/item/device/motiondetector/attack_self(mob/user)
+	..()
+
 	if(ishuman(user))
 		toggle_active(user, active)
 
 // var/active is used to forcefully toggle it to a specific state
 /obj/item/device/motiondetector/proc/toggle_active(mob/user, var/old_active)
 	active = !old_active
-	if(active)
-		update_icon()
-		if(user)
-			to_chat(user, SPAN_NOTICE("You activate [src]."))
-		playsound(loc, 'sound/items/detector_turn_on.ogg', 30, 0, 5, 2)
-		START_PROCESSING(SSobj, src)
+	if(!active)
+		turn_off(user)
 	else
-		scanning = FALSE // safety if MD runtimes in scan and stops scanning
-		icon_state = "[initial(icon_state)]"
-		if(user)
-			to_chat(user, SPAN_NOTICE("You deactivate [src]."))
-		playsound(loc, 'sound/items/detector_turn_off.ogg', 30, 0, 5, 2)
-		STOP_PROCESSING(SSobj, src)
+		turn_on(user)
+	update_icon()
+
+/obj/item/device/motiondetector/proc/turn_on(mob/user)
+	if(user)
+		to_chat(user, SPAN_NOTICE("You activate [src]."))
+	playsound(loc, 'sound/items/detector_turn_on.ogg', 30, FALSE, 5, 2)
+	START_PROCESSING(SSobj, src)
+
+/obj/item/device/motiondetector/proc/turn_off(mob/user)
+	if(user)
+		to_chat(user, SPAN_NOTICE("You deactivate [src]."))
+	scanning = FALSE // safety if MD runtimes in scan and stops scanning
+	icon_state = "[initial(icon_state)]"
+	playsound(loc, 'sound/items/detector_turn_off.ogg', 30, FALSE, 5, 2)
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/device/motiondetector/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -102,7 +140,7 @@
 		qdel(blip_pool[to_delete])
 		blip_pool.Remove(to_delete)
 	blip_pool = null
-	..()
+	return ..()
 
 /obj/item/device/motiondetector/process()
 	if(isturf(loc))
@@ -139,6 +177,9 @@
 	if(ishuman(A.loc))
 		return A.loc
 
+/obj/item/device/motiondetector/proc/apply_debuff(var/mob/M)
+	return
+
 /obj/item/device/motiondetector/proc/scan()
 	set waitfor = 0
 	if(scanning)
@@ -162,14 +203,14 @@
 	var/list/ping_candidates = SSquadtree.players_in_range(range_bounds, cur_turf.z, QTREE_EXCLUDE_OBSERVER | QTREE_SCAN_MOBS)
 
 	for(var/A in ping_candidates)
-		var/mob/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
+		var/mob/living/M = A	//do this to skip the unnecessary istype() check; everything in ping_candidate is a mob already
 		if(M == loc) continue //device user isn't detected
 		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
 		if(isrobot(M)) continue
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			if(H.get_target_lock(iff_signal))
-				continue
+		if(M.get_target_lock(iff_signal))
+			continue
+
+		apply_debuff(M)
 		ping_count++
 		if(human_user)
 			show_blip(human_user, M)
@@ -178,7 +219,7 @@
 		if(Q.z != cur_turf.z || !(range_bounds.contains_atom(Q))) continue
 		ping_count++
 		if(human_user)
-			show_blip(human_user, Q, "error")
+			show_blip(human_user, Q, "queen_eye")
 
 	if(ping_count > 0)
 		playsound(loc, pick('sound/items/detector_ping_1.ogg', 'sound/items/detector_ping_2.ogg', 'sound/items/detector_ping_3.ogg', 'sound/items/detector_ping_4.ogg'), 60, 0, 7, 2)
@@ -190,7 +231,7 @@
 
 	return ping_count
 
-/obj/item/device/motiondetector/proc/show_blip(mob/user, mob/target, var/blip_icon)
+/obj/item/device/motiondetector/proc/show_blip(var/mob/user, var/atom/target, var/blip_icon)
 	set waitfor = 0
 	if(user && user.client)
 
@@ -217,101 +258,34 @@
 		else if(target.y - user.y < -c_view + view_y_offset) diff_dir_y = 2
 		if(diff_dir_x || diff_dir_y)
 			DB.icon_state = "[blip_icon]_blip_dir"
-			DB.dir = diff_dir_x + diff_dir_y
+			DB.setDir(diff_dir_x + diff_dir_y)
 		else
 			DB.icon_state = "[blip_icon]_blip"
-			DB.dir = initial(DB.dir)
+			DB.setDir(initial(DB.dir))
 
 		DB.screen_loc = "[Clamp(c_view + 1 - view_x_offset + (target.x - user.x), 1, 2*c_view+1)],[Clamp(c_view + 1 - view_y_offset + (target.y - user.y), 1, 2*c_view+1)]"
 		user.client.screen += DB
-		sleep(12)
-		if(user.client)
-			user.client.screen -= DB
+		addtimer(CALLBACK(src, .proc/clear_pings, user, DB), 1 SECONDS)
 
-/obj/item/device/motiondetector/intel
-	name = "data detector"
-	desc = "A device that detects objects that may be useful for intel gathering. You can switch modes with Alt+Click."
-	icon_state = "datadetector"
-	item_state = "data_detector"
-	blip_type = "data"
-	var/objects_to_detect = list(
-		/obj/item/document_objective,
-		/obj/item/disk/objective,
-		/obj/item/device/mass_spectrometer/adv/objective,
-		/obj/item/device/reagent_scanner/adv/objective,
-		/obj/item/device/healthanalyzer/objective,
-		/obj/item/device/autopsy_scanner/objective,
-		/obj/item/device/autopsy_scanner/objective,
-		/obj/item/paper/research_notes,
-		/obj/item/reagent_container/glass/beaker/vial/random,
-		/obj/item/storage/fancy/vials/random,
-		/obj/structure/machinery/computer/objective,
-		/obj/item/limb/head/synth,
-	)
+/obj/item/device/motiondetector/proc/clear_pings(mob/user, var/obj/effect/detector_blip/DB)
+	if(user.client)
+		user.client.screen -= DB
 
-/obj/item/device/motiondetector/intel/update_icon()
-	if (active)
-		icon_state = "[initial(icon_state)]_on_[detector_mode]"
-	else
-		icon_state = "[initial(icon_state)]"
+/obj/item/device/motiondetector/m717
+	name = "M717 pocket motion detector"
+	desc = "This prototype motion detector sacrifices versatility, having only the long-range mode, for size, being so small it can even fit in pockets."
+	icon_state = "pocket"
+	item_state = "motion_detector"
+	flags_atom = FPRINT| CONDUCT
+	flags_equip_slot = SLOT_WAIST
+	w_class = SIZE_SMALL
+	blip_type = "tracker"
+	long_range_locked = TRUE
 
-/obj/item/device/motiondetector/intel/scan()
-	set waitfor = 0
-	if(scanning)
-		return
-	scanning = TRUE
-	var/mob/living/carbon/human/human_user
-	if(ishuman(loc))
-		human_user = loc
+/obj/item/device/motiondetector/hacked
+	name = "hacked motion detector"
+	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-UPP movement instead. Fight fire with fire!"
+	iff_signal = FACTION_UPP
 
-	var/detected_sound = FALSE
-
-	for(var/obj/I in orange(detector_range, loc))
-		var/detected
-		for(var/DT in objects_to_detect)
-			if(istype(I, DT))
-				detected = TRUE
-			if(I.contents)
-				for(var/obj/item/CI in I.contents)
-					if(istype(CI, DT))
-						detected = TRUE
-						break
-			if(human_user && detected)
-				show_blip(human_user, I)
-			if(detected)
-				break
-
-		if(detected)
-			detected_sound = TRUE
-
-		CHECK_TICK
-
-	for(var/mob/M in orange(detector_range, loc))
-		var/detected
-		if(loc == null || M == null) continue
-		if(loc.z != M.z) continue
-		if(M == loc) continue //device user isn't detected
-		if((isXeno(M) || isYautja(M)) && M.stat == DEAD )
-			detected = TRUE
-		else if(ishuman(M) && M.stat == DEAD && M.contents.len)
-			for(var/obj/I in M.contents_twice())
-				for(var/DT in objects_to_detect)
-					if(istype(I, DT))
-						detected = TRUE
-						break
-				if(detected)
-					break
-
-		if(human_user && detected)
-			show_blip(human_user, M)
-			if(detected)
-				detected_sound = TRUE
-
-		CHECK_TICK
-
-	if(detected_sound)
-		playsound(loc, 'sound/items/tick.ogg', 50, 0, 7, 2)
-	else
-		playsound(loc, 'sound/items/detector.ogg', 50, 0, 7, 2)
-
-	scanning = FALSE
+#undef MOTION_DETECTOR_RANGE_LONG
+#undef MOTION_DETECTOR_RANGE_SHORT

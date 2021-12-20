@@ -22,7 +22,7 @@
 /obj/item/reagent_container/food/snacks/grown/Initialize()
 	. = ..()
 	GLOB.grown_snacks_list += src
-	update_from_seed()
+	addtimer(CALLBACK(src, .proc/update_from_seed), 1)
 
 /obj/item/reagent_container/food/snacks/grown/Destroy()
 	GLOB.grown_snacks_list -= src
@@ -159,20 +159,24 @@
 	filling_color = "#70C470"
 	plantname = "mtear"
 
-/obj/item/reagent_container/food/snacks/grown/mtear/attack_self(mob/user as mob)
+/obj/item/reagent_container/food/snacks/grown/mtear/attack_self(mob/user)
+	..()
+
 	if(istype(user.loc,/turf/open/space))
 		return
-	var/obj/item/stack/medical/advanced/ointment/tajaran/poultice = new /obj/item/stack/medical/advanced/ointment/tajaran(user.loc)
+	var/obj/item/stack/medical/advanced/ointment/predator/poultice = new /obj/item/stack/medical/advanced/ointment/predator(user.loc)
 
 	poultice.heal_burn = potency
 	qdel(src)
 
 	to_chat(user, SPAN_NOTICE("You mash the petals into a poultice."))
 
-/obj/item/reagent_container/food/snacks/grown/shand/attack_self(mob/user as mob)
+/obj/item/reagent_container/food/snacks/grown/shand/attack_self(mob/user)
+	..()
+
 	if(istype(user.loc,/turf/open/space))
 		return
-	var/obj/item/stack/medical/advanced/bruise_pack/tajaran/poultice = new /obj/item/stack/medical/advanced/bruise_pack/tajaran(user.loc)
+	var/obj/item/stack/medical/advanced/bruise_pack/predator/poultice = new /obj/item/stack/medical/advanced/bruise_pack/predator(user.loc)
 
 	poultice.heal_brute = potency
 	qdel(src)
@@ -190,16 +194,16 @@
 
 /obj/item/reagent_container/food/snacks/grown/glowberries/Destroy()
 	if(istype(loc,/mob))
-		loc.SetLuminosity(round(-potency/5,1))
+		loc.SetLuminosity(0, FALSE, src)
 	. = ..()
 
 /obj/item/reagent_container/food/snacks/grown/glowberries/pickup(mob/user)
 	. = ..()
 	src.SetLuminosity(0)
-	user.SetLuminosity(round((potency/5),1))
+	user.SetLuminosity(round((potency/5),1), FALSE, src)
 
 /obj/item/reagent_container/food/snacks/grown/glowberries/dropped(mob/user)
-	user.SetLuminosity(-(round((potency/5),1)))
+	user.SetLuminosity(0, FALSE, src)
 	src.SetLuminosity(round(potency/5,1))
 	..()
 
@@ -401,7 +405,9 @@
 	potency = 30
 	plantname = "killertomato"
 
-/obj/item/reagent_container/food/snacks/grown/killertomato/attack_self(mob/user as mob)
+/obj/item/reagent_container/food/snacks/grown/killertomato/attack_self(mob/user)
+	..()
+
 	if(istype(user.loc,/turf/open/space))
 		return
 	new /mob/living/simple_animal/tomato(user.loc)
@@ -543,7 +549,9 @@
 	potency = 30
 	plantname = "glowshroom"
 
-/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user as mob)
+/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user)
+	..()
+
 	if(istype(user.loc,/turf/open/space))
 		return
 	var/obj/effect/glowshroom/planted = new /obj/effect/glowshroom(user.loc)
@@ -557,16 +565,16 @@
 
 /obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/Destroy()
 	if(istype(loc,/mob))
-		loc.SetLuminosity(round(-potency/10,1))
+		loc.SetLuminosity(0, FALSE, src)
 	. = ..()
 
 /obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/pickup(mob/user)
 	. = ..()
 	SetLuminosity(0)
-	user.SetLuminosity(round((potency/10),1))
+	user.SetLuminosity(round((potency/10),1), FALSE, src)
 
 /obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom/dropped(mob/user)
-	user.SetLuminosity(round(-(potency/10),1))
+	user.SetLuminosity(0, FALSE, src)
 	SetLuminosity(round(potency/10,1))
 	..()
 

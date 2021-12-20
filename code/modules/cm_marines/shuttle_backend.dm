@@ -384,6 +384,7 @@ x_pos = 0 1 2 3 4 5 6 7 8 9 ....	   15 16
 // 		 and dumps the source turf of whatever called it into the passed list.
 #define SHUTTLE_LINK_LOCATIONS(T, L) \
 ..(); \
+if(!shuttle_controller) { qdel(src); return FALSE }; \
 var/datum/shuttle/ferry/marine/S = shuttle_controller.shuttles["[MAIN_SHIP_NAME] [T] [name]"]; \
 if(!S) {log_debug("ERROR CODE SO1: unable to find shuttle with the tag of: ["[MAIN_SHIP_NAME] [T] [name]"]."); \
 return FALSE}; \
@@ -559,7 +560,7 @@ qdel(src)
 
 			if (isliving(A))
 				var/mob/living/L = A
-				L.last_damage_mob = null
+				L.last_damage_data = create_cause_data("dropship flattening")
 				L.gib()
 
 		target = target.ChangeTurf(/turf/open/gm/empty)
@@ -578,7 +579,7 @@ qdel(src)
 		var/old_icon = T.icon
 
 		target.ChangeTurf(T.type)
-		target.dir = old_dir
+		target.setDir(old_dir)
 		target.icon_state = old_icon_state
 		target.icon = old_icon
 

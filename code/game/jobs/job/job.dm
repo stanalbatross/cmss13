@@ -22,7 +22,7 @@
 	//If you have use_timelocks config option enabled, this option will add a requirement for players to have the prerequisite roles have at least x minimum playtime before unlocking.
 	var/list/minimum_playtimes
 
-	var/minimum_playtime_as_job = HOURS_3
+	var/minimum_playtime_as_job = 3 HOURS
 
 	var/gear_preset //Gear preset name used for this job
 	var/list/gear_preset_whitelist = list()//Gear preset name used for council snowflakes ;)
@@ -31,6 +31,9 @@
 	var/entry_message_intro
 	var/entry_message_body
 	var/entry_message_end
+
+	/// When set to true, SSticker won't call spawn_in_player, instead calling the job's spawn_and_equip proc
+	var/handle_spawn_and_equip = FALSE
 
 /datum/job/New()
 	. = ..()
@@ -115,33 +118,36 @@
 /datum/job/proc/get_access()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].access
+	if(GLOB.gear_path_presets_list[gear_preset])
+		return GLOB.gear_path_presets_list[gear_preset].access
 	return null
 
 /datum/job/proc/get_skills()
 	if(!gear_preset)
 		return null
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].skills
+	if(GLOB.gear_path_presets_list[gear_preset])
+		return GLOB.gear_path_presets_list[gear_preset].skills
 	return null
 
 /datum/job/proc/get_paygrade()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].paygrade
+	if(GLOB.gear_path_presets_list[gear_preset])
+		return GLOB.gear_path_presets_list[gear_preset].paygrade
 	return ""
 
 /datum/job/proc/get_comm_title()
 	if(!gear_preset)
 		return ""
-	if(gear_presets_list[gear_preset])
-		return gear_presets_list[gear_preset].role_comm_title
+	if(GLOB.gear_path_presets_list[gear_preset])
+		return GLOB.gear_path_presets_list[gear_preset].role_comm_title
 	return ""
 
 /datum/job/proc/set_spawn_positions(var/count)
 	return spawn_positions
+
+/datum/job/proc/spawn_and_equip(var/mob/new_player/player)
+	CRASH("A job without a set spawn_and_equip proc has handle_spawn_and_equip set to TRUE!")
 
 /datum/job/proc/generate_entry_message()
 	if(!entry_message_intro)
@@ -162,7 +168,7 @@
 			[SPAN_ROLE_BODY("|______________________|")] \n\
 			[SPAN_ROLE_HEADER("You are \a [title_given]")] \n\
 			[flags_startup_parameters & ROLE_ADMIN_NOTIFY ? SPAN_ROLE_HEADER("You are playing a job that is important for game progression. If you have to disconnect, please notify the admins via adminhelp.") : ""] \n\
-			[SPAN_ROLE_BODY("[generate_entry_message(H)].[M ? "Your account number is: <b>[M.account_number]</b>. Your account pin is: <b>[M.remote_access_pin]</b>." : ""]")] \n\
+			[SPAN_ROLE_BODY("[generate_entry_message(H)]<br>[M ? "Your account number is: <b>[M.account_number]</b>. Your account pin is: <b>[M.remote_access_pin]</b>." : ""]")] \n\
 			[SPAN_ROLE_BODY("|______________________|")] \
 		"
 		to_chat_spaced(H, html = entrydisplay)
@@ -270,7 +276,7 @@
 		if(flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
 			RoleAuthority.randomize_squad(H)
 
-		if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
+		if(Check_WO() && job_squad_roles.Find(GET_DEFAULT_ROLE(H.job)))	//activates self setting proc for marine headsets for WO
 			var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
 			WO.self_set_headset(H)
 

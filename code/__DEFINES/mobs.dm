@@ -53,9 +53,9 @@
 //=================================================
 
 //sdisabilities
-#define BLIND			1
-#define MUTE			2
-#define DEAF			4
+#define DISABILITY_BLIND		(1<<0)
+#define DISABILITY_MUTE			(1<<1)
+#define DISABILITY_DEAF			(1<<2)
 //=================================================
 
 //mob/var/stat things
@@ -99,6 +99,9 @@
 //=================================================
 
 //Bitflags defining which status effects could be or are inflicted on a mob
+
+#define STATUS_FLAGS_DEBILITATE (CANSTUN|CANKNOCKOUT|CANDAZE|CANSLOW)
+
 #define CANSTUN				(1<<0)
 #define CANKNOCKDOWN		(1<<1)
 #define CANKNOCKOUT			(1<<2)
@@ -113,16 +116,20 @@
 #define PERMANENTLY_DEAD	(1<<17)
 #define CANDAZE				(1<<18)
 #define CANSLOW				(1<<19)
+#define NO_PERMANENT_DAMAGE	(1<<20)
 
 // =============================
 // hive types
 
-#define XENO_HIVE_NORMAL 1
-#define XENO_HIVE_CORRUPTED 2
-#define XENO_HIVE_ALPHA 3
-#define XENO_HIVE_BRAVO 4
-#define XENO_HIVE_CHARLIE 5
-#define XENO_HIVE_DELTA 6
+#define XENO_HIVE_NORMAL "xeno_hive_normal"
+#define XENO_HIVE_CORRUPTED "xeno_hive_corrupted"
+#define XENO_HIVE_ALPHA "xeno_hive_alpha"
+#define XENO_HIVE_BRAVO "xeno_hive_bravo"
+#define XENO_HIVE_CHARLIE "xeno_hive_charlie"
+#define XENO_HIVE_DELTA "xeno_hive_delta"
+#define XENO_HIVE_FERAL "xeno_hive_feral"
+#define XENO_HIVE_TAMED "xeno_hive_tamed"
+#define XENO_HIVE_MUTATED "xeno_hive_mutated"
 
 //=================================================
 
@@ -150,7 +157,6 @@
 #define LANGUAGE_ALIEN		2
 #define LANGUAGE_DOG		4
 #define LANGUAGE_CAT		8
-#define LANGUAGE_BINARY		16
 #define LANGUAGE_OTHER		32768
 #define LANGUAGE_UNIVERSAL	65535
 
@@ -159,6 +165,8 @@
 // Mob flags.
 #define KNOWS_TECHNOLOGY		(1<<0)	// This mob understands technology
 #define SQUEEZE_UNDER_VEHICLES 	(1<<1)  // Only the van is supported as of now.
+#define EASY_SURGERY			(1<<2)  // Surgeries on this mob don't require advanced skills.
+#define SURGERY_MODE_ON			(1<<3)  // Mob on surgery mode, will attempt surgery when using relevant items on harm/disarm intent.
 
 //=================================================
 
@@ -171,21 +179,23 @@
 //=================================================
 
 //Species flags.
-#define NO_BLOOD 1
-#define NO_BREATHE 2
-#define NO_SCAN 4
-#define NO_SLIP 8
-#define NO_POISON 16
-#define NO_CHEM_METABOLIZATION 32 //Prevents reagents from acting on_mob_life().
-#define HAS_SKIN_TONE 64
-#define HAS_SKIN_COLOR 128
-#define HAS_LIPS 256
-#define HAS_UNDERWEAR 512
-#define IS_WHITELISTED 1024
-#define IS_SYNTHETIC 2048
-#define NO_NEURO 4096 //species cannot be neuroed
-#define SPECIAL_BONEBREAK 8192 //species do not get their bonebreak chance modified by endurance
-#define NO_SHRAPNEL 16384
+#define NO_BLOOD                 (1<<0)
+#define NO_BREATHE               (1<<1)
+#define NO_CLONE_LOSS            (1<<2)
+#define NO_SLIP                  (1<<3)
+#define NO_POISON                (1<<4)
+#define NO_CHEM_METABOLIZATION   (1<<5) //Prevents reagents from acting on_mob_life().
+#define HAS_SKIN_TONE            (1<<6)
+#define HAS_SKIN_COLOR           (1<<7)
+#define HAS_LIPS                 (1<<8)
+#define HAS_UNDERWEAR            (1<<9)
+#define IS_WHITELISTED           (1<<10)
+#define IS_SYNTHETIC             (1<<11)
+#define NO_NEURO                 (1<<12)
+#define SPECIAL_BONEBREAK        (1<<13) //species do not get their bonebreak chance modified by endurance
+#define NO_SHRAPNEL              (1<<14)
+#define HAS_HARDCRIT             (1<<15)
+
 //=================================================
 
 //Some on_mob_life() procs check for alien races.
@@ -200,7 +210,7 @@
 #define MOB_SIZE_XENO_SMALL 	2
 #define MOB_SIZE_XENO			3
 #define MOB_SIZE_BIG			4
-#define MOB_SIZE_IMMOBILE		5 // if you are not supposed to be able to move AT ALL then you get this flag
+#define MOB_SIZE_IMMOBILE		5 // if you are not supposed to be able to moved AT ALL then you get this flag
 
 
 //defines for the busy icons when the mob does something that takes time using do_after proc
@@ -219,6 +229,7 @@
 #define ACTION_RED_POWER_UP		10
 #define ACTION_GREEN_POWER_UP	11
 #define ACTION_BLUE_POWER_UP	12
+#define ACTION_PURPLE_POWER_UP	13
 
 //defins for datum/hud
 
@@ -290,6 +301,7 @@
 // Carrier strain flags
 #define CARRIER_NORMAL 		"Normal"
 #define CARRIER_SHAMAN		"Shaman"
+#define CARRIER_EGGSAC		"Eggsac"
 
 // Burrower strain flags
 #define BURROWER_NORMAL 	"Normal"
@@ -341,7 +353,8 @@ var/list/default_onmob_icons = list(
 		WEAR_R_HAND = 'icons/mob/humans/onmob/items_righthand_0.dmi',
 		WEAR_WAIST = 'icons/mob/humans/onmob/belt.dmi',
 		WEAR_BACK = 'icons/mob/humans/onmob/back.dmi',
-		WEAR_EAR = 'icons/mob/humans/onmob/ears.dmi',
+		WEAR_L_EAR = 'icons/mob/humans/onmob/ears.dmi',
+		WEAR_R_EAR = 'icons/mob/humans/onmob/ears.dmi',
 		WEAR_EYES = 'icons/mob/humans/onmob/eyes.dmi',
 		WEAR_ID = 'icons/mob/mob.dmi',
 		WEAR_BODY = 'icons/mob/humans/onmob/uniform_0.dmi',
@@ -359,4 +372,11 @@ var/list/default_onmob_icons = list(
 // species names
 #define SPECIES_HUMAN "Human"
 #define SPECIES_YAUTJA "Yautja"
+#define SPECIES_SYNTHETIC "Synthetic"
 #define SPECIES_MONKEY "Monkey"
+
+#define ALL_LIMBS list("head","chest","groin","l_leg","l_foot","r_leg","r_foot","l_arm","l_hand","r_arm","r_hand")
+#define MOVEMENT_LIMBS list("l_leg", "l_foot", "r_leg", "r_foot")
+#define HANDLING_LIMBS list("l_arm","l_hand", "r_arm", "r_hand")
+#define EXTREMITY_LIMBS list("l_leg","l_foot","r_leg","r_foot","l_arm","l_hand","r_arm","r_hand")
+#define CORE_LIMBS list("chest","head","groin")

@@ -43,7 +43,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(heat_source)
 		STOP_PROCESSING(SSobj, src)
 	if(ismob(src.loc))
-		src.loc.SetLuminosity(-CANDLE_LUM)
+		src.loc.SetLuminosity(0, FALSE, src)
 	else
 		SetLuminosity(0)
 	. = ..()
@@ -82,26 +82,28 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 
 
-/obj/item/tool/candle/attack_self(mob/user as mob)
+/obj/item/tool/candle/attack_self(mob/user)
+	..()
+
 	if(heat_source)
 		heat_source = 0
 		update_icon()
 		SetLuminosity(0)
-		user.SetLuminosity(-CANDLE_LUM)
+		user.SetLuminosity(0, FALSE, src)
 		STOP_PROCESSING(SSobj, src)
 
 
 /obj/item/tool/candle/pickup(mob/user)
 	. = ..()
-	if(heat_source && src.loc != user)
+	if(heat_source)
 		SetLuminosity(0)
-		user.SetLuminosity(CANDLE_LUM)
+		user.SetLuminosity(CANDLE_LUM, FALSE, src)
 
 
 /obj/item/tool/candle/dropped(mob/user)
 	..()
 	if(heat_source && src.loc != user)
-		user.SetLuminosity(-CANDLE_LUM)
+		user.SetLuminosity(0, FALSE, src)
 		SetLuminosity(CANDLE_LUM)
 
 
@@ -145,7 +147,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	damtype = "burn"
 	icon_state = "match_lit"
 	if(ismob(loc))
-		loc.SetLuminosity(2)
+		loc.SetLuminosity(2, FALSE, src)
 	else
 		SetLuminosity(2)
 	START_PROCESSING(SSobj, src)
@@ -158,7 +160,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_state = "match_burnt"
 	item_state = "cigoff"
 	if(user && loc != user)
-		user.SetLuminosity(-2)
+		user.SetLuminosity(0, FALSE, src)
 	SetLuminosity(0)
 	name = "burnt match"
 	desc = "A match. This one has seen better days."
@@ -166,9 +168,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/tool/lighter/dropped(mob/user)
 	if(heat_source && src.loc != user)
-		user.SetLuminosity(-2)
+		user.SetLuminosity(0, FALSE, src)
 		SetLuminosity(2)
 	return ..()
+
 //////////////////
 //FINE SMOKABLES//
 //////////////////
@@ -180,6 +183,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "cigoff"
 	w_class = SIZE_TINY
 	flags_armor_protection = 0
+	flags_equip_slot = SLOT_EAR | SLOT_FACE
 	flags_atom = CAN_BE_SYRINGED
 	attack_verb = list("burnt", "singed")
 	blood_overlay_type = ""
@@ -241,13 +245,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
 
-	else if(istype(W, /obj/item/weapon/gun))
+	else if(isgun(W))
 		var/obj/item/weapon/gun/G = W
 		for(var/slot in G.attachments)
 			if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
 				light(SPAN_NOTICE("[user] lights their [src] with [G.attachments[slot]]."))
 				break
-
 
 	else if(istype(W, /obj/item/tool/surgery/cautery))
 		light(SPAN_NOTICE("[user] lights their [src] with the [W]."))
@@ -300,16 +303,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!heat_source)
 		heat_source = 1000
 		damtype = "fire"
-		if(reagents.get_reagent_amount("phoron")) // the phoron explodes when exposed to fire
-			var/datum/effect_system/reagents_explosion/e = new()
-			e.set_up(round(reagents.get_reagent_amount("phoron") / 2.5, 1), get_turf(src), 0, 0)
-			e.start()
-			qdel(src)
-			return
-		if(reagents.get_reagent_amount("fuel")) // the fuel explodes, too, but much less violently
-			var/datum/effect_system/reagents_explosion/e = new()
-			e.set_up(round(reagents.get_reagent_amount("fuel") / 5, 1), get_turf(src), 0, 0)
-			e.start()
+		if(reagents.handle_volatiles())
 			qdel(src)
 			return
 		flags_atom &= ~NOREACT // allowing reagents to react after being lit
@@ -362,7 +356,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		die()
 	return ..()
 
-
 /obj/item/clothing/mask/cigarette/proc/die()
 	var/turf/T = get_turf(src)
 	var/obj/item/butt = new type_butt(T)
@@ -378,7 +371,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/ucigarette
 	icon_on = "ucigon"
 	icon_off = "ucigoff"
-	type_butt = /obj/item/trash/ucigbutt
+	type_butt = /obj/item/trash/cigbutt/ucigbutt
 	name = "cigarette"
 	desc = "An unfiltered roll of tobacco and nicotine. Smoking this releases even more tar and soot into your mouth."
 	item_state = "cigoff"
@@ -387,7 +380,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/bcigarette
 	icon_on = "bcigon"
 	icon_off = "bcigoff"
-	type_butt = /obj/item/trash/bcigbutt
+	type_butt = /obj/item/trash/cigbutt/bcigbutt
 	name = "cigarette"
 	desc = "A roll of tobacco, nicotine, and some phosphor, in a fancy black package. The phosphor makes the tip glow blue when lit."
 	item_state = "bcigoff"
@@ -412,7 +405,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 // CIGARS //
 ////////////
 /obj/item/clothing/mask/cigarette/cigar
-	name = "premium cigar"
+	name = "\improper premium cigar"
 	desc = "A huge, brown roll of tobacco and some other stuff that you're meant to smoke. Makes you feel like a true USCM sergeant."
 	icon_state = "cigar_off"
 	icon_on = "cigar_on"
@@ -422,6 +415,24 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "cigar_off"
 	smoketime = 50 MINUTES
 	chem_volume = 20
+
+/obj/item/clothing/mask/cigarette/cigar/classic
+	name = "classic cigar"
+	desc = "This thing is covered with dust and what seems to be toolbox residue. For the old-fashioned."
+	icon_state = "cigar2_off"
+	icon_on = "cigar2_on"
+	icon_off = "cigar2_off"
+	smoketime = 120 MINUTES
+
+/obj/item/clothing/mask/cigarette/cigar/tarbacks
+	name = "\improper Tarback cigar"
+	desc = "Tarbacks by Reisland Tobacco. The Surgeon General has declared that smoking Tarbacks can be hazardous to one’s health. Reisland Tobacco has declared that the Surgeon General is a bitch. Rolled in Columbia."
+	icon_state = "tarback_off"
+	icon_on = "tarback_on"
+	icon_off = "tarback_off"
+	type_butt = /obj/item/trash/cigbutt/cigarbutt
+	item_state = "tarback_off"
+	smoketime = 30 MINUTES
 
 /obj/item/clothing/mask/cigarette/cigar/Initialize()
 	. = ..()
@@ -436,7 +447,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	desc = "A cigar fit for only the best of the best."
 	smoketime = 7200
 	chem_volume = 30
-
 
 /obj/item/clothing/mask/cigarette/cigar/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/tool/weldingtool))
@@ -482,7 +492,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else
 			to_chat(user, SPAN_WARNING("Turn on the pilot light first!"))
 
-	else if(istype(W, /obj/item/weapon/gun))
+	else if(isgun(W))
 		var/obj/item/weapon/gun/G = W
 		for(var/slot in G.attachments)
 			if(istype(G.attachments[slot], /obj/item/attachable/attached_gun/flamer))
@@ -528,7 +538,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		STOP_PROCESSING(SSobj, src)
 		return
 
-/obj/item/clothing/mask/cigarette/pipe/attack_self(mob/user as mob) //Refills the pipe. Can be changed to an attackby later, if loose tobacco is added to vendors or something.
+/// Refills the pipe. Can be changed to an attackby later, if loose tobacco is added to vendors or something.
+/obj/item/clothing/mask/cigarette/pipe/attack_self(mob/user)
+	..()
+
 	if(heat_source)
 		user.visible_message(SPAN_NOTICE("[user] puts out [src]."))
 		heat_source = 0
@@ -539,7 +552,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(smoketime <= 0)
 		to_chat(user, SPAN_NOTICE("You refill the pipe with tobacco."))
 		smoketime = initial(smoketime)
-	return
 
 /obj/item/clothing/mask/cigarette/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/tool/weldingtool))
@@ -607,6 +619,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_on = "zippoon"
 	icon_off = "zippo"
 
+/obj/item/tool/lighter/zippo/gold
+	name = "golden Zippo lighter"
+	desc = "A gold-anodized Zippo lighter. Osentatious, but it certainly stands out."
+	icon_state = "goldzippo"
+	item_state = "goldzippo"
+	icon_on = "goldzippoon"
+	icon_off = "goldzippo"
+
 /obj/item/tool/lighter/random
 
 /obj/item/tool/lighter/random/Initialize()
@@ -618,7 +638,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/tool/lighter/Destroy()
 	if(ismob(src.loc))
-		src.loc.SetLuminosity(-2)
+		src.loc.SetLuminosity(0, FALSE, src)
 	else
 		SetLuminosity(0)
 	. = ..()
@@ -645,7 +665,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 						user.apply_damage(2,BURN,"r_hand")
 					user.visible_message(SPAN_NOTICE("After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
 
-			user.SetLuminosity(2)
+			user.SetLuminosity(2, FALSE, src)
 			START_PROCESSING(SSobj, src)
 		else
 			turn_off(user, 0)
@@ -665,7 +685,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			else
 				bearer.visible_message(SPAN_NOTICE("[bearer] quietly shuts off the [src]."))
 
-		bearer.SetLuminosity(-2)
+		bearer.SetLuminosity(0, FALSE, src)
 		STOP_PROCESSING(SSobj, src)
 		return 1
 	return 0
@@ -694,13 +714,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/tool/lighter/pickup(mob/user)
 	. = ..()
-	if(heat_source && src.loc != user)
+	if(heat_source)
 		SetLuminosity(0)
-		user.SetLuminosity(2)
+		user.SetLuminosity(2, FALSE, src)
 
 
 /obj/item/tool/lighter/dropped(mob/user)
 	if(heat_source && src.loc != user)
-		user.SetLuminosity(-2)
+		user.SetLuminosity(0, FALSE, src)
 		SetLuminosity(2)
 	return ..()

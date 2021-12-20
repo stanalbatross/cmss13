@@ -21,9 +21,15 @@
 	armor_rad = CLOTHING_ARMOR_LOW
 	armor_internaldamage = CLOTHING_ARMOR_NONE
 	siemens_coefficient = 0.9
+	vision_impair = VISION_IMPAIR_NONE
 	var/gas_filter_strength = 1			//For gas mask filters
-	var/vision_impair = VISION_IMPAIR_NONE //Changed system to support more than 2 versions of impairment
 	var/list/filtered_gases = list("phoron", "sleeping_agent", "carbon_dioxide")
+
+/obj/item/clothing/mask/gas/kutjevo
+	name = "kutjevo respirator"
+	desc = "A respirator worn on the face that filters out harmful air particles often present in the air of Kutjevo."
+	icon_state = "kutjevo_respirator"
+	item_state = "kutjevo_respirator"
 
 /obj/item/clothing/mask/gas/PMC
 	name = "\improper M8 pattern armored balaclava"
@@ -43,6 +49,11 @@
 	flags_inventory = COVERMOUTH|ALLOWINTERNALS|BLOCKGASEFFECT|ALLOWREBREATH
 	flags_inv_hide = HIDEEARS|HIDEFACE|HIDEALLHAIR
 	flags_equip_slot = SLOT_FACE
+
+/obj/item/clothing/mask/gas/PMC/marsoc
+	name = "\improper MARSOC armored balaclava"
+	desc = "Designed for maximum protection -- and badassery. Provides protection against facial attacks, filters toxins, and conceals the wearer's identity."
+	icon_state = "balaclava"
 
 /obj/item/clothing/mask/gas/PMC/upp
 	name = "\improper UPP armored commando balaclava"
@@ -137,5 +148,5 @@
 	icon_state = "souto_man"
 	vision_impair = VISION_IMPAIR_NONE
 	unacidable = TRUE
-	flags_item = NODROP|DELONDROP
+//	flags_item = NODROP|DELONDROP
 	flags_inventory = CANTSTRIP|COVEREYES|COVERMOUTH|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT|ALLOWCPR|BLOCKSHARPOBJ

@@ -5,6 +5,7 @@ SUBSYSTEM_DEF(mob)
 	priority      = SS_PRIORITY_MOB
 
 	var/list/currentrun = list()
+	var/list/living_misc_mobs = list()
 
 /datum/controller/subsystem/mob/stat_entry(msg)
 	msg = "P:[living_misc_mobs.len]"
@@ -22,7 +23,7 @@ SUBSYSTEM_DEF(mob)
 		if (!M || QDELETED(M))
 			continue
 
-		M.Life()
+		M.Life(wait * 0.1)
 
 		if (MC_TICK_CHECK)
 			return

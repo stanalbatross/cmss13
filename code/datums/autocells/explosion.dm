@@ -55,8 +55,7 @@
 	var/should_merge = TRUE
 
 	// For stat tracking and logging purposes
-	var/explosion_source = null
-	var/mob/explosion_source_mob = null
+	var/datum/cause_data/explosion_cause_data
 
 	// Workaround to account for the fact that this is subsystemized
 	// See on_turf_entered
@@ -148,13 +147,13 @@
 		resistance += max(0, A.get_explosion_resistance())
 
 	// Blow stuff up
-	INVOKE_ASYNC(in_turf, /atom.proc/ex_act, power, direction, explosion_source, explosion_source_mob)
+	INVOKE_ASYNC(in_turf, /atom.proc/ex_act, power, direction, explosion_cause_data)
 	for(var/atom/A in in_turf)
 		if(A in exploded_atoms)
 			continue
 		if(A.gc_destroyed)
 			continue
-		INVOKE_ASYNC(A, /atom.proc/ex_act, power, direction, explosion_source, explosion_source_mob)
+		INVOKE_ASYNC(A, /atom.proc/ex_act, power, direction, explosion_cause_data)
 		exploded_atoms += A
 		log_explosion(A, src)
 
@@ -198,14 +197,15 @@
 		switch(falloff_shape)
 			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL)
 				new_falloff += new_falloff * dir_falloff
+			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF)
+				new_falloff += (new_falloff*0.5) * dir_falloff
 
 		var/datum/automata_cell/explosion/E = propagate(dir)
 		if(E)
 			E.power = new_power
 			E.power_falloff = new_falloff
 			E.falloff_shape = falloff_shape
-			E.explosion_source = explosion_source
-			E.explosion_source_mob = explosion_source_mob
+			E.explosion_cause_data = explosion_cause_data
 
 			// Set the direction the explosion is traveling in
 			E.direction = dir
@@ -240,13 +240,13 @@
 	if(A.gc_destroyed)
 		return
 
-	INVOKE_ASYNC(A, /atom.proc/ex_act, power, null, explosion_source, explosion_source_mob)
+	INVOKE_ASYNC(A, /atom.proc/ex_act, power, null, explosion_cause_data)
 	log_explosion(A, src)
 
 // I'll admit most of the code from here on out is basically just copypasta from DOREC
 
 // Spawns a cellular automaton of an explosion
-/proc/cell_explosion(var/turf/epicenter, var/power, var/falloff, var/falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, var/direction, var/explosion_source, var/explosion_source_mob)
+/proc/cell_explosion(var/turf/epicenter, var/power, var/falloff, var/falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR, var/direction, var/datum/cause_data/explosion_cause_data)
 	if(!istype(epicenter))
 		epicenter = get_turf(epicenter)
 
@@ -270,14 +270,13 @@
 	E.power_falloff = falloff
 	E.falloff_shape = falloff_shape
 	E.direction = direction
-	E.explosion_source = explosion_source
-	E.explosion_source_mob = explosion_source_mob
+	E.explosion_cause_data = explosion_cause_data
 
 	if(power >= 100) // powerful explosions send out some special effects
 		epicenter = get_turf(epicenter) // the ex_acts might have changed the epicenter
-		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_source, explosion_source_mob)
+		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver1, explosion_cause_data)
 		sleep(1)
-		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_source, explosion_source_mob)
+		create_shrapnel(epicenter, rand(5,9), , ,/datum/ammo/bullet/shrapnel/light/effect/ver2, explosion_cause_data)
 
 /proc/log_explosion(var/atom/A, var/datum/automata_cell/explosion/E)
 	if(isliving(A))
@@ -287,16 +286,15 @@
 		if(QDELETED(M) || QDELETED(T))
 			return
 
-		var/explosion_source = E.explosion_source
-		var/mob/explosion_source_mob = E.explosion_source_mob
-
-		log_attack("[key_name(M)] was harmed by explosion in [T.loc.name] caused by [explosion_source] at ([T.x],[T.y],[T.z])")
+		M.last_damage_data = E.explosion_cause_data
+		var/explosion_source = E.explosion_cause_data?.cause_name
+		var/mob/explosion_source_mob = E.explosion_cause_data?.resolve_mob()
 
 		if(explosion_source_mob)
+			log_attack("[key_name(M)] was harmed by explosion in [T.loc.name] caused by [explosion_source] at ([T.x],[T.y],[T.z])")
 			if(!ismob(explosion_source_mob))
 				CRASH("Statistics attempted to track a source mob incorrectly: [explosion_source_mob] ([explosion_source])")
 			var/mob/firing_mob = explosion_source_mob
-			M.last_damage_mob = firing_mob
 			var/turf/location_of_mob = get_turf(firing_mob)
 			// who cares about the explosion if it happened nowhere
 			if(!location_of_mob)
@@ -309,7 +307,11 @@
 				M.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
 				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
-				msg_admin_ff("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP LOC</a>) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP SRC</a>) (<a href='?priv_msg=\ref[firing_mob.client]'>PM</a>)")
+				var/ff_msg = "[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP LOC</a>) (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[location_of_mob.x];Y=[location_of_mob.y];Z=[location_of_mob.z]'>JMP SRC</a>) (<a href='?priv_msg=\ref[firing_mob.client]'>PM</a>)"
+				var/ff_living = TRUE
+				if(M.stat == DEAD)
+					ff_living = FALSE
+				msg_admin_ff(ff_msg, ff_living)
 
 				if(ishuman(firing_mob))
 					var/mob/living/carbon/human/H = firing_mob
@@ -320,7 +322,8 @@
 				firing_mob.attack_log += "\[[time_stamp()]\] <b>[key_name(firing_mob)]</b> blew up <b>[key_name(M)]</b> with \a <b>[explosion_source]</b> in [get_area(T)]."
 
 				msg_admin_attack("[key_name(firing_mob)] blew up [key_name(M)] with \a [explosion_source] in [get_area(T)] ([T.x],[T.y],[T.z]).", T.x, T.y, T.z)
-
+		else
+			log_attack("[key_name(M)] was harmed by unknown explosion in [T.loc.name] at ([T.x],[T.y],[T.z])")
 
 /obj/effect/particle_effect/shockwave
 	name = "shockwave"

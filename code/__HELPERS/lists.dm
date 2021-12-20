@@ -263,11 +263,18 @@ proc/listclearnulls(list/list)
 			return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
-
-
+/*
+ * Get a list of successive items from start to end
+ */
+/proc/init_list_range(end, start=1)
+	var/list/res = list()
+	for(var/i in start to end)
+		res += i
+	return res
 
 //Mergesort: any value in a list
 /proc/sortList(var/list/L)
+	RETURN_TYPE(/list)
 	if(!istype(L))
 		return
 	if(L.len < 2)
@@ -579,3 +586,5 @@ proc/listclearnulls(list/list)
 		if(!typecache[A.type])
 			. += A
 
+//Checks for specific types in specifically structured (Assoc "type" = TRUE) lists ('typecaches')
+#define is_type_in_typecache(A, L) (A && length(L) && L[(ispath(A) ? A : A:type)])

@@ -109,6 +109,12 @@
 		user.visible_message(SPAN_WARNING("[user] stops installing \the [HP] on \the [src]."), SPAN_WARNING("You stop installing \the [HP] on \the [src]."))
 		return
 
+	//check to prevent putting two modules on same slot
+	for(var/obj/item/hardpoint/H in hardpoints)
+		if(HP.slot == H.slot)
+			to_chat(user, SPAN_WARNING("There is already something installed there!"))
+			return
+
 	user.visible_message(SPAN_NOTICE("[user] installs \the [HP] on \the [src]."), SPAN_NOTICE("You install \the [HP] on \the [src]."))
 
 	if(ispowerclamp(O))
@@ -137,11 +143,11 @@
 	var/list/hps = list()
 	for(var/obj/item/hardpoint/H in get_hardpoints_copy())
 		// Only allow uninstalls of massive hardpoints when using powerloaders
-		if(H.w_class == SIZE_MASSIVE && !ispowerclamp(O) || H.w_class <= SIZE_HUGE && ispowerclamp(O))
+		if(H.w_class == SIZE_MASSIVE && !ispowerclamp(O) || H.w_class <= SIZE_HUGE && ispowerclamp(O) || istype(H, /obj/item/hardpoint/special))
 			continue
 		hps += H
 
-	var/chosen_hp = input("Select a hardpoint to remove") in (hps + "Cancel")
+	var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Hardpoint Removal", (hps + "Cancel"))
 	if(chosen_hp == "Cancel")
 		return
 	var/obj/item/hardpoint/old = chosen_hp
@@ -221,7 +227,7 @@
 	hardpoints -= old
 	old.owner = null
 
-	if(old.health <= 0)
+	if(old.health <= 0 && !old.gc_destroyed) // Make sure it's not already being deleted.
 		qdel(old)
 
 	update_icon()

@@ -6,7 +6,7 @@
 #define from_file(file_entry, target_var)                   file_entry >> (target_var)
 #define close_browser(target, browser_name)                 target << browse(null, "window=[browser_name]")
 #define show_image(target, image)                           target << (image)
-#define send_rsc(target, rsc_content, rsc_name)             target << browse_rsc(rsc_content, rsc_name)
+#define send_rsc(target, args...)             				target << browse_rsc(##args)
 #define open_link(target, url)                              target << link(url)
 
 #define any2ref(x) ref(x)
@@ -52,7 +52,9 @@
 // Safely checks if I is in L
 #define LAZYISIN(L, I) (L ? (I in L) : FALSE)
 // Null-safe L.Cut()
-#define LAZYCLEARLIST(L) if(L) L.Cut()
+#define LAZYCLEARLIST(L) L?.Cut()
+// Null-safe L.Copy()
+#define LAZYCOPY(L) L?.Copy()
 // Reads L or an empty list if L is not a list.  Note: Does NOT assign, L may be an expression.
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
 
@@ -70,10 +72,13 @@
 
 #define IS_DIAGONAL_DIR(dir) (dir & ~(NORTH|SOUTH))
 
-#define REVERSE_DIR(dir) ((dir & (NORTH|SOUTH) ? ~dir & (NORTH|SOUTH) : 0) | (dir & (EAST|WEST) ? ~dir & (EAST|WEST) : 0))
+// Inverse direction, taking into account UP|DOWN if necessary.
+#define REVERSE_DIR(dir) ( ((dir & 85) << 1) | ((dir & 170) >> 1) )
 
 #define GENERATE_DEBUG_ID "[rand(0, 9)][rand(0, 9)][rand(0, 9)][rand(0, 9)][pick(alphabet_lowercase)][pick(alphabet_lowercase)][pick(alphabet_lowercase)][pick(alphabet_lowercase)]"
 
 #define RECT new /datum/shape/rectangle
 #define QTREE new /datum/quadtree
 #define SEARCH_QTREE(qtree, shape_range, flags) qtree.query_range(shape_range, null, flags)
+
+#define HTML_FILE(contents) "<!DOCTYPE html><html><body>[contents]</body></html>"

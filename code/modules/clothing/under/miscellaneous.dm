@@ -30,21 +30,21 @@
 	desc = "<i>'Special delivery!'</i>"
 	icon_state = "mailman"
 	item_state = "b_suit"
-	rollable_sleeves = FALSE
+	flags_jumpsuit = FALSE
 
 /obj/item/clothing/under/rank/centcom_officer
 	desc = "It's a jumpsuit worn by CentCom Officers."
 	name = "\improper CentCom officer's jumpsuit"
 	icon_state = "officer"
 	item_state = "g_suit"
-	rollable_sleeves = FALSE
+	flags_jumpsuit = FALSE
 
 /obj/item/clothing/under/rank/centcom_commander
 	desc = "It's a jumpsuit worn by CentCom's highest-tier Commanders."
 	name = "\improper CentCom officer's jumpsuit"
 	icon_state = "centcom"
 	item_state = "dg_suit"
-	rollable_sleeves = FALSE
+	flags_jumpsuit = FALSE
 
 /obj/item/clothing/under/space
 	name = "\improper NASA jumpsuit"
@@ -105,10 +105,35 @@
 	icon_state = "pirate"
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS
 
+/obj/item/clothing/under/kutjevo
+	name = "kutjevo jumper"
+	desc = "A heavy-duty jumpsuit worn by the workers on Kutjevo."
+	icon_state = "kutjevo_jumper"
+	item_state = "kutjevo_jumper"
+
+/obj/item/clothing/under/kutjevo/drysuit
+	name = "kutjevo drysuit"
+	desc = "A heavy-duty drysuit worn by the workers on Kutjevo."
+	icon_state = "kutjevo_drysuit"
+	item_state = "kutjevo_drysuit"
+
+
 /obj/item/clothing/under/soviet
 	name = "soviet uniform"
 	desc = "For the Motherland!"
 	icon_state = "soviet"
+
+/obj/item/clothing/under/rank/veteran/soviet_uniform_01
+	name = "soviet military uniform"
+	desc = "Made with fabric so strong and unified it would make the capitalist tailors jealous."
+	icon_state = "soviet_uniform_01"
+	item_state = "soviet_uniform_01_d"
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
+
+/obj/item/clothing/under/rank/miner
+	desc = "It's a snappy jumpsuit with a sturdy set of overalls. It is very dirty."
+	name = "shaft miner's jumpsuit"
+	icon_state = "miner"
 
 /obj/item/clothing/under/redcoat
 	name = "redcoat uniform"
@@ -218,6 +243,6 @@
 
 /obj/item/clothing/under/suit_jacket/trainee
 	name = "trainee's uniform"
-	desc = "It's a uniform that has a W-Y insignia on it with the words \"Trainee\" stamped below."
+	desc = "It's a uniform that has a Wey-Yu insignia on it with the words \"Trainee\" stamped below."
 	icon_state = "trainee_uniform"
 	item_state = "trainee_uniform"

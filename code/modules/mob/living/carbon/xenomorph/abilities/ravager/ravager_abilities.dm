@@ -1,25 +1,3 @@
-// Base ravager shield ability
-/datum/action/xeno_action/activable/empower
-	name = "Empower"
-	action_icon_state = "empower"
-	ability_name = "empower"
-	macro_path = /datum/action/xeno_action/verb/verb_empower
-	action_type = XENO_ACTION_ACTIVATE
-	ability_primacy = XENO_PRIMARY_ACTION_1
-	plasma_cost = 50
-	xeno_cooldown = 180
-
-	// Config values (mutable)
-	var/empower_range = 3
-	var/max_shield = 300
-	var/baseline_shield = 75
-	var/shield_per_human = 50
-	var/initial_shield = 100
-	var/time_until_timeout = 100
-
-	// State
-	var/activated_once = FALSE
-
 // Rav charge
 /datum/action/xeno_action/activable/pounce/charge
 	name = "Charge"
@@ -27,16 +5,38 @@
 	ability_name = "charge"
 	macro_path = /datum/action/xeno_action/verb/verb_charge_rav
 	action_type = XENO_ACTION_CLICK
-	ability_primacy = XENO_PRIMARY_ACTION_2
-	xeno_cooldown = 140
+	ability_primacy = XENO_PRIMARY_ACTION_1
+	xeno_cooldown = 14 SECONDS
 	plasma_cost = 25
 
 	// Pounce config
-	distance = 5					
+	distance = 5
 	knockdown = FALSE				// Should we knock down the target?
 	slash = FALSE					// Do we slash upon reception?
 	freeze_self = FALSE				// Should we freeze ourselves after the lunge?
 	should_destroy_objects = TRUE   // Only used for ravager charge
+
+// Base ravager shield ability
+/datum/action/xeno_action/activable/empower
+	name = "Empower"
+	action_icon_state = "empower"
+	ability_name = "empower"
+	macro_path = /datum/action/xeno_action/verb/verb_empower
+	action_type = XENO_ACTION_ACTIVATE
+	ability_primacy = XENO_PRIMARY_ACTION_2
+	plasma_cost = 50
+	xeno_cooldown = 22 SECONDS
+
+	// Config values (mutable)
+	var/empower_range = 3
+	var/max_targets = 5
+	var/main_empower_base_shield = 0
+	var/initial_activation_shield = 75
+	var/shield_per_human = 80
+	var/time_until_timeout = 15 SECONDS
+
+	// State
+	var/activated_once = FALSE
 
 // Rav "Scissor Cut"
 /datum/action/xeno_action/activable/scissor_cut
@@ -46,20 +46,20 @@
 	macro_path = /datum/action/xeno_action/verb/verb_scissorcut
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
-	xeno_cooldown = 100
+	xeno_cooldown = 10 SECONDS
 	plasma_cost = 25
 
 	// Config
 	var/damage = 45
 
-	var/daze_duration = 2 // If we daze, daze for this duration
+	var/superslow_duration = 3 SECONDS
 
 //// BERSERKER ACTIONS
 
 /datum/action/xeno_action/activable/apprehend
 	name = "Apprehend"
 	action_icon_state = "rav_enrage"
-	ability_name = "enrage"
+	ability_name = "apprehend"
 	macro_path = /datum/action/xeno_action/verb/verb_apprehend
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_1
@@ -116,7 +116,7 @@
 	action_type = XENO_ACTION_ACTIVATE
 	ability_primacy = XENO_PRIMARY_ACTION_1
 	plasma_cost = 0
-	xeno_cooldown = SECONDS_9 + SECONDS_2 // Left operand is the actual CD, right operand is the buffer for the shield duration
+	xeno_cooldown = 9 SECONDS + 2 SECONDS // Left operand is the actual CD, right operand is the buffer for the shield duration
 
 	// Config values
 	var/shield_duration = 20  		// Shield lasts 2 seconds by default.
@@ -134,7 +134,7 @@
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
 	plasma_cost = 0
-	xeno_cooldown = 130
+	xeno_cooldown = 100
 
 	// Config
 	var/shard_cost = 75
@@ -153,7 +153,7 @@
 	// Config values
 	var/shard_cost = 50
 	var/ammo_type = /datum/ammo/xeno/bone_chips/spread
-	var/shrapnel_amount = 20
+	var/shrapnel_amount = 40
 
 
 

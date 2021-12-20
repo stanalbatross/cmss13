@@ -26,7 +26,7 @@
 		to_chat(M, SPAN_WARNING("None of the hardpoints can be activated or they are all broken."))
 		return
 
-	var/obj/item/hardpoint/HP = input("Select a hardpoint.") in usable_hps
+	var/obj/item/hardpoint/HP = tgui_input_list(usr, "Select a hardpoint.", "Switch Hardpoint", usable_hps)
 	if(!HP)
 		return
 
@@ -109,8 +109,8 @@
 			seat = vehicle_seat
 			break
 	if(seat == VEHICLE_GUNNER)
-		V.vehicle_flags ^= TOGGLE_SHIFT_CLICK_GUNNER
-		to_chat(usr, SPAN_NOTICE("You will fire not selected weapon with [(V.vehicle_flags & TOGGLE_SHIFT_CLICK_GUNNER) ? "Shift + Click" : "Middle Mouse Button click"] now, if possible."))
+		V.vehicle_flags ^= VEHICLE_TOGGLE_SHIFT_CLICK_GUNNER
+		to_chat(usr, SPAN_NOTICE("You will fire not selected weapon with [(V.vehicle_flags & VEHICLE_TOGGLE_SHIFT_CLICK_GUNNER) ? "Shift + Click" : "Middle Mouse Button click"] now, if possible."))
 	return
 
 //opens vehicle status window with HP and ammo of hardpoints
@@ -146,9 +146,7 @@
 		else
 			dat += "<font color=\"red\">[resist * 100]% [i] </font>"
 
-	dat +="<br>"
-	V.interior.update_passenger_count()
-	dat += "Passenger capacity: [V.interior.humans_inside]/[V.interior.human_capacity].<br>"
+	dat += "<br>"
 
 	if(V.health <= 0)
 		dat += "Hull integrity: <font color=\"red\">\[CRITICAL FAILURE\]</font>"
@@ -162,6 +160,19 @@
 		LAZYREMOVE(hps, H)
 	for(var/obj/item/hardpoint/H in hps)
 		dat += H.get_hardpoint_info()
+
+	dat += "<hr>"
+
+	if(V.health <= 0)
+		dat += "Doors locks: <font color=\"red\">BROKEN</font>.<br>"
+	else
+		dat += "Doors locks: [V.door_locked ? "<font color=\"green\">Enabled</font>" : "<font color=\"red\">Disabled</font>"].<br>"
+
+	V.interior.update_passenger_count()
+	dat += "Common passengers capacity: [V.interior.passengers_taken_slots]/[V.interior.passengers_slots].<br>"
+
+	for(var/datum/role_reserved_slots/RRS in V.interior.role_reserved_slots)
+		dat += "[RRS.category_name] passengers capacity: [RRS.taken]/[RRS.total].<br>"
 
 	show_browser(user, dat, "Vehicle Status Info", "vehicle_info")
 	onclose(user, "vehicle_info")
@@ -197,6 +208,7 @@
 	<font color=\"red\"><b><i>Gunner verbs:</i></b></font><br> 1. <b>\"A: Cycle Active Hardpoint\"</b> - works similarly to one above, except it automatically switches to next hardpoint in a list allowing you to switch faster.<br> \
 	 2. <b>\"G: Toggle Middle/Shift Clicking\"</b> - toggles between using <i>Middle Mouse Button</i> click and <i>Shift + Click</i> to fire not currently selected weapon if possible.<br> \
 	 3. <b>\"G: Toggle Turret Gyrostabilizer\"</b> - toggles Turret Gyrostabilizer allowing it to keep current direction ignoring hull turning. <i>(Exists only on vehicles with rotating turret, e.g. M34A2 Longstreet Light Tank)</i><br> \
+	<font color='#003300'><b><i>Support Gunner verbs:</i></b></font><br> 1. <b>\"Reload Firing Port Weapon\"</b> - initiates automated reloading process for M56 FPW. Requires a confirmation.<br> \
 	<font color='#cd6500'><b><i>Driver shortcuts:</i></b></font><br> 1. <b>\"CTRL + Click\"</b> - activates vehicle horn.<br> \
 	<font color=\"red\"><b><i>Gunner shortcuts:</i></b></font><br> 1. <b>\"ALT + Click\"</b> - toggles Turret Gyrostabilizer. <i>(Exists only on vehicles with rotating turret, e.g. M34A2 Longstreet Light Tank)</i><br> \
 	 2. <b>\"CTRL + Click\"</b> - activates not destroyed activatable support module.<br> \
@@ -255,10 +267,13 @@
 		to_chat(user, SPAN_WARNING("Vehicle already has a \"[V.nickname]\" nickname."))
 		return
 
-	var/new_nickname = stripped_input(user, "Enter a unique name or callsign to add to your vehicle's name. 26 characters maximum. \n\nThis is IC nickname/callsign for your vehicle.\nSINGLE USE ONLY.", "Name your vehicle", "", MAX_NAME_LEN)
+	var/new_nickname = stripped_input(user, "Enter a unique IC name or a callsign to add to your vehicle's name. [MAX_NAME_LEN] characters maximum. \n\nIMPORTANT! This is an IC nickname/callsign for your vehicle and you will be punished for putting in meme names.\nSINGLE USE ONLY.", "Name your vehicle", null, MAX_NAME_LEN)
 	if(!new_nickname)
 		return
-	if(alert(user, "Vehicle's name will be [initial(V.name) + "\"[new_nickname]\""]. Confirm?", "Confirmation?", "Yes", "No") == "No")
+	if(length(new_nickname) > MAX_NAME_LEN)
+		alert(user, "Name [new_nickname] is over [MAX_NAME_LEN] characters limit. Try again.", "Naming vehicle failed", "Ok")
+		return
+	if(alert(user, "Vehicle's name will be [V.name + "\"[new_nickname]\""]. Confirm?", "Confirmation?", "Yes", "No") == "No")
 		return
 
 	//post-checks
@@ -304,10 +319,45 @@
 		to_chat(user, SPAN_WARNING("You need to wait [(V.next_honk - world.time) / 10] seconds."))
 		return
 
-	V.next_honk = world.time + SECONDS_10
+	V.next_honk = world.time + 10 SECONDS
 	to_chat(user, SPAN_NOTICE("You activate vehicle's horn."))
 	V.perform_honk()
 
 /obj/vehicle/multitile/proc/perform_honk()
 	if(honk_sound)
 		playsound(loc, honk_sound, 75, TRUE, 15)	//heard within ~15 tiles
+
+//Support gunner verbs
+
+/obj/vehicle/multitile/proc/reload_firing_port_weapon()
+	set name = "Reload Firing Port Weapon"
+	set desc = "Initiates firing port weapon automated reload process."
+	set category = "Vehicle"
+
+	var/mob/user = usr
+	if(!user || !istype(user))
+		return
+
+	var/obj/vehicle/multitile/V = user.interactee
+	if(!istype(V))
+		return
+
+	var/seat
+	for(var/vehicle_seat in V.seats)
+		if(V.seats[vehicle_seat] == user)
+			seat = vehicle_seat
+			break
+
+	if(!seat)
+		return
+
+	if(V.health < initial(V.health) * 0.5)
+		to_chat(user, SPAN_WARNING("\The [V]'s hull is too damaged to operate!"))
+
+	for(var/obj/item/hardpoint/special/firing_port_weapon/FPW in V.hardpoints)
+		if(FPW.allowed_seat == seat)
+			if(alert(user, "Initiate M56 FPW reload process? It will take [FPW.reload_time / 10] seconds.", "Initiate reload", "Yes", "No") == "Yes")
+				FPW.start_auto_reload(user)
+			return
+
+	to_chat(user, SPAN_WARNING("Warning. No FPW for [seat] found, tell a dev!"))

@@ -7,6 +7,7 @@
 	w_class = SIZE_SMALL
 	throw_speed = SPEED_FAST
 	throw_range = 5
+	attack_speed = 3
 	var/amount_per_transfer_from_this = 5
 	var/possible_transfer_amounts = list(5,10,15,25,30)
 	var/volume = 30
@@ -21,7 +22,7 @@
 	var/obj/item/reagent_container/R = user.get_active_hand()
 	if(!istype(R))
 		return
-	var/N = input("Amount per transfer from this:","[R]") as null|anything in possible_transfer_amounts
+	var/N = tgui_input_list(usr, "Amount per transfer from this:","[R]", possible_transfer_amounts)
 	if (N)
 		R.amount_per_transfer_from_this = N
 
@@ -30,6 +31,10 @@
 	if (!possible_transfer_amounts)
 		verbs -= /obj/item/reagent_container/verb/set_APTFT //which objects actually uses it?
 	create_reagents(volume)
+
+/obj/item/reagent_container/Destroy()
+	possible_transfer_amounts = null
+	return ..()
 
 /obj/item/reagent_container/proc/display_contents(mob/user) // Used on examine for properly skilled people to see contents.
 	if(isXeno(user))

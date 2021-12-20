@@ -149,7 +149,7 @@
 /obj/item/storage/box/emps
 	name = "box of emp grenades"
 	desc = "A box with 5 emp grenades."
-	icon_state = "flashbang"
+	icon_state = "emp"
 
 /obj/item/storage/box/emps/fill_preset_inventory()
 	new /obj/item/explosive/grenade/empgrenade(src)
@@ -377,6 +377,7 @@
 /obj/item/storage/box/pillbottles
 	name = "box of pill bottles"
 	desc = "It has pictures of pill bottles on its front."
+	icon_state = "pillbox"
 
 /obj/item/storage/box/pillbottles/fill_preset_inventory()
 	new /obj/item/storage/pill_bottle( src )
@@ -474,24 +475,38 @@
 		new /obj/item/reagent_container/hypospray/autoinjector/empty(src)
 
 
+/obj/item/storage/box/twobore
+	name = "box of 2 bore shells"
+	icon_state = "twobore"
+	desc = "A box filled with enormous slug shells, for hunting only the most dangerous game. 2 Bore."
+	storage_slots = 5
+	can_hold = list(/obj/item/ammo_magazine/handful/shotgun/twobore)
+
+/obj/item/storage/box/twobore/fill_preset_inventory()
+	for(var/i in 1 to storage_slots)
+		new /obj/item/ammo_magazine/handful/shotgun/twobore(src)
+
 ////////// MARINES BOXES //////////////////////////
 
 
 /obj/item/storage/box/explosive_mines
 	name = "\improper M20 mine box"
-	desc = "A secure box holding anti-personel proximity mines."
+	desc = "A secure box holding five M20 anti-personel proximity mines."
 	icon_state = "minebox"
 	w_class = SIZE_MEDIUM
 	max_storage_space = 8
 	can_hold = list(/obj/item/explosive/mine)
 
 /obj/item/storage/box/explosive_mines/fill_preset_inventory()
-	var/I = type == /obj/item/storage/box/explosive_mines/pmc ? /obj/item/explosive/mine/pmc : /obj/item/explosive/mine
 	for(var/i in 1 to 5)
-		new I(src)
+		new /obj/item/explosive/mine(src)
 
 /obj/item/storage/box/explosive_mines/pmc
 	name = "\improper M20P mine box"
+
+/obj/item/storage/box/explosive_mines/pmc/fill_preset_inventory()
+	for(var/i in 1 to 5)
+		new /obj/item/explosive/mine/pmc(src)
 
 /obj/item/storage/box/m94
 	name = "\improper M94 marking flare pack"
@@ -537,15 +552,12 @@
 	storage_slots = 25
 	max_storage_space = 50
 	can_hold = list(/obj/item/explosive/grenade/HE)
-	var/nade_box_icon
+	var/base_icon
 	var/grenade_type = /obj/item/explosive/grenade/HE
+	has_gamemode_skin = TRUE
 
-/obj/item/storage/box/nade_box/Initialize()
-	. = ..()
-
-	select_gamemode_skin(/obj/item/storage/box/nade_box)
-	nade_box_icon = initial(icon_state)
-	update_icon()
+/obj/item/storage/box/nade_box/post_skin_selection()
+	base_icon = icon_state
 
 /obj/item/storage/box/nade_box/fill_preset_inventory()
 	for(var/i = 1 to storage_slots)
@@ -553,10 +565,10 @@
 
 /obj/item/storage/box/nade_box/update_icon()
 	if(!contents.len)
-		icon_state = "[nade_box_icon]_e"
+		icon_state = "[base_icon]_e"
 		qdel(src) //No reason to keep it - nobody will reuse it...
 	else
-		icon_state = nade_box_icon
+		icon_state = base_icon
 
 
 /obj/item/storage/box/nade_box/frag
@@ -568,6 +580,18 @@
 	max_storage_space = 50
 	can_hold = list(/obj/item/explosive/grenade/HE/frag)
 	grenade_type = /obj/item/explosive/grenade/HE/frag
+	has_gamemode_skin = FALSE
+
+/obj/item/storage/box/nade_box/phophorus
+	name = "\improper M40 HPDP grenade box"
+	desc = "A secure box holding 25 M40 HPDP white phosphorus grenade. High explosive, don't store near the flamer fuel."
+	icon_state = "phos_nade_placeholder"
+	w_class = SIZE_LARGE
+	storage_slots = 25
+	max_storage_space = 50
+	can_hold = list(/obj/item/explosive/grenade/phosphorus)
+	grenade_type = /obj/item/explosive/grenade/phosphorus
+	has_gamemode_skin = FALSE
 
 /obj/item/storage/box/nade_box/airburst
 	name = "\improper M74 AGM-F grenade box"
@@ -578,6 +602,7 @@
 	max_storage_space = 50
 	can_hold = list(/obj/item/explosive/grenade/HE/airburst)
 	grenade_type = /obj/item/explosive/grenade/HE/airburst
+	has_gamemode_skin = FALSE
 
 /obj/item/storage/box/nade_box/training
 	name = "\improper M07 training grenade box"
@@ -585,7 +610,7 @@
 	icon_state = "train_nade_placeholder"
 	grenade_type = /obj/item/explosive/grenade/HE/training
 	can_hold = list(/obj/item/explosive/grenade/HE/training)
-
+	has_gamemode_skin = FALSE
 
 /obj/item/storage/box/nade_box/tear_gas
 	name = "\improper M66 tear gas grenade box"
@@ -593,10 +618,7 @@
 	icon_state = "teargas_nade_placeholder"
 	can_hold = list(/obj/item/explosive/grenade/custom/teargas)
 	grenade_type = /obj/item/explosive/grenade/custom/teargas
-
-
-
-
+	has_gamemode_skin = FALSE
 
 //ITEMS-----------------------------------//
 /obj/item/storage/box/lightstick
@@ -627,16 +649,13 @@
 	new /obj/item/lightstick/red(src)
 	new /obj/item/lightstick/red(src)
 
-
-
-
 /obj/item/storage/box/MRE
 	name = "\improper USCM MRE"
-	desc = "Meal Ready-to-Eat, property of the US Colonial Marines. Meant to be consumed in the field, and has an expiration that is at least two decades past your combat life expectancy."
+	desc = "A Meal, Ready-to-Eat. A single-meal combat ration designed to provide a soldier with enough nutrients for a day's of strenuous work. Its expiration date is at least 20 years ahead of your combat life expectancy."
 	icon_state = "mealpack"
 	w_class = SIZE_SMALL
 	can_hold = list()
-	storage_slots = 4
+	storage_slots = 6
 	max_w_class = 0
 	use_sound = "rip"
 	var/isopened = 0
@@ -650,10 +669,20 @@
 	var/side = pick("biscuit", "meatballs", "pretzels", "peanuts", "sushi")
 	var/desert = pick("spiced apples", "chocolate brownie", "sugar cookie", "coco bar", "flan", "honey flan")
 	name = "[initial(name)] ([main])"
+	//1 in 3 chance of getting a fortune cookie
+	var/cookie = rand(1,3)
 	new /obj/item/reagent_container/food/snacks/packaged_meal(src, main)
 	new /obj/item/reagent_container/food/snacks/packaged_meal(src, second)
 	new /obj/item/reagent_container/food/snacks/packaged_meal(src, side)
 	new /obj/item/reagent_container/food/snacks/packaged_meal(src, desert)
+	new /obj/item/reagent_container/food/drinks/cans/waterbottle(src)
+	if(cookie == 1)
+		new /obj/item/reagent_container/food/snacks/fortunecookie/prefilled(src)
+
+/obj/item/storage/box/MRE/Initialize()
+	. = ..()
+	isopened = 0
+	icon_state = "mealpack"
 
 /obj/item/storage/box/MRE/update_icon()
 	if(!contents.len)

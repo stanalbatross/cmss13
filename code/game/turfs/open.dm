@@ -123,8 +123,8 @@
 		return
 
 	var/mob/living/carbon/human/H = AM
-	if(H.bloody_feet)
-		QDEL_NULL(H.bloody_feet)
+	if(H.bloody_footsteps)
+		SEND_SIGNAL(H, COMSIG_HUMAN_CLEAR_BLOODY_FEET)
 
 
 /turf/open/beach/sand
@@ -238,6 +238,7 @@
 	var/cover_icon = 'icons/turf/floors/filtration.dmi'
 	var/cover_icon_state = "grate"
 	var/default_name = "river"
+	var/no_overlay = FALSE
 	baseturfs = /turf/open/gm/river
 
 /turf/open/gm/river/Initialize(mapload, ...)
@@ -250,6 +251,8 @@
 
 /turf/open/gm/river/proc/update_overlays()
 	overlays.Cut()
+	if(no_overlay)
+		return
 	if(covered)
 		name = covered_name
 		overlays += image("icon"=src.cover_icon,"icon_state"=cover_icon_state,"layer"=CATWALK_LAYER,"dir" = dir)
@@ -284,11 +287,11 @@
 			var/mob/living/carbon/human/H = AM
 			cleanup(H)
 			if(H.gloves && rand(0,100) < 60)
-				if(istype(H.gloves,/obj/item/clothing/gloves/yautja))
-					var/obj/item/clothing/gloves/yautja/Y = H.gloves
+				if(istype(H.gloves,/obj/item/clothing/gloves/yautja/hunter))
+					var/obj/item/clothing/gloves/yautja/hunter/Y = H.gloves
 					if(Y && istype(Y) && Y.cloaked)
 						to_chat(H, SPAN_WARNING(" Your bracers hiss and spark as they short out!"))
-						Y.decloak(H)
+						Y.decloak(H, TRUE)
 
 		else if(isXeno(C))
 			river_slowdown = 1.3
@@ -300,8 +303,8 @@
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if(H.bloody_feet)
-			QDEL_NULL(H.bloody_feet)
+		if(H.bloody_footsteps)
+			SEND_SIGNAL(H, COMSIG_HUMAN_CLEAR_BLOODY_FEET)
 
 
 /turf/open/gm/river/proc/cleanup(var/mob/living/carbon/human/M)
@@ -354,6 +357,9 @@
 	. = ..()
 	overlays += image("icon"='icons/turf/ground_map.dmi',"icon_state"="water","layer"=MOB_LAYER+0.1)
 
+/turf/open/gm/river/no_overlay
+	no_overlay = TRUE
+
 
 
 
@@ -391,9 +397,10 @@
 //Randomize ice floor sprite
 /turf/open/ice/Initialize(mapload, ...)
 	. = ..()
-	dir = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
 
-
+/turf/open/ice/noweed/is_weedable() //used for new prison ice block xenos
+	return FALSE
 
 
 
@@ -617,6 +624,10 @@
 	icon = 'icons/turf/escapepods.dmi'
 	icon_state = "floor3"
 
+/turf/open/shuttle/lifeboat
+	icon = 'icons/turf/almayer.dmi'
+	icon_state = "plating"
+	allow_construction = FALSE
 
 // Elevator floors
 /turf/open/shuttle/elevator
@@ -627,3 +638,13 @@
 	icon_state = "floor_grating"
 
 
+//vehicle interior floors
+/turf/open/shuttle/vehicle
+	name = "floor"
+	icon = 'icons/turf/vehicle_interior.dmi'
+	icon_state = "floor_0"
+
+//vehicle interior floors
+/turf/open/shuttle/vehicle/med
+	name = "floor"
+	icon_state = "dark_sterile"

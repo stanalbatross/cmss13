@@ -48,17 +48,18 @@
 	return NO_BLOCKED_MOVEMENT
 
 /atom/movable/Move(NewLoc, direct)
+	// If Move is not valid, exit
+	if (SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, NewLoc) & COMPONENT_CANCEL_MOVE)
+		return FALSE
+
 	var/atom/oldloc = loc
 	var/old_dir = dir
 
 	. = ..()
 	if (flags_atom & DIRLOCK)
-		dir = old_dir
-	else
-		if (old_dir & EAST|WEST) // Can no longer face NW/NE/SW/SE after moving/being moved
-			dir &= NORTH|SOUTH
-		else
-			dir &= EAST|WEST
+		setDir(old_dir)
+	else if(old_dir != direct)
+		setDir(direct)
 	l_move_time = world.time
 	if ((oldloc != loc && oldloc && oldloc.z == z))
 		last_move_dir = get_dir(oldloc, loc)
@@ -106,7 +107,7 @@
 /atom/movable/proc/doMove(atom/destination)
 	. = FALSE
 	if(destination)
-		if(pulledby)
+		if(pulledby && (get_dist(pulledby, destination) > 1 || !isturf(destination) || !isturf(pulledby.loc)))
 			pulledby.stop_pulling()
 		var/atom/oldloc = loc
 		var/same_loc = oldloc == destination

@@ -5,8 +5,8 @@
 
 	if (!action_cooldown_check())
 		return
-	
-	if(!A || A.layer >= FLY_LAYER || !isturf(X.loc) || !X.check_state()) 
+
+	if(!A || A.layer >= FLY_LAYER || !isturf(X.loc) || !X.check_state())
 		return
 
 	if (!check_and_use_plasma_owner())
@@ -15,9 +15,9 @@
 	X.visible_message(SPAN_XENOWARNING("[X] fires a burst of bone chips at [A]!"), SPAN_XENOWARNING("You fire a burst of bone chips at [A]!"))
 
 	var/turf/target = locate(A.x, A.y, A.z)
-	var/obj/item/projectile/P = new /obj/item/projectile(initial(X.caste_name), X, X.loc)
-	
-	var/datum/ammo/ammoDatum = ammo_list[ammo_type]
+	var/obj/item/projectile/P = new /obj/item/projectile(X.loc, create_cause_data(initial(X.caste_type), X))
+
+	var/datum/ammo/ammoDatum = GLOB.ammo_list[ammo_type]
 
 	P.generate_bullet(ammoDatum)
 
@@ -125,7 +125,7 @@
 	if(BD.acid_amount < BD.melt_acid_cost)
 		to_chat(src, SPAN_XENOHIGHDANGER("Not enough acid stored!"))
 		return
-	
+
 	BD.modify_acid(-BD.melt_acid_cost)
 
 	var/obj/effect/xenomorph/acid/A = new acid_type(T, O)
@@ -152,7 +152,12 @@
 
 	if(!istype(X))
 		return
-	
+
+	var/area/xeno_area = get_area(X)
+	if(xeno_area.flags_area & AREA_CONTAINMENT)
+		to_chat(X, SPAN_XENOWARNING("You can't activate this here!"))
+		return
+
 	if(!X.check_state())
 		return
 
@@ -165,7 +170,7 @@
 	var/datum/behavior_delegate/runner_acider/BD = X.behavior_delegate
 	if(!istype(BD))
 		return
-	
+
 	if(BD.caboom_trigger)
 		cancel_ability()
 		return

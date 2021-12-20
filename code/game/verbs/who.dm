@@ -20,7 +20,7 @@
 							FACTION_UPP = 0,
 							FACTION_FREELANCER = 0,
 							FACTION_SURVIVOR = 0,
-							FACTION_DEATHSQUAD = 0,
+							FACTION_WY_DEATHSQUAD = 0,
 							FACTION_COLONIST = 0,
 							FACTION_MERCENARY = 0,
 							FACTION_DUTCH = 0,
@@ -35,7 +35,7 @@
 							FACTION_ZOMBIE = 0
 							)
 
-	var/list/counted_xenos = list(0,0,0,0,0,0)
+	var/list/counted_xenos = list()
 
 	var/msg = "<b>Current Players:</b>\n"
 	var/list/Lines = list()
@@ -87,10 +87,9 @@
 								counted_humanoids[C.mob.faction]++
 						if(isXeno(C.mob))
 							var/mob/living/carbon/Xenomorph/X = C.mob
-							if(X.hivenumber > 0 && X.hivenumber <= 5)	//hard check to prevent admin version of who runtiming from non-standard hivenumbers created by bugs/admins
-								counted_xenos[X.hivenumber]++
+							counted_xenos[X.hivenumber]++
 							if(X.faction == FACTION_PREDALIEN)
-								counted_xenos[6]++
+								counted_xenos[FACTION_PREDALIEN]++
 							entry += " - <b><font color='red'>Xenomorph</font></b>"
 
 				entry += " (<A HREF='?_src_=admin_holder;adminmoreinfo;extra=\ref[C.mob]'>?</A>)"
@@ -119,19 +118,21 @@
 
 		show_fact = TRUE
 		var/datum/hive_status/hive
-		for(var/i = 1;i < LAZYLEN(counted_xenos); i++)
-			if(counted_xenos[i])
-				if(show_fact)
-					msg += "<br><br>Xenomorphs:"
-					show_fact = FALSE
-				hive = GLOB.hive_datum[i]
-				if(hive)
-					msg += "<br><b style='color:[hive.color ? hive.color : "#8200FF"]'>[hive.name]: [counted_xenos[i]]</b> <b style='color:#4D0096'>(Queen: [hive.living_xeno_queen ? "Alive" : "Dead"])</b>"
-				else
-					msg += "<br><b style='color:#F00'>Error: no hive datum detected for [counted_xenos[i]]s Hive.</b>"
-				hive = null
-		if(counted_xenos[6])
-			msg += "<br><b style='color:#7ABA19'>Predaliens: [counted_xenos[6]]</b>"
+		for(var/hivenumber in counted_xenos)
+			// Print predalien counts last
+			if(hivenumber == FACTION_PREDALIEN)
+				continue
+			if(show_fact)
+				msg += "<br><br>Xenomorphs:"
+				show_fact = FALSE
+			hive = GLOB.hive_datum[hivenumber]
+			if(hive)
+				msg += "<br><b style='color:[hive.color ? hive.color : "#8200FF"]'>[hive.name]: [counted_xenos[hivenumber]]</b> <b style='color:#4D0096'>(Queen: [hive.living_xeno_queen ? "Alive" : "Dead"])</b>"
+			else
+				msg += "<br><b style='color:#F00'>Error: no hive datum detected for [hivenumber].</b>"
+			hive = null
+		if(counted_xenos[FACTION_PREDALIEN])
+			msg += "<br><b style='color:#7ABA19'>Predaliens: [counted_xenos[FACTION_PREDALIEN]]</b>"
 
 	else
 		for(var/client/C in GLOB.clients)
@@ -149,84 +150,40 @@
 	set name = "Staffwho"
 	set category = "OOC"
 
-	var/msg = ""
-	var/modmsg = ""
-	var/mentmsg = ""
-	var/num_mods_online = 0
-	var/num_admins_online = 0
-	var/num_mentors_online = 0
-
-	if(admin_holder && !AHOLD_IS_ONLY_MENTOR(admin_holder))
-		for(var/client/C in GLOB.admins)
-			if(AHOLD_IS_ADMIN(C.admin_holder))	//Used to determine who shows up in admin rows
-				msg += "\t[C] is a [C.admin_holder.rank]"
-
-				if(C.admin_holder.fakekey)
-					msg += " <i>(HIDDEN)</i>"
-
-				if(isobserver(C.mob))
-					msg += " - Observing"
-				else if(istype(C.mob,/mob/new_player))
-					msg += " - Lobby"
-				else
-					msg += " - Playing"
-
-				if(C.is_afk())
-					msg += " (AFK)"
-				msg += "\n"
-
-				num_admins_online++
-			else if(AHOLD_IS_MOD(C.admin_holder))				//Who shows up in mod/mentor rows.
-				modmsg += "\t[C] is a [C.admin_holder.rank]"
-
-				if(C.admin_holder.fakekey)
-					modmsg += " <i>(HIDDEN)</i>"
-
-				if(isobserver(C.mob))
-					modmsg += " - Observing"
-				else if(istype(C.mob,/mob/new_player))
-					modmsg += " - Lobby"
-				else
-					modmsg += " - Playing"
-
-				if(C.is_afk())
-					modmsg += " (AFK)"
-				modmsg += "\n"
-				num_mods_online++
-
-			else if(AHOLD_IS_MENTOR(C.admin_holder))
-				mentmsg += "\t[C] is a [C.admin_holder.rank]"
-
-				if(C.is_afk())
-					mentmsg += " (AFK)"
-				mentmsg += "\n"
-
-				num_mentors_online++
-
-	else
-		for(var/client/C in GLOB.admins)
-			if(AHOLD_IS_ADMIN(C.admin_holder))
-				if(C.admin_holder.fakekey)
-					continue
-
-				msg += "\t[C] is a [C.admin_holder.rank]\n"
-				num_admins_online++
-			else if (AHOLD_IS_MOD(C.admin_holder))
-				if(C.admin_holder.fakekey)
-					continue
-
-				modmsg += "\t[C] is a [C.admin_holder.rank]\n"
-				num_mods_online++
-			else if (AHOLD_IS_MENTOR(C.admin_holder))
-				mentmsg += "\t[C] is a [C.admin_holder.rank]\n"
-				num_mentors_online++
-
-	msg = "<b>Current Admins ([num_admins_online]):</b>\n" + msg
-
+	var/list/mappings
+	LAZYSET(mappings, "Admins", R_ADMIN)
 	if(CONFIG_GET(flag/show_mods))
-		msg += "\n<b> Current Moderators ([num_mods_online]):</b>\n" + modmsg
-
+		LAZYSET(mappings, "Moderators", R_MOD)
 	if(CONFIG_GET(flag/show_mentors))
-		msg += "\n<b> Current Mentors ([num_mentors_online]):</b>\n" + mentmsg
+		LAZYSET(mappings, "Mentors", R_MENTOR)
 
-	to_chat(src, msg)
+	var/list/listings
+	for(var/category in mappings)
+		LAZYSET(listings, category, list())
+
+	for(var/client/C in GLOB.admins)
+		if(C.admin_holder?.fakekey && !CLIENT_IS_STAFF(src))
+			continue
+		for(var/category in mappings)
+			if(CLIENT_HAS_RIGHTS(C, mappings[category]))
+				LAZYADD(listings[category], C)
+				break
+
+	var/output = ""
+	for(var/category in listings)
+		output += "\n<b>Current [category] ([length(listings[category])]):</b>\n"
+		for(var/client/entry in listings[category])
+			output += "\t[entry.key] is a [entry.admin_holder.rank]"
+			if(CLIENT_IS_STAFF(src))
+				if(entry.admin_holder?.fakekey)
+					output += " <i>(HIDDEN)</i>"
+				if(istype(entry.mob, /mob/dead/observer))
+					output += " - Observing"
+				else if(istype(entry.mob, /mob/new_player))
+					output += " - Lobby"
+				else
+					output += " - Playing"
+				if(entry.is_afk())
+					output += " (AFK)"
+			output += "\n"
+	to_chat(src, output)

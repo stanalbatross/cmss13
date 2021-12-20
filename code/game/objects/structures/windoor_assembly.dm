@@ -32,9 +32,9 @@ obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 		anchored = 0
 	switch(start_dir)
 		if(NORTH, SOUTH, EAST, WEST)
-			dir = start_dir
+			setDir(start_dir)
 		else //If the user is facing northeast. northwest, southeast, southwest or north, default to north
-			dir = NORTH
+			setDir(NORTH)
 
 
 obj/structure/windoor_assembly/Destroy()
@@ -66,7 +66,11 @@ obj/structure/windoor_assembly/Destroy()
 					return
 
 			//Wrenching an unsecure assembly anchors it in place. Step 4 complete
-			if(istype(W, /obj/item/tool/wrench) && !anchored)
+			if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH) && !anchored)
+				var/turf/open/T = loc
+				if(!(istype(T) && T.allow_construction))
+					to_chat(user, SPAN_WARNING("[src] must be secured on a proper surface!"))
+					return
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 				user.visible_message("[user] secures the windoor assembly to the floor.", "You start to secure the windoor assembly to the floor.")
 
@@ -80,7 +84,7 @@ obj/structure/windoor_assembly/Destroy()
 						src.name = "Anchored Windoor Assembly"
 
 			//Unwrenching an unsecure assembly un-anchors it. Step 4 undone
-			else if(istype(W, /obj/item/tool/wrench) && anchored)
+			else if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH) && anchored)
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
 				user.visible_message("[user] unsecures the windoor assembly to the floor.", "You start to unsecure the windoor assembly to the floor.")
 
@@ -129,7 +133,7 @@ obj/structure/windoor_assembly/Destroy()
 		if("02")
 
 			//Removing wire from the assembly. Step 5 undone.
-			if(istype(W, /obj/item/tool/wirecutters) && !src.electronics)
+			if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) && !src.electronics)
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
 				user.visible_message("[user] cuts the wires from the airlock assembly.", "You start to cut the wires from airlock assembly.")
 
@@ -161,7 +165,7 @@ obj/structure/windoor_assembly/Destroy()
 					W.forceMove(src.loc)
 
 			//Screwdriver to remove airlock electronics. Step 6 undone.
-			else if(istype(W, /obj/item/tool/screwdriver) && src.electronics)
+			else if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) && src.electronics)
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 				user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to uninstall electronics from the airlock assembly.")
 
@@ -177,7 +181,7 @@ obj/structure/windoor_assembly/Destroy()
 					ae.forceMove(src.loc)
 
 			//Crowbar to complete the assembly, Step 7 complete.
-			else if(istype(W, /obj/item/tool/crowbar))
+			else if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 				if(!src.electronics)
 					to_chat(usr, SPAN_DANGER("The assembly is missing electronics."))
 					return
@@ -200,7 +204,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.icon_state = "rightsecureopen"
 							windoor.base_state = "rightsecure"
-						windoor.dir = src.dir
+						windoor.setDir(src.dir)
 						windoor.density = 0
 
 						if(src.electronics.one_access)
@@ -218,7 +222,7 @@ obj/structure/windoor_assembly/Destroy()
 						else
 							windoor.icon_state = "rightopen"
 							windoor.base_state = "right"
-						windoor.dir = src.dir
+						windoor.setDir(src.dir)
 						windoor.density = 0
 
 						if(src.electronics.one_access)
@@ -249,7 +253,7 @@ obj/structure/windoor_assembly/Destroy()
 	if (src.anchored)
 		to_chat(usr, "It is fastened to the floor; therefore, you can't rotate it!")
 		return 0
-	src.dir = turn(src.dir, 270)
+	src.setDir(turn(src.dir, 270))
 	update_icon()
 	return
 

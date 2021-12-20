@@ -8,7 +8,7 @@
 
 /datum/action/xeno_action/watch_xeno/can_use_action()
 	var/mob/living/carbon/Xenomorph/X = owner
-	if (X.is_mob_incapacitated() || X.buckled)
+	if (X.is_mob_incapacitated() || X.buckled || X.burrow)
 		return FALSE
 	else
 		return TRUE
@@ -19,7 +19,7 @@
 		return FALSE
 
 	var/isQueen = FALSE
-	if (X.caste_name == "Queen")
+	if (X.caste_type == XENO_CASTE_QUEEN)
 		isQueen = TRUE
 
 	if(!X.hive.living_xeno_queen && !X.hive.allow_no_queen_actions)
@@ -42,7 +42,7 @@
 		if (T != X && !is_admin_level(T.z) && X.hivenumber == T.hivenumber) // Can't overwatch yourself, Xenos in Thunderdome, or Xenos in other hives
 			possible_xenos += T
 
-	var/mob/living/carbon/Xenomorph/selected_xeno = input(X, "Target", "Watch which xenomorph?") as null|anything in possible_xenos
+	var/mob/living/carbon/Xenomorph/selected_xeno = tgui_input_list(X, "Target", "Watch which xenomorph?", possible_xenos)
 
 	if (!selected_xeno || QDELETED(selected_xeno) || selected_xeno == X.observed_xeno || selected_xeno.stat == DEAD || is_admin_level(selected_xeno.z) || !X.check_state(1))
 		X.overwatch(X.observed_xeno, TRUE) // Cancel OW
@@ -66,7 +66,7 @@
 		var/mob/living/carbon/Xenomorph/oldXeno = observed_xeno
 		observed_xeno = null
 
-		SEND_SIGNAL(src, COMSIG_XENOMORPH_STOP_OVERWATCH, oldXeno)
+		SEND_SIGNAL(src, COMSIG_XENO_STOP_OVERWATCH, oldXeno)
 
 		if(oldXeno)
 			to_chat(src, SPAN_XENOWARNING("You stop watching [oldXeno]."))
@@ -93,7 +93,7 @@
 			to_chat(src, SPAN_XENOWARNING("You are already watching that sister!"))
 			return
 
-		if (caste_name != "Queen" && is_zoomed)
+		if (caste_type != XENO_CASTE_QUEEN && is_zoomed)
 			zoom_out()
 
 
@@ -103,13 +103,13 @@
 			var/mob/living/carbon/Xenomorph/oldXeno = observed_xeno
 			observed_xeno = null
 
-			SEND_SIGNAL(src, COMSIG_XENOMORPH_STOP_OVERWATCH_XENO, oldXeno)
+			SEND_SIGNAL(src, COMSIG_XENO_STOP_OVERWATCH_XENO, oldXeno)
 			oldXeno.hud_set_queen_overwatch()
 
 		observed_xeno = targetXeno
 
 		observed_xeno.hud_set_queen_overwatch()
-		SEND_SIGNAL(src, COMSIG_XENOMORPH_OVERWATCH_XENO, observed_xeno)
+		SEND_SIGNAL(src, COMSIG_XENO_OVERWATCH_XENO, observed_xeno)
 		src.add_movement_handler(new movement_event_handler(src))
 
 	src.reset_view()
@@ -140,7 +140,7 @@
 		if(!check_state(1))
 			return
 
-		var/isQueen = (src.caste_name == "Queen")
+		var/isQueen = (src.caste_type == XENO_CASTE_QUEEN)
 
 		var/mob/living/carbon/Xenomorph/xenoTarget = locate(href_list[XENO_OVERWATCH_TARGET_HREF]) in GLOB.living_xeno_list
 		var/mob/living/carbon/Xenomorph/xenoSrc = locate(href_list[XENO_OVERWATCH_SRC_HREF]) in GLOB.living_xeno_list

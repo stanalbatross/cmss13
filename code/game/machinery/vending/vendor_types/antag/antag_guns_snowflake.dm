@@ -14,23 +14,22 @@
 		FACTION_UPP = list(
 
 			list("PRIMARY FIREARMS", 0, null, null, null),
-			list("CZ-81 Submachinegun", 20, /obj/item/weapon/gun/smg/skorpion/upp, null, VENDOR_ITEM_REGULAR),
-			list("Type 71 Flamethrower Pulse Rifle", 30, /obj/item/weapon/gun/rifle/type71/flamer, null, VENDOR_ITEM_REGULAR),
+			list("CZ-81 Machine Pistol", 20, /obj/item/weapon/gun/pistol/skorpion/upp, null, VENDOR_ITEM_REGULAR),
 			list("Type 71 Pulse Rifle", 30, /obj/item/weapon/gun/rifle/type71, null, VENDOR_ITEM_REGULAR),
 			list("Type 71 Pulse Rifle Carbine", 30, /obj/item/weapon/gun/rifle/type71/carbine, null, VENDOR_ITEM_REGULAR),
 
 			list("PRIMARY AMMUNITION", 0, null, null, null),
-			list("CZ-81 Magazine (.32ACP)", 5, /obj/item/ammo_magazine/smg/skorpion, null, VENDOR_ITEM_REGULAR),
+			list("CZ-81 Magazine (.32ACP)", 5, /obj/item/ammo_magazine/pistol/skorpion, null, VENDOR_ITEM_REGULAR),
 			list("Type 71 AP Magazine (5.45x39mm)", 15, /obj/item/ammo_magazine/rifle/type71/ap, null, VENDOR_ITEM_REGULAR),
 			list("Type 71 Magazine (5.45x39mm)", 5, /obj/item/ammo_magazine/rifle/type71, null, VENDOR_ITEM_REGULAR),
 
 			list("SIDEARMS", 0, null, null, null),
 			list("Highpower Automag", 15, /obj/item/weapon/gun/pistol/highpower, null, VENDOR_ITEM_REGULAR),
 			list("Korovin PK-9 Pistol", 15, /obj/item/weapon/gun/pistol/c99/upp, null, VENDOR_ITEM_REGULAR),
-			list("N-Y 7.62mm Revolver", 15, /obj/item/weapon/gun/revolver/upp, null, VENDOR_ITEM_REGULAR),
+			list("N-Y 7.62mm Revolver", 15, /obj/item/weapon/gun/revolver/nagant, null, VENDOR_ITEM_REGULAR),
 
 			list("SIDEARM AMMUNITION", 0, null, null, null),
-			list("Highpower Magazine (9mm)", 5, /obj/item/ammo_magazine/pistol/automatic, null, VENDOR_ITEM_REGULAR),
+			list("Highpower Magazine (9mm)", 5, /obj/item/ammo_magazine/pistol/highpower, null, VENDOR_ITEM_REGULAR),
 			list("N-Y Speed Loader (7.62x38mmR)", 5, /obj/item/ammo_magazine/revolver/upp, null, VENDOR_ITEM_REGULAR),
 			list("PK-9 Magazine (.22 Hollowpoint)", 5, /obj/item/ammo_magazine/pistol/c99, null, VENDOR_ITEM_REGULAR),
 
@@ -39,7 +38,6 @@
 			list("Burst Fire Assembly", 15, /obj/item/attachable/burstfire_assembly, null, VENDOR_ITEM_REGULAR),
 			list("Extended Barrel", 15, /obj/item/attachable/extended_barrel, null, VENDOR_ITEM_REGULAR),
 			list("Laser Sight", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
-			list("Quickfire Adapter", 15, /obj/item/attachable/quickfire, null, VENDOR_ITEM_REGULAR),
 			list("Rail Flashlight", 5, /obj/item/attachable/flashlight, null, VENDOR_ITEM_REGULAR),
 			list("Red-Dot Sight", 15, /obj/item/attachable/reddot, null, VENDOR_ITEM_REGULAR),
 			list("Reflex Sight", 15, /obj/item/attachable/reflex, null, VENDOR_ITEM_REGULAR),
@@ -56,7 +54,7 @@
 
 			list("PRIMARY FIREARMS", 0, null, null, null),
 			list("Basira-Armstrong Rifle", 30, /obj/item/weapon/gun/rifle/hunting, null, VENDOR_ITEM_REGULAR),
-			list("CZ-81 Submachinegun", 20, /obj/item/ammo_magazine/smg/skorpion, null, VENDOR_ITEM_REGULAR),
+			list("CZ-81 Machine Pistol", 20, /obj/item/ammo_magazine/pistol/skorpion, null, VENDOR_ITEM_REGULAR),
 			list("Double Barrel Shotgun", 30, /obj/item/weapon/gun/shotgun/double, null, VENDOR_ITEM_REGULAR),
 			list("HG 37-12 Pump Shotgun", 30, /obj/item/weapon/gun/shotgun/double/sawn, null, VENDOR_ITEM_REGULAR),
 			list("M16 Rifle", 30, /obj/item/weapon/gun/rifle/m16, null, VENDOR_ITEM_REGULAR),
@@ -72,7 +70,7 @@
 			list("Box Of Buckshot Shells", 10, /obj/item/ammo_magazine/shotgun/buckshot, null, VENDOR_ITEM_REGULAR),
 			list("Box Of Flechette Shells", 10, /obj/item/ammo_magazine/shotgun/flechette, null, VENDOR_ITEM_REGULAR),
 			list("Box Of Shotgun Slugs", 10, /obj/item/ammo_magazine/shotgun, null, VENDOR_ITEM_REGULAR),
-			list("CZ-81 Magazine (.32ACP)", 5, /obj/item/ammo_magazine/smg/skorpion, null, VENDOR_ITEM_REGULAR),
+			list("CZ-81 Magazine (.32ACP)", 5, /obj/item/ammo_magazine/pistol/skorpion, null, VENDOR_ITEM_REGULAR),
 			list("M16 AP Magazine (5.56x45mm)", 15, /obj/item/ammo_magazine/rifle/m16/ap, null, VENDOR_ITEM_REGULAR),
 			list("M16 Magazine (5.56x45mm)", 5, /obj/item/ammo_magazine/rifle/m16, null, VENDOR_ITEM_REGULAR),
 			list("MAC-15 Magazine (9mm)", 5, /obj/item/ammo_magazine/smg/uzi, null, VENDOR_ITEM_REGULAR),
@@ -103,7 +101,6 @@
 			list("Burst Fire Assembly", 15, /obj/item/attachable/burstfire_assembly, null, VENDOR_ITEM_REGULAR),
 			list("Extended Barrel", 15, /obj/item/attachable/extended_barrel, null, VENDOR_ITEM_REGULAR),
 			list("Laser Sight", 15, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
-			list("Quickfire Adapter", 15, /obj/item/attachable/quickfire, null, VENDOR_ITEM_REGULAR),
 			list("Rail Flashlight", 5, /obj/item/attachable/flashlight, null, VENDOR_ITEM_REGULAR),
 			list("Red-Dot Sight", 15, /obj/item/attachable/reddot, null, VENDOR_ITEM_REGULAR),
 			list("Reflex Sight", 15, /obj/item/attachable/reflex, null, VENDOR_ITEM_REGULAR),
@@ -180,20 +177,12 @@
 		ui.open()
 		ui.set_auto_update(0)
 
-/obj/structure/machinery/cm_vending/gear/antag_guns/Topic(href, href_list)
-	. = ..()
-	if(.)
-		return
-	if(stat & (BROKEN|NOPOWER))
-		return
-	if(usr.is_mob_incapacitated())
-		return
-
-	if(in_range(src, usr) && isturf(loc) && ishuman(usr))
-		usr.set_interaction(src)
+/obj/structure/machinery/cm_vending/gear/antag_guns/handle_topic(mob/user, href, href_list)
+	if(in_range(src, user) && isturf(loc) && ishuman(user))
+		user.set_interaction(src)
 		if (href_list["vend"])
 
-			var/mob/living/carbon/human/H = usr
+			var/mob/living/carbon/human/H = user
 
 			if(!allowed(H))
 				to_chat(H, SPAN_WARNING("Access denied."))
@@ -220,7 +209,7 @@
 			var/list/L = listed_products[H.faction][idx]
 			var/cost = L[2]
 
-			if((!H.assigned_squad && squad_tag) || (squad_tag && H.assigned_squad.name != squad_tag))
+			if((!H.assigned_squad && squad_tag) || (!H.assigned_squad?.omni_squad_vendor && (squad_tag && H.assigned_squad.name != squad_tag)))
 				to_chat(H, SPAN_WARNING("This machine isn't for your squad."))
 				vend_fail()
 				return
@@ -257,8 +246,8 @@
 
 			vend_succesfully(L, H, T)
 
-		add_fingerprint(usr)
-		ui_interact(usr) //updates the nanoUI window
+		add_fingerprint(user)
+		ui_interact(user) //updates the nanoUI window
 
 /obj/structure/machinery/cm_vending/gear/antag_guns/vend_succesfully(var/list/L, var/mob/living/carbon/human/H, var/turf/T)
 	if(stat & IN_USE)

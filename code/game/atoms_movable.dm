@@ -5,21 +5,16 @@
 	var/drag_delay = 3 //delay (in deciseconds) added to mob's move_delay when pulling it.
 	var/l_move_time = 1
 	var/throwing = 0
-	var/atom/thrower = null
 	var/throw_speed = SPEED_FAST // Speed that an atom will go when thrown by a carbon mob
 	var/throw_range = 7
 	var/cur_speed = MIN_SPEED // Current speed of an atom (account for speed when launched/thrown as well)
-	var/moved_recently = 0
 	var/mob/pulledby = null
-	var/diagonal_movement = DIAG_MOVE_DEFAULT 	// Type of diagonal movement (whether it checks for obstacles adjacent to start turf)
 	var/rebounds = FALSE
 	var/rebounding = FALSE // whether an object that was launched was rebounded (to prevent infinite recursive loops from wall bouncing)
 
 	var/acid_damage = 0 //Counter for stomach acid damage. At ~60 ticks, dissolved
 
 	var/move_intentionally = FALSE // this is for some deep stuff optimization. This means that it is regular movement that can only be NSWE and you don't need to perform checks on diagonals. ALWAYS reset it back to FALSE when done
-
-
 
 //===========================================================================
 /atom/movable/Destroy()
@@ -119,7 +114,7 @@
 
 	while (duration > turn_delay)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 		duration -= turn_delay
 
 /atom/movable/proc/spin_circle(var/num_circles = 1, var/turn_delay = 1, var/clockwise = 0, var/cardinal_only = 1)
@@ -140,7 +135,7 @@
 
 	for (var/x in 0 to num_circles -1)
 		sleep(turn_delay)
-		dir = turn(dir, spin_degree)
+		setDir(turn(dir, spin_degree))
 
 
 //called when a mob tries to breathe while inside us.
@@ -221,3 +216,22 @@
 	clones.Remove(src.clone)
 	qdel(src.clone)
 	src.clone = null
+
+/**
+* A wrapper for setDir that should only be able to fail by living mobs.
+*
+* Called from [/atom/movable/proc/keyLoop], this exists to be overwritten by living mobs with a check to see if we're actually alive enough to change directions
+*/
+/atom/movable/proc/keybind_face_direction(direction)
+	setDir(direction)
+
+/atom/movable/proc/onTransitZ(old_z,new_z)
+	SEND_SIGNAL(src, COMSIG_MOVABLE_Z_CHANGED, old_z, new_z)
+	for(var/item in src) // Notify contents of Z-transition. This can be overridden IF we know the items contents do not care.
+		var/atom/movable/AM = item
+		AM.onTransitZ(old_z,new_z)
+
+/atom/movable/proc/safe_throw_at(atom/target, range, speed, mob/thrower, spin = TRUE)
+	//if((force < (move_resist * MOVE_FORCE_THROW_RATIO)) || (move_resist == INFINITY))
+	//	return
+	return throw_atom(target, range, speed, thrower, spin)

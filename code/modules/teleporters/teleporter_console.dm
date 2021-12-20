@@ -32,9 +32,10 @@
     ui_interact(user)
 
 /obj/structure/machinery/computer/teleporter_console/attack_alien(var/mob/living/carbon/Xenomorph/X)
-    if(!isXenoQueen(X))
-        return
-    return attack_hand(X)
+	if(!isXenoQueen(X))
+		return FALSE
+	attack_hand(X)
+	return XENO_ATTACK_ACTION
 
 // Try to find and add a teleporter from the globals.
 /obj/structure/machinery/computer/teleporter_console/proc/attempt_teleporter_link()
@@ -104,14 +105,14 @@
     add_fingerprint(usr)
 
     if(href_list["select_source"])
-        var/new_source = input("Select source location","Source Location") as null|anything in linked_teleporter.locations
+        var/new_source = tgui_input_list(usr, "Select source location","Source Location", linked_teleporter.locations)
         if (selected_source && !new_source)
             return
         else
             selected_source = new_source
 
     if(href_list["select_dest"])
-        var/new_dest = input("Select destination location","Destination Location") as null|anything in linked_teleporter.locations
+        var/new_dest = tgui_input_list(usr, "Select destination location","Destination Location", linked_teleporter.locations)
         if(selected_destination && !new_dest)
             return
         else

@@ -255,7 +255,7 @@ a.popt {
 /* ADD HERE FOR ITALIC */
 
 
-.italic, .italics, .emote {
+.italic, .italics, {
   font-style: italic;
 }
 
@@ -378,10 +378,6 @@ em {
 
 .alert {
   color: #d82020;
-}
-
-.emote {
-  font-style: italic;
 }
 
 .userdanger {
@@ -877,6 +873,7 @@ em {
 .bravoradio				{color: #C68610;}
 .charlieradio			{color: #AA55AA;}
 .deltaradio				{color: #007FCF;}
+.echoradio				{color: #3EB489;}
 
 .medium					{					font-size: 110%}
 .big					{					font-size: 115%}
@@ -906,6 +903,7 @@ em {
 .debuginfo				{color: #493D26;	font-style: italic;}
 
 .xenonotice				{color: #51a16c;}
+.xenoboldnotice		{color: #51a16c;	font-style: italic;}
 
 .xenowarning			{color: #51a16c;	font-style: italic;}
 .xenominorwarning		{color: #51a16c;	font-weight: bold; font-style: italic;}
@@ -930,16 +928,17 @@ em {
 .xenoqueen				{color: #996e99; 	font-style: italic; font-weight: bold; font-size: 125%;}
 .newscaster				{color: #800000;}
 
-.role_header			{color: #e92d2d;	display: block; text-align: center; font-weight: bold; font-family: trebuchet-ms; font-size: 170%;}
-.role_body				{color: #3a3ae9;	display: block; text-align: center; font-size: 120%;}
+.role_header			{color: #e92d2d;	display: block; text-align: center; font-weight: bold; font-family: trebuchet-ms; font-size: 150%;}
+.role_body				{color: #3a3ae9;	display: block; text-align: center; font-size: 125%;}
 
-.round_header			{color: #e92d2d; 	display: block; text-align: center; font-family: courier; font-weight: bold; font-size: 250%;}
-.round_body				{color: #c5c5c5; 	display: block; text-align: center; font-family: trebuchet-ms; font-weight: bold; font-size: 180%;}
-.event_announcement		{color: #600d48; 	font-family: arial-narrow; font-weight: bold; font-size: 140%;}
+.round_header			{color: #e92d2d; 	display: block; text-align: center; font-family: courier; font-weight: bold; font-size: 180%;}
+.round_body				{color: #c5c5c5; 	display: block; text-align: center; font-family: trebuchet-ms; font-weight: bold; font-size: 125%;}
+.event_announcement		{color: #600d48; 	font-family: arial-narrow; font-weight: bold; font-size: 125%;}
 
-.announce_header		{color: #cecece;	font-weight: bold; font-size: 180%;}
-.announce_header_blue	{color: #7575f3;	font-weight: bold; font-size: 180%;}
-.announce_body			{color: #e92d2d;	font-weight: normal; font-size: 140%;}
+.announce_header		{color: #cecece;	font-weight: bold; font-size: 150%;}
+.announce_header_blue	{color: #7575f3;	font-weight: bold; font-size: 150%;}
+.announce_header_admin {color: #7575f3; font-weight: bold; font-size: 150%;}
+.announce_body			{color: #e92d2d;	font-weight: normal; font-size: 125%;}
 
 .centerbold				{						display: block; text-align: center; font-weight: bold;}
 
@@ -958,14 +957,48 @@ em {
 .german					{color: #858F1E; 	font-family: 'Times New Roman', Times, serif;}
 .spanish				{color: #CF982B;}
 .japanese				{color: #be0029}
+.zombie 				{color: #2dacb1; font-style: italic;}
 .rough					{font-family: trebuchet-ms, cursive, sans-serif;}
 .commando				{color: #FE9B24; font-style: bold;}
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
 
 .admin .message         {color: #314cad;}
 .admin .prefix          {font-weight: bolder;}
-.pm                     {font-size: 125%;}
+.pm                     {font-size: 110%;}
 
 .deadsay {
   color: #8b4dff;
+}
+
+.retro_translator {
+  font-weight: bold;
+}
+
+.yautja_translator {
+  color: #aa0000;
+  font-weight: bold;
+
+  /*Animation*/
+  animation: glitch 0.5s infinite;
+}
+
+/*Keyframes*/
+
+@keyframes glitch {
+  25% {
+    color: #aa0000;
+    transform: translate(-2px, -1px);
+  }
+  50% {
+    color: #be0000;
+    transform: translate(1px, -2px);
+  }
+  75% {
+    color: #8d0000;
+    transform: translate(-1px, 2px);
+  }
+  100% {
+    color: #830000;
+    transform: translate(1px, 1px);
+  }
 }

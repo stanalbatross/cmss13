@@ -44,6 +44,11 @@
 	name = "platinum coin"
 	icon_state = "coin_adamantine"
 
+/obj/item/coin/marine/synth
+	name = "synthetic experimental tool redemption token"
+	desc = "Insert this into a synthetic experimental tools vendor in order to access a variety of experimental support tools."
+	icon_state = "coin_adamantine"
+
 /obj/item/coin/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/CC = W
@@ -57,7 +62,7 @@
 		else
 			to_chat(user, SPAN_NOTICE("This cable coil appears to be empty."))
 		return
-	else if(istype(W,/obj/item/tool/wirecutters))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(!string_attached)
 			..()
 			return
@@ -70,7 +75,8 @@
 		to_chat(user, SPAN_NOTICE(" You detach the string from the coin."))
 	else ..()
 
-/obj/item/coin/attack_self(mob/user as mob)
+/obj/item/coin/attack_self(mob/user)
+	..()
 	var/result = rand(1, sides)
 	var/comment = ""
 	if(result == 1)

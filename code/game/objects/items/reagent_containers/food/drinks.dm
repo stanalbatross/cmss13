@@ -15,24 +15,20 @@
 	if (gulp_size < 5) gulp_size = 5
 	else gulp_size = max(round(reagents.total_volume / 5), 5)
 
-/obj/item/reagent_container/food/drinks/attack_self(mob/user as mob)
-	return
-
-/obj/item/reagent_container/food/drinks/attack(mob/M as mob, mob/user as mob, def_zone)
+/obj/item/reagent_container/food/drinks/attack(mob/M, mob/user)
 	var/datum/reagents/R = src.reagents
 	var/fillevel = gulp_size
 
 	if(!R.total_volume || !R)
 		to_chat(user, SPAN_DANGER("The [src.name] is empty!"))
-		return 0
+		return FALSE
 
 	if(M == user)
-
 		if(istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
 			if(H.species.flags & IS_SYNTHETIC)
 				to_chat(H, SPAN_DANGER("You have a monitor for a head, where do you think you're going to put that?"))
-				return
+				return FALSE
 
 		to_chat(M, SPAN_NOTICE(" You swallow a gulp from \the [src]."))
 		if(reagents.total_volume)
@@ -40,20 +36,20 @@
 			reagents.trans_to_ingest(M, gulp_size)
 
 		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-		return 1
-	else if( istype(M, /mob/living/carbon/human) )
-
+		return TRUE
+	else if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		if(H.species.flags & IS_SYNTHETIC)
 			to_chat(user, SPAN_DANGER("They have a monitor for a head, where do you think you're going to put that?"))
-			return
+			return FALSE
 
 		user.affected_message(M,
 			SPAN_HELPFUL("You <b>start feeding</b> [user == M ? "yourself" : "[M]"] <b>[src]</b>."),
 			SPAN_HELPFUL("[user] <b>starts feeding</b> you <b>[src]</b>."),
 			SPAN_NOTICE("[user] starts feeding [user == M ? "themselves" : "[M]"] [src]."))
 
-		if(!do_after(user, 30, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, M)) return
+		if(!do_after(user, 30, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, M))
+			return FALSE
 		user.affected_message(M,
 			SPAN_HELPFUL("You <b>fed</b> [user == M ? "yourself" : "[M]"] <b>[src]</b>."),
 			SPAN_HELPFUL("[user] <b>fed</b> you <b>[src]</b>."),
@@ -68,18 +64,18 @@
 		if(reagents.total_volume)
 			reagents.set_source_mob(user)
 			reagents.trans_to_ingest(M, gulp_size)
-			
+
 		if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
 			var/mob/living/silicon/robot/bro = user
 			bro.cell.use(30)
 			var/refill = R.get_master_reagent_id()
-			spawn(MINUTES_1)
+			spawn(1 MINUTES)
 				R.add_reagent(refill, fillevel)
 
 		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-		return 1
+		return TRUE
 
-	return 0
+	return FALSE
 
 
 /obj/item/reagent_container/food/drinks/afterattack(obj/target, mob/user, proximity)
@@ -100,7 +96,7 @@
 		if(!trans)
 			to_chat(user, SPAN_DANGER("You fail to fill [src] with reagents from [target]."))
 			return
-		
+
 		to_chat(user, SPAN_NOTICE(" You fill [src] with [trans] units of the contents of [target]."))
 
 	else if(target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
@@ -130,7 +126,7 @@
 			to_chat(user, "Now synthesizing [trans] units of [refillName]...")
 
 
-			spawn(SECONDS_30)
+			spawn(30 SECONDS)
 				reagents.add_reagent(refill, trans)
 				to_chat(user, "Cyborg [src] refilled.")
 
@@ -338,9 +334,19 @@
 	volume = 60
 	center_of_mass = "x=15;y=4"
 
-/obj/item/reagent_container/food/drinks/britcup
-	name = "cup"
-	desc = "A cup with the British flag emblazoned on it. The sight of it irritates you."
-	icon_state = "britcup"
+/obj/item/reagent_container/food/drinks/coffeecup
+	name = "coffee mug"
+	desc = "A ceramic coffee mug. Practically guaranteed to fall and spill scalding-hot drink onto your brand-new shirt. Ouch."
+	icon_state = "coffeecup"
 	volume = 30
 	center_of_mass = "x=15;y=13"
+
+/obj/item/reagent_container/food/drinks/coffeecup/uscm
+	name = "USCM coffee mug"
+	desc = "A red, white and blue coffee mug depicting the emblem of the USCM. Patriotic and bold, and commonly seen among veterans as a novelty."
+	icon_state = "uscmcup"
+
+/obj/item/reagent_container/food/drinks/coffeecup/wy
+	name = "Weyland-Yutani coffee mug"
+	desc = "A matte gray coffee mug bearing the Weyland-Yutani logo on its front. Either issued as corporate standard, or bought as a souvenir for people who love the Company oh so dearly. Probably the former."
+	icon_state = "wycup"

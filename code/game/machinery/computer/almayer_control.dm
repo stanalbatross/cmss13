@@ -5,10 +5,14 @@
 #define STATE_DESTROY 5
 #define STATE_DEFCONLIST 6
 
-#define COOLDOWN_COMM_MESSAGE SECONDS_30
-#define COOLDOWN_COMM_REQUEST MINUTES_5
-#define COOLDOWN_COMM_CENTRAL SECONDS_30
-#define COOLDOWN_COMM_DESTRUCT MINUTES_5
+#define STATE_MESSAGELIST 7
+#define STATE_VIEWMESSAGE 8
+#define STATE_DELMESSAGE 9
+
+#define COOLDOWN_COMM_MESSAGE 30 SECONDS
+#define COOLDOWN_COMM_REQUEST 5 MINUTES
+#define COOLDOWN_COMM_CENTRAL 30 SECONDS
+#define COOLDOWN_COMM_DESTRUCT 5 MINUTES
 
 #define COMMAND_SHIP_ANNOUNCE		"Command Ship Announcement"
 
@@ -27,6 +31,11 @@
 	var/cooldown_request = 0
 	var/cooldown_destruct = 0
 	var/cooldown_central = 0
+
+	var/list/messagetitle = list()
+	var/list/messagetext = list()
+	var/currmsg = 0
+	var/aicurrmsg = 0
 
 /obj/structure/machinery/computer/almayer_control/attack_remote(var/mob/user as mob)
 	return attack_hand(user)
@@ -52,17 +61,14 @@
 	switch(state)
 		if(STATE_DEFAULT)
 			dat += "Alert Level: <A href='?src=\ref[src];operation=changeseclevel'>[get_security_level()]</A><BR>"
-			dat += "<BR><A HREF='?src=\ref[src];operation=ship_announce'>[is_announcement_active ? "Make a ship announcement" : "*Unavaliable*"]</A>"
+			dat += "<BR><A HREF='?src=\ref[src];operation=ship_announce'>[is_announcement_active ? "Make a ship announcement" : "*Unavailable*"]</A>"
 			dat += GLOB.admins.len > 0 ? "<BR><A HREF='?src=\ref[src];operation=messageUSCM'>Send a message to USCM</A>" : "<BR>USCM communication offline"
 			dat += "<BR><A HREF='?src=\ref[src];operation=award'>Award a medal</A>"
 			dat += "<BR><hr>"
-			dat += "<BR>DEFCON [defcon_controller.current_defcon_level]: [defcon_controller.check_defcon_percentage()]%"
-			dat += "<BR>Threat assessment level: [defcon_controller.last_objectives_completion_percentage*100]%"
-			dat += "<BR>Remaining DEFCON asset budget: $[defcon_controller.remaining_reward_points * DEFCON_TO_MONEY_MULTIPLIER]."
-			dat += "<BR><A href='?src=\ref[src];operation=defcon'>Enable DEFCON assets</A>"
-			dat += "<BR><A href='?src=\ref[src];operation=defconlist'>List DEFCON assets</A>"
 			dat += "<BR><hr>"
 
+
+			dat += "<BR><A HREF='?src=\ref[src];operation=messagelist'>Message list</A>"
 			dat += "<BR><A HREF='?src=\ref[src];operation=distress'>Send Distress Beacon</A>"
 			dat += "<BR><A HREF='?src=\ref[src];operation=destroy'>Activate Self Destruct</A>"
 			switch(EvacuationAuthority.evac_status)
@@ -83,12 +89,27 @@
 		if(STATE_DESTROY)
 			dat += "Are you sure you want to trigger the self destruct? This would mean abandoning ship. <A HREF='?src=\ref[src];operation=destroy'>Confirm</A>"
 
-		if(STATE_DEFCONLIST)
-			for(var/str in typesof(/datum/defcon_reward))
-				var/datum/defcon_reward/DR = new str
-				if(!DR.cost)
-					continue
-				dat += "DEFCON [DR.minimum_defcon_level] - [DR.name]<BR>"
+		if(STATE_MESSAGELIST)
+			dat += "Messages:"
+			for(var/i = 1; i<=messagetitle.len; i++)
+				dat += "<BR><A HREF='?src=\ref[src];operation=viewmessage;message-num=[i]'>[messagetitle[i]]</A>"
+
+		if(STATE_VIEWMESSAGE)
+			if (currmsg)
+				dat += "<B>[messagetitle[currmsg]]</B><BR><BR>[messagetext[currmsg]]"
+				dat += "<BR><BR><A HREF='?src=\ref[src];operation=delmessage'>Delete"
+			else
+				state = STATE_MESSAGELIST
+				attack_hand(user)
+				return FALSE
+
+		if(STATE_DELMESSAGE)
+			if (currmsg)
+				dat += "Are you sure you want to delete this message? <A HREF='?src=\ref[src];operation=delmessage2'>OK</A>|<A HREF='?src=\ref[src];operation=viewmessage'>Cancel</A>"
+			else
+				state = STATE_MESSAGELIST
+				attack_hand(user)
+				return FALSE
 
 	dat += "<BR>[(state != STATE_DEFAULT) ? "<A HREF='?src=\ref[src];operation=main'>Main Menu</A>|" : ""]<A HREF='?src=\ref[user];mach_close=almayer_control'>Close</A>"
 
@@ -104,13 +125,6 @@
 	switch(href_list["operation"])
 		if("main")
 			state = STATE_DEFAULT
-
-		if("defcon")
-			defcon_controller.list_and_purchase_rewards()
-			return
-
-		if("defconlist")
-			state = STATE_DEFCONLIST
 
 		if("ship_announce")
 			if(!is_announcement_active)
@@ -131,9 +145,10 @@
 					signed = "[paygrade] [id.registered_name]"
 
 			shipwide_ai_announcement(input, COMMAND_SHIP_ANNOUNCE, signature = signed)
-			addtimer(CALLBACK(GLOBAL_PROC, .proc/message_staff, "[key_name(usr)] has announced the following to the ship: [input]"), 20)
 			addtimer(CALLBACK(src, .proc/reactivate_announcement, usr), COOLDOWN_COMM_MESSAGE)
+			message_staff("[key_name(usr)] has made a shipwide annoucement.")
 			log_announcement("[key_name(usr)] has announced the following to the ship: [input]")
+
 
 		if("evacuation_start")
 			if(state == STATE_EVACUATION)
@@ -178,7 +193,7 @@
 			if(state == STATE_DISTRESS)
 				//Comment to test
 				if(world.time < DISTRESS_TIME_LOCK)
-					to_chat(usr, SPAN_WARNING("The distress beacon cannot be launched this early in the operation. Please wait another [round((DISTRESS_TIME_LOCK-world.time)/MINUTES_1)] minutes before trying again."))
+					to_chat(usr, SPAN_WARNING("The distress beacon cannot be launched this early in the operation. Please wait another [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] minutes before trying again."))
 					return FALSE
 
 				if(!SSticker.mode)
@@ -212,7 +227,7 @@
 			if(state == STATE_DESTROY)
 				//Comment to test
 				if(world.time < DISTRESS_TIME_LOCK)
-					to_chat(usr, SPAN_WARNING("The self destruct cannot be activated this early in the operation. Please wait another [round((DISTRESS_TIME_LOCK-world.time)/MINUTES_1)] minutes before trying again."))
+					to_chat(usr, SPAN_WARNING("The self destruct cannot be activated this early in the operation. Please wait another [time_left_until(DISTRESS_TIME_LOCK, world.time, 1 MINUTES)] minutes before trying again."))
 					return FALSE
 
 				if(!SSticker.mode)
@@ -240,6 +255,29 @@
 
 			state = STATE_DESTROY
 
+		if("messagelist")
+			currmsg = 0
+			state = STATE_MESSAGELIST
+
+		if("viewmessage")
+			state = STATE_VIEWMESSAGE
+			if (!currmsg)
+				if(href_list["message-num"]) 	currmsg = text2num(href_list["message-num"])
+				else 							state = STATE_MESSAGELIST
+
+		if("delmessage")
+			state = (currmsg) ? STATE_DELMESSAGE : STATE_MESSAGELIST
+
+		if("delmessage2")
+			if(currmsg)
+				var/title = messagetitle[currmsg]
+				var/text  = messagetext[currmsg]
+				messagetitle.Remove(title)
+				messagetext.Remove(text)
+				if(currmsg == aicurrmsg) aicurrmsg = 0
+				currmsg = 0
+			state = STATE_MESSAGELIST
+
 		if("messageUSCM")
 			if(world.time < cooldown_central + COOLDOWN_COMM_CENTRAL)
 				to_chat(usr, SPAN_WARNING("Arrays recycling.  Please stand by."))
@@ -262,11 +300,11 @@
 				if(SEC_LEVEL_DELTA)
 					return
 
-			var/level_selected = input("What alert would you like to set it as?") as null|anything in alert_list
+			var/level_selected = tgui_input_list(usr, "What alert would you like to set it as?", "Alert Level", alert_list)
 			if(!level_selected)
 				return
 
-			set_security_level(level_selected)
+			set_security_level(seclevel2num(level_selected))
 
 			log_game("[key_name(usr)] has changed the security level to [get_security_level()].")
 			message_staff("[key_name_admin(usr)] has changed the security level to [get_security_level()].")
@@ -295,3 +333,7 @@
 #undef COOLDOWN_COMM_MESSAGE
 #undef COOLDOWN_COMM_REQUEST
 #undef COOLDOWN_COMM_CENTRAL
+
+#undef STATE_MESSAGELIST
+#undef STATE_VIEWMESSAGE
+#undef STATE_DELMESSAGE

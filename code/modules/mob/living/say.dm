@@ -3,20 +3,21 @@ var/list/department_radio_keys = list(
 	  ":h" = "department",	"#h" = "department",	".h" = "department",
 	  ":+" = "special",		"#+" = "special",		".+" = "special", //activate radio-specific special functions
 	  ":w" = "whisper",		"#w" = "whisper",		".w" = "whisper",
-	  ":t" = "Syndicate",	"#t" = "Syndicate",		".t" = "Syndicate",
+	  ":z" = "HighCom",		"#z" = "HighCom",		".z" = "HighCom",
 
 	  ":m" = "MedSci",		"#m" = "MedSci",		".m" = "MedSci",
-	  ":e" = "Engi", 		"#e" = "Engi",			".e" = "Engi",
+	  ":n" = "Engi", 		"#n" = "Engi",			".n" = "Engi",
 	  ":g" = "Almayer",		"#g" = "Almayer",		".g" = "Almayer",
 	  ":v" = "Command",		"#v" = "Command",		".v" = "Command",
 	  ":a" = SQUAD_NAME_1,	"#a" = SQUAD_NAME_1,	".a" = SQUAD_NAME_1,
 	  ":b" = SQUAD_NAME_2,	"#b" = SQUAD_NAME_2,	".b" = SQUAD_NAME_2,
 	  ":c" = SQUAD_NAME_3,	"#c" = SQUAD_NAME_3,	".c" = SQUAD_NAME_3,
 	  ":d" = SQUAD_NAME_4,	"#d" = SQUAD_NAME_4,	".d" = SQUAD_NAME_4,
+	  ":e" = SQUAD_NAME_5,	"#e" = SQUAD_NAME_5,	".e" = SQUAD_NAME_5,
 	  ":p" = "MP",			"#p" = "MP",			".p" = "MP",
 	  ":u" = "Req",			"#u" = "Req",			".u" = "Req",
 	  ":j" = "JTAC",		"#j" = "JTAC",			".j" = "JTAC",
-	  ":z" = "Intel",		"#z" = "Intel",			".z" = "Intel",
+	  ":t" = "Tactics",		"#t" = "Tactics",		".t" = "Tactics",
 	  ":y" = "WY",			"#y" = "WY",			".y" = "WY",
 
 	  ":R" = "right ear",	"#R" = "right ear",		".R" = "right ear",
@@ -24,20 +25,21 @@ var/list/department_radio_keys = list(
 	  ":I" = "intercom",	"#I" = "intercom",		".I" = "intercom",
 	  ":H" = "department",	"#H" = "department",	".H" = "department",
 	  ":W" = "whisper",		"#W" = "whisper",		".W" = "whisper",
-	  ":T" = "Syndicate",	"#T" = "Syndicate",		".T" = "Syndicate",
+	  ":Z" = "HighCom",		"#Z" = "HighCom",		".Z" = "HighCom",
 
 	  ":M" = "MedSci",		"#M" = "MedSci",		".M" = "MedSci",
-	  ":E" = "Engi", 		"#E" = "Engi",			".E" = "Engi",
+	  ":N" = "Engi", 		"#N" = "Engi",			".N" = "Engi",
 	  ":G" = "Almayer",		"#G" = "Almayer",		".G" = "Almayer",
 	  ":V" = "Command",		"#V" = "Command",		".V" = "Command",
 	  ":A" = SQUAD_NAME_1,	"#A" = SQUAD_NAME_1,	".A" = SQUAD_NAME_1,
 	  ":B" = SQUAD_NAME_2,	"#B" = SQUAD_NAME_2,	".B" = SQUAD_NAME_2,
 	  ":C" = SQUAD_NAME_3,	"#C" = SQUAD_NAME_3,	".C" = SQUAD_NAME_3,
 	  ":D" = SQUAD_NAME_4,	"#D" = SQUAD_NAME_4,	".D" = SQUAD_NAME_4,
+	  ":E" = SQUAD_NAME_5,	"#E" = SQUAD_NAME_5,	".E" = SQUAD_NAME_5,
 	  ":P" = "MP",			"#P" = "MP",			".P" = "MP",
 	  ":U" = "Req",			"#U" = "Req",			".U" = "Req",
 	  ":J" = "JTAC",		"#J" = "JTAC",			".J" = "JTAC",
-	  ":Z" = "Intel",		"#Z" = "Intel",			".Z" = "Intel",
+	  ":T" = "Tactics",		"#T" = "Tactics",		".T" = "Tactics",
 	  ":Y" = "WY",			"#Y" = "WY",			".Y" = "WY",
 
 	  //kinda localization -- rastaf0
@@ -54,21 +56,15 @@ var/list/department_radio_keys = list(
 )
 
 /mob/living/proc/binarycheck()
-	if (!ishuman(src))
-		return
+	return FALSE
 
-	var/mob/living/carbon/human/H = src
-	if (H.wear_ear)
-		var/obj/item/device/radio/headset/dongle
-		if(istype(H.wear_ear,/obj/item/device/radio/headset))
-			dongle = H.wear_ear
-		if(!istype(dongle)) return
-		if(dongle.translate_binary) return 1
-
+///Shows custom speech bubbles for screaming, *warcry etc.
 /mob/living/proc/show_speech_bubble(var/bubble_name)
 	var/list/hear = hearers()
 
 	var/image/speech_bubble = image('icons/mob/hud/talk.dmi',src,"[bubble_name]")
+
+	speech_bubble.appearance_flags = NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 
 	if(appearance_flags & PIXEL_SCALE)
 		speech_bubble.appearance_flags |= PIXEL_SCALE
@@ -80,24 +76,22 @@ var/list/department_radio_keys = list(
 
 
 /mob/living/proc/remove_speech_bubble(var/image/speech_bubble, var/list_of_mobs)
-	if(client) 
+	if(client)
 		client.images -= speech_bubble
 
 	for(var/mob/M in list_of_mobs)
-		if(M.client) 
+		if(M.client)
 			M.client.images -= speech_bubble
 
-	qdel(speech_bubble)
+	speech_bubble = null
 
-#define ENDING_PUNCT list(".", "-", "?", "!")
 
 /mob/living/say(var/message, var/datum/language/speaking = null, var/verb="says", var/alt_name="", var/italics=0, var/message_range = world_view_size, var/sound/speech_sound, var/sound_vol, var/nolog = 0, var/message_mode = null)
 	var/turf/T
 
-	// Automatic punctuation
-	if (client && client.prefs && client.prefs.toggle_prefs & TOGGLE_AUTOMATIC_PUNCTUATION)
-		if (!(copytext(message, -1) in ENDING_PUNCT))
-			message += "."
+	if(SEND_SIGNAL(src, COMSIG_LIVING_SPEAK, message, speaking, verb, alt_name, italics, message_range, speech_sound, sound_vol, nolog, message_mode) & COMPONENT_OVERRIDE_SPEAK) return
+
+	message = process_chat_markup(message, list("~", "_"))
 
 	for(var/dst=0; dst<=1; dst++) //Will run twice if src has a clone
 		if(!dst && src.clone) //Will speak in src's location and the clone's
@@ -144,11 +138,12 @@ var/list/department_radio_keys = list(
 					listening |= M
 
 		var/speech_bubble_test = say_test(message)
-		var/image/speech_bubble = image('icons/mob/hud/talk.dmi',src,"h[speech_bubble_test]")		
+		var/image/speech_bubble = image('icons/mob/hud/talk.dmi',src,"h[speech_bubble_test]")
+		speech_bubble.appearance_flags = NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 
 		var/not_dead_speaker = (stat != DEAD)
 		if(not_dead_speaker)
-			langchat_make_image(message, listening, speaking)
+			langchat_speech(message, listening, speaking)
 		for(var/mob/M in listening)
 			if(not_dead_speaker)
 				M << speech_bubble
@@ -174,10 +169,8 @@ var/list/department_radio_keys = list(
 			log_say("[name]: [message] (CKEY: [key]) (JOB: [job])")
 	else
 		log_say("[name]: [message] (CKEY: [key])")
-		
-	return 1
 
-#undef ENDING_PUNCT
+	return 1
 
 /mob/living/proc/say_signlang(var/message, var/verb="gestures", var/datum/language/language)
 	for (var/mob/O in viewers(src, null))

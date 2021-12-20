@@ -1,11 +1,18 @@
 /datum/species/yautja
+	group = SPECIES_YAUTJA
 	name = "Yautja"
 	name_plural = "Yautja"
 	brute_mod = 0.33 //Beefy!
 	burn_mod = 0.65
 	reagent_tag = IS_YAUTJA
 	mob_flags = KNOWS_TECHNOLOGY
-	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_SCAN|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL
+	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_CLONE_LOSS|NO_POISON|NO_NEURO|SPECIAL_BONEBREAK|NO_SHRAPNEL|HAS_HARDCRIT
+	mob_inherent_traits = list(
+		TRAIT_YAUTJA_TECH,
+		TRAIT_SUPER_STRONG,
+		TRAIT_FOREIGN_BIO,
+		TRAIT_DEXTROUS
+		)
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	pain_type = /datum/pain/yautja
@@ -17,7 +24,7 @@
 	death_message = "clicks in agony and falls still, motionless and completely lifeless..."
 	darksight = 5
 	slowdown = -0.5
-
+	total_health = 150 //more health than regular humans, makes up for hardcrit reintroduction
 	timed_hug = FALSE
 
 	heat_level_1 = 500
@@ -28,11 +35,20 @@
 		/mob/living/carbon/human/proc/pred_buy,
 		/mob/living/carbon/human/proc/butcher,
 		/mob/living/carbon/human/proc/mark_for_hunt,
-		/mob/living/carbon/human/proc/remove_from_hunt
+		/mob/living/carbon/human/proc/remove_from_hunt,
+		/mob/living/carbon/human/proc/mark_gear,
+		/mob/living/carbon/human/proc/unmark_gear,
+		/mob/living/carbon/human/proc/mark_honored,
+		/mob/living/carbon/human/proc/unmark_honored,
+		/mob/living/carbon/human/proc/mark_dishonored,
+		/mob/living/carbon/human/proc/unmark_dishonored,
+		/mob/living/carbon/human/proc/mark_thralled,
+		/mob/living/carbon/human/proc/unmark_thralled,
+		/mob/living/carbon/human/proc/mark_panel
 		)
 
-	knock_down_reduction = 2
-	stun_reduction = 2
+	knock_down_reduction = 4
+	stun_reduction = 4
 
 		//Set their special slot priority
 
@@ -46,7 +62,8 @@
 		WEAR_IN_SHOES,\
 		WEAR_FACE,\
 		WEAR_HANDS,\
-		WEAR_EAR,\
+		WEAR_L_EAR,\
+		WEAR_R_EAR,\
 		WEAR_EYES,\
 		WEAR_IN_SCABBARD,\
 		WEAR_WAIST,\
@@ -64,14 +81,14 @@
 
 /datum/species/yautja/New()
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/setup_yautja_icons)
+	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PREGAME_LOBBY, .proc/setup_yautja_icons)
 
 /datum/species/yautja/proc/setup_yautja_icons()
 	SIGNAL_HANDLER
 
 	icobase_source = CONFIG_GET(string/species_hunter)
 	deform_source = CONFIG_GET(string/species_hunter)
-	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/setup_yautja_icons)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PREGAME_LOBBY, .proc/setup_yautja_icons)
 
 /datum/species/yautja/larva_impregnated(var/obj/item/alien_embryo/embryo)
 	var/datum/hive_status/hive = GLOB.hive_datum[embryo.hivenumber]
@@ -93,13 +110,33 @@
 	if(gibbed)
 		GLOB.yautja_mob_list -= H
 
-	if(H.yautja_hunted_prey)
-		H.yautja_hunted_prey = null
+	for(var/mob/living/carbon/M in H.hunter_data.dishonored_targets)
+		M.hunter_data.dishonored_set = null
+		H.hunter_data.dishonored_targets -= M
+	for(var/mob/living/carbon/M in H.hunter_data.honored_targets)
+		M.hunter_data.honored_set = null
+		H.hunter_data.honored_targets -= M
+	for(var/mob/living/carbon/M in H.hunter_data.gear_targets)
+		M.hunter_data.gear_set = null
+		H.hunter_data.gear_targets -= M
+
+	if(H.hunter_data.prey)
+		var/mob/living/carbon/M = H.hunter_data.prey
+		H.hunter_data.prey = null
+		M.hunter_data.hunter = null
+		M.hud_set_hunter()
 
 	// Notify all yautja so they start the gear recovery
-	message_all_yautja("[H] has died at \the [get_area_name(H)].")
+	message_all_yautja("[H.real_name] has died at \the [get_area_name(H)].")
+
+	if(H.hunter_data.thrall)
+		var/mob/living/carbon/T = H.hunter_data.thrall
+		message_all_yautja("[H.real_name]'s Thrall, [T.real_name] is now masterless.")
+		H.message_thrall("Your master has fallen!")
+		H.hunter_data.thrall = null
 
 /datum/species/yautja/post_species_loss(mob/living/carbon/human/H)
+	..()
 	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
 	A.add_to_hud(H)
 	H.blood_type = pick("A+","A-","B+","B-","O-","O+","AB+","AB-")
@@ -129,24 +166,21 @@
 	for(var/obj/limb/L in H.limbs)
 		switch(L.name)
 			if("groin","chest")
-				L.min_broken_damage = 80
-				L.max_damage = 200
-				L.time_to_knit = 1200 // 10 mins
+				L.min_broken_damage = 140
+				L.max_damage = 140
+				L.time_to_knit = 1200 // 2 minutes, time is in tenths of a second
 			if("head")
-				L.min_broken_damage = 70
-				L.max_damage = 90
-				L.time_to_knit = 1200 // 10 mins
-			if("l_hand","r_hand","r_foot","l_foot")
-				L.min_broken_damage = 40
-				L.max_damage = 60
-				L.time_to_knit = 600 // 5 mins
-			if("r_leg","r_arm","l_leg","l_arm")
-				L.min_broken_damage = 60
+				L.min_broken_damage = 80
 				L.max_damage = 80
-				L.time_to_knit = 600 // 5 mins
+				L.time_to_knit = 1200 // 2 minutes, time is in tenths of a second
+			if("l_hand","r_hand","r_foot","l_foot")
+				L.min_broken_damage = 55
+				L.max_damage = 55
+				L.time_to_knit = 600 // 1 minute, time is in tenths of a second
+			if("r_leg","r_arm","l_leg","l_arm")
+				L.min_broken_damage = 75
+				L.max_damage = 75
+				L.time_to_knit = 600 // 1 minute, time is in tenths of a second
 
-
-	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
-	A.remove_from_hud(H)
-	H.set_languages(list("Sainja"))
+	H.set_languages(list(LANGUAGE_YAUTJA))
 	return ..()

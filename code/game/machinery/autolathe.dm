@@ -41,9 +41,13 @@
 	var/list/queue = list()
 	var/queue_max = AUTOLATHE_MAX_QUEUE
 
-/obj/structure/machinery/autolathe/Initialize()
+/obj/structure/machinery/autolathe/Initialize(mapload, ...)
 	. = ..()
 	projected_stored_material = stored_material.Copy()
+	if(!mapload)
+		for(var/res as anything in projected_stored_material)
+			projected_stored_material[res] = 0
+			stored_material[res] = 0
 
 	//Create global autolathe recipe list if it hasn't been made already.
 	if(isnull(recipes))
@@ -75,7 +79,7 @@
 	update_printable()
 
 /obj/structure/machinery/autolathe/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (istype(O, /obj/item/tool/screwdriver))
+	if (HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER))
 		if (!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(user, SPAN_WARNING("You are not trained to dismantle machines..."))
 			return
@@ -86,7 +90,7 @@
 
 	if (panel_open)
 		//Don't eat multitools or wirecutters used on an open lathe.
-		if(istype(O, /obj/item/device/multitool) || istype(O, /obj/item/tool/wirecutters))
+		if(HAS_TRAIT(O, TRAIT_TOOL_MULTITOOL) || HAS_TRAIT(O, TRAIT_TOOL_WIRECUTTERS))
 			attack_hand(user)
 			return
 
@@ -179,11 +183,12 @@
 	add_fingerprint(usr)
 
 	if (href_list["change_category"])
-		var/choice = input("Which category do you wish to display?") as null|anything in categories+"All"
+		var/choice = tgui_input_list(usr, "Which category do you wish to display?", "Category Selection", categories+"All")
 		if(!choice)
 			return
 		show_category = choice
 		update_printable()
+		updateUsrDialog()
 		return
 
 	else if (href_list["cancel"])
@@ -250,8 +255,8 @@
 		if (!skillcheck(usr, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(usr, SPAN_WARNING("You don't understand anything about this wiring..."))
 			return
-
-		if (!iswirecutter(usr.get_active_hand()))
+		var/obj/item/held_item = usr.get_held_item()
+		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
 			to_chat(usr, "You need wirecutters!")
 			return
 
@@ -267,7 +272,8 @@
 			to_chat(usr, SPAN_WARNING("You don't understand anything about this wiring..."))
 			return 0
 
-		if (!ismultitool(usr.get_active_hand()))
+		var/obj/item/held_item = usr.get_held_item()
+		if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 			to_chat(usr, "You need a multitool!")
 			return
 
@@ -347,7 +353,7 @@
 	icon_state = "[base_state]_n"
 
 	playsound(src, 'sound/machines/print.ogg', 25)
-	sleep(SECONDS_5)
+	sleep(5 SECONDS)
 	playsound(src, 'sound/machines/print_off.ogg', 25)
 	icon_state = "[base_state]"
 
@@ -403,7 +409,7 @@
 			hacked = !hacked
 			visible_message(SPAN_NOTICE("A blue light flickers [hacked ? "on" : "off"] in the panel of \the [src]."))
 			update_printable()
-			addtimer(CALLBACK(src, .proc/flip_hacked), SECONDS_10)
+			addtimer(CALLBACK(src, .proc/flip_hacked), 10 SECONDS)
 		if (AUTOLATHE_WIRE_SHOCK)
 			shock(user, 50)
 			seconds_electrified = 10

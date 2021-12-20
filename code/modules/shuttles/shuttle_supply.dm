@@ -25,17 +25,18 @@
 
 /datum/shuttle/ferry/supply/New()
 	..()
-	Elevator_x = pick_loc().x
-	Elevator_y = pick_loc().y
-	Elevator_z = pick_loc().z
-	SW = new /obj/effect/elevator/supply(locate(Elevator_x-2,Elevator_y-2,Elevator_z))
-	SE = new /obj/effect/elevator/supply(locate(Elevator_x+2,Elevator_y-2,Elevator_z))
-	SE.pixel_x = -128
-	NW = new /obj/effect/elevator/supply(locate(Elevator_x-2,Elevator_y+2,Elevator_z))
-	NW.pixel_y = -128
-	NE = new /obj/effect/elevator/supply(locate(Elevator_x+2,Elevator_y+2,Elevator_z))
-	NE.pixel_x = -128
-	NE.pixel_y = -128
+	if(pick_loc())
+		Elevator_x = pick_loc().x
+		Elevator_y = pick_loc().y
+		Elevator_z = pick_loc().z
+		SW = new /obj/effect/elevator/supply(locate(Elevator_x-2,Elevator_y-2,Elevator_z))
+		SE = new /obj/effect/elevator/supply(locate(Elevator_x+2,Elevator_y-2,Elevator_z))
+		SE.pixel_x = -128
+		NW = new /obj/effect/elevator/supply(locate(Elevator_x-2,Elevator_y+2,Elevator_z))
+		NW.pixel_y = -128
+		NE = new /obj/effect/elevator/supply(locate(Elevator_x+2,Elevator_y+2,Elevator_z))
+		NE.pixel_x = -128
+		NE.pixel_y = -128
 
 /datum/shuttle/ferry/supply/short_jump(var/area/origin,var/area/destination)
 	if(moving_status != SHUTTLE_IDLE)
@@ -96,12 +97,15 @@
 		stop_gears()
 
 		if (!at_station())	//at centcom
-			supply_controller.sell()
+			handle_sell()
 		else
 			lower_railings()
 
 		spawn(0)
 			recharging = 0
+
+/datum/shuttle/ferry/supply/proc/handle_sell()
+	supply_controller.sell()
 
 // returns 1 if the supply shuttle should be prevented from moving because it contains forbidden atoms
 /datum/shuttle/ferry/supply/proc/forbidden_atoms_check()
@@ -116,11 +120,6 @@
 //returns 1 if the shuttle is idle and we can still mess with the cargo shopping list
 /datum/shuttle/ferry/supply/proc/idle()
 	return (moving_status == SHUTTLE_IDLE)
-
-//returns the ETA in minutes
-/datum/shuttle/ferry/supply/proc/eta_minutes()
-	var/ticksleft = arrive_time - world.time
-	return round(ticksleft/MINUTES_1,1)
 
 /datum/shuttle/ferry/supply/proc/raise_railings()
 	var/effective = 0
@@ -170,7 +169,7 @@
 		if(M.id == gear_id)
 			spawn()
 				M.icon_state = "gear_moving"
-				M.dir = direction
+				M.setDir(direction)
 
 /datum/shuttle/ferry/supply/proc/stop_gears()
 	for(var/obj/structure/machinery/gear/M in machines)

@@ -4,7 +4,7 @@
 	var/cloaked = 1
 	var/at_origin = 1
 	var/returned_home = 0
-	var/move_time = MINUTES_4
+	var/move_time = 4 MINUTES
 	var/cooldown = 20
 	var/last_move = 0	//the time at which we last moved
 
@@ -114,7 +114,7 @@
 			to_chat(usr, SPAN_DANGER("The ship's drive is inoperable while the engines are charging."))
 			return
 
-		var/choice = input("Select a destination.") as null|anything in MS.destinations
+		var/choice = tgui_input_list(usr, "Select a destination.", MS.destinations)
 		if(!choice) return
 
 		to_chat(usr, SPAN_NOTICE(" [shuttle_tag] main computer recieved message."))

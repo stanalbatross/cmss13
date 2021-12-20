@@ -5,9 +5,18 @@
 	flavor_description = "Only in Death does your sisters' service to the Queen end. Keep them fighting using your own blood and claws."
 	cost = MUTATOR_COST_EXPENSIVE
 	individual_only = TRUE
-	caste_whitelist = list("Praetorian")  	// Only bae
-	mutator_actions_to_remove = list("Acid Ball", "Dash", "Spray Acid")
-	mutator_actions_to_add = list(/datum/action/xeno_action/activable/spray_acid/prae_warden, /datum/action/xeno_action/activable/warden_heal, /datum/action/xeno_action/onclick/prae_switch_heal_type, /datum/action/xeno_action/onclick/emit_pheromones)
+	caste_whitelist = list(XENO_CASTE_PRAETORIAN)  	// Only bae
+	mutator_actions_to_remove = list(
+		/datum/action/xeno_action/activable/pounce/base_prae_dash,
+		/datum/action/xeno_action/activable/prae_acid_ball,
+		/datum/action/xeno_action/activable/spray_acid/base_prae_spray_acid,
+	)
+	mutator_actions_to_add = list(
+		/datum/action/xeno_action/activable/spray_acid/prae_warden,
+		/datum/action/xeno_action/activable/warden_heal,
+		/datum/action/xeno_action/onclick/prae_switch_heal_type,
+		/datum/action/xeno_action/onclick/emit_pheromones
+	)
 	behavior_delegate_type = /datum/behavior_delegate/praetorian_warden
 	keystone = TRUE
 
@@ -21,7 +30,6 @@
 	// Make a 'halftank'
 	P.speed_modifier += XENO_SPEED_SLOWMOD_TIER_5
 	P.damage_modifier -= XENO_DAMAGE_MOD_SMALL
-	P.armor_modifier -= XENO_ARMOR_MOD_VERYLARGE
 
 	mutator_update_actions(P)
 	MS.recalculate_actions(description, flavor_description)
@@ -35,10 +43,8 @@
 	name = "Praetorian Warden Behavior Delegate"
 
 	// Config
-	var/internal_hitpoints_max = 325
-	var/internal_hitpoints_per_attack = 75
-	var/percent_hp_to_self_heal = 0.2
-	var/internal_hp_selfheal_size = 50
+	var/internal_hitpoints_max = 350
+	var/internal_hitpoints_per_attack = 50
 	var/internal_hp_per_life = 5
 
 	// State
@@ -46,31 +52,14 @@
 
 /datum/behavior_delegate/praetorian_warden/append_to_stat()
 	. = list()
-	. += "Health Reserves: [internal_hitpoints]/[internal_hitpoints_max]"
+	. += "Energy Reserves: [internal_hitpoints]/[internal_hitpoints_max]"
 
 /datum/behavior_delegate/praetorian_warden/on_life()
-	if ((internal_hitpoints != 0) && bound_xeno.health <= percent_hp_to_self_heal*bound_xeno.maxHealth && !bound_xeno.on_fire)
-		if (internal_hitpoints >= internal_hp_selfheal_size)
-			remove_internal_hitpoints(internal_hp_selfheal_size)
-			bound_xeno.gain_health(internal_hp_selfheal_size)
-		else
-			bound_xeno.gain_health(internal_hitpoints)
-			remove_internal_hitpoints(internal_hitpoints)
-
-		to_chat(bound_xeno, SPAN_XENOHIGHDANGER("You feel your resources of health pour through your blood!"))
-	else
-		internal_hitpoints = min(internal_hitpoints_max, internal_hitpoints + internal_hp_per_life)
-
-/datum/behavior_delegate/praetorian_warden/on_hitby_projectile(ammo)
-	if ((internal_hitpoints != 0) && bound_xeno.health <= percent_hp_to_self_heal*bound_xeno.maxHealth && !bound_xeno.on_fire)
-		if (internal_hitpoints >= internal_hp_selfheal_size)
-			remove_internal_hitpoints(internal_hp_selfheal_size)
-			bound_xeno.gain_health(internal_hp_selfheal_size)
-		else
-			bound_xeno.gain_health(internal_hitpoints)
-			remove_internal_hitpoints(internal_hitpoints)
+	internal_hitpoints = min(internal_hitpoints_max, internal_hitpoints + internal_hp_per_life)
 
 /datum/behavior_delegate/praetorian_warden/melee_attack_additional_effects_self()
+	..()
+
 	add_internal_hitpoints(internal_hitpoints_per_attack)
 
 /datum/behavior_delegate/praetorian_warden/ranged_attack_additional_effects_target(var/atom/A)
@@ -78,6 +67,10 @@
 		add_internal_hitpoints(internal_hitpoints_per_attack)
 
 /datum/behavior_delegate/praetorian_warden/proc/add_internal_hitpoints(amount)
+	if (amount > 0)
+		if (internal_hitpoints >= internal_hitpoints_max)
+			return
+		to_chat(bound_xeno, SPAN_XENODANGER("You feel your resources of health increase!"))
 	internal_hitpoints = Clamp(internal_hitpoints + amount, 0, internal_hitpoints_max)
 
 /datum/behavior_delegate/praetorian_warden/proc/remove_internal_hitpoints(amount)

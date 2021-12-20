@@ -15,7 +15,7 @@ var/list/archive_diseases = list()
 var/list/advance_cures = 	list(
 									"nutriment", "sugar", "orangejuice",
 									"spaceacillin", "kelotane", "ethanol",
-									"leporazine", "synaptizine", "lipozine",
+									"leporazine", "lipozine",
 									"silver", "gold", "phoron"
 								)
 
@@ -375,7 +375,7 @@ var/list/advance_cures = 	list(
 	symptoms += "Done"
 	symptoms += list_symptoms.Copy()
 	do
-		var/symptom = input(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom") in symptoms
+		var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", symptoms)
 		if(istext(symptom))
 			i = 0
 		else if(ispath(symptom))

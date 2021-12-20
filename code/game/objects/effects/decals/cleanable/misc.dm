@@ -20,12 +20,6 @@
 	to_chat(user, SPAN_NOTICE("[src] sifts through your fingers."))
 	qdel(src)
 
-/obj/effect/decal/cleanable/greenglow
-
-	New()
-		..()
-		QDEL_IN(src, MINUTES_2)
-
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
@@ -58,9 +52,15 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
 
+/obj/effect/decal/cleanable/greenglow/Initialize(mapload, ...)
+	if(mapload)
+		return INITIALIZE_HINT_QDEL
+	. = ..()
+	QDEL_IN(WEAKREF(src), 2 MINUTES)
+
 /obj/effect/decal/cleanable/greenglow/Destroy()
 	SetLuminosity(0)
-	. = ..()
+	return ..()
 
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
@@ -88,6 +88,22 @@
 	layer = OBJ_LAYER
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "cobweb2"
+
+/// Variant used for halloween - need to pass info in constructor as its turned in an overlay
+/obj/effect/decal/cleanable/cobweb2/dynamic
+	alpha = 80
+	appearance_flags = RESET_ALPHA | TILE_BOUND | PIXEL_SCALE
+	garbage = FALSE
+/obj/effect/decal/cleanable/cobweb2/dynamic/Initialize(mapload, targetdir, webscale = 1.0)
+	alpha += round(webscale * 120)
+	var/angle = dir2angle(targetdir)
+	var/matrix/TM = new
+	TM *= webscale
+	TM = TM.Translate(16 * (1 - webscale))
+	angle -= 225 // Flip and adjust, base sprite is top right
+	TM = TM.Turn(angle)
+	transform = TM
+	return ..()
 
 //Vomit (sorry)
 /obj/effect/decal/cleanable/vomit

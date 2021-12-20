@@ -55,7 +55,7 @@
 			total_silenced++
 			message_staff("A player has silenced the currently playing midi. Total: [total_silenced] player(s).", 1)
 			src.mob.client.midi_silenced = 1
-			spawn(SECONDS_30) // Prevents message_admins() spam. Should match with the midi_playing_timer spawn() in playsound.dm
+			spawn(30 SECONDS) // Prevents message_admins() spam. Should match with the midi_playing_timer spawn() in playsound.dm
 				src.mob.client.midi_silenced = 0
 	else
 		to_chat(src, "You have 'Play Admin Midis' disabled in your Character Setup, so this verb is useless to you.")
@@ -68,6 +68,15 @@
 	prefs.lang_chat_disabled = ~prefs.lang_chat_disabled
 	prefs.save_preferences()
 	to_chat(src, "You will [(!prefs.lang_chat_disabled) ? "now" : "no longer"] see messages above head.")
+
+/client/verb/toggle_permission_errors()
+	set name = "Toggle Permission Errors"
+	set category = "Preferences.Chat"
+	set desc = "Toggles error messages due to missing permissions."
+
+	prefs.show_permission_errors = !prefs.show_permission_errors
+	prefs.save_preferences()
+	to_chat(src, "You will [(prefs.show_permission_errors) ? "now" : "no longer"] see permission error messages.")
 
 /client/verb/listen_ooc()
 	set name = "Show/Hide OOC"
@@ -101,6 +110,54 @@
 		src << sound(null, repeat = 0, wait = 0, volume = 0, channel = SOUND_CHANNEL_AMBIENCE)
 		src << sound(null, repeat = 0, wait = 0, volume = 0, channel = SOUND_CHANNEL_SOUNDSCAPE)
 
+/client/verb/toggle_roundstart_flash()
+	set name = "Toggle Roundstart Flash"
+	set category = "Preferences.TaskbarFlashing"
+	set desc = "Toggles the taskbar flashing when the round starts."
+
+	prefs.toggles_flashing ^= FLASH_ROUNDSTART
+	prefs.save_preferences()
+	if(prefs.toggles_flashing & FLASH_ROUNDSTART)
+		to_chat(src, "The icon on your taskbar will now flash when the Tip of the Round is played right before the start of the round.")
+	else
+		to_chat(src, "The icon on your taskbar will no longer flash when the Tip of the Round is played right before the start of the round.")
+
+/client/verb/toggle_roundend_flash()
+	set name = "Toggle Roundend Flash"
+	set category = "Preferences.TaskbarFlashing"
+	set desc = "Toggles the taskbar flashing when the round ends."
+
+	prefs.toggles_flashing ^= FLASH_ROUNDEND
+	prefs.save_preferences()
+	if(prefs.toggles_flashing & FLASH_ROUNDEND)
+		to_chat(src, "The icon on your taskbar will now flash when the round ends.")
+	else
+		to_chat(src, "The icon on your taskbar will no longer flash when the round ends.")
+
+/client/verb/toggle_corpserevive_flash()
+	set name = "Toggle Revival Flash"
+	set category = "Preferences.TaskbarFlashing"
+	set desc = "Toggles the taskbar flashing when your corpse gets revived."
+
+	prefs.toggles_flashing ^= FLASH_CORPSEREVIVE
+	prefs.save_preferences()
+	if(prefs.toggles_flashing & FLASH_CORPSEREVIVE)
+		to_chat(src, "The icon on your taskbar will now flash when your corpse gets revived.")
+	else
+		to_chat(src, "The icon on your taskbar will no longer flash when your corpse gets revived.")
+
+/client/verb/toggle_adminpm_flash()
+	set name = "Toggle Admin PM Flash"
+	set category = "Preferences.TaskbarFlashing"
+	set desc = "Toggles the taskbar flashing when you an admin messages you."
+
+	prefs.toggles_flashing ^= FLASH_ADMINPM
+	prefs.save_preferences()
+	if(prefs.toggles_flashing & FLASH_ADMINPM)
+		to_chat(src, "The icon on your taskbar will now flash when an admin messages you.")
+	else
+		to_chat(src, "The icon on your taskbar will no longer flash when an admin messages you. Warning, use at own risk.")
+
 //be special
 /client/verb/toggle_be_special(role in be_special_flags)
 	set name = "Toggle SpecialRole Candidacy"
@@ -112,6 +169,24 @@
 	prefs.be_special ^= role_flag
 	prefs.save_preferences()
 	to_chat(src, "You will [(prefs.be_special & role_flag) ? "now" : "no longer"] be considered for [role] events (where possible).")
+
+/client/verb/toggle_fullscreen_preference()
+	set name = "Toggle Fullscreen Preference"
+	set category = "Preferences"
+	set desc = "Toggles whether the game window will be true fullscreen or normal."
+
+	prefs.toggle_prefs ^= TOGGLE_FULLSCREEN
+	prefs.save_preferences()
+	toggle_fullscreen(prefs.toggle_prefs & TOGGLE_FULLSCREEN)
+
+/client/verb/toggle_member_publicity()
+	set name = "Toggle Membership Publicity"
+	set category = "Preferences"
+	set desc = "Toggles if other players can see that you are a BYOND member (OOC logo)."
+
+	prefs.toggle_prefs ^= MEMBER_PUBLIC
+	prefs.save_preferences()
+	to_chat(src, "Others can[(prefs.toggle_prefs & MEMBER_PUBLIC) ? "" : "'t"] see if you are a BYOND member.")
 
 /client/verb/toggle_prefs() // Toggle whether anything will happen when you click yourself in non-help intent
 	set name = "Toggle Preferences"
@@ -125,7 +200,9 @@
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_auto_eject_to_hand'>Toggle Guns Auto-Ejecting Magazines to Your Hands</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_eject_to_hand'>Toggle 'Unload Weapon' Ejecting Magazines to Your Hands</a><br>",
 		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_automatic_punctuation'>Toggle Automatic Punctuation</a><br>",
-		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_click'>Toggle Middle Mouse Ability Activation</a><br>"
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_middle_mouse_click'>Toggle Middle Mouse Ability Activation</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_clickdrag_override'>Toggle Combat Click-Drag Override</a><br>",
+		"<a href='?src=\ref[src];action=proccall;procpath=/client/proc/toggle_dualwield'>Toggle Alternate-Fire Dual Wielding</a><br>"
 	)
 
 	var/dat = ""
@@ -198,7 +275,22 @@
 		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with middle clicking."))
 	else
 		to_chat(src, SPAN_NOTICE("Your selected ability will now be activated with shift clicking."))
+	prefs.save_preferences()
 
+/client/proc/toggle_clickdrag_override() //Toggle whether mousedown clicks immediately when on disarm or harm intent to prevent click-dragging from 'eating' attacks.
+	prefs.toggle_prefs ^= TOGGLE_COMBAT_CLICKDRAG_OVERRIDE
+	if(prefs.toggle_prefs & TOGGLE_COMBAT_CLICKDRAG_OVERRIDE)
+		to_chat(src, "Depressing the mouse button on disarm or harm intent will now click the target immediately, even if you hold it down -- unless you're click-dragging yourself, an ally, or an object in your inventory.")
+	else
+		to_chat(src, "Click-dragging now blocks clicks from going through.")
+	prefs.save_preferences()
+
+/client/proc/toggle_dualwield() //Toggle whether dual-wielding fires both guns at once or swaps between them.
+	prefs.toggle_prefs ^= TOGGLE_ALTERNATING_DUAL_WIELD
+	if(prefs.toggle_prefs & TOGGLE_ALTERNATING_DUAL_WIELD)
+		to_chat(src, "Dual-wielding now switches between guns, as long as the other gun is loaded.")
+	else
+		to_chat(src, "Dual-wielding now fires both guns simultaneously.")
 	prefs.save_preferences()
 
 //------------ GHOST PREFERENCES ---------------------------------
@@ -268,7 +360,7 @@
 	set category = "Preferences.Ghost"
 	set desc = "Use to change which HUDs you want to have by default when you become an observer."
 
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD prefs", null) as null|anything in list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD", "Faction UPP HUD", "Faction W-Y HUD", "Faction RESS HUD", "Faction CLF HUD")
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD prefs", list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD", "Faction UPP HUD", "Faction Wey-Yu HUD", "Faction RESS HUD", "Faction CLF HUD"))
 	if(!hud_choice)
 		return
 	prefs.observer_huds[hud_choice] = !prefs.observer_huds[hud_choice]
@@ -291,7 +383,7 @@
 			H = huds[MOB_HUD_XENO_STATUS]
 		if("Faction UPP HUD")
 			H = huds[MOB_HUD_FACTION_UPP]
-		if("Faction W-Y HUD")
+		if("Faction Wey-Yu HUD")
 			H = huds[MOB_HUD_FACTION_WY]
 		if("Faction RESS HUD")
 			H = huds[MOB_HUD_FACTION_RESS]

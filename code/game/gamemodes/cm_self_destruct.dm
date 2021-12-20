@@ -92,12 +92,14 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 
 /datum/authority/branch/evacuation/proc/initiate_evacuation(var/force=0) //Begins the evacuation procedure.
 	if(force || (evac_status == EVACUATION_STATUS_STANDING_BY && !(flags_scuttle & FLAGS_EVACUATION_DENY)))
-		enter_allowed = 0 //No joining during evac.
 		evac_time = world.time
 		evac_status = EVACUATION_STATUS_INITIATING
 		ai_announcement("Attention. Emergency. All personel must evacuate immediately. You have [round(EVACUATION_ESTIMATE_DEPARTURE/60,1)] minute\s until departure.", 'sound/AI/evacuate.ogg')
-		xeno_message("A wave of adrenaline ripples through the hive. The fleshy creatures are trying to escape!")
+		xeno_message_all("A wave of adrenaline ripples through the hive. The fleshy creatures are trying to escape!")
 		var/datum/shuttle/ferry/marine/evacuation_pod/P
+		for(var/obj/structure/machinery/status_display/SD in machines)
+			if(is_mainship_level(SD.z))
+				SD.set_picture("evac")
 		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
 			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
 			P.toggle_ready()
@@ -106,11 +108,14 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 
 /datum/authority/branch/evacuation/proc/cancel_evacuation() //Cancels the evac procedure. Useful if admins do not want the marines leaving.
 	if(evac_status == EVACUATION_STATUS_INITIATING)
-		enter_allowed = 1
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
 		ai_announcement("Evacuation has been cancelled.", 'sound/AI/evacuate_cancelled.ogg')
 		var/datum/shuttle/ferry/marine/evacuation_pod/P
+		if(get_security_level() == "red")
+			for(var/obj/structure/machinery/status_display/SD in machines)
+				if(is_mainship_level(SD.z))
+					SD.set_picture("redalert")
 		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
 			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
 			P.toggle_ready()
@@ -212,7 +217,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 /datum/authority/branch/evacuation/proc/trigger_self_destruct(list/z_levels = SSmapping.levels_by_trait(ZTRAIT_MARINE_MAIN_SHIP), origin = dest_master, override = FALSE, end_type = NUKE_EXPLOSION_FINISHED, play_anim = TRUE, end_round = TRUE)
 	set waitfor = 0
 	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS) //One more check for good measure, in case it's triggered through a bomb instead of the destruct mechanism/admin panel.
-		enter_allowed = 0 //Do not want baldies spawning in as everything is exploding.
 		dest_status = NUKE_EXPLOSION_IN_PROGRESS
 		playsound(origin, 'sound/machines/Alarm.ogg', 75, 0, 30)
 		world << pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg')
@@ -255,7 +259,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 				if(T.z in z_levels)
 					if(istype(M.loc, /obj/structure/closet/secure_closet/freezer/fridge))
 						continue
-					M.death("nuclear explosion")
+					M.death(create_cause_data("nuclear explosion"))
 				else
 					if(play_anim)
 						M.client.screen -= C //those who managed to escape the z level at last second shouldn't have their view obstructed.
@@ -302,8 +306,8 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	var/in_progress = 0 //Cannot interact with while it's doing something, like an animation.
 	var/active_state = SELF_DESTRUCT_MACHINE_INACTIVE //What step of the process it's on.
 
-/obj/structure/machinery/self_destruct/New()
-	..()
+/obj/structure/machinery/self_destruct/Initialize(mapload, ...)
+	. = ..()
 	icon_state += "_1"
 
 /obj/structure/machinery/self_destruct/Destroy()

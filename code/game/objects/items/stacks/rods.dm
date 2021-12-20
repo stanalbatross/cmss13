@@ -40,8 +40,8 @@
 		use(used_per_sheet)
 
 var/global/list/datum/stack_recipe/rod_recipes = list ( \
-	new/datum/stack_recipe("grille", /obj/structure/grille, 4, time = 20, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED), \
-	new/datum/stack_recipe("fence", /obj/structure/fence, 10, time = 20, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION_TRAINED), \
+	new/datum/stack_recipe("grille", /obj/structure/grille, 4, time = 20, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION, skill_lvl = SKILL_CONSTRUCTION_TRAINED), \
+	new/datum/stack_recipe("fence", /obj/structure/fence, 10, time = 20, one_per_turf = ONE_TYPE_PER_TURF, on_floor = 1, skill_req = SKILL_CONSTRUCTION, skill_lvl = SKILL_CONSTRUCTION_TRAINED), \
 )
 
 
@@ -77,7 +77,7 @@ var/global/list/datum/stack_recipe/rod_recipes = list ( \
 		to_chat(user, SPAN_DANGER("You need at least five plasteel rods to do this."))
 		return
 
-	if(M.amount >= 10 && do_after(user, SECONDS_1, INTERRUPT_ALL, BUSY_ICON_BUILD))
+	if(M.amount >= 10 && do_after(user, 1 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD))
 		if(!M.use(10))
 			return
 		var/obj/item/device/m56d_post_frame/PF = new(get_turf(user))

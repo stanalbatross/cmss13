@@ -108,9 +108,8 @@
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/under/U = H.w_uniform
 
-		//some clothes can only be worn when wearing specific uniforms
 		if(uniform_restricted && (!is_type_in_list(U, uniform_restricted) || !U))
-			to_chat(H, SPAN_WARNING("Your [U ? "[U.name]":"naked body"] doesn't allow you to wear this [name].")) //Note : Duplicate warning, commenting
+			to_chat(H, SPAN_WARNING("Your [U ? "[U.name]":"naked body"] doesn't allow you to wear this [name]."))
 			return 0
 
 	return 1
@@ -218,8 +217,7 @@
 	sprite_sheets = list(SPECIES_MONKEY = 'icons/mob/humans/species/monkeys/onmob/hands_monkey.dmi')
 	blood_overlay_type = "hands"
 	var/gloves_blood_amt = 0 //taken from blood.dm
-
-	var/hide_prints = FALSE
+	var/hide_prints = FALSE 
 
 /obj/item/clothing/gloves/update_clothing_icon()
 	if (ismob(src.loc))
@@ -378,7 +376,7 @@
 				to_chat(M, "<div class='notice'>You slide the [I] into [src].</div>")
 				playsound(M, 'sound/weapons/gun_shotgun_shell_insert.ogg', 15, 1)
 				update_icon()
-				desc = initial(desc) + "It is storing \a [stored_item]."
+				desc = initial(desc) + "\nIt is storing \a [stored_item]."
 				break
 
 /obj/item/clothing/equipped(mob/user, slot)

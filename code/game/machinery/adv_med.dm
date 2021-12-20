@@ -130,10 +130,10 @@
 	//G = null
 
 
-/obj/structure/machinery/bodyscanner/ex_act(var/severity, var/source)
+/obj/structure/machinery/bodyscanner/ex_act(var/severity, var/datum/cause_data/cause_data)
 	for(var/atom/movable/A as mob|obj in src)
 		A.forceMove(loc)
-		A.ex_act(severity, , source)
+		A.ex_act(severity, , cause_data)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if (prob(25))
@@ -250,8 +250,9 @@
 	else if (connected) //Is something connected?
 		var/mob/living/carbon/human/H = connected.occupant
 		var/datum/data/record/N = null
+		var/human_ref = WEAKREF(H)
 		for(var/datum/data/record/R in GLOB.data_core.medical)
-			if (R.fields["name"] == H.real_name)
+			if (R.fields["ref"] == human_ref)
 				N = R
 		if(isnull(N))
 			N = create_medical_record(H)
@@ -408,16 +409,21 @@
 			break
 		if(istype(e, /obj/limb/chest) && occ["lung_ruptured"])
 			lung_ruptured = "Lung ruptured:<br>"
-		if(e.status & LIMB_SPLINTED)
+		if(e.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+			splint = "Nanosplinted<br>"
+		else if(e.status & LIMB_SPLINTED)
 			splint = "Splinted<br>"
 		for(var/datum/effects/bleeding/external/E in e.bleeding_effects_list)
 			bled = "Bleeding<br>"
 			break
 		if(e.status & LIMB_BROKEN)
 			AN = "[e.broken_description]<br>"
-		if(e.status & LIMB_ROBOT)
-			robot = "Prosthetic<br>"
-		if(e.surgery_open_stage)
+		else if(e.status & LIMB_ROBOT)
+			if(e.status & LIMB_UNCALIBRATED_PROSTHETIC)
+				robot = "Nonfunctional prosthetic<br>"
+			else
+				robot = "Prosthetic<br>"
+		if(e.get_incision_depth())
 			open = "Open<br>"
 
 		var/unknown_body = 0
@@ -468,7 +474,7 @@
 			dat += SET_CLASS("No [organ_name] detected.", INTERFACE_RED)
 			dat += "<BR>"
 
-	if(occ["sdisabilities"] & BLIND)
+	if(occ["sdisabilities"] & DISABILITY_BLIND)
 		dat += SET_CLASS("Cataracts detected.", INTERFACE_RED)
 		dat += "<BR>"
 	if(occ["sdisabilities"] & NEARSIGHTED)

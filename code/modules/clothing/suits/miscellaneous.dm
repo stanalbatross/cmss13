@@ -140,7 +140,7 @@
 		/obj/item/tool/crowbar,
 		/obj/item/tool/pen,
 	)
-
+	valid_accessory_slots = list(ACCESSORY_SLOT_MEDAL)
 
 /obj/item/clothing/suit/storage/apron/overalls
 	name = "coveralls"
@@ -165,7 +165,7 @@
 		/obj/item/tool/crowbar,
 		/obj/item/tool/pen,
 	)
-
+	valid_accessory_slots = list(ACCESSORY_SLOT_MEDAL)
 
 /obj/item/clothing/suit/syndicatefake
 	name = "red space suit replica"
@@ -267,6 +267,33 @@
 	icon_state = "ianshirt"
 	item_state = "ianshirt"
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_ARMS
+
+/obj/item/clothing/suit/storage/webbing
+	name = "External webbing"
+	desc = "Designed to be worn over a jumpsuit rather than clipped on."
+	icon_state = "webbing"
+	item_state = "webbing"
+	allowed = list(
+		/obj/item/device/analyzer,
+		/obj/item/device/multitool,
+		/obj/item/device/pipe_painter,
+		/obj/item/device/t_scanner,
+		/obj/item/tool/screwdriver,
+		/obj/item/tool/weldingtool,
+		/obj/item/tool/wirecutters,
+		/obj/item/tool/wrench,
+		/obj/item/clothing/mask/gas,
+
+		/obj/item/device/flashlight,
+		/obj/item/device/healthanalyzer,
+		/obj/item/device/radio,
+		/obj/item/tank/emergency_oxygen,
+		/obj/item/tool/crowbar,
+		/obj/item/tool/pen,
+		/obj/item/device/binoculars,
+		/obj/item/tool/crew_monitor,
+		/obj/item/reagent_container/hypospray,
+	)
 
 //Blue suit jacket toggle
 /obj/item/clothing/suit/suit/verb/toggle()
@@ -396,8 +423,8 @@
 	icon_state = "redponcho"
 
 /obj/item/clothing/suit/storage/bomber
-	name = "bomber jacket"
-	desc = "A well-worn WW2 leather bomber jacket."
+	name = "brown bomber jacket"
+	desc = "A well-worn leather bomber jacket."
 	icon_state = "bomber"
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_ARMS
 	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_ARMS
@@ -405,9 +432,7 @@
 		/obj/item/device/analyzer,
 		/obj/item/device/multitool,
 		/obj/item/device/pipe_painter,
-		/obj/item/device/radio,
 		/obj/item/device/t_scanner,
-		/obj/item/tool/crowbar,
 		/obj/item/tool/screwdriver,
 		/obj/item/tool/weldingtool,
 		/obj/item/tool/wirecutters,
@@ -420,12 +445,17 @@
 		/obj/item/tank/emergency_oxygen,
 		/obj/item/tool/crowbar,
 		/obj/item/tool/pen,
+		/obj/item/device/binoculars,
+		/obj/item/tool/crew_monitor,
+		/obj/item/reagent_container/hypospray,
 	)
 	min_cold_protection_temperature = T0C
 	siemens_coefficient = 0.7
+	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 
-/obj/item/clothing/suit/storage/bomber/open
-	name = "open bomber jacket"
+/obj/item/clothing/suit/storage/bomber/alt
+	name = "black bomber jacket"
 	icon_state = "bomber_2"
 
 /obj/item/clothing/suit/storage/manager
@@ -457,6 +487,8 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 
 /obj/item/clothing/suit/storage/director
 	name = "director's jacket"
@@ -488,3 +520,5 @@
 	armor_bio = CLOTHING_ARMOR_MEDIUM
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_DECOR, ACCESSORY_SLOT_MEDAL)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)

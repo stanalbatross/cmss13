@@ -10,6 +10,7 @@
 	flags_atom = OPENCONTAINER
 	buildstacktype = null //can't be disassembled and doesn't drop anything when destroyed
 	//copypaste sorry
+	picked_up_item = null
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 	var/obj/item/storage/bag/trash/mybag	= null
 	var/callme = "pimpin' ride"	//how do people refer to it?
@@ -83,7 +84,7 @@
 
 /obj/structure/bed/chair/janicart/proc/update_mob()
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 		switch(dir)
 			if(SOUTH)
 				buckled_mob.pixel_x = 0

@@ -50,7 +50,15 @@
 		return
 
 	src.visible_message(SPAN_DANGER("[src] has been hit by [O]."), null, null, 5)
-	apply_armoured_damage(impact_damage, ARMOR_MELEE, dtype, null, , is_sharp(O), has_edge(O), null)
+	var/damage_done = apply_armoured_damage(impact_damage, ARMOR_MELEE, dtype, null, , is_sharp(O), has_edge(O), null)
+
+	if (damage_done > 5)
+		animation_flash_color(src)
+		var/obj/item/I = O
+		if(istype(I) && I.sharp) //Hilarious is_sharp only returns true if it's sharp AND edged, while a bunch of things don't have edge to limit embeds.
+			playsound(loc, 'sound/effects/spike_hit.ogg', 20, TRUE, falloff = 2)
+		else
+			playsound(loc, 'sound/effects/thud.ogg', 25, TRUE, falloff = 2)
 
 	O.throwing = 0		//it hit, so stop moving
 
@@ -67,9 +75,8 @@
 	L.Move(get_step_away(L, src))
 
 /mob/living/obj_launch_collision(var/obj/O)
-	if ((!thrower || thrower != src) && \
-		!rebounding
-	)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [O]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -79,7 +86,10 @@
 
 //This is called when the mob or human is thrown into a dense turf or wall
 /mob/living/turf_launch_collision(var/turf/T)
-	if (!rebounding)
+	var/datum/launch_metadata/LM = launch_metadata
+	if(!rebounding && LM.thrower != src)
+		if(LM.thrower)
+			last_damage_data = create_cause_data("wall tossing", LM.thrower)
 		var/impact_damage = (1 + MOB_SIZE_COEFF/(mob_size + 1))*THROW_SPEED_DENSE_COEFF*cur_speed
 		apply_damage(impact_damage)
 		visible_message(SPAN_DANGER("\The [name] slams into [T]!"), null, null, 5) //feedback to know that you got slammed into a wall and it hurt
@@ -107,27 +117,32 @@
 //Mobs on Fire
 /mob/living/proc/IgniteMob(force)
 	if(!force && SEND_SIGNAL(src, COMSIG_LIVING_PREIGNITION) & COMPONENT_CANCEL_IGNITION)
-		return FALSE
+		return IGNITE_FAILED
 	if(fire_stacks > 0)
 		if(on_fire)
-			return TRUE
+			return IGNITE_ON_FIRE
 		on_fire = TRUE
 		to_chat(src, SPAN_DANGER("You are on fire! Use Resist to put yourself out!"))
+		update_fire()
+		return IGNITE_IGNITED
+	return IGNITE_FAILED
+
+/mob/living/carbon/human/IgniteMob()
+	. = ..()
+	if(. && !stat && pain.feels_pain)
+		INVOKE_ASYNC(src, /mob.proc/emote, "scream")
+
+/mob/living/proc/ExtinguishMob()
+	if(on_fire)
+		on_fire = FALSE
+		fire_stacks = 0
 		update_fire()
 		return TRUE
 	return FALSE
 
-/mob/living/carbon/human/IgniteMob()
+/mob/living/carbon/human/ExtinguishMob()
 	. = ..()
-	if(.)
-		if(!stat && pain.feels_pain)
-			emote("scream")
-
-/mob/living/proc/ExtinguishMob()
-	if(on_fire)
-		on_fire = 0
-		fire_stacks = 0
-		update_fire()
+	SEND_SIGNAL(src, COMSIG_HUMAN_EXTINGUISH)
 
 /mob/living/proc/update_fire()
 	return

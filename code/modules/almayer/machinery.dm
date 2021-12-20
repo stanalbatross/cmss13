@@ -50,13 +50,13 @@
 
 /obj/item/prop/almayer/comp_closed
 	name = "dropship maintenance computer"
-	desc = "A closed dropship maintenance computer that technicans and pilots use to find out whats wrong with a dropship. It has various outlets for different systems."
+	desc = "A closed dropship maintenance computer that technicians and pilots use to find out what's wrong with a dropship. It has various outlets for different systems."
 	icon_state = "hangar_comp"
 	w_class = SIZE_LARGE
 
 /obj/item/prop/almayer/comp_open
 	name = "dropship maintenance computer"
-	desc = "A opened dropship maintenance computer, it seems to be off however. Its used by technicans and pilots to find damaged or broken systems on a dropship. It has various outlets for different systems."
+	desc = "A opened dropship maintenance computer, it seems to be off however. It's used by technicians and pilots to find damaged or broken systems on a dropship. It has various outlets for different systems."
 	icon_state = "hangar_comp_open"
 	w_class = SIZE_LARGE
 
@@ -118,7 +118,7 @@
 
 /obj/structure/machinery/prop/almayer/NavCon
 	name = "NavCon"
-	desc = "Navigational console for ploting course and heading of the ship. Since the AI calculates all long range navigation, this is only used for in system curse corrections and orbital maneuvers. Don't touch it!"
+	desc = "Navigational console for ploting course and heading of the ship. Since the AI calculates all long range navigation, this is only used for in-system course corrections and orbital maneuvers. Don't touch it!"
 
 	density = 0
 	anchored = 1
@@ -164,7 +164,7 @@
 
 /obj/structure/machinery/prop/almayer/NavCon2
 	name = "NavCon 2"
-	desc = "Navigational console for ploting course and heading of the ship. Since the AI calculates all long range navigation, this is only used for in system curse corrections and orbital maneuvers. Don't touch it!"
+	desc = "Navigational console for ploting course and heading of the ship. Since the AI calculates all long range navigation, this is only used for in-system course corrections and orbital maneuvers. Don't touch it!"
 
 	density = 0
 	anchored = 1
@@ -221,13 +221,16 @@
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "maptable"
 
+	var/map_type = TACMAP_DEFAULT
+	var/map_base_type = TACMAP_BASE_OCCLUDED
+
 /obj/structure/machinery/prop/almayer/CICmap/Destroy()
 	for(var/mob/living/L in current_viewers)
 		to_chat(L, SPAN_NOTICE("You stop looking at the map."))
 		close_browser(L,"marineminimap")
 		current_viewers -= L
 		continue
-	..()
+	return ..()
 
 /obj/structure/machinery/prop/almayer/CICmap/examine(mob/living/user)
 	if(ishuman(user) && get_dist(src,user) < 3 && powered())
@@ -237,18 +240,17 @@
 			current_viewers -= user
 			return
 		current_viewers += user
-		if(!istype(marine_mapview_overlay_5))
-			overlay_marine_mapview()
+		if(!populated_mapview_type_updated[map_type])
+			overlay_tacmap(map_type, map_base_type)
 		to_chat(user, SPAN_NOTICE("You start looking at the map."))
-		user << browse_rsc(marine_mapview_overlay_5, "marine_minimap.png")
-		show_browser(user, "<img src=marine_minimap.png>", "CIC Map Table", "marineminimap", "size=[(map_sizes[1][1]*2)+50]x[(map_sizes[1][2]*2)+50]")
-		onclose(user, "marineminimap", src, list("close" = 1, "viewer" = "\ref[user]"))
+		user << browse_rsc(populated_mapview_types[map_type], "marine_minimap.png")
+		show_browser(user, "<img src=marine_minimap.png>", "Tactical Map Table", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
 		return
 	..()
 
 /obj/structure/machinery/prop/almayer/CICmap/proc/update_mapview()
-	if(!istype(marine_mapview_overlay_5))
-		overlay_marine_mapview()
+	if(!populated_mapview_type_updated[map_type])
+		overlay_tacmap(map_type, map_base_type)
 	for(var/mob/living/L in current_viewers)
 		if(!powered() || get_dist(src,L) > 2)
 			to_chat(L, SPAN_NOTICE("You stop looking at the map."))
@@ -256,22 +258,18 @@
 			current_viewers -= L
 			continue
 
-		L << browse_rsc(marine_mapview_overlay_5, "marine_minimap.png")
-		show_browser(L, "<img src=marine_minimap.png>", "CIC Map Table", "marineminimap", "size=[(map_sizes[1][1]*2)+50]x[(map_sizes[1][2]*2)+50]")
-		onclose(L, "marineminimap", src, list("close" = 1, "viewer" = "\ref[L]"))
+		L << browse_rsc(populated_mapview_types[map_type], "marine_minimap.png")
+		show_browser(L, "<img src=marine_minimap.png>", "Tactical Map Table", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
 
 
 /obj/structure/machinery/prop/almayer/CICmap/Topic(href, href_list)
 	. = ..()
 	if(.)
 		return
-	if (href_list["close"])
-		var/mob/living/L = locate(href_list["viewer"])
-		if (!L)
-			return
-		to_chat(L, SPAN_NOTICE("You stop looking at the map."))
-		close_browser(L, "marineminimap")
-		current_viewers -= L
+	if(href_list["close"] && usr)
+		to_chat(usr, SPAN_NOTICE("You stop looking at the map."))
+		close_browser(usr, "marineminimap")
+		current_viewers -= usr
 
 //Nonpower using props
 
@@ -298,14 +296,6 @@
 
 	if(hacked)
 		overlays += "+hacked"
-
-/obj/structure/prop/almayer/computers/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/device/agents/floppy_disk))
-		var/obj/item/device/agents/floppy_disk/D = W
-		D.insert_drive(user, src)
-		return
-
-	. = ..()
 
 /obj/structure/prop/almayer/computers/mission_planning_system
 	name = "\improper MPS IV computer"
@@ -397,7 +387,7 @@
 	unacidable = TRUE
 
 /obj/structure/prop/almayer/name_stencil
-	name = MAIN_SHIP_NAME
+	name = "USS Almayer"
 	desc = "The name of the ship stenciled on the hull."
 	icon = 'icons/obj/structures/props/almayer_props64.dmi'
 	icon_state = "almayer0"
@@ -485,8 +475,9 @@
 /obj/structure/closet/basketball
 	name = "athletic wardrobe"
 	desc = "It's a storage unit for athletic wear."
-	icon_state = "mixed"
-	icon_closed = "mixed"
+	icon_state = "purple"
+	icon_closed = "purple"
+	icon_opened = "purple_open"
 
 /obj/structure/closet/basketball/Initialize()
 	. = ..()

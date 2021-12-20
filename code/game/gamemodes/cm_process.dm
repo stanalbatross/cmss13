@@ -1,5 +1,5 @@
 
-#define QUEEN_DEATH_COUNTDOWN 			 MINUTES_10 //10 minutes. Can be changed into a variable if it needs to be manipulated later.
+#define QUEEN_DEATH_COUNTDOWN 			 10 MINUTES //10 minutes. Can be changed into a variable if it needs to be manipulated later.
 
 #define MODE_INFESTATION_X_MAJOR		"Xenomorph Major Victory"
 #define MODE_INFESTATION_M_MAJOR		"Marine Major Victory"
@@ -9,9 +9,9 @@
 
 #define MODE_INFECTION_ZOMBIE_WIN		"Major Zombie Victory"
 
-#define MODE_BATTLEFIELD_W_MAJOR		"W-Y PMC Major Success"
+#define MODE_BATTLEFIELD_W_MAJOR		"Wey-Yu PMC Major Success"
 #define MODE_BATTLEFIELD_M_MAJOR		"Marine Major Success"
-#define MODE_BATTLEFIELD_W_MINOR		"W-Y PMC Minor Success"
+#define MODE_BATTLEFIELD_W_MINOR		"Wey-Yu PMC Minor Success"
 #define MODE_BATTLEFIELD_M_MINOR		"Marine Minor Success"
 #define MODE_BATTLEFIELD_DRAW_STALEMATE "DRAW: Stalemate"
 #define MODE_BATTLEFIELD_DRAW_DEATH		"DRAW: My Friends Are Dead"
@@ -27,7 +27,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 */
 
 //If the queen is dead after a period of time, this will end the game.
-/datum/game_mode/proc/check_queen_status(queen_time)
+/datum/game_mode/proc/check_queen_status()
 	return
 
 //===================================================\\
@@ -38,7 +38,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 
 /datum/game_mode/proc/declare_completion_announce_fallen_soldiers()
 	set waitfor = 0
-	sleep(SECONDS_2)
+	sleep(2 SECONDS)
 	if(fallen_list.len)
 		var/dat = "<br>"
 		dat += SPAN_ROUNDBODY("In Flanders fields...<br>")
@@ -50,31 +50,10 @@ of predators), but can be added to include variant game modes (like humans vs. h
 				dat += "[fallen_list[i]].<br>"
 		to_world("[dat]")
 
-/datum/game_mode/proc/announce_agents()
-	set waitfor = 0
-	sleep(SECONDS_2)
-	if(length(human_agent_list))
-		var/dat = "<br>"
-		dat += SPAN_CENTERBOLD("The Agents were: <br>")
-		for(var/mob/living/carbon/human/H in human_agent_list)
-			if(!H.agent_holder)
-				continue
-
-			dat += "[SPAN_BOLD("[H]")] was being blackmailed by [H.agent_holder.faction], with the following objectives: <br>"
-			for(var/datum/agent_objective/O in H.agent_holder.objectives_list)
-				dat += "- [O.description]"
-				if(O.check_completion_round_end())
-					dat += " [SPAN_BOLD("[SPAN_GREEN("(COMPLETED)")]")] <br>"
-				else
-					dat += " [SPAN_BOLD("[SPAN_RED("(FAILED)")]")] <br>"
-			dat += "<br>"
-
-		to_world("[dat]")
-
 
 /datum/game_mode/proc/declare_completion_announce_xenomorphs()
 	set waitfor = 0
-	sleep(SECONDS_2)
+	sleep(2 SECONDS)
 	if(LAZYLEN(xenomorphs) || LAZYLEN(dead_queens))
 		var/dat = "<br>"
 		dat += SPAN_ROUNDBODY("<br>The xenomorph Queen(s) were:")
@@ -95,7 +74,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 
 /datum/game_mode/proc/declare_completion_announce_predators()
 	set waitfor = 0
-	sleep(SECONDS_2)
+	sleep(2 SECONDS)
 	if(predators.len)
 		var/dat = "<br>"
 		dat += SPAN_ROUNDBODY("<br>The Predators were:")
@@ -112,7 +91,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 
 /datum/game_mode/proc/declare_completion_announce_medal_awards()
 	set waitfor = 0
-	sleep(SECONDS_2)
+	sleep(2 SECONDS)
 	if(medal_awards.len)
 		var/dat = "<br>"
 		dat +=  SPAN_ROUNDBODY("<br>Medal Awards:")
@@ -124,7 +103,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 
 /datum/game_mode/proc/declare_random_fact()
 	set waitfor = 0
-	sleep(SECONDS_2)
+	sleep(2 SECONDS)
 	var/fact_type = pick(subtypesof(/datum/random_fact))
 	var/datum/random_fact/fact = new fact_type()
 	fact.announce()
@@ -150,7 +129,7 @@ of predators), but can be added to include variant game modes (like humans vs. h
 	for(i in round_fog)
 		round_fog -= i
 		qdel(i)
-		sleep(1)
+		CHECK_TICK
 	round_fog = null
 
 // Open podlocks with the given ID if they aren't already opened.
@@ -164,10 +143,10 @@ of predators), but can be added to include variant game modes (like humans vs. h
 var/peakHumans = 1
 var/peakXenos = 1
 
-var/lastXenoBioscan = MINUTES_30//30 minutes in (we will add to that!)
-var/lastHumanBioscan = MINUTES_30//30 minutes in (we will add to that!)
-var/nextPredatorBioscan = MINUTES_5//5 minutes in
-var/nextAdminBioscan = MINUTES_30//30 minutes in
+var/lastXenoBioscan = 30 MINUTES//30 minutes in (we will add to that!)
+var/lastHumanBioscan = 30 MINUTES//30 minutes in (we will add to that!)
+var/nextPredatorBioscan = 5 MINUTES//5 minutes in
+var/nextAdminBioscan = 30 MINUTES//30 minutes in
 
 /datum/game_mode/proc/select_lz(var/obj/structure/machinery/computer/shuttle_control/console)
 	if(active_lz)
@@ -194,8 +173,10 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 
 	var/larva = 0
 	//Count all larva across all hives
-	for(var/datum/hive_status/hs in GLOB.hive_datum)
-		larva += hs.stored_larva
+	var/datum/hive_status/HS
+	for(var/hivenumber in GLOB.hive_datum)
+		HS = GLOB.hive_datum[hivenumber]
+		larva += HS.stored_larva
 
 	//Keeping track of peak numbers to determine when a side is "losing"
 	if (peakHumans < length(GLOB.alive_human_list))
@@ -205,7 +186,7 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 
 	for(var/mob/M in GLOB.living_xeno_list)
 		var/area/A = get_area(M)
-		if(A && A.flags_atom & AREA_AVOID_BIOSCAN || (A.flags_atom & AREA_AVOID_BIOSCAN && A.flags_atom & AREA_NOTUNNEL))
+		if(A?.flags_area & AREA_AVOID_BIOSCAN)
 			numXenosShip++
 			continue
 		var/atom/where = M
@@ -233,7 +214,7 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 			hostsShipLocations += where
 
 	if (world.time > nextAdminBioscan)
-		nextAdminBioscan += MINUTES_30//every 30 minutes, straight
+		nextAdminBioscan += 30 MINUTES//every 30 minutes, straight
 		//Message the admins first before we tweak the numbers
 		message_staff("A bioscan/Queen Mother message has completed. Humans: [numHostsPlanet] on the planet and [numHostsShip] on the ship. Xenos: [numXenosPlanet] on the planet and [numXenosShip] on the ship.")
 
@@ -252,7 +233,7 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 		RandomXenosShipLocation = get_area_name(pick(xenosShipLocations))
 
 	if(world.time > nextPredatorBioscan)
-		nextPredatorBioscan += MINUTES_5//5 minutes, straight
+		nextPredatorBioscan += 5 MINUTES//5 minutes, straight
 		var/xeno_colony_location = "[RandomXenosPlanetLocation?", including one in [RandomXenosPlanetLocation]":""]"
 		var/xeno_ship_location = "[RandomXenosShipLocation?", including one in [RandomXenosShipLocation].":"."]"
 		var/marine_colony_location = "[RandomHostsPlanetLocation?", including one in [RandomHostsPlanetLocation].":"."]"
@@ -277,8 +258,8 @@ var/nextAdminBioscan = MINUTES_30//30 minutes in
 	//So if you have peak 30 xenos, if you still have 30 xenos, humans will have to wait 30 minutes between bioscans
 	//But if you fall down to 15 xenos, humans will get them every 15 minutes
 	//But never more often than 5 minutes apart
-	var/nextXenoBioscan = lastXenoBioscan + max(MINUTES_30 * length(GLOB.alive_human_list) / peakHumans, MINUTES_5)
-	var/nextHumanBioscan = lastHumanBioscan + max(MINUTES_30 * length(GLOB.living_xeno_list) / peakXenos, MINUTES_5)
+	var/nextXenoBioscan = lastXenoBioscan + max(30 MINUTES * length(GLOB.alive_human_list) / peakHumans, 5 MINUTES)
+	var/nextHumanBioscan = lastHumanBioscan + max(30 MINUTES * length(GLOB.living_xeno_list) / peakXenos, 5 MINUTES)
 
 	if(world.time > nextXenoBioscan)
 		lastXenoBioscan = world.time
@@ -329,11 +310,11 @@ Only checks living mobs with a client attached.
 			else
 				var/area/A = get_area(M)
 				if(isXeno(M))
-					if (A.flags_atom & AREA_AVOID_BIOSCAN)
+					if (A.flags_area & AREA_AVOID_BIOSCAN)
 						continue
 					num_xenos++
 				else if(iszombie(M))
-					if (A.flags_atom & AREA_AVOID_BIOSCAN)
+					if (A.flags_area & AREA_AVOID_BIOSCAN)
 						continue
 					num_xenos++
 

@@ -35,18 +35,8 @@
 				thermitemelt(user)
 			return
 
-	if(damage && istype(W, /obj/item/tool/weldingtool))
-		var/obj/item/tool/weldingtool/WT = W
-		if(WT.remove_fuel(0,user))
-			to_chat(user, SPAN_NOTICE("You start repairing the damage to [src]."))
-			playsound(src, 'sound/items/Welder.ogg', 25, 1)
-			if(do_after(user, max(5, damage / 5 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION)), INTERRUPT_ALL, BUSY_ICON_FRIENDLY) && WT && WT.isOn())
-				to_chat(user, SPAN_NOTICE("You finish repairing the damage to [src]."))
-				take_damage(-damage)
-			return
-		else
-			to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
-			return
+	if(try_weldingtool_usage(W, user) || try_nailgun_usage(W, user))
+		return
 
 
 	//DECONSTRUCTION
@@ -57,7 +47,7 @@
 				playsound(src, 'sound/items/Welder.ogg', 25, 1)
 				user.visible_message(SPAN_NOTICE("[user] begins slicing through the outer plating."),
 				SPAN_NOTICE("You begin slicing through the outer plating."))
-				if(!WT || !WT.isOn())	
+				if(!WT || !WT.isOn())
 					return
 				if(!do_after(user, 60 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 					return
@@ -66,7 +56,7 @@
 				return
 
 		if(WALL_STATE_SCREW)
-			if(isscrewdriver(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 				user.visible_message(SPAN_NOTICE("[user] begins removing the support lines."),
 				SPAN_NOTICE("You begin removing the support lines."))
 				playsound(src, 'sound/items/Screwdriver.ogg', 25, 1)
@@ -77,7 +67,7 @@
 				return
 
 		if(WALL_STATE_WIRECUTTER)
-			if(iswirecutter(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 				user.visible_message(SPAN_NOTICE("[user] begins uncrimping the hydraulic lines."),
 				SPAN_NOTICE("You begin uncrimping the hydraulic lines."))
 				playsound(src, 'sound/items/Wirecutter.ogg', 25, 1)
@@ -88,7 +78,7 @@
 				return
 
 		if(WALL_STATE_WRENCH)
-			if(iswrench(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 				user.visible_message(SPAN_NOTICE("[user] starts loosening the anchoring bolts securing the support rods."),
 				SPAN_NOTICE("You start loosening the anchoring bolts securing the support rods."))
 				playsound(src, 'sound/items/Ratchet.ogg', 25, 1)
@@ -99,7 +89,7 @@
 				return
 
 		if(WALL_STATE_CROWBAR)
-			if(iscrowbar(W))
+			if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 				user.visible_message(SPAN_NOTICE("[user] struggles to pry apart the connecting rods."),
 				SPAN_NOTICE("You struggle to pry apart the connecting rods."))
 				playsound(src, 'sound/items/Crowbar.ogg', 25, 1)

@@ -1,35 +1,52 @@
-/mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+/mob/Destroy()
 	GLOB.mob_list -= src
 	GLOB.dead_mob_list -= src
 	GLOB.alive_mob_list -= src
 	GLOB.player_list -= src
 
-	item_verbs = null
+	ghostize(FALSE)
 
-	if(mind)
+	item_verbs = null
+	control_object = null
+
+	if(mind) // Means ghostize failed for some reason
 		if(mind.current == src)
 			mind.current = null
 		if(mind.original == src)
 			mind.original = null
+		mind = null
 
-	QDEL_NULL(hud_used)
+	QDEL_NULL(skills)
+	QDEL_NULL_LIST(actions)
+	QDEL_NULL_LIST(viruses)
+	resistances?.Cut()
+	QDEL_LIST_ASSOC_VAL(implants)
 
-	if(open_uis)
-		for(var/datum/nanoui/ui in open_uis)
-			ui.close()
-			qdel(ui)
-		open_uis = null
+	. = ..()
 
-	interactee = null
-
-	last_damage_source = null
-	last_damage_mob = null
-
-	QDEL_NULL(mob_panel)
-
-	ghostize()
 	clear_fullscreens()
-	return ..()
+	QDEL_NULL(mob_panel)
+	QDEL_NULL_LIST(open_uis)
+
+	tgui_open_uis = null
+	buckled = null
+	skincmds = null
+	item_verbs = null
+	interactee = null
+	faction_group = null
+	lastarea = null
+	langchat_listeners = null
+	langchat_image = null
+	languages = null
+	last_damage_data = null
+	listed_turf = null
+	tile_contents = null
+	hud_list = null
+	attack_log = null
+	item_verbs = null
+	luminosity_sources = null
+
+
 
 /mob/Initialize()
 	if(!faction_group)
@@ -49,8 +66,10 @@
 		current_area.Entered(src)
 	if(!isnull(current_area) && current_area.statistic_exempt)
 		statistic_exempt = TRUE
-	prepare_huds()
 
+	set_focus(src)
+	prepare_huds()
+	langchat_make_image()
 	create_player_panel()
 
 	return ..()
@@ -70,7 +89,7 @@
 	hud_list = new
 	for(var/hud in hud_possible)
 		var/image/I = image('icons/mob/hud/hud.dmi', src, "")
-		I.appearance_flags |= RESET_COLOR
+		I.appearance_flags |= NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 		hud_list[hud] = I
 
 
@@ -79,19 +98,19 @@
 	if(!client || !client.prefs)	return
 
 	if (type)
-		if(type & 1 && (sdisabilities & BLIND || blinded) )//Vision related
+		if(type & 1 && (sdisabilities & DISABILITY_BLIND || blinded) )//Vision related
 			if (!alt)
 				return
 			else
 				msg = alt
 				type = alt_type
-		if (type & 2 && (sdisabilities & DEAF || ear_deaf))//Hearing related
+		if (type & 2 && (sdisabilities & DISABILITY_DEAF || ear_deaf))//Hearing related
 			if (!alt)
 				return
 			else
 				msg = alt
 				type = alt_type
-				if (type & 1 && (sdisabilities & BLIND))
+				if (type & 1 && (sdisabilities & DISABILITY_BLIND))
 					return
 	if(message_flags == CHAT_TYPE_OTHER || client.prefs && (message_flags & client.prefs.chat_display_preferences) > 0) // or logic between types
 		if(stat == UNCONSCIOUS)
@@ -177,7 +196,9 @@
 	. += speed
 	move_delay = .
 
-/mob/proc/Life()
+
+/mob/proc/Life(delta_time)
+	SHOULD_NOT_SLEEP(TRUE)
 	if(client == null)
 		away_timer++
 	else
@@ -218,7 +239,7 @@
 		INVOKE_ASYNC(src, .proc/equip_to_slot_timed, W, slot, redraw_mob, permanent, start_loc)
 		return TRUE
 
-	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
+	equip_to_slot(W, slot) //This proc should not ever fail.
 	if(permanent)
 		W.flags_inventory |= CANTSTRIP
 		W.flags_item |= NODROP
@@ -234,7 +255,7 @@
 /mob/proc/equip_to_slot_timed(obj/item/W, slot, redraw_mob = 1, permanent = 0, start_loc)
 	if(!do_after(src, W.time_to_equip, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		to_chat(src, "You stop putting on \the [W]")
-	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
+	equip_to_slot(W, slot) //This proc should not ever fail.
 	if(permanent)
 		W.flags_inventory |= CANTSTRIP
 		W.flags_item |= NODROP
@@ -281,6 +302,10 @@
 			else
 				client.perspective = EYE_PERSPECTIVE
 				client.eye = loc
+
+		client.mouse_pointer_icon = mouse_icon
+
+		SEND_SIGNAL(client, COMSIG_CLIENT_RESET_VIEW, A)
 	return
 
 
@@ -422,12 +447,12 @@
 				client.recalculate_move_delay()
 
 			return
-		else
-			stop_pulling()
 
 	var/mob/M
 	if(ismob(AM))
 		M = AM
+		if(!M.can_be_pulled_by(src))
+			return
 	else if(istype(AM, /obj))
 		AM.add_fingerprint(src)
 
@@ -438,6 +463,23 @@
 	var/pull_response = AM.pull_response(src)
 	if(!pull_response) // If I'm not allowed to pull you I won't. Stop here.
 		return FALSE
+
+	return do_pull(AM, lunge, no_msg)
+
+/mob/living/proc/do_pull(atom/movable/clone/AM, lunge, no_msg)
+	if(pulling)
+		stop_pulling()
+
+	if(SEND_SIGNAL(AM, COMSIG_ATTEMPT_MOB_PULL) & COMPONENT_CANCEL_MOB_PULL)
+		return
+
+	var/mob/M
+	if(ismob(AM))
+		M = AM
+		if(!M.can_be_pulled_by(src))
+			return
+	else if(istype(AM, /obj))
+		AM.add_fingerprint(src)
 
 	pulling = AM
 	AM.pulledby = src
@@ -627,6 +669,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			add_temp_pass_flags(PASS_MOB_THRU)
 			drop_l_hand()
 			drop_r_hand()
+			SEND_SIGNAL(src, COMSIG_MOB_KNOCKED_DOWN)
 		else
 			density = TRUE
 			SEND_SIGNAL(src, COMSIG_MOB_GETTING_UP)
@@ -644,7 +687,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	else if(layer == LYING_DEAD_MOB_LAYER || layer == LYING_LIVING_MOB_LAYER)
 		layer = initial(layer)
 
-	SEND_SIGNAL(src, COMSIG_MOB_POST_UPDATE_CANMOVE, canmove, laid_down ,lying)
+	SEND_SIGNAL(src, COMSIG_MOB_POST_UPDATE_CANMOVE, canmove, laid_down, lying)
 
 	return canmove
 
@@ -653,15 +696,19 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/newdir = FALSE
 	if(dir != ndir)
 		flags_atom &= ~DIRLOCK
-		dir = ndir
+		setDir(ndir)
 		newdir = TRUE
 	if(buckled && !buckled.anchored)
-		buckled.dir = ndir
+		buckled.setDir(ndir)
 		buckled.handle_rotation()
 	var/mob/living/mliv = src
 	if(istype(mliv))
 		if(newdir)
 			mliv.on_movement(0)
+
+	if(back && (back.flags_item & ITEM_OVERRIDE_NORTHFACE))
+		update_inv_back()
+
 	return 1
 
 
@@ -678,6 +725,22 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/get_species()
 	return ""
+
+/// Sets freeze if possible and wasn't already set, returning success
+/mob/proc/freeze()
+	if(frozen)
+		return FALSE
+	frozen = TRUE
+	update_canmove()
+	return TRUE
+
+/// Attempts to unfreeze mob, returning success
+/mob/proc/unfreeze()
+	if(!frozen)
+		return FALSE
+	frozen = FALSE
+	update_canmove()
+	return TRUE
 
 /mob/proc/flash_weak_pain()
 	overlay_fullscreen("pain", /obj/screen/fullscreen/pain, 1)
@@ -723,7 +786,7 @@ mob/proc/yank_out_object()
 		remove_verb(src, /mob/proc/yank_out_object)
 		return
 
-	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = tgui_input_list(usr, "What do you want to yank out?", "Embedded objects", valid_objects)
 	if(self)
 		if(get_active_hand())
 			to_chat(src, SPAN_WARNING("You need an empty hand for this!"))
@@ -948,3 +1011,33 @@ mob/proc/yank_out_object()
 /// Adds this list to the output to the stat browser
 /mob/proc/get_status_tab_items()
 	. = list()
+
+/mob/proc/get_role_name()
+	return
+
+/mob/get_vv_options()
+	. = ..()
+	. += "<option value>-----MOB-----</option>"
+	. += "<option value='?_src_=vars;mob_player_panel=\ref[src]'>Show player panel</option>"
+	. += "<option value='?_src_=vars;give_disease=\ref[src]'>Give TG-style Disease</option>"
+	. += "<option value='?_src_=vars;godmode=\ref[src]'>Toggle Godmode</option>"
+	. += "<option value='?_src_=vars;build_mode=\ref[src]'>Toggle Build Mode</option>"
+
+	. += "<option value='?_src_=vars;direct_control=\ref[src]'>Assume Direct Control</option>"
+	. += "<option value='?_src_=vars;drop_everything=\ref[src]'>Drop Everything</option>"
+
+	. += "<option value='?_src_=vars;regenerateicons=\ref[src]'>Regenerate Icons</option>"
+	. += "<option value='?_src_=vars;addlanguage=\ref[src]'>Add Language</option>"
+	. += "<option value='?_src_=vars;remlanguage=\ref[src]'>Remove Language</option>"
+	. += "<option value='?_src_=vars;addorgan=\ref[src]'>Add Organ</option>"
+	. += "<option value='?_src_=vars;remorgan=\ref[src]'>Remove Organ</option>"
+	. += "<option value='?_src_=vars;addlimb=\ref[src]'>Add Limb</option>"
+	. += "<option value='?_src_=vars;amplimb=\ref[src]'>Amputate Limb</option>"
+	. += "<option value='?_src_=vars;remlimb=\ref[src]'>Remove Limb</option>"
+
+	. += "<option value='?_src_=vars;fix_nano=\ref[src]'>Fix NanoUI</option>"
+
+	. += "<option value='?_src_=vars;addverb=\ref[src]'>Add Verb</option>"
+	. += "<option value='?_src_=vars;remverb=\ref[src]'>Remove Verb</option>"
+
+	. += "<option value='?_src_=vars;gib=\ref[src]'>Gib</option>"

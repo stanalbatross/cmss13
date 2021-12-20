@@ -18,8 +18,6 @@ var/global/datum/authority/branch/role/RoleAuthority
 #define RETURN_TO_LOBBY 2
 #define BE_XENOMORPH 3
 
-#define CHANCE_OF_PRED_ROUND 20
-
 #define NEVER_PRIORITY 	0
 #define HIGH_PRIORITY 	1
 #define MED_PRIORITY 	2
@@ -41,6 +39,10 @@ var/global/marines_assigned = 0
 	var/list/castes_by_path //Master list generated when role aithority is created, listing every caste by path.
 	var/list/castes_by_name //Master list generated when role authority is created, listing every default caste by name.
 
+	/// List of mapped roles that should be used in place of usual ones
+	var/list/role_mappings
+	var/list/default_roles
+
 	var/list/unassigned_players
 	var/list/squads
 
@@ -51,9 +53,11 @@ var/global/marines_assigned = 0
 											/datum/job/command,
 											/datum/job/civilian,
 											/datum/job/logistics,
-											/datum/job/logistics/tech,
 											/datum/job/marine,
-											/datum/job/antag)
+											/datum/job/antag,
+											/datum/job/distress,
+											/datum/job/distress/provost
+											)
 	var/squads_all[] = typesof(/datum/squad) - /datum/squad
 	var/castes_all[] = subtypesof(/datum/caste_datum)
 
@@ -77,13 +81,13 @@ var/global/marines_assigned = 0
 	for(var/caste in castes_all) //Setting up our castes.
 		var/datum/caste_datum/C = new caste()
 
-		if(!C.caste_name) //In case you forget to subtract one of those variable holder jobs.
+		if(!C.caste_type) //In case you forget to subtract one of those variable holder jobs.
 			to_world(SPAN_DEBUG("Error setting up castes, blank caste name: [C.type].</span>"))
 			log_debug("Error setting up castes, blank caste name: [C.type].")
 			continue
 
 		castes_by_path[C.type] = C
-		castes_by_name[C.caste_name] = C
+		castes_by_name[C.caste_type] = C
 
 	roles_by_path = list()
 	roles_by_name = list()
@@ -97,23 +101,7 @@ var/global/marines_assigned = 0
 			continue
 
 		roles_by_path[J.type] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
-			roles_by_name[J.title] = J
-		if(J.flags_startup_parameters & ROLE_ADD_TO_MODE)
-			roles_for_mode[J.title] = J
-
-	//TODO Come up with some dynamic method of doing this.
-	//added exception for WO, so appropriate roles would appear in prefs for WO.
-	var/list/MODE_ROLES = ROLES_REGULAR_ALL
-	if(Check_WO())
-		MODE_ROLES = ROLES_WO + ROLES_MARINES + JOB_XENOMORPH
-
-	var/list/L = new()
-	for(var/role in MODE_ROLES) //We're going to re-arrange the list for mode to look better, starting with the officers.
-		var/datum/job/J = roles_for_mode[role]
-		if(J)
-			L[J.title] = J
-	roles_for_mode = L
+		roles_by_name[J.title] = J
 
 	squads = list()
 	for(var/squad in squads_all) //Setting up our squads.
@@ -121,14 +109,6 @@ var/global/marines_assigned = 0
 		squads += S
 
 	load_whitelist()
-
-
-/datum/authority/branch/role/proc/replace_jobs(var/list/jobs)
-	//Replaces one set of jobs with another - used for WO
-	for(var/i in jobs)
-		var/datum/job/J = new i
-		roles_for_mode[J.title] = J
-		roles_by_name[J.title] = J
 
 
 /datum/authority/branch/role/proc/load_whitelist(filename = "config/role_whitelist.txt")
@@ -182,25 +162,27 @@ var/global/marines_assigned = 0
 
 /datum/authority/branch/role/proc/setup_candidates_and_roles(var/list/overwritten_roles_for_mode)
 	//===============================================================\\
-	//PART I: Initializing starting lists and such.
-	if(!roles_for_mode && !overwritten_roles_for_mode || !length(roles_for_mode) && !length(overwritten_roles_for_mode))
-		return //Can't start if this doesn't exist.
+	//PART I: Get roles relevant to the mode
 
 	var/datum/game_mode/G = SSticker.mode
-	switch(G.role_instruction)
-		if(1) //Replacing the entire list.
-			roles_for_mode = new
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(2) //Adding a role, or multiple roles, to the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode[J.title] = J
-		if(3) //Subtracting from the list.
-			for(var/i in G.roles_for_mode)
-				var/datum/job/J = roles_by_path[i]
-				roles_for_mode -= J.title
+	roles_for_mode = list()
+	for(var/role_name in G.get_roles_list())
+		var/datum/job/J = roles_by_name[role_name]
+		if(!J)
+			continue
+		roles_for_mode[role_name] = J
+
+	// Also register game mode specific mappings to standard roles
+	role_mappings = list()
+	default_roles = list()
+	if(G.role_mappings)
+		for(var/role_path in G.role_mappings)
+			var/mapped_title = G.role_mappings[role_path]
+			var/datum/job/J = roles_by_path[role_path]
+			if(!J || !roles_by_name[mapped_title])
+				continue
+			role_mappings[mapped_title] = J
+			default_roles[J.title] = mapped_title
 
 	/*===============================================================*/
 
@@ -248,8 +230,8 @@ var/global/marines_assigned = 0
 	if(istype(SJ))
 		SJ.set_spawn_positions(marines_assigned)
 
-	if(prob(CHANCE_OF_PRED_ROUND))
-		SSticker?.mode?.flags_round_type |= MODE_PREDATOR
+	if(prob(SSticker.mode.pred_round_chance))
+		SSticker.mode.flags_round_type |= MODE_PREDATOR
 		// Set predators starting amount based on marines assigned
 		var/datum/job/PJ = temp_roles_for_mode[JOB_PREDATOR]
 		if(istype(PJ))
@@ -272,7 +254,8 @@ var/global/marines_assigned = 0
 			if(GET_RANDOM_JOB)
 				roles_left = assign_random_role(M, roles_left) //We want to keep the list between assignments.
 			if(BE_MARINE)
-				assign_role(M, temp_roles_for_mode[JOB_SQUAD_MARINE]) //Should always be available, in all game modes, as a candidate. Even if it may not be a marine.
+				var/datum/job/marine_job = GET_MAPPED_ROLE(JOB_SQUAD_MARINE)
+				assign_role(M, marine_job) //Should always be available, in all game modes, as a candidate. Even if it may not be a marine.
 			if(BE_XENOMORPH)
 				assign_role(M, temp_roles_for_mode[JOB_XENOMORPH])
 			if(RETURN_TO_LOBBY)
@@ -379,7 +362,8 @@ var/global/marines_assigned = 0
 				return roles_to_iterate
 
 	//If they fail the two passes, or no regular roles are available, they become a marine regardless.
-	assign_role(M,roles_for_mode[JOB_SQUAD_MARINE])
+	var/datum/job/marine_job = GET_MAPPED_ROLE(JOB_SQUAD_MARINE)
+	assign_role(M, marine_job)
 
 /datum/authority/branch/role/proc/assign_role(mob/new_player/M, datum/job/J, latejoin = FALSE)
 	if(ismob(M) && istype(J))
@@ -452,6 +436,12 @@ var/global/marines_assigned = 0
 				else
 					to_chat(user, "There are no [J.title] slots occupied in [sq.name] Squad.")
 					return
+			if(JOB_SQUAD_RTO)
+				if(sq.num_rto > 0)
+					sq.num_rto--
+				else
+					to_chat(user, "There are no [J.title] slots occupied in [sq.name] Squad.")
+					return
 			if(JOB_SQUAD_LEADER)
 				if(sq.num_leaders > 0)
 					sq.num_leaders--
@@ -464,8 +454,6 @@ var/global/marines_assigned = 0
 
 /datum/authority/branch/role/proc/modify_role(datum/job/J, amount)
 	if(!istype(J))
-		return 0
-	if(!J.allow_additional) //if job does not allow additional joins - cancel. Should be caught above
 		return 0
 	if(amount <= J.current_positions) //we should be able to slot everyone
 		return 0
@@ -535,7 +523,7 @@ var/global/marines_assigned = 0
 	if(J.flags_startup_parameters & ROLE_ADD_TO_SQUAD) //Are we a muhreen? Randomize our squad. This should go AFTER IDs. //TODO Robust this later.
 		randomize_squad(H)
 
-	if(Check_WO() && job_squad_roles.Find(H.job))	//activates self setting proc for marine headsets for WO
+	if(Check_WO() && job_squad_roles.Find(GET_DEFAULT_ROLE(H.job)))	//activates self setting proc for marine headsets for WO
 		var/datum/game_mode/whiskey_outpost/WO = SSticker.mode
 		WO.self_set_headset(H)
 
@@ -557,7 +545,7 @@ var/global/marines_assigned = 0
 
 	for(var/i= 1 to squads_copy.len)
 		var/datum/squad/S = pick_n_take(squads_copy)
-		if (S.usable)
+		if (S.roundstart && S.usable)
 			mixed_squads += S
 
 	var/datum/squad/lowest = pick(mixed_squads)
@@ -629,7 +617,7 @@ var/global/marines_assigned = 0
 		switch(H.job)
 			if("Squad Engineer")
 				for(var/datum/squad/S in mixed_squads)
-					if(S.usable)
+					if(S.usable && S.roundstart)
 						if(!skip_limit && S.num_engineers >= S.max_engineers) continue
 						if(pref_squad_name && S.name == pref_squad_name)
 							S.put_marine_in_squad(H) //fav squad has a spot for us, no more searching needed.
@@ -642,7 +630,7 @@ var/global/marines_assigned = 0
 
 			if("Squad Medic")
 				for(var/datum/squad/S in mixed_squads)
-					if(S.usable)
+					if(S.usable && S.roundstart)
 						if(!skip_limit && S.num_medics >= S.max_medics) continue
 						if(pref_squad_name && S.name == pref_squad_name)
 							S.put_marine_in_squad(H) //fav squad has a spot for us.
@@ -655,7 +643,7 @@ var/global/marines_assigned = 0
 
 			if("Squad Leader")
 				for(var/datum/squad/S in mixed_squads)
-					if(S.usable)
+					if(S.usable && S.roundstart)
 						if(!skip_limit && S.num_leaders >= S.max_leaders) continue
 						if(pref_squad_name && S.name == pref_squad_name)
 							S.put_marine_in_squad(H) //fav squad has a spot for us.
@@ -668,7 +656,7 @@ var/global/marines_assigned = 0
 
 			if("Squad Specialist")
 				for(var/datum/squad/S in mixed_squads)
-					if(S.usable)
+					if(S.usable && S.roundstart)
 						if(!skip_limit && S.num_specialists >= S.max_specialists) continue
 						if(pref_squad_name && S.name == pref_squad_name)
 							S.put_marine_in_squad(H) //fav squad has a spot for us.
@@ -679,9 +667,22 @@ var/global/marines_assigned = 0
 						else if(S.num_specialists < lowest.num_specialists)
 							lowest = S
 
+			if("Squad RT Operator")
+				for(var/datum/squad/S in mixed_squads)
+					if(S.usable && S.roundstart)
+						if(!skip_limit && S.num_rto >= S.max_rto) continue
+						if(pref_squad_name && S.name == pref_squad_name)
+							S.put_marine_in_squad(H) //fav squad has a spot for us.
+							return
+
+						if(!lowest)
+							lowest = S
+						else if(S.num_rto < lowest.num_rto)
+							lowest = S
+
 			if("Squad Smartgunner")
 				for(var/datum/squad/S in mixed_squads)
-					if(S.usable)
+					if(S.usable && S.roundstart)
 						if(!skip_limit && S.num_smartgun >= S.max_smartgun) continue
 						if(pref_squad_name && S.name == pref_squad_name)
 							S.put_marine_in_squad(H) //fav squad has a spot for us.
@@ -723,3 +724,25 @@ var/global/marines_assigned = 0
 		return status_limit
 
 	return desired_status
+
+/proc/transfer_marine_to_squad(var/mob/living/carbon/human/transfer_marine, var/datum/squad/new_squad, var/datum/squad/old_squad, var/obj/item/card/id/ID)
+	if(old_squad)
+		if(transfer_marine.assigned_fireteam)
+			if(old_squad.fireteam_leaders["FT[transfer_marine.assigned_fireteam]"] == transfer_marine)
+				old_squad.unassign_ft_leader(transfer_marine.assigned_fireteam, TRUE, FALSE)
+			old_squad.unassign_fireteam(transfer_marine, TRUE)	//reset fireteam assignment
+		old_squad.remove_marine_from_squad(transfer_marine, ID)
+		old_squad.update_free_mar()
+		old_squad.update_squad_ui()
+	. = new_squad.put_marine_in_squad(transfer_marine, ID)
+	if(.)
+		new_squad.update_free_mar()
+		new_squad.update_squad_ui()
+
+		var/marine_ref = WEAKREF(transfer_marine)
+		for(var/datum/data/record/t in GLOB.data_core.general) //we update the crew manifest
+			if(t.fields["ref"] == marine_ref)
+				t.fields["squad"] = new_squad.name
+				break
+
+		transfer_marine.hud_set_squad()

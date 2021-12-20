@@ -1,12 +1,12 @@
 /mob/living/carbon/human/var/cpr_cooldown
 /mob/living/carbon/human/attack_hand(mob/living/carbon/human/M)
-	..()
+	if(..())
+		return TRUE
 
 	if((M != src) && check_shields(0, M.name))
 		visible_message(SPAN_DANGER("<B>[M] attempted to touch [src]!</B>"), null, null, 5)
 		return 0
 
-	M.next_move += 7 //Adds some lag to the 'attack'. This will add up to 10
 	switch(M.a_intent)
 		if(INTENT_HELP)
 
@@ -50,13 +50,13 @@
 						SPAN_NOTICE("<b>[M]</b> performs <b>CPR</b> on <b>[src]</b>."))
 				if(is_revivable() && stat == DEAD)
 					if(cpr_cooldown < world.time)
-						revive_grace_period += SECONDS_7
+						revive_grace_period += 7 SECONDS
 						M.visible_message(SPAN_NOTICE("<b>[M]</b> performs <b>CPR</b> on <b>[src]</b>."),
 							SPAN_HELPFUL("You perform <b>CPR</b> on <b>[src]</b>."))
 					else
 						M.visible_message(SPAN_NOTICE("<b>[M]</b> fails to perform CPR on <b>[src]</b>."),
 							SPAN_HELPFUL("You <b>fail</b> to perform <b>CPR</b> on <b>[src]</b>. Incorrect rhythm. Do it <b>slower</b>."))
-					cpr_cooldown = world.time + SECONDS_7
+					cpr_cooldown = world.time + 7 SECONDS
 
 			return 1
 
@@ -81,8 +81,7 @@
 			if(!attack.is_usable(M)) attack = M.species.secondary_unarmed
 			if(!attack.is_usable(M)) return
 
-			M.last_damage_source = "fisticuffs"
-			M.last_damage_mob = src
+			last_damage_data = create_cause_data("fisticuffs", src)
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [key_name(src)]</font>")
 			attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [key_name(M)]</font>")
 			msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)] in [get_area(src)] ([src.loc.x],[src.loc.y],[src.loc.z]).", src.loc.x, src.loc.y, src.loc.z)
@@ -90,29 +89,21 @@
 			M.animation_attack_on(src)
 			M.flick_attack_overlay(src, "punch")
 
-			var/max_dmg = 5
+			var/extra_cqc_dmg = 0 //soft maximum of 5, this damage is added onto the final value depending on how much cqc skill you have
 			if(M.skills)
-				max_dmg += M.skills.get_skill_level(SKILL_CQC)
-			var/damage = rand(0, max_dmg)
-			if(!damage)
-				playsound(loc, attack.miss_sound, 25, 1)
-				visible_message(SPAN_DANGER("[M] tried to [pick(attack.attack_verb)] [src]!"), null, null, 5)
-				return
+				extra_cqc_dmg = M.skills?.get_skill_level(SKILL_CQC)
+			var/raw_damage = 0 //final value, gets absorbed by the armor and then deals the leftover to the mob
 
-			var/obj/limb/affecting = get_limb(ran_zone(M.zone_selected))
+			var/obj/limb/affecting = get_limb(rand_zone(M.zone_selected, 70))
 			var/armor = getarmor(affecting, ARMOR_MELEE)
 
 			playsound(loc, attack.attack_sound, 25, 1)
 
 			visible_message(SPAN_DANGER("[M] [pick(attack.attack_verb)]ed [src]!"), null, null, 5)
-			if(damage >= 5 && prob(50))
-				visible_message(SPAN_DANGER("[M] has weakened [src]!"), null, null, 5)
-				apply_effect(3, WEAKEN)
 
-			damage += attack.damage
-			damage = armor_damage_reduction(GLOB.marine_melee, damage, armor, 0) // no penetration frm punches
-			apply_damage(damage, BRUTE, affecting, sharp=attack.sharp, edge=attack.edge)
-
+			raw_damage = attack.damage + extra_cqc_dmg
+			var/final_damage = armor_damage_reduction(GLOB.marine_melee, raw_damage, armor, FALSE) // no penetration from punches
+			apply_damage(final_damage, BRUTE, affecting, sharp=attack.sharp, edge = attack.edge)
 
 		if(INTENT_DISARM)
 			if(M == src)
@@ -131,16 +122,16 @@
 				w_uniform.add_fingerprint(M)
 
 			//Accidental gun discharge
-			if(!skillcheck(M, SKILL_CQC, SKILL_CQC_MP))
-				if (istype(r_hand,/obj/item/weapon/gun) || istype(l_hand,/obj/item/weapon/gun))
+			if(!skillcheck(M, SKILL_CQC, SKILL_CQC_SKILLED))
+				if (isgun(r_hand) || isgun(l_hand))
 					var/obj/item/weapon/gun/W = null
 					var/chance = 0
 
-					if (istype(l_hand,/obj/item/weapon/gun))
+					if (isgun(l_hand))
 						W = l_hand
 						chance = hand ? 40 : 20
 
-					if (istype(r_hand,/obj/item/weapon/gun))
+					if (isgun(r_hand))
 						W = r_hand
 						chance = !hand ? 40 : 20
 
@@ -241,42 +232,74 @@
 	SPAN_NOTICE("You check yourself for injuries."), null, 3)
 
 	for(var/obj/limb/org in limbs)
-		var/status = ""
+		var/list/status = list()
 		var/brutedamage = org.brute_dam
 		var/burndamage = org.burn_dam
 		if(org.status & LIMB_DESTROYED)
-			status = "MISSING!"
+			status += "MISSING!"
+		else if(org.status & LIMB_ROBOT)
+			switch(brutedamage)
+				if(1 to 20)
+					status += "dented"
+				if(20 to 40)
+					status += "battered"
+				if(40 to INFINITY)
+					status += "mangled"
+
+			switch(burndamage)
+				if(1 to 10)
+					status += "singed"
+				if(10 to 40)
+					status += "scorched"
+				if(40 to INFINITY)
+					status += "charred"
+
 		else
 			if(org.status & LIMB_MUTATED)
-				if(status)
-					status += " and "
-				status += "weirdly shapen"
+				status += "weirdly shaped"
 			if(halloss > 0)
-				if(status)
-					status += " and "
 				status += "tingling"
-			if(brutedamage > 0)
-				if(status)
-					status += " and "
-				if(brutedamage > 40)
-					status += "mangled"
-				else if(brutedamage > 20)
-					status += "battered"
-				else
+			switch(brutedamage)
+				if(1 to 20)
 					status += "bruised"
-			if(burndamage > 0)
-				if(status)
-					status += " and "
-				if(burndamage > 40)
-					status += "peeling away"
-				else if(burndamage > 10)
-					status += "blistered"
-				else
+				if(20 to 40)
+					status += "battered"
+				if(40 to INFINITY)
+					status += "mangled"
+
+			switch(burndamage)
+				if(1 to 10)
 					status += "numb"
+				if(10 to 40)
+					status += "blistered"
+				if(40 to INFINITY)
+					status += "peeling away"
 
-		if(!status)
-			status = "OK"
-		if(org.status & LIMB_SPLINTED)
-			status += " <b>(SPLINTED)</b>"
+		if(org.get_incision_depth()) //Unindented because robotic and severed limbs may also have surgeries performed upon them.
+			status += "cut open"
 
-		to_chat(src, "\t My [org.display_name] is [status=="OK"?SPAN_NOTICE(status):SPAN_WARNING(status)]")
+		for(var/datum/effects/bleeding/external/E in org.bleeding_effects_list)
+			status += "bleeding"
+			break
+
+		var/limb_surgeries = org.get_active_limb_surgeries()
+		if(limb_surgeries)
+			status += "undergoing [limb_surgeries]"
+
+		if(!length(status))
+			status += "OK"
+
+		var/postscript
+		if(org.status & LIMB_UNCALIBRATED_PROSTHETIC)
+			postscript += " <b>(NONFUNCTIONAL)</b>"
+		if(org.status & LIMB_BROKEN)
+			postscript += " <b>(BROKEN)</b>"
+		if(org.status & LIMB_SPLINTED_INDESTRUCTIBLE)
+			postscript += " <b>(NANOSPLINTED)</b>"
+		else if(org.status & LIMB_SPLINTED)
+			postscript += " <b>(SPLINTED)</b>"
+
+		if(postscript)
+			to_chat(src, "\t My [org.display_name] is [SPAN_WARNING("[english_list(status, final_comma_text = ",")].[postscript]")]")
+		else
+			to_chat(src, "\t My [org.display_name] is [status[1] == "OK" ? SPAN_NOTICE("OK.") : SPAN_WARNING("[english_list(status, final_comma_text = ",")].")]")

@@ -33,7 +33,7 @@
 
 /obj/item/toy/deck/uno
 	name = "deck of UNO cards"
-	desc = "A simple deck of the Weston-Yamada classic UNO playing cards."
+	desc = "A simple deck of the Weyland-Yutani classic UNO playing cards."
 	icon_state = "deck_uno"
 	base_icon = "deck_uno"
 	max_cards = 108
@@ -190,7 +190,7 @@
 			players += player
 	//players -= usr
 
-	var/mob/living/M = input("Who do you wish to deal a card?") as null|anything in players
+	var/mob/living/M = tgui_input_list(usr, "Who do you wish to deal a card?", "Deal card", players)
 	if(!usr || QDELETED(src) || !Adjacent(usr) || !M || QDELETED(M)) return
 
 	if(!cards.len)
@@ -215,7 +215,8 @@
 		user.visible_message("\The [user] deals a card to \the [target].")
 	H.throw_atom(get_step(target,target.dir), 10, SPEED_VERY_FAST, H)
 
-/obj/item/toy/deck/attack_self(var/mob/user as mob)
+/obj/item/toy/deck/attack_self(var/mob/user)
+	..()
 	var/list/newcards = list()
 	while(cards.len)
 		var/datum/playingcard/P = pick(cards)
@@ -315,7 +316,7 @@
 	var/list/to_discard = list()
 	for(var/datum/playingcard/P in cards)
 		to_discard[P.name] = P
-	var/discarding = input("Which card do you wish to put down?") as null|anything in to_discard
+	var/discarding = tgui_input_list(usr, "Which card do you wish to put down?", "Discard card", to_discard)
 
 	if(!discarding || !usr || QDELETED(src) || loc != usr) return
 
@@ -365,7 +366,7 @@
 	var/list/to_pick_up = list()
 	for(var/datum/playingcard/P in cards)
 		to_pick_up[P.name] = P
-	var/picking_up = input("Which card do you wish to pick up?") as null|anything in to_pick_up
+	var/picking_up = tgui_input_list(usr, "Which card do you wish to pick up?", "Take a card", to_pick_up)
 
 	if(!picking_up || !usr || QDELETED(src)) return
 
@@ -406,7 +407,8 @@
 		src.update_icon()
 
 
-/obj/item/toy/handcard/attack_self(var/mob/user as mob)
+/obj/item/toy/handcard/attack_self(var/mob/user)
+	..()
 	concealed = !concealed
 	update_icon()
 	user.visible_message("\The [user] [concealed ? "conceals" : "reveals"] their hand.")

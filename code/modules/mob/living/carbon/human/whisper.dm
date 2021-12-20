@@ -49,7 +49,7 @@
 
 	// Mute disability
 	//TODO: handle_speech_problems
-	if (src.sdisabilities & MUTE)
+	if (src.sdisabilities & DISABILITY_MUTE)
 		return
 
 	//TODO: handle_speech_problems
@@ -94,6 +94,7 @@
 	//now mobs
 	var/speech_bubble_test = say_test(message)
 	var/image/speech_bubble = image('icons/mob/hud/talk.dmi',src,"h[speech_bubble_test]")
+	speech_bubble.appearance_flags = NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 
 	var/not_dead_speaker = (stat != DEAD)
 	for(var/mob/M in listening)
@@ -116,8 +117,6 @@
 				if(M.client) M.client.images -= speech_bubble
 			for(var/mob/M in eavesdropping)
 				if(M.client) M.client.images -= speech_bubble
-		qdel(speech_bubble)
-
 
 	if (watching.len)
 		var/rendered = "<span class='game say'><span class='name'>[src.name]</span> whispers something.</span>"

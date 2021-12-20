@@ -11,30 +11,31 @@
 	config_tag = "Whiskey Outpost"
 	required_players 		= 0
 	xeno_bypass_timer 		= 1
-	role_instruction		= 1
-	roles_for_mode = list(/datum/job/command/commander/whiskey,
-					/datum/job/command/executive/whiskey,
-					/datum/job/civilian/synthetic/whiskey,
-					/datum/job/command/warrant/whiskey,
-					/datum/job/command/bridge/whiskey,
-					/datum/job/command/tank_crew/whiskey,
-					/datum/job/command/police/whiskey,
-					/datum/job/command/pilot/whiskey,
-					/datum/job/logistics/requisition/whiskey,
-					/datum/job/civilian/professor/whiskey,
-					/datum/job/civilian/doctor/whiskey,
-					/datum/job/civilian/researcher/whiskey,
-					/datum/job/logistics/engineering/whiskey,
-					/datum/job/logistics/tech/maint/whiskey,
-					/datum/job/logistics/tech/cargo/whiskey,
-					/datum/job/civilian/liaison/whiskey,
-					/datum/job/marine/leader/equipped/whiskey,
-					/datum/job/marine/specialist/equipped/whiskey,
-					/datum/job/marine/smartgunner/equipped/whiskey,
-					/datum/job/marine/medic/equipped/whiskey,
-					/datum/job/marine/engineer/equipped/whiskey,
-					/datum/job/marine/standard/equipped/whiskey
-)
+	flags_round_type = MODE_NEW_SPAWN
+	role_mappings = list(
+					/datum/job/command/commander/whiskey = JOB_CO,
+					/datum/job/command/executive/whiskey = JOB_XO,
+					/datum/job/civilian/synthetic/whiskey = JOB_SYNTH,
+					/datum/job/command/warrant/whiskey = JOB_CHIEF_POLICE,
+					/datum/job/command/bridge/whiskey = JOB_SO,
+					/datum/job/command/tank_crew/whiskey = JOB_CREWMAN,
+					/datum/job/command/police/whiskey = JOB_POLICE,
+					/datum/job/command/pilot/whiskey = JOB_PILOT,
+					/datum/job/logistics/requisition/whiskey = JOB_CHIEF_REQUISITION,
+					/datum/job/civilian/professor/whiskey = JOB_CMO,
+					/datum/job/civilian/doctor/whiskey = JOB_DOCTOR,
+					/datum/job/civilian/researcher/whiskey = JOB_RESEARCHER,
+					/datum/job/logistics/engineering/whiskey = JOB_CHIEF_ENGINEER,
+					/datum/job/logistics/tech/maint/whiskey = JOB_MAINT_TECH,
+					/datum/job/logistics/cargo/whiskey = JOB_CARGO_TECH,
+					/datum/job/civilian/liaison/whiskey = JOB_CORPORATE_LIAISON,
+					/datum/job/marine/leader/equipped/whiskey = JOB_SQUAD_LEADER,
+					/datum/job/marine/specialist/equipped/whiskey = JOB_SQUAD_SPECIALIST,
+					/datum/job/marine/smartgunner/equipped/whiskey = JOB_SQUAD_SMARTGUN,
+					/datum/job/marine/medic/equipped/whiskey = JOB_SQUAD_MEDIC,
+					/datum/job/marine/engineer/equipped/whiskey = JOB_SQUAD_ENGI,
+					/datum/job/marine/standard/equipped/whiskey = JOB_SQUAD_MARINE
+	)
 
 
 	latejoin_larva_drop = 0 //You never know
@@ -45,7 +46,7 @@
 	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
-	var/spawn_next_wave = MINUTES_10 / SECONDS_2 //Spawn first batch at ~10 minutes (we divide it by the game ticker time of 2 seconds)
+	var/spawn_next_wave = 10 MINUTES //Spawn first batch at ~10 minutes (we divide it by the game ticker time of 2 seconds)
 	var/xeno_wave = 1 //Which wave is it
 
 	var/wave_ticks_passed = 0 //Timer for xeno waves
@@ -60,7 +61,7 @@
 			//This will get populated with spawn_xenos() proc
 	var/list/spawnxeno = list()
 
-	var/next_supply = MINUTES_1 //At which wave does the next supply drop come?
+	var/next_supply = 1 MINUTES //At which wave does the next supply drop come?
 
 	var/ticks_passed = 0
 	var/lobby_time = 0 //Lobby time does not count for marine 1h win condition
@@ -72,6 +73,10 @@
 	var/list/whiskey_outpost_waves = list()
 
 	hardcore = TRUE
+	votable = FALSE // not fun
+
+/datum/game_mode/whiskey_outpost/get_roles_list()
+	return ROLES_WO
 
 /datum/game_mode/whiskey_outpost/announce()
 	return 1
@@ -112,7 +117,7 @@
 				spawn_player(H)
 	sleep(10)
 	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
-	to_world(SPAN_ROUNDBODY("It is the year [game_year - 5] on the planet LV-624, five years before the arrival of the USS Almayer and the 7th 'Falling Falcons' Battalion in the sector"))
+	to_world(SPAN_ROUNDBODY("It is the year [game_year - 5] on the planet LV-624, five years before the arrival of the USS Almayer and the 2nd 'Falling Falcons' Battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
 	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
 	to_world(SPAN_ROUNDBODY("With casualties mounting and supplies running thin, the Dust Raiders at [SSmapping.configs[GROUND_MAP].map_name] must survive for an hour to alert the rest of their battalion in the sector"))
@@ -132,27 +137,24 @@
 		//Cleaning stuff more aggresively
 		SSitem_cleanup.start_processing_time = 0
 		SSitem_cleanup.percentage_of_garbage_to_delete = 1.0
-		SSitem_cleanup.wait = MINUTES_1
-		SSitem_cleanup.next_fire = MINUTES_1
+		SSitem_cleanup.wait = 1 MINUTES
+		SSitem_cleanup.next_fire = 1 MINUTES
 		spawn(0)
 			//Deleting Almayer, for performance!
 			SSitem_cleanup.delete_almayer()
-	if(SSdefcon)
-		//Don't need DEFCON
-		SSdefcon.wait = MINUTES_30
 	if(SSxenocon)
 		//Don't need XENOCON
-		SSxenocon.wait = MINUTES_30
+		SSxenocon.wait = 30 MINUTES
 
 
 //PROCCESS
-/datum/game_mode/whiskey_outpost/process()
+/datum/game_mode/whiskey_outpost/process(delta_time)
 	. = ..()
 	checkwin_counter++
 	ticks_passed++
 	wave_ticks_passed++
 
-	if(wave_ticks_passed >= spawn_next_wave)
+	if(wave_ticks_passed >= (spawn_next_wave/(delta_time SECONDS)))
 		if(count_xenos() < 50)//Checks braindead too, so we don't overpopulate! Also make sure its less than twice us in the world, so we advance waves/get more xenos the more marines survive.
 			wave_ticks_passed = 0
 			spawn_next_wo_wave = TRUE
@@ -168,7 +170,7 @@
 
 	if(world.time > next_supply)
 		place_whiskey_outpost_drop()
-		next_supply += MINUTES_2
+		next_supply += 2 MINUTES
 
 	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
 		if(!finished && round_should_check_for_win)
@@ -201,13 +203,21 @@
 
 	if(C[1] == 0)
 		finished = 1 //Alien win
-	else if(world.time > HOURS_1 + MINUTES_20 + lobby_time + initial(spawn_next_wave) + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
+	else if(world.time > 1 HOURS + 20 MINUTES + lobby_time + initial(spawn_next_wave) + randomovertime)//one hour or so, plus lobby time, plus the setup time marines get
 		finished = 2 //Marine win
 
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
-	enter_allowed = 0
+	for(var/i in RoleAuthority.roles_by_name)
+		var/datum/job/J = RoleAuthority.roles_by_name[i]
+
+		// If the job has unlimited job slots, We set the amount of slots to the amount it has at the moment this is called
+		if (J.spawn_positions < 0)
+			J.spawn_positions = J.current_positions
+			J.total_positions = J.current_positions
+		J.current_positions = J.get_total_positions(TRUE)
 	to_world("<B>New players may no longer join the game.</B>")
 	message_staff("Wave one has begun. Disabled new player game joining.")
+	message_staff("Wave one has begun. Disabled new player game joining except for replacement of cryoed marines.")
 	world.update_status()
 
 /datum/game_mode/whiskey_outpost/count_xenos()//Counts braindead too
@@ -220,8 +230,8 @@
 	return xeno_count
 
 /datum/game_mode/whiskey_outpost/proc/pickovertime()
-	var/randomtime = ((rand(0,6)+rand(0,6)+rand(0,6)+rand(0,6))*SECONDS_50)
-	var/maxovertime = MINUTES_20
+	var/randomtime = ((rand(0,6)+rand(0,6)+rand(0,6)+rand(0,6))*50 SECONDS)
+	var/maxovertime = 20 MINUTES
 	if (randomtime >= maxovertime)
 		return maxovertime
 	return randomtime
@@ -245,21 +255,27 @@
 		log_game("Round end result - xenos won")
 		to_world("<span class='round_header'>The Xenos have succesfully defended their hive from colonization.</span>")
 		to_world(SPAN_ROUNDBODY("Well done, you've secured LV-624 for the hive!"))
-		to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Tychon's Rift sector, with the arrival of the 7th 'Falling Falcons' Battalion and the USS Almayer."))
+		to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Tychon's Rift sector, with the arrival of the 2nd 'Falling Falcons' Battalion and the USS Almayer."))
 		to_world(SPAN_ROUNDBODY("The xenomorph hive on LV-624 remains unthreatened until then.."))
 		world << sound('sound/misc/Game_Over_Man.ogg')
 		if(round_statistics)
 			round_statistics.round_result = MODE_INFESTATION_X_MAJOR
+			if(round_statistics.current_map)
+				round_statistics.current_map.total_xeno_victories += 1
+				round_statistics.current_map.total_xeno_majors += 1
 
 	else if(finished == 2)
 		log_game("Round end result - marines won")
 		to_world("<span class='round_header'>Against the onslaught, the marines have survived.</span>")
 		to_world(SPAN_ROUNDBODY("The signal rings out to the USS Alistoun, and Dust Raiders stationed elsewhere in Tychon's Rift begin to converge on LV-624."))
 		to_world(SPAN_ROUNDBODY("Eventually, the Dust Raiders secure LV-624 and the entire Tychon's Rift sector in 2182, pacifiying it and establishing peace in the sector for decades to come."))
-		to_world(SPAN_ROUNDBODY("The USS Almayer and the 7th 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
+		to_world(SPAN_ROUNDBODY("The USS Almayer and the 2nd 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
 		world << sound('sound/misc/hell_march.ogg')
 		if(round_statistics)
 			round_statistics.round_result = MODE_INFESTATION_M_MAJOR
+			if(round_statistics.current_map)
+				round_statistics.current_map.total_marine_victories += 1
+				round_statistics.current_map.total_marine_majors += 1
 
 	else
 		log_game("Round end result - no winners")
@@ -305,9 +321,9 @@
 				randomitems = list(/obj/item/clothing/head/helmet/marine,
 								/obj/item/clothing/head/helmet/marine,
 								/obj/item/clothing/head/helmet/marine,
-								/obj/item/clothing/suit/storage/marine,
-								/obj/item/clothing/suit/storage/marine,
-								/obj/item/clothing/suit/storage/marine,
+								/obj/item/clothing/suit/storage/marine/medium,
+								/obj/item/clothing/suit/storage/marine/medium,
+								/obj/item/clothing/suit/storage/marine/medium,
 								/obj/item/clothing/head/helmet/marine/tech,
 								/obj/item/clothing/head/helmet/marine/medic,
 								/obj/item/clothing/under/marine/medic,
@@ -519,7 +535,10 @@
 	var/supply_drop = 0 //0 = Regular ammo, 1 = Rocket, 2 = Smartgun, 3 = Sniper, 4 = Explosives + GL
 
 /obj/item/device/whiskey_supply_beacon/attack_self(mob/user)
-	if(!ishuman(user)) return
+	..()
+
+	if(!ishuman(user))
+		return
 	if(!user.mind)
 		to_chat(user, "It doesn't seem to do anything for you.")
 		return
@@ -536,7 +555,7 @@
 		"Smartgun ammo",
 	)
 
-	var/supply_drop_choice = input(user, "Which supplies to call down?") as null|anything in supplies
+	var/supply_drop_choice = tgui_input_list(user, "Which supplies to call down?", "Supply Drop", supplies)
 
 	switch(supply_drop_choice)
 		if("10x24mm, slugs, buckshot, and 10x20mm rounds")
@@ -667,7 +686,7 @@
 								/obj/item/attachable/extended_barrel,/obj/item/attachable/verticalgrip, /obj/item/attachable/angledgrip,
 								/obj/item/attachable/gyro, /obj/item/attachable/bipod)
 	var/list/attachment_2 = list(/obj/item/attachable/stock/smg, /obj/item/attachable/stock/shotgun, /obj/item/attachable/stock/rifle, /obj/item/attachable/magnetic_harness,
-								/obj/item/attachable/quickfire, /obj/item/attachable/heavy_barrel, /obj/item/attachable/scope, /obj/item/attachable/quickfire,
+								/obj/item/attachable/heavy_barrel, /obj/item/attachable/scope,
 								/obj/item/attachable/scope/mini)
 
 /obj/item/storage/box/attachments/fill_preset_inventory()

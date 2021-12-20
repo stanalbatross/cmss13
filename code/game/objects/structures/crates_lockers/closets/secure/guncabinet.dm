@@ -18,12 +18,25 @@
 
 /obj/structure/closet/secure_closet/guncabinet/Initialize()
 	. = ..()
-	GLOB.gun_cabinets += src
 	update_icon()
+	if(is_mainship_level(z))
+		RegisterSignal(SSdcs, COMSIG_GLOB_SECURITY_LEVEL_CHANGED, .proc/sec_changed)
 
-/obj/structure/closet/secure_closet/guncabinet/Destroy()
-	GLOB.gun_cabinets -= src
-	return ..()
+/obj/structure/closet/secure_closet/guncabinet/proc/sec_changed(datum/source, new_sec)
+	SIGNAL_HANDLER
+	if(new_sec < req_level)
+		if(locked)
+			return
+		for(var/mob/living/L in contents)
+			L.forceMove(loc)
+			to_chat(L, SPAN_WARNING("You are forced out of [src]!"))
+		if(!locked)
+			locked = TRUE
+	else
+		if(locked)
+			locked = FALSE
+	visible_message(SPAN_NOTICE("[src] [locked ? "locks" : "unlocks"] itself."), null, null, 3)
+	update_icon()
 
 /obj/structure/closet/secure_closet/guncabinet/toggle()
 	..()
@@ -54,21 +67,6 @@
 			A.ex_act(severity - EXPLOSION_THRESHOLD_LOW)
 		qdel(src)
 
-/obj/structure/closet/secure_closet/guncabinet/proc/check_sec_level(var/alert)
-	if(alert < req_level)
-		if(locked)
-			return
-		for(var/mob/living/L in contents)
-			L.forceMove(loc)
-			to_chat(L, SPAN_WARNING("You are forced out of [src]!"))
-		if(!locked)
-			locked = TRUE
-	else
-		if(locked)
-			locked = FALSE
-	visible_message(SPAN_NOTICE("[src] [locked ? "locks" : "unlocks"] itself."), null, null, 3)
-	update_icon()
-
 /obj/structure/closet/secure_closet/guncabinet/mp_armory
 //	req_access = list(ACCESS_MARINE_BRIG)
 	req_level = SEC_LEVEL_RED
@@ -92,17 +90,17 @@
 
 /obj/structure/closet/secure_closet/guncabinet/riot_control/Initialize()
 	. = ..()
-	new /obj/item/weapon/gun/shotgun/pump(src, TRUE)
-	new /obj/item/weapon/gun/shotgun/pump(src, TRUE)
-	new /obj/item/weapon/gun/shotgun/pump(src, TRUE)
+	new /obj/item/weapon/gun/shotgun/combat/riot(src, TRUE)
+	new /obj/item/weapon/gun/shotgun/combat/riot(src, TRUE)
+	new /obj/item/weapon/gun/shotgun/combat/riot(src, TRUE)
 	new /obj/item/weapon/shield/riot(src)
 	new /obj/item/weapon/shield/riot(src)
 	new /obj/item/weapon/shield/riot(src)
-	new /obj/item/ammo_magazine/shotgun/beanbag(src)
-	new /obj/item/ammo_magazine/shotgun/beanbag(src)
-	new /obj/item/ammo_magazine/shotgun/beanbag(src)
-	new /obj/item/ammo_magazine/shotgun/beanbag(src)
-	new /obj/item/weapon/gun/launcher/m81/riot(src, TRUE)
+	new /obj/item/ammo_magazine/shotgun/beanbag/riot(src)
+	new /obj/item/ammo_magazine/shotgun/beanbag/riot(src)
+	new /obj/item/ammo_magazine/shotgun/beanbag/riot(src)
+	new /obj/item/ammo_magazine/shotgun/beanbag/riot(src)
+	new /obj/item/weapon/gun/launcher/grenade/m81/riot(src, TRUE)
 	new /obj/item/storage/box/nade_box/tear_gas(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/clothing/mask/gas(src)

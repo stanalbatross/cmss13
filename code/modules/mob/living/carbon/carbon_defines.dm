@@ -14,9 +14,13 @@
 	var/pulse = PULSE_NORM	//current pulse level
 	var/butchery_progress = 0
 	var/list/internal_organs = list()
-	var/huggable = TRUE //can apply Facehuggers (still checks proc/CanHug())
+	var/huggable = TRUE //can apply Facehuggers (still checks proc/can_hug())
+
+	var/list/view_change_sources
 
 	//blood.dm
 	blood_volume = BLOOD_VOLUME_NORMAL
 
 	var/hivenumber
+
+	var/datum/huntdata/hunter_data //Stores all information relating to Hunters for use with their HUD and other systems.

@@ -34,6 +34,16 @@
 	path = "data/player_saves/[copytext(ckey,1,2)]/[ckey]/[filename]"
 	savefile_version = SAVEFILE_VERSION_MAX
 
+/proc/sanitize_keybindings(value)
+	var/list/base_bindings = sanitize_islist(value, null)
+	if(!base_bindings)
+		base_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key)
+	for(var/key in base_bindings)
+		base_bindings[key] = base_bindings[key] & GLOB.keybindings_by_name
+		if(!length(base_bindings[key]))
+			base_bindings -= key
+	return base_bindings
+
 /datum/preferences/proc/load_preferences()
 	if(!path)				return 0
 	if(!fexists(path))		return 0
@@ -60,6 +70,8 @@
 	S["chat_display_preferences"] >> chat_display_preferences
 	S["toggles_sound"]		>> toggles_sound
 	S["toggle_prefs"]		>> toggle_prefs
+	S["toggles_flashing"]	>> toggles_flashing
+	S["toggles_ghost"]		>> toggles_ghost
 	S["UI_style_color"]		>> UI_style_color
 	S["UI_style_alpha"]		>> UI_style_alpha
 	S["stylesheet"] 		>> stylesheet
@@ -78,21 +90,30 @@
 	S["pred_name"]			>> predator_name
 	S["pred_gender"]		>> predator_gender
 	S["pred_age"]			>> predator_age
+	S["pred_trans_type"]	>> predator_translator_type
 	S["pred_mask_type"]		>> predator_mask_type
 	S["pred_armor_type"]	>> predator_armor_type
 	S["pred_boot_type"]		>> predator_boot_type
+	S["pred_armor_mat"]		>> predator_armor_material
 
 	S["commander_status"]	>> commander_status
+	S["co_sidearm"]			>> commander_sidearm
 	S["yautja_status"]		>> yautja_status
 	S["synth_status"]		>> synth_status
+	S["key_bindings"] 		>> key_bindings
+
+	S["grade_path"]			>> sea_path
+	var/list/remembered_key_bindings
+	S["remembered_key_bindings"] >> remembered_key_bindings
 
 	S["lang_chat_disabled"]	>> lang_chat_disabled
-
-	S["swap_hand_default"]	>> swap_hand_default
-	S["swap_hand_hotkeymode"] >> swap_hand_hotkeymode
+	S["show_permission_errors"] >> show_permission_errors
+	S["hear_vox"] >> hear_vox
+	S["hide_statusbar"] >> hide_statusbar
+	S["hotkeys"] >> hotkeys
 
 	//Sanitize
-	ooccolor		= sanitize_hexcolor(ooccolor, initial(ooccolor))
+	ooccolor		= sanitize_hexcolor(ooccolor, CONFIG_GET(string/ooc_color_default))
 	lastchangelog	= sanitize_text(lastchangelog, initial(lastchangelog))
 	UI_style		= sanitize_inlist(UI_style, list("white", "dark", "midnight", "orange", "old"), initial(UI_style))
 	be_special		= sanitize_integer(be_special, 0, 65535, initial(be_special))
@@ -101,31 +122,53 @@
 	chat_display_preferences	= sanitize_integer(chat_display_preferences, 0, 65535, initial(chat_display_preferences))
 	toggles_sound	= sanitize_integer(toggles_sound, 0, 65535, initial(toggles_sound))
 	toggle_prefs	= sanitize_integer(toggle_prefs, 0, 65535, initial(toggle_prefs))
+	toggles_flashing= sanitize_integer(toggles_flashing, 0, 65535, initial(toggles_flashing))
+	toggles_ghost	= sanitize_integer(toggles_ghost, 0, 65535, initial(toggles_ghost))
 	UI_style_color	= sanitize_hexcolor(UI_style_color, initial(UI_style_color))
 	UI_style_alpha	= sanitize_integer(UI_style_alpha, 0, 255, initial(UI_style_alpha))
 	window_skin		= sanitize_integer(window_skin, 0, 65535, initial(window_skin))
 	playtime_perks   = sanitize_integer(playtime_perks, 0, 1, 1)
+	hear_vox  		= sanitize_integer(hear_vox, FALSE, TRUE, TRUE)
+	hide_statusbar = sanitize_integer(hide_statusbar, FALSE, TRUE, FALSE)
 
 	synthetic_name 		= synthetic_name ? sanitize_text(synthetic_name, initial(synthetic_name)) : initial(synthetic_name)
 	synthetic_type		= sanitize_text(synthetic_type, initial(synthetic_type))
 	predator_name 		= predator_name ? sanitize_text(predator_name, initial(predator_name)) : initial(predator_name)
 	predator_gender 	= sanitize_text(predator_gender, initial(predator_gender))
 	predator_age 		= sanitize_integer(predator_age, 100, 10000, initial(predator_age))
+	predator_translator_type = sanitize_inlist(predator_translator_type, list("Modern", "Retro", "Combo"), initial(predator_translator_type))
 	predator_mask_type 	= sanitize_integer(predator_mask_type,1,1000000,initial(predator_mask_type))
 	predator_armor_type = sanitize_integer(predator_armor_type,1,1000000,initial(predator_armor_type))
 	predator_boot_type 	= sanitize_integer(predator_boot_type,1,1000000,initial(predator_boot_type))
+	predator_armor_material = sanitize_inlist(predator_armor_material, list("ebony", "silver", "bronze"), initial(predator_armor_material))
 	commander_status	= sanitize_inlist(commander_status, whitelist_hierarchy, initial(commander_status))
+	commander_sidearm   = sanitize_inlist(commander_sidearm, list("Mateba","Commodore's Mateba","Golden Desert Eagle","Desert Eagle"), initial(commander_sidearm))
+	sea_path			= sanitize_inlist(sea_path, list("Command", "Technical"), initial(sea_path))
 	yautja_status		= sanitize_inlist(yautja_status, whitelist_hierarchy + list("Elder"), initial(yautja_status))
 	synth_status		= sanitize_inlist(synth_status, whitelist_hierarchy, initial(synth_status))
+	key_bindings 		= sanitize_keybindings(key_bindings)
+	remembered_key_bindings = sanitize_islist(remembered_key_bindings, null)
+	hotkeys  			= sanitize_integer(hotkeys, FALSE, TRUE, TRUE)
 	vars["fps"] = fps
+
+	if(remembered_key_bindings)
+		for(var/i in GLOB.keybindings_by_name)
+			if(!(i in remembered_key_bindings))
+				var/datum/keybinding/instance = GLOB.keybindings_by_name[i]
+				// Classic
+				if(LAZYLEN(instance.classic_keys))
+					for(var/bound_key in instance.classic_keys)
+						LAZYADD(key_bindings[bound_key], list(instance.name))
+
+				// Hotkey
+				if(LAZYLEN(instance.hotkey_keys))
+					for(var/bound_key in instance.hotkey_keys)
+						LAZYADD(key_bindings[bound_key], list(instance.name))
+
+	S["remembered_key_bindings"] << GLOB.keybindings_by_name
 
 	if(!observer_huds)
 		observer_huds = list("Medical HUD" = FALSE, "Security HUD" = FALSE, "Squad HUD" = FALSE, "Xeno Status HUD" = FALSE)
-
-	if (!swap_hand_default)
-		swap_hand_default = "CTRL+X"
-	if (!swap_hand_hotkeymode)
-		swap_hand_hotkeymode = "X"
 
 	return 1
 
@@ -150,6 +193,8 @@
 	S["chat_display_preferences"] << chat_display_preferences
 	S["toggles_sound"]		<< toggles_sound
 	S["toggle_prefs"]		<< toggle_prefs
+	S["toggles_flashing"]	<< toggles_flashing
+	S["toggles_ghost"]		<< toggles_ghost
 	S["window_skin"]		<< window_skin
 	S["fps"]				<< fps
 
@@ -166,18 +211,26 @@
 	S["pred_name"] 			<< predator_name
 	S["pred_gender"] 		<< predator_gender
 	S["pred_age"]			<< predator_age
+	S["pred_trans_type"]	<< predator_translator_type
 	S["pred_mask_type"] 	<< predator_mask_type
 	S["pred_armor_type"] 	<< predator_armor_type
 	S["pred_boot_type"] 	<< predator_boot_type
+	S["pred_armor_mat"]		<< predator_armor_material
 
 	S["commander_status"] 	<< commander_status
+	S["co_sidearm"]			<< commander_sidearm
 	S["yautja_status"]		<< yautja_status
 	S["synth_status"]		<< synth_status
+	S["grade_path"]			<< sea_path
 
 	S["lang_chat_disabled"] << lang_chat_disabled
+	S["show_permission_errors"] << show_permission_errors
+	S["key_bindings"] << key_bindings
+	S["hotkeys"] << hotkeys
 
-	S["swap_hand_default"]	<< swap_hand_default
-	S["swap_hand_hotkeymode"] << swap_hand_hotkeymode
+	S["hear_vox"] << hear_vox
+
+	S["hide_statusbar"] << hide_statusbar
 
 	return TRUE
 
@@ -253,6 +306,7 @@
 	S["citizenship"] 		>> citizenship
 	S["faction"] 			>> faction
 	S["religion"] 			>> religion
+	S["traits"]				>> traits
 
 	S["preferred_squad"]		>> preferred_squad
 	S["nanotrasen_relation"] 	>> nanotrasen_relation
@@ -287,20 +341,23 @@
 	r_skin			= sanitize_integer(r_skin, 0, 255, initial(r_skin))
 	g_skin			= sanitize_integer(g_skin, 0, 255, initial(g_skin))
 	b_skin			= sanitize_integer(b_skin, 0, 255, initial(b_skin))
-	h_style			= sanitize_inlist(h_style, hair_styles_list, initial(h_style))
-	var/datum/sprite_accessory/HS = hair_styles_list[h_style]
+	h_style			= sanitize_inlist(h_style, GLOB.hair_styles_list, initial(h_style))
+	var/datum/sprite_accessory/HS = GLOB.hair_styles_list[h_style]
 	if(!HS.selectable)	// delete this
 		h_style = random_hair_style(gender, species)
 		save_character()
-	f_style			= sanitize_inlist(f_style, facial_hair_styles_list, initial(f_style))
-	var/datum/sprite_accessory/FS = facial_hair_styles_list[f_style]
+	f_style			= sanitize_inlist(f_style, GLOB.facial_hair_styles_list, initial(f_style))
+	var/datum/sprite_accessory/FS = GLOB.facial_hair_styles_list[f_style]
 	if(!FS.selectable)	// delete this
 		f_style = random_facial_hair_style(gender, species)
 		save_character()
 	r_eyes			= sanitize_integer(r_eyes, 0, 255, initial(r_eyes))
 	g_eyes			= sanitize_integer(g_eyes, 0, 255, initial(g_eyes))
 	b_eyes			= sanitize_integer(b_eyes, 0, 255, initial(b_eyes))
-	underwear		= sanitize_integer(underwear, 1, underwear_m.len, initial(underwear))
+	if(gender == MALE)
+		underwear	= sanitize_integer(underwear, 1, underwear_m.len, initial(underwear))
+	else
+		underwear	= sanitize_integer(underwear, 1, underwear_f.len, initial(underwear))
 	undershirt		= sanitize_integer(undershirt, 1, undershirt_t.len, initial(undershirt))
 	backbag			= sanitize_integer(backbag, 1, backbaglist.len, initial(backbag))
 	//b_type			= sanitize_text(b_type, initial(b_type))
@@ -308,16 +365,18 @@
 	alternate_option = sanitize_integer(alternate_option, 0, 2, initial(alternate_option))
 	if(!job_preference_list)
 		ResetJobs()
-	else	
+	else
 		for(var/job in job_preference_list)
 			job_preference_list[job] = sanitize_integer(job_preference_list[job], 0, 3, initial(job_preference_list[job]))
 
-	if(isnull(disabilities)) 
+	if(isnull(disabilities))
 		disabilities = 0
-	if(!organ_data) 
+	if(!organ_data)
 		organ_data = list()
-	if(!gear) 
-		gear = list()
+
+	gear = sanitize_list(gear)
+
+	traits = sanitize_list(traits)
 
 	//if(!skin_style) skin_style = "Default"
 
@@ -392,6 +451,7 @@
 	S["citizenship"] 		<< citizenship
 	S["faction"] 			<< faction
 	S["religion"] 			<< religion
+	S["traits"]				<< traits
 
 	S["nanotrasen_relation"] 	<< nanotrasen_relation
 	S["preferred_squad"]		<< preferred_squad

@@ -19,6 +19,7 @@
 	survive_mob_death = TRUE //FALSE //switch to true to make dead infected humans still transform
 	var/zombie_transforming = 0 //whether we're currently transforming the host into a zombie.
 	var/goo_message_cooldown = 0 //to make sure we don't spam messages too often.
+	var/stage_counter = 0 // tells a dead infectee their stage, so they can know when-abouts they'll revive
 
 /datum/disease/black_goo/stage_act()
 	..()
@@ -30,18 +31,27 @@
 	if(H.stat == DEAD) stage_minimum_age = 75 //the virus progress faster when the host is dead.
 	switch(stage)
 		if(1)
+			if(H.stat == DEAD && stage_counter != stage)
+				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage One! Zombie transformation begins at Stage Four."))
+				stage_counter = stage
 			survive_mob_death = TRUE //changed because infection rate was REALLY horrible.
 			if(goo_message_cooldown < world.time )
 				if(prob(3))
 					to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
 					goo_message_cooldown = world.time + 100
 		if(2)
+			if(H.stat == DEAD && stage_counter != stage)
+				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Two! Zombie transformation begins at Stage Four."))
+				stage_counter = stage
 			if(goo_message_cooldown < world.time)
 				if (prob(3)) to_chat(affected_mob, SPAN_DANGER("Your throat is really dry..."))
 				else if (prob(6)) to_chat(affected_mob, SPAN_DANGER("You feel really warm..."))
 				else if (prob(2)) H.vomit_on_floor()
 				goo_message_cooldown = world.time + 100
 		if(3)
+			if(H.stat == DEAD && stage_counter != stage)
+				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Three! Zombie transformation begins at Stage Four, which will be soon."))
+				stage_counter = stage
 			hidden = list(0,0)
 			//survive_mob_death = TRUE //even if host dies now, the transformation will occur.
 			H.next_move_slowdown = max(H.next_move_slowdown, 1)
@@ -59,6 +69,9 @@
 					goo_message_cooldown = world.time + 100
 					H.vomit_on_floor()
 		if(4)
+			if(H.stat == DEAD && stage_counter != stage)
+				to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Four! Your transformation will happen any moment now."))
+				stage_counter = stage
 			H.next_move_slowdown = max(H.next_move_slowdown, 2)
 			if(prob(5) || age >= stage_minimum_age-1)
 				if(!zombie_transforming)
@@ -66,6 +79,11 @@
 			else if(prob(5))
 				H.vomit_on_floor()
 		if(5)
+			if(H.stat == DEAD && stage_counter != stage)
+				stage_counter = stage
+				if(H.species.name != "Zombie" && !zombie_transforming)
+					to_chat(H, SPAN_CENTERBOLD("Your zombie infection is now at Stage Five! Your transformation should have happened already, but will be forced now."))
+					zombie_transform(H)
 			if(!zombie_transforming && prob(50))
 				if(H.stat != DEAD)
 					var/healamt = 2
@@ -107,22 +125,22 @@
 	attack_verb = list("slashed", "bitten", "torn", "scraped", "nibbled")
 	pry_capable = IS_PRY_CAPABLE_FORCE
 
-/obj/item/weapon/zombie_claws/attack(mob/living/M, mob/living/carbon/human/user, def_zone)
+/obj/item/weapon/zombie_claws/attack(mob/living/M, mob/living/carbon/human/user)
 	if(iszombie(M))
 		return FALSE
-	
+
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1, 5)
-	
+
 	if(isHumanStrict(M))
 		var/mob/living/carbon/human/H = M
 
 		for(var/datum/disease/black_goo/BG in H.viruses)
 			user.show_message(text(SPAN_XENOWARNING(" <B>You sense your target is infected</B>")))
 			return .
-		
-		var/bio_protected = max(CLOTHING_ARMOR_HARDCORE - H.getarmor(def_zone, ARMOR_BIO), 0)
+
+		var/bio_protected = max(CLOTHING_ARMOR_HARDCORE - H.getarmor(user.zone_selected, ARMOR_BIO), 0)
 
 		if(prob(bio_protected))
 			M.AddDisease(new /datum/disease/black_goo())
@@ -137,14 +155,16 @@
 		var/obj/structure/machinery/door/airlock/D = O
 		if(!D.density)
 			return
-
+		if(D.heavy)
+			to_chat(usr, SPAN_DANGER("[D] is too heavy to be forced open."))
+			return FALSE
 		if(user.action_busy || user.a_intent == INTENT_HARM)
 			return
 
 		user.visible_message(SPAN_DANGER("[user] jams their [name] into [O] and strains to rip it open."),
 		SPAN_DANGER("You jam your [name] into [O] and strain to rip it open."))
 		playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, 1)
-		if(do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
 			if(!D.density)
 				return
 
@@ -160,7 +180,7 @@
 		user.visible_message(SPAN_DANGER("[user] jams their [name] into [D] and strains to rip it open."),
 		SPAN_DANGER("You jam your [name] into [D] and strain to rip it open."))
 		playsound(user, 'sound/weapons/wristblades_hit.ogg', 15, TRUE)
-		if(do_after(user, SECONDS_3, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
+		if(do_after(user, 3 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE) && D.density)
 			user.visible_message(SPAN_DANGER("[user] forces [D] open with their [name]."),
 			SPAN_DANGER("You force [D] open with your [name]."))
 			D.Open()
@@ -190,7 +210,7 @@
 /datum/language/zombie
 	name = "Zombie"
 	desc = "If you select this from the language screen, expect a ban."
-	colour = "soghun"
+	colour = "zombie"
 
 	speech_verb = "groans"
 	ask_verb = "groans"

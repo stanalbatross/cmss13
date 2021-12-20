@@ -16,8 +16,6 @@
 
 	// is the wound bandaged?
 	var/bandaged = 0
-	// Similar to bandaged, but works differently
-	var/clamped = 0
 	// is the wound salved?
 	var/salved = 0
 	var/created = 0
@@ -37,10 +35,6 @@
 	var/autoheal_cutoff = 15
 
 	var/icon/bandaged_icon = null // Icon for gauze over a wound
-
-	var/icon/impact_icon = null // Icon for special impact icons from projectiles or melee weapons
-
-
 
 	// helper lists
 	var/tmp/list/desc_list = list()
@@ -94,7 +88,6 @@
 		if (other.damage_type != src.damage_type) return 0
 		if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
 		if (!(other.bandaged) != !(src.bandaged)) return 0
-		if (!(other.clamped) != !(src.clamped)) return 0
 		if (!(other.salved) != !(src.salved)) return 0
 		return 1
 
@@ -126,6 +119,8 @@
 	// opens the wound again
 	proc/open_wound(damage)
 		src.damage += damage
+		bandaged = FALSE
+		salved = FALSE
 
 		while(src.current_stage > 1 && src.damage_list[current_stage-1] <= src.damage / src.amount)
 			src.current_stage--

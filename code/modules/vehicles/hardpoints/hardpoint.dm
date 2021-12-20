@@ -95,9 +95,17 @@
 	//maximum amount of spare mags
 	var/max_clips = 0
 
+	/// An assoc list in the format list(/datum/element/bullet_trait_to_give = list(...args))
+	/// that will be given to a projectile fired from the hardpoint
+	var/list/list/traits_to_give
+
 //-----------------------------
 //------GENERAL PROCS----------
 //-----------------------------
+
+/obj/item/hardpoint/Initialize()
+	. = ..()
+	set_bullet_traits()
 
 /obj/item/hardpoint/Destroy()
 	if(owner)
@@ -108,6 +116,31 @@
 	QDEL_NULL(ammo)
 
 	return ..()
+
+/// Populate traits_to_give in this proc
+/obj/item/hardpoint/proc/set_bullet_traits()
+	return
+
+/obj/item/hardpoint/proc/generate_bullet(mob/user, turf/origin_turf)
+	var/obj/item/projectile/P = new(origin_turf, create_cause_data(initial(name), user))
+	P.generate_bullet(new ammo.default_ammo)
+	// Apply bullet traits from gun
+	for(var/entry in traits_to_give)
+		var/list/L
+		// Check if this is an ID'd bullet trait
+		if(istext(entry))
+			L = traits_to_give[entry].Copy()
+		else
+			// Prepend the bullet trait to the list
+			L = list(entry) + traits_to_give[entry]
+		P.apply_bullet_trait(L)
+	return P
+
+/obj/item/hardpoint/proc/can_take_damage()
+	if(!damage_multiplier)
+		return FALSE
+	if(health > 0)
+		return TRUE
 
 /obj/item/hardpoint/proc/take_damage(var/damage)
 	health = max(0, health - damage * damage_multiplier)
@@ -184,7 +217,7 @@ obj/item/hardpoint/proc/remove_buff(var/obj/vehicle/multitile/V)
 	origins = new_origin
 
 	// Update dir
-	dir = turn(dir, deg)
+	setDir(turn(dir, deg))
 
 //for status window
 /obj/item/hardpoint/proc/get_hardpoint_info()
@@ -398,7 +431,7 @@ obj/item/hardpoint/proc/remove_buff(var/obj/vehicle/multitile/V)
 	being_repaired = TRUE
 	playsound(get_turf(user), 'sound/items/weldingtool_weld.ogg', 25)
 	user.visible_message(SPAN_NOTICE("[user] starts repairing \the [name]."), SPAN_NOTICE("You start repairing \the [name]."))
-	if(!do_after(user, SECONDS_1 * needed_time * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY, numticks = needed_time))
+	if(!do_after(user, 1 SECONDS * needed_time * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL, BUSY_ICON_FRIENDLY, numticks = needed_time))
 		user.visible_message(SPAN_NOTICE("[user] stops repairing \the [name]."), SPAN_NOTICE("You stop repairing \the [name]."))
 		being_repaired = FALSE
 		return
@@ -476,13 +509,9 @@ obj/item/hardpoint/proc/remove_buff(var/obj/vehicle/multitile/V)
 	var/turf/origin_turf = get_turf(src)
 	origin_turf = locate(origin_turf.x + origins[1], origin_turf.y + origins[2], origin_turf.z)
 
-	var/obj/item/projectile/P = new(initial(name), user)
-	P.forceMove(origin_turf)
-	P.generate_bullet(new ammo.default_ammo)
-	if(ammo.has_iff && owner.seats[VEHICLE_GUNNER])
-		P.fire_at(A, owner.seats[VEHICLE_GUNNER], src, P.ammo.max_range, P.ammo.shell_speed, iff_group = owner.seats[VEHICLE_GUNNER].faction_group)
-	else
-		P.fire_at(A, owner.seats[VEHICLE_GUNNER], src, P.ammo.max_range, P.ammo.shell_speed)
+	var/obj/item/projectile/P = generate_bullet(user, origin_turf)
+	SEND_SIGNAL(P, COMSIG_BULLET_USER_EFFECTS, user)
+	P.fire_at(A, user, src, P.ammo.max_range, P.ammo.shell_speed)
 
 	if(use_muzzle_flash)
 		muzzle_flash(Get_Angle(owner, A))
@@ -507,10 +536,20 @@ obj/item/hardpoint/proc/remove_buff(var/obj/vehicle/multitile/V)
 
 //Returns the image object to overlay onto the root object
 /obj/item/hardpoint/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
-	var/icon_state_suffix = "0"
-	if(health <= 0)
-		icon_state_suffix = "1"
-	return image(icon = disp_icon, icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset, dir = new_dir)
+	var/is_broken = health <= 0
+	var/image/I = image(icon = disp_icon, icon_state = "[disp_icon_state]_[is_broken ? "1" : "0"]", pixel_x = x_offset, pixel_y = y_offset, dir = new_dir)
+	switch(round((health / initial(health)) * 100))
+		if(0 to 20)
+			I.color = "#4e4e4e"
+		if(21 to 40)
+			I.color = "#6e6e6e"
+		if(41 to 60)
+			I.color = "#8b8b8b"
+		if(61 to 80)
+			I.color = "#bebebe"
+		else
+			I.color = null
+	return I
 
 // debug proc
 /obj/item/hardpoint/proc/set_offsets(var/dir, var/x, var/y)

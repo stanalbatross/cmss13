@@ -1,6 +1,3 @@
-
-var/global/normal_ooc_colour = "#1c52f5"
-
 /client/verb/ooc(msg as text)
 	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set category = "OOC.OOC"
@@ -52,25 +49,35 @@ var/global/normal_ooc_colour = "#1c52f5"
 	log_ooc("[mob.name]/[key] : [msg]")
 	GLOB.STUI.ooc.Add("\[[time_stamp()]] <font color='#display_colour'>OOC: [mob.name]/[key]: [msg]</font><br>")
 	GLOB.STUI.processing |= STUI_LOG_OOC_CHAT
-	var/display_colour = normal_ooc_colour
-	if(admin_holder && !admin_holder.fakekey && !AHOLD_IS_ONLY_MENTOR(admin_holder))
-		display_colour = "#2e78d9"	//light blue
-		if(admin_holder.rights & R_MOD && !(admin_holder.rights & R_ADMIN))
-			display_colour = "#184880"	//dark blue
-		if(admin_holder.rights & R_DEBUG && !(admin_holder.rights & R_ADMIN))
-			display_colour = "#1b521f"	//dark green
-		else if(admin_holder.rights & R_COLOR)
-			if(CONFIG_GET(flag/allow_admin_ooccolor))
-				display_colour = prefs.ooccolor
-			else
-				display_colour = "#b82e00"	//orange
-	if(donator)
+
+	var/display_colour = GLOB.ooc_color_override
+	if(!display_colour)
+		display_colour = CONFIG_GET(string/ooc_color_normal)
+	if(admin_holder && !admin_holder.fakekey)
+		display_colour = CONFIG_GET(string/ooc_color_other)
+		if(admin_holder.rights & R_DEBUG)
+			display_colour = CONFIG_GET(string/ooc_color_debug)
+		if(admin_holder.rights & R_MOD)
+			display_colour = CONFIG_GET(string/ooc_color_mods)
+		if(admin_holder.rights & R_ADMIN)
+			display_colour = CONFIG_GET(string/ooc_color_admin)
+		if(admin_holder.rights & R_COLOR)
+			display_colour = prefs.ooccolor
+	else if(donator)
 		display_colour = prefs.ooccolor
+	if(!display_colour) // if invalid R_COLOR choice
+		display_colour = CONFIG_GET(string/ooc_color_default)
+
+	msg = process_chat_markup(msg, list("*"))
 
 	for(var/client/C in GLOB.clients)
 		if(C.prefs.toggles_chat & CHAT_OOC)
 			var/display_name = src.key
-			to_chat(C, "<font color='[display_colour]'><span class='ooc'>[src.donator ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
+			if(prefs.unlock_content)
+				if(prefs.toggle_prefs & MEMBER_PUBLIC)
+					var/byond = icon('icons/effects/effects.dmi', "byondlogo")
+					display_name = "[icon2html(byond, GLOB.clients)][display_name]"
+			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[src.donator ? "\[D\] " : ""]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
 
 	usr.talked = 1
 	addtimer(CALLBACK(usr, .proc/clear_chat_spam_mute, usr.talked), CHAT_OOC_DELAY, TIMER_UNIQUE)
@@ -79,7 +86,7 @@ var/global/normal_ooc_colour = "#1c52f5"
 	set name = "OOC Text Color - Global"
 	set desc = "Set to yellow for eye burning goodness."
 	set category = "OOC.OOC"
-	normal_ooc_colour = newColor
+	GLOB.ooc_color_override = newColor
 
 
 /client/verb/looc(msg as text)
@@ -88,7 +95,7 @@ var/global/normal_ooc_colour = "#1c52f5"
 	set category = "OOC.OOC"
 
 	if(usr.talked == 2)
-		to_chat(usr, SPAN_DANGER("Your spam has been consumed for it's nutritional value."))
+		to_chat(usr, SPAN_DANGER("Your spam has been consumed for its nutritional value."))
 		return
 	if((usr.talked == 1) && (usr.chatWarn >= 5))
 		usr.talked = 2
@@ -142,6 +149,8 @@ var/global/normal_ooc_colour = "#1c52f5"
 	if(S.stat != DEAD && !isobserver(S))
 		display_name = S.name
 
+	msg = process_chat_markup(msg, list("*"))
+
 	// Handle non-admins
 	for(var/mob/M in heard)
 		if(!M.client)
@@ -151,7 +160,11 @@ var/global/normal_ooc_colour = "#1c52f5"
 			continue //they are handled after that
 
 		if(C.prefs.toggles_chat & CHAT_LOOC)
-			to_chat(C, "<font color='#6699CC'><span class='ooc'><span class='prefix'>LOOC:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
+			to_chat(C, "<font color='#6699CC'><span class='ooc linkify'><span class='prefix'>LOOC:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
+
+	if(mob.looc_overhead)
+		var/transmit_language = isXeno(mob) ? LANGUAGE_XENOMORPH : LANGUAGE_ENGLISH
+		mob.langchat_speech(msg, heard, GLOB.all_languages[transmit_language], "#ff47d7")
 
 	// Now handle admins
 	display_name = S.key
@@ -166,7 +179,7 @@ var/global/normal_ooc_colour = "#1c52f5"
 			var/prefix = "(R)LOOC"
 			if (C.mob in heard)
 				prefix = "LOOC"
-			to_chat(C, "<font color='#6699CC'><span class='ooc'><span class='prefix'>[prefix]:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
+			to_chat(C, "<font color='#6699CC'><span class='ooc linkify'><span class='prefix'>[prefix]:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
 	usr.talked = 1
 	addtimer(CALLBACK(usr, .proc/clear_chat_spam_mute, usr.talked), CHAT_OOC_DELAY, TIMER_UNIQUE)
 
@@ -192,6 +205,6 @@ var/global/normal_ooc_colour = "#1c52f5"
 			ui.close()
 
 	log_tgui(src, "Closing all tgui windows.", context = "verb/fixnanoui")
-	var/closed_windows = SStgui.close_all_uis(usr)
+	var/closed_windows = SStgui.close_user_uis(usr)
 
 	to_chat(mob, SPAN_NOTICE("<b>All interfaces have been forcefully closed. Please try re-opening them. (Closed [closed_windows] windows)</b>"))

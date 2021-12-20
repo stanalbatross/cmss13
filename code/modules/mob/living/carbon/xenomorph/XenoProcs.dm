@@ -1,9 +1,6 @@
 //Xenomorph General Procs And Functions - Colonial Marines
 //LAST EDIT: APOPHIS 22MAY16
 
-/mob/living/carbon/Xenomorph/Move(NewLoc, direct)
-	. = ..()
-
 //Send a message to all xenos. Mostly used in the deathgasp display
 /proc/xeno_message(var/message = null, var/size = 3, var/hivenumber = XENO_HIVE_NORMAL)
 	if(!message)
@@ -21,8 +18,11 @@
 	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
 		for(var/datum/mind/L in SSticker.mode.xenomorphs)
 			var/mob/living/carbon/M = L.current
-			if(M && istype(M) && !M.stat && M.client && M.ally_of_hivenumber(hivenumber)) //Only living and connected xenos
+			if(M && istype(M) && !M.stat && M.client && (!hivenumber || M.ally_of_hivenumber(hivenumber))) //Only living and connected xenos
 				to_chat(M, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
+
+/proc/xeno_message_all(var/message = null, var/size = 3)
+	xeno_message(message, size)
 
 //Adds stuff to your "Status" pane -- Specific castes can have their own, like carrier hugger count
 //Those are dealt with in their caste files.
@@ -44,16 +44,31 @@
 
 	. += "Shield: [shieldtotal]"
 
+	if(selected_ability)
+		. += ""
+		. += "Selected Ability: [selected_ability.name]"
+		if(selected_ability.charges != NO_ACTION_CHARGES)
+			. += "Charges Left: [selected_ability.charges]"
+
+		if(selected_ability.cooldown_timer_id != TIMER_ID_NULL)
+			. += "On Cooldown: [DisplayTimeText(timeleft(selected_ability.cooldown_timer_id))]"
+
 	. += ""
 
-	if(caste_name == "Bloody Larva" || caste_name == "Predalien Larva")
-		. += "Evolve Progress: [round(amount_grown)]/[max_grown]"
-	else if(hive && !hive.living_xeno_queen)
-		. += "Evolve Progress: NO QUEEN"
-	else if(hive && !hive.living_xeno_queen.ovipositor && !caste_name == "Queen")
-		. += "Evolve Progress: NO OVIPOSITOR"
+	var/evolve_progress
+
+	if(caste_type == XENO_CASTE_LARVA || caste_type == XENO_CASTE_PREDALIEN_LARVA)
+		evolve_progress = "[round(amount_grown)]/[max_grown]"
 	else if(caste && caste.evolution_allowed)
-		. += "Evolve Progress: [round(evolution_stored)]/[evolution_threshold]"
+		evolve_progress = "[round(evolution_stored)]/[evolution_threshold]"
+		if(hive && !hive.allow_no_queen_actions)
+			if(!hive.living_xeno_queen)
+				evolve_progress += " (NO QUEEN)"
+			else if(!(hive.living_xeno_queen.ovipositor || hive.evolution_without_ovipositor))
+				evolve_progress += " (NO OVIPOSITOR)"
+
+	if(evolve_progress)
+		. += "Evolve Progress: [evolve_progress]"
 
 	. += ""
 
@@ -61,45 +76,32 @@
 		var/datum/behavior_delegate/MD = behavior_delegate
 		. += MD.append_to_stat()
 
-	. += ""
-	//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
-	var/msg_holder = "-"
-
-	if(frenzy_aura)
-		switch(frenzy_aura)
-			if(-INFINITY to 0.9) msg_holder = "Very Weak"
-			if(1.0 to 1.9) msg_holder = "Weak"
-			if(2.0 to 2.9) msg_holder = "Moderate"
-			if(3.0 to 3.9) msg_holder = "Strong"
-			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	. += "Frenzy: [msg_holder]"
-	msg_holder = "-"
-
-	if(warding_aura)
-		switch(warding_aura)
-			if(-INFINITY to 0.9) msg_holder = "Very Weak"
-			if(1.0 to 1.9) msg_holder = "Weak"
-			if(2.0 to 2.9) msg_holder = "Moderate"
-			if(3.0 to 3.9) msg_holder = "Strong"
-			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	. += "Warding: [msg_holder]"
-	msg_holder = "-"
-
-	if(recovery_aura)
-		switch(recovery_aura)
-			if(-INFINITY to 0.9) msg_holder = "Very Weak"
-			if(1.0 to 1.9) msg_holder = "Weak"
-			if(2.0 to 2.9) msg_holder = "Moderate"
-			if(3.0 to 3.9) msg_holder = "Strong"
-			if(4.0 to INFINITY) msg_holder = "Very Strong"
-	. += "Recovery: [msg_holder]"
+	var/list/statdata = list()
+	SEND_SIGNAL(src, COMSIG_XENO_APPEND_TO_STAT, statdata)
+	if(length(statdata))
+		. += statdata
 
 	. += ""
+	if(!ignores_pheromones)
+		//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
+		var/msg_holder = "-"
+		if(frenzy_aura)
+			msg_holder = get_pheromone_aura_strength(frenzy_aura)
+		. += "Frenzy: [msg_holder]"
+		msg_holder = "-"
+		if(warding_aura)
+			msg_holder = get_pheromone_aura_strength(warding_aura)
+		. += "Warding: [msg_holder]"
+		msg_holder = "-"
+		if(recovery_aura)
+			msg_holder = get_pheromone_aura_strength(recovery_aura)
+		. += "Recovery: [msg_holder]"
+		. += ""
 
 	if(hive)
 		if(!hive.living_xeno_queen)
 			. += "Queen's Location: NO QUEEN"
-		else if(!(caste_name == "Queen"))
+		else if(!(caste_type == XENO_CASTE_QUEEN))
 			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
 
 		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
@@ -134,7 +136,7 @@
 		if(is_mob_incapacitated() || lying || buckled)
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 			return FALSE
-		else if(!(caste_name == "Queen") && observed_xeno)
+		else if(!(caste_type == XENO_CASTE_QUEEN) && observed_xeno)
 			to_chat(src, SPAN_WARNING("You cannot do this in your current state."))
 	else
 		if(is_mob_incapacitated() || buckled)
@@ -231,6 +233,10 @@
 	if(slowed && !superslowed)
 		. += XENO_SLOWED_AMOUNT
 
+	var/list/L = list("speed" = .)
+	SEND_SIGNAL(src, COMSIG_XENO_MOVEMENT_DELAY, L)
+	. = L["speed"]
+
 	move_delay = .
 
 
@@ -254,23 +260,27 @@
 		if(ishuman(M) && (M.dir in reverse_nearby_direction(dir)))
 			var/mob/living/carbon/human/H = M
 			if(H.check_shields(15, "the pounce")) //Human shield block.
-				KnockDown(3)
+				visible_message(SPAN_DANGER("[src] slams into [H]!"),
+					SPAN_XENODANGER("You slam into [H]!"), null, 5)
+				KnockDown(1)
 				throwing = FALSE //Reset throwing manually.
+				playsound(H, "bonk", 75, FALSE) //bonk
 				return
 
 			if(isYautja(H))
 				if(H.check_shields(0, "the pounce", 1))
 					visible_message(SPAN_DANGER("[H] blocks the pounce of [src] with the combistick!"), SPAN_XENODANGER("[H] blocks your pouncing form with the combistick!"), null, 5)
-					KnockDown(5)
+					KnockDown(3)
 					throwing = FALSE
+					playsound(H, "bonk", 75, FALSE)
 					return
 				else if(prob(75)) //Body slam the fuck out of xenos jumping at your front.
 					visible_message(SPAN_DANGER("[H] body slams [src]!"),
 						SPAN_XENODANGER("[H] body slams you!"), null, 5)
-					KnockDown(4)
+					KnockDown(3)
 					throwing = FALSE
 					return
-			if(isEarlySynthetic(H) && prob(60))
+			if(isColonySynthetic(H) && prob(60))
 				visible_message(SPAN_DANGER("[H] withstands being pounced and slams down [src]!"),
 					SPAN_XENODANGER("[H] throws you down after withstanding the pounce!"), null, 5)
 				KnockDown(1.5)
@@ -288,21 +298,17 @@
 		playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
 		canmove = FALSE
 		frozen = TRUE
-		addtimer(CALLBACK(src, .proc/end_pounce_freeze), pounceAction.freeze_time)
+		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, .proc/unfreeze), pounceAction.freeze_time, TIMER_STOPPABLE)
+
+	pounceAction.additional_effects(M)
 
 	if(pounceAction.slash)
 		M.attack_alien(src, pounceAction.slash_bonus_damage)
-
-	pounceAction.additional_effects(M)
 
 	throwing = FALSE //Reset throwing since something was hit.
 
 /mob/living/carbon/Xenomorph/proc/pounced_mob_wrapper(var/mob/living/L)
 	pounced_mob(L)
-
-/mob/living/carbon/Xenomorph/proc/charge_unfreeze()
-	frozen = FALSE
-	update_canmove()
 
 /mob/living/carbon/Xenomorph/proc/pounced_obj(var/obj/O)
 	var/datum/action/xeno_action/activable/pounce/pounceAction = get_xeno_action_by_type(src, /datum/action/xeno_action/activable/pounce)
@@ -375,17 +381,21 @@
 	else
 		to_chat(src, SPAN_WARNING("There's nothing in your belly that needs regurgitating."))
 
-/mob/living/carbon/Xenomorph/proc/check_alien_construction(var/turf/current_turf)
+/mob/living/carbon/Xenomorph/proc/check_alien_construction(var/turf/current_turf, var/check_blockers = TRUE, var/silent = FALSE)
 	var/has_obstacle
 	for(var/obj/O in current_turf)
-		if(istype(O, /obj/effect/build_blocker))
-			to_chat(src, SPAN_WARNING("This is too close to a special structure!"))
+		if(check_blockers && istype(O, /obj/effect/build_blocker))
+			var/obj/effect/build_blocker/bb = O
+			if(!silent)
+				to_chat(src, SPAN_WARNING("This is too close to a [bb.linked_structure]!"))
 			return
 		if(istype(O, /obj/item/clothing/mask/facehugger))
-			to_chat(src, SPAN_WARNING("There is a little one here already. Best move it."))
+			if(!silent)
+				to_chat(src, SPAN_WARNING("There is a little one here already. Best move it."))
 			return
 		if(istype(O, /obj/effect/alien/egg))
-			to_chat(src, SPAN_WARNING("There's already an egg."))
+			if(!silent)
+				to_chat(src, SPAN_WARNING("There's already an egg."))
 			return
 		if(istype(O, /obj/structure/mineral_door) || istype(O, /obj/effect/alien/resin))
 			has_obstacle = TRUE
@@ -411,7 +421,8 @@
 			break
 
 	if(current_turf.density || has_obstacle)
-		to_chat(src, SPAN_WARNING("There's something built here already."))
+		if(!silent)
+			to_chat(src, SPAN_WARNING("There's something built here already."))
 		return
 
 	return TRUE
@@ -445,7 +456,7 @@
 	jitter_time--
 
 	if(jitter_time)
-		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph/proc/xeno_jitter, jitter_time), 1)
+		addtimer(CALLBACK(src, /mob/living/carbon/Xenomorph.proc/xeno_jitter, jitter_time), 1) // The fuck, use a processing SS, TODO FIXME AHH
 	else
 		//endwhile - reset the pixel offsets to zero
 		pixel_x = old_x
@@ -483,7 +494,7 @@
 		return
 
 	if(queued_action.can_use_action() && queued_action.action_cooldown_check())
-		queued_action.use_ability(A)
+		queued_action.use_ability_wrapper(A)
 
 	queued_action = null
 
@@ -544,8 +555,7 @@
 		SPAN_XENOWARNING("[M]'s [L.display_name] bones snap with a satisfying crunch!"))
 		L.take_damage(rand(15,25), 0, 0)
 		L.fracture(100)
-	M.last_damage_source = initial(name)
-	M.last_damage_mob = src
+	M.last_damage_data = create_cause_data(initial(caste_type), src)
 	src.attack_log += text("\[[time_stamp()]\] <font color='red'>ripped the [L.display_name] off of [M.name] ([M.ckey]) 1/2 progress</font>")
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>had their [L.display_name] ripped off by [src.name] ([src.ckey]) 1/2 progress</font>")
 	log_attack("[src.name] ([src.ckey]) ripped the [L.display_name] off of [M.name] ([M.ckey]) 1/2 progress")
@@ -578,17 +588,12 @@
 	if(pipe)
 		handle_ventcrawl(pipe)
 
-/mob/living/carbon/Xenomorph/proc/end_pounce_freeze()
-	frozen = FALSE
-	update_canmove()
-
 /mob/living/carbon/Xenomorph/proc/attempt_tackle(var/mob/M, var/tackle_mult = 1, var/tackle_min_offset = 0, var/tackle_max_offset = 0, var/tackle_bonus = 0)
-	var/datum/tackle_counter/TC
-	if (M in tackle_counter)
-		TC = tackle_counter[M]
-	else
+	var/datum/tackle_counter/TC = LAZYACCESS(tackle_counter, M)
+	if(!TC)
 		TC = new(tackle_min + tackle_min_offset, tackle_max + tackle_max_offset, tackle_chance*tackle_mult)
-		tackle_counter[M] = TC
+		LAZYSET(tackle_counter, M, TC)
+		RegisterSignal(M, COMSIG_MOB_KNOCKED_DOWN, .proc/tackle_handle_lying_changed)
 
 	if (TC.tackle_reset_id)
 		deltimer(TC.tackle_reset_id)
@@ -596,16 +601,51 @@
 
 	. = TC.attempt_tackle(tackle_bonus)
 	if (!.)
-		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), SECONDS_4, TIMER_UNIQUE | TIMER_STOPPABLE)
+		TC.tackle_reset_id = addtimer(CALLBACK(src, .proc/reset_tackle, M), 4 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 	else
-		qdel(TC)
-		tackle_counter[M] = null
-		tackle_counter.Remove(M)
+		reset_tackle(M)
+
+/mob/living/carbon/Xenomorph/proc/tackle_handle_lying_changed(mob/M)
+	SIGNAL_HANDLER
+	// Infected mobs do not have their tackle counter reset if
+	// they get knocked down or get up from a knockdown
+	if(M.status_flags & XENO_HOST)
+		return
+
+	reset_tackle(M)
 
 /mob/living/carbon/Xenomorph/proc/reset_tackle(var/mob/M)
-	var/datum/tackle_counter/TC
-	if (M in tackle_counter)
-		TC = tackle_counter[M]
+	var/datum/tackle_counter/TC = LAZYACCESS(tackle_counter, M)
+	if (TC)
 		qdel(TC)
-		tackle_counter[M] = null
-		tackle_counter.Remove(M)
+		LAZYREMOVE(tackle_counter, M)
+		UnregisterSignal(M, COMSIG_MOB_KNOCKED_DOWN)
+
+
+/mob/living/carbon/Xenomorph/burn_skin(burn_amount)
+	if(burrow)
+		return FALSE
+
+	if(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE)
+		burn_amount *= 0.5
+
+	apply_damage(burn_amount, BURN)
+	to_chat(src, SPAN_DANGER("Your flesh, it melts!"))
+	updatehealth()
+	return TRUE
+
+/mob/living/carbon/Xenomorph/get_role_name()
+	return caste_type
+
+/proc/get_pheromone_aura_strength(var/aura)
+	switch(aura)
+		if(-INFINITY to 0.9)
+			return "Very Weak"
+		if(1.0 to 1.9)
+			return "Weak"
+		if(2.0 to 2.9)
+			return "Moderate"
+		if(3.0 to 3.9)
+			return "Strong"
+		if(4.0 to INFINITY)
+			return "Very Strong"

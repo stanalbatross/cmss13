@@ -18,7 +18,7 @@
 /obj/structure/ladder/Initialize(mapload, ...)
 	. = ..()
 	cam = new /obj/structure/machinery/camera(src)
-	cam.network = list("LADDER")
+	cam.network = list(CAMERA_NET_LADDER)
 	cam.c_tag = name
 
 	GLOB.ladder_list += src
@@ -206,10 +206,10 @@
 			ladder_dest = down
 		else return //just in case
 
-		if(grenade_grief_check(G))
-			to_chat(user, SPAN_WARNING("\The [name]'s IFF inhibitor prevents you from priming the grenade!"))
+		if(G.has_iff && user.faction == FACTION_MARINE && explosive_grief_check(G))
+			to_chat(user, SPAN_WARNING("\The [G.name]'s IFF inhibitor prevents you from priming the grenade!"))
 			// Let staff know, in case someone's actually about to try to grief
-			msg_admin_niche("[key_name(user)] attempted to prime \a [name] in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
+			msg_admin_niche("[key_name(user)] attempted to prime \a [G.name] in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")
 			return
 
 		user.visible_message(SPAN_WARNING("[user] takes position to throw [G] [ladder_dir_name] [src]."),
@@ -219,7 +219,7 @@
 			SPAN_WARNING("You throw [G] [ladder_dir_name] [src]"))
 			user.drop_held_item()
 			G.forceMove(ladder_dest.loc)
-			G.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
+			G.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 			step_away(G, src, rand(1, 5))
 			if(!G.active)
 				G.activate(user)
@@ -251,7 +251,7 @@
 			SPAN_WARNING("You throw [F] [ladder_dir_name] [src]"))
 			user.drop_held_item()
 			F.forceMove(ladder_dest.loc)
-			F.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
+			F.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 			step_away(F,src,rand(1, 5))
 	else
 		return attack_hand(user)

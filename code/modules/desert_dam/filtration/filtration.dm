@@ -179,14 +179,13 @@ var/global/east_riverstart = 0
 /obj/effect/blocker/toxic_water/proc/cause_damage(mob/living/M)
 	if(M.stat == DEAD)
 		return
+	M.last_damage_data = create_cause_data("toxic water")
 	if(isXeno(M))
 		M.apply_damage(34,BURN)
 	else if(isYautja(M))
 		M.apply_damage(0.5,BURN)
 	else
 		var/dam_amount = 3
-		if(istype(M,/mob/living/carbon/human/synthetic_old)) dam_amount = 0.5
-		else if(istype(M,/mob/living/carbon/human/synthetic) || istype(M,/mob/living/carbon/human/synthetic_2nd_gen)) dam_amount = 1
 		if(M.lying)
 			M.apply_damage(dam_amount,BURN)
 			M.apply_damage(dam_amount,BURN)
@@ -251,8 +250,9 @@ var/global/east_riverstart = 0
 	icon_state = null
 
 /obj/structure/machinery/dispersal_initiator/proc/initiate()
-	var/area/A = get_area(src)
-	A.ambience = list('sound/ambience/ambiatm1.ogg')
+	// Ported over ambience->ambience_exterior, was broken. Enable if you actually want it
+	//var/area/A = get_area(src)
+	//A.ambience_exterior = 'sound/ambience/ambiatm1.ogg'
 	sleep(30)
 	for(var/obj/effect/blocker/toxic_water/W in get_turf(src))
 		W.disperse_spread()
@@ -287,8 +287,9 @@ var/global/east_riverstart = 0
 	active = 1
 	icon_state = "launcheract"
 
-	var/area/A = get_area(src)
-	A.ambience = list('sound/ambience/ambiatm1.ogg')
+	// Ported over ambience->ambience_exterior, was broken. Enable if you actually want it
+	//var/area/A = get_area(src)
+	//A.ambience_exterior = 'sound/ambience/ambiatm1.ogg'
 
 	for(var/obj/structure/machinery/dispersal_initiator/M in machines)
 		if (M.id == src.id)

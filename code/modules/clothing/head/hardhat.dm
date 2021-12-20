@@ -18,42 +18,42 @@
 	siemens_coefficient = 0.9
 	flags_inventory = BLOCKSHARPOBJ
 
-	attack_self(mob/user)
-		if(!isturf(user.loc))
-			to_chat(user, "You cannot turn the light on while in [user.loc]") //To prevent some lighting anomalities.
-			return
-		on = !on
-		icon_state = "hardhat[on]_[hardhat_color]"
-		item_state = "hardhat[on]_[hardhat_color]"
+/obj/item/clothing/head/hardhat/attack_self(mob/user)
+	..()
 
-		if(on)	user.SetLuminosity(brightness_on)
-		else	user.SetLuminosity(-brightness_on)
+	if(!isturf(user.loc))
+		to_chat(user, "You cannot turn the light on while in [user.loc]") //To prevent some lighting anomalities.
+		return
+	on = !on
+	icon_state = "hardhat[on]_[hardhat_color]"
+	item_state = "hardhat[on]_[hardhat_color]"
 
-		if(ismob(loc))
-			var/mob/M = loc
-			M.update_inv_head()
+	if(on)	user.SetLuminosity(brightness_on, FALSE, src)
+	else	user.SetLuminosity(0, FALSE, src)
 
-		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_inv_head()
 
-	pickup(mob/user)
-		if(on)
-			user.SetLuminosity(brightness_on)
-//			user.UpdateLuminosity()	//TODO: Carn
-			SetLuminosity(0)
-		..()
+	for(var/X in actions)
+		var/datum/action/A = X
+		A.update_button_icon()
 
-	dropped(mob/user)
-		if(on)
-			user.SetLuminosity(-brightness_on)
-//			user.UpdateLuminosity()
-			SetLuminosity(brightness_on)
-		..()
+/obj/item/clothing/head/hardhat/pickup(mob/user)
+	if(on)
+		user.SetLuminosity(brightness_on, FALSE, src)
+		SetLuminosity(0)
+	..()
+
+/obj/item/clothing/head/hardhat/dropped(mob/user)
+	if(on)
+		user.SetLuminosity(0, FALSE, src)
+		SetLuminosity(brightness_on)
+	..()
 
 /obj/item/clothing/head/hardhat/Destroy()
 	if(ismob(src.loc))
-		src.loc.SetLuminosity(-brightness_on)
+		src.loc.SetLuminosity(0, FALSE, src)
 	else
 		SetLuminosity(0)
 	return ..()

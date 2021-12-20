@@ -1,131 +1,6 @@
-
-#define DROPSHIP_WEAPON "dropship_weapon"
-#define DROPSHIP_CREW_WEAPON "dropship_crew_weapon"
-#define DROPSHIP_ELECTRONICS "dropship_electronics"
-#define DROPSHIP_FUEL_EQP "dropship_fuel_equipment"
-#define DROPSHIP_COMPUTER "dropship_computer"
-
-//the bases onto which you attach dropship equipments.
-
-/obj/effect/attach_point
-	name = "equipment attach point"
-	desc = "A place where heavy equipment can be installed with a powerloader."
-	unacidable = TRUE
-	anchored = TRUE
-	var/gimbal = GIMBAL_CENTER//which way it is gimballed
-	icon = 'icons/obj/structures/props/almayer_props.dmi'
-	icon_state = "equip_base"
-	var/base_category //what kind of equipment this base accepts.
-	var/ship_tag //used to associate the base to a dropship.
-	var/obj/structure/dropship_equipment/installed_equipment
-
-/obj/effect/attach_point/Destroy()
-	QDEL_NULL(installed_equipment)
-	. = ..()
-
-/obj/effect/attach_point/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/powerloader_clamp))
-		var/obj/item/powerloader_clamp/PC = I
-		install_equipment(PC, user)
-		return TRUE
-	. = ..()
-
-/obj/effect/attach_point/proc/install_equipment(var/obj/item/powerloader_clamp/PC, var/mob/living/user)
-	if(!istype(PC.loaded, /obj/structure/dropship_equipment))
-		return
-	var/obj/structure/dropship_equipment/SE = PC.loaded
-	if(!(base_category in SE.equip_categories) )
-		to_chat(user, SPAN_WARNING("[SE] doesn't fit on [src]."))
-		return TRUE
-	if(installed_equipment)
-		return TRUE
-	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
-	var/point_loc = loc
-	if(!do_after(user, 70 * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
-		return TRUE
-	if(loc != point_loc)//dropship flew away
-		return TRUE
-	if(installed_equipment || PC.loaded != SE)
-		return TRUE
-	to_chat(user, SPAN_NOTICE("You install [SE] on [src]."))
-	SE.forceMove(loc)
-	PC.loaded = null
-	playsound(loc, 'sound/machines/hydraulics_2.ogg', 40, 1)
-	PC.update_icon()
-	installed_equipment = SE
-	SE.ship_base = src
-
-	for(var/datum/shuttle/ferry/marine/S in shuttle_controller.process_shuttles)
-		if(S.shuttle_tag == ship_tag)
-			SE.linked_shuttle = S
-			S.equipments += SE
-			break
-
-	SE.update_equipment()
-
-
-/obj/effect/attach_point/weapon
-	name = "weapon system attach point"
-	icon_state = "equip_base_front"
-	base_category = DROPSHIP_WEAPON
-
-/obj/effect/attach_point/weapon/dropship1
-	ship_tag = "USS Almayer Dropship 1"
-
-/obj/effect/attach_point/weapon/dropship2
-	ship_tag = "USS Almayer Dropship 2"
-
-
-/obj/effect/attach_point/crew_weapon
-	name = "crew compartment attach point"
-	base_category = DROPSHIP_CREW_WEAPON
-
-/obj/effect/attach_point/crew_weapon/dropship1
-	ship_tag = "USS Almayer Dropship 1"
-
-/obj/effect/attach_point/crew_weapon/dropship2
-	ship_tag = "USS Almayer Dropship 2"
-
-/obj/effect/attach_point/electronics
-	name = "electronic system attach point"
-	base_category = DROPSHIP_ELECTRONICS
-	icon_state = "equip_base_front"
-
-/obj/effect/attach_point/electronics/dropship1
-	ship_tag = "USS Almayer Dropship 1"
-
-/obj/effect/attach_point/electronics/dropship2
-	ship_tag = "USS Almayer Dropship 2"
-
-
-/obj/effect/attach_point/fuel
-	name = "engine system attach point"
-	icon = 'icons/obj/structures/props/almayer_props64.dmi'
-	icon_state = "fuel_base"
-	base_category = DROPSHIP_FUEL_EQP
-
-/obj/effect/attach_point/fuel/dropship1
-	ship_tag = "USS Almayer Dropship 1"
-
-/obj/effect/attach_point/fuel/dropship2
-	ship_tag = "USS Almayer Dropship 2"
-
-
-/obj/effect/attach_point/computer
-	base_category = DROPSHIP_COMPUTER
-
-/obj/effect/attach_point/computer/dropship1
-	ship_tag = "USS Almayer Dropship 1"
-
-/obj/effect/attach_point/computer/dropship2
-	ship_tag = "USS Almayer Dropship 2"
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////::
 
-//Actual dropship equipments
-
+//Dropship equipments
 /obj/structure/dropship_equipment
 	density = TRUE
 	anchored = TRUE
@@ -142,6 +17,7 @@
 	var/datum/shuttle/ferry/marine/linked_shuttle
 	var/screen_mode = 0 //used by the dropship console code when this equipment is selected
 	var/point_cost = 0 //how many points it costs to build this with the fabricator, set to 0 if unbuildable.
+	var/skill_required = SKILL_PILOT_TRAINED
 
 /obj/structure/dropship_equipment/Destroy()
 	QDEL_NULL(ammo_equipped)
@@ -318,10 +194,10 @@
 
 /obj/structure/dropship_equipment/sentry_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "sentry_system_installed"
 		if(deployed_turret)
-			deployed_turret.dir = dir
+			deployed_turret.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(SOUTH)
@@ -340,13 +216,13 @@
 				deployed_turret.pixel_x = 0
 				deployed_turret.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_turret)
 			icon_state = "sentry_system"
 			deployed_turret.pixel_y = 0
 			deployed_turret.pixel_x = 0
 			deployed_turret.forceMove(src)
-			deployed_turret.dir = dir
+			deployed_turret.setDir(dir)
 			deployed_turret.turned_on = 0
 		else
 			icon_state = "sentry_system_destroyed"
@@ -439,10 +315,10 @@
 
 /obj/structure/dropship_equipment/mg_holder/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		icon_state = "mg_system_installed"
 		if(deployed_mg)
-			deployed_mg.dir = dir
+			deployed_mg.setDir(dir)
 			if(ship_base.base_category == DROPSHIP_WEAPON)
 				switch(dir)
 					if(NORTH)
@@ -458,13 +334,13 @@
 				deployed_mg.pixel_x = 0
 				deployed_mg.pixel_y = 0
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		if(deployed_mg)
 			icon_state = "mg_system"
 			deployed_mg.pixel_y = 0
 			deployed_mg.pixel_x = 0
 			deployed_mg.forceMove(src)
-			deployed_mg.dir = dir
+			deployed_mg.setDir(dir)
 		else
 			icon_state = "mg_system_destroyed"
 
@@ -637,17 +513,21 @@
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector/Destroy()
 	linked_cam_console = null
-	. = ..()
+	return ..()
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector/on_launch()
-	linked_cam_console.network.Add("landing zones") //only accessible while in the air.
-	for(var/ref in linked_cam_console.concurrent_users)
-		linked_cam_console.update_static_data(locate(ref))
+	linked_cam_console.network.Add(CAMERA_NET_LANDING_ZONES) //only accessible while in the air.
+	for(var/datum/weakref/ref in linked_cam_console.concurrent_users)
+		var/mob/user = ref.resolve()
+		if(user)
+			linked_cam_console.update_static_data(user)
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector/on_arrival()
-	linked_cam_console.network.Remove("landing zones")
-	for(var/ref in linked_cam_console.concurrent_users)
-		linked_cam_console.update_static_data(locate(ref))
+	linked_cam_console.network.Remove(CAMERA_NET_LANDING_ZONES)
+	for(var/datum/weakref/ref in linked_cam_console.concurrent_users)
+		var/mob/user = ref.resolve()
+		if(user)
+			linked_cam_console.update_static_data(user)
 
 
 /////////////////////////////////// COMPUTERS //////////////////////////////////////
@@ -682,6 +562,7 @@
 	is_weapon = TRUE
 	screen_mode = 1
 	is_interactable = TRUE
+	skill_required = SKILL_PILOT_EXPERT
 	var/last_fired //used for weapon cooldown after use.
 	var/firing_sound
 	var/firing_delay = 20 //delay between firing. 2 seconds by default
@@ -689,11 +570,11 @@
 
 /obj/structure/dropship_equipment/weapon/update_equipment()
 	if(ship_base)
-		dir = ship_base.dir
+		setDir(ship_base.dir)
 		bound_width = 32
 		bound_height = 32
 	else
-		dir = initial(dir)
+		setDir(initial(dir))
 		bound_width = initial(bound_width)
 		bound_height = initial(bound_height)
 	update_icon()
@@ -750,9 +631,7 @@
 	// clamp back to maximum inaccuracy
 	ammo_accuracy_range = min(ammo_accuracy_range, ammo_max_inaccuracy)
 
-	var/list/possible_turfs = list()
-	for(var/turf/TU in range(ammo_accuracy_range, target_turf))
-		possible_turfs += TU
+	var/list/possible_turfs = RANGE_TURFS(ammo_accuracy_range, target_turf)
 	var/turf/impact = pick(possible_turfs)
 	if(ammo_warn_sound)
 		playsound(impact, ammo_warn_sound, ammo_warn_sound_volume, 1)
@@ -793,6 +672,7 @@
 	icon_state = "30mm_cannon"
 	firing_sound = 'sound/effects/cannon30.ogg'
 	point_cost = 400
+	skill_required = SKILL_PILOT_TRAINED
 	fire_mission_only = FALSE
 
 /obj/structure/dropship_equipment/weapon/heavygun/update_icon()
@@ -804,9 +684,9 @@
 
 
 /obj/structure/dropship_equipment/weapon/rocket_pod
-	name = "rocket pod"
+	name = "missile pod"
 	icon_state = "rocket_pod"
-	desc = "A rocket pod weapon system capable of launching a single laser-guided rocket. Moving this will require some sort of lifter."
+	desc = "A missile pod weapon system capable of launching a single laser-guided missile. Moving this will require some sort of lifter."
 	firing_sound = 'sound/weapons/gun_flare_explode.ogg'
 	firing_delay = 5
 	point_cost = 600
@@ -852,6 +732,7 @@
 	firing_sound = 'sound/effects/phasein.ogg'
 	firing_delay = 50 //5 seconds
 	point_cost = 500
+	skill_required = SKILL_PILOT_TRAINED
 	fire_mission_only = FALSE
 
 /obj/structure/dropship_equipment/weapon/laser_beam_gun/update_icon()
@@ -861,8 +742,6 @@
 		if(ship_base) icon_state = "laser_beam_installed"
 		else icon_state = "laser_beam"
 
-
-/*TBD
 /obj/structure/dropship_equipment/weapon/launch_bay
 	name = "launch bay"
 	icon_state = "launch_bay"
@@ -870,18 +749,15 @@
 	icon = 'icons/obj/structures/props/almayer_props.dmi'
 	firing_sound = 'sound/weapons/gun_flare_explode.ogg'
 	firing_delay = 10 //1 seconds
+	bound_height = 32
 	equip_categories = list(DROPSHIP_CREW_WEAPON) //fits inside the central spot of the dropship
-	point_cost = 0
+	point_cost = 400
 
-	update_icon()
-		if(ammo_equipped && ammo_equipped.ammo_count)
-			icon_state = "launch_bay_loaded"
-		else
-			if(ship_base) icon_state = "launch_bay"
-			else icon_state = "launch_bay"
-*/
-
-
+/obj/structure/dropship_equipment/weapon/launch_bay/update_equipment()
+	if(ship_base)
+		icon_state = "launch_bay_deployed"
+	else
+		icon_state = "launch_bay"
 
 //////////////// OTHER EQUIPMENT /////////////////
 
@@ -920,10 +796,6 @@
 
 	if(linked_shuttle.moving_status != SHUTTLE_INTRANSIT)
 		to_chat(user, SPAN_WARNING("[src] can only be used while in flight."))
-		return
-
-	if(!linked_shuttle.transit_gun_mission)
-		to_chat(user, SPAN_WARNING("[src] requires a flyby flight to be used."))
 		return
 
 	if(busy_winch)
@@ -967,7 +839,7 @@
 		to_chat(user, SPAN_WARNING("No active medevac stretcher detected."))
 		return
 
-	var/stretcher_choice = input("Which emitting stretcher would you like to link with?", "Available stretchers") as null|anything in possible_stretchers
+	var/stretcher_choice = tgui_input_list(usr, "Which emitting stretcher would you like to link with?", "Available stretchers", possible_stretchers)
 	if(!stretcher_choice)
 		return
 
@@ -997,10 +869,6 @@
 
 	if(linked_shuttle.moving_status != SHUTTLE_INTRANSIT)
 		to_chat(user, SPAN_WARNING("[src] can only be used while in flight."))
-		return
-
-	if(!linked_shuttle.transit_gun_mission)
-		to_chat(user, SPAN_WARNING("[src] requires a flyby flight to be used."))
 		return
 
 	if(busy_winch)
@@ -1054,10 +922,6 @@
 		to_chat(user, SPAN_WARNING("[src] can only be used while in flight."))
 		return
 
-	if(!linked_shuttle.transit_gun_mission)
-		to_chat(user, SPAN_WARNING("[src] requires a flyby flight to be used."))
-		return
-
 	if(busy_winch)
 		to_chat(user, SPAN_WARNING(" The winch is already in motion."))
 		return
@@ -1097,7 +961,7 @@
 	else if(!ship_base) //uninstalled midway
 		fail = TRUE
 
-	else if(!linked_shuttle || linked_shuttle.moving_status != SHUTTLE_INTRANSIT || !linked_shuttle.transit_gun_mission)
+	else if(!linked_shuttle || linked_shuttle.moving_status != SHUTTLE_INTRANSIT)
 		fail = TRUE
 
 	if(fail)
@@ -1178,7 +1042,7 @@
 		to_chat(user, SPAN_WARNING("No active balloons detected."))
 		return
 
-	var/fulton_choice = input("Which balloon would you like to link with?", "Available balloons") as null|anything in possible_fultons
+	var/fulton_choice = tgui_input_list(usr, "Which balloon would you like to link with?", "Available balloons", possible_fultons)
 	if(!fulton_choice)
 		return
 

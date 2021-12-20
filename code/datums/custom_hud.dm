@@ -43,7 +43,7 @@
 	var/UI_FRAME_LOC		= "EAST-3:0,14:15"
 
 	//Status effects starting loc
-	var/UI_STATUS_X			= 1	
+	var/UI_STATUS_X			= 1
 	var/UI_STATUS_X_OFFSET	= 4
 	var/UI_STATUS_Y			= 0
 	var/UI_STATUS_Y_OFFSET	= 26
@@ -62,7 +62,8 @@
 	var/ui_gloves 		= "WEST+2:10,2:7"
 	var/ui_glasses 		= "WEST:6,3:9"
 	var/ui_mask 		= "WEST+1:8,3:9"
-	var/ui_wear_ear 	= "WEST+2:10,3:9"
+	var/ui_wear_l_ear 	= "WEST+2:10,3:9"
+	var/ui_wear_r_ear 	= "WEST+2:10,4:11"
 	var/ui_head 		= "WEST+1:8,4:11"
 
 /datum/custom_hud/proc/get_status_loc(var/placement)
@@ -74,6 +75,12 @@
 	var/coord_row = "[-1 - row]"
 	var/coord_row_offset = 26
 	return "EAST[coord_col]:[coord_col_offset],NORTH[coord_row]:[coord_row_offset]"
+
+///Offsets the slot's screen_loc by the item's hud_offset var. Uses the ui slot var as the arg: ui_belt, not WEAR_WAIST/"belt".
+/datum/custom_hud/proc/hud_slot_offset(obj/item/A, ui_slot)
+	var/coords = splittext(ui_slot, ",")
+	var/coords_x = splittext(coords[1], ":")
+	return "[coords_x[1]]:[text2num(coords_x[2])+A.hud_offset],[coords[2]]"
 
 /datum/custom_hud/proc/special_behaviour(var/datum/hud/element, var/ui_alpha = 255, var/ui_color = "#ffffff")
 	return

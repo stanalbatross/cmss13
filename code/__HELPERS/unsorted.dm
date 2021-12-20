@@ -14,10 +14,8 @@
 //Returns 1 if the given item is capable of popping things like balloons, inflatable barriers, or cutting police tape.
 // For the record, WHAT THE HELL IS THIS METHOD OF DOING IT?
 #define can_puncture(W) (isitem(W) && (W.sharp || W.heat_source >= 400 || \
-							istype(W, /obj/item/tool/screwdriver) || istype(W, /obj/item/tool/pen ) || istype(W, /obj/item/tool/shovel)) \
+							HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER) || istype(W, /obj/item/tool/pen ) || istype(W, /obj/item/tool/shovel)) \
 						)
-
-#define is_surgery_tool(W) (istype(W, /obj/item/tool/surgery))
 
 //Makes sure MIDDLE is between LOW and HIGH. If not, it adjusts it. Returns the adjusted value.
 #define between(low, middle, high) (max(min(middle, high), low))
@@ -159,9 +157,7 @@
 			return A
 
 	// Check for atoms in adjacent turf EAST/WEST
-	if (mover.diagonal_movement == DIAG_MOVE_DEFAULT && \
-		fd1 && fd1 != fdir
-	)
+	if (fd1 && fd1 != fdir)
 		T = get_step(start_turf, fd1)
 		if (T.BlockedExitDirs(mover, fd2) || T.BlockedPassDirs(mover, fd1))
 			blocking_dir |= fd1
@@ -180,9 +176,7 @@
 				break
 
 	// Check for atoms in adjacent turf NORTH/SOUTH
-	if (mover.diagonal_movement == DIAG_MOVE_DEFAULT && \
-		fd2 && fd2 != fdir
-	)
+	if (fd2 && fd2 != fdir)
 		T = get_step(start_turf, fd2)
 		if (T.BlockedExitDirs(mover, fd1) || T.BlockedPassDirs(mover, fd2))
 			blocking_dir |= fd2
@@ -252,9 +246,10 @@
 
 	if(oldname)
 		//update the datacore records! This is goig to be a bit costly.
+		var/mob_ref = WEAKREF(src)
 		for(var/list/L in list(GLOB.data_core.general, GLOB.data_core.medical, GLOB.data_core.security, GLOB.data_core.locked))
 			for(var/datum/data/record/R in L)
-				if(R.fields["name"] == oldname)
+				if(R.fields["ref"] == mob_ref)
 					R.fields["name"] = newname
 					break
 
@@ -336,7 +331,7 @@
 /proc/select_active_ai(var/mob/user)
 	var/list/ais = active_ais()
 	if(ais.len)
-		if(user)	. = input(usr,"AI signals detected:", "AI selection") in ais
+		if(user)	. = tgui_input_list(usr,"AI signals detected:", "AI selection", ais)
 		else		. = pick(ais)
 	return .
 
@@ -409,13 +404,10 @@
 		else
 			names.Add(name)
 			namecounts[name] = 1
-		if (M.real_name && M.real_name != M.name)
-			name += " \[[M.real_name]\]"
-		if (M.stat == 2)
-			name += " \[dead\]"
-		if(istype(M, /mob/dead/observer/))
+		if(isobserver(M))
 			name += " \[ghost\]"
-
+		else if(M.stat == DEAD)
+			name += " \[dead\]"
 		creatures[name] = M
 	return creatures
 
@@ -556,6 +548,15 @@
 		else
 			names.Add(name)
 			namecounts[name] = 1
+		vehicles[name] = MV
+
+	return vehicles
+
+//Unlike the above adds object reference instead of number, for 100% pinpointing the needed vehicle
+/proc/get_multi_vehicles_admin()
+	var/list/vehicles = list()
+	for(var/obj/vehicle/multitile/MV as anything in GLOB.all_multi_vehicles)
+		var/name = "[MV.name] (\ref[MV]) ([get_area(MV)])"
 		vehicles[name] = MV
 
 	return vehicles
@@ -815,12 +816,14 @@
 	var/y = min(world.maxy, max(1, A.y + dy))
 	return locate(x,y,A.z)
 
-proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as text,sleeptime = 0,direction as num)
+/proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as text, qdel_in = 0,direction as num)
 //This proc throws up either an icon or an animation for a specified amount of time.
 //The variables should be apparent enough.
 	var/atom/movable/overlay/animation = new(location)
+	var/qdel_time = max(qdel_in, 1.5 SECONDS)
+	QDEL_IN(animation, qdel_time)
 	if(direction)
-		animation.dir = direction
+		animation.setDir(direction)
 	animation.icon = a_icon
 	animation.layer = target.layer+0.1
 	if(a_icon_state)
@@ -829,8 +832,6 @@ proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as te
 		animation.icon_state = "blank"
 		animation.master = target
 		flick(flick_anim, animation)
-	sleep(max(sleeptime, 15))
-	qdel(animation)
 
 //Will return the contents of an atom recursivly to a depth of 'searchDepth'
 /atom/proc/GetAllContents(searchDepth = 5)
@@ -880,6 +881,7 @@ var/global/image/emote_indicator_tailswipe
 var/global/image/action_red_power_up
 var/global/image/action_green_power_up
 var/global/image/action_blue_power_up
+var/global/image/action_purple_power_up
 
 /proc/get_busy_icon(busy_type)
 	if(busy_type == BUSY_ICON_GENERIC)
@@ -929,19 +931,24 @@ var/global/image/action_blue_power_up
 		return emote_indicator_tailswipe
 	else if(busy_type == ACTION_RED_POWER_UP)
 		if(!action_red_power_up)
-			action_red_power_up = image('icons/effects/effects.dmi', null,"anger", "pixel_x" = 14)
+			action_red_power_up = image('icons/effects/effects.dmi', null, "anger", "pixel_x" = 16)
 			action_red_power_up.layer = FLY_LAYER
 		return action_red_power_up
 	else if(busy_type == ACTION_GREEN_POWER_UP)
 		if(!action_green_power_up)
-			action_green_power_up = image('icons/effects/effects.dmi', null,"vitality", "pixel_x" = 14)
+			action_green_power_up = image('icons/effects/effects.dmi', null, "vitality", "pixel_x" = 16)
 			action_green_power_up.layer = FLY_LAYER
 		return action_green_power_up
 	else if(busy_type == ACTION_BLUE_POWER_UP)
 		if(!action_blue_power_up)
-			action_blue_power_up = image('icons/effects/effects.dmi', null,"shock", "pixel_x" = 14)
+			action_blue_power_up = image('icons/effects/effects.dmi', null, "shock", "pixel_x" = 16)
 			action_blue_power_up.layer = FLY_LAYER
 		return action_blue_power_up
+	else if(busy_type == ACTION_PURPLE_POWER_UP)
+		if(!action_purple_power_up)
+			action_purple_power_up = image('icons/effects/effects.dmi', null, "pain", "pixel_x" = 16)
+			action_purple_power_up.layer = FLY_LAYER
+		return action_purple_power_up
 
 
 /*
@@ -996,7 +1003,7 @@ var/global/image/action_blue_power_up
 	if(user_flags & BEHAVIOR_IMMOBILE)
 		L.status_flags |= IMMOBILE_ACTION
 
-	L.action_busy = TRUE // target is not tethered by action, the action is tethered by target though
+	L.action_busy++ // target is not tethered by action, the action is tethered by target though
 	L.resisting = FALSE
 	L.clicked_something = list()
 	if(has_target && target_is_mob)
@@ -1007,7 +1014,7 @@ var/global/image/action_blue_power_up
 	var/cur_target_zone_sel
 	if(has_target && istype(T))
 		cur_target_zone_sel = T.zone_selected
-	var/delayfraction = round(delay/numticks)
+	var/delayfraction = Ceiling(delay/numticks)
 	var/user_orig_loc = L.loc
 	var/user_orig_turf = get_turf(L)
 	var/target_orig_loc
@@ -1019,11 +1026,11 @@ var/global/image/action_blue_power_up
 	var/obj/target_holding
 	if(has_target && istype(T))
 		target_holding = T.get_active_hand()
-	var/expected_total_time = delayfraction*(numticks+1)
+	var/expected_total_time = delayfraction*numticks
 	var/time_remaining = expected_total_time
 
 	. = TRUE
-	for(var/i = 0 to numticks)
+	for(var/i in 1 to numticks)
 		sleep(delayfraction)
 		time_remaining -= delayfraction
 		if(!istype(L) || has_target && !istype(target)) // Checks if L exists and is not dead and if the target exists and is not destroyed
@@ -1125,7 +1132,7 @@ var/global/image/action_blue_power_up
 	if(target && target_icon)
 		target.overlays -= target_icon
 
-	L.action_busy = FALSE
+	L.action_busy--
 	L.resisting = FALSE
 	if(target_is_mob)
 		T.resisting = FALSE
@@ -1140,16 +1147,13 @@ var/global/image/action_blue_power_up
 	if(A.vars.Find(lowertext(varname))) return 1
 	else return 0
 
-//Returns: all the areas in the world
-/proc/return_areas()
-	var/list/area/areas = list()
-	for(var/area/A in all_areas)
-		areas += A
-	return areas
-
-//Returns: all the areas in the world, sorted.
+//Returns: all the non-lighting areas in the world, sorted.
 /proc/return_sorted_areas()
-	return sortAtom(return_areas())
+	var/list/area/AL = list()
+	for(var/area/A in GLOB.sorted_areas)
+		if(!A.lighting_subarea)
+			AL += A
+	return AL
 
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all turfs in areas of that type of that type in the world.
@@ -1166,8 +1170,15 @@ var/global/image/action_blue_power_up
 
 	var/list/turfs = list()
 	var/area/A = GLOB.areas_by_type[areatype]
-	for(var/turf/T in A)
-		turfs += T
+
+	// Fix it up with /area/var/related due to lighting shenanigans
+	var/list/area/LA
+	if(!length(A.related))
+		LA = list(A)
+	else LA = A.related
+	for(var/area/Ai in LA)
+		for(var/turf/T in Ai)
+			turfs += T
 
 	return turfs
 
@@ -1175,6 +1186,19 @@ var/global/image/action_blue_power_up
 	var/x_pos = null
 	var/y_pos = null
 	var/z_pos = null
+
+/datum/coords/New(var/turf/location)
+	. = ..()
+	if(location)
+		x_pos = location.x
+		y_pos = location.y
+		z_pos = location.z
+
+/datum/coords/proc/get_turf_from_coord()
+	if(!x_pos || !y_pos || !z_pos)
+		return
+
+	return locate(x_pos, y_pos, z_pos)
 
 /area/proc/move_contents_to(var/area/A, var/turftoleave=null, var/direction = null)
 	//Takes: Area. Optional: turf type to leave behind.
@@ -1232,7 +1256,7 @@ var/global/image/action_blue_power_up
 
 					var/turf/X = B.ChangeTurf(T.type)
 					if (X)
-						X.dir = old_dir1
+						X.setDir(old_dir1)
 						X.icon_state = old_icon_state1
 						X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
 
@@ -1546,7 +1570,7 @@ var/list/WALLITEMS = list(
 	var/list/options = list()
 	for(var/datum/D in marked_datums)
 		options += "Marked datum ([D] - \ref[D])"
-	var/choice = input("Select marked datum", "Marked datums") as null|anything in options
+	var/choice = tgui_input_list(usr, "Select marked datum", "Marked datums", options)
 
 	if(!choice)
 		return null
@@ -1557,18 +1581,18 @@ var/list/WALLITEMS = list(
 
 	return null
 
-// Returns true if arming a given grenade might be considered grief
-// Grenades are considered "griefy" if they are primed when all the following are true:
-// * The grenade is on the Almayer/dropship transit z levels
+// Returns true if arming a given explosive might be considered grief
+// Explosives are considered "griefy" if they are primed when all the following are true:
+// * The explosive is on the Almayer/dropship transit z levels
 // * The alert level is green/blue (alternatively, not red+)
 // * The dropship crash hasn't happened yet
-// * An admin hasn't disabled grenade antigrief
-// Certain areas may be exempt from this check. Look up grenade_antigrief_exempt_areas
-/proc/grenade_grief_check(var/obj/item/explosive/grenade/G)
-	var/turf/T = get_turf(G)
-	if(!(T.loc.type in grenade_antigrief_exempt_areas))
+// * An admin hasn't disabled explosive antigrief
+// Certain areas may be exempt from this check. Look up explosive_antigrief_exempt_areas
+/proc/explosive_grief_check(var/obj/item/explosive/E)
+	var/turf/T = get_turf(E)
+	if(!(T.loc.type in GLOB.explosive_antigrief_exempt_areas))
 		var/crash_occured = (SSticker?.mode?.is_in_endgame)
-		if(G.harmful && (T.z in SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_LOWORBIT))) && (security_level < SEC_LEVEL_RED) && !crash_occured && grenade_antigrief_on)
+		if((T.z in SSmapping.levels_by_any_trait(list(ZTRAIT_MARINE_MAIN_SHIP, ZTRAIT_LOWORBIT))) && (security_level < SEC_LEVEL_RED) && !crash_occured && explosive_antigrief_on)
 			return TRUE
 	return FALSE
 
@@ -1590,7 +1614,7 @@ var/list/WALLITEMS = list(
 
 /proc/flick_overlay(var/atom/target, overlay, time)
 	target.overlays += overlay
-	addtimer(CALLBACK(target, /proc/remove_timed_overlay, overlay), time)
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_timed_overlay, target, overlay), time)
 
 /proc/remove_timed_overlay(var/atom/target, overlay)
 	target.overlays -= overlay
@@ -1771,3 +1795,67 @@ var/list/WALLITEMS = list(
 			processing += A.contents
 			assembled += A
 	return assembled
+
+// Returns a list where [1] is all x values and [2] is all y values that overlap between the given pair of rectangles
+/proc/get_overlap(x1, y1, x2, y2, x3, y3, x4, y4)
+	var/list/region_x1 = list()
+	var/list/region_y1 = list()
+	var/list/region_x2 = list()
+	var/list/region_y2 = list()
+
+	// These loops create loops filled with x/y values that the boundaries inhabit
+	// ex: list(5, 6, 7, 8, 9)
+	for(var/i in min(x1, x2) to max(x1, x2))
+		region_x1["[i]"] = TRUE
+	for(var/i in min(y1, y2) to max(y1, y2))
+		region_y1["[i]"] = TRUE
+	for(var/i in min(x3, x4) to max(x3, x4))
+		region_x2["[i]"] = TRUE
+	for(var/i in min(y3, y4) to max(y3, y4))
+		region_y2["[i]"] = TRUE
+
+	return list(region_x1 & region_x2, region_y1 & region_y2)
+
+#define TURF_FROM_COORDS_LIST(List) (locate(List[1], List[2], List[3]))
+
+//Vars that will not be copied when using /DuplicateObject
+GLOBAL_LIST_INIT(duplicate_forbidden_vars,list(
+	"tag", "datum_components", "area", "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key",
+	"power_supply", "contents", "reagents", "stat", "x", "y", "z", "group", "atmos_adjacent_turfs", "comp_lookup",
+	"client_mobs_in_contents", "bodyparts", "internal_organs", "hand_bodyparts", "overlays_standing", "hud_list",
+	"actions", "AIStatus", "appearance", "managed_overlays", "managed_vis_overlays", "computer_id", "lastKnownIP", "implants",
+	"tgui_shared_states"
+	))
+
+/proc/DuplicateObject(atom/original, perfectcopy = TRUE, sameloc, atom/newloc = null)
+	RETURN_TYPE(original.type)
+	if(!original)
+		return
+	var/atom/O
+
+	if(sameloc)
+		O = new original.type(original.loc)
+	else
+		O = new original.type(newloc)
+
+	if(perfectcopy && O && original)
+		for(var/V in original.vars - GLOB.duplicate_forbidden_vars)
+			if(islist(original.vars[V]))
+				var/list/L = original.vars[V]
+				O.vars[V] = L.Copy()
+			else if(istype(original.vars[V], /datum) || ismob(original.vars[V]))
+				continue // this would reference the original's object, that will break when it is used or deleted.
+			else
+				O.vars[V] = original.vars[V]
+
+	if(ismob(O)) //Overlays are carried over despite disallowing them, if a fix is found remove this.
+		var/mob/M = O
+		M.overlays.Cut()
+		M.regenerate_icons()
+	return O
+
+/proc/convert_to_json_text(var/json_file_string)
+	var/json_file = file(json_file_string)
+	json_file = file2text(json_file)
+	json_file = json_decode(json_file)
+	return json_file

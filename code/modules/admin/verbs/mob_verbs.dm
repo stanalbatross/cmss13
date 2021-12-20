@@ -22,6 +22,7 @@
 	var/mob/living/carbon/Xenomorph/XNO = M
 	if(istype(XNO))
 		XNO.generate_name()
+	M.client?.change_view(world_view_size)
 
 /client/proc/cmd_admin_changekey(mob/O in GLOB.mob_list)
 	set name = "Change CKey"
@@ -65,7 +66,7 @@
 		return
 
 	var/list/listed_huds = list("Medical HUD", "Security HUD", "Squad HUD", "Xeno Status HUD")
-	var/hud_choice = input("Choose a HUD to toggle", "Toggle HUD", null) as null|anything in listed_huds
+	var/hud_choice = tgui_input_list(usr, "Choose a HUD to toggle", "Toggle HUD", listed_huds)
 	var/datum/mob_hud/H
 	switch(hud_choice)
 		if("Medical HUD")
@@ -127,9 +128,9 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/list/subtle_message_options = list("Voice in head", "Weston-Yamada", "USCM High Command", "Faction-specific")
+	var/list/subtle_message_options = list("Voice in head", "Weyland-Yutani", "USCM High Command", "Faction-specific")
 
-	var/message_option = input("Choose the method of subtle messaging", "") in subtle_message_options
+	var/message_option = tgui_input_list(usr, "Choose the method of subtle messaging", "", subtle_message_options)
 
 	if(message_option == "Faction-specific")
 		message_option = input("Choose which faction", "")
@@ -152,7 +153,7 @@
 				to_chat(usr, "The person you are trying to contact is not human")
 				return
 
-			if(!istype(H.wear_ear, /obj/item/device/radio/headset))
+			if(!H.get_type_in_ears(/obj/item/device/radio/headset))
 				to_chat(usr, "The person you are trying to contact is not wearing a headset")
 				return
 			to_chat(H, SPAN_DANGER("Message received through headset. [message_option] Transmission <b>\"[msg]\"</b>"))
@@ -168,7 +169,7 @@
 		return
 
 	if(!M)
-		M = input("Direct narrate to who?", "Active Players") as null|anything in GLOB.player_list
+		M = tgui_input_list(usr, "Direct narrate to who?", "Active Players", GLOB.player_list)
 
 	if(!M)
 		return
@@ -251,10 +252,11 @@
 		return
 
 	var/list/hives = list()
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	for(var/hivenumber in GLOB.hive_datum)
+		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 		hives += list("[hive.name]" = hive.hivenumber)
 
-	var/newhive = input(src,"Select a hive.", null, null) in hives
+	var/newhive = tgui_input_list(src,"Select a hive.", "Change Hivenumber", hives)
 
 	if(!H)
 		to_chat(usr, "This mob no longer exists")

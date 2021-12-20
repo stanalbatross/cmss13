@@ -3,11 +3,8 @@
 	desc = "Used for scanning and alerting when someone enters a certain proximity."
 	icon_state = "prox"
 	matter = list("metal" = 800, "glass" = 200, "waste" = 50)
-
-
-	wires = WIRE_PULSE
-
-	secured = 0
+	wires = WIRE_ASSEMBLY_PULSE
+	secured = FALSE
 
 	var/scanning = 0
 	var/timing = FALSE
@@ -73,10 +70,8 @@
 	if(scanning)
 		var/turf/mainloc = get_turf(src)
 		for(var/mob/living/M in range(range,mainloc))
-			if(ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if(H.get_target_lock(iff_signal))
-					continue
+			if(M.get_target_lock(iff_signal))
+				continue
 			HasProximity(M)
 
 	if(timing && (time >= 0))
@@ -158,7 +153,7 @@
 			scanning = text2num(params["armed"])
 			update_icon()
 			. = TRUE
-		
+
 		if("set_delay")
 			delay = clamp(text2num(params["value"]), PROXY_MINIMUM_DELAY, PROXY_MAXIMUM_DELAY)
 			. = TRUE
@@ -169,19 +164,19 @@
 
 /obj/item/device/assembly/prox_sensor/ui_data(mob/user)
 	. = list()
-	.["current_arm_time"] = time SECONDS_TO_DECISECONDS
+	.["current_arm_time"] = time *0.1
 	.["is_arming"] = timing
 
 	.["current_delay"] = delay
 	.["current_range"] = range
 
 	.["armed"] = scanning
-	
-	
+
+
 /obj/item/device/assembly/prox_sensor/ui_static_data(mob/user)
 	. = list()
-	.["min_time"] = PROXY_MINIMUM_TIME SECONDS_TO_DECISECONDS
-	.["max_time"] = PROXY_MAXIMUM_TIME SECONDS_TO_DECISECONDS
+	.["min_time"] = PROXY_MINIMUM_TIME *0.1
+	.["max_time"] = PROXY_MAXIMUM_TIME *0.1
 
 	.["min_range"] = PROXY_MINIMUM_RANGE
 	.["max_range"] = PROXY_MAXIMUM_RANGE

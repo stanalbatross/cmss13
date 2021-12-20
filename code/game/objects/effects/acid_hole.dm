@@ -15,7 +15,7 @@
 		W.acided_hole = src
 		holed_wall = W
 		holed_wall.opacity = 0
-		dir = W.acided_hole_dir
+		setDir(W.acided_hole_dir)
 
 /obj/effect/acid_hole/Destroy()
 	if(holed_wall)
@@ -40,15 +40,16 @@
 
 
 /obj/effect/acid_hole/attack_alien(mob/living/carbon/Xenomorph/user)
-	if(holed_wall)
-		if(user.mob_size >= MOB_SIZE_BIG)
-			expand_hole(user)
+	if(holed_wall && user.mob_size >= MOB_SIZE_BIG)
+		expand_hole(user)
+		return XENO_NO_DELAY_ACTION
 
 /obj/effect/acid_hole/proc/expand_hole(mob/living/carbon/Xenomorph/user)
 	if(user.action_busy || user.lying)
 		return
 
 	playsound(src, 'sound/effects/metal_creaking.ogg', 25, 1)
+	xeno_attack_delay(user)
 	if(do_after(user, 60, INTERRUPT_ALL, BUSY_ICON_GENERIC) && !QDELETED(src) && holed_wall && !user.lying && istype(holed_wall))
 		holed_wall.take_damage(rand(2000,3500))
 		user.emote("roar")
@@ -130,7 +131,7 @@
 								 SPAN_WARNING("You throw [G] through [src]"))
 			user.drop_held_item()
 			G.forceMove(Target)
-			G.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
+			G.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 			step_away(G,src,rand(2,5))
 			if(!G.active)
 				G.activate(user)
@@ -152,7 +153,7 @@
 								 SPAN_WARNING("You throw [F] through [src]"))
 			user.drop_held_item()
 			F.forceMove(Target)
-			F.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
+			F.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 			step_away(F,src,rand(1,5))
 			F.SetLuminosity(0)
 			if(F.on && loc != user)

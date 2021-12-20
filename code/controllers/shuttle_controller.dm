@@ -43,32 +43,12 @@
 
 	supply_controller.shuttle = shuttle
 
-	// ASRS vehicle elevator
-	var/datum/shuttle/ferry/supply/vehicle/elevator
-	elevator = new()
-	elevator.location = 1
-	elevator.warmup_time = 1
-	elevator.move_time = ELEVATOR_TRANSIT_DURATION
-	for(var/area/A in all_areas)
-		if(A.type == /area/supply/dock_vehicle)
-			elevator.area_offsite = A
-			break
-
-	for(var/area/A in all_areas)
-		if(A.type == /area/supply/station_vehicle)
-			elevator.area_station = A
-			break
-
-	shuttles["Vehicle"] = elevator
-	process_shuttles += elevator
-
-	supply_controller.vehicle_elevator = elevator
-
 	var/datum/shuttle/ferry/marine/shuttle1 //Because I am using shuttle_tag, which is only defined under /datum/shuttle/ferry/marine
 	//ALMAYER DROPSHIP 1
 	shuttle1 = new
+	shuttle1.name = "Alamo"
 	shuttle1.location = 0
-	shuttle1.warmup_time = SECONDS_10
+	shuttle1.warmup_time = DROPSHIP_WARMUP_TIME
 	shuttle1.move_time = DROPSHIP_TRANSIT_DURATION
 	shuttle1.shuttle_tag = "[MAIN_SHIP_NAME] Dropship 1"
 	shuttle1.info_tag = "Almayer Dropship"
@@ -80,8 +60,9 @@
 
 	//ALMAYER DROPSHIP 2
 	shuttle1 = new
+	shuttle1.name = "Normandy"
 	shuttle1.location = 0
-	shuttle1.warmup_time = SECONDS_10
+	shuttle1.warmup_time = DROPSHIP_WARMUP_TIME
 	shuttle1.move_time = DROPSHIP_TRANSIT_DURATION
 	shuttle1.shuttle_tag = "[MAIN_SHIP_NAME] Dropship 2"
 	shuttle1.info_tag = "Almayer Dropship"
@@ -98,7 +79,7 @@
 	if (SSmapping.configs[GROUND_MAP].map_name)
 		shuttle1 = new
 		shuttle1.location = 0
-		shuttle1.warmup_time = SECONDS_10
+		shuttle1.warmup_time = 10 SECONDS
 		shuttle1.move_time = DROPSHIP_CORSAT_DURATION // 30s
 		shuttle1.shuttle_tag = "Ground Transport 1"
 		shuttle1.info_tag = "CORSAT Monorail"
@@ -231,7 +212,7 @@
 	// Elevator I
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 
 	for(var/area/A in all_areas)
@@ -257,7 +238,7 @@
 	// Elevator II
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 
 	for(var/area/A in all_areas)
@@ -284,7 +265,7 @@
 	// Elevator III
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/elevator3/underground)
@@ -309,7 +290,7 @@
 	// Elevator IV
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/elevator4/underground)
@@ -334,7 +315,7 @@
 	// Trijent Transit I
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/tri_trans1/omega)
@@ -360,7 +341,7 @@
 	// Trijent Transit II
 	shuttle = new /datum/shuttle/ferry/elevator()
 	shuttle.location = 0
-	shuttle.warmup_time = SECONDS_10
+	shuttle.warmup_time = 10 SECONDS
 	shuttle.recharge_time = ELEVATOR_RECHARGE
 	for(var/area/A in all_areas)
 		if(A.type == /area/shuttle/tri_trans2/omega)

@@ -19,6 +19,9 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 	var/abort_timer = 100 //10 seconds
 	var/link = 0 // Does this terminal activate the transport system?
 
+	 ///Has it been admin-disabled?
+	var/disabled = FALSE
+
 	var/datum/shuttle/ferry/shuttle_datum
 
 /obj/structure/machinery/computer/shuttle_control/Initialize()
@@ -47,6 +50,10 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 		to_chat(user, SPAN_WARNING("Access denied."))
 		return 1
 
+	if(disabled)
+		to_chat(user, SPAN_WARNING("The console seems to be broken."))
+		return
+
 	user.set_interaction(src)
 
 	var/datum/shuttle/ferry/shuttle = get_shuttle()
@@ -57,10 +64,10 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 	if(!isXeno(user) && (onboard || is_ground_level(z)) && !shuttle.iselevator)
 		if(shuttle.queen_locked)
-			if(onboard && (isSynth(user) || user.job== "Pilot Officer"))
+			if(onboard && skillcheck(user, SKILL_PILOT, SKILL_PILOT_TRAINED))
 				user.visible_message(SPAN_NOTICE("[user] starts to type on the [src]."),
 				SPAN_NOTICE("You try to take back the control over the shuttle. It will take around 3 minutes."))
-				if(do_after(user, MINUTES_3, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
+				if(do_after(user, 3 MINUTES, INTERRUPT_ALL, BUSY_ICON_FRIENDLY))
 					if(user.lying)
 						return 0
 					shuttle.last_locked = world.time
@@ -73,14 +80,14 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 				return
 			else
 				if(world.time < shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN)
-					to_chat(user, SPAN_WARNING("You can't seem to re-enable remote control, some sort of safety cooldown is in place. Please wait another [round((shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN - world.time)/MINUTES_1)] minutes before trying again."))
+					to_chat(user, SPAN_WARNING("You can't seem to re-enable remote control, some sort of safety cooldown is in place. Please wait another [time_left_until(shuttle.last_locked + SHUTTLE_LOCK_COOLDOWN, world.time, 1 MINUTES)] minutes before trying again."))
 				else
 					to_chat(user, SPAN_NOTICE("You interact with the pilot's console and re-enable remote control."))
 					shuttle.last_locked = world.time
 					shuttle.queen_locked = 0
 		if(shuttle.door_override)
 			if(world.time < shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN)
-				to_chat(user, SPAN_WARNING("You can't seem to reverse the door override. Please wait another [round((shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN - world.time)/MINUTES_1)] minutes before trying again."))
+				to_chat(user, SPAN_WARNING("You can't seem to reverse the door override. Please wait another [time_left_until(shuttle.last_door_override + SHUTTLE_LOCK_COOLDOWN, world.time, 1 MINUTES)] minutes before trying again."))
 			else
 				to_chat(user, SPAN_NOTICE("You reverse the door override."))
 				shuttle.last_door_override = world.time
@@ -150,8 +157,16 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 	var/recharge_status = effective_recharge_time - shuttle.recharging
 
 	var/is_dropship = FALSE
+	var/is_automated = FALSE
+	var/automated_launch_delay = 0
+	var/automated_launch_time_left = 0
 	if(istype(shuttle, /datum/shuttle/ferry/marine))
 		is_dropship = TRUE
+		var/datum/shuttle/ferry/marine/DS = shuttle
+		is_automated = DS.automated_launch
+		automated_launch_delay = DS.automated_launch_delay * 0.1
+		if(DS.automated_launch_timer != TIMER_ID_NULL)
+			automated_launch_time_left = timeleft(DS.automated_launch_timer) * 0.1
 
 	data = list(
 		"shuttle_status" = shuttle_status,
@@ -176,6 +191,9 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 		"human_user" = ishuman(user),
 		"is_dropship" = is_dropship,
 		"onboard" = onboard,
+		"automated" = is_automated,
+		"auto_time" = automated_launch_delay,
+		"auto_time_cdown" = automated_launch_time_left,
 	)
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -236,7 +254,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 					return
 
 				// Allow the queen to choose the ship section to crash into
-				var/crash_target = input("Choose a ship section to target","Hijack",null) as null|anything in almayer_ship_sections + list("Cancel")
+				var/crash_target = tgui_input_list(usr, "Choose a ship section to target","Hijack", almayer_ship_sections + list("Cancel"))
 				if(crash_target == "Cancel")
 					return
 
@@ -289,7 +307,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 					if(almayer_orbital_cannon)
 						almayer_orbital_cannon.is_disabled = TRUE
-						addtimer(CALLBACK(almayer_orbital_cannon, .obj/structure/orbital_cannon/proc/enable), MINUTES_10, TIMER_UNIQUE)
+						addtimer(CALLBACK(almayer_orbital_cannon, /obj/structure/orbital_cannon.proc/enable), 10 MINUTES, TIMER_UNIQUE)
 
 					if(almayer_aa_cannon)
 						almayer_aa_cannon.is_disabled = TRUE
@@ -450,14 +468,33 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 			to_chat(usr, SPAN_WARNING("The console flashes a warning about the rear door not being present."))
 
 	if(href_list["cancel_flyby"])
-		var/mob/M = usr
-		if(M.mind && M.skills && !M.skills.get_skill_level(SKILL_PILOT))
-			to_chat(usr, SPAN_WARNING("Need Pilot level access to return the Dropship."))
+		if(isXeno(usr))
+			to_chat(usr, SPAN_WARNING("You have no idea how to use this button!"))
+			return
+		if(!allowed(usr))
+			to_chat(usr, SPAN_WARNING("You need Pilot level access to return the Dropship."))
 			return
 		if(shuttle.transit_gun_mission && shuttle.moving_status == SHUTTLE_INTRANSIT && shuttle.in_transit_time_left>abort_timer)
 			shuttle.in_transit_time_left = abort_timer
 
+	if(href_list["toggle-automated"])
+		if(istype(shuttle, /datum/shuttle/ferry/marine))
+			var/datum/shuttle/ferry/marine/dropship = shuttle
+			if(!skip_time_lock && world.time < SSticker.mode.round_time_lobby + SHUTTLE_TIME_LOCK)
+				to_chat(usr, SPAN_NOTICE("Automated flights are not available at this time."))
+				return
+			if(dropship.queen_locked)
+				to_chat(usr, SPAN_WARNING("ERROR: Automatic Departure Schedule unavailable. Reason: Unknown."))
+				return
+
+			if(!dropship.automated_launch) //If we're toggling it on...
+				var/auto_delay
+				auto_delay = input("Set the delay for automated departure after recharging", "Automated Departure Settings", 0) as num
+				dropship.automated_launch_delay = Clamp(auto_delay SECONDS, DROPSHIP_MIN_AUTO_DELAY, DROPSHIP_MAX_AUTO_DELAY)
+			dropship.set_automated_launch(!dropship.automated_launch)
+
 	ui_interact(usr)
+
 
 /obj/structure/machinery/computer/shuttle_control/bullet_act(var/obj/item/projectile/Proj)
 	visible_message("[Proj] ricochets off [src]!")

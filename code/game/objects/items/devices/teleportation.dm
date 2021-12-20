@@ -23,7 +23,8 @@
 	matter = list("metal" = 400)
 
 
-/obj/item/device/locator/attack_self(mob/user as mob)
+/obj/item/device/locator/attack_self(mob/user)
+	..()
 	user.set_interaction(src)
 	var/dat
 	if (src.temp)
@@ -135,7 +136,9 @@
 	matter = list("metal" = 10000)
 
 
-/obj/item/device/hand_tele/attack_self(mob/user as mob)
+/obj/item/device/hand_tele/attack_self(mob/user)
+	..()
+
 	var/turf/current_location = get_turf(user)//What turf is the user on?
 	if(!current_location || is_admin_level(current_location.z))//If turf was not found or they're on z level 2
 		to_chat(user, SPAN_NOTICE("\The [src] is malfunctioning."))
@@ -155,7 +158,7 @@
 		turfs += T
 	if(turfs.len)
 		L["None (Dangerous)"] = pick(turfs)
-	var/t1 = input(user, "Please select a teleporter to lock in on.", "Hand Teleporter") in L
+	var/t1 = tgui_input_list(user, "Please select a teleporter to lock in on.", "Hand Teleporter", L)
 	if ((user.get_active_hand() != src || user.stat || user.is_mob_restrained()))
 		return
 	var/count = 0	//num of portals from this teleport in the world

@@ -40,9 +40,9 @@
 		else if(task == "rank")
 			var/new_rank
 			if(admin_ranks.len)
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in (admin_ranks|"*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", (admin_ranks|"*New Rank*"))
 			else
-				new_rank = input("Please select a rank", "New rank", null, null) as null|anything in list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*")
+				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*"))
 
 			var/rights = 0
 			if(D)
@@ -84,7 +84,7 @@
 			var/list/permissionlist = list()
 			for(var/i=1, i<=R_HOST, i<<=1)		//that <<= is shorthand for i = i << 1. Which is a left bitshift
 				permissionlist[rights2text(i)] = i
-			var/new_permission = input("Select a permission to turn on/off", "Permission toggle", null, null) as null|anything in permissionlist
+			var/new_permission = tgui_input_list(usr, "Select a permission to turn on/off", "Permission toggle", permissionlist)
 			if(!new_permission)	return
 			D.rights ^= permissionlist[new_permission]
 
@@ -135,13 +135,8 @@
 				var/confirm = alert("Are you sure you want to self-destruct the Almayer?", "Self-Destruct", "Yes", "Cancel")
 				if(confirm != "Yes")
 					return
-
-				if(!EvacuationAuthority.initiate_self_destruct(1))
-					to_chat(usr, SPAN_WARNING("You are unable to trigger the self-destruct right now!"))
-					return
-				if(alert("Are you sure you want to destroy the Almayer right now?",, "Yes", "Cancel") == "Cancel") return
-
 				message_staff("[key_name_admin(usr)] forced the self-destrust system, destroying the [MAIN_SHIP_NAME].")
+				EvacuationAuthority.trigger_self_destruct()
 
 			if("toggle_dest")
 				EvacuationAuthority.flags_scuttle ^= FLAGS_SELF_DESTRUCT_DENY
@@ -635,8 +630,6 @@
 	else if(href_list["c_mode"])
 		if(!check_rights(R_ADMIN))	return
 
-		if(SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<B>What mode do you wish to play?</B><HR>"}
 		for(var/mode in config.modes)
 			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[config.mode_names[mode]]</A><br>"}
@@ -660,13 +653,11 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if (SSticker.mode)
-			return alert(usr, "The game has already started.", null, null, null, null)
-		master_mode = href_list["c_mode2"]
-		message_staff("[key_name_admin(usr)] set the mode as [master_mode].")
-		to_world(SPAN_NOTICE("<b><i>The mode is now: [master_mode]!</i></b>"))
+		GLOB.master_mode = href_list["c_mode2"]
+		message_staff("[key_name_admin(usr)] set the mode as [GLOB.master_mode].")
+		to_world(SPAN_NOTICE("<b><i>The mode is now: [GLOB.master_mode]!</i></b>"))
 		Game() // updates the main game menu
-		world.save_mode(master_mode)
+		SSticker.save_mode(GLOB.master_mode)
 		.(href, list("c_mode"=1))
 
 
@@ -748,10 +739,12 @@
 			return
 
 		var/list/hives = list()
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/datum/hive_status/hive
+		for(var/hivenumber in GLOB.hive_datum)
+			hive = GLOB.hive_datum[hivenumber]
 			hives += list("[hive.name]" = hive.hivenumber)
 
-		var/newhive = input(usr,"Select a hive.", null, null) in hives
+		var/newhive = tgui_input_list(usr,"Select a hive.", "Infect Larva", hives)
 
 		if(!H)
 			to_chat(usr, "This mob no longer exists")
@@ -790,12 +783,13 @@
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/list/hives = list();
-		for(var/datum/hive_status/hive in GLOB.hive_datum)
+		var/list/hives = list()
+		for(var/hivenumber in GLOB.hive_datum)
+			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 			LAZYSET(hives, hive.name, hive)
 		LAZYSET(hives, "CANCEL", null)
 
-		var/hive_name = input("Which Hive will he belongs to") in hives
+		var/hive_name = tgui_input_list(usr, "Which Hive will he belongs to", "Make Cultist", hives)
 		if(!hive_name || hive_name == "CANCEL")
 			to_chat(usr, SPAN_ALERT("Hive choice error. Aborting."))
 
@@ -1034,8 +1028,8 @@
 
 			if(is_alien_whitelisted(M,"Yautja Elder"))
 				M.change_real_name(M, "Elder [y_name]")
-				H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/yautja/full(H), WEAR_JACKET)
-				H.equip_to_slot_or_del(new /obj/item/weapon/melee/twohanded/glaive(H), WEAR_L_HAND)
+				H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/yautja/hunter/full(H), WEAR_JACKET)
+				H.equip_to_slot_or_del(new /obj/item/weapon/melee/twohanded/yautja/glaive(H), WEAR_L_HAND)
 			else
 				M.change_real_name(M, y_name)
 			M.name = "Unknown"	// Yautja names are not visible for oomans
@@ -1126,7 +1120,7 @@
 
 	else if(href_list["admincancelpredsd"])
 		if (!check_rights(R_MOD))	return
-		var/obj/item/clothing/gloves/yautja/bracer = locate(href_list["bracer"])
+		var/obj/item/clothing/gloves/yautja/hunter/bracer = locate(href_list["bracer"])
 		var/mob/living/carbon/victim = locate(href_list["victim"])
 		if (!istype(bracer))
 			return
@@ -1136,7 +1130,7 @@
 		message_staff("[src.owner] has cancelled the predator self-destruct sequence [victim ? "of [victim] ([victim.key])":""].")
 
 	else if(href_list["adminspawncookie"])
-		if(!check_rights(R_ADMIN|R_FUN))
+		if(!check_rights(R_MOD))
 			return
 
 		var/mob/living/carbon/human/H = locate(href_list["adminspawncookie"])
@@ -1144,17 +1138,40 @@
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
-		H.equip_to_slot_or_del( new /obj/item/reagent_container/food/snacks/cookie(H), WEAR_L_HAND )
-		if(!(istype(H.l_hand,/obj/item/reagent_container/food/snacks/cookie)))
-			H.equip_to_slot_or_del( new /obj/item/reagent_container/food/snacks/cookie(H), WEAR_R_HAND )
-			if(!(istype(H.r_hand,/obj/item/reagent_container/food/snacks/cookie)))
-				message_staff("[key_name(H)] has their hands full, so they did not receive their cookie, spawned by [key_name(src.owner)].")
-				return
-			else
-				H.update_inv_r_hand()//To ensure the icon appears in the HUD
-		else
-			H.update_inv_l_hand()
-		message_staff("[key_name(H)] got their cookie, spawned by [key_name(src.owner)]")
+		var/cookie_type = tgui_input_list(usr, "Choose cookie type:", "Give Cookie", list("cookie", "random fortune cookie", "custom fortune cookie"))
+		if(!cookie_type)
+			return
+
+		var/obj/item/reagent_container/food/snacks/snack
+		switch(cookie_type)
+			if("cookie")
+				snack = new /obj/item/reagent_container/food/snacks/cookie(H.loc)
+			if("random fortune cookie")
+				snack = new /obj/item/reagent_container/food/snacks/fortunecookie/prefilled(H.loc)
+			if("custom fortune cookie")
+				var/fortune_text = tgui_input_list(usr, "Choose fortune:", "Cookie customisation", list("Random", "Custom", "None"))
+				if(!fortune_text)
+					return
+				if(fortune_text == "Custom")
+					fortune_text = input(usr, "Enter the fortune text:", "Cookie customisation", "")
+					if(!fortune_text)
+						return
+				var/fortune_numbers = tgui_input_list(usr, "Choose lucky numbers:", "Cookie customisation", list("Random", "Custom", "None"))
+				if(!fortune_numbers)
+					return
+				if(fortune_numbers == "Custom")
+					fortune_numbers = input(usr, "Enter the lucky numbers:", "Cookie customisation", "1, 2, 3, 4 and 5")
+					if(!fortune_numbers)
+						return
+				if(fortune_text == "None" && fortune_numbers == "None")
+					to_chat(usr, "No fortune provided, Give Cookie code crumbled!")
+					return
+				snack = new /obj/item/reagent_container/food/snacks/fortunecookie/prefilled(H.loc, fortune_text, fortune_numbers)
+
+		if(!snack)
+			error("Give Cookie code crumbled!")
+		H.put_in_hands(snack)
+		message_staff("[key_name(H)] got their [cookie_type], spawned by [key_name(src.owner)]")
 		to_chat(H, SPAN_NOTICE(" Your prayers have been answered!! You received the <b>best cookie</b>!"))
 
 	else if(href_list["CentcommReply"])
@@ -1166,7 +1183,7 @@
 
 		//unanswered_distress -= H
 
-		if(!istype(H.wear_ear, /obj/item/device/radio/headset))
+		if(!H.get_type_in_ears(/obj/item/device/radio/headset))
 			to_chat(usr, "The person you are trying to contact is not wearing a headset")
 			return
 
@@ -1186,7 +1203,7 @@
 		if(!istype(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
-		if(!istype(H.wear_ear, /obj/item/device/radio/headset))
+		if(!H.get_type_in_ears(/obj/item/device/radio/headset))
 			to_chat(usr, "The person you are trying to contact is not wearing a headset")
 			return
 
@@ -1202,7 +1219,7 @@
 		var/mob/living/carbon/human/H = locate(href_list["USCMFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use which template or roll your own?") in list("USCM High Command", "USCM Provost General", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use which template or roll your own?", "Fax Templates", list("USCM High Command", "USCM Provost General", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
@@ -1215,7 +1232,7 @@
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
@@ -1224,7 +1241,7 @@
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weston USCM", "") as message|null
+				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland USCM", "") as message|null
 				if(!message_body)
 					return
 				var/sent_by = input(src.owner, "Enter the name and rank you are sending from.", "Outgoing message from USCM", "") as message|null
@@ -1236,7 +1253,7 @@
 
 				fax_message = generate_templated_fax(0, "USCM CENTRAL COMMAND", subject,addressed_to, message_body,sent_by, sent_title, "United States Colonial Marine Corps")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "uscmfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Template", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1284,37 +1301,37 @@
 		var/mob/living/carbon/human/H = locate(href_list["CLFaxReply"])
 		var/obj/structure/machinery/faxmachine/fax = locate(href_list["originfax"])
 
-		var/template_choice = input("Use the template or roll your own?") in list("Template", "Custom")
+		var/template_choice = tgui_input_list(usr, "Use the template or roll your own?", "Fax Template", list("Template", "Custom"))
 		var/fax_message = ""
 		switch(template_choice)
 			if("Custom")
-				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Weston-Yamada", "") as message|null
+				var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!input)
 					return
 				fax_message = "[input]"
 			if("Template")
-				var/subject = input(src.owner, "Enter subject line", "Outgoing message from Weston-Yamada", "") as message|null
+				var/subject = input(src.owner, "Enter subject line", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!subject)
 					return
 				var/addressed_to = ""
-				var/address_option = input("Address it to the sender or custom?") in list("Sender", "Custom")
+				var/address_option = tgui_input_list(usr, "Address it to the sender or custom?", "Fax Template", list("Sender", "Custom"))
 				if(address_option == "Sender")
 					addressed_to = "[H.real_name]"
 				else if(address_option == "Custom")
-					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from Weston-Yamada", "") as message|null
+					addressed_to = input(src.owner, "Enter Addressee Line", "Outgoing message from Weyland-Yutani", "") as message|null
 					if(!addressed_to)
 						return
 				else
 					return
-				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weston-Yamada", "") as message|null
+				var/message_body = input(src.owner, "Enter Message Body, use <p></p> for paragraphs", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!message_body)
 					return
-				var/sent_by = input(src.owner, "Enter JUST the name you are sending this from", "Outgoing message from Weston-Yamada", "") as message|null
+				var/sent_by = input(src.owner, "Enter JUST the name you are sending this from", "Outgoing message from Weyland-Yutani", "") as message|null
 				if(!sent_by)
 					return
-				fax_message = generate_templated_fax(1, "WESTON-YAMADA CORPORATE AFFAIRS - USS ALMAYER", subject, addressed_to, message_body, sent_by, "Corporate Affairs Director", "Weston-Yamada")
+				fax_message = generate_templated_fax(1, "WEYLAND-YUTANI CORPORATE AFFAIRS - USS ALMAYER", subject, addressed_to, message_body, sent_by, "Corporate Affairs Director", "Weyland-Yutani")
 		show_browser(usr, "<body class='paper'>[fax_message]</body>", "clfaxpreview", "size=500x400")
-		var/send_choice = input("Send this fax?") in list("Send", "Cancel")
+		var/send_choice = tgui_input_list(usr, "Send this fax?", "Fax Confirmation", list("Send", "Cancel"))
 		if(send_choice == "Cancel")
 			return
 		fax_contents += fax_message // save a copy
@@ -1325,7 +1342,7 @@
 		if(!customname)
 			return
 
-		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>WESTON-YAMADA FAX REPLY: </font></b> ")
+		var/msg_ghost = SPAN_NOTICE("<b><font color='#1F66A0'>WEYLAND-YUTANI FAX REPLY: </font></b> ")
 		msg_ghost += "Transmitting '[customname]' via secure connection ... "
 		msg_ghost += "<a href='?FaxView=\ref[fax_message]'>view message</a>"
 		announce_fax( ,msg_ghost)
@@ -1341,7 +1358,7 @@
 					// give the sprite some time to flick
 					spawn(20)
 						var/obj/item/paper/P = new /obj/item/paper( F.loc )
-						P.name = "Weston-Yamada - [customname]"
+						P.name = "Weyland-Yutani - [customname]"
 						P.info = fax_message
 						P.update_icon()
 
@@ -1354,14 +1371,19 @@
 							P.stamped = new
 						P.stamped += /obj/item/tool/stamp
 						P.overlays += stampoverlay
-						P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weston-Yamada Quantum Relay (tm).</i>"
+						P.stamps += "<HR><i>This paper has been stamped and encrypted by the Weyland-Yutani Quantum Relay (tm).</i>"
 
 				to_chat(src.owner, "Message reply to transmitted successfully.")
 				message_staff("[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(H)]", 1)
 				return
 		to_chat(src.owner, "/red Unable to locate fax!")
 
+	else if(href_list["customise_paper"])
+		if(!check_rights(R_MOD))
+			return
 
+		var/obj/item/paper/sheet = locate(href_list["customise_paper"])
+		usr.client.customise_paper(sheet)
 
 	else if(href_list["jumpto"])
 		if(!check_rights(R_ADMIN))
@@ -1419,6 +1441,11 @@
 		if(!check_rights(R_SPAWN))
 			return
 		return create_mob(usr)
+
+	else if(href_list["send_tip"])
+		if(!check_rights(R_SPAWN))
+			return
+		return send_tip(usr)
 
 	else if(href_list["object_list"])			//this is the laggiest thing ever
 		if(!check_rights(R_SPAWN))
@@ -1521,7 +1548,7 @@
 					else
 						var/atom/O = new path(target)
 						if(O)
-							O.dir = obj_dir
+							O.setDir(obj_dir)
 							if(obj_name)
 								O.name = obj_name
 								if(istype(O,/mob))
@@ -1554,11 +1581,6 @@
 
 		topic_events(href_list["events"])
 
-	else if(href_list["debug"])
-		if(!check_rights(R_DEBUG))
-			return
-		topic_debug(href_list["debug"])
-
 	else if(href_list["teleport"])
 		if(!check_rights(R_MOD))
 			return
@@ -1580,13 +1602,6 @@
 	else if(href_list["ahelp"])
 
 		topic_ahelps(href_list)
-
-	else if(href_list["agent"] == "showobjectives")
-		if(!check_rights(R_MOD))
-			return
-
-		var/mob/M = locate(href_list["extra"])
-		show_agent_objectives(M)
 
 	// player info stuff
 
@@ -1666,7 +1681,7 @@
 	if(href_list["distress"]) //Distress Beacon, sends a random distress beacon when pressed
 		distress_cancel = FALSE
 		message_staff("[key_name_admin(usr)] has opted to SEND the distress beacon! Launching in 10 seconds... (<A HREF='?_src_=admin_holder;distresscancel=\ref[usr]'>CANCEL</A>)")
-		addtimer(CALLBACK(src, .proc/accept_ert, locate(href_list["distress"])), SECONDS_10)
+		addtimer(CALLBACK(src, .proc/accept_ert, usr, locate(href_list["distress"])), 10 SECONDS)
 		//unanswered_distress -= ref_person
 
 	if(href_list["destroyship"]) //Distress Beacon, sends a random distress beacon when pressed
@@ -1675,7 +1690,7 @@
 		spawn(100)
 			if(distress_cancel)
 				return
-			var/mob/ref_person = locate(href_list["destroy"])
+			var/mob/ref_person = locate(href_list["destroyship"])
 			set_security_level(SEC_LEVEL_DELTA)
 			log_game("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]")
 			message_staff("[key_name_admin(usr)] has granted self destruct, requested by [key_name_admin(ref_person)]", 1)
@@ -1700,13 +1715,13 @@
 
 	return
 
-/datum/admins/proc/accept_ert(var/mob/ref_person)
+/datum/admins/proc/accept_ert(mob/approver, mob/ref_person)
 	if(distress_cancel)
 		return
 	distress_cancel = TRUE
 	SSticker.mode.activate_distress()
-	log_game("[key_name_admin(usr)] has sent a randomized distress beacon, requested by [key_name_admin(ref_person)]")
-	message_staff("[key_name_admin(usr)] has sent a randomized distress beacon, requested by [key_name_admin(ref_person)]")
+	log_game("[key_name_admin(approver)] has sent a randomized distress beacon, requested by [key_name_admin(ref_person)]")
+	message_staff("[key_name_admin(approver)] has sent a randomized distress beacon, requested by [key_name_admin(ref_person)]")
 
 /datum/admins/proc/generate_job_ban_list(var/mob/M, var/datum/entity/player/P, var/list/roles, var/department, var/color = "ccccff")
 	var/counter = 0

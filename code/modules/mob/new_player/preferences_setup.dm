@@ -196,80 +196,94 @@ datum/preferences/proc/randomize_skin_color()
 	preview_dummy.update_body()
 	preview_dummy.update_hair()
 
-	arm_equipment(preview_dummy, J, FALSE, FALSE)
-	
+	arm_equipment(preview_dummy, J, FALSE, FALSE, owner)
+
 	preview_front = new()
 	owner.screen |= preview_front
 	preview_front.icon_state = "blank"
 	preview_front.vis_contents += preview_dummy
 	preview_front.screen_loc = "preview:0,0"
 
-datum/preferences/proc/job_pref_to_gear_preset()
+/datum/preferences/proc/job_pref_to_gear_preset()
 	var/high_priority
 	for(var/job in job_preference_list)
 		if(job_preference_list[job] == 1)
 			high_priority = job
-	
+
 	switch(high_priority)
 		if(JOB_SQUAD_MARINE)
-			return "USCM Cryo Private (Equipped)"
+			return /datum/equipment_preset/uscm/private_equipped
 		if(JOB_SQUAD_ENGI)
-			return "USCM Cryo Engineer (Equipped)"
+			return /datum/equipment_preset/uscm/engineer_equipped
 		if(JOB_SQUAD_LEADER)
-			return "USCM Cryo Squad Leader (Equipped)"
+			return /datum/equipment_preset/uscm/leader_equipped
 		if(JOB_SQUAD_MEDIC)
-			return "USCM Cryo Medic (Equipped)"
+			return /datum/equipment_preset/uscm/medic_equipped
 		if(JOB_SQUAD_SPECIALIST)
-			return "USCM Cryo Specialist (Equipped)"
+			return /datum/equipment_preset/uscm/specialist_equipped
 		if(JOB_SQUAD_SMARTGUN)
-			return "USCM Cryo Smartgunner (Equipped)"
+			return /datum/equipment_preset/uscm/smartgunner_equipped
+		if(JOB_SQUAD_RTO)
+			return /datum/equipment_preset/uscm/rto_equipped
 		if(JOB_CO)
-			return "USCM Captain (CO)"
+			return /datum/equipment_preset/uscm_ship/commander
 		if(JOB_SO)
-			return "USCM Staff Officer (SO)"
+			return /datum/equipment_preset/uscm_ship/so
 		if(JOB_XO)
-			return "USCM Executive Officer (XO)"
+			return /datum/equipment_preset/uscm_ship/xo
 		if(JOB_PILOT)
-			return "USCM Pilot Officer (PO)"
+			return /datum/equipment_preset/uscm_ship/po/full
+		if(JOB_DROPSHIP_CREW_CHIEF)
+			return /datum/equipment_preset/uscm_ship/dcc/full
 		if(JOB_CORPORATE_LIAISON)
-			return "USCM Corporate Liaison (CL)"
+			return /datum/equipment_preset/uscm_ship/liaison
 		if(JOB_SYNTH)
-			return "USCM Synthetic"
+			return /datum/equipment_preset/synth/uscm
+		if(JOB_POLICE_CADET)
+			return /datum/equipment_preset/uscm_ship/uscm_police/mp_cadet
 		if(JOB_POLICE)
-			return "USCM Military Police (MP)"
+			return /datum/equipment_preset/uscm_ship/uscm_police/mp
 		if(JOB_CHIEF_POLICE)
-			return "USCM Chief MP (CMP)"
+			return /datum/equipment_preset/uscm_ship/uscm_police/cmp
 		if(JOB_WARDEN)
-			return "USCM Military Warden (MW)"
+			return /datum/equipment_preset/uscm_ship/uscm_police/warden
 		if(JOB_CREWMAN)
-			return "USCM Vehicle Crewman (CRMN)"
-		if(JOB_INTEL)
-			return "USCM Intelligence Officer (IO)"
+			return /datum/equipment_preset/uscm/tank/full
 		if(JOB_SEA)
-			return "USCM Senior Enlisted Advisor (SEA)"
+			return /datum/equipment_preset/uscm_ship/sea
 		if(JOB_CHIEF_ENGINEER)
-			return "USCM Chief Engineer (CE)"
+			return /datum/equipment_preset/uscm_ship/chief_engineer
 		if(JOB_ORDNANCE_TECH)
-			return "USCM Ordnance Technician (OT)"
+			return /datum/equipment_preset/uscm_ship/ordn
 		if(JOB_MAINT_TECH)
-			return "USCM Maintenance Technician (MT)"
+			return /datum/equipment_preset/uscm_ship/maint
 		if(JOB_CHIEF_REQUISITION)
-			return "USCM Requisitions Officer (RO)"
+			return /datum/equipment_preset/uscm_ship/ro
 		if(JOB_CARGO_TECH)
-			return "USCM Cargo Technician (CT)"
+			return /datum/equipment_preset/uscm_ship/cargo
 		if(JOB_CMO)
-			return "USCM Chief Medical Officer (CMO)"
+			return /datum/equipment_preset/uscm_ship/uscm_medical/cmo
 		if(JOB_DOCTOR)
-			return "USCM Doctor"
+			return /datum/equipment_preset/uscm_ship/uscm_medical/doctor
 		if(JOB_RESEARCHER)
-			return "USCM Researcher"
+			return /datum/equipment_preset/uscm_ship/uscm_medical/researcher
 		if(JOB_NURSE)
-			return "USCM Nurse"
+			return /datum/equipment_preset/uscm_ship/uscm_medical/nurse
 		if(JOB_MESS_SERGEANT)
-			return "USCM Mess Sergeant (MS)"	
+			return /datum/equipment_preset/uscm_ship/chef
+		if(JOB_SURVIVOR)
+			if(length(SSmapping.configs[GROUND_MAP].survivor_types))
+				return pick(SSmapping.configs[GROUND_MAP].survivor_types)
+			return /datum/equipment_preset/survivor
+		if(JOB_PREDATOR)
+			if(length(RoleAuthority.roles_whitelist))
+				var/datum/job/J = RoleAuthority.roles_by_name[JOB_PREDATOR]
+				return J.gear_preset_whitelist[J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]
+			else
+				return /datum/equipment_preset/yautja/blooded
 
-	return "USCM Cryo Private (Equipped)"
+	return /datum/equipment_preset/uscm/private_equipped
 
-datum/preferences/proc/clear_equipment()
+/datum/preferences/proc/clear_equipment()
 	for(var/obj/item/I in preview_dummy)
 		qdel(I)

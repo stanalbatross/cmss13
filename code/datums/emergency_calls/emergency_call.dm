@@ -26,11 +26,14 @@
 	var/item_spawn = /obj/effect/landmark/ert_spawns/distress/item
 	var/mob/living/carbon/leader = null //Who's leading these miscreants
 	var/medics = 0
+	var/engineers = 0
 	var/heavies = 0
 	var/max_medics = 1
+	var/max_engineers = 1
 	var/max_heavies = 1
 	var/shuttle_id = "Distress" //Empty shuttle ID means we're not using shuttles (aka spawn straight into cryo)
 	var/auto_shuttle_launch = FALSE
+	var/spawn_max_amount = FALSE
 
 	var/ert_message = "An emergency beacon has been activated"
 
@@ -121,7 +124,7 @@
 
 		beacons += list("[name]" = em_call) // I hate byond
 
-	var/choice = input(usr, "Choose a distress beacon to join", "") in beacons
+	var/choice = tgui_input_list(usr, "Choose a distress beacon to join", "", beacons)
 
 	if(!choice)
 		to_chat(usr, "Something seems to have gone wrong!")
@@ -138,7 +141,7 @@
 		return
 	var/deathtime = world.time - usr.timeofdeath
 
-	if(deathtime < SECONDS_60) //Nice try, ghosting right after the announcement
+	if(deathtime < 1 MINUTES) //Nice try, ghosting right after the announcement
 		if(SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST) // people ghost so often on whiskey outpost.
 			to_chat(usr, SPAN_WARNING("You ghosted too recently."))
 			return
@@ -175,13 +178,13 @@
 	if(announce)
 		marine_announcement("A distress beacon has been launched from the [MAIN_SHIP_NAME].", "Priority Alert", 'sound/AI/distressbeacon.ogg')
 
-	addtimer(CALLBACK(src, /datum/emergency_call/proc/spawn_candidates, announce), SECONDS_60)
+	addtimer(CALLBACK(src, /datum/emergency_call.proc/spawn_candidates, announce), 30 SECONDS)
 
 /datum/emergency_call/proc/spawn_candidates(announce = TRUE)
 	if(SSticker.mode)
 		SSticker.mode.picked_calls -= src
 
-	if(candidates.len < mob_min)
+	if(candidates.len < mob_min && !spawn_max_amount)
 		message_staff("Aborting distress beacon, not enough candidates: found [candidates.len].")
 		members = list() //Empty the members list.
 		candidates = list()
@@ -222,24 +225,29 @@
 			if(M.client)
 				to_chat(M, SPAN_NOTICE("Distress beacon: [src.name] finalized."))
 
-		var/datum/shuttle/ferry/shuttle = shuttle_controller.shuttles[shuttle_id]
-		if(!shuttle || !istype(shuttle))
+		var/datum/shuttle/ferry/shuttle = shuttle_controller?.shuttles[shuttle_id]
+		if(!istype(shuttle))
 			if(shuttle_id) //Cryo distress doesn't have a shuttle
-				message_staff("Warning: Distress shuttle not found. Aborting.")
-				return
+				message_staff("Warning: Distress shuttle not found.")
 		spawn_items()
 
 		if(shuttle && auto_shuttle_launch)
 			shuttle.launch()
 
+		var/i = 0
 		if(picked_candidates.len)
-			var/i = 0
 			for(var/datum/mind/M in picked_candidates)
 				members += M
 				i++
 				if(i > mob_max)
 					break //Some logic. Hopefully this will never happen..
 				create_member(M)
+
+
+		if(spawn_max_amount && i < mob_max)
+			for(var/c in i to mob_max)
+				create_member()
+
 		candidates = list()
 
 /datum/emergency_call/proc/add_candidate(var/mob/M)

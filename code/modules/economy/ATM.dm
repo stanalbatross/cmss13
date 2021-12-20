@@ -15,7 +15,7 @@ log transactions
 /obj/item/card/id/var/money = 2000
 
 /obj/structure/machinery/atm
-	name = "W-Y Automatic Teller Machine"
+	name = "Wey-Yu Automatic Teller Machine"
 	desc = "For all your monetary needs!"
 	icon = 'icons/obj/structures/machinery/terminals.dmi'
 	icon_state = "atm"
@@ -42,6 +42,9 @@ log transactions
 	spark_system.attach(src)
 
 /obj/structure/machinery/atm/attackby(obj/item/I as obj, mob/user as mob)
+	if(inoperable())
+		to_chat(user, SPAN_NOTICE("You try to use it ,but it appears to be unpowered!"))
+		return //so it doesnt brazil IDs when unpowered
 	if(istype(I, /obj/item/card))
 		var/obj/item/card/id/idcard = I
 		if(!held_card)
@@ -77,14 +80,14 @@ log transactions
 
 /obj/structure/machinery/atm/attack_hand(mob/user as mob)
 	if(isRemoteControlling(user))
-		to_chat(user, SPAN_DANGER("[icon2html(src, usr)] Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per Weston-Yamada regulation #1005."))
+		to_chat(user, SPAN_DANGER("[icon2html(src, usr)] Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per Weyland-Yutani regulation #1005."))
 		return
 	if(get_dist(src,user) <= 1)
 
 		//js replicated from obj/structure/machinery/computer/card
-		var/dat = "<h1>Weston-Yamada Automatic Teller Machine</h1>"
+		var/dat = "<h1>Weyland-Yutani Automatic Teller Machine</h1>"
 		dat += "For all your monetary needs!<br>"
-		dat += "<i>This terminal is</i> [machine_id]. <i>Report this code when contacting Weston-Yamada IT Support</i><br/>"
+		dat += "<i>This terminal is</i> [machine_id]. <i>Report this code when contacting Weyland-Yutani IT Support</i><br/>"
 
 		dat += "Card: <a href='?src=\ref[src];choice=insert_card'>[held_card ? held_card.name : "------"]</a><br><br>"
 
@@ -166,7 +169,7 @@ log transactions
 			dat += "<input type='submit' class='button' value='Submit'><br>"
 			dat += "</form>"
 
-		show_browser(user, dat, "Weston-Yamada Automatic Teller Machine", "atm", "size=550x650")
+		show_browser(user, dat, "Weyland-Yutani Automatic Teller Machine", "atm", "size=550x650")
 	else
 		close_browser(user,"atm")
 
@@ -429,7 +432,23 @@ log transactions
 	if(ishuman(human_user) && !human_user.get_active_hand())
 		human_user.put_in_hands(held_card)
 	held_card = null
+/obj/structure/machinery/atm/verb/eject_id()
+	set category = "Object"
+	set name = "Eject ID Card"
+	set src in view(1)
 
+	if(!usr || usr.stat || usr.lying)	return
+
+	if(ishuman(usr) && held_card)
+		to_chat(usr, "You remove \the [held_card] from \the [src].")
+		held_card.forceMove(get_turf(src))
+		if(!usr.get_active_hand() && istype(usr,/mob/living/carbon/human))
+			usr.put_in_hands(held_card)
+		held_card = null
+		authenticated_account = null
+	else
+		to_chat(usr, "There is nothing to remove from \the [src].")
+	return
 
 /obj/structure/machinery/atm/proc/spawn_ewallet(var/sum, loc, mob/living/carbon/human/human_user as mob)
 	var/obj/item/spacecash/ewallet/E = new /obj/item/spacecash/ewallet(loc)

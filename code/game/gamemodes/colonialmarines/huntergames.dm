@@ -1,10 +1,10 @@
 #define HUNTER_BEST_ITEM  pick(\
 								75; list(/obj/item/clothing/glasses/night, /obj/item/storage/backpack/holding, /obj/item/storage/belt/grenade/full, /obj/item/weapon/gun/flamer), \
-								100; list(/obj/item/weapon/melee/twohanded/glaive, /obj/item/clothing/mask/gas/yautja, /obj/item/clothing/suit/armor/yautja,/obj/item/clothing/shoes/yautja), \
-								50; list(/obj/item/weapon/melee/combistick, /obj/item/clothing/mask/gas/yautja, /obj/item/clothing/suit/armor/yautja/full,/obj/item/clothing/shoes/yautja), \
+								100; list(/obj/item/weapon/melee/twohanded/yautja/glaive, /obj/item/clothing/mask/gas/yautja/hunter, /obj/item/clothing/suit/armor/yautja/hunter,/obj/item/clothing/shoes/yautja/hunter), \
+								50; list(/obj/item/weapon/melee/yautja/combistick, /obj/item/clothing/mask/gas/yautja/hunter, /obj/item/clothing/suit/armor/yautja/hunter/full,/obj/item/clothing/shoes/yautja/hunter), \
 								150; list(/obj/item/stack/medical/advanced/ointment, /obj/item/stack/medical/advanced/bruise_pack, /obj/item/storage/belt/medical/lifesaver/full), \
 								50; list(/obj/item/clothing/under/marine/veteran/PMC/commando, /obj/item/clothing/suit/storage/marine/veteran/PMC/commando, /obj/item/clothing/gloves/marine/veteran/PMC/commando, /obj/item/clothing/shoes/veteran/PMC/commando, /obj/item/clothing/head/helmet/marine/veteran/PMC/commando), \
-								125; list(/obj/item/weapon/yautja_chain, /obj/item/weapon/melee/yautja_knife, /obj/item/weapon/melee/yautja_scythe, /obj/item/legcuffs/yautja, /obj/item/legcuffs/yautja), \
+								125; list(/obj/item/weapon/melee/yautja/chain, /obj/item/weapon/melee/yautja/knife, /obj/item/weapon/melee/yautja/scythe, /obj/item/hunting_trap, /obj/item/hunting_trap), \
 								75; list(/obj/item/weapon/gun/revolver/mateba/admiral, /obj/item/ammo_magazine/revolver/mateba, /obj/item/ammo_magazine/revolver/mateba, /obj/item/clothing/mask/balaclava/tactical), \
 								50; list(/obj/item/weapon/shield/energy, /obj/item/weapon/melee/energy/axe, /obj/item/clothing/under/gladiator, /obj/item/clothing/head/helmet/gladiator) \
 								)
@@ -22,7 +22,7 @@
 \
 								50; /obj/item/device/flash, \
 								25; /obj/item/explosive/grenade/flashbang, \
-								25; /obj/item/legcuffs/yautja, \
+								25; /obj/item/hunting_trap, \
 								50; /obj/item/explosive/plastic, \
 								100; /obj/item/explosive/grenade/HE, \
 								100; /obj/item/explosive/grenade/HE/frag, \
@@ -104,6 +104,8 @@ var/waiting_for_drop_votes = 0
 
 	var/ticks_passed = 0
 	var/drops_disabled = 0
+
+	votable = FALSE // borked
 
 /obj/effect/step_trigger/hell_hound_blocker/Trigger(mob/living/carbon/hellhound/H)
 	if(istype(H)) H.gib() //No mercy.
@@ -194,7 +196,7 @@ var/waiting_for_drop_votes = 0
 
 	spawn(10)
 		to_world("<B>The current game mode is - HUNTER GAMES!</B>")
-		to_world("You have been dropped off on a Weston-Yamada colony overrun with alien Predators who have turned it into a game preserve..")
+		to_world("You have been dropped off on a Weyland-Yutani colony overrun with alien Predators who have turned it into a game preserve..")
 		to_world("And you are both the hunter and the hunted!")
 		to_world("Be the <B>last survivor</b> and <B>win glory</B>! Fight in any way you can! Team up or be a loner, it's up to you.")
 		to_world("Be warned though - if someone hasn't died in 3 minutes, the watching Predators get irritated!")
@@ -225,7 +227,7 @@ var/waiting_for_drop_votes = 0
 	if(istype(M,/mob/living/carbon/human)) //somehow?
 		H = M
 		if(H.contents.len)
-			for(var/I in H.contents)
+			for(var/obj/item/I in H.contents)
 				qdel(I)
 		H.forceMove(picked)
 	else
@@ -238,6 +240,8 @@ var/waiting_for_drop_votes = 0
 		H.mind = new(H.key)
 		H.mind_initialize()
 
+	H.name = H.real_name
+
 	H.skills = null //no restriction on what the contestants can do
 
 	H.KnockDown(15)
@@ -246,8 +250,7 @@ var/waiting_for_drop_votes = 0
 	var/randjob = rand(0,10)
 	switch(randjob)
 		if(0) //colonial marine
-			if(prob(50))
-				H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/marine(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(H), WEAR_FEET)
 		if(1) //MP
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/mp(H), WEAR_BODY)
@@ -275,13 +278,13 @@ var/waiting_for_drop_votes = 0
 		if(6)//BEARS!!
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/bear(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(H), WEAR_FEET)
-			H.remove_language("English")
-			H.remove_language("Sol Common")
-			H.add_language("Russian")
+			H.remove_language(LANGUAGE_ENGLISH)
+			H.add_language(LANGUAGE_RUSSIAN)
 		if(7) //Highlander!
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/kilt(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H), WEAR_FEET)
 		if(8) //Assassin!
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket(H), WEAR_BODY)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), WEAR_FEET)
 		if(9) //Corporate guy
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/liaison_suit(H), WEAR_BODY)
@@ -407,9 +410,6 @@ var/waiting_for_drop_votes = 0
 		to_world(SPAN_DANGER("<FONT size = 4><B>NOBODY WON!?</B></FONT>"))
 		to_world("<FONT size = 3><B>'Somehow you stupid humans managed to even fuck up killing yourselves. Well done.'</B></FONT>")
 		world << 'sound/misc/sadtrombone.ogg'
-
-		if(round_stats) // Logging to data/logs/round_stats.log
-			round_stats << "Humans remaining: [count_humans()]\nRound time: [duration2text()][log_end]"
 	else
 		to_world(SPAN_DANGER("<FONT size = 4><B>NOBODY WON!</B></FONT>"))
 		to_world("<FONT size = 3><B>There was a winner, but they died before they could receive the prize!! Bummer.</B></FONT>")

@@ -35,9 +35,11 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/Ian/Life()
+/mob/living/simple_animal/corgi/Ian/Life(delta_time)
 	..()
+	INVOKE_ASYNC(src, .proc/look_for_food)
 
+/mob/living/simple_animal/corgi/Ian/proc/look_for_food()
 	//Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
@@ -63,35 +65,36 @@
 
 				if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
 					if (movement_target.loc.x < src.x)
-						dir = WEST
+						setDir(WEST)
 					else if (movement_target.loc.x > src.x)
-						dir = EAST
+						setDir(EAST)
 					else if (movement_target.loc.y < src.y)
-						dir = SOUTH
+						setDir(SOUTH)
 					else if (movement_target.loc.y > src.y)
-						dir = NORTH
+						setDir(NORTH)
 					else
-						dir = SOUTH
+						setDir(SOUTH)
 
 					if(isturf(movement_target.loc) )
 						movement_target.attack_animal(src)
 					else if(ishuman(movement_target.loc) )
 						if(prob(20))
-							emote("stares at the [movement_target] that [movement_target.loc] has with a sad puppy-face")
+							INVOKE_ASYNC(src, .proc/emote, "stares at the [movement_target] that [movement_target.loc] has with a sad puppy-face")
 
 		if(prob(1))
-			emote(pick("dances around","chases its tail"))
+			INVOKE_ASYNC(src, .proc/emote, pick("dances around","chases its tail"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
-					dir = i
+					setDir(i)
 					sleep(1)
 
 /mob/living/simple_animal/corgi/death()
 	. = ..()
 	if(!.)	return //was already dead
-	if(last_damage_mob)
-		var/mob/user = last_damage_mob
-		user.count_niche_stat(STATISTICS_NICHE_CORGI)
+	if(last_damage_data)
+		var/mob/user = last_damage_data.resolve_mob()
+		if(user)
+			user.count_niche_stat(STATISTICS_NICHE_CORGI)
 
 /obj/item/reagent_container/food/snacks/meat/corgi
 	name = "Corgi meat"
@@ -106,7 +109,7 @@
 					M.show_message(SPAN_NOTICE("[user] baps [name] on the nose with the rolled up [O]"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))
-					dir = i
+					setDir(i)
 					sleep(1)
 	else
 		..()
@@ -179,7 +182,7 @@
 		return
 	..()
 
-/mob/living/simple_animal/corgi/Lisa/Life()
+/mob/living/simple_animal/corgi/Lisa/Life(delta_time)
 	..()
 
 	if(!stat && !resting && !buckled)
@@ -205,8 +208,8 @@
 
 
 		if(prob(1))
-			emote(pick("dances around","chases her tail"))
+			INVOKE_ASYNC(src, .proc/emote, pick("dances around","chases her tail"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
-					dir = i
+					setDir(i)
 					sleep(1)

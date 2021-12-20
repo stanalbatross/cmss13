@@ -42,7 +42,11 @@ SUBSYSTEM_DEF(tracking)
 				continue
 			if(ishuman(current_mob))
 				var/mob/living/carbon/human/human_mob = current_mob
-				human_mob.locate_squad_leader()
+				var/obj/item/device/radio/headset/almayer/marine/earpiece = human_mob.get_type_in_ears(/obj/item/device/radio/headset/almayer/marine)
+				if(earpiece)
+					human_mob.locate_squad_leader(earpiece.locate_setting)
+				else
+					human_mob.locate_squad_leader()
 			else if(isXeno(current_mob))
 				var/mob/living/carbon/Xenomorph/xeno_mob = current_mob
 				xeno_mob.queen_locator()
@@ -94,5 +98,7 @@ SUBSYSTEM_DEF(tracking)
 
 /datum/controller/subsystem/tracking/proc/initialize_trackers()
 	setup_trackers(null, "marine_sl")
-	for(var/datum/hive_status/hive in GLOB.hive_datum)
+	var/datum/hive_status/hive
+	for(var/hivenumber in GLOB.hive_datum)
+		hive = GLOB.hive_datum[hivenumber]
 		setup_trackers(null, "hive_[hive.hivenumber]")

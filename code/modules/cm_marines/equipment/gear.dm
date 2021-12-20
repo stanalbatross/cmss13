@@ -79,11 +79,11 @@
 	return stored_units
 
 /obj/structure/closet/bodybag/tarp/open()
-	animate(src, alpha = 255, time = SECONDS_3, easing = QUAD_EASING)
+	animate(src, alpha = 255, time = 3 SECONDS, easing = QUAD_EASING)
 	. = ..()
 
 /obj/structure/closet/bodybag/tarp/close()
-	animate(src, alpha = 60, time = SECONDS_12, easing = QUAD_EASING)
+	animate(src, alpha = 60, time = 12 SECONDS, easing = QUAD_EASING)
 	. = ..()
 
 /obj/structure/closet/bodybag/tarp/dump_contents()
@@ -285,11 +285,9 @@
 	icon_state = "pamphlet"
 	info = "In loving memory of Cub Johnson."
 
-
-
 /obj/item/storage/box/wy_mre
-	name = "\improper Weston-Yamada brand MRE"
-	desc = "A prepackaged, long-lasting food box from Weston-Yamada Industries.\nOn the box is the Weston-Yamada logo, with a slogan surrounding it: \n<b>WESTON-YAMADA. BUILDING BETTER LUNCHES</b>"
+	name = "\improper Weyland-Yutani brand MRE"
+	desc = "A prepackaged, long-lasting food box from Weyland-Yutani Industries.\nOn the box is the Weyland-Yutani logo, with a slogan surrounding it: \n<b>WEYLAND-YUTANI. BUILDING BETTER LUNCHES</b>"
 	icon_state = "mre2"
 	can_hold = list(/obj/item/reagent_container/food/snacks)
 	w_class = SIZE_LARGE

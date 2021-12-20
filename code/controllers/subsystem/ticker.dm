@@ -10,15 +10,14 @@ SUBSYSTEM_DEF(ticker)
 	var/force_ending = FALSE					//Round was ended by admin intervention
 	var/bypass_checks = FALSE 				//Bypass mode init checks
 	var/setup_failed = FALSE 				//If the setup has failed at any point
-
-	var/start_immediately = FALSE //If true, there is no lobby phase, the game starts immediately.
-	var/setup_done = FALSE //All game setup done including mode post setup and
+	var/setup_started = FALSE
 
 	var/datum/game_mode/mode = null
 
 	var/list/login_music = null						//Music played in pregame lobby
 
 	var/delay_end = FALSE					//If set true, the round will not restart on it's own
+	var/delay_start = FALSE
 	var/admin_delay_notice = ""				//A message to display to anyone who tries to restart the world after a delay
 
 	var/time_left							//Pre-game timer
@@ -42,22 +41,29 @@ SUBSYSTEM_DEF(ticker)
 
 	var/automatic_delay_end = FALSE
 
+	 ///If we have already done tip of the round.
+	var/tipped
+
 	var/totalPlayers = 0					//used for pregame stats on statpanel
 	var/totalPlayersReady = 0				//used for pregame stats on statpanel
+	var/datum/nmcontext/NM
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
 	load_mode()
 
+	if(CONFIG_GET(flag/nightmare_enabled))
+		NM = new
+		if(!NM.init_config() || !NM.init_scenario())
+			QDEL_NULL(NM)
+			log_debug("TICKER: Error during Nightmare Init, aborting")
+
 	var/all_music = CONFIG_GET(keyed_list/lobby_music)
 	var/key = SAFEPICK(all_music)
 	if(key)
-		var/music_options = splittext(all_music[key], " ")
-		login_music = list(music_options[1], music_options[2], music_options[3])
-
+		login_music = file(all_music[key])
 	return ..()
 
-
-/datum/controller/subsystem/ticker/fire()
+/datum/controller/subsystem/ticker/fire(resumed = FALSE)
 	switch(current_state)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in && !length(GLOB.clients))
@@ -66,6 +72,7 @@ SUBSYSTEM_DEF(ticker)
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0, html = SPAN_ROUNDHEADER("Welcome to the pre-game lobby of [CONFIG_GET(string/servername)]!"))
 			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 0, html = SPAN_ROUNDBODY("Please, setup your character and select ready. Game will start in [round(time_left / 10) || CONFIG_GET(number/lobby_countdown)] seconds."))
+			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MODE_PREGAME_LOBBY)
 			current_state = GAME_STATE_PREGAME
 			fire()
 
@@ -79,29 +86,18 @@ SUBSYSTEM_DEF(ticker)
 				var/mob/new_player/player = i
 				if(player.ready) // TODO: port this     == PLAYER_READY_TO_PLAY)
 					++totalPlayersReady
-
-			if(start_immediately)
-				time_left = 0
-
-			//countdown
-			if(time_left < 0)
+			if(time_left < 0 || delay_start)
 				return
+
 			time_left -= wait
 
-			if(time_left <= 0)
-				current_state = GAME_STATE_SETTING_UP
-				Master.SetRunLevel(RUNLEVEL_SETUP)
-				if(start_immediately)
-					fire()
+			if(time_left <= 40 SECONDS && !tipped)
+				send_tip_of_the_round()
+				tipped = TRUE
+				flash_clients()
 
-		if(GAME_STATE_SETTING_UP)
-			setup_failed = !setup()
-			if(setup_failed)
-				current_state = GAME_STATE_STARTUP
-				time_left = null
-				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-				start_immediately = FALSE
-				Master.SetRunLevel(RUNLEVEL_LOBBY)
+			if(time_left <= 0)
+				request_start()
 
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
@@ -110,10 +106,77 @@ SUBSYSTEM_DEF(ticker)
 				current_state = GAME_STATE_FINISHED
 				ooc_allowed = TRUE
 				mode.declare_completion(force_ending)
-				addtimer(CALLBACK(SSvote, /datum/controller/subsystem/vote.proc/initiate_vote, "groundmap", "SERVER"), 3 SECONDS)
-				addtimer(CALLBACK(src, .proc/Reboot), 63 SECONDS)
+				flash_clients()
+				if(text2num(SSperf_logging?.round?.id) % CONFIG_GET(number/gamemode_rounds_needed) == 0)
+					addtimer(CALLBACK(
+						SSvote,
+						/datum/controller/subsystem/vote/proc/initiate_vote,
+						"gamemode",
+						"SERVER",
+						CALLBACK(src, .proc/handle_map_reboot)
+					), 3 SECONDS)
+				else
+					handle_map_reboot()
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
+/// Attempt to start game asynchronously if applicable
+/datum/controller/subsystem/ticker/proc/request_start(skip_nightmare = FALSE)
+	if(current_state != GAME_STATE_PREGAME)
+		return FALSE
+
+	if(!CONFIG_GET(flag/nightmare_enabled))
+		skip_nightmare = TRUE
+		QDEL_NULL(NM)
+
+	current_state = GAME_STATE_SETTING_UP
+	if(!skip_nightmare)
+		setup_nightmare()
+	else
+		INVOKE_ASYNC(src, .proc/setup_start)
+	return TRUE
+
+/// Request to start nightmare setup before moving on to regular setup
+/datum/controller/subsystem/ticker/proc/setup_nightmare()
+	PRIVATE_PROC(TRUE)
+	if(NM && !NM.done)
+		RegisterSignal(SSdcs, COMSIG_GLOB_NIGHTMARE_SETUP_DONE, .proc/nightmare_setup_done)
+		if(!NM.start_setup())
+			QDEL_NULL(NM)
+			INVOKE_ASYNC(src, .proc/setup_start)
+		return
+	INVOKE_ASYNC(src, .proc/setup_start)
+
+/// Catches nightmare result to proceed to game start
+/datum/controller/subsystem/ticker/proc/nightmare_setup_done(_, datum/nmcontext/ctx, retval)
+	SIGNAL_HANDLER
+	PRIVATE_PROC(TRUE)
+	if(ctx != NM)
+		return
+	if(retval != NM_TASK_OK)
+		QDEL_NULL(NM)
+	INVOKE_ASYNC(src, .proc/setup_start)
+
+/// Try to effectively setup gamemode and start now
+/datum/controller/subsystem/ticker/proc/setup_start()
+	PRIVATE_PROC(TRUE)
+	Master.SetRunLevel(RUNLEVEL_SETUP)
+	setup_failed = !setup()
+	if(setup_failed)
+		current_state = GAME_STATE_STARTUP
+		time_left = null
+		start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
+		Master.SetRunLevel(RUNLEVEL_LOBBY)
+		return FALSE
+	return TRUE
+
+/datum/controller/subsystem/ticker/proc/handle_map_reboot()
+	addtimer(CALLBACK(
+		SSvote,
+		/datum/controller/subsystem/vote/proc/initiate_vote,
+		"groundmap",
+		"SERVER",
+		CALLBACK(src, .proc/Reboot)
+	), 3 SECONDS)
 
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, SPAN_BOLDNOTICE("Enjoy the game!"))
@@ -137,6 +200,10 @@ SUBSYSTEM_DEF(ticker)
 
 	CHECK_TICK
 	mode.announce()
+
+	if(GLOB.perf_flags & PERF_TOGGLE_LAZYSS)
+		apply_lazy_timings()
+
 
 	if(CONFIG_GET(flag/autooocmute))
 		ooc_allowed = FALSE
@@ -168,20 +235,16 @@ SUBSYSTEM_DEF(ticker)
 
 	current_state = GAME_STATE_PLAYING
 	Master.SetRunLevel(RUNLEVEL_GAME)
+	SSatoms.lateinit_roundstart_atoms()
 
 	CHECK_TICK
 
 	for(var/mob/new_player/np in GLOB.new_player_list)
-		np.new_player_panel_proc(TRUE)
-
-	begin_game_recording()
-
-	if((master_mode == "Distress Signal") && SSevents)
-		SSevents.Initialize()
+		INVOKE_ASYNC(np, /mob/new_player.proc/new_player_panel_proc, TRUE)
 
 	setup_economy()
 
-	shuttle_controller.setup_shuttle_docks()
+	shuttle_controller?.setup_shuttle_docks()
 
 	PostSetup()
 	return TRUE
@@ -191,9 +254,15 @@ SUBSYSTEM_DEF(ticker)
 	set waitfor = FALSE
 	mode.initialize_emergency_calls()
 	mode.post_setup()
+	mode.setup_round_stats()
+
+	begin_game_recording()
+
+	// Switch back to default automatically
+	save_mode(CONFIG_GET(string/gamemode_default))
 
 	if(round_statistics)
-		to_chat_spaced(world, html = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>Welcome to [round_statistics.name]</B>")))
+		to_chat_spaced(world, html = FONT_SIZE_BIG(SPAN_ROLE_BODY("<B>Welcome to [round_statistics.round_name]</B>")))
 
 	supply_controller.process() 		//Start the supply shuttle regenerating points -- TLE
 
@@ -203,7 +272,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/obj/structure/machinery/vending/V in machines)
 		INVOKE_ASYNC(V, /obj/structure/machinery/vending.proc/select_gamemode_equipment, mode.type)
 
-	setup_done = TRUE
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_POST_SETUP)
 
 
 //These callbacks will fire after roundstart key transfer
@@ -237,6 +306,7 @@ SUBSYSTEM_DEF(ticker)
 	login_music = SSticker.login_music
 
 	delay_end = SSticker.delay_end
+	delay_start = SSticker.delay_start
 
 	totalPlayers = SSticker.totalPlayers
 	totalPlayersReady = SSticker.totalPlayersReady
@@ -328,15 +398,18 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/spawn_and_equip_char(var/mob/new_player/player)
 	var/datum/job/J = RoleAuthority.roles_for_mode[player.job]
-	var/mob/M = J.spawn_in_player(player)
-	if(istype(M))
-		J.equip_job(M)
-		EquipCustomItems(M)
+	if(J.handle_spawn_and_equip)
+		J.spawn_and_equip(player)
+	else
+		var/mob/M = J.spawn_in_player(player)
+		if(istype(M))
+			J.equip_job(M)
+			EquipCustomItems(M)
 
-		if(M.client)
-			var/client/C = M.client
-			if(C.player_data && C.player_data.playtime_loaded && length(C.player_data.playtimes) == 0)
-				msg_admin_niche("NEW PLAYER: <b>[key_name(player, 1, 1, 0)] (<A HREF='?_src_=admin_holder;ahelp=adminmoreinfo;extra=\ref[player]'>?</A>)</b>. IP: [player.lastKnownIP], CID: [player.computer_id]")
+			if(M.client)
+				var/client/C = M.client
+				if(C.player_data && C.player_data.playtime_loaded && length(C.player_data.playtimes) == 0)
+					msg_admin_niche("NEW PLAYER: <b>[key_name(player, 1, 1, 0)] (<A HREF='?_src_=admin_holder;ahelp=adminmoreinfo;extra=\ref[player]'>?</A>)</b>. IP: [player.lastKnownIP], CID: [player.computer_id]")
 
 	QDEL_IN(player, 5)
 
@@ -372,3 +445,34 @@ SUBSYSTEM_DEF(ticker)
 			if(!istype(M,/mob/new_player))
 				to_chat(M, "Marine commanding officer position not forced on anyone.")
 
+/datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
+	var/message
+	var/tip_file = pick("strings/xenotips.txt", "strings/marinetips.txt", "strings/metatips.txt", 15;"strings/memetips.txt")
+	var/list/tip_list = file2list(tip_file)
+	if(length(tip_file))
+		message = pick(tip_list)
+	else
+		CRASH("send_tip_of_the_round() failed somewhere")
+
+	if(message)
+		to_chat(world, "<span class='purple'><b>Tip of the round: </b>[html_encode(message)]</span>")
+		return TRUE
+	else
+		return FALSE
+
+/// Placeholder proc to apply slower SS timings for performance. Should be refactored to be included in Master/SS probably. Note we can't change prios after MC init.
+/datum/controller/subsystem/ticker/proc/apply_lazy_timings()
+	/* Notes:
+	 * SSsound: lowering SSsound freq probably won't help because it's just a worker for the sound queue, same amount of work gets queued anyway
+	 * SSmob/SShuman/SSxeno: you don't want to touch these, because several systems down the line rely on the timing (2 SECONDS) for gameplay logic
+	 * SSchat/SSinput: these are perf intensive but need to be SS_TICKER, changing wait would be troublesome and/or inconsequential for perf
+	 * SScellauto: can't touch this because it would directly affect explosion spread speed
+	 */
+
+	SSquadtree?.wait           = 0.8 SECONDS // From 0.5, relevant based on player movement speed (higher = more error in sound location, motion detector pings, sentries target acquisition)
+	SSlighting?.wait           = 0.6 SECONDS // From 0.4, same but also heavily scales on player/scene density (higher = less frequent lighting updates which is very noticeable as you move)
+	SSstatpanels?.wait         = 1.5 SECONDS // From 0.6, refresh rate mainly matters for ALT+CLICK turf contents (which gens icons, intensive)
+	SSsoundscape?.wait         =   2 SECONDS // From 1, soudscape triggering checks, scales on player count
+	SStgui?.wait               = 1.2 SECONDS // From 0.9, UI refresh rate
+
+	log_debug("Switching to lazy Subsystem timings for performance")

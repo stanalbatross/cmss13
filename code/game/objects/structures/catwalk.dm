@@ -18,7 +18,7 @@
 	icon_state = base_state
 
 /obj/structure/catwalk/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/tool/crowbar))
+	if (HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		if(covered)
 			var/obj/item/stack/catwalk/R = new(usr.loc)
 			R.add_to_stacks(usr)
@@ -36,7 +36,12 @@
 
 /obj/structure/catwalk/prison
 	icon = 'icons/turf/floors/prison.dmi'
-	icon_state = "catwalk"
+	icon_state = "catwalk_plating"
+	base_state = "catwalk"
+
+/obj/structure/catwalk/prison/alt
+	icon_state = "catwalk_plating_alt"
+	base_state = "catwalk_alt"
 
 /obj/structure/catwalk/bigred
 	icon = 'icons/turf/floors/catwalks.dmi'

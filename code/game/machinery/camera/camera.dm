@@ -8,7 +8,7 @@
 	active_power_usage = 10
 	layer = FLY_LAYER
 
-	var/list/network = list("military")
+	var/list/network = list(CAMERA_NET_MILITARY)
 	var/c_tag = null
 	var/c_tag_order = 999
 	var/status = 1.0
@@ -33,20 +33,20 @@
 	var/light_disabled = 0
 	var/alarm_on = 0
 
+	var/colony_camera_mapload = TRUE
+
 /obj/structure/machinery/camera/Initialize(mapload, ...)
 	. = ..()
 	WireColorToFlag = randomCameraWires()
 	assembly = new(src)
 	assembly.state = 4
-	/* // Use this to look for cameras that have the same c_tag.
-	for(var/obj/structure/machinery/camera/C in cameranet.cameras)
-		var/list/tempnetwork = C.network&src.network
-		if(C != src && C.c_tag == src.c_tag && tempnetwork.len)
-			world.log << "[src.c_tag] [src.x] [src.y] [src.z] conflicts with [C.c_tag] [C.x] [C.y] [C.z]"
-	*/
+
+	if(colony_camera_mapload && mapload && is_ground_level(z))
+		network = list(CAMERA_NET_COLONY)
+
 	if(!src.network || src.network.len < 1)
 		if(loc)
-			error("[src.name] in [get_area(src)] (x:[src.x] y:[src.y] z:[src.z] has errored. [src.network?"Empty network list":"Null network list"]")
+			error("[src.name] in [get_area(src)] (x:[src.x] y:[src.y] z:[src.z]) has errored. [src.network?"Empty network list":"Null network list"]")
 		else
 			error("[src.name] in [get_area(src)]has errored. [src.network?"Empty network list":"Null network list"]")
 		ASSERT(src.network)
@@ -105,10 +105,10 @@
 		light_disabled = 0
 		toggle_cam_status(user, TRUE)
 
-/obj/structure/machinery/camera/attackby(W as obj, mob/living/user as mob)
+/obj/structure/machinery/camera/attackby(obj/item/W, mob/living/user as mob)
 
 	// DECONSTRUCTION
-	if(isscrewdriver(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		//to_chat(user, SPAN_NOTICE("You start to [panel_open ? ")close" : "open"] the camera's panel.")
 		//if(toggle_panel(user)) // No delay because no one likes screwdrivers trying to be hip and have a duration cooldown
 		panel_open = !panel_open
@@ -116,7 +116,7 @@
 		SPAN_NOTICE("You screw the camera's panel [panel_open ? "open" : "closed"]."))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
 
-	else if((iswirecutter(W) || ismultitool(W)) && panel_open)
+	else if((HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS) || HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL)) && panel_open)
 		interact(user)
 
 	else if(iswelder(W) && canDeconstruct())
@@ -226,15 +226,7 @@
 		T = get_ranged_target_turf(src, i, 1)
 		if(istype(T))
 			//If someone knows a better way to do this, let me know. -Giacom
-			switch(i)
-				if(NORTH)
-					src.dir = SOUTH
-				if(SOUTH)
-					src.dir = NORTH
-				if(WEST)
-					src.dir = EAST
-				if(EAST)
-					src.dir = WEST
+			setDir(turn(i, 180))
 			break
 
 //Return a working camera that can see a given mob
@@ -273,3 +265,19 @@
 		SPAN_NOTICE("You weld [src]."))
 		return 1
 	return 0
+
+/obj/structure/machinery/camera/mortar
+	alpha = 0
+	mouse_opacity = 0
+	density = FALSE
+	invuln = TRUE
+	network = list(CAMERA_NET_MORTAR)
+	colony_camera_mapload = FALSE
+
+/obj/structure/machinery/camera/mortar/Initialize()
+	c_tag = "Para-Cam ([obfuscate_x(x)]):([obfuscate_y(y)])"
+	. = ..()
+	QDEL_IN(src, 3 MINUTES)
+
+/obj/structure/machinery/camera/mortar/isXRay()
+	return TRUE

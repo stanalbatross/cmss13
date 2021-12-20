@@ -27,12 +27,12 @@
 	var/use_points = FALSE			//disabling these two grants unlimited access to items for adminab... I mean, events purposes
 	var/use_snowflake_points = FALSE
 
-	var/avaliable_points_to_display = 0
+	var/available_points_to_display = 0
 	var/show_points = TRUE
 
 	//squad-specific gear
-	var/gloves_type
-	var/headset_type
+	var/gloves_type = /obj/item/clothing/gloves/marine
+	var/headset_type = /obj/item/device/radio/headset/almayer/marine
 
 	var/vend_delay = 0		//delaying vending of an item (for drinks machines animation, for example). Make sure to synchronize this with animation duration
 	var/vend_sound			//use with caution. Potential spam
@@ -62,7 +62,7 @@ IN_USE						used for vending/denying
 
 	//restoring sprite to initial
 	overlays.Cut()
-	icon_state = initial(icon_state)	//shouldn't be needed but just in case
+	//icon_state = initial(icon_state)	//shouldn't be needed but just in case
 	var/matrix/A = matrix()
 	apply_transform(A)
 
@@ -117,8 +117,6 @@ IN_USE						used for vending/denying
 		to_chat(user, SPAN_WARNING("You have succesfully removed access restrictions in [src]."))
 		if(user && is_mainship_level(z))
 			SSclues.create_print(get_turf(user), user, "A small piece of cut wire is found on the fingerprint.")
-			if(user.faction == FACTION_MARINE && user.detectable_by_ai())
-				ai_silent_announcement("DAMAGE REPORT: Unauthorized access change detected at [get_area(src)], requesting Military Police supervision.")
 	else
 		to_chat(user, SPAN_WARNING("You have restored access restrictions in [src]."))
 	return
@@ -173,7 +171,7 @@ IN_USE						used for vending/denying
 /obj/structure/machinery/cm_vending/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(stat & TIPPED_OVER)
 		to_chat(M, SPAN_WARNING("There's no reason to bother with that old piece of trash."))
-		return FALSE
+		return XENO_NO_DELAY_ACTION
 
 	if(M.a_intent == INTENT_HARM && !unslashable)
 		M.animation_attack_on(src)
@@ -183,15 +181,15 @@ IN_USE						used for vending/denying
 			SPAN_DANGER("You enter a frenzy and smash [src] apart!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 			malfunction()
 			tip_over()
-			return TRUE
 		else
 			M.visible_message(SPAN_DANGER("[M] slashes [src]!"), \
 			SPAN_DANGER("You slash [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 			playsound(loc, 'sound/effects/metalhit.ogg', 25, 1)
-		return TRUE
+		return XENO_ATTACK_ACTION
 
 	if(M.action_busy)
-		return
+		return XENO_NO_DELAY_ACTION
+
 	M.visible_message(SPAN_WARNING("[M] begins to lean against [src]."), \
 	SPAN_WARNING("You begin to lean against [src]."), null, 5, CHAT_TYPE_XENO_COMBAT)
 	var/shove_time = 80
@@ -199,10 +197,15 @@ IN_USE						used for vending/denying
 		shove_time = 30
 	if(istype(M,/mob/living/carbon/Xenomorph/Crusher))
 		shove_time = 15
+
+	xeno_attack_delay(M) //Adds delay here and returns nothing because otherwise it'd cause lag *after* finishing the shove.
+
 	if(do_after(M, shove_time, INTERRUPT_ALL, BUSY_ICON_HOSTILE))
+		M.animation_attack_on(src)
 		M.visible_message(SPAN_DANGER("[M] knocks [src] down!"), \
 		SPAN_DANGER("You knock [src] down!"), null, 5, CHAT_TYPE_XENO_COMBAT)
 		tip_over()
+	return XENO_NO_DELAY_ACTION
 
 /obj/structure/machinery/cm_vending/attack_hand(mob/user)
 	if(stat & TIPPED_OVER)
@@ -257,7 +260,7 @@ IN_USE						used for vending/denying
 	if(stat & TIPPED_OVER)
 		to_chat(user, SPAN_WARNING("You need to set [src] back upright first."))
 		return
-	if(isscrewdriver(W))
+	if(HAS_TRAIT(W, TRAIT_TOOL_SCREWDRIVER))
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(user, SPAN_WARNING("You do not understand how to repair the broken [src]."))
 			return FALSE
@@ -284,7 +287,7 @@ IN_USE						used for vending/denying
 			var/msg = get_repair_move_text()
 			to_chat(user, SPAN_WARNING("[msg]"))
 			return FALSE
-	else if(iswirecutter(W))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 			to_chat(user, SPAN_WARNING("You do not understand how to repair the broken [src]."))
 			return FALSE
@@ -345,10 +348,10 @@ IN_USE						used for vending/denying
 			var/msg = get_repair_move_text()
 			to_chat(user, SPAN_WARNING("[msg]"))
 			return
-	else if(ismultitool(W))
+	else if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL))
 		var/obj/item/device/multitool/MT = W
 
-		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI) && !skillcheck(user, SKILL_ANTAG, SKILL_ANTAG_TRAINED))
+		if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI) && !skillcheckexplicit(user, SKILL_ANTAG, SKILL_ANTAG_AGENT))
 			to_chat(user, SPAN_WARNING("You do not understand how tweak access requirements in [src]."))
 			return FALSE
 		if(stat != WORKING)
@@ -366,6 +369,9 @@ IN_USE						used for vending/denying
 
 	..()
 
+/obj/structure/machinery/cm_vending/proc/get_listed_products(var/mob/user)
+	return listed_products
+
 /obj/structure/machinery/cm_vending/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 0)
 
 	if(!ishuman(user))
@@ -376,15 +382,16 @@ IN_USE						used for vending/denying
 
 	var/buy_flags = NO_FLAGS
 	if(use_snowflake_points)
-		avaliable_points_to_display = H.marine_snowflake_points
+		available_points_to_display = H.marine_snowflake_points
 	else if(use_points)
-		avaliable_points_to_display = H.marine_points
+		available_points_to_display = H.marine_points
 
 	buy_flags = H.marine_buy_flags
 
-	if(listed_products.len)
-		for(var/i in 1 to listed_products.len)
-			var/list/myprod = listed_products[i]
+	var/list/ui_listed_products = get_listed_products(user)
+	if(length(ui_listed_products))
+		for(var/i in 1 to length(ui_listed_products))
+			var/list/myprod = ui_listed_products[i]
 			var/p_name = myprod[1]
 			var/p_cost = myprod[2]
 			if(p_cost > 0)
@@ -392,7 +399,7 @@ IN_USE						used for vending/denying
 
 			var/prod_available = FALSE
 			var/avail_flag = myprod[4]
-			if(avaliable_points_to_display >= p_cost && (!avail_flag || buy_flags & avail_flag))
+			if(available_points_to_display >= p_cost && (!avail_flag || buy_flags & avail_flag))
 				prod_available = TRUE
 
 			//place in main list, name, cost, available or not, color.
@@ -402,7 +409,7 @@ IN_USE						used for vending/denying
 		"vendor_name" = name,
 		"theme" = vendor_theme,
 		"show_points" = show_points,
-		"current_m_points" = avaliable_points_to_display,
+		"current_m_points" = available_points_to_display,
 		"displayed_records" = display_list,
 	)
 
@@ -431,6 +438,9 @@ IN_USE						used for vending/denying
 		add_fingerprint(usr)
 		ui_interact(usr) //updates the nanoUI window
 
+/obj/structure/machinery/cm_vending/proc/handle_topic(mob/user, href, href_list)
+	return
+
 /obj/structure/machinery/cm_vending/proc/vend_succesfully()
 	return
 
@@ -439,7 +449,8 @@ IN_USE						used for vending/denying
 	if(vend_delay)
 		overlays.Cut()
 		icon_state = "[initial(icon_state)]_deny"
-	sleep(15)
+	sleep(1.5 SECONDS)
+	icon_state = initial(icon_state)
 	stat &= ~IN_USE
 	update_icon()
 	return
@@ -457,20 +468,19 @@ IN_USE						used for vending/denying
 /obj/structure/machinery/cm_vending/gear/Topic(href, href_list)
 	. = ..()
 	if(.)
-		return
-	if(stat & (BROKEN|NOPOWER))
-		return
-	if(usr.is_mob_incapacitated())
-		return
+		return TRUE
 
-	if(in_range(src, usr) && isturf(loc) && ishuman(usr))
-		usr.set_interaction(src)
+	handle_topic(usr, href, href_list)
+
+/obj/structure/machinery/cm_vending/gear/handle_topic(mob/user, href, href_list)
+	if(in_range(src, user) && isturf(loc) && ishuman(user))
+		user.set_interaction(src)
 		if(href_list["vend"])
 
 			if(stat & IN_USE)
 				return
 
-			var/mob/living/carbon/human/H = usr
+			var/mob/living/carbon/human/H = user
 
 			if(!hacked)
 				if(!allowed(H))
@@ -495,10 +505,11 @@ IN_USE						used for vending/denying
 					return
 
 			var/idx=text2num(href_list["vend"])
-			var/list/L = listed_products[idx]
-			var/cost = L[2]
 
-			if((!H.assigned_squad && squad_tag) || (squad_tag && H.assigned_squad.name != squad_tag))
+			var/list/topic_listed_products = get_listed_products(user)
+			var/list/L = topic_listed_products[idx]
+
+			if((!H.assigned_squad && squad_tag) || (!H.assigned_squad?.omni_squad_vendor && (squad_tag && H.assigned_squad.name != squad_tag)))
 				to_chat(H, SPAN_WARNING("This machine isn't for your squad."))
 				vend_fail()
 				return
@@ -516,7 +527,7 @@ IN_USE						used for vending/denying
 						to_chat(H, SPAN_WARNING("Only specialists can take specialist sets."))
 						vend_fail()
 						return
-					else if(!H.skills || H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_TRAINED)
+					else if(!H.skills || H.skills.get_skill_level(SKILL_SPEC_WEAPONS) != SKILL_SPEC_ALL)
 						to_chat(H, SPAN_WARNING("You already have a specialization."))
 						vend_fail()
 						return
@@ -525,51 +536,72 @@ IN_USE						used for vending/denying
 						to_chat(H, SPAN_WARNING("That set is already taken."))
 						vend_fail()
 						return
+					if(!istype(H.wear_id, /obj/item/card/id))
+						to_chat(H, SPAN_WARNING("You must be wearing your ID card to select a specialization!"))
+						return
+					var/obj/item/card/id/ID = H.wear_id
+					if(ID.registered_ref != WEAKREF(H))
+						to_chat(H, SPAN_WARNING("You must be wearing YOUR ID card to select a specialization!"))
+						return
+					var/specialist_assignment
 					switch(p_name)
 						if("Scout Set")
 							H.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_SCOUT)
+							specialist_assignment = "Scout"
 						if("Sniper Set")
 							H.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_SNIPER)
+							specialist_assignment = "Sniper"
 						if("Demolitionist Set")
 							H.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_ROCKET)
+							specialist_assignment = "Demo"
 						if("Heavy Grenadier Set")
 							H.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_GRENADIER)
+							specialist_assignment = "Grenadier"
 						if("Pyro Set")
 							H.skills.set_skill(SKILL_SPEC_WEAPONS, SKILL_SPEC_PYRO)
+							specialist_assignment = "Pyro"
 						else
 							to_chat(H, SPAN_WARNING("<b>Something bad occured with [src], tell a Dev.</b>"))
 							vend_fail()
 							return
+					ID.set_assignment(JOB_SQUAD_SPECIALIST + " ([specialist_assignment])")
+					GLOB.data_core.manifest_modify(H.real_name, WEAKREF(H), ID.assignment)
 					available_specialist_sets -= p_name
 
-			if(use_points)
-				if(use_snowflake_points)
-					if(H.marine_snowflake_points < cost)
-						to_chat(H, SPAN_WARNING("Not enough points."))
-						vend_fail()
-						return
-					else
-						H.marine_snowflake_points -= cost
-				else
-					if(H.marine_points < cost)
-						to_chat(H, SPAN_WARNING("Not enough points."))
-						vend_fail()
-						return
-					else
-						H.marine_points -= cost
 
-			if(L[4])
-				if(H.marine_buy_flags & L[4])
-					H.marine_buy_flags &= ~L[4]
-				else
-					to_chat(H, SPAN_WARNING("You can't buy things from this category anymore."))
-					vend_fail()
-					return
+			if(!handle_points(H, L))
+				return
 
 			vend_succesfully(L, H, T)
 
-		add_fingerprint(usr)
-		ui_interact(usr) //updates the nanoUI window
+		add_fingerprint(user)
+		ui_interact(user) //updates the nanoUI window
+
+/obj/structure/machinery/cm_vending/gear/proc/handle_points(var/mob/living/carbon/human/H, var/list/L)
+	. = TRUE
+	var/cost = L[2]
+	if(use_points)
+		if(use_snowflake_points)
+			if(H.marine_snowflake_points < cost)
+				to_chat(H, SPAN_WARNING("Not enough points."))
+				vend_fail()
+				return FALSE
+			else
+				H.marine_snowflake_points -= cost
+		else
+			if(H.marine_points < cost)
+				to_chat(H, SPAN_WARNING("Not enough points."))
+				vend_fail()
+				return FALSE
+			else
+				H.marine_points -= cost
+	if(L[4])
+		if(H.marine_buy_flags & L[4])
+			H.marine_buy_flags &= ~L[4]
+		else
+			to_chat(H, SPAN_WARNING("You can't buy things from this category anymore."))
+			vend_fail()
+			return FALSE
 
 /obj/structure/machinery/cm_vending/gear/vend_succesfully(var/list/L, var/mob/living/carbon/human/H, var/turf/T)
 	if(stat & IN_USE)
@@ -610,19 +642,18 @@ IN_USE						used for vending/denying
 	. = ..()
 	if(.)
 		return
-	if(stat & (BROKEN|NOPOWER))
-		return
-	if(usr.is_mob_incapacitated())
-		return
 
-	if(in_range(src, usr) && isturf(loc) && ishuman(usr))
-		usr.set_interaction(src)
+	handle_topic(usr, href, href_list)
+
+/obj/structure/machinery/cm_vending/clothing/handle_topic(mob/user, href, href_list)
+	if(in_range(src, user) && isturf(loc) && ishuman(user))
+		user.set_interaction(src)
 		if(href_list["vend"])
 
 			if(stat & IN_USE)
 				return
 
-			var/mob/living/carbon/human/H = usr
+			var/mob/living/carbon/human/H = user
 
 			if(!hacked)
 
@@ -648,10 +679,11 @@ IN_USE						used for vending/denying
 					return
 
 			var/idx=text2num(href_list["vend"])
-			var/list/L = listed_products[idx]
+			var/list/topic_listed_products = get_listed_products(user)
+			var/list/L = topic_listed_products[idx]
 			var/cost = L[2]
 
-			if((!H.assigned_squad && squad_tag) || (squad_tag && H.assigned_squad.name != squad_tag))
+			if((!H.assigned_squad && squad_tag) || (!H.assigned_squad?.omni_squad_vendor && (squad_tag && H.assigned_squad.name != squad_tag)))
 				to_chat(H, SPAN_WARNING("This machine isn't for your squad."))
 				vend_fail()
 				return
@@ -661,6 +693,14 @@ IN_USE						used for vending/denying
 				to_chat(H, SPAN_WARNING("The floor is too cluttered, make some space."))
 				vend_fail()
 				return
+
+			var/bitf = L[4]
+			if(bitf)
+				if(bitf == MARINE_CAN_BUY_ESSENTIALS && vendor_role.Find(JOB_SYNTH))
+					if(H.job != JOB_SYNTH)
+						to_chat(H, SPAN_WARNING("Only USCM Synthetics may vend experimental tool tokens."))
+						vend_fail()
+						return
 
 			if(use_points)
 				if(use_snowflake_points)
@@ -694,8 +734,8 @@ IN_USE						used for vending/denying
 
 			vend_succesfully(L, H, T)
 
-		add_fingerprint(usr)
-		ui_interact(usr) //updates the nanoUI window
+		add_fingerprint(user)
+		ui_interact(user) //updates the nanoUI window
 
 /obj/structure/machinery/cm_vending/clothing/vend_succesfully(var/list/L, var/mob/living/carbon/human/H, var/turf/T)
 	if(stat & IN_USE)
@@ -770,12 +810,13 @@ IN_USE						used for vending/denying
 		return
 	var/list/display_list = list()
 
-	if(!LAZYLEN(listed_products))	//runtimed for vendors without goods in them
+	var/list/ui_listed_products = get_listed_products(user)
+	if(!LAZYLEN(ui_listed_products))	//runtimed for vendors without goods in them
 		to_chat(user, SPAN_WARNING("Vendor wasn't properly initialized, tell an admin!"))
 		return
 
-	for(var/i in 1 to listed_products.len)
-		var/list/myprod = listed_products[i]	//we take one list from listed_products
+	for(var/i in 1 to length(ui_listed_products))
+		var/list/myprod = ui_listed_products[i]	//we take one list from listed_products
 
 		var/p_name = myprod[1]					//taking it's name
 		var/p_amount = myprod[2]				//amount left
@@ -806,21 +847,18 @@ IN_USE						used for vending/denying
 
 /obj/structure/machinery/cm_vending/sorted/Topic(href, href_list)
 	. = ..()
-	if(.)
-		return
-	if(inoperable())
-		return
-	if(usr.is_mob_incapacitated())
-		return
 
-	if(in_range(src, usr) && isturf(loc) && ishuman(usr))
-		usr.set_interaction(src)
+	handle_topic(usr, href, href_list)
+
+/obj/structure/machinery/cm_vending/sorted/handle_topic(mob/user, href, href_list)
+	if(in_range(src, user) && isturf(loc) && ishuman(user))
+		user.set_interaction(src)
 		if(href_list["vend"])
 
 			if(stat & IN_USE)
 				return
 
-			var/mob/living/carbon/human/H = usr
+			var/mob/living/carbon/human/H = user
 
 			if(!hacked)
 
@@ -846,7 +884,8 @@ IN_USE						used for vending/denying
 					return
 
 			var/idx=text2num(href_list["vend"])
-			var/list/L = listed_products[idx]
+			var/list/topic_listed_products = get_listed_products(user)
+			var/list/L = topic_listed_products[idx]
 
 			var/turf/T = get_appropriate_vend_turf(H)
 			if(T.contents.len > 25)
@@ -861,8 +900,8 @@ IN_USE						used for vending/denying
 
 			vend_succesfully(L, H, T)
 
-		add_fingerprint(usr)
-		ui_interact(usr) //updates the nanoUI window
+		add_fingerprint(user)
+		ui_interact(user) //updates the nanoUI window
 
 /obj/structure/machinery/cm_vending/sorted/vend_succesfully(var/list/L, var/mob/living/carbon/human/H, var/turf/T)
 	if(stat & IN_USE)
@@ -908,7 +947,8 @@ IN_USE						used for vending/denying
 
 /obj/structure/machinery/cm_vending/sorted/proc/stock(obj/item/item_to_stock, mob/user)
 	var/list/R
-	for(R in (listed_products))
+	var/list/stock_listed_products = get_listed_products(user)
+	for(R in (stock_listed_products))
 		if(item_to_stock.type == R[3] && !istype(item_to_stock,/obj/item/storage))
 
 			if(item_to_stock.loc == user) //Inside the mob's inventory
@@ -928,7 +968,7 @@ IN_USE						used for vending/denying
 			return //We found our item, no reason to go on.
 
 //------------GEAR VENDORS---------------
-//For vendors with their own points avaliable
+//For vendors with their own points available
 /obj/structure/machinery/cm_vending/own_points
 	name = "\improper ColMarTech generic vendor"
 	desc = "This is a vendor with its own points system."
@@ -937,8 +977,8 @@ IN_USE						used for vending/denying
 	use_points = FALSE
 	use_snowflake_points = FALSE
 
-	var/avaliable_points = MARINE_TOTAL_BUY_POINTS
-	avaliable_points_to_display = MARINE_TOTAL_BUY_POINTS
+	var/available_points = MARINE_TOTAL_BUY_POINTS
+	available_points_to_display = MARINE_TOTAL_BUY_POINTS
 
 /obj/structure/machinery/cm_vending/own_points/Topic(href, href_list)
 	. = ..()
@@ -980,10 +1020,11 @@ IN_USE						used for vending/denying
 					return
 
 			var/idx=text2num(href_list["vend"])
-			var/list/L = listed_products[idx]
+			var/list/topic_listed_products = get_listed_products(usr)
+			var/list/L = topic_listed_products[idx]
 			var/cost = L[2]
 
-			if((!H.assigned_squad && squad_tag) || (squad_tag && H.assigned_squad.name != squad_tag))
+			if((!H.assigned_squad && squad_tag) || (!H.assigned_squad?.omni_squad_vendor && (squad_tag && H.assigned_squad.name != squad_tag)))
 				to_chat(H, SPAN_WARNING("This machine isn't for your squad."))
 				vend_fail()
 				return
@@ -994,13 +1035,13 @@ IN_USE						used for vending/denying
 				vend_fail()
 				return
 
-			if(avaliable_points < cost)
+			if(available_points < cost)
 				to_chat(H, SPAN_WARNING("Not enough points."))
 				vend_fail()
 				return
 			else
-				avaliable_points -= cost
-				avaliable_points_to_display = avaliable_points
+				available_points -= cost
+				available_points_to_display = available_points
 
 			vend_succesfully(L, H, T)
 

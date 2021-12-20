@@ -24,6 +24,8 @@
 	var/heat_proof = 0 // For glass airlocks/opacity firedoors
 	var/air_properties_vary_with_direction = 0
 	var/turf/filler //Fixes double door opacity issue
+	/// Stops it being forced open through normal means (Hunters/Zombies/Aliens).
+	var/heavy
 
 
 	//Multi-tile doors
@@ -137,7 +139,7 @@
 	if(prob(40/severity))
 		if(secondsElectrified == 0)
 			secondsElectrified = -1
-			spawn(SECONDS_30)
+			spawn(30 SECONDS)
 				secondsElectrified = 0
 	..()
 
@@ -205,7 +207,7 @@
 	if(!density)		return 1
 	if(operating > 0 || !loc)	return
 	if(!operating)		operating = 1
-
+	CHECK_TICK
 	do_animate("opening")
 	icon_state = "door0"
 	src.SetOpacity(0)
@@ -231,7 +233,7 @@
 	if(density)	return 1
 	if(operating > 0 || !loc)	return
 	operating = 1
-
+	CHECK_TICK
 	src.density = 1
 	src.layer = closed_layer
 	do_animate("closing")

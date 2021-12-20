@@ -30,6 +30,15 @@
 
 	to_chat(usr, SPAN_DANGER("This mob type cannot throw items."))
 	return
+/mob/verb/view_stats()
+	set category = "OOC"
+	set name = "View Playtimes"
+	set desc = "View your playtimes."
+	if(!SSentity_manager.ready)
+		to_chat(src, "DB is still starting up, please wait")
+		return
+	if(client && client.player_entity)
+		client.player_data.ui_interact(src)
 
 /mob/verb/toggle_high_toss()
 	set name = "Toggle High Toss"
@@ -93,19 +102,6 @@
 	else
 		to_chat(src, "The game appears to have misplaced your mind datum, so we can't show you your notes.")
 
-/mob/verb/view_objective_memory()
-	set name = "View objectives clues"
-	set category = "IC"
-
-	if(mind)
-		mind.view_objective_memories(src)
-	else
-		to_chat(src, "The game appears to have misplaced your mind datum, so we can't show you your notes.")
-
-/mob/living/carbon/Xenomorph/view_objective_memory()
-	set hidden = 1
-	return
-
 /mob/verb/abandon_mob()
 	set name = "Respawn"
 	set category = "OOC"
@@ -136,11 +132,8 @@
 		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
 		to_chat(usr, "You have been dead for[pluralcheck] [deathtimeseconds] seconds.")
 
-		if (deathtime < MINUTES_30 && !is_admin)
-			to_chat(usr, "You must wait 30 minutes to respawn!")
-			return
-		else
-			to_chat(usr, "You can respawn now, enjoy your new life!")
+	if(alert("Are you sure you want to respawn?",,"Yes","No") != "Yes")
+		return
 
 	log_game("[usr.name]/[usr.key] used abandon mob.")
 
@@ -228,7 +221,7 @@
 	var/eye_name = null
 
 	var/ok = "[is_admin ? "Admin Observe" : "Observe"]"
-	eye_name = input("Please, select a player!", ok, null, null) as null|anything in creatures
+	eye_name = tgui_input_list(usr, "Please, select a player!", ok, creatures)
 
 	if (!eye_name)
 		return
@@ -251,7 +244,6 @@
 		var/mob/living/M = src
 		if(M.cameraFollow)
 			M.cameraFollow = null
-
 
 /mob/verb/eastface()
 	set hidden = 1

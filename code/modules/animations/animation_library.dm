@@ -14,6 +14,11 @@ Instead of being uniform, it starts out a littler slower, goes fast in the middl
 	animate(transform = matrix(240 * direction, MATRIX_ROTATE), time = 1)
 	animate(transform = null, time = 2, easing = SINE_EASING|EASE_OUT)
 
+/proc/animation_move_up_slightly(atom/A, loop_num = 0)
+	animate(A, transform = matrix(330, MATRIX_ROTATE), time = 1, loop = loop_num, easing = SINE_EASING|EASE_IN)
+	animate(transform = matrix(330, MATRIX_ROTATE), time = 1)
+	animate(transform = null, time = 2, easing = SINE_EASING|EASE_OUT)
+
 //Makes it look like the user threw something in the air (north) and then caught it.
 /proc/animation_toss_snatch(atom/A)
 	A.transform *= 0.75
@@ -146,7 +151,7 @@ proc/animation_destruction_knock_fade(atom/A, speed = 7, x_n = rand(10,18), y_n 
 	return speed*2
 
 /*
-//Wip animation. Needs byond 511 parallel animation to look nice.
+//Work in progress animation. Needs byond 511 parallel animation to look nice.
 proc/animation_destruction_long_fade(atom/A, speed = 4, x_n = 4, y_n = 4)
 	A.flags_atom |= NOINTERACT
 	A.mouse_opacity = 0
@@ -198,7 +203,7 @@ proc/animation_destruction_long_fade(atom/A, speed = 4, x_n = 4, y_n = 4)
 		if(SOUTHWEST)
 			pixel_x_diff = -pixel_offset
 			pixel_y_diff = -pixel_offset
-	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2)
+	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2, flags = ANIMATION_PARALLEL)
 	animate(pixel_x = initial(pixel_x), pixel_y = initial(pixel_y), time = 2)
 
 

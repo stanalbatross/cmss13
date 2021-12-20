@@ -8,16 +8,10 @@
 		icon_full  	= ""
 		icon_broken	= ""
 
-/obj/item/ashtray/Initialize()
-	. = ..()
-	src.pixel_y = rand(-5, 5)
-	src.pixel_x = rand(-6, 6)
-	return
-
 /obj/item/ashtray/attackby(obj/item/W as obj, mob/user as mob)
 	if (health < 1)
 		return
-	if (istype(W,/obj/item/trash/cigbutt) || istype(W,/obj/item/trash/ucigbutt) || istype(W,/obj/item/clothing/mask/cigarette) || istype(W, /obj/item/tool/match))
+	if (istype(W,/obj/item/trash/cigbutt) || istype(W,/obj/item/clothing/mask/cigarette) || istype(W, /obj/item/tool/match))
 		if (contents.len >= max_butts)
 			to_chat(user, "This ashtray is full.")
 			return

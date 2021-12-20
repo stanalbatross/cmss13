@@ -38,7 +38,7 @@
 	//Emotes
 	var/recent_audio_emote = FALSE
 
-	var/on_fire = 0 //The "Are we on fire?" var
+	var/on_fire = FALSE //The "Are we on fire?" var
 	var/fire_stacks = 0 //Tracks how many stacks of fire we have on, max is
 	var/datum/reagent/fire_reagent
 
@@ -66,9 +66,24 @@
 	//Flags for any active emotes the mob may be performing
 	var/flags_emote
 	//ventcrawl
-	var/canEnterVentWith = "/obj/item/implant=0&/obj/item/clothing/mask/facehugger=0&/obj/item/device/radio/borg=0&/obj/structure/machinery/camera=0&/obj/item/verbs=0"
+	var/list/canEnterVentWith = list(
+		/obj/item/implant,
+		/obj/item/clothing/mask/facehugger,
+		/obj/item/device/radio,
+		/obj/structure/machinery/camera,
+		/obj/limb,
+		/obj/item/alien_embryo
+	)
 	//blood.dm
 	var/blood_volume = 0 //how much blood the mob has
 
 	var/datum/pain/pain	//Pain datum for the mob, set on New()
 	var/datum/stamina/stamina
+
+	var/action_delay //for do_after
+
+	//Surgery vars.
+	///Assoc. list - the operations being performed, by aim zone. Both boolean and link to that surgery.
+	var/list/active_surgeries = DEFENSE_ZONES_LIVING
+	///Assoc. list - incision depths, by aim zone. Set by initialize_incision_depths().
+	var/list/incision_depths = DEFENSE_ZONES_LIVING

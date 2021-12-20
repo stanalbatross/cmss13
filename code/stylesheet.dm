@@ -53,6 +53,7 @@ em						{font-style: normal;	font-weight: bold;}
 .bravoradio				{color: #C68610;}
 .charlieradio			{color: #AA55AA;}
 .deltaradio				{color: #007FCF;}
+.echoradio				{color: #3EB489;}
 
 .medium					{					font-size: 2}
 .big					{					font-size: 2}
@@ -70,7 +71,6 @@ em						{font-style: normal;	font-weight: bold;}
 .alert					{color: #ff0000;}
 h1.alert, h2.alert		{color: #000000;}
 
-.emote					{					font-style: italic;}
 .selecteddna			{color: #FFFFFF; 	background-color: #001B1B}
 
 .attack					{color: #ff0000;}
@@ -89,6 +89,7 @@ h1.alert, h2.alert		{color: #000000;}
 .debuginfo				{color: #493D26;	font-style: italic;}
 .notice					{color: #000099;}
 .xenonotice				{color: #2a623d;}
+.xenoboldnotice			{color: #2a623d;	font-weight: bold;}
 .boldnotice				{color: #000099;	font-weight: bold;}
 .warning				{color: #ff0000;	font-style: italic;}
 .xenowarning			{color: #2a623d;	font-style: italic;}
@@ -140,4 +141,8 @@ h1.alert, h2.alert		{color: #000000;}
 .japanese				{color: #0047A0}
 .commando				{color: #FE9B24; font-style: bold;}
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
+
+.retro_translator		{font-weight: bold;}
+.yautja_translator		{color: #aa0000; font-weight: bold;}
+
 </style>"}

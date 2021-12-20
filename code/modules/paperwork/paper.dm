@@ -27,9 +27,9 @@
 	var/rigged = 0
 	var/spam_flag = 0
 
-	var/const/deffont = "Verdana"
-	var/const/signfont = "Times New Roman"
-	var/const/crayonfont = "Comic Sans MS"
+	var/deffont = "Verdana"
+	var/signfont = "Times New Roman"
+	var/crayonfont = "Comic Sans MS"
 
 //lipstick wiping is in code/game/obj/items/weapons/cosmetics.dm!
 
@@ -48,7 +48,7 @@
 	updateinfolinks()
 
 /obj/item/paper/update_icon()
-	if(icon_state == "paper_talisman" || icon_state == "paper_wy_words" || icon_state == "paper_uscm")
+	if(icon_state == "paper_talisman" || icon_state == "paper_wy_words" || icon_state == "paper_uscm" || icon_state == "fortune")
 		return
 	if(info)
 		if(icon_state == "paper_wy")
@@ -96,8 +96,8 @@
 	return
 
 /obj/item/paper/attack_self(mob/living/user)
+	..()
 	examine(user)
-	return
 
 /obj/item/paper/attack_remote(var/mob/living/silicon/ai/user as mob)
 	var/dist
@@ -123,17 +123,22 @@
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H == user)
-				to_chat(user, SPAN_NOTICE("You wipe off the lipstick with [src]."))
+				to_chat(user, SPAN_NOTICE("You wipe off the face paint with [src]."))
 				H.lip_style = null
 				H.update_body()
 			else
-				user.visible_message(SPAN_WARNING("[user] begins to wipe [H]'s lipstick off with \the [src]."), \
-								 	 SPAN_NOTICE("You begin to wipe off [H]'s lipstick."))
+				user.visible_message(SPAN_WARNING("[user] begins to wipe [H]'s face paint off with \the [src]."), \
+								 	 SPAN_NOTICE("You begin to wipe off [H]'s face paint."))
 				if(do_after(user, 10, INTERRUPT_ALL, BUSY_ICON_FRIENDLY) && do_after(H, 10, INTERRUPT_ALL, BUSY_ICON_GENERIC))	//user needs to keep their active hand, H does not.
-					user.visible_message(SPAN_NOTICE("[user] wipes [H]'s lipstick off with \the [src]."), \
-										 SPAN_NOTICE("You wipe off [H]'s lipstick."))
+					user.visible_message(SPAN_NOTICE("[user] wipes [H]'s face paint off with \the [src]."), \
+										 SPAN_NOTICE("You wipe off [H]'s face paint."))
 					H.lip_style = null
 					H.update_body()
+
+/obj/item/paper/get_vv_options()
+	. = ..()
+	. += "<option value>-----PAPER-----</option>"
+	. += "<option value='?_src_=admin_holder;customise_paper=\ref[src]'>Customise content</option>"
 
 /obj/item/paper/proc/addtofield(var/id, var/text, var/links = 0)
 	var/locid = 0
@@ -456,6 +461,9 @@
 	name = "Judgement"
 	info = "For crimes against the station, the offender is sentenced to:<BR>\n<BR>\n"
 
+/obj/item/paper/almayer_storage
+	name = "Almayer Emergency Storage Note"
+	info = "<i>Hey Garry, I got the boys to move most of the emergency supplies down into the ASRS hold just like ya' asked. <BR>Next time you're around Chinook I'll buy you a beer ok?</i>"
 /obj/item/paper/Toxin
 	name = "Chemical Information"
 	info = "Known Onboard Toxins:<BR>\n\tGrade A Semi-Liquid Phoron:<BR>\n\t\tHighly poisonous. You cannot sustain concentrations above 15 units.<BR>\n\t\tA gas mask fails to filter phoron after 50 units.<BR>\n\t\tWill attempt to diffuse like a gas.<BR>\n\t\tFiltered by scrubbers.<BR>\n\t\tThere is a bottled version which is very different<BR>\n\t\t\tfrom the version found in canisters!<BR>\n<BR>\n\t\tWARNING: Highly Flammable. Keep away from heat sources<BR>\n\t\texcept in a enclosed fire area!<BR>\n\t\tWARNING: It is a crime to use this without authorization.<BR>\nKnown Onboard Anti-Toxin:<BR>\n\tAnti-Toxin Type 01P: Works against Grade A Phoron.<BR>\n\t\tBest if injected directly into bloodstream.<BR>\n\t\tA full injection is in every regular Med-Kit.<BR>\n\t\tSpecial toxin Kits hold around 7.<BR>\n<BR>\nKnown Onboard Chemicals (other):<BR>\n\tRejuvenation T#001:<BR>\n\t\tEven 1 unit injected directly into the bloodstream<BR>\n\t\t\twill cure paralysis and sleep phoron.<BR>\n\t\tIf administered to a dying patient it will prevent<BR>\n\t\t\tfurther damage for about units*3 seconds.<BR>\n\t\t\tit will not cure them or allow them to be cured.<BR>\n\t\tIt can be administeredd to a non-dying patient<BR>\n\t\t\tbut the chemicals disappear just as fast.<BR>\n\tSoporific T#054:<BR>\n\t\t5 units wilkl induce precisely 1 minute of sleep.<BR>\n\t\t\tThe effect are cumulative.<BR>\n\t\tWARNING: It is a crime to use this without authorization"
@@ -471,6 +479,10 @@
 /obj/item/paper/djstation
 	name = "DJ Listening Outpost"
 	info = "<B>Welcome new owner!</B><BR><BR>You have purchased the latest in listening equipment. The telecommunication setup we created is the best in listening to common and private radio fequencies. Here is a step by step guide to start listening in on those saucy radio channels:<br><ol><li>Equip yourself with a multi-tool</li><li>Use the multitool on each machine, that is the broadcaster, receiver and the relay.</li><li>Turn all the machines on, it has already been configured for you to listen on.</li></ol> Simple as that. Now to listen to the private channels, you'll have to configure the intercoms, located on the front desk. Here is a list of frequencies for you to listen on.<br><ul><li>145.7 - Common Channel</li><li>144.7 - Private AI Channel</li><li>135.9 - Security Channel</li><li>135.7 - Engineering Channel</li><li>135.5 - Medical Channel</li><li>135.3 - Command Channel</li><li>135.1 - Science Channel</li><li>134.9 - Mining Channel</li><li>134.7 - Cargo Channel</li>"
+
+/obj/item/paper/warhead_recycle
+	name = "USCM Recycling Efforts"
+	info = "<B>Hello USCM Orbital Cannon System Owner!</B><BR><BR>We regret to inform you that a communications mishap has resulted in your orbital bombardment warheads being recycled for spare metal! Worry not, the metal has been put to good use in High Command's chest freezer."
 
 /obj/item/paper/flag
 	icon_state = "flag_neutral"
@@ -522,6 +534,10 @@
 
 /obj/item/paper/prison_station/nursery_rhyme
 	info = "<p>Mary had a little lamb,<BR>\nits fleece was white as snow;<BR>\nAnd everywhere that Mary went,<BR>\nthe lamb was sure to go.</p><p>It followed her to school one day,<BR>\nwhich was against the rule;<BR>\nIt made the children laugh and play,<BR>\nto see a lamb at school.</p><p>And so the teacher turned it out,<BR>\nbut still it lingered near,<BR>\nAnd waited patiently about,<BR>\ntill Mary did appear.</p><p>\"Why does the lamb love Mary so?\"<BR>\nthe eager children cry;<BR>\n\"Why, Mary loves the lamb, you know\",<BR>\nthe teacher did reply."
+
+/obj/item/paper/lv_624/cheese
+	name = "paper= 'Note on the contents of the armoury'"
+	info = "<p>Seems the administrator had an extra shipment of cheese delivered in our last supply drop from Earth. We've got no space to store it in the main kitchen, and he wants it to \"age\" or something.</p><p>It's being kept in the armoury for now, seems it has the right conditions. Anyway, apologies about the smell.</p><p> - Marshall"
 
 /obj/item/paper/crumpled
 	name = "paper scrap"
@@ -579,7 +595,7 @@
 		if(!random_chem)
 			random_chem = pick(chemical_gen_classes_list["T1"])
 		C = chemical_reagents_list["[random_chem]"]
-	var/txt = "<center><img src = wylogo.png><HR><I><B>Official Weston-Yamada Document</B><BR>Experiment Notes</I><HR><H2>"
+	var/txt = "<center><img src = wylogo.png><HR><I><B>Official Weyland-Yutani Document</B><BR>Experiment Notes</I><HR><H2>"
 	switch(note_type)
 		if("synthesis")
 			var/datum/chemical_reaction/G = chemical_reactions_list[C.id]
@@ -601,21 +617,29 @@
 				txt += "<BR>Overdoses at: [C.overdose] units</font><BR>\n"
 			else
 				txt += "<BR>\nTesting for chemical properties is currently pending.<BR>\n"
-			if(C.get_property(PROPERTY_EXPLOSIVE))
+			var/is_volatile = FALSE
+			if(C.chemfiresupp)
+				is_volatile = TRUE
+			else
+				for(var/datum/chem_property/P in C.properties)
+					if(P.volatile)
+						is_volatile = TRUE
+						break
+			if(is_volatile)
 				txt += "<BR><B>\nWARNING: UNSTABLE REAGENT. MIX CAREFULLY.</B><BR>\n"
-			txt += "<BR>\n<HR> - <I>Weston-Yamada</I>"
+			txt += "<BR>\n<HR> - <I>Weyland-Yutani</I>"
 		if("test")
 			name = "Experiment [pick("C","Q","V","W","X","Y","Z")][rand(100,999)][pick("a","b","c")]"
 			txt += "Note for [name]</H2></center>"
 			txt += "Subject <I>[rand(10000,99999)]</I> experienced [pick(C.properties)] effects during testing of [C.name]. <BR>\nTesting for additional chemical properties is currently pending. <BR>\n"
-			txt += "<BR>\n<HR> - <I>Weston-Yamada</I>"
+			txt += "<BR>\n<HR> - <I>Weyland-Yutani</I>"
 		if("grant")
 			if(!grant)
 				grant = rand(2,4)
 			name = "Research Grant"
-			txt += "Weston-Yamada Research Grant</H2></center>"
-			txt += "Dear valued researcher. Weston-Yamada has taken high interest of your recent scientific progress. To further support your work we have sent you this research grant of [grant] credits. Please scan at your local Weston-Yamada research data terminal to receive the benefits.<BR>\n"
-			txt += "<BR>\n<HR> - <I>Weston-Yamada</I>"
+			txt += "Weyland-Yutani Research Grant</H2></center>"
+			txt += "Dear valued researcher. Weyland-Yutani has taken high interest of your recent scientific progress. To further support your work we have sent you this research grant of [grant] credits. Please scan at your local Weyland-Yutani research data terminal to receive the benefits.<BR>\n"
+			txt += "<BR>\n<HR> - <I>Weyland-Yutani</I>"
 	info = txt
 
 /obj/item/paper/research_notes/bad
@@ -633,8 +657,6 @@
 
 /obj/item/paper/research_notes/good/Initialize()
 	var/list/L = list("T3", "T4")
-	if(length(chemical_gen_classes_list["omega"]))//If we have chems from the previous round we can pick from the omega list
-		L += "omega"
 	tier = pick(L)
 	. = ..()
 
@@ -757,10 +779,12 @@
 
 /obj/item/paper/incident/Initialize()
 	. = ..()
-	info = {"\[center\]\[logo\]\[/center\]
-\[center\]\[b\]\[i\]Encoded USCM Incident Report\[/b\]\[/i\]\[hr\]
-\[small\]FOR USE BY MP'S ONLY\[/small\]\[br\]
-\[barcode\]\[/center\]"}
+	var/template = {"\[center\]\[logo\]\[/center\]
+		\[center\]\[b\]\[i\]Encoded USCM Incident Report\[/b\]\[/i\]\[hr\]
+		\[small\]FOR USE BY MP'S ONLY\[/small\]\[br\]
+		\[barcode\]\[/center\]"}
+	info = parsepencode(template, null, null, FALSE)
+	update_icon()
 
 /obj/item/paper/incident/Destroy()
 	incident = null
@@ -773,12 +797,13 @@
 
 /obj/item/paper/fingerprint/Initialize(mapload, var/criminal_name = "", var/criminal_rank = "", var/criminal_squad = "", var/description = "")
 	. = ..()
-	info = {"\[center\]\[logo\]\[/center\]
-			\[center\]\[b\]\[i\]Fingerprint Sample From [criminal_name]\[/b\]\[/i\]\[hr\]
-			\[small\]
-			Name: [criminal_name]\[br\]
-			Rank: [criminal_rank]\[br\]
-			Squad: [criminal_squad]\[br\]
-			Description [description]\[br\]
-			\[/small\]
-			\[/center\]"}
+	var/template = {"\[center\]\[logo\]\[/center\]
+		\[center\]\[b\]\[i\]Fingerprint Sample From [criminal_name]\[/b\]\[/i\]\[hr\]
+		\[small\]
+		Name: [criminal_name]\[br\]
+		Rank: [criminal_rank]\[br\]
+		Squad: [criminal_squad]\[br\]
+		Description [description]\[br\]
+		\[/small\]
+		\[/center\]"}
+	info = parsepencode(template, null, null, FALSE)

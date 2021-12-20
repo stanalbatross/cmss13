@@ -179,64 +179,13 @@
 
 	if(admin_holder)
 		body += "<option value='?_src_=vars;mark_object=\ref[D]'>[(D in admin_holder.marked_datums) ? "Unm" : "M"]ark Datum</option>"
-	if(ismob(D))
-		body += "<option value='?_src_=vars;mob_player_panel=\ref[D]'>Show player panel</option>"
-
 	body += "<option value='?_src_=vars;adv_proccall=\ref[D]'>Advanced ProcCall</option>"
+	body += "<option value>----------</option>"
 
-	body += "<option value>---</option>"
-
-	if(ismob(D))
-		body += "<option value='?_src_=vars;give_disease=\ref[D]'>Give TG-style Disease</option>"
-		body += "<option value='?_src_=vars;godmode=\ref[D]'>Toggle Godmode</option>"
-		body += "<option value='?_src_=vars;build_mode=\ref[D]'>Toggle Build Mode</option>"
-
-		body += "<option value='?_src_=vars;direct_control=\ref[D]'>Assume Direct Control</option>"
-		body += "<option value='?_src_=vars;drop_everything=\ref[D]'>Drop Everything</option>"
-
-		body += "<option value='?_src_=vars;regenerateicons=\ref[D]'>Regenerate Icons</option>"
-		body += "<option value='?_src_=vars;addlanguage=\ref[D]'>Add Language</option>"
-		body += "<option value='?_src_=vars;remlanguage=\ref[D]'>Remove Language</option>"
-		body += "<option value='?_src_=vars;addorgan=\ref[D]'>Add Organ</option>"
-		body += "<option value='?_src_=vars;remorgan=\ref[D]'>Remove Organ</option>"
-		body += "<option value='?_src_=vars;addlimb=\ref[D]'>Add Limb</option>"
-		body += "<option value='?_src_=vars;amplimb=\ref[D]'>Amputate Limb</option>"
-		body += "<option value='?_src_=vars;remlimb=\ref[D]'>Remove Limb</option>"
-
-		body += "<option value='?_src_=vars;fix_nano=\ref[D]'>Fix NanoUI</option>"
-
-		body += "<option value='?_src_=vars;addverb=\ref[D]'>Add Verb</option>"
-		body += "<option value='?_src_=vars;remverb=\ref[D]'>Remove Verb</option>"
-
-		if(ishuman(D))
-			body += "<option value>---</option>"
-			body += "<option value='?_src_=vars;edit_skill=\ref[D]'>Edit Skills</option>"
-			body += "<option value='?_src_=vars;setspecies=\ref[D]'>Set Species</option>"
-			body += "<option value='?_src_=vars;selectequipment=\ref[D]'>Select Equipment</option>"
-			var/mob/living/carbon/human/H = D
-			if(H.agent_holder)
-				body += "<option value='?_src_=vars;giveagentobjective=\ref[D]'>Give Agent Objective</option>"
-			else
-				body += "<option value='?_src_=vars;createagent=\ref[D]'>Make Agent</option>"
-		if(iscarbon(D))
-			body += "<option value='?_src_=vars;changehivenumber=\ref[D]'>Change Hivenumber</option>"
-		body += "<option value>---</option>"
-		body += "<option value='?_src_=vars;gib=\ref[D]'>Gib</option>"
-	if(isobj(D))
-		body += "<option value='?_src_=vars;delall=\ref[D]'>Delete all of type</option>"
-	if(isobj(D) || ismob(D) || isturf(D))
-		body += "<option value='?_src_=vars;explode=\ref[D]'>Trigger explosion</option>"
-		body += "<option value='?_src_=vars;emp=\ref[D]'>Trigger EM pulse</option>"
-		body += "<option value='?_src_=vars;setmatrix=\ref[D]'>Set Base Matrix</option>"
-
-	body += "<option value>---</option>"
-
-	if(istype(D, /obj/structure/machinery/faxmachine))
-		body += "<option value='?_src_=admin_holder;USCMFaxReply=\ref[usr];originfax=\ref[D]'>Send USCM fax message</option>"
-		body += "<option value='?_src_=admin_holder;CLFaxReply=\ref[usr];originfax=\ref[D]'>Send CL fax message</option>"
-
-	if(istype(D, /atom))
-		body += "<option value='?_src_=vars;enablepixelscaling=\ref[D]'>Enable Pixel Scaling</option>"
+	var/list/datum_options = D.get_vv_options()
+	if(length(datum_options))
+		for(var/specific_option in datum_options)
+			body += specific_option
 
 	body += "</select></form>"
 
@@ -292,6 +241,33 @@ body
 	show_browser(usr, html, "View Variables", "variables\ref[D]", "size=475x650")
 
 	return
+
+/datum/proc/get_vv_options()
+	return list()
+
+/atom/get_vv_options()
+	. = ..()
+	. += "<option value='?_src_=vars;enablepixelscaling=\ref[src]'>Enable Pixel Scaling</option>"
+
+/turf/get_vv_options()
+	. = ..()
+	. += "<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>"
+	. += "<option value='?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>"
+	. += "<option value='?_src_=vars;setmatrix=\ref[src]'>Set Base Matrix</option>"
+
+/mob/get_vv_options()
+	. = ..()
+	. += "<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>"
+	. += "<option value='?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>"
+	. += "<option value='?_src_=vars;setmatrix=\ref[src]'>Set Base Matrix</option>"
+
+/obj/get_vv_options()
+	. = ..()
+	. += "<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>"
+	. += "<option value='?_src_=vars;emp=\ref[src]'>Trigger EM pulse</option>"
+	. += "<option value='?_src_=vars;setmatrix=\ref[src]'>Set Base Matrix</option>"
+	. += "<option value>-----OBJECT-----</option>"
+	. += "<option value='?_src_=vars;delall=\ref[src]'>Delete all of type</option>"
 
 /client/proc/is_safe_variable(name)
 	if(name == "step_x" || name == "step_y" || name == "bound_x" || name == "bound_y" || name == "bound_height" || name == "bound_width" || name == "bounds")
@@ -457,7 +433,7 @@ body
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
 
-		if(!M.client || !M.client.admin_holder || !M.client.admin_holder.rights & R_MOD)
+		if(!M.client || !M.client.admin_holder || !(M.client.admin_holder.rights & R_MOD))
 			to_chat(usr, "This can only be used on people with +MOD permissions")
 			return
 
@@ -563,7 +539,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /obj, /mob and /turf")
 			return
 
-		cell_explosion(A, 150, 100)
+		cell_explosion(A, 150, 100, , create_cause_data("divine intervention"))
 		message_staff("[key_name(src, TRUE)] has exploded [A]!")
 		href_list["datumrefresh"] = href_list["explode"]
 
@@ -616,8 +592,8 @@ body
 			return
 
 		switch(href_list["rotatedir"])
-			if("right")	A.dir = turn(A.dir, -45)
-			if("left")	A.dir = turn(A.dir, 45)
+			if("right")	A.setDir(turn(A.dir, -45))
+			if("left")	A.setDir(turn(A.dir, 45))
 		href_list["datumrefresh"] = href_list["rotatedatum"]
 
 	else if(href_list["makemonkey"])
@@ -711,7 +687,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/new_species = input("Please choose a new species.","Species",null) as null|anything in all_species
+		var/new_species = tgui_input_list(usr, "Please choose a new species.","Species",GLOB.all_species)
 
 		if(!new_species) return
 
@@ -736,7 +712,7 @@ body
 		if(!H.skills)
 			H.skills = new /datum/skills/pfc(H)
 
-		var/selected_skill = input("Please choose a skill to edit.","Skills",null) as null|anything in list("cqc","endurance","engineer", "construction","firearms", "pistols", "rifles", "smgs", "shotguns", "heavy_weapons","smartgun","spec_weapons","leadership","medical","surgery","research","melee_weapons","pilot","police","powerloader")
+		var/selected_skill = tgui_input_list(usr, "Please choose a skill to edit.","Skills", list("cqc","endurance","engineer", "construction","firearms", "pistols", "rifles", "smgs", "shotguns", "heavy_weapons","smartgun","spec_weapons","leadership","medical","surgery","research","melee_weapons","pilot","police","powerloader"))
 		if(!selected_skill)
 			return
 
@@ -755,42 +731,6 @@ body
 		H.skills.set_skill(selected_skill, new_skill_level)
 		to_chat(usr, "[H]'s [selected_skill] skill is now set to [new_skill_level].")
 
-	else if(href_list["createagent"])
-		if(!check_rights(R_DEBUG|R_ADMIN))
-			return
-
-		var/mob/living/carbon/human/H = locate(href_list["createagent"])
-		if(!istype(H))
-			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
-			return
-
-		var/faction = input(src,"Select the agent faction", null, null) in list("Random") + FACTION_LIST_AGENT + list("Cancel")
-		if(faction == "Cancel")
-			return
-
-		if(faction == "Random")
-			new /datum/agent(H)
-		else
-			new /datum/agent(H, faction)
-
-	else if(href_list["giveagentobjective"])
-		if(!check_rights(R_DEBUG|R_ADMIN))
-			return
-
-		var/mob/living/carbon/human/H = locate(href_list["giveagentobjective"])
-		if(!istype(H))
-			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
-			return
-
-		var/objective = input(src,"Select an objective", null, null) in list("Random") + OBJECTIVES_TO_PICK_FROM + list("Cancel")
-		if(objective == "Cancel")
-			return
-
-		if(objective == "Random")
-			H.agent_holder.give_objective()
-		else
-			H.agent_holder.give_objective(objective)
-
 	else if(href_list["addlanguage"])
 		if(!check_rights(R_SPAWN))
 			return
@@ -800,7 +740,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob")
 			return
 
-		var/new_language = input("Please choose a language to add.","Language",null) as null|anything in all_languages
+		var/new_language = tgui_input_list(usr, "Please choose a language to add.","Language", GLOB.all_languages)
 
 		if(!new_language)
 			return
@@ -827,7 +767,7 @@ body
 			to_chat(usr, "This mob knows no languages.")
 			return
 
-		var/datum/language/rem_language = input("Please choose a language to remove.","Language",null) as null|anything in H.languages
+		var/datum/language/rem_language = tgui_input_list(usr, "Please choose a language to remove.","Language", H.languages)
 
 		if(!rem_language)
 			return
@@ -863,7 +803,7 @@ body
 		possibleverbs -= H.verbs
 		possibleverbs += "Cancel" 								// ...And one for the bottom
 
-		var/verb = input("Select a verb!", "Verbs",null) as anything in possibleverbs
+		var/verb = tgui_input_list(usr, "Select a verb!", "Verbs", possibleverbs)
 		if(!H)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
@@ -881,7 +821,7 @@ body
 		if(!istype(H))
 			to_chat(usr, "This can only be done to instances of type /mob")
 			return
-		var/verb = input("Please choose a verb to remove.","Verbs",null) as null|anything in H.verbs
+		var/verb = tgui_input_list(usr, "Please choose a verb to remove.","Verbs", H.verbs)
 		if(!H)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
@@ -899,7 +839,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 			return
 
-		var/new_organ = input("Please choose an organ to add.","Organ",null) as null|anything in typesof(/datum/internal_organ)-/datum/internal_organ
+		var/new_organ = tgui_input_list(usr, "Please choose an organ to add.","Organ",null, typesof(/datum/internal_organ)-/datum/internal_organ)
 
 		if(!new_organ)
 			return FALSE
@@ -951,7 +891,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 			return
 
-		var/rem_organ = input("Please choose an organ to remove.","Organ",null) as null|anything in M.internal_organs
+		var/rem_organ = tgui_input_list(usr, "Please choose an organ to remove.","Organ",null, M.internal_organs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -974,7 +914,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/new_limb = input("Please choose an organ to add.","Organ",null) as null|anything in typesof(/obj/limb)-/obj/limb
+		var/new_limb = tgui_input_list(usr, "Please choose an organ to add.","Organ", typesof(/obj/limb)-/obj/limb)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1003,7 +943,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/rem_limb = input("Please choose a limb to remove.","Organ",null) as null|anything in M.limbs
+		var/rem_limb = tgui_input_list(usr, "Please choose a limb to remove.","Organ", M.limbs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1026,7 +966,7 @@ body
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
 
-		var/rem_limb = input("Please choose a limb to remove.","Organ",null) as null|anything in M.limbs
+		var/rem_limb = tgui_input_list(usr, "Please choose a limb to remove.","Organ", M.limbs)
 
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
@@ -1088,6 +1028,39 @@ body
 			message_staff("[key_name(usr)] dealt [amount] amount of [Text] damage to [L] ")
 			href_list["datumrefresh"] = href_list["mobToDamage"]
 
+	else if(href_list["addtrait"])
+		if(!check_rights(R_DEBUG|R_ADMIN|R_SPAWN))
+			return
+
+		var/mob/living/carbon/C = locate(href_list["addtrait"])
+		if(!istype(C))
+			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
+			return
+		var/trait_new = tgui_input_list(usr, "Select a trait to add", "Trait", GLOB.mob_traits)
+		if(!trait_new)
+			return
+		ADD_TRAIT(C, trait_new, TRAIT_SOURCE_ADMIN)
+		message_staff("TRAIT: [key_name(usr)] added trait '[trait_new]' to [key_name(C)]")
+		if(trait_new == TRAIT_CRAWLER)
+			add_verb(C, /mob/living/proc/ventcrawl)
+
+	else if(href_list["removetrait"])
+		if(!check_rights(R_DEBUG|R_ADMIN|R_SPAWN))
+			return
+
+		var/mob/living/carbon/C = locate(href_list["removetrait"])
+		if(!istype(C))
+			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
+			return
+
+		var/trait_old = tgui_input_list(usr, "Select a trait to remove", "Trait", C.status_traits)
+		if(!trait_old)
+			return
+		REMOVE_TRAIT(C, trait_old, null)
+		message_staff("TRAIT: [key_name(usr)] removed trait '[trait_old]' from [key_name(C)]")
+		if(trait_old == TRAIT_CRAWLER)
+			remove_verb(C, /mob/living/proc/ventcrawl)
+
 	else if(href_list["setmatrix"])
 		if(!check_rights(R_DEBUG|R_ADMIN|R_FUN|R_VAREDIT))
 			return
@@ -1101,7 +1074,7 @@ body
 			to_chat(usr, "You don't have any matrices stored!")
 			return
 
-		var/matrix_name = input("Choose a matrix", "Matrix") as null|anything in (stored_matrices + "Revert to Default" + "Cancel")
+		var/matrix_name = tgui_input_list(usr, "Choose a matrix", "Matrix", (stored_matrices + "Revert to Default" + "Cancel"))
 		if(!matrix_name || matrix_name == "Cancel")
 			return
 		else if (matrix_name == "Revert to Default")

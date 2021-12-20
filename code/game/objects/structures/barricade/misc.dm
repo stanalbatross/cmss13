@@ -14,11 +14,11 @@
 	stack_amount = 3
 	destroyed_stack_amount = 0
 	can_wire = FALSE
-	bullet_divider = 2
+	metallic = FALSE
 
 /obj/structure/barricade/snow/New(loc, mob/user, direction)
 	if(direction)
-		dir = direction
+		setDir(direction)
 	..(loc, user)
 
 
@@ -76,7 +76,8 @@
 	can_change_dmg_state = 0
 	barricade_type = "wooden"
 	can_wire = FALSE
-	bullet_divider = 2
+	repair_materials = list("wood" = 1)
+	metallic = FALSE
 
 /obj/structure/barricade/wooden/attackby(obj/item/W as obj, mob/user as mob)
 	for(var/obj/effect/xenomorph/acid/A in src.loc)
@@ -90,11 +91,16 @@
 				to_chat(user, SPAN_WARNING("You need one plank of wood to repair [src]."))
 				return
 			visible_message(SPAN_NOTICE("[user] begins to repair [src]."))
-			if(do_after(user,20, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src) && health < maxhealth)
+			if(do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src) && health < maxhealth)
 				if (D.use(1))
-					health = maxhealth
-					visible_message(SPAN_NOTICE("[user] repairs [src]."))
+					update_health(-0.5*maxhealth)
+					update_damage_state()
+					visible_message(SPAN_NOTICE("[user] clumsily repairs [src]."))
 		return
+
+	if(try_nailgun_usage(W, user))
+		return
+
 	. = ..()
 
 /obj/structure/barricade/wooden/hit_barricade(obj/item/I)

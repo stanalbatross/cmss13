@@ -4,6 +4,7 @@
 	icon_state = "wheelchair"
 	anchored = 0
 	drag_delay = 1 //pulling something on wheels is easy
+	picked_up_item = null
 	var/bloodiness = 0
 	var/move_delay = 6
 
@@ -13,7 +14,7 @@
 	var/image/O = image(icon = 'icons/obj/objects.dmi', icon_state = "w_overlay", layer = FLY_LAYER, dir = src.dir)
 	overlays += O
 	if(buckled_mob)
-		buckled_mob.dir = dir
+		buckled_mob.setDir(dir)
 
 /obj/structure/bed/chair/wheelchair/relaymove(mob/user, direction)
 	if(world.time <= l_move_time + move_delay)
@@ -47,7 +48,7 @@
 			var/pull_delay = driver.pulling.get_pull_drag_delay() * driver.get_pull_miltiplier()
 			move_delay += max(driver.pull_speed + pull_delay + 3*driver.grab_level, 0) //harder grab makes you slower
 
-		if(istype(driver.get_active_hand(), /obj/item/weapon/gun)) //Wheelchair user has a gun out, so obviously can't move
+		if(isgun(driver.get_active_hand())) //Wheelchair user has a gun out, so obviously can't move
 			return
 
 		if(driver.next_move_slowdown)
@@ -73,7 +74,7 @@
 		var/mob/living/occupant = buckled_mob
 		unbuckle()
 
-		var/def_zone = ran_zone()
+		var/def_zone = rand_zone()
 		occupant.throw_atom(A, 3, propelled)
 		occupant.apply_effect(6, STUN)
 		occupant.apply_effect(6, WEAKEN)
@@ -82,7 +83,7 @@
 		playsound(src.loc, 'sound/weapons/punch1.ogg', 25, 1)
 		if(ishuman(A) && !isYautja(A))
 			var/mob/living/victim = A
-			def_zone = ran_zone()
+			def_zone = rand_zone()
 			victim.apply_effect(6, STUN)
 			victim.apply_effect(6, WEAKEN)
 			victim.apply_effect(6, STUTTER)
@@ -93,12 +94,12 @@
 	var/obj/effect/decal/cleanable/blood/tracks/B = new(loc)
 	var/newdir = get_dir(get_step(loc, dir), loc)
 	if(newdir == dir)
-		B.dir = newdir
+		B.setDir(newdir)
 	else
 		newdir = newdir|dir
 		if(newdir == 3)
-			newdir = 1
+			newdir = NORTH
 		else if(newdir == 12)
-			newdir = 4
-		B.dir = newdir
+			newdir = EAST
+		B.setDir(newdir)
 	bloodiness--

@@ -4,14 +4,21 @@
 	icon = 'icons/obj/items/inflatable.dmi'
 	icon_state = "folded_wall"
 	w_class = SIZE_MEDIUM
+	var/inflatable_type = /obj/structure/inflatable
 
 /obj/item/inflatable/attack_self(mob/user)
-	playsound(loc, 'sound/items/zip.ogg', 25, 1)
-	to_chat(user, SPAN_NOTICE(" You inflate [src]."))
-	var/obj/structure/inflatable/R = new /obj/structure/inflatable(user.loc)
-	src.transfer_fingerprints_to(R)
-	R.add_fingerprint(user)
-	qdel(src)
+	..()
+	var/turf/open/T = user.loc
+	if(!(istype(T) && T.allow_construction))
+		to_chat(user, SPAN_WARNING("[src] must be inflated on a proper surface!"))
+		return
+	if(do_after(user, 0.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD, src))
+		playsound(loc, 'sound/items/zip.ogg', 25, TRUE)
+		to_chat(user, SPAN_NOTICE(" You inflate [src]."))
+		var/obj/structure/inflatable/R = new inflatable_type(usr.loc)
+		src.transfer_fingerprints_to(R)
+		R.add_fingerprint(user)
+		qdel(src)
 
 
 
@@ -20,16 +27,7 @@
 	desc = "A folded membrane which rapidly expands into a simple door on activation."
 	icon = 'icons/obj/items/inflatable.dmi'
 	icon_state = "folded_door"
-
-	attack_self(mob/user)
-		playsound(loc, 'sound/items/zip.ogg', 25, 1)
-		to_chat(user, SPAN_NOTICE(" You inflate [src]."))
-		var/obj/structure/inflatable/door/R = new /obj/structure/inflatable/door(user.loc)
-		src.transfer_fingerprints_to(R)
-		R.add_fingerprint(user)
-		qdel(src)
-
-
+	inflatable_type = /obj/structure/inflatable/door
 
 
 

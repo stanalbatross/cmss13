@@ -12,8 +12,8 @@
 	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
 	soundscape_interval = 30 //seconds
 	is_resin_allowed = FALSE
-	flags_atom = AREA_NOTUNNEL
-	
+	flags_area = AREA_NOTUNNEL
+
 /area/shuttle/drop1/Enter(atom/movable/O, atom/oldloc)
 	if(istype(O, /obj/structure/barricade))
 		return FALSE
@@ -45,7 +45,6 @@
 
 /area/shuttle/drop1/ice_colony
 	name = "\improper Dropship Alamo"
-	ambience_exterior = AMBIENCE_ICE
 	icon_state = "shuttle"
 
 /area/shuttle/drop1/DesertDam
@@ -72,7 +71,7 @@
 	//soundscape_playlist = list('sound/soundscape/drum1.ogg')
 	soundscape_interval = 30 //seconds
 	is_resin_allowed = FALSE
-	flags_atom = AREA_NOTUNNEL
+	flags_area = AREA_NOTUNNEL
 
 /area/shuttle/drop2/sulaco
 	name = "\improper Dropship Normandy"
@@ -100,7 +99,6 @@
 
 /area/shuttle/drop2/ice_colony
 	name = "\improper Dropship Normandy"
-	ambience_exterior = AMBIENCE_ICE
 	icon_state = "shuttle2"
 
 /area/shuttle/drop2/DesertDam
@@ -123,9 +121,14 @@
 
 //DISTRESS SHUTTLES
 
+/area/shuttle/distress
+	lighting_use_dynamic = FALSE
+	unique = TRUE
+
 /area/shuttle/distress/start
 	name = "\improper Distress Shuttle"
 	icon_state = "away1"
+	flags_atom = AREA_ALLOW_XENO_JOIN
 
 /area/shuttle/distress/transit
 	name = "\improper Distress Shuttle Transit"

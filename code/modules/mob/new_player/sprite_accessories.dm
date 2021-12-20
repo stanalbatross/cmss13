@@ -28,7 +28,18 @@
 	var/gender = NEUTER
 
 	// Restrict some styles to specific species
-	var/list/species_allowed = list("Human", "Machine", "Human Hero", "Synthetic", "Early Synthetic", "Second Generation Synthetic")
+	var/list/species_allowed = list(
+		"Human",
+		"Machine",
+		"Human Hero",
+		"Synthetic",
+		SYNTH_COLONY,
+		SYNTH_COMBAT,
+		SYNTH_GEN_ONE,
+		SYNTH_GEN_TWO,
+		SYNTH_GEN_THREE,
+		"Event Synthetic"
+		)
 
 	// Whether or not the accessory can be affected by colouration
 	var/do_colouration = 1
@@ -264,7 +275,6 @@
 /datum/sprite_accessory/hair/longovereye
 	name = "Overeye Long"
 	icon_state = "hair_longovereye"
-	selectable = 0
 
 /datum/sprite_accessory/hair/fag
 	name = "Flow Hair"
@@ -556,6 +566,11 @@
 /datum/sprite_accessory/hair/ponytail6
 	name = "Ponytail 5"
 	icon_state = "hair_ponytail6"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/ponytail7
+	name = "Ponytail 6"
+	icon_state = "hair_ponytail7"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/shorthair3

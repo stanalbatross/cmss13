@@ -47,7 +47,7 @@ var/list/ai_verbs_default = list(
 	status_flags = CANSTUN|CANKNOCKOUT
 	med_hud = MOB_HUD_MEDICAL_BASIC
 	sec_hud = MOB_HUD_SECURITY_BASIC
-	var/list/network = list("almayer")
+	var/list/network = list(CAMERA_NET_ALMAYER)
 	var/obj/structure/machinery/camera/camera = null
 	var/list/connected_robots = list()
 	var/aiRestorePowerRoutine = 0
@@ -116,10 +116,10 @@ var/list/ai_verbs_default = list(
 		add_ai_verbs(src)
 
 	//Languages
-	add_language("Robot Talk", 1)
-	add_language("English", 1)
-	add_language("Russian", 1)
-	add_language("Xenomorph", 0)
+	add_language(LANGUAGE_BINARY, 1)
+	add_language(LANGUAGE_ENGLISH, 1)
+	add_language(LANGUAGE_RUSSIAN, 1)
+	add_language(LANGUAGE_XENOMORPH, 0)
 
 
 	if(!safety)//Only used by AIize() to successfully spawn an AI.
@@ -205,7 +205,7 @@ var/list/ai_verbs_default = list(
 		return
 
 		//if(icon_state == initial(icon_state))
-	var/icontype = input("Select an icon!", "AI", null, null) in list("Monochrome", "Rainbow", "Blue", "Inverted", "Text", "Smiley", "Angry", "Dorf", "Matrix", "Bliss", "Firewall", "Green", "Red", "Static", "Triumvirate", "Triumvirate Static", "Soviet", "Trapped", "Heartline", "Chatterbox")
+	var/icontype = tgui_input_list(usr, "Select an icon!", "AI", list("Monochrome", "Rainbow", "Blue", "Inverted", "Text", "Smiley", "Angry", "Dorf", "Matrix", "Bliss", "Firewall", "Green", "Red", "Static", "Triumvirate", "Triumvirate Static", "Soviet", "Trapped", "Heartline", "Chatterbox"))
 	switch(icontype)
 		if("Rainbow") icon_state = "ai-clown"
 		if("Monochrome") icon_state = "ai-mono"
@@ -284,7 +284,7 @@ var/list/ai_verbs_default = list(
 
 	ai_announcement(input)
 	message_cooldown = 1
-	spawn(MINUTES_1)//One minute cooldown
+	spawn(1 MINUTES)//One minute cooldown
 		message_cooldown = 0
 
 /mob/living/silicon/ai/check_eye(mob/user)
@@ -342,8 +342,7 @@ var/list/ai_verbs_default = list(
 			playsound(loc, M.attack_sound, 25, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(SPAN_DANGER("<B>[M]</B> [M.attacktext] [src]!"), 1)
-		last_damage_source = initial(M.name)
-		last_damage_mob = M
+		last_damage_data = create_cause_data(initial(M.name), M)
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -428,7 +427,7 @@ var/list/ai_verbs_default = list(
 			for(var/i in tempnetwork)
 				cameralist[i] = i
 	var/old_network = network
-	network = input(U, "Which network would you like to view?") as null|anything in cameralist
+	network = tgui_input_list(U, "Which network would you like to view?", "View network", cameralist)
 
 	if(!U.eyeobj)
 		U.view_core()
@@ -454,7 +453,7 @@ var/list/ai_verbs_default = list(
 		return
 
 	var/list/ai_emotions = list("Very Happy", "Happy", "Neutral", "Unsure", "Confused", "Surprised", "Sad", "Upset", "Angry", "Awesome", "BSOD", "Blank", "Problems?", "Facepalm", "Friend Computer")
-	var/emote = input("Please, select a status!", "AI Status", null, null) in ai_emotions
+	var/emote = tgui_input_list(usr, "Please, select a status!", "AI Status", ai_emotions)
 	for (var/obj/structure/machinery/M in machines) //change status
 		if(istype(M, /obj/structure/machinery/ai_status_display))
 			var/obj/structure/machinery/ai_status_display/AISD = M
@@ -487,7 +486,7 @@ var/list/ai_verbs_default = list(
 			personnel_list["[t.fields["name"]]: [t.fields["rank"]]"] = t.fields["image"]//Pull names, rank, and image.
 
 		if(personnel_list.len)
-			input = input("Select a crew member:") as null|anything in personnel_list
+			input = tgui_input_list(usr, "Select a crew member:", "Change hologram",  personnel_list)
 			var/icon/character_icon = personnel_list[input]
 			if(character_icon)
 				qdel(holo_icon)//Clear old icon so we're not storing it in memory.
@@ -501,7 +500,7 @@ var/list/ai_verbs_default = list(
 		"floating face",
 		"carp"
 		)
-		input = input("Please select a hologram:") as null|anything in icon_list
+		input = tgui_input_list(usr, "Please select a hologram:", "Select hologram", icon_list)
 		if(input)
 			QDEL_NULL(holo_icon)
 			switch(input)
@@ -569,7 +568,7 @@ var/list/ai_verbs_default = list(
 
 
 /mob/living/silicon/ai/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/wrench))
+	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		if(anchored)
 			user.visible_message(SPAN_NOTICE("\The [user] starts to unbolt \the [src] from the plating..."))
 			if(!do_after(user, 40, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))

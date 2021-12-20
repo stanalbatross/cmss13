@@ -28,7 +28,7 @@
 	var/list/mutators_for_purchase = available_mutators()
 	if(mutators_for_purchase.len == 0)
 		to_chat(usr, "You can't take another strain.")
-	var/pick = input("Which strain would you like to purchase?") as null|anything in mutators_for_purchase
+	var/pick = tgui_input_list(usr, "Which strain would you like to purchase?", "Purchase strain", mutators_for_purchase)
 	if(!pick)
 		return FALSE
 	if(alert(usr, "[GLOB.xeno_mutator_list[pick].description]\n\nConfirm mutation?", "Strain purchase", "Yes", "No") == "No")		return
@@ -200,7 +200,7 @@
 	var/datum/xeno_mutator/XM = GLOB.xeno_mutator_list[mutator_name]
 	if(XM.hive_only)
 		return FALSE //We can't buy Hive mutators on an individual level
-	if(XM.caste_whitelist && (XM.caste_whitelist.len > 0) && !(xeno.caste_name in XM.caste_whitelist))
+	if(XM.caste_whitelist && (XM.caste_whitelist.len > 0) && !(xeno.caste_type in XM.caste_whitelist))
 		return FALSE //We are not on the whitelist
 	return TRUE
 

@@ -45,6 +45,7 @@
 	var/creation_complexity = list(CHEM_CLASS_COMMON, CHEM_CLASS_UNCOMMON, CHEM_CLASS_RARE)
 	var/creation_name = ""
 	var/creation_cost = 0
+	var/min_creation_cost = 5
 	var/creation_od_level = 10 //a cache for new_od_level when switching between modes
 
 /obj/structure/machinery/chem_simulator/Initialize()
@@ -295,14 +296,21 @@
 		else
 			creation_name = newname
 	else if(href_list["set_level"] && target_property)
-		target_property.level = input("Set target level for [target_property.name]:","[src]") as anything in list(1,2,3,4,5,6,7,8,9,10)
+		var/level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4,5,6,7,8,9,10))
+		if(!level_to_set)
+			return
+
+		target_property.level = level_to_set
 		if(target_property.max_level && target_property.level > target_property.max_level)
 			target_property.level = target_property.max_level
 			to_chat(user, "Max level for [target_property.name] is [target_property.max_level].")
 		calculate_creation_cost()
 	else if(href_list["set_od"])
-		new_od_level = input("Set new OD:","[src]") as anything in list(5,10,15,20,25,30,35,40,45,50,55,60)
-		creation_od_level = new_od_level
+		var/od_to_set = tgui_input_list(usr, "Set new OD:", "[src]", list(5,10,15,20,25,30,35,40,45,50,55,60))
+		if(!od_to_set)
+			return
+		new_od_level = od_to_set
+		creation_od_level = od_to_set
 		calculate_creation_cost()
 	else if(href_list["set_filter"])
 		if(href_list["set_filter"] == "ALL")
@@ -317,7 +325,10 @@
 		complexity_editor = !complexity_editor
 	else if(href_list["set_complexity"])
 		var/slot = text2num(href_list["set_complexity"])
-		var/new_rarity = input("Set chemical rarity for complexity slot [slot]:","[src]") as anything in list("BASIC (+7)","COMMON (+4)","UNCOMMON (1)","RARE (-5)")
+		var/new_rarity = tgui_input_list(usr, "Set chemical rarity for complexity slot [slot]:","[src]", list("BASIC (+7)","COMMON (+4)","UNCOMMON (1)","RARE (-5)"))
+		if(!new_rarity)
+			return
+
 		switch(new_rarity)
 			if("BASIC (+7)")
 				creation_complexity[slot] = CHEM_CLASS_BASIC
@@ -385,7 +396,7 @@
 	var/only_positive = TRUE
 	if(mode == MODE_CREATE)
 		for(var/datum/chem_property/P in chemical_data.research_property_data)
-			property_costs[P.name] = P.value
+			property_costs[P.name] = max(abs(P.value), 1)
 	else if(target && target.data && target.completed)
 		for(var/datum/chem_property/P in target.data.properties)
 			if(!isPositiveProperty(P))
@@ -416,19 +427,15 @@
 //Here the cost for creating a chemical is calculated. If you're looking to rebalance create mode, this is where you do it
 /obj/structure/machinery/chem_simulator/proc/calculate_creation_cost()
 	creation_cost = 0
+	min_creation_cost = 5 //min cost of 5
 	var/slots_used = LAZYLEN(creation_template)
 	creation_cost += slots_used * 3 - 6 //3 cost for each slot after the 2nd
-	var/has_combustibles = FALSE
+	min_creation_cost += slots_used - 2
 	for(var/datum/chem_property/P in creation_template)
-		creation_cost += P.value * P.level
+		creation_cost += max(abs(P.value), 1) * P.level
 		if(P.level > 5) // a penalty is added at each level above 5 (+1 at 6, +2 at 7, +4 at 8, +5 at 9, +7 at 10)
 			creation_cost += P.level - 6 + n_ceil((P.level - 5) / 2)
-		if(P.category & PROPERTY_TYPE_COMBUSTIBLE)
-			has_combustibles = TRUE
-	if(has_combustibles) //negative values are not applied in templates that use combustibles unless those properties are also of the combustible category
-		for(var/datum/chem_property/P in creation_template)
-			if(P.value < 0 && !(P.category & PROPERTY_TYPE_COMBUSTIBLE))
-				creation_cost += P.value * P.level * -1 //revert
+			min_creation_cost += max(P.level - 6, 0) // Min creation cost scales linearly for each property at level 7+
 	creation_cost += ((new_od_level - 10) / 5) * 3 //3 cost for every 5 units above 10
 	for(var/rarity in creation_complexity)
 		switch(rarity)
@@ -440,22 +447,17 @@
 				creation_cost += 1
 			if(CHEM_CLASS_RARE)
 				creation_cost -= 5
-	creation_cost = max(creation_cost, 5) //min cost of 5
+	creation_cost = max(creation_cost, min_creation_cost) //checks against minimum cost
 
 /obj/structure/machinery/chem_simulator/proc/calculate_new_od_level()
 	if(mode == MODE_CREATE || !target || !target.data)
 		new_od_level = creation_od_level
 		return
 	new_od_level = max(target.data.overdose, 1)
-	if(isNeutralProperty(target_property)) //unchanged
-		return
-	if((mode == MODE_AMPLIFY && isPositiveProperty(target_property)) || (mode == MODE_SUPPRESS && isNegativeProperty(target_property)) || (mode == MODE_RELATE && isPositiveProperty(target_property)))
-		if(new_od_level <= 5)
-			new_od_level = max(new_od_level - 1, 1)
-		else
-			new_od_level = max(5, new_od_level - 5)
+	if(new_od_level <= 5)
+		new_od_level = max(new_od_level - 1, 1)
 	else
-		new_od_level += 5
+		new_od_level = max(new_od_level - 5, 5)
 
 /obj/structure/machinery/chem_simulator/proc/prepare_recipe_options()
 	var/datum/chemical_reaction/generated/O = chemical_reactions_list[target.data.id]
@@ -498,7 +500,7 @@
 		if(!target.data)
 			status_bar = "DATA CORRUPTION DETECTED, RESCAN CHEMICAL"
 			return FALSE
-		if(target.data.chemclass < CHEM_CLASS_COMMON)
+		if(target.data.chemclass < CHEM_CLASS_BASIC || !istype(target.data, /datum/reagent/generated)) //Requires a custom/generated chem as a base
 			status_bar = "TARGET CAN NOT BE ALTERED"
 			return FALSE
 		//Safety check in case of irregular papers
@@ -522,7 +524,7 @@
 				status_bar = "TARGET PROPERTY CAN NOT BE SIMULATED"
 				return FALSE
 	if(mode == MODE_RELATE)
-		if(target && target.data.properties.len < 2)
+		if(target && length(target.data.properties) < 2)
 			status_bar = "TARGET COMPLEXITY IMPROPER FOR RELATION"
 			return FALSE
 		if(reference && target)
