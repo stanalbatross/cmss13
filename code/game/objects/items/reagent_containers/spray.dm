@@ -27,7 +27,7 @@
 /obj/item/reagent_container/spray/afterattack(atom/A, mob/user, proximity)
 	//this is what you get for using afterattack() TODO: make is so this is only called if attackby() returns 0 or something
 	if(isstorage(A) || istype(A, /obj/structure/surface/table) || istype(A, /obj/structure/surface/rack) || istype(A, /obj/structure/closet) \
-	|| istype(A, /obj/item/reagent_container) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart || istype(A, /obj/structure/ladder)))
+	|| istype(A, /obj/item/reagent_container) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart) || istype(A, /obj/structure/ladder) || istype(A, /obj/screen))
 		return
 
 	if(istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
@@ -80,7 +80,13 @@
 
 /obj/item/reagent_container/spray/examine(mob/user)
 	..()
-	to_chat(user, "[round(reagents.total_volume)] units left.")
+	var/obj/item/reagent_container/spray/mister/MS
+	if(!istype(MS))
+		return
+	if((reagents.total_volume) == 0)
+		to_chat(user, "It's empty!")
+	else
+		to_chat(user, "[round(reagents.total_volume)] units left.")
 
 /obj/item/reagent_container/spray/verb/empty()
 
