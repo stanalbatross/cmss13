@@ -211,17 +211,19 @@
 	var/text = SPAN_HELPFUL("A.C.I.D. states: ")
 	switch(boot_status)
 		if(0)
-			text += SPAN_NOTICE("Core systems, initialized.")
+			text += SPAN_NOTICE("Welcome, to the Automated Chemical Integrated Delivery harness.")
 		if(1)
+			text += SPAN_NOTICE("Core systems, initialized.")
+		if(2)
 			text += SPAN_NOTICE("Communication interface, online.")
 			playsound_client(user.client, 'sound/handling/toggle_nv1.ogg', null, ITEM_EQUIP_VOLUME)
-		if(2)
+		if(3)
 			text += SPAN_NOTICE("Vital signs monitoring, activated.")
 			playsound_client(user.client, 'sound/items/detector_turn_on.ogg', null, ITEM_EQUIP_VOLUME)
-		if(3)
+		if(4)
 			text += SPAN_NOTICE("Automated medical systems, engaged.")
 			playsound_client(user.client, 'sound/items/healthanalyzer.ogg', null, ITEM_EQUIP_VOLUME)
-		if(4)
+		if(5)
 			text += SPAN_NOTICE("Bootup sequence finalized. Have a very healthy operation.")
 		else
 			return
@@ -268,7 +270,7 @@
 	if(!check_user())
 		boot_status = FALSE
 		return
-	if(boot_status < 5)
+	if(boot_status < 6)
 		addtimer(CALLBACK(src, .proc/boot_sequence, boot_status), 2 SECONDS)
 		return
 	scan()
