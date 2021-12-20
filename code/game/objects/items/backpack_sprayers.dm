@@ -269,7 +269,7 @@
 		if(R.total_volume < launcher_cost)
 			to_chat(user, SPAN_WARNING("You need at least 100 units of water to use the metal foam launcher!"))
 			return
-		R.remove_reagent("water", launcher_cost))
+		R.remove_reagent("water", launcher_cost)
 		var/obj/effect/resin_container/A = new (get_turf(src))
 		playsound(src,'sound/items/syringeproj.ogg',40,TRUE)
 		for(var/i in 1 to 5)
