@@ -30,6 +30,7 @@
 	var/iff_signal = FACTION_MARINE
 	actions_types = list(/datum/action/item_action)
 	var/scanning = FALSE // controls if MD is in process of scan
+	var/makes_noise = TRUE
 	var/datum/shape/rectangle/range_bounds
 
 /obj/item/device/motiondetector/examine()
@@ -192,7 +193,7 @@
 		if(human_user)
 			show_blip(human_user, Q, "error")
 
-	if(ping_count > 0)
+	if(ping_count > 0 && makes_noise == TRUE)
 		playsound(loc, pick('sound/items/detector_ping_1.ogg', 'sound/items/detector_ping_2.ogg', 'sound/items/detector_ping_3.ogg', 'sound/items/detector_ping_4.ogg'), 60, 0, 7, 2)
 	else
 		playsound(loc, 'sound/items/detector.ogg', 60, 0, 7, 2)
@@ -244,6 +245,17 @@
 	name = "hacked motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-UPP movement instead. Fight fire with fire!"
 	iff_signal = FACTION_UPP
+
+/obj/item/device/motiondetector/scout
+	name = "scout's internal motion detector"
+	desc = "You shouldn't be able to see this description"
+	makes_noise = FALSE
+	detector_range = 10
+
+/obj/item/device/motiondetector/scout/get_user()
+	var/atom/A = loc
+	if(ishuman(A.loc))
+		return A.loc
 
 #undef MOTION_DETECTOR_RANGE_LONG
 #undef MOTION_DETECTOR_RANGE_SHORT
