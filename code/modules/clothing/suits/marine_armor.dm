@@ -634,6 +634,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	unacidable = TRUE
 	specialty = "M3-S light"
 	flags_item = MOB_LOCK_ON_EQUIP|NO_CRYO_STORE
+	var/obj/item/device/motiondetector/scout/MD
 
 #define FIRE_SHIELD_CD 150
 
