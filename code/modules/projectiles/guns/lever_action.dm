@@ -58,12 +58,14 @@ their unique feature is that a direct hit will buff your damage and firerate
 	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 19,"rail_x" = 11, "rail_y" = 21, "under_x" = 15, "under_y" = 12, "stock_x" = 15, "stock_y" = 11)
 
 /obj/item/weapon/gun/lever_action/wield(var/mob/M)
-	..()
-	RegisterSignal(M, COMSIG_DIRECT_BULLET_HIT, .proc/direct_hit_buff)
+	. = ..()
+	if(.)
+		RegisterSignal(M, COMSIG_DIRECT_BULLET_HIT, .proc/direct_hit_buff)
 
 /obj/item/weapon/gun/lever_action/unwield(var/mob/M)
-	..()
-	UnregisterSignal(M, COMSIG_DIRECT_BULLET_HIT)
+	. = ..()
+	if(.)
+		UnregisterSignal(M, COMSIG_DIRECT_BULLET_HIT)
 
 /obj/item/weapon/gun/lever_action/proc/direct_hit_buff(mob/user, mob/target, var/one_hand_lever = FALSE)
 	SIGNAL_HANDLER
@@ -78,7 +80,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 				O = human_user.get_limb(user.hand ? "l_arm" : "r_arm")
 				human_user.drop_held_item()
 			O.fracture()
-			O &= ~LIMB_SPLINTED
+			O.status &= ~LIMB_SPLINTED
 			human_user.pain.recalculate_pain()
 			return
 

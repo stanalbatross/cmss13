@@ -66,6 +66,17 @@
 	containername = "MOU-53 Breack Action Shotgun Crate"
 	group = "Weapons"
 
+/datum/supply_packs/r4t
+	name = "R4T Lever Action Rifle Crate (x2)"
+	contains = list(
+		/obj/item/storage/box/guncase/r4t_scout,
+		/obj/item/storage/box/guncase/r4t_scout
+	)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/weapon
+	containername = "R4T Lever Action Rifle Crate"
+	group = "Weapons"
+
 /datum/supply_packs/smartpistol
 	name = "SU-6 Smart Pistol Crate (x2)"
 	contains = list(

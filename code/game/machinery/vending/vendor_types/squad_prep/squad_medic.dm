@@ -60,6 +60,7 @@ GLOBAL_LIST_INIT(cm_vending_gear_medic, list(
 		list("VP78 Pistol", 8, /obj/item/storage/box/guncase/vp78, null, VENDOR_ITEM_REGULAR),
 		list("SU-6 Smart Pistol", 12, /obj/item/storage/box/guncase/smartpistol, null, VENDOR_ITEM_REGULAR),
 		list("MOU-53 Shotgun", 12, /obj/item/storage/box/guncase/mou53, null, VENDOR_ITEM_REGULAR),
+		list("R4T Lever Action Rifle", 12, /obj/item/storage/box/guncase/r4t_scout, null, VENDOR_ITEM_REGULAR),
 		list("M41AE2 Heavy Pulse Rifle", 18, /obj/item/storage/box/guncase/lmg, null, VENDOR_ITEM_REGULAR),
 
 		list("UTILITIES", 0, null, null, null),

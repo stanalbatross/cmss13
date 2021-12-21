@@ -664,11 +664,11 @@ Defined in conflicts.dm of the #defines folder.
 
 /obj/item/attachable/r4t_sling/Attach(var/obj/item/weapon/gun/G)
 	. = ..()
-	G.AddElement(/datum/element/drop_retrieval) //TO BE CHANGED LATER - STAN_ALBATROSS r4t-to-fix
+	G.AddElement(/datum/element/drop_retrieval)
 
 /obj/item/attachable/r4t_sling/Detach(var/obj/item/weapon/gun/G)
 	. = ..()
-	G.RemoveElement(/datum/element/drop_retrieval) //TO BE CHANGED LATER - STAN_ALBATROSS r4t-to-fix
+	G.RemoveElement(/datum/element/drop_retrieval)
 
 /obj/item/attachable/scope
 	name = "S8 4x telescopic scope"

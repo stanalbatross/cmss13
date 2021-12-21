@@ -92,6 +92,11 @@
 	group = "Munition"
 	cost = ASRS_VERY_LOW_WEIGHT
 
+/datum/supply_packs/ammo_4570_rounds_box/asrs
+	buyable = 0
+	group = "Munition"
+	cost = ASRS_VERY_LOW_WEIGHT
+
 /datum/supply_packs/ammo_smartgun/asrs
 	buyable = 0
 	group = "Munition"

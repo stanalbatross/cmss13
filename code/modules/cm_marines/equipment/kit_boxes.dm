@@ -264,7 +264,7 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 
 /obj/item/storage/box/kit/r4t_scout/New()
 	..()
-	overlays += image('icons/obj/items/pro_case.dmi', "+r4t") //TO BE CHANGED LATER - STAN_ALBATROSS r4t-to-fix
+	pro_case_overlay = "r4t" //TO BE CHANGED LATER - STAN_ALBATROSS r4t-to-fix
 
 /obj/item/storage/box/kit/r4t_scout/fill_preset_inventory()
 	new /obj/item/weapon/gun/lever_action/r4t(src)
@@ -272,9 +272,9 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 	new /obj/item/attachable/r4t_sling(src)
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/ammo_magazine/lever_action(src)
-	new /obj/item/storage/belt/lever_action(src)
+	new /obj/item/storage/belt/shotgun/lever_action(src)
 	new /obj/item/storage/belt/gun/m44/lever_action/attach_holster(src)
-	new /obj/item/device/motiondetector/m717(src)
+//	new /obj/item/device/motiondetector/m717(src) //not right now.
 	new /obj/item/ammo_magazine/lever_action/training(src)
 
 /obj/item/storage/box/kit/machinegunner

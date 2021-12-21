@@ -70,6 +70,7 @@
 #define ATTACH_MELEE        32 //This attachment should activate if you attack() with it attached.
 
 //Ammo magazine defines, for flags_magazine
+
 #define AMMUNITION_REFILLABLE   (1<<0)
 #define AMMUNITION_HANDFUL      (1<<1)
 #define AMMUNITION_HANDFUL_BOX  (1<<2) //for dump_ammo_to(), boxes of handfuls like shotgun shell boxes

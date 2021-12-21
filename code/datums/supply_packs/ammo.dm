@@ -238,6 +238,46 @@
 	containername = "\improper shotgun flechette crate"
 	group = "Ammo"
 
+/datum/supply_packs/ammo_4570_rounds_box
+	name = "45-70 bullets box (300x bullets)"
+	contains = list(
+					/obj/item/ammo_box/magazine/lever_action
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "\improper 45-70 bullets crate"
+	group = "Ammo"
+
+/datum/supply_packs/ammo_4570_rounds_box_training
+	name = "45-70 blanks box (300x blanks)"
+	contains = list(
+					/obj/item/ammo_box/magazine/lever_action/training
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "\improper 45-70 blanks crate"
+	group = "Ammo"
+
+/datum/supply_packs/ammo_4570_rounds_box_tracker //unobtainable... for now
+	name = "45-70 tracker bullets box (300x tracker bullets)"
+	contains = list(
+					/obj/item/ammo_box/magazine/lever_action/tracker
+					)
+	buyable = 0 //if these are made buyable they should be more expensive than the regular rounds
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "\improper 45-70 tracker bullets crate"
+	group = "Ammo"
+
+/datum/supply_packs/ammo_4570_rounds_box_marksman //unobtainable... for now
+	name = "45-70 marksman bullets box (300x bullets)"
+	contains = list(
+					/obj/item/ammo_box/magazine/lever_action/marksman
+					)
+	buyable = 0 //if these are made buyable they should be more expensive than the regular rounds
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "\improper 45-70 marksman bullets crate"
+	group = "Ammo"
+
 //------------------------Misc ammo crates----------------
 
 /datum/supply_packs/ammo_hpr

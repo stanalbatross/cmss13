@@ -131,7 +131,7 @@
 		/obj/item/device/defibrillator,
 		/obj/item/tool/surgery/surgical_line,
 		/obj/item/device/reagent_scanner,
-		/obj/item/device/analyzer/plant_analyzer, 
+		/obj/item/device/analyzer/plant_analyzer,
 		/obj/item/roller
 	)
 
@@ -520,7 +520,7 @@
 	for(var/i in 1 to max_storage_space * 0.5)
 		new /obj/item/ammo_magazine/handful/shotgun/twobore(src)
 
-/obj/item/storage/belt/lever_action
+/obj/item/storage/belt/shotgun/lever_action
 	name = "\improper M276 pattern 45-70 loading rig"
 	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle."
 	icon_state = "r4t-ammobelt"
@@ -531,11 +531,11 @@
 	max_storage_space = 28
 	can_hold = list(/obj/item/ammo_magazine/handful)
 
-/obj/item/storage/belt/lever_action/Initialize()
+/obj/item/storage/belt/shotgun/lever_action/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
 
-/obj/item/storage/belt/lever_action/attackby(obj/item/W, mob/user)
+/obj/item/storage/belt/shotgun/lever_action/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/lever_action))
 		var/obj/item/ammo_magazine/lever_action/M = W
 		dump_ammo_to(M, user, M.transfer_handful_amount)
@@ -734,7 +734,7 @@
 /obj/item/storage/belt/gun/update_icon()
 	overlays.Cut()
 
-	if(content_watchers)
+	if(content_watchers && flap)
 		return
 	var/magazines = current_gun ? length(contents) - 1 : length(contents)
 	if(!magazines)
@@ -945,12 +945,13 @@
 	w_class = SIZE_LARGE
 	storage_slots = 18
 	max_storage_space = 28
-	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
+//	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	can_hold = list(
 		/obj/item/ammo_magazine/handful,
 		/obj/item/weapon/gun/revolver,
 		/obj/item/ammo_magazine/revolver
 		)
+	flap = FALSE
 	icon_x = 10
 	icon_y = 3
 	//needs belt MR merged. WIP
@@ -962,7 +963,7 @@
 /obj/item/storage/belt/gun/m44/lever_action/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/lever_action))
 		var/obj/item/ammo_magazine/lever_action/M = W
-		dump_ammo_to(M,user, M.transfer_handful_amount)
+		dump_ammo_to(M,user, M.transfer_handful_amount) //r4t-to-fix - current issue, you can fill it up all the way PLUS the slot meant to be for the revolver.
 	else
 		return ..()
 

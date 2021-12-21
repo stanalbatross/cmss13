@@ -671,6 +671,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	handfuls = TRUE
 	handful = "rounds"
 
+/obj/item/ammo_box/magazine/lever_action/empty
+	empty = TRUE
+
 /obj/item/ammo_box/magazine/lever_action/training
 	name = "45-70 blank box (45-70 x 300)"
 	icon_state = "base_4570"
@@ -685,6 +688,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 		overlays += image(icon, icon_state = "base_type[overlay_ammo_type]")	//adding base color stripes
 		overlays += image(icon, icon_state = "lid_type[overlay_ammo_type]")	adding base color stripes*/
 
+/obj/item/ammo_box/magazine/lever_action/training/empty
+	empty = TRUE
+
 //unused
 /obj/item/ammo_box/magazine/lever_action/tracker
 	name = "45-70 tracker bullets box (45-70 x 300)"
@@ -694,6 +700,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	overlay_content = "_tracker"
 	magazine_type = /obj/item/ammo_magazine/handful/lever_action/tracker
 
+/obj/item/ammo_box/magazine/lever_action/tracker/empty
+	empty = TRUE
+
 //unused
 /obj/item/ammo_box/magazine/lever_action/marksman
 	name = "45-70 marksman bullets box (45-70 x 300)"
@@ -702,6 +711,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	overlay_gun_type = "_4570"
 	overlay_content = "_marksman"
 	magazine_type = /obj/item/ammo_magazine/handful/lever_action/marksman
+
+/obj/item/ammo_box/magazine/lever_action/marksman/empty
+	empty = TRUE
 
 //-----------------------M4A3 Pistol Mag Box-----------------------
 
