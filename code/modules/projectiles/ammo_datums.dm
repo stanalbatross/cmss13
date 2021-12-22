@@ -1418,7 +1418,7 @@
 /datum/ammo/bullet/lever_action
 	name = "lever-action bullet"
 
-	damage = 85
+	damage = 80
 	penetration = ARMOR_PENETRATION_TIER_1
 	accuracy = HIT_ACCURACY_TIER_1
 	shell_speed = AMMO_SPEED_TIER_6
@@ -1457,8 +1457,8 @@
 	shrapnel_chance = 0
 	damage_falloff = 0
 	accurate_range = 12
-	damage = 85
-	penetration = ARMOR_PENETRATION_TIER_8
+	damage = 70
+	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_6
 	handful_state = "marksman_lever_action_bullet"
 
