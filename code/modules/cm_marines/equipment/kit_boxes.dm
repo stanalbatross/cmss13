@@ -264,12 +264,12 @@ var/list/kits = list("Pyro" = 2, "Grenadier" = 2, "Sniper" = 2, "Scout" = 2, "De
 
 /obj/item/storage/box/kit/r4t_scout/New()
 	..()
-	pro_case_overlay = "r4t" //TO BE CHANGED LATER - STAN_ALBATROSS r4t-to-fix
+	pro_case_overlay = "r4t"
 
 /obj/item/storage/box/kit/r4t_scout/fill_preset_inventory()
 	new /obj/item/weapon/gun/lever_action/r4t(src)
 	new /obj/item/attachable/stock/r4t(src)
-	new /obj/item/attachable/r4t_sling(src)
+	new /obj/item/attachable/magnetic_harness/lever_sling(src)
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/ammo_magazine/lever_action(src)
 	new /obj/item/storage/belt/shotgun/lever_action(src)

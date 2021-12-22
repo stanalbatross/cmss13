@@ -55,7 +55,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 	recoil_unwielded = RECOIL_AMOUNT_TIER_1
 
 /obj/item/weapon/gun/lever_action/set_gun_attachment_offsets()
-	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 19,"rail_x" = 11, "rail_y" = 21, "under_x" = 15, "under_y" = 12, "stock_x" = 15, "stock_y" = 11)
+	attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 19,"rail_x" = 11, "rail_y" = 21, "under_x" = 24, "under_y" = 16, "stock_x" = 15, "stock_y" = 11) //r4t-to-fix
 
 /obj/item/weapon/gun/lever_action/wield(var/mob/M)
 	. = ..()
@@ -139,12 +139,11 @@ their unique feature is that a direct hit will buff your damage and firerate
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/magnetic_harness,
 						//Under
-						/obj/item/attachable/flashlight/grip,
 						/obj/item/attachable/verticalgrip,
 						/obj/item/attachable/angledgrip,
 						/obj/item/attachable/gyro,
 						/obj/item/attachable/lasersight,
-						/obj/item/attachable/r4t_sling,
+						/obj/item/attachable/magnetic_harness/lever_sling,
 						//Stock
 						/obj/item/attachable/stock/r4t
 						)

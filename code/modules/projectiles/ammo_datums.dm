@@ -1417,21 +1417,20 @@
 
 /datum/ammo/bullet/lever_action
 	name = "lever-action bullet"
-	debilitate = list(1,0,0,0,0,0,0,0)
 
-	damage = 90
-	penetration = ARMOR_PENETRATION_TIER_3
+	damage = 85
+	penetration = ARMOR_PENETRATION_TIER_1
 	accuracy = HIT_ACCURACY_TIER_1
 	shell_speed = AMMO_SPEED_TIER_6
 	handful_state = "lever_action_bullet"
 
-//unused and not working. need to refactor MD code
+//unused and not working. need to refactor MD code. Unobtainable.
 //intended mechanic is to have xenos hit with it show up very frequently on any MDs around
 /datum/ammo/bullet/lever_action/tracker
 	name = "tracking lever-action bullet"
 	icon_state = "redbullet"
 
-	damage = 75
+	damage = 70
 	penetration = ARMOR_PENETRATION_TIER_3
 	accuracy = HIT_ACCURACY_TIER_1
 	handful_state = "tracking_lever_action_bullet"
@@ -1444,21 +1443,21 @@
 	name = "lever-action blank"
 	icon_state = "blank"
 
-	damage = 75  //blanks CAN hurt you if shot very close
+	damage = 70  //blanks CAN hurt you if shot very close
 	penetration = 0
 	accuracy = HIT_ACCURACY_TIER_1
 	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
 	shell_speed = AMMO_SPEED_TIER_5
 	handful_state = "training_lever_action_bullet"
 
-//unused
+//unused, and unobtainable... for now
 /datum/ammo/bullet/lever_action/marksman
 	name = "marksman lever-action bullet"
 
 	shrapnel_chance = 0
 	damage_falloff = 0
 	accurate_range = 12
-	damage = 90
+	damage = 85
 	penetration = ARMOR_PENETRATION_TIER_8
 	shell_speed = AMMO_SPEED_TIER_6
 	handful_state = "marksman_lever_action_bullet"

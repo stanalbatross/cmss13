@@ -144,10 +144,6 @@
 
 GLOBAL_VAR_INIT(spawn_ob, TRUE)
 
-GLOBAL_VAR_INIT(spawn_ob, TRUE)
-
-GLOBAL_VAR_INIT(spawn_ob, TRUE)
-
 /obj/effect/spawner/random/warhead
 	name = "random orbital warhead"
 	desc = "This is a random orbital warhead."

@@ -526,7 +526,7 @@
 	icon_state = "r4t-ammobelt"
 	item_state = "marinebelt"
 	w_class = SIZE_LARGE
-	storage_slots = 21
+	storage_slots = 14
 	max_w_class = SIZE_SMALL
 	max_storage_space = 28
 	can_hold = list(/obj/item/ammo_magazine/handful)
@@ -941,9 +941,9 @@
 	name = "\improper M276 pattern 45-70 revolver rig"
 	desc = "An ammunition belt designed to hold the large 45-70 Govt. caliber bullets for the R4T lever-action rifle. This version has reduced capacity in exchange for a whole revolver holster."
 	icon_state = "r4t-cowboybelt"
-	item_state = "marinebelt"
+	item_state = "r4t-cowboybelt"
 	w_class = SIZE_LARGE
-	storage_slots = 18
+	storage_slots = 11
 	max_storage_space = 28
 //	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
 	can_hold = list(
@@ -954,7 +954,7 @@
 	flap = FALSE
 	icon_x = 10
 	icon_y = 3
-	//needs belt MR merged. WIP
+	//needs belt MR merged. WIP //I'm pretty sure this is fully functional now - stan_albatross, December 2021
 
 /obj/item/storage/belt/gun/m44/lever_action/Initialize()
 	. = ..()
@@ -963,9 +963,28 @@
 /obj/item/storage/belt/gun/m44/lever_action/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_magazine/lever_action))
 		var/obj/item/ammo_magazine/lever_action/M = W
-		dump_ammo_to(M,user, M.transfer_handful_amount) //r4t-to-fix - current issue, you can fill it up all the way PLUS the slot meant to be for the revolver.
+		dump_ammo_to(M,user, M.transfer_handful_amount)
 	else
 		return ..()
+
+
+obj/item/storage/belt/gun/m44/lever_action/verb/detach_holster()
+	set category = "Object"
+	set name = "Detach Revolver Holster"
+	set src in usr
+	if(ishuman(usr))
+		if(contents.len)
+			to_chat(usr, SPAN_WARNING("The belt needs to be fully empty to remove the holster!"))
+			return
+		to_chat(usr, SPAN_NOTICE("You detach the holster from the belt."))
+		var/obj/item/storage/belt/shotgun/lever_action/new_belt = new /obj/item/storage/belt/shotgun/lever_action
+		var/obj/item/storage/belt/gun/m44/lever_action/attach_holster/new_holster = new /obj/item/storage/belt/gun/m44/lever_action/attach_holster
+		qdel(src)
+		usr.put_in_hands(new_belt)
+		usr.put_in_hands(new_holster)
+		update_icon(usr)
+	else
+		return
 
 /obj/item/storage/belt/gun/m44/lever_action/attach_holster
 	name = "\improper M276 revolver holster attachment"

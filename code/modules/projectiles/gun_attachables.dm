@@ -642,7 +642,7 @@ Defined in conflicts.dm of the #defines folder.
 	G.RemoveElement(/datum/element/drop_retrieval/gun, retrieval_slot)
 
 /obj/item/attachable/magnetic_harness/lever_sling
-	name = "R4T magnetic sling"
+	name = "R4T magnetic sling" //please don't make this attachable to any other guns...
 	desc = "A custom sling designed for comfortable holstering of a 19th century lever action rifle, for some reason. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
 	icon_state = "r4t-sling"
 	attach_icon = "r4t-sling_a"
@@ -650,25 +650,20 @@ Defined in conflicts.dm of the #defines folder.
 	wield_delay_mod = WIELD_DELAY_VERY_FAST
 	retrieval_slot = WEAR_BACK
 
-/obj/item/attachable/r4t_sling
-	name = "R4T magnetic sling"
-	desc = "A custom sling designed for comfortable holstering of the R4T lever-action rifle on your back. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
-	icon_state = "r4t-sling"
-	attach_icon = "r4t-sling_a"
-	slot = "under"
-
-/obj/item/attachable/r4t_sling/New()
+/obj/item/attachable/magnetic_harness/lever_sling/New()
 	..()
-	wield_delay_mod = WIELD_DELAY_VERY_FAST
 	select_gamemode_skin(type)
 
-/obj/item/attachable/r4t_sling/Attach(var/obj/item/weapon/gun/G)
+/obj/item/attachable/magnetic_harness/lever_sling/Attach(var/obj/item/weapon/gun/G) //this is so the sling lines up correctly
 	. = ..()
-	G.AddElement(/datum/element/drop_retrieval)
+	G.attachable_offset["under_x"] = 15
+	G.attachable_offset["under_y"] = 12
 
-/obj/item/attachable/r4t_sling/Detach(var/obj/item/weapon/gun/G)
+
+/obj/item/attachable/magnetic_harness/lever_sling/Detach(var/obj/item/weapon/gun/G)
 	. = ..()
-	G.RemoveElement(/datum/element/drop_retrieval)
+	G.attachable_offset["under_x"] = 24
+	G.attachable_offset["under_y"] = 16
 
 /obj/item/attachable/scope
 	name = "S8 4x telescopic scope"

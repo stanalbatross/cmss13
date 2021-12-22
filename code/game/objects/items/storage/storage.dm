@@ -601,26 +601,45 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	if(ammo_dumping.flags_magazine & AMMUNITION_HANDFUL_BOX)
 		var/handfuls = round(ammo_dumping.current_rounds / amount_to_dump, 1) //The number of handfuls, we round up because we still want the last one that isn't full
 		if(ammo_dumping.current_rounds != 0)
-			if(contents.len < storage_slots)
-				to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
-				if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
-				for(var/i = 1 to handfuls)
-					if(contents.len < storage_slots)
-						//Hijacked from /obj/item/ammo_magazine/proc/create_handful because it had to be handled differently
-						//All this because shell types are instances and not their own objects :)
-						
-						var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
-						var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
-						new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
-						ammo_dumping.current_rounds -= transferred_handfuls
-						handle_item_insertion(new_handful, TRUE,user)
-						update_icon(-transferred_handfuls)
-					else
-						break
-				playsound(user.loc, "rustle", 15, TRUE, 6)
-				ammo_dumping.update_icon()
+			if(!(istype(src ,/obj/item/storage/belt/gun)))
+				if(contents.len < storage_slots)
+					to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
+					if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
+					for(var/i = 1 to handfuls)
+						if(contents.len < storage_slots)
+							//Hijacked from /obj/item/ammo_magazine/proc/create_handful because it had to be handled differently
+							//All this because shell types are instances and not their own objects :)
+
+							var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
+							var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
+							new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
+							ammo_dumping.current_rounds -= transferred_handfuls
+							handle_item_insertion(new_handful, TRUE,user)
+							update_icon(-transferred_handfuls)
+						else
+							break
+					playsound(user.loc, "rustle", 15, TRUE, 6)
+					ammo_dumping.update_icon()
+				else
+					to_chat(user, SPAN_WARNING("[src] is full."))
 			else
-				to_chat(user, SPAN_WARNING("[src] is full."))
+				if(contents.len < storage_slots - 1) //this is because it's a gunbelt and the final slot is reserved for the gun
+					to_chat(user, SPAN_NOTICE("You start refilling [src] with [ammo_dumping]."))
+					if(!do_after(user, 1.5 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC)) return
+					for(var/i = 1 to handfuls)
+						if(contents.len < storage_slots - 1)
+							var/obj/item/ammo_magazine/handful/new_handful = new /obj/item/ammo_magazine/handful
+							var/transferred_handfuls = min(ammo_dumping.current_rounds, amount_to_dump)
+							new_handful.generate_handful(ammo_dumping.default_ammo, ammo_dumping.caliber, amount_to_dump, transferred_handfuls, ammo_dumping.gun_type)
+							ammo_dumping.current_rounds -= transferred_handfuls
+							handle_item_insertion(new_handful, TRUE,user)
+							update_icon(-transferred_handfuls)
+						else
+							break
+					playsound(user.loc, "rustle", 15, TRUE, 6)
+					ammo_dumping.update_icon()
+				else
+					to_chat(user, SPAN_WARNING("[src] is full."))
 		else
 			to_chat(user, SPAN_WARNING("[ammo_dumping] is empty."))
 	return TRUE
