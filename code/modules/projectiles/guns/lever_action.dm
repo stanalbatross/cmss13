@@ -139,8 +139,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/magnetic_harness,
 						//Under
-						/obj/item/attachable/verticalgrip,
-						/obj/item/attachable/angledgrip,
 						/obj/item/attachable/gyro,
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/magnetic_harness/lever_sling,
