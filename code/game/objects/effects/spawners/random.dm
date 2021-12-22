@@ -139,7 +139,8 @@
 					prob(3);/obj/item/storage/box/kit/mini_intel,\
 					prob(3);/obj/item/storage/box/kit/mini_jtac,\
 					prob(2);/obj/item/storage/box/kit/mou53_sapper,\
-					prob(1);/obj/item/storage/box/kit/heavy_support)
+					prob(1);/obj/item/storage/box/kit/heavy_support,\
+					prob(1);/obj/item/storage/box/kit/r4t_scout)
 
 GLOBAL_VAR_INIT(spawn_ob, TRUE)
 

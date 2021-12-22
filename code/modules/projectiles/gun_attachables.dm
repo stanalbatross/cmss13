@@ -642,13 +642,28 @@ Defined in conflicts.dm of the #defines folder.
 	G.RemoveElement(/datum/element/drop_retrieval/gun, retrieval_slot)
 
 /obj/item/attachable/magnetic_harness/lever_sling
-	name = "R4T magnetic sling"
+	name = "R4T magnetic sling" //please don't make this attachable to any other guns...
 	desc = "A custom sling designed for comfortable holstering of a 19th century lever action rifle, for some reason. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
 	icon_state = "r4t-sling"
 	attach_icon = "r4t-sling_a"
 	slot = "under"
 	wield_delay_mod = WIELD_DELAY_VERY_FAST
 	retrieval_slot = WEAR_BACK
+
+/obj/item/attachable/magnetic_harness/lever_sling/New()
+	..()
+	select_gamemode_skin(type)
+
+/obj/item/attachable/magnetic_harness/lever_sling/Attach(var/obj/item/weapon/gun/G) //this is so the sling lines up correctly
+	. = ..()
+	G.attachable_offset["under_x"] = 15
+	G.attachable_offset["under_y"] = 12
+
+
+/obj/item/attachable/magnetic_harness/lever_sling/Detach(var/obj/item/weapon/gun/G)
+	. = ..()
+	G.attachable_offset["under_x"] = 24
+	G.attachable_offset["under_y"] = 16
 
 /obj/item/attachable/scope
 	name = "S8 4x telescopic scope"
@@ -857,7 +872,6 @@ Defined in conflicts.dm of the #defines folder.
 	//but at the same time you are slow when 2 handed
 	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
-
 	matter = list("wood" = 2000)
 
 	select_gamemode_skin(type)
@@ -876,6 +890,21 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_unwielded_mod = HIT_ACCURACY_MULT_TIER_1
 	recoil_unwielded_mod = -RECOIL_AMOUNT_TIER_5
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
+
+/obj/item/attachable/stock/r4t
+	name = "\improper R4T scouting stock"
+	desc = "A wooden stock designed for the R4T lever-action rifle, designed to withstand harsh environments. It increases weapon stability but really gets in the way."
+	icon_state = "r4t-stock"
+	attach_icon = "r4t-stock"
+	wield_delay_mod = WIELD_DELAY_SLOW
+
+/obj/item/attachable/stock/r4t/New()
+	..()
+	select_gamemode_skin(type)
+	recoil_mod = -RECOIL_AMOUNT_TIER_5
+	scatter_mod = -SCATTER_AMOUNT_TIER_8
+	recoil_unwielded_mod = RECOIL_AMOUNT_TIER_5
+	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_4
 
 /obj/item/attachable/stock/tactical
 	name = "\improper MK221 tactical stock"

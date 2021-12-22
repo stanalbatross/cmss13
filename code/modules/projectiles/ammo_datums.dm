@@ -76,7 +76,7 @@
 /datum/ammo/proc/on_hit_turf(turf/T, obj/item/projectile/P) //Special effects when hitting dense turfs.
 	return
 
-/datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P) //Special effects when hitting mobs.
+/datum/ammo/proc/on_hit_mob(mob/M, obj/item/projectile/P, mob/user) //Special effects when hitting mobs.
 	return
 
 ///Special effects when pointblanking mobs. Ultimately called from /living/attackby(). Return TRUE to end the PB attempt.
@@ -1113,6 +1113,7 @@
 	damage = 70
 	penetration = ARMOR_PENETRATION_TIER_4
 	damage_armor_punch = 2
+	handful_state = "slug_shell"
 
 /datum/ammo/bullet/shotgun/slug/on_hit_mob(mob/M,obj/item/projectile/P)
 	heavy_knockback(M, P, 6)
@@ -1131,6 +1132,7 @@
 	stamina_damage = 45
 	accuracy = HIT_ACCURACY_TIER_3
 	shell_speed = AMMO_SPEED_TIER_3
+	handful_state = "beanbag_slug"
 
 /datum/ammo/bullet/shotgun/beanbag/on_hit_mob(mob/M, obj/item/projectile/P)
 	if(!M || M == P.firer) return
@@ -1149,6 +1151,7 @@
 	max_range = 12
 	damage = 55
 	penetration= ARMOR_PENETRATION_TIER_1
+	handful_state = "incendiary_slug"
 
 /datum/ammo/bullet/shotgun/incendiary/set_bullet_traits()
 	. = ..()
@@ -1181,6 +1184,7 @@
 	damage_var_high = PROJECTILE_VARIANCE_TIER_8
 	penetration	= ARMOR_PENETRATION_TIER_7
 	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_3
+	handful_state = "flechette_shell"
 	multiple_handful_name = TRUE
 
 /datum/ammo/bullet/shotgun/flechette_spread
@@ -1215,6 +1219,8 @@
 	shell_speed = AMMO_SPEED_TIER_2
 	damage_armor_punch = 0
 	pen_armor_punch = 0
+	handful_state = "buckshot_shell"
+	multiple_handful_name = TRUE
 
 /datum/ammo/bullet/shotgun/buckshot/incendiary
 	name = "incendiary buckshot shell"
@@ -1408,6 +1414,53 @@
 		to_chat(M, SPAN_HIGHDANGER("The impact knocks you off your feet!"))
 
 	step(M, get_dir(P.firer, M))
+
+/datum/ammo/bullet/lever_action
+	name = "lever-action bullet"
+
+	damage = 80
+	penetration = ARMOR_PENETRATION_TIER_1
+	accuracy = HIT_ACCURACY_TIER_1
+	shell_speed = AMMO_SPEED_TIER_6
+	handful_state = "lever_action_bullet"
+
+//unused and not working. need to refactor MD code. Unobtainable.
+//intended mechanic is to have xenos hit with it show up very frequently on any MDs around
+/datum/ammo/bullet/lever_action/tracker
+	name = "tracking lever-action bullet"
+	icon_state = "redbullet"
+
+	damage = 70
+	penetration = ARMOR_PENETRATION_TIER_3
+	accuracy = HIT_ACCURACY_TIER_1
+	handful_state = "tracking_lever_action_bullet"
+
+/datum/ammo/bullet/lever_action/tracker/on_hit_mob(mob/M, obj/item/projectile/P, mob/user)
+	//SEND_SIGNAL(user, COMSIG_BULLET_TRACKING, user, M)
+	M.visible_message(SPAN_DANGER("You hear a faint beep under [M]'s [M.mob_size > MOB_SIZE_HUMAN ? "chitin" : "skin"]."))
+
+/datum/ammo/bullet/lever_action/training
+	name = "lever-action blank"
+	icon_state = "blank"
+
+	damage = 70  //blanks CAN hurt you if shot very close
+	penetration = 0
+	accuracy = HIT_ACCURACY_TIER_1
+	damage_falloff = DAMAGE_FALLOFF_BLANK //not much, though (comparatively)
+	shell_speed = AMMO_SPEED_TIER_5
+	handful_state = "training_lever_action_bullet"
+
+//unused, and unobtainable... for now
+/datum/ammo/bullet/lever_action/marksman
+	name = "marksman lever-action bullet"
+
+	shrapnel_chance = 0
+	damage_falloff = 0
+	accurate_range = 12
+	damage = 70
+	penetration = ARMOR_PENETRATION_TIER_6
+	shell_speed = AMMO_SPEED_TIER_6
+	handful_state = "marksman_lever_action_bullet"
 
 /*
 //======
