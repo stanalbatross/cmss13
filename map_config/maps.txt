@@ -50,7 +50,7 @@ map sorokyne_strata
 	minplayers 130
 endmap
 
-map water_world
+map new_varadero
 endmap
 
 map whiskey_outpost_v2
