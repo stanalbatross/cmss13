@@ -51,6 +51,10 @@
 ///from /datum/controller/subsystem/radio/get_available_tcomm_zs(): (list/tcomms)
 #define COMSIG_SSRADIO_GET_AVAILABLE_TCOMMS_ZS "ssradio_get_available_tcomms_zs"
 
+/// sent right before a radio sends its message, allowing it to be blocked
+#define COMSIG_GLOB_SAY_RADIO "!radio_say"
+	#define COMSIG_GLOB_SAY_RADIO_BLOCK (1<<0)
+
 ///from /mob/do_click(): (atom/A, list/mods)
 #define COMSIG_CLIENT_PRE_CLICK "client_pre_click"
 

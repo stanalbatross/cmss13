@@ -19,6 +19,8 @@
 			message = "<B>[XENO_STRUCTURE_RECOVERY]</B> - Hastily recovers the strength of sisters resting around it."
 		if(XENO_STRUCTURE_NEST)
 			message = "<B>[XENO_STRUCTURE_NEST]</B> - Strong enough to secure a headhunter for indeterminate durations."
+		if(XENO_STRUCTURE_JAMMER)
+			message = "<B>[XENO_STRUCTURE_JAMMER]</B> - By using stored plasma, will jam radio messages."
 	return message
 
 /obj/effect/alien/resin/special

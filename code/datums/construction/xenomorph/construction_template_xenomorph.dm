@@ -60,6 +60,12 @@
 	build_icon_state = "evopod"
 	crystals_required = 50 * XENO_STRUCTURE_PLASMA_MULTIPLIER
 
+/datum/construction_template/xenomorph/jammer
+	name = XENO_STRUCTURE_JAMMER
+	build_type = /obj/effect/alien/resin/special/jammer
+	build_icon_state = "jammer"
+	crystals_required = 50 * XENO_STRUCTURE_PLASMA_MULTIPLIER
+
 /datum/construction_template/xenomorph/eggmorph
 	name = XENO_STRUCTURE_EGGMORPH
 	build_type = /obj/effect/alien/resin/special/eggmorph

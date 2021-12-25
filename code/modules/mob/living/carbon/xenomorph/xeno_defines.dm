@@ -230,6 +230,7 @@
 		XENO_STRUCTURE_EGGMORPH = 6,
 		XENO_STRUCTURE_EVOPOD = 2,
 		XENO_STRUCTURE_RECOVERY = 6,
+		XENO_STRUCTURE_JAMMER = 3,
 	)
 
 	var/global/list/hive_structure_types = list(
@@ -238,7 +239,8 @@
 		XENO_STRUCTURE_POOL = /datum/construction_template/xenomorph/pool,
 		XENO_STRUCTURE_EGGMORPH = /datum/construction_template/xenomorph/eggmorph,
 		XENO_STRUCTURE_EVOPOD = /datum/construction_template/xenomorph/evopod,
-		XENO_STRUCTURE_RECOVERY = /datum/construction_template/xenomorph/recovery
+		XENO_STRUCTURE_RECOVERY = /datum/construction_template/xenomorph/recovery,
+		XENO_STRUCTURE_JAMMER = /datum/construction_template/xenomorph/jammer,
 	)
 
 	var/list/list/hive_structures = list() //Stringref list of structures that have been built

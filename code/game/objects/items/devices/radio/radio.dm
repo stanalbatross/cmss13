@@ -290,6 +290,10 @@
 	if(istype(src, /obj/item/device/radio/intercom))
 		filter_type = RADIO_FILTER_TYPE_INTERCOM
 
+	// check to see if nothing is jamming our signal
+	if(SEND_GLOBAL_SIGNAL(COMSIG_GLOB_SAY_RADIO, M) & COMSIG_GLOB_SAY_RADIO_BLOCK)
+		to_chat(M, SPAN_WARNING("A horrible screeching emits from \the [src]!"))
+		return
 
 	Broadcast_Message(connection, M, voicemask, pick(M.speak_emote),
 					  src, message, displayname, jobname, real_name, M.voice_name,
