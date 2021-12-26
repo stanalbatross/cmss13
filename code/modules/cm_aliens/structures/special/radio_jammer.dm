@@ -1,4 +1,7 @@
-#define DEFAULT_JAMMER_PROCESS 3 SECONDS
+#define JAMMER_DEFAULT_COOLDOWN 3 SECONDS
+#define JAMMER_DEFAULT_USAGE 1
+#define JAMMER_DEFAULT_MAX 100
+#define JAMMER_DEFAULT_REFILL_LOOP 5 SECONDS
 
 /obj/effect/alien/resin/special/jammer
 	name = XENO_STRUCTURE_JAMMER
@@ -10,13 +13,13 @@
 	// the amount of plasma that is stored within the jammer
 	var/plasma_stored = 0
 	// the maximum amount of plasma that is able to be stored within the jammer
-	var/plasma_max = 100
+	var/plasma_max = JAMMER_DEFAULT_MAX
 	// the amount of plasma that is used per six seconds
-	var/plasma_usage = 1
+	var/plasma_usage = JAMMER_DEFAULT_USAGE
 	// this is to prevent multiple xenos from filling it up at the same time... or the same xeno
 	in_use = FALSE
 	// this is what tells how many seconds between each process
-	var/processing_cooldown = DEFAULT_JAMMER_PROCESS
+	var/processing_cooldown = JAMMER_DEFAULT_COOLDOWN
 	// this is the time to check between each processing_cooldown
 	var/processing_timer = 0
 
@@ -90,7 +93,7 @@
 			in_use = FALSE
 			return
 		// if the refilling xeno cannot wait 2 seconds, lets stop
-		if(!do_after(M, 5 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
+		if(!do_after(M, JAMMER_DEFAULT_REFILL_LOOP, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_GENERIC))
 			in_use = FALSE
 			return
 		visible_message(SPAN_XENONOTICE("\The [src] shivers as it is filled with plasma..."))
@@ -109,3 +112,8 @@
 		return
 	// time to block the signal
 	return COMSIG_GLOB_SAY_RADIO_BLOCK
+
+#undef JAMMER_DEFAULT_COOLDOWN
+#undef JAMMER_DEFAULT_USAGE
+#undef JAMMER_DEFAULT_MAX
+#undef JAMMER_DEFAULT_REFILL_LOOP
