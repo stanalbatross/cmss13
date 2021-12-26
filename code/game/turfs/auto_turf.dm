@@ -105,6 +105,8 @@
 
 /turf/open/auto_turf/sand_white
 	layer_name = list("aged igneous", "wind swept dunes", "warn a coder", "warn a coder", "warn a coder")
+	icon_state = "varadero_1"
+	icon_prefix = "varadero"
 
 turf/open/auto_turf/sand_white/get_dirt_type()
 	return DIRT_TYPE_SAND
