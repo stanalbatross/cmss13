@@ -1,4 +1,4 @@
-#define DEFAULT_JAMMER_PROCESS 6 SECONDS
+#define DEFAULT_JAMMER_PROCESS 3 SECONDS
 
 /obj/effect/alien/resin/special/jammer
 	name = XENO_STRUCTURE_JAMMER
