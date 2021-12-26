@@ -18,16 +18,18 @@
 	if (!istype(X))
 		return
 
-	if (X.mutation_type == LURKER_NORMAL)
+	if(X.mutation_type == LURKER_NORMAL)
+		var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/lurker_invisibility)
 		var/found = FALSE
 		for (var/mob/living/carbon/human/H in get_turf(X))
 			found = TRUE
 			break
 
-		if (found)
-			var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(X, /datum/action/xeno_action/onclick/lurker_invisibility)
-			if (istype(LIA))
+		if(istype(LIA))
+			if(found)
 				LIA.invisibility_off()
+			else
+				apply_cooldown_override(xeno_cooldown + 2 SECONDS) // missed pounces while cloaked increase the pounce delay
 
 /datum/action/xeno_action/activable/pounce/lurker/additional_effects(mob/living/L)
 	var/mob/living/carbon/Xenomorph/X = owner

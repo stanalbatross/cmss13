@@ -62,6 +62,12 @@
 /datum/behavior_delegate/proc/melee_attack_additional_effects_self()
 	SEND_SIGNAL(bound_xeno, COMSIG_XENO_SLASH_ADDITIONAL_EFFECTS_SELF)
 
+/datum/behavior_delegate/proc/melee_disarm_additional_effects_target(mob/living/carbon/A)
+	return
+
+/datum/behavior_delegate/proc/melee_disarm_additional_effects_self()
+	SEND_SIGNAL(bound_xeno, COMSIG_XENO_DISARM_ADDITIONAL_EFFECTS_SELF)
+
 // Identical to the above 3 procs but for ranged attacks.
 // Technically speaking, these are called whenever a xeno projectile impacts
 // a target (acid spit), NOT when gas damages them.

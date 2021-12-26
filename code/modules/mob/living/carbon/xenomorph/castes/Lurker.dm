@@ -95,10 +95,16 @@
 
 /datum/behavior_delegate/lurker_base/melee_attack_additional_effects_self()
 	..()
-
 	var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/onclick/lurker_invisibility)
-	if (LIA && istype(LIA))
+	if(istype(LIA))
 		LIA.invisibility_off()
+
+/datum/behavior_delegate/lurker_base/melee_disarm_additional_effects_self()
+	..()
+	var/datum/action/xeno_action/onclick/lurker_invisibility/LIA = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/onclick/lurker_invisibility)
+	if(istype(LIA))
+		LIA.invisibility_off()
+
 
 // What to do when we go invisible
 /datum/behavior_delegate/lurker_base/proc/on_invisibility()

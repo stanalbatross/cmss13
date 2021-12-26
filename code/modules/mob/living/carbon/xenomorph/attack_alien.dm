@@ -117,12 +117,11 @@
 			var/n_damage = armor_damage_reduction(GLOB.marine_melee, damage, armor_block)
 
 			if(M.behavior_delegate)
-				n_damage = M.behavior_delegate.melee_attack_modify_damage(n_damage, src)
-
-			if(M.behavior_delegate)
 				var/datum/behavior_delegate/MD = M.behavior_delegate
 				MD.melee_attack_additional_effects_target(src)
 				MD.melee_attack_additional_effects_self()
+
+				n_damage = MD.melee_attack_modify_damage(n_damage, src)
 
 			var/slash_noise = "alien_claw_flesh"
 			var/list/slashdata = list("n_damage" = n_damage, "slash_noise" = slash_noise)
@@ -205,6 +204,11 @@
 				tackle_mult = 0.2
 				tackle_min_offset += 2
 				tackle_max_offset += 2
+
+			if(M.behavior_delegate)
+				var/datum/behavior_delegate/MD = M.behavior_delegate
+				MD.melee_disarm_additional_effects_target(src)
+				MD.melee_disarm_additional_effects_self()
 
 			if(M.attempt_tackle(src, tackle_mult, tackle_min_offset, tackle_max_offset))
 				playsound(loc, 'sound/weapons/alien_knockdown.ogg', 25, 1)

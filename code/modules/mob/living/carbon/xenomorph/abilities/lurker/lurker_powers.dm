@@ -77,11 +77,9 @@
 	to_chat(X, SPAN_XENOHIGHDANGER("Your next slash will deal increased damage!"))
 
 	addtimer(CALLBACK(src, .proc/unbuff_slash), buff_duration)
-	X.next_move = world.time + 1 // Autoattack reset
 
 	apply_cooldown()
-	..()
-	return
+	return ..()
 
 /datum/action/xeno_action/onclick/lurker_assassinate/proc/unbuff_slash()
 	var/mob/living/carbon/Xenomorph/X = owner
