@@ -1,4 +1,4 @@
-#define JAMMER_DEFAULT_COOLDOWN 3 SECONDS
+#define JAMMER_DEFAULT_COOLDOWN 18 SECONDS
 #define JAMMER_DEFAULT_USAGE 1
 #define JAMMER_DEFAULT_MAX 100
 #define JAMMER_DEFAULT_REFILL_LOOP 5 SECONDS
@@ -107,8 +107,8 @@
 	// we need at least a certain amount of plasma to function
 	if(plasma_stored < plasma_usage)
 		return
-	// need to be within 8 tiles distance to be blocked
-	if(get_dist(M, src) >= 9)
+	// need to be within 14 tiles distance to be blocked
+	if(get_dist(M, src) >= 15)
 		return
 	// time to block the signal
 	return COMSIG_GLOB_SAY_RADIO_BLOCK
