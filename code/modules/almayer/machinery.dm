@@ -360,7 +360,7 @@
 	if(istype(I, /obj/item/dogtag))
 		var/obj/item/dogtag/D = I
 		if(D.fallen_names)
-			var/added_req_points = length(D.fallen_names) * 2 //give 2 points per dead marine
+			var/added_req_points = length(D.fallen_names) * 3 //give $300 per dead marine
 			supply_controller.points += added_req_points
 			to_chat(user, SPAN_NOTICE("You add [D] to [src]."))
 			fallen_list += D.fallen_names
