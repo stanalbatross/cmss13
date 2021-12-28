@@ -360,7 +360,14 @@
 	if(istype(I, /obj/item/dogtag))
 		var/obj/item/dogtag/D = I
 		if(D.fallen_names)
-			var/added_req_points = length(D.fallen_names) * 3 //give $300 per dead marine
+			var/added_req_points = length(D.fallen_names) * 2 //give $200 per dead marine
+			for(var/mob/living/carbon/human/checking_location in D.fallen_persons)
+				if(!istype(checking_location.loc, /obj/structure/morgue)) //if they aren't in a morgue, move on
+					continue
+				var/turf/morgue_location = get_turf(checking_location)
+				if(!is_mainship_level(morgue_location.z))
+					continue
+				added_req_points += 3 //give an additional $300 if the marine is in a morgue on the ship
 			supply_controller.points += added_req_points
 			to_chat(user, SPAN_NOTICE("You add [D] to [src]."))
 			fallen_list += D.fallen_names

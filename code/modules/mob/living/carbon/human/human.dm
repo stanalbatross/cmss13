@@ -398,6 +398,7 @@
 							D.fallen_names = list(DT.registered_name)
 							D.fallen_assgns = list(DT.assignment)
 							D.fallen_blood_types = list(DT.blood_type)
+							D.fallen_persons = list(src)
 							usr.put_in_hands(D)
 						else
 							to_chat(usr, SPAN_WARNING("You can't take a dogtag's information tag while its owner is alive."))

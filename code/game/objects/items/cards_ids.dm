@@ -359,9 +359,14 @@
 	icon_state = "dogtag_taken"
 	icon = 'icons/obj/items/card.dmi'
 	w_class = SIZE_TINY
+	/// the list of fallen marine's names
 	var/list/fallen_names
+	/// the list of fallen marine's blood types
 	var/list/fallen_blood_types
+	/// the list of fallen marine's rank/role
 	var/list/fallen_assgns
+	/// the list of fallen marine's actual person reference
+	var/list/fallen_persons
 
 /obj/item/dogtag/Initialize()
 	. = ..()
@@ -369,6 +374,7 @@
 	fallen_names = list()
 	fallen_blood_types = list()
 	fallen_assgns = list()
+	fallen_persons = list()
 
 /obj/item/dogtag/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/dogtag))
@@ -379,6 +385,7 @@
 			fallen_names += D.fallen_names
 			fallen_blood_types += D.fallen_blood_types
 			fallen_assgns += D.fallen_assgns
+			fallen_persons += D.fallen_persons
 		qdel(D)
 		return TRUE
 	else
