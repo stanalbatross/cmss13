@@ -11887,7 +11887,6 @@
 /area/event/metal/dynamic)
 "KL" = (
 /obj/structure/surface/table/almayer,
-/obj/item/tool/surgery/WYautopsy,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whitebluefull";

@@ -156,6 +156,13 @@
 		if(user.drop_held_item())
 			if (I.loc != loc)
 				step(I, get_dir(I, src))
+	//so we can place dead xenos on the table
+	else if(isXeno(A))
+		var/mob/living/carbon/Xenomorph/moving_xeno = A
+		if(moving_xeno.stat != DEAD)
+			return ..()
+		moving_xeno.forceMove(get_turf(src))
+		return
 	else if(ismob(A))
 		..()
 

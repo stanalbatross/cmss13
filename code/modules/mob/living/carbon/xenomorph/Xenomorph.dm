@@ -284,6 +284,9 @@
 
 	var/atom/movable/vis_obj/xeno_wounds/wound_icon_carrier
 
+	///whether the xeno has had an autopsy performed on them
+	var/autopsy_performed = FALSE
+
 /mob/living/carbon/Xenomorph/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
 	var/area/A = get_area(src)
 	if(A && A.statistic_exempt)

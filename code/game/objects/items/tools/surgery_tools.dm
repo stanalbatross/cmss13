@@ -275,107 +275,122 @@ t. optimisticdude
 	w_class = SIZE_SMALL
 	flags_item = NOBLUDGEON
 
-//XENO AUTOPSY TOOL
+// XENO AUTOPSY TOOL
+// In the future, perhaps we can make /obj/item/XenoBio items useful?
 
-/obj/item/tool/surgery/WYautopsy
+/obj/item/tool/surgery/xeno_autopsy
 	name = "Weyland Brand Automatic Autopsy System(TM)"
-	desc = "Putting the FUN back in Autopsy.  This little gadget performs an entire autopsy of whatever strange life form you've found in about 30 seconds."
+	desc = "Putting the FUN back in Autopsy.  This little gadget performs an entire autopsy of whatever strange life form you've found."
 	icon_state = "scalpel_laser_2"
 	damtype = "fire"
 	force = 0
 	flags_item = ANIMATED_SURGICAL_TOOL
-	var/active = 0
-	var/resetting = 0//For the reset, to prevent macro-spam abuse
+	// just so they can't be spammed from the medilathe
+	matter = list("glass" = 10000, "plastic" = 10000)
+	// this is important to prevent multi-use
+	in_use = FALSE
 
-/obj/item/tool/surgery/WYautopsy/verb/reset()
-	set category = "IC"
-	set name = "Reset WY Autopsy tool"
-	set desc = "Reset the WY Tool in case it breaks."
-	set src in usr
+/obj/item/tool/surgery/xeno_autopsy/examine(mob/user)
+	. = ..()
+	to_chat(user, SPAN_NOTICE("There are multiple restrictions to this tool: The xenomorph must be on an operating table and on the ship."))
+	to_chat(user, SPAN_NOTICE("Additionally, you must be proficient in research."))
+	to_chat(user, SPAN_NOTICE("It is recommended to have a PICT in the other hand; otherwise, there is a chance to have acid spray onto you."))
 
-	if(!active)
-		to_chat(usr, "System appears to be working fine...")
-		return
-	if(active)
-		resetting = 1
-		to_chat(usr, "Resetting tool, This will take a few seconds...  Do not attempt to use the tool during the reset or it may malfunction.")
-		while(active) //While keep running until it's reset (in case of lag-spam)
-			active = 0 //Sets it to not active
-			to_chat(usr, "Processing...")
-			spawn(60) // runs a timer before the final check.  timer is longer than autopsy timers.
-				if(!active)
-					to_chat(usr, "System Reset completed")
-					resetting = 0
+// to reduce the amount of lines required for the code
+/obj/item/tool/surgery/xeno_autopsy/proc/failure_message(var/message = null, mob/living/user, var/allow_usage = FALSE)
+	to_chat(user, SPAN_HELPFUL("W.B.A.A.S. states: ") + message)
+	playsound(loc, 'sound/machines/buzz-sigh.ogg', 25)
+	if(allow_usage)
+		in_use = FALSE
 
-/obj/item/tool/surgery/WYautopsy/attack(mob/living/carbon/Xenomorph/T as mob, mob/living/user as mob)
-/*	set category = "Autopsy"
-	set name = "Perform Alien Autopsy"
-	set src in usr*/
-	if(resetting)
-		to_chat(usr, "Tool is currently returning to factory default.  If you have been waiting, try running the reset again.")
-	if(!isXeno(T))
-		to_chat(usr, "What are you, some sort of fucking MONSTER?")
-		return
-	if(T.health > 0)
-		to_chat(usr, "Nope.")
-		return
-	if(active)
-		to_chat(usr, "Your already performing an autopsy")
-		return
-	if(istype(T, /mob/living/carbon/Xenomorph/Larva))
-		to_chat(usr, "It's too young... (This will be in a future update)")
-		return
-	active = 1
-	var CHECK = user.loc
-	playsound(loc, 'sound/weapons/pierce.ogg', 25)
-	to_chat(usr, "You begin to cut into the alien... This might take some time...")
-	if(T.health >-100)
-		to_chat(usr, "HOLY SHIT IT'S STILL ALIVE.  It knocks you down as it jumps up.")
-		usr.KnockDown(20)
-		to_chat(T, "You feel TREMENDOUS pain and jump back up to use the last of your strength to kill [usr] with your final moments of life. (~10 seconds)")
-		T.health = T.maxHealth*2 //It's hulk levels of angry.
-		active = 0
-		spawn (1000) //Around 10 seconds
-			T.apply_damage(5000, BRUTE) //to make sure it's DEAD after it's hyper-boost
-		return
+// to reduce the amount of lines required for the code
+/obj/item/tool/surgery/xeno_autopsy/proc/start_autopsy(var/amount, mob/living/carbon/Xenomorph/xeno, mob/living/user)
+	// at minimum, a thirty(30) percent chance; at maximum, a one hundred(100) percent chance
+	var/success_chance = ((3 + user.skills.get_skill_level(SKILL_MEDICAL) + user.skills.get_skill_level(SKILL_SURGERY)) * 10)
+	// this is why xeno tier is so important, damn xeno queens
+	for(var/iterating_autopsy in 1 to amount)
+		playsound(loc, 'sound/weapons/pierce.ogg', 25)
+		to_chat(user, SPAN_WARNING("You begin working carefully on [xeno]..."))
+		// you have to go for it, or suffer the consequence
+		if(!do_after(user, 5 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_MEDICAL))
+			failure_message(SPAN_WARNING("Warning! Aborting the operation may lead to injury!"), user, TRUE)
+			user.apply_damage(10, BURN)
+			xeno.autopsy_performed = TRUE
+			return
+		// can only work if xeno is on a table
+		var/table_check = FALSE
+		var/turf/xeno_turf = get_turf(xeno)
+		for(var/obj/check_obj in xeno_turf.contents)
+			if(check_obj.surgery_duration_multiplier == SURGERY_SURFACE_MULT_IDEAL)
+				table_check = TRUE
+				break
+		if(!table_check)
+			failure_message(SPAN_WARNING("Warning! Xenomorphs can only be operated on whilst on an operating table!"), user, TRUE)
+			xeno.autopsy_performed = TRUE
+			return
+		// you better hope you have a PICT in your other hand
+		if(!istype(user.l_hand, /obj/item/tool/surgery/scalpel/pict_system) && !istype(user.r_hand, /obj/item/tool/surgery/scalpel/pict_system))
+			if(prob(75))
+				// this is gonna hurt
+				xeno.check_blood_splash(20, TOX, 100, 2)
+				failure_message(SPAN_WARNING("Warning! It is highly recommended to hold a W-Y approved PICT system!"), user)
+		// you had the skills to gain a research credit, nice
+		if(prob(success_chance))
+			to_chat(user, SPAN_HELPFUL("W.B.A.A.S. states: ") + SPAN_NOTICE("This portion of the autopsy was a success!"))
+			chemical_data.update_credits(1)
+		// you failed
+		else
+			failure_message(SPAN_WARNING("This portion of the autopsy was a failure!"), user)
+	// we only get to this point once all the iterating_autopsy has been completed
+		to_chat(user, SPAN_HELPFUL("W.B.A.A.S. states: ") + SPAN_NOTICE("Thank you for using the W.B.A.A.S.!"))
+	playsound(loc, 'sound/machines/ping.ogg', 25)
+	in_use = FALSE
+	xeno.autopsy_performed = TRUE
 
-	switch(T.butchery_progress)
-		if(0)
-			spawn(50)
-				if(CHECK != user.loc)
-					to_chat(usr, "This is difficult, you probably shouldn't move")
-					return
-				to_chat(usr, "You've cut through the outer layers of Chitin")
-				new /obj/item/XenoBio/Chitin(T.loc) //This will be 1-3 Chitin eventually (depending on tier)
-				new /obj/item/XenoBio/Chitin(T.loc) //This will be 1-3 Chitin eventually (depending on tier)
-				T.butchery_progress++
-				active = 0
-		if(1)
-			spawn(50)
-				if(CHECK != user.loc)
-					to_chat(usr, "This is difficult, you probably shouldn't move.")
-					return
-				to_chat(usr, "You've cut into the chest cavity and retreived a sample of blood.")
-				new /obj/item/XenoBio/Blood(T.loc)//This will be a sample of blood eventually
-				T.butchery_progress++
-				active = 0
-		if(2)
-			spawn(50)
-				if(CHECK != user.loc)
-					to_chat(usr, "This is difficult, you probably shouldn't move.")
-					return
-				//to_chat(usr, "You've cut out an intact organ.")
-				to_chat(usr, "You've cut out some Biomass...")
-				new /obj/item/XenoBio/Resin(T.loc)//This will be an organ eventually, based on the caste.
-				T.butchery_progress++
-				active = 0
-		if(3)
-			spawn(50)
-				if(CHECK != user.loc)
-					to_chat(usr, "This is difficult, you probably shouldn't move.")
-					return
-				to_chat(usr, "You scrape out the remaining biomass.")
-				active = 0
-				new /obj/item/XenoBio/Resin(T.loc)
-				new /obj/effect/decal/remains/xeno(T.loc)
-				qdel(T)
+/obj/item/tool/surgery/xeno_autopsy/attack(mob/living/M, mob/living/user)
+	// no spamming the tool
+	if(in_use)
+		failure_message(SPAN_WARNING("\The [src] is already in use!"), user, FALSE)
+		return
+	in_use = TRUE
+	// have to have some research skill
+	if(!skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
+		failure_message(SPAN_WARNING("Warning! You are not qualified skill-wise to use this tool!"), user, TRUE)
+		return
+	// can only work on xenos
+	if(!isXeno(M))
+		failure_message(SPAN_WARNING("Warning! This tool may only be used on Xenomorphs!"), user, TRUE)
+		return
+	var/mob/living/carbon/Xenomorph/attacked_xeno = M
+	// can only work on *dead* xenos
+	if(attacked_xeno.stat != DEAD)
+		failure_message(SPAN_WARNING("Warning! This tool may only be used on DEAD Xenomorphs"), user, TRUE)
+		return
+	if(attacked_xeno.autopsy_performed)
+		failure_message(SPAN_WARNING("Warning! This tool cannot be used on an already operated on Xenomorph"), user, TRUE)
+		return
+	var/turf/xeno_turf = get_turf(attacked_xeno)
+	// can only work if on the ship
+	if(!is_mainship_level(xeno_turf.z))
+		failure_message(SPAN_WARNING("Warning! This tool can only be used in proper locations! Return to to a W-Y owned corporate vessel!"), user, TRUE)
+		return
+	// can only work if xeno is on a table
+	var/table_check = FALSE
+	for(var/obj/check_obj in xeno_turf.contents)
+		if(check_obj.surgery_duration_multiplier == SURGERY_SURFACE_MULT_IDEAL)
+			table_check = TRUE
+			break
+	if(!table_check)
+		failure_message(SPAN_WARNING("Warning! Xenomorphs can only be operated on whilst on an operating table!"), user, TRUE)
+		return
+	// you have to actually wait a little to activate the tool
+	to_chat(user, SPAN_NOTICE("You slowly raise \the [src] up to [attacked_xeno], preparing for the autopsy."))
+	if(!do_after(user, 5 SECONDS, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_MEDICAL))
+		failure_message(SPAN_WARNING("Warning! Aborting the operation may lead to injury!"), user, TRUE)
+		return
+	//xeno queens are tier 0... so we are going to falsify the xeno tier here
+	if(isXenoQueen(attacked_xeno))
+		start_autopsy(4, attacked_xeno, user)
+		return
+	//proceed to the autopsy with the xeno tier in mind
+	start_autopsy(attacked_xeno.tier, attacked_xeno, user)

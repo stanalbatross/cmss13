@@ -394,6 +394,10 @@ datum/autolathe/recipe/medilathe/autoinjector/s30x6
 	name = "rollerbed"
 	path = /obj/item/roller
 
+/datum/autolathe/recipe/medilathe/xeno_autopsy
+	name = "xeno autopsy tool"
+	path = /obj/item/tool/surgery/xeno_autopsy
+
 /datum/autolathe/recipe/medilathe/pill_bottle
 	name = "pill bottle"
 	path = /obj/item/storage/pill_bottle
