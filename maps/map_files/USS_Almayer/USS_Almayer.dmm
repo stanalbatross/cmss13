@@ -47644,6 +47644,7 @@
 /area/almayer/hull/upper_hull/u_f_s)
 "hGB" = (
 /obj/structure/machinery/light,
+/obj/structure/aquarium,
 /turf/open/floor/wood/ship,
 /area/almayer/living/commandbunks)
 "hGD" = (
