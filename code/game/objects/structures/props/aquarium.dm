@@ -22,9 +22,12 @@
 		if(1)
 			to_chat(user, SPAN_WARNING("\The [src] is falling apart..."))
 
+// at a future date, add functionality with fish/fishing.
+// allow storing of fish, and fish flopping on ground when broken
 /obj/structure/aquarium/proc/spawn_dead()
 	new /obj/structure/aquarium/dead(loc)
 	playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)
+	new /obj/item/shard(loc)
 	Destroy()
 
 /obj/structure/aquarium/proc/try_interaction(mob/user)
@@ -85,7 +88,7 @@
 	return
 
 /obj/structure/aquarium/dead/Destroy()
-	playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)\
+	playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)
 	new /obj/item/stack/sheet/wood(loc)
 	return ..()
 
