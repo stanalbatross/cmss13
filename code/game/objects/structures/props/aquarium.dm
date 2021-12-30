@@ -76,11 +76,17 @@
 	// at this point, its dead, sk allow moving it around
 	wrenchable = FALSE
 	anchored = FALSE
-	// drop wood if its destroyed
-	debris = list(/obj/item/stack/sheet/wood)
+
+/obj/structure/aquarium/dead/proc/deal_damage()
+	health--
+	playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)
+	if(health <= 0)
+		Destroy()
+	return
 
 /obj/structure/aquarium/dead/Destroy()
-	playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)
+	playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 50, 1)\
+	new /obj/item/stack/sheet/wood(loc)
 	return ..()
 
 /obj/structure/aquarium/dead/attack_robot(mob/user)
@@ -90,21 +96,16 @@
 	return
 
 /obj/structure/aquarium/dead/bullet_act(obj/item/projectile/P)
-	Destroy()
-	return
+	deal_damage()
 
 /obj/structure/aquarium/dead/ex_act(severity, direction)
 	Destroy()
-	return
 
 /obj/structure/aquarium/dead/attack_animal(mob/living/user)
-	Destroy()
-	return
+	deal_damage()
 
 /obj/structure/aquarium/dead/attack_alien(mob/living/carbon/Xenomorph/M)
-	Destroy()
-	return
+	deal_damage()
 
 /obj/structure/aquarium/dead/attackby(obj/item/W, mob/user)
-	Destroy()
-	return
+	deal_damage()
