@@ -388,17 +388,17 @@
 
 /obj/item/storage/pill_bottle/verb/set_maptext()
 	set category = "Object"
-	set name = "Set Short Label"
+	set name = "Set Short Label (on-sprite)"
 	set src in usr
 	if(src && ishuman(usr))
-		var/str = copytext(reject_bad_text(input(usr,"Label text?", "Set label (2 CHARACTERS MAXIMUM)", "")), 1, 3)
+		var/str = copytext(reject_bad_text(input(usr,"Label text? (2 CHARACTERS MAXIMUM)", "Set \the [src]'s on-sprite label", "")), 1, 3)
 		if(!str || !length(str))
-			to_chat(usr, SPAN_NOTICE("You clear the label."))
+			to_chat(usr, SPAN_NOTICE("You clear the label off \the [src]."))
 			maptext_label = null
 			update_icon()
 			return
 		maptext_label = str
-		to_chat(usr, SPAN_NOTICE("You set the label to '[str]'."))
+		to_chat(usr, SPAN_NOTICE("You label \the [src] with '[str]' in big, blocky letters."))
 		update_icon()
 		return
 
