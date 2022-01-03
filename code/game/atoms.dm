@@ -587,3 +587,23 @@ Parameters are passed from New.
 	animate(src, pixel_x = pixel_x + shiftx, pixel_y = pixel_y + shifty, time = 0.2, loop = duration)
 	pixel_x = initialpixelx
 	pixel_y = initialpixely
+
+/**
+ * Show a message to all mobs in sight of this atom
+ * Use for objects performing visible actions
+ * message is output to anyone who can see, e.g. "The [src] does something!"
+ * blind_message (optional) is what blind people will hear e.g. "You hear something!"
+ * blacklist allows to specify atoms to skip
+ */
+/atom/proc/visible_message(message, blind_message, max_distance = 7, message_flags = CHAT_TYPE_OTHER, list/mob/blacklist)
+	var/list/mob/receivers = list()
+	var/list/mob/targets = viewers(max_distance, src)
+	if(blacklist)
+		targets -= blacklist
+	for(var/mob/M as anything in targets)
+		M.show_message(message, 1, blind_message, 2, message_flags, receivers)
+	var/msg_type
+	if(message_flags & CHAT_TYPE_ALL_COMBAT)
+		msg_type = MESSAGE_TYPE_COMBAT // Pre-tag these so client-side tgchat doesn't have to regex for type (SG DDoS etc..)
+	if(length(receivers))
+		to_chat(receivers, message, msg_type)

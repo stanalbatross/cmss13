@@ -92,95 +92,74 @@
 		I.appearance_flags |= NO_CLIENT_COLOR|KEEP_APART|RESET_COLOR
 		hud_list[hud] = I
 
-
-/mob/proc/show_message(msg, type, alt, alt_type, message_flags = CHAT_TYPE_OTHER)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
-
-	if(!client || !client.prefs)	return
-
-	if (type)
-		if(type & 1 && (sdisabilities & DISABILITY_BLIND || blinded) )//Vision related
-			if (!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-		if (type & 2 && (sdisabilities & DISABILITY_DEAF || ear_deaf))//Hearing related
-			if (!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-				if (type & 1 && (sdisabilities & DISABILITY_BLIND))
-					return
-	if(message_flags == CHAT_TYPE_OTHER || client.prefs && (message_flags & client.prefs.chat_display_preferences) > 0) // or logic between types
-		if(stat == UNCONSCIOUS)
-			to_chat(src, "<I>... You can almost hear someone talking ...</I>")
-		else if(message_flags & CHAT_TYPE_ALL_COMBAT) // Pre-tag combat messages for tgchat
-			to_chat(src, html = msg, type = MESSAGE_TYPE_COMBAT)
-		else
-			to_chat(src, msg)
-
-
-// Show a message to all mobs in sight of this one
-// This would be for visible actions by the src mob
-// message is the message output to anyone who can see e.g. "[src] does something!"
-// self_message (optional) is what the src mob sees  e.g. "You do something!"
-// blind_message (optional) is what blind people will hear e.g. "You hear something!"
-
-/mob/visible_message(message, self_message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER)
-	set waitfor = FALSE
-
-	var/view_dist = 7
-	var/flags = message_flags
-	if(max_distance) view_dist = max_distance
-	for(var/mob/M in viewers(view_dist, src))
-		var/msg = message
-		if(self_message && M==src)
-			msg = self_message
-			if(flags & CHAT_TYPE_TARGETS_ME)
-				flags = CHAT_TYPE_BEING_HIT
-		M.show_message( msg, 1, blind_message, 2, flags)
-		CHECK_TICK
-
-	for(var/obj/vehicle/V in orange(max_distance))
-		for(var/mob/M in V.contents)
-			var/msg = message
-			if(self_message && M==src)
-				msg = self_message
-				if(flags & CHAT_TYPE_TARGETS_ME)
-					flags = CHAT_TYPE_BEING_HIT
-			M.show_message( msg, 1, blind_message, 2, flags)
-		CHECK_TICK
+/mob/proc/show_message(msg, type, alt, alt_type, message_flags = CHAT_TYPE_OTHER, list/mob/receivers)
+	var/use_alt = FALSE
+	var/alt_blind = FALSE
+	var/chat_type // tgchat message type
+	if(!client?.prefs)
+		return
+	if((message_flags != CHAT_TYPE_OTHER) && !(message_flags & client.prefs.chat_display_preferences))
+		return
+	if(sdisabilities & DISABILITY_BLIND || blinded)
+		if(type & 1)
+			msg = alt
+			type = alt_type
+			use_alt = TRUE
+		if(alt_type & 1)
+			alt_blind = TRUE
+	if((type & 2) && (sdisabilities & DISABILITY_DEAF || ear_deaf))
+		if(alt_blind) // Blind and deaf ? Tough luck.
+			return
+		use_alt = TRUE
+		msg = alt
+		type = alt_type
+	if(!msg)
+		return
+	if(stat == UNCONSCIOUS)
+		to_chat(src, "<I>... You can almost hear someone talking ...</I>", chat_type)
+		return
+	if(receivers && !use_alt)
+		receivers += src
+		return
+	if(message_flags & CHAT_TYPE_ALL_COMBAT)
+		chat_type = MESSAGE_TYPE_COMBAT // Pre-tag these so client-side tgchat doesn't have to regex for type (SG DDoS..)
+	to_chat(src, msg, chat_type)
 
 
-// Shows three different messages depending on who does it to who and how does it look like to outsiders
-// message_mob: "You do something to X!"
-// message_affected: "Y does something to you!"
-// message_viewer: "X does something to Y!"
+/**
+  * Show a message to all mobs in sight of this one
+  * This would be for visible actions by the src mob
+  * message is the message output to anyone who can see e.g. "[src] does something!"
+  * self_message (optional) is what the src mob sees  e.g. "You do something!"
+  * blind_message (optional) is what blind people will hear e.g. "You hear something!"
+*/
+/mob/visible_message(message, self_message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER, list/mob/blacklist)
+	if(blacklist)
+		blacklist += src
+	else
+		blacklist = list(src)
+	if(!self_message)
+		self_message = message
+	if(message_flags & CHAT_TYPE_TARGETS_ME)
+		show_message(self_message, 1, blind_message, 2, CHAT_TYPE_BEING_HIT)
+	else
+		show_message(self_message, 1, blind_message, 2, message_flags)
+	// THIS PROCS SIGNATURE DOESNT MATCH PARENT. WHOEVER DID THIS IS AN EVIL IDIOT. YES. GOOD LUCK FIXING THAT.
+	return ..(message, blind_message, max_distance, message_flags, blacklist)
+
+/**
+  * Shows three different messages depending on who does it to who and how does it look like to outsiders
+  * message_mob: "You do something to X!"
+  * message_affected: "Y does something to you!"
+  * message_viewer: "X does something to Y!"
+*/
 /mob/proc/affected_message(mob/affected, message_mob, message_affected, message_viewer)
-	src.show_message(message_mob, 1)
-	if(src != affected)
+	if(src != affected && affected && message_affected)
 		affected.show_message(message_affected, 1)
-	for(var/mob/V in viewers(7, src))
-		if(V != src && V != affected)
-			V.show_message(message_viewer, 1)
-
-// Show a message to all mobs in sight of this atom
-// Use for objects performing visible actions
-// message is output to anyone who can see, e.g. "The [src] does something!"
-// blind_message (optional) is what blind people will hear e.g. "You hear something!"
-/atom/proc/visible_message(message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER)
-	var/view_dist = 7
-	if(max_distance) view_dist = max_distance
-	for(var/mob/M in viewers(view_dist, src))
-		M.show_message(message, 1, blind_message, 2, message_flags)
-
-/atom/proc/ranged_message(message, blind_message, max_distance, message_flags = CHAT_TYPE_OTHER)
-	var/view_dist = 7
-	if(max_distance) view_dist = max_distance
-	for(var/mob/M in orange(view_dist, src))
-		M.show_message(message, 1, blind_message, 2, message_flags)
-
+	if(!affected)
+		visible_message(message_viewer, message_mob)
+		return
+	visible_message(message_viewer, message_mob, blacklist = list(affected))
 
 /mob/proc/findname(msg)
 	for(var/mob/M in GLOB.mob_list)
