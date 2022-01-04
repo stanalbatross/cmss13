@@ -6701,10 +6701,6 @@
 /obj/structure/filingcabinet/chestdrawer{
 	pixel_x = 7
 	},
-/obj/item/reagent_container/food/drinks/britcup{
-	pixel_x = 7;
-	pixel_y = 4
-	},
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
@@ -23405,12 +23401,6 @@
 	icon_state = "orange_tile"
 	},
 /area/lv522/buildings/C_Block/Garage)
-"oxy" = (
-/obj/item/folding_barricade,
-/turf/open/asphalt/cement{
-	icon_state = "cement4"
-	},
-/area/lv522/buildings/colony_streets)
 "oxG" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/asphalt/cement{
@@ -64940,7 +64930,7 @@ wjp
 ahv
 qCO
 qCO
-oxy
+qgj
 oes
 oes
 dPq
