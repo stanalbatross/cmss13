@@ -1,7 +1,7 @@
 {
-	"map_name": "LV_522_Chances_Claim",
-	"map_path": "map_files/LV_522_Chances_Claim",
-	"map_file": "LV_522_Chances_Claim.dmm",
+	"map_name": "LV522_Chances_Claim",
+	"map_path": "map_files/LV522_Chances_Claim",
+	"map_file": "LV522_Chances_Claim.dmm",
     "survivor_types": [
         "Survivor - LV-624 Archeologist",
         "Survivor - LV-624 Emergency Medical Technician",
