@@ -186,8 +186,12 @@
 
 		if(INTENT_DISARM)
 
-			if(M.caste.disarming_allowed == XENO_DISARM_FORBIDDEN)
-				to_chat(M, SPAN_XENOWARNING("You can't tackle with these limbs! They don't have the dexterity!")) //ravager knife hands
+			if(M.caste.disarming_allowed == XENO_DISARM_FORBIDDEN && M.caste_type == XENO_CASTE_RAVAGER)
+				to_chat(M, SPAN_XENOWARNING("You are a ravager, and completely uninterested in capturing! You focus back on killing!"))
+				M.a_intent_change(INTENT_HARM)
+				return XENO_NO_DELAY_ACTION
+			else if(M.caste.disarming_allowed == XENO_DISARM_FORBIDDEN) //in case more get added
+				to_chat(M, SPAN_XENOWARNING("You can't tackle with these limbs! They don't have the dexterity!"))
 				return XENO_NO_DELAY_ACTION
 
 			if(M.legcuffed && isYautja(src))
