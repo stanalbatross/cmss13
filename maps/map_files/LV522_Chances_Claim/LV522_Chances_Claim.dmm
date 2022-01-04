@@ -24815,7 +24815,7 @@
 	layer = 3.1
 	},
 /obj/structure{
-	desc = "A board for pinning important notices upon. This one contains a sole flyer, the flyer reads: "Safe Driving Saves Lives!" The rest of the flyer seems to be covered by the van's bumper.";
+	desc = "A board for pinning important notices upon. This one contains a sole flyer, the flyer reads: 'Safe Driving Saves Lives!' The rest of the flyer seems to be covered by the van's bumper.";
 	icon = 'icons/obj/structures/props/stationobjs.dmi';
 	icon_state = "nboard00";
 	name = "notice board";
