@@ -13,6 +13,7 @@
 	speed = XENO_SPEED_TIER_3
 	heal_standing = 0.66
 
+	disarming_allowed = XENO_DISARM_FORBIDDEN
 	tackle_min = 2
 	tackle_max = 5
 	tackle_chance = 35

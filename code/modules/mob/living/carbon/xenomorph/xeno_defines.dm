@@ -29,6 +29,7 @@
 	var/caste_desc = null
 
 	// Tackles
+	var/disarming_allowed = XENO_DISARM_ALLOWED
 	var/tackle_min = 2
 	var/tackle_max = 6
 	var/tackle_chance = 35

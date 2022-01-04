@@ -186,6 +186,10 @@
 
 		if(INTENT_DISARM)
 
+			if(M.disarming_allowed == XENO_DISARM_FORBIDDEN)
+				to_chat(M, SPAN_XENOWARNING("You can't tackle with these limbs!")) //ravager knife hands
+				return XENO_NO_DELAY_ACTION
+
 			if(M.legcuffed && isYautja(src))
 				to_chat(M, SPAN_XENODANGER("You don't have the dexterity to tackle the headhunter with that thing on your leg!"))
 				return XENO_NO_DELAY_ACTION
