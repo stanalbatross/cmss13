@@ -8,6 +8,7 @@
 	canhear_range = 0 // can't hear headsets from very far away
 
 	flags_equip_slot = SLOT_EAR
+	mic_button = FALSE
 	var/translate_binary = FALSE
 	var/translate_hive = FALSE
 	var/maximum_keys = 3

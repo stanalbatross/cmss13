@@ -59,6 +59,8 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 
 	var/list/obj/item/device/assembly/signaller/attached_signallers = list()
 
+	var/movement_sound = 'sound/machines/airlock.ogg'
+
 	var/announce_hacked = TRUE
 
 /obj/structure/machinery/door/airlock/Destroy()
@@ -707,10 +709,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 		if( !arePowerSystemsOn() || isWireCut(AIRLOCK_WIRE_OPEN_DOOR) )
 			return FALSE
 	use_power(360)	//360 W seems much more appropriate for an actuator moving an industrial door capable of crushing people
-	if(istype(src, /obj/structure/machinery/door/airlock/glass))
-		playsound(loc, 'sound/machines/windowdoor.ogg', 25, 1)
-	else
-		playsound(loc, 'sound/machines/airlock.ogg', 25, 0)
+	playsound(loc, movement_sound, 25, 1)
 	if(closeOther != null && istype(closeOther, /obj/structure/machinery/door/airlock/) && !closeOther.density)
 		closeOther.close()
 	return ..(forced)
@@ -746,10 +745,7 @@ GLOBAL_LIST_INIT(airlock_wire_descriptions, list(
 				location.add_mob_blood(M)
 
 	use_power(360)	//360 W seems much more appropriate for an actuator moving an industrial door capable of crushing people
-	if(istype(src, /obj/structure/machinery/door/airlock/glass))
-		playsound(loc, 'sound/machines/windowdoor.ogg', 25, 1)
-	else
-		playsound(loc, 'sound/machines/airlock.ogg', 25, 0)
+	playsound(loc, movement_sound, 25, 1)
 	for(var/turf/turf in locs)
 		var/obj/structure/window/killthis = (locate(/obj/structure/window) in turf)
 		if(killthis)

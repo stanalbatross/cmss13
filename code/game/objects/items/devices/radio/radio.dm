@@ -20,6 +20,7 @@
 	var/syndie = 0//Holder to see if it's a syndicate encrpyed radio
 	var/maxf = 1499
 	var/volume = RADIO_VOLUME_QUIET
+	var/mic_button = TRUE //if it can have its listening or broadcasting turned on and off
 //			"Example" = FREQ_LISTENING|FREQ_BROADCASTING
 	flags_atom = FPRINT|CONDUCT
 	flags_equip_slot = SLOT_WAIST
@@ -83,7 +84,7 @@
 
 	var/dat = "<html><body><TT>"
 
-	if(!istype(src, /obj/item/device/radio/headset)) //Headsets dont get a mic button
+	if(!mic_button)
 		dat += "Microphone: [broadcasting ? "<A href='byond://?src=\ref[src];talk=0'>Engaged</A>" : "<A href='byond://?src=\ref[src];talk=1'>Disengaged</A>"]<BR>"
 
 	dat += {"

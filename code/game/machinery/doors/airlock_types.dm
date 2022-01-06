@@ -40,6 +40,7 @@
 	icon = 'icons/obj/structures/doors/Doorglass.dmi'
 	opacity = 0
 	glass = 1
+	movement_sound = 'sound/machines/windowdoor.ogg'
 
 /obj/structure/machinery/door/airlock/centcom
 	name = "\improper Airlock"
