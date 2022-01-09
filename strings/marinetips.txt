@@ -59,3 +59,8 @@ CIC staff can track every USCM-aligned person via the suit sensors console and o
 When the M7 RPG is fired, it creates a substantial shockwave behind it that can stun and harm marines standing too close. Watch your backblast!
 Remember that you need to put a defibrillator's paddles away in order to store it.
 W-Y PMCs do not have marine IFF. Don't fire smartguns through them!
+To talk on multiple radio channels at once, put a COMMA [,] before your message and add up to four prefixes. E.g, ,abcd talks on all squad channels at once.
+Put .w or :w before your message to whisper. Another way to whisper is to use the verb "whisper" in the IC tab or command bar.
+For Vehicle Crewmen : it is often safer to repair the parts of your APC or tank inside the vehicle than outside it.
+It is almost always faster to do surgery manually than in the autodoc.
+To check your skills, go to the IC tab and click "view skills".
