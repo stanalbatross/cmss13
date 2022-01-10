@@ -2,6 +2,10 @@ turf/open/floor/cobaltite
 	icon = 'icons/turf/leucanth.dmi'
 	icon_state = "cobaltite_gravel"
 
+turf/open/floor/cobaltite/ex_act()
+
+turf/open/floor/cobaltite/fire_act()
+
 turf/open/floor/cobaltite/edge
 	icon_state = "cobaltite_gravel_edge"
 

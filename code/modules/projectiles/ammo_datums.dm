@@ -2176,6 +2176,13 @@
 	..()
 
 
+/datum/ammo/ichor
+	icon_state = "ichor"
+	damage_type = BURN
+	max_range = 5
+	accuracy = HIT_ACCURACY_TIER_1
+	damage = 20
+
 /*
 //======
 					Xeno Spits

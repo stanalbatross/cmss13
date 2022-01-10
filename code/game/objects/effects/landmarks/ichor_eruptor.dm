@@ -99,3 +99,7 @@
 
 	var/dead_time = ((rand(1,5) * 5) + (20 * (100/eruption_power))) MINUTES
 	addtimer(CALLBACK(src, .proc/rumble, 0), dead_time, TIMER_UNIQUE)
+
+	//screen shake all clients in range
+	//explosion at epicenter
+	explosion(src, -1, 0, 2, 3, 0) //stollen from implant code (LOL)
