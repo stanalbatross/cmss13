@@ -14,14 +14,22 @@
 
 /obj/item/reagent_container/glass/watertank/Initialize(mapload)
 	. = ..()
-	overlays += "[icon_state]_nozzle"
 	noz = make_noz()
 	noz.AddElement(/datum/element/drop_retrieval/mister)
+	update_icon()
 
 /obj/item/reagent_container/glass/watertank/Initialize()
 	. = ..()
-	reagents.add_reagent("cleaner", 500)
-	update_icon()
+	reagents.add_reagent("cleaner", volume)
+
+/obj/item/reagent_container/glass/watertank/update_icon()
+	if(noz == null || QDELETED(noz))
+		overlays -= "[icon_state]_nozzle"
+	else
+		overlays += "[icon_state]_nozzle"
+
+	. = ..()
+
 
 /obj/item/reagent_container/glass/watertank/Destroy()
 	QDEL_NULL(noz)
@@ -40,16 +48,15 @@
 		noz = make_noz()
 		noz.AddElement(/datum/element/drop_retrieval/mister)
 	if(noz in src)
+		update_icon()
 		//Detach the nozzle into the user's hands
-		overlays -= "[icon_state]_nozzle"
 		if(!user.put_in_hands(noz))
 			to_chat(user, SPAN_WARNING("You need a free hand to hold the mister!"))
-			overlays += "[icon_state]_nozzle"
+			update_icon()
 			return
 	else
 		//Remove from their hands and put back "into" the tank
 		remove_noz()
-		overlays += "[icon_state]_nozzle"
 
 
 
@@ -63,11 +70,10 @@
 
 /obj/item/reagent_container/glass/watertank/proc/remove_noz()
 	qdel(noz)
-	icon_state = initial(icon_state)
-	overlays += "[icon_state]_nozzle"
+	update_icon()
 	if(!QDELETED(noz))
 		qdel(noz)
-		icon_state = initial(icon_state)
+		update_icon()
 
 /obj/item/reagent_container/glass/watertank/attack_hand(mob/user, list/modifiers)
 	if (user.get_item_by_slot(WEAR_BACK) == src)
@@ -211,9 +217,18 @@
 /obj/item/reagent_container/glass/watertank/atmos/make_noz()
 	return new /obj/item/reagent_container/spray/mister/atmos(src)
 
-/obj/item/reagent_container/glass/watertank/atmos/dropped(mob/user)
+/obj/item/reagent_container/glass/watertank/atmos/afterattack(obj/O as obj, mob/user as mob, proximity)
+	if(!proximity) // this replaces and improves the get_dist(src,O) <= 1 checks used previously
+		return
+	if (istype(O, /obj/structure/reagent_dispensers/watertank) && src.reagents.total_volume < volume)
+		O.reagents.trans_to(src, volume)
+		to_chat(user, SPAN_NOTICE(" You crack the cap off the top of the [src] and fill it back up again with water from the [O]."))
+		playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
+		return
+	else if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == volume)
+		to_chat(user, SPAN_NOTICE(" The [src] is already full!"))
+		return
 	..()
-	icon_state = initial(icon_state)
 
 /obj/item/reagent_container/spray/mister/atmos
 	name = "extinguisher nozzle"
