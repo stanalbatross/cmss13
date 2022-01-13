@@ -21,7 +21,8 @@
 
 /obj/structure/flora/bulb_ichor/bullet_act(obj/item/projectile/P)
 	. = ..()
-	Destroy()
+	if(P.damage_type == BRUTE) //bad code
+		Destroy()
 
 /obj/structure/flora/bulb_ichor/Destroy()
 	playsound(src.loc, "sound/effects/splat.ogg", 25)

@@ -2182,6 +2182,13 @@
 	max_range = 5
 	accuracy = HIT_ACCURACY_TIER_1
 	damage = 20
+	flags_ammo_behavior = AMMO_STRIKES_SURFACE
+
+/datum/ammo/ichor/on_hit_turf(turf/T, obj/item/projectile/P)
+	. = ..()
+	//add splash effect here, once I animate it :o)
+
+
 
 /*
 //======
