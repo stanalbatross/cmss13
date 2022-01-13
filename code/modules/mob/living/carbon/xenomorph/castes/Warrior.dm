@@ -121,7 +121,7 @@
 	name = "Base Warrior Behavior Delegate"
 
 	var/stored_shield_max = 160
-	var/stored_shield_per_slash = 40
+	var/stored_shield_per_slash = 20
 	var/datum/component/shield_component
 
 /datum/behavior_delegate/warrior_base/New()
