@@ -269,6 +269,9 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 				if(istype(shuttle, /datum/shuttle/ferry/marine) && is_ground_level(z))
 					var/datum/shuttle/ferry/marine/shuttle1 = shuttle
 
+				if(!crash_target)
+					crash_target = pick(almayer_ship_sections)
+
 					shuttle1.true_crash_target_section = crash_target
 
 					// If the AA is protecting the target area, pick any other section to crash into at random
