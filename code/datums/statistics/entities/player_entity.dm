@@ -9,7 +9,9 @@
 	var/name
 	var/ckey // "cakey"
 	var/list/datum/entity/player_stats = list()
-	var/list/datum/entity/statistic/death/death_stats = list()
+	var/list/datum/entity/statistic/death/DEATHS = list()
+	var/list/datum/entity/statistic/medal/MEDALS = list()
+	var/list/datum/entity/statistic/niche/NICHE = list()
 	var/menu = 0
 	var/subMenu = 0
 	var/dataMenu = 0
@@ -17,13 +19,6 @@
 	var/path
 	var/savefile_version
 	var/save_loaded = FALSE
-
-/datum/entity/player_entity/proc/get_playtime(var/branch, var/type)
-	var/playtime = 0
-	if(player_stats["[branch]"])
-		var/datum/entity/player_stats/branch_stat = player_stats["[branch]"]
-		playtime += branch_stat.get_playtime(type)
-	return playtime
 
 /datum/entity/player_entity/proc/setup_human_stats()
 	if(player_stats["human"] && !isnull(player_stats["human"]))

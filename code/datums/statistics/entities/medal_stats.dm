@@ -10,6 +10,8 @@
 	var/giver_name
 	var/giver_player_id
 
+BSQL_PROTECT_DATUM(/datum/entity/statistic/medal)
+
 /datum/entity_meta/statistic_medal
     entity_type = /datum/entity/statistic/medal
     table_name = "log_player_statistic_medal"
@@ -23,33 +25,61 @@
         "citation" = DB_FIELDTYPE_STRING_MAX,
 
         "giver_name" = DB_FIELDTYPE_STRING_LARGE,
-		"giver_player_id" = DB_FIELDTYPE_BIGINT
+        "giver_player_id" = DB_FIELDTYPE_BIGINT
     )
+
+/datum/view_record/statistic_medal
+	var/player_id
+	var/round_id
+
+	var/medal_type
+	var/recipient_name
+	var/recipient_role
+	var/citation
+
+	var/giver_name
+	var/giver_player_id
+
+/datum/entity_view_meta/statistic_medal_ordered
+    root_record_type = /datum/entity/statistic/medal
+    destination_entity = /datum/view_record/statistic_medal
+    fields = list(
+        "player_id",
+        "round_id",
+
+        "medal_type",
+        "recipient_name",
+        "recipient_role",
+        "citation",
+
+        "giver_name",
+        "giver_player_id",
+    )
+    order_by = list("player_id" = DB_ORDER_BY_DEFAULT)
 
 /datum/entity/player_entity/proc/track_medal_earned(var/new_medal_type, var/mob/new_recipient, var/new_recipient_role, var/new_citation, var/mob/giver)
 	if(!new_medal_type || !new_recipient || new_recipient.statistic_exempt || !new_recipient_role || !new_citation || !giver)
 		return
 
-	var/datum/entity/statistic/medal/new_medal = DB_ENTITY(/datum/entity/statistic/medal)
+	var/datum/entity/statistic/medal/Mlog = DB_ENTITY(/datum/entity/statistic/medal)
 	var/datum/entity/player/player_entity = get_player_from_key(new_recipient.ckey)
 	if(player_entity)
-		new_medal.player_id = player_entity.id
+		Mlog.player_id = player_entity.id
 
-	new_medal.round_id = SSperf_logging.round.id
-	new_medal.medal_type = new_medal_type
-	new_medal.recipient_name = new_recipient.real_name
-	new_medal.recipient_role = new_recipient_role
-	new_medal.citation = new_citation
+	Mlog.round_id = SSperf_logging.round.id
+	Mlog.medal_type = new_medal_type
+	Mlog.recipient_name = new_recipient.real_name
+	Mlog.recipient_role = new_recipient_role
+	Mlog.citation = new_citation
 
-	new_medal.giver_name = giver.real_name
+	Mlog.giver_name = giver.real_name
 
 	var/datum/entity/player/giver_player = get_player_from_key(giver.ckey)
 	if(giver_player)
-		new_medal.giver_player_id = giver_player.id
+		Mlog.giver_player_id = giver_player.id
 
-	new_medal.save()
-	new_medal.detach()
+	Mlog.save()
+	Mlog.detach()
 
-	var/datum/entity/player_stats/human/human_stats = setup_human_stats()
-	human_stats.count_niche_stat(STATISTICS_NICHE_MEDALS, 1, new_recipient_role)
-	human_stats.medal_list.Insert(1, new_medal)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_MEDALS, STATISTICS_NICHE_HELP_SUBTYPE, 1, new_recipient.client.player_data.id)
+	MEDALS.Insert(1, Mlog)

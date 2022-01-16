@@ -246,7 +246,7 @@ Works together with spawning an observer, noted above.
 		if(ghost.mind)
 			ghost.mind.original = ghost
 	else if(ghost.mind && ghost.mind.player_entity) //Use else here because track_death_calculations() already calls this.
-		ghost.mind.player_entity.update_panel_data(round_statistics)
+		ghost.mind.player_entity.setup_entity(round_statistics)
 		ghost.mind.original = src
 
 	mind = null
@@ -278,7 +278,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(stat == DEAD)
 		if(mind && mind.player_entity)
-			mind.player_entity.update_panel_data(round_statistics)
+			mind.player_entity.setup_entity(round_statistics)
 		ghostize(TRUE)
 	else
 		var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to return to your body. You can't change your mind so choose wisely!)","Are you sure you want to ghost?","Ghost","Stay in body")
@@ -878,6 +878,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			ref = WEAKREF(H)
 		GLOB.data_core.manifest_modify(name, ref, null, null, "*Deceased*")
 
+
+/mob/dead/observer/verb/view_stats()
+	set category = "Ghost.View"
+	set name = "View Statistics"
+	set desc = "View global and player statistics tied to the game."
+
+	if(client && client.player_entity)
+		client.player_entity.show_statistics(src, round_statistics)
 
 /mob/dead/observer/verb/view_kill_feed()
 	set category = "Ghost.View"

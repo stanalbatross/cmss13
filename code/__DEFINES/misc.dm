@@ -124,7 +124,29 @@
 #define STATISTIC_HUMAN "human"
 
 #define STATISTICS_DEATH_LIST_LEN 10
+#define STATISTICS_KILL_LIST_LEN 10
 
+#define STATISTICS_NICHE_FF_SHOT_HIT                "FF Shot Hit"
+#define STATISTICS_NICHE_SHOT_HIT                   "Shot Hit"
+#define STATISTICS_NICHE_SHOT                       "Shot"
+#define STATISTICS_NICHE_SCREAM                     "Scream"
+#define STATISTICS_NICHE_HIT                        "Hit"
+#define STATISTICS_NICHE_FF_HIT                     "FF Hit"
+#define STATISTICS_NICHE_SLASH                      "Slash"
+#define STATISTICS_NICHE_REVIVE                     "Revive"
+#define STATISTICS_NICHE_REVIVED                    "Revived"
+#define STATISTICS_NICHE_STEPS_WALKED               "Steps"
+#define STATISTICS_NICHE_KILL                       "Kill"
+#define STATISTICS_NICHE_DEATH                      "Death"
+#define STATISTICS_NICHE_KILL_FF                    "Kill FF"
+#define STATISTICS_NICHE_DEATH_FF                   "Death FF"
+#define STATISTICS_NICHE_ROUNDS_PLAYED              "Rounds Played"
+#define STATISTICS_NICHE_ABILITES                   "Abilites"
+#define STATISTICS_NICHE_NICHES                     "Niche"
+
+//base
+#define STATISTICS_NICHE_HELP_SUBTYPE               "ADDITIONAL_STATISTIC"
+#define STATISTICS_NICHE_WEAPON_SUBTYPE             "WEAPON_STATISTIC"
 #define STATISTICS_NICHE_EXECUTION                  "Executions Made"
 #define STATISTICS_NICHE_MEDALS                     "Medals Received"
 #define STATISTICS_NICHE_MEDALS_GIVE                "Medals Given"

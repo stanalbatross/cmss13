@@ -1,4 +1,3 @@
-
 /datum/cause_data
 	var/datum/weakref/weak_mob
 	var/ckey

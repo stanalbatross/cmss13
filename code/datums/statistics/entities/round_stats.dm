@@ -15,6 +15,10 @@
 	var/total_huggers_applied = 0
 	var/total_larva_burst = 0
 
+	var/defcon_level = 5
+	var/objective_points = 0
+	var/total_objective_points = 0
+
 	var/total_projectiles_fired = 0
 	var/total_projectiles_hit = 0
 	var/total_projectiles_hit_human = 0
@@ -61,6 +65,10 @@
 		"total_huggers_applied" = DB_FIELDTYPE_INT,
 		"total_larva_burst" = DB_FIELDTYPE_INT,
 
+		"defcon_level" = DB_FIELDTYPE_INT,
+		"objective_points" = DB_FIELDTYPE_INT,
+		"total_objective_points" = DB_FIELDTYPE_INT,
+
 		"total_projectiles_fired" = DB_FIELDTYPE_INT,
 		"total_projectiles_hit" = DB_FIELDTYPE_INT,
 		"total_projectiles_hit_human" = DB_FIELDTYPE_INT,
@@ -96,80 +104,6 @@
 
 		// Connect map to round
 		round_stats.current_map = new_map
-
-/datum/entity/statistic/round/proc/setup_job_stats(var/job, var/noteworthy = TRUE)
-	if(!job)
-		return
-	var/job_key = strip_improper(job)
-	if(job_stats_list["[job_key]"])
-		var/datum/entity/player_stats/job/S = job_stats_list["[job_key]"]
-		if(!S.display_stat && noteworthy)
-			S.display_stat = noteworthy
-		return S
-	var/datum/entity/player_stats/job/new_stat = new()
-	new_stat.display_stat = noteworthy
-	new_stat.player = src
-	new_stat.name = job_key
-	new_stat.total_rounds_played += 1
-	job_stats_list["[job_key]"] = new_stat
-	return new_stat
-
-/datum/entity/statistic/round/proc/setup_weapon_stats(var/weapon, var/noteworthy = TRUE)
-	if(!weapon)
-		return
-	var/weapon_key = strip_improper(weapon)
-	if(weapon_stats_list["[weapon_key]"])
-		var/datum/entity/weapon_stats/S = weapon_stats_list["[weapon_key]"]
-		if(!S.display_stat && noteworthy)
-			S.display_stat = noteworthy
-		return S
-	var/datum/entity/weapon_stats/new_stat = new()
-	new_stat.display_stat = noteworthy
-	new_stat.player = src
-	new_stat.name = weapon_key
-	weapon_stats_list["[weapon_key]"] = new_stat
-	return new_stat
-
-/datum/entity/statistic/round/proc/setup_caste_stats(var/caste, var/noteworthy = TRUE)
-	if(!caste)
-		return
-	var/caste_key = strip_improper(caste)
-	if(caste_stats_list["[caste_key]"])
-		var/datum/entity/player_stats/caste/S = caste_stats_list["[caste_key]"]
-		if(!S.display_stat && noteworthy)
-			S.display_stat = noteworthy
-		return S
-	var/datum/entity/player_stats/caste/new_stat = new()
-	new_stat.display_stat = noteworthy
-	new_stat.player = src
-	new_stat.name = caste_key
-	new_stat.total_rounds_played += 1
-	caste_stats_list["[caste_key]"] = new_stat
-	return new_stat
-
-/datum/entity/statistic/round/proc/setup_ability(var/ability)
-	if(!ability)
-		return
-	var/ability_key = strip_improper(ability)
-	if(abilities_used["[ability_key]"])
-		return abilities_used["[ability_key]"]
-	var/datum/entity/statistic/S = new()
-	S.name = ability_key
-	S.value = 0
-	abilities_used["[ability_key]"] = S
-	return S
-
-/datum/entity/statistic/round/proc/recalculate_nemesis()
-	for(var/caste_statistic in caste_stats_list)
-		var/datum/entity/player_stats/caste/caste_entity = caste_stats_list[caste_statistic]
-		caste_entity.recalculate_nemesis()
-	for(var/job_statistic in job_stats_list)
-		var/datum/entity/player_stats/job/job_entity = job_stats_list[job_statistic]
-		job_entity.recalculate_nemesis()
-
-/datum/entity/statistic/round/proc/track_ability_usage(var/ability, var/amount = 1)
-	var/datum/entity/statistic/S = setup_ability(ability)
-	S.value += amount
 
 /datum/entity/statistic/round/proc/setup_faction(var/faction)
 	if(!faction)
@@ -280,7 +214,6 @@
 			"total_damage" = damage_list,
 			"time_of_death" = new_time_of_death,
 			"total_time_alive" = new_total_time_alive,
-			"total_damage_taken" = new_death.total_damage_taken,
 			"x" = new_death.x,
 			"y" = new_death.y,
 			"z" = new_death.z
@@ -361,6 +294,10 @@
 	stats += "Total shots fired: [total_projectiles_fired]\n"
 	stats += "Total friendly fire instances: [total_friendly_fire_instances]\n"
 	stats += "Total friendly fire kills: [total_friendly_fire_kills]\n"
+
+	stats += "DEFCON level: [defcon_level]\n"
+	stats += "Objective points earned: [objective_points]\n"
+	stats += "Objective points total: [total_objective_points]\n"
 
 	stats += "Marines remaining: [end_of_round_marines]\n"
 	stats += "Xenos remaining: [end_of_round_xenos]\n"
