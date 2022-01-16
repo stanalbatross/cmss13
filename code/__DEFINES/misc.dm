@@ -143,10 +143,16 @@
 #define STATISTICS_NICHE_ROUNDS_PLAYED              "Rounds Played"
 #define STATISTICS_NICHE_ABILITES                   "Abilites"
 #define STATISTICS_NICHE_NICHES                     "Niche"
+#define STATISTICS_NICHE_NOT_NICHES                 "Not Niche"
 
-//base
+//TYPE
 #define STATISTICS_NICHE_HELP_SUBTYPE               "ADDITIONAL_STATISTIC"
 #define STATISTICS_NICHE_WEAPON_SUBTYPE             "WEAPON_STATISTIC"
+#define STATISTICS_NICHE_JOB_SUBTYPE                "JOB_STATISTIC"
+#define STATISTICS_NICHE_CASTLE_SUBTYPE             "CASTLE_STATISTIC"
+#define STATISTICS_NICHE_TYPE_BASE_XENO             "XENO_STATISTIC"
+#define STATISTICS_NICHE_TYPE_BASE_HUMAN            "HUMAN_STATISTIC"
+
 #define STATISTICS_NICHE_EXECUTION                  "Executions Made"
 #define STATISTICS_NICHE_MEDALS                     "Medals Received"
 #define STATISTICS_NICHE_MEDALS_GIVE                "Medals Given"
