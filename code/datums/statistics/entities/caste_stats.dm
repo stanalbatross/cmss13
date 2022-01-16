@@ -7,7 +7,7 @@
 		if(N.niche_statistic_name_first == name)
 			if(N.niche_statistic_name_second == STATISTICS_NICHE_KILL)
 				total_kills = N.niche_value
-			else if(STATISTICS_NICHE_ABILITES)
+			else if(N.niche_statistic_name_second == STATISTICS_NICHE_ABILITES)
 				if(!niche_stats["[N.niche_statistic_name_second]"])
 					var/datum/entity/statistic/NS = new()
 					NS.name = N.niche_statistic_name_second
