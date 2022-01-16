@@ -879,7 +879,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		GLOB.data_core.manifest_modify(name, ref, null, null, "*Deceased*")
 
 
-/mob/dead/observer/verb/view_stats()
+/mob/dead/observer/verb/view_statistic()
 	set category = "Ghost.View"
 	set name = "View Statistics"
 	set desc = "View global and player statistics tied to the game."

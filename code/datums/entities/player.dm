@@ -42,10 +42,17 @@
 	var/list/datum/entity/player_note/notes
 	var/list/datum/entity/player_job_ban/job_bans
 	var/list/datum/entity/player_time/playtimes
+	var/list/datum/entity/statistic/death
+	var/list/datum/entity/statistic/medal
+	var/list/datum/entity/statistic/niche
+	var/datum/entity/player_entity/player_entity
 	var/list/playtime_data // For the NanoUI menu
 	var/client/owning_client
 
 BSQL_PROTECT_DATUM(/datum/entity/player)
+BSQL_PROTECT_DATUM(/datum/entity/death)
+BSQL_PROTECT_DATUM(/datum/entity/medal)
+BSQL_PROTECT_DATUM(/datum/entity/niche)
 
 /datum/entity_meta/player
 	entity_type = /datum/entity/player
@@ -364,6 +371,10 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/on_read_timestat))
 
+	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_d))
+	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_m))
+	DB_FILTER(/datum/entity/statistic/niche, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_n))
+
 	if(!migrated_bans && !migrating_bans)
 		migrating_bans = TRUE
 		INVOKE_ASYNC(src, /datum/entity/player.proc/migrate_bans)
@@ -372,8 +383,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
 	if(time_ban_admin_id)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
-
-
 
 /datum/entity/player/proc/on_read_notes(var/list/datum/entity/player_note/_notes)
 	notes_loaded = TRUE
@@ -400,6 +409,21 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		for(var/datum/entity/player_time/S in _stat)
 			LAZYSET(playtimes, S.role_id, S)
 
+/datum/entity/player/proc/statistic_load_d(var/list/datum/entity/statistic/death/D)
+	for(var/datum/entity/statistic/death/S in D)
+		LAZYSET(death, S.id, S)
+		player_entity.DEATHS.Insert(1, S)
+
+/datum/entity/player/proc/statistic_load_m(var/list/datum/entity/statistic/medal/M)
+	for(var/datum/entity/statistic/medal/S in M)
+		LAZYSET(medal, S.id, S)
+		player_entity.MEDALS.Insert(1, S)
+
+/datum/entity/player/proc/statistic_load_n(var/list/datum/entity/statistic/niche/N)
+	for(var/datum/entity/statistic/niche/S in N)
+		LAZYSET(niche, S.id, S)
+		player_entity.NICHE.Insert(1, S)
+	player_entity.update_panel_data()
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
@@ -425,6 +449,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_login = "[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]"
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
+	player_data.player_entity = player_entity
 	player_data.save()
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.sync()

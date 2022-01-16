@@ -265,9 +265,10 @@
 				HS.stored_larva++
 				HS.hive_ui.update_pooled_larva()
 
-	if(character.mind && character.mind.player_entity)
-		var/datum/entity/player_entity/player = character.mind.player_entity
-		if(player.get_playtime(STATISTIC_HUMAN) == 0 && player.get_playtime(STATISTIC_XENO) == 0)
+	if(character.mind && character.client.player_data)
+		var/list/xeno_playtimes = LAZYACCESS(character.client.player_data.playtime_data, "stored_xeno_playtime")
+		var/list/marine_playtimes = LAZYACCESS(character.client.player_data.playtime_data, "stored_human_playtime")
+		if(!xeno_playtimes && !marine_playtimes)
 			msg_admin_niche("NEW PLAYER: <b>[key_name(character, 1, 1, 0)] (<A HREF='?_src_=admin_holder;ahelp=adminmoreinfo;extra=\ref[character]'>?</A>)</b>. IP: [character.lastKnownIP], CID: [character.computer_id]")
 
 	character.client.init_statbrowser() // init verbs for the late join

@@ -16,6 +16,7 @@
 	var/total_kills = 0
 	var/time_of_death
 	var/total_time_alive
+	var/total_damage_taken
 
 	var/total_brute = 0
 	var/total_burn = 0
@@ -49,6 +50,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
         "total_kills" = DB_FIELDTYPE_INT,
         "time_of_death" = DB_FIELDTYPE_BIGINT,
         "total_time_alive" = DB_FIELDTYPE_BIGINT,
+        "total_damage_taken" = DB_FIELDTYPE_INT,
 
         "total_brute" = DB_FIELDTYPE_INT,
         "total_burn" = DB_FIELDTYPE_INT,
@@ -78,6 +80,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	var/total_kills = 0
 	var/time_of_death
 	var/total_time_alive
+	var/total_damage_taken
 
 	var/total_brute = 0
 	var/total_burn = 0
@@ -117,6 +120,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
         "total_kills",
         "time_of_death",
         "total_time_alive",
+        "total_damage_taken",
 
         "total_brute",
         "total_burn",
@@ -177,12 +181,13 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	Dlog.total_steps = life_steps_total
 	Dlog.total_kills = life_kills_total
 	Dlog.total_time_alive = life_time_total
+	Dlog.total_damage_taken = life_damage_taken_total
 
-	var/observer_message = "<b>[real_name]</b> умер"
+	var/observer_message = "<b>[real_name]</b> died"
 	if(cause_data && cause_data.cause_name)
-		observer_message += " от <b>[cause_name]</b>"
+		observer_message += " to <b>[cause_name]</b>"
 	if(A.name)
-		observer_message += " в <b>[A.name]</b>"
+		observer_message += " at \the <b>[A.name]</b>"
 
 	msg_admin_attack(observer_message, death_loc.x, death_loc.y, death_loc.z)
 

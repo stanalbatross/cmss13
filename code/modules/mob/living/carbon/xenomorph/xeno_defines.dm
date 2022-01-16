@@ -137,12 +137,6 @@
 
 	total_xeno_playtime += get_job_playtime(src, JOB_XENOMORPH)
 
-	if(player_entity)
-		var/past_xeno_playtime = player_entity.get_playtime(STATISTIC_XENO)
-		if(past_xeno_playtime)
-			total_xeno_playtime += past_xeno_playtime
-
-
 	cached_xeno_playtime = total_xeno_playtime
 
 	return total_xeno_playtime
