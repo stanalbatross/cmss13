@@ -95,6 +95,15 @@
 				client.player_data.ui_interact(src)
 			return 1
 
+		if("show_statistics")
+			if(!SSentity_manager.ready)
+				to_chat(src, "DB еще запускается, пожалуйста подождите")
+				return
+			if(client.player_entity)
+				client.player_entity.menu = 1
+				client.player_entity.show_statistics(src, null)
+			return 1
+
 		if("ready")
 			if( (SSticker.current_state <= GAME_STATE_PREGAME) && !ready) // Make sure we don't ready up after the round has started
 				ready = TRUE

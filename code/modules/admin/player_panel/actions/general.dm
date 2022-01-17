@@ -212,6 +212,14 @@
 
 	return TRUE
 
+/datum/player_action/access_statistics
+	action_tag = "access_statistics"
+	name = "Access Statistics"
+
+/datum/player_action/access_statistics/act(var/client/user, var/mob/target, var/list/params)
+	target?.client?.player_entity.ui_interact(user.mob)
+
+	return TRUE
 
 /datum/player_action/access_admin_datum
 	action_tag = "access_admin_datum"
