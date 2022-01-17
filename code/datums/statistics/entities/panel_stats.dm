@@ -117,6 +117,7 @@
 					"total_damage" = damage_list,
 					"time_of_death" = duration2text(SD.time_of_death),
 					"total_time_alive" = duration2text(SD.total_time_alive),
+					"total_damage_taken" = SD.total_damage_taken,
 					"x" = SD.x,
 					"y" = SD.y,
 					"z" = SD.z
@@ -151,6 +152,7 @@
 						"total_damage" = damage_list,
 						"time_of_death" = duration2text(SD.time_of_death),
 						"total_time_alive" = duration2text(SD.total_time_alive),
+						"total_damage_taken" = SD.total_damage_taken,
 						"x" = SD.x,
 						"y" = SD.y,
 						"z" = SD.z
@@ -205,6 +207,7 @@
 					"total_damage" = damage_list,
 					"time_of_death" = duration2text(SD.time_of_death),
 					"total_time_alive" = duration2text(SD.total_time_alive),
+					"total_damage_taken" = SD.total_damage_taken,
 					"x" = SD.x,
 					"y" = SD.y,
 					"z" = SD.z
@@ -275,6 +278,7 @@
 					"total_damage" = damage_list,
 					"time_of_death" = duration2text(SD.time_of_death),
 					"total_time_alive" = duration2text(SD.total_time_alive),
+					"total_damage_taken" = SD.total_damage_taken,
 					"x" = SD.x,
 					"y" = SD.y,
 					"z" = SD.z
@@ -408,6 +412,7 @@
 			"total_damage" = damage_list,
 			"time_of_death" = new_time_of_death,
 			"total_time_alive" = new_total_time_alive,
+			"total_damage_taken" = S.total_damage_taken,
 			"x" = S.x,
 			"y" = S.y,
 			"z" = S.z

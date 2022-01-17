@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Title: Player statistics viewing panel, pulls data from statistic entities from the game.
 Used in: /code/datums/statistics/entities/player_entity.dm
  -->
@@ -13,9 +13,6 @@ Used in: /code/datums/statistics/entities/player_entity.dm
         {{:helper.link('General', null, {'subMenu' : 0, 'dataMenu': 0}, data.subMenu == 0 ? 'selected' : null)}}
         {{:helper.link('Participants', null, {'subMenu' : 1, 'dataMenu': 0}, data.subMenu == 1 ? 'selected' : null)}}
         {{:helper.link('Deaths', null, {'subMenu' : 2, 'dataMenu': 0}, data.subMenu == 2 ? 'selected' : null)}}
-        {{:helper.link('Jobs', null, {'subMenu' : 3, 'dataMenu': 0}, data.subMenu == 3 ? 'selected' : null)}}
-        {{:helper.link('Castes', null, {'subMenu' : 4, 'dataMenu': 0}, data.subMenu == 4 ? 'selected' : null)}}
-        {{:helper.link('Weapons', null, {'subMenu' : 5, 'dataMenu': 0}, data.subMenu == 5 ? 'selected' : null)}}
     {{else data.menu == 1}}
         {{if data.human}}
             {{:helper.link('Human', null, {'subMenu' : 0, 'dataMenu' : 0}, data.subMenu == 0 ? 'selected' : null)}}
@@ -278,6 +275,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             {{:death_value.total_time_alive}}
                         </div>
                         <div class="itemLabelClear">
+                            Damage Taken:
+                        </div>
+                        <div class="itemContentSmallRight">
+                            {{:death_value.total_damage_taken}}
+                        </div>
+                        <div class="itemLabelClear">
                             Location:
                         </div>
                         <div class="itemContentSmallRight">
@@ -404,6 +407,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                                 {{:death_value.total_time_alive}}
                             </div>
                             <div class="itemLabelClear">
+                                Damage Taken:
+                            </div>
+                            <div class="itemContentSmallRight">
+                                {{:death_value.total_damage_taken}}
+                            </div>
+                            <div class="itemLabelClear">
                                 Location:
                             </div>
                             <div class="itemContentSmallRight">
@@ -507,6 +516,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
 				                                {{:death_value.total_kills}}
 				                            </div>
 											<hr>
+					                        <div class="itemLabelClear">
+					                            Damage Taken:
+					                        </div>
+					                        <div class="itemContentSmallRight">
+					                            {{:death_value.total_damage_taken}}
+					                        </div>
 											<div class="itemLabelClearBoth">
 												<b>Total Damage:</b>
 											</div>
@@ -677,6 +692,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             </div>
                             <div class="itemContentSmallRight">
                                 {{:death_value.total_time_alive}}
+                            </div>
+                            <div class="itemLabelClear">
+                                Damage Taken:
+                            </div>
+                            <div class="itemContentSmallRight">
+                                {{:death_value.total_damage_taken}}
                             </div>
                             <div class="itemLabelClear">
                                 Location:
