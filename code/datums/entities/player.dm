@@ -434,6 +434,8 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 	P.sync()
 	return P
 
+/client/var/datum/entity/player/player_data
+
 /client/proc/load_player_data()
 	set waitfor=0
 	WAIT_DB_READY
