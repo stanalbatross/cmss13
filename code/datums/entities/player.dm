@@ -423,7 +423,7 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 	for(var/datum/entity/statistic/niche/S in N)
 		LAZYSET(niche, S.id, S)
 		player_entity.NICHE.Insert(1, S)
-	player_entity.update_panel_data()
+	player_entity.setup_entity()
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
@@ -433,8 +433,6 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 	P.save()
 	P.sync()
 	return P
-
-/client/var/datum/entity/player/player_data
 
 /client/proc/load_player_data()
 	set waitfor=0
