@@ -4,7 +4,8 @@
 
 /datum/entity/player_stats/weapon_stats/proc/get_recalculate()
 	for(var/datum/entity/statistic/niche/N in player.NICHE)
-		if(N.niche_statistic_name_first == name)
+		var/weapon_name = N.niche_statistic_name_first
+		if(weapon_name == name)
 			if(N.niche_statistic_name_second == STATISTICS_NICHE_KILL)
 				total_kills = N.niche_value
 			else if(N.niche_statistic_name_last == STATISTICS_NICHE_NICHES)

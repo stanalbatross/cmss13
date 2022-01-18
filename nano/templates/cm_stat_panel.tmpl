@@ -286,24 +286,6 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                         <div class="itemContentSmallRight">
                             ({{:death_value.x}}, {{:death_value.y}}, {{:death_value.z}})
                         </div>
-                        <div class="itemLabelClear">
-                            Total Kills:
-                        </div>
-                        <div class="itemContentSmallRight">
-                            {{:death_value.total_kills}}
-                        </div>
-						<hr>
-                        <div class="itemLabelClearBoth">
-                            <b>Total Damage:</b>
-                        </div>
-                        {{props death_value.total_damage :damage_value:damage_index}}
-							<div class="itemLabelClear">
-								{{:damage_value.name}}:
-                            </div>
-                            <div class="itemContentSmallRight">
-                                {{:damage_value.value}}
-                            </div>
-                        {{/props}}
                     </fieldset>
                 {{/props}}
             {{/if}}

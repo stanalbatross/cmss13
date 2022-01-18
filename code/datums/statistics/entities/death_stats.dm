@@ -181,11 +181,11 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	Dlog.total_time_alive = life_time_total
 	Dlog.total_damage_taken = life_damage_taken_total
 
-	var/observer_message = "<b>[real_name]</b> умер"
+	var/observer_message = "<b>[real_name]</b> has died"
 	if(cause_data && cause_data.cause_name)
-		observer_message += " от <b>[cause_name]</b>"
+		observer_message += " to <b>[cause_name]</b>"
 	if(A.name)
-		observer_message += " в <b>[A.name]</b>"
+		observer_message += " at \the <b>[A.name]</b>"
 
 	msg_admin_attack(observer_message, death_loc.x, death_loc.y, death_loc.z)
 
