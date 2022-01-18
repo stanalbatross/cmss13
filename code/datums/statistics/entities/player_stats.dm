@@ -67,15 +67,15 @@
 //************************
 
 //KILLS
-/datum/entity/player_stats/proc/count_personal_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/kill_type)
+/datum/entity/player_stats/proc/count_personal_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
 	return
 
-/datum/entity/player_stats/proc/count_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/kill_type)
+/datum/entity/player_stats/proc/count_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
 	return
 
 //DEATHS
-/datum/entity/player_stats/proc/count_personal_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/death_type)
+/datum/entity/player_stats/proc/count_personal_death(var/role, var/weapon, var/role, var/id, var/death_type, var/amount = 1)
 	return
 
-/datum/entity/player_stats/proc/count_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/death_type)
+/datum/entity/player_stats/proc/count_death(var/role, var/weapon, var/id, var/death_type, var/amount = 1)
 	return

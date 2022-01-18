@@ -130,21 +130,15 @@
 //************************
 
 //KILLS
-/datum/entity/player_stats/xeno/count_personal_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
-	track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, kill_type, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-	recalculate_top_caste()
-
-/datum/entity/player_stats/xeno/count_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
-	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, kill_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+/datum/entity/player_stats/xeno/count_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, kill_type, STATISTICS_NICHE_NICHES, amount, id)
 	if(role)
-		count_personal_kill(cause_name, role, player_data, kill_type)
+		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, kill_type, STATISTICS_NICHE_NOT_NICHES, amount, id)
+		recalculate_top_caste()
 
 //DEATHS
-/datum/entity/player_stats/xeno/count_personal_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
-	track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
-	recalculate_top_caste()
-
-/datum/entity/player_stats/xeno/count_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
-	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+/datum/entity/player_stats/xeno/count_death(var/role, var/weapon, var/id, var/death_type, var/amount = 1)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, death_type, STATISTICS_NICHE_NICHES, amount, id)
 	if(role)
-		count_personal_death(cause_name, role, player_data, death_type)
+		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, death_type, STATISTICS_NICHE_NICHES, amount, id)
+		recalculate_top_caste()

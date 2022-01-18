@@ -202,7 +202,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 /*******************************************************************************************/
 // KILLS - DEATHS
 /*******************************************************************************************/
-	if(isXeno(src))
+	if(isXeno(cause_mob))
 		var/datum/entity/player_stats/xeno/xeno_stats = cause_mob.mind.setup_xeno_stats()
 		if(xeno_stats)
 			if(cause_mob.faction != faction)
@@ -210,7 +210,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 			else
 				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL)
 				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL_FF)
-	if(ishuman(src))
+	if(ishuman(cause_mob))
 		var/datum/entity/player_stats/human/human_stats = cause_mob.mind.setup_human_stats()
 		if(human_stats)
 			if(cause_mob.faction != faction)
