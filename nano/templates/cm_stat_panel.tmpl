@@ -427,28 +427,26 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                                 <div class="itemLabelClearBoth">
                                     <b>{{:value.name}}</b>
                                 </div>
-                                {{if value.total_kills}}
-                                    <div class="itemLabelClear">
-                                        Total Kills:
-                                    </div>
-                                    <div class="itemContentSmallRight">
-                                        {{:value.total_kills}}
-                                    </div>
-                                {{/if}}
-                                {{props value.niche_stats :niche_value:niche_index}}
-                                    <div class="itemLabelClear">
-                                        {{:niche_value.name}}:
-                                    </div>
-                                    <div class="itemContentSmallRight">
-                                        {{:niche_value.value}}
-                                    </div>
-                                {{/props}}
-                                {{if data.human.death_list}}
+			                    <div class="itemLabelClear">
+			                        Total Kills:
+			                    </div>
+			                    <div class="itemContentSmallRight">
+			                        {{:value.total_kills}}
+			                    </div>
+			                    {{props value.niche_stats :niche_value:niche_index}}
+			                        <div class="itemLabelClear">
+			                            {{:niche_value.name}}:
+			                        </div>
+			                        <div class="itemContentSmallRight">
+			                            {{:niche_value.value}}
+			                        </div>
+			                    {{/props}}
+                                {{if value.list_killed}}
 									<hr>
                                     <div class="itemLabelClearBoth">
                                         <b>Kills List:</b>
                                     </div>
-				                    {{props data.human.list_killed :death_value:death_index}}
+				                    {{props value.list_killed :death_value:death_index}}
 				                        <fieldset class="fieldContainerSpaced">
 				                            <div class="itemLabelClearBoth">
 				                                <b>{{:death_value.mob_name}}</b>
