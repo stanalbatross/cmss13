@@ -766,13 +766,13 @@ var/const/MAX_SAVE_SLOTS = 10
 				if("general")
 					var/msg = input(usr,"Give a physical description of your character. This will be shown regardless of clothing.","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message
 					if(msg != null)
-						msg = copytext(msg, 1, 256)
+						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 						msg = html_encode(msg)
 					flavor_texts[href_list["task"]] = msg
 				else
 					var/msg = input(usr,"Set the flavor text for your [href_list["task"]].","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message
 					if(msg != null)
-						msg = copytext(msg, 1, 256)
+						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 						msg = html_encode(msg)
 					flavor_texts[href_list["task"]] = msg
 			SetFlavorText(user)
