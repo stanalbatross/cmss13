@@ -21,3 +21,18 @@
 					niche_stats["[N.niche_statistic_name_second]"] = NS
 				var/datum/entity/statistic/S = niche_stats["[N.niche_statistic_name_second]"]
 				S.value = N.niche_value
+
+/datum/entity/player_stats/caste/recalculate_nemesis()
+	var/list/causes = list()
+	for(var/datum/entity/statistic/death/stat_entity in player.DEATHS)
+		if(!stat_entity.cause_name || stat_entity.role_name != name)
+			continue
+		causes["[stat_entity.cause_name]"] += 1
+		if(!nemesis)
+			nemesis = new()
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = 1
+			continue
+		if(causes["[stat_entity.cause_name]"] > nemesis.value)
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = causes["[stat_entity.cause_name]"]

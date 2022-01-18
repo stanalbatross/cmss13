@@ -93,6 +93,21 @@
 		if(stat_entity.total_kills > top_weapon.total_kills)
 			top_weapon = stat_entity
 
+/datum/entity/player_stats/human/recalculate_nemesis()
+	var/list/causes = list()
+	for(var/datum/entity/statistic/death/stat_entity in player.DEATHS)
+		if(!stat_entity.cause_name || stat_entity.faction_name == "Normal Hive")
+			continue
+		causes["[stat_entity.cause_name]"] += 1
+		if(!nemesis)
+			nemesis = new()
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = 1
+			continue
+		if(causes["[stat_entity.cause_name]"] > nemesis.value)
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = causes["[stat_entity.cause_name]"]
+
 /datum/entity/player_stats/human/proc/track_job_playing(var/job, var/client/client)
 	if(!job)
 		return
@@ -166,52 +181,37 @@
 	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_SCREAM, STATISTICS_NICHE_NICHES, amount, client.player_data.id)
 	track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, job, STATISTICS_NICHE_SCREAM, STATISTICS_NICHE_NICHES, amount, client.player_data.id)
 
-/datum/entity/player_stats/human/count_niche_stat(var/client/client, var/niche_name, var/amount = 1, var/role)
+/datum/entity/player_stats/human/count_niche_stat(var/client/client, var/niche_name, var/amount = 1, var/role, var/weapon)
 	if(!niche_name)
 		return
 	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, niche_name, STATISTICS_NICHE_NICHES, amount, client.player_data.id)
 	if(role)
 		track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, niche_name, STATISTICS_NICHE_NICHES, amount, client.player_data.id)
-
+	if(weapon)
+		track_niche_earned(STATISTICS_NICHE_WEAPON_SUBTYPE, weapon, niche_name, STATISTICS_NICHE_NICHES, amount, client.player_data.id)
 
 //************************
 //Stat Procs - kills/death
 //************************
 
 //KILLS
-/datum/entity/player_stats/human/count_personal_kill(var/cause, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, STATISTICS_NICHE_KILL, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-		if(cause)
-			track_niche_earned(STATISTICS_NICHE_WEAPON_SUBTYPE, cause, STATISTICS_NICHE_KILL, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-	else
-		track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, STATISTICS_NICHE_KILL_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(cause)
-			track_niche_earned(STATISTICS_NICHE_WEAPON_SUBTYPE, cause, STATISTICS_NICHE_KILL_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
+/datum/entity/player_stats/human/count_personal_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
+	track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, kill_type, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
+	if(cause_name)
+		track_niche_earned(STATISTICS_NICHE_WEAPON_SUBTYPE, cause_name, kill_type, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
+		recalculate_top_weapon()
 
-/datum/entity/player_stats/human/count_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_KILL, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_kill(cause_name, role, player_data)
-	else
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_KILL_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_kill(cause_name, role, player_data, ff_caused)
+/datum/entity/player_stats/human/count_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, kill_type, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
+	if(role)
+		count_personal_kill(cause_name, role, player_data, kill_type)
+		recalculate_top_weapon()
 
 //DEATHS
-/datum/entity/player_stats/human/count_personal_death(var/cause, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, STATISTICS_NICHE_DEATH, STATISTICS_NICHE_NICHES, 1, player_data.id)
-	else
-		track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, STATISTICS_NICHE_DEATH_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
+/datum/entity/player_stats/human/count_personal_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
+	track_niche_earned(STATISTICS_NICHE_JOB_SUBTYPE, role, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
 
-/datum/entity/player_stats/human/count_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_DEATH, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_death(cause_name, role, player_data)
-	else
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_DEATH_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_death(cause_name, role, player_data, ff_caused)
+/datum/entity/player_stats/human/count_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_HELP_SUBTYPE, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+	if(role)
+		count_personal_death(cause_name, role, player_data, death_type)

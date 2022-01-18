@@ -75,6 +75,21 @@
 		if(stat_entity.total_kills > top_caste.total_kills)
 			top_caste = stat_entity
 
+/datum/entity/player_stats/xeno/recalculate_nemesis()
+	var/list/causes = list()
+	for(var/datum/entity/statistic/death/stat_entity in player.DEATHS)
+		if(!stat_entity.cause_name || stat_entity.faction_name != "Normal Hive")
+			continue
+		causes["[stat_entity.cause_name]"] += 1
+		if(!nemesis)
+			nemesis = new()
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = 1
+			continue
+		if(causes["[stat_entity.cause_name]"] > nemesis.value)
+			nemesis.name = stat_entity.cause_name
+			nemesis.value = causes["[stat_entity.cause_name]"]
+
 /datum/entity/player_stats/xeno/proc/track_caste_playing(var/caste, var/client/client)
 	var/datum/entity/player_stats/caste/S = setup_caste_stats(caste)
 	if(!S.round_played)
@@ -115,39 +130,21 @@
 //************************
 
 //KILLS
-/datum/entity/player_stats/xeno/count_personal_kill(var/cause, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, STATISTICS_NICHE_KILL, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-		recalculate_top_caste()
-	else
-		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, STATISTICS_NICHE_KILL_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		recalculate_top_caste()
+/datum/entity/player_stats/xeno/count_personal_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
+	track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, kill_type, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
+	recalculate_top_caste()
 
-/datum/entity/player_stats/xeno/count_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_KILL, STATISTICS_NICHE_NOT_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_kill(cause_name, role, player_data)
-	else
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_KILL_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_kill(cause_name, role, player_data, ff_caused)
+/datum/entity/player_stats/xeno/count_kill(var/role, var/cause_name, var/datum/entity/player/player_data, var/kill_type)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, kill_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+	if(role)
+		count_personal_kill(cause_name, role, player_data, kill_type)
 
 //DEATHS
-/datum/entity/player_stats/xeno/count_personal_death(var/cause, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, STATISTICS_NICHE_DEATH, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		recalculate_top_caste()
-	else
-		track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, STATISTICS_NICHE_DEATH_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		recalculate_top_caste()
+/datum/entity/player_stats/xeno/count_personal_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
+	track_niche_earned(STATISTICS_NICHE_CASTLE_SUBTYPE, role, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+	recalculate_top_caste()
 
-/datum/entity/player_stats/xeno/count_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
-	if(!ff_caused)
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_DEATH, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_death(cause_name, role, player_data)
-	else
-		track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, STATISTICS_NICHE_DEATH_FF, STATISTICS_NICHE_NICHES, 1, player_data.id)
-		if(role)
-			count_personal_death(cause_name, role, player_data, ff_caused)
+/datum/entity/player_stats/xeno/count_death(var/role, var/cause_name, var/datum/entity/player/player_data, var/death_type)
+	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_XENO, STATISTICS_NICHE_HELP_SUBTYPE, death_type, STATISTICS_NICHE_NICHES, 1, player_data.id)
+	if(role)
+		count_personal_death(cause_name, role, player_data, death_type)

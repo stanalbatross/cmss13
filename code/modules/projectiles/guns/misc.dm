@@ -2,7 +2,7 @@
 //This gun is very powerful, but also has a kick.
 
 /obj/item/weapon/gun/minigun
-	name = "\improper Ol' Painless"
+	name = "Ol' Painless"
 	desc = "An enormous multi-barreled rotating gatling gun. This thing will no doubt pack a punch."
 	icon_state = "painless"
 	item_state = "painless"
@@ -33,7 +33,7 @@
 
 //Minigun UPP
 /obj/item/weapon/gun/minigun/upp
-	name = "\improper GSh-7.62 rotary machine gun"
+	name = "GSh-7.62 rotary machine gun"
 	desc = "A gas-operated rotary machine gun used by UPP heavies. Its enormous volume of fire and ammunition capacity allows the suppression of large concentrations of enemy forces. Heavy weapons training is required control its recoil."
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER|GUN_RECOIL_BUILDUP|GUN_HAS_FULL_AUTO
 
@@ -68,7 +68,7 @@
 
 //M60
 /obj/item/weapon/gun/m60
-	name = "\improper M60 General Purpose Machine Gun"
+	name = "M60 General Purpose Machine Gun"
 	desc = "The M60. The Pig. The Action Hero's wet dream."
 	icon_state = "m60"
 	item_state = "m60"

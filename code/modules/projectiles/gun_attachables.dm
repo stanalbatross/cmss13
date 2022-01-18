@@ -246,7 +246,7 @@ Defined in conflicts.dm of the #defines folder.
 	damage_falloff_mod = 0.4
 
 /obj/item/attachable/suppressor/m40_integral
-	name = "\improper M40SD integral suppressor"
+	name = "M40SD integral suppressor"
 	icon_state = "m40sd_suppressor"
 	attach_icon = "m40sd_suppressor_a"
 
@@ -262,7 +262,7 @@ Defined in conflicts.dm of the #defines folder.
 	attach_icon = "m40sd_suppressor_a"
 
 /obj/item/attachable/bayonet
-	name = "\improper M5 'Night Raider' bayonet"
+	name = "M5 'Night Raider' bayonet"
 	icon_state = "bayonet"
 	item_state = "combat_knife"
 	desc = "The standard-issue bayonet of the Colonial Marines. You can slide this knife into your boots, or attach it to the end of a rifle."
@@ -291,13 +291,13 @@ Defined in conflicts.dm of the #defines folder.
 	accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_1
 
 /obj/item/attachable/bayonet/upp_replica
-	name = "\improper Type 80 bayonet"
+	name = "Type 80 bayonet"
 	icon_state = "upp_bayonet"
 	item_state = "combat_knife"
 	desc = "The standard-issue bayonet of the UPP, its dulled from heavy use."
 
 /obj/item/attachable/bayonet/upp
-	name = "\improper Type 80 bayonet"
+	name = "Type 80 bayonet"
 	desc = "The standard-issue bayonet of the UPP, the Type 80 is balanced to also function as an effective throwing knife."
 	icon_state = "upp_bayonet"
 	item_state = "combat_knife"
@@ -308,7 +308,7 @@ Defined in conflicts.dm of the #defines folder.
 
 
 /obj/item/attachable/bayonet/c02
-	name = "\improper M8 cartridge bayonet"
+	name = "M8 cartridge bayonet"
 	desc = "A back issue USCM approved exclusive for Boots subscribers found in issue #255 'Inside the Night Raider - morale breaking alternatives with 2nd LT. Juliane Gerd'. A pressurized tube runs along the inside of the blade, and a button allows one to inject compressed CO2 into the stab wound. It feels cheap to the touch. Faulty even."
 	icon_state = "c02_knife"
 	var/filled = FALSE
@@ -642,7 +642,7 @@ Defined in conflicts.dm of the #defines folder.
 	G.RemoveElement(/datum/element/drop_retrieval/gun, retrieval_slot)
 
 /obj/item/attachable/magnetic_harness/lever_sling
-	name = "R4T magnetic sling"
+	name = "R4T magnetic sling" //please don't make this attachable to any other guns...
 	desc = "A custom sling designed for comfortable holstering of a 19th century lever action rifle, for some reason. Contains magnets specifically built to make sure the lever-action rifle never drops from your back, however they somewhat get in the way of the grip."
 	icon_state = "r4t-sling"
 	attach_icon = "r4t-sling_a"
@@ -834,7 +834,7 @@ Defined in conflicts.dm of the #defines folder.
 	pixel_shift_y = 14
 
 /obj/item/attachable/stock/shotgun
-	name = "\improper M37 wooden stock"
+	name = "M37 wooden stock"
 	desc = "A non-standard heavy wooden stock for the M37 Shotgun. More cumbersome than the standard issue stakeout, but reduces recoil and improves accuracy. Allegedly makes a pretty good club in a fight too.."
 	slot = "stock"
 	icon_state = "stock"
@@ -857,13 +857,12 @@ Defined in conflicts.dm of the #defines folder.
 	//but at the same time you are slow when 2 handed
 	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
-
 	matter = list("wood" = 2000)
 
 	select_gamemode_skin(type)
 
 /obj/item/attachable/stock/mou53
-	name = "\improper MOU53 tactical stock"
+	name = "MOU53 tactical stock"
 	desc = "A metal stock fitted specifically for the MOU53 break action shotgun."
 	icon_state = "ou_stock"
 	hud_offset_mod = 5
@@ -878,7 +877,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
 
 /obj/item/attachable/stock/tactical
-	name = "\improper MK221 tactical stock"
+	name = "MK221 tactical stock"
 	desc = "A metal stock made for the MK221 tactical shotgun."
 	icon_state = "tactical_stock"
 	hud_offset_mod = 6
@@ -894,7 +893,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
 
 /obj/item/attachable/stock/type23
-	name = "\improper Type 23 standard stock"
+	name = "Type 23 standard stock"
 	desc = "A stamped metal stock with internal recoil springs designed to absorb the ridiculous kick the 8 Gauge shotgun causes when fired. Not recommended to remove."
 	icon_state = "type23_stock"
 	pixel_shift_x = 15
@@ -955,7 +954,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
 
 /obj/item/attachable/stock/rifle
-	name = "\improper M41A solid stock"
+	name = "M41A solid stock"
 	desc = "A rare stock distributed in small numbers to USCM forces. Compatible with the M41A, this stock reduces recoil and improves accuracy, but at a reduction to handling and agility. Also enhances the thwacking of things with the stock-end of the rifle."
 	slot = "stock"
 	melee_mod = 5
@@ -982,7 +981,7 @@ Defined in conflicts.dm of the #defines folder.
 	aim_speed_mod = CONFIG_GET(number/slowdown_med)
 
 /obj/item/attachable/stock/m16
-	name = "\improper M16 bump stock"
+	name = "M16 bump stock"
 	desc = "Technically illegal in the state of California."
 	icon_state = "m16_stock"
 	attach_icon = "m16_stock_a"
@@ -994,7 +993,7 @@ Defined in conflicts.dm of the #defines folder.
 	..()
 
 /obj/item/attachable/stock/m79
-	name = "\improper M79 hardened polykevlon stock"
+	name = "M79 hardened polykevlon stock"
 	desc = "Helps to mitigate the recoil of launching a 40mm grenade. Fits only to the M79."
 	icon_state = "m79_stock"
 	icon_state = "m79_stock_a"
@@ -1003,7 +1002,7 @@ Defined in conflicts.dm of the #defines folder.
 	hud_offset_mod = 2
 
 /obj/item/attachable/stock/mod88
-	name = "\improper Mod 88 burst stock"
+	name = "Mod 88 burst stock"
 	desc = "Increases the firerate and burst amount on the Mod 88. Some versions act as a holster for the weapon when un-attached. This is a test item and should not be used in normal gameplay (yet)."
 	icon_state = "mod88_stock"
 	attach_icon = "mod88_stock_a"
@@ -1029,7 +1028,7 @@ Defined in conflicts.dm of the #defines folder.
 	scatter_unwielded_mod = -SCATTER_AMOUNT_TIER_10
 
 /obj/item/attachable/stock/carbine
-	name = "\improper L42 synthetic stock"
+	name = "L42 synthetic stock"
 	desc = "A special issue stock made of sturdy, yet lightweight materials. Attaches to the L42A Battle Rifle. Not effective as a blunt force weapon."
 	slot = "stock"
 	size_mod = 1
@@ -1054,7 +1053,7 @@ Defined in conflicts.dm of the #defines folder.
 
 
 /obj/item/attachable/stock/rifle/marksman
-	name = "\improper M41A marksman stock"
+	name = "M41A marksman stock"
 	icon_state = "m4markstock"
 	attach_icon = "m4markstock"
 	flags_attach_features = NO_FLAGS
@@ -1187,7 +1186,7 @@ Defined in conflicts.dm of the #defines folder.
 	to_chat(user, SPAN_NOTICE("You [message] [src]."))
 
 /obj/item/attachable/stock/smg/collapsible/brace
-	name = "\improper submachinegun arm brace"
+	name = "submachinegun arm brace"
 	desc = "A specialized stock for use on an M39 submachine gun. It makes one handing more accurate at the expense of burst amount. Wielding the weapon with this stock attached confers a major inaccuracy and recoil debuff."
 	size_mod = 1
 	icon_state = "smg_brace"
@@ -1238,7 +1237,7 @@ Defined in conflicts.dm of the #defines folder.
 	G.update_overlays(src, "stock")
 
 /obj/item/attachable/stock/revolver
-	name = "\improper M44 magnum sharpshooter stock"
+	name = "M44 magnum sharpshooter stock"
 	desc = "A wooden stock modified for use on a 44-magnum. Increases accuracy and reduces recoil at the expense of handling and agility. Less effective in melee as well."
 	slot = "stock"
 	melee_mod = -5
@@ -1454,7 +1453,6 @@ Defined in conflicts.dm of the #defines folder.
 	if(get_dist(user,target) > max_range)
 		to_chat(user, SPAN_WARNING("Too far to fire the attachment!"))
 		return
-
 	if(current_rounds > 0 && ..())
 		prime_grenade(target,gun,user)
 
@@ -1603,7 +1601,7 @@ Defined in conflicts.dm of the #defines folder.
 	burn_duration = BURN_TIME_TIER_2
 
 /obj/item/attachable/attached_gun/shotgun
-	name = "\improper U7 underbarrel shotgun"
+	name = "U7 underbarrel shotgun"
 	icon_state = "masterkey"
 	attach_icon = "masterkey_a"
 	desc = "An ARMAT U7 tactical shotgun. Attaches to the underbarrel of most weapons. Only capable of loading up to five buckshot shells. Specialized for breaching into buildings."

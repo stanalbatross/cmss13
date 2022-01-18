@@ -287,7 +287,7 @@
 //M44 Revolver
 
 /obj/item/weapon/gun/revolver/m44
-	name = "\improper M44 combat revolver"
+	name = "M44 combat revolver"
 	desc = "A bulky revolver, occasionally carried by assault troops and officers in the Colonial Marines, as well as civilian law enforcement. Fires .44 Magnum rounds."
 	icon_state = "m44r"
 	item_state = "m44r"
@@ -330,7 +330,7 @@
 		return ..()
 
 /obj/item/weapon/gun/revolver/m44/custom //accuracy and damage bonus
-	name = "\improper M44 custom combat revolver"
+	name = "M44 custom combat revolver"
 	desc = "A bulky combat revolver. The handle has been polished to a pearly perfection, and the body is silver plated. Fires .44 Magnum rounds."
 	current_mag = /obj/item/ammo_magazine/internal/revolver/m44/marksman
 	icon_state = "m44rc"
@@ -342,7 +342,7 @@
 	damage_mult = BASE_BULLET_DAMAGE_MULT + BULLET_DAMAGE_MULT_TIER_2
 
 /obj/item/weapon/gun/revolver/m44/custom/webley //Van Bandolier's Webley.
-	name = "\improper Webley Mk VI service pistol"
+	name = "Webley Mk VI service pistol"
 	desc = "A heavy top-break revolver. Bakelite grips, and older than most nations. .455 was good enough for angry tribesmen and <i>les boche</i>, and by Gum it'll do for Colonial Marines and xenomorphs as well."
 	current_mag = /obj/item/ammo_magazine/internal/revolver/webley
 	icon_state = "webley"
@@ -355,7 +355,7 @@
 //RUSSIAN REVOLVER //Based on the 7.62mm Russian revolvers.
 
 /obj/item/weapon/gun/revolver/nagant
-	name = "\improper N-Y 7.62mm revolver"
+	name = "N-Y 7.62mm revolver"
 	desc = "The Nagant-Yamasaki 7.62 is an effective killing machine designed by a consortion of shady Not-Americans. It is frequently found in the hands of criminals or mercenaries."
 	icon_state = "ny762"
 	item_state = "ny762"
@@ -404,7 +404,7 @@
 //357 REVOLVER //Based on the generic S&W 357.
 
 /obj/item/weapon/gun/revolver/small
-	name = "\improper S&W .357 revolver"
+	name = "S&W .357 revolver"
 	desc = "A lean .357 made by Smith & Wesson. A timeless classic, from antiquity to the future."
 	icon_state = "sw357"
 	item_state = "ny762" //PLACEHOLDER
@@ -446,7 +446,7 @@
 	attack_verb = list("stabbed")
 
 /obj/item/weapon/gun/revolver/mateba
-	name = "\improper Mateba autorevolver"
+	name = "Mateba autorevolver"
 	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. It fires heavy .454 rounds."
 	icon_state = "mateba"
 	item_state = "mateba"
@@ -518,7 +518,7 @@
 
 
 /obj/item/weapon/gun/revolver/mateba/admiral
-	name = "\improper engraved Mateba autorevolver custom"
+	name = "engraved Mateba autorevolver custom"
 	desc = "Boasting a gold-plated frame and grips made of a critically-endangered rosewood tree, this heavily-customized Mateba revolver's pretentious design rivals only the power of its wielder. Fit for a king. Or an admiral."
 	icon_state = "amateba"
 	item_state = "amateba"
@@ -542,7 +542,7 @@
 	update_attachables()
 
 /obj/item/weapon/gun/revolver/mateba/admiral/santa
-	name = "\improper Festeba"
+	name = "Festeba"
 	desc = "The Mateba used by SANTA himself. Rumoured to be loaded with explosive ammunition."
 	icon_state = "amateba"
 	item_state = "amateba"
@@ -552,14 +552,14 @@
 	starting_attachment_types = list(/obj/item/attachable/heavy_barrel)
 
 /obj/item/weapon/gun/revolver/mateba/engraved
-	name = "\improper engraved Mateba autorevolver"
+	name = "engraved Mateba autorevolver"
 	desc = "With a matte black chassis, ebony wooden grips, and gold-plated cylinder, this statement of a Mateba is as much a work of art as it is a bringer of death."
 	icon_state = "aamateba"
 	item_state = "aamateba"
 	current_mag = /obj/item/ammo_magazine/internal/revolver/mateba/impact
 
 /obj/item/weapon/gun/revolver/mateba/cmateba
-	name = "\improper Mateba autorevolver custom"
+	name = "Mateba autorevolver custom"
 	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. It uses heavy .454 rounds. This version is a limited edition produced for the USCM, and issued in extremely small amounts. Was a mail-order item back in 2172, and is highly sought after by officers across many different battalions."
 	icon_state = "cmateba"
 	item_state = "cmateba"
@@ -570,7 +570,7 @@
 //MARSHALS REVOLVER //Spearhead exists in Alien cannon.
 
 /obj/item/weapon/gun/revolver/cmb
-	name = "\improper CMB Spearhead autorevolver"
+	name = "CMB Spearhead autorevolver"
 	desc = "An automatic revolver chambered in .357. Commonly issued to Colonial Marshals. It has three select fire options, safe, single, and burst."
 	icon_state = "spearhead"
 	item_state = "spearhead"

@@ -1,5 +1,5 @@
 /obj/item/weapon/gun/souto
-	name = "\improper Souto Slinger Supremo"
+	name = "Souto Slinger Supremo"
 	desc = "This appears to be a T-shirt cannon modified to fire cans of Souto at speeds fast enough to get them up into the top stands of a stadium. This can't be safe. Cobbled together in Havana."
 	icon_state = "supremo_w"
 	item_state = "supremo_w"
@@ -85,7 +85,7 @@
 	return ..()
 
 /obj/item/ammo_magazine/internal/souto
-	name = "\improper Souto Slinger Supremo internal magazine"
+	name = "Souto Slinger Supremo internal magazine"
 	caliber = "Cans"
 	max_rounds = 100
 	default_ammo = /datum/ammo/souto

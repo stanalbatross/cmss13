@@ -17,7 +17,7 @@
 
 //Pow! Headshot.
 /obj/item/weapon/gun/rifle/sniper/M42A
-	name = "\improper M42A scoped rifle"
+	name = "M42A scoped rifle"
 	desc = "A heavy sniper rifle manufactured by Armat Systems. It has a scope system and fires armor penetrating rounds out of a 15-round magazine.\n'Peace Through Superior Firepower'"
 	icon_state = "m42a"
 	item_state = "m42a"
@@ -63,7 +63,7 @@
 	recoil = RECOIL_AMOUNT_TIER_5
 
 /obj/item/weapon/gun/rifle/sniper/M42B
-	name = "\improper XM42B experimental anti-tank rifle"
+	name = "XM42B experimental anti-tank rifle"
 	desc = "An experimental anti-tank rifle produced by Armat Systems, currently undergoing field testing. Chambered in 10x99mm Caseless."
 	icon_state = "xm42b"
 	item_state = "xm42b"
@@ -116,7 +116,7 @@
 
 
 /obj/item/weapon/gun/rifle/sniper/elite
-	name = "\improper M42C anti-tank sniper rifle"
+	name = "M42C anti-tank sniper rifle"
 	desc = "A high end mag-rail heavy sniper rifle from Weyland-Armat chambered in the heaviest ammo available, 10x99mm Caseless."
 	icon_state = "m42c"
 	item_state = "m42c" //NEEDS A TWOHANDED STATE
@@ -166,7 +166,7 @@
 //SVD //Based on the actual Dragunov sniper rifle.
 
 /obj/item/weapon/gun/rifle/sniper/svd
-	name = "\improper SVD Dragunov-033 sniper rifle"
+	name = "SVD Dragunov-033 sniper rifle"
 	desc = "A sniper variant of the MAR-40 rifle, with a new stock, barrel, and scope. It doesn't have the punch of modern sniper rifles, but it's finely crafted in 2133 by someone probably illiterate. Fires 7.62x54mmR rounds."
 	icon_state = "svd003"
 	item_state = "svd003" //NEEDS A ONE HANDED STATE
@@ -216,7 +216,7 @@
 //M4RA marksman rifle
 
 /obj/item/weapon/gun/rifle/m4ra
-	name = "\improper M4RA battle rifle"
+	name = "M4RA battle rifle"
 	desc = "The M4RA battle rifle is a designated marksman rifle in service with the USCM. Only fielded in small numbers, and sporting a bullpup configuration, the M4RA battle rifle is perfect for reconnaissance and fire support teams.\nIt is equipped with rail scope and takes 10x24mm A19 high velocity magazines."
 	icon_state = "m41b"
 	item_state = "m4ra" //PLACEHOLDER
@@ -275,7 +275,7 @@
 
 //Come get some.
 /obj/item/weapon/gun/smartgun
-	name = "\improper M56B smartgun"
+	name = "M56B smartgun"
 	desc = "The actual firearm in the 4-piece M56B Smartgun System. Essentially a heavy, mobile machinegun.\nYou may toggle firing restrictions by using a special action."
 	icon_state = "m56"
 	item_state = "m56"
@@ -702,7 +702,7 @@
 			STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/smartgun/dirty
-	name = "\improper M56D 'Dirty' smartgun"
+	name = "M56D 'Dirty' smartgun"
 	desc = "The actual firearm in the 4-piece M56D Smartgun System. If you have this, you're about to bring some serious pain to anyone in your way.\nYou may toggle firing restrictions by using a special action."
 	current_mag = /obj/item/ammo_magazine/smartgun/dirty
 	ammo = /obj/item/ammo_magazine/smartgun/dirty
@@ -717,7 +717,7 @@
 
 //TERMINATOR SMARTGUN
 /obj/item/weapon/gun/smartgun/dirty/elite
-	name = "\improper M56T 'Terminator' smartgun"
+	name = "M56T 'Terminator' smartgun"
 	desc = "The actual firearm in the 4-piece M56T Smartgun System. If you have this, you're about to bring some serious pain to anyone in your way.\nYou may toggle firing restrictions by using a special action."
 
 /obj/item/weapon/gun/smartgun/dirty/elite/Initialize(mapload, ...)
@@ -986,7 +986,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //M92 GRENADE LAUNCHER
 
 /obj/item/weapon/gun/launcher/grenade/m92
-	name = "\improper M92 grenade launcher"
+	name = "M92 grenade launcher"
 	desc = "A heavy, 6-shot grenade launcher used by the Colonial Marines for area denial and big explosions."
 	icon_state = "m92"
 	item_state = "m92"
@@ -1021,7 +1021,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //M81 GRENADE LAUNCHER
 
 /obj/item/weapon/gun/launcher/grenade/m81
-	name = "\improper M81 grenade launcher"
+	name = "M81 grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher used by the Colonial Marines for area denial and big explosions."
 	icon_state = "m81"
 	item_state = "m81" //needs a wield sprite.
@@ -1048,7 +1048,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 
 /obj/item/weapon/gun/launcher/grenade/m81/riot
-	name = "\improper M81 riot grenade launcher"
+	name = "M81 riot grenade launcher"
 	desc = "A lightweight, single-shot low-angle grenade launcher to launch tear gas grenades. Used by the Colonial Marines Military Police during riots."
 	valid_munitions = list(/obj/item/explosive/grenade/custom/teargas)
 	preload = /obj/item/explosive/grenade/custom/teargas
@@ -1057,7 +1057,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //M79 Grenade Launcher subtype of the M81
 
 /obj/item/weapon/gun/launcher/grenade/m81/m79//m79 variant for marines
-	name = "\improper M79 grenade launcher"
+	name = "M79 grenade launcher"
 	desc = "A heavy, low-angle 40mm grenade launcher. It's been in use since the Vietnam War, though this version has been modernized with an IFF enabled micro-computer. The wooden furniture is, in fact, made of painted hardened polykevlon."
 	icon_state = "m79"
 	item_state = "m79"
@@ -1098,7 +1098,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //M5 RPG
 
 /obj/item/weapon/gun/launcher/rocket
-	name = "\improper M5 RPG"
+	name = "M5 RPG"
 	desc = "The M5 RPG is the primary anti-armor weapon of the USCM. Used to take out light-tanks and enemy structures, the M5 RPG is a dangerous weapon with a variety of combat uses."
 	icon_state = "m5"
 	item_state = "m5"
@@ -1287,7 +1287,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //M5 RPG'S MEAN FUCKING COUSIN
 
 /obj/item/weapon/gun/launcher/rocket/m57a4
-	name = "\improper M57-A4 'Lightning Bolt' quad thermobaric launcher"
+	name = "M57-A4 'Lightning Bolt' quad thermobaric launcher"
 	desc = "The M57-A4 'Lightning Bolt' is posssibly the most destructive man-portable weapon ever made. It is a 4-barreled missile launcher capable of burst-firing 4 thermobaric missiles. Enough said."
 	icon_state = "m57a4"
 	item_state = "m57a4"
@@ -1310,7 +1310,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //Flare gun. Close enough to a specialist gun?
 
 /obj/item/weapon/gun/flare
-	name = "\improper M82-F flare gun"
+	name = "M82-F flare gun"
 	desc = "A flare gun issued to JTAC operators to use with standard flares. Cannot be used with signal flares. Comes with a miniscope. One shot, one... life saved?"
 	icon_state = "m82f"
 	item_state = "m82f"

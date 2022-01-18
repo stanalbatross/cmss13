@@ -39,12 +39,12 @@
 /mob/proc/count_niche_stat(var/niche_name, var/amount = 1)
 	return
 
-/mob/living/carbon/human/count_niche_stat(var/niche_name, var/amount = 1)
+/mob/living/carbon/human/count_niche_stat(var/niche_name, var/amount = 1, var/weapon)
 	if(statistic_exempt || !mind)
 		return
 	var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
 	var/job_actual = get_actual_job_name(src)
-	human_stats.count_niche_stat(client, niche_name, amount, job_actual)
+	human_stats.count_niche_stat(client, niche_name, amount, job_actual, weapon)
 
 /mob/living/carbon/Xenomorph/count_niche_stat(var/niche_name, var/amount = 1)
 	if(statistic_exempt || !mind)
@@ -67,15 +67,15 @@
 //************************
 
 //KILLS
-/datum/entity/player_stats/proc/count_personal_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
+/datum/entity/player_stats/proc/count_personal_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/kill_type)
 	return
 
-/datum/entity/player_stats/proc/count_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
+/datum/entity/player_stats/proc/count_kill(var/cause_name, var/role, var/datum/entity/player/player_data, var/kill_type)
 	return
 
 //DEATHS
-/datum/entity/player_stats/proc/count_personal_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
+/datum/entity/player_stats/proc/count_personal_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/death_type)
 	return
 
-/datum/entity/player_stats/proc/count_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/ff_caused = 0)
+/datum/entity/player_stats/proc/count_death(var/cause_name, var/role, var/datum/entity/player/player_data, var/death_type)
 	return

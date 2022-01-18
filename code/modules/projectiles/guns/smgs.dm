@@ -36,7 +36,7 @@
 //M39 SMG
 
 /obj/item/weapon/gun/smg/m39
-	name = "\improper M39 submachinegun"
+	name = "M39 submachinegun"
 	desc = "The Armat Battlefield Systems M-39 submachinegun. Occasionally carried by light-infantry, scouts, engineers and medics. A lightweight, lower caliber alternative to the various Pulse weapons used the USCM. Fires 10x20mm rounds out of 48 round magazines."
 	icon_state = "m39"
 	item_state = "m39"
@@ -90,7 +90,7 @@
 //-------------------------------------------------------
 
 /obj/item/weapon/gun/smg/m39/elite
-	name = "\improper M39B/2 submachinegun"
+	name = "M39B/2 submachinegun"
 	desc = "A modified version M-39 submachinegun, re-engineered for better weight, handling and accuracy. Given only to elite units."
 	icon_state = "m39b2"
 	item_state = "m39b2"
@@ -124,7 +124,7 @@
 //M5, a classic SMG used in a lot of action movies.
 
 /obj/item/weapon/gun/smg/mp5
-	name = "\improper MP5 submachinegun"
+	name = "MP5 submachinegun"
 	desc = "A German design, this was one of the most widely used submachine guns in the world. It's still possible to find this firearm in the hands of collectors or gun fanatics."
 	icon_state = "mp5"
 	item_state = "mp5"
@@ -184,7 +184,7 @@
 //MP27, based on the MP27, based on the M7.
 
 /obj/item/weapon/gun/smg/mp7
-	name = "\improper MP27 submachinegun"
+	name = "MP27 submachinegun"
 	desc = "An archaic design going back hundreds of years, the MP27 was common in its day. Today it sees limited use as cheap computer-printed replicas or family heirlooms."
 	icon_state = "mp7"
 	item_state = "mp7"
@@ -234,7 +234,7 @@
 //PPSH //Based on the PPSh-41.
 
 /obj/item/weapon/gun/smg/ppsh
-	name = "\improper PPSh-17b submachinegun"
+	name = "PPSh-17b submachinegun"
 	desc = "An unauthorized copy of a replica of a prototype submachinegun developed in a third world shit hole somewhere."
 	icon_state = "ppsh17b"
 	item_state = "ppsh17b"
@@ -267,7 +267,7 @@
 //GENERIC UZI //Based on the uzi submachinegun, of course.
 
 /obj/item/weapon/gun/smg/uzi
-	name = "\improper MAC-15 submachinegun"
+	name = "MAC-15 submachinegun"
 	desc = "A cheap, reliable design and manufacture make this ubiquitous submachinegun useful despite the age. Turn on burst mode for maximum firepower."
 	icon_state = "mac15"
 	item_state = "mac15"
@@ -313,7 +313,7 @@
 //FP9000 //Based on the FN P90
 
 /obj/item/weapon/gun/smg/fp9000
-	name = "\improper FN FP9000 Submachinegun"
+	name = "FN FP9000 Submachinegun"
 	desc = "An older design, but one that's stood the test of time and still sees common use today. Fires fast armor piercing rounds at a high rate."
 	icon_state = "fp9000"
 	item_state = "fp9000"
@@ -366,7 +366,7 @@
 	recoil_unwielded = RECOIL_AMOUNT_TIER_5
 
 /obj/item/weapon/gun/smg/fp9000/pmc
-	name = "\improper FN FP9000 Submachinegun"
+	name = "FN FP9000 Submachinegun"
 	desc = "A variant of the FP9000 SMG that appears to feature some special modifications for elite forces."
 	icon_state = "fp9000_pmc"
 	item_state = "fp9000_pmc"

@@ -116,7 +116,6 @@ can cause issues with ammo types getting mixed up during the burst.
 /obj/item/weapon/gun/shotgun/proc/check_chamber_position()
 	return 1
 
-
 /obj/item/weapon/gun/shotgun/reload(mob/user, var/obj/item/ammo_magazine/magazine)
 	if(flags_gun_features & GUN_BURST_FIRING) return
 
@@ -215,7 +214,7 @@ can cause issues with ammo types getting mixed up during the burst.
 //TACTICAL SHOTGUN
 
 /obj/item/weapon/gun/shotgun/combat
-	name = "\improper MK221 tactical shotgun"
+	name = "MK221 tactical shotgun"
 	desc = "The Weyland-Yutani MK221 Shotgun, a semi-automatic shotgun with a quick fire rate."
 	icon_state = "mk221"
 	item_state = "mk221"
@@ -285,7 +284,7 @@ can cause issues with ammo types getting mixed up during the burst.
 
 //MARSOC MK210, an earlier developmental variant of the MK211 tactical used by the USCM MARSOC.
 /obj/item/weapon/gun/shotgun/combat/marsoc
-	name = "\improper MK210 tactical shotgun"
+	name = "MK210 tactical shotgun"
 	desc = "Way back in 2168, Wey-Yu began testing the MK221. The USCM picked up an early prototype, and later adopted it with a limited military contract. But the USCM MARSOC division wasn't satisfied, and iterated on the early prototypes they had access to; eventually, their internal armorers and tinkerers produced the MK210, a lightweight folding shotgun that snaps to the belt. And to boot, it's fully automatic, made of stamped medal, and keeps the UGL. Truly an engineering marvel."
 	icon_state = "mk210"
 	item_state = "mk210"
@@ -331,7 +330,7 @@ can cause issues with ammo types getting mixed up during the burst.
 //TYPE 23. SEMI-AUTO UPP SHOTGUN, BASED ON KS-23
 
 /obj/item/weapon/gun/shotgun/type23
-	name = "\improper Type 23 riot shotgun"
+	name = "Type 23 riot shotgun"
 	desc = "As UPP soldiers frequently reported being outmatched by enemy combatants, UPP High Command commissioned a large amount of Type 23 shotguns, originally used for quelling defector colony riots. This slow semi-automatic shotgun chambers 8 gauge, and packs a mean punch."
 	icon_state = "type23"
 	item_state = "type23"
@@ -585,7 +584,7 @@ can cause issues with ammo types getting mixed up during the burst.
 //M-OU53 SHOTGUN | Marine mid-range slug/flechette only coach gun (except its an over-under). Support weapon for slug stuns / flechette DOTS (when implemented). Buckshot in this thing is just stupidly strong, hence the denial.
 
 /obj/item/weapon/gun/shotgun/double/mou53
-	name = "\improper MOU53 break action shotgun"
+	name = "MOU53 break action shotgun"
 	desc = "A limited production Kerchner MOU53 triple break action classic. Respectable damage output at medium ranges, while the ARMAT M37 is the king of CQC, the Kerchner MOU53 is what hits the broadside of that barn. This specific model cannot safely fire buckshot shells."
 	icon_state = "mou"
 	item_state = "mou"
@@ -892,7 +891,7 @@ can cause issues with ammo types getting mixed up during the burst.
 //Shotguns in this category will need to be pumped each shot.
 
 /obj/item/weapon/gun/shotgun/pump
-	name = "\improper M37A2 pump shotgun"
+	name = "M37A2 pump shotgun"
 	desc = "An Armat Battlefield Systems classic design, the M37A2 combines close-range firepower with long term reliability. Requires a pump, which is a Unique Action."
 	icon_state = "m37"
 	item_state = "m37"
@@ -1010,7 +1009,7 @@ can cause issues with ammo types getting mixed up during the burst.
 //SHOTGUN FROM ISOLATION
 
 /obj/item/weapon/gun/shotgun/pump/cmb
-	name = "\improper HG 37-12 pump shotgun"
+	name = "HG 37-12 pump shotgun"
 	desc = "A nine-round pump action shotgun with internal tube magazine allowing for quick reloading and highly accurate fire. Used exclusively by Colonial Marshals."
 	icon_state = "hg3712"
 	item_state = "hg3712"

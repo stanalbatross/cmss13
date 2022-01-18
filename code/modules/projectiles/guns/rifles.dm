@@ -36,7 +36,7 @@
 //M41A PULSE RIFLE
 
 /obj/item/weapon/gun/rifle/m41a
-	name = "\improper M41A pulse rifle MK2"
+	name = "M41A pulse rifle MK2"
 	desc = "The standard issue rifle of the Colonial Marines. Commonly carried by most combat personnel. Uses 10x24mm caseless ammunition."
 	icon_state = "m41a"
 	item_state = "m41a"
@@ -104,7 +104,7 @@
 //M41A PMC VARIANT
 
 /obj/item/weapon/gun/rifle/m41a/elite
-	name = "\improper M41A/2 pulse rifle"
+	name = "M41A/2 pulse rifle"
 	desc = "A modified version M41A Pulse Rifle MK2, re-engineered for better weight, handling and accuracy. Fires precise two-round bursts. Given only to elite units."
 	icon_state = "m41a2"
 	item_state = "m41a2"
@@ -144,7 +144,7 @@
 //M40-SD AKA MARSOC RIFLE FROM HELL (It's actually an M41A, don't tell!)
 
 /obj/item/weapon/gun/rifle/m41a/elite/m40_sd
-	name = "\improper M40-SD pulse rifle"
+	name = "M40-SD pulse rifle"
 	desc = "One of the experimental predecessors to the M41A line that never saw widespread adoption beyond elite marine units. Of the rifles in the USCM inventory that are still in production, this is the only one to feature an integrated suppressor. It can accept M41A MK2 magazines, but also features its own proprietary magazine system. Extremely lethal in burstfire mode."
 	icon_state = "m40sd"
 	item_state = "m40sd"
@@ -218,7 +218,7 @@
 //M41A TRUE AND ORIGINAL
 
 /obj/item/weapon/gun/rifle/m41aMK1
-	name = "\improper M41A pulse rifle"
+	name = "M41A pulse rifle"
 	desc = "An older design of the Pulse Rifle commonly used by Colonial Marines. Uses 10x24mm caseless ammunition."
 	icon_state = "m41amk1" //Placeholder.
 	item_state = "m41amk1" //Placeholder.
@@ -279,7 +279,7 @@
 //Special gun for the CO to replace the smartgun
 
 /obj/item/weapon/gun/rifle/m46c
-	name = "\improper M46C pulse rifle"
+	name = "M46C pulse rifle"
 	desc = "A prototype M46C, an experimental rifle platform built to outperform the standard M41A. Back issue only. Uses standard MK1 & MK2 rifle magazines."
 	icon_state = "m46c"
 	item_state = "m46c"
@@ -467,7 +467,7 @@
 
 
 /obj/item/weapon/gun/rifle/mar40
-	name = "\improper MAR-40 battle rifle"
+	name = "MAR-40 battle rifle"
 	desc = "A cheap, reliable assault rifle chambered in 7.62x39mm. Commonly found in the hands of criminals or mercenaries, or in the hands of the UPP or Iron Bears."
 	icon_state = "mar40"
 	item_state = "mar40"
@@ -541,7 +541,7 @@
 
 
 /obj/item/weapon/gun/rifle/mar40/carbine
-	name = "\improper MAR-30 battle carbine"
+	name = "MAR-30 battle carbine"
 	desc = "A cheap, reliable carbine chambered in 7.62x39mm. Commonly found in the hands of criminals or mercenaries."
 	icon_state = "mar30"
 	item_state = "mar30"
@@ -606,7 +606,7 @@
 //M16 RIFLE
 
 /obj/item/weapon/gun/rifle/m16
-	name = "\improper M16 rifle"
+	name = "M16 rifle"
 	desc = "An old, reliable design first adopted by the U.S. military in the 1960s. Something like this belongs in a museum of war history. It is chambered in 5.56x45mm."
 	icon_state = "m16"
 	item_state = "m16"
@@ -692,7 +692,7 @@
 //DUTCH'S GEAR
 
 /obj/item/weapon/gun/rifle/m16/dutch
-	name = "\improper Dutch's M16A2"
+	name = "Dutch's M16A2"
 	desc = "A modified M16 employed by Dutch's Dozen mercenaries. It has 'CLOAKER KILLER' printed on a label on the side. Chambered in 5.56x45mm."
 	icon_state = "m16"
 	item_state = "m16"
@@ -731,7 +731,7 @@
 //M41AE2 HEAVY PULSE RIFLE
 
 /obj/item/weapon/gun/rifle/lmg
-	name = "\improper M41AE2 heavy pulse rifle"
+	name = "M41AE2 heavy pulse rifle"
 	desc = "A large squad support weapon capable of laying down sustained supressing fire from a mounted position. While unstable and less accurate, it can be lugged and shot with two hands. Like it's smaller brothers, the M41A MK2 and L42 MK1, the M41AE2 is chambered in 10mm."
 	icon_state = "m41ae2"
 	item_state = "m41ae2"
@@ -787,7 +787,7 @@
 //UPP TYPE 71 RIFLE
 
 /obj/item/weapon/gun/rifle/type71
-	name = "\improper Type 71 pulse rifle"
+	name = "Type 71 pulse rifle"
 	desc = "The primary service rifle of the UPP space forces, the Type 71 is an ergonomic, lightweight pulse rifle chambered in 5.45x39mm. In accordance with doctrinal principles of overmatch and suppression, the rifle has a high rate of fire and a high-capacity casket magazine. Despite lackluster precision, an integrated recoil-dampening mechanism makes the rifle surprisingly controllable in bursts."
 	icon_state = "type71"
 	item_state = "type71"
@@ -897,7 +897,7 @@
 							)
 
 /obj/item/weapon/gun/rifle/type71/flamer
-	name = "\improper Type 71-F pulse rifle"
+	name = "Type 71-F pulse rifle"
 	desc = " This appears to be a less common variant of the Type 71 with an integrated flamethrower that seems especially powerful."
 	attachable_allowed = list(
 						/obj/item/attachable/suppressor,
@@ -928,7 +928,7 @@
 							)
 
 /obj/item/weapon/gun/rifle/type71/carbine
-	name = "\improper Type 71 pulse carbine"
+	name = "Type 71 pulse carbine"
 	desc = "A carbine variant of the Type 71, easier to handle at the cost of lesser damage, but negative soldier reviews have shifted it out of active use, given only to reserves or troops not expected to face much combat."
 	icon_state = "type71c"
 	item_state = "type71c"
@@ -967,7 +967,7 @@
 							)
 
 /obj/item/weapon/gun/rifle/type71/carbine/commando
-	name = "\improper Type 71 'Commando' pulse carbine"
+	name = "Type 71 'Commando' pulse carbine"
 	desc = "A much rarer variant of the Type 71, this version contains an integrated supressor, integrated scope, and extensive fine-tuning. Many parts have been replaced, filed down, and improved upon. As a result, this variant is rarely seen outside of commando units."
 	icon_state = "type73"
 	item_state = "type73"
@@ -1135,7 +1135,7 @@
 //L42A Battle Rifle
 
 /obj/item/weapon/gun/rifle/l42a
-	name = "\improper L42A battle rifle"
+	name = "L42A battle rifle"
 	desc = "A L42A battle rifle. A non-standard alternative to the standard issue M41A-MK2 available to the jarheads of the USCM. Renowned for its high accuracy and superior stopping power compared to other pulse rifles. Chambered in 10x24mm caseless."
 	icon_state = "l42mk1"
 	item_state = "l42mk1"
@@ -1192,7 +1192,7 @@
 //Basira-Armstrong rifle (Used by the CLF)
 
 /obj/item/weapon/gun/rifle/hunting
-	name = "\improper Basira-Armstrong rifle"
+	name = "Basira-Armstrong rifle"
 	desc = "Named after its eccentric designers, the Basira-Armstrong is a civilian semi-automatic rifle frequently found in the outer colonies. Despite its legally-mandated limited magazine capacity, its light weight and legendary accuracy makes it popular among hunters and competitive shooters."
 	icon_state = "hunting"
 	item_state = "hunting"

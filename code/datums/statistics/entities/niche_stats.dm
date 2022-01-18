@@ -53,6 +53,8 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/niche)
     order_by = list("player_id" = DB_ORDER_BY_DESC)
 
 /proc/track_niche_earned(niche_statistic_name_primary, niche_statistic_name_first, niche_statistic_name_second, niche_statistic_name_last, niche_value, player_id)
+	if(!player_id)
+		return
 	DB_FILTER(/datum/entity/statistic/niche, DB_AND( // find all records (hopefully just one)
 		DB_COMP("player_id", DB_EQUALS, player_id),
 		DB_COMP("niche_statistic_name_primary", DB_EQUALS, niche_statistic_name_primary),

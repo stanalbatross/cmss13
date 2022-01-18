@@ -202,39 +202,39 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 /*******************************************************************************************/
 // KILLS - DEATHS
 /*******************************************************************************************/
-	if(cause_mob)
-		if(isXeno(cause_mob.client.mob))
-			var/datum/entity/player_stats/xeno/xeno_stats = cause_mob.mind.setup_xeno_stats()
-			if(xeno_stats)
-				if(cause_mob.faction != faction)
-					xeno_stats.count_kill(cause_data.role, cause_player)
-				else
-					xeno_stats.count_kill(cause_data.role, cause_player, 1)
-		if(ishuman(cause_mob.client.mob))
-			var/datum/entity/player_stats/human/human_stats = cause_mob.mind.setup_human_stats()
-			if(human_stats)
-				if(cause_mob.faction != faction)
-					human_stats.count_kill(cause_data.role, cause_name, cause_player)
-				else
-					human_stats.count_kill(cause_data.role, cause_name, cause_player, 1)
+	if(isXeno(src))
+		var/datum/entity/player_stats/xeno/xeno_stats = cause_mob.mind.setup_xeno_stats()
+		if(xeno_stats)
+			if(cause_mob.faction != faction)
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL)
+			else
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL)
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL_FF)
+	if(ishuman(src))
+		var/datum/entity/player_stats/human/human_stats = cause_mob.mind.setup_human_stats()
+		if(human_stats)
+			if(cause_mob.faction != faction)
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL)
+			else
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL)
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL_FF)
 
-	if(player_entity)
-		if(isXeno(src))
-			var/role = get_role_name()
-			var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
-			if(xeno_stats)
-				if(cause_mob.faction != faction)
-					xeno_stats.count_death(role, cause_name, player_entity)
-				else
-					xeno_stats.count_death(role, cause_name, player_entity, 1)
-		if(ishuman(src))
-			var/role = get_role_name()
-			var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
-			if(human_stats)
-				if(cause_mob.faction != faction)
-					human_stats.count_death(role, cause_name, player_entity)
-				else
-					human_stats.count_death(role, cause_name, player_entity, 1)
+	if(isXeno(src))
+		var/role = get_role_name()
+		var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
+		if(xeno_stats)
+			if(cause_mob.faction != faction)
+				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH)
+			else
+				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH_FF)
+	if(ishuman(src))
+		var/role = get_role_name()
+		var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
+		if(human_stats)
+			if(cause_mob.faction != faction)
+				human_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH)
+			else
+				human_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH_FF)
 /*******************************************************************************************/
 
 /*******************************************************************************************/
