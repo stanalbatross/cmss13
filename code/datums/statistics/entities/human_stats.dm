@@ -116,7 +116,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_human)
 		return S
 	var/datum/entity/player_stats/weapon/new_stat = new()
 	new_stat.display_stat = noteworthy
-	new_stat.player = src
+	new_stat.player = player
 	new_stat.name = weapon_key
 	weapon_stats_list["[weapon_key]"] = new_stat
 	new_stat.get_recalculate()
