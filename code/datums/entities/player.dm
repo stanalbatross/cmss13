@@ -478,6 +478,8 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 //STATISTIC ENDS HERE//
 
 
+/client/var/datum/entity/player/player_data
+
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
 	if(!safe_key)
