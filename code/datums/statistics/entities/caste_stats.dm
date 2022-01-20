@@ -129,7 +129,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 /proc/track_statistic_caste_ability_earned_callback(caste, name, value, player_id, var/list/datum/entity/statistic/abilities/stats)
 	var/result_length = length(stats)
 	if(result_length == 0) // haven't found an item
-		var/datum/entity/statistic/abilities/S = DB_ENTITY(/datum/entity/statistic/caste/abilities) // this creates a new record
+		var/datum/entity/statistic/abilities/S = DB_ENTITY(/datum/entity/statistic/abilities) // this creates a new record
 		S.caste = caste
 		S.name = name
 		S.value = value
