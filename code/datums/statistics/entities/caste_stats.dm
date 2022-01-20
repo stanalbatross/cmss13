@@ -76,7 +76,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste)
 	var/player_id
 	var/caste
 
-BSQL_PROTECT_DATUM(/datum/entity/statistic/caste/abilities)
+BSQL_PROTECT_DATUM(/datum/entity/statistic/abilities)
 BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 
 /datum/entity_meta/statistic_caste_abilities
@@ -159,7 +159,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 			var/datum/entity/statistic/caste/NNN = statistic["[N.name]"]
 			NNN.value = N.value
 
-	for(var/datum/entity/statistic/caste/abilities/N in player.CAS)
+	for(var/datum/entity/statistic/abilities/N in player.CAS)
 		if(N.caste == name)
 			if(!abilities_used["[N.name]"])
 				var/datum/entity/statistic/abilities/NN = new()
