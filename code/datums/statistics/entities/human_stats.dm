@@ -261,7 +261,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_human)
 
 //KILLS
 
-/datum/entity/player_stats/human/count_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1, W)
+/datum/entity/player_stats/human/count_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
 	track_statistic_human_earned(kill_type, amount, id)
 	if(role)
 		track_statistic_job_earned(role, kill_type, amount, id)
@@ -273,4 +273,4 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_human)
 /datum/entity/player_stats/human/count_death(var/role, var/weapon, var/id, var/death_type, var/amount = 1)
 	track_statistic_human_earned(death_type, amount, id)
 	if(role)
-		track_statistic_job_earned(role, death_type, death_type, amount, id)
+		track_statistic_job_earned(role, death_type, amount, id)

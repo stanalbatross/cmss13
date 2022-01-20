@@ -376,6 +376,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/on_read_timestat))
 
+	//statistic
 	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
 	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
 	DB_FILTER(/datum/entity/statistic/human, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_human))

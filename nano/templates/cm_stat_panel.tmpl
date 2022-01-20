@@ -310,12 +310,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:data.human.top_weapon.name}}</b>
                             </div>
-                            {{props data.human.top_weapon.statistic :statistic_value:statistic_index}}
+                            {{props data.human.top_weapon.statistic :statistic_value_top:statistic_index_top}}
                                 <div class="itemLabelClear">
-                                    {{:statistic_value.name}}:
+                                    {{:statistic_value_top.name}}:
                                 </div>
                                 <div class="itemContentSmallRight">
-                                    {{:statistic_value.value}}
+                                    {{:statistic_value_top.value}}
                                 </div>
                             {{/props}}
                         </fieldset>
@@ -421,81 +421,6 @@ Used in: /code/datums/statistics/entities/player_entity.dm
 			                            {{:statistic_value.value}}
 			                        </div>
 			                    {{/props}}
-                                {{if value.list_killed}}
-									<hr>
-                                    <div class="itemLabelClearBoth">
-                                        <b>Kills List:</b>
-                                    </div>
-				                    {{props value.list_killed :death_value:death_index}}
-				                        <fieldset class="fieldContainerSpaced">
-				                            <div class="itemLabelClearBoth">
-				                                <b>{{:death_value.mob_name}}</b>
-				                            </div>
-				                            {{if death_value.job_name}}
-				                                <div class="itemLabelClear">
-				                                    Role:
-				                                </div>
-				                                <div class="itemContentSmallRight">
-				                                    {{:death_value.job_name}}
-				                                </div>
-				                            {{/if}}
-				                            <div class="itemLabelClear">
-				                                Area:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                {{:death_value.area_name}}
-				                            </div>
-				                            <div class="itemLabelClear">
-				                                Cause:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                {{:death_value.cause_name}}
-				                            </div>
-				                            <div class="itemLabelClear">
-				                                Time of Death:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                {{:death_value.time_of_death}}
-				                            </div>
-				                            <div class="itemLabelClear">
-				                                Lifespan:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                {{:death_value.total_time_alive}}
-				                            </div>
-				                            <div class="itemLabelClear">
-				                                Location:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                ({{:death_value.x}}, {{:death_value.y}}, {{:death_value.z}})
-				                            </div>
-				                            <div class="itemLabelClear">
-				                                Total Kills:
-				                            </div>
-				                            <div class="itemContentSmallRight">
-				                                {{:death_value.total_kills}}
-				                            </div>
-											<hr>
-					                        <div class="itemLabelClear">
-					                            Damage Taken:
-					                        </div>
-					                        <div class="itemContentSmallRight">
-					                            {{:death_value.total_damage_taken}}
-					                        </div>
-											<div class="itemLabelClearBoth">
-												<b>Total Damage:</b>
-											</div>
-											{{props death_value.total_damage :damage_value:damage_index}}
-												<div class="itemLabelClear">
-													{{:damage_value.name}}:
-												</div>
-												<div class="itemContentSmallRight">
-													{{:damage_value.value}}
-												</div>
-											{{/props}}
-				                        </fieldset>
-				                    {{/props}}
-                                {{/if}}
                             </fieldset>
                         </div>
                     {{/props}}
@@ -571,12 +496,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:data.xeno.top_caste.name}}</b>
                             </div>
-                            {{props data.xeno.top_caste.statistic_top_caste :statistic_value:statistic_index}}
+                            {{props data.xeno.top_caste.statistic_top_caste :statistic_value_top:statistic_index_top}}
                                 <div class="itemLabelClear">
-                                    {{:statistic_value.name}}:
+                                    {{:statistic_value_top.name}}:
                                 </div>
                                 <div class="itemContentSmallRight">
-                                    {{:statistic_value.value}}
+                                    {{:statistic_value_top.value}}
                                 </div>
                             {{/props}}
                         </fieldset>

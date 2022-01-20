@@ -126,38 +126,7 @@
 			var/datum/entity/player_stats/weapon/S = H.weapon_stats_list[iteration]
 			if(!S.display_stat)
 				continue
-			var/list/weapon_list_killed = list()
 			var/list/weapon_statistic_list = list()
-
-			for(var/datum/entity/statistic/death/SD in DS)
-				if(SD.cause_name == S.name)
-					if(weapon_list_killed.len >= STATISTICS_KILL_LIST_LEN)
-						break
-					var/list/damage_list = list()
-					if(SD.total_brute)
-						damage_list += list(list("name" = "brute", "value" = SD.total_brute))
-					if(SD.total_burn)
-						damage_list += list(list("name" = "burn", "value" = SD.total_burn))
-					if(SD.total_oxy)
-						damage_list += list(list("name" = "oxy", "value" = SD.total_oxy))
-					if(SD.total_tox)
-						damage_list += list(list("name" = "tox", "value" = SD.total_tox))
-					var/list/killed = list(list(
-						"mob_name" = sanitize(SD.mob_name),
-						"job_name" = SD.role_name,
-						"area_name" = sanitize(SD.area_name),
-						"cause_name" = sanitize(SD.cause_name),
-						"total_kills" = SD.total_kills,
-						"total_damage" = damage_list,
-						"time_of_death" = duration2text(SD.time_of_death),
-						"total_time_alive" = duration2text(SD.total_time_alive),
-						"total_damage_taken" = SD.total_damage_taken,
-						"x" = SD.x,
-						"y" = SD.y,
-						"z" = SD.z
-					))
-					if(weapon_list_killed.len < STATISTICS_KILL_LIST_LEN)
-						weapon_list_killed += killed
 
 			for(var/sub_iteration in S.statistic)
 				var/datum/entity/statistic/weapon/D = S.statistic[sub_iteration]
@@ -165,7 +134,6 @@
 
 			weapon_stats_list += list(list(
 				"name" = sanitize(S.name),
-				"list_killed" = weapon_list_killed,
 				"statistic" = weapon_statistic_list
 			))
 

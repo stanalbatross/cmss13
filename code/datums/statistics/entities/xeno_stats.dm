@@ -164,7 +164,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
 	if(statistic_exempt || !client || !mind)
 		return
 	if(caste)
-		track_statistic_caste_ability_earned(caste_type, name, amount, client.player_data.id)
+		track_statistic_caste_ability_earned(caste, name, amount, client.player_data.id)
 
 /mob/living/carbon/Xenomorph/track_steps_walked(var/amount = 1, var/name = STATISTICS_STEPS_WALKED)
 	if(statistic_exempt || !client || !mind)
