@@ -899,7 +899,7 @@
 	var/turf/target = locate(T.x + rand(-3, 3), T.y + rand(-3, 3), T.z)
 	if(target && istype(target))
 		almayer_orbital_cannon.fire_ob_cannon(target, user)
-		user.count_niche_stat(STATISTICS_NICHE_OB)
+		user.count_statistic_stat(STATISTICS_OB)
 
 /obj/structure/machinery/computer/overwatch/proc/handle_supplydrop()
 	if(!usr || usr != operator)
@@ -953,7 +953,7 @@
 	S.supply_cooldown = world.time
 	if(ismob(usr))
 		var/mob/M = usr
-		M.count_niche_stat(STATISTICS_NICHE_CRATES)
+		M.count_statistic_stat(STATISTICS_CRATES)
 
 	playsound(C.loc,'sound/effects/bamf.ogg', 50, 1)  //Ehh
 	C.anchored = FALSE

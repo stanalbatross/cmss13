@@ -35,7 +35,7 @@ var/global/list/medal_awards = list()
 	var/recipient_mob
 	for(var/mob/M in GLOB.mob_list)
 		if(M == usr)
-			M.count_niche_stat(STATISTICS_NICHE_MEDALS_GIVE)
+			M.count_statistic_stat(STATISTICS_MEDALS_GIVE)
 		if(M.real_name == chosen_recipient)
 			if(isliving(M) && M.stat != DEAD)
 				posthumous = 0

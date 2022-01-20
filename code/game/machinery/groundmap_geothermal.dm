@@ -187,7 +187,7 @@
 					return FALSE
 				playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 				buildstate = 0
-				user.count_niche_stat(STATISTICS_NICHE_REPAIR_GENERATOR)
+				user.count_statistic_stat(STATISTICS_REPAIR_GENERATOR)
 				user.visible_message(SPAN_NOTICE("[user] repairs [src]'s tubing and plating."),
 				SPAN_NOTICE("You repair [src]'s tubing and plating."))
 				update_icon()

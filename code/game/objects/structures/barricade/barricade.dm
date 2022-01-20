@@ -36,7 +36,7 @@
 /obj/structure/barricade/Initialize(mapload, mob/user)
 	. = ..()
 	if(user)
-		user.count_niche_stat(STATISTICS_NICHE_CADES)
+		user.count_statistic_stat(STATISTICS_CADES)
 	addtimer(CALLBACK(src, .proc/update_icon), 0)
 	starting_maxhealth = maxhealth
 
@@ -372,7 +372,7 @@
 
 	user.visible_message(SPAN_NOTICE("[user] repairs some damage on [src]."),
 	SPAN_NOTICE("You repair [src]."))
-	user.count_niche_stat(STATISTICS_NICHE_REPAIR_CADES)
+	user.count_statistic_stat(STATISTICS_REPAIR_CADES)
 	update_health(-200)
 	playsound(src.loc, 'sound/items/Welder2.ogg', 25, TRUE)
 	return TRUE

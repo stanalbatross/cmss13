@@ -198,7 +198,7 @@
 			Stun(6)//This should work for now, more is really silly and makes you lay there forever
 			KnockDown(6)
 
-		count_niche_stat(STATISTICS_NICHE_SHOCK)
+		count_statistic_stat(STATISTICS_SHOCK)
 
 	else
 		src.visible_message(

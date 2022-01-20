@@ -219,7 +219,7 @@
 
 		user.visible_message(SPAN_NOTICE("[user] repairs some damage on [src]."),
 		SPAN_NOTICE("You repair [src]."))
-		user.count_niche_stat(STATISTICS_NICHE_REPAIR_CADES)
+		user.count_statistic_stat(STATISTICS_REPAIR_CADES)
 
 		health += 200
 		if(health > maxhealth)

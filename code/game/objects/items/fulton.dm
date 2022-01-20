@@ -122,7 +122,7 @@ var/global/list/deployed_fultons = list()
 			transfer_fingerprints_to(F)
 			src.add_fingerprint(user)
 			F.add_fingerprint(user)
-			user.count_niche_stat(STATISTICS_NICHE_FULTON)
+			user.count_statistic_stat(STATISTICS_FULTON)
 			use(1)
 			F.deploy_fulton()
 	else

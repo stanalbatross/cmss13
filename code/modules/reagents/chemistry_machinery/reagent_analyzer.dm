@@ -94,7 +94,7 @@
 			chemical_data.save_new_properties(S.properties)
 		if(S.chemclass >= CHEM_CLASS_SPECIAL && !chemical_identified_list[S.id])
 			if(last_used)
-				last_used.count_niche_stat(STATISTICS_NICHE_CHEMS)
+				last_used.count_statistic_stat(STATISTICS_CHEMS)
 			var/datum/chem_property/P = S.get_property(PROPERTY_DNA_DISINTEGRATING)
 			if(P)
 				if(chemical_data.clearance_level >= S.gen_tier)

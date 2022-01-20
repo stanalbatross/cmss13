@@ -135,7 +135,7 @@
 	if(last_damage_data)
 		var/mob/user = last_damage_data.resolve_mob()
 		if(user)
-			user.count_niche_stat(STATISTICS_NICHE_COW)
+			user.count_statistic_stat(STATISTICS_COW)
 
 /mob/living/simple_animal/cow/attack_hand(mob/living/carbon/M as mob)
 	if(!stat && M.a_intent == INTENT_DISARM && icon_state != icon_dead)
@@ -245,7 +245,7 @@ var/global/chicken_count = 0
 	if(last_damage_data)
 		var/mob/user = last_damage_data.resolve_mob()
 		if(user)
-			user.count_niche_stat(STATISTICS_NICHE_CHICKEN)
+			user.count_statistic_stat(STATISTICS_CHICKEN)
 
 /mob/living/simple_animal/chicken/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(istype(O, /obj/item/reagent_container/food/snacks/grown/wheat)) //feedin' dem chickens

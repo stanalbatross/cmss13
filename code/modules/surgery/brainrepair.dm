@@ -17,7 +17,7 @@
 	var/datum/internal_organ/brain/B = patient.internal_organs_by_name["brain"]
 	if(!B || B.damage <= dmg_min || B.robotic == ORGAN_ROBOT)
 		return FALSE
-	if(dmg_max && B.damage > dmg_max)	
+	if(dmg_max && B.damage > dmg_max)
 		return FALSE
 	return TRUE
 
@@ -51,7 +51,7 @@
 		SPAN_NOTICE("[user] finishes extracting fragments of bone from your brain."),
 		SPAN_NOTICE("[user] finishes extracting fragments of bone from [target]'s brain."))
 
-	user.count_niche_stat(STATISTICS_NICHE_SURGERY_BRAIN)
+	user.count_statistic_stat(STATISTICS_SURGERY_BRAIN)
 
 	var/datum/internal_organ/brain/B = target.internal_organs_by_name["brain"]
 	if(B)

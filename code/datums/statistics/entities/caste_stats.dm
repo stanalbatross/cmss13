@@ -120,16 +120,16 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 /proc/track_statistic_caste_ability_earned(caste, name, value, player_id)
 	if(!player_id || !name)
 		return
-	DB_FILTER(/datum/entity/statistic/caste/abilities, DB_AND( // find all records (hopefully just one)
+	DB_FILTER(/datum/entity/statistic/abilities, DB_AND( // find all records (hopefully just one)
 		DB_COMP("player_id", DB_EQUALS, player_id),
 		DB_COMP("caste", DB_EQUALS, caste),
 		DB_COMP("name", DB_EQUALS, name)),
 		CALLBACK(GLOBAL_PROC, .proc/track_statistic_caste_ability_earned_callback, caste, name, value, player_id)) // call the thing when filter is done filtering
 
-/proc/track_statistic_caste_ability_earned_callback(caste, name, value, player_id, var/list/datum/entity/statistic/caste/abilities/stats)
+/proc/track_statistic_caste_ability_earned_callback(caste, name, value, player_id, var/list/datum/entity/statistic/abilities/stats)
 	var/result_length = length(stats)
 	if(result_length == 0) // haven't found an item
-		var/datum/entity/statistic/caste/abilities/S = DB_ENTITY(/datum/entity/statistic/caste/abilities) // this creates a new record
+		var/datum/entity/statistic/abilities/S = DB_ENTITY(/datum/entity/statistic/caste/abilities) // this creates a new record
 		S.caste = caste
 		S.name = name
 		S.value = value
@@ -137,7 +137,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 		S.save() // save it
 		return // we are done here
 
-	var/datum/entity/statistic/caste/abilities/S = stats[1] // we ensured this is the only item
+	var/datum/entity/statistic/abilities/S = stats[1] // we ensured this is the only item
 	S.value += value // add the thing
 	S.save() // say we wanna save it
 
@@ -162,10 +162,10 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_caste_abilities)
 	for(var/datum/entity/statistic/caste/abilities/N in player.CAS)
 		if(N.caste == name)
 			if(!abilities_used["[N.name]"])
-				var/datum/entity/statistic/caste/NN = new()
+				var/datum/entity/statistic/abilities/NN = new()
 				NN.name = N.name
 				abilities_used["[N.name]"] = NN
-			var/datum/entity/statistic/caste/NNN = abilities_used["[N.name]"]
+			var/datum/entity/statistic/abilities/NNN = abilities_used["[N.name]"]
 			NNN.value = N.value
 
 /datum/entity/player_stats/caste/recalculate_nemesis()

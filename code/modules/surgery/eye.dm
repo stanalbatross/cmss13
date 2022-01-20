@@ -60,7 +60,7 @@
 		SPAN_WARNING("Your hand slips, slicing [target]'s eyes with \the [tool]!"),
 		SPAN_WARNING("[user]'s hand slips, slicing your eyes with \the [tool]!"),
 		SPAN_WARNING("[user]'s hand slips, slicing [target]'s eyes with \the [tool]!"))
-	
+
 	log_interact(user, target, "[key_name(user)] failed to separate the cornea on [key_name(target)]'s eyes with \the [tool], aborting [surgery].")
 
 	target.apply_damage(10, BRUTE, target_zone)
@@ -167,7 +167,7 @@
 	target.disabilities &= ~NEARSIGHTED
 	target.sdisabilities &= ~DISABILITY_BLIND
 	surgery.target_eyes.damage = 0
-	user.count_niche_stat(STATISTICS_NICHE_SURGERY_EYE)
+	user.count_statistic_stat(STATISTICS_SURGERY_EYE)
 	target.pain.recalculate_pain()
 
 /datum/surgery_step/cauterize/eyes/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/eye_repair/surgery)

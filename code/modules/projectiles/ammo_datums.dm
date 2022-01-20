@@ -403,7 +403,7 @@
 	H.visible_message(SPAN_HIGHDANGER(uppertext("[L] WAS EXECUTED!")), \
 		SPAN_HIGHDANGER("You were executed!"))
 
-	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
+	user.count_statistic_stat(STATISTICS_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
 	var/area/A = get_area(H)
 
@@ -700,7 +700,7 @@
 	H.visible_message(SPAN_HIGHDANGER(uppertext("[L] WAS EXECUTED!")), \
 		SPAN_HIGHDANGER("You were executed!"))
 
-	user.count_niche_stat(STATISTICS_NICHE_EXECUTION, 1, P.weapon_cause_data?.cause_name)
+	user.count_statistic_stat(STATISTICS_EXECUTION, 1, P.weapon_cause_data?.cause_name)
 
 	var/area/A = get_area(H)
 

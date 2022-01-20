@@ -257,7 +257,7 @@ var/datum/controller/supply/supply_controller = new()
 		S.supply_cooldown = world.time
 		if(ismob(usr))
 			var/mob/M = usr
-			M.count_niche_stat(STATISTICS_NICHE_CRATES)
+			M.count_statistic_stat(STATISTICS_CRATES)
 
 		playsound(C.loc,'sound/effects/bamf.ogg', 50, 1)  //Ehh
 		C.anchored = FALSE
