@@ -54,7 +54,7 @@
 	if(!owner)
 		return
 	var/mob/living/carbon/Xenomorph/X = owner
-	if (ability_name && round_statistics)
+	if(ability_name)
 		X.track_ability_usage(ability_name, X.caste_type)
 
 /datum/action/xeno_action/can_use_action()

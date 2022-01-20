@@ -81,5 +81,5 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/medal)
 	Mlog.save()
 	Mlog.detach()
 
-	track_niche_earned(STATISTICS_NICHE_TYPE_BASE_HUMAN, STATISTICS_NICHE_MEDALS, STATISTICS_NICHE_HELP_SUBTYPE, 1, new_recipient.client.player_data.id)
-	MEDALS.Insert(1, Mlog)
+	track_statistic_human_earned(STATISTICS_MEDALS, 1, new_recipient.client.player_data.id)
+	MS.Insert(1, Mlog)

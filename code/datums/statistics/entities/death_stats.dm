@@ -62,6 +62,14 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
         "z" = DB_FIELDTYPE_INT
     )
 
+/datum/entity_link/player_to_statistic_death
+    parent_entity = /datum/entity/player
+    child_entity = /datum/entity/statistic/death
+    child_field = "player_id"
+
+    parent_name = "player"
+    child_name = "death"
+
 /datum/view_record/statistic_death
 	var/player_id
 	var/round_id
@@ -89,14 +97,6 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	var/x
 	var/y
 	var/z
-
-/datum/entity_link/player_to_statistic_death
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic/death
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "death"
 
 /datum/entity_view_meta/statistic_death_ordered
     root_record_type = /datum/entity/statistic/death
@@ -129,7 +129,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
         "y",
         "z",
     )
-    order_by = list("player_id" = DB_ORDER_BY_DESC)
+    order_by = list("round_id" = DB_ORDER_BY_DESC)
 
 /mob/proc/track_mob_death(var/datum/cause_data/cause_data, var/turf/death_loc)
 	if(!mind || statistic_exempt)
@@ -181,11 +181,11 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	Dlog.total_time_alive = life_time_total
 	Dlog.total_damage_taken = life_damage_taken_total
 
-	var/observer_message = "<b>[real_name]</b> has died"
+	var/observer_message = "<b>[real_name]</b> умер"
 	if(cause_data && cause_data.cause_name)
-		observer_message += " to <b>[cause_name]</b>"
+		observer_message += " от <b>[cause_name]</b>"
 	if(A.name)
-		observer_message += " at \the <b>[A.name]</b>"
+		observer_message += " в <b>[A.name]</b>"
 
 	msg_admin_attack(observer_message, death_loc.x, death_loc.y, death_loc.z)
 
@@ -197,7 +197,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	if(round_statistics)
 		round_statistics.track_death(Dlog)
 
-	player_entity.player_entity.DEATHS.Insert(1, Dlog)
+	player_entity.player_entity.DS.Insert(1, Dlog)
 
 /*******************************************************************************************/
 // KILLS - DEATHS
@@ -206,35 +206,35 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 		var/datum/entity/player_stats/xeno/xeno_stats = cause_mob.mind.setup_xeno_stats()
 		if(xeno_stats)
 			if(cause_mob.faction != faction)
-				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL)
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_KILL)
 			else
-				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL)
-				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_NICHE_KILL_FF)
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_KILL)
+				xeno_stats.count_kill(cause_data.role, cause_player, STATISTICS_KILL_FF)
 	if(ishuman(cause_mob))
 		var/datum/entity/player_stats/human/human_stats = cause_mob.mind.setup_human_stats()
 		if(human_stats)
 			if(cause_mob.faction != faction)
-				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL)
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_KILL)
 			else
-				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL)
-				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_NICHE_KILL_FF)
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_KILL)
+				human_stats.count_kill(cause_data.role, cause_name, cause_player, STATISTICS_KILL_FF)
 
 	if(isXeno(src))
 		var/role = get_role_name()
 		var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
 		if(xeno_stats)
 			if(cause_mob.faction != faction)
-				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH)
+				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_DEATH)
 			else
-				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH_FF)
+				xeno_stats.count_death(role, cause_name, player_entity, STATISTICS_DEATH_FF)
 	if(ishuman(src))
 		var/role = get_role_name()
 		var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
 		if(human_stats)
 			if(cause_mob.faction != faction)
-				human_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH)
+				human_stats.count_death(role, cause_name, player_entity, STATISTICS_DEATH)
 			else
-				human_stats.count_death(role, cause_name, player_entity, STATISTICS_NICHE_DEATH_FF)
+				human_stats.count_death(role, cause_name, player_entity, STATISTICS_DEATH_FF)
 /*******************************************************************************************/
 
 /*******************************************************************************************/

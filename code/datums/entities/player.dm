@@ -42,17 +42,22 @@
 	var/list/datum/entity/player_note/notes
 	var/list/datum/entity/player_job_ban/job_bans
 	var/list/datum/entity/player_time/playtimes
-	var/list/datum/entity/statistic/death
-	var/list/datum/entity/statistic/medal
-	var/list/datum/entity/statistic/niche
 	var/datum/entity/player_entity/player_entity
 	var/list/playtime_data // For the NanoUI menu
 	var/client/owning_client
 
+//statistic
+	var/list/datum/entity/statistic/death/DS
+	var/list/datum/entity/statistic/medal/MS
+	var/list/datum/entity/statistic/human/HS
+	var/list/datum/entity/statistic/xeno/XS
+	var/list/datum/entity/statistic/caste/CS
+	var/list/datum/entity/statistic/abilities/CAS
+	var/list/datum/entity/statistic/job/JS
+	var/list/datum/entity/statistic/weapon/WS
+//end
+
 BSQL_PROTECT_DATUM(/datum/entity/player)
-BSQL_PROTECT_DATUM(/datum/entity/death)
-BSQL_PROTECT_DATUM(/datum/entity/medal)
-BSQL_PROTECT_DATUM(/datum/entity/niche)
 
 /datum/entity_meta/player
 	entity_type = /datum/entity/player
@@ -371,9 +376,14 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 
 	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/on_read_timestat))
 
-	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_d))
-	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_m))
-	DB_FILTER(/datum/entity/statistic/niche, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_n))
+	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
+	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
+	DB_FILTER(/datum/entity/statistic/human, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_human))
+	DB_FILTER(/datum/entity/statistic/xeno, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_xeno))
+	DB_FILTER(/datum/entity/statistic/caste, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_caste))
+	DB_FILTER(/datum/entity/statistic/abilities, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_abilities))
+	DB_FILTER(/datum/entity/statistic/job, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_job))
+	DB_FILTER(/datum/entity/statistic/weapon, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
 
 	if(!migrated_bans && !migrating_bans)
 		migrating_bans = TRUE
@@ -409,21 +419,64 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 		for(var/datum/entity/player_time/S in _stat)
 			LAZYSET(playtimes, S.role_id, S)
 
-/datum/entity/player/proc/statistic_load_d(var/list/datum/entity/statistic/death/D)
-	for(var/datum/entity/statistic/death/S in D)
-		LAZYSET(death, S.id, S)
-		player_entity.DEATHS.Insert(1, S)
 
-/datum/entity/player/proc/statistic_load_m(var/list/datum/entity/statistic/medal/M)
-	for(var/datum/entity/statistic/medal/S in M)
-		LAZYSET(medal, S.id, S)
-		player_entity.MEDALS.Insert(1, S)
+//STATISTIC//
+/datum/entity/player/proc/statistic_load_death(var/list/datum/entity/statistic/death/S)
+	for(var/datum/entity/statistic/death/STAT in S)
+		if(!LAZYISIN(DS, STAT))
+			LAZYSET(DS, S.id, STAT)
+			player_entity.DS.Insert(1, STAT)
 
-/datum/entity/player/proc/statistic_load_n(var/list/datum/entity/statistic/niche/N)
-	for(var/datum/entity/statistic/niche/S in N)
-		LAZYSET(niche, S.id, S)
-		player_entity.NICHE.Insert(1, S)
+/datum/entity/player/proc/statistic_load_medals(var/list/datum/entity/statistic/medal/S)
+	for(var/datum/entity/statistic/medal/STAT in S)
+		if(!LAZYISIN(MS, STAT))
+			LAZYSET(MS, S.id, STAT)
+			player_entity.MS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_human(var/list/datum/entity/statistic/human/S)
+	LAZYCLEARLIST(HS)
+	LAZYCLEARLIST(player_entity.HS)
+	for(var/datum/entity/statistic/human/STAT in S)
+		LAZYSET(HS, S.id, STAT)
+		player_entity.HS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_xeno(var/list/datum/entity/statistic/xeno/S)
+	LAZYCLEARLIST(XS)
+	LAZYCLEARLIST(player_entity.XS)
+	for(var/datum/entity/statistic/xeno/STAT in S)
+		LAZYSET(XS, S.id, STAT)
+		player_entity.XS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_caste(var/list/datum/entity/statistic/caste/S)
+	LAZYCLEARLIST(CS)
+	LAZYCLEARLIST(player_entity.CS)
+	for(var/datum/entity/statistic/caste/STAT in S)
+		LAZYSET(CS, S.id, STAT)
+		player_entity.CS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_abilities(var/list/datum/entity/statistic/abilities/S)
+	LAZYCLEARLIST(CAS)
+	LAZYCLEARLIST(player_entity.CAS)
+	for(var/datum/entity/statistic/abilities/STAT in S)
+		LAZYSET(CAS, S.id, STAT)
+		player_entity.CAS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_job(var/list/datum/entity/statistic/job/S)
+	LAZYCLEARLIST(JS)
+	LAZYCLEARLIST(player_entity.JS)
+	for(var/datum/entity/statistic/job/STAT in S)
+		LAZYSET(JS, S.id, STAT)
+		player_entity.JS.Insert(1, STAT)
+
+/datum/entity/player/proc/statistic_load_weapon(var/list/datum/entity/statistic/weapon/S)
+	LAZYCLEARLIST(WS)
+	LAZYCLEARLIST(player_entity.WS)
+	for(var/datum/entity/statistic/weapon/STAT in S)
+		LAZYSET(WS, S.id, STAT)
+		player_entity.WS.Insert(1, STAT)
 	player_entity.setup_entity()
+//STATISTIC ENDS HERE//
+
 
 /proc/get_player_from_key(key)
 	var/safe_key = ckey(key)
@@ -433,8 +486,6 @@ BSQL_PROTECT_DATUM(/datum/entity/niche)
 	P.save()
 	P.sync()
 	return P
-
-/client/var/datum/entity/player/player_data
 
 /client/proc/load_player_data()
 	set waitfor=0

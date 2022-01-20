@@ -294,18 +294,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
         {{if data.subMenu == 0}}
             {{if data.human}}
                 {{if data.dataMenu == 0}}
-                    <div class="itemLabelClear">
-                        Total Kills:
-                    </div>
-                    <div class="itemContentSmallRight">
-                        {{:data.human.total_kills}}
-                    </div>
-                    {{props data.human.niche_stats :niche_value:niche_index}}
+                    {{props data.human.statistic :statistic_value:statistic_index}}
                         <div class="itemLabelClear">
-                            {{:niche_value.name}}:
+                            {{:statistic_value.name}}:
                         </div>
                         <div class="itemContentSmallRight">
-                            {{:niche_value.value}}
+                            {{:statistic_value.value}}
                         </div>
                     {{/props}}
                     {{if data.human.top_weapon}}
@@ -316,20 +310,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:data.human.top_weapon.name}}</b>
                             </div>
-                            {{if data.human.top_weapon.total_kills}}
+                            {{props data.human.top_weapon.statistic :statistic_value:statistic_index}}
                                 <div class="itemLabelClear">
-                                    Total Kills:
+                                    {{:statistic_value.name}}:
                                 </div>
                                 <div class="itemContentSmallRight">
-                                    {{:data.human.top_weapon.total_kills}}
-                                </div>
-                            {{/if}}
-                            {{props data.human.top_weapon.niche_stats :niche_value:niche_index}}
-                                <div class="itemLabelClear">
-                                    {{:niche_value.name}}:
-                                </div>
-                                <div class="itemContentSmallRight">
-                                    {{:niche_value.value}}
+                                    {{:statistic_value.value}}
                                 </div>
                             {{/props}}
                         </fieldset>
@@ -427,18 +413,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                                 <div class="itemLabelClearBoth">
                                     <b>{{:value.name}}</b>
                                 </div>
-			                    <div class="itemLabelClear">
-			                        Total Kills:
-			                    </div>
-			                    <div class="itemContentSmallRight">
-			                        {{:value.total_kills}}
-			                    </div>
-			                    {{props value.niche_stats :niche_value:niche_index}}
+			                    {{props value.statistic :statistic_value:statistic_index}}
 			                        <div class="itemLabelClear">
-			                            {{:niche_value.name}}:
+			                            {{:statistic_value.name}}:
 			                        </div>
 			                        <div class="itemContentSmallRight">
-			                            {{:niche_value.value}}
+			                            {{:statistic_value.value}}
 			                        </div>
 			                    {{/props}}
                                 {{if value.list_killed}}
@@ -525,20 +505,14 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:job_value.name}}</b>
                             </div>
-                            <div class="itemLabelClear">
-                                Total Kills:
-                            </div>
-                            <div class="itemContentSmallRight">
-                                {{:job_value.total_kills}}
-                            </div>
-                            {{props job_value.niche_stats :niche_value:niche_index}}
-                                <div class="itemLabelClear">
-                                    {{:niche_value.name}}:
-                                </div>
-                                <div class="itemContentSmallRight">
-                                    {{:niche_value.value}}
-                                </div>
-                            {{/props}}
+		                    {{props job_value.statistic :statistic_value:statistic_index}}
+		                        <div class="itemLabelClear">
+		                            {{:statistic_value.name}}:
+		                        </div>
+		                        <div class="itemContentSmallRight">
+		                            {{:statistic_value.value}}
+		                        </div>
+		                    {{/props}}
 							<hr>
                             {{if job_value.nemesis}}
                                 <div class="itemLabelClearBoth">
@@ -581,18 +555,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
         {{else data.subMenu == 1}}
             {{if data.xeno}}
                 {{if data.dataMenu == 0}}
-                    <div class="itemLabelClear">
-                        Total Kills:
-                    </div>
-                    <div class="itemContentSmallRight">
-                        {{:data.xeno.total_kills}}
-                    </div>
-                    {{props data.xeno.niche_stats :niche_value:niche_index}}
+                    {{props data.xeno.statistic :statistic_value:statistic_index}}
                         <div class="itemLabelClear">
-                            {{:niche_value.name}}:
+                            {{:statistic_value.name}}:
                         </div>
                         <div class="itemContentSmallRight">
-                            {{:niche_value.value}}
+                            {{:statistic_value.value}}
                         </div>
                     {{/props}}
                     {{if data.xeno.top_caste}}
@@ -603,18 +571,12 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:data.xeno.top_caste.name}}</b>
                             </div>
-                            <div class="itemLabelClear">
-                                Total Kills:
-                            </div>
-                            <div class="itemContentSmallRight">
-                                {{:data.xeno.top_caste.total_kills}}
-                            </div>
-                            {{props data.xeno.top_caste.niche_stats_top_caste :niche_value:niche_index}}
+                            {{props data.xeno.top_caste.statistic_top_caste :statistic_value:statistic_index}}
                                 <div class="itemLabelClear">
-                                    {{:niche_value.name}}:
+                                    {{:statistic_value.name}}:
                                 </div>
                                 <div class="itemContentSmallRight">
-                                    {{:niche_value.value}}
+                                    {{:statistic_value.value}}
                                 </div>
                             {{/props}}
                         </fieldset>
@@ -711,32 +673,23 @@ Used in: /code/datums/statistics/entities/player_entity.dm
                             <div class="itemLabelClearBoth">
                                 <b>{{:caste_value.name}}<b>
                             </div>
-                            <div class="itemLabelClear">
-                                Total Kills:
-                            </div>
-                            <div class="itemContentSmallRight">
-                                {{:caste_value.total_kills}}
-                            </div>
-                            {{props caste_value.niche_stats :niche_value:niche_index}}
+                            {{props caste_value.statistic :statistic_value:statistic_index}}
                                 <div class="itemLabelClear">
-                                    {{:niche_value.name}}:
+                                    {{:statistic_value.name}}:
                                 </div>
                                 <div class="itemContentSmallRight">
-                                    {{:niche_value.value}}
+                                    {{:statistic_value.value}}
                                 </div>
                             {{/props}}
 							<hr>
-                            <div class="itemLabelClearBoth">
-                                <b>Abilities Used:</b>
-                            </div>
-                            {{props caste_value.abilities_used :ability_value:ability_index}}
-                                <div class="itemLabelClear">
-                                    {{:ability_value.name}}:
-                                </div>
-                                <div class="itemContentSmallRight">
-                                    {{:ability_value.value}}
-                                </div>
-                            {{/props}}
+	                        {{props caste_value.abilities_used :ability_value:ability_index}}
+	                            <div class="itemLabelClear">
+	                                {{:ability_value.name}}:
+	                            </div>
+	                            <div class="itemContentSmallRight">
+	                                {{:ability_value.value}}
+	                            </div>
+	                        {{/props}}
                             {{if caste_value.nemesis}}
                                 <div class="itemLabelClearBoth">
                                     Nemesis:

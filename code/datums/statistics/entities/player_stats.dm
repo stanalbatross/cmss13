@@ -3,7 +3,7 @@
 	var/total_kills = 0
 	var/round_played = FALSE
 	var/datum/entity/statistic/nemesis = null // "runner" = 3
-	var/list/niche_stats = list() // list of type /datum/entity/statistic, "Total Executions" = number
+	var/list/statistic = list() // list of type /datum/entity/statistic, "Total Executions" = number
 	var/display_stat = TRUE
 
 //******************
@@ -12,7 +12,7 @@
 
 /datum/entity/player_stats/proc/recalculate_nemesis()
 	var/list/causes = list()
-	for(var/datum/entity/statistic/death/stat_entity in player.DEATHS)
+	for(var/datum/entity/statistic/death/stat_entity in player.DS)
 		if(!stat_entity.cause_name)
 			continue
 		causes["[stat_entity.cause_name]"] += 1
@@ -36,23 +36,23 @@
 //Mob Procs - minor
 //*****************
 
-/mob/proc/count_niche_stat(var/niche_name, var/amount = 1)
+/mob/proc/count_statistic_stat(var/name, var/amount = 1)
 	return
 
-/mob/living/carbon/human/count_niche_stat(var/niche_name, var/amount = 1, var/weapon)
+/mob/living/carbon/human/count_statistic_stat(var/name, var/amount = 1, var/weapon)
 	if(statistic_exempt || !mind)
 		return
 	var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
 	var/job_actual = get_actual_job_name(src)
-	human_stats.count_niche_stat(client, niche_name, amount, job_actual, weapon)
+	human_stats.count_statistic_stat(client, name, amount, job_actual, weapon)
 
-/mob/living/carbon/Xenomorph/count_niche_stat(var/niche_name, var/amount = 1)
+/mob/living/carbon/Xenomorph/count_statistic_stat(var/name, var/amount = 1)
 	if(statistic_exempt || !mind)
 		return
 	var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
-	xeno_stats.count_niche_stat(client, niche_name, amount, caste_type)
+	xeno_stats.count_statistic_stat(client, name, amount, caste_type)
 
-/datum/entity/player_stats/proc/count_niche_stat(var/client/client, var/niche_name, var/amount = 1, var/job)
+/datum/entity/player_stats/proc/count_statistic_stat(var/client/client, var/name, var/amount = 1, var/job)
 	return
 
 /datum/entity/player_stats/proc/count_personal_steps_walked(var/client/client, var/job)
@@ -67,15 +67,9 @@
 //************************
 
 //KILLS
-/datum/entity/player_stats/proc/count_personal_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
-	return
-
 /datum/entity/player_stats/proc/count_kill(var/role, var/weapon, var/id, var/kill_type, var/amount = 1)
 	return
 
 //DEATHS
-/datum/entity/player_stats/proc/count_personal_death(var/role, var/weapon, var/role, var/id, var/death_type, var/amount = 1)
-	return
-
 /datum/entity/player_stats/proc/count_death(var/role, var/weapon, var/id, var/death_type, var/amount = 1)
 	return

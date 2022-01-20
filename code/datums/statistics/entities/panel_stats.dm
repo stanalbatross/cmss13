@@ -65,7 +65,7 @@
 		var/list/medal_list = list()
 		var/list/weapon_stats_list = list()
 		var/list/job_stats_list = list()
-		var/list/niche_stats_list = list()
+		var/list/statistic_list = list()
 		var/list/top_weapon = null
 		var/list/human_nemesis = null
 
@@ -74,21 +74,20 @@
 
 
 		if(H.top_weapon)
-			var/list/top_weapon_niche_stats_list = list()
-			for(var/iteration in H.top_weapon.niche_stats)
-				var/datum/entity/statistic/S = H.top_weapon.niche_stats[iteration]
-				top_weapon_niche_stats_list += list(list("name" = S.name, "value" = S.value))
+			var/list/top_weapon_statistic_list = list()
+			for(var/iteration in H.top_weapon.statistic)
+				var/datum/entity/statistic/S = H.top_weapon.statistic[iteration]
+				top_weapon_statistic_list += list(list("name" = S.name, "value" = S.value))
 			top_weapon = list(
 				"name" = sanitize(H.top_weapon.name),
-				"total_kills" = H.top_weapon.total_kills,
-				"niche_stats" = top_weapon_niche_stats_list
+				"statistic" = top_weapon_statistic_list
 			)
 
-		for(var/iteration in H.niche_stats)
-			var/datum/entity/statistic/S = H.niche_stats[iteration]
-			niche_stats_list += list(list("name" = S.name, "value" = S.value))
+		for(var/iteration in H.statistic)
+			var/datum/entity/statistic/S = H.statistic[iteration]
+			statistic_list += list(list("name" = S.name, "value" = S.value))
 
-		for(var/datum/entity/statistic/medal/M in MEDALS)
+		for(var/datum/entity/statistic/medal/M in MS)
 			medal_list += list(list(
 				"medal_type" = sanitize(M.medal_type),
 				"recipient" = sanitize(M.recipient_name),
@@ -97,7 +96,7 @@
 				"giver" = sanitize(M.giver_name)
 			))
 
-		for(var/datum/entity/statistic/death/SD in DEATHS)
+		for(var/datum/entity/statistic/death/SD in DS)
 			if(SD.faction_name != "Normal Hive")
 				var/list/damage_list = list()
 				if(SD.total_brute)
@@ -124,13 +123,13 @@
 				))
 
 		for(var/iteration in H.weapon_stats_list)
-			var/datum/entity/player_stats/weapon_stats/S = H.weapon_stats_list[iteration]
+			var/datum/entity/player_stats/weapon/S = H.weapon_stats_list[iteration]
 			if(!S.display_stat)
 				continue
 			var/list/weapon_list_killed = list()
-			var/list/weapon_niche_stats_list = list()
+			var/list/weapon_statistic_list = list()
 
-			for(var/datum/entity/statistic/death/SD in DEATHS)
+			for(var/datum/entity/statistic/death/SD in DS)
 				if(SD.cause_name == S.name)
 					if(weapon_list_killed.len >= STATISTICS_KILL_LIST_LEN)
 						break
@@ -160,15 +159,14 @@
 					if(weapon_list_killed.len < STATISTICS_KILL_LIST_LEN)
 						weapon_list_killed += kill
 
-			for(var/sub_iteration in S.niche_stats)
-				var/datum/entity/statistic/D = S.niche_stats[sub_iteration]
-				weapon_niche_stats_list += list(list("name" = D.name, "value" = D.value))
+			for(var/sub_iteration in S.statistic)
+				var/datum/entity/statistic/D = S.statistic[sub_iteration]
+				weapon_statistic_list += list(list("name" = D.name, "value" = D.value))
 
 			weapon_stats_list += list(list(
 				"name" = sanitize(S.name),
-				"total_kills" = S.total_kills,
 				"list_killed" = weapon_list_killed,
-				"niche_stats" = weapon_niche_stats_list
+				"statistic" = weapon_statistic_list
 			))
 
 		for(var/iteration in H.job_stats_list)
@@ -176,17 +174,17 @@
 			if(!S.display_stat)
 				continue
 			var/list/job_death_list = list()
-			var/list/job_niche_stats_list = list()
+			var/list/job_statistic_list = list()
 			var/list/job_nemesis = null
 
 			if(S.nemesis)
 				job_nemesis = list("name" = S.nemesis.name, "value" = S.nemesis.value)
 
-			for(var/sub_iteration in S.niche_stats)
-				var/datum/entity/statistic/D = S.niche_stats[sub_iteration]
-				job_niche_stats_list += list(list("name" = D.name, "value" = D.value))
+			for(var/sub_iteration in S.statistic)
+				var/datum/entity/statistic/D = S.statistic[sub_iteration]
+				job_statistic_list += list(list("name" = D.name, "value" = D.value))
 
-			for(var/datum/entity/statistic/death/SD in DEATHS)
+			for(var/datum/entity/statistic/death/SD in DS)
 				if(SD.role_name != S.name)
 					continue
 				var/list/damage_list = list()
@@ -215,20 +213,18 @@
 
 			job_stats_list += list(list(
 				"name" = S.name,
-				"total_kills" = S.total_kills,
 				"nemesis" = job_nemesis,
 				"job_death_list" = job_death_list,
-				"niche_stats" = job_niche_stats_list
+				"niche_stats" = job_statistic_list
 			))
 
 		data["human"] = list(
-			"total_kills" = H.total_kills,
 			"nemesis" = human_nemesis,
 			"medal_list" = medal_list,
 			"death_list" = death_list,
 			"weapon_stats_list" = weapon_stats_list,
 			"job_stats_list" = job_stats_list,
-			"niche_stats" = niche_stats_list,
+			"statistic" = statistic_list,
 			"top_weapon" = top_weapon
 		)
 
@@ -236,7 +232,7 @@
 		var/datum/entity/player_stats/xeno/H = player_stats["xeno"]
 		var/list/death_list = list()
 		var/list/caste_stats_list = list()
-		var/list/niche_stats_list = list()
+		var/list/statistic_list = list()
 		var/list/top_caste = null
 		var/list/xeno_nemesis = null
 
@@ -244,21 +240,20 @@
 			xeno_nemesis = list("name" = H.nemesis.name, "value" = H.nemesis.value)
 
 		if(H.top_caste)
-			var/list/top_caste_niche_stats_list = list()
-			for(var/iteration in H.top_caste.niche_stats)
-				var/datum/entity/statistic/S = H.top_caste.niche_stats[iteration]
-				top_caste_niche_stats_list += list(list("name" = S.name, "value" = S.value))
+			var/list/top_caste_statistic_list = list()
+			for(var/iteration in H.top_caste.statistic)
+				var/datum/entity/statistic/S = H.top_caste.statistic[iteration]
+				top_caste_statistic_list += list(list("name" = S.name, "value" = S.value))
 			top_caste = list(
 				"name" = H.top_caste.name,
-				"total_kills" = H.top_caste.total_kills,
-				"niche_stats" = top_caste_niche_stats_list
+				"statistic" = top_caste_statistic_list
 			)
 
-		for(var/iteration in H.niche_stats)
-			var/datum/entity/statistic/S = H.niche_stats[iteration]
-			niche_stats_list += list(list("name" = S.name, "value" = S.value))
+		for(var/iteration in H.statistic)
+			var/datum/entity/statistic/S = H.statistic[iteration]
+			statistic_list += list(list("name" = S.name, "value" = S.value))
 
-		for(var/datum/entity/statistic/death/SD in DEATHS)
+		for(var/datum/entity/statistic/death/SD in DS)
 			if(SD.faction_name == "Normal Hive")
 				var/list/damage_list = list()
 				if(SD.total_brute)
@@ -289,9 +284,8 @@
 			if(!S.display_stat)
 				continue
 			var/list/caste_abilities_used = list()
-			var/caste_total_kills = null
 			var/list/caste_death_list = list()
-			var/list/caste_niche_stats_list = list()
+			var/list/caste_statistic_list = list()
 			var/list/caste_nemesis = null
 
 			if(S.nemesis)
@@ -301,15 +295,11 @@
 				var/datum/entity/statistic/D = S.abilities_used[sub_iteration]
 				caste_abilities_used += list(list("name" = D.name, "value" = D.value))
 
-			for(var/sub_iteration in S.total_kills)
-				var/datum/entity/statistic/D = S.total_kills[sub_iteration]
-				caste_total_kills += list(list("name" = D.name, "value" = D.value))
+			for(var/sub_iteration in S.statistic)
+				var/datum/entity/statistic/D = S.statistic[sub_iteration]
+				caste_statistic_list += list(list("name" = D.name, "value" = D.value))
 
-			for(var/sub_iteration in S.niche_stats)
-				var/datum/entity/statistic/D = S.niche_stats[sub_iteration]
-				caste_niche_stats_list += list(list("name" = D.name, "value" = D.value))
-
-			for(var/datum/view_record/statistic_death/SD in DEATHS)
+			for(var/datum/entity/statistic/death/SD in DS)
 				if(SD.faction_name == "Normal Hive")
 					var/list/damage_list = list()
 					if(SD.total_brute)
@@ -336,19 +326,17 @@
 
 			caste_stats_list += list(list(
 				"name" = S.name,
-				"total_kills" = S.total_kills,
 				"nemesis" = caste_nemesis,
 				"death_list" = caste_death_list,
 				"abilities_used" = caste_abilities_used,
-				"niche_stats" = caste_niche_stats_list
+				"niche_stats" = caste_statistic_list
 			))
 
 		data["xeno"] = list(
-			"total_kills" = H.total_kills,
 			"nemesis" = xeno_nemesis,
 			"death_list" = death_list,
 			"caste_stats_list" = caste_stats_list,
-			"niche_stats" = niche_stats_list,
+			"statistic" = statistic_list,
 			"top_caste" = top_caste
 		)
 
