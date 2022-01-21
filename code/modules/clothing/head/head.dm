@@ -268,7 +268,7 @@
 
 /obj/item/clothing/head/cmcap/flap
 	name = "\improper USCM expedition cap"
-	desc = "It's a cap, with flaps. A patch stitched across the front reads \"<b>USS ALMAYER</b>\"."
+	desc = "It's a cap, with flaps. A patch stitched across the front reads \"<b>[MAIN_SHIP_NAME]</b>\"."
 	icon = 'icons/obj/items/clothing/cm_hats.dmi'
 	icon_state = "flapcap"
 	flags_marine_hat = HAT_GARB_OVERLAY

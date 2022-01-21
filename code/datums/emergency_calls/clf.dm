@@ -25,7 +25,7 @@
 	to_chat(H, SPAN_BOLD("With the Tychon's Rift sector existing in relative isolation from United America oversight for the last five years, many colonists have considered themselves free from governmental rule."))
 	to_chat(H, "")
 	to_chat(H, SPAN_BOLD("The year is now [game_year]."))
-	to_chat(H, SPAN_BOLD("The arrival of the USCM Battalion, the Falling Falcons, and their flagship, the USS Almayer, have reaffirmed that the United Americas considers Tychon's Rift part of their holdings."))
+	to_chat(H, SPAN_BOLD("The arrival of the USCM Battalion, the Falling Falcons, and their flagship, the [MAIN_SHIP_NAME], have reaffirmed that the United Americas considers Tychon's Rift part of their holdings."))
 	to_chat(H, SPAN_BOLD("It is up to you and your fellow colonists to make them realize their trespasses. This sector is no longer theirs."))
 
 /datum/emergency_call/clf/create_member(datum/mind/M)

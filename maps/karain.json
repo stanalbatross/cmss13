@@ -1,0 +1,6 @@
+{
+    "map_name": "USS Karain",
+    "map_path": "map_files/USS_Karain",
+    "map_file": "USS_Karain.dmm",
+    "traits": [{"Marine Main Ship": true}]
+}
