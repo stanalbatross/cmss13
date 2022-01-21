@@ -132,7 +132,6 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
 	for(var/statistics in caste_stats_list)
 		var/datum/entity/player_stats/caste/stat_entity = caste_stats_list[statistics]
 		stat_entity.get_recalculate()
-		stat_entity.get_kills()
 		if(!top_caste)
 			top_caste = stat_entity
 			continue
@@ -164,7 +163,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
 	if(statistic_exempt || !client || !mind)
 		return
 	if(caste)
-		track_statistic_caste_ability_earned(caste, name, amount, client.player_data.id)
+		track_statistic_caste_ability_earned(caste, ability, amount, client.player_data.id)
 
 /mob/living/carbon/Xenomorph/track_steps_walked(var/amount = 1, var/name = STATISTICS_STEPS_WALKED)
 	if(statistic_exempt || !client || !mind)
