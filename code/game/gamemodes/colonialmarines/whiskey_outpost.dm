@@ -42,7 +42,7 @@
 
 	//var/mob/living/carbon/human/Commander //If there is no Commander, marines wont get any supplies
 	//No longer relevant to the game mode, since supply drops are getting changed.
-	round_end_states = list(MODE_WISKEY_OUTPOST_X_MAJOR, MODE_WISKEY_OUTPOST_M_MAJOR)
+	round_end_states = list(MODE_WISKEY_OUTPOST_X_MAJOR, MODE_WISKEY_OUTPOST_M_MAJOR, MODE_INFESTATION_DRAW_DEATH)
 	var/checkwin_counter = 0
 	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
