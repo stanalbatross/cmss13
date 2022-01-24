@@ -20,6 +20,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	var/config_tag = null
 	var/votable = 1
 	var/probability = 0
+	var/list/round_end_states = list()
 	var/list/datum/mind/modePlayer = new
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret

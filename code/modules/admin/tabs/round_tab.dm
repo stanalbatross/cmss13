@@ -122,14 +122,26 @@
 	if(!check_rights(R_SERVER) || !SSticker.mode)
 		return
 
-	if(alert("Are you sure you want to end the round?",,"Yes","No") != "Yes")
-		return
 	// trying to end the round before it even starts. bruh
 	if(!SSticker.mode)
 		return
 
-	SSticker.mode.round_finished = MODE_INFESTATION_DRAW_DEATH
-	message_staff("[key_name(usr)] has made the round end early.")
+	if(alert("Are you sure you want to end the round?", "End Round", "Yes", "No") != "Yes")
+		return
+
+	var/winstate = input(usr, "What do you want the round end state to be?", "End Round") as null|anything in list("Custom", "Admin Intervention") + SSticker.mode.round_end_states //Make list and custom ending, because we can!
+	if(!winstate)
+		return
+
+	if(winstate == "Custom")
+		winstate = input(usr, "Please enter a custom round end state.", "End Round") as null|text
+		if(!winstate)
+			return
+
+	SSticker.mode.round_finished = winstate
+
+	log_admin("[key_name(usr)] has made the round end early - [winstate].")
+	message_staff("[key_name(usr)] has made the round end early - [winstate].")
 	for(var/client/C in GLOB.admins)
 		to_chat(C, {"
 		<hr>

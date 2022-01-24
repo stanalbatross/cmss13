@@ -42,6 +42,7 @@
 
 	//var/mob/living/carbon/human/Commander //If there is no Commander, marines wont get any supplies
 	//No longer relevant to the game mode, since supply drops are getting changed.
+	round_end_states = list(MODE_WISKEY_OUTPOST_X_MAJOR, MODE_WISKEY_OUTPOST_M_MAJOR)
 	var/checkwin_counter = 0
 	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
@@ -109,7 +110,7 @@
 
 	CONFIG_SET(flag/remove_gun_restrictions, TRUE)
 	sleep(10)
-	to_world("<span class='round_header'>The current game mode is - WHISKEY OUTPOST!</span>")
+	to_world("<span class='round_header'>The current game mode is - [name]!</span>")
 	to_world(SPAN_ROUNDBODY("It is the year 2177 on the planet LV-624, five years before the arrival of the USS Almayer and the 2nd 'Falling Falcons' Battalion in the sector"))
 	to_world(SPAN_ROUNDBODY("The 3rd 'Dust Raiders' Battalion is charged with establishing a USCM prescence in the Tychon's Rift sector"))
 	to_world(SPAN_ROUNDBODY("[SSmapping.configs[GROUND_MAP].map_name], one of the Dust Raider bases being established in the sector, has come under attack from unrecognized alien forces"))
@@ -205,9 +206,9 @@
 	var/C = count_humans_and_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))
 
 	if(C[1] == 0)
-		finished = 1 //Alien win
-	else if(world.time > last_wave_time + 15 MINUTES) // Around 1:12 hh:mm
-		finished = 2 //Marine win
+		round_end_states = MODE_WISKEY_OUTPOST_X_MAJOR //Alien win
+	else if(world.time > last_wave_time + 15 MINUTES) //Last wave time + 15 minutes over for give some time to xeno push
+		round_end_states = MODE_WISKEY_OUTPOST_M_MAJOR //Marine win
 
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
 	for(var/i in RoleAuthority.roles_by_name)
@@ -254,44 +255,48 @@
 /datum/game_mode/whiskey_outpost/declare_completion()
 	if(round_statistics)
 		round_statistics.track_round_end()
-	if(finished == 1)
-		log_game("Round end result - xenos won")
-		to_world("<span class='round_header'>The Xenos have succesfully defended their hive from colonization.</span>")
-		to_world(SPAN_ROUNDBODY("Well done, you've secured LV-624 for the hive!"))
-		to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Tychon's Rift sector, with the arrival of the 2nd 'Falling Falcons' Battalion and the USS Almayer."))
-		to_world(SPAN_ROUNDBODY("The xenomorph hive on LV-624 remains unthreatened until then.."))
-		world << sound('sound/misc/Game_Over_Man.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_X_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_xeno_victories += 1
-				round_statistics.current_map.total_xeno_majors += 1
+	switch(round_end_states)
+		if(MODE_WISKEY_OUTPOST_X_MAJOR)
+			log_game("Round end result - xenos won")
+			to_world("<span class='round_header'>The Xenos have succesfully defended their hive from colonization.</span>")
+			to_world(SPAN_ROUNDBODY("Well done, you've secured LV-624 for the hive!"))
+			to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Tychon's Rift sector, with the arrival of the 2nd 'Falling Falcons' Battalion and the USS Almayer."))
+			to_world(SPAN_ROUNDBODY("The xenomorph hive on LV-624 remains unthreatened until then.."))
+			world << sound('sound/misc/Game_Over_Man.ogg')
+			if(round_statistics)
+				if(round_statistics.current_map)
+					round_statistics.current_map.total_xeno_victories += 1
+					round_statistics.current_map.total_xeno_majors += 1
 
-	else if(finished == 2)
-		log_game("Round end result - marines won")
-		to_world("<span class='round_header'>Against the onslaught, the marines have survived.</span>")
-		to_world(SPAN_ROUNDBODY("The signal rings out to the USS Alistoun, and Dust Raiders stationed elsewhere in Tychon's Rift begin to converge on LV-624."))
-		to_world(SPAN_ROUNDBODY("Eventually, the Dust Raiders secure LV-624 and the entire Tychon's Rift sector in 2182, pacifiying it and establishing peace in the sector for decades to come."))
-		to_world(SPAN_ROUNDBODY("The USS Almayer and the 2nd 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
-		world << sound('sound/misc/hell_march.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_M_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_marine_victories += 1
-				round_statistics.current_map.total_marine_majors += 1
+		if(MODE_WISKEY_OUTPOST_M_MAJOR)
+			log_game("Round end result - marines won")
+			to_world("<span class='round_header'>Against the onslaught, the marines have survived.</span>")
+			to_world(SPAN_ROUNDBODY("The signal rings out to the USS Alistoun, and Dust Raiders stationed elsewhere in Tychon's Rift begin to converge on LV-624."))
+			to_world(SPAN_ROUNDBODY("Eventually, the Dust Raiders secure LV-624 and the entire Tychon's Rift sector in 2182, pacifiying it and establishing peace in the sector for decades to come."))
+			to_world(SPAN_ROUNDBODY("The USS Almayer and the 2nd 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
+			world << sound('sound/misc/hell_march.ogg')
+			if(round_statistics)
+				if(round_statistics.current_map)
+					round_statistics.current_map.total_marine_victories += 1
+					round_statistics.current_map.total_marine_majors += 1
 
-	else
-		log_game("Round end result - no winners")
-		to_world("<span class='round_header'>NOBODY WON!</span>")
-		to_world(SPAN_ROUNDBODY("How? Don't ask me..."))
-		world << 'sound/misc/sadtrombone.ogg'
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_DRAW_DEATH
+		if(MODE_INFESTATION_DRAW_DEATH)
+			log_game("Round end result - no winners")
+			to_world("<span class='round_header'>NOBODY WON!</span>")
+			to_world(SPAN_ROUNDBODY("How? Don't ask me..."))
+			world << 'sound/misc/sadtrombone.ogg'
+			if(round_statistics)
+				if(round_statistics.current_map)
+					round_statistics.current_map.total_marine_victories += 1
+					round_statistics.current_map.total_marine_majors += 1
+		else
+			log_game("Round end result - [round_end_states]")
 
 	if(round_statistics)
 		round_statistics.game_mode = name
 		round_statistics.round_length = world.time
 		round_statistics.end_round_player_population = GLOB.clients.len
+		round_statistics.round_result = round_end_states
 
 		round_statistics.log_round_statistics()
 

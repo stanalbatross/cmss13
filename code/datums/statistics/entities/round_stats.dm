@@ -343,7 +343,7 @@
 	var/stats = ""
 	stats += "[SSticker.mode.round_finished]\n"
 	stats += "Game mode: [game_mode]\n"
-	stats += "Map name: [current_map.name]\n"
+	stats += "Map name: [current_map.map_name]\n"
 	stats += "Round time: [duration2text(round_length)]\n"
 	stats += "End round player population: [end_round_player_population]\n"
 

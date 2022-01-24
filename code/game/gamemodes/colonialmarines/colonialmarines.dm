@@ -6,6 +6,7 @@
 	monkey_amount = 5
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED|MODE_NEW_SPAWN
 	var/round_status_flags
+	round_end_states = list(MODE_INFESTATION_X_MAJOR, MODE_INFESTATION_M_MAJOR, MODE_INFESTATION_X_MINOR, MODE_INFESTATION_M_MINOR, MODE_INFESTATION_DRAW_DEATH)
 
 	var/passive_increase_interval = 20 MINUTES
 	var/next_passive_increase = 0
@@ -324,6 +325,8 @@
 			musical_track = pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg')
 			if(round_statistics && round_statistics.current_map)
 				round_statistics.current_map.total_draws += 1
+		else
+			log_game("Round end result - [round_end_states]")
 	var/sound/S = sound(musical_track, channel = SOUND_CHANNEL_LOBBY)
 	S.status = SOUND_STREAM
 	sound_to(world, S)
@@ -359,4 +362,6 @@
 			return "Round has ended. Marine Minor Victory."
 		if(MODE_INFESTATION_DRAW_DEATH)
 			return "Round has ended. Draw."
+	if(round_finished != 1 && round_finished)
+		return "[round_finished]"
 	return "Round has ended in a strange way."

@@ -1,4 +1,3 @@
-
 #define QUEEN_DEATH_COUNTDOWN 			 10 MINUTES //10 minutes. Can be changed into a variable if it needs to be manipulated later.
 
 #define MODE_INFESTATION_X_MAJOR		"Xenomorph Major Victory"
@@ -7,7 +6,9 @@
 #define MODE_INFESTATION_M_MINOR		"Marine Minor Victory"
 #define MODE_INFESTATION_DRAW_DEATH		"DRAW: Mutual Annihilation"
 
-#define MODE_INFECTION_ZOMBIE_WIN		"Major Zombie Victory"
+#define MODE_WISKEY_OUTPOST_X_MAJOR		"Xenomorph Destroyed Marines"
+#define MODE_WISKEY_OUTPOST_M_MAJOR		"Marine Stay Alive"
+#define MODE_INFESTATION_DRAW_DEATH		"DRAW: Mutual Annihilation"
 
 #define MODE_BATTLEFIELD_W_MAJOR		"Wey-Yu PMC Major Success"
 #define MODE_BATTLEFIELD_M_MAJOR		"Marine Major Success"
@@ -15,6 +16,8 @@
 #define MODE_BATTLEFIELD_M_MINOR		"Marine Minor Success"
 #define MODE_BATTLEFIELD_DRAW_STALEMATE "DRAW: Stalemate"
 #define MODE_BATTLEFIELD_DRAW_DEATH		"DRAW: My Friends Are Dead"
+#define MODE_INFECTION_HUMAN_WIN		"Major Human Victory"
+#define MODE_INFECTION_ZOMBIE_WIN		"Major Zombie Victory"
 
 #define MODE_GENERIC_DRAW_NUKE			"DRAW: Nuclear Explosion"
 
@@ -344,19 +347,3 @@ Only checks living mobs with a client attached.
 				num_marines++
 
 	return num_marines
-
-
-/*
-#undef QUEEN_DEATH_COUNTDOWN
-#undef MODE_INFESTATION_X_MAJOR
-#undef MODE_INFESTATION_M_MAJOR
-#undef MODE_INFESTATION_X_MINOR
-#undef MODE_INFESTATION_M_MINOR
-#undef MODE_INFESTATION_DRAW_DEATH
-#undef MODE_BATTLEFIELD_W_MAJOR
-#undef MODE_BATTLEFIELD_M_MAJOR
-#undef MODE_BATTLEFIELD_W_MINOR
-#undef MODE_BATTLEFIELD_M_MINOR
-#undef MODE_BATTLEFIELD_DRAW_STALEMATE
-#undef MODE_BATTLEFIELD_DRAW_DEATH
-#undef MODE_GENERIC_DRAW_NUKE*/
