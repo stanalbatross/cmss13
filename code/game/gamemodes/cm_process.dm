@@ -8,7 +8,6 @@
 
 #define MODE_WISKEY_OUTPOST_X_MAJOR		"Xenomorph Destroyed Marines"
 #define MODE_WISKEY_OUTPOST_M_MAJOR		"Marine Stay Alive"
-#define MODE_INFESTATION_DRAW_DEATH		"DRAW: Mutual Annihilation"
 
 #define MODE_BATTLEFIELD_W_MAJOR		"Wey-Yu PMC Major Success"
 #define MODE_BATTLEFIELD_M_MAJOR		"Marine Major Success"
