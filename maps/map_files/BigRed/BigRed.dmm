@@ -22938,7 +22938,7 @@
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning (NORTH)"
 	},
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/telecomm2)
 "bhP" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -23220,7 +23220,7 @@
 	},
 /obj/item/stack/cable_coil/cut,
 /turf/open/floor/plating,
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/telecomm2)
 "biX" = (
 /obj/structure/barricade/handrail/wire,
 /turf/open/floor{
@@ -23432,7 +23432,7 @@
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning (WEST)"
 	},
-/area/bigredv2/outside/s)
+/area/bigredv2/outside/telecomm2)
 "bjF" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
 	dir = 1
@@ -23442,7 +23442,7 @@
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning (EAST)"
 	},
-/area/bigredv2/outside/s)
+/area/bigredv2/outside/telecomm2)
 "bjG" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
@@ -29226,6 +29226,12 @@
 	icon_state = "wood"
 	},
 /area/bigredv2/caves/eta/living)
+"bFw" = (
+/turf/open/mars{
+	icon_state = "mars_dirt_13";
+	tag = "icon-mars_dirt_13"
+	},
+/area/bigredv2/outside/telecomm2)
 "bGp" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/effect/spawner/random/tool,
@@ -29248,7 +29254,7 @@
 	icon_state = "mars_dirt_4";
 	tag = "icon-mars_dirt_4"
 	},
-/area/bigredv2/outside/s)
+/area/bigredv2/outside/telecomm2)
 "bLA" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_door,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_door,
@@ -29423,7 +29429,7 @@
 	icon_state = "mars_dirt_14";
 	tag = "icon-mars_dirt_14"
 	},
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/telecomm2)
 "cAs" = (
 /turf/open/floor{
 	dir = 1;
@@ -29657,6 +29663,9 @@
 	},
 /area/bigredv2/outside/eta)
 "dZR" = (
+/obj/structure/machinery/power/apc{
+	name = "Control Center APC"
+	},
 /turf/open/mars_cave{
 	icon_state = "mars_cave_14";
 	tag = "icon-mars_cave_14"
@@ -29812,6 +29821,12 @@
 	icon_state = "dark"
 	},
 /area/bigredv2/outside/marshal_office)
+"eLq" = (
+/turf/open/mars{
+	icon_state = "mars_dirt_10";
+	tag = "icon-mars_dirt_10"
+	},
+/area/bigredv2/outside/telecomm2)
 "eLQ" = (
 /turf/open/mars_cave{
 	icon_state = "mars_dirt_5";
@@ -30362,6 +30377,15 @@
 	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigredv2/outside/filtration_plant)
+"hvu" = (
+/obj/structure/pipes/standard/simple/hidden/green{
+	dir = 4
+	},
+/turf/open/mars_cave{
+	icon_state = "mars_dirt_4";
+	tag = "icon-mars_dirt_4"
+	},
+/area/bigredv2/outside/telecomm2)
 "hwy" = (
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -30394,7 +30418,7 @@
 	icon_state = "asteroidwarning";
 	tag = "icon-asteroidwarning (SOUTHEAST)"
 	},
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/telecomm2)
 "hGP" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/mars_cave{
@@ -30506,6 +30530,12 @@
 	tag = "icon-mars_dirt_7"
 	},
 /area/bigredv2/outside/eta)
+"iix" = (
+/turf/open/mars{
+	icon_state = "mars_dirt_9";
+	tag = "icon-mars_dirt_9"
+	},
+/area/bigredv2/outside/telecomm2)
 "iml" = (
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
@@ -30908,8 +30938,9 @@
 	},
 /area/bigredv2/caves/eta/research)
 "kfZ" = (
-/turf/closed/wall/solaris/rock,
-/area/bigredv2/outside/c)
+/obj/effect/landmark/crap_item,
+/turf/open/mars,
+/area/bigredv2/outside/telecomm2)
 "kgw" = (
 /obj/structure/blocker/forcefield/vehicles,
 /turf/open/mars_cave{
@@ -32088,6 +32119,12 @@
 /obj/structure/closet/firecloset/full,
 /turf/open/mars,
 /area/bigredv2/outside/telecomm2)
+"qTq" = (
+/turf/open/mars{
+	icon_state = "mars_dirt_8";
+	tag = "icon-mars_dirt_8"
+	},
+/area/bigredv2/outside/telecomm2)
 "qTu" = (
 /obj/effect/landmark/nightmare{
 	insert_tag = "viro"
@@ -32524,6 +32561,14 @@
 	tag = "icon-mars_cave_10"
 	},
 /area/bigredv2/caves_east)
+"sQM" = (
+/obj/structure/pipes/standard/simple/hidden/green,
+/turf/open/floor{
+	dir = 1;
+	icon_state = "asteroidfloor";
+	tag = "icon-asteroidfloor (NORTH)"
+	},
+/area/bigredv2/outside/telecomm2)
 "taf" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
@@ -32664,7 +32709,7 @@
 	icon_state = "mars_dirt_10";
 	tag = "icon-mars_dirt_10"
 	},
-/area/bigredv2/outside/c)
+/area/bigredv2/outside/telecomm2)
 "tIq" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_weed_node,
 /turf/open/mars_cave{
@@ -50380,11 +50425,11 @@ aHD
 aBR
 aBR
 aBR
-aBR
-aBR
-aVo
-aIn
-aMc
+aus
+aus
+eLq
+bhM
+biA
 biV
 hGP
 bjC
@@ -50596,8 +50641,8 @@ apC
 aHD
 aBR
 aBR
-aBR
-aBR
+aus
+aus
 aus
 bhi
 bhM
@@ -50812,16 +50857,16 @@ aYO
 apD
 aHD
 aBR
-aBR
-aBR
-aBR
+aus
+aus
+aus
 bhi
 bhi
 bhI
 wGV
 rCD
 bhM
-bjD
+hvu
 jdQ
 bjA
 bjH
@@ -51029,16 +51074,16 @@ aYO
 apD
 aHD
 aBR
-aBR
-aLd
-kfZ
+aus
+bFw
+bhi
 bhi
 bhi
 lxh
 biA
 hnT
 bhM
-bjD
+hvu
 bka
 bjA
 bjH
@@ -51246,16 +51291,16 @@ aYO
 apC
 aHD
 aBR
-aBR
+aus
 tHl
-kfZ
+bhi
 bhi
 pKa
 tZW
 biA
 biX
 bhM
-bjD
+hvu
 bka
 bjA
 bjH
@@ -51463,16 +51508,16 @@ aof
 apC
 aHD
 aBR
-aBR
-kfZ
-kfZ
+aus
+bhi
+bhi
 bhi
 dXc
 fgE
 fCH
 biX
 bhM
-bjD
+hvu
 bjy
 bkr
 bjy
@@ -51680,9 +51725,9 @@ aXL
 apC
 aHD
 aBR
-aBR
-kfZ
-kfZ
+aus
+bhi
+bhi
 bhi
 sdt
 dXc
@@ -51897,9 +51942,9 @@ aUb
 apC
 aHD
 aBR
-aBR
+aus
 cxQ
-kfZ
+bhi
 bhi
 bhh
 fgE
@@ -52114,16 +52159,16 @@ aUc
 apC
 aHD
 aBR
-aBR
-aBR
-kfZ
+aus
+aus
+bhi
 bhi
 bhi
 dZR
 biA
 biX
 bhM
-bjD
+hvu
 bjy
 bjy
 bjy
@@ -52331,16 +52376,16 @@ aof
 apC
 aHD
 aBR
-aBR
-aBR
-aVo
+aus
+aus
+eLq
 bhM
 hXi
 bhL
 biA
 biX
 bhM
-bjD
+hvu
 bjy
 bjy
 bjy
@@ -52548,9 +52593,9 @@ bdP
 apC
 aHD
 aBR
-aFL
-aBR
-aVo
+kfZ
+aus
+eLq
 bhM
 hXi
 bhM
@@ -52765,16 +52810,16 @@ aof
 apC
 aHD
 aIm
-aBR
-aBR
-aVo
+aus
+aus
+eLq
 bhM
 hXi
 bhM
 biA
 biX
 bhM
-bjD
+hvu
 bjy
 bjy
 bjA
@@ -52982,16 +53027,16 @@ aJT
 apC
 aHD
 aIn
-aIm
-aBR
-kfZ
+qTq
+aus
+bhi
 bhi
 bhi
 sfF
 biA
 biX
 bhM
-bjD
+hvu
 loY
 bkp
 bjA
@@ -53199,16 +53244,16 @@ aOO
 apC
 aHD
 beY
-aIp
-aBR
-kfZ
+iix
+aus
+bhi
 bhi
 qRU
 aus
 biA
 hnT
 bhM
-bjD
+hvu
 bjy
 bjA
 bkq
@@ -53417,8 +53462,8 @@ apC
 aHD
 aWJ
 aBR
-aBR
-aBR
+aus
+aus
 aus
 aus
 bhN
@@ -53635,11 +53680,11 @@ aHD
 aWJ
 aBR
 aBR
-aBR
-aBR
-aBR
+aus
+aus
+aus
 bhO
-aVp
+sQM
 hFu
 hGP
 bjG
