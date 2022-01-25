@@ -287,8 +287,7 @@
 			world << 'sound/misc/sadtrombone.ogg'
 			if(round_statistics)
 				if(round_statistics.current_map)
-					round_statistics.current_map.total_marine_victories += 1
-					round_statistics.current_map.total_marine_majors += 1
+					round_statistics.current_map.total_draws += 1
 		else
 			log_game("Round end result - [round_end_states]")
 
