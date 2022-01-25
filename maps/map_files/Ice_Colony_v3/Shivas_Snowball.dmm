@@ -26883,6 +26883,12 @@
 	},
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/caves/cp_camp)
+"xbT" = (
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms,
+/turf/open/floor/shiva{
+	icon_state = "yellowfull"
+	},
+/area/shiva/interior/fort_biceps)
 "xbZ" = (
 /obj/structure/prop/invuln/minecart_tracks{
 	dir = 8
@@ -46982,10 +46988,10 @@ puZ
 puZ
 puZ
 puZ
-puZ
-puZ
-puZ
-puZ
+hcJ
+hcJ
+hcJ
+hcJ
 puZ
 puZ
 puZ
@@ -47144,10 +47150,10 @@ puZ
 puZ
 puZ
 puZ
-puZ
-puZ
-puZ
-puZ
+hcJ
+cUl
+xbT
+hcJ
 puZ
 puZ
 puZ
@@ -47307,8 +47313,8 @@ puZ
 puZ
 hcJ
 hcJ
-hcJ
-hcJ
+cUl
+cUl
 hcJ
 hcJ
 puZ

@@ -3947,7 +3947,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -3962,7 +3961,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -3977,7 +3975,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds2{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -3992,7 +3989,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -5529,7 +5525,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -5545,7 +5540,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -5790,7 +5784,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -5805,7 +5798,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -6169,7 +6161,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -6181,7 +6172,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -6311,7 +6301,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -6323,7 +6312,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -6609,7 +6597,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -6621,7 +6608,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -9520,7 +9506,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/prison{
@@ -9535,7 +9520,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/prison{
@@ -9550,7 +9534,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/prison{
@@ -9565,7 +9548,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/prison{
@@ -19183,7 +19165,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds1/delaytwo{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -19194,7 +19175,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds1/delayone{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -19205,7 +19185,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds1{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -19216,7 +19195,6 @@
 	tag = "icon-S"
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe"
 	},
 /turf/open/floor/plating,
@@ -20445,7 +20423,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -20461,7 +20438,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -20842,7 +20818,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -20857,7 +20832,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -21033,7 +21007,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -21045,7 +21018,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -21493,7 +21465,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -21505,7 +21476,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -22061,7 +22031,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/plating,
@@ -22091,7 +22060,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/plating,
@@ -23001,7 +22969,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -23322,7 +23289,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -27048,7 +27014,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -27063,7 +27028,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delayone{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -27075,7 +27039,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaytwo{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -27087,7 +27050,6 @@
 	},
 /obj/structure/machinery/landinglight/ds1/delaythree{
 	dir = 1;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (NORTH)"
 	},
 /turf/open/floor/plating,
@@ -30752,8 +30714,12 @@
 	},
 /area/prison/maintenance/hangar_barracks)
 "bEf" = (
-/turf/closed/wall/r_wall/prison,
-/area/prison/maintenance/hangar_barracks)
+/obj/structure/pipes/standard/simple/hidden/supply,
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bEg" = (
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
@@ -30964,42 +30930,26 @@
 /turf/open/floor/prison,
 /area/prison/hallway/east)
 "bEJ" = (
-/turf/closed/wall/r_wall/prison,
-/area/prison/telecomms)
-"bEK" = (
-/obj/structure/pipes/vents/scrubber,
-/turf/open/floor/prison{
-	dir = 9;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
-"bEL" = (
-/obj/structure/machinery/telecomms/bus,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "darkyellow2"
 	},
 /area/prison/telecomms)
+"bEK" = (
+/obj/structure/pipes/vents/scrubber,
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bEM" = (
 /obj/structure/pipes/vents/pump/on,
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
 	},
-/turf/open/floor/prison{
-	dir = 1;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
-"bEN" = (
-/obj/structure/machinery/computer/telecomms/traffic,
-/turf/open/floor/prison{
-	dir = 5;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/obj/structure/largecrate/random,
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bEO" = (
 /turf/closed/wall/r_wall/prison_unmeltable,
-/area/prison/telecomms)
+/area/prison/maintenance/hangar_barracks)
 "bEP" = (
 /obj/structure/sink{
 	pixel_y = 15
@@ -31317,16 +31267,18 @@
 	},
 /area/prison/holding/holding2)
 "bFF" = (
-/obj/structure/machinery/door/airlock/almayer/generic{
+/obj/structure/machinery/door/airlock/almayer/engineering{
 	dir = 2;
-	name = "Parole"
+	name = "Telecommunications";
+	req_one_access = null
 	},
+/obj/structure/pipes/standard/simple/hidden/supply,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "bright_clean";
 	tag = "icon-bright_clean (SOUTHWEST)"
 	},
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bFG" = (
 /turf/open/floor/prison{
 	dir = 4;
@@ -31385,34 +31337,31 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/structure/machinery/door/airlock/almayer/secure{
-	name = "Telecommunications";
-	req_access = null
+/obj/structure/machinery/door/airlock/almayer/maint{
+	name = "Old Storage Room";
+	req_one_access = null
 	},
 /turf/open/floor/prison,
-/area/prison/telecomms)
+/area/prison/maintenance/hangar_barracks)
 "bFQ" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
-/turf/open/floor/prison{
-	dir = 8;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bFR" = (
 /obj/effect/landmark/crap_item,
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/turf/open/floor/prison,
-/area/prison/telecomms)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "bFS" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/turf/open/floor/prison,
-/area/prison/telecomms)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "bFT" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -31441,15 +31390,13 @@
 	dir = 9;
 	tag = "icon-intact-supply (EAST)"
 	},
-/turf/open/floor/prison,
-/area/prison/telecomms)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "bFW" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/obj/structure/largecrate/random,
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bFX" = (
 /obj/structure/toilet{
 	dir = 8;
@@ -31768,11 +31715,20 @@
 /obj/structure/bed/chair{
 	dir = 4
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison{
+	dir = 9;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bGP" = (
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/obj/structure/machinery/light{
+	dir = 1
+	},
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bGQ" = (
 /obj/structure/window/framed/prison/reinforced/hull,
 /turf/open/floor/plating,
@@ -31808,17 +31764,19 @@
 	},
 /area/prison/residential/south)
 "bGW" = (
-/obj/structure/machinery/alarm/almayer{
-	dir = 1
+/obj/structure/machinery/telecomms/bus,
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bGX" = (
-/obj/effect/decal/cleanable/cobweb{
-	dir = 4
+/obj/structure/machinery/computer/telecomms/traffic,
+/turf/open/floor/prison{
+	dir = 5;
+	icon_state = "darkyellow2"
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bGY" = (
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
@@ -31906,32 +31864,23 @@
 	pixel_x = -24;
 	start_charge = 0
 	},
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
-"bHm" = (
-/turf/open/floor/plating/plating_catwalk/prison,
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bHn" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/plating/plating_catwalk/prison,
-/area/prison/telecomms)
+/area/prison/maintenance/hangar_barracks)
 "bHo" = (
 /obj/item/device/radio/headset,
 /turf/open/floor/plating/plating_catwalk/prison,
-/area/prison/telecomms)
+/area/prison/maintenance/hangar_barracks)
 "bHp" = (
 /obj/effect/spawner/random/tool,
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bHq" = (
 /turf/closed/shuttle,
 /area/prison/monorail/east)
@@ -32084,11 +32033,11 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
-"bHM" = (
-/turf/closed/wall/r_wall/prison,
-/area/prison/parole/main)
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bHN" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 8
@@ -32155,22 +32104,15 @@
 "bHY" = (
 /obj/structure/surface/table/reinforced,
 /obj/effect/spawner/random/tool,
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bHZ" = (
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bIa" = (
 /obj/structure/window/framed/prison/reinforced/hull,
 /turf/open/floor/plating,
-/area/prison/telecomms)
+/area/prison/maintenance/hangar_barracks)
 "bIb" = (
 /obj/structure/machinery/door/airlock/glass,
 /turf/open/floor{
@@ -32314,9 +32256,8 @@
 	},
 /area/prison/holding/holding2)
 "bIy" = (
-/obj/structure/bed/chair,
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/telecomms)
 "bIz" = (
 /obj/structure/machinery/power/apc{
 	dir = 8;
@@ -32359,18 +32300,12 @@
 "bIG" = (
 /obj/structure/surface/table/reinforced,
 /obj/effect/landmark/good_item,
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bIH" = (
 /obj/structure/bed/chair/office/dark,
-/turf/open/floor/prison{
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "bIJ" = (
 /obj/structure/toilet{
 	dir = 4
@@ -32490,9 +32425,10 @@
 	},
 /area/prison/holding/holding2)
 "bIW" = (
-/obj/structure/surface/table/reinforced,
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison{
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bIX" = (
 /turf/open/floor/prison{
 	icon_state = "darkbrowncorners2"
@@ -32577,22 +32513,12 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bJk" = (
-/obj/structure/machinery/computer/telecomms/monitor{
-	req_one_access_txt = "19;200"
-	},
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
+/obj/structure/largecrate/random,
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bJl" = (
 /turf/open/floor/prison{
 	dir = 10;
@@ -32600,26 +32526,12 @@
 	tag = "icon-floor_plate (SOUTHWEST)"
 	},
 /area/prison/hallway/east)
-"bJn" = (
-/obj/structure/machinery/computer/telecomms/server{
-	req_one_access_txt = "19;200"
-	},
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
 "bJo" = (
-/obj/structure/machinery/computer/telecomms/traffic{
-	req_one_access_txt = "19;200"
+/obj/structure/bed/chair/office/dark{
+	dir = 8
 	},
-/turf/open/floor/prison{
-	dir = 4;
-	icon_state = "darkyellowfull2";
-	tag = "icon-darkyellowfull2 (EAST)"
-	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bJp" = (
 /obj/structure/bed/chair/office/light{
 	dir = 1
@@ -32788,10 +32700,15 @@
 	},
 /area/prison/holding/holding2)
 "bJJ" = (
-/obj/structure/surface/table/reinforced,
-/obj/effect/landmark/crap_item,
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/obj/structure/barricade/handrail/wire{
+	dir = 8
+	},
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "bJL" = (
 /obj/structure/pipes/vents/pump{
 	dir = 4
@@ -33132,18 +33049,17 @@
 	},
 /area/prison/holding/holding2)
 "bKD" = (
-/obj/structure/bed/chair/office/dark{
-	dir = 1;
-	tag = "icon-officechair_dark (NORTH)"
-	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "bKE" = (
 /obj/structure/machinery/light{
 	dir = 4
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "bKG" = (
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
@@ -33218,10 +33134,8 @@
 /turf/closed/wall/prison,
 /area/prison/toilet/security)
 "bKO" = (
-/turf/open/floor/prison{
-	icon_state = "darkyellow2"
-	},
-/area/prison/telecomms)
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "bKP" = (
 /obj/structure/machinery/shower{
 	pixel_y = 15
@@ -33236,11 +33150,11 @@
 	},
 /area/prison/toilet/security)
 "bKQ" = (
-/turf/open/floor/prison{
-	dir = 6;
-	icon_state = "darkyellow2"
+/obj/structure/bed/chair/office/dark{
+	dir = 4
 	},
-/area/prison/telecomms)
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "bKR" = (
 /obj/structure/pipes/vents/scrubber,
 /turf/open/floor/wood,
@@ -33425,28 +33339,28 @@
 	},
 /area/prison/holding/holding2)
 "bLu" = (
-/obj/structure/pipes/standard/simple/hidden/supply{
-	dir = 6;
-	tag = "icon-intact-supply (EAST)"
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (WEST)"
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bLv" = (
 /turf/closed/wall/r_wall/prison,
 /area/prison/security)
 "bLw" = (
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
+"bLx" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
-	dir = 4;
+	dir = 6;
 	tag = "icon-intact-supply (EAST)"
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
-"bLx" = (
-/obj/structure/pipes/standard/manifold/hidden/supply{
-	dir = 1
-	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "bLy" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
 /turf/open/floor/prison{
@@ -33477,14 +33391,15 @@
 	dir = 4;
 	tag = "icon-intact-supply (EAST)"
 	},
-/obj/structure/machinery/door/airlock/almayer/generic{
-	name = "Parole"
+/obj/structure/machinery/door/airlock/almayer/engineering{
+	name = "Telecommunications";
+	req_one_access = null
 	},
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
 	},
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bLG" = (
 /obj/structure/bed/stool,
 /turf/open/floor/prison,
@@ -33761,25 +33676,25 @@
 	},
 /area/prison/holding/holding2)
 "bMz" = (
-/obj/structure/pipes/vents/scrubber{
-	dir = 1
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/area/prison/telecomms)
 "bMA" = (
 /obj/structure/pipes/vents/pump{
 	dir = 1
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "bMB" = (
 /obj/structure/machinery/power/apc{
 	dir = 4;
 	pixel_x = 28;
 	start_charge = 0
 	},
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "bMC" = (
 /obj/structure/bed/chair/comfy{
 	dir = 8
@@ -46743,7 +46658,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -46894,6 +46808,14 @@
 	tag = "icon-bright_clean2 (SOUTHWEST)"
 	},
 /area/prison/hallway/central/east)
+"dgl" = (
+/obj/structure/pipes/standard/simple/hidden/supply{
+	dir = 9;
+	tag = "icon-intact-supply (EAST)"
+	},
+/obj/effect/spawner/random/tool,
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "diQ" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 4
@@ -47078,6 +47000,15 @@
 	tag = "icon-darkpurplecorners2 (NORTH)"
 	},
 /area/prison/hanger/research)
+"dIT" = (
+/obj/structure/barricade/handrail/wire{
+	dir = 8
+	},
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "dJf" = (
 /obj/structure/sink{
 	dir = 8;
@@ -47108,7 +47039,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -47348,6 +47278,12 @@
 /obj/structure/largecrate/random/case,
 /turf/open/shuttle/elevator/grating,
 /area/prison/hallway/central/west)
+"eMW" = (
+/turf/open/floor/prison{
+	dir = 6;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "eNJ" = (
 /obj/structure/window/framed/prison/reinforced,
 /turf/open/floor/plating,
@@ -47500,6 +47436,15 @@
 	tag = "icon-sterile_white (SOUTHWEST)"
 	},
 /area/prison/cellblock/lowsec/se)
+"fqG" = (
+/obj/structure/machinery/light{
+	dir = 8
+	},
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
+	},
+/area/prison/telecomms)
 "ftk" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
 	dir = 2;
@@ -47625,6 +47570,12 @@
 	icon_state = "yellow"
 	},
 /area/prison/cellblock/mediumsec/south)
+"fMU" = (
+/obj/structure/bed/chair/office/dark,
+/turf/open/floor/prison{
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "fNt" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 8
@@ -47771,7 +47722,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -47789,6 +47739,15 @@
 	tag = "icon-darkredfull2 (SOUTHWEST)"
 	},
 /area/prison/security/checkpoint/highsec/n)
+"gpx" = (
+/obj/structure/surface/table/reinforced/prison,
+/obj/effect/landmark/good_item,
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "grW" = (
 /turf/closed/shuttle/elevator/button/freight,
 /area/prison/hallway/central/west)
@@ -47798,6 +47757,12 @@
 	},
 /turf/open/floor/prison,
 /area/prison/visitation)
+"gtK" = (
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "darkyellowcorners2"
+	},
+/area/prison/telecomms)
 "gvb" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -47831,7 +47796,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -47878,6 +47842,16 @@
 /obj/structure/pipes/standard/manifold/hidden/supply,
 /turf/open/floor/plating,
 /area/prison/cellblock/mediumsec/east)
+"gEZ" = (
+/obj/structure/pipes/vents/pump/on,
+/obj/structure/machinery/alarm/almayer{
+	dir = 1
+	},
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "gFN" = (
 /obj/structure/surface/table/almayer,
 /obj/item/storage/toolbox/antag,
@@ -47891,6 +47865,16 @@
 /obj/structure/surface/table/reinforced,
 /turf/open/floor/prison,
 /area/prison/cellblock/highsec/north/north)
+"gGu" = (
+/obj/structure/bed/chair/office/dark{
+	dir = 1;
+	tag = "icon-officechair_dark (NORTH)"
+	},
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "gIv" = (
 /obj/structure/stairs/perspective{
 	dir = 8;
@@ -48069,6 +48053,13 @@
 /obj/structure/largecrate/random/barrel/yellow,
 /turf/open/floor/plating,
 /area/prison/cellblock/mediumsec/south)
+"hdw" = (
+/obj/structure/pipes/standard/simple/hidden/supply{
+	dir = 4;
+	tag = "icon-intact-supply (EAST)"
+	},
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "hdK" = (
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/plating/plating_catwalk/prison,
@@ -48176,6 +48167,10 @@
 	},
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/ne)
+"hrZ" = (
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms,
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "hyp" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -48216,7 +48211,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -48621,6 +48615,12 @@
 /obj/structure/surface/rack,
 /turf/open/floor/plating,
 /area/prison/cellblock/highsec/south/south)
+"isr" = (
+/obj/structure/barricade/handrail/wire,
+/turf/open/floor/prison{
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "iuH" = (
 /obj/structure/machinery/light/small{
 	dir = 1;
@@ -48688,10 +48688,28 @@
 	},
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/sw)
+"iCH" = (
+/obj/structure/machinery/computer/telecomms/traffic{
+	req_one_access_txt = "19;200"
+	},
+/obj/structure/barricade/handrail/wire,
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "iDV" = (
 /obj/item/trash/chips,
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/access/south)
+"iEp" = (
+/obj/effect/decal/cleanable/blood,
+/turf/open/floor/prison{
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe"
+	},
+/area/prison/telecomms)
 "iGo" = (
 /obj/structure/flora/bush/ausbushes/ppflowers,
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_wall,
@@ -48708,6 +48726,12 @@
 /obj/structure/largecrate/random/case/double,
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/nw)
+"iHC" = (
+/turf/open/floor/prison{
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe"
+	},
+/area/prison/telecomms)
 "iIg" = (
 /obj/structure/kitchenspike,
 /turf/open/floor/prison{
@@ -48790,10 +48814,12 @@
 	},
 /area/prison/hallway/central/west)
 "iWK" = (
-/obj/structure/surface/table/reinforced,
-/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/turf/open/floor/wood,
-/area/prison/parole/main)
+/obj/structure/barricade/handrail/wire,
+/turf/open/floor/prison{
+	dir = 10;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "iYD" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 1
@@ -49108,6 +49134,12 @@
 /obj/structure/largecrate/random/case/double,
 /turf/open/floor/plating,
 /area/prison/maintenance/staff_research)
+"jMq" = (
+/turf/open/floor/prison{
+	dir = 10;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "jNo" = (
 /obj/structure/surface/table/reinforced,
 /obj/item/reagent_container/food/snacks/carrotfries,
@@ -49174,8 +49206,8 @@
 	},
 /area/prison/cellblock/highsec/south/north)
 "jUC" = (
-/turf/closed/wall/prison,
-/area/prison/parole/main)
+/turf/closed/wall/r_wall/prison,
+/area/prison/telecomms)
 "jVk" = (
 /obj/structure/pipes/vents/scrubber{
 	dir = 4
@@ -49760,6 +49792,10 @@
 	},
 /turf/open/floor/plating,
 /area/prison/maintenance/staff_research)
+"lJo" = (
+/obj/structure/pipes/standard/manifold/hidden/supply,
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "lME" = (
 /obj/structure/machinery/vending/security,
 /turf/open/floor/prison{
@@ -50265,6 +50301,13 @@
 	tag = "icon-darkpurple2 (EAST)"
 	},
 /area/prison/hanger/research)
+"nmr" = (
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "non" = (
 /obj/structure/machinery/washing_machine{
 	desc = "The bottom portion of the machine of dread. The second oen, it beckons."
@@ -50376,6 +50419,13 @@
 	tag = "icon-bright_clean2 (SOUTHWEST)"
 	},
 /area/prison/cellblock/highsec/south/south)
+"nJm" = (
+/obj/structure/pipes/standard/simple/hidden/supply{
+	dir = 5;
+	tag = "icon-intact-supply (EAST)"
+	},
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "nJw" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/window/framed/prison/reinforced,
@@ -50501,6 +50551,13 @@
 	icon_state = "redfull"
 	},
 /area/prison/recreation/highsec/s)
+"nXN" = (
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (NORTH)"
+	},
+/area/prison/telecomms)
 "nYP" = (
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 4;
@@ -50775,7 +50832,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -50817,7 +50873,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -50826,6 +50881,16 @@
 	tag = "icon-darkpurple2 (EAST)"
 	},
 /area/prison/hanger/research)
+"oNp" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/machinery/light{
+	dir = 4
+	},
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "oNG" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -50833,7 +50898,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -50958,6 +51022,15 @@
 	},
 /turf/open/floor/prison,
 /area/prison/security/checkpoint/maxsec)
+"pft" = (
+/obj/structure/surface/table/reinforced/prison,
+/obj/effect/spawner/random/tool,
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "pgg" = (
 /obj/structure/machinery/autolathe/full,
 /turf/open/floor/plating,
@@ -51080,6 +51153,10 @@
 	icon_state = "red"
 	},
 /area/prison/cellblock/highsec/south/south)
+"ptn" = (
+/obj/item/device/radio/headset,
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "puK" = (
 /obj/structure/window/framed/prison/reinforced/hull,
 /turf/open/floor/plating,
@@ -51182,6 +51259,12 @@
 	tag = "icon-bright_clean (SOUTHWEST)"
 	},
 /area/prison/security/checkpoint/maxsec)
+"pGv" = (
+/obj/effect/spawner/random/tool,
+/turf/open/floor/prison{
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "pHT" = (
 /obj/structure/pipes/vents/pump{
 	dir = 4
@@ -51224,6 +51307,12 @@
 /obj/item/stack/rods,
 /turf/open/floor/plating,
 /area/prison/cellblock/mediumsec/east)
+"pVz" = (
+/turf/open/floor/prison{
+	dir = 9;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "pXk" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
 /turf/open/floor/prison{
@@ -51267,6 +51356,13 @@
 	tag = "icon-floor (SOUTHWEST)"
 	},
 /area/prison/cellblock/highsec/south/south)
+"qco" = (
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (EAST)"
+	},
+/area/prison/telecomms)
 "qdT" = (
 /obj/structure/surface/table/reinforced,
 /obj/item/paper_bin{
@@ -51332,7 +51428,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -51564,6 +51659,12 @@
 	icon_state = "darkred2"
 	},
 /area/prison/security/monitoring/medsec/central)
+"rqT" = (
+/obj/structure/bed/chair/office/dark{
+	dir = 8
+	},
+/turf/open/floor/plating/plating_catwalk/prison,
+/area/prison/maintenance/hangar_barracks)
 "rrG" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
 /obj/effect/decal/cleanable/blood,
@@ -51656,6 +51757,13 @@
 	tag = "icon-bright_clean_marked (SOUTHWEST)"
 	},
 /area/prison/canteen)
+"rKA" = (
+/obj/effect/spawner/random/tool,
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
+	},
+/area/prison/telecomms)
 "rLO" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating,
@@ -51686,6 +51794,14 @@
 /obj/structure/pipes/standard/simple/hidden/supply,
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/access/south)
+"rRJ" = (
+/obj/effect/landmark/crap_item,
+/obj/structure/pipes/standard/simple/hidden/supply{
+	dir = 4;
+	tag = "icon-intact-supply (EAST)"
+	},
+/turf/open/floor/prison,
+/area/prison/telecomms)
 "rSg" = (
 /obj/structure/machinery/light/small,
 /turf/open/floor/prison{
@@ -51715,7 +51831,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaytwo{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -51733,6 +51848,17 @@
 	tag = "icon-floor_plate"
 	},
 /area/prison/cellblock/mediumsec/south)
+"saD" = (
+/obj/structure/machinery/power/apc{
+	dir = 8;
+	pixel_x = -24;
+	start_charge = 0
+	},
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
+	},
+/area/prison/telecomms)
 "sdq" = (
 /obj/structure/machinery/light{
 	dir = 8
@@ -52192,7 +52318,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delayone{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -52264,7 +52389,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2{
 	dir = 8;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (WEST)"
 	},
 /turf/open/floor/prison{
@@ -52292,7 +52416,6 @@
 	},
 /obj/structure/machinery/landinglight/ds2/delaythree{
 	dir = 4;
-	icon_state = "landingstripe";
 	tag = "icon-landingstripe (EAST)"
 	},
 /turf/open/floor/prison{
@@ -52472,6 +52595,12 @@
 	tag = "icon-bright_clean2 (SOUTHWEST)"
 	},
 /area/prison/cellblock/highsec/south/south)
+"utI" = (
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "uuw" = (
 /obj/structure/machinery/door/airlock/almayer/security/glass{
 	name = "Security Booth"
@@ -52777,6 +52906,17 @@
 	},
 /turf/open/floor/prison,
 /area/prison/medbay/morgue)
+"vhZ" = (
+/obj/structure/machinery/computer/telecomms/server{
+	req_one_access_txt = "19;200"
+	},
+/obj/structure/barricade/handrail/wire,
+/turf/open/floor/prison{
+	dir = 4;
+	icon_state = "darkyellowfull2";
+	tag = "icon-darkyellowfull2 (EAST)"
+	},
+/area/prison/telecomms)
 "vix" = (
 /turf/closed/wall/prison,
 /area/prison/security/monitoring/protective)
@@ -52860,6 +53000,14 @@
 /obj/structure/machinery/light,
 /turf/open/floor/plating,
 /area/prison/maintenance/residential/ne)
+"vAT" = (
+/obj/effect/decal/cleanable/blood,
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (WEST)"
+	},
+/area/prison/telecomms)
 "vCU" = (
 /obj/structure/bed/chair/comfy{
 	dir = 4
@@ -53283,6 +53431,16 @@
 	},
 /turf/open/floor/prison,
 /area/prison/storage/medsec)
+"xji" = (
+/obj/structure/pipes/vents/scrubber,
+/obj/structure/machinery/light{
+	dir = 1
+	},
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "darkyellow2"
+	},
+/area/prison/telecomms)
 "xjn" = (
 /obj/item/stack/cable_coil,
 /turf/open/floor/plating,
@@ -93113,7 +93271,7 @@ bAA
 bEA
 bDM
 bAA
-bHM
+jUC
 jUC
 jUC
 jUC
@@ -93328,13 +93486,13 @@ bAA
 jUC
 bGO
 bHL
-bGP
-bGP
-bGP
-bGP
-bGP
-bGP
-bRM
+jMq
+vhZ
+saD
+qco
+qco
+fqG
+bQj
 bPY
 bRB
 bTd
@@ -93537,16 +93695,16 @@ bAA
 bEA
 bDM
 bAA
-bHM
+jUC
 bGP
-bGP
-bGP
-bGP
-bGP
-bGP
-bGP
-bGP
-bRM
+ptn
+fMU
+iCH
+iHC
+bKD
+hrZ
+nXN
+bQj
 bPY
 bRB
 bTd
@@ -93747,18 +93905,18 @@ bxY
 brw
 bAA
 bEA
-bDM
-bAA
+bDT
+bGZ
 bFF
-bGP
-bGP
-bGP
+bEf
+nJm
+gtK
 iWK
-iWK
+iEp
 bKD
-bGP
-bGP
-bRM
+bKD
+nXN
+bQj
 bPY
 bRA
 bTe
@@ -93961,16 +94119,16 @@ bAA
 bCJ
 bDM
 bAL
-bHM
-bGP
-bGP
-bGP
-iWK
-iWK
-bGP
+jUC
+bEJ
+hdw
+bKD
+isr
+rKA
+vAT
 bLu
 bMz
-bRM
+bQj
 bPY
 bRD
 bTf
@@ -94174,15 +94332,15 @@ bEG
 bDR
 bAA
 jUC
-bGP
-bGP
+xji
+lJo
 bIy
 bIW
 bJJ
-bKD
+pVz
 bLw
-bGP
-bRM
+dIT
+bQj
 bRM
 bRM
 bTg
@@ -94387,14 +94545,14 @@ bDM
 bAA
 jUC
 bGW
-bGP
-bGP
-bIW
-bIW
-bGP
+rRJ
+bIy
+pGv
+nmr
+bEJ
 bLx
 bMA
-bRM
+bQj
 bQa
 bRE
 bTh
@@ -94598,15 +94756,15 @@ bEA
 bDM
 bAA
 jUC
-bGP
-bGP
-bGP
+bGW
+hdw
+bIy
 bIW
-bIW
+nmr
+gGu
+hdw
 bKD
-bLw
-bGP
-bRM
+bQj
 bQb
 bUs
 bTi
@@ -94810,15 +94968,15 @@ bCK
 bDS
 bAA
 jUC
-bGP
-bGP
-bGP
-bGP
-bGP
-bGP
-bLw
-bGP
-bRM
+gEZ
+dgl
+bIy
+bIW
+gpx
+bEJ
+hdw
+bKD
+bQj
 bQc
 bRG
 bTj
@@ -95023,14 +95181,14 @@ bDT
 bEx
 jUC
 bGX
-bGP
-bGP
-bGP
-bGP
+oNp
+utI
+eMW
+pft
 bKE
-bLw
+hdw
 bMB
-bRM
+bQj
 bQd
 bQd
 bTk
@@ -95233,15 +95391,15 @@ bAA
 bEA
 bFT
 bGB
-bHM
 jUC
 jUC
 jUC
 jUC
 jUC
-bHM
+jUC
+jUC
 bLD
-bHM
+jUC
 bQj
 bRM
 bRM
@@ -101591,14 +101749,14 @@ bDa
 bzJ
 bDa
 bCQ
-bEf
-bEJ
+byt
+byt
 bFP
-bEJ
-bEJ
-bEJ
-bEJ
-bEJ
+byt
+byt
+byt
+byt
+byt
 bKN
 bKN
 bKN
@@ -101810,7 +101968,7 @@ bHl
 bHY
 bIG
 bJi
-bEJ
+byt
 bKP
 bLI
 bMI
@@ -102016,13 +102174,13 @@ bzL
 bAX
 byK
 bwQ
-bEL
+bHZ
 bFR
-bHm
-bHm
+bKO
+bKO
 bKO
 bHY
-bEJ
+byt
 bKN
 bKN
 bMJ
@@ -102228,13 +102386,13 @@ bzM
 bAY
 bzQ
 bwQ
-bEL
+bJk
 bFS
 bHn
-bHm
+rqT
 bKO
 bJk
-bEJ
+byt
 bKP
 bLI
 bMI
@@ -102445,8 +102603,8 @@ bFV
 bHo
 bHn
 bIH
-bJn
-bEJ
+bJo
+byt
 bKN
 bKN
 bMK
@@ -102652,13 +102810,13 @@ bzO
 bBa
 bCT
 bwQ
-bEN
+bJk
 bFW
 bHp
 bHZ
 bKQ
 bJo
-bEJ
+byt
 bKP
 bLI
 bMI
