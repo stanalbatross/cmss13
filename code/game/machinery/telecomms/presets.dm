@@ -147,8 +147,12 @@
 	desc = "A static heavy-duty TC-3T telecommunications tower. Used to set up subspace communications lines between planetary and extra-planetary locations."
 	use_power = 0
 	idle_power_usage = 10000
+	icon = 'icons/obj/structures/machinery/comm_tower3.dmi'
+	icon_state = "static1"
 	toggled = FALSE
 	var/ispowered = 0
+	bound_height = 64
+	bound_width = 64
 
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/attack_hand(mob/user)
 	if(ishighersilicon(user))

@@ -475,6 +475,14 @@
 
 
 /area/bigredv2/outside/telecomm
+	name = "\improper Relay Station"
+	icon_state = "ass_line"
+	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS
+	is_resin_allowed = FALSE
+	ceiling_muffle = FALSE
+	base_muffle = MUFFLE_LOW
+
+/area/bigredv2/outside/telecomm2
 	name = "\improper Telecommunications"
 	icon_state = "ass_line"
 	ceiling = CEILING_UNDERGROUND_METAL_ALLOW_CAS

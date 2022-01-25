@@ -97,7 +97,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		/obj/item/tool/lighter,
 		/obj/item/storage/bible,
 		/obj/item/attachable/bayonet,
-		/obj/item/storage/sparepouch,
+		/obj/item/storage/backpack/general_belt,
 		/obj/item/storage/large_holster/machete,
 		/obj/item/storage/belt/gun/m4a3,
 		/obj/item/storage/belt/gun/m44,
@@ -311,7 +311,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		/obj/item/explosive/grenade,
 		/obj/item/device/binoculars,
 		/obj/item/attachable/bayonet,
-		/obj/item/storage/sparepouch,
+		/obj/item/storage/backpack/general_belt,
 		/obj/item/device/hailer,
 		/obj/item/storage/belt/gun,
 		/obj/item/weapon/melee/claymore/mercsword/ceremonial,
@@ -325,6 +325,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	name = "M2 pattern padless MP armor"
 	icon_state = "mp_2"
 	specialty = "M2 pattern padless MP"
+	item_state_slots = list(WEAR_JACKET = "mp_2")
 
 /obj/item/clothing/suit/storage/marine/MP/warden
 	icon_state = "warden"
@@ -343,6 +344,12 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	specialty = "M3 pattern warden MP"
 	item_state_slots = list(WEAR_JACKET = "warden")
 
+/obj/item/clothing/suit/storage/marine/MP/warden/padless
+	name = "M3 pattern padless warden MP armor"
+	icon_state = "warden_2"
+	specialty = "M3 pattern padless warden MP"
+	item_state_slots = list(WEAR_JACKET = "warden_2")
+
 /obj/item/clothing/suit/storage/marine/MP/WO
 	icon_state = "warrant_officer"
 	name = "\improper M3 pattern chief MP armor"
@@ -359,6 +366,12 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	uniform_restricted = list(/obj/item/clothing/under/marine/officer/warrant)
 	specialty = "M3 pattern chief MP"
 	item_state_slots = list(WEAR_JACKET = "warrant_officer")
+
+/obj/item/clothing/suit/storage/marine/MP/WO/padless
+	name = "M3 pattern padless chief MP armor"
+	icon_state = "warrant_officer_2"
+	specialty = "M3 pattern padless chief MP"
+	item_state_slots = list(WEAR_JACKET = "warrant_officer_2")
 
 /obj/item/clothing/suit/storage/marine/MP/admiral
 	icon_state = "admiral"
@@ -422,7 +435,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 					/obj/item/explosive/mine,
 					/obj/item/attachable/bayonet,
 					/obj/item/weapon/gun/smartgun,
-					/obj/item/storage/sparepouch,
+					/obj/item/storage/backpack/general_belt,
 					/obj/item/device/motiondetector,
 					/obj/item/device/walkman)
 
@@ -1330,7 +1343,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		/obj/item/tool/lighter,
 		/obj/item/storage/bible,
 		/obj/item/attachable/bayonet,
-		/obj/item/storage/sparepouch,
+		/obj/item/storage/backpack/general_belt,
 		/obj/item/storage/large_holster/machete,
 		/obj/item/storage/belt/gun/m4a3,
 		/obj/item/storage/belt/gun/m44,
@@ -1544,7 +1557,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		/obj/item/explosive/grenade,
 		/obj/item/device/binoculars,
 		/obj/item/attachable/bayonet,
-		/obj/item/storage/sparepouch,
+		/obj/item/storage/backpack/general_belt,
 		/obj/item/storage/large_holster/machete,
 		/obj/item/weapon/melee/baseballbat,
 		/obj/item/weapon/melee/baseballbat/metal,
@@ -1603,7 +1616,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 		/obj/item/explosive/grenade,
 		/obj/item/device/binoculars,
 		/obj/item/attachable/bayonet,
-		/obj/item/storage/sparepouch,
+		/obj/item/storage/backpack/general_belt,
 		/obj/item/storage/large_holster/machete,
 		/obj/item/weapon/melee/baseballbat,
 		/obj/item/weapon/melee/baseballbat/metal,

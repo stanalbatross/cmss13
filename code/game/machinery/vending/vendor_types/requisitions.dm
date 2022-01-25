@@ -76,7 +76,7 @@
 		list("Logistics IMP Backpack", round(scale * 2), /obj/item/storage/backpack/marine/satchel/big, VENDOR_ITEM_REGULAR),
 
 		list("BELTS", -1, null, null),
-		list("G8-A General Utility Pouch", round(scale * 2), /obj/item/storage/sparepouch, VENDOR_ITEM_REGULAR),
+		list("G8-A General Utility Pouch", round(scale * 2), /obj/item/storage/backpack/general_belt, VENDOR_ITEM_REGULAR),
 		list("M276 Ammo Load Rig", round(scale * 15), /obj/item/storage/belt/marine, VENDOR_ITEM_REGULAR),
 		list("M276 General Pistol Holster Rig", round(scale * 10), /obj/item/storage/belt/gun/m4a3, VENDOR_ITEM_REGULAR),
 		list("M276 Knife Rig", round(scale * 5), /obj/item/storage/belt/knifepouch, VENDOR_ITEM_REGULAR),
@@ -165,7 +165,7 @@
 
 /obj/structure/machinery/cm_vending/sorted/cargo_guns/squad
 	name = "\improper ColMarTech Automated Armaments Squad Vendor"
-	desc = "An automated supply rack hooked up to a small storage of various firearms and explosives. Can be accessed by any Squad Marine."
+	desc = "An automated supply rack hooked up to a small storage of various firearms and explosives. Can be accessed by any Marine Rifleman."
 	req_access = list(ACCESS_MARINE_ALPHA)
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_SPECPREP, ACCESS_MARINE_RO)
 	hackable = TRUE
@@ -187,7 +187,7 @@
 		list("Technician Welder-Satchel", round(scale * 3), /obj/item/storage/backpack/marine/engineerpack/satchel, VENDOR_ITEM_REGULAR),
 
 		list("BELTS", -1, null, null),
-		list("G8-A General Utility Pouch", round(scale * 2), /obj/item/storage/sparepouch, VENDOR_ITEM_REGULAR),
+		list("G8-A General Utility Pouch", round(scale * 2), /obj/item/storage/backpack/general_belt, VENDOR_ITEM_REGULAR),
 		list("M276 General Pistol Holster Rig", round(scale * 10), /obj/item/storage/belt/gun/m4a3, VENDOR_ITEM_REGULAR),
 		list("M276 M39 Holster Rig", round(scale * 2), /obj/item/storage/large_holster/m39, VENDOR_ITEM_REGULAR),
 		list("M276 M44 Holster Rig", round(scale * 5), /obj/item/storage/belt/gun/m44, VENDOR_ITEM_REGULAR),
@@ -355,7 +355,7 @@
 
 /obj/structure/machinery/cm_vending/sorted/cargo_ammo/squad
 	name = "\improper ColMarTech Automated Munition Squad Vendor"
-	desc = "An automated supply rack hooked up to a small storage of various ammunition types. Can be accessed by any Squad Marine."
+	desc = "An automated supply rack hooked up to a small storage of various ammunition types. Can be accessed by any Marine Rifleman."
 	req_access = list(ACCESS_MARINE_ALPHA)
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_SPECPREP, ACCESS_MARINE_RO)
 	hackable = TRUE
@@ -479,7 +479,7 @@
 
 /obj/structure/machinery/cm_vending/sorted/attachments/squad
 	name = "\improper Armat Systems Squad Attachments Vendor"
-	desc = "An automated supply rack hooked up to a small storage of weapons attachments. Can be accessed by any Squad Marine."
+	desc = "An automated supply rack hooked up to a small storage of weapons attachments. Can be accessed by any Marine Rifleman."
 	req_access = list(ACCESS_MARINE_ALPHA)
 	req_one_access = list(ACCESS_MARINE_LEADER, ACCESS_MARINE_SPECPREP, ACCESS_MARINE_RO)
 	hackable = TRUE
