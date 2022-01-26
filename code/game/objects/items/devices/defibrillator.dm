@@ -10,9 +10,9 @@
 #define HALF_MODE_DMGHEAL	20
 #define FULL_MODE_DMGHEAL	80
 
-#define LOW_MODE_HEARTD		5
-#define HALF_MODE_HEARTD	10
-#define FULL_MODE_HEARTD	25
+#define LOW_MODE_HEARTD		4
+#define HALF_MODE_HEARTD	9
+#define FULL_MODE_HEARTD	19
 
 #define LOW_MODE_DEF		"Low Power Mode"
 #define HALF_MODE_DEF		"Half Power Mode"
