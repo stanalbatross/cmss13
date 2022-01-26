@@ -118,6 +118,9 @@
 		to_chat(user, SPAN_WARNING("You need wield [src]..."))
 		return
 
+	if(attached_to.defib_mode == FULL_MODE_DEF)
+		to_chat(user, SPAN_WARNING("Are you sure? It can make alot damage to patient heart!"))
+
 	if(!attached_to.check_revive(H, user))
 		return
 

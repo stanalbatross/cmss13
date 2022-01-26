@@ -12,13 +12,13 @@
 
 #define LOW_MODE_HEARTD		4
 #define HALF_MODE_HEARTD	9
-#define FULL_MODE_HEARTD	19
+#define FULL_MODE_HEARTD	19 //don't making 100% dead after unlacky reviving
 
 #define LOW_MODE_DEF		"Low Power Mode"
 #define HALF_MODE_DEF		"Half Power Mode"
 #define FULL_MODE_DEF		"Full Power Mode"
 
-#define PROB_DMGHEART		10 //%
+#define PROB_DMGHEART		25 //%
 
 /obj/item/device/defibrillator
 	name = "emergency defibrillator"
