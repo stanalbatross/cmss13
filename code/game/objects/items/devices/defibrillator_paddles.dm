@@ -213,6 +213,7 @@
 /obj/item/device/paddles/forceMove(atom/dest)
 	. = ..()
 	if(.)
+		unwield()
 		reset_tether()
 
 /obj/item/device/paddles/proc/do_zlevel_check()

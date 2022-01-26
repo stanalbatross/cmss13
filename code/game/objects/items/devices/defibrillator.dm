@@ -128,6 +128,9 @@
 
 	defib_mode = tgui_input_list(usr, "Select Defib Mode", "Defib Mode Selecting", difib_modes_to_choise)
 
+	if(!defib_mode)
+		return
+
 	switch(defib_mode)
 		if(FULL_MODE_DEF)
 			heart_damage_to_deal = FULL_MODE_HEARTD * heart_damage_mult
@@ -191,7 +194,7 @@
 
 /obj/item/device/defibrillator/attackby(obj/item/W, mob/user)
 	if(W == paddles_type)
-		unwield()
+		paddles_type.unwield()
 		recall_paddles()
 	else
 		. = ..()
