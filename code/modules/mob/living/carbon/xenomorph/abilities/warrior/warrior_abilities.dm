@@ -20,10 +20,10 @@
 	macro_path = /datum/action/xeno_action/verb/verb_fling
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
-	xeno_cooldown = 40
+	xeno_cooldown = 55
 
 	// Configurables
-	var/fling_distance = 4
+	var/fling_distance = 3
 	var/stun_power = 1
 	var/weaken_power = 1
 
@@ -36,7 +36,7 @@
 	macro_path = /datum/action/xeno_action/verb/verb_lunge
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_2
-	xeno_cooldown = 80
+	xeno_cooldown = 100
 
 	// Configurables
 	var/grab_range = 6
