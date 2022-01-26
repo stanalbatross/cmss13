@@ -118,7 +118,7 @@
 
 	// Config
 	var/max_distance = 7
-	var/windup = 8
+	var/windup = 4
 
 /datum/action/xeno_action/activable/oppressor_punch
 	name = "Dislocate"
@@ -158,7 +158,7 @@
 
 	// Config
 	var/fling_dist = 3
-	var/windup = 2
+	var/windup = 4
 
 ////////// Dancer Abilities
 

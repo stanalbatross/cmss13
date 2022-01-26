@@ -50,10 +50,6 @@
 	opacity = 0
 	glass = 1
 
-/obj/structure/machinery/door/airlock/multi_tile/research/reinforced
-	name = "Reinforced Research Airlock"
-	reinforced = TRUE
-
 /obj/structure/machinery/door/airlock/multi_tile/secure
 	name = "Secure Airlock"
 	icon = 'icons/obj/structures/doors/Door2x1_secure.dmi'
@@ -126,11 +122,6 @@
 	opacity = TRUE
 	glass = FALSE
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/medidoor/research
-	name = "\improper Research Airlock"
-	req_one_access = list(ACCESS_MARINE_RESEARCH)
-	reinforced = TRUE
-
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor
 	name = "\improper Command Airlock"
 	icon = 'icons/obj/structures/doors/2x1comdoor.dmi'
@@ -138,19 +129,10 @@
 	glass = TRUE
 	req_access = list(ACCESS_MARINE_BRIDGE)
 
-/obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/reinforced
-	name = "\improper Reinforced Command Airlock"
-	reinforced = TRUE
-
 /obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid
 	icon = 'icons/obj/structures/doors/2x1comdoor_solid.dmi'
 	opacity = TRUE
 	glass = FALSE
-
-/obj/structure/machinery/door/airlock/multi_tile/almayer/comdoor/solid/reinforced
-	name = "\improper Reinforced Command Airlock"
-	reinforced = TRUE
-
 
 /obj/structure/machinery/door/airlock/multi_tile/almayer/handle_multidoor()
 	if(!(width > 1)) return //Bubblewrap

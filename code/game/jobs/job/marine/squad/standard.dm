@@ -1,5 +1,3 @@
-#define STANDARD_MARINE_TO_TOTAL_SPAWN_RATIO 0.4
-
 /datum/job/marine/standard
 	title = JOB_SQUAD_MARINE
 	total_positions = -1
@@ -21,6 +19,3 @@
 	name = JOB_SQUAD_MARINE
 	icon_state = "marine_spawn"
 	job = /datum/job/marine/standard
-
-/datum/job/marine/standard/set_spawn_positions(var/count)
-	spawn_positions =  max((round(count * STANDARD_MARINE_TO_TOTAL_SPAWN_RATIO)), 8)

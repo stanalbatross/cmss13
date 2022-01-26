@@ -32375,10 +32375,10 @@
 /area/fiorina/station/research_cells)
 "tAb" = (
 /obj/structure/surface/rack,
-/obj/item/storage/backpack/general_belt{
+/obj/item/storage/sparepouch{
 	pixel_y = 7
 	},
-/obj/item/storage/backpack/general_belt,
+/obj/item/storage/sparepouch,
 /turf/open/floor/almayer,
 /area/fiorina/tumor/ship)
 "tAf" = (
@@ -75919,9 +75919,9 @@ azZ
 azZ
 lAh
 lAh
-lAh
-lAh
-lAh
+lJa
+lJa
+lJa
 ruy
 csp
 xjK

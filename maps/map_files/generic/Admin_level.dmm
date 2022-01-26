@@ -125,7 +125,11 @@
 /area/space)
 "aK" = (
 /obj/structure/closet/cabinet,
-/turf/open/floor/carpet,
+/turf/open/floor/carpet{
+	dir = 9;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (NORTHWEST)"
+	},
 /area/adminlevel/ert_station)
 "aN" = (
 /turf/open/space/transit/north/shuttlespace_ns11,
@@ -484,6 +488,15 @@
 	},
 /turf/open/space/transit/east/shuttlespace_ew4,
 /area/space)
+"cY" = (
+/obj/structure/bed,
+/obj/item/bedsheet,
+/turf/open/floor/carpet{
+	dir = 6;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (SOUTHEAST)"
+	},
+/area/adminlevel/ert_station)
 "dg" = (
 /turf/open/space/transit/north/shuttlespace_ns4,
 /area/almayer/evacuation/stranded/pod9)
@@ -3148,7 +3161,11 @@
 /obj/structure/sign/safety/cryo{
 	pixel_x = 36
 	},
-/turf/open/floor/carpet,
+/turf/open/floor/carpet{
+	dir = 5;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (NORTHEAST)"
+	},
 /area/adminlevel/ert_station)
 "ot" = (
 /turf/open/floor/almayer{
@@ -3445,6 +3462,13 @@
 	},
 /turf/open/space/transit/east/shuttlespace_ew15,
 /area/space)
+"vO" = (
+/turf/open/floor/carpet{
+	dir = 1;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (NORTH)"
+	},
+/area/adminlevel/ert_station)
 "wj" = (
 /turf/open/floor/almayer{
 	dir = 1;
@@ -4146,6 +4170,12 @@
 	},
 /turf/open/floor/wood/ship,
 /area/adminlevel/ert_station)
+"KO" = (
+/turf/open/floor/almayer{
+	icon_state = "carpet15-15";
+	tag = "icon-sterile"
+	},
+/area/adminlevel/ert_station)
 "KQ" = (
 /obj/structure/machinery/cm_vending/sorted/boozeomat,
 /turf/open/floor/wood/ship,
@@ -4346,6 +4376,13 @@
 "NZ" = (
 /turf/open/floor/carpet,
 /area/adminlevel/ert_station)
+"Oi" = (
+/turf/open/floor/carpet{
+	dir = 8;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (WEST)"
+	},
+/area/adminlevel/ert_station)
 "Oj" = (
 /turf/open/floor/almayer{
 	icon_state = "plating_striped";
@@ -4415,7 +4452,11 @@
 "Po" = (
 /obj/structure/bed,
 /obj/item/bedsheet,
-/turf/open/floor/carpet,
+/turf/open/floor/carpet{
+	dir = 4;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (EAST)"
+	},
 /area/adminlevel/ert_station)
 "Pr" = (
 /turf/open/floor/almayer{
@@ -4788,6 +4829,12 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/tdome/tdomeobserve)
+"VP" = (
+/turf/open/floor/almayer{
+	icon_state = "carpet13-5";
+	tag = "icon-sterile"
+	},
+/area/adminlevel/ert_station)
 "VQ" = (
 /obj/effect/step_trigger/teleporter/random{
 	affect_ghosts = 1;
@@ -4980,7 +5027,11 @@
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/paper_bin/wy,
 /obj/item/tool/pen,
-/turf/open/floor/carpet,
+/turf/open/floor/carpet{
+	dir = 10;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (SOUTHWEST)"
+	},
 /area/adminlevel/ert_station)
 "Zr" = (
 /obj/structure/sign/poster{
@@ -5025,7 +5076,11 @@
 /area/adminlevel/ert_station)
 "ZU" = (
 /obj/structure/bed/chair/comfy,
-/turf/open/floor/carpet,
+/turf/open/floor/carpet{
+	dir = 8;
+	icon_state = "carpetside";
+	tag = "icon-carpetside (WEST)"
+	},
 /area/adminlevel/ert_station)
 "ZV" = (
 /turf/open/floor/wood/ship,
@@ -7549,8 +7604,8 @@ CI
 tY
 YU
 aK
-NZ
-NZ
+Oi
+Oi
 ZU
 Zp
 YU
@@ -7700,11 +7755,11 @@ AL
 AL
 AL
 ET
-NZ
-NZ
-NZ
-NZ
-NZ
+vO
+KO
+KO
+KO
+VP
 uf
 GB
 Qr
@@ -7856,7 +7911,7 @@ op
 Po
 Po
 Po
-Po
+cY
 VC
 GB
 an

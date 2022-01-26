@@ -16,38 +16,21 @@
 	..()
 	target.remove_language(language_name)
 
-
-/datum/character_trait_group/language
-	trait_group_name = "Languages"
-
 /datum/character_trait/language/russian
 	language_name = LANGUAGE_RUSSIAN
 	applyable = TRUE
-	cost = 1
 
 /datum/character_trait/language/japanese
 	language_name = LANGUAGE_JAPANESE
 	applyable = TRUE
-	cost = 1
 
 /datum/character_trait/language/german
-	language_name = LANGUAGE_WELTRAUMDEUTSCH
+	language_name = LANGUAGE_SPACENDEUTCHEN
 	applyable = TRUE
-	cost = 1
 
 /datum/character_trait/language/spanish
-	language_name = LANGUAGE_NEOSPANISH
+	language_name = LANGUAGE_SPANISH
 	applyable = TRUE
-	cost = 1
 
-/datum/character_trait/language/primitive
-	language_name = LANGUAGE_MONKEY
-	applyable = FALSE
-
-/datum/character_trait/language/xenomorph
-	language_name = LANGUAGE_XENOMORPH
-	applyable = FALSE
-
-/datum/character_trait/language/sainja
-	language_name = LANGUAGE_YAUTJA
-	applyable = FALSE
+/datum/character_trait_group/language
+	trait_group_name = "Languages"

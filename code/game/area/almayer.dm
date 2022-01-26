@@ -202,12 +202,12 @@
 	name = "\improper Brig Armory"
 	icon_state = "brig"
 
-/area/almayer/shipboard/brig/main_office
-	name = "\improper Brig Main Office"
+/area/almayer/shipboard/brig/main_office_perma
+	name = "\improper Brig Main Office and Perma"
 	icon_state = "brig"
 
-/area/almayer/shipboard/brig/perma
-	name = "\improper Brig Perma Cells"
+/area/almayer/shipboard/brig/secondary_office
+	name = "\improper Brig Secondary Office"
 	icon_state = "brig"
 
 /area/almayer/shipboard/brig/cryo
@@ -236,10 +236,6 @@
 
 /area/almayer/shipboard/brig/dress
 	name = "\improper CIC Dress Uniform Room"
-	icon_state = "brig"
-
-/area/almayer/shipboard/brig/processing
-	name = "\improper Brig Processing and Holding"
 	icon_state = "brig"
 
 /area/almayer/shipboard/brig/cells
@@ -475,12 +471,9 @@
 	fake_zlevel = 1 // upperdeck
 
 /area/almayer/living/offices
-	name = "\improper Conference Office"
+	name = "\improper Flight Office"
 	icon_state = "briefing"
 	fake_zlevel = 2 // lowerdeck
-
-/area/almayer/living/offices/flight
-	name = "\improper Flight Office"
 
 /area/almayer/living/captain_mess
 	name = "\improper Captain's Mess"

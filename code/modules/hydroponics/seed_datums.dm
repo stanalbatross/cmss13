@@ -236,7 +236,6 @@ proc/populate_seed_list()
 			"tramadol",
 			"cryptobiolin",
 			"dermaline",
-			"meralyne",
 			"dexalin",
 			"phoron",
 			"impedrezene",
