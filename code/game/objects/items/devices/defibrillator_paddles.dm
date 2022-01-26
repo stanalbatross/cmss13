@@ -158,7 +158,7 @@
 	attached_to.update_icon()
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
-	if(heart && prob(25))
+	if(heart && prob(PROB_DMGHEART))
 		heart.damage += attached_to.heart_damage_to_deal //Allow the defibrilator to possibly worsen heart damage. Still rare enough to just be the "clone damage" of the defib
 
 	if(!H.is_revivable())
@@ -398,3 +398,5 @@
 #undef LOW_MODE_DEF
 #undef HALF_MODE_DEF
 #undef FULL_MODE_DEF
+
+#undef PROB_DMGHEART

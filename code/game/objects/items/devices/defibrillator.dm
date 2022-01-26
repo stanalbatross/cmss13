@@ -1,6 +1,6 @@
-#define LOW_MODE_RECH		5 SECONDS
-#define HALF_MODE_RECH		10 SECONDS
-#define FULL_MODE_RECH		20 SECONDS
+#define LOW_MODE_RECH		4 SECONDS
+#define HALF_MODE_RECH		8 SECONDS
+#define FULL_MODE_RECH		16 SECONDS
 
 #define LOW_MODE_CHARGE		60
 #define HALF_MODE_CHARGE	120
@@ -8,15 +8,17 @@
 
 #define LOW_MODE_DMGHEAL	5
 #define HALF_MODE_DMGHEAL	20
-#define FULL_MODE_DMGHEAL	60
+#define FULL_MODE_DMGHEAL	80
 
 #define LOW_MODE_HEARTD		5
-#define HALF_MODE_HEARTD	15
-#define FULL_MODE_HEARTD	40
+#define HALF_MODE_HEARTD	10
+#define FULL_MODE_HEARTD	25
 
 #define LOW_MODE_DEF		"Low Power Mode"
 #define HALF_MODE_DEF		"Half Power Mode"
 #define FULL_MODE_DEF		"Full Power Mode"
+
+#define PROB_DMGHEART		10 //%
 
 /obj/item/device/defibrillator
 	name = "emergency defibrillator"
