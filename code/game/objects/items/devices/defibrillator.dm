@@ -48,7 +48,7 @@
 
 	var/heart_damage_mult = 1.0 //Don't set on 0, bad move.
 	var/additional_charge_cost = 1.0 // 0.5 cost lower
-	var/bust_recharge = 1.0 // 0.5 faster
+	var/boost_recharge = 1.0 // 0.5 faster
 	var/healing_mult = 1.0 // 1.5 heal more
 
 	var/skill_req = SKILL_MEDICAL_MEDIC
@@ -105,7 +105,7 @@
 	maxuses = round(dcell.maxcharge / charge_cost)
 	currentuses = round(dcell.charge / charge_cost)
 
-	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently [name] in [defib_mode] mode, recharge take [FULL_MODE_RECH] seconds."))
+	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently [name] in [defib_mode] mode, recharge take [defib_recharge] seconds."))
 
 /obj/item/device/defibrillator/clicked(mob/user, list/mods)
 	if(!ishuman(usr))
@@ -136,17 +136,17 @@
 			heart_damage_to_deal = FULL_MODE_HEARTD * heart_damage_mult
 			damage_heal_threshold = FULL_MODE_DMGHEAL * healing_mult
 			charge_cost = FULL_MODE_CHARGE * additional_charge_cost
-			defib_recharge = FULL_MODE_RECH * bust_recharge
+			defib_recharge = FULL_MODE_RECH * boost_recharge
 		if(HALF_MODE_DEF)
 			heart_damage_to_deal = HALF_MODE_HEARTD * heart_damage_mult
 			damage_heal_threshold = HALF_MODE_DMGHEAL * healing_mult
 			charge_cost = HALF_MODE_CHARGE * additional_charge_cost
-			defib_recharge = HALF_MODE_RECH * bust_recharge
+			defib_recharge = HALF_MODE_RECH * boost_recharge
 		if(HALF_MODE_DEF)
 			heart_damage_to_deal = LOW_MODE_HEARTD * heart_damage_mult
 			damage_heal_threshold = LOW_MODE_DMGHEAL * healing_mult
 			charge_cost = LOW_MODE_CHARGE * additional_charge_cost
-			defib_recharge = LOW_MODE_RECH * bust_recharge
+			defib_recharge = LOW_MODE_RECH * boost_recharge
 
 	defib_cooldown = world.time + 20
 	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
@@ -302,7 +302,7 @@
 	blocked_by_suit = FALSE
 	heart_damage_mult = 0.4
 	additional_charge_cost = 2.0
-	bust_recharge = 0.8
+	boost_recharge = 0.8
 	healing_mult = 1.75
 	skill_req = SKILL_MEDICAL_TRAINED
 
