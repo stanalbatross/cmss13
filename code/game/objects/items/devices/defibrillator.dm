@@ -7,12 +7,12 @@
 #define FULL_MODE_CHARGE	180
 
 #define LOW_MODE_DMGHEAL	5
-#define HALF_MODE_DMGHEAL	30
+#define HALF_MODE_DMGHEAL	20
 #define FULL_MODE_DMGHEAL	60
 
-#define LOW_MODE_HEARTD		10
-#define HALF_MODE_HEARTD	20
-#define FULL_MODE_HEARTD	50
+#define LOW_MODE_HEARTD		5
+#define HALF_MODE_HEARTD	15
+#define FULL_MODE_HEARTD	40
 
 #define LOW_MODE_DEF		"Low Power Mode"
 #define HALF_MODE_DEF		"Half Power Mode"
