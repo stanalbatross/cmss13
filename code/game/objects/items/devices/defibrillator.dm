@@ -79,19 +79,7 @@
 /obj/item/device/defibrillator/update_icon()
 	icon_state = initial(icon_state)
 
-	if(paddles_type.loc != src)
-		icon_state += "_out"
-
-	if(dcell && dcell.charge)
-		switch(round(dcell.charge * 100 / dcell.maxcharge))
-			if(67 to INFINITY)
-				icon_state += "_full"
-			if(34 to 66)
-				icon_state += "_half"
-			if(1 to 33)
-				icon_state += "_low"
-	else
-		icon_state += "_empty"
+	update_overlays()
 
 /obj/item/device/defibrillator/proc/update_overlays()
 	if(overlays) overlays.Cut()

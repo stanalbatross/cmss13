@@ -132,7 +132,7 @@
 
 	//Taking square root not to make defibs too fast...
 	overlays += image(icon, "+paddle_zap")
-	if(!do_after(user, 4 SECONDS * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+	if(!do_after(user, 1 SECONDS * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 		user.visible_message(SPAN_WARNING("[user] stops setting up the paddles on [H]'s chest"), \
 		SPAN_WARNING("You stop setting up the paddles on [H]'s chest"))
 		update_icon()
@@ -347,7 +347,7 @@
 
 	icon_state = initial(icon_state)
 
-	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
+	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
 	if(flags_item & WIELDED)
 		icon_state += "_paddle"
 
@@ -377,3 +377,23 @@
 	if(!QDESTROYING(src))
 		var/obj/item/main_hand = user.get_active_hand()
 		if(main_hand) main_hand.unwield(user)
+
+#undef LOW_MODE_RECH
+#undef HALF_MODE_RECH
+#undef FULL_MODE_RECH
+
+#undef LOW_MODE_CHARGE
+#undef HALF_MODE_CHARGE
+#undef FULL_MODE_CHARGE
+
+#undef LOW_MODE_DMGHEAL
+#undef HALF_MODE_DMGHEAL
+#undef FULL_MODE_DMGHEAL
+
+#undef LOW_MODE_HEARTD
+#undef HALF_MODE_HEARTD
+#undef FULL_MODE_HEARTD
+
+#undef LOW_MODE_DEF
+#undef HALF_MODE_DEF
+#undef FULL_MODE_DEF
