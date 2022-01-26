@@ -33,7 +33,7 @@ obj/structure/machinery/recharger/attackby(obj/item/G as obj, mob/user as mob)
 			return
 		if(istype(G, /obj/item/device/defibrillator))
 			var/obj/item/device/defibrillator/D = G
-			if(D.ready)
+			if(D.paddles_type && D.paddles_type.loc == D.loc)
 				to_chat(user, SPAN_WARNING("It won't fit, put the paddles back into [D] first!"))
 				return
 		if(user.drop_inv_item_to_loc(G, src))

@@ -1,13 +1,13 @@
-#define LOW_MODE_RECH		6 SECONDS
-#define HALF_MODE_RECH		12 SECONDS
+#define LOW_MODE_RECH		5 SECONDS
+#define HALF_MODE_RECH		10 SECONDS
 #define FULL_MODE_RECH		20 SECONDS
 
 #define LOW_MODE_CHARGE		60
 #define HALF_MODE_CHARGE	120
 #define FULL_MODE_CHARGE	180
 
-#define LOW_MODE_DMGHEAL	20
-#define HALF_MODE_DMGHEAL	40
+#define LOW_MODE_DMGHEAL	5
+#define HALF_MODE_DMGHEAL	30
 #define FULL_MODE_DMGHEAL	60
 
 #define LOW_MODE_HEARTD		10
@@ -30,9 +30,10 @@
 	throwforce = 5
 	w_class = SIZE_MEDIUM
 
+	var/icon_state_for_paddles
+
 	var/blocked_by_suit = TRUE
 	var/heart_damage_to_deal = FULL_MODE_HEARTD
-	var/ready = 0
 	var/damage_heal_threshold = FULL_MODE_DMGHEAL //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
 	var/charge_cost = FULL_MODE_CHARGE //How much energy is used.
@@ -40,7 +41,9 @@
 	var/datum/effect_system/spark_spread/sparks = new
 	var/defib_cooldown = 0 //Cooldown for defib
 
-	var/obj/item/paddles/paddles_type = new /obj/item/paddles
+	var/paddles = /obj/item/device/paddles
+	var/obj/item/device/paddles/paddles_type
+
 	var/atom/tether_holder
 
 	var/heart_damage_mult = 1.0 //Don't set on 0, bad move.
@@ -63,6 +66,10 @@
 /obj/item/device/defibrillator/Initialize(mapload, ...)
 	. = ..()
 
+	icon_state_for_paddles = initial(icon_state)
+
+	paddles_type = new paddles(src)
+
 	sparks.set_up(5, 0, src)
 	sparks.attach(src)
 	dcell = new/obj/item/cell(src)
@@ -71,7 +78,6 @@
 
 /obj/item/device/defibrillator/update_icon()
 	icon_state = initial(icon_state)
-
 
 	if(paddles_type.loc != src)
 		icon_state += "_out"
@@ -87,6 +93,23 @@
 	else
 		icon_state += "_empty"
 
+/obj/item/device/defibrillator/proc/update_overlays()
+	if(overlays) overlays.Cut()
+
+	if(paddles_type.loc == src)
+		overlays += image(icon, "+paddles_[icon_state_for_paddles]")
+
+	if(dcell && dcell.charge)
+		switch(round(dcell.charge * 100 / dcell.maxcharge))
+			if(67 to INFINITY)
+				overlays += image(icon, "+full")
+			if(34 to 66)
+				overlays += image(icon, "+half")
+			if(1 to 33)
+				overlays += image(icon, "+low")
+	else
+		overlays += image(icon, "+empty")
+
 /obj/item/device/defibrillator/examine(mob/user)
 	..()
 	var/maxuses = 0
@@ -94,10 +117,7 @@
 	maxuses = round(dcell.maxcharge / charge_cost)
 	currentuses = round(dcell.charge / charge_cost)
 
-
-
 	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently [name] in [defib_mode] mode, recharge take [FULL_MODE_RECH] seconds."))
-
 
 /obj/item/device/defibrillator/clicked(mob/user, list/mods)
 	if(!ishuman(usr))
@@ -112,7 +132,7 @@
 		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 		return
 
-	if(paddles_type.charging)
+	if(paddles_type.charged)
 		to_chat(user, SPAN_WARNING("Paddles already charged, you don't can change mode."))
 		return
 
@@ -139,7 +159,7 @@
 
 	defib_cooldown = world.time + 20
 	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
-	SPAN_NOTICE("You change [src] mode, now it in [defib_mode] mode, recharge take [FULL_MODE_RECH] seconds."))
+	SPAN_NOTICE("You change [src] mode, now it in [defib_mode] mode, recharge take [defib_recharge/10] seconds."))
 	if(defib_mode == FULL_MODE_DEF)
 		to_chat(user, SPAN_WARNING("This is mode only for emergency! You can deal alot damage to patient heart!"))
 
@@ -149,34 +169,41 @@
 	..()
 
 /obj/item/device/defibrillator/attack_hand(mob/living/carbon/human/user)
-	if(!paddles_type || paddles_type.loc != src)
-		return
-
 	if(!ishuman(user))
 		return
 
-	if(user.belt == src)
+	if(user.belt == src && paddles_type && paddles_type.loc == src)
 		paddles_type.attack_hand(user)
 		to_chat(user, SPAN_PURPLE("[icon2html(src, user)] Picked up a paddles."))
 		playsound(get_turf(src), "sparks", 25, 1, 4)
 
 		user.put_in_active_hand(paddles_type)
+		paddles_type.update_icon()
 		update_icon()
+		add_fingerprint(usr)
 	else
 		. = ..()
 
-/obj/item/storage/backpack/marine/satchel/rto/attack_hand(mob/user)
-	if(user.back == src)
-		internal_transmitter.attack_hand(user)
-	else if(internal_transmitter.get_calling_phone())
-		if(internal_transmitter.attached_to && internal_transmitter.attached_to.loc != internal_transmitter)
-			return . = ..()
-		internal_transmitter.attack_hand(user)
-	else
-		. = ..()
+/obj/item/device/defibrillator/MouseDrop(obj/over_object as obj)
+	if(!CAN_PICKUP(usr, src))
+		return ..()
+	if(!istype(over_object, /obj/screen))
+		return ..()
+	if(loc != usr)
+		return ..()
+
+	switch(over_object.name)
+		if("r_hand")
+			if(usr.drop_inv_item_on_ground(src))
+				usr.put_in_r_hand(src)
+		if("l_hand")
+			if(usr.drop_inv_item_on_ground(src))
+				usr.put_in_l_hand(src)
+	add_fingerprint(usr)
 
 /obj/item/device/defibrillator/attackby(obj/item/W, mob/user)
 	if(W == paddles_type)
+		unwield()
 		recall_paddles()
 	else
 		. = ..()
@@ -187,8 +214,16 @@
 	if(paddles_type)
 		paddles_type.reset_tether()
 
+/obj/item/device/defibrillator/forceMove(atom/dest)
+	. = ..()
+	if(isturf(dest))
+		set_tether_holder(src)
+	else
+		set_tether_holder(loc)
+
 /obj/item/device/defibrillator/proc/override_delete()
 	SIGNAL_HANDLER
+	unwield()
 	recall_paddles()
 	return COMPONENT_ABORT_QDEL
 
@@ -197,7 +232,8 @@
 		var/mob/M = paddles_type.loc
 		M.drop_held_item(paddles_type)
 		playsound(get_turf(src), "sparks", 25, 1, 4)
-		paddles_type.charging = FALSE
+		paddles_type.charged = FALSE
+		paddles_type.update_icon()
 
 	paddles_type.forceMove(src)
 
@@ -206,6 +242,7 @@
 /obj/item/device/defibrillator/on_enter_storage(obj/item/storage/S)
 	. = ..()
 	if(paddles_type.loc != src)
+		unwield()
 		recall_paddles()
 
 /obj/item/device/defibrillator/Destroy()
@@ -242,9 +279,6 @@
 /obj/item/device/defibrillator/proc/check_revive(var/mob/living/carbon/human/H, mob/living/carbon/human/user)
 	if(!ishuman(H) || isYautja(H))
 		to_chat(user, SPAN_WARNING("You can't defibrilate [H]. You don't even know where to put the paddles!"))
-		return
-	if(!ready)
-		to_chat(user, SPAN_WARNING("Take [src]'s paddles out first."))
 		return
 	if(dcell.charge <= charge_cost)
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src]'s battery is too low! It needs to recharge."))

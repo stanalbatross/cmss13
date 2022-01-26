@@ -1,6 +1,5 @@
-/obj/item/paddles
-	name = "telephone"
-	icon = 'icons/obj/items/misc.dmi'
+/obj/item/device/paddles
+	name = "paddles"
 	icon_state = "paddles"
 
 	w_class = SIZE_LARGE
@@ -8,28 +7,33 @@
 	var/obj/item/device/defibrillator/attached_to
 	var/datum/effects/tethering/tether_effect
 
-	var/raised = FALSE
 	var/zlevel_transfer = FALSE
 	var/zlevel_transfer_timer = TIMER_ID_NULL
 	var/zlevel_transfer_timeout = 5 SECONDS
-	var/charging = FALSE
+	var/charged = FALSE
 
+	var/wieldsound = null
+
+	var/skill_req = SKILL_MEDICAL_MEDIC
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
 	var/datum/effect_system/spark_spread/sparks = new
 
-/obj/item/paddles/Initialize(mapload)
+/obj/item/device/paddles/Initialize(mapload)
 	. = ..()
-	if(istype(loc, /obj/structure/transmitter))
+	if(istype(loc, /obj/item/device/defibrillator))
 		attach_to(loc)
 
 	sparks.set_up(5, 0, src)
 	sparks.attach(src)
 
-/obj/item/paddles/Destroy()
+	name = "[attached_to.name] [name]"
+	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
+
+/obj/item/device/paddles/Destroy()
 	remove_attached()
 	return ..()
 
-/obj/item/paddles/proc/attach_to(var/obj/item/device/defibrillator/to_attach)
+/obj/item/device/paddles/proc/attach_to(var/obj/item/device/defibrillator/to_attach)
 	if(!istype(to_attach))
 		return
 
@@ -37,12 +41,11 @@
 
 	attached_to = to_attach
 
-
-/obj/item/paddles/proc/remove_attached()
+/obj/item/device/paddles/proc/remove_attached()
 	attached_to = null
 	reset_tether()
 
-/obj/item/paddles/proc/reset_tether()
+/obj/item/device/paddles/proc/reset_tether()
 	SIGNAL_HANDLER
 	if (tether_effect)
 		UnregisterSignal(tether_effect, COMSIG_PARENT_QDELETING)
@@ -52,13 +55,7 @@
 	if(!do_zlevel_check())
 		on_beam_removed()
 
-/obj/item/paddles/attack_hand(mob/user)
-	if(attached_to && get_dist(user, attached_to) > attached_to.range)
-		return FALSE
-	return ..()
-
-
-/obj/item/paddles/proc/on_beam_removed()
+/obj/item/device/paddles/proc/on_beam_removed()
 	if(!attached_to)
 		return
 
@@ -66,6 +63,7 @@
 		return
 
 	if(get_dist(attached_to, src) > attached_to.range)
+		unwield()
 		attached_to.recall_paddles()
 
 	var/atom/tether_to = src
@@ -73,6 +71,7 @@
 	if(loc != get_turf(src))
 		tether_to = loc
 		if(tether_to.loc != get_turf(tether_to))
+			unwield()
 			attached_to.recall_paddles()
 			return
 
@@ -84,30 +83,19 @@
 	if(tether_from == tether_to)
 		return
 
-	var/list/tether_effects = apply_tether(tether_from, tether_to, range = attached_to.range, icon = "wire", always_face = FALSE)
+	var/list/tether_effects = apply_tether(tether_from, tether_to, range = attached_to.range, icon = "paddles_wire", always_face = FALSE)
 	tether_effect = tether_effects["tetherer_tether"]
 	RegisterSignal(tether_effect, COMSIG_PARENT_QDELETING, .proc/reset_tether)
 
-/obj/item/paddles/attack_self(mob/user)
+/obj/item/device/paddles/attack_self(mob/user)
 	..()
-	if(!skillcheck(user, SKILL_MEDICAL, attached_to.skill_req))
-		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
-		return
-	if(user.action_busy)
-		return
-	if(!charging)
-		to_chat(user, SPAN_NOTICE("You already charging it."))
+
+	if(flags_item & WIELDED)
+		unwield(user) // Trying to unwield it
 	else
-		playsound(get_turf(src), "sparks", 30, 2, 5)
-		if(!do_after(user, attached_to.defib_recharge * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, user, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-			to_chat(user, SPAN_NOTICE("Charge not complited!"))
-			return
-		playsound(get_turf(src), "sparks", 25, 1, 4)
-		charging = TRUE
-		to_chat(user, SPAN_NOTICE("You charges defib"))
+		wield(user) // Trying to wield it
 
-
-/obj/item/paddles/attack(mob/living/carbon/human/H, mob/living/carbon/human/user)
+/obj/item/device/paddles/attack(mob/living/carbon/human/H, mob/living/carbon/human/user)
 	if(attached_to.defib_cooldown > world.time) //Both for pulling the paddles out (2 seconds) and shocking (1 second)
 		return
 
@@ -118,12 +106,16 @@
 
 	//job knowledge requirement
 	if(user.skills)
-		if(!skillcheck(user, SKILL_MEDICAL, attached_to.skill_req))
+		if(!skillcheck(user, SKILL_MEDICAL, skill_req))
 			to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 			return
 
-	if(!charging)
+	if(!charged)
 		to_chat(user, SPAN_WARNING("You need charge [src]..."))
+		return
+
+	if(!(flags_item & WIELDED))
+		to_chat(user, SPAN_WARNING("You need wield [src]..."))
 		return
 
 	if(!attached_to.check_revive(H, user))
@@ -137,27 +129,33 @@
 
 	user.visible_message(SPAN_NOTICE("[user] starts setting up the paddles on [H]'s chest"), \
 		SPAN_HELPFUL("You start <b>setting up</b> the paddles on <b>[H]</b>'s chest."))
-	playsound(get_turf(src),'sound/items/defib_charge.ogg', 25, 0) //Do NOT vary this tune, it needs to be precisely 7 seconds
 
 	//Taking square root not to make defibs too fast...
-	if(!do_after(user, 9 SECONDS * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
+	overlays += image(icon, "+paddle_zap")
+	if(!do_after(user, 4 SECONDS * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, H, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
 		user.visible_message(SPAN_WARNING("[user] stops setting up the paddles on [H]'s chest"), \
 		SPAN_WARNING("You stop setting up the paddles on [H]'s chest"))
+		update_icon()
+		attached_to.update_icon()
 		return
 
 	if(!attached_to.check_revive(H, user))
+		update_icon()
+		attached_to.update_icon()
 		return
 
 	//Do this now, order doesn't matter
 	sparks.start()
 	attached_to.sparks.start()
 	attached_to.dcell.use(attached_to.charge_cost)
-	update_icon()
+	charged = FALSE
 	playsound(get_turf(src), 'sound/items/defib_release.ogg', 25, 1)
 	user.visible_message(SPAN_NOTICE("[user] shocks [H] with the paddles."),
 		SPAN_HELPFUL("You shock <b>[H]</b> with the paddles."))
 	H.visible_message(SPAN_DANGER("[H]'s body convulses a bit."))
 	attached_to.defib_cooldown = world.time + 40
+	update_icon()
+	attached_to.update_icon()
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
 	if(heart && prob(25))
@@ -206,17 +204,18 @@
 		H.electrocute_act(40, src)
 
 
-/obj/item/paddles/on_enter_storage(obj/item/storage/S)
+/obj/item/device/paddles/on_enter_storage(obj/item/storage/S)
 	. = ..()
 	if(attached_to)
+		unwield()
 		attached_to.recall_paddles()
 
-/obj/item/paddles/forceMove(atom/dest)
+/obj/item/device/paddles/forceMove(atom/dest)
 	. = ..()
 	if(.)
 		reset_tether()
 
-/obj/item/paddles/proc/do_zlevel_check()
+/obj/item/device/paddles/proc/do_zlevel_check()
 	if(!attached_to || !loc.z || !attached_to.z)
 		return FALSE
 
@@ -232,11 +231,11 @@
 	if(attached_to && loc.z != attached_to.z)
 		zlevel_transfer = TRUE
 		zlevel_transfer_timer = addtimer(CALLBACK(src, .proc/try_doing_tether), zlevel_transfer_timeout, TIMER_UNIQUE|TIMER_STOPPABLE)
-		RegisterSignal(attached_to, COMSIG_MOVABLE_MOVED, .proc/transmitter_move_handler)
+		RegisterSignal(attached_to, COMSIG_MOVABLE_MOVED, .proc/paddles_move_handler)
 		return TRUE
 	return FALSE
 
-/obj/item/paddles/proc/transmitter_move_handler(var/datum/source)
+/obj/item/device/paddles/proc/paddles_move_handler(var/datum/source)
 	SIGNAL_HANDLER
 	zlevel_transfer = FALSE
 	if(zlevel_transfer_timer)
@@ -244,8 +243,137 @@
 	UnregisterSignal(attached_to, COMSIG_MOVABLE_MOVED)
 	reset_tether()
 
-/obj/item/paddles/proc/try_doing_tether()
+/obj/item/device/paddles/proc/try_doing_tether()
 	zlevel_transfer_timer = TIMER_ID_NULL
 	zlevel_transfer = FALSE
 	UnregisterSignal(attached_to, COMSIG_MOVABLE_MOVED)
 	reset_tether()
+
+/obj/item/device/paddles/clicked(mob/user, list/mods)
+	if(!ishuman(usr))
+		return
+	if(mods["alt"])
+		paddles_charge(user)
+		return 1
+	return ..()
+
+/obj/item/device/paddles/proc/paddles_charge(mob/user)
+	if(!skillcheck(user, SKILL_MEDICAL, skill_req))
+		to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
+		return
+	if(user.action_busy)
+		return
+
+	if(!(flags_item & WIELDED))
+		to_chat(user, SPAN_WARNING("You need wield [src]..."))
+		return
+
+	if(charged)
+		to_chat(user, SPAN_NOTICE("You already charged it."))
+		return
+	else
+		charged = TRUE
+		user.visible_message(SPAN_NOTICE("[user] starts charging the paddles"), \
+		SPAN_HELPFUL("You start <b>charging</b> the paddles."))
+		playsound(get_turf(src), "sparks", 30, 2, 5)
+		playsound(get_turf(src),'sound/items/defib_charge.ogg', 25, 0) //Do NOT vary this tune, it needs to be precisely 7 seconds
+		if(!do_after(user, attached_to.defib_recharge * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, user, INTERRUPT_ALL))
+			user.visible_message(SPAN_NOTICE("[user] stop charging the paddles"), \
+			SPAN_HELPFUL("You stop <b>charging</b> the paddles."))
+			charged = FALSE
+			return
+		sparks.start()
+		attached_to.sparks.start()
+		playsound(get_turf(src), "sparks", 25, 1, 4)
+		update_icon()
+		user.visible_message(SPAN_NOTICE("[user] charges the paddles"), \
+		SPAN_HELPFUL("You <b>charges</b> the paddles."))
+
+/obj/item/device/paddles/unwield(mob/user)
+	if( (flags_item|WIELDED) != flags_item)
+		return FALSE//Have to be actually a wielded.
+	flags_item ^= WIELDED
+	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
+	name 	    = copytext(name,1,-10)
+	item_state  = copytext(item_state,1,-2)
+	remove_offhand(user)
+	return TRUE
+
+/obj/item/device/paddles/place_offhand(var/mob/user,item_name)
+	to_chat(user, SPAN_NOTICE("You grab [item_name] with both hands."))
+	user.recalculate_move_delay = TRUE
+	var/obj/item/device/paddles/offhand/offhand = new /obj/item/device/paddles/offhand(user)
+	offhand.name = "[item_name] - offhand"
+	offhand.desc = "Your second grip on the [item_name]."
+	offhand.flags_item |= WIELDED
+	update_icon()
+	offhand.icon_state = icon_state
+	user.put_in_inactive_hand(offhand)
+	user.update_inv_l_hand(0)
+	user.update_inv_r_hand()
+
+/obj/item/device/paddles/remove_offhand(var/mob/user)
+	to_chat(user, SPAN_NOTICE("You are now grab [name] with one hand."))
+	user.recalculate_move_delay = TRUE
+	var/obj/item/device/paddles/offhand/offhand = user.get_inactive_hand()
+	if(istype(offhand)) offhand.unwield(user)
+	update_icon()
+	user.update_inv_l_hand(0)
+	user.update_inv_r_hand()
+
+/obj/item/device/paddles/wield(mob/user)
+	if(flags_item & WIELDED) return
+
+	var/obj/item/I = user.get_inactive_hand()
+	if(I)
+		user.drop_inv_item_on_ground(I)
+
+	if(ishuman(user))
+		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
+		var/mob/living/carbon/human/wielder = user
+		var/obj/limb/hand = wielder.get_limb(check_hand)
+		if( !istype(hand) || !hand.is_usable() )
+			to_chat(user, SPAN_WARNING("Your other hand can't hold [src]!"))
+			return
+
+	flags_item 	   ^= WIELDED
+	name 	   += " (Wielded)"
+	place_offhand(user,initial(name))
+	user.recalculate_move_delay = TRUE
+	if(wieldsound) playsound(user, wieldsound, 15, 1)
+
+/obj/item/device/paddles/update_icon()
+	update_overlays()
+
+	icon_state = initial(icon_state)
+
+	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
+	if(flags_item & WIELDED)
+		icon_state += "_paddle"
+
+/obj/item/device/paddles/proc/update_overlays()
+	if(overlays) overlays.Cut()
+
+///////////OFFHAND///////////////
+/obj/item/device/paddles/offhand
+	w_class = SIZE_HUGE
+	icon_state = "offhand"
+	name = "offhand"
+	flags_item = DELONDROP|TWOHANDED|WIELDED
+
+/obj/item/device/paddles/offhand/unwield(var/mob/user)
+	if(flags_item & WIELDED)
+		flags_item &= ~WIELDED
+		user.temp_drop_inv_item(src)
+		qdel(src)
+
+/obj/item/device/paddles/offhand/wield()
+	qdel(src) //This shouldn't even happen.
+
+/obj/item/device/paddles/offhand/dropped(mob/user)
+	..()
+	//This hand should be holding the main weapon. If everything worked correctly, it should not be wielded.
+	//If it is, looks like we got our hand torn off or something.
+	if(!QDESTROYING(src))
+		var/obj/item/main_hand = user.get_active_hand()
+		if(main_hand) main_hand.unwield(user)
