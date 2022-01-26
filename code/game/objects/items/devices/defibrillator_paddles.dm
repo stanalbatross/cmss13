@@ -316,7 +316,6 @@
 
 /obj/item/device/paddles/remove_offhand(mob/user)
 	to_chat(user, SPAN_NOTICE("You are now grab [name] with one hand."))
-	user.recalculate_move_delay = TRUE
 	var/obj/item/device/paddles/offhand/offhand = user.get_inactive_hand()
 	if(istype(offhand))
 		offhand.unwield(user)
@@ -342,7 +341,6 @@
 	flags_item 	   ^= WIELDED
 	name 	   += " (Wielded)"
 	place_offhand(user,initial(name))
-	user.recalculate_move_delay = TRUE
 	if(wieldsound) playsound(user, wieldsound, 15, 1)
 
 /obj/item/device/paddles/update_icon()
