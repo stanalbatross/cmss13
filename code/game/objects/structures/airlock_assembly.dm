@@ -62,7 +62,7 @@
 		if(!anchored)
 			to_chat(user, SPAN_NOTICE("The airlock is not secured!"))
 			return
-		if(!STATE_STANDARD)
+		if(state != STATE_STANDARD)
 			to_chat(user, SPAN_NOTICE("You can't add in the glass with the circuit already in!"))
 			return
 		if(!do_after(user, 20 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
