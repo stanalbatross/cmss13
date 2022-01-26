@@ -194,7 +194,7 @@
 
 /obj/item/device/defibrillator/attackby(obj/item/W, mob/user)
 	if(W == paddles_type)
-		paddles_type.unwield()
+		paddles_type.unwield(user)
 		recall_paddles()
 	else
 		. = ..()
@@ -214,7 +214,7 @@
 
 /obj/item/device/defibrillator/proc/override_delete()
 	SIGNAL_HANDLER
-	unwield()
+	paddles_type.unwield()
 	recall_paddles()
 	return COMPONENT_ABORT_QDEL
 
@@ -233,7 +233,7 @@
 /obj/item/device/defibrillator/on_enter_storage(obj/item/storage/S)
 	. = ..()
 	if(paddles_type.loc != src)
-		unwield()
+		paddles_type.unwield()
 		recall_paddles()
 
 /obj/item/device/defibrillator/Destroy()

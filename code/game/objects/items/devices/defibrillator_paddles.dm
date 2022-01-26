@@ -298,9 +298,10 @@
 	name 	    = copytext(name,1,-10)
 	item_state  = copytext(item_state,1,-2)
 	remove_offhand(user)
+	update_icon()
 	return TRUE
 
-/obj/item/device/paddles/place_offhand(var/mob/user,item_name)
+/obj/item/device/paddles/place_offhand(mob/user, item_name)
 	to_chat(user, SPAN_NOTICE("You grab [item_name] with both hands."))
 	user.recalculate_move_delay = TRUE
 	var/obj/item/device/paddles/offhand/offhand = new /obj/item/device/paddles/offhand(user)
@@ -313,11 +314,12 @@
 	user.update_inv_l_hand(0)
 	user.update_inv_r_hand()
 
-/obj/item/device/paddles/remove_offhand(var/mob/user)
+/obj/item/device/paddles/remove_offhand(mob/user)
 	to_chat(user, SPAN_NOTICE("You are now grab [name] with one hand."))
 	user.recalculate_move_delay = TRUE
 	var/obj/item/device/paddles/offhand/offhand = user.get_inactive_hand()
-	if(istype(offhand)) offhand.unwield(user)
+	if(istype(offhand))
+		offhand.unwield(user)
 	update_icon()
 	user.update_inv_l_hand(0)
 	user.update_inv_r_hand()
@@ -360,9 +362,9 @@
 	w_class = SIZE_HUGE
 	icon_state = "offhand"
 	name = "offhand"
-	flags_item = DELONDROP|TWOHANDED|WIELDED
+	flags_item = DELONDROP|WIELDED
 
-/obj/item/device/paddles/offhand/unwield(var/mob/user)
+/obj/item/device/paddles/offhand/unwield(mob/user)
 	if(flags_item & WIELDED)
 		flags_item &= ~WIELDED
 		user.temp_drop_inv_item(src)
