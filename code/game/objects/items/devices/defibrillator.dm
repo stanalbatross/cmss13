@@ -6,19 +6,19 @@
 #define HALF_MODE_CHARGE	120
 #define FULL_MODE_CHARGE	180
 
-#define LOW_MODE_DMGHEAL	5
-#define HALF_MODE_DMGHEAL	20
-#define FULL_MODE_DMGHEAL	80
+#define LOW_MODE_DMGHEAL	10
+#define HALF_MODE_DMGHEAL	40
+#define FULL_MODE_DMGHEAL	120
 
-#define LOW_MODE_HEARTD		4
-#define HALF_MODE_HEARTD	9
-#define FULL_MODE_HEARTD	19 //don't making 100% dead after unlacky reviving
+#define LOW_MODE_HEARTD		1
+#define HALF_MODE_HEARTD	5
+#define FULL_MODE_HEARTD	9 //don't making 100% dead after unlacky reviving
 
 #define LOW_MODE_DEF		"Low Power Mode"
 #define HALF_MODE_DEF		"Half Power Mode"
 #define FULL_MODE_DEF		"Full Power Mode"
 
-#define PROB_DMGHEART		25 //%
+#define PROB_DMGHEART		50 //%
 
 /obj/item/device/defibrillator
 	name = "emergency defibrillator"
@@ -284,7 +284,7 @@
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Patient's general condition does not allow reviving."))
 		return
 
-	if(blocked_by_suit && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
+	if((blocked_by_suit && defib_mode != FULL_MODE_DEF) && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interfering."))
 		return
 
