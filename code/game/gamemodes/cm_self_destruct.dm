@@ -92,6 +92,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 
 /datum/authority/branch/evacuation/proc/initiate_evacuation(var/force=0) //Begins the evacuation procedure.
 	if(force || (evac_status == EVACUATION_STATUS_STANDING_BY && !(flags_scuttle & FLAGS_EVACUATION_DENY)))
+		enter_allowed = 0 //No joining during evac.
 		evac_time = world.time
 		evac_status = EVACUATION_STATUS_INITIATING
 		ai_announcement("Attention. Emergency. All personel must evacuate immediately. You have [round(EVACUATION_ESTIMATE_DEPARTURE/60,1)] minute\s until departure.", 'sound/AI/evacuate.ogg')
@@ -103,6 +104,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
 			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
 			P.toggle_ready()
+		activate_lifeboats()
 		process_evacuation()
 		return TRUE
 
@@ -110,6 +112,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(evac_status == EVACUATION_STATUS_INITIATING)
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
+		deactivate_lifeboats()
 		ai_announcement("Evacuation has been cancelled.", 'sound/AI/evacuate_cancelled.ogg')
 		var/datum/shuttle/ferry/marine/evacuation_pod/P
 		if(get_security_level() == "red")
@@ -126,6 +129,12 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		evac_status = EVACUATION_STATUS_IN_PROGRESS //Cannot cancel at this point. All shuttles are off.
 		spawn() //One of the few times spawn() is appropriate. No need for a new proc.
 			ai_announcement("WARNING: Evacuation order confirmed. Launching escape pods.", 'sound/AI/evacuation_confirmed.ogg')
+
+			for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
+				var/obj/docking_port/mobile/lifeboat/L = LD.get_docked()
+				if(L && L.available)
+					LD.open_dock()
+
 			var/datum/shuttle/ferry/marine/evacuation_pod/P
 			var/L[] = new
 			var/i
@@ -135,9 +144,18 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 				P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
 				P.prepare_for_launch() //May or may not launch, will do everything on its own.
 				L -= i
-				sleep(50) //Sleeps 5 seconds each launch.
-			sleep(300) //Sleep 30 more seconds to make sure everyone had a chance to leave.
-			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [P.passengers ? P.passengers  : "none"].", 'sound/AI/evacuation_complete.ogg')
+				sleep(5 SECONDS) //Sleeps 5 seconds each launch.
+
+			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
+			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle("lifeboat2")
+			while(L1.available || L2.available)
+				sleep(30 SECONDS) //Sleep 30 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
+
+			var/lifesigns = 0
+			lifesigns += P.passengers
+			lifesigns += L1.survivors
+			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [lifesigns ? lifesigns  : "none"].", 'sound/AI/evacuation_complete.ogg')
+
 			evac_status = EVACUATION_STATUS_COMPLETE
 		return TRUE
 
@@ -155,9 +173,26 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			. = "[(eta / 60) % 60]:[add_zero(num2text(eta % 60), 2)]"
 		if(EVACUATION_STATUS_IN_PROGRESS) . = "NOW"
 
+
+// LIFEBOATS CORNER
+/datum/authority/branch/evacuation/proc/activate_lifeboats()
+	for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks)
+		var/obj/docking_port/mobile/lifeboat/L = LD.get_docked()
+		if(L && L.status != LIFEBOAT_LOCKED)
+			L.status = LIFEBOAT_ACTIVE
+			L.set_mode(SHUTTLE_RECHARGING)
+			L.setTimer(20 MINUTES)
+
+/datum/authority/branch/evacuation/proc/deactivate_lifeboats()
+	for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks)
+		var/obj/docking_port/mobile/lifeboat/L = LD.get_docked()
+		if(L && L.status != LIFEBOAT_LOCKED)
+			L.status = LIFEBOAT_INACTIVE
+			L.set_mode(SHUTTLE_IDLE)
+			L.setTimer(0)
 //=========================================================================================
 //=========================================================================================
-//=====================================SELF DETRUCT========================================
+//=====================================SELF DESTRUCT=======================================
 //=========================================================================================
 //=========================================================================================
 
