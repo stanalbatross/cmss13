@@ -54,6 +54,8 @@
 	var/cloak_time = 15		//ditto for cloaking
 	var/closed_alpha = 60	//how much ALPHA the tarp has once it's fully cloaked.
 	var/can_store_dead = FALSE
+	var/is_animating = FALSE
+	var/first_open = TRUE
 	exit_stun = 0
 
 /obj/structure/closet/bodybag/tarp/snow
@@ -108,13 +110,44 @@
 		stored_units += mob_size
 	return stored_units
 
+/obj/structure/closet/bodybag/tarp/proc/handle_cloaking()
+	if(opened) //if we are OPENING the bag
+		if(first_open)
+			alpha = 255
+			message_admins("opening [src] for the FIRST TIME")
+			first_open = FALSE
+			return
+		if(is_animating) //if it's not fully cloaked we don't want to do the whole animation from a fully cloaked state.
+			alpha = 255
+			message_admins("opening [src] during animation, alpha set to 255")
+			is_animating = FALSE
+			return
+		else
+			is_animating = TRUE
+			animate(src, alpha = 255, time = uncloak_time SECONDS, easing = QUAD_EASING)
+			message_admins("opening [src] normally, uncloaking now")
+			spawn(uncloak_time SECONDS)
+				message_admins("[src] uncloak finished")
+				is_animating = FALSE
+				return
+	else if(!opened) //if we are CLOSING the bag
+		is_animating = TRUE
+		animate(src, alpha = closed_alpha, time = cloak_time SECONDS, easing = QUAD_EASING)
+		message_admins("closing [src], beginning cloaking")
+		spawn(cloak_time SECONDS)
+			message_admins("[src] cloak finished")
+			is_animating = FALSE
+			return
+
 /obj/structure/closet/bodybag/tarp/open()
-	animate(src, alpha = 255, time = uncloak_time SECONDS, easing = QUAD_EASING)
 	. = ..()
+	message_admins("[src] open proc triggered")
+	handle_cloaking()
 
 /obj/structure/closet/bodybag/tarp/close()
-	animate(src, alpha = closed_alpha, time = cloak_time SECONDS, easing = QUAD_EASING)
 	. = ..()
+	message_admins("[src] close proc triggered")
+	handle_cloaking()
 
 /obj/item/coin/marine
 	name = "marine specialist weapon token"
