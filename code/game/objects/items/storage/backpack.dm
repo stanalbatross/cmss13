@@ -400,6 +400,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	RegisterSignal(internal_transmitter, COMSIG_TRANSMITTER_UPDATE_ICON, .proc/check_for_ringing)
 
 	LAZYADD(actions, new /datum/action/human_action/activable/droppod())
+	LAZYADD(actions, new /datum/action/human_action/activable/record_xeno())
 
 	GLOB.radio_packs += src
 
@@ -485,6 +486,45 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 		var/mob/M = loc
 		to_chat(M, SPAN_PURPLE("[icon2html(src, M)] New droppod available ([N.name])."))
 
+/obj/item/storage/backpack/marine/satchel/rto/verb/view_recorded_xenos()
+	set category = "Object"
+	set name = "View Recorded Xenos"
+	set src in usr
+	
+	message_admins("Restrain check")
+	if(!usr.is_mob_restrained())
+		message_admins("Inserting important data in the list")
+		var/mob/M
+		message_admins("Inserting important data in the list")
+		for(M in recorded_xenos_list)
+			message_admins("Inserting name: [M.name] in index [recorded_xenos_list_refined.len]")
+			recorded_xenos_list_refined.Add(M.name)
+			message_admins("Inserting state: [M.stat]")
+			recorded_xenos_list_refined.Add(M.stat)
+		message_admins("Running tgui_interact")
+		tgui_interact(usr)
+
+	
+/obj/item/storage/backpack/marine/satchel/rto/tgui_interact(mob/user, datum/tgui/ui)
+	message_admins("tgui_interact initiated, preparing to setup UI")
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		message_admins("UI doesn't exist, creating one")
+		ui = new(user, src, "RecordedXenos", "Recorded Xenos List")
+		message_admins("Opening UI")
+		ui.open()
+		
+/obj/item/storage/backpack/marine/satchel/rto/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+	
+/obj/item/storage/backpack/marine/satchel/rto/ui_data(mob/user)	
+	. = list(
+		"name" = test
+
+
+
 /obj/item/storage/backpack/marine/satchel/rto/small
 	name = "\improper USCM Small Radio Telephone Pack"
 	max_storage_space = 10
@@ -494,6 +534,7 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 /obj/item/storage/backpack/marine/satchel/rto/small/Initialize()
 	. = ..()
 	internal_transmitter.phone_category = "Marine"
+
 
 /obj/item/storage/backpack/marine/smock
 	name = "\improper M3 sniper's smock"

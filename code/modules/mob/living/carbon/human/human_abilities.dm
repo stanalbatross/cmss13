@@ -171,6 +171,46 @@ CULT
 	update_button_icon()
 
 	addtimer(CALLBACK(src, .proc/update_button_icon), amount)
+	
+/datum/action/human_action/activable/record_xeno
+	name = "Record Xeno"
+	action_icon_state = "techpod_deploy"
+	
+datum/var/list/recorded_xenos_list
+datum/var/list/recorded_xenos_list_refined
+	
+/datum/action/human_action/activable/record_xeno/use_ability(atom/A)
+	. = ..()
+	var/mob/living/carbon/Xenomorph/targetXeno = A
+	//H now equals the user of the ability
+	var/mob/living/carbon/human/H = owner
+	//Do not add non-xenos
+	//if(targetXeno != /mob/living/carbon/Xenomorph)
+	if(!isXeno(A))
+		to_chat(H, SPAN_WARNING("This isn't what you're looking for."))
+		return 
+	
+	//Decide if it should be added or removed depending on it being alive or not
+	if(targetXeno.stat == DEAD)
+		recorded_xenos_list -= A
+		to_chat(H, SPAN_WARNING("One less thing to worry about."))
+		return
+	
+	message_admins("[targetXeno.name] targeted")
+	//basic human ability check, ensures they are not restrained or incapacitated
+	if(!can_use_action())
+		return
+	message_admins("Can use action")
+	//Is the xeno in the list already?
+	if(targetXeno in recorded_xenos_list)
+		to_chat(H, SPAN_WARNING("This one is already on record."))
+		return
+		
+	//Everything checks out, so proceed to add the xeno to the list
+	message_admins("Readying to add xeno to list")
+	recorded_xenos_list.Add(targetXeno)
+	message_admins("[targetXeno.name] added")
+	to_chat(H, SPAN_WARNING("Threat identified."))
 
 /datum/action/human_action/activable/droppod
 	name = "Call Droppod"
