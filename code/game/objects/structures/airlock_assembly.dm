@@ -68,8 +68,10 @@
 		if(!do_after(user, 20 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			return
 		if(G.use(5))
+			playsound(loc, 'sound/items/Deconstruct.ogg', 25, 1)
 			glass = 1
 			to_chat(user, SPAN_NOTICE("You insert some glass into the [src], adding windows to it."))
+			update_icon()
 			return
 		else
 			to_chat(user, SPAN_WARNING("You need five sheets of glass to add windows to the [src]"))
