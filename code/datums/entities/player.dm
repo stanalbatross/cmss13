@@ -503,7 +503,11 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	player_data.last_login = "[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]"
 	player_data.last_known_ip = address
 	player_data.last_known_cid = computer_id
-	player_data.player_entity = player_entity
+	if(player_entity)
+		player_data.player_entity = player_entity
+	else
+		player_data.player_entity = setup_player_entity(ckey)
+
 	player_data.save()
 	record_login_triplet(player.ckey, address, computer_id)
 	player_data.sync()
