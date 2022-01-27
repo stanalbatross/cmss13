@@ -44,7 +44,6 @@
 	//No longer relevant to the game mode, since supply drops are getting changed.
 	round_end_states = list(MODE_WISKEY_OUTPOST_X_MAJOR, MODE_WISKEY_OUTPOST_M_MAJOR, MODE_INFESTATION_DRAW_DEATH)
 	var/checkwin_counter = 0
-	var/finished = 0
 	var/has_started_timer = 10 //This is a simple timer so we don't accidently check win conditions right in post-game
 	var/randomovertime = 0 //This is a simple timer so we can add some random time to the game mode.
 	var/spawn_next_wave = 12 MINUTES //Spawn first batch at ~12 minutes
@@ -177,7 +176,7 @@
 	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
 		if(xeno_wave == WO_MAX_WAVE && last_wave_time == 0)
 			last_wave_time = world.time
-		if(!finished && round_should_check_for_win && last_wave_time != 0)
+		if(!round_end_states && round_should_check_for_win && last_wave_time != 0)
 			check_win()
 		checkwin_counter = 0
 	return 0
@@ -244,7 +243,7 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/whiskey_outpost/check_finished()
-	if(finished != 0)
+	if(round_end_states)
 		return 1
 
 	return 0
