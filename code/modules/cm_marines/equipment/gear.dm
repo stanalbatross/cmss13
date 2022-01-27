@@ -41,6 +41,7 @@
 
 /obj/structure/closet/bodybag/tarp
 	name = "\improper V1 thermal-dampening tarp"
+	bag_name = "\improper V1 thermal-dampening tarp"
 	desc = "A tarp carried by USCM Snipers. When laying underneath the tarp, the sniper is almost indistinguishable from the landscape if utilized correctly. The tarp contains a thermal-dampening weave to hide the wearer's heat signatures, optical camouflage, and smell dampening."
 	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "jungletarp_closed"
@@ -66,6 +67,7 @@
 
 /obj/structure/closet/bodybag/tarp/reactive
 	name = "\improper V2 reactive thermal tarp"
+	bag_name = "\improper V2 reactive thermal tarp"
 	desc = "A tarp carried by some USCM infantry. This updated tarp is capable of blending into its environment nearly flawlessly, given that it can properly collate data once deployed. The tarp is able to hide the wearer's heat signature."
 	icon_state = "reactivetarp_closed"
 	icon_closed = "reactivetarp_closed"
@@ -78,6 +80,7 @@
 
 /obj/structure/closet/bodybag/tarp/reactive/scout
 	name = "\improper V3 reactive thermal tarp (folded)"
+	bag_name = "\improper V3 reactive thermal tarp"
 	desc = "A more compact and improved version of the V2 thermal tarp, intended primarily for the transportation of deceased or wounded marines. It has improved cloaking technology than earlier models, allowing it to cloak to a greater degree and faster, but can only be used with special training.\nUse this item in-hand or click somewhere on the floor adjacent to you to deploy it, then click it again to close it, which automatically cloaks the bag. Click again to open and uncloak it. If you lose it, right click to check tile contents around you to find it."
 	icon_state = "scouttarp_closed"
 	icon_closed = "scouttarp_closed"
