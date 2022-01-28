@@ -114,42 +114,34 @@
 	return stored_units
 
 /obj/structure/closet/bodybag/tarp/proc/handle_cloaking()
-	if(opened) //if we are OPENING the bag
-		if(first_open)
+	if(opened) //if we are OPENING the bag. It checks for opened because the handle_cloaking proc triggers AFTER the parent open() is called
+		if(first_open) //if this is the first time we are opening it (ie not animated because the open proc is being triggered by putting it on the ground)
 			alpha = 255
-			message_admins("opening [src] for the FIRST TIME")
 			first_open = FALSE
 			return
 		if(is_animating) //if it's not fully cloaked we don't want to do the whole animation from a fully cloaked state.
 			alpha = 255
-			message_admins("opening [src] during animation, alpha set to 255")
 			is_animating = FALSE
 			return
-		else
+		else //not animating and not the first time we're opening it, therefore play the full animation from a fully cloaked state
 			is_animating = TRUE
 			animate(src, alpha = 255, time = uncloak_time SECONDS, easing = QUAD_EASING)
-			message_admins("opening [src] normally, uncloaking now")
 			spawn(uncloak_time SECONDS)
-				message_admins("[src] uncloak finished")
 				is_animating = FALSE
 				return
-	else if(!opened) //if we are CLOSING the bag
+	else //if we are CLOSING the bag, animate as usual.
 		is_animating = TRUE
 		animate(src, alpha = closed_alpha, time = cloak_time SECONDS, easing = QUAD_EASING)
-		message_admins("closing [src], beginning cloaking")
 		spawn(cloak_time SECONDS)
-			message_admins("[src] cloak finished")
-			is_animating = FALSE
+			is_animating = FALSE //animation finished
 			return
 
 /obj/structure/closet/bodybag/tarp/open()
 	. = ..()
-	message_admins("[src] open proc triggered")
 	handle_cloaking()
 
 /obj/structure/closet/bodybag/tarp/close()
 	. = ..()
-	message_admins("[src] close proc triggered")
 	handle_cloaking()
 
 /obj/item/coin/marine
