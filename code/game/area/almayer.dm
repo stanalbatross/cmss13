@@ -686,6 +686,13 @@
 	flags_atom = AREA_NOTUNNEL
 	lighting_use_dynamic = FALSE
 
+/area/shuttle/evacuation_pod
+	icon = 'icons/turf/areas.dmi'
+	icon_state = "shuttle2"
+	requires_power = FALSE
+	flags_atom = AREA_NOTUNNEL
+	lighting_use_dynamic = FALSE
+
 /area/space/almayer/lifeboat_dock
 	name = "\improper Lifeboat Docking Port"
 	icon = 'icons/turf/area_almayer.dmi'

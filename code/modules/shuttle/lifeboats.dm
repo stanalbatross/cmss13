@@ -115,18 +115,15 @@
 	height = 7
 
 /obj/docking_port/stationary/lifeboat_dock/on_dock_ignition(departing_shuttle)
-	var/wait = 0
 	for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/D as anything in GLOB.lifeboat_doors)
 		if(D.linked_dock == id)
-			addtimer(CALLBACK(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/close_and_lock), wait)
+			INVOKE_ASYNC(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/close_and_lock)
 			addtimer(CALLBACK(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor.proc/bolt_explosion), 75)
-			wait += 10
 
 	var/obj/docking_port/mobile/lifeboat/docked_shuttle = departing_shuttle
 	if(istype(docked_shuttle))
 		for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/D in docked_shuttle.doors)
-			addtimer(CALLBACK(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/close_and_lock), wait)
-			wait += 10
+			INVOKE_ASYNC(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/close_and_lock)
 
 /obj/docking_port/stationary/lifeboat_dock/on_departure(obj/docking_port/mobile/departing_shuttle)
 	. = ..()
@@ -135,17 +132,14 @@
 			adoor.vacate_premises()
 
 /obj/docking_port/stationary/lifeboat_dock/proc/open_dock()
-	var/wait = 0
 	for(var/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor/D as anything in GLOB.lifeboat_doors)
 		if(D.linked_dock == id)
-			addtimer(CALLBACK(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/unlock_and_open), wait)
-			wait += 10
+			INVOKE_ASYNC(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/unlock_and_open)
 
 	var/obj/docking_port/mobile/lifeboat/docked_shuttle = get_docked()
 	if(docked_shuttle)
 		for(var/obj/structure/machinery/door/airlock/multi_tile/D in docked_shuttle.doors)
-			addtimer(CALLBACK(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/unlock_and_open), wait)
-			wait += 10
+			INVOKE_ASYNC(D,/obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat.proc/unlock_and_open)
 
 /// Port Aft Lifeboat default dock
 /obj/docking_port/stationary/lifeboat_dock/almayer/port
@@ -186,5 +180,3 @@
 /datum/map_template/shuttle/lifeboat_starboard
 	name = "Starboard door lifeboat"
 	shuttle_id = "lifeboat-starboard"
-
-

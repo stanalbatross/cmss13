@@ -31,3 +31,5 @@ GLOBAL_LIST_EMPTY_TYPED(hijack_deletable_windows, /obj/structure/machinery/door/
 GLOBAL_LIST_EMPTY_TYPED(lifeboat_doors, /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear/lifeboat/blastdoor)
 GLOBAL_LIST_EMPTY_TYPED(lifeboat_displays, /obj/structure/machinery/status_display/lifeboat)
 GLOBAL_LIST_EMPTY_TYPED(lifeboat_almayer_docks, /obj/docking_port/stationary/lifeboat_dock)
+
+GLOBAL_LIST_EMPTY_TYPED(escape_almayer_docks, /obj/docking_port/stationary/escape_pod_dock)

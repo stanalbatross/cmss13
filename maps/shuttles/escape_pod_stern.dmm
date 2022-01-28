@@ -1,0 +1,24 @@
+"a" = (/turf/closed/shuttle/escapepod{icon_state = "wall9"; tag = "icon-wall9"},/area/shuttle/evacuation_pod)
+"b" = (/obj/structure/machinery/door/airlock/evacuation{name = "Evacuation Airlock"},/obj/docking_port/mobile/escape_pod/stern,/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
+"e" = (/turf/closed/shuttle/escapepod{icon_state = "wall1"; tag = "icon-wall1"},/area/shuttle/evacuation_pod)
+"g" = (/turf/closed/shuttle/escapepod{icon_state = "wall6"; tag = "icon-wall6"},/area/shuttle/evacuation_pod)
+"r" = (/obj/structure/machinery/cryopod/evacuation,/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
+"u" = (/turf/open/shuttle/escapepod{icon_state = "floor5"; tag = "icon-floor5"},/area/shuttle/evacuation_pod)
+"x" = (/obj/structure/machinery/cryopod/evacuation,/obj/structure/sign/safety/cryo{pixel_x = 36},/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
+"z" = (/turf/closed/shuttle/escapepod{icon_state = "wall13"; tag = "icon-wall13"},/area/shuttle/evacuation_pod)
+"E" = (/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod{pixel_y = 30},/turf/open/shuttle/escapepod{icon_state = "floor4"; tag = "icon-floor4"},/area/shuttle/evacuation_pod)
+"F" = (/turf/closed/shuttle/escapepod{icon_state = "wall3"; tag = "icon-wall3"},/area/shuttle/evacuation_pod)
+"L" = (/turf/closed/shuttle/escapepod{icon_state = "wall2"; tag = "icon-wall2"},/area/shuttle/evacuation_pod)
+"N" = (/turf/closed/shuttle/escapepod{icon_state = "wall8"; tag = "icon-wall8"},/area/shuttle/evacuation_pod)
+"O" = (/turf/closed/shuttle/escapepod{icon_state = "wall4"; tag = "icon-wall4"},/area/shuttle/evacuation_pod)
+"W" = (/turf/closed/shuttle/escapepod{icon_state = "wall10"; tag = "icon-wall10"},/area/shuttle/evacuation_pod)
+"Y" = (/turf/closed/shuttle/escapepod{icon_state = "wall7"; tag = "icon-wall7"},/area/shuttle/evacuation_pod)
+"Z" = (/turf/open/shuttle/escapepod{icon_state = "floor6"; tag = "icon-floor0"},/area/shuttle/evacuation_pod)
+
+(1,1,1) = {"
+zeLF
+WErO
+buxO
+WZrO
+aNYg
+"}
