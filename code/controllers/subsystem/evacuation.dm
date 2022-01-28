@@ -81,24 +81,26 @@ SUBSYSTEM_DEF(evacuation)
 				if(L && L.available)
 					LD.open_dock()
 
+			var/obj/docking_port/mobile/escape_pod/L
 			var/lifesigns = 0
-			var/obj/docking_port/mobile/escape_pod/P
 			var/ES[] = new
 			var/i
 			for(i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER) ES += i
-			while(ES.len)
-				i = pick(ES)
-				P = SSshuttle.getShuttle("escapepod[i]")
-				P.prepare_for_launch() //May or may not launch, will do everything on its own.
-				ES -= i
-				sleep(5 SECONDS) //Sleeps 5 seconds each launch.
+			for(var/obj/docking_port/stationary/escape_pod_dock/LD in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
+				L = LD.get_docked()
+				lifesigns += L.survivors
+				while(ES.len)
+					i = pick(ES)
+					L.setTimer(0)
+					L.prepare_for_launch() //May or may not launch, will do everything on its own.
+					ES -= i
+					sleep(5 SECONDS) //Sleeps 5 seconds each launch.
 
 			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
 			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle("lifeboat2")
 			while(L1.available || L2.available)
 				sleep(30 SECONDS) //Sleep 30 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
-			lifesigns += P.survivors
 			lifesigns += L1.survivors + L2.survivors
 			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [lifesigns ? lifesigns  : "none"].", 'sound/AI/evacuation_complete.ogg')
 

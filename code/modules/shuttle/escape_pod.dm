@@ -6,6 +6,7 @@
 	id = "escapepod"
 	area_type = /area/shuttle/evacuation_pod
 	ignitionTime = 8 SECONDS
+	dwidth = 2
 	width = 5
 	height = 4
 	rechargeTime = 5 MINUTES
@@ -18,6 +19,30 @@
 	var/list/cryo_cells = list()
 	var/list/obj/structure/machinery/door/airlock/evacuation/doors = list()
 	var/static/survivors = 0
+
+/obj/docking_port/mobile/escape_pod/proc/link_support_units(turf/ref)
+	var/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/R = locate() in shuttle_areas //Grab the controller.
+	if(!R)
+		log_debug("ERROR CODE EV1.5: could not find controller in [id].")
+		to_world(SPAN_DEBUG("ERROR CODE EV1: could not find controller in [id]."))
+		return FALSE
+
+	//Set the tags.
+	R.id_tag = id //Set tag.
+	R.tag_door = id //Set the door tag.
+	R.evacuation_program = new(R) //Make a new program with the right parent-child relationship. Make sure the master is specified in new().
+	//R.docking_program = R.evacuation_program //Link them all to the same program, sigh.
+	//R.program = R.evacuation_program
+	evacuation_program = R.evacuation_program //For the shuttle, to shortcut the controller program.
+
+	cryo_cells = new
+	for(var/obj/structure/machinery/cryopod/evacuation/E in shuttle_areas)
+		cryo_cells += E
+		E.evacuation_program = evacuation_program
+	if(!cryo_cells.len)
+		log_debug("ERROR CODE EV2: could not find cryo pods in [id].")
+		to_world(SPAN_DEBUG("ERROR CODE EV2: could not find cryo pods in [id]."))
+		return FALSE
 
 /obj/docking_port/mobile/escape_pod/proc/can_launch()
 	if(..() && EvacuationAuthority.evac_status >= EVACUATION_STATUS_INITIATING)
@@ -39,6 +64,7 @@
 
 /obj/docking_port/mobile/escape_pod/LateInitialize()
 	. = ..()
+	link_support_units()
 
 /obj/docking_port/mobile/escape_pod/proc/check_for_survivors()
 	for(var/mob/living/carbon/human/M as anything in GLOB.alive_human_list)
@@ -108,24 +134,20 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 		INVOKE_ASYNC(D, /obj/structure/machinery/door/airlock/evacuation/.proc/force_close)
 
 /// Port
-/obj/docking_port/mobile/escape_pod/port
-	preferred_direction = WEST
-	port_direction = WEST
+/obj/docking_port/mobile/escape_pod/up
+	dir = SOUTH
 
 /// Starboard
-/obj/docking_port/mobile/escape_pod/starboard
-	preferred_direction = EAST
-	port_direction = EAST
+/obj/docking_port/mobile/escape_pod/down
+	dir = NORTH
 
 /// Aft
-/obj/docking_port/mobile/escape_pod/aft
-	preferred_direction = SOUTH
-	port_direction = SOUTH
+/obj/docking_port/mobile/escape_pod/left
+	dir = EAST
 
 /// Stern
-/obj/docking_port/mobile/escape_pod/stern
-	preferred_direction = NORTH
-	port_direction = NORTH
+/obj/docking_port/mobile/escape_pod/right
+	dir = WEST
 
 /obj/docking_port/mobile/escape_pod/proc/send_to_infinite_transit()
 	status = ESCAPE_STATE_LAUNCHED
@@ -133,31 +155,30 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 	on_ignition()
 	setTimer(ignitionTime)
 
-
-
 // === STATIONARIES
 
 /// Generic lifeboat dock
 /obj/docking_port/stationary/escape_pod_dock
 	name   = "Escape pod docking port"
+	dwidth = 2
 	width = 5
 	height = 4
 
-/obj/docking_port/stationary/escape_pod_dock/almayer/port
-	dir = NORTH
-	roundstart_template = /datum/map_template/shuttle/escape_pod_port
+/obj/docking_port/stationary/escape_pod_dock/almayer/up
+	dir = SOUTH
+	roundstart_template = /datum/map_template/shuttle/escape_pod_up
 
-/obj/docking_port/stationary/escape_pod_dock/almayer/starboard
+/obj/docking_port/stationary/escape_pod_dock/almayer/down
 	dir = NORTH
-	roundstart_template = /datum/map_template/shuttle/escape_pod_starboard
+	roundstart_template = /datum/map_template/shuttle/escape_pod_down
 
-/obj/docking_port/stationary/escape_pod_dock/almayer/aft
-	dir = NORTH
-	roundstart_template = /datum/map_template/shuttle/escape_pod_aft
+/obj/docking_port/stationary/escape_pod_dock/almayer/left
+	dir = EAST
+	roundstart_template = /datum/map_template/shuttle/escape_pod_left
 
-/obj/docking_port/stationary/escape_pod_dock/almayer/stern
-	dir = NORTH
-	roundstart_template = /datum/map_template/shuttle/escape_pod_stern
+/obj/docking_port/stationary/escape_pod_dock/almayer/right
+	dir = WEST
+	roundstart_template = /datum/map_template/shuttle/escape_pod_right
 
 /obj/docking_port/stationary/escape_pod_dock/almayer/Initialize(mapload)
 	. = ..()
@@ -176,45 +197,37 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 // === SHUTTLE TEMPLATES FOR SPAWNING THEM
 
 /// Port
-/datum/map_template/shuttle/escape_pod_port
+/datum/map_template/shuttle/escape_pod_up
 	name = "Port door escape pod"
-	shuttle_id = "escape_pod_port"
+	shuttle_id = "escape_pod_up"
 
 /// Starboard
-/datum/map_template/shuttle/escape_pod_starboard
+/datum/map_template/shuttle/escape_pod_down
 	name = "Starboard door escape pod"
-	shuttle_id = "escape_pod_starboard"
+	shuttle_id = "escape_pod_down"
 
 /// Aft
-/datum/map_template/shuttle/escape_pod_aft
+/datum/map_template/shuttle/escape_pod_left
 	name = "Aft door escape pod"
-	shuttle_id = "escape_pod_aft"
+	shuttle_id = "escape_pod_left"
 
 /// Stern
-/datum/map_template/shuttle/escape_pod_stern
+/datum/map_template/shuttle/escape_pod_right
 	name = "Stern door escape pod"
-	shuttle_id = "escape_pod_stern"
+	shuttle_id = "escape_pod_right"
 
 
 
 //=========================================================================================
 //==================================Console Object=========================================
 //=========================================================================================
-/*
-These were written by a crazy person, so that datums are constantly inserted for child objects,
-the same datums that serve a similar purpose all-around. Incredibly stupid, but there you go.
-As such, a new tracker datum must be constructed to follow proper child inheritance.
-*/
 
 //This controller goes on the escape pod itself.
 /obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod
 	name = "escape pod controller"
 	unslashable = TRUE
 	unacidable = TRUE
-	var/datum/computer/file/embedded_program/docking/simple/escape_pod/evacuation_program //Runs the doors and states.
-	//door_tag is the tag for the pod door.
-	//id_tag is the generic connection tag.
-	//TODO make sure you can't C4 this.
+	var/datum/computer/file/embedded_program/docking/simple/escape_pod/evacuation_program
 
 	ex_act(severity)
 		return FALSE
@@ -393,6 +406,7 @@ As such, a new tracker datum must be constructed to follow proper child inherita
 	heat_proof = 1
 	unslashable = TRUE
 	unacidable = TRUE
+	var/linked_to_shuttle = FALSE
 
 /obj/structure/machinery/door/airlock/evacuation/Initialize()
 	. = ..()
@@ -431,6 +445,18 @@ As such, a new tracker datum must be constructed to follow proper child inherita
 
 /obj/structure/machinery/door/airlock/evacuation/attack_remote()
 	return FALSE
+
+/obj/structure/machinery/door/airlock/evacuation/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
+	if(linked_to_shuttle)
+		return
+	. = ..()
+
+	if(istype(port, /obj/docking_port/mobile/escape_pod))
+		var/obj/docking_port/mobile/escape_pod/M = port
+		id_tag = M.id
+		M.doors += src
+		linked_to_shuttle = TRUE
+
 
 /*
 //Leaving this commented out for the CL pod, which should have a way to open from the outside.

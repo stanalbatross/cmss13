@@ -639,7 +639,7 @@
 	},
 /area/almayer/shipboard/weapon_room)
 "acb" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/starboard,
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -2064,7 +2064,7 @@
 	},
 /area/almayer/hallways/aft_hallway)
 "agp" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/aft,
+/obj/docking_port/stationary/escape_pod_dock/almayer/right,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -12696,7 +12696,7 @@
 	},
 /area/almayer/living/numbertwobunks)
 "aLs" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/port,
+/obj/docking_port/stationary/escape_pod_dock/almayer/up,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -30832,7 +30832,7 @@
 	},
 /area/almayer/hull/lower_hull)
 "cbp" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/aft,
+/obj/docking_port/stationary/escape_pod_dock/almayer/right,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -31125,7 +31125,7 @@
 	},
 /area/almayer/command/cichallway)
 "cci" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/starboard,
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -32480,7 +32480,7 @@
 /turf/open/floor/almayer,
 /area/almayer/powered)
 "ciB" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/port,
+/obj/docking_port/stationary/escape_pod_dock/almayer/up,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -33499,7 +33499,7 @@
 /turf/open/floor/almayer,
 /area/almayer/command/securestorage)
 "cmT" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/stern,
+/obj/docking_port/stationary/escape_pod_dock/almayer/left,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -50491,7 +50491,7 @@
 /turf/open/floor/plating/almayer,
 /area/almayer/shipboard/firing_range_south)
 "jIY" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/port,
+/obj/docking_port/stationary/escape_pod_dock/almayer/up,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -56965,7 +56965,7 @@
 	},
 /area/almayer/living/port_emb)
 "mKQ" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/starboard,
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"

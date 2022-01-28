@@ -12,7 +12,7 @@
 "M" = (/turf/closed/shuttle/escapepod{icon_state = "wall7"; tag = "icon-wall7"},/area/shuttle/evacuation_pod)
 "N" = (/obj/structure/machinery/cryopod/evacuation,/obj/structure/sign/safety/cryo{pixel_x = 8; pixel_y = -35},/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
 "W" = (/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod{pixel_y = 30},/turf/open/shuttle/escapepod{icon_state = "floor7"; tag = "icon-floor7"},/area/shuttle/evacuation_pod)
-"Y" = (/obj/structure/machinery/door/airlock/evacuation{dir = 2; name = "Evacuation Airlock"},/obj/docking_port/mobile/escape_pod/port,/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
+"Y" = (/obj/structure/machinery/door/airlock/evacuation{dir = 2; name = "Evacuation Airlock"},/obj/docking_port/mobile/escape_pod/up,/turf/open/shuttle/escapepod,/area/shuttle/evacuation_pod)
 
 (1,1,1) = {"
 noYBL
