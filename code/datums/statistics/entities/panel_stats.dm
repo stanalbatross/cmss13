@@ -114,8 +114,8 @@
 					"cause_name" = sanitize(SD.cause_name),
 					"total_kills" = SD.total_kills,
 					"total_damage" = damage_list,
-					"time_of_death" = duration2text(SD.time_of_death),
-					"total_time_alive" = duration2text(SD.total_time_alive),
+					"time_of_death" = SD.time_of_death,
+					"total_time_alive" = SD.total_time_alive,
 					"total_damage_taken" = SD.total_damage_taken,
 					"x" = SD.x,
 					"y" = SD.y,
@@ -172,8 +172,8 @@
 						"cause_name" = sanitize(SD.cause_name),
 						"total_kills" = SD.total_kills,
 						"total_damage" = damage_list,
-						"time_of_death" = duration2text(SD.time_of_death),
-						"total_time_alive" = duration2text(SD.total_time_alive),
+						"time_of_death" = SD.time_of_death,
+						"total_time_alive" = SD.total_time_alive,
 						"total_damage_taken" = SD.total_damage_taken,
 						"x" = SD.x,
 						"y" = SD.y,
@@ -242,8 +242,8 @@
 					"cause_name" = sanitize(SD.cause_name),
 					"total_kills" = SD.total_kills,
 					"total_damage" = damage_list,
-					"time_of_death" = duration2text(SD.time_of_death),
-					"total_time_alive" = duration2text(SD.total_time_alive),
+					"time_of_death" = SD.time_of_death,
+					"total_time_alive" = SD.total_time_alive,
 					"total_damage_taken" = SD.total_damage_taken,
 					"x" = SD.x,
 					"y" = SD.y,
@@ -288,8 +288,8 @@
 						"cause_name" = sanitize(SD.cause_name),
 						"total_kills" = SD.total_kills,
 						"total_damage" = damage_list,
-						"time_of_death" = duration2text(SD.time_of_death),
-						"total_time_alive" = duration2text(SD.total_time_alive),
+						"time_of_death" = SD.time_of_death,
+						"total_time_alive" = SD.total_time_alive,
 						"x" = SD.x,
 						"y" = SD.y,
 						"z" = SD.z
@@ -355,13 +355,6 @@
 		if(S.total_tox)
 			damage_list += list(list("name" = "tox", "value" = S.total_tox))
 
-		var/new_time_of_death
-		if(S.time_of_death)
-			new_time_of_death = duration2text(S.time_of_death)
-		var/new_total_time_alive
-		if(S.total_time_alive)
-			new_total_time_alive = duration2text(S.total_time_alive)
-
 		var/death = list(list(
 			"mob_name" = sanitize(S.mob_name),
 			"job_name" = S.role_name,
@@ -369,8 +362,8 @@
 			"cause_name" = sanitize(S.cause_name),
 			"total_kills" = S.total_kills,
 			"total_damage" = damage_list,
-			"time_of_death" = new_time_of_death,
-			"total_time_alive" = new_total_time_alive,
+			"time_of_death" = S.time_of_death,
+			"total_time_alive" = S.total_time_alive,
 			"total_damage_taken" = S.total_damage_taken,
 			"x" = S.x,
 			"y" = S.y,
@@ -379,36 +372,17 @@
 		if(new_death_stats_list.len < STATISTICS_DEATH_LIST_LEN)
 			new_death_stats_list += death
 
-	var/new_time_start
-	if(real_time_start)
-		new_time_start = time2text(real_time_start)
-
-	var/new_round_length
-	if(round_length)
-		new_round_length = duration2text(round_length)
-
-	var/new_hijack_time
-	if(round_hijack_time)
-		new_hijack_time = time2text(round_hijack_time)
-
-	var/new_time_end
-	if(real_time_end)
-		new_time_end = time2text(real_time_end)
-
 	death_data["death_stats_list"] = new_death_stats_list
 	round_data["round"] = list(
 		"name" = round_name,
 		"game_mode" = game_mode,
 		"map_name" = map_name,
 		"round_result" = round_result,
-		"real_time_start" = new_time_start,
-		"real_time_end" = new_time_end,
-		"round_length" = new_round_length,
-		"round_hijack_time" = new_hijack_time,
+		"real_time_start" = real_time_start,
+		"real_time_end" = real_time_end,
+		"round_length" = round_length,
+		"round_hijack_time" = round_hijack_time,
 		"end_round_player_population" = end_round_player_population,
-		"defcon_level" = defcon_level,
-		"objective_points" = objective_points,
-		"total_objective_points" = total_objective_points,
 		"total_projectiles_fired" = total_projectiles_fired,
 		"total_projectiles_hit" = total_projectiles_hit,
 		"total_projectiles_hit_human" = total_projectiles_hit_human,

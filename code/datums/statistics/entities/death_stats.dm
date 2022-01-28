@@ -48,8 +48,8 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 
         "total_steps" = DB_FIELDTYPE_INT,
         "total_kills" = DB_FIELDTYPE_INT,
-        "time_of_death" = DB_FIELDTYPE_BIGINT,
-        "total_time_alive" = DB_FIELDTYPE_BIGINT,
+        "time_of_death" = DB_FIELDTYPE_STRING_SMALL,
+        "total_time_alive" = DB_FIELDTYPE_STRING_SMALL,
         "total_damage_taken" = DB_FIELDTYPE_INT,
 
         "total_brute" = DB_FIELDTYPE_INT,
@@ -170,7 +170,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 	if(getToxLoss())
 		Dlog.total_tox = round(getToxLoss())
 
-	Dlog.time_of_death = world.time
+	Dlog.time_of_death = duration2text(world.time)
 
 	Dlog.x = death_loc.x
 	Dlog.y = death_loc.y
@@ -178,7 +178,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 
 	Dlog.total_steps = life_steps_total
 	Dlog.total_kills = life_kills_total
-	Dlog.total_time_alive = life_time_total
+	Dlog.total_time_alive = duration2text(life_time_total)
 	Dlog.total_damage_taken = life_damage_taken_total
 
 	var/observer_message = "<b>[real_name]</b> has died"

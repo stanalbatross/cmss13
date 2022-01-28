@@ -393,8 +393,6 @@ var/waiting_for_drop_votes = 0
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/huntergames/declare_completion()
-	if(round_statistics)
-		round_statistics.track_round_end()
 	var/mob/living/carbon/winner = null
 
 	for(var/mob/living/carbon/human/Q in GLOB.alive_mob_list)
@@ -417,8 +415,9 @@ var/waiting_for_drop_votes = 0
 
 	if(round_statistics)
 		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
+		round_statistics.round_length = duration2text(world.time)
 		round_statistics.end_round_player_population = count_humans()
+		round_statistics.track_round_end()
 
 		round_statistics.log_round_statistics()
 

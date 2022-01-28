@@ -329,9 +329,10 @@
 	sound_to(world, S)
 	if(round_statistics)
 		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
+		round_statistics.round_length = duration2text(world.time)
 		round_statistics.round_result = round_finished
 		round_statistics.end_round_player_population = GLOB.clients.len
+		round_statistics.track_round_end()
 
 		round_statistics.log_round_statistics()
 

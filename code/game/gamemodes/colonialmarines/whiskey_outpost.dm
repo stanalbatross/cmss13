@@ -252,8 +252,6 @@
 //Announces the end of the game with all relevant information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/whiskey_outpost/declare_completion()
-	if(round_statistics)
-		round_statistics.track_round_end()
 	if(finished == 1)
 		log_game("Round end result - xenos won")
 		to_world("<span class='round_header'>The Xenos have succesfully defended their hive from colonization.</span>")
@@ -261,11 +259,10 @@
 		to_world(SPAN_ROUNDBODY("It will be another five years before the USCM returns to the Tychon's Rift sector, with the arrival of the 2nd 'Falling Falcons' Battalion and the USS Almayer."))
 		to_world(SPAN_ROUNDBODY("The xenomorph hive on LV-624 remains unthreatened until then.."))
 		world << sound('sound/misc/Game_Over_Man.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_X_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_xeno_victories += 1
-				round_statistics.current_map.total_xeno_majors += 1
+		round_finished = MODE_INFESTATION_X_MAJOR
+		if(round_statistics && round_statistics.current_map)
+			round_statistics.current_map.total_xeno_victories += 1
+			round_statistics.current_map.total_xeno_majors += 1
 
 	else if(finished == 2)
 		log_game("Round end result - marines won")
@@ -274,26 +271,26 @@
 		to_world(SPAN_ROUNDBODY("Eventually, the Dust Raiders secure LV-624 and the entire Tychon's Rift sector in 2182, pacifiying it and establishing peace in the sector for decades to come."))
 		to_world(SPAN_ROUNDBODY("The USS Almayer and the 2nd 'Falling Falcons' Battalion are never sent to the sector and are spared their fate in 2186."))
 		world << sound('sound/misc/hell_march.ogg')
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_M_MAJOR
-			if(round_statistics.current_map)
-				round_statistics.current_map.total_marine_victories += 1
-				round_statistics.current_map.total_marine_majors += 1
+		round_finished = MODE_INFESTATION_M_MAJOR
+		if(round_statistics && round_statistics.current_map)
+			round_statistics.current_map.total_marine_victories += 1
+			round_statistics.current_map.total_marine_majors += 1
 
 	else
 		log_game("Round end result - no winners")
 		to_world("<span class='round_header'>NOBODY WON!</span>")
 		to_world(SPAN_ROUNDBODY("How? Don't ask me..."))
 		world << 'sound/misc/sadtrombone.ogg'
-		if(round_statistics)
-			round_statistics.round_result = MODE_INFESTATION_DRAW_DEATH
+		round_finished = MODE_INFESTATION_DRAW_DEATH
+		if(round_statistics && round_statistics.current_map)
+			round_statistics.current_map.total_draws += 1
 
 	if(round_statistics)
+		round_statistics.round_result = round_finished
 		round_statistics.game_mode = name
-		round_statistics.round_length = world.time
+		round_statistics.round_length = duration2text(world.time)
 		round_statistics.end_round_player_population = GLOB.clients.len
-
-		round_statistics.log_round_statistics()
+		round_statistics.track_round_end()
 
 		round_finished = 1
 
