@@ -98,6 +98,44 @@
 	preferred_direction = EAST
 	port_direction = EAST
 
+/obj/docking_port/mobile/lifeboat/proc/check_passengers()
+	. = TRUE
+	var/n = 0 //Generic counter.
+	for(var/mob/living/carbon/human/M as anything in GLOB.alive_human_list)
+		var/area/A = get_area(M)
+		if(!M)
+			continue
+		if(A in shuttle_areas)
+			var/turf/T = get_turf(M)
+			if(!T || is_mainship_level(T.z))
+				continue
+			n++
+	for(var/mob/living/carbon/Xenomorph/X as anything in GLOB.living_xeno_list)
+		var/area/A = get_area(X)
+		if(!X)
+			continue
+		if(A in shuttle_areas)
+			var/turf/T = get_turf(X)
+			if(!T || is_mainship_level(T.z))
+				continue
+			if(isXenoQueen(X))
+				return FALSE
+			else if(X.mob_size >= MOB_SIZE_BIG)
+				n += 3
+			n++
+	if(n > 25)  . = FALSE
+	return TRUE
+
+/obj/docking_port/mobile/lifeboat/proc/try_launch()
+	if(!check_passengers())
+		available = FALSE
+		status = LIFEBOAT_LOCKED
+		ai_announcement("ATTENTION: Lifeboat [id] critical failure, unable to launch.")
+		sleep(40)
+		explosion(return_center_turf(), -1, -1, 3, 4, , , , create_cause_data("escape lifeboat malfunction"))
+		return FALSE
+	send_to_infinite_transit()
+
 /obj/docking_port/mobile/lifeboat/proc/send_to_infinite_transit()
 	destination = null
 	set_mode(SHUTTLE_IGNITING)

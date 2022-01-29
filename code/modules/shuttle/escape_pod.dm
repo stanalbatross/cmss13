@@ -3,8 +3,6 @@
 /// Generic Lifeboat definition
 /obj/docking_port/mobile/escape_pod
 	name = "escapepod"
-	id = "escapepod"
-	area_type = /area/shuttle/evacuation_pod
 	ignitionTime = 8 SECONDS
 	dwidth = 2
 	width = 5
@@ -14,39 +12,16 @@
 	var/can_launch = FALSE
 	var/cap_weight = 3
 
-	var/status = ESCAPE_STATE_IDLE
+	ignition_sound = 'sound/effects/escape_pod_warmup.ogg'
+
 	var/datum/computer/file/embedded_program/docking/simple/escape_pod/evacuation_program
 	var/list/cryo_cells = list()
-	var/list/obj/structure/machinery/door/airlock/evacuation/doors = list()
+	var/list/doors = list()
 	var/static/survivors = 0
 
-/obj/docking_port/mobile/escape_pod/proc/link_support_units(turf/ref)
-	var/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/R = locate() in shuttle_areas //Grab the controller.
-	if(!R)
-		log_debug("ERROR CODE EV1.5: could not find controller in [id].")
-		to_world(SPAN_DEBUG("ERROR CODE EV1: could not find controller in [id]."))
-		return FALSE
-
-	//Set the tags.
-	R.id_tag = id //Set tag.
-	R.tag_door = id //Set the door tag.
-	R.evacuation_program = new(R) //Make a new program with the right parent-child relationship. Make sure the master is specified in new().
-	//R.docking_program = R.evacuation_program //Link them all to the same program, sigh.
-	//R.program = R.evacuation_program
-	evacuation_program = R.evacuation_program //For the shuttle, to shortcut the controller program.
-
-	cryo_cells = new
-	for(var/obj/structure/machinery/cryopod/evacuation/E in shuttle_areas)
-		cryo_cells += E
-		E.evacuation_program = evacuation_program
-	if(!cryo_cells.len)
-		log_debug("ERROR CODE EV2: could not find cryo pods in [id].")
-		to_world(SPAN_DEBUG("ERROR CODE EV2: could not find cryo pods in [id]."))
-		return FALSE
-
 /obj/docking_port/mobile/escape_pod/proc/can_launch()
-	if(..() && EvacuationAuthority.evac_status >= EVACUATION_STATUS_INITIATING)
-		switch(status)
+	if(EvacuationAuthority.evac_status >= EVACUATION_STATUS_INITIATING)
+		switch(evacuation_program.dock_state)
 			if(ESCAPE_STATE_READY)
 				return TRUE
 			if(ESCAPE_STATE_DELAYED)
@@ -56,15 +31,7 @@
 				return TRUE
 
 /obj/docking_port/mobile/escape_pod/proc/can_cancel()
-	. = (EvacuationAuthority.evac_status > EVACUATION_STATUS_STANDING_BY && (status in ESCAPE_STATE_READY to ESCAPE_STATE_DELAYED))
-
-/obj/docking_port/mobile/escape_pod/Initialize(mapload)
-	. = ..()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/docking_port/mobile/escape_pod/LateInitialize()
-	. = ..()
-	link_support_units()
+	. = (EvacuationAuthority.evac_status > EVACUATION_STATUS_STANDING_BY && (evacuation_program.dock_state in ESCAPE_STATE_READY to ESCAPE_STATE_DELAYED))
 
 /obj/docking_port/mobile/escape_pod/proc/check_for_survivors()
 	for(var/mob/living/carbon/human/M as anything in GLOB.alive_human_list)
@@ -76,42 +43,71 @@
 			if(!T || is_mainship_level(T.z))
 				continue
 			survivors++
-			if(survivors > cap_weight)
-				return FALSE
 			to_chat(M, "<br><br>[SPAN_CENTERBOLD("<big>You have successfully left the [MAIN_SHIP_NAME]. You may now ghost and observe the rest of the round.</big>")]<br>")
-	playsound(src,'sound/effects/escape_pod_warmup.ogg', 50, 1)
 	return TRUE
+
+/obj/docking_port/mobile/escape_pod/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/docking_port/mobile/escape_pod/LateInitialize()
+	. = ..()
+	for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells)
+		C.evacuation_program = evacuation_program
 
 #define MOVE_MOB_OUTSIDE \
 for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 
 /obj/docking_port/mobile/escape_pod/proc/toggle_ready()
-	switch(status)
+	switch(evacuation_program.dock_state)
 		if(ESCAPE_STATE_IDLE)
-			status = ESCAPE_STATE_READY
+			evacuation_program.dock_state = ESCAPE_STATE_READY
 			can_launch = TRUE
 			spawn()
-				setTimer(5 MINUTES)
 				open_all_doors()
 
 		if(ESCAPE_STATE_READY)
-			status = ESCAPE_STATE_IDLE
+			evacuation_program.dock_state = ESCAPE_STATE_IDLE
 			MOVE_MOB_OUTSIDE
 			can_launch = FALSE
 			spawn(250)
-				setTimer(0)
 				close_all_doors()
 
+/obj/docking_port/mobile/escape_pod/proc/check_passengers()
+	. = TRUE
+	var/n = 0 //Generic counter.
+	for(var/mob/living/carbon/human/M as anything in GLOB.alive_human_list)
+		var/area/A = get_area(M)
+		if(!M)
+			continue
+		if(A in shuttle_areas)
+			var/turf/T = get_turf(M)
+			if(!T || is_mainship_level(T.z))
+				continue
+			n++
+	for(var/mob/living/carbon/Xenomorph/X as anything in GLOB.living_xeno_list)
+		var/area/A = get_area(X)
+		if(!X)
+			continue
+		if(A in shuttle_areas)
+			var/turf/T = get_turf(X)
+			if(!T || is_mainship_level(T.z))
+				continue
+			if(X.mob_size >= MOB_SIZE_BIG)
+				return FALSE //Huge xenomorphs will automatically fail the launch.
+			n++
+	if(n > cryo_cells.len)  . = FALSE //Default is 3 cryo cells and three people inside the pod.
+	return TRUE
 
 /obj/docking_port/mobile/escape_pod/proc/prepare_for_launch()
 	if(!can_launch())
 		return FALSE
-	status = ESCAPE_STATE_LAUNCHING
+	evacuation_program.dock_state = ESCAPE_STATE_LAUNCHING
 	spawn()
 		close_all_doors()
 	sleep(31)
-	if(!check_for_survivors())
-		status = ESCAPE_STATE_BROKEN
+	if(!check_passengers())
+		evacuation_program.dock_state = ESCAPE_STATE_BROKEN
 		explosion(evacuation_program.master, -1, -1, 3, 4, , , , create_cause_data("escape pod malfunction"))
 		sleep(25)
 
@@ -135,23 +131,36 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 
 /// Port
 /obj/docking_port/mobile/escape_pod/up
+	id = "escape_pod_up"
 	dir = SOUTH
+	preferred_direction = SOUTH
+	port_direction = SOUTH
 
 /// Starboard
 /obj/docking_port/mobile/escape_pod/down
+	id = "escape_pod_down"
 	dir = NORTH
+	preferred_direction = NORTH
+	port_direction = NORTH
 
 /// Aft
 /obj/docking_port/mobile/escape_pod/left
+	id = "escape_pod_left"
 	dir = EAST
+	preferred_direction = EAST
+	port_direction = EAST
 
 /// Stern
 /obj/docking_port/mobile/escape_pod/right
+	id = "escape_pod_right"
 	dir = WEST
+	preferred_direction = WEST
+	port_direction = WEST
 
 /obj/docking_port/mobile/escape_pod/proc/send_to_infinite_transit()
-	status = ESCAPE_STATE_LAUNCHED
+	evacuation_program.dock_state = ESCAPE_STATE_LAUNCHED
 	destination = null
+	check_for_survivors()
 	on_ignition()
 	setTimer(ignitionTime)
 
@@ -189,31 +198,26 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 		GLOB.escape_almayer_docks -= src
 	. = ..()
 
-/// Admin lifeboat dock temporary dest because someone mapped them in for some reason (use transit instead)
-/obj/docking_port/stationary/escape_pod_dock/admin
-	dir = NORTH
-	id = "admin-lifeboat" // change this
-
 // === SHUTTLE TEMPLATES FOR SPAWNING THEM
 
 /// Port
 /datum/map_template/shuttle/escape_pod_up
-	name = "Port door escape pod"
+	name = "escape pod up"
 	shuttle_id = "escape_pod_up"
 
 /// Starboard
 /datum/map_template/shuttle/escape_pod_down
-	name = "Starboard door escape pod"
+	name = "escape pod down"
 	shuttle_id = "escape_pod_down"
 
 /// Aft
 /datum/map_template/shuttle/escape_pod_left
-	name = "Aft door escape pod"
+	name = "escape pod left"
 	shuttle_id = "escape_pod_left"
 
 /// Stern
 /datum/map_template/shuttle/escape_pod_right
-	name = "Stern door escape pod"
+	name = "escape pod right"
 	shuttle_id = "escape_pod_right"
 
 
@@ -228,6 +232,7 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 	unslashable = TRUE
 	unacidable = TRUE
 	var/datum/computer/file/embedded_program/docking/simple/escape_pod/evacuation_program
+	var/linked_to_shuttle = FALSE
 
 	ex_act(severity)
 		return FALSE
@@ -270,6 +275,20 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 					spawn()
 						P.close_all_doors()
 
+
+/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
+	if(linked_to_shuttle)
+		return
+	. = ..()
+
+	if(istype(port, /obj/docking_port/mobile/escape_pod))
+		var/obj/docking_port/mobile/escape_pod/M = port
+		id_tag = M.id
+		tag_door = M.id
+		evacuation_program = new(src)
+		M.evacuation_program = evacuation_program
+		linked_to_shuttle = TRUE
+
 //=========================================================================================
 //================================Controller Program=======================================
 //=========================================================================================
@@ -293,6 +312,7 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 	time_till_despawn = 6000000 //near infinite so despawn never occurs.
 	var/being_forced = 0 //Simple variable to prevent sound spam.
 	var/datum/computer/file/embedded_program/docking/simple/escape_pod/evacuation_program
+	var/linked_to_shuttle = FALSE
 
 	ex_act(severity)
 		return FALSE
@@ -387,6 +407,16 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 		if(do_after(user, 20, INTERRUPT_ALL, BUSY_ICON_HOSTILE)) go_out() //Force the occupant out.
 		being_forced = !being_forced
 		return XENO_NO_DELAY_ACTION
+
+/obj/structure/machinery/cryopod/evacuation/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
+	if(linked_to_shuttle)
+		return
+	. = ..()
+
+	if(istype(port, /obj/docking_port/mobile/escape_pod))
+		var/obj/docking_port/mobile/escape_pod/M = port
+		M.cryo_cells += src
+		linked_to_shuttle = TRUE
 
 /obj/structure/machinery/cryopod/evacuation/proc/move_mob_inside(mob/M)
 	if(occupant)

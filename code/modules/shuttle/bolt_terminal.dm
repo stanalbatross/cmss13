@@ -147,7 +147,7 @@
 	if(L.mode == SHUTTLE_IDLE && L.available)
 		log_game("[key_name(usr)] has sent the shuttle [L] to infinite transit")
 		visible_message(SPAN_NOTICE("<b>\The [src]</b> beeps, \"Shuttle departing. Please stand away from the doors.\""))
-		L.send_to_infinite_transit()
+		L.try_launch()
 
 /obj/structure/machinery/bolt_control/target/proc/detonate_animation()
 	set waitfor = FALSE

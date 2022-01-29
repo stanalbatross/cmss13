@@ -81,19 +81,14 @@ SUBSYSTEM_DEF(evacuation)
 				if(L && L.available)
 					LD.open_dock()
 
-			var/obj/docking_port/mobile/escape_pod/L
+			enable_self_destruct()
+
 			var/lifesigns = 0
-			var/ES[] = new
-			var/i
-			for(i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER) ES += i
-			for(var/obj/docking_port/stationary/escape_pod_dock/LD in GLOB.lifeboat_almayer_docks) //evacuation confirmed, time to open lifeboats
-				L = LD.get_docked()
-				lifesigns += L.survivors
-				while(ES.len)
-					i = pick(ES)
-					L.setTimer(0)
-					L.prepare_for_launch() //May or may not launch, will do everything on its own.
-					ES -= i
+			for(var/obj/docking_port/stationary/escape_pod_dock/ED in GLOB.escape_almayer_docks)
+				var/obj/docking_port/mobile/escape_pod/E = ED.get_docked()
+				if(E && E.evacuation_program.dock_state != ESCAPE_STATE_BROKEN)
+					lifesigns += E.survivors
+					E.prepare_for_launch() //May or may not launch, will do everything on its own.
 					sleep(5 SECONDS) //Sleeps 5 seconds each launch.
 
 			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
@@ -106,7 +101,11 @@ SUBSYSTEM_DEF(evacuation)
 
 			evac_status = EVACUATION_STATUS_COMPLETE
 
-			enable_self_destruct()
+			if(L1.status != LIFEBOAT_LOCKED && L2.status != LIFEBOAT_LOCKED)
+				initiate_self_destruct(1)
+			else
+				ai_announcement("ATTENTION: Not all lifeboat escaped, auto self destruct denied.", 'sound/AI/evacuation_complete.ogg')
+
 		return TRUE
 
 
@@ -129,13 +128,13 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/activate_escape()
 	for(var/obj/docking_port/stationary/escape_pod_dock/ED in GLOB.escape_almayer_docks)
 		var/obj/docking_port/mobile/escape_pod/E = ED.get_docked()
-		if(E && E.status != ESCAPE_STATE_BROKEN)
+		if(E && E.evacuation_program.dock_state != ESCAPE_STATE_BROKEN)
 			E.toggle_ready()
 
 /datum/controller/subsystem/evacuation/proc/deactivate_escape()
 	for(var/obj/docking_port/stationary/escape_pod_dock/ED in GLOB.escape_almayer_docks)
 		var/obj/docking_port/mobile/escape_pod/E = ED.get_docked()
-		if(E && E.status != ESCAPE_STATE_BROKEN)
+		if(E && E.evacuation_program.dock_state != ESCAPE_STATE_BROKEN)
 			E.toggle_ready()
 
 
