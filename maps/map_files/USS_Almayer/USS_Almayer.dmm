@@ -14470,6 +14470,20 @@
 "aQv" = (
 /turf/closed/wall/almayer,
 /area/almayer/hallways/starboard_umbilical)
+"aQy" = (
+/obj/structure/transmitter{
+	dir = 8;
+	name = "RO Office Telephone";
+	phone_category = "Offices";
+	phone_id = "RO Office";
+	pixel_x = 16
+	},
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green";
+	tag = "icon-green (EAST)"
+	},
+/area/almayer/squads/req)
 "aQz" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "S";
@@ -47160,7 +47174,7 @@
 /obj/structure/transmitter{
 	dir = 4;
 	name = "Brig Warden's Office Telephone";
-	phone_category = "Almayer";
+	phone_category = "Offices";
 	phone_id = "Brig Warden's Office";
 	pixel_x = -16
 	},
@@ -50288,7 +50302,7 @@
 /obj/item/folder/red,
 /obj/structure/transmitter/rotary{
 	name = "Brig CMP's Office Telephone";
-	phone_category = "Almayer";
+	phone_category = "Offices";
 	phone_id = "Brig CMP's Office";
 	pixel_x = 15
 	},
@@ -128235,7 +128249,7 @@ bMa
 sPo
 bdl
 wIr
-bCB
+aQy
 jAB
 bCB
 rLr
