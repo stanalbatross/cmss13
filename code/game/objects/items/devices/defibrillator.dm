@@ -166,23 +166,20 @@
 	add_fingerprint(user)
 
 /obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
-	..()
-
-/obj/item/device/defibrillator/attack_hand(mob/living/carbon/human/user)
 	if(!ishuman(user))
 		return
 
-	if(user.belt == src && paddles_type && paddles_type.loc == src)
-		paddles_type.attack_hand(user)
-		to_chat(user, SPAN_PURPLE("[icon2html(src, user)] Picked up a paddles."))
-		playsound(get_turf(src), "sparks", 25, 1, 4)
+	if(!paddles_type || paddles_type.loc != src)
+		return
 
-		user.put_in_active_hand(paddles_type)
-		paddles_type.update_icon()
-		update_icon()
-		add_fingerprint(usr)
-	else
-		. = ..()
+	paddles_type.attack_hand(user)
+	to_chat(user, SPAN_PURPLE("[icon2html(src, user)] Picked up a paddles."))
+	playsound(get_turf(src), "sparks", 25, 1, 4)
+
+	user.put_in_inactive_hand(paddles_type)
+	paddles_type.update_icon()
+	update_icon()
+	add_fingerprint(usr)
 
 /obj/item/device/defibrillator/MouseDrop(obj/over_object as obj)
 	if(!CAN_PICKUP(usr, src))
