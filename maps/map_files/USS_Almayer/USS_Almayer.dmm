@@ -35444,7 +35444,7 @@
 	},
 /obj/structure/machinery/door/poddoor/almayer/blended{
 	dir = 4;
-	id = sd_lockdown;
+	id = "sd_lockdown";
 	name = "SD LockDown"
 	},
 /turf/open/floor/almayer{
@@ -51410,7 +51410,7 @@
 	req_one_access = null
 	},
 /obj/structure/machinery/door/poddoor/almayer/blended{
-	id = sd_lockdown;
+	id = "sd_lockdown";
 	name = "SD LockDown"
 	},
 /turf/open/floor/almayer{
