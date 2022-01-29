@@ -173,6 +173,8 @@
 	flick("opening_raising", sis_panel)
 	update_icon()
 	sis_panel.update_icon()
+	spawn(5 MINUTES)
+		detonate()
 
 
 /obj/structure/machinery/bolt_control/panel

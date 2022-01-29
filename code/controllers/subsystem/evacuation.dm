@@ -145,7 +145,7 @@ SUBSYSTEM_DEF(evacuation)
 		if(L && L.status != LIFEBOAT_LOCKED)
 			L.status = LIFEBOAT_ACTIVE
 			L.set_mode(SHUTTLE_RECHARGING)
-			L.setTimer(20 MINUTES)
+			L.setTimer(10 MINUTES)
 
 /datum/controller/subsystem/evacuation/proc/deactivate_lifeboats()
 	for(var/obj/docking_port/stationary/lifeboat_dock/LD in GLOB.lifeboat_almayer_docks)
