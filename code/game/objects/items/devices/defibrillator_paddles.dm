@@ -162,7 +162,7 @@
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
 	if(heart && prob(PROB_DMGHEART))
-		heart.damage += attached_to.heart_damage_to_deal //Allow the defibrilator to possibly worsen heart damage. Still rare enough to just be the "clone damage" of the defib
+		heart.damage += rand(attached_to.heart_damage_to_deal_lower, attached_to.heart_damage_to_deal_upper) //Allow the defibrilator to possibly worsen heart damage. Still rare enough to just be the "clone damage" of the defib
 
 	if(!H.is_revivable())
 		if(heart && heart.is_broken())

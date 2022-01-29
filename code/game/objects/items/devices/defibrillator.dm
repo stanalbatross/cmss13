@@ -1,24 +1,27 @@
-#define LOW_MODE_RECH		4 SECONDS
-#define HALF_MODE_RECH		8 SECONDS
-#define FULL_MODE_RECH		16 SECONDS
+#define LOW_MODE_RECH			4 SECONDS
+#define HALF_MODE_RECH			8 SECONDS
+#define FULL_MODE_RECH			16 SECONDS
 
-#define LOW_MODE_CHARGE		60
-#define HALF_MODE_CHARGE	120
-#define FULL_MODE_CHARGE	180
+#define LOW_MODE_CHARGE			60
+#define HALF_MODE_CHARGE		120
+#define FULL_MODE_CHARGE		180
 
-#define LOW_MODE_DMGHEAL	10
-#define HALF_MODE_DMGHEAL	40
-#define FULL_MODE_DMGHEAL	120
+#define LOW_MODE_DMGHEAL		10
+#define HALF_MODE_DMGHEAL		40
+#define FULL_MODE_DMGHEAL		120
 
-#define LOW_MODE_HEARTD		1
-#define HALF_MODE_HEARTD	5
-#define FULL_MODE_HEARTD	9 //don't making 100% dead after unlacky reviving
+#define LOW_MODE_HEARTD_LOWER	1
+#define HALF_MODE_HEARTD_LOWER	2
+#define FULL_MODE_HEARTD_LOWER	4
+#define LOW_MODE_HEARTD_UPPER	5
+#define HALF_MODE_HEARTD_UPPER	10
+#define FULL_MODE_HEARTD_UPPER	20
 
-#define LOW_MODE_DEF		"Low Power Mode"
-#define HALF_MODE_DEF		"Half Power Mode"
-#define FULL_MODE_DEF		"Full Power Mode"
+#define LOW_MODE_DEF			"Low Power Mode"
+#define HALF_MODE_DEF			"Half Power Mode"
+#define FULL_MODE_DEF			"Full Power Mode"
 
-#define PROB_DMGHEART		50 //%
+#define PROB_DMGHEART		33 //%
 
 /obj/item/device/defibrillator
 	name = "emergency defibrillator"
@@ -35,7 +38,8 @@
 	var/icon_state_for_paddles
 
 	var/blocked_by_suit = TRUE
-	var/heart_damage_to_deal = FULL_MODE_HEARTD
+	var/heart_damage_to_deal_lower = FULL_MODE_HEARTD_LOWER
+	var/heart_damage_to_deal_upper = FULL_MODE_HEARTD_UPPER
 	var/damage_heal_threshold = FULL_MODE_DMGHEAL //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
 	var/charge_cost = FULL_MODE_CHARGE //How much energy is used.
@@ -135,17 +139,20 @@
 
 	switch(defib_mode)
 		if(FULL_MODE_DEF)
-			heart_damage_to_deal = FULL_MODE_HEARTD * heart_damage_mult
+			heart_damage_to_deal_lower = FULL_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = FULL_MODE_HEARTD_UPPER * heart_damage_mult
 			damage_heal_threshold = FULL_MODE_DMGHEAL * healing_mult
 			charge_cost = FULL_MODE_CHARGE * additional_charge_cost
 			defib_recharge = FULL_MODE_RECH * boost_recharge
 		if(HALF_MODE_DEF)
-			heart_damage_to_deal = HALF_MODE_HEARTD * heart_damage_mult
+			heart_damage_to_deal_lower = HALF_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = HALF_MODE_HEARTD_UPPER * heart_damage_mult
 			damage_heal_threshold = HALF_MODE_DMGHEAL * healing_mult
 			charge_cost = HALF_MODE_CHARGE * additional_charge_cost
 			defib_recharge = HALF_MODE_RECH * boost_recharge
 		if(HALF_MODE_DEF)
-			heart_damage_to_deal = LOW_MODE_HEARTD * heart_damage_mult
+			heart_damage_to_deal_lower = LOW_MODE_HEARTD_LOWER * heart_damage_mult
+			heart_damage_to_deal_upper = LOW_MODE_HEARTD_UPPER * heart_damage_mult
 			damage_heal_threshold = LOW_MODE_DMGHEAL * healing_mult
 			charge_cost = LOW_MODE_CHARGE * additional_charge_cost
 			defib_recharge = LOW_MODE_RECH * boost_recharge
@@ -302,10 +309,10 @@
 	item_state = "defib"
 	w_class = SIZE_MEDIUM
 	blocked_by_suit = FALSE
-	heart_damage_mult = 0.4
-	additional_charge_cost = 2.0
-	boost_recharge = 0.8
-	healing_mult = 1.75
+	heart_damage_mult = 0.6
+	additional_charge_cost = 1.8
+	boost_recharge = 0.4
+	healing_mult = 1.25
 	skill_req = SKILL_MEDICAL_TRAINED
 
 /obj/item/device/defibrillator/compact
