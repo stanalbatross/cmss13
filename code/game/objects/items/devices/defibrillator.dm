@@ -182,6 +182,7 @@
 	paddles_type.update_icon()
 	update_icon()
 	add_fingerprint(usr)
+	..()
 
 /obj/item/device/defibrillator/MouseDrop(obj/over_object as obj)
 	if(!CAN_PICKUP(usr, src))
