@@ -20,7 +20,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 	var/config_tag = null
 	var/votable = 1
 	var/probability = 0
-	var/list/round_end_states = list()
+	var/list/round_end_states = list(MODE_INFESTATION_DRAW_DEATH)
 	var/list/datum/mind/modePlayer = new
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret
@@ -103,7 +103,7 @@ var/global/cas_tracking_id_increment = 0	//this var used to assign unique tracki
 
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
-	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED || EvacuationAuthority.dest_status == NUKE_EXPLOSION_GROUND_FINISHED )
+	if(EvacuationAuthority.dest_status == NUKE_EXPLOSION_FINISHED || EvacuationAuthority.dest_status == NUKE_EXPLOSION_GROUND_FINISHED || round_finished)
 		return TRUE
 
 /datum/game_mode/proc/cleanup()	//This is called when the round has ended but not the game, if any cleanup would be necessary in that case.

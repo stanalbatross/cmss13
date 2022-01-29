@@ -18,6 +18,10 @@
 #define MODE_INFECTION_HUMAN_WIN		"Major Human Victory"
 #define MODE_INFECTION_ZOMBIE_WIN		"Major Zombie Victory"
 
+#define MODE_XVX_WIN					"Xeno War Ended"
+
+#define MODE_HUNTERGAMES_WIN			"Hunter Games Ended"
+
 #define MODE_GENERIC_DRAW_NUKE			"DRAW: Nuclear Explosion"
 
 /*

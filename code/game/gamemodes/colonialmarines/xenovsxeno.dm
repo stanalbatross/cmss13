@@ -21,6 +21,9 @@
 
 	var/round_time_larva_interval = 0
 	var/round_time_sd = 0
+
+	round_end_states = list(MODE_XVX_WIN)
+
 	votable = FALSE // broken
 
 /* Pre-pre-startup */
