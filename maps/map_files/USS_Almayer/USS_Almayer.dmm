@@ -44007,6 +44007,12 @@
 "gjL" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/crew/alt,
+/obj/structure/transmitter/rotary{
+	name = "Brig Cells Telephone";
+	phone_category = "Almayer";
+	phone_id = "Brig Cells";
+	pixel_x = 15
+	},
 /turf/open/floor/almayer{
 	allow_construction = 0
 	},
