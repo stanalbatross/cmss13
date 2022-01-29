@@ -17,6 +17,8 @@
 #define HALF_MODE_HEARTD_UPPER	9
 #define FULL_MODE_HEARTD_UPPER	18
 
+#define FULL_MODE_TOXIN_DMG		30
+
 #define LOW_MODE_DEF			"Low Power Mode"
 #define HALF_MODE_DEF			"Half Power Mode"
 #define FULL_MODE_DEF			"Full Power Mode"

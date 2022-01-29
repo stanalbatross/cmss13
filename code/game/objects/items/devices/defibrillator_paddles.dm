@@ -197,6 +197,7 @@
 		user.track_life_saved(user.job)
 		if(attached_to.defib_mode == FULL_MODE_DEF)
 			H.electrocute_act(120, src)//god damn Doktor...
+			H.apply_damage(FULL_MODE_TOXIN_DMG, TOX)
 			to_chat(H, SPAN_NOTICE("You got shocked!"))
 		H.handle_revive()
 		to_chat(H, SPAN_NOTICE("You suddenly feel a spark and your consciousness returns, dragging you back to the mortal plane."))
