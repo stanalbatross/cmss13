@@ -130,10 +130,10 @@
 	if(!check_passengers())
 		available = FALSE
 		status = LIFEBOAT_LOCKED
-		ai_announcement("ATTENTION: Lifeboat [id] critical failure, unable to launch.")
+		ai_announcement("ATTENTION: [id] critical failure, unable to launch.")
 		sleep(40)
 		explosion(return_center_turf(), -1, -1, 3, 4, , , , create_cause_data("escape lifeboat malfunction"))
-		return FALSE
+		return
 	send_to_infinite_transit()
 
 /obj/docking_port/mobile/lifeboat/proc/send_to_infinite_transit()
