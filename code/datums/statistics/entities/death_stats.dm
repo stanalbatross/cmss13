@@ -199,9 +199,6 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 
 	player_entity.player_entity.DS.Insert(1, Dlog)
 
-/*******************************************************************************************/
-// KILLS - DEATHS
-/*******************************************************************************************/
 	if(isXeno(cause_mob))
 		var/datum/entity/player_stats/xeno/xeno_stats = cause_mob.mind.setup_xeno_stats()
 		if(xeno_stats)
@@ -235,9 +232,6 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 				human_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH)
 			else
 				human_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH_FF)
-/*******************************************************************************************/
-
-/*******************************************************************************************/
 
 	Dlog.save()
 	Dlog.detach()

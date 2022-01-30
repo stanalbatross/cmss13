@@ -51,8 +51,7 @@
 //*******************PLAYER DATA*************************
 //*******************************************************
 
-
-/datum/entity/player_entity/proc/update_panel_data(var/datum/entity/statistic/round/viewing_round = round_statistics, mob/user)
+/datum/entity/player_entity/proc/update_panel_data(var/datum/entity/statistic/round/viewing_round = round_statistics)
 	data["current_time"] = "[time2text(world.timeofday, "hh:mm.ss")]"
 
 	if(viewing_round)
