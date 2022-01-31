@@ -223,13 +223,13 @@ var/global/datum/controller/defcon/defcon_controller
 
 	supply_controller.shoppinglist += O
 
-/datum/defcon_reward/aditional_squad
-	name = "Send additional troops"
+/datum/defcon_reward/cryo_squad
+	name = "Wake up additional troops"
 	cost = DEFCON_COST_PRICEY
 	minimum_defcon_level = 4
-	announcement_message = "Отправлены дополнительные марины со станции CHINOOK 91 GSO."
+	announcement_message = "Additional troops are being taken out of cryo."
 
-/datum/defcon_reward/aditional_squad/apply_reward(var/datum/controller/defcon/d)
+/datum/defcon_reward/cryo_squad/apply_reward(var/datum/controller/defcon/d)
 	if (!SSticker.mode)
 		return
 
@@ -237,7 +237,7 @@ var/global/datum/controller/defcon/defcon_controller
 	if(. == 0)
 		return
 
-	SSticker.mode.get_specific_call("Marine Support Reinforcements (Squad)", FALSE, FALSE)
+	SSticker.mode.get_specific_call("Marine Cryo Reinforcements (Squad)", FALSE, FALSE)
 
 /datum/defcon_reward/chemical_points
 	name = "Points for researchers"
@@ -254,3 +254,28 @@ var/global/datum/controller/defcon/defcon_controller
 		return
 
 	chemical_data.update_credits((6 - defcon_controller.current_defcon_level)*4)
+
+/datum/defcon_reward/nuke
+	name = "Planetary nuke"
+	cost = DEFCON_COST_LUDICROUS
+	minimum_defcon_level = 1
+	unique = TRUE
+	announcement_message = "Planetary nuke has been been delivered to Requisitions' ASRS."
+
+/datum/defcon_reward/nuke/apply_reward(var/datum/controller/defcon/d)
+	. = ..()
+	if(. == 0)
+		return
+
+	var/datum/supply_order/O = new /datum/supply_order()
+	O.ordernum = supply_controller.ordernum
+	supply_controller.ordernum++
+	O.object = supply_controller.supply_packs["Operational Nuke"]
+	O.orderedby = MAIN_AI_SYSTEM
+
+	supply_controller.shoppinglist += O
+
+/datum/defcon_reward/nuke/announce_reward(var/announcement_message)
+	//Send ARES message about special asset authorisation
+	var/name = "STRATEGIC NUKE AUTHORISED"
+	marine_announcement(announcement_message, name, 'sound/misc/notice1.ogg')
