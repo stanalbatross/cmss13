@@ -12490,6 +12490,9 @@
 	pixel_x = -3;
 	pixel_y = 16
 	},
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -22299,6 +22302,13 @@
 /obj/structure/machinery/m56d_hmg,
 /turf/open/floor/prison,
 /area/fiorina/station/flight_deck)
+"nrQ" = (
+/obj/structure/machinery/computer/objective,
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
+	},
+/area/fiorina/lz/near_lzII)
 "nrR" = (
 /turf/open/floor/prison{
 	dir = 4;
@@ -23867,6 +23877,16 @@
 	tag = "icon-whitegreenfull (SOUTHWEST)"
 	},
 /area/fiorina/station/medbay)
+"oos" = (
+/obj/structure/surface/table/reinforced/prison,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "blue_plate"
+	},
+/area/fiorina/station/botany)
 "ooF" = (
 /obj/structure/machinery/power/apc,
 /turf/open/floor/wood,
@@ -34178,6 +34198,9 @@
 /obj/structure/surface/table/reinforced/prison{
 	dir = 4;
 	flipped = 1
+	},
+/obj/structure/machinery/computer/objective{
+	dir = 4
 	},
 /turf/open/floor/prison{
 	dir = 10;
@@ -62026,7 +62049,7 @@ ohI
 wRZ
 ohI
 wRZ
-eqq
+oos
 ipd
 cLR
 vha
@@ -76040,7 +76063,7 @@ rev
 oYM
 vMK
 hxy
-aWR
+nrQ
 aWR
 aWR
 hxy

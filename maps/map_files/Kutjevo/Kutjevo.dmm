@@ -1223,6 +1223,9 @@
 	},
 /obj/structure/window/reinforced,
 /obj/structure/surface/table/reinforced/prison,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
 /turf/open/floor/plating/kutjevo,
 /area/kutjevo/interior/complex/med)
 "eh" = (
@@ -1906,6 +1909,13 @@
 /obj/item/ammo_magazine/rifle/m16,
 /turf/open/floor/kutjevo/tan/multi_tiles,
 /area/kutjevo/interior/complex/botany)
+"gr" = (
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
+/obj/structure/surface/table/almayer,
+/turf/open/floor/kutjevo/multi_tiles,
+/area/kutjevo/interior/power)
 "gs" = (
 /obj/structure/machinery/cm_vending/sorted/medical/marinemed,
 /obj/effect/decal/medical_decals{
@@ -2258,6 +2268,7 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
+/obj/structure/machinery/computer/objective,
 /turf/open/floor/kutjevo/colors/red,
 /area/kutjevo/interior/complex/med)
 "hD" = (
@@ -13228,7 +13239,7 @@
 /area/kutjevo/interior/complex/med/triage)
 "ST" = (
 /obj/structure/surface/table/almayer,
-/obj/structure/machinery/computer/emails{
+/obj/structure/machinery/computer/objective{
 	dir = 1
 	},
 /turf/open/floor/kutjevo/colors/red,
@@ -24039,7 +24050,7 @@ KE
 Em
 wu
 RI
-fo
+gr
 cZ
 la
 Em

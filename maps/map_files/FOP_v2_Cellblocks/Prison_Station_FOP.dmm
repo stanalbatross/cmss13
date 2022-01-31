@@ -25462,6 +25462,7 @@
 	pixel_x = 9;
 	pixel_y = 8
 	},
+/obj/structure/machinery/computer/objective,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "darkredfull2";
@@ -46509,6 +46510,9 @@
 /area/prison/security/monitoring/medsec/south)
 "czq" = (
 /obj/structure/surface/table/reinforced,
+/obj/structure/machinery/computer/objective{
+	dir = 8
+	},
 /turf/open/floor/prison,
 /area/prison/security/monitoring/medsec/south)
 "czr" = (
@@ -46984,6 +46988,13 @@
 /obj/effect/landmark/xeno_hive_spawn,
 /turf/open/floor/plating,
 /area/shuttle/drop1/prison)
+"dtH" = (
+/obj/structure/surface/table/reinforced,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
+/turf/open/floor/carpet,
+/area/prison/research/RD)
 "duu" = (
 /obj/structure/flora/bush/ausbushes/var3/brflowers,
 /obj/structure/machinery/light{
@@ -90073,7 +90084,7 @@ alT
 ajk
 amM
 ans
-anr
+dtH
 ant
 apR
 aqB

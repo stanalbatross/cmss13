@@ -8453,6 +8453,7 @@
 /area/strata/ag/interior/outpost/engi)
 "axf" = (
 /obj/structure/surface/table/reinforced/prison,
+/obj/structure/machinery/computer/objective,
 /turf/open/floor/strata,
 /area/strata/ag/interior/outpost/engi)
 "axg" = (
@@ -15034,10 +15035,10 @@
 /area/strata/ag/interior/outpost/admin)
 "aPO" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/structure/machinery/computer/communications{
+/obj/structure/barricade/handrail/strata,
+/obj/structure/machinery/computer/objective{
 	dir = 1
 	},
-/obj/structure/barricade/handrail/strata,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
@@ -34840,6 +34841,7 @@
 	dir = 1;
 	pixel_y = 20
 	},
+/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor/strata{
 	icon_state = "red1"
 	},
@@ -36896,7 +36898,9 @@
 /area/strata/ag/exterior/marsh/center)
 "ioM" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
 /turf/open/floor/strata,
 /area/strata/ag/interior/landingzone_checkpoint)
 "ipd" = (
@@ -41820,6 +41824,7 @@
 "qBg" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/clipboard,
+/obj/item/device/binoculars,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"
@@ -45638,7 +45643,9 @@
 /area/strata/ag/exterior/shed_five_caves)
 "wZW" = (
 /obj/structure/surface/table/reinforced/prison,
-/obj/item/device/binoculars,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "floor3"

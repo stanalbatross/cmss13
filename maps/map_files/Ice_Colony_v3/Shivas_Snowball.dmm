@@ -8672,6 +8672,13 @@
 	icon_state = "floor3"
 	},
 /area/shiva/interior/bar)
+"cHl" = (
+/obj/structure/surface/table,
+/obj/structure/machinery/computer/objective,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/colony/research_hab)
 "cHB" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/circuitboard,
@@ -10008,6 +10015,15 @@
 	icon_state = "purple"
 	},
 /area/shiva/interior/lz2_habs)
+"epd" = (
+/obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 8
+	},
+/turf/open/floor/shiva{
+	icon_state = "yellowfull"
+	},
+/area/shiva/interior/fort_biceps)
 "epp" = (
 /obj/item/stool{
 	pixel_x = 4;
@@ -20611,9 +20627,7 @@
 /area/shiva/exterior/cp_colony_grounds)
 "qer" = (
 /obj/structure/surface/table,
-/obj/item/vehicle_clamp{
-	pixel_y = 2
-	},
+/obj/structure/machinery/computer/objective,
 /turf/open/floor/shiva{
 	dir = 1;
 	icon_state = "red"
@@ -23359,6 +23373,10 @@
 	dir = 1;
 	pixel_y = -24
 	},
+/obj/item/vehicle_clamp{
+	pixel_y = 2
+	},
+/obj/structure/surface/table,
 /turf/open/floor/shiva{
 	icon_state = "red"
 	},
@@ -38686,7 +38704,7 @@ pcY
 asz
 asz
 asz
-ahu
+cHl
 qfI
 bJi
 bJi
@@ -48278,7 +48296,7 @@ sod
 rKk
 cXk
 wNj
-cUl
+epd
 nTv
 vnF
 hgL

@@ -6770,6 +6770,9 @@
 "arN" = (
 /obj/structure/surface/table,
 /obj/effect/spawner/random/powercell,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
 /turf/open/floor{
 	dir = 8;
 	icon_state = "purple";
@@ -15107,7 +15110,7 @@
 	icon_state = "whitegreen";
 	tag = "icon-whitegreen (SOUTHWEST)"
 	},
-/area)
+/area/bigredv2/caves/lambda/virology)
 "aMw" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -15145,7 +15148,7 @@
 	icon_state = "whitegreen";
 	tag = "icon-whitegreen (SOUTHEAST)"
 	},
-/area)
+/area/bigredv2/caves/lambda/virology)
 "aMA" = (
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/machinery/door/airlock/almayer/research{
@@ -26024,6 +26027,9 @@
 "bwr" = (
 /obj/structure/machinery/light,
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -29095,6 +29101,9 @@
 /area/bigredv2/caves/eta/living)
 "bEB" = (
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
 /turf/open/floor{
 	dir = 9;
 	icon_state = "darkblue2";
@@ -29499,10 +29508,6 @@
 	tag = "icon-mars_cave_20"
 	},
 /area/bigredv2/caves_north)
-"cLZ" = (
-/obj/structure/window/framed/solaris/reinforced,
-/turf/open/floor/plating,
-/area)
 "cOl" = (
 /turf/open/mars_cave{
 	icon_state = "mars_cave_18";
@@ -29575,17 +29580,6 @@
 "dyv" = (
 /turf/open/mars,
 /area/bigredv2/caves/eta/xenobiology)
-"dAi" = (
-/obj/effect/decal/warning_stripes{
-	icon_state = "SW-in";
-	tag = "icon-SW-in"
-	},
-/turf/open/floor{
-	dir = 8;
-	icon_state = "whitegreencorner";
-	tag = "icon-whitegreencorner (WEST)"
-	},
-/area)
 "dEf" = (
 /obj/structure/closet/toolcloset,
 /obj/structure/machinery/light,
@@ -76657,7 +76651,7 @@ hWa
 hWa
 aFo
 aGY
-cLZ
+anL
 aIV
 aJS
 anI
@@ -78397,7 +78391,7 @@ aHU
 aHV
 aKa
 aKW
-dAi
+aKV
 aMv
 aob
 aob

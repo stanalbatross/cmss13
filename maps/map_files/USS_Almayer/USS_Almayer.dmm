@@ -14683,6 +14683,7 @@
 	dir = 1;
 	tag = ""
 	},
+/obj/effect/landmark/start/intel,
 /turf/open/floor/almayer,
 /area/almayer/command/computerlab)
 "aRj" = (
@@ -45493,6 +45494,7 @@
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
+/obj/effect/landmark/start/intel,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "silvercorner";
@@ -46417,6 +46419,10 @@
 	},
 /turf/open/floor/plating,
 /area/almayer/medical/medical_science)
+"hpE" = (
+/obj/effect/landmark/start/intel,
+/turf/open/floor/almayer,
+/area/almayer/command/computerlab)
 "hpN" = (
 /obj/structure/machinery/computer/crew,
 /obj/structure/machinery/light,
@@ -69010,6 +69016,7 @@
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
+/obj/effect/landmark/start/intel,
 /turf/open/floor/almayer{
 	icon_state = "silver";
 	tag = "icon-silver"
@@ -124016,8 +124023,8 @@ cSD
 ioU
 rcl
 aGN
-aGN
-aGN
+hpE
+hpE
 aGN
 qrv
 aHq
