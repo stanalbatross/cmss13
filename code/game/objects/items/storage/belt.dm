@@ -131,7 +131,7 @@
 		/obj/item/device/defibrillator,
 		/obj/item/tool/surgery/surgical_line,
 		/obj/item/device/reagent_scanner,
-		/obj/item/device/analyzer/plant_analyzer, 
+		/obj/item/device/analyzer/plant_analyzer,
 		/obj/item/roller
 	)
 
@@ -621,10 +621,6 @@
 	new /obj/item/explosive/grenade/HE/airburst(src)
 	new /obj/item/explosive/grenade/HE/airburst(src)
 	new /obj/item/explosive/grenade/HE/airburst(src)
-
-
-
-
 
 
 ////////////////////////////// GUN BELTS /////////////////////////////////////

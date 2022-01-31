@@ -10,6 +10,7 @@
 	var/opened = 0
 	var/welded = 0
 	var/wall_mounted = 0 //never solid (You can always pass over it)
+	var/defcon_objective_spawn = TRUE
 	health = 100
 	var/lastbang
 	var/storage_capacity = 30 //This is so that someone can't pack hundreds of items in a locker/crate
@@ -28,6 +29,19 @@
 
 /obj/structure/closet/Initialize()
 	. = ..()
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(defcon_objective_spawn && is_ground_level(T.z))
+		if(prob(50))//make sure not all closets have defcon things
+			if(prob(defcon_controller.close_obj_prob))
+				new /obj/effect/landmark/objective_landmark/close(loc)
+			else if(prob(defcon_controller.medium_obj_prob))
+				new /obj/effect/landmark/objective_landmark/medium(loc)
+			else if(prob(defcon_controller.far_obj_prob))
+				new /obj/effect/landmark/objective_landmark/far(loc)
+			else if(prob(defcon_controller.science_obj_prob))
+				new /obj/effect/landmark/objective_landmark/science(loc)
+
 	if(!opened && fill_from_loc)		// if closed, any item at the crate's loc is put in the contents
 		for(var/obj/item/I in src.loc)
 			if(I.density || I.anchored || I == src)

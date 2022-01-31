@@ -689,6 +689,27 @@
 /obj/item/storage/pouch/medkit/full_advanced/fill_preset_inventory()
 	new /obj/item/storage/firstaid/adv(src)
 
+/obj/item/storage/pouch/document
+	name = "large document pouch"
+	desc = "It can contain papers, folders, disks, technical manuals, and clipboards."
+	icon_state = "document"
+	storage_slots = 21
+	max_w_class = SIZE_MEDIUM
+	max_storage_space = 21
+	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_CLICK_GATHER
+	can_hold = list(
+		/obj/item/paper,
+		/obj/item/clipboard,
+		/obj/item/document_objective/paper,
+		/obj/item/document_objective/report,
+		/obj/item/document_objective/folder,
+		/obj/item/disk/objective,
+		/obj/item/document_objective/technical_manual
+	)
+
+/obj/item/storage/pouch/document/small
+	name = "small document pouch"
+	storage_slots = 7
 
 /obj/item/storage/pouch/pressurized_reagent_canister
 	name = "Pressurized Reagent Canister Pouch"

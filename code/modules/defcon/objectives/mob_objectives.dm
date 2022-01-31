@@ -123,7 +123,7 @@
 // --------------------------------------------
 // *** Minimise losses ***
 // --------------------------------------------
-/*
+
 #define PASSED_NO_THRESHOLD 0
 #define PASSED_GOOD_THRESHOLD 1
 #define PASSED_POOR_THRESHOLD 2
@@ -136,6 +136,7 @@
 	priority = OBJECTIVE_EXTREME_VALUE
 	var/last_threshold = PASSED_NO_THRESHOLD
 	objective_flags = OBJ_DO_NOT_TREE
+	var/fail_anounce = FALSE
 
 /datum/cm_objective/minimise_losses/proc/get_loss_percentage()
 	return 0
@@ -159,10 +160,11 @@
 
 /datum/cm_objective/minimise_losses/check_completion()
 	. = ..()
-	if(get_loss_percentage() >= fail_threshold)
+	if(get_loss_percentage() >= fail_threshold && !fail_anounce)
 		if(!is_failed())
 			last_threshold = PASSED_FAIL_THRESHOLD
 			announce_losses(fail_threshold, 1)
+			fail_anounce = TRUE
 		fail()
 		return 0
 
@@ -208,7 +210,6 @@
 
 /datum/cm_objective/minimise_losses/total_point_value()
 	return priority
-*/
 
 // --------------------------------------------
 // *** Recover the dead ***
@@ -364,7 +365,7 @@
 	var/points_per_specimen_tier_1 = 50
 	var/points_per_specimen_tier_2 = 100
 	var/points_per_specimen_tier_3 = 150
-	var/points_per_specimen_tier_4 = 200
+	var/points_per_specimen_tier_4 = 450
 
 /datum/cm_objective/contain/process()
 	contained_specimen_points = 0

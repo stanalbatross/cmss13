@@ -270,6 +270,22 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "6"
 	specialty = "M3 pattern smooth marine"
 
+/obj/item/clothing/suit/storage/marine/intel
+	icon_state = "io"
+	name = "\improper XM4 pattern intelligence officer plate armor"
+	desc = "A well tinkered and crafted hybrid of Smart-Gunner mesh and M3 pattern plates. Robust, yet nimble, with room for all your pouches."
+	armor_melee = CLOTHING_ARMOR_MEDIUM
+	armor_bullet = CLOTHING_ARMOR_MEDIUM
+	armor_laser = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bomb = CLOTHING_ARMOR_MEDIUMLOW
+	armor_bio = CLOTHING_ARMOR_MEDIUMHIGH
+	armor_rad = CLOTHING_ARMOR_MEDIUM
+	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
+	storage_slots = 4
+	brightness_on = 7 //slightly higher
+	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit, /obj/item/clothing/under/marine/officer/intel,)
+	specialty = "XM4 pattern intel"
+
 /obj/item/clothing/suit/storage/marine/rto
 	icon_state = "io"
 	name = "\improper M4 pattern marine armor"

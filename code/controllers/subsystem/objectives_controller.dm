@@ -6,6 +6,7 @@ SUBSYSTEM_DEF(objectives)
 	var/list/active_objectives = list()
 	var/list/inactive_objectives = list()
 	var/list/non_processing_objectives = list()
+	var/datum/cm_objective/communications/comms
 	var/datum/cm_objective/establish_power/power
 	var/datum/cm_objective/recover_corpses/marines/marines
 	var/datum/cm_objective/recover_corpses/xenos/xenos
@@ -24,13 +25,15 @@ SUBSYSTEM_DEF(objectives)
 	connect_objectives()
 	// Setup some global objectives
 	power = new /datum/cm_objective/establish_power
+	comms = new /datum/cm_objective/communications
 	marines = new /datum/cm_objective/recover_corpses/marines
 	xenos = new /datum/cm_objective/recover_corpses/xenos
 	contain = new /datum/cm_objective/contain
 	chems = new /datum/cm_objective/analyze_chems
-	//objectives_controller.add_objective(new /datum/cm_objective/minimise_losses/squad_marines)
+	add_objective(new /datum/cm_objective/minimise_losses/squad_marines)
 	add_objective(new /datum/cm_objective/recover_corpses/colonists)
 	active_objectives += power
+	active_objectives += comms
 
 	generate_corpses(corpses)
 
@@ -421,3 +424,7 @@ SUBSYSTEM_DEF(objectives)
 		message_staff("Objectives status: [scored_points] / [total_points] ([scored_points/total_points*100]%).", 1)
 
 	return answer
+
+/datum/controller/subsystem/objectives/proc/add_admin_points(var/amount)
+	bonus_admin_points += amount
+	defcon_controller.check_defcon_level()

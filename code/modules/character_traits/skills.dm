@@ -43,7 +43,6 @@
 	skill =
 	*/
 
-
 /datum/character_trait/skills/medical
 	trait_name = "First Aid Training"
 	trait_desc = "Boosts the medical skill to 1. Crewmember has attended several first aid training sessions and learned basic medical care."

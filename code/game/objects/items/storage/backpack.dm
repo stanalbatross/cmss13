@@ -338,6 +338,13 @@ obj/item/storage/backpack/proc/compare_id(var/mob/living/carbon/human/H)
 	icon_state = "marinepack_medic"
 	item_state = "marinepack_medic"
 
+/obj/item/storage/backpack/marine/satchel/intel
+	name = "\improper USCM lightweight expedition pack"
+	desc = "A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to USCM intelligence officers."
+	icon_state = "marinebigsatch"
+	item_state = "marinebigsatch"
+	max_storage_space = 20
+
 /obj/item/storage/backpack/marine/tech
 	name = "\improper USCM technician backpack"
 	desc = "A standard-issue backpack worn by USCM technicians."

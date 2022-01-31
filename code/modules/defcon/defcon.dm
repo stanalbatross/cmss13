@@ -7,7 +7,7 @@
 #define DEFCON_COST_LUDICROUS 10
 #define DEFCON_COST_MAX 12
 
-#define DEFCON_POINT_GAIN_PER_LEVEL 2
+#define DEFCON_POINT_GAIN_PER_LEVEL 4
 #define DEFCON_MAX_LEVEL 5
 
 var/global/datum/controller/defcon/defcon_controller
@@ -30,11 +30,17 @@ var/global/datum/controller/defcon/defcon_controller
 	//Starts with a few points to enable a bit of fun
 	var/remaining_reward_points = DEFCON_POINT_GAIN_PER_LEVEL
 
+	//Probability for spawn objectives
+	var/close_obj_prob = 50		//50%
+	var/medium_obj_prob = 25	//25%
+	var/far_obj_prob = 15		//15%
+	var/science_obj_prob = 10	//10%
+
 /datum/controller/defcon/proc/check_defcon_percentage()
 	if(current_defcon_level == 1)
 		return "MAXIMUM"
 	else
-		if (!defcon_level_triggers)
+		if(!defcon_level_triggers)
 			return 0
 		var/percentage = last_objectives_scored_points / defcon_level_triggers[current_defcon_level -1] * 100
 		return percentage
@@ -46,7 +52,7 @@ var/global/datum/controller/defcon/defcon_controller
 	if(current_defcon_level > 1)
 		current_defcon_level--
 		remaining_reward_points += DEFCON_POINT_GAIN_PER_LEVEL + (DEFCON_POINT_GAIN_PER_LEVEL * (DEFCON_MAX_LEVEL - current_defcon_level))
-		chemical_data.update_credits((6 - current_defcon_level)*2)
+		chemical_data.update_credits((6 - current_defcon_level)*4)
 		announce_defcon_level()
 
 /datum/controller/defcon/proc/check_defcon_level()
@@ -58,10 +64,10 @@ var/global/datum/controller/defcon/defcon_controller
 	if(current_defcon_level > 1)
 		if(last_objectives_scored_points > defcon_level_triggers[current_defcon_level - 1])
 			decrease_defcon_level()
-	if(round_statistics)
-		round_statistics.defcon_level = current_defcon_level
-		round_statistics.objective_points = last_objectives_scored_points
-		round_statistics.total_objective_points = last_objectives_total_points
+//	if(round_statistics)
+//		round_statistics.defcon_level = current_defcon_level
+//		round_statistics.objective_points = last_objectives_scored_points
+//		round_statistics.total_objective_points = last_objectives_total_points
 
 /datum/controller/defcon/proc/announce_defcon_level()
 	//Send ARES message about new DEFCON level
@@ -114,7 +120,7 @@ var/global/datum/controller/defcon/defcon_controller
 /datum/defcon_reward
 	var/name = "Reward"
 	var/cost = null //Cost to get this reward
-	var/minimum_defcon_level = 5 //DEFCON needs to be at this level or LOWER
+	var/minimum_defcon_level = 0 //DEFCON needs to be at this level or LOWER
 	var/unique = FALSE //Whether the reward is unique or not
 	var/announcement_message = "YOU SHOULD NOT BE SEEING THIS MESSAGE. TELL A DEV." //Message to be shared after a reward is purchased
 
@@ -140,11 +146,13 @@ var/global/datum/controller/defcon/defcon_controller
 	minimum_defcon_level = 5
 	announcement_message = "Additional Supply Budget has been authorised for this operation."
 
+
+
 /datum/defcon_reward/supply_points/apply_reward(var/datum/controller/defcon/d)
 	. = ..()
 	if(. == 0)
 		return
-	supply_controller.points += 200
+	supply_controller.points += 800
 
 /datum/defcon_reward/dropship_part_fabricator_points
 	name = "Additional Dropship Part Fabricator Points"
@@ -156,7 +164,7 @@ var/global/datum/controller/defcon/defcon_controller
 	. = ..()
 	if(. == 0)
 		return
-	supply_controller.dropship_points += 1600 //Enough for both fuel enhancers, or about 3.5 fatties
+	supply_controller.dropship_points += 2800 //Enough for both fuel enhancers, or about 3.5 fatties
 
 /datum/defcon_reward/ob_he
 	name = "Additional OB projectiles - HE x2"
@@ -215,14 +223,13 @@ var/global/datum/controller/defcon/defcon_controller
 
 	supply_controller.shoppinglist += O
 
-/datum/defcon_reward/cryo_squad
-	name = "Wake up additional troops"
+/datum/defcon_reward/aditional_squad
+	name = "Send additional troops"
 	cost = DEFCON_COST_PRICEY
-	minimum_defcon_level = 3
-	unique = TRUE
-	announcement_message = "Additional troops are being taken out of cryo."
+	minimum_defcon_level = 4
+	announcement_message = "Отправлены дополнительные марины со станции CHINOOK 91 GSO."
 
-/datum/defcon_reward/cryo_squad/apply_reward(var/datum/controller/defcon/d)
+/datum/defcon_reward/aditional_squad/apply_reward(var/datum/controller/defcon/d)
 	if (!SSticker.mode)
 		return
 
@@ -230,62 +237,20 @@ var/global/datum/controller/defcon/defcon_controller
 	if(. == 0)
 		return
 
-	SSticker.mode.get_specific_call("Marine Cryo Reinforcements (Squad)", FALSE, FALSE)
+	SSticker.mode.get_specific_call("Marine Support Reinforcements (Squad)", FALSE, FALSE)
 
-/datum/defcon_reward/tank_points
-	name = "Additional Vehicle Parts Delivery System Points"
-	cost = DEFCON_COST_EXPENSIVE
-	minimum_defcon_level = 2
-	unique = TRUE
-	announcement_message = "Additional Vehicle Parts Delivery System Points have been authorised for this operation."
+/datum/defcon_reward/chemical_points
+	name = "Points for researchers"
+	cost = DEFCON_COST_PRICEY
+	minimum_defcon_level = 3
+	announcement_message = "Additional points to researchers gived."
 
-/datum/defcon_reward/tank_points/apply_reward(var/datum/controller/defcon/d)
-	. = ..()
-	if(. == 0)
+/datum/defcon_reward/chemical_points/apply_reward(var/datum/controller/defcon/d)
+	if (!SSticker.mode)
 		return
-	supply_controller.tank_points += 3000 //Enough for full kit + ammo
 
-/datum/defcon_reward/spec_kits
-	name = "Four Specialist Kits"
-	cost = DEFCON_COST_EXPENSIVE
-	minimum_defcon_level = 2
-	unique = TRUE
-	announcement_message = "Specialist kits have been delievered to Requisitions' ASRS."
-
-/datum/defcon_reward/spec_kits/apply_reward(var/datum/controller/defcon/d)
 	. = ..()
 	if(. == 0)
 		return
 
-	var/datum/supply_order/O = new /datum/supply_order()
-	O.ordernum = supply_controller.ordernum
-	supply_controller.ordernum++
-	O.object = supply_controller.supply_packs["Specialist Kits"]
-	O.orderedby = MAIN_AI_SYSTEM
-
-	supply_controller.shoppinglist += O
-
-/datum/defcon_reward/nuke
-	name = "Planetary nuke"
-	cost = DEFCON_COST_LUDICROUS
-	minimum_defcon_level = 1
-	unique = TRUE
-	announcement_message = "Planetary nuke has been been delivered to Requisitions' ASRS."
-
-/datum/defcon_reward/nuke/apply_reward(var/datum/controller/defcon/d)
-	. = ..()
-	if(. == 0)
-		return
-
-	var/datum/supply_order/O = new /datum/supply_order()
-	O.ordernum = supply_controller.ordernum
-	supply_controller.ordernum++
-	O.object = supply_controller.supply_packs["Operational Nuke"]
-	O.orderedby = MAIN_AI_SYSTEM
-
-	supply_controller.shoppinglist += O
-
-/datum/defcon_reward/nuke/announce_reward(var/announcement_message)
-	//Send ARES message about special asset authorisation
-	var/name = "STRATEGIC NUKE AUTHORISED"
-	marine_announcement(announcement_message, name, 'sound/misc/notice1.ogg')
+	chemical_data.update_credits((6 - defcon_controller.current_defcon_level)*4)

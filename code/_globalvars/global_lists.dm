@@ -137,6 +137,9 @@ GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_MUTATED = new /datum/hive_status/mutated()
 ))
 
+//DEFCON rewards / assets
+GLOBAL_REFERENCE_LIST_INDEXED_SORTED(defcon_reward_list, /datum/defcon_reward, name)
+
 GLOBAL_LIST_INIT(custom_event_info_list, setup_custom_event_info())
 
 // Posters

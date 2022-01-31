@@ -1,6 +1,7 @@
 //Surface structures are structures that can have items placed on them
 /obj/structure/surface
 	health = 100
+	var/defcon_objective_spawn = TRUE
 	var/list/update_types = list(
 		/obj/item/reagent_container/glass,
 		/obj/item/storage,
@@ -11,8 +12,20 @@
 		/obj/item/device/radio/intercom
 	)
 
-/obj/structure/surface/Initialize()
+/obj/structure/surface/Initialize(mapload)
 	. = ..()
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(defcon_objective_spawn && is_ground_level(T.z))
+		if(prob(50))//make sure not all tables have defcon things
+			if(prob(defcon_controller.close_obj_prob))
+				new /obj/effect/landmark/objective_landmark/close(loc)
+			else if(prob(defcon_controller.medium_obj_prob))
+				new /obj/effect/landmark/objective_landmark/medium(loc)
+			else if(prob(defcon_controller.far_obj_prob))
+				new /obj/effect/landmark/objective_landmark/far(loc)
+			else if(prob(defcon_controller.science_obj_prob))
+				new /obj/effect/landmark/objective_landmark/science(loc)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/surface/LateInitialize()
