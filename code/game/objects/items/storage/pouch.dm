@@ -22,7 +22,7 @@
 	if(isnull(storage_slots))//uses weight instead of slots
 		var/fullness = 0
 		for(var/obj/item/C as anything in contents)
-			fullness += C.w_class 
+			fullness += C.w_class
 		if(fullness <= max_storage_space * 0.5)
 			overlays += "+[icon_state]_half"
 		else
@@ -238,7 +238,7 @@
 	icon_state = "pistol"
 	use_sound = null
 	max_w_class = SIZE_MEDIUM
-	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver/m44,/obj/item/weapon/gun/flare)
+	can_hold = list(/obj/item/weapon/gun/pistol, /obj/item/weapon/gun/revolver,/obj/item/weapon/gun/flare)
 	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD|STORAGE_ALLOW_QUICKDRAW
 	flap = FALSE
 
