@@ -81,18 +81,12 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 		if(!M)
 			continue
 		if(A in shuttle_areas)
-			var/turf/T = get_turf(M)
-			if(!T || is_mainship_level(T.z))
-				continue
 			n++
 	for(var/mob/living/carbon/Xenomorph/X as anything in GLOB.living_xeno_list)
 		var/area/A = get_area(X)
 		if(!X)
 			continue
 		if(A in shuttle_areas)
-			var/turf/T = get_turf(X)
-			if(!T || is_mainship_level(T.z))
-				continue
 			if(X.mob_size >= MOB_SIZE_BIG)
 				return FALSE //Huge xenomorphs will automatically fail the launch.
 			n++
