@@ -46694,6 +46694,10 @@
 	tag = "icon-sterile_green_side (NORTHEAST)"
 	},
 /area/almayer/medical/lower_medical_medbay)
+"icD" = (
+/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/berth,
+/turf/closed/wall/almayer,
+/area/almayer/command/corporateliason)
 "icM" = (
 /turf/closed/wall/almayer/research/containment/wall/north,
 /area/almayer/medical/containment/cell)
@@ -70759,6 +70763,13 @@
 	tag = "icon-orange (EAST)"
 	},
 /area/almayer/engineering/upper_engineering)
+"ttp" = (
+/obj/docking_port/stationary/escape_pod_dock/almayer/right/berth,
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/hull/upper_hull/u_m_p)
 "ttM" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -113164,7 +113175,7 @@ avm
 qVM
 csz
 csz
-cbp
+ttp
 csz
 csz
 awE
@@ -113368,7 +113379,7 @@ qVM
 awE
 awE
 abm
-awE
+icD
 awE
 awE
 xJC
