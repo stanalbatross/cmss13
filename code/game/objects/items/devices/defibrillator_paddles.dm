@@ -292,7 +292,7 @@
 		playsound(get_turf(src), "sparks", 25, 1, 4)
 		update_icon()
 		user.visible_message(SPAN_NOTICE("[user] charges the paddles"), \
-		SPAN_HELPFUL("You <b>charges</b> the paddles."))
+		SPAN_HELPFUL("You <b>charge</b> the paddles."))
 
 /obj/item/device/paddles/update_icon()
 	update_overlays()
