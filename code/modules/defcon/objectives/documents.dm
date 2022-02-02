@@ -115,6 +115,8 @@
 		to_chat(user, SPAN_NOTICE("You don't notice anything useful."))
 
 /obj/item/document_objective/attack_self(var/mob/living/carbon/human/user)
+	..()
+
 	if(!objective.is_active())
 		objective.activate() //Trying to rejig it just in case
 	to_chat(user, SPAN_NOTICE("You start reading \the [src]."))
