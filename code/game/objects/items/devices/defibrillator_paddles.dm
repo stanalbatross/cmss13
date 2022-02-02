@@ -26,8 +26,6 @@
 	sparks.set_up(5, 0, src)
 	sparks.attach(src)
 
-	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
-
 /obj/item/device/paddles/Destroy()
 	remove_attached()
 	return ..()
@@ -39,6 +37,7 @@
 	remove_attached()
 
 	attached_to = to_attach
+	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
 
 /obj/item/device/paddles/proc/remove_attached()
 	attached_to = null
