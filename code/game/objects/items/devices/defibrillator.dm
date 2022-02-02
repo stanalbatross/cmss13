@@ -132,7 +132,7 @@
 		to_chat(user, SPAN_WARNING("Paddles already charged, you don't can change mode."))
 		return
 
-	var/difib_modes_to_choise = difib_mode_choices - defib_mode
+	var/difib_modes_to_choise = difib_mode_choices
 
 	defib_mode = tgui_input_list(usr, "Select Defib Mode", "Defib Mode Selecting", difib_modes_to_choise)
 

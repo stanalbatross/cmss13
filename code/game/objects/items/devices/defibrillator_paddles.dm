@@ -26,7 +26,6 @@
 	sparks.set_up(5, 0, src)
 	sparks.attach(src)
 
-	name = "[attached_to.name] [name]"
 	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
 
 /obj/item/device/paddles/Destroy()
