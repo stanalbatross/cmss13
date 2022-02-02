@@ -4,6 +4,8 @@
 
 	w_class = SIZE_LARGE
 
+	flags_item = TWOHANDED
+
 	var/obj/item/device/defibrillator/attached_to
 	var/datum/effects/tethering/tether_effect
 
@@ -292,94 +294,15 @@
 		user.visible_message(SPAN_NOTICE("[user] charges the paddles"), \
 		SPAN_HELPFUL("You <b>charges</b> the paddles."))
 
-/obj/item/device/paddles/unwield(mob/user)
-	if( (flags_item|WIELDED) != flags_item)
-		return FALSE//Have to be actually a wielded.
-	flags_item ^= WIELDED
-	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
-	name 	    = copytext(name,1,-10)
-	item_state  = copytext(item_state,1,-2)
-	remove_offhand(user)
-	update_icon()
-	return TRUE
-
-/obj/item/device/paddles/place_offhand(mob/user, item_name)
-	to_chat(user, SPAN_NOTICE("You grab [item_name] with both hands."))
-	user.recalculate_move_delay = TRUE
-	var/obj/item/device/paddles/offhand/offhand = new /obj/item/device/paddles/offhand(user)
-	offhand.name = "[item_name] - offhand"
-	offhand.desc = "Your second grip on the [item_name]."
-	offhand.flags_item |= WIELDED
-	update_icon()
-	offhand.icon_state = icon_state
-	user.put_in_inactive_hand(offhand)
-	user.update_inv_l_hand(0)
-	user.update_inv_r_hand()
-
-/obj/item/device/paddles/remove_offhand(mob/user)
-	to_chat(user, SPAN_NOTICE("You are now grab [name] with one hand."))
-	var/obj/item/device/paddles/offhand/offhand = user.get_inactive_hand()
-	if(istype(offhand))
-		offhand.unwield(user)
-	update_icon()
-	user.update_inv_l_hand(0)
-	user.update_inv_r_hand()
-
-/obj/item/device/paddles/wield(mob/user)
-	if(flags_item & WIELDED) return
-
-	var/obj/item/I = user.get_inactive_hand()
-	if(I)
-		user.drop_inv_item_on_ground(I)
-
-	if(ishuman(user))
-		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
-		var/mob/living/carbon/human/wielder = user
-		var/obj/limb/hand = wielder.get_limb(check_hand)
-		if( !istype(hand) || !hand.is_usable() )
-			to_chat(user, SPAN_WARNING("Your other hand can't hold [src]!"))
-			return
-
-	flags_item 	   ^= WIELDED
-	name 	   += " (Wielded)"
-	place_offhand(user,initial(name))
-	if(wieldsound) playsound(user, wieldsound, 15, 1)
-
 /obj/item/device/paddles/update_icon()
 	update_overlays()
 
 	icon_state = initial(icon_state)
 
 	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
-	if(flags_item & WIELDED)
-		icon_state += "_paddle"
 
 /obj/item/device/paddles/proc/update_overlays()
 	if(overlays) overlays.Cut()
-
-///////////OFFHAND///////////////
-/obj/item/device/paddles/offhand
-	w_class = SIZE_HUGE
-	icon_state = "offhand"
-	name = "offhand"
-	flags_item = DELONDROP|WIELDED
-
-/obj/item/device/paddles/offhand/unwield(mob/user)
-	if(flags_item & WIELDED)
-		flags_item &= ~WIELDED
-		user.temp_drop_inv_item(src)
-		qdel(src)
-
-/obj/item/device/paddles/offhand/wield()
-	qdel(src) //This shouldn't even happen.
-
-/obj/item/device/paddles/offhand/dropped(mob/user)
-	..()
-	//This hand should be holding the main weapon. If everything worked correctly, it should not be wielded.
-	//If it is, looks like we got our hand torn off or something.
-	if(!QDESTROYING(src))
-		var/obj/item/main_hand = user.get_active_hand()
-		if(main_hand) main_hand.unwield(user)
 
 #undef LOW_MODE_RECH
 #undef HALF_MODE_RECH
