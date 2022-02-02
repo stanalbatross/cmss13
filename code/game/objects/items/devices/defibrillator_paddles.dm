@@ -277,7 +277,6 @@
 		to_chat(user, SPAN_NOTICE("You already charged it."))
 		return
 	else
-		charged = TRUE
 		user.visible_message(SPAN_NOTICE("[user] starts charging the paddles"), \
 		SPAN_HELPFUL("You start <b>charging</b> the paddles."))
 		playsound(get_turf(src), "sparks", 30, 2, 5)
@@ -285,11 +284,11 @@
 		if(!do_after(user, attached_to.defib_recharge * user.get_skill_duration_multiplier(SKILL_MEDICAL), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_FRIENDLY, user, INTERRUPT_ALL))
 			user.visible_message(SPAN_NOTICE("[user] stop charging the paddles"), \
 			SPAN_HELPFUL("You stop <b>charging</b> the paddles."))
-			charged = FALSE
 			return
 		sparks.start()
 		attached_to.sparks.start()
 		playsound(get_turf(src), "sparks", 25, 1, 4)
+		charged = TRUE
 		update_icon()
 		user.visible_message(SPAN_NOTICE("[user] charges the paddles"), \
 		SPAN_HELPFUL("You <b>charges</b> the paddles."))
@@ -300,9 +299,25 @@
 	icon_state = initial(icon_state)
 
 	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
+	if(flags_item & WIELDED)
+		icon_state += "_paddle"
 
 /obj/item/device/paddles/proc/update_overlays()
 	if(overlays) overlays.Cut()
+
+/obj/item/device/paddles/place_offhand(var/obj/item/weapon/melee/twohanded/offhand/offhand)
+	. = ..(offhand)
+	update_icon()
+	offhand.icon = 'icons/obj/items/devices.dmi'
+	offhand.icon_state = icon_state
+
+/obj/item/device/paddles/remove_offhand(var/mob/user)
+	..()
+	update_icon()
+
+/obj/item/device/paddles/dropped(mob/user)
+	..()
+	unwield(user)
 
 #undef LOW_MODE_RECH
 #undef HALF_MODE_RECH
