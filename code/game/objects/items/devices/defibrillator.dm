@@ -113,7 +113,7 @@
 	maxuses = round(dcell.maxcharge / charge_cost)
 	currentuses = round(dcell.charge / charge_cost)
 
-	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently [name] in [defib_mode] mode, recharge take [defib_recharge] seconds."))
+	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery. Currently it is in [defib_mode], and will take [defib_recharge/10] seconds to recharge between shocks."))
 
 /obj/item/device/defibrillator/clicked(mob/user, list/mods)
 	if(!ishuman(usr))
@@ -161,9 +161,9 @@
 
 	defib_cooldown = world.time + 20
 	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
-	SPAN_NOTICE("You change [src] mode, now it in [defib_mode] mode, recharge take [defib_recharge/10] seconds."))
+	SPAN_NOTICE("You change \the [src]'s mode to [defib_mode], recharging will take [defib_recharge/10] seconds."))
 	if(defib_mode == FULL_MODE_DEF)
-		to_chat(user, SPAN_WARNING("This is mode only for emergency! You can deal alot damage to patient heart!"))
+		to_chat(user, SPAN_WARNING("WARNING! \The [src] is now in high power mode! The increased voltage has the potential to cause severe cardiac damage!"))
 
 	add_fingerprint(user)
 
