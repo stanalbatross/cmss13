@@ -37,7 +37,7 @@
 	remove_attached()
 
 	attached_to = to_attach
-	icon_state = "[attached_to.icon_state_for_paddles]_[icon_state]"
+	icon_state = "[icon_state]_[attached_to.icon_state_for_paddles]"
 
 /obj/item/device/paddles/proc/remove_attached()
 	attached_to = null
