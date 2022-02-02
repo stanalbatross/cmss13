@@ -2233,7 +2233,8 @@
 
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(!H.wear_suit || H.wear_suit.slowdown == 0)
+			if(!skillcheck(M, SKILL_ENDURANCE, SKILL_ENDURANCE_SURVIVOR) \
+				&& (!H.wear_suit || H.wear_suit.slowdown == 0))
 				no_clothes_neuro = TRUE
 
 		if(no_clothes_neuro)
