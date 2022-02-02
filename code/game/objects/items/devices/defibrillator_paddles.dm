@@ -119,7 +119,7 @@
 		return
 
 	if(attached_to.defib_mode == FULL_MODE_DEF)
-		to_chat(user, SPAN_WARNING("Are you sure? It can make alot damage to patient heart!"))
+		to_chat(user, SPAN_WARNING("Warning! Shock voltage over 3000V! Cardiac damage is likely!"))
 
 	if(!attached_to.check_revive(H, user))
 		return
