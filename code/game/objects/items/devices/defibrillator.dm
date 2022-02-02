@@ -161,7 +161,7 @@
 
 	defib_cooldown = world.time + 20
 	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
-	SPAN_NOTICE("You change [src] mode, now it in [defib_mode] mode, recharge take [defib_recharge/10] seconds."))
+	SPAN_NOTICE("You change \the [src]'s mode to [defib_mode], recharging will take [defib_recharge/10] seconds."))
 	if(defib_mode == FULL_MODE_DEF)
 		to_chat(user, SPAN_WARNING("WARNING! \The [src] is now in high power mode! The increased voltage has the potential to cause severe cardiac damage!"))
 
