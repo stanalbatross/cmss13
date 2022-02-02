@@ -163,7 +163,7 @@
 	user.visible_message(SPAN_NOTICE("[user] turns [src] in [defib_mode]."),
 	SPAN_NOTICE("You change [src] mode, now it in [defib_mode] mode, recharge take [defib_recharge/10] seconds."))
 	if(defib_mode == FULL_MODE_DEF)
-		to_chat(user, SPAN_WARNING("This is mode only for emergency! You can deal alot damage to patient heart!"))
+		to_chat(user, SPAN_WARNING("WARNING! \The [src] is now in high power mode! The increased voltage has the potential to cause severe cardiac damage!"))
 
 	add_fingerprint(user)
 
