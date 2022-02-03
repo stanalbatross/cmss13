@@ -86,8 +86,18 @@
 	icon_state = "macheteB_holster"
 	item_state = "machete_holster"
 	flags_equip_slot = SLOT_STORE
-	storage_flags = STORAGE_FLAGS_POUCH
+	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_USING_DRAWING_METHOD
 	can_hold = list(/obj/item/weapon/melee/claymore/mercsword/machete)
+	var/draw_cooldown = 0
+	var/draw_cooldown_interval = 0
+	
+/obj/item/storage/large_holster/macheteB/_item_insertion(obj/item/W, prevent_warning = 0)
+	..()
+	playsound(src, 'sound/weapons/gun_shotgun_shell_insert.ogg', 15, TRUE)
+
+/obj/item/storage/large_holster/macheteB/_item_removal(obj/item/W, atom/new_location)
+	..()
+	playsound(src, 'sound/weapons/gun_shotgun_shell_insert.ogg', 15, TRUE)
 
 /obj/item/storage/large_holster/macheteB/full/fill_preset_inventory()
 	new /obj/item/weapon/melee/claymore/mercsword/machete(src)
