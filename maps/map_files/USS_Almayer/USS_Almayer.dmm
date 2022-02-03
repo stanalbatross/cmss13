@@ -43408,11 +43408,6 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/medical/morgue)
-"fXp" = (
-/obj/structure/machinery/cryopod,
-/obj/structure/machinery/cryopod,
-/turf/open/floor/almayer,
-/area/almayer/shipboard/brig/cells)
 "fXz" = (
 /obj/structure/machinery/alarm/almayer{
 	dir = 1
@@ -94471,7 +94466,7 @@ thL
 thL
 nYd
 thL
-fXp
+wRm
 fgR
 hPT
 mnm
