@@ -239,12 +239,10 @@
 		if (PAS == null)
 			PAS = new /datum/effects/prae_acid_stacks(H)
 			PAS.increment_stack_count()
-			message_admins("added 1 stack due to it being null")
 			found = TRUE
 		else
 			PAS.increment_stack_count()
 			PAS.increment_stack_count()
-			message_admins("added 2 stacks due to it being 1 already")
 			found = TRUE
 
 		if (!found)
