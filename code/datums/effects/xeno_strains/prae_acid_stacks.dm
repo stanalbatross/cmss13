@@ -20,14 +20,14 @@
 
 /datum/effects/prae_acid_stacks/validate_atom(mob/living/carbon/human/H)
 	if (H.stat == DEAD)
-		return FALSE 
+		return FALSE
 
 	return ..()
 
 /datum/effects/prae_acid_stacks/process_mob()
 	. = ..()
 	if (!istype(affected_atom, /mob/living/carbon/human))
-		return 
+		return
 
 	if (last_decrement_time + time_between_decrements < world.time && !(last_increment_time + increment_grace_time > world.time))
 		stack_count--
