@@ -215,7 +215,7 @@
 	. = ..()
 	if(.)
 		if(ismob(loc))
-			var/mob/M = paddles_type.loc
+			var/mob/M = loc
 			unwield(M)
 		reset_tether()
 
