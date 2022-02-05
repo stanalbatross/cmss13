@@ -40,11 +40,11 @@
 	var/icon_state_for_paddles
 
 	var/blocked_by_suit = TRUE
-	var/heart_damage_to_deal_lower = FULL_MODE_HEARTD_LOWER
-	var/heart_damage_to_deal_upper = FULL_MODE_HEARTD_UPPER
-	var/damage_heal_threshold = FULL_MODE_DMGHEAL //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
+	var/heart_damage_to_deal_lower = LOW_MODE_HEARTD_LOWER
+	var/heart_damage_to_deal_upper = LOW_MODE_HEARTD_UPPER
+	var/damage_heal_threshold = LOW_MODE_DMGHEAL //This is the maximum non-oxy damage the defibrillator will heal to get a patient above -100, in all categories
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
-	var/charge_cost = FULL_MODE_CHARGE //How much energy is used.
+	var/charge_cost = LOW_MODE_CHARGE //How much energy is used.
 	var/obj/item/cell/dcell = null
 	var/datum/effect_system/spark_spread/sparks = new
 	var/defib_cooldown = 0 //Cooldown for defib
@@ -63,8 +63,8 @@
 
 	var/range = 4
 	var/list/difib_mode_choices = list(LOW_MODE_DEF, HALF_MODE_DEF, FULL_MODE_DEF)
-	var/defib_mode = FULL_MODE_DEF
-	var/defib_recharge = FULL_MODE_RECH //Recharge defib
+	var/defib_mode = LOW_MODE_DEF
+	var/defib_recharge = LOW_MODE_RECH //Recharge defib
 
 /mob/living/carbon/human/proc/check_tod()
 	if(!undefibbable && world.time <= timeofdeath + revive_grace_period)
