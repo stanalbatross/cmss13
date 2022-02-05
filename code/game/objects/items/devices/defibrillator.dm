@@ -223,7 +223,6 @@
 
 /obj/item/device/defibrillator/proc/override_delete()
 	SIGNAL_HANDLER
-	paddles_type.unwield()
 	recall_paddles()
 	return COMPONENT_ABORT_QDEL
 
@@ -231,6 +230,7 @@
 	if(ismob(paddles_type.loc))
 		var/mob/M = paddles_type.loc
 		M.drop_held_item(paddles_type)
+		paddles_type.unwield(M)
 		playsound(get_turf(src), "sparks", 25, 1, 4)
 		paddles_type.charged = FALSE
 		paddles_type.update_icon()
@@ -242,7 +242,6 @@
 /obj/item/device/defibrillator/on_enter_storage(obj/item/storage/S)
 	. = ..()
 	if(paddles_type.loc != src)
-		paddles_type.unwield()
 		recall_paddles()
 
 /obj/item/device/defibrillator/Destroy()

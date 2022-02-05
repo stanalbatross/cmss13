@@ -63,7 +63,6 @@
 		return
 
 	if(get_dist(attached_to, src) > attached_to.range)
-		unwield()
 		attached_to.recall_paddles()
 
 	var/atom/tether_to = src
@@ -71,7 +70,6 @@
 	if(loc != get_turf(src))
 		tether_to = loc
 		if(tether_to.loc != get_turf(tether_to))
-			unwield()
 			attached_to.recall_paddles()
 			return
 
@@ -211,13 +209,14 @@
 /obj/item/device/paddles/on_enter_storage(obj/item/storage/S)
 	. = ..()
 	if(attached_to)
-		unwield()
 		attached_to.recall_paddles()
 
 /obj/item/device/paddles/forceMove(atom/dest)
 	. = ..()
 	if(.)
-		unwield()
+		if(ismob(loc))
+			var/mob/M = paddles_type.loc
+			unwield(M)
 		reset_tether()
 
 /obj/item/device/paddles/proc/do_zlevel_check()
