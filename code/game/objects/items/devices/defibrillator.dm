@@ -152,7 +152,7 @@
 			damage_heal_threshold = HALF_MODE_DMGHEAL * healing_mult
 			charge_cost = HALF_MODE_CHARGE * additional_charge_cost
 			defib_recharge = HALF_MODE_RECH * boost_recharge
-		if(HALF_MODE_DEF)
+		if(LOW_MODE_DEF)
 			heart_damage_to_deal_lower = LOW_MODE_HEARTD_LOWER * heart_damage_mult
 			heart_damage_to_deal_upper = LOW_MODE_HEARTD_UPPER * heart_damage_mult
 			damage_heal_threshold = LOW_MODE_DMGHEAL * healing_mult
