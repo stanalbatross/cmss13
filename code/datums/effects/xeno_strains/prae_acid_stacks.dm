@@ -50,8 +50,8 @@
 
 	return ..()
 
-/datum/effects/prae_acid_stacks/proc/increment_stack_count()
-	stack_count = min(max_stacks, stack_count + 1)
+/datum/effects/prae_acid_stacks/proc/increment_stack_count(var/increment_number = 1)
+	stack_count = min(max_stacks, stack_count + increment_number)
 
 	if (!istype(affected_atom, /mob/living/carbon/human))
 		return
