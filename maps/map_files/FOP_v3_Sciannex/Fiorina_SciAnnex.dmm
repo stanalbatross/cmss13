@@ -38233,7 +38233,9 @@
 	},
 /area/fiorina/tumor/aux_engi)
 "xgx" = (
-/obj/structure/machinery/defenses/tesla_coil,
+/obj/structure/machinery/defenses/tesla_coil{
+	faction_group = FACTION_LIST_MARINE
+	},
 /turf/open/organic/grass{
 	name = "astroturf"
 	},
