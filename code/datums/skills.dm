@@ -1285,11 +1285,10 @@ MISCELLANEOUS
 		SKILL_LEADERSHIP = SKILL_LEAD_BEGINNER,
 		SKILL_MEDICAL = SKILL_MEDICAL_TRAINED,
 		SKILL_MELEE_WEAPONS = SKILL_MELEE_TRAINED,
-		SKILL_SPEC_WEAPONS = SKILL_SPEC_ALL,
 		SKILL_JTAC = SKILL_JTAC_BEGINNER,
 	)
 
-/datum/skills/mercenary/elite //actually somewhat worse than standard
+/datum/skills/mercenary/elite
 	name = "Elite Mercenary"
 	skills = list(
 		SKILL_CQC = SKILL_CQC_MASTER,
