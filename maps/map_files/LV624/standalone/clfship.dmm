@@ -84,7 +84,7 @@
 "bQ" = (
 /obj/structure/machinery/defenses/sentry/premade/dumb{
 	dir = 1;
-	faction_group = FACTION_CLF
+	faction_group = list("CLF")
 	},
 /obj/item/ammo_casing/shell{
 	icon_state = "casing_7_1"
@@ -477,7 +477,7 @@
 "mH" = (
 /obj/structure/machinery/defenses/sentry/premade/dumb{
 	dir = 4;
-	faction_group = FACTION_CLF
+	faction_group = list("CLF")
 	},
 /obj/item/ammo_casing/shell{
 	icon_state = "casing_9_1"
@@ -1781,7 +1781,7 @@
 /obj/item/stack/rods,
 /obj/structure/machinery/defenses/sentry/premade/dumb{
 	dir = 1;
-	faction_group = FACTION_CLF
+	faction_group = list("CLF")
 	},
 /obj/item/ammo_casing/shell{
 	icon_state = "casing_7_1"
