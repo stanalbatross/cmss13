@@ -47,15 +47,6 @@
 	var/client/owning_client
 
 //statistic
-	var/list/datum/entity/statistic/death/DS
-	var/list/datum/entity/statistic/medal/MS
-	var/list/datum/entity/statistic/human/HS
-	var/list/datum/entity/statistic/xeno/XS
-	var/list/datum/entity/statistic/caste/CS
-	var/list/datum/entity/statistic/abilities/CAS
-	var/list/datum/entity/statistic/job/JS
-	var/list/datum/entity/statistic/weapon/WS
-//end
 
 BSQL_PROTECT_DATUM(/datum/entity/player)
 
@@ -376,7 +367,15 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	DB_FILTER(/datum/entity/player_time, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/on_read_timestat))
 
-	//statistic
+	if(!migrated_bans && !migrating_bans)
+		migrating_bans = TRUE
+		INVOKE_ASYNC(src, /datum/entity/player.proc/migrate_bans)
+
+	if(permaban_admin_id)
+		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
+	if(time_ban_admin_id)
+		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
+
 	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
 	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
 	DB_FILTER(/datum/entity/statistic/human, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_human))
@@ -386,14 +385,9 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	DB_FILTER(/datum/entity/statistic/job, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_job))
 	DB_FILTER(/datum/entity/statistic/weapon, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
 
-	if(!migrated_bans && !migrating_bans)
-		migrating_bans = TRUE
-		INVOKE_ASYNC(src, /datum/entity/player.proc/migrate_bans)
+	DB_FILTER(/datum/entity/discord, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/load_discord))
 
-	if(permaban_admin_id)
-		permaban_admin = DB_ENTITY(/datum/entity/player, permaban_admin_id)
-	if(time_ban_admin_id)
-		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
+	setup_entity()
 
 /datum/entity/player/proc/on_read_notes(var/list/datum/entity/player_note/_notes)
 	notes_loaded = TRUE
@@ -423,59 +417,67 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 //STATISTIC//
 /datum/entity/player/proc/statistic_load_death(var/list/datum/entity/statistic/death/S)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/death/STAT in S)
-		if(!LAZYISIN(DS, STAT))
-			LAZYSET(DS, STAT.player_id, STAT)
+		if(!LAZYISIN(player_entity.DS, STAT))
 			player_entity.DS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_medals(var/list/datum/entity/statistic/medal/S)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/medal/STAT in S)
-		if(!LAZYISIN(MS, STAT))
-			LAZYSET(MS, STAT.id, STAT)
+		if(!LAZYISIN(player_entity.MS, STAT))
 			player_entity.MS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_human(var/list/datum/entity/statistic/human/S)
-	LAZYCLEARLIST(HS)
-	LAZYCLEARLIST(player_entity.HS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/human/STAT in S)
-		LAZYSET(HS, STAT.id, STAT)
-		player_entity.HS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.HS, STAT))
+			player_entity.HS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_xeno(var/list/datum/entity/statistic/xeno/S)
-	LAZYCLEARLIST(XS)
-	LAZYCLEARLIST(player_entity.XS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/xeno/STAT in S)
-		LAZYSET(XS, STAT.id, STAT)
-		player_entity.XS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.XS, STAT))
+			player_entity.XS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_caste(var/list/datum/entity/statistic/caste/S)
-	LAZYCLEARLIST(CS)
-	LAZYCLEARLIST(player_entity.CS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/caste/STAT in S)
-		LAZYSET(CS, STAT.id, STAT)
-		player_entity.CS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.CS, STAT))
+			player_entity.CS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_abilities(var/list/datum/entity/statistic/abilities/S)
-	LAZYCLEARLIST(CAS)
-	LAZYCLEARLIST(player_entity.CAS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/abilities/STAT in S)
-		LAZYSET(CAS, STAT.id, STAT)
-		player_entity.CAS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.CAS, STAT))
+			player_entity.CAS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_job(var/list/datum/entity/statistic/job/S)
-	LAZYCLEARLIST(JS)
-	LAZYCLEARLIST(player_entity.JS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/job/STAT in S)
-		LAZYSET(JS, STAT.id, STAT)
-		player_entity.JS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.JS, STAT))
+			player_entity.JS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_weapon(var/list/datum/entity/statistic/weapon/S)
-	LAZYCLEARLIST(WS)
-	LAZYCLEARLIST(player_entity.WS)
+	if(!player_entity)
+		return
 	for(var/datum/entity/statistic/weapon/STAT in S)
-		LAZYSET(WS, STAT.id, STAT)
-		player_entity.WS.Insert(1, STAT)
+		if(!LAZYISIN(player_entity.WS, STAT))
+			player_entity.WS.Insert(1, STAT)
+
+/datum/entity/player/proc/setup_entity()
+	sleep(10)
+	if(!player_entity)
+		return
 	player_entity.setup_entity()
+
 //STATISTIC ENDS HERE//
 
 
