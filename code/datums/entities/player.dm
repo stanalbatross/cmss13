@@ -46,8 +46,6 @@
 	var/list/playtime_data // For the NanoUI menu
 	var/client/owning_client
 
-//statistic
-
 BSQL_PROTECT_DATUM(/datum/entity/player)
 
 /datum/entity_meta/player
@@ -384,8 +382,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	DB_FILTER(/datum/entity/statistic/abilities, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_abilities))
 	DB_FILTER(/datum/entity/statistic/job, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_job))
 	DB_FILTER(/datum/entity/statistic/weapon, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
-
-	DB_FILTER(/datum/entity/discord, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/load_discord))
 
 	setup_entity()
 
