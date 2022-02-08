@@ -34,3 +34,126 @@
 	flags_inventory = COVEREYES
 	flags_item = MOB_LOCK_ON_EQUIP
 	fullscreen_vision = /obj/screen/fullscreen/meson/refurb
+
+/obj/item/clothing/glasses/meson/aemf
+	name = "A.E.M.F scanner"
+	desc = "This little piece of tech can be used to see electrical currents trough walls, can even detect devices that are off thanks to the new REDACTED technology."
+	icon_state = "meson"
+	item_state = "glasses"
+	actions_types = list(/datum/action/item_action/toggle)
+	toggleable = TRUE
+	fullscreen_vision = /obj/screen/fullscreen/meson
+	toggle_on_sound = 'sound/items/aemf_on.ogg'
+	toggle_off_sound = 'sound/items/aemf_off.ogg'
+	var/recycletime = 120
+	var/list/blip_pool = list()
+	var/ping_count = 0
+	var/detector_range = 7
+	var/blip_type = "data"
+	var/scanning = FALSE
+	var/datum/shape/rectangle/range_bounds
+	var/objects_to_detect = list(
+		/obj/structure/bed/chair/e_chair,
+		/obj/structure/sign/double/barsign,
+		/obj/structure/machinery/,
+		/obj/structure/AIcore
+	)
+	
+/obj/effect/aemfsignature
+	icon = 'icons/obj/items/clothing/glasses.dmi'
+	icon_state = "aemf_blip"
+	layer = BELOW_FULLSCREEN_LAYER
+	
+/obj/item/device/Initialize()
+	. = ..()
+	
+/obj/item/clothing/glasses/meson/aemf/process()
+	message_admins("Main process started")
+	if(!active)
+		STOP_PROCESSING(SSobj, src)
+		return
+	recycletime--
+	if(!recycletime)
+		recycletime = initial(recycletime)
+		refresh_blip_pool()
+
+	scan()
+	
+/obj/item/clothing/glasses/meson/aemf/New()
+	message_admins("range_bounds created")
+	range_bounds = new //Just creating a rectangle datum
+	..()
+	
+/obj/item/clothing/glasses/meson/aemf/proc/refresh_blip_pool()
+	message_admins("-- Blip pool being refreshed")
+	for(var/X in blip_pool) //we dump and remake the blip pool every few minutes
+		if(blip_pool[X])	//to clear blips assigned to mobs that are long gone.
+			qdel(blip_pool[X])
+	blip_pool = list()
+	
+/obj/item/clothing/glasses/meson/aemf/proc/scan()
+	set waitfor = 0
+	if(scanning)
+		return
+	scanning = TRUE
+	var/mob/living/carbon/human/human_user
+	if(ishuman(loc))
+		human_user = loc
+
+
+	for(var/obj/I in orange(detector_range, loc))
+		var/detected
+		for(var/DT in objects_to_detect)
+			if(istype(I, DT))
+				detected = TRUE
+			if(I.contents)
+				for(var/obj/item/CI in I.contents)
+					if(istype(CI, DT))
+						detected = TRUE
+						break
+			if(human_user && detected)
+				show_blip(human_user, I)
+			if(detected)
+				break
+
+
+
+		CHECK_TICK
+
+	scanning = FALSE
+
+/obj/item/clothing/glasses/meson/aemf/proc/show_blip(var/mob/user, var/atom/target, var/blip_icon)
+	set waitfor = 0
+	message_admins("Attempting to show blips")
+
+	if(user && user.client)
+
+		blip_icon = blip_icon ? blip_icon : blip_type
+
+		if(!blip_pool[target])
+			blip_pool[target] = new /obj/effect/aemfsignature
+
+		var/obj/effect/aemfsignature/DB = blip_pool[target]
+		var/c_view = user.client.view
+		var/view_x_offset = 0
+		var/view_y_offset = 0
+		if(c_view > 7)
+			if(user.client.pixel_x >= 0) view_x_offset = round(user.client.pixel_x/32)
+			else view_x_offset = Ceiling(user.client.pixel_x/32)
+			if(user.client.pixel_y >= 0) view_y_offset = round(user.client.pixel_y/32)
+			else view_y_offset = Ceiling(user.client.pixel_y/32)
+
+		var/diff_dir_x = 0
+		var/diff_dir_y = 0
+		if(target.x - user.x > c_view + view_x_offset) diff_dir_x = 4
+		else if(target.x - user.x < -c_view + view_x_offset) diff_dir_x = 8
+		if(target.y - user.y > c_view + view_y_offset) diff_dir_y = 1
+		else if(target.y - user.y < -c_view + view_y_offset) diff_dir_y = 2
+		DB.icon_state = "aemf_blip"
+
+
+		DB.screen_loc = "[Clamp(c_view + 1 - view_x_offset + (target.x - user.x), 1, 2*c_view+1)],[Clamp(c_view + 1 - view_y_offset + (target.y - user.y), 1, 2*c_view+1)]"
+		user.client.screen += DB
+		sleep(12)
+		if(user.client)
+			user.client.screen -= DB
