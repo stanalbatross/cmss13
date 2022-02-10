@@ -6801,6 +6801,12 @@
 	dir = 6
 	},
 /area/kutjevo/interior/power)
+"ww" = (
+/obj/effect/landmark/nightmare{
+	insert_tag = "cleaningprog"
+	},
+/turf/open/floor/kutjevo/tan,
+/area/kutjevo/interior/complex/botany)
 "wx" = (
 /obj/structure/platform/kutjevo/smooth{
 	dir = 4
@@ -11607,6 +11613,12 @@
 "Np" = (
 /turf/closed/wall/kutjevo/rock,
 /area/kutjevo/interior/colony_South)
+"Nq" = (
+/obj/effect/landmark/nightmare{
+	insert_tag = "plinkingspot"
+	},
+/turf/closed/wall/kutjevo/rock/border,
+/area/kutjevo/exterior/scrubland)
 "Nr" = (
 /obj/structure/largecrate/random/case/double,
 /obj/structure/machinery/light{
@@ -13666,6 +13678,12 @@
 /obj/item/stack/sandbags/large_stack,
 /turf/open/auto_turf/sand/layer0,
 /area/kutjevo/exterior/complex_border/med_rec)
+"Up" = (
+/obj/effect/landmark/nightmare{
+	insert_tag = "trappedmonke"
+	},
+/turf/open/floor/kutjevo/tan/multi_tiles,
+/area/kutjevo/interior/oob)
 "Uq" = (
 /turf/open/auto_turf/sand/layer0,
 /area/kutjevo/exterior/scrubland)
@@ -25959,7 +25977,7 @@ wF
 Uq
 wF
 UM
-bs
+Nq
 cx
 bs
 bs
@@ -26826,7 +26844,7 @@ wF
 Uq
 bQ
 ic
-Sl
+Up
 ic
 bQ
 pl
@@ -33513,7 +33531,7 @@ YL
 YL
 YL
 YL
-YL
+ww
 Jm
 Vv
 YL
