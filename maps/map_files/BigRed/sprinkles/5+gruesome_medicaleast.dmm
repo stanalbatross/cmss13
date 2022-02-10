@@ -6,8 +6,9 @@
 /turf/template_noop,
 /area/template_noop)
 "d" = (
-/obj/item/clothing/head/helmet/marine/fluff/DingleDangle{
-	pixel_x = 5
+/obj/item/clothing/head/cmcap{
+	pixel_x = -10;
+	pixel_y = -6
 	},
 /turf/template_noop,
 /area/template_noop)
