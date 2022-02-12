@@ -33,13 +33,13 @@
 	var/turf/T = get_turf(src)
 	if(defcon_objective_spawn && is_ground_level(T.z))
 		if(prob(50))//make sure not all closets have defcon things
-			if(prob(defcon_controller.close_obj_prob))
+			if(prob(goals_controller.close_obj_prob))
 				new /obj/effect/landmark/objective_landmark/close(loc)
-			else if(prob(defcon_controller.medium_obj_prob))
+			else if(prob(goals_controller.medium_obj_prob))
 				new /obj/effect/landmark/objective_landmark/medium(loc)
-			else if(prob(defcon_controller.far_obj_prob))
+			else if(prob(goals_controller.far_obj_prob))
 				new /obj/effect/landmark/objective_landmark/far(loc)
-			else if(prob(defcon_controller.science_obj_prob))
+			else if(prob(goals_controller.science_obj_prob))
 				new /obj/effect/landmark/objective_landmark/science(loc)
 
 	if(!opened && fill_from_loc)		// if closed, any item at the crate's loc is put in the contents

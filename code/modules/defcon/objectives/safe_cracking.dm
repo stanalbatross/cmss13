@@ -1,5 +1,5 @@
 //An objective to open a safe
-/datum/cm_objective/crack_safe
+/datum/cm_goals/crack_safe
 	var/obj/structure/safe/target
 	var/area/initial_location
 	priority = OBJECTIVE_MEDIUM_VALUE
@@ -7,19 +7,19 @@
 	objective_flags = OBJ_DEAD_END
 	number_of_clues_to_generate = 4
 
-/datum/cm_objective/crack_safe/New(var/obj/structure/safe/safe)
+/datum/cm_goals/crack_safe/New(var/obj/structure/safe/safe)
 	if(!istype(safe))
 		CRASH("Object is not of type safe - [safe]")
 	target = safe
 	initial_location = get_area(target)
 	. = ..()
 
-/datum/cm_objective/crack_safe/Destroy()
+/datum/cm_goals/crack_safe/Destroy()
 	target = null
 	initial_location = null
 	return ..()
 
-/datum/cm_objective/crack_safe/check_completion()
+/datum/cm_goals/crack_safe/check_completion()
 	if(!target)
 		complete() //Safe got blown up probably
 		. = ..()
@@ -31,8 +31,8 @@
 	. = ..()
 	return
 
-/datum/cm_objective/crack_safe/get_clue()
+/datum/cm_goals/crack_safe/get_clue()
 	return SPAN_DANGER("Crack open a safe in <u>[initial_location]</u>, the combination lock is <b>[target.tumbler_1_open]|[target.tumbler_2_open]</b>")
 
-/datum/cm_objective/crack_safe/get_related_label()
+/datum/cm_goals/crack_safe/get_related_label()
 	return "Safe"

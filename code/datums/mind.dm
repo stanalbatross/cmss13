@@ -71,16 +71,16 @@
 
 //this is an objective that the player has just completed
 //and we want to store the objective clues generated based on it -spookydonut
-/datum/mind/proc/store_objective(var/datum/cm_objective/O)
+/datum/mind/proc/store_objective(var/datum/cm_goals/O)
 	if(objective_memory)
 		objective_memory.store_objective(O)
 
 /datum/mind/proc/view_objective_memories(mob/recipient)
 	if(objective_memory)
 		if(ismob(current))
-			objective_memory.view_objective_memories(recipient, current.real_name)
+			objective_memory.view_goals_memories(recipient, current.real_name)
 		else
-			objective_memory.view_objective_memories(recipient, null)
+			objective_memory.view_goals_memories(recipient, null)
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))

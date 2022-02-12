@@ -1,37 +1,37 @@
-SUBSYSTEM_DEF(objectives)
-	name = "objectives"
+SUBSYSTEM_DEF(goals)
+	name = "goals"
 	init_order = SS_INIT_OBJECTIVES
 	flags = SS_NO_FIRE
 	var/list/objectives = list()
 	var/list/active_objectives = list()
 	var/list/inactive_objectives = list()
 	var/list/non_processing_objectives = list()
-	var/datum/cm_objective/communications/comms
-	var/datum/cm_objective/establish_power/power
-	var/datum/cm_objective/recover_corpses/marines/marines
-	var/datum/cm_objective/recover_corpses/xenos/xenos
-	var/datum/cm_objective/contain/contain
-	var/datum/cm_objective/analyze_chems/chems
+	var/datum/cm_goals/communications/comms
+	var/datum/cm_goals/establish_power/power
+	var/datum/cm_goals/recover_corpses/marines/marines
+	var/datum/cm_goals/recover_corpses/xenos/xenos
+	var/datum/cm_goals/contain/contain
+	var/datum/cm_goals/analyze_chems/chems
 	var/bonus_admin_points = 0 //bonus points given by admins, doesn't increase the point cap, but does increase points for easier rewards
 
 	var/nextDChatAnnouncement = 5 MINUTES //5 minutes in
 
 	var/corpses = 15
 
-/datum/controller/subsystem/objectives/Initialize(start_timeofday)
+/datum/controller/subsystem/goals/Initialize(start_timeofday)
 	. = ..()
 	generate_objectives()
 	clear_objective_landmarks()
 	connect_objectives()
 	// Setup some global objectives
-	power = new /datum/cm_objective/establish_power
-	comms = new /datum/cm_objective/communications
-	marines = new /datum/cm_objective/recover_corpses/marines
-	xenos = new /datum/cm_objective/recover_corpses/xenos
-	contain = new /datum/cm_objective/contain
-	chems = new /datum/cm_objective/analyze_chems
-	add_objective(new /datum/cm_objective/minimise_losses/squad_marines)
-	add_objective(new /datum/cm_objective/recover_corpses/colonists)
+	power = new /datum/cm_goals/establish_power
+	comms = new /datum/cm_goals/communications
+	marines = new /datum/cm_goals/recover_corpses/marines
+	xenos = new /datum/cm_goals/recover_corpses/xenos
+	contain = new /datum/cm_goals/contain
+	chems = new /datum/cm_goals/analyze_chems
+	add_objective(new /datum/cm_goals/minimise_losses/squad_marines)
+	add_objective(new /datum/cm_goals/recover_corpses/colonists)
 	active_objectives += power
 	active_objectives += comms
 
@@ -40,7 +40,7 @@ SUBSYSTEM_DEF(objectives)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/pre_round_start)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/post_round_start)
 
-/datum/controller/subsystem/objectives/proc/generate_objectives()
+/datum/controller/subsystem/goals/proc/generate_objectives()
 	if(objective_spawn_close.len == 0 || objective_spawn_medium.len == 0 || objective_spawn_far.len == 0 || objective_spawn_science.len == 0)
 		//The map doesn't have the correct landmarks, so we generate nothing, hoping the map has normal objectives
 		return
@@ -102,7 +102,7 @@ SUBSYSTEM_DEF(objectives)
 		var/dest = pick(15;"close", 30;"medium", 5;"far", 50;"science")
 		spawn_objective_at_landmark(dest, /obj/item/storage/fancy/vials/random)
 
-/datum/controller/subsystem/objectives/proc/generate_corpses(corpses)
+/datum/controller/subsystem/goals/proc/generate_corpses(corpses)
 	var/list/obj/effect/landmark/corpsespawner/objective_spawn_corpse = GLOB.corpse_spawns.Copy()
 	while(corpses--)
 		if(!length(objective_spawn_corpse))
@@ -115,7 +115,7 @@ SUBSYSTEM_DEF(objectives)
 			arm_equipment(M, spawner.equip_path, TRUE, FALSE)
 		objective_spawn_corpse.Remove(spawner)
 
-/datum/controller/subsystem/objectives/proc/clear_objective_landmarks()
+/datum/controller/subsystem/goals/proc/clear_objective_landmarks()
 	//Don't need them anymore, so we remove them
 	objective_spawn_close = null
 	objective_spawn_medium = null
@@ -126,7 +126,7 @@ SUBSYSTEM_DEF(objectives)
 	objective_spawn_far_documents = null
 	objective_spawn_science_documents = null
 
-/datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(var/dest, var/obj/item/it)
+/datum/controller/subsystem/goals/proc/spawn_objective_at_landmark(var/dest, var/obj/item/it)
 	var/picked_locaton
 	switch(dest)
 		if("close")
@@ -178,8 +178,8 @@ SUBSYSTEM_DEF(objectives)
 		new it(picked_locaton)
 
 
-/datum/controller/subsystem/objectives/proc/connect_objectives()
-	for(var/datum/cm_objective/C in objectives)
+/datum/controller/subsystem/goals/proc/connect_objectives()
+	for(var/datum/cm_goals/C in objectives)
 		if(!(C in objectives))
 			objectives += C
 		if(C.objective_flags & OBJ_PROCESS_ON_DEMAND)
@@ -187,27 +187,27 @@ SUBSYSTEM_DEF(objectives)
 		else
 			inactive_objectives += C
 	setup_tree()
-	for(var/datum/cm_objective/N in non_processing_objectives)
+	for(var/datum/cm_goals/N in non_processing_objectives)
 		N.activate()
 
-/datum/controller/subsystem/objectives/proc/pre_round_start()
+/datum/controller/subsystem/goals/proc/pre_round_start()
 	SIGNAL_HANDLER
-	for(var/datum/cm_objective/O in objectives)
+	for(var/datum/cm_goals/O in objectives)
 		O.pre_round_start()
 
-/datum/controller/subsystem/objectives/proc/post_round_start()
+/datum/controller/subsystem/goals/proc/post_round_start()
 	SIGNAL_HANDLER
-	for(var/datum/cm_objective/O in objectives)
+	for(var/datum/cm_goals/O in objectives)
 		O.post_round_start()
 
-/datum/controller/subsystem/objectives/proc/get_objectives_progress()
+/datum/controller/subsystem/goals/proc/get_objectives_progress()
 	var/point_total = 0
 	var/complete = 0
 
 	var/list/categories = list()
 	var/list/notable_objectives = list()
 
-	for(var/datum/cm_objective/C in objectives)
+	for(var/datum/cm_goals/C in objectives)
 		if(C.display_category)
 			if(!(C.display_category in categories))
 				categories += C.display_category
@@ -235,12 +235,12 @@ SUBSYSTEM_DEF(objectives)
 					total = 1 //To avoid divide by zero errors, just in case...
 				dat += "<b>[cat]: </b> [compl]pts completed ([round(100.0*compl/total)]%)<br>"
 
-		for(var/datum/cm_objective/O in notable_objectives)
+		for(var/datum/cm_goals/O in notable_objectives)
 			dat += O.get_readable_progress()
 
 	return dat
 
-/datum/controller/subsystem/objectives/proc/setup_tree()
+/datum/controller/subsystem/goals/proc/setup_tree()
 	//Sets up the objective interdependance tree
 	//Every objective that is not a dead end enables an objective of a higher tier
 	//Every objective that needs prerequisites gets them from objectives of lower tier
@@ -259,7 +259,7 @@ SUBSYSTEM_DEF(objectives)
 	var/list/absolute_value = list()
 	var/list/absolute_value_with_prerequisites = list()
 
-	for(var/datum/cm_objective/O in objectives)
+	for(var/datum/cm_goals/O in objectives)
 		if(O.objective_flags & OBJ_DO_NOT_TREE)
 			continue // exempt from the tree
 		switch(O.priority)
@@ -286,8 +286,8 @@ SUBSYSTEM_DEF(objectives)
 				if(O.prerequisites_required != PREREQUISITES_NONE)
 					absolute_value_with_prerequisites += O
 
-	var/datum/cm_objective/enables
-	for(var/datum/cm_objective/N in no_value)
+	var/datum/cm_goals/enables
+	for(var/datum/cm_goals/N in no_value)
 		if(!low_value_with_prerequisites || !low_value_with_prerequisites.len)
 			break
 		if(N.objective_flags & OBJ_DEAD_END)
@@ -298,9 +298,9 @@ SUBSYSTEM_DEF(objectives)
 			break
 		N.enables_objectives += enables
 		enables.required_objectives += N
-	for(var/datum/cm_objective/L in low_value)
+	for(var/datum/cm_goals/L in low_value)
 		while(L.required_objectives.len < L.number_of_clues_to_generate && no_value.len)
-			var/datum/cm_objective/req = pick(no_value)
+			var/datum/cm_goals/req = pick(no_value)
 			if(req in L.required_objectives)
 				continue //don't want to pick the same thing twice
 			L.required_objectives += req
@@ -315,9 +315,9 @@ SUBSYSTEM_DEF(objectives)
 			break
 		L.enables_objectives += enables
 		enables.required_objectives += L
-	for(var/datum/cm_objective/M in med_value)
+	for(var/datum/cm_goals/M in med_value)
 		while(M.required_objectives.len < M.number_of_clues_to_generate && low_value.len)
-			var/datum/cm_objective/req = pick(low_value)
+			var/datum/cm_goals/req = pick(low_value)
 			if(req in M.required_objectives)
 				continue //don't want to pick the same thing twice
 			M.required_objectives += req
@@ -332,9 +332,9 @@ SUBSYSTEM_DEF(objectives)
 			break
 		M.enables_objectives += enables
 		enables.required_objectives += M
-	for(var/datum/cm_objective/H in high_value)
+	for(var/datum/cm_goals/H in high_value)
 		while(H.required_objectives.len < H.number_of_clues_to_generate && med_value.len)
-			var/datum/cm_objective/req = pick(med_value)
+			var/datum/cm_goals/req = pick(med_value)
 			if(req in H.required_objectives)
 				continue //don't want to pick the same thing twice
 			H.required_objectives += req
@@ -349,9 +349,9 @@ SUBSYSTEM_DEF(objectives)
 			break
 		H.enables_objectives += enables
 		enables.required_objectives += H
-	for(var/datum/cm_objective/E in extreme_value)
+	for(var/datum/cm_goals/E in extreme_value)
 		while(E.required_objectives.len < E.number_of_clues_to_generate && high_value.len)
-			var/datum/cm_objective/req = pick(high_value)
+			var/datum/cm_goals/req = pick(high_value)
 			if(req in E.required_objectives)
 				continue //don't want to pick the same thing twice
 			E.required_objectives += req
@@ -366,15 +366,15 @@ SUBSYSTEM_DEF(objectives)
 			break
 		E.enables_objectives += enables
 		enables.required_objectives += E
-	for(var/datum/cm_objective/A in absolute_value)
+	for(var/datum/cm_goals/A in absolute_value)
 		while(A.required_objectives.len < A.number_of_clues_to_generate && extreme_value.len)
-			var/datum/cm_objective/req = pick(extreme_value)
+			var/datum/cm_goals/req = pick(extreme_value)
 			if(req in A.required_objectives)
 				continue //don't want to pick the same thing twice
 			A.required_objectives += req
 			req.enables_objectives += A
 
-/datum/controller/subsystem/objectives/proc/add_objective(var/datum/cm_objective/O)
+/datum/controller/subsystem/goals/proc/add_objective(var/datum/cm_goals/O)
 	if(!(O in objectives))
 		objectives += O
 	if((O.objective_flags & OBJ_PROCESS_ON_DEMAND) && !(O in non_processing_objectives))
@@ -383,29 +383,29 @@ SUBSYSTEM_DEF(objectives)
 		inactive_objectives += O
 		O.activate()
 
-/datum/controller/subsystem/objectives/proc/remove_objective(var/datum/cm_objective/O)
+/datum/controller/subsystem/goals/proc/remove_objective(var/datum/cm_goals/O)
 	objectives -= O
 	non_processing_objectives -= O
 	inactive_objectives -= O
 	active_objectives -= O
 
-/datum/controller/subsystem/objectives/proc/get_total_points()
+/datum/controller/subsystem/goals/proc/get_total_points()
 	var/total_points = 0
 
-	for(var/datum/cm_objective/L in objectives)
+	for(var/datum/cm_goals/L in objectives)
 		total_points += L.total_point_value()
 
 	return total_points
 
-/datum/controller/subsystem/objectives/proc/get_scored_points()
+/datum/controller/subsystem/goals/proc/get_scored_points()
 	var/scored_points = 0 + bonus_admin_points//bonus points only apply to scored points, not to total, to make admin lives easier
 
-	for(var/datum/cm_objective/L in objectives)
+	for(var/datum/cm_goals/L in objectives)
 		scored_points += L.get_point_value()
 
 	return scored_points
 
-/datum/controller/subsystem/objectives/proc/get_objective_completion_stats()
+/datum/controller/subsystem/goals/proc/get_objective_completion_stats()
 	var/total_points = get_total_points()
 	var/scored_points = get_scored_points()
 
@@ -425,6 +425,6 @@ SUBSYSTEM_DEF(objectives)
 
 	return answer
 
-/datum/controller/subsystem/objectives/proc/add_admin_points(var/amount)
+/datum/controller/subsystem/goals/proc/add_admin_points(var/amount)
 	bonus_admin_points += amount
-	defcon_controller.check_defcon_level()
+	goals_controller.check_goals_complition()

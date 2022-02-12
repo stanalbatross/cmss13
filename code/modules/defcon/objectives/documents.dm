@@ -2,7 +2,7 @@
 // *** Find a document and read it ***
 // These are intended as the initial breadcrumbs that lead to more objectives such as data retrieval
 // --------------------------------------------
-/datum/cm_objective/document
+/datum/cm_goals/document
 	name = "Document Clue"
 	var/obj/item/document_objective/document
 	var/area/initial_area
@@ -13,32 +13,32 @@
 	prerequisites_required = PREREQUISITES_NONE
 	display_category = "Documents"
 
-/datum/cm_objective/document/New(var/obj/item/document_objective/D)
+/datum/cm_goals/document/New(var/obj/item/document_objective/D)
 	. = ..()
 	document = D
 	initial_area = get_area(document)
 	important = rand(0,1)
 
-/datum/cm_objective/document/Destroy()
+/datum/cm_goals/document/Destroy()
 	document.objective = null
 	document = null
 	initial_area = null
 	return ..()
 
-/datum/cm_objective/document/get_related_label()
+/datum/cm_goals/document/get_related_label()
 	return document.label
 
-/datum/cm_objective/document/complete()
+/datum/cm_goals/document/complete()
 	if(..())
 		if(important)
-			var/datum/cm_objective/O = new /datum/cm_objective/retrieve_item/almayer(document)
+			var/datum/cm_goals/O = new /datum/cm_goals/retrieve_item/almayer(document)
 			O.priority = priority //retrieving item gets you double the points for whatever the item is worth, rather than EXTREME value each time
-			SSobjectives.add_objective(O)
+			SSgoals.add_objective(O)
 
-/datum/cm_objective/document/get_clue()
+/datum/cm_goals/document/get_clue()
 	return SPAN_DANGER("[document.name] in <u>[initial_area]</u>")
 
-/datum/cm_objective/document/check_completion()
+/datum/cm_goals/document/check_completion()
 	. = ..()
 	if(document)
 		if(document.read)
@@ -48,7 +48,7 @@
 		fail()
 		return FALSE
 
-/datum/cm_objective/document/folder
+/datum/cm_goals/document/folder
 	priority = OBJECTIVE_MEDIUM_VALUE
 	prerequisites_required = PREREQUISITES_ONE
 	display_flags = 0
@@ -56,15 +56,15 @@
 	var/display_color = "white"
 	number_of_clues_to_generate = 2
 
-/datum/cm_objective/document/progress_report
+/datum/cm_goals/document/progress_report
 	priority = OBJECTIVE_MEDIUM_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	display_flags = 0
 
-/datum/cm_objective/document/folder/get_clue()
+/datum/cm_goals/document/folder/get_clue()
 	return SPAN_DANGER("A <font color=[display_color]><u>[color]</u></font> folder <b>[document.label]</b> in <u>[initial_area]</u>.")
 
-/datum/cm_objective/document/technical_manual
+/datum/cm_goals/document/technical_manual
 	priority = OBJECTIVE_HIGH_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	display_flags = 0
@@ -74,10 +74,10 @@
 // --------------------------------------------
 
 /obj/item/document_objective
-	var/datum/cm_objective/document/objective
+	var/datum/cm_goals/document/objective
 	var/read = 0
 	var/reading_time = 10
-	var/objective_type = /datum/cm_objective/document
+	var/objective_type = /datum/cm_goals/document
 	unacidable = TRUE
 	indestructible = 1
 	var/label // label on the document
@@ -98,7 +98,7 @@
 	if(user && user.mind)
 		user.mind.store_objective(objective)
 	var/related_labels = ""
-	for(var/datum/cm_objective/D in objective.enables_objectives)
+	for(var/datum/cm_goals/D in objective.enables_objectives)
 		to_chat(user, SPAN_NOTICE("You make out something about [D.get_clue()]."))
 		if (related_labels != "")
 			related_labels+=","
@@ -155,7 +155,7 @@
 	icon_state = "paper_p_words"
 	w_class = SIZE_TINY
 	reading_time = 60
-	objective_type = /datum/cm_objective/document/progress_report
+	objective_type = /datum/cm_goals/document/progress_report
 
 /obj/item/document_objective/report/Initialize(mapload, ...)
 	. = ..()
@@ -169,12 +169,12 @@
 	icon_state = "folder"
 	var/folder_color = "white" //display color
 	reading_time = 40
-	objective_type = /datum/cm_objective/document/folder
+	objective_type = /datum/cm_goals/document/folder
 	w_class = SIZE_TINY
 
 /obj/item/document_objective/folder/Initialize(mapload, ...)
 	. = ..()
-	var/datum/cm_objective/document/folder/F = objective
+	var/datum/cm_goals/document/folder/F = objective
 	var/col = pick("red", "black", "blue", "yellow", "white")
 	switch(col)
 		if ("red")
@@ -207,7 +207,7 @@
 	icon = 'icons/obj/items/books.dmi'
 	icon_state = "book"
 	reading_time = 200
-	objective_type = /datum/cm_objective/document/technical_manual
+	objective_type = /datum/cm_goals/document/technical_manual
 
 /obj/item/document_objective/technical_manual/Initialize(mapload, ...)
 	. = ..()

@@ -1,7 +1,7 @@
 // --------------------------------------------
 // *** Slightly more complicated data retrieval ***
 // --------------------------------------------
-/datum/cm_objective/retrieve_data
+/datum/cm_goals/retrieve_data
 	name = "Retrieve Important Data"
 	var/data_total = 100
 	var/data_retrieved = 0
@@ -12,34 +12,34 @@
 	display_category = "Data Retrieval"
 	number_of_clues_to_generate = 2
 
-/datum/cm_objective/retrieve_data/New()
+/datum/cm_goals/retrieve_data/New()
 	. = ..()
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
-/datum/cm_objective/retrieve_data/Destroy()
+/datum/cm_goals/retrieve_data/Destroy()
 	initial_location = null
 	return ..()
 
-/datum/cm_objective/retrieve_data/check_completion()
+/datum/cm_goals/retrieve_data/check_completion()
 	. = ..()
 	if(data_retrieved >= data_total)
 		complete()
 		return TRUE
 
-/datum/cm_objective/retrieve_data/process()
+/datum/cm_goals/retrieve_data/process()
 	if(..())
 		if(data_is_available())
 			data_retrieved += data_transfer_rate
 
-/datum/cm_objective/retrieve_data/proc/data_is_available()
+/datum/cm_goals/retrieve_data/proc/data_is_available()
 	if(objective_flags & OBJ_REQUIRES_COMMS)
-		if(SSobjectives.comms?.is_complete())
+		if(SSgoals.comms?.is_complete())
 			return TRUE
 		else
 			return FALSE
 	return TRUE
 
-/datum/cm_objective/retrieve_data/complete()
+/datum/cm_goals/retrieve_data/complete()
 	if(..())
 		if(intel_system)
 			intel_system.store_objective(src)
@@ -49,34 +49,34 @@
 // --------------------------------------------
 // *** Upload data from a terminal ***
 // --------------------------------------------
-/datum/cm_objective/retrieve_data/terminal
+/datum/cm_goals/retrieve_data/terminal
 	var/obj/structure/machinery/computer/objective/data_source
 	priority = OBJECTIVE_HIGH_VALUE
 	objective_flags = OBJ_FAILABLE | OBJ_REQUIRES_POWER | OBJ_REQUIRES_COMMS
 	prerequisites_required = PREREQUISITES_MAJORITY
 
-/datum/cm_objective/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
+/datum/cm_goals/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
 	. = ..()
 	data_source = D
 	initial_location = get_area(data_source)
 
-/datum/cm_objective/retrieve_data/terminal/Destroy()
+/datum/cm_goals/retrieve_data/terminal/Destroy()
 	data_source.objective = null
 	data_source = null
 	return ..()
 
-/datum/cm_objective/retrieve_data/terminal/get_related_label()
+/datum/cm_goals/retrieve_data/terminal/get_related_label()
 	return data_source.label
 
-/datum/cm_objective/retrieve_data/terminal/complete()
+/datum/cm_goals/retrieve_data/terminal/complete()
 	if(..())
 		data_source.visible_message(SPAN_NOTICE("[data_source] pings softly as it finishes the upload."))
 		playsound(data_source, 'sound/machines/screen_output1.ogg', 25, 1)
 
-/datum/cm_objective/retrieve_data/terminal/get_clue()
+/datum/cm_goals/retrieve_data/terminal/get_clue()
 	return SPAN_DANGER("Upload data from data terminal <b>[data_source.label]</b> in <u>[get_area(data_source)]</u>, the password is <b>[decryption_password]</b>")
 
-/datum/cm_objective/retrieve_data/terminal/data_is_available()
+/datum/cm_goals/retrieve_data/terminal/data_is_available()
 	. = ..()
 	if(!data_source.powered())
 		return FALSE
@@ -86,27 +86,27 @@
 // --------------------------------------------
 // *** Retrieve a disk and upload it ***
 // --------------------------------------------
-/datum/cm_objective/retrieve_data/disk
+/datum/cm_goals/retrieve_data/disk
 	var/obj/item/disk/objective/disk
 	priority = OBJECTIVE_HIGH_VALUE
 	prerequisites_required = PREREQUISITES_ONE
 
-/datum/cm_objective/retrieve_data/disk/New(var/obj/item/disk/objective/O)
+/datum/cm_goals/retrieve_data/disk/New(var/obj/item/disk/objective/O)
 	. = ..()
 	disk = O
 	data_total = disk.data_amount
 	data_transfer_rate = disk.read_speed
 	initial_location = get_area(disk)
 
-/datum/cm_objective/retrieve_data/disk/Destroy()
+/datum/cm_goals/retrieve_data/disk/Destroy()
 	disk?.objective = null
 	disk = null
 	return ..()
 
-/datum/cm_objective/retrieve_data/disk/get_related_label()
+/datum/cm_goals/retrieve_data/disk/get_related_label()
 	return disk.label
 
-/datum/cm_objective/retrieve_data/disk/complete()
+/datum/cm_goals/retrieve_data/disk/complete()
 	if(..())
 		if(istype(disk.loc,/obj/structure/machinery/computer/disk_reader))
 			var/obj/structure/machinery/computer/disk_reader/reader = disk.loc
@@ -118,10 +118,10 @@
 		return TRUE
 	return FALSE
 
-/datum/cm_objective/retrieve_data/disk/get_clue()
+/datum/cm_goals/retrieve_data/disk/get_clue()
 	return SPAN_DANGER("Retrieving <font color=[disk.display_color]><u>[disk.disk_color]</u></font> computer disk <b>[disk.label]</b> in <u>[initial_location]</u>, decryption password is <b>[decryption_password]</b>")
 
-/datum/cm_objective/retrieve_data/disk/data_is_available()
+/datum/cm_goals/retrieve_data/disk/data_is_available()
 	. = ..()
 	if(!istype(disk.loc,/obj/structure/machinery/computer/disk_reader))
 		return FALSE
@@ -142,7 +142,7 @@
 	var/data_amount = 500
 	var/read_speed = 50
 	unacidable = TRUE
-	var/datum/cm_objective/retrieve_data/disk/objective
+	var/datum/cm_goals/retrieve_data/disk/objective
 	var/display_color = "white"
 	var/disk_color = "white"
 
@@ -176,7 +176,7 @@
 
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "[disk_color] computer disk [label]"
-	objective = new /datum/cm_objective/retrieve_data/disk(src)
+	objective = new /datum/cm_goals/retrieve_data/disk(src)
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
 	w_class = SIZE_TINY
@@ -198,13 +198,13 @@
 	icon_state = "medlaptop"
 	unslashable = TRUE
 	unacidable = TRUE
-	var/datum/cm_objective/retrieve_data/terminal/objective
+	var/datum/cm_goals/retrieve_data/terminal/objective
 
 /obj/structure/machinery/computer/objective/Initialize()
 	. = ..()
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "data terminal [label]"
-	objective = new /datum/cm_objective/retrieve_data/terminal(src)
+	objective = new /datum/cm_goals/retrieve_data/terminal(src)
 
 /obj/structure/machinery/computer/objective/Destroy()
 	objective?.data_source = null
@@ -217,7 +217,7 @@
 		to_chat(user, SPAN_WARNING("This terminal has no power!"))
 		return FALSE
 	if(objective.objective_flags & OBJ_REQUIRES_COMMS)
-		if(!SSobjectives.comms?.is_complete())
+		if(!SSgoals.comms?.is_complete())
 			to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
 			return FALSE
 	if(objective.is_complete())
@@ -235,7 +235,7 @@
 		to_chat(user, SPAN_WARNING("This terminal has no power!"))
 		return FALSE
 	if(objective.objective_flags & OBJ_REQUIRES_COMMS)
-		if(!SSobjectives.comms?.is_complete())
+		if(!SSgoals.comms?.is_complete())
 			to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
 			return FALSE
 	if(uploading)

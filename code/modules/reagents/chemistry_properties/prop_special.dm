@@ -89,7 +89,7 @@
 	SSticker.mode.get_specific_call("Weyland-Yutani PMC (Chemical Investigation Squad)", TRUE, FALSE, holder.name)
 	chemical_data.update_credits(10)
 	message_staff("The research department has discovered DNA_Disintegrating in [holder.name] adding [OBJECTIVE_ABSOLUTE_VALUE * 2] bonus DEFCON points.")
-	defcon_controller.add_rewards_points(4);
+	goals_controller.add_rewards_points(500);
 	ai_announcement("NOTICE: $20000 received from USCSS Royce and sent to assets. Shuttle inbound.")
 
 /datum/chem_property/special/ciphering

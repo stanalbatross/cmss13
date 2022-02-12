@@ -169,7 +169,7 @@
 #define STATISTICS_NICHE_DESTRUCTION_WINDOWS        "Windows Destroyed"
 
 //Multiplier for turning points into cash
-#define DEFCON_TO_MONEY_MULTIPLIER 10000
+#define GOALS_TO_MONEY_MULTIPLIER 10000
 #define SUPPLY_TO_MONEY_MUPLTIPLIER 100
 
 //Force the config directory to be something other than "config"
