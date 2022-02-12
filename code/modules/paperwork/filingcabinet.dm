@@ -19,6 +19,8 @@
 	wrenchable = TRUE
 	var/list/allowed_types = list(/obj/item/paper, /obj/item/folder, /obj/item/clipboard, /obj/item/photo, /obj/item/paper_bundle, /obj/item/pamphlet)
 
+	var/goals_objective_spawn = TRUE
+
 /obj/structure/filingcabinet/Destroy()
 	for(var/obj/item/W in contents)
 		if(W.unacidable)
@@ -36,6 +38,18 @@
 
 /obj/structure/filingcabinet/Initialize()
 	. = ..()
+	//make sure to load landmarks for defcons
+	var/turf/T = get_turf(src)
+	if(goals_objective_spawn && is_ground_level(T.z))
+		if(prob(50))//make sure not all closets have defcon things
+			if(prob(goals_controller.close_obj_prob))
+				new /obj/effect/landmark/objective_landmark/close(loc)
+			else if(prob(goals_controller.medium_obj_prob))
+				new /obj/effect/landmark/objective_landmark/medium(loc)
+			else if(prob(goals_controller.far_obj_prob))
+				new /obj/effect/landmark/objective_landmark/far(loc)
+			else if(prob(goals_controller.science_obj_prob))
+				new /obj/effect/landmark/objective_landmark/science(loc)
 	for(var/obj/item/I in loc)
 		for(var/allowed_type in allowed_types)
 			if(istype(I, allowed_type))

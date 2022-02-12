@@ -1,7 +1,6 @@
 //Surface structures are structures that can have items placed on them
 /obj/structure/surface
 	health = 100
-	var/defcon_objective_spawn = TRUE
 	var/list/update_types = list(
 		/obj/item/reagent_container/glass,
 		/obj/item/storage,
@@ -12,11 +11,13 @@
 		/obj/item/device/radio/intercom
 	)
 
+	var/goals_objective_spawn = TRUE
+
 /obj/structure/surface/Initialize(mapload)
 	. = ..()
 	//make sure to load landmarks for defcons
 	var/turf/T = get_turf(src)
-	if(defcon_objective_spawn && is_ground_level(T.z))
+	if(goals_objective_spawn && is_ground_level(T.z))
 		if(prob(50))//make sure not all tables have defcon things
 			if(prob(goals_controller.close_obj_prob))
 				new /obj/effect/landmark/objective_landmark/close(loc)
