@@ -517,6 +517,16 @@
 /obj/structure/prop/leucanth/shadow_f,
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/arid_cractus/varient)
+"cj" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
+	dir = 10
+	},
+/obj/structure/prop/invuln/cobaltite_stalagmite{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "cn" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
@@ -1156,6 +1166,14 @@
 	},
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/cove/bulb_land)
+"eO" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_2nd,
+/obj/structure/prop/invuln/cobaltite_stalagmite{
+	dir = 4
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "eP" = (
 /obj/structure/machinery/landinglight/ds1{
 	dir = 4;
@@ -1836,11 +1854,9 @@
 /turf/open/floor/cobaltite,
 /area/leucanth/exterior/jungle/grassy_matts)
 "hy" = (
-/obj/structure/prop/leucanth/shadow{
-	dir = 10
-	},
+/obj/structure/flora/bulb_ichor,
 /turf/open/floor/cobaltite,
-/area/leucanth/exterior/cove/bulb_land)
+/area/leucanth/exterior/ichor/stigma)
 "hA" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_3rd{
 	dir = 4
@@ -7620,11 +7636,9 @@
 	},
 /area/leucanth/exterior/cove/bulb_land)
 "Gm" = (
-/obj/structure/prop/leucanth/shadow{
-	dir = 8
-	},
+/obj/structure/flora/bulbvines,
 /turf/open/floor/cobaltite,
-/area/leucanth/exterior/cove/bulb_land)
+/area/leucanth/exterior/ichor/stigma)
 "Gp" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
 /turf/open/cobaltite_wall/cave_top,
@@ -8336,6 +8350,12 @@
 "Ju" = (
 /turf/open/cobaltite_wall/top,
 /area/leucanth/exterior/w_caves)
+"Jv" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd,
+/obj/structure/prop/invuln/cobaltite_stalagmite/big,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "Jx" = (
 /obj/effect/glamour/overhanging_rockledge/cobaltite_cove_3rd{
 	dir = 1
@@ -10505,6 +10525,14 @@
 	},
 /turf/open/cobaltite_wall/cave_top,
 /area/leucanth/exterior/cove/bulb_land)
+"Sx" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/obj/structure/prop/invuln/cobaltite_stalagmite{
+	dir = 8
+	},
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "Sy" = (
 /obj/structure/prop/leucanth/shadow_f,
 /obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
@@ -10746,6 +10774,12 @@
 	dir = 10
 	},
 /area/leucanth/exterior/cove/arid_cractus)
+"TA" = (
+/obj/structure/prop/leucanth/shadow_f,
+/obj/effect/glamour/overhanging_rockledge/cobaltite_wall_surface,
+/obj/structure/prop/invuln/cobaltite_stalagmite,
+/turf/open/floor/cobaltite,
+/area/leucanth/exterior/cove/fungal_flats)
 "TB" = (
 /turf/open/cobaltite_wall/cave_base{
 	dir = 1
@@ -24645,7 +24679,7 @@ hN
 hN
 hN
 hN
-hN
+hw
 hN
 hN
 AV
@@ -24848,8 +24882,8 @@ hN
 hN
 hN
 hN
+hw
 hN
-hN
 AV
 AV
 rt
@@ -24879,7 +24913,7 @@ mp
 mp
 mp
 mp
-hN
+hw
 hN
 Wa
 Fg
@@ -25082,7 +25116,7 @@ mp
 mp
 mp
 hN
-hN
+hw
 Wa
 Fg
 qI
@@ -25878,7 +25912,7 @@ AV
 AV
 tQ
 tQ
-tQ
+Gm
 tQ
 tQ
 mp
@@ -26079,8 +26113,8 @@ uW
 uW
 tQ
 tQ
-tQ
-tQ
+hy
+Gm
 tQ
 MP
 MP
@@ -26281,7 +26315,7 @@ uW
 uW
 tQ
 tQ
-tQ
+Gm
 tQ
 MP
 MP
@@ -26524,7 +26558,7 @@ Rp
 gY
 eK
 pJ
-hN
+hw
 hN
 hN
 hN
@@ -26727,7 +26761,7 @@ qw
 gY
 eK
 pJ
-hN
+hw
 hN
 hN
 hN
@@ -27331,8 +27365,8 @@ kU
 kU
 kU
 IB
-nD
-nD
+kC
+ZF
 qr
 UP
 bD
@@ -27535,7 +27569,7 @@ kU
 IB
 IB
 nD
-nD
+kC
 qr
 WO
 ps
@@ -27759,8 +27793,8 @@ jR
 th
 qh
 bp
-rf
-Xk
+Jv
+eO
 qz
 aL
 aL
@@ -28364,9 +28398,9 @@ nD
 qr
 sY
 Xs
-BQ
+TA
 Um
-Kb
+cj
 IW
 Hk
 aL
@@ -28568,7 +28602,7 @@ MZ
 zD
 BQ
 BQ
-rf
+Jv
 Xk
 qz
 aL
@@ -29174,7 +29208,7 @@ nD
 kC
 MZ
 zD
-BQ
+Sx
 GP
 bh
 bL
@@ -32586,8 +32620,8 @@ Nl
 Ni
 tD
 DW
-Gm
-hy
+UA
+EM
 Xu
 Xu
 Xu
@@ -32791,8 +32825,8 @@ GU
 Oa
 dY
 DW
-Gm
-hy
+UA
+EM
 nD
 Xu
 Xu

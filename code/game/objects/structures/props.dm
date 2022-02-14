@@ -801,6 +801,13 @@
 	layer = ABOVE_MOB_LAYER
 	density = 0
 
+/obj/structure/prop/invuln/cobaltite_stalagmite
+	name = "stalagmite"
+	desc = "A very mighty stalag."
+	icon = 'icons/obj/structures/props/leucanth.dmi'
+	icon_state = "stalagmite"
+	density = 0
+	layer = BELOW_MOB_LAYER
 /obj/structure/prop/wooden_cross
 	name = "wooden cross"
 	desc = "A wooden grave marker. Is it more respectful because someone made it by hand, or less, because it's crude and misshapen?"
@@ -810,6 +817,16 @@
 	health = 30
 	var/inscription
 	var/obj/item/helmet
+
+/obj/structure/prop/invuln/cobaltite_stalagmite/big
+	icon_state = "stalagmite_big_1"
+	var/icon_tag = "stalagmite_big"
+	var/variations = 3
+	density = TRUE
+
+/obj/structure/prop/invuln/cobaltite_stalagmite/big/Initialize()
+	. = ..()
+	icon_state = "[icon_tag]_[rand(1,variations)]"
 
 /obj/structure/prop/wooden_cross/Destroy()
 	if(helmet)

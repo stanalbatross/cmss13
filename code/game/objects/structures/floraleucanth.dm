@@ -21,8 +21,8 @@
 
 /obj/structure/flora/bulb_ichor/bullet_act(obj/item/projectile/P)
 	. = ..()
-	if(P.damage_type == BRUTE) //bad code
-		Destroy()
+	//if(P.damage_type == BRUTE) //bad code
+	//	Destroy()
 
 /obj/structure/flora/bulb_ichor/Destroy()
 	playsound(src.loc, "sound/effects/splat.ogg", 25)
@@ -32,13 +32,14 @@
 	..()
 
 /obj/structure/flora/bulb_ichor/proc/splash()
-	for(var/i = 1, i <= splash_size, i++)
+	/*for(var/i = 1, i <= splash_size, i++)
 		var/obj/item/projectile/P = new /obj/item/projectile(src.loc, create_cause_data(name))
 		var/datum/ammo/ammoDatum = GLOB.ammo_list[splash_ammo]
 		P.generate_bullet(ammoDatum)
 		P.permutated += src
 		var/list/targets = range(rand(2,5), src.loc)
-		P.fire_at(targets[rand(1,length(targets))], src, src, ammoDatum.max_range, ammoDatum.shell_speed)
+		P.fire_at(targets[rand(1,length(targets))], src, src, ammoDatum.max_range, ammoDatum.shell_speed) */
+
 
 /obj/structure/flora/bulb_ichor/medium
 	icon_tag = "bulb_M"
@@ -53,6 +54,16 @@
 	icon_state = "bulb_L_1"
 	variations = 3
 	splash_size = 6
+
+/obj/effect/ichor_splash
+	name = "ichors"
+	desc = "Its a strange amber liquid, it smells acrid and earthy. Seems dangerous."
+	icon_state = "acid_normal"
+	density = 0
+	opacity = 0
+	anchored = 1
+	unacidable = TRUE
+	var/ticks = 0
 
 //----------------------------ICHOR BULB VINES---------------------------------
 
