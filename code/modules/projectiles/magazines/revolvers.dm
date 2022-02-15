@@ -46,6 +46,13 @@
 	default_ammo = /datum/ammo/bullet/revolver/cluster
 	icon_state = "m44_cluster"
 
+/obj/item/ammo_magazine/revolver/pkd
+	name = "\improper PKD speed loader (.44)"
+	desc = "A chunky 14 round speed loader. Excessive AND silly."
+	icon_state = "pkd_44"
+	max_rounds = 14
+	caliber = ".44 sabot"
+
 /obj/item/ammo_magazine/revolver/upp
 	name = "\improper N-Y speed loader (7.62x38mmR)"
 	default_ammo = /datum/ammo/bullet/revolver/nagant
@@ -90,7 +97,7 @@
 	desc = "A formidable .454 speedloader, made exclusively for the Mateba autorevolver. Packs a devastating punch. This high impact variant is optimized for anti-personnel. Don't fire this at anyone you want to stay alive."
 	default_ammo = /datum/ammo/bullet/revolver/mateba/highimpact
 	icon_state = "matebaE"
-	
+
 /obj/item/ammo_magazine/revolver/mateba/highimpact/explosive
 	name = "\improper Mateba explosive speed loader (.454)"
 	desc = "A formidable .454 speedloader, made exclusively for the Mateba autorevolver. There's an impact charge built into the bullet tip. Firing this at anything will result in a powerful explosion. Use with EXTREME caution."
@@ -123,6 +130,10 @@
 	caliber = ".44"
 	max_rounds = 7
 	gun_type = /obj/item/weapon/gun/revolver/m44
+
+/obj/item/ammo_magazine/internal/revolver/m44/pkd
+	max_rounds = 8
+	caliber = ".44 sabot"
 
 /obj/item/ammo_magazine/internal/revolver/m44/marksman
 	default_ammo = /datum/ammo/bullet/revolver/marksman //because the starting m44 custom revolver belt is full of marksman ammo, but your gun would have normal ammo loaded
