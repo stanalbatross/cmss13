@@ -17,14 +17,6 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_job)
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/entity_link/player_to_job_stat
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic/job
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "job"
-
 /datum/view_record/job
 	var/player_id
 	var/job
@@ -65,6 +57,12 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_job)
 		S.save() // save it
 		return // we are done here
 
+	if(result_length >= 2)
+		while(result_length == 1)
+			var/datum/entity/statistic/job/S = stats[2]
+			S.delete()
+			result_length--
+
 	var/datum/entity/statistic/job/S = stats[1] // we ensured this is the only item
 	S.value += value // add the thing
 	S.save() // say we wanna save it
@@ -99,10 +97,3 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_job)
 		if(causes["[stat_entity.cause_name]"] > nemesis.value)
 			nemesis.name = stat_entity.cause_name
 			nemesis.value = causes["[stat_entity.cause_name]"]
-
-/datum/entity/player_stats/job/proc/get_kills()
-	for(var/statistics in statistic)
-		var/datum/entity/statistic/stat_entity = statistic[statistics]
-		if(stat_entity.name != "total_kills")
-			continue
-		total_kills = stat_entity.value

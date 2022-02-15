@@ -62,14 +62,6 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
         "z" = DB_FIELDTYPE_INT
     )
 
-/datum/entity_link/player_to_statistic_death
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic/death
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "death"
-
 /datum/view_record/statistic_death
 	var/player_id
 	var/round_id

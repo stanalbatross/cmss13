@@ -15,14 +15,6 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/entity_link/player_to_xeno_stat
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic/xeno
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "xeno"
-
 /datum/view_record/xeno
 	var/player_id
 	var/name
@@ -58,6 +50,12 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
 		S.player_id = player_id
 		S.save() // save it
 		return // we are done here
+
+	if(result_length >= 2)
+		while(result_length == 1)
+			var/datum/entity/statistic/xeno/S = stats[2]
+			S.delete()
+			result_length--
 
 	var/datum/entity/statistic/xeno/S = stats[1] // we ensured this is the only item
 	S.value += value // add the thing
@@ -132,6 +130,7 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_xeno)
 	for(var/statistics in caste_stats_list)
 		var/datum/entity/player_stats/caste/stat_entity = caste_stats_list[statistics]
 		stat_entity.get_recalculate()
+		stat_entity.get_kills()
 		if(!top_caste)
 			top_caste = stat_entity
 			continue

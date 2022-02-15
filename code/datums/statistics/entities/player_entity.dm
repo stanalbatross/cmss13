@@ -14,17 +14,6 @@
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/entity_meta/statistic/on_insert(var/datum/entity/statistic/player)
-    player.value = 0
-
-/datum/entity_link/player_to_caste
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "statistic"
-
 /datum/view_record/statistic
 	var/player_id
 	var/name

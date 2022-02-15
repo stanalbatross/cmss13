@@ -17,14 +17,6 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_weapon)
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/entity_link/player_to_weapon_stat
-    parent_entity = /datum/entity/player
-    child_entity = /datum/entity/statistic/weapon
-    child_field = "player_id"
-
-    parent_name = "player"
-    child_name = "weapon"
-
 /datum/view_record/weapon
 	var/player_id
 	var/weapon
@@ -64,6 +56,12 @@ BSQL_PROTECT_DATUM(/datum/entity_meta/statistic_weapon)
 		S.player_id = player_id
 		S.save() // save it
 		return // we are done here
+
+	if(result_length >= 2)
+		while(result_length == 1)
+			var/datum/entity/statistic/weapon/S = stats[2]
+			S.delete()
+			result_length--
 
 	var/datum/entity/statistic/weapon/S = stats[1] // we ensured this is the only item
 	S.value += value // add the thing

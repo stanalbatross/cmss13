@@ -417,6 +417,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/death/STAT in S)
 		if(!LAZYISIN(player_entity.DS, STAT))
+			STAT.sync()
 			player_entity.DS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_medals(var/list/datum/entity/statistic/medal/S)
@@ -424,6 +425,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/medal/STAT in S)
 		if(!LAZYISIN(player_entity.MS, STAT))
+			STAT.sync()
 			player_entity.MS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_human(var/list/datum/entity/statistic/human/S)
@@ -431,6 +433,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/human/STAT in S)
 		if(!LAZYISIN(player_entity.HS, STAT))
+			STAT.sync()
 			player_entity.HS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_xeno(var/list/datum/entity/statistic/xeno/S)
@@ -438,6 +441,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/xeno/STAT in S)
 		if(!LAZYISIN(player_entity.XS, STAT))
+			STAT.sync()
 			player_entity.XS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_caste(var/list/datum/entity/statistic/caste/S)
@@ -445,6 +449,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/caste/STAT in S)
 		if(!LAZYISIN(player_entity.CS, STAT))
+			STAT.sync()
 			player_entity.CS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_abilities(var/list/datum/entity/statistic/abilities/S)
@@ -452,6 +457,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/abilities/STAT in S)
 		if(!LAZYISIN(player_entity.CAS, STAT))
+			STAT.sync()
 			player_entity.CAS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_job(var/list/datum/entity/statistic/job/S)
@@ -459,6 +465,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/job/STAT in S)
 		if(!LAZYISIN(player_entity.JS, STAT))
+			STAT.sync()
 			player_entity.JS.Insert(1, STAT)
 
 /datum/entity/player/proc/statistic_load_weapon(var/list/datum/entity/statistic/weapon/S)
@@ -466,6 +473,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		return
 	for(var/datum/entity/statistic/weapon/STAT in S)
 		if(!LAZYISIN(player_entity.WS, STAT))
+			STAT.sync()
 			player_entity.WS.Insert(1, STAT)
 
 /datum/entity/player/proc/setup_entity()

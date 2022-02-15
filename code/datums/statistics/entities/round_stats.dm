@@ -15,6 +15,10 @@
 	var/total_huggers_applied = 0
 	var/total_larva_burst = 0
 
+	var/defcon_level = 5
+	var/objective_points = 0
+	var/total_objective_points = 0
+
 	var/total_projectiles_fired = 0
 	var/total_projectiles_hit = 0
 	var/total_projectiles_hit_human = 0
@@ -60,6 +64,10 @@
 
 		"total_huggers_applied" = DB_FIELDTYPE_INT,
 		"total_larva_burst" = DB_FIELDTYPE_INT,
+
+		"defcon_level" = DB_FIELDTYPE_INT,
+		"objective_points" = DB_FIELDTYPE_INT,
+		"total_objective_points" = DB_FIELDTYPE_INT,
 
 		"total_projectiles_fired" = DB_FIELDTYPE_INT,
 		"total_projectiles_hit" = DB_FIELDTYPE_INT,
@@ -285,6 +293,10 @@
 	stats += "Total shots fired: [total_projectiles_fired]\n"
 	stats += "Total friendly fire instances: [total_friendly_fire_instances]\n"
 	stats += "Total friendly fire kills: [total_friendly_fire_kills]\n"
+
+	stats += "DEFCON level: [defcon_level]\n"
+	stats += "Objective points earned: [objective_points]\n"
+	stats += "Objective points total: [total_objective_points]\n"
 
 	stats += "Marines remaining: [end_of_round_marines]\n"
 	stats += "Xenos remaining: [end_of_round_xenos]\n"
