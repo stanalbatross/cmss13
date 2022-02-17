@@ -1,13 +1,6 @@
 //for all defines that doesn't fit in any other file.
 
 
-// Droppods
-#define DROPPOD_DROPPED (1<<0)
-#define DROPPOD_DROPPING (1<<1)
-#define DROPPOD_OPEN (1<<2)
-#define DROPPOD_STRIPPED (1<<3)
-#define DROPPOD_RETURNING (1<<4)
-
 //dirt type for each turf types.
 
 #define NO_DIRT				0
