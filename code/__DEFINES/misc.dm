@@ -1,6 +1,13 @@
 //for all defines that doesn't fit in any other file.
 
 
+// Droppods
+#define DROPPOD_DROPPED (1<<0)
+#define DROPPOD_DROPPING (1<<1)
+#define DROPPOD_OPEN (1<<2)
+#define DROPPOD_STRIPPED (1<<3)
+#define DROPPOD_RETURNING (1<<4)
+
 //dirt type for each turf types.
 
 #define NO_DIRT				0
@@ -119,88 +126,13 @@
 #define ASSEMBLY_UNLOCKED	1
 #define ASSEMBLY_LOCKED		2
 
-// Statistics defines
-#define STATISTIC_XENO "xeno"
-#define STATISTIC_HUMAN "human"
-
-#define STATISTICS_DEATH_LIST_LEN 20
-#define STATISTICS_KILL_LIST_LEN 10
-
-#define STATISTICS_FF_SHOT_HIT			"FF Shot Hit"
-#define STATISTICS_SHOT_HIT				"Shot Hit"
-#define STATISTICS_SHOT					"Shot"
-#define STATISTICS_SCREAM				"Scream"
-#define STATISTICS_HIT					"Hit"
-#define STATISTICS_FF_HIT				"FF Hit"
-#define STATISTICS_SLASH				"Slash"
-#define STATISTICS_REVIVE				"Revive"
-#define STATISTICS_REVIVED				"Revived"
-#define STATISTICS_STEPS_WALKED			"Steps"
-#define STATISTICS_KILL					"Kill"
-#define STATISTICS_DEATH				"Death"
-#define STATISTICS_KILL_FF				"Kill FF"
-#define STATISTICS_DEATH_FF				"Death FF"
-#define STATISTICS_ROUNDS_PLAYED		"Rounds Played"
-#define STATISTICS_ABILITES				"Abilites"
-#define STATISTICS_NICHES				"Niche"
-#define STATISTICS_NOT_NICHES			"Not Niche"
-
-#define STATISTICS_EXECUTION			"Executions Made"
-#define STATISTICS_MEDALS				"Medals Received"
-#define STATISTICS_MEDALS_GIVE			"Medals Given"
-#define STATISTICS_SHOCK				"Times Shocked"
-#define STATISTICS_GRENADES				"Grenades Thrown"
-#define STATISTICS_FLIGHT				"Flights Piloted"
-#define STATISTICS_HANDCUFF				"Handcuffs Applied"
-#define STATISTICS_PILLS				"Pills Fed"
-#define STATISTICS_DISCHARGE			"Accidental Discharges"
-#define STATISTICS_FULTON				"Fultons Deployed"
-#define STATISTICS_DISK					"Disks Decrypted"
-#define STATISTICS_UPLOAD				"Data Uploaded"
-#define STATISTICS_CHEMS				"Chemicals Discovered"
-#define STATISTICS_CRATES				"Supplies Airdropped"
-#define STATISTICS_OB					"Bombardments Fired"
-
-#define STATISTICS_CADES				"Barricades Built"
-#define STATISTICS_UPGRADE_CADES		"Barricades Upgraded"
-#define STATISTICS_REPAIR_CADES			"Barricades Repaired"
-#define STATISTICS_REPAIR_GENERATOR		"Generators Repaired"
-#define STATISTICS_REPAIR_APC			"APCs Repaired"
-#define STATISTICS_DEFENSES_BUILT		"Defenses Built"
-
-#define STATISTICS_CORGI				"Corgis Murdered"
-#define STATISTICS_CAT					"Cats Murdered"
-#define STATISTICS_COW					"Cows Murdered"
-#define STATISTICS_CHICKEN				"Chickens Murdered"
-
-#define STATISTICS_SURGERY_BONES		"Bones Mended"
-#define STATISTICS_SURGERY_IB			"Internal Bleedings Stopped"
-#define STATISTICS_SURGERY_BRAIN		"Brains Mended"
-#define STATISTICS_SURGERY_EYE			"Eyes Mended"
-#define STATISTICS_SURGERY_LARVA		"Larvae Removed"
-#define STATISTICS_SURGERY_SHRAPNEL		"Shrapnel Removed"
-#define STATISTICS_SURGERY_AMPUTATE		"Limbs Amputated"
-#define STATISTICS_SURGERY_ORGAN_REPAIR	"Organs Repaired"
-#define STATISTICS_SURGERY_ORGAN_ATTACH	"Organs Implanted"
-#define STATISTICS_SURGERY_ORGAN_REMOVE	"Organs Harvested"
-
-#define STATISTICS_DESTRUCTION_WALLS	"Walls Destroyed"
-#define STATISTICS_DESTRUCTION_DOORS	"Doors Destroyed"
-#define STATISTICS_DESTRUCTION_WINDOWS	"Windows Destroyed"
-
 //Multiplier for turning points into cash
-#define DEFCON_TO_MONEY_MULTIPLIER 10000
-#define SUPPLY_TO_MONEY_MUPLTIPLIER 100
+#define DEFCON_TO_MONEY_MULTIPLIER 20000
+#define SUPPLY_TO_MONEY_MUPLTIPLIER 200
 
 //Force the config directory to be something other than "config"
 #define OVERRIDE_CONFIG_DIRECTORY_PARAMETER "config-directory"
 
-//Gun categories, currently used for firing while dualwielding.
-#define GUN_CATEGORY_HANDGUN 1
-#define GUN_CATEGORY_SMG 2
-#define GUN_CATEGORY_RIFLE 3
-#define GUN_CATEGORY_SHOTGUN 4
-#define GUN_CATEGORY_HEAVY 5
 
 /**
  * Get the ultimate area of `A`, similarly to [get_turf].

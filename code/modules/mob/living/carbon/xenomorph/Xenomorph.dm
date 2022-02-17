@@ -178,6 +178,7 @@
 	var/attack_speed_modifier = 0
 	var/armor_integrity_modifier = 0
 
+
 	//////////////////////////////////////////////////////////////////
 	//
 	//		Intrinsic State - well-ish modularized
@@ -692,9 +693,6 @@
 	return pull_multiplier
 
 /mob/living/carbon/Xenomorph/proc/set_faction(var/new_faction = FACTION_XENOMORPH)
-	if(round_statistics && !statistic_exempt)
-		round_statistics.track_new_participant(faction, -1)
-		round_statistics.track_new_participant(new_faction, 1)
 	faction = new_faction
 
 //Call this function to set the hive and do other cleanup

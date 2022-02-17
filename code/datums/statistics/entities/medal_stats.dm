@@ -1,5 +1,4 @@
 /datum/entity/statistic/medal
-	var/player_id
 	var/round_id
 
 	var/medal_type

@@ -75,7 +75,7 @@
 		if(H.top_weapon)
 			var/list/top_weapon_statistic_list = list()
 			for(var/iteration in H.top_weapon.statistic)
-				var/datum/entity/statistic/weapon/S = H.top_weapon.statistic[iteration]
+				var/datum/entity/statistic/human/S = H.top_weapon.statistic[iteration]
 				top_weapon_statistic_list += list(list("name" = S.name, "value" = S.value))
 			top_weapon = list(
 				"name" = sanitize(H.top_weapon.name),
@@ -83,7 +83,7 @@
 			)
 
 		for(var/iteration in H.statistic)
-			var/datum/entity/statistic/S = H.statistic[iteration]
+			var/datum/entity/statistic/human/S = H.statistic[iteration]
 			statistic_list += list(list("name" = S.name, "value" = S.value))
 
 		for(var/datum/entity/statistic/medal/M in MS)
@@ -128,7 +128,7 @@
 			var/list/weapon_statistic_list = list()
 
 			for(var/sub_iteration in S.statistic)
-				var/datum/entity/statistic/weapon/D = S.statistic[sub_iteration]
+				var/datum/entity/statistic/human/D = S.statistic[sub_iteration]
 				weapon_statistic_list += list(list("name" = D.name, "value" = D.value))
 
 			weapon_stats_list += list(list(
@@ -148,7 +148,7 @@
 				job_nemesis = list("name" = S.nemesis.name, "value" = S.nemesis.value)
 
 			for(var/sub_iteration in S.statistic)
-				var/datum/entity/statistic/job/D = S.statistic[sub_iteration]
+				var/datum/entity/statistic/human/D = S.statistic[sub_iteration]
 				job_statistic_list += list(list("name" = D.name, "value" = D.value))
 
 			for(var/datum/entity/statistic/death/SD in DS)
@@ -212,7 +212,7 @@
 		if(H.top_caste)
 			var/list/top_caste_statistic_list = list()
 			for(var/iteration in H.top_caste.statistic)
-				var/datum/entity/statistic/caste/S = H.top_caste.statistic[iteration]
+				var/datum/entity/statistic/xeno/S = H.top_caste.statistic[iteration]
 				top_caste_statistic_list += list(list("name" = S.name, "value" = S.value))
 			top_caste = list(
 				"name" = H.top_caste.name,
@@ -220,7 +220,7 @@
 			)
 
 		for(var/iteration in H.statistic)
-			var/datum/entity/statistic/S = H.statistic[iteration]
+			var/datum/entity/statistic/xeno/S = H.statistic[iteration]
 			statistic_list += list(list("name" = S.name, "value" = S.value))
 
 		for(var/datum/entity/statistic/death/SD in DS)
@@ -262,11 +262,11 @@
 				caste_nemesis = list("name" = S.nemesis.name, "value" = S.nemesis.value)
 
 			for(var/sub_iteration in S.abilities_used)
-				var/datum/entity/statistic/abilities/D = S.abilities_used[sub_iteration]
+				var/datum/entity/statistic/xeno/D = S.abilities_used[sub_iteration]
 				caste_abilities_used += list(list("name" = D.name, "value" = D.value))
 
 			for(var/sub_iteration in S.statistic)
-				var/datum/entity/statistic/caste/D = S.statistic[sub_iteration]
+				var/datum/entity/statistic/xeno/D = S.statistic[sub_iteration]
 				caste_statistic_list += list(list("name" = D.name, "value" = D.value))
 
 			for(var/datum/entity/statistic/death/SD in DS)

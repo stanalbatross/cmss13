@@ -1,5 +1,4 @@
 /datum/entity/statistic/death
-	var/player_id
 	var/round_id
 
 	var/role_name
@@ -197,16 +196,16 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 			if(cause_mob.faction != faction)
 				xeno_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL)
 			else
-				xeno_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL)
 				xeno_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL_FF)
-	if(ishuman(cause_mob))
+	else if(ishuman(cause_mob))
 		var/datum/entity/player_stats/human/human_stats = cause_mob.mind.setup_human_stats()
 		if(human_stats)
 			if(cause_mob.faction != faction)
 				human_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL)
 			else
-				human_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL)
 				human_stats.count_kill(cause_data.role, cause_name, cause_player.id, STATISTICS_KILL_FF)
+				if(round_statistics)
+					round_statistics.total_friendly_fire_kills++
 
 	if(isXeno(src))
 		var/role = get_role_name()
@@ -216,7 +215,7 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 				xeno_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH)
 			else
 				xeno_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH_FF)
-	if(ishuman(src))
+	else if(ishuman(src))
 		var/role = get_role_name()
 		var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
 		if(human_stats)
@@ -224,6 +223,8 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 				human_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH)
 			else
 				human_stats.count_death(role, cause_name, player_entity.id, STATISTICS_DEATH_FF)
+				if(round_statistics)
+					round_statistics.total_friendly_fire_kills++
 
 	Dlog.save()
 	Dlog.detach()
