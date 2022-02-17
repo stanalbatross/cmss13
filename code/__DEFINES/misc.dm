@@ -1,13 +1,6 @@
 //for all defines that doesn't fit in any other file.
 
 
-// Droppods
-#define DROPPOD_DROPPED (1<<0)
-#define DROPPOD_DROPPING (1<<1)
-#define DROPPOD_OPEN (1<<2)
-#define DROPPOD_STRIPPED (1<<3)
-#define DROPPOD_RETURNING (1<<4)
-
 //dirt type for each turf types.
 
 #define NO_DIRT				0
@@ -127,12 +120,18 @@
 #define ASSEMBLY_LOCKED		2
 
 //Multiplier for turning points into cash
-#define DEFCON_TO_MONEY_MULTIPLIER 20000
-#define SUPPLY_TO_MONEY_MUPLTIPLIER 200
+#define DEFCON_TO_MONEY_MULTIPLIER 10000
+#define SUPPLY_TO_MONEY_MUPLTIPLIER 100
 
 //Force the config directory to be something other than "config"
 #define OVERRIDE_CONFIG_DIRECTORY_PARAMETER "config-directory"
 
+//Gun categories, currently used for firing while dualwielding.
+#define GUN_CATEGORY_HANDGUN 1
+#define GUN_CATEGORY_SMG 2
+#define GUN_CATEGORY_RIFLE 3
+#define GUN_CATEGORY_SHOTGUN 4
+#define GUN_CATEGORY_HEAVY 5
 
 /**
  * Get the ultimate area of `A`, similarly to [get_turf].
