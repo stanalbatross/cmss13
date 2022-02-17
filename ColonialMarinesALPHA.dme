@@ -75,6 +75,7 @@
 #include "code\__DEFINES\skills.dm"
 #include "code\__DEFINES\sounds.dm"
 #include "code\__DEFINES\stamina.dm"
+#include "code\__DEFINES\statistic.dm"
 #include "code\__DEFINES\STUI.dm"
 #include "code\__DEFINES\subsystem.dm"
 #include "code\__DEFINES\surgery.dm"
