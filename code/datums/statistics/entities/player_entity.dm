@@ -27,28 +27,7 @@
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/view_record/statistic_human
-	var/player_id
-	var/type_s
-	var/name
-	var/second_name
-	var/value
-
-/datum/entity_view_meta/statistic_human_ordered
-    root_record_type = /datum/entity/statistic/human
-    destination_entity = /datum/view_record/statistic_human
-    fields = list(
-        "player_id",
-        "type_s",
-        "name",
-        "second_name",
-        "value"
-    )
-    order_by = list("player_id" = DB_ORDER_BY_DESC)
-
-
 //TRACK
-
 /proc/track_statistic_human_earned(type_s, name, second_name, value, player_id)
 	if(!player_id || !type_s || !name)
 		return
@@ -73,7 +52,7 @@
 		return // we are done here
 
 	if(result_length >= 2)
-		while(result_length == 1)
+		while(result_length != 1)
 			var/datum/entity/statistic/human/S = stats[2]
 			S.delete()
 			result_length--
@@ -100,28 +79,7 @@
         "value" = DB_FIELDTYPE_INT
     )
 
-/datum/view_record/statistic_xeno
-	var/player_id
-	var/type_s
-	var/name
-	var/second_name
-	var/value
-
-/datum/entity_view_meta/statistic_xeno_ordered
-    root_record_type = /datum/entity/statistic/xeno
-    destination_entity = /datum/view_record/statistic_xeno
-    fields = list(
-        "player_id",
-        "type_s",
-        "name",
-        "second_name",
-        "value"
-    )
-    order_by = list("player_id" = DB_ORDER_BY_DESC)
-
-
 //TRACK
-
 /proc/track_statistic_xeno_earned(type_s, name, second_name, value, player_id)
 	if(!player_id || !type_s || !name)
 		return
@@ -146,7 +104,7 @@
 		return // we are done here
 
 	if(result_length >= 2)
-		while(result_length == 1)
+		while(result_length != 1)
 			var/datum/entity/statistic/xeno/S = stats[2]
 			S.delete()
 			result_length--
