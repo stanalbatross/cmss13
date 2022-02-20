@@ -7,7 +7,6 @@
 #define STATISTIC_TYPE_HUMAN_WEAPON			"human_weapon"
 
 #define STATISTICS_DEATH_LIST_LEN 20
-#define STATISTICS_KILL_LIST_LEN 10
 
 #define STATISTICS_FF_SHOT_HIT			"FF Shot Hit"
 #define STATISTICS_SHOT_HIT				"Shot Hit"
@@ -41,11 +40,18 @@
 #define STATISTICS_CHEMS				"Chemicals Discovered"
 #define STATISTICS_CRATES				"Supplies Airdropped"
 #define STATISTICS_OB					"Bombardments Fired"
+#define STATISTICS_AMMO_CONVERTED		"Ammo Converted"
+#define STATISTICS_IMPLANTS_IMPLANTED	"Implants Implanted"
+#define STATISTICS_REVIVED_BY_IMPLANT	"Revive Implant Saved Lifes"
+#define STATISTICS_SD_ACTIVATION		"SD Activated"
+#define STATISTICS_SACRIFICE			"Sacrificed"
+#define STATISTICS_ESCAPE				"Escaped"
 
 #define STATISTICS_CADES				"Barricades Built"
 #define STATISTICS_UPGRADE_CADES		"Barricades Upgraded"
 #define STATISTICS_REPAIR_CADES			"Barricades Repaired"
 #define STATISTICS_REPAIR_GENERATOR		"Generators Repaired"
+#define STATISTICS_UPGRADE_TURRETS		"Defenses Upgraded"
 #define STATISTICS_REPAIR_APC			"APCs Repaired"
 #define STATISTICS_DEFENSES_BUILT		"Defenses Built"
 
