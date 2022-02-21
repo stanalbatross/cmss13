@@ -1,8 +1,13 @@
 var/global/datum/controller/subsystem/evacuation/EvacuationAuthority //This is initited elsewhere so that the world has a chance to load in.
 
+GLOBAL_LIST_EMPTY(dest_rods)
+
 SUBSYSTEM_DEF(evacuation)
-	name = "Evacuation"
-	flags = SS_NO_INIT|SS_TICKER
+	name          = "Evacuation"
+	wait          = 30 SECONDS
+	init_order    = SS_INIT_EVAC
+	priority	  = SS_PRIORITY_EVAC
+	flags		  = SS_BACKGROUND
 
 	var/evac_time	//Time the evacuation was initiated.
 	var/evac_status = EVACUATION_STATUS_STANDING_BY //What it's doing now? It can be standing by, getting ready to launch, or finished.
@@ -14,7 +19,27 @@ SUBSYSTEM_DEF(evacuation)
 	var/dest_status = NUKE_EXPLOSION_INACTIVE
 	var/dest_started_at = 0
 
+	var/lifesigns = 0
+
 	var/flags_scuttle = NO_FLAGS
+
+	var/status
+
+/datum/controller/subsystem/evacuation/fire(resumed = FALSE)
+	if(evac_status == EVACUATION_STATUS_INITIATING) //If it's not departing, no need to process.
+		if(world.time >= evac_time + EVACUATION_AUTOMATIC_DEPARTURE)
+			begin_launch()
+
+	if(dest_master && dest_master.loc && dest_master.active_state == SELF_DESTRUCT_MACHINE_ARMED && dest_status == NUKE_EXPLOSION_ACTIVE && dest_index <= dest_rods.len)
+		var/obj/structure/machinery/self_destruct/rod/I = dest_rods[dest_index]
+		if(world.time >= dest_cooldown + I.activate_time)
+			I.lock_or_unlock() //Unlock it.
+			if(++dest_index <= dest_rods.len)
+				I = dest_rods[dest_index]//Start the next sequence.
+				I.activate_time = world.time
+
+	if(MC_TICK_CHECK)
+		return
 
 /datum/controller/subsystem/evacuation/proc/prepare()
 	dest_master = locate()
@@ -22,13 +47,13 @@ SUBSYSTEM_DEF(evacuation)
 		log_debug("ERROR CODE SD1: could not find master self-destruct console")
 		to_world(SPAN_DEBUG("ERROR CODE SD1: could not find master self-destruct console"))
 		return FALSE
-	dest_rods = new
-	for(var/obj/structure/machinery/self_destruct/rod/I in dest_master.loc.loc) dest_rods += I
+	if(!dest_rods)
+		dest_rods = new
+		for(var/obj/structure/machinery/self_destruct/rod/I in GLOB.dest_rods)
+			dest_rods += I
 	if(!dest_rods.len)
 		log_debug("ERROR CODE SD2: could not find any self destruct rods")
 		to_world(SPAN_DEBUG("ERROR CODE SD2: could not find any self destruct rods"))
-		qdel(dest_master)
-		dest_master = null
 		return FALSE
 	dest_cooldown = SELF_DESTRUCT_ROD_STARTUP_TIME / dest_rods.len
 	dest_master.desc = "he main operating panel for a self-destruct system. It requires very little user input, but the final safety mechanism is manually unlocked.\nAfter the initial start-up sequence, [dest_rods.len] control rods must be armed, followed by manually flipping the detonation switch."
@@ -52,7 +77,6 @@ SUBSYSTEM_DEF(evacuation)
 				SD.set_picture("evac")
 		activate_escape()
 		activate_lifeboats()
-		process_evacuation()
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/cancel_evacuation() //Cancels the evac procedure. Useful if admins do not want the marines leaving.
@@ -83,11 +107,9 @@ SUBSYSTEM_DEF(evacuation)
 
 			enable_self_destruct()
 
-			var/lifesigns = 0
 			for(var/obj/docking_port/stationary/escape_pod_dock/ED in GLOB.escape_almayer_docks)
 				var/obj/docking_port/mobile/escape_pod/E = ED.get_docked()
 				if(E && E.evacuation_program.dock_state != ESCAPE_STATE_BROKEN)
-					lifesigns += E.survivors
 					E.prepare_for_launch() //May or may not launch, will do everything on its own.
 					sleep(5 SECONDS) //Sleeps 5 seconds each launch.
 
@@ -108,13 +130,6 @@ SUBSYSTEM_DEF(evacuation)
 
 		return TRUE
 
-
-/datum/controller/subsystem/evacuation/proc/process_evacuation() //Process the timer.
-	set background = 1
-
-	spawn while(evac_status == EVACUATION_STATUS_INITIATING) //If it's not departing, no need to process.
-		if(world.time >= evac_time + EVACUATION_AUTOMATIC_DEPARTURE) begin_launch()
-		sleep(10) //One second.
 
 /datum/controller/subsystem/evacuation/proc/get_status_panel_eta()
 	switch(evac_status)
@@ -282,7 +297,7 @@ SUBSYSTEM_DEF(evacuation)
 				to_world(SPAN_ROUNDBODY("Resetting in 30 seconds!"))
 				sleep(300)
 				log_game("Rebooting due to nuclear detonation.")
-				world.Reboot()
+				world.Reboot(SSticker.graceful)
 			return TRUE
 
 /datum/controller/subsystem/evacuation/proc/process_self_destruct()
@@ -400,10 +415,13 @@ SUBSYSTEM_DEF(evacuation)
 	layer = BELOW_OBJ_LAYER
 	var/activate_time
 
+/obj/structure/machinery/self_destruct/rod/Initialize(mapload, ...)
+	. = ..()
+	GLOB.dest_rods += src
+
 /obj/structure/machinery/self_destruct/rod/Destroy()
 	. = ..()
-	if(EvacuationAuthority && EvacuationAuthority.dest_rods)
-		EvacuationAuthority.dest_rods -= src
+	GLOB.dest_rods -= src
 
 /obj/structure/machinery/self_destruct/rod
 	lock_or_unlock(lock)

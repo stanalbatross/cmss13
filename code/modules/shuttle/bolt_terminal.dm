@@ -44,6 +44,9 @@
 			sis_panel = M
 			break
 
+/obj/structure/machinery/bolt_control/ex_act(severity)
+	return FALSE
+
 /obj/structure/machinery/bolt_control/target/update_icon()
 	. = ..()
 
@@ -139,6 +142,10 @@
 	operator.Stun(2)
 	shake_camera(operator, 15, 1,2)
 
+//	operator.count_statistic_stat(STATISTICS_SACRIFICE)
+//	if(sis_panel.operator)
+//		sis_panel.operator.count_statistic_stat(STATISTICS_SACRIFICE) MAKE SURE COMMIT AFTER STATISTIC DB REFACTOR MERGED!!!
+
 	detonate_animation()//launch proc here
 	var/obj/docking_port/mobile/lifeboat/L = SSshuttle.getShuttle(id)
 	if(!istype(L))
@@ -212,6 +219,9 @@
 				M.sis_panel = src
 				sis_target = M
 				break
+
+/obj/structure/machinery/bolt_control/panel/ex_act(severity)
+	return FALSE
 
 /obj/structure/machinery/bolt_control/panel/attack_hand(var/mob/user)
 	if(..() || stage != BOLT_TERMINAL_UNLOCKED)

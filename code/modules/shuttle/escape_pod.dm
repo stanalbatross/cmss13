@@ -43,7 +43,9 @@
 			if(!T || is_mainship_level(T.z))
 				continue
 			survivors++
+//			M.count_statistic_stat(STATISTICS_ESCAPE) MAKE SURE COMMIT AFTER STATISTIC DB REFACTOR MERGED!!!
 			to_chat(M, "<br><br>[SPAN_CENTERBOLD("<big>You have successfully left the [MAIN_SHIP_NAME]. You may now ghost and observe the rest of the round.</big>")]<br>")
+	EvacuationAuthority.lifesigns += survivors
 	return TRUE
 
 /obj/docking_port/mobile/escape_pod/Initialize(mapload)
