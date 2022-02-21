@@ -559,9 +559,9 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	movement_compensation = SLOWDOWN_ARMOR_MEDIUM
 
 /obj/item/clothing/suit/storage/marine/bio
-	name = "\improper M3-B pattern enviromental armor"
+	name = "\improper M3-EV pattern enviromental armor"
 	desc = "A heavy piece of protective gear, it is built to protect the user under conditions involving hazardous chemicals."
-	specialty = "\improper M3-B pattern enviromental armor"
+	specialty = "\improper M3-EV pattern enviromental armor"
 	icon_state = "B1"
 	armor_variation = 8
 	flags_armor_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_ARMS|BODY_FLAG_LEGS
