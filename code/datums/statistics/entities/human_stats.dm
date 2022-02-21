@@ -9,9 +9,9 @@
 
 /datum/entity/player_stats/human/proc/get_recalculate()
 	for(var/datum/entity/statistic/human/N in player.JS)
-		setup_job_stats(N.second_name)
+		setup_job_stats(N.name)
 	for(var/datum/entity/statistic/human/N in player.WS)
-		setup_weapon_stats(N.second_name)
+		setup_weapon_stats(N.name)
 
 	recalculate_statistic()
 
@@ -62,7 +62,7 @@
 				NN.name = D.name
 				statistic["[D.name]"] = NN
 			var/datum/entity/statistic/human/NNN = statistic["[D.name]"]
-			NNN.value = D.value
+			NNN.value += D.value
 
 /mob/living/carbon/human/track_death_calculations()
 	if(statistic_exempt || statistic_tracked || !mind || !mind.player_entity)

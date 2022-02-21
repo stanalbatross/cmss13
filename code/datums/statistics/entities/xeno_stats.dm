@@ -42,7 +42,7 @@
 				NN.name = D.name
 				statistic["[D.name]"] = NN
 			var/datum/entity/statistic/xeno/NNN = statistic["[D.name]"]
-			NNN.value = D.value
+			NNN.value += D.value
 
 //*****************
 //Mob Procs - minor

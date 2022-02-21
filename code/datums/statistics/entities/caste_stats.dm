@@ -15,10 +15,10 @@
 	for(var/datum/entity/statistic/xeno/N in player.CAS)
 		if(N.name == name)
 			if(!abilities_used["[N.second_name]"])
-				var/datum/entity/statistic/NN = new()
+				var/datum/entity/statistic/xeno/NN = new()
 				NN.name = N.second_name
 				abilities_used["[N.second_name]"] = NN
-			var/datum/entity/statistic/NNN = abilities_used["[N.second_name]"]
+			var/datum/entity/statistic/xeno/NNN = abilities_used["[N.second_name]"]
 			NNN.value = N.value
 
 /datum/entity/player_stats/caste/recalculate_nemesis()
@@ -37,6 +37,5 @@
 			nemesis.value = causes["[stat_entity.cause_name]"]
 
 /datum/entity/player_stats/caste/proc/get_kills()
-	for(var/statistics in statistic)
-		var/datum/entity/statistic/xeno/stat_entity = statistic["total_kills"]
-		total_kills = stat_entity.value
+	var/datum/entity/statistic/xeno/stat_entity = statistic["total_kills"]
+	total_kills = stat_entity.value
