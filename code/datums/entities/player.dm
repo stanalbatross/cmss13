@@ -374,14 +374,7 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	if(time_ban_admin_id)
 		time_ban_admin = DB_ENTITY(/datum/entity/player, time_ban_admin_id)
 
-	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
-	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
-	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO)), CALLBACK(src, /datum/entity/player.proc/statistic_load_xeno))
-	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO_CASTE)), CALLBACK(src, /datum/entity/player.proc/statistic_load_caste))
-	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO_CASTE_ABILITIES)), id), CALLBACK(src, /datum/entity/player.proc/statistic_load_abilities))
-	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN)), CALLBACK(src, /datum/entity/player.proc/statistic_load_human))
-	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN_JOB)), CALLBACK(src, /datum/entity/player.proc/statistic_load_job))
-	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN_WEAPON)), id), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
+	load_statistics()
 
 	setup_entity()
 
@@ -410,6 +403,27 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 		for(var/datum/entity/player_time/S in _stat)
 			LAZYSET(playtimes, S.role_id, S)
 
+/datum/entity/player/proc/load_statistics()
+	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
+	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
+	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO)), CALLBACK(src, /datum/entity/player.proc/statistic_load_xeno))
+	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO_CASTE)), CALLBACK(src, /datum/entity/player.proc/statistic_load_caste))
+	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO_CASTE_ABILITIES)), CALLBACK(src, /datum/entity/player.proc/statistic_load_abilities))
+	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN)), CALLBACK(src, /datum/entity/player.proc/statistic_load_human))
+	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN_JOB)), CALLBACK(src, /datum/entity/player.proc/statistic_load_job))
+	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN_WEAPON)), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
+
+	setup_entity()
+
+//DISCORD//
+/datum/entity/player/proc/load_discord(var/list/datum/entity/discord/S)
+	if(!discord)
+		return
+	for(var/datum/entity/discord/N in S)
+		N.sync()
+		N.name = owning_client.ckey
+		discord = N
+		owning_client.discord = N
 
 //STATISTIC//
 /datum/entity/player/proc/statistic_load_death(var/list/datum/entity/statistic/death/S)
