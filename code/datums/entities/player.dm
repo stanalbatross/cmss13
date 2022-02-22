@@ -376,8 +376,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 
 	load_statistics()
 
-	setup_entity()
-
 /datum/entity/player/proc/on_read_notes(var/list/datum/entity/player_note/_notes)
 	notes_loaded = TRUE
 	if(notes)
@@ -414,16 +412,6 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 	DB_FILTER(/datum/entity/statistic/human, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_HUMAN_WEAPON)), CALLBACK(src, /datum/entity/player.proc/statistic_load_weapon))
 
 	setup_entity()
-
-//DISCORD//
-/datum/entity/player/proc/load_discord(var/list/datum/entity/discord/S)
-	if(!discord)
-		return
-	for(var/datum/entity/discord/N in S)
-		N.sync()
-		N.name = owning_client.ckey
-		discord = N
-		owning_client.discord = N
 
 //STATISTIC//
 /datum/entity/player/proc/statistic_load_death(var/list/datum/entity/statistic/death/S)
