@@ -34669,6 +34669,9 @@
 	dir = 8;
 	tag = "icon-door_open (WEST)"
 	},
+/obj/structure/machinery/computer/supply_goals{
+	dir = 4
+	},
 /turf/open/floor/almayer,
 /area/almayer/command/computerlab)
 "cnS" = (

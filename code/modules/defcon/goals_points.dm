@@ -208,3 +208,54 @@ var/global/datum/controller/goals/goals_controller
 		return
 
 	chemical_data.update_credits(4*round(goals_controller.current_goals_progress*GOALS_POINT_MODIFIER, 1))
+
+
+
+
+//CONSOLE
+/obj/structure/machinery/computer/supply_goals
+	name = "supply goals control console"
+	desc = "This is used for controlling supply goals and its related functions."
+	icon_state = "comm_alt"
+	req_access = list()
+	unslashable = TRUE
+	unacidable = TRUE
+
+/obj/structure/machinery/computer/supply_goals/attack_remote(var/mob/user as mob)
+	return attack_hand(user)
+
+/obj/structure/machinery/computer/supply_goals/attack_hand(var/mob/user as mob)
+	if(..() || !allowed(user) || inoperable())
+		return
+
+	ui_interact(user)
+
+/obj/structure/machinery/computer/supply_goals/ui_interact(mob/user as mob)
+	user.set_interaction(src)
+
+	var/dat = "<head><title>Supply Goals Control Console</title></head><body>"
+
+	dat += "<BR><hr>"
+	dat += "<BR>PROGRESS [goals_controller.check_goals_percentage()]%"
+	dat += "<BR>Threat assessment level: [goals_controller.last_objectives_completion_percentage*100]%"
+	dat += "<BR>Remaining DEFCON asset budget: $[goals_controller.remaining_reward_points * GOALS_TO_MONEY_MULTIPLIER]."
+	dat += "<BR><A href='?src=\ref[src];operation=defcon'>Activate Actives</A>"
+	dat += "<BR><hr>"
+
+	dat += "<BR><A HREF='?src=\ref[user];mach_close=supply_goals_control'>Close</A>"
+
+	show_browser(user, dat, name, "supply_goals_control")
+	onclose(user, "supply_goals_control")
+
+/obj/structure/machinery/computer/supply_goals/Topic(href, href_list)
+	if(..())
+		return FALSE
+
+	usr.set_interaction(src)
+
+	switch(href_list["operation"])
+		if("defcon")
+			goals_controller.list_and_purchase_rewards()
+			return
+
+	updateUsrDialog()

@@ -9,7 +9,6 @@
 #define STATE_ALERT_LEVEL 9
 #define STATE_CONFIRM_LEVEL 10
 #define STATE_DESTROY 11
-#define STATE_DEFCONLIST 12
 
 #define COOLDOWN_COMM_MESSAGE 1 MINUTES
 #define COOLDOWN_COMM_REQUEST 5 MINUTES
@@ -85,10 +84,6 @@
 			return
 
 		if("main") state = STATE_DEFAULT
-
-		if("defcon")
-			defcon_controller.list_and_purchase_rewards()
-			return
 
 		if("login")
 			if(isRemoteControlling(usr))
@@ -462,11 +457,6 @@
 				dat += "<BR><A HREF='?src=\ref[src];operation=logout'>LOG OUT</A>"
 				dat += "<BR><A HREF='?src=\ref[src];operation=messagelist'>Message list</A>"
 				dat += "<BR><A href='?src=\ref[src];operation=mapview'>Toggle Tactical Map</A>"
-				dat += "<BR>DEFCON [defcon_controller.current_defcon_level]: [defcon_controller.check_defcon_percentage()]%"
-				dat += "<BR>Threat assessment level: [defcon_controller.last_objectives_completion_percentage*100]%"
-				dat += "<BR>Remaining DEFCON asset budget: $[defcon_controller.remaining_reward_points * DEFCON_TO_MONEY_MULTIPLIER]."
-				dat += "<BR><A href='?src=\ref[src];operation=defcon'>Activate DEFCON Actives</A>"
-				dat += "<BR><hr>"
 
 				if(authenticated == 2)
 					dat += "<BR><A HREF='?src=\ref[src];operation=announce'>Make an announcement</A>"
