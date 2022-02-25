@@ -70185,7 +70185,7 @@
 	},
 /area/almayer/living/bridgebunks)
 "sxV" = (
-/obj/structure/machinery/cm_vending/gear/intelligence_officer,
+/obj/structure/surface/table/reinforced/almayer_B,
 /turf/open/floor/almayer{
 	icon_state = "silverfull"
 	},
