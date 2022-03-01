@@ -67,7 +67,7 @@ SUBSYSTEM_DEF(evacuation)
 		enter_allowed = 1
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
-		deactivate_lifeboats()
+		ai_announcement("Evacuation canceled.", 'sound/AI/evacuate_cancelled.ogg')
 		if(get_security_level() == "red")
 			for(var/obj/structure/machinery/status_display/SD in machines)
 				if(is_mainship_level(SD.z))
@@ -101,6 +101,8 @@ SUBSYSTEM_DEF(evacuation)
 				sleep(30 SECONDS) //Sleep 30 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
 			lifesigns += L1.survivors + L2.survivors
+
+			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [lifesigns ? lifesigns  : "none"].", 'sound/AI/evacuation_complete.ogg')
 
 			evac_status = EVACUATION_STATUS_COMPLETE
 
