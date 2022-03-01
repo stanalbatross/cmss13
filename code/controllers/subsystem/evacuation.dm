@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(evacuation)
 	wait          = 30 SECONDS
 	init_order    = SS_INIT_EVAC
 	priority	  = SS_PRIORITY_EVAC
-	flags		  = SS_BACKGROUND
+	flags		  = SS_NO_INIT
 
 	var/evac_time	//Time the evacuation was initiated.
 	var/evac_status = EVACUATION_STATUS_STANDING_BY //What it's doing now? It can be standing by, getting ready to launch, or finished.
@@ -22,24 +22,6 @@ SUBSYSTEM_DEF(evacuation)
 	var/lifesigns = 0
 
 	var/flags_scuttle = NO_FLAGS
-
-	var/status
-
-/datum/controller/subsystem/evacuation/fire(resumed = FALSE)
-	if(evac_status == EVACUATION_STATUS_INITIATING) //If it's not departing, no need to process.
-		if(world.time >= evac_time + EVACUATION_AUTOMATIC_DEPARTURE)
-			begin_launch()
-
-	if(dest_master && dest_master.loc && dest_master.active_state == SELF_DESTRUCT_MACHINE_ARMED && dest_status == NUKE_EXPLOSION_ACTIVE && dest_index <= dest_rods.len)
-		var/obj/structure/machinery/self_destruct/rod/I = dest_rods[dest_index]
-		if(world.time >= dest_cooldown + I.activate_time)
-			I.lock_or_unlock() //Unlock it.
-			if(++dest_index <= dest_rods.len)
-				I = dest_rods[dest_index]//Start the next sequence.
-				I.activate_time = world.time
-
-	if(MC_TICK_CHECK)
-		return
 
 /datum/controller/subsystem/evacuation/proc/prepare()
 	dest_master = locate()
@@ -77,6 +59,7 @@ SUBSYSTEM_DEF(evacuation)
 				SD.set_picture("evac")
 		activate_escape()
 		activate_lifeboats()
+		process_evacuation()
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/cancel_evacuation() //Cancels the evac procedure. Useful if admins do not want the marines leaving.
@@ -85,7 +68,6 @@ SUBSYSTEM_DEF(evacuation)
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
 		deactivate_lifeboats()
-		ai_announcement("Evacuation has been cancelled.", 'sound/AI/evacuate_cancelled.ogg')
 		if(get_security_level() == "red")
 			for(var/obj/structure/machinery/status_display/SD in machines)
 				if(is_mainship_level(SD.z))
@@ -119,7 +101,6 @@ SUBSYSTEM_DEF(evacuation)
 				sleep(30 SECONDS) //Sleep 30 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
 			lifesigns += L1.survivors + L2.survivors
-			ai_announcement("ATTENTION: Evacuation complete. Outbound lifesigns detected: [lifesigns ? lifesigns  : "none"].", 'sound/AI/evacuation_complete.ogg')
 
 			evac_status = EVACUATION_STATUS_COMPLETE
 
@@ -130,6 +111,12 @@ SUBSYSTEM_DEF(evacuation)
 
 		return TRUE
 
+/datum/controller/subsystem/evacuation/proc/process_evacuation() //Process the timer.
+	set background = 1
+
+	spawn while(evac_status == EVACUATION_STATUS_INITIATING) //If it's not departing, no need to process.
+		if(world.time >= evac_time + EVACUATION_AUTOMATIC_DEPARTURE) begin_launch()
+		sleep(10) //One second.
 
 /datum/controller/subsystem/evacuation/proc/get_status_panel_eta()
 	switch(evac_status)
@@ -137,6 +124,7 @@ SUBSYSTEM_DEF(evacuation)
 			var/eta = EVACUATION_ESTIMATE_DEPARTURE
 			. = "[(eta / 60) % 60]:[add_zero(num2text(eta % 60), 2)]"
 		if(EVACUATION_STATUS_IN_PROGRESS) . = "NOW"
+		if(EVACUATION_STATUS_COMPLETE) . = "Ship Abandoned"
 
 
 // ESCAPE_POODS
