@@ -928,7 +928,7 @@
 	},
 /obj/structure/machinery/door/poddoor/almayer/blended{
 	dir = 2;
-	icon_state = "shutter";
+	icon_state = "almayer_pdoor";
 	id = "sd_lockdown";
 	name = "SD LockDown"
 	},
@@ -35192,22 +35192,6 @@
 "cZs" = (
 /turf/closed/wall/almayer/outer,
 /area/almayer/shipboard/brig/chief_mp_office)
-"cZJ" = (
-/obj/structure/machinery/door/airlock/almayer/maint{
-	name = "\improper Core Hatch"
-	},
-/obj/structure/machinery/door/poddoor/almayer/blended{
-	dir = 4;
-	icon_state = "shutter";
-	id = "sd_lockdown";
-	name = "SD LockDown"
-	},
-/turf/open/floor/almayer{
-	dir = 5;
-	icon_state = "plating";
-	tag = "icon-blue (NORTHEAST)"
-	},
-/area/almayer/engineering/engine_core)
 "daj" = (
 /obj/structure/machinery/iv_drip,
 /turf/open/floor/almayer{
@@ -137426,13 +137410,13 @@ aca
 aca
 aca
 aca
-cZJ
 aca
 aca
 aca
 aca
 aca
-cZJ
+aca
+aca
 aca
 aca
 aca
