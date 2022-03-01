@@ -527,19 +527,16 @@
 	},
 /area/almayer/hallways/aft_hallway)
 "abm" = (
-/obj/structure/machinery/door/airlock/almayer/maint{
-	req_access_txt = "200";
-	req_one_access = null
-	},
-/turf/open/floor/almayer,
-/area/almayer/powered)
-"abn" = (
-/obj/structure/machinery/light{
-	dir = 8;
-	tag = "icon-tube1 (WEST)"
-	},
-/turf/open/floor/carpet,
+/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/berth,
+/turf/closed/wall/almayer,
 /area/almayer/command/corporateliason)
+"abn" = (
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/hull/upper_hull/u_m_s)
 "abo" = (
 /turf/closed/wall/almayer/reinforced,
 /area/almayer/engineering/airmix)
@@ -762,7 +759,7 @@
 	},
 /area/almayer/command/self_destruct)
 "acb" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/down,
+/obj/docking_port/stationary/escape_pod_dock/almayer/right,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -2298,7 +2295,7 @@
 	},
 /area/almayer/hallways/aft_hallway)
 "agp" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/right,
+/obj/docking_port/stationary/escape_pod_dock/almayer/up,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -12879,12 +12876,12 @@
 	},
 /area/almayer/living/numbertwobunks)
 "aLs" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/up,
+/obj/docking_port/stationary/escape_pod_dock/almayer/right/berth,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/almayer/hull/upper_hull/u_m_s)
+/area/almayer/hull/upper_hull/u_m_p)
 "aLt" = (
 /obj/structure/surface/rack,
 /turf/open/floor/almayer{
@@ -30698,7 +30695,7 @@
 	},
 /area/almayer/hull/lower_hull)
 "cbp" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/right,
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -30984,7 +30981,7 @@
 	},
 /area/almayer/command/cichallway)
 "cci" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/down,
+/obj/docking_port/stationary/escape_pod_dock/almayer/right,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -33359,12 +33356,12 @@
 /turf/open/floor/almayer,
 /area/almayer/command/securestorage)
 "cmT" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/left,
+/obj/docking_port/stationary/escape_pod_dock/almayer/down,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/almayer/hull/lower_hull/l_m_p)
+/area/almayer/hull/lower_hull/l_m_s)
 "cnd" = (
 /obj/structure/machinery/door/airlock/almayer/secure/reinforced{
 	dir = 2;
@@ -46695,9 +46692,12 @@
 	},
 /area/almayer/medical/lower_medical_medbay)
 "icD" = (
-/obj/structure/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/berth,
-/turf/closed/wall/almayer,
-/area/almayer/command/corporateliason)
+/obj/structure/machinery/door/airlock/almayer/maint{
+	req_access_txt = "200";
+	req_one_access = null
+	},
+/turf/open/floor/almayer,
+/area/almayer/powered)
 "icM" = (
 /turf/closed/wall/almayer/research/containment/wall/north,
 /area/almayer/medical/containment/cell)
@@ -50044,7 +50044,7 @@
 /turf/open/floor/plating/almayer,
 /area/almayer/shipboard/firing_range_south)
 "jIY" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/up,
+/obj/docking_port/stationary/escape_pod_dock/almayer/left,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -56464,12 +56464,12 @@
 	},
 /area/almayer/living/port_emb)
 "mKQ" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/down,
+/obj/docking_port/stationary/escape_pod_dock/almayer/up,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/almayer/hull/lower_hull/l_m_s)
+/area/almayer/hull/lower_hull/l_m_p)
 "mKX" = (
 /turf/open/floor/almayer{
 	dir = 1;
@@ -70763,13 +70763,6 @@
 	tag = "icon-orange (EAST)"
 	},
 /area/almayer/engineering/upper_engineering)
-"ttp" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/right/berth,
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
-/area/almayer/hull/upper_hull/u_m_p)
 "ttM" = (
 /obj/item/device/radio/intercom{
 	freerange = 1;
@@ -112568,7 +112561,7 @@ csz
 csz
 csz
 csz
-csz
+aLs
 awE
 pQu
 kmL
@@ -112675,9 +112668,9 @@ bJt
 fiq
 oed
 oed
-cmT
 oed
 oed
+jIY
 fiq
 oDf
 oDf
@@ -113175,7 +113168,7 @@ avm
 qVM
 csz
 csz
-ttp
+csz
 csz
 csz
 awE
@@ -113581,8 +113574,8 @@ avj
 cGr
 awE
 fUn
+wQv
 rne
-abn
 guC
 ecQ
 whZ
@@ -117807,12 +117800,12 @@ aao
 aao
 aao
 aao
+acb
 aao
 aao
 aao
 aao
-aao
-aao
+acb
 aej
 aeO
 afG
@@ -117848,12 +117841,12 @@ csz
 csz
 csz
 csz
+cci
 csz
 csz
 csz
 csz
-csz
-csz
+cci
 qVM
 vGk
 xIb
@@ -118414,12 +118407,12 @@ ady
 aar
 aao
 aao
-agp
 aao
 aao
 aao
 aao
-agp
+aao
+aao
 aao
 aao
 aej
@@ -118455,12 +118448,12 @@ bqG
 qVM
 csz
 csz
-cbp
 csz
 csz
 csz
 csz
-cbp
+csz
+csz
 csz
 csz
 qVM
@@ -119113,7 +119106,7 @@ hhw
 aSm
 aSm
 aSm
-aSm
+cmT
 aLB
 nyG
 aNO
@@ -119184,7 +119177,7 @@ bGb
 oed
 oed
 oed
-oed
+mKQ
 fiq
 fYc
 uqH
@@ -119519,7 +119512,7 @@ hhw
 aSm
 aSm
 aSm
-mKQ
+aSm
 jUx
 aLG
 aNO
@@ -119587,7 +119580,7 @@ jJe
 bHa
 buH
 vfo
-jIY
+oed
 oed
 oed
 oed
@@ -119630,7 +119623,7 @@ aar
 aao
 aao
 aao
-aao
+abn
 aar
 bWs
 abg
@@ -119639,7 +119632,7 @@ aar
 aao
 aao
 aao
-aao
+agp
 ael
 afE
 agT
@@ -119674,7 +119667,7 @@ qVM
 csz
 csz
 csz
-csz
+cbp
 qVM
 acG
 abg
@@ -119683,7 +119676,7 @@ qVM
 csz
 csz
 csz
-csz
+ciB
 qVM
 aPX
 vGk
@@ -120036,13 +120029,13 @@ aar
 aao
 aao
 aao
-acb
+aao
 aba
 abx
 abx
 abx
 bWd
-aLs
+aao
 aao
 aao
 aao
@@ -120080,13 +120073,13 @@ qVM
 csz
 csz
 csz
-cci
+csz
 nuY
 abx
 abx
 abx
 ceD
-ciB
+csz
 csz
 csz
 csz
@@ -120331,7 +120324,7 @@ hhw
 aSm
 aSm
 aSm
-aSm
+cmT
 aLB
 enx
 aQt
@@ -120402,7 +120395,7 @@ bGb
 oed
 oed
 oed
-oed
+mKQ
 fiq
 wlp
 oDf
@@ -120737,7 +120730,7 @@ hhw
 aSm
 aSm
 aSm
-mKQ
+aSm
 cmC
 aLG
 aNO
@@ -120805,7 +120798,7 @@ mqc
 ybV
 buH
 cnd
-jIY
+oed
 oed
 oed
 oed
@@ -120848,7 +120841,7 @@ aar
 aao
 aao
 aao
-aao
+abn
 aar
 acG
 abx
@@ -120857,7 +120850,7 @@ aar
 aao
 aao
 aao
-aao
+agp
 adO
 adO
 adO
@@ -120892,7 +120885,7 @@ qVM
 csz
 csz
 csz
-csz
+cbp
 qVM
 acG
 abx
@@ -120901,7 +120894,7 @@ qVM
 csz
 csz
 csz
-csz
+ciB
 qVM
 lJg
 csz
@@ -121254,13 +121247,13 @@ aar
 aao
 aao
 aao
-acb
+aao
 bWh
 abx
 abx
 abx
 xHG
-aLs
+aao
 aao
 aao
 aao
@@ -121298,13 +121291,13 @@ qVM
 csz
 csz
 csz
-cci
+csz
 xfh
 abx
 abx
 abx
 cix
-ciB
+csz
 csz
 csz
 csz

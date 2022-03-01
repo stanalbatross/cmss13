@@ -1,5 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
+/obj/docking_port/mobile/escape_pod/right/corporate,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall9";
 	tag = "icon-wall9"
@@ -53,7 +54,6 @@
 /area/shuttle/evacuation_pod)
 "i" = (
 /obj/structure/machinery/door/airlock/evacuation,
-/obj/docking_port/mobile/escape_pod/right/corporate,
 /turf/open/shuttle/escapepod,
 /area/shuttle/evacuation_pod)
 "j" = (
@@ -127,7 +127,7 @@ Y
 (4,1,1) = {"
 F
 O
-i
 O
+i
 g
 "}

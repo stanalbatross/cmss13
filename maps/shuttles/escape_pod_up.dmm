@@ -1,5 +1,6 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
+/obj/docking_port/mobile/escape_pod/up,
 /turf/closed/shuttle/escapepod{
 	icon_state = "wall9";
 	tag = "icon-wall9"
@@ -88,7 +89,6 @@
 	dir = 2;
 	name = "Evacuation Airlock"
 	},
-/obj/docking_port/mobile/escape_pod/up,
 /turf/open/shuttle/escapepod,
 /area/shuttle/evacuation_pod)
 
