@@ -910,7 +910,9 @@
 /area/almayer/living/starboard_garden)
 "acw" = (
 /obj/structure/surface/rack,
-/obj/item/defenses/handheld/sentry/shotgun,
+/obj/item/defenses/handheld/sentry/shotgun{
+	name = "handheld UA 12-G shotgun sentry 'Simply Ass Engineer'"
+	},
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -132438,11 +132440,11 @@ eky
 pCb
 eky
 uNV
-aHe
+aPw
 aDQ
 aDQ
 aDQ
-aHe
+aPw
 uNV
 eky
 pCb
@@ -132640,13 +132642,13 @@ aMT
 aMT
 aMR
 qeF
-aHe
-aHe
+aPw
+aPw
 aDX
 yge
 aEm
-aHe
-aHe
+aPw
+aPw
 okg
 aMR
 aMT
@@ -133249,13 +133251,13 @@ eky
 arV
 aMS
 eky
-aHe
+aPw
 jMQ
 eky
 eky
 eky
 dEn
-aHe
+aPw
 eky
 aMS
 arV
@@ -133655,13 +133657,13 @@ aRp
 aRp
 aPk
 akS
-aHe
+aPw
 oxU
 bsy
 xgg
 gzw
 shh
-aHe
+aPw
 tKf
 aPk
 aRp
@@ -133858,13 +133860,13 @@ eky
 atM
 ams
 atK
-aHe
-aHe
-aHe
-aHe
-aHe
-aHe
-aHe
+aPw
+aPw
+aPw
+aPw
+aPw
+aPw
+aPw
 atM
 ams
 atK
@@ -134062,11 +134064,11 @@ avu
 pDL
 amq
 bFD
-aHe
+aPw
 fdX
 wcR
 xJh
-aHe
+aPw
 lbE
 vQu
 iZL
@@ -135573,8 +135575,8 @@ aaa
 aaa
 bdH
 abq
-aby
-aby
+abV
+abV
 abV
 eFH
 eFH
@@ -135598,8 +135600,8 @@ rbp
 vuR
 rbp
 abV
-aby
-aby
+abV
+abV
 abq
 aaa
 aaa
@@ -135886,7 +135888,7 @@ xVk
 xVk
 eJQ
 aPw
-abb
+aPw
 dnJ
 eky
 eky
@@ -135896,7 +135898,7 @@ eky
 eky
 eky
 hfw
-abb
+aPw
 aPw
 eJQ
 xVk
@@ -137611,7 +137613,7 @@ hlz
 eFH
 fKg
 tce
-abq
+abV
 heg
 vNF
 xuU
@@ -137621,7 +137623,7 @@ vNF
 xuU
 vNF
 riA
-abq
+abV
 osE
 gai
 cAH
@@ -137713,7 +137715,7 @@ xVk
 xVk
 oee
 aPw
-abb
+aPw
 tqB
 eky
 eky
@@ -137723,7 +137725,7 @@ ouB
 eky
 eky
 gwu
-abb
+aPw
 aPw
 oee
 xVk
@@ -137814,7 +137816,7 @@ hlz
 hlz
 hlz
 hlz
-abq
+abV
 adJ
 vNF
 xuU
@@ -137824,7 +137826,7 @@ vNF
 xuU
 vNF
 niX
-abq
+abV
 pFP
 cAH
 cAH
@@ -138012,8 +138014,8 @@ abq
 abY
 acc
 adn
-abq
-abq
+abV
+abV
 gcK
 jPf
 jPf
@@ -138031,8 +138033,8 @@ acy
 vuR
 vuR
 woG
-abq
-abq
+abV
+abV
 adn
 lyE
 adn
