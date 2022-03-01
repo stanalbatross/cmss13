@@ -4,7 +4,6 @@
 /obj/docking_port/mobile/escape_pod
 	name = "escapepod"
 	ignitionTime = 8 SECONDS
-	dwidth = 2
 	width = 5
 	height = 4
 	rechargeTime = 5 MINUTES
@@ -174,7 +173,6 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 /// Generic lifeboat dock
 /obj/docking_port/stationary/escape_pod_dock
 	name   = "Escape pod docking port"
-	dwidth = 2
 	width = 5
 	height = 4
 
