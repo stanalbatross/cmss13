@@ -6510,7 +6510,7 @@
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
-/area/almayer/command/lifeboat)
+/area/almayer/powered)
 "asc" = (
 /turf/open/floor/almayer{
 	dir = 1;
@@ -13794,7 +13794,7 @@
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
-/area/almayer/command/lifeboat)
+/area/almayer/powered)
 "aPy" = (
 /turf/closed/wall/almayer/outer,
 /area/almayer/hallways/starboard_umbilical)
@@ -13803,7 +13803,7 @@
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
-/area/almayer/command/lifeboat)
+/area/almayer/powered)
 "aPB" = (
 /turf/open/floor/almayer{
 	icon_state = "emerald";
@@ -60971,7 +60971,7 @@
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
-/area/almayer/command/lifeboat)
+/area/almayer/powered)
 "oNb" = (
 /obj/structure/closet/secure_closet/engineering_chief,
 /obj/item/clothing/glasses/welding,
@@ -68153,7 +68153,7 @@
 	icon_state = "test_floor4";
 	tag = "icon-test_floor4"
 	},
-/area/almayer/command/lifeboat)
+/area/almayer/powered)
 "skl" = (
 /obj/effect/landmark/start/professor,
 /obj/structure/bed/chair/office/dark{
