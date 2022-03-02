@@ -98,7 +98,7 @@ SUBSYSTEM_DEF(evacuation)
 			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
 			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle("lifeboat2")
 			while(L1.available || L2.available)
-				sleep(30 SECONDS) //Sleep 30 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
+				sleep(5 SECONDS) //Sleep 5 more seconds to make sure everyone had a chance to leave. And wait for lifeboats
 
 			lifesigns += L1.survivors + L2.survivors
 
