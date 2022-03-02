@@ -180,7 +180,7 @@
 	flick("opening_raising", sis_panel)
 	update_icon()
 	sis_panel.update_icon()
-	spawn(5 MINUTES)
+	spawn(2.5 MINUTES)
 		detonate()
 
 

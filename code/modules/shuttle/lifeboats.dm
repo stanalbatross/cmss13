@@ -4,10 +4,10 @@
 /obj/docking_port/mobile/lifeboat
 	name = "lifeboat"
 	area_type = /area/shuttle/lifeboat
-	ignitionTime = 8 SECONDS
+	ignitionTime = 15 SECONDS
 	width = 27
 	height = 7
-	rechargeTime = 20 MINUTES
+	rechargeTime = 10 MINUTES
 
 	var/available = TRUE // can be used for evac? false if queenlocked or if in transit already
 	var/status = LIFEBOAT_INACTIVE // -1 queen locked, 0 locked til evac, 1 working
