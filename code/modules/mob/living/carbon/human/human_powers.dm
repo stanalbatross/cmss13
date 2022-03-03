@@ -227,6 +227,12 @@
 		if(H.stat == DEAD)
 			continue
 		H.activate_order_buff(order, command_aura_strength, command_aura_duration)
+		if(order == COMMAND_ORDER_FOCUS)
+			if(H.gender == "male")
+				playsound(H, "male_warcry", 20)
+			else
+				playsound(H, "female_warcry", 20)
+			
 
 	if(loc != T) //if we were inside something, the range() missed us.
 		activate_order_buff(order, command_aura_strength, command_aura_duration)
@@ -245,6 +251,10 @@
 			message = pick(";DUCK AND COVER!", ";HOLD THE LINE!", ";HOLD POSITION!", ";STAND YOUR GROUND!", ";STAND AND FIGHT!")
 		if(COMMAND_ORDER_FOCUS)
 			message = pick(";FOCUS FIRE!", ";PICK YOUR TARGETS!", ";CENTER MASS!", ";CONTROLLED BURSTS!", ";AIM YOUR SHOTS!")
+			if(gender == "male")
+				playsound(loc, "male_warcry", 50)
+			else
+				playsound(loc, "female_warcry", 50)
 	say(message)
 
 
