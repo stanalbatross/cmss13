@@ -1,12 +1,14 @@
 /datum/equipment_preset/uscm_ship/uscm_medical/cmo
 	name = "USCM Chief Medical Officer (CMO)"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
+	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 
 	idtype = /obj/item/card/id/silver
 	access = list(
 		ACCESS_MARINE_CMO,
 		ACCESS_MARINE_MEDBAY,
 		ACCESS_MARINE_RESEARCH,
+		ACCESS_MARINE_COMMANDER,
 		ACCESS_MARINE_BRIDGE,
 		ACCESS_MARINE_CHEMISTRY,
 		ACCESS_MARINE_MORGUE
@@ -90,6 +92,7 @@
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/doc(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical/green(H), WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/labcoat(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/white(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/latex(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health(H), WEAR_EYES)

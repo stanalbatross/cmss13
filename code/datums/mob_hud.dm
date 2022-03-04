@@ -98,7 +98,7 @@ var/list/datum/mob_hud/huds = list(
 	if(!istype(U))
 		return FALSE
 
-	if(U.sensor_mode <= 2 || U.has_sensor == 0)
+	if(U.sensor_mode <= SENSOR_MODE_DAMAGE || U.has_sensor == UNIFORM_NO_SENSORS)
 		return FALSE
 
 	return TRUE
@@ -386,6 +386,12 @@ var/list/datum/mob_hud/huds = list(
 							holder2.icon_state = "huddeadalmost"
 							holder3.icon_state = "huddead"
 							holder2_set = 1
+					else if(world.time > timeofdeath + revive_grace_period - 2.5 MINUTES)
+						holder.icon_state = "huddeadclose"
+						if(!holder2_set)
+							holder2.icon_state = "huddeadclose"
+							holder3.icon_state = "huddead"
+							holder2_set = 1
 					else
 						holder.icon_state = "huddeaddefib"
 						if(!holder2_set)
@@ -660,7 +666,7 @@ var/list/datum/mob_hud/huds = list(
 				marine_rk = "dcc"
 			if(JOB_CREWMAN)
 				marine_rk = "tc"
-			if(JOB_PROVOST_OFFICER || JOB_PROVOST_ENFORCER)
+			if(JOB_PROVOST_OFFICER, JOB_PROVOST_ENFORCER)
 				marine_rk = "pvo"
 			if(JOB_PROVOST_TML)
 				marine_rk = "pvtml"
@@ -670,7 +676,7 @@ var/list/datum/mob_hud/huds = list(
 			if(JOB_PROVOST_ADVISOR)
 				marine_rk = "pva"
 				border_rk = "command"
-			if(JOB_PROVOST_MARSHAL || JOB_PROVOST_CMARSHAL || JOB_PROVOST_SMARSHAL)
+			if(JOB_PROVOST_MARSHAL, JOB_PROVOST_CMARSHAL, JOB_PROVOST_SMARSHAL)
 				marine_rk = "pvm"
 				border_rk = "command"
 			if(JOB_CHIEF_POLICE)

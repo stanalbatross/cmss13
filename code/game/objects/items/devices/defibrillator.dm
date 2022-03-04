@@ -19,6 +19,7 @@
 	var/obj/item/cell/dcell = null
 	var/datum/effect_system/spark_spread/sparks = new
 	var/defib_cooldown = 0 //Cooldown for toggling the defib
+	var/shock_cooldown = 0 //cooldown for shocking someone - separate to toggling
 
 /mob/living/carbon/human/proc/check_tod()
 	if(!undefibbable && world.time <= timeofdeath + revive_grace_period)
@@ -57,12 +58,13 @@
 	maxuses = round(dcell.maxcharge / charge_cost)
 	currentuses = round(dcell.charge / charge_cost)
 	to_chat(user, SPAN_INFO("It has [currentuses] out of [maxuses] uses left in its internal battery."))
-
+	if(MODE_HAS_TOGGLEABLE_FLAG(MODE_STRONG_DEFIBS) || !blocked_by_suit)
+		to_chat(user, SPAN_NOTICE("This defibrillator will ignore worn armor."))
 
 /obj/item/device/defibrillator/attack_self(mob/living/carbon/human/user)
 	..()
 
-	if(defib_cooldown > world.time)
+	if(defib_cooldown > world.time) //cooldown only to prevent spam toggling
 		return
 
 	//Job knowledge requirement
@@ -121,7 +123,7 @@
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Patient's general condition does not allow reviving."))
 		return
 
-	if(blocked_by_suit && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
+	if((!MODE_HAS_TOGGLEABLE_FLAG(MODE_STRONG_DEFIBS) && blocked_by_suit) && H.wear_suit && (istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/storage/marine)) && prob(95))
 		user.visible_message(SPAN_WARNING("[icon2html(src, viewers(src))] \The [src] buzzes: Paddles registering >100,000 ohms, Possible cause: Suit or Armor interfering."))
 		return
 
@@ -132,10 +134,10 @@
 	return TRUE
 
 /obj/item/device/defibrillator/attack(mob/living/carbon/human/H, mob/living/carbon/human/user)
-	if(defib_cooldown > world.time) //Both for pulling the paddles out (2 seconds) and shocking (1 second)
+	if(shock_cooldown > world.time) //cooldown is only for shocking, this is so that you can immediately shock when you take the paddles out - stan_albatross
 		return
 
-	defib_cooldown = world.time + 20 //2 second cooldown before you can try shocking again
+	shock_cooldown = world.time + 20 //2 second cooldown before you can try shocking again
 
 	if(user.action_busy) //Currently deffibing
 		return
@@ -176,7 +178,7 @@
 	user.visible_message(SPAN_NOTICE("[user] shocks [H] with the paddles."),
 		SPAN_HELPFUL("You shock <b>[H]</b> with the paddles."))
 	H.visible_message(SPAN_DANGER("[H]'s body convulses a bit."))
-	defib_cooldown = world.time + 10 //1 second cooldown before you can shock again
+	shock_cooldown = world.time + 10 //1 second cooldown before you can shock again
 
 	var/datum/internal_organ/heart/heart = H.internal_organs_by_name["heart"]
 	if(heart && prob(25))
