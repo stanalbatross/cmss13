@@ -193,7 +193,7 @@
 
 /obj/item/weapon/gun/rifle/sniper/svd/handle_starting_attachment()
 	..()
-	var/obj/item/attachable/S = new /obj/item/attachable/scope/variable_zoom/slavic(src)
+	var/obj/item/attachable/scope/S = new /obj/item/attachable/scope/variable_zoom/slavic(src)
 	S.flags_attach_features &= ~ATTACH_REMOVABLE
 	S.ignore_clash_fog = TRUE
 	S.Attach(src)
