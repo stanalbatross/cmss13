@@ -198,7 +198,7 @@
 	for(var/i in 1 to bonus_projectiles_amount) //Want to run this for the number of bonus projectiles.
 		var/final_angle = initial_angle
 
-		var/obj/item/projectile/P = new /obj/item/projectile(original_P.weapon_cause_data)
+		var/obj/item/projectile/P = new /obj/item/projectile(curloc, original_P.weapon_cause_data)
 		P.generate_bullet(GLOB.ammo_list[bonus_projectiles_type]) //No bonus damage or anything.
 		P.accuracy = round(P.accuracy * original_P.accuracy/initial(original_P.accuracy)) //if the gun changes the accuracy of the main projectile, it also affects the bonus ones.
 		original_P.give_bullet_traits(P)
@@ -375,9 +375,9 @@
 	if(!user || L == user || user.zone_selected != "head" || user.a_intent != INTENT_HARM || !isHumanStrict(L))
 		return
 
-	if(!skillcheck(user, SKILL_LEADERSHIP, SKILL_LEAD_MASTER) || !skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
+	if(!skillcheck(user, SKILL_EXECUTION, SKILL_EXECUTION_TRAINED))
 		to_chat(user, SPAN_DANGER("You don't know how to execute someone correctly."))
-		return TRUE
+		return
 
 	if(L.status_flags & PERMANENTLY_DEAD)
 		to_chat(user, SPAN_DANGER("[L] is already as dead as it's possible to be!"))
@@ -669,10 +669,9 @@
 	if(!user || L == user || user.zone_selected != "head" || user.a_intent != INTENT_HARM || !isHumanStrict(L))
 		return
 
-	if(!skillcheck(user, SKILL_LEADERSHIP, SKILL_LEAD_MASTER) || !skillcheck(user, SKILL_POLICE, SKILL_POLICE_SKILLED))
+	if(!skillcheck(user, SKILL_EXECUTION, SKILL_EXECUTION_TRAINED))
 		to_chat(user, SPAN_DANGER("You don't know how to execute someone correctly."))
-		fired_from.delete_bullet(P, TRUE)
-		return TRUE
+		return
 
 	if(L.status_flags & PERMANENTLY_DEAD)
 		to_chat(user, SPAN_DANGER("[L] is already as dead as it's possible to be!"))
@@ -1683,14 +1682,14 @@
 /datum/ammo/bullet/machinegun/auto // for M2C, automatic variant for M56D, stats for bullet should always be moderately overtuned to fulfill its ultra-offense + flank-push purpose
 	name = "heavy machinegun bullet"
 
-	accurate_range = 8
+	accurate_range = 10
 	damage =  50
 	penetration = ARMOR_PENETRATION_TIER_6
-	accuracy = HIT_ACCURACY_TIER_8
+	accuracy = HIT_ACCURACY_TIER_9 + HIT_ACCURACY_TIER_5 // 75 accuracy
 	shell_speed = AMMO_SPEED_TIER_2
-	max_range = 14
+	max_range = 15
 	effective_range_max = 7
-	damage_falloff = DAMAGE_FALLOFF_TIER_7
+	damage_falloff = DAMAGE_FALLOFF_TIER_8
 
 /datum/ammo/bullet/machinegun/auto/set_bullet_traits()
 	return
@@ -1704,7 +1703,18 @@
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
 	accurate_range = 12
 	damage = 35
-	penetration = ARMOR_PENETRATION_TIER_7
+	penetration = ARMOR_PENETRATION_TIER_6
+
+/datum/ammo/bullet/minigun/New()
+	..()
+	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
+		damage = 15
+	else if(SSticker.current_state < GAME_STATE_PLAYING)
+		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/setup_hvh_damage)
+
+/datum/ammo/bullet/minigun/proc/setup_hvh_damage()
+	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
+		damage = 15
 
 /datum/ammo/bullet/minigun/tank
 	accuracy = -HIT_ACCURACY_TIER_1

@@ -18,6 +18,7 @@
 	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
 	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	ammo.current_rounds--
+	track_shot()
 	if(ammo.current_rounds == 0)
 		visible_message("[icon2html(src, viewers(src))] <span class='warning'>The [name] beeps steadily and its ammo light blinks red.</span>")
 		playsound(loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
@@ -43,7 +44,7 @@
 	health = 150
 	health_max = 150
 	density = FALSE
-	fire_delay = 10
+	fire_delay = 1.25 SECONDS
 	disassemble_time = 0.75 SECONDS
 	ammo = new /obj/item/ammo_magazine/sentry_flamer/mini
 	handheld_type = /obj/item/defenses/handheld/sentry/flamer/mini

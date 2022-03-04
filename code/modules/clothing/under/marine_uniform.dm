@@ -89,12 +89,12 @@
 	..(loc,expected_type, override_icon_state, new_name, new_protection)
 
 /obj/item/clothing/under/marine/chef
-	name = "\improper USCM Mess Sergeant uniform"
-	desc = "Standard-issue Mess Sergeant uniform. It has shards of light Kevlar to help protect against stabbing weapons and bullets."
+	name = "\improper USCM Mess Technician uniform"
+	desc = "Standard-issue Mess Technician uniform. It has shards of light Kevlar to help protect against stabbing weapons and bullets."
 	icon_state = "chef_uniform"
 	worn_state = "chef_uniform"
 	flags_jumpsuit = FALSE
-	specialty = "USCM mess sergeant"
+	specialty = "USCM mess technician"
 	flags_atom = NO_SNOW_TYPE
 
 /obj/item/clothing/under/marine/mp
@@ -408,6 +408,7 @@
 	armor_bio = CLOTHING_ARMOR_NONE
 	armor_rad = CLOTHING_ARMOR_NONE
 	armor_internaldamage = CLOTHING_ARMOR_LOW
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/PMC,
 							/obj/item/clothing/suit/storage/marine/smartgunner/veteran/PMC,
 							/obj/item/clothing/suit/armor/vest/security)//For survivors.
@@ -417,6 +418,7 @@
 	desc = "A white set of fatigues, designed for private security operators. The symbol of the Weyland-Yutani corporation is emblazed on the suit. This particular suit looks like it belongs to a high-ranking officer."
 	icon_state = "officer_jumpsuit"
 	worn_state = "officer_jumpsuit"
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
 /obj/item/clothing/under/marine/veteran/PMC/commando
 	name = "\improper PMC commando uniform"
@@ -440,7 +442,7 @@
 	icon_state = "bear_jumpsuit"
 	worn_state = "bear_jumpsuit"
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/bear)
 
 
@@ -450,7 +452,8 @@
 	icon_state = "upp_uniform"
 	worn_state = "upp_uniform"
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
-	has_sensor = FALSE
+	has_sensor = UNIFORM_HAS_SENSORS
+	sensor_faction = FACTION_UPP
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet)
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
@@ -513,7 +516,7 @@
 	icon_state = "freelancer_uniform"
 	worn_state = "freelancer_uniform"
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/freelancer)
 
 //=========================//Dutch Dozen\\================================\\
@@ -526,7 +529,7 @@
 	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS
 	icon_state = "dutch_jumpsuit"
 	worn_state = "dutch_jumpsuit"
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 	suit_restricted = list(/obj/item/clothing/suit/storage/marine/veteran/dutch, /obj/item/clothing/suit/armor/vest/dutch)
 
 
@@ -540,7 +543,7 @@
 	worn_state = "van_bandolier"
 	item_state = "van_bandolier_clothes"
 	flags_cold_protection = ICE_PLANET_min_cold_protection_temperature
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 
 //===========================//HELGHAST - MERCENARY\\================================\\
 //=====================================================================\\
@@ -591,27 +594,29 @@
 	icon_state = "redshirt2"
 	item_state = "r_suit"
 	worn_state = "redshirt2"
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 
 /obj/item/clothing/under/souto
 	name = "\improper Souto Man's cargo pants"
 	desc = "The white cargo pants worn by the one and only Souto man. As cool as an ice cold can of Souto Grape!"
 	icon_state = "souto_man"
 	worn_state = "souto_man"
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 
 /obj/item/clothing/under/colonist
 	name = "colonist uniform"
 	desc = "A stylish gray-green jumpsuit - standard issue for colonists."
 	icon_state = "colonist"
 	worn_state = "colonist"
-	has_sensor = 0
+	has_sensor = UNIFORM_HAS_SENSORS
+	sensor_faction = FACTION_COLONIST
 
 /obj/item/clothing/under/colonist/clf
 	name = "\improper Colonial Liberation Front uniform"
 	desc = "A stylish grey-green jumpsuit - standard issue for colonists. This version appears to have the symbol of the Colonial Liberation Front emblazoned in select areas."
 	icon_state = "clf_uniform"
 	worn_state = "clf_uniform"
+	sensor_faction = FACTION_CLF
 
 /obj/item/clothing/under/colonist/ua_civvies
 	name = "gray utilities"
@@ -633,7 +638,7 @@
 
 /obj/item/clothing/under/tshirt
 	name = "T-shirt parent object"
-	has_sensor = 0
+	has_sensor = UNIFORM_NO_SENSORS
 
 /obj/item/clothing/under/tshirt/w_br
 	name = "white T-shirt and brown pants"
