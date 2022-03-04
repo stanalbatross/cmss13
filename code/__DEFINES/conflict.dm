@@ -60,6 +60,7 @@
 /// Whether the gun has been fired by its current user (reset upon `dropped()`)
 #define GUN_FIRED_BY_USER		(1<<20)
 #define GUN_SUPPORT_PLATFORM	(1<<21) /// support weapon, bipod will grant IFF
+#define GUN_BURST_ONLY			(1<<22)
 
 //Gun attachable related flags.
 #define ATTACH_REMOVABLE	1
@@ -85,6 +86,7 @@
 #define SLOWDOWN_ARMOR_HEAVY		1
 #define SLOWDOWN_ARMOR_VERY_HEAVY	1.15
 
+#define SLOWDOWN_ADS_NONE				0
 #define SLOWDOWN_ADS_QUICK				0.35
 #define SLOWDOWN_ADS_VERSATILE			0.50
 #define SLOWDOWN_ADS_SHOTGUN			0.75
@@ -167,6 +169,15 @@
 #define CLOTHING_ARMOR_VERYHIGH 40
 #define CLOTHING_ARMOR_ULTRAHIGH 50
 #define CLOTHING_ARMOR_HARDCORE 100
+
+#define UNIFORM_NO_SENSORS 0
+#define UNIFORM_HAS_SENSORS 1
+#define UNIFORM_FORCED_SENSORS 2
+
+#define SENSOR_MODE_OFF 0
+#define SENSOR_MODE_BINARY 1
+#define SENSOR_MODE_DAMAGE 2
+#define SENSOR_MODE_LOCATION 3
 
 //OB timings
 #define OB_TRAVEL_TIMING 12 SECONDS

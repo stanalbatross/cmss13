@@ -16,8 +16,9 @@
 	armor_internaldamage = CLOTHING_ARMOR_NONE
 	w_class = SIZE_MEDIUM
 	blood_overlay_type = "uniform"
-	var/has_sensor = 1//For the crew computer 2 = unable to change mode
-	var/sensor_mode = 3
+	var/sensor_faction = FACTION_MARINE
+	var/has_sensor = UNIFORM_HAS_SENSORS // For the crew computer
+	var/sensor_mode = SENSOR_MODE_LOCATION
 		/*
 		1 = Report living/dead
 		2 = Report detailed damages
@@ -39,9 +40,7 @@
 /obj/item/clothing/under/Initialize()
 	. = ..()
 	if(worn_state)
-		if(!item_state_slots)
-			item_state_slots = list()
-		item_state_slots[WEAR_BODY] = worn_state
+		LAZYSET(item_state_slots, WEAR_BODY, worn_state)
 	else
 		worn_state = icon_state
 
@@ -86,7 +85,7 @@
 /obj/item/clothing/under/select_gamemode_skin(expected_type, list/override_icon_state, list/override_protection)
 	. = ..()
 	worn_state = icon_state
-	item_state_slots[WEAR_BODY] = worn_state
+	LAZYSET(item_state_slots, WEAR_BODY, worn_state)
 
 /obj/item/clothing/under/update_clothing_icon()
 	if(ismob(loc))
@@ -115,22 +114,22 @@
 	..()
 	if(has_sensor)
 		switch(sensor_mode)
-			if(0)
+			if(SENSOR_MODE_OFF)
 				to_chat(user, "Its sensors appear to be disabled.")
-			if(1)
+			if(SENSOR_MODE_BINARY)
 				to_chat(user, "Its binary life sensors appear to be enabled.")
-			if(2)
+			if(SENSOR_MODE_DAMAGE)
 				to_chat(user, "Its vital tracker appears to be enabled.")
-			if(3)
+			if(SENSOR_MODE_LOCATION)
 				to_chat(user, "Its vital tracker and tracking beacon appear to be enabled.")
 
 /obj/item/clothing/under/proc/set_sensors(mob/user)
 	if (istype(user, /mob/dead/)) return
 	if (user.stat || user.is_mob_restrained()) return
-	if(has_sensor >= 2)
+	if(has_sensor >= UNIFORM_FORCED_SENSORS)
 		to_chat(user, "The controls are locked.")
 		return 0
-	if(has_sensor <= 0)
+	if(has_sensor <= UNIFORM_NO_SENSORS)
 		to_chat(user, "This suit does not have any sensors.")
 		return 0
 
@@ -209,10 +208,10 @@
 		if(flags_jumpsuit & UNIFORM_JACKET_REMOVED)
 			to_chat(usr, SPAN_NOTICE("You roll the jacket's sleeves in your hands.")) //visual representation that the sleeves have been rolled while jacket has been removed.
 		else if(flags_jumpsuit & UNIFORM_SLEEVE_ROLLED)
-			item_state_slots[WEAR_BODY] = "[worn_state]_d"
+			LAZYSET(item_state_slots, WEAR_BODY, "[worn_state]_d")
 			update_clothing_icon()
 		else
-			item_state_slots[WEAR_BODY] = "[worn_state]"
+			LAZYSET(item_state_slots, WEAR_BODY, worn_state)
 			update_clothing_icon()
 
 	else
@@ -248,16 +247,16 @@
 	if(flags_jumpsuit & UNIFORM_JACKET_REMOVABLE)
 		flags_jumpsuit ^= UNIFORM_JACKET_REMOVED
 		if(flags_jumpsuit & UNIFORM_JACKET_REMOVED)
-			item_state_slots[WEAR_BODY] = "[worn_state]_dj"
+			LAZYSET(item_state_slots, WEAR_BODY, "[worn_state]_dj")
 			if(ismob(loc))
 				var/mob/M = loc
 				M.update_inv_wear_id()
 		else if(flags_jumpsuit & UNIFORM_SLEEVE_CUT)
-			item_state_slots[WEAR_BODY] = "[worn_state]_df"
+			LAZYSET(item_state_slots, WEAR_BODY, "[worn_state]_df")
 		else if(flags_jumpsuit & UNIFORM_SLEEVE_ROLLED)
-			item_state_slots[WEAR_BODY] = "[worn_state]_d"
+			LAZYSET(item_state_slots, WEAR_BODY, "[worn_state]_d")
 		else
-			item_state_slots[WEAR_BODY] = "[worn_state]"
+			LAZYSET(item_state_slots, WEAR_BODY, worn_state)
 		update_clothing_icon()
 	else
 		to_chat(usr, SPAN_WARNING("\The [src] doesn't have a removable jacket!"))
@@ -274,7 +273,7 @@
 			flags_jumpsuit &= ~(UNIFORM_SLEEVE_ROLLABLE|UNIFORM_SLEEVE_CUTTABLE)
 			flags_jumpsuit |= UNIFORM_SLEEVE_CUT
 
-			item_state_slots[WEAR_BODY] = "[worn_state]_df"
+			LAZYSET(item_state_slots, WEAR_BODY, "[worn_state]_df")
 			user.visible_message("[user] slices [src] with [B].")
 			update_clothing_icon()
 			update_rollsuit_status()
