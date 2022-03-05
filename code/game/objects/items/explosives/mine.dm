@@ -108,8 +108,13 @@
 				user.visible_message(SPAN_WARNING("[user] stops disarming [src]."), \
 					SPAN_WARNING("You stop disarming [src]."))
 				return
-			if(user.faction != iff_signal)
+			if(user.faction != iff_signal) //ow!
 				if(prob(75))
+					triggered = TRUE
+					if(tripwire)
+						var/direction = reverse_dir[src.dir]
+						var/step_direction = get_step(src, direction)
+						tripwire.forceMove(step_direction)
 					prime()
 			if(!active)//someone beat us to it
 				return
