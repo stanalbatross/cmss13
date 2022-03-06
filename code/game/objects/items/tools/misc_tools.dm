@@ -5,11 +5,8 @@
 
 /////////////////////// Hand Labeler ////////////////////////////////
 
-/atom/proc/set_name_label(var/new_label)
-	name_label = new_label
-	name = initial(name)
-	if(name_label)
-		name += " ([name_label])"
+/atom
+	var/name_label
 
 /atom/proc/set_name_label(var/new_label)
 	name_label = new_label
