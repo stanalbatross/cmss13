@@ -4104,15 +4104,6 @@
 	},
 /turf/open/floor/prison,
 /area/fiorina/tumor/servers)
-"csT" = (
-/mob/living/simple_animal/cat/George{
-	desc = "A fierce caracal with floppy ears. Quite the murderer in disguise.";
-	name = "Hannibal"
-	},
-/turf/open/floor/prison{
-	icon_state = "darkredfull2"
-	},
-/area/fiorina/oob)
 "ctc" = (
 /obj/structure/prop/resin_prop{
 	icon_state = "sheater0"
@@ -6417,11 +6408,6 @@
 "dNh" = (
 /turf/open/auto_turf/sand/layer1,
 /area/fiorina/lz/near_lzI)
-"dNn" = (
-/obj/structure/window/framed/prison/reinforced/hull,
-/obj/structure/window/framed/prison,
-/turf/open/floor/plating/prison,
-/area/fiorina/station/security)
 "dNF" = (
 /turf/open/floor/prison{
 	dir = 10;
@@ -9796,10 +9782,6 @@
 	},
 /turf/open/floor/plating/prison,
 /area/fiorina/station/transit_hub)
-"fUM" = (
-/obj/structure/window/framed/prison/reinforced,
-/turf/open/floor/plating/prison,
-/area/fiorina/station/disco)
 "fUX" = (
 /obj/structure/bedsheetbin,
 /turf/open/floor/plating/prison,
@@ -64733,7 +64715,7 @@ cME
 cME
 cME
 cME
-dNn
+gIB
 sTa
 sTa
 dCM
@@ -64945,7 +64927,7 @@ cME
 cME
 cME
 cME
-dNn
+gIB
 tHs
 tHs
 dCM
@@ -73580,7 +73562,7 @@ sMj
 miU
 xKX
 hgJ
-fUM
+mlC
 bQM
 cAW
 rOa
@@ -73792,7 +73774,7 @@ fBi
 xKX
 rym
 rym
-fUM
+mlC
 rOa
 rOa
 rOa
@@ -74004,7 +73986,7 @@ tom
 vGv
 uzO
 dhe
-fUM
+mlC
 bQM
 rOa
 cAW
@@ -75472,7 +75454,7 @@ uwk
 bQM
 rOa
 bQM
-uwk
+jmG
 hul
 cKa
 cKa
@@ -76108,7 +76090,7 @@ jmG
 bQM
 rOa
 bQM
-jmG
+uwk
 vbt
 fyi
 mIE
@@ -77583,12 +77565,12 @@ pVq
 wef
 pVq
 aSz
-aSz
-aSz
+jmG
+jmG
 uwk
 uwk
-aSz
-aSz
+jmG
+jmG
 ozh
 kxV
 cjF
@@ -78431,12 +78413,12 @@ cKa
 hul
 cKa
 cKa
-aSz
-hfT
+jmG
+rBF
 dzl
 dzl
-hfT
-hfT
+rBF
+rBF
 ozh
 cjF
 cjF
@@ -87108,7 +87090,7 @@ sYM
 mam
 xdy
 pcu
-csT
+xdy
 eza
 sYM
 cAW
