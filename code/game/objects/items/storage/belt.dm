@@ -75,8 +75,15 @@
 		/obj/item/device/analyzer,
 		/obj/item/weapon/gun/smg/nailgun/compact,
 		/obj/item/tool/shovel/etool,
+		/obj/item/tool/extinguisher/mini,
+		/obj/item/cell,
+		/obj/item/device/lightreplacer
+
 	)
-	bypass_w_limit = list(/obj/item/tool/shovel/etool)
+	bypass_w_limit = list(
+	/obj/item/tool/shovel/etool,
+	/obj/item/device/lightreplacer
+	)
 
 
 /obj/item/storage/belt/utility/full/fill_preset_inventory()
@@ -565,7 +572,7 @@
 	item_state = "marinebelt" // aslo temp, maybe somebody update these icons with better ones?
 	w_class = SIZE_LARGE
 	storage_slots = 12
-	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD
+	storage_flags = STORAGE_FLAGS_DEFAULT|STORAGE_USING_DRAWING_METHOD|STORAGE_ALLOW_QUICKDRAW
 	max_w_class = SIZE_SMALL
 	max_storage_space = 48
 	can_hold = list(
@@ -672,6 +679,7 @@
 	storage_slots = 5
 	max_storage_space = 11
 	max_w_class = SIZE_MEDIUM
+	storage_flags = STORAGE_FLAGS_POUCH|STORAGE_ALLOW_QUICKDRAW
 	var/obj/item/weapon/gun/current_gun //The gun it holds, used for referencing later so we can update the icon.
 	var/image/gun_underlay //The underlay we will use.
 	var/sheatheSound = 'sound/weapons/gun_pistol_sheathe.ogg'
@@ -999,6 +1007,24 @@
 	new /obj/item/ammo_magazine/revolver/mateba/highimpact/explosive(src)
 	new_gun.on_enter_storage(src)
 
+/obj/item/storage/belt/gun/mateba/pmc
+	name = "PMC M276 pattern Mateba holster rig"
+	desc = "The M276 is the standard load-bearing equipment of the USCM. \
+	It consists of a modular belt with various clips. This version is for the powerful Mateba magnum revolver, \
+	along with five small pouches for speedloaders. This specific one is tinted black and engraved with gold, heavily customized for a high-ranking official."
+
+	icon_state = "amateba_holster"
+	item_state = "s_marinebelt"
+
+/obj/item/storage/belt/gun/mateba/pmc/fill_preset_inventory()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/revolver/mateba/admiral(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact/explosive(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact/explosive(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact(src)
+	new_gun.on_enter_storage(src)
+
 /obj/item/storage/belt/gun/type47
 	name = "\improper Type 47 pistol holster rig"
 	desc = "This UPP-designed sidearm rig can very snugly and securely fit either a Nagant-Yamasaki revolver or a Korovin PK-9, and both their magazines or speedloaders. However, it lacks versatility in stored weaponry."
@@ -1164,9 +1190,29 @@
 	new /obj/item/ammo_magazine/smartgun(src)
 	new_gun.on_enter_storage(src)
 
+/obj/item/storage/belt/gun/smartgunner/pmc
+	name = "\improper M802 pattern 'Dirty' smartgunner sidearm rig"
+	desc = "A modification of the standard M802 load-bearing equipment, designed to carry smartgun ammunition and a Mateba revolver."
+	icon_state = "sgbelt"
+	icon_x = 5
+	icon_y = -2
+	mixed_pistols = TRUE
+	can_hold = list(
+		/obj/item/device/flashlight/flare,
+		/obj/item/weapon/gun/flare,
+		/obj/item/weapon/gun/pistol,
+		/obj/item/weapon/gun/revolver/m44,
+		/obj/item/weapon/gun/revolver/mateba,
+		/obj/item/ammo_magazine/revolver,
+		/obj/item/ammo_magazine/revolver/mateba,
+		/obj/item/ammo_magazine/pistol,
+		/obj/item/ammo_magazine/smartgun
+	)
+	has_gamemode_skin = TRUE
+
 /obj/item/storage/belt/gun/smartgunner/pmc/full/fill_preset_inventory()
-	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/vp78(src)
-	new /obj/item/ammo_magazine/smartgun/dirty(src)
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/revolver/mateba(src)
+	new /obj/item/ammo_magazine/revolver/mateba/highimpact(src)
 	new /obj/item/ammo_magazine/smartgun/dirty(src)
 	new /obj/item/ammo_magazine/smartgun/dirty(src)
 	new /obj/item/ammo_magazine/smartgun/dirty(src)

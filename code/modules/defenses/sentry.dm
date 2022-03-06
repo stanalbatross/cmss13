@@ -345,6 +345,20 @@
 				blocked = TRUE
 				break
 
+		if(!omni_directional)
+			var/turf/F = get_step(src, src.dir)
+			if(F.density || F.opacity)
+				blocked = TRUE
+
+			for(var/obj/structure/S in F)
+				if(F.opacity)
+					blocked = TRUE
+					break
+
+			for(var/obj/vehicle/multitile/V in F)
+				blocked = TRUE
+				break
+
 		if(blocked)
 			if(A == target)
 				target = null
@@ -492,7 +506,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	fire_delay = 0.15 SECONDS
 	health = 150
 	health_max = 150
-	damage_mult = 0.6
+	damage_mult = 0.4
 	density = FALSE
 	disassemble_time = 0.75 SECONDS
 	handheld_type = /obj/item/defenses/handheld/sentry/mini

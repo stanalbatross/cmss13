@@ -209,6 +209,7 @@
 	var/tileoffset = 0 // Zooming-out related vars
 	var/viewsize = 0
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
+	var/lock_evolve = FALSE //Prevents evolve/devolve (used when banished)
 	var/list/tackle_counter
 	var/evolving = FALSE // Whether the xeno is in the process of evolving
 	/// The damage dealt by a xeno whenever they take damage near someone
@@ -692,9 +693,6 @@
 	return pull_multiplier
 
 /mob/living/carbon/Xenomorph/proc/set_faction(var/new_faction = FACTION_XENOMORPH)
-	if(round_statistics && !statistic_exempt)
-		round_statistics.track_new_participant(faction, -1)
-		round_statistics.track_new_participant(new_faction, 1)
 	faction = new_faction
 
 //Call this function to set the hive and do other cleanup
