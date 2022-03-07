@@ -176,7 +176,7 @@
 	if(checkwin_counter >= 10) //Only check win conditions every 10 ticks.
 		if(xeno_wave == WO_MAX_WAVE && last_wave_time == 0)
 			last_wave_time = world.time
-		if(!round_end_states && round_should_check_for_win && last_wave_time != 0)
+		if(!round_finished && round_should_check_for_win && last_wave_time != 0)
 			check_win()
 		checkwin_counter = 0
 	return 0
@@ -205,9 +205,9 @@
 	var/C = count_humans_and_xenos(SSmapping.levels_by_trait(ZTRAIT_GROUND))
 
 	if(C[1] == 0)
-		round_end_states = MODE_WISKEY_OUTPOST_X_MAJOR //Alien win
+		round_finished = MODE_WISKEY_OUTPOST_X_MAJOR //Alien win
 	else if(world.time > last_wave_time + 15 MINUTES) //Last wave time + 15 minutes over for give some time to xeno push
-		round_end_states = MODE_WISKEY_OUTPOST_M_MAJOR //Marine win
+		round_finished = MODE_WISKEY_OUTPOST_M_MAJOR //Marine win
 
 /datum/game_mode/whiskey_outpost/proc/disablejoining()
 	for(var/i in RoleAuthority.roles_by_name)
@@ -243,10 +243,7 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/whiskey_outpost/check_finished()
-	if(round_end_states)
-		return 1
-
-	return 0
+	if(round_finished) return 1
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relevant information stated//
@@ -254,7 +251,7 @@
 /datum/game_mode/whiskey_outpost/declare_completion()
 	if(round_statistics)
 		round_statistics.track_round_end()
-	switch(round_end_states)
+	switch(round_finished)
 		if(MODE_WISKEY_OUTPOST_X_MAJOR)
 			log_game("Round end result - xenos won")
 			to_world("<span class='round_header'>The Xenos have succesfully defended their hive from colonization.</span>")
@@ -288,13 +285,13 @@
 				if(round_statistics.current_map)
 					round_statistics.current_map.total_draws += 1
 		else
-			log_game("Round end result - [round_end_states]")
+			log_game("Round end result - [round_finished]")
 
 	if(round_statistics)
 		round_statistics.game_mode = name
 		round_statistics.round_length = world.time
 		round_statistics.end_round_player_population = GLOB.clients.len
-		round_statistics.round_result = round_end_states
+		round_statistics.round_result = round_finished
 
 		round_statistics.log_round_statistics()
 

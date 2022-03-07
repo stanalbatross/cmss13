@@ -326,7 +326,7 @@
 			if(round_statistics && round_statistics.current_map)
 				round_statistics.current_map.total_draws += 1
 		else
-			log_game("Round end result - [round_end_states]")
+			log_game("Round end result - [round_finished]")
 	var/sound/S = sound(musical_track, channel = SOUND_CHANNEL_LOBBY)
 	S.status = SOUND_STREAM
 	sound_to(world, S)
