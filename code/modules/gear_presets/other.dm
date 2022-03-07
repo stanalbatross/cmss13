@@ -64,6 +64,7 @@
 
 /datum/equipment_preset/other/freelancer/standard
 	name = "Freelancer (Standard)"
+	paygrade = "Freelancer Standard"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	skills = /datum/skills/freelancer
@@ -135,6 +136,7 @@
 
 /datum/equipment_preset/other/freelancer/medic
 	name = "Freelancer (Medic)"
+	paygrade = "Freelancer Medic"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Freelancer Medic"
 	skills = /datum/skills/freelancer/combat_medic
@@ -200,6 +202,7 @@
 
 /datum/equipment_preset/other/freelancer/leader
 	name = "Freelancer (Leader)"
+	paygrade = "Freelancer Leader"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Freelancer Warlord"
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_JAPANESE, LANGUAGE_YAUTJA)
@@ -263,6 +266,7 @@
 
 /datum/equipment_preset/other/elite_merc/standard
 	name = "Elite Mercenary (Standard Miner)"
+	paygrade = "Elite Freelancer Standard"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/centcom
@@ -303,6 +307,7 @@
 
 /datum/equipment_preset/other/elite_merc/heavy
 	name = "Elite Mercenary (Heavy)"
+	paygrade = "Elite Freelancer Heavy"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/centcom
@@ -346,6 +351,7 @@
 //*****************************************************************************************************/
 /datum/equipment_preset/other/elite_merc/engineer
 	name = "Elite Mercenary (Engineer)"
+	paygrade = "Elite Freelancer Engineer"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/data
@@ -402,6 +408,7 @@
 
 /datum/equipment_preset/other/elite_merc/medic
 	name = "Elite Mercenary (Medic)"
+	paygrade = "Elite Freelancer Medic"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/centcom
@@ -451,6 +458,7 @@
 
 /datum/equipment_preset/other/elite_merc/leader
 	name = "Elite Mercenary (Leader)"
+	paygrade = "Elite Freelancer Leader"
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/centcom
