@@ -384,6 +384,13 @@
 			fallen_list += D.fallen_names
 			qdel(D)
 		return TRUE
+	if(istype(I, /obj/item/card/id))
+		var/obj/item/card/id/D = I
+		if(D.fallen_names_shipside)
+			to_chat(user, SPAN_NOTICE("You add [D] to [src]."))
+			fallen_list += D.fallen_names_shipside
+			qdel(D)
+		return TRUE
 	else
 		. = ..()
 
