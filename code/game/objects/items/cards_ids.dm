@@ -67,6 +67,7 @@
 	var/registered_name = "Unknown" // The name registered_name on the card
 	var/registered_ref = null
 	var/registered_gid = 0
+	var/mob/living/carbon/human/idtarget
 	flags_equip_slot = SLOT_ID
 
 	var/blood_type = "\[UNSET\]"
@@ -102,7 +103,8 @@
 /obj/item/card/id/proc/set_user_data(var/mob/living/carbon/human/H)
 	if(!istype(H))
 		return
-
+	
+	idtarget = H
 	registered_name = H.real_name
 	registered_ref = WEAKREF(H)
 	registered_gid = H.gid

@@ -386,6 +386,9 @@
 		return TRUE
 	if(istype(I, /obj/item/card/id))
 		var/obj/item/card/id/D = I
+		if(D.idtarget.stat == DEAD)
+			to_chat(user, SPAN_NOTICE("The owner of that ID is still alive, probably."))
+			return
 		if(D.fallen_names_shipside)
 			to_chat(user, SPAN_NOTICE("You add [D] to [src]."))
 			fallen_list += D.fallen_names_shipside
