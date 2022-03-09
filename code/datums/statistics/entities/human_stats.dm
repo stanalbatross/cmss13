@@ -82,7 +82,6 @@
 		var/datum/entity/player_stats/job/job_entity = job_stats_list[job_statistic]
 		job_entity.get_recalculate()
 		job_entity.recalculate_nemesis()
-	..()
 
 /datum/entity/player_stats/human/proc/recalculate_top_weapon()
 	for(var/statistics in weapon_stats_list)
