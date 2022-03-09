@@ -174,7 +174,7 @@
 	w_class = SIZE_LARGE
 	flags_equip_slot = SLOT_BACK
 	var/slowdown_amount = IMP_SLOWDOWN_TIME
-	var/area_range = 3
+	var/area_range = 5 //stretches 3 tiles away in all directions
 
 
 /obj/item/storage/backpack/imp/equipped(mob/user, slot)
@@ -202,6 +202,7 @@
 		return
 
 	for(var/mob/living/carbon/Xenomorph/X in targets)
+		to_chat(X, SPAN_XENOWARNING("Augh! You are slowed by the incessant ringing!"))
 		X.SetSuperslowed(BELL_TOWER_EFFECT)
 		playsound(X, 'sound/misc/bell.ogg', 50, 0, 50)
 
