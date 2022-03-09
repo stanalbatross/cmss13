@@ -402,6 +402,9 @@ BSQL_PROTECT_DATUM(/datum/entity/player)
 			LAZYSET(playtimes, S.role_id, S)
 
 /datum/entity/player/proc/load_statistics()
+	if(!player_entity)
+		player_entity = setup_player_entity(ckey)
+
 	DB_FILTER(/datum/entity/statistic/death, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_death))
 	DB_FILTER(/datum/entity/statistic/medal, DB_COMP("player_id", DB_EQUALS, id), CALLBACK(src, /datum/entity/player.proc/statistic_load_medals))
 	DB_FILTER(/datum/entity/statistic/xeno, DB_AND(DB_COMP("player_id", DB_EQUALS, id), DB_COMP("type_s", DB_EQUALS, STATISTIC_TYPE_XENO)), CALLBACK(src, /datum/entity/player.proc/statistic_load_xeno))

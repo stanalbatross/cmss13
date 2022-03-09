@@ -27,7 +27,7 @@ var/global/list/medal_awards = list()
 	if(!chosen_recipient || chosen_recipient == "Cancel") return
 	var/recipient_rank = listed_rcpt_ranks[chosen_recipient]
 	var/posthumous = 1
-	var/medal_type = tgui_input_list(usr, "What type of medal do you want to award?", "Medal Type", list("distinguished conduct medal", "bronze heart medal","medal of valor", "medal of exceptional heroism"))
+	var/medal_type = tgui_input_list(usr, "What type of medal do you want to award?", "Medal Type", list("distinguished conduct medal", "bronze heart medal", "medal of valor", "medal of exceptional heroism"))
 	if(!medal_type) return
 	var/citation = strip_html(input("What should the medal citation read?","Medal Citation", null) as text|null, MAX_PAPER_MESSAGE_LEN)
 	if(!citation) return
@@ -35,7 +35,7 @@ var/global/list/medal_awards = list()
 	var/recipient_mob
 	for(var/mob/M in GLOB.mob_list)
 		if(M == usr)
-			M.count_statistic_stat(STATISTICS_MEDALS_GIVE)
+			track_statistic_human_earned(STATISTICS_MEDALS_GIVE, 1, M.client.player_data.id)
 		if(M.real_name == chosen_recipient)
 			if(isliving(M) && M.stat != DEAD)
 				posthumous = 0

@@ -78,13 +78,17 @@
 	)
 
 /datum/game_mode/proc/setup_round_stats()
+	set waitfor=0
+
+	SSperf_logging.start_logging()
+
+	WAIT_SSPERFLOGGING_READY
+
 	if(!round_stats)
 		var/operation_name
 		operation_name = "[pick(operation_titles)]"
 		operation_name += " [pick(operation_prefixes)]"
 		operation_name += "-[pick(operation_postfixes)]"
-
-		SSperf_logging.start_logging()
 
 		// Round stats
 		round_stats = DB_ENTITY(/datum/entity/statistic/round)
@@ -145,14 +149,12 @@
 	var/datum/entity/statistic/S = final_participants["[faction]"]
 	S.value += amount
 
-/datum/entity/statistic/round/proc/track_round_end(var/completion_type)
+/datum/entity/statistic/round/proc/track_round_end()
 	real_time_end = time2text(world.realtime)
-	round_result = completion_type
 	for(var/i in GLOB.alive_mob_list)
 		var/mob/M = i
 		if(M.mind)
 			track_final_participant(M.faction)
-			end_round_player_population += 1
 	if(current_map)
 		current_map.total_rounds += 1
 		current_map.save()

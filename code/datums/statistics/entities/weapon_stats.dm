@@ -12,6 +12,6 @@
 			NNN.value = N.value
 
 /datum/entity/player_stats/weapon/proc/get_kills()
-	var/datum/entity/statistic/human/stat_entity = statistic["total_kills"]
+	var/datum/entity/statistic/human/stat_entity = statistic["Kill"]
 	if(stat_entity)
 		total_kills = stat_entity.value

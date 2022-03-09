@@ -37,6 +37,6 @@
 			nemesis.value = causes["[stat_entity.cause_name]"]
 
 /datum/entity/player_stats/caste/proc/get_kills()
-	var/datum/entity/statistic/xeno/stat_entity = statistic["total_kills"]
+	var/datum/entity/statistic/xeno/stat_entity = statistic["Kill"]
 	if(stat_entity)
 		total_kills = stat_entity.value

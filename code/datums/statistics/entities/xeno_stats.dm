@@ -68,7 +68,6 @@
 		var/datum/entity/player_stats/caste/caste_entity = caste_stats_list[caste_statistic]
 		caste_entity.get_recalculate()
 		caste_entity.recalculate_nemesis()
-	..()
 
 /datum/entity/player_stats/xeno/proc/recalculate_top_caste()
 	for(var/statistics in caste_stats_list)
@@ -80,21 +79,6 @@
 			continue
 		if(stat_entity.total_kills > top_caste.total_kills)
 			top_caste = stat_entity
-
-/datum/entity/player_stats/xeno/recalculate_nemesis()
-	var/list/causes = list()
-	for(var/datum/entity/statistic/death/stat_entity in player.DS)
-		if(!stat_entity.cause_name || stat_entity.faction_name != "Normal Hive")
-			continue
-		causes["[stat_entity.cause_name]"] += 1
-		if(!nemesis)
-			nemesis = new()
-			nemesis.name = stat_entity.cause_name
-			nemesis.value = 1
-			continue
-		if(causes["[stat_entity.cause_name]"] > nemesis.value)
-			nemesis.name = stat_entity.cause_name
-			nemesis.value = causes["[stat_entity.cause_name]"]
 
 /datum/entity/player_stats/xeno/proc/track_caste_playing(var/caste, var/client/client)
 	var/datum/entity/player_stats/caste/S = setup_caste_stats(caste)
