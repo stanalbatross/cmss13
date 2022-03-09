@@ -196,4 +196,7 @@ var/list/almayer_ship_sections = list(
 	(LOWER_DECK + " " + MIDSHIP),
 	(LOWER_DECK + " " + AFTSHIP)
 	*/
+
 )
+//Used to store the Almayer's orbit for related tomfoolery, since it affects such a wide variety of things. 0 = safe high altitude, 1 = lower and riskier orbit
+var/almayer_orbit_depth = 0

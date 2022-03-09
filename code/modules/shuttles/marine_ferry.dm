@@ -53,6 +53,8 @@
 	var/crash_target_section = null
 	// Used during the jump crash to announce if the AA system threw the dropship off course
 	var/true_crash_target_section = null
+	
+	almayer_orbit_depth  //If orbit is 1 (lower), activates the 10 bonus, otherwise this is just 0 
 
 
 //Full documentation 650-700 lines down by the copy for elevators
@@ -225,7 +227,7 @@
 		return	//someone cancelled the launch
 
 	if(transit_gun_mission)
-		travel_time = move_time * 1.5 //fire missions not made shorter by optimization.
+		travel_time = (move_time * 1.5) + (almayer_orbit_depth * 10) //fire missions not made shorter by optimization. If orbit is 1 (lower), activates the 10 bonus, otherwise this is just 0 
 		for(var/X in equipments)
 			var/obj/structure/dropship_equipment/E = X
 			if(istype(E, /obj/structure/dropship_equipment/fuel/fuel_enhancer))
@@ -233,9 +235,9 @@
 				break
 	else
 		if(transit_optimized)
-			travel_time = move_time * SHUTTLE_OPTIMIZE_FACTOR_TRAVEL
+			travel_time = (move_time - (almayer_orbit_depth * 10)) * SHUTTLE_OPTIMIZE_FACTOR_TRAVEL 
 		else
-			travel_time = move_time
+			travel_time = move_time - (almayer_orbit_depth * 10)
 
 		for(var/X in equipments)
 			var/obj/structure/dropship_equipment/E = X
