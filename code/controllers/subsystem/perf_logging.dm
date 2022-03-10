@@ -1,3 +1,5 @@
+#define WAIT_SSPERFLOGGING_READY while(!SSperf_logging.round) {stoplag();}
+
 SUBSYSTEM_DEF(perf_logging)
 	name = "Perf Logging"
 	wait = 60 SECONDS
