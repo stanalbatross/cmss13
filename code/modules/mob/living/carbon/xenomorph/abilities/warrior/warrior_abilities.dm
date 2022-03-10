@@ -23,7 +23,7 @@
 	xeno_cooldown = 55
 
 	// Configurables
-	var/fling_distance = 3
+	var/fling_distance = 4
 	var/stun_power = 1
 	var/weaken_power = 1
 
