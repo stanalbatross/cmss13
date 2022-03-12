@@ -1,13 +1,13 @@
-#define M2C_SETUP_TIME 4
-#define M2C_OVERHEAT_CRITICAL 18
-#define M2C_OVERHEAT_BAD 10
-#define M2C_OVERHEAT_OK 2
+#define M2C_SETUP_TIME 0.2 SECONDS
+#define M2C_OVERHEAT_CRITICAL 25
+#define M2C_OVERHEAT_BAD 14
+#define M2C_OVERHEAT_OK 4
 #define M2C_OVERHEAT_DAMAGE 30
 #define M2C_LOW_COOLDOWN_ROLL 0.3
 #define M2C_HIGH_COOLDOWN_ROLL 0.45
-#define M2C_PASSIVE_COOLDOWN_AMOUNT 3
+#define M2C_PASSIVE_COOLDOWN_AMOUNT 4
 #define M2C_OVERHEAT_OVERLAY 14
-#define M2C_CRUSHER_STUN 3
+#define M2C_CRUSHER_STUN 3 SECONDS
 
 //////////////////////////////////////////////////////////////
 //Mounted MG, Replacment for the current jury rig code.
@@ -289,6 +289,22 @@
 		return
 
 	if(HAS_TRAIT(O, TRAIT_TOOL_SCREWDRIVER))
+		var/turf/T = get_turf(src)
+		var/fail = FALSE
+		if(T.density)
+			fail = TRUE
+		else
+			for(var/obj/X in T.contents - src)
+				if(X.density && !(X.flags_atom & ON_BORDER))
+					fail = TRUE
+					break
+				if(istype(X, /obj/structure/machinery/defenses))
+					fail = TRUE
+					break
+		if(fail)
+			to_chat(user, SPAN_WARNING("You can't install \the [src] here, something is in the way."))
+			return
+
 		if(gun_mounted)
 			to_chat(user, "You're securing the M56D into place...")
 
@@ -307,19 +323,6 @@
 				G.update_icon()
 				qdel(src)
 		else
-			if(!anchored)
-				var/turf/T = get_turf(src)
-				var/fail = 0
-				if(T.density)
-					fail = 1
-				else
-					for(var/obj/X in T)
-						if(X.density  && X != src && !(X.flags_atom & ON_BORDER))
-							fail = 1
-							break
-				if(fail)
-					to_chat(user, SPAN_WARNING("Can't install [src] here, something is in the way."))
-					return
 			if(anchored)
 				to_chat(user, "You begin unscrewing [src] from the ground...")
 			else
@@ -676,6 +679,9 @@
 	if(user.get_active_hand())
 		to_chat(usr, SPAN_WARNING("You need a free hand to shoot the [src]."))
 		return HANDLE_CLICK_UNHANDLED
+	if(!user.allow_gun_usage)
+		to_chat(user, SPAN_WARNING("You aren't allowed to use firearms!"))
+		return HANDLE_CLICK_UNHANDLED
 
 	target = A
 	if(!istype(target))
@@ -688,6 +694,7 @@
 		return HANDLE_CLICK_UNHANDLED
 
 	if(mods["middle"] || mods["shift"] || mods["alt"] || mods["ctrl"])
+		handle_modded_clicks(user, mods)
 		return HANDLE_CLICK_PASS_THRU
 
 	var/angle = get_dir(src, target)
@@ -709,6 +716,9 @@
 
 /obj/structure/machinery/m56d_hmg/proc/handle_outside_cone(mob/living/carbon/human/user)
 	return FALSE
+
+/obj/structure/machinery/m56d_hmg/proc/handle_modded_clicks(mob/living/carbon/human/user, var/list/mods)
+	return HANDLE_CLICK_PASS_THRU
 
 /obj/structure/machinery/m56d_hmg/proc/muzzle_flash(var/angle) // Might as well keep this too.
 	if(isnull(angle))
@@ -768,6 +778,11 @@
 				return
 			if(user.get_active_hand() != null)
 				to_chat(user, SPAN_WARNING("You need a free hand to man the [src]."))
+
+			if(!user.allow_gun_usage)
+				to_chat(user, SPAN_WARNING("You aren't allowed to use firearms!"))
+				return
+
 			else
 				user.set_interaction(src)
 
@@ -974,7 +989,7 @@
 	if(!(user.alpha > 60))
 		to_chat(user, SPAN_WARNING("You can't set this up while cloaked!"))
 		return
-	if(!do_after(user, M2C_SETUP_TIME , INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
+	if(!do_after(user, M2C_SETUP_TIME, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 		return
 
 	var/obj/structure/machinery/m56d_hmg/auto/M =  new /obj/structure/machinery/m56d_hmg/auto(user.loc)
@@ -1029,10 +1044,10 @@
 	icon_empty = "M56DE_e"
 	rounds_max = 125
 	ammo = /datum/ammo/bullet/machinegun/auto
-	fire_delay = 1.2
+	fire_delay = 1.1
 	last_fired = 0
 	var/grip_dir = null
-	var/fold_time = 24
+	var/fold_time = 1.5 SECONDS
 	var/repair_time = 5 SECONDS
 	density = 1
 	health = 230
@@ -1048,10 +1063,10 @@
 
 	// OVERHEAT MECHANIC VARIABLES
 	var/overheat_value = 0
-	var/overheat_threshold = 30
+	var/overheat_threshold = 40
 	var/emergency_cooling = FALSE
 	var/overheat_text_cooldown = 0
-	var/force_cooldown_timer = 12
+	var/force_cooldown_timer = 10
 	var/rotate_timer = 0
 	var/fire_stopper = FALSE
 
@@ -1207,13 +1222,19 @@
 		return
 	return
 
+/obj/structure/machinery/m56d_hmg/auto/handle_modded_clicks(mob/living/carbon/human/user, var/list/mods)
+	if(mods["middle"])
+		handle_rotating_gun(user)
+
+	return ..()
+
 // AUTOMATIC FIRING
 
 /obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_start(client/source, atom/A, params)
 	SIGNAL_HANDLER
 	if(!(source.mob == operator) || !A)
 		return
-	var/mob/user = operator
+	var/mob/living/carbon/human/user = operator
 	target = A
 
 	if(params["shift"] || params["ctrl"] || params["alt"])
@@ -1233,10 +1254,8 @@
 	params = params
 	target = A
 
-	var/angle = get_dir(src, target)
-	if(world.time > rotate_timer && !((dir & angle) && target.loc != src.loc && target.loc != operator.loc))
-		rotate_timer = world.time + 0.5 SECONDS
-		rotate_to(user, target)
+	handle_rotating_gun(user)
+
 	INVOKE_ASYNC(src, .proc/auto_fire_repeat, user)
 
 /obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_stop(client/source, atom/A, params)
@@ -1257,12 +1276,9 @@
 
 	target = hovered
 
-	var/angle = get_dir(src,target)
-	if((world.time > rotate_timer) && !((dir & angle) && target.loc != src.loc && target.loc != operator.loc))
-		rotate_timer = world.time + 0.5 SECONDS
-		rotate_to(user, target)
+	handle_rotating_gun(user)
 
-/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_repeat(var/mob/user, var/atom/A)
+/obj/structure/machinery/m56d_hmg/auto/proc/auto_fire_repeat(var/mob/living/carbon/human/user, var/atom/A)
 	if(!target)
 		return
 	if(operator != user)
@@ -1271,6 +1287,9 @@
 		return
 	if(user.get_active_hand() || user.get_inactive_hand())
 		to_chat(usr, SPAN_WARNING("You need both your hands free to shoot [src]."))
+		return
+	if(!user.allow_gun_usage)
+		to_chat(user, SPAN_WARNING("You aren't allowed to use firearms!"))
 		return
 
 	var/angle = get_dir(src,target)
@@ -1303,7 +1322,6 @@
 	AM.current_rounds = 0
 	AM.update_icon()
 
-
 /obj/structure/machinery/m56d_hmg/auto/get_scatter()
 	return 0
 
@@ -1329,7 +1347,7 @@
 
 	if (mods["ctrl"])
 		if(operator != user) return
-		to_chat(user, SPAN_NOTICE("This isn't a M56D, there IS no burst fire option for the M2C."))
+		to_chat(user, SPAN_NOTICE("You try to toggle a burst-mode on the M2C, but realize that it doesn't exist."))
 		return
 
 	return ..()
@@ -1397,6 +1415,8 @@
 			HMG.update_icon()
 			HMG.health = health
 			user.put_in_active_hand(HMG)
+			if(user.equip_to_slot_if_possible(HMG, WEAR_BACK, disable_warning = TRUE))
+				to_chat(user, SPAN_NOTICE("You quickly heave the machine gun onto your back!"))
 			qdel(src)
 
 	update_icon()
@@ -1487,14 +1507,14 @@
 
 	var/turf/rotate_check = get_step(src.loc, turn(direction,180))
 	if(rotate_check.density)
-		to_chat(user, "You can't rotate it that way.")
+		to_chat(user, SPAN_WARNING("You can't rotate it that way."))
 		return
 
 	src.setDir(direction)
 	user.setDir(direction)
 	update_pixels(user)
 	playsound(src.loc, 'sound/items/m56dauto_rotate.ogg', 25, 1)
-	to_chat(user, "You rotate [src], using the tripod to support your pivoting movement.")
+	to_chat(user, SPAN_NOTICE("You rotate [src], using the tripod to support your pivoting movement."))
 
 /obj/structure/machinery/m56d_hmg/auto/proc/disable_interaction(mob/user, NewLoc, direction)
 	SIGNAL_HANDLER
@@ -1507,6 +1527,13 @@
 
 	if(laid_down)
 		user.unset_interaction()
+
+/obj/structure/machinery/m56d_hmg/auto/proc/handle_rotating_gun(mob/user)
+	var/angle = get_dir(src, target)
+	if(world.time > rotate_timer && !((dir & angle) && target.loc != src.loc && target.loc != operator.loc))
+		rotate_timer = world.time + 0.4 SECONDS
+		rotate_to(user, target)
+		return TRUE
 
 #undef M2C_OVERHEAT_CRITICAL
 #undef M2C_OVERHEAT_BAD

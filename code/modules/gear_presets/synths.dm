@@ -1,7 +1,7 @@
 /datum/equipment_preset/synth
 	name = "Synth"
 	uses_special_name = TRUE
-	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_JAPANESE, LANGUAGE_YAUTJA, LANGUAGE_XENOMORPH, LANGUAGE_SPACENDEUTCHEN, LANGUAGE_SPANISH)
+	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_JAPANESE, LANGUAGE_YAUTJA, LANGUAGE_XENOMORPH, LANGUAGE_WELTRAUMDEUTSCH, LANGUAGE_NEOSPANISH)
 	skills = /datum/skills/synthetic
 
 /datum/equipment_preset/synth/New()
@@ -129,6 +129,14 @@
 	H.equip_to_slot_or_del(new /obj/item/weapon/melee/twohanded/fireaxe(H), WEAR_L_HAND)
 
 	add_random_survivor_equipment(H)
+
+/datum/equipment_preset/synth/survivor/load_id(mob/living/carbon/human/H, client/mob_client)
+	var/obj/item/clothing/under/uniform = H.w_uniform
+	if(istype(uniform))
+		uniform.has_sensor = UNIFORM_HAS_SENSORS
+		uniform.sensor_faction = FACTION_COLONIST
+	return ..()
+
 
 //*****************************************************************************************************/
 

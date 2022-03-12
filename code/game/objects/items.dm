@@ -72,7 +72,7 @@
 	var/list/sprite_sheets = list()
 	var/list/item_icons = list()
 
-	var/list/item_state_slots = list() //overrides the default
+	var/list/item_state_slots //overrides the default
 
 	var/mob/living/carbon/human/locked_to_mob = null	// If the item uses flag MOB_LOCK_ON_PICKUP, this is the mob owner reference.
 
@@ -307,11 +307,16 @@ cases. Override_icon_state should be a list.*/
 /obj/item/proc/on_exit_storage(obj/item/storage/S as obj)
 	SHOULD_CALL_PARENT(TRUE)
 	appearance_flags &= ~NO_CLIENT_COLOR
+	if(src in S.hearing_items)
+		LAZYREMOVE(S.hearing_items, src)
+
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
 /obj/item/proc/on_enter_storage(obj/item/storage/S as obj)
 	SHOULD_CALL_PARENT(TRUE)
 	appearance_flags |= NO_CLIENT_COLOR //It's in an inventory item, so saturation/desaturation etc. effects shouldn't affect it.
+	if(src.flags_atom & USES_HEARING)
+		LAZYADD(S.hearing_items, src)
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
 /obj/item/proc/on_found(mob/finder as mob)
@@ -837,8 +842,9 @@ keep_zoom - do we keep zoom during movement. be careful with setting this to 1
 
 /obj/item/proc/get_icon_state(mob/user_mob, slot)
 	var/mob_state
-	if(item_state_slots && item_state_slots[slot])
-		mob_state = item_state_slots[slot]
+	var/item_state_slot_state = LAZYACCESS(item_state_slots, slot)
+	if(item_state_slot_state)
+		mob_state = item_state_slot_state
 	else if (item_state && (slot == WEAR_R_HAND || slot == WEAR_L_HAND || slot == WEAR_ID || slot == WEAR_WAIST))
 		mob_state = item_state
 	else

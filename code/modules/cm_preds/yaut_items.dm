@@ -19,6 +19,7 @@
 
 //======================================\\
 //=================\\//=================\\
+
 /obj/item/clothing/suit/armor/yautja
 	name = "ancient alien armor"
 	desc = "Ancient armor made from a strange alloy. It feels cold with an alien weight."
@@ -55,6 +56,7 @@
 	item_state_slots = list(WEAR_JACKET = "halfarmor1")
 	valid_accessory_slots = list(ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S, ACCESSORY_SLOT_ARMOR_M)
 	var/thrall = FALSE//Used to affect icon generation.
+	fire_intensity_resistance = 10
 
 /obj/item/clothing/suit/armor/yautja/Initialize(mapload, armor_number = rand(1,7), armor_material = "ebony", elder_restricted = 0)
 	. = ..()
@@ -65,29 +67,29 @@
 			if(1341)
 				name = "\improper 'Armor of the Dragon'"
 				icon_state = "halfarmor_elder_tr"
-				item_state_slots = list(WEAR_JACKET = "halfarmor_elder_tr")
+				LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor_elder_tr")
 			if(7128)
 				name = "\improper 'Armor of the Swamp Horror'"
 				icon_state = "halfarmor_elder_joshuu"
-				item_state_slots = list(WEAR_JACKET = "halfarmor_elder_joshuu")
+				LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor_elder_joshuu")
 			if(9867)
 				name = "\improper 'Armor of the Enforcer'"
 				icon_state = "halfarmor_elder_feweh"
-				item_state_slots = list(WEAR_JACKET = "halfarmor_elder_feweh")
+				LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor_elder_feweh")
 			if(4879)
 				name = "\improper 'Armor of the Ambivalent Collector'"
 				icon_state = "halfarmor_elder_n"
-				item_state_slots = list(WEAR_JACKET = "halfarmor_elder_n")
+				LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor_elder_n")
 			else
 				name = "clan elder's armor"
 				icon_state = "halfarmor_elder"
-				item_state_slots = list(WEAR_JACKET = "halfarmor_elder")
+				LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor_elder")
 	else
 		if(armor_number > 7)
 			armor_number = 1
 		if(armor_number) //Don't change full armor number
 			icon_state = "halfarmor[armor_number]_[armor_material]"
-			item_state_slots = list(WEAR_JACKET = "halfarmor[armor_number]_[armor_material]")
+			LAZYSET(item_state_slots, WEAR_JACKET, "halfarmor[armor_number]_[armor_material]")
 
 	flags_cold_protection = flags_armor_protection
 	flags_heat_protection = flags_armor_protection
@@ -142,11 +144,12 @@
 			/obj/item/weapon/melee/yautja,
 			/obj/item/storage/backpack/yautja,
 			/obj/item/weapon/melee/twohanded/yautja)
+	fire_intensity_resistance = 20
 
-/obj/item/clothing/suit/armor/yautja/full/Initialize(mapload, armor_number, armor_material)
+/obj/item/clothing/suit/armor/yautja/hunter/full/Initialize(mapload, armor_number, armor_material = "ebony")
 	. = ..(mapload, 0)
 	icon_state = "fullarmor_[armor_material]"
-	item_state_slots = list(WEAR_JACKET = "fullarmor_[armor_material]")
+	LAZYSET(item_state_slots, WEAR_JACKET, "fullarmor_[armor_material]")
 
 
 /obj/item/clothing/cape
@@ -171,19 +174,19 @@
 		if(1341)
 			name = "\improper 'Mantle of the Dragon'"
 			icon_state = "cape_elder_tr"
-			item_state_slots = list(WEAR_JACKET = "cape_elder_tr")
+			LAZYSET(item_state_slots, WEAR_BACK, "cape_elder_tr")
 		if(7128)
 			name = "\improper 'Mantle of the Swamp Horror'"
 			icon_state = "cape_elder_joshuu"
-			item_state_slots = list(WEAR_JACKET = "cape_elder_joshuu")
+			LAZYSET(item_state_slots, WEAR_BACK, "cape_elder_joshuu")
 		if(9867)
 			name = "\improper 'Mantle of the Enforcer'"
 			icon_state = "cape_elder_feweh"
-			item_state_slots = list(WEAR_JACKET = "cape_elder_feweh")
+			LAZYSET(item_state_slots, WEAR_BACK, "cape_elder_feweh")
 		if(4879)
 			name = "\improper 'Mantle of the Ambivalent Collector'"
 			icon_state = "cape_elder_n"
-			item_state_slots = list(WEAR_JACKET = "cape_elder_n")
+			LAZYSET(item_state_slots, WEAR_BACK, "cape_elder_n")
 
 /obj/item/clothing/cape/eldercape/dropped(mob/living/user)
 	add_to_missing_pred_gear(src)
@@ -261,6 +264,7 @@
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	var/thrall = FALSE//Used to affect icon generation.
+	fire_intensity_resistance = 10
 
 /obj/item/clothing/shoes/yautja/New(location, boot_number = rand(1,4), armor_material = "ebony")
 	..()
@@ -317,7 +321,8 @@
 	flags_cold_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_ARMS|BODY_FLAG_FEET|BODY_FLAG_HANDS //Does not cover the head though.
 	flags_heat_protection = BODY_FLAG_CHEST|BODY_FLAG_GROIN|BODY_FLAG_LEGS|BODY_FLAG_ARMS|BODY_FLAG_FEET|BODY_FLAG_HANDS
 	flags_item = ITEM_PREDATOR
-	has_sensor = 0
+	has_sensor = UNIFORM_HAS_SENSORS
+	sensor_faction = FACTION_YAUTJA
 	siemens_coefficient = 0.9
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
 

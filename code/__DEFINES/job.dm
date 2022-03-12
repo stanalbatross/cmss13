@@ -35,7 +35,7 @@ var/global/list/job_squad_roles = JOB_SQUAD_ROLES_LIST
 #define JOB_MEDIC_ROLES_LIST            list(JOB_SQUAD_MEDIC, JOB_CMO, JOB_DOCTOR, JOB_NURSE, JOB_RESEARCHER)
 
 #define JOB_CORPORATE_LIAISON			"Corporate Liaison"
-#define JOB_MESS_SERGEANT				"Mess Sergeant"
+#define JOB_MESS_SERGEANT   			"Mess Technician"
 #define JOB_SYNTH						"Synthetic"
 #define JOB_WORKING_JOE					"Working Joe"
 
@@ -128,8 +128,8 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 
 //-------- PMC --------//
 #define JOB_PMC							"PMC Standard"
-#define JOB_PMC_ENGINEER				"PMC Mechanic"
-#define JOB_PMC_DOCTOR					"PMC Triage"
+#define JOB_PMC_ENGINEER				"PMC Corporate Technician"
+#define JOB_PMC_DOCTOR					"PMC Trauma Surgeon"
 #define JOB_PMC_INVESTIGATOR			"PMC Medical Investigator"
 #define JOB_PMC_ELITE					"PMC Elite"
 #define JOB_PMC_GUNNER					"PMC Support Weapons Specialist" //Renamed from Specialist to Support Specialist as it only has SG skills.
@@ -140,6 +140,7 @@ var/global/list/job_command_roles = JOB_COMMAND_ROLES_LIST
 #define JOB_PMC_COMMANDO				"PMC Commando"
 #define JOB_PMC_LEADER					"PMC Leader"
 #define JOB_PMC_LEAD_INVEST				"PMC Lead Investigator"
+#define JOB_PMC_DIRECTOR				"PMC Site Director"
 
 //-------- UPP --------//
 #define JOB_UPP							"UPP Private"

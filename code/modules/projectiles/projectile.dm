@@ -495,6 +495,13 @@
 			if(ammo.sound_miss) playsound_client(L.client, ammo.sound_miss, get_turf(L), 75, TRUE)
 			L.visible_message(SPAN_AVOIDHARM("[src] misses [L]!"),
 				SPAN_AVOIDHARM("[src] narrowly misses you!"), null, 4, CHAT_TYPE_TAKING_HIT)
+			log_attack("[src] narrowly missed [key_name(L)]")
+
+			var/mob/living/carbon/shotby = firer
+			if(istype(shotby))
+				L.attack_log += "[time_stamp()]\] [src], fired by [key_name(firer)], narrowly missed [key_name(L)]"
+				shotby.attack_log += "[time_stamp()]\] [src], fired by [key_name(shotby)], narrowly missed [key_name(L)]"
+
 
 		#if DEBUG_HIT_CHANCE
 		to_world(SPAN_DEBUG("([L]) Missed."))
@@ -1097,12 +1104,12 @@
 
 
 //This is where the bullet bounces off.
-/atom/proc/bullet_ping(obj/item/projectile/P)
+/atom/proc/bullet_ping(obj/item/projectile/P, var/pixel_x_offset, var/pixel_y_offset)
 	if(!P || !P.ammo.ping)
 		return
 
 	if(P.ammo.sound_bounce) playsound(src, P.ammo.sound_bounce, 50, 1)
-	var/image/I = image('icons/obj/items/weapons/projectiles.dmi',src,P.ammo.ping,10)
+	var/image/I = image('icons/obj/items/weapons/projectiles.dmi',src,P.ammo.ping,10, pixel_x = pixel_x_offset, pixel_y = pixel_y_offset)
 	var/angle = (P.firer && prob(60)) ? round(Get_Angle(P.firer,src)) : round(rand(1,359))
 	I.pixel_x += rand(-6,6)
 	I.pixel_y += rand(-6,6)
