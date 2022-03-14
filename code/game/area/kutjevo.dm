@@ -203,6 +203,11 @@
 	ceiling = CEILING_METAL
 	icon_state = "power"
 
+/area/kutjevo/interior/power/comms
+	name = "Kutjevo - Hydroelectric Dam Comms Relay"
+	ceiling = CEILING_METAL
+	icon_state = "power"
+
 /area/kutjevo/interior/construction
 	name = "Kutjevo - Abandoned Construction Interior"
 	ceiling = CEILING_METAL

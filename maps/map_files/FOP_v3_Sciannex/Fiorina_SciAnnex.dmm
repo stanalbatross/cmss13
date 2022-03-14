@@ -9225,8 +9225,8 @@
 /area/fiorina/oob)
 "fEY" = (
 /obj/structure/machinery/power/apc,
-/turf/open/floor/prison{
-	icon_state = "bluefull"
+/turf/open/floor{
+	icon_state = "delivery"
 	},
 /area/fiorina/station/power_ring)
 "fFf" = (
@@ -14745,6 +14745,21 @@
 	},
 /turf/open/floor/wood,
 /area/fiorina/station/park)
+"jcB" = (
+/obj/structure/surface/table/reinforced/prison,
+/obj/item/stock_parts/subspace/amplifier{
+	pixel_x = 6;
+	pixel_y = 3
+	},
+/obj/item/stock_parts/subspace/analyzer{
+	pixel_x = -9;
+	pixel_y = 8
+	},
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
+	},
+/area/fiorina/station/power_ring)
 "jdc" = (
 /obj/structure/closet/secure_closet/engineering_personal,
 /obj/item/device/multitool,
@@ -15215,10 +15230,9 @@
 /turf/open/floor/wood,
 /area/fiorina/station/park)
 "joS" = (
-/obj/structure/machinery/power/geothermal,
+/obj/item/weapon/gun/rifle/mar40,
 /turf/open/floor/prison{
-	dir = 8;
-	icon_state = "bluecorner"
+	icon_state = "bluefull"
 	},
 /area/fiorina/station/power_ring)
 "jpb" = (
@@ -19327,8 +19341,7 @@
 "lLU" = (
 /obj/effect/landmark/corpsespawner/engineer,
 /turf/open/floor/prison{
-	dir = 8;
-	icon_state = "bluecorner"
+	icon_state = "bluefull"
 	},
 /area/fiorina/station/power_ring)
 "lMi" = (
@@ -33933,6 +33946,10 @@
 	tag = "icon-floor_plate"
 	},
 /area/fiorina/tumor/civres)
+"uTk" = (
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms,
+/turf/open/floor/prison,
+/area/fiorina/station/power_ring)
 "uTp" = (
 /obj/structure/bed/chair,
 /turf/open/floor/prison{
@@ -36615,6 +36632,14 @@
 	tag = "icon-darkbrownfull2"
 	},
 /area/fiorina/maintenance)
+"wDF" = (
+/obj/structure/bed/chair{
+	dir = 1
+	},
+/turf/open/floor/prison{
+	icon_state = "bluefull"
+	},
+/area/fiorina/station/power_ring)
 "wDV" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1
@@ -83564,11 +83589,11 @@ lAS
 neX
 mxQ
 mxQ
+kfA
 joS
-luU
-xUz
-xUz
-pRG
+kfA
+kfA
+wDF
 oYM
 kfA
 kfA
@@ -83775,12 +83800,12 @@ oYM
 lAS
 flg
 wOc
-jjg
-swh
-oiu
+mxQ
 oYM
 oYM
-xUz
+oYM
+wqx
+kfA
 oYM
 kfA
 kaE
@@ -83989,8 +84014,8 @@ lAS
 neX
 mxQ
 mxQ
-oiu
-oYM
+lAS
+uTk
 oYM
 lLU
 oYM
@@ -84200,11 +84225,11 @@ oYM
 lAS
 qMV
 wOc
-jjg
-eNs
-oiu
-oiu
-rev
+mxQ
+lAS
+lAS
+oYM
+kfA
 oYM
 kfA
 kfA
@@ -84413,10 +84438,10 @@ eNs
 lAS
 neX
 mxQ
-jjg
 mxQ
-swh
-joS
+mxQ
+jcB
+kfA
 dMm
 kfA
 kfA
@@ -84627,7 +84652,7 @@ flg
 lJy
 wOc
 mxQ
-jjg
+mxQ
 mxQ
 eRH
 kfA

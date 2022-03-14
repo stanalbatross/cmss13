@@ -19392,16 +19392,13 @@
 /area/strata/ag/interior/administration)
 "bcG" = (
 /obj/structure/flora/grass/tallgrass/ice/corner{
-	dir = 1
+	dir = 9
 	},
 /turf/open/auto_turf/snow/layer3,
 /area/strata/ag/exterior/paths/southadmin)
 "bcH" = (
-/obj/structure/flora/grass/tallgrass/ice/corner{
-	dir = 9
-	},
-/turf/open/auto_turf/snow/layer2,
-/area/strata/ag/exterior/paths/southadmin)
+/turf/open/auto_turf/snow/layer4,
+/area/strata/ag/interior/admin_tcomms)
 "bcI" = (
 /obj/structure/machinery/weather_siren{
 	dir = 4;
@@ -38608,6 +38605,9 @@
 	},
 /turf/open/ice,
 /area/strata/ag/exterior/nearlz2)
+"lgj" = (
+/turf/open/auto_turf/snow/layer3,
+/area/strata/ag/exterior)
 "lgv" = (
 /obj/structure/flora/grass/tallgrass/jungle/corner{
 	dir = 9
@@ -39439,6 +39439,9 @@
 	icon_state = "floor3"
 	},
 /area/strata/ag/exterior/tcomms/tcomms_deck)
+"mrr" = (
+/turf/open/auto_turf/snow/layer2,
+/area/strata/ag/interior/admin_tcomms)
 "mrz" = (
 /obj/structure/closet/secure_closet/personal,
 /obj/effect/landmark/crap_item,
@@ -41016,6 +41019,10 @@
 	icon_state = "cement1"
 	},
 /area/strata/ag/exterior/landingzone_2)
+"ppk" = (
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms,
+/turf/open/auto_turf/snow/layer2,
+/area/strata/ag/interior/admin_tcomms)
 "ppA" = (
 /obj/structure/machinery/light/small,
 /turf/open/floor/strata{
@@ -42853,6 +42860,9 @@
 "srk" = (
 /turf/closed/wall/strata_outpost_bare,
 /area/strata/ug/interior/jungle/platform/east/scrub)
+"srn" = (
+/turf/open/auto_turf/snow/layer1,
+/area/strata/ag/interior/admin_tcomms)
 "srQ" = (
 /obj/structure/machinery/light/small,
 /turf/open/floor/strata{
@@ -45759,6 +45769,16 @@
 	icon_state = "floor2"
 	},
 /area/strata/ag/interior/outpost/med)
+"xlh" = (
+/obj/structure/machinery/power/apc{
+	dir = 1;
+	pixel_y = 24;
+	start_charge = 0
+	},
+/turf/open/floor{
+	icon_state = "delivery"
+	},
+/area/strata/ag/interior/admin_tcomms)
 "xlP" = (
 /turf/open/floor/strata{
 	dir = 8;
@@ -59845,11 +59865,11 @@ bhD
 bkx
 coB
 cfR
-cfR
-aac
-aac
-aac
+coB
 bcH
+bcH
+srn
+bed
 aZP
 aZP
 aZK
@@ -60038,10 +60058,10 @@ cqH
 csm
 bGa
 bJE
-cfR
-aac
-aac
-aac
+coB
+mrr
+ppk
+mrr
 aZK
 aZP
 aZP
@@ -60231,13 +60251,13 @@ ctA
 bAM
 bGb
 bJF
-cfR
-aac
-aac
-bgh
+coB
+mrr
+mrr
+bcH
 aZK
 aZP
-bbj
+aZP
 bed
 bbj
 bfc
@@ -60425,13 +60445,13 @@ cfR
 bGc
 bJG
 coB
-aac
-aac
-aZK
+xlh
+srn
+srn
 aZP
 aZP
-aac
-aac
+glL
+lgj
 aac
 bfd
 bfc
@@ -60619,11 +60639,11 @@ cqQ
 cqQ
 aac
 aac
-aRt
+baW
 aZP
 aZP
 aZK
-aac
+lgj
 aac
 aac
 aac
@@ -60816,7 +60836,7 @@ aRw
 aZP
 aZK
 bcm
-aac
+lgj
 aac
 aac
 fil
@@ -61009,7 +61029,7 @@ aRw
 aZP
 aZK
 bdA
-aac
+lgj
 aac
 aac
 aac
@@ -61201,7 +61221,7 @@ baU
 aRw
 aZK
 bgh
-aac
+lgj
 aac
 aac
 aac

@@ -175,6 +175,52 @@
 	freq_listening = list(CIV_GEN_FREQ, CIV_COMM_FREQ)
 	faction_shorthand = "colony"
 
+GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
+
+/obj/structure/machinery/telecomms/relay/preset/tower/Initialize()
+	GLOB.all_static_telecomms_towers += src
+	. = ..()
+
+/obj/structure/machinery/telecomms/relay/preset/tower/destroy()
+	GLOB.all_static_telecomms_towers -= src
+	. = ..()
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms
+	name = "TC-3T static telecommunications tower"
+	desc = "A static heavy-duty TC-3T telecommunications tower. Used to set up subspace communications lines between planetary and extra-planetary locations."
+	use_power = 0
+	idle_power_usage = 10000
+	icon = 'icons/obj/structures/machinery/comm_tower3.dmi'
+	icon_state = "static1"
+	toggled = FALSE
+	var/ispowered = 0
+	bound_height = 64
+	bound_width = 64
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/attack_hand(mob/user)
+	if(ishighersilicon(user))
+		return ..()
+	if(!ispowered)
+		to_chat(user, SPAN_WARNING("The TC-3T tower makes a small plaintful beep, and nothing happens. It seems to be out of power."))
+		return 0
+	if(!on)
+		use_power = 1
+	else
+		use_power = 0
+	toggle_state(user) // just flip dat switch
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/power_change()
+	..()
+	if((stat & NOPOWER))
+		if(on)
+			toggle_state()
+		ispowered = 0
+		on = 0
+		update_icon()
+	else
+		ispowered = 1
+		update_icon()
+
 /obj/structure/machinery/telecomms/relay/preset/telecomms
 	id = "Telecomms Relay"
 	autolinkers = list("relay")

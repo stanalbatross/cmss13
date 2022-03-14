@@ -106,6 +106,14 @@ SUBSYSTEM_DEF(atoms)
 		A.LateInitialize()
 	roundstart_loaders.Cut()
 
+/datum/controller/subsystem/atoms/proc/spawn_static_comms()
+	for(var/i = 1 to SSticker.mode.static_comms_amount)
+		var/obj/effect/landmark/static_comms/SC = pick_n_take(GLOB.comm_tower_landmarks)
+		if(!SC)
+			break
+		SC.spawn_tower()
+	QDEL_NULL_LIST(GLOB.comm_tower_landmarks)
+
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
 	old_initialized = initialized
 	initialized = INITIALIZATION_INSSATOMS

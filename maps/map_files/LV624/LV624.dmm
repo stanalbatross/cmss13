@@ -10624,7 +10624,9 @@
 /area/lv624/lazarus/chapel)
 "aRi" = (
 /obj/structure/surface/table,
-/obj/item/device/multitool,
+/obj/item/ashtray/glass,
+/obj/item/tool/crowbar,
+/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "brown"
@@ -10875,9 +10877,8 @@
 	},
 /area/lv624/lazarus/comms)
 "aSe" = (
-/obj/structure/bed/chair/office/light{
-	dir = 8
-	},
+/obj/structure/surface/table,
+/obj/item/device/multitool,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "brown"
@@ -11157,8 +11158,11 @@
 	},
 /area/lv624/lazarus/comms)
 "aTk" = (
-/obj/structure/fence,
-/turf/open/gm/dirtgrassborder,
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms,
+/turf/open/floor{
+	dir = 9;
+	icon_state = "brown"
+	},
 /area/lv624/lazarus/comms)
 "aTo" = (
 /obj/structure/machinery/power/geothermal,
@@ -11285,8 +11289,7 @@
 	start_charge = 15
 	},
 /turf/open/floor{
-	dir = 9;
-	icon_state = "brown"
+	icon_state = "delivery"
 	},
 /area/lv624/lazarus/comms)
 "aTK" = (
@@ -12542,16 +12545,6 @@
 "aXX" = (
 /turf/open/gm/grass,
 /area/lv624/lazarus/landing_zones/lz2)
-"aXY" = (
-/obj/structure/surface/table,
-/obj/item/ashtray/glass,
-/obj/item/tool/crowbar,
-/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/turf/open/floor{
-	dir = 9;
-	icon_state = "brown"
-	},
-/area/lv624/lazarus/comms)
 "aXZ" = (
 /obj/structure/surface/rack,
 /obj/effect/spawner/random/tool,
@@ -12870,20 +12863,6 @@
 	icon_state = "grimy"
 	},
 /area/lv624/lazarus/captain)
-"aZk" = (
-/obj/structure/surface/table,
-/obj/item/device/radio/off{
-	frequency = 1469
-	},
-/obj/structure/machinery/light{
-	dir = 1
-	},
-/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/turf/open/floor{
-	dir = 9;
-	icon_state = "brown"
-	},
-/area/lv624/lazarus/comms)
 "aZn" = (
 /obj/structure/surface/table/woodentable/poor,
 /obj/item/tool/candle,
@@ -14579,11 +14558,6 @@
 	icon_state = "grass2"
 	},
 /area/lv624/ground/jungle/north_jungle)
-"ejn" = (
-/turf/open/gm/grass{
-	icon_state = "grass2"
-	},
-/area/lv624/lazarus/comms)
 "ejx" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/window/framed/colony,
@@ -18357,12 +18331,6 @@
 	icon_state = "whiteyellowcorner"
 	},
 /area/lv624/lazarus/corporate_dome)
-"nzh" = (
-/obj/structure/flora/bush/ausbushes/var3/sunnybush,
-/turf/open/gm/grass{
-	icon_state = "grass2"
-	},
-/area/lv624/lazarus/comms)
 "nzw" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_wall,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
@@ -20970,9 +20938,6 @@
 	},
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
-"tmn" = (
-/turf/open/gm/grass,
-/area/lv624/lazarus/comms)
 "tmE" = (
 /obj/structure/flora/grass/tallgrass/jungle/corner{
 	dir = 8
@@ -40346,7 +40311,7 @@ byY
 taK
 aPt
 aPt
-aZk
+aTI
 aQn
 aTg
 aTg
@@ -40572,10 +40537,10 @@ byY
 byY
 byY
 fTf
-ejn
 aPT
 aRi
-aSe
+aQn
+aQn
 aSK
 aTg
 aTJ
@@ -40800,9 +40765,9 @@ byY
 byY
 byY
 fTf
-ejn
 aPT
-aXY
+aSe
+aQn
 aQn
 aQn
 aQn
@@ -41028,10 +40993,10 @@ byY
 byY
 byY
 fTf
-tmn
 aPT
-aSg
-aSg
+aQn
+aTk
+aQn
 aQn
 aTj
 aQn
@@ -41256,11 +41221,11 @@ aMN
 aNA
 aMN
 aIO
-tmn
 aPt
-aPT
-aPT
-aPT
+aTI
+aQn
+aQn
+aQn
 aPt
 aQn
 aQn
@@ -41484,11 +41449,11 @@ aMO
 aKB
 aMP
 aIO
-tmn
-tmn
-ejn
-tmn
-ejn
+aSg
+aQn
+aQn
+aQn
+aQn
 aPt
 aPT
 aUk
@@ -41715,9 +41680,9 @@ aIO
 aIL
 aIL
 aIO
-ejn
-nzh
-aTk
+aRe
+aQn
+aPT
 aTK
 aTK
 aTK
@@ -41944,8 +41909,8 @@ aNB
 aQo
 aJz
 aIO
-ejn
-aTk
+aSg
+aPT
 aTK
 aTK
 aSL
@@ -42172,7 +42137,7 @@ aEt
 aQp
 aRo
 aIO
-ejn
+aSg
 aSL
 aSL
 aSL

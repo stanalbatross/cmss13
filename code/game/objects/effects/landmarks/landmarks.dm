@@ -350,3 +350,21 @@
 /obj/effect/landmark/late_join/Destroy()
 	GLOB.latejoin -= src
 	return ..()
+
+//****************************************** STATIC COMMS ************************************************//
+/obj/effect/landmark/static_comms
+	name = "static comms"
+	icon = 'icons/obj/structures/machinery/comm_tower3.dmi'
+	icon_state = "comms_landmark"
+
+/obj/effect/landmark/static_comms/Initialize(mapload, ...)
+	. = ..()
+	GLOB.comm_tower_landmarks += src
+
+/obj/effect/landmark/static_comms/Destroy()
+	GLOB.comm_tower_landmarks -= src
+	return ..()
+
+/obj/effect/landmark/static_comms/proc/spawn_tower()
+	new /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms(loc)
+	qdel(src)
