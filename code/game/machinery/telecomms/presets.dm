@@ -187,7 +187,7 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms
 	name = "TC-3T static telecommunications tower"
-	desc = "A static heavy-duty TC-3T telecommunications tower. Used to set up subspace communications lines between planetary and extra-planetary locations."
+	desc = "A static heavy-duty TC-3T telecommunications tower. Used to set up subspace communications lines between planetary and extra-planetary locations. Will need to have extra communication frequencies programmed into it by multitool."
 	use_power = 0
 	idle_power_usage = 10000
 	icon = 'icons/obj/structures/machinery/comm_tower3.dmi'
@@ -196,6 +196,7 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	var/ispowered = 0
 	bound_height = 64
 	bound_width = 64
+	freq_listening = list(CIV_COMM_FREQ, CIV_GEN_FREQ)
 
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/attack_hand(mob/user)
 	if(ishighersilicon(user))
@@ -208,6 +209,32 @@ GLOBAL_LIST_EMPTY(all_static_telecomms_towers)
 	else
 		use_power = 0
 	toggle_state(user) // just flip dat switch
+
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/attackby(obj/item/I, mob/user)
+	if(HAS_TRAIT(I, TRAIT_TOOL_MULTITOOL))
+		var/choice = tgui_input_list(user, "What do you wish to do?", "TC-3T comms tower", list("Wipe communication frequencies", "Add your faction's frequencies"))
+		if(choice == "Wipe frequencies")
+			freq_listening = null
+			to_chat(user, SPAN_NOTICE("You wipe the preexisting frequencies from \the [src]."))
+			return
+		else if(choice == "Add your faction's frequencies")
+			if(!do_after(user, 10, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+				return
+			switch(user.faction)
+				if(FACTION_SURVIVOR)
+					freq_listening += list(CIV_GEN_FREQ, CIV_COMM_FREQ)
+				if(FACTION_CLF)
+					freq_listening += list(CLF_FREQ, CCT_FREQ)
+				if(FACTION_UPP)
+					freq_listening += list(RUS_FREQ, CCT_FREQ)
+				if(FACTION_YAUTJA)
+					to_chat(user, SPAN_WARNING("You decide to leave the human machine alone."))
+					return
+				else
+					freq_listening += DEPT_FREQS
+			to_chat(user, SPAN_NOTICE("You add your faction's communication frequencies to \the [src]'s comm list."))
+			return
+	. = ..()
 
 /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms/power_change()
 	..()
