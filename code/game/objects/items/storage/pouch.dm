@@ -981,6 +981,7 @@
 		/obj/item/stack/sandbags_empty,
 		/obj/item/device/lightreplacer,
 		/obj/item/weapon/gun/smg/nailgun/compact,
+		/obj/item/weapon/melee/twohanded/engi_breacher
 	)
 
 /obj/item/storage/pouch/construction/full/fill_preset_inventory()

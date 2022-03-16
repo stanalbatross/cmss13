@@ -375,3 +375,151 @@
 		var/obj/structure/girder/G = A
 		G.dismantle()
 		playsound(user, 'sound/effects/metal_shatter.ogg', 40, 1)
+
+/obj/item/weapon/melee/twohanded/engi_breacher
+	name = "\improper A3 Demolition Hammer"
+	desc = "A solid, heavy hammer made out of tungsten and titanium, has enough weight behind it to take down machines and weakened walls."
+	icon = 'icons/obj/items/weapons/combat-sledge.dmi'
+	icon_state = "folded-sledge"
+	item_state = "csledge"
+	force = MELEE_FORCE_TIER_1
+	force_wielded = MELEE_FORCE_WEAK
+	w_class = SIZE_MEDIUM
+	flags_item = TWOHANDED
+	flags_equip_slot = SLOT_BACK
+
+	attack_verb = list("smashed", "thwacked", "crushed", "hammered", "wrecked")
+	var/folded = TRUE
+	
+/obj/item/weapon/melee/twohanded/engi_breacher/wield(mob/user)
+	. = ..()
+	folded = FALSE
+	icon_state = "combat-sledge"
+	force = MELEE_FORCE_WEAK
+	force_wielded = MELEE_FORCE_STRONG
+	w_class = SIZE_LARGE
+	attack_verb = list("smashed", "thwacked", "crushed", "hammered", "wrecked")
+
+/obj/item/weapon/melee/twohanded/engi_breacher/unwield(mob/user)
+	. = ..()
+	folded = TRUE
+	icon_state = "folded-sledge"
+	w_class = SIZE_MEDIUM
+	force = MELEE_FORCE_TIER_1
+	force_wielded = MELEE_FORCE_WEAK
+	attack_verb = list("bonked", "thwacked")
+	
+/*	
+/obj/item/weapon/melee/twohanded/engi_breacher/attack_self(mob/user as mob)
+	folded = !folded
+	if(folded)
+		icon_state = "folded-sledge"
+		item_state = "folded-sledge"
+		w_class = SIZE_MEDIUM
+		force = MELEE_FORCE_TIER_1
+		force_wielded = MELEE_FORCE_WEAK
+		attack_verb = list("bonked", "thwacked")
+	else
+		icon_state = "combat-sledge"
+		item_state = "combat-sledge"
+		force = MELEE_FORCE_WEAK
+		force_wielded = MELEE_FORCE_STRONG
+		w_class = SIZE_LARGE
+		attack_verb = list("smashed", "thwacked", "crushed", "hammered", "wrecked")
+		
+	..()
+*/
+
+/obj/item/weapon/melee/twohanded/engi_breacher/attack(target as mob, mob/living/user as mob)
+	if(!HAS_TRAIT(user, TRAIT_SUPER_STRONG)) //If you aren't strong enough, swinging this will put a strain on your mobility.
+		user.Slow(2)
+	..()
+
+/obj/item/weapon/melee/twohanded/engi_breacher/afterattack(var/atom/A, var/mob/user, var/proximity)
+	if(!(flags_item & WIELDED))
+		return ..()
+
+	if(istype(A, /turf/closed/wall))
+		var/turf/closed/wall/W = A
+		if(W.hull)
+			to_chat(user, SPAN_WARNING("That is WAY too hard to tear down with this."))
+			return
+			
+		if(W.damage < (W.damage_cap * 0.60))
+			to_chat(user, SPAN_WARNING("This seems too sturdy to take down at the moment."))
+			return
+
+		if(istype(W, /turf/closed/wall/r_wall))
+			to_chat(user, SPAN_WARNING("That is too hard to tear down with this."))
+		if(!user.Adjacent(A))
+			return
+		var/time_to_destroy = 70
+		breach_action(W, user, time_to_destroy)
+		..()
+
+	if(istype(A, /obj/structure/girder))
+		var/obj/structure/girder/G = A
+
+		if(!user.Adjacent(A))
+			return
+
+		breach_action(G, user, 40)
+		..()
+		
+	if(istype(A, /obj/structure/window))
+		var/obj/structure/window/I = A
+		
+		if(istype(I, /obj/structure/window/framed/almayer/hull) || I.not_damageable == 1)
+			to_chat(user, SPAN_WARNING("That is too hard to tear down with this."))
+			return
+			
+		if(!user.Adjacent(A))
+			return
+
+		breach_action(I, user, 30)
+		..()
+
+		
+	if(istype(A, /obj/structure/machinery))
+		var/obj/structure/machinery/M = A
+		if(!user.Adjacent(A))
+			return
+			
+		breach_action(M, user, 15)
+	..()
+
+
+/obj/item/weapon/melee/twohanded/engi_breacher/proc/breach_action(var/atom/A, var/mob/user, var/time_to_destroy)
+	if(user.action_busy || !user.Adjacent(A))
+		return
+
+	to_chat(user, SPAN_NOTICE("You start taking down the [A.name]."))
+
+	if(!do_after(user, time_to_destroy, INTERRUPT_ALL_OUT_OF_RANGE, BUSY_ICON_BUILD))
+		to_chat(user, SPAN_NOTICE("You stop taking down the [A.name]."))
+		return
+
+	to_chat(user, SPAN_NOTICE("You tear down the [A.name]."))
+
+	if(istype(A, /turf/closed/wall))
+		var/turf/closed/wall/W = A
+		W.take_damage(W.damage_cap)
+		playsound(user, 'sound/effects/meteorimpact.ogg', 35, 1)
+		playsound(user, 'sound/effects/ceramic_shatter.ogg', 35, 1)
+
+	if(istype(A, /obj/structure/girder))
+		var/obj/structure/girder/G = A
+		G.dismantle()
+		playsound(user, 'sound/effects/metal_shatter.ogg', 35, 1)
+		
+	if(istype(A, /obj/structure/window))
+		var/obj/structure/window/I = A
+		I.health = 0
+		I.healthcheck(1)
+		
+	if(istype(A, /obj/structure/machinery/cm_vending))
+		var/obj/structure/machinery/cm_vending/M = A
+		M.malfunction()
+		M.tip_over()
+		playsound(user, 'sound/effects/metal_shatter.ogg', 35, 1)
+		
