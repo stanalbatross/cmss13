@@ -798,6 +798,7 @@ Defined in conflicts.dm of the #defines folder.
 	zoom_offset = 6
 	zoom_viewsize = 7
 	allows_movement = TRUE
+	aim_speed_mod = 0
 	var/dynamic_aim_slowdown = SLOWDOWN_ADS_MINISCOPE_DYNAMIC
 
 /obj/item/attachable/scope/mini/New()
@@ -816,7 +817,6 @@ Defined in conflicts.dm of the #defines folder.
 	..()
 
 /obj/item/attachable/scope/mini/flaregun
-	aim_speed_mod = 0
 	wield_delay_mod = 0
 	dynamic_aim_slowdown = SLOWDOWN_ADS_MINISCOPE_DYNAMIC
 
