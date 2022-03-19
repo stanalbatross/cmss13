@@ -44,13 +44,13 @@
 		return
 	var/datum/entity/player_stats/human/human_stats = mind.setup_human_stats()
 	var/job_actual = get_actual_job_name(src)
-	human_stats.count_statistic_stat(client, name, amount, job_actual, weapon)
+	human_stats.count_statistic_stat(STATISTIC_TYPE_HUMAN, name, amount, job_actual, weapon)
 
 /mob/living/carbon/Xenomorph/count_statistic_stat(var/name, var/amount = 1)
 	if(statistic_exempt || !mind)
 		return
 	var/datum/entity/player_stats/xeno/xeno_stats = mind.setup_xeno_stats()
-	xeno_stats.count_statistic_stat(client, name, amount, caste_type)
+	xeno_stats.count_statistic_stat(STATISTIC_TYPE_XENO, name, amount, caste_type)
 
 /datum/entity/player_stats/proc/count_statistic_stat(var/client/client, var/name, var/amount = 1, var/job)
 	return
