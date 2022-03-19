@@ -17,6 +17,7 @@
 	var/immobile = FALSE //Used for prebuilt ones.
 	var/obj/item/ammo_magazine/ammo = new /obj/item/ammo_magazine/sentry
 	var/sentry_type = "sentry" //Used for the icon
+	display_additional_stats = TRUE
 
 	var/omni_directional = FALSE
 	var/sentry_range = SENTRY_RANGE
@@ -120,6 +121,7 @@
 	set_range()
 
 /obj/structure/machinery/defenses/sentry/power_off_action()
+	SetLuminosity(0)
 	visible_message("[icon2html(src, viewers(src))] [SPAN_NOTICE("The [name] powers down and goes silent.")]")
 	stop_processing()
 	unset_range()
@@ -223,7 +225,7 @@
 		addtimer(CALLBACK(src, .proc/get_target), fire_delay)
 
 /obj/structure/machinery/defenses/sentry/proc/actual_fire(var/atom/A)
-	var/obj/item/projectile/P = new(create_cause_data(initial(name), owner_mob))
+	var/obj/item/projectile/P = new(src, create_cause_data(initial(name), owner_mob, src))
 	P.generate_bullet(new ammo.default_ammo)
 	P.damage *= damage_mult
 	P.accuracy *= accuracy_mult
@@ -231,6 +233,7 @@
 	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	ammo.current_rounds--
+	track_shot()
 	if(ammo.current_rounds == 0)
 		handle_empty()
 
@@ -343,6 +346,20 @@
 				blocked = TRUE
 				break
 
+		if(!omni_directional)
+			var/turf/F = get_step(src, src.dir)
+			if(F.density || F.opacity)
+				blocked = TRUE
+
+			for(var/obj/structure/S in F)
+				if(F.opacity)
+					blocked = TRUE
+					break
+
+			for(var/obj/vehicle/multitile/V in F)
+				blocked = TRUE
+				break
+
 		if(blocked)
 			if(A == target)
 				target = null
@@ -371,7 +388,15 @@
 	immobile = TRUE
 	turned_on = TRUE
 	icon_state = "sentry_on"
+	faction_group = FACTION_LIST_MARINE
 	static = TRUE
+
+/obj/structure/machinery/defenses/sentry/premade/examine(mob/user)
+	. = ..()
+	to_chat(user, SPAN_NOTICE("It seems this one's bolts have been securely welded into the floor, and the access panel locked. You can't interact with it."))
+
+/obj/structure/machinery/defenses/sentry/premade/attackby(var/obj/item/O, var/mob/user)
+	return
 
 /obj/structure/machinery/defenses/sentry/premade/power_on()
 	return
@@ -410,6 +435,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 //the turret inside the shuttle sentry deployment system
 /obj/structure/machinery/defenses/sentry/premade/dropship
 	density = TRUE
+	faction_group = FACTION_LIST_MARINE
 	var/obj/structure/dropship_equipment/sentry_holder/deployment_system
 
 /obj/structure/machinery/defenses/sentry/premade/dropship/Destroy()
@@ -481,7 +507,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	fire_delay = 0.15 SECONDS
 	health = 150
 	health_max = 150
-	damage_mult = 0.6
+	damage_mult = 0.4
 	density = FALSE
 	disassemble_time = 0.75 SECONDS
 	handheld_type = /obj/item/defenses/handheld/sentry/mini
@@ -491,6 +517,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	name = "\improper UA 571-O sentry post"
 	desc = "A deployable, omni-directional automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 1500-round drum magazine."
 	ammo = new /obj/item/ammo_magazine/sentry/dropped
+	faction_group = FACTION_LIST_MARINE
 	luminosity = 5
 	omni_directional = TRUE
 	immobile = TRUE

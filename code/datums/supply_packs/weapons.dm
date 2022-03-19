@@ -6,10 +6,13 @@
 
 /datum/supply_packs/m56b_smartgun
 	name = "M56B Smartgun System Package (x1)"
+	contains = list(
+		/obj/item/storage/box/m56_system
+	)
 	cost = RO_PRICE_VERY_PRICY
-	contains = list()
-	containertype = /obj/item/storage/box/m56_system
+	containertype = /obj/structure/closet/crate/weapon
 	containername = "M56B Smartgun System Package"
+	group = "Weapons"
 
 /datum/supply_packs/m56_hmg
 	name = "M56D Heavy Machine Gun (x1)"
@@ -179,7 +182,7 @@
 /datum/supply_packs/gun/merc
 	contains = list()
 	name = "black market firearms (x1)"
-	cost = RO_PRICE_CHEAP
+	cost = RO_PRICE_NORMAL
 	contraband = 1
 	containertype = /obj/structure/largecrate/guns/merc
 	containername = "\improper black market firearms crate"

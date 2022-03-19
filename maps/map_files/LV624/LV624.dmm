@@ -630,12 +630,8 @@
 /area/lv624/lazarus/crashed_ship_containers)
 "acV" = (
 /obj/structure/surface/rack,
-/obj/item/storage/firstaid{
-	pixel_x = 8
-	},
-/obj/item/storage/firstaid/toxin{
-	pixel_y = -3
-	},
+/obj/item/ammo_magazine/rifle/nsg23/extended,
+/obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/shuttle{
 	icon_state = "floor4"
 	},
@@ -1198,22 +1194,19 @@
 /area/lv624/ground/barrens/central_barrens)
 "afl" = (
 /obj/structure/cargo_container{
-	icon_state = "blue 0,0";
-	tag = "icon-blue 0,0"
+	icon_state = "ferret_l"
 	},
 /turf/open/floor,
 /area/lv624/ground/barrens/containers)
 "afn" = (
 /obj/structure/cargo_container{
-	icon_state = "blue 1,0";
-	tag = "icon-blue 1,0"
+	icon_state = "ferret_m"
 	},
 /turf/open/floor,
 /area/lv624/ground/barrens/containers)
 "afo" = (
 /obj/structure/cargo_container{
-	icon_state = "blue 2,0";
-	tag = "icon-blue 2,0"
+	icon_state = "ferret_r"
 	},
 /turf/open/floor,
 /area/lv624/ground/barrens/containers)
@@ -4375,8 +4368,7 @@
 /area/lv624/lazarus/fitness)
 "ava" = (
 /obj/structure/cargo_container{
-	icon_state = "green 0,0";
-	tag = "icon-green 0,0"
+	icon_state = "seegson_l"
 	},
 /turf/open/floor/plating{
 	icon_state = "platebotc"
@@ -4384,8 +4376,7 @@
 /area/lv624/lazarus/quartstorage/outdoors)
 "avb" = (
 /obj/structure/cargo_container{
-	icon_state = "green 1,0";
-	tag = "icon-green 1,0"
+	icon_state = "seegson_m"
 	},
 /turf/open/floor/plating{
 	icon_state = "platebotc"
@@ -4393,8 +4384,7 @@
 /area/lv624/lazarus/quartstorage/outdoors)
 "avc" = (
 /obj/structure/cargo_container{
-	icon_state = "green 2,0";
-	tag = "icon-green 2,0"
+	icon_state = "seegson_r"
 	},
 /turf/open/floor/plating{
 	icon_state = "platebotc"
@@ -9263,6 +9253,7 @@
 /obj/item/reagent_container/hypospray/autoinjector/tricord,
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/crap_item,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -9694,6 +9685,7 @@
 /obj/structure/surface/rack,
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/crap_item,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -9893,6 +9885,7 @@
 /obj/structure/surface/rack,
 /obj/effect/landmark/crap_item,
 /obj/effect/landmark/crap_item,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	icon_state = "cult"
 	},
@@ -11075,6 +11068,7 @@
 "aST" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/clothing/under/CM_uniform,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	icon_state = "red"
 	},
@@ -12493,6 +12487,7 @@
 /area/lv624/lazarus/engineering)
 "aXL" = (
 /obj/structure/closet/secure_closet/security,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	dir = 4;
 	icon_state = "red"
@@ -12703,6 +12698,7 @@
 /area/lv624/lazarus/hop)
 "aYH" = (
 /obj/structure/closet/lawcloset,
+/obj/item/clothing/suit/armor/vest/security,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "red"
@@ -15951,6 +15947,12 @@
 	},
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_west_jungle)
+"hJa" = (
+/obj/structure/cargo_container{
+	icon_state = "lockmart_l"
+	},
+/turf/open/floor,
+/area/lv624/ground/barrens/containers)
 "hJd" = (
 /obj/structure/surface/rack,
 /obj/item/moneybag,
@@ -16354,7 +16356,8 @@
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
 "iKp" = (
 /obj/structure/surface/rack,
-/obj/item/storage/belt/shotgun/full,
+/obj/item/clothing/mask/gas/PMC/leader,
+/obj/item/clothing/under/marine/veteran/PMC,
 /obj/item/clothing/gloves/marine/veteran/PMC,
 /turf/open/shuttle{
 	icon_state = "floor4"
@@ -16594,6 +16597,12 @@
 	icon_state = "desert1"
 	},
 /area/lv624/ground/river/east_river)
+"jvl" = (
+/obj/structure/cargo_container{
+	icon_state = "lockmart_m"
+	},
+/turf/open/floor,
+/area/lv624/ground/barrens/containers)
 "jwW" = (
 /turf/open/floor/plating{
 	dir = 6;
@@ -17079,6 +17088,12 @@
 /obj/structure/flora/bush/ausbushes/var3/sunnybush,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_west_jungle)
+"kzE" = (
+/obj/structure/cargo_container{
+	icon_state = "lockmart_r"
+	},
+/turf/open/floor,
+/area/lv624/ground/barrens/containers)
 "kAg" = (
 /obj/structure/flora/grass/tallgrass/jungle,
 /turf/open/gm/grass,
@@ -17185,7 +17200,7 @@
 /area/lv624/ground/jungle/north_west_jungle)
 "kRr" = (
 /obj/structure/surface/rack,
-/obj/item/clothing/mask/gas/PMC/leader,
+/obj/item/storage/belt/shotgun/full,
 /obj/item/weapon/gun/shotgun/double,
 /obj/item/weapon/gun/shotgun/pump/cmb{
 	pixel_y = -6
@@ -20947,6 +20962,12 @@
 /area/lv624/ground/jungle/north_west_jungle)
 "tlQ" = (
 /obj/structure/surface/table/reinforced/prison,
+/obj/item/storage/firstaid{
+	pixel_x = 8
+	},
+/obj/item/storage/firstaid/toxin{
+	pixel_y = -3
+	},
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
 "tmn" = (
@@ -48666,7 +48687,7 @@ aeX
 qjf
 qjf
 qjf
-afl
+hJa
 qjf
 afZ
 qjf
@@ -48894,7 +48915,7 @@ aeY
 qjf
 qjf
 qjf
-afn
+jvl
 qjf
 aga
 qjf
@@ -49122,7 +49143,7 @@ afb
 qjf
 qjf
 qjf
-afo
+kzE
 qjf
 agb
 qjf

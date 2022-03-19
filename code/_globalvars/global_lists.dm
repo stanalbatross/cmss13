@@ -1,8 +1,11 @@
 
 var/list/unansweredAhelps = list()			//This feels inefficient, but I can't think of a better way. Stores the message indexed by CID
-var/list/CLFaxes = list()					//List of all CL faxes sent this round
-var/list/fax_contents = list() 				//List of fax contents to maintain it even if source paper is deleted
-var/list/USCMFaxes = list()					//List of all USCM faxes sent this round
+
+GLOBAL_LIST_EMPTY(WYFaxes)			//Departmental faxes
+GLOBAL_LIST_EMPTY(USCMFaxes)
+GLOBAL_LIST_EMPTY(ProvostFaxes)
+GLOBAL_LIST_EMPTY(GeneralFaxes)		//Inter-machine faxes
+GLOBAL_LIST_EMPTY(fax_contents)		//List of fax contents to maintain it even if source paper is deleted
 
 // Global lists of the HUDs
 var/global/list/custom_huds_list = list("midnight" = new /datum/custom_hud(),
@@ -131,7 +134,8 @@ GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_DELTA = new /datum/hive_status/delta(),
 	XENO_HIVE_FERAL = new /datum/hive_status/feral(),
 	XENO_HIVE_TAMED = new /datum/hive_status/corrupted/tamed(),
-	XENO_HIVE_MUTATED = new /datum/hive_status/mutated()
+	XENO_HIVE_MUTATED = new /datum/hive_status/mutated(),
+	XENO_HIVE_FORSAKEN = new /datum/hive_status/forsaken()
 ))
 
 GLOBAL_LIST_INIT(custom_event_info_list, setup_custom_event_info())

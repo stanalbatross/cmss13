@@ -177,6 +177,8 @@ BSQL_PROTECT_DATUM(/datum/entity/statistic/death)
 		observer_message += " to <b>[cause_name]</b>"
 	if(A.name)
 		observer_message += " at \the <b>[A.name]</b>"
+	if(cause_data && cause_mob)
+		observer_message += " from <b>[cause_mob]</b>"
 
 	msg_admin_attack(observer_message, death_loc.x, death_loc.y, death_loc.z)
 
