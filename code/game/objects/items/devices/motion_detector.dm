@@ -245,6 +245,12 @@
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-UPP movement instead. Fight fire with fire!"
 	iff_signal = FACTION_UPP
 
+/obj/item/device/motiondetector/hacked/elite_merc
+	name = "hacked motion detector"
+	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-freelancer movement instead. Fight fire with fire!"
+	iff_signal = FACTION_MERCENARY
+
+
 /obj/item/device/motiondetector/intel
 	name = "data detector"
 	desc = "A device that detects objects that may be useful for intel gathering. You can switch modes with Alt+Click."
