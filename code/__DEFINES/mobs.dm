@@ -130,6 +130,7 @@
 #define XENO_HIVE_FERAL "xeno_hive_feral"
 #define XENO_HIVE_TAMED "xeno_hive_tamed"
 #define XENO_HIVE_MUTATED "xeno_hive_mutated"
+#define XENO_HIVE_FORSAKEN "xeno_hive_forsaken"
 
 //=================================================
 
@@ -167,6 +168,7 @@
 #define SQUEEZE_UNDER_VEHICLES 	(1<<1)  // Only the van is supported as of now.
 #define EASY_SURGERY			(1<<2)  // Surgeries on this mob don't require advanced skills.
 #define SURGERY_MODE_ON			(1<<3)  // Mob on surgery mode, will attempt surgery when using relevant items on harm/disarm intent.
+#define MUTINEER				(1<<4)  // Part of the Mutiny Gang
 
 //=================================================
 

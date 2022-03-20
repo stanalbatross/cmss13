@@ -693,9 +693,6 @@
 	return pull_multiplier
 
 /mob/living/carbon/Xenomorph/proc/set_faction(var/new_faction = FACTION_XENOMORPH)
-	if(round_statistics && !statistic_exempt)
-		round_statistics.track_new_participant(faction, -1)
-		round_statistics.track_new_participant(new_faction, 1)
 	faction = new_faction
 
 //Call this function to set the hive and do other cleanup
@@ -719,6 +716,10 @@
 		generate_name()
 	if(istype(src, /mob/living/carbon/Xenomorph/Queen))
 		update_living_queens()
+
+	lock_evolve = FALSE
+	banished = FALSE
+	hud_update_banished()
 
 	recalculate_everything()
 
