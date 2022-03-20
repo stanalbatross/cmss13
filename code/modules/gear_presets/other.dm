@@ -10,12 +10,13 @@
 	name = "Mutineer"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	faction = FACTION_MUTINEER
-
 /datum/equipment_preset/other/mutineer/load_status(mob/living/carbon/human/H)
 	. = ..()
-	H.faction = FACTION_MUTINEER
+	H.mob_flags |= MUTINEER
 	H.hud_set_squad()
+
+	to_chat(H, SPAN_HIGHDANGER("<hr>You are now a Mutineer!"))
+	to_chat(H, SPAN_DANGER("Please check the rules to see what you can and can't do as a mutineer.<hr>"))
 
 /datum/equipment_preset/other/mutineer/leader
 	name = "Mutineer Leader"
@@ -26,11 +27,8 @@
 		A.remove_from(H)
 
 	var/list/abilities = subtypesof(/datum/action/human_action/activable/mutineer)
-
-
 	for(var/type in abilities)
 		give_action(H, type)
-
 
 /datum/equipment_preset/other/freelancer
 	name = "Freelancer"
@@ -140,9 +138,9 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "Freelancer Medic"
 	skills = /datum/skills/freelancer/combat_medic
-	var/shotgunner = FALSE
 
 /datum/equipment_preset/other/freelancer/medic/load_gear(mob/living/carbon/human/H)
+	var/shotgunner = FALSE
 	if(prob(50))
 		shotgunner = TRUE
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/freelancer, WEAR_BODY)
@@ -162,9 +160,9 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health, WEAR_EYES)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
 
-	load_freelancer_medic(H)
+	load_freelancer_medic(H, shotgunner)
 
-/datum/equipment_preset/other/freelancer/medic/proc/load_freelancer_medic(mob/living/carbon/human/H)
+/datum/equipment_preset/other/freelancer/medic/proc/load_freelancer_medic(mob/living/carbon/human/H, shotgunner)
 	if(shotgunner)
 		load_shotgunner_medic(H)
 	else
@@ -174,12 +172,14 @@
 	//storage items
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/shotgun/large, WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/medkit/full_advanced, WEAR_R_STORE)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/medical/full, WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/medical/full/with_suture_and_graft, WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer, WEAR_IN_BELT)
 	//stuff in backpack
+	H.equip_to_slot_or_del(new /obj/item/device/defibrillator, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/roller, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/HE/stick, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/explosive/grenade/HE/stick, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/packet/smoke, WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/tool/surgery/surgical_line, WEAR_IN_BACK)
 	//gun
 	spawn_merc_shotgun(H)
 
@@ -194,8 +194,8 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/roller, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/roller/surgical, WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/tool/surgery/surgical_line, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/tool/surgery/synthgraft, WEAR_IN_BACK) //Line is in vest.
 	spawn_merc_rifle(H)
 
 //*****************************************************************************************************/
@@ -441,13 +441,13 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/medkit/full_advanced, WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/medical/lifesaver/upp/full, WEAR_WAIST)
 	//backpack and stuff in it
-	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/engineerpack/ert, WEAR_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack, WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/defibrillator/upgraded, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/device/defibrillator/upgraded, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/roller, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/roller/surgical, WEAR_IN_BACK)
-	H.equip_to_slot_or_del(new /obj/item/tool/surgery/surgical_line, WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/tool/surgery/synthgraft, WEAR_IN_BACK) //Line in vest.
 	H.equip_to_slot_or_del(new /obj/item/device/healthanalyzer, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/packet/smoke, WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/attachments(H), WEAR_IN_BACK)
@@ -920,8 +920,6 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/tank(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/tanker(H), WEAR_HEAD)
 
-	H.hud_set_squad()
-
 	spawn_weapon(/obj/item/weapon/gun/smg/m39, /obj/item/ammo_magazine/smg/m39/extended, H, 0, 3)
 
 /datum/equipment_preset/other/tank/load_status()
@@ -964,7 +962,5 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/tools/tank(H), WEAR_R_STORE)
-
-	H.hud_set_squad()
 
 //*****************************************************************************************************/

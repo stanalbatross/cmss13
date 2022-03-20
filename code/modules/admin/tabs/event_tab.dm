@@ -29,6 +29,8 @@
 	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[faction]
 
 	var/input = input(usr, "Enter the custom event message for \"[faction]\" category. Be descriptive. \nTo remove the event message, remove text and confirm.", "[faction] Event Message", CEI.msg) as message|null
+	if(isnull(input))
+		return
 
 	if(input == "" || !input)
 		CEI.msg = ""
@@ -712,8 +714,8 @@
 		return
 
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
-		if(H && H.faction == FACTION_MUTINEER)
-			H.faction = FACTION_MARINE
+		if(H.mob_flags & MUTINEER)
+			H.mob_flags &= ~MUTINEER
 			H.hud_set_squad()
 
 			for(var/datum/action/human_action/activable/mutineer/A in H.actions)
