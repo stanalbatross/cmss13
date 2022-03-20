@@ -104,7 +104,7 @@
 //NSG 23 ASSAULT RIFLE - PMC PRIMARY RIFLE
 
 /obj/item/weapon/gun/rifle/nsg23
-	name = "\improper NSG 23 assault rifle"
+	name = "NSG 23 assault rifle"
 	desc = "A rare sight, this rifle is seen most commonly in the hands of Weyland-Yutani PMCs. Compared to the M41A MK2, it has noticeably improved handling and vastly improved performance at long and medium range, but compares similarly up close."
 	icon_state = "nsg23"
 	item_state = "nsg23"

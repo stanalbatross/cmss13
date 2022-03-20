@@ -64,7 +64,7 @@
 	recoil = RECOIL_AMOUNT_TIER_5
 
 /obj/item/weapon/gun/rifle/sniper/XM42B
-	name = "\improper XM42B experimental anti-materiel rifle"
+	name = "XM42B experimental anti-materiel rifle"
 	desc = "An experimental anti-materiel rifle produced by Armat Systems, recently reacquired from the deep storage of an abandoned prototyping facility. This one in particular is currently undergoing field testing. Chambered in 10x99mm Caseless."
 	icon_state = "xm42b"
 	item_state = "xm42b"
@@ -126,7 +126,7 @@
 */
 
 /obj/item/weapon/gun/rifle/sniper/elite
-	name = "\improper M42C anti-tank sniper rifle"
+	name = "M42C anti-tank sniper rifle"
 	desc = "A high-end superheavy magrail sniper rifle from Weyland-Armat chambered in a specialized variant of the heaviest ammo available, 10x99mm Caseless. This weapon requires a specialized armor rig for recoil mitigation in order to be used effectively."
 	icon_state = "m42c"
 	item_state = "m42c" //NEEDS A TWOHANDED STATE
@@ -748,7 +748,7 @@
 // CLF SMARTGUN
 
 /obj/item/weapon/gun/smartgun/clf
-	name = "\improper M56B 'Freedom' smartgun"
+	name = "M56B 'Freedom' smartgun"
 	desc = "The actual firearm in the 4-piece M56B Smartgun System. Essentially a heavy, mobile machinegun. This one has the CLF logo carved over the manufactoring stamp.\nYou may toggle firing restrictions by using a special action."
 
 /obj/item/weapon/gun/smartgun/clf/Initialize(mapload, ...)
@@ -1331,7 +1331,7 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 //Flare gun. Close enough to a specialist gun?
 
 /obj/item/weapon/gun/flare
-	name = "\improper M82-F flare gun"
+	name = "M82-F flare gun"
 	desc = "A flare gun issued to JTAC operators to use with flares. Comes with a miniscope. One shot, one... life saved?"
 	icon_state = "m82f"
 	item_state = "m82f"
