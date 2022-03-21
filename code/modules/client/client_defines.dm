@@ -18,6 +18,7 @@
 		//OTHER//
 		/////////
 	var/datum/preferences/prefs = null
+	var/datum/tooltip/tooltips
 	var/move_delay = 0
 	var/next_movement = 0
 	var/moving = null

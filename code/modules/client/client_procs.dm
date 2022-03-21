@@ -342,6 +342,10 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 
 	view = world_view_size
 
+	//This is down here because of the browse() calls in tooltip/New()
+	if(!tooltips && prefs.tooltips)
+		tooltips = new /datum/tooltip(src)
+
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_LOGIN, src)
 
 	//////////////
@@ -360,6 +364,7 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	GLOB.clients -= src
 
 	unansweredAhelps?.Remove(computer_id)
+	QDEL_NULL(tooltips)
 	log_access("Logout: [key_name(src)]")
 	if(CLIENT_IS_STAFF(src))
 		message_staff("Admin logout: [key_name(src)]")

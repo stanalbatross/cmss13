@@ -115,6 +115,7 @@
 	S["hear_vox"] >> hear_vox
 	S["hide_statusbar"] >> hide_statusbar
 	S["no_radials_preference"] >> no_radials_preference
+	S["no_tooltips_preference"] >> no_tooltips_preference
 	S["hotkeys"] >> hotkeys
 
 	//Sanitize
@@ -136,6 +137,7 @@
 	hear_vox  		= sanitize_integer(hear_vox, FALSE, TRUE, TRUE)
 	hide_statusbar = sanitize_integer(hide_statusbar, FALSE, TRUE, FALSE)
 	no_radials_preference = sanitize_integer(no_radials_preference, FALSE, TRUE, FALSE)
+	no_tooltips_preference = sanitize_integer(no_tooltips_preference, FALSE, TRUE, FALSE)
 
 	synthetic_name 		= synthetic_name ? sanitize_text(synthetic_name, initial(synthetic_name)) : initial(synthetic_name)
 	synthetic_type		= sanitize_text(synthetic_type, initial(synthetic_type))
@@ -238,6 +240,7 @@
 
 	S["hide_statusbar"] << hide_statusbar
 	S["no_radials_preference"] << no_radials_preference
+	S["no_tooltips_preference"] << no_tooltips_preference
 
 	return TRUE
 

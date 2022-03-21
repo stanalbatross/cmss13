@@ -102,7 +102,7 @@ Notes:
 /datum/tooltip/proc/do_hide()
 	winshow(owner, control, FALSE)
 
-/* TG SPECIFIC CODE */
+/* CM SPECIFIC CODE */
 
 //Open a tooltip for user, at a location based on params
 //Theme is a CSS class in tooltip.html, by default this wrapper chooses a CSS class based on the user's UI_style (Midnight, Plasmafire, Retro, etc)
@@ -112,8 +112,8 @@ Notes:
 		return
 	if(!user?.client.tooltips)
 		return
-	if(!theme && user.client?.prefs?.ui_style)
-		theme = lowertext(user.client.prefs.ui_style)
+//	if(!theme && user.client?.prefs?.ui_style)
+//		theme = lowertext(user.client.prefs.ui_style)
 	if(!theme)
 		theme = "default"
 	user.client.tooltips.show(tip_src, params, title, content, theme)
