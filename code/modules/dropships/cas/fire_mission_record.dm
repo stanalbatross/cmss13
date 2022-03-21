@@ -15,10 +15,11 @@
 		return null
 	// Currently doesn't take weapon into account yet
 	var/obj/effect/attach_point/weapon/AW = weapon.ship_base
-	if(istype(AW, /obj/effect/attach_point/crew_weapon))
-		return null
-	else
+	if(istype(AW))
 		return AW.get_offsets()
+	else
+		return null
+
 
 /// Get current ammo status for a weapon
 /datum/cas_fire_mission_record/proc/get_ammo()
