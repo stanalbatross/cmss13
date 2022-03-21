@@ -15,7 +15,7 @@
 		return null
 	// Currently doesn't take weapon into account yet
 	var/obj/effect/attach_point/weapon/AW = weapon.ship_base
-	if(AW.istype(/obj/effect/attach_point/crew_weapon))
+	if(istype(AW, /obj/effect/attach_point/crew_weapon))
 		return null
 	else
 		return AW.get_offsets()
