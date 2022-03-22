@@ -335,6 +335,8 @@ var/datum/controller/supply/supply_controller = new()
 	var/points_per_process = 1.5
 	var/points_per_slip = 1
 	var/points_per_crate = 2
+	//black market stuff
+	var/black_market_points = 0
 
 	var/base_random_crate_interval = 10 //Every how many processing intervals do we get a random crates.
 
@@ -470,6 +472,9 @@ var/datum/controller/supply/supply_controller = new()
 			var/obj/item/paper/manifest/M = MA
 			if(M.stamped && M.stamped.len)
 				points += points_per_slip
+				qdel(M)
+		else if(MA.?black_market_value)
+			black_market_points += MA.black_market_value
 
 		// Delete everything else.
 		qdel(MA)
