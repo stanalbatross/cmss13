@@ -68,6 +68,11 @@
 	source_action = null
 	. = ..()
 
+/obj/screen/action_button/MouseEntered(location, control, params)
+	if(usr.client?.prefs?.no_tooltips_preference)
+		return
+	openToolTip(usr, src, params, title = name, content = desc)
+
 /obj/screen/action_button/proc/get_button_screen_loc(button_number)
 	var/row = round((button_number-1)/13) //13 is max amount of buttons per row
 	var/col = ((button_number - 1)%(13)) + 1
