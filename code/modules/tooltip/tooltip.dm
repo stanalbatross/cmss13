@@ -67,24 +67,30 @@ Notes:
 	title = replacetext(title, "\improper", "")
 
 	if(!content && title)
+		message_admins("no content detected")
 		content = title
 		title = null
 	if(title)
 		title = "<h1>[title]</h1>"
+		message_admins("title is now [title]")
 	if(content)
 		content = "<p>[content]</p>"
+		message_admins("content is now [content]")
 
 	//Make our dumb param object
 	params = {"{ "cursor": "[params]", "screenLoc": "[thing.screen_loc]" }"}
 
 	//Send stuff to the tooltip
 	var/list/view_size = getviewsize(owner.view)
+	message_admins("outputting NOW")
 	owner << output(list2params(list(params, view_size[1] , view_size[2], "[title][content]", theme, special)), "[control]:tooltip.update")
+	message_admins("output failed!")
 
 	//If a hide() was hit while we were showing, run hide() again to avoid stuck tooltips
 	showing = FALSE
 	if (queueHide)
 		hide()
+		message_admins("hide called!")
 
 	return TRUE
 
@@ -116,7 +122,9 @@ Notes:
 //		theme = lowertext(user.client.prefs.ui_style)
 	if(!theme)
 		theme = "default"
+		message_admins( "Theme set to default")
 	user.client.tooltips.show(tip_src, params, title, content, theme)
+	message_admins("showing tooltip NOW")
 
 
 //Arbitrarily close a user's tooltip
