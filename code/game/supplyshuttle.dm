@@ -336,7 +336,7 @@ var/datum/controller/supply/supply_controller = new()
 	var/points_per_slip = 1
 	var/points_per_crate = 2
 	//black market stuff
-	var/black_market_points = 0
+	var/black_market_points = 0 //Weyland-Yutani dollars - Stan_Albatross
 
 	var/base_random_crate_interval = 10 //Every how many processing intervals do we get a random crates.
 
@@ -842,6 +842,8 @@ var/datum/controller/supply/supply_controller = new()
 				var/datum/supply_packs/N = supply_controller.supply_packs[supply_name]
 				if((N.hidden && !hacked) || (N.contraband && !can_order_contraband) || N.group != last_viewed_group || !N.buyable) continue								//Have to send the type instead of a reference to
 				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"		//the obj because it would get caught by the garbage
+				if(N.contraband)
+				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: W-Y $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"
 
 		/*temp = "Supply points: [supply_controller.points]<BR><HR><BR>Request what?<BR><BR>"
 
@@ -926,6 +928,20 @@ var/datum/controller/supply/supply_controller = new()
 			if(SO.ordernum == ordernum)
 				O = SO
 				P = O.object
+				if(P.contraband) //handle black market interactions
+					if(supply_controller.black_market_points >= round(P.cost))
+						supply_controller.requestlist.Cut(i,i+1)
+						supply_controller.black_market_points -= round(P.cost)
+						supply_controller.shoppinglist += O
+						P.cost = P.cost * SUPPLY_COST_MULTIPLIER
+						temp = "Thank you for your order, a safe and inconspicuous delivery is guaranteed.<BR>"
+						temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
+						O.approvedby = usr.name
+						msg_admin_niche("[usr] confirmed black market supply order of [P.name].")
+				else
+					temp = "Not enough W-Y Dollars left.<BR>"
+					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
+				break
 				if(supply_controller.points >= round(P.cost))
 					supply_controller.requestlist.Cut(i,i+1)
 					supply_controller.points -= round(P.cost)
