@@ -64,6 +64,8 @@
 
 	var/list/uniform_restricted //Need to wear this uniform to equip this
 
+	var/black_market_value //how many points is it worth on the black market
+
 	var/time_to_equip = 0 // set to ticks it takes to equip a worn suit.
 	var/time_to_unequip = 0 // set to ticks it takes to unequip a worn suit.
 

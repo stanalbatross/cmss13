@@ -138,7 +138,7 @@
 	icon_state = "earmuffs"
 	item_state = "earmuffs"
 	flags_equip_slot = SLOT_EAR
-	var/black_market_value = 15
+	black_market_value = 15
 
 /obj/item/clothing/ears/earmuffs/New()
 	. = ..()

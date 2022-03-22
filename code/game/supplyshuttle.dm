@@ -473,8 +473,10 @@ var/datum/controller/supply/supply_controller = new()
 			if(M.stamped && M.stamped.len)
 				points += points_per_slip
 				qdel(M)
-		else if(MA.?black_market_value)
-			black_market_points += MA.black_market_value
+		if(istype(MA, /obj/item))
+			var/obj/item/I = MA
+			if(I?.black_market_value)
+				black_market_points += I.black_market_value
 
 		// Delete everything else.
 		qdel(MA)
@@ -841,9 +843,11 @@ var/datum/controller/supply/supply_controller = new()
 			for(var/supply_name in supply_controller.supply_packs )
 				var/datum/supply_packs/N = supply_controller.supply_packs[supply_name]
 				if((N.hidden && !hacked) || (N.contraband && !can_order_contraband) || N.group != last_viewed_group || !N.buyable) continue								//Have to send the type instead of a reference to
-				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"		//the obj because it would get caught by the garbage
 				if(N.contraband)
-				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: W-Y $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"
+					temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: W-Y $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"
+					continue
+				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"		//the obj because it would get caught by the garbage
+
 
 		/*temp = "Supply points: [supply_controller.points]<BR><HR><BR>Request what?<BR><BR>"
 

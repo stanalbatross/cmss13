@@ -9,8 +9,8 @@
 	throwforce = 0.0
 	w_class = SIZE_TINY
 	var/string_attached
-	var/sides =
-	var/black_market_value = 1
+	var/sides = 2
+	black_market_value = 1
 
 /obj/item/coin/Initialize()
 	. = ..()

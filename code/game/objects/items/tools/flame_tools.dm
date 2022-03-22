@@ -626,7 +626,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "goldzippo"
 	icon_on = "goldzippoon"
 	icon_off = "goldzippo"
-	var/black_market_points = 5
+	black_market_value = 5
 
 /obj/item/tool/lighter/random
 
