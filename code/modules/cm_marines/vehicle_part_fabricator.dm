@@ -165,6 +165,54 @@
 
 	return static_data
 
+/obj/structure/machinery/part_fabricator/dropship/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/powerloader_clamp))
+		var/obj/item/powerloader_clamp/PC = I
+		recycle_equipment(PC, user)
+		return
+	return ..()
+
+/obj/structure/machinery/part_fabricator/dropship/proc/recycle_equipment(obj/item/powerloader_clamp/PC, mob/living/user)
+	if(istype(PC.loaded, /obj/structure/dropship_equipment))
+		var/obj/structure/dropship_equipment/SE = PC.loaded
+
+		if(!SE.point_cost)
+			to_chat(user, SPAN_WARNING("\The [SE] can't be recycled!"))
+			return
+		to_chat(user, SPAN_WARNING("You start recycling \the [SE]!"))
+		playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
+		if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
+			return
+		to_chat(user, SPAN_NOTICE("You recycle \the [SE] into [src], and get back [SE.point_cost*0.8] points."))
+		if(SE.contents.len)
+			SE.contents = null //no sentries popping out when we qdel please
+		qdel(SE)
+		PC.loaded = null
+		msg_admin_niche("[key_name(user)] recycled a [SE] into \the [src] for [SE.point_cost*0.8] points.")
+		add_to_point_store(SE.point_cost*0.8)
+		playsound(loc, 'sound/machines/fax.ogg', 40, 1)
+		PC.update_icon()
+	else if(istype(PC.loaded, /obj/structure/ship_ammo))
+		var/obj/structure/ship_ammo/SE = PC.loaded
+
+		if(!SE.point_cost)
+			to_chat(user, SPAN_WARNING("\The [SE] can't be recycled!"))
+			return
+		to_chat(user, SPAN_WARNING("You start recycling \the [SE]!"))
+		playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
+		if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
+			return
+		to_chat(user, SPAN_NOTICE("You recycle \the [SE] into [src], and get back [SE.point_cost*0.8] points."))
+		qdel(SE)
+		PC.loaded = null
+		msg_admin_niche("[key_name(user)] recycled a [SE] into \the [src] for [SE.point_cost*0.8] points.")
+		add_to_point_store(SE.point_cost*0.8)
+		playsound(loc, 'sound/machines/fax.ogg', 40, 1)
+		PC.update_icon()
+	else
+		return
+
+
 /// WARNING: IF YOU DECIDE TO READD THIS, GIVE THE HARDPOINTS POINT COSTS
 /obj/structure/machinery/part_fabricator/tank
 	name = "vehicle part fabricator"
