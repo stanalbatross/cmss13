@@ -6,11 +6,26 @@
 
 	var/list/linked_charges = list()
 
-/obj/item/satchel_charge_detonator/attack_self(mob/user)
+/obj/item/satchel_charge_detonator/attack_self(mob/user, parameters)
 	. = ..()
-	flick("detonator_pressed",src)
+	flick("detonator_pressed", src)
+	var/detonation_count = 0
 	for(var/obj/item/explosive/satchel_charge/SC in linked_charges)
-		SC.detonate()
+		if(SC.z != src.loc.z)
+			message_admins("")
+		SC.detonate(src)
+		detonation_count++
+	to_chat(user, SPAN_NOTICE("[detonation_count] charges detonated."))
+
+/obj/item/satchel_charge_detonator/clicked(mob/user, list/mods)
+	if (isobserver(user) || isXeno(user)) return
+
+	if (mods["alt"])
+		to_chat(SPAN_NOTICE("You ping the detonator's [length(linked_charges)] linked charges."))
+		for(var/obj/item/explosive/satchel_charge/SC in linked_charges)
+			flick("satchel_primed", SC)
+			SC.beep(TRUE)
+		return 1
 
 /obj/item/explosive/satchel_charge
 	name = "M17 Satchel Charge"
@@ -28,15 +43,10 @@
 	)
 
 	var/prime_time_usa = 3 SECONDS
+	var/prime_timer_usa = null
 	var/linked_detonator = null
 	var/activated = FALSE
 	var/armed = FALSE
-
-/obj/item/explosive/satchel_charge/Click(var/A, var/mods)
-	. = ..()
-	if(mods["middle"])
-		message_admins("fuck you son bitch mother fucker")
-
 
 /obj/item/explosive/satchel_charge/attack_self(mob/user)
 	. = ..()
@@ -55,41 +65,62 @@
 /obj/item/explosive/satchel_charge/attackby(obj/item/W, mob/user)
 	. = ..()
 	beep(TRUE)
-	if(istype(W, /obj/item/satchel_charge_detonator))
-		var/obj/item/satchel_charge_detonator/D = W
+	if(armed)
+		to_chat(user, SPAN_WARNING("This charge is armed, its linking cannot be altered unless disarmed."))
+		return
+	if(!istype(W, /obj/item/satchel_charge_detonator))
+		return
+	var/obj/item/satchel_charge_detonator/D = W
+	if(linked_detonator == D)
+		D.linked_charges -= src
+		linked_detonator == null
+		to_chat(user, SPAN_NOTICE("You unlink the charge from the detonator."))
+		icon_state = "satchel"
+	else
 		D.linked_charges |= src
 		linked_detonator = D
+		to_chat(user, SPAN_NOTICE("The detonator indicates a new charge has been linked."))
+		icon_state = "satchel_linked"
 
 /obj/item/explosive/satchel_charge/proc/un_activate()
 	if(activated)
 		activated = FALSE
-	icon_state = "satchel"
+		if(linked_detonator)
+			icon_state = "satchel_linked"
+		else
+			icon_state = "satchel"
 
 /obj/item/explosive/satchel_charge/throw_atom(atom/target, range, speed, atom/thrower, spin, launch_type, pass_flags)
 	. = ..()
 	dir = get_dir(src, thrower)
 	if(activated && linked_detonator)
 		icon_state = "satchel_primed"
-		addtimer(CALLBACK(src, .proc/arm), prime_time_usa, TIMER_UNIQUE)
+		prime_timer_usa = addtimer(CALLBACK(src, .proc/arm), prime_time_usa, TIMER_UNIQUE)
 		beep()
 
-/obj/item/explosive/satchel_charge/proc/beep(var/beep_once = FALSE)
+/obj/item/explosive/satchel_charge/proc/beep(var/beep_once)
 	playsound(src.loc, 'sound/effects/beepo.ogg', 10, 1)
-	if(!armed && !beep_once)
+	if(!armed && beep_once != TRUE)
 		addtimer(CALLBACK(src, .proc/beep), 1 SECONDS, TIMER_UNIQUE)
 
 
 /obj/item/explosive/satchel_charge/proc/arm()
+	activated = FALSE
 	if(!linked_detonator || armed)
 		return
 	icon_state = "satchel_armed"
 	armed = TRUE
 
 /obj/item/explosive/satchel_charge/pickup(mob/user)
-	if(armed)
-		icon_state = "satchel"
+	if(armed || prime_timer_usa)
+		if(prime_timer_usa)
+			//stop the timer somehow -_-
+		do_after(user, prime_time_usa, INTERRUPT_MOVED, TRUE)
+		if(linked_detonator)
+			icon_state = "satchel_linked"
+		else
+			icon_state = "satchel"
 		armed = FALSE
-
 		. = ..()
 	else
 		. = ..()
@@ -97,6 +128,9 @@
 /obj/item/explosive/satchel_charge/proc/detonate(triggerer)
 	if(!armed || linked_detonator != triggerer)
 		return
+	linked_detonator.linked_charges -= src
+	message_admins("BOOM!")
+	qdel(src)
 
 
 
