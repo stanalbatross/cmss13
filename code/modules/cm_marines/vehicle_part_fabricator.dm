@@ -18,13 +18,13 @@
 	start_processing()
 
 /obj/structure/machinery/part_fabricator/proc/get_point_store()
-    return 0
+	return 0
 
 /obj/structure/machinery/part_fabricator/proc/add_to_point_store(var/number = 1)
-    return
+	return
 
 /obj/structure/machinery/part_fabricator/proc/spend_point_store(var/number = 1)
-    return
+	return
 
 /obj/structure/machinery/part_fabricator/dropship/ui_data(mob/user)
 	return list(
@@ -121,13 +121,13 @@
 	valid_ammo = /obj/structure/ship_ammo
 
 /obj/structure/machinery/part_fabricator/dropship/get_point_store()
-    return supply_controller.dropship_points
+	return supply_controller.dropship_points
 
 /obj/structure/machinery/part_fabricator/dropship/add_to_point_store(var/number = 1)
-    supply_controller.dropship_points += number
+	supply_controller.dropship_points += number
 
 /obj/structure/machinery/part_fabricator/dropship/spend_point_store(var/number = 1)
-    supply_controller.dropship_points -= number
+	supply_controller.dropship_points -= number
 
 /obj/structure/machinery/part_fabricator/dropship/ui_static_data(mob/user)
 	var/list/static_data = list()
@@ -173,44 +173,36 @@
 	return ..()
 
 /obj/structure/machinery/part_fabricator/dropship/proc/recycle_equipment(obj/item/powerloader_clamp/PC, mob/living/user)
+	if(!PC.loaded)
+		to_chat(user, SPAN_WARNING("There is nothing loaded in the powerclamp."))
+		return
+
+	var/recycle_points
 	if(istype(PC.loaded, /obj/structure/dropship_equipment))
 		var/obj/structure/dropship_equipment/SE = PC.loaded
-
-		if(!SE.point_cost)
-			to_chat(user, SPAN_WARNING("\The [SE] can't be recycled!"))
-			return
-		to_chat(user, SPAN_WARNING("You start recycling \the [SE]!"))
-		playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
-		if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
-			return
-		to_chat(user, SPAN_NOTICE("You recycle \the [SE] into [src], and get back [SE.point_cost*0.8] points."))
-		if(SE.contents.len)
-			SE.contents = null //no sentries popping out when we qdel please
-		qdel(SE)
-		PC.loaded = null
-		msg_admin_niche("[key_name(user)] recycled a [SE] into \the [src] for [SE.point_cost*0.8] points.")
-		add_to_point_store(SE.point_cost*0.8)
-		playsound(loc, 'sound/machines/fax.ogg', 40, 1)
-		PC.update_icon()
+		recycle_points = SE.point_cost
 	else if(istype(PC.loaded, /obj/structure/ship_ammo))
 		var/obj/structure/ship_ammo/SE = PC.loaded
+		recycle_points = SE.point_cost
 
-		if(!SE.point_cost)
-			to_chat(user, SPAN_WARNING("\The [SE] can't be recycled!"))
-			return
-		to_chat(user, SPAN_WARNING("You start recycling \the [SE]!"))
-		playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
-		if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
-			return
-		to_chat(user, SPAN_NOTICE("You recycle \the [SE] into [src], and get back [SE.point_cost*0.8] points."))
-		qdel(SE)
-		PC.loaded = null
-		msg_admin_niche("[key_name(user)] recycled a [SE] into \the [src] for [SE.point_cost*0.8] points.")
-		add_to_point_store(SE.point_cost*0.8)
-		playsound(loc, 'sound/machines/fax.ogg', 40, 1)
-		PC.update_icon()
-	else
+	if(!recycle_points)
+		to_chat(user, SPAN_WARNING("\The [PC.loaded] can't be recycled!"))
 		return
+
+	to_chat(user, SPAN_WARNING("You start recycling \the [PC.loaded]!"))
+	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
+	if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
+		return
+	to_chat(user, SPAN_NOTICE("You recycle \the [PC.loaded] into [src], and get back [recycle_points * 0.8] points."))
+	for(var/obj/thing as anything in PC.loaded)
+		thing.forceMove(loc) // no sentries popping out when we qdel please
+		qdel(thing)
+	qdel(PC.loaded)
+	PC.loaded = null
+	msg_admin_niche("[key_name(user)] recycled a [PC.loaded] into \the [src] for [recycle_points * 0.8] points.")
+	add_to_point_store(recycle_points * 0.8)
+	playsound(loc, 'sound/machines/fax.ogg', 40, 1)
+	PC.update_icon()
 
 
 /// WARNING: IF YOU DECIDE TO READD THIS, GIVE THE HARDPOINTS POINT COSTS
@@ -226,13 +218,13 @@
 	indestructible = TRUE
 
 /obj/structure/machinery/part_fabricator/tank/get_point_store()
-    return supply_controller.tank_points
+	return supply_controller.tank_points
 
 /obj/structure/machinery/part_fabricator/tank/add_to_point_store(var/number = 1)
-    supply_controller.tank_points += number
+	supply_controller.tank_points += number
 
 /obj/structure/machinery/part_fabricator/tank/spend_point_store(var/number = 1)
-    supply_controller.tank_points -= number
+	supply_controller.tank_points -= number
 
 /obj/structure/machinery/part_fabricator/tank/ui_static_data(mob/user)
 	var/list/static_data = list()
