@@ -1413,10 +1413,10 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 		return
 
 	unfold(user)
-	playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE)
+	playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
 	user.visible_message(SPAN_NOTICE("[user] finishes unfolding \the [src]."), SPAN_NOTICE("You finish unfolding \the [src]."))
 	spawn(4)
-		playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE)
+		playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
 	. = ..()
 
 /obj/item/prop/folded_anti_tank_sadar/proc/unfold(mob/user)
