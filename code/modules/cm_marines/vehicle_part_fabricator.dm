@@ -174,7 +174,7 @@
 
 /obj/structure/machinery/part_fabricator/dropship/proc/recycle_equipment(obj/item/powerloader_clamp/PC, mob/living/user)
 	if(!PC.loaded)
-		to_chat(user, SPAN_WARNING("There is nothing loaded in the powerclamp."))
+		to_chat(user, SPAN_WARNING("There is nothing loaded in \the [PC]."))
 		return
 
 	var/recycle_points
@@ -189,17 +189,19 @@
 		to_chat(user, SPAN_WARNING("\The [PC.loaded] can't be recycled!"))
 		return
 
+	var/thing_to_recycle = PC.loaded
 	to_chat(user, SPAN_WARNING("You start recycling \the [PC.loaded]!"))
 	playsound(loc, 'sound/machines/hydraulics_1.ogg', 40, 1)
-	if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE))
+	if(!user || !do_after(user, (7 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_HOSTILE, PC.loaded, INTERRUPT_ALL))
+		to_chat(user, SPAN_NOTICE("You stop recycling \the [thing_to_recycle]."))
 		return
-	to_chat(user, SPAN_NOTICE("You recycle \the [PC.loaded] into [src], and get back [recycle_points * 0.8] points."))
 	for(var/obj/thing as anything in PC.loaded)
 		thing.forceMove(loc) // no sentries popping out when we qdel please
 		qdel(thing)
 	qdel(PC.loaded)
 	PC.loaded = null
-	msg_admin_niche("[key_name(user)] recycled a [PC.loaded] into \the [src] for [recycle_points * 0.8] points.")
+	to_chat(user, SPAN_NOTICE("You recycle \the [thing_to_recycle] into [src], and get back [recycle_points * 0.8] points."))
+	msg_admin_niche("[key_name(user)] recycled a [thing_to_recycle] into \the [src] for [recycle_points * 0.8] points.")
 	add_to_point_store(recycle_points * 0.8)
 	playsound(loc, 'sound/machines/fax.ogg', 40, 1)
 	PC.update_icon()
