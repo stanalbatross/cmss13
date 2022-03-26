@@ -108,11 +108,16 @@ SUBSYSTEM_DEF(atoms)
 
 /datum/controller/subsystem/atoms/proc/spawn_static_comms()
 	for(var/i = 1 to SSticker.mode.static_comms_amount)
-		var/obj/effect/landmark/static_comms/SC = pick_n_take(GLOB.comm_tower_landmarks)
-		if(!SC)
+		var/obj/effect/landmark/static_comms/SCO = pick_n_take(GLOB.comm_tower_landmarks_net_one)
+		var/obj/effect/landmark/static_comms/SCT = pick_n_take(GLOB.comm_tower_landmarks_net_two)
+		if(!SCO)
 			break
-		SC.spawn_tower()
-	QDEL_NULL_LIST(GLOB.comm_tower_landmarks)
+		SCO.spawn_tower()
+		if(!SCT)
+			break
+		SCT.spawn_tower()
+	QDEL_NULL_LIST(GLOB.comm_tower_landmarks_net_one)
+	QDEL_NULL_LIST(GLOB.comm_tower_landmarks_net_two)
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
 	old_initialized = initialized

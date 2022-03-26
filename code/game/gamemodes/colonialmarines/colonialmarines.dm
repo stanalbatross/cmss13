@@ -5,7 +5,7 @@
 	xeno_required_num = 1 //Need at least one xeno.
 	monkey_amount = 5
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED|MODE_NEW_SPAWN
-	static_comms_amount = 2
+	static_comms_amount = 1
 	var/round_status_flags
 
 	var/passive_increase_interval = 20 MINUTES
