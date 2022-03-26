@@ -183,7 +183,14 @@
 		recycle_points = SE.point_cost
 	else if(istype(PC.loaded, /obj/structure/ship_ammo))
 		var/obj/structure/ship_ammo/SE = PC.loaded
-		recycle_points = SE.point_cost
+		if(!SE.ammo_count)
+			to_chat(user, SPAN_WARNING("\The [SE] is empty!"))
+			return
+		if(SE.ammo_count != SE.max_ammo_count)
+			recycle_points = (SE.point_cost * (SE.ammo_count / SE.max_ammo_count))
+			to_chat(user, SPAN_WARNING("\The [SE] is not fully loaded, and less points will be able to be refunded."))
+		else
+			recycle_points = SE.point_cost
 
 	if(!recycle_points)
 		to_chat(user, SPAN_WARNING("\The [PC.loaded] can't be recycled!"))
@@ -200,9 +207,9 @@
 		qdel(thing)
 	qdel(PC.loaded)
 	PC.loaded = null
-	to_chat(user, SPAN_NOTICE("You recycle \the [thing_to_recycle] into [src], and get back [recycle_points * 0.8] points."))
-	msg_admin_niche("[key_name(user)] recycled a [thing_to_recycle] into \the [src] for [recycle_points * 0.8] points.")
-	add_to_point_store(recycle_points * 0.8)
+	to_chat(user, SPAN_NOTICE("You recycle \the [thing_to_recycle] into [src], and get back [round(recycle_points * 0.8)] points."))
+	msg_admin_niche("[key_name(user)] recycled a [thing_to_recycle] into \the [src] for [round(recycle_points * 0.8)] points.")
+	add_to_point_store(round(recycle_points * 0.8))
 	playsound(loc, 'sound/machines/fax.ogg', 40, 1)
 	PC.update_icon()
 
