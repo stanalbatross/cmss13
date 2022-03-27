@@ -446,7 +446,6 @@ Defined in conflicts.dm of the #defines folder.
 	..()
 	accuracy_mod = HIT_ACCURACY_MULT_TIER_3
 	scatter_mod = -SCATTER_AMOUNT_TIER_8
-	damage_mod = BULLET_DAMAGE_MULT_TIER_3
 
 /obj/item/attachable/smartbarrel
 	name = "smartgun barrel"
