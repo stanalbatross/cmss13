@@ -336,7 +336,7 @@ var/datum/controller/supply/supply_controller = new()
 	var/points_per_slip = 1
 	var/points_per_crate = 2
 	//black market stuff
-	var/black_market_points = 0 //Weyland-Yutani dollars - Stan_Albatross
+	var/black_market_points = 0 //in Weyland-Yutani dollars - Stan_Albatross.
 
 	var/base_random_crate_interval = 10 //Every how many processing intervals do we get a random crates.
 
@@ -473,10 +473,16 @@ var/datum/controller/supply/supply_controller = new()
 			if(M.stamped && M.stamped.len)
 				points += points_per_slip
 				qdel(M)
+		var/black_market_points_to_add
 		if(istype(MA, /obj/item))
 			var/obj/item/I = MA
-			if(I?.black_market_value)
-				black_market_points += I.black_market_value
+			if(I.black_market_value)
+				if(istype(I, /obj/item/stack))
+					var/obj/item/stack/S = I
+					black_market_points_to_add = (S.black_market_value * amount)
+				else
+					black_market_points_to_add = I.black_market_value
+				black_market_points += I.black_market_points_to_add
 
 		// Delete everything else.
 		qdel(MA)

@@ -160,6 +160,7 @@
 	fire_sound = 'sound/weapons/gun_DE50.ogg'
 	current_mag = /obj/item/ammo_magazine/pistol/heavy
 	force = 13
+	black_market_value = 50
 
 	attachable_allowed = list(
 						/obj/item/attachable/reddot,

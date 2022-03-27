@@ -139,6 +139,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	perunit = 3750
 	sheettype = "diamond"
 	stack_id = "diamond"
+	black_market_value = 20
 
 
 /obj/item/stack/sheet/mineral/diamond/Initialize()
@@ -154,6 +155,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	perunit = 2000
 	sheettype = "uranium"
 	stack_id = "uranium"
+	black_market_value = 15
 
 /obj/item/stack/sheet/mineral/uranium/Initialize()
 	. = ..()
@@ -171,6 +173,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	perunit = 2000
 	sheettype = "phoron"
 	stack_id = "phoron"
+	black_market_value = 10
 
 /obj/item/stack/sheet/mineral/phoron/small_stack
 	amount = STACK_10
@@ -211,6 +214,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	perunit = 2000
 	sheettype = "gold"
 	stack_id = "gold"
+	black_market_value = 10
 
 /obj/item/stack/sheet/mineral/gold/Initialize()
 	. = ..()
@@ -228,6 +232,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	perunit = 2000
 	sheettype = "silver"
 	stack_id = "silver"
+	black_market_value = 10
 
 /obj/item/stack/sheet/mineral/silver/Initialize()
 	. = ..()
@@ -244,6 +249,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 
 	perunit = 1000
 	stack_id = "uranium"
+	black_market_value = 20
 
 //Valuable resource, cargo can sell it.
 /obj/item/stack/sheet/mineral/platinum
@@ -255,6 +261,7 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	sheettype = "platinum"
 	perunit = 2000
 	stack_id = "platinum"
+	black_market_value = 30
 
 //Extremely valuable to Research.
 /obj/item/stack/sheet/mineral/mhydrogen
@@ -289,3 +296,4 @@ GLOBAL_LIST_INIT(iron_recipes, list ( \
 	color = "#9999FF"
 	perunit = 2000
 	stack_id = "osmium"
+	black_market_value = 20
