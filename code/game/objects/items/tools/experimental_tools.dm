@@ -123,10 +123,11 @@
 	return dat
 
 /obj/item/auto_cpr
-	name = "auto-compressor"
+	name = "auto-compressor" //autocompressor
 	desc = "A device that gives regular compression to the victim's ribcage, used in case of urgent heart issues."
-	icon = 'icons/obj/auto_cpr.dmi'
-	icon_state = "pumper"
+	icon = 'icons/obj/items/experimental_tools.dmi'
+	icon_state = "autocpr"
+	item_state = "autocpr"
 	w_class = SIZE_MEDIUM
 	flags_equip_slot = SLOT_OCLOTHING
 	var/last_pump
@@ -134,9 +135,7 @@
 
 /obj/item/auto_cpr/mob_can_equip(mob/living/carbon/human/H, slot, disable_warning = 0, force = 0)
 	. = ..()
-	if(force || !istype(H) || slot != WEAR_JACKET)
-		return
-	if(H.species.get_bodytype() in list(SPECIES_HUMAN)) //non-humanoids btfo
+	if(force || !isHumanStrict(H) || slot != WEAR_JACKET)
 		return
 	else
 		return FALSE
@@ -145,16 +144,18 @@
 	if(istype(M) && user.a_intent == INTENT_HELP)
 		if(M.wear_suit)
 			to_chat(user, SPAN_WARNING("Their [M.wear_suit] is in the way, remove it first!"))
-			return 1
-		user.visible_message(SPAN_NOTICE("[user] starts fitting [src] onto the [M]'s chest."))
-
-		if(!do_after(user, 2 SECONDS, BUSY_ICON_FRIENDLY, M))
+			return
+		user.affected_message(M,
+							SPAN_NOTICE("You start fitting \the [src] onto [M]'s chest."),
+							SPAN_WARNING("[user] starts fitting \the [src] onto your chest!"),
+							SPAN_NOTICE("[user] starts fitting \the [src] onto [M]'s chest."))
+		if(!do_after(user, 20, BUSY_ICON_MEDICAL, target = M, show_target_icon = BUSY_ICON_MEDICAL))
 			return
 
-/*		if(user.unEquip(src))
-			if(!M.equip_to_slot_if_possible(src, WEAR_JACKET))
-				user.put_in_active_hand(src)
-			return 1 */
+		user.drop_inv_item_on_ground(src)
+		if(!M.equip_to_slot_if_possible(src, WEAR_JACKET))
+			user.put_in_active_hand(src)
+			return
 	else
 		return ..()
 
@@ -180,14 +181,25 @@
 
 	if(world.time > last_pump + 15 SECONDS)
 		last_pump = world.time
-		playsound(src, 'sound/machines/pump.ogg', 25)
+//		playsound(src, 'sound/machines/pump.ogg', 25)
 		if(!skilled_setup && prob(20))
 			var/obj/limb/chest/E = H.limbs["c"]
-			E.add_pain(15)
+			H.pain.apply_pain(PAIN_BONE_BREAK) //ouch!
 			to_chat(H, "<span class='danger'>Your [E] is compressed painfully!</span>")
 			if(prob(5))
 				E.fracture()
 		else
-			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
-			if(heart)
-				heart.external_pump = list(world.time, 0.6)
+			if(H.stat != DEAD)
+				var/suff = min(H.getOxyLoss(), 10) //Pre-merge level, less healing, more prevention of dieing.
+				H.apply_damage(-suff, OXY)
+				H.updatehealth()
+				H.affected_message(src,
+					SPAN_HELPFUL("You feel a <b>breath of fresh air</b> enter your lungs. It feels good."),
+					message_viewer = SPAN_NOTICE("<b>[src]</b> performs <b>CPR</b> on <b>[H]</b>."))
+			if(H.is_revivable() && H.stat == DEAD)
+				if(H.cpr_cooldown < world.time)
+					H.revive_grace_period += 7 SECONDS
+					src.visible_message(SPAN_NOTICE("<b>[src]</b> performs <b>CPR</b> on <b>[H]</b>."))
+				else
+					H.visible_message(SPAN_NOTICE("<b>[src]</b> fails to perform CPR on <b>[H]</b>."))
+				H.cpr_cooldown = world.time + 7 SECONDS
