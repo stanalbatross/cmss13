@@ -135,12 +135,11 @@
 
 /obj/item/auto_cpr/mob_can_equip(mob/living/carbon/human/H, slot, disable_warning = 0, force = 0)
 	. = ..()
-	if(force || !isHumanStrict(H) || slot != WEAR_JACKET)
+	if(!isHumanStrict(H))
+		to_chat("\The [src] only fits on humans!")
 		return
-	else
-		return FALSE
 
-/obj/item/auto_cpr/attack(mob/living/carbon/human/M, mob/living/user, var/target_zone)
+/obj/item/auto_cpr/attack(mob/living/carbon/human/M, mob/living/user)
 	if(istype(M) && user.a_intent == INTENT_HELP)
 		if(M.wear_suit)
 			to_chat(user, SPAN_WARNING("Their [M.wear_suit] is in the way, remove it first!"))
@@ -149,13 +148,17 @@
 							SPAN_NOTICE("You start fitting \the [src] onto [M]'s chest."),
 							SPAN_WARNING("[user] starts fitting \the [src] onto your chest!"),
 							SPAN_NOTICE("[user] starts fitting \the [src] onto [M]'s chest."))
-		if(!do_after(user, 20, BUSY_ICON_MEDICAL, target = M, show_target_icon = BUSY_ICON_MEDICAL))
+		if(!mob_can_equip(M))
+			return
+
+		if(!do_after(user, 20, BUSY_ICON_FRIENDLY, M, BUSY_ICON_MEDICAL))
 			return
 
 		user.drop_inv_item_on_ground(src)
-		if(!M.equip_to_slot_if_possible(src, WEAR_JACKET))
+		if(!M.equip_to_slot_if_possible(M, WEAR_JACKET))
 			user.put_in_active_hand(src)
 			return
+		M.update_inv_wear_suit()
 	else
 		return ..()
 
