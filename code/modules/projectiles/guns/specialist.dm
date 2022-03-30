@@ -1366,7 +1366,8 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/weapon/gun/launcher/rocket/anti_tank/disposable/Fire(atom/target, mob/living/user, params, reflex, dual_wield)
 	. = ..()
-	fired = TRUE
+	if(.)
+		fired = TRUE
 
 /obj/item/weapon/gun/launcher/rocket/anti_tank/disposable/unique_action(mob/M)
 	if(fired)
@@ -1407,16 +1408,16 @@ obj/item/weapon/gun/launcher/grenade/update_icon()
 
 /obj/item/prop/folded_anti_tank_sadar/attack_self(mob/user)
 	user.visible_message(SPAN_NOTICE("[user] begins to unfold \the [src]."), SPAN_NOTICE("You start to unfold and expand \the [src]."))
+	playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
 
 	if(!do_after(user, 4 SECONDS, INTERRUPT_ALL, BUSY_ICON_GENERIC))
 		to_chat(user, SPAN_NOTICE("You stop unfolding \the [src]"))
 		return
 
 	unfold(user)
-	playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
+
 	user.visible_message(SPAN_NOTICE("[user] finishes unfolding \the [src]."), SPAN_NOTICE("You finish unfolding \the [src]."))
-	spawn(4)
-		playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
+	playsound(src, 'sound/items/component_pickup.ogg', 20, TRUE, 5)
 	. = ..()
 
 /obj/item/prop/folded_anti_tank_sadar/proc/unfold(mob/user)

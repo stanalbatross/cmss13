@@ -1887,12 +1887,12 @@
 /datum/ammo/rocket/ap/anti_tank
 	name = "anti-tank rocket"
 	damage = 100
+	var/vehicle_slowdown_time = 5 SECONDS
 
 /datum/ammo/rocket/ap/anti_tank/on_hit_obj(obj/O, obj/item/projectile/P)
 	if(istype(O, /obj/vehicle/multitile))
 		var/obj/vehicle/multitile/M = O
-		var/slowdown_time = 5 SECONDS
-		M.next_move = world.time + slowdown_time
+		M.next_move = world.time + vehicle_slowdown_time
 		playsound(M, 'sound/effects/meteorimpact.ogg', 35)
 		M.at_munition_interior_explosion_effect(cause_data = create_cause_data("Anti-Tank Rocket"))
 		M.interior_crash_effect()
