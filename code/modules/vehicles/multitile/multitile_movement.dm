@@ -290,7 +290,7 @@
 	var/turf/target = get_random_turf_in_range(centre, 2, 0)
 
 	if(shrapnel)
-		create_shrapnel(target, 48, , ,/datum/ammo/bullet/shrapnel, cause_data)
+		create_shrapnel(target, shrapnel_count, , ,/datum/ammo/bullet/shrapnel, cause_data)
 		sleep(2) //so that mobs are not knocked down before being hit by shrapnel. shrapnel might also be getting deleted by explosions?
 		cell_explosion(target, explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 		return

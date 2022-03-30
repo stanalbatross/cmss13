@@ -695,18 +695,15 @@
 	random_spawn_chance = 38
 	random_spawn_rail = list(
 							/obj/item/attachable/reddot,
-							/obj/item/attachable/reflex/,
+							/obj/item/attachable/reflex,
 							/obj/item/attachable/scope/slavic,
 							/obj/item/attachable/magnetic_harness
 							)
 
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_WIELDED_FIRING_ONLY
 
-
-
 /obj/item/weapon/gun/rifle/mar40/lmg/set_gun_attachment_offsets()
 	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 16,"rail_x" = 16, "rail_y" = 20, "under_x" = 26, "under_y" = 16, "stock_x" = 24, "stock_y" = 13)
-
 
 /obj/item/weapon/gun/rifle/mar40/lmg/set_gun_config_values()
 	..()

@@ -1901,7 +1901,7 @@
 		smoke.set_up(1, T)
 		smoke.start()
 		return
-	. = ..()
+	return ..()
 
 
 /datum/ammo/rocket/ltb
