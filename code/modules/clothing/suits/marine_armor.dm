@@ -16,8 +16,8 @@
 	to_chat(src, SPAN_DEBUG("The overall armor score is: <b>[counter]</b>."))
 #endif
 
-//=======================================================================\\
-//=======================================================================\\
+//=======================================================================//
+//=======================================================================//
 
 #define ALPHA		1
 #define BRAVO		2
@@ -270,6 +270,7 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	icon_state = "6"
 	specialty = "M3 pattern smooth marine"
 
+
 /obj/item/clothing/suit/storage/marine/intel
 	icon_state = "io"
 	name = "\improper XM4 pattern intelligence officer plate armor"
@@ -282,7 +283,6 @@ var/list/squad_colors_chat = list(rgb(230,125,125), rgb(255,230,80), rgb(255,150
 	armor_rad = CLOTHING_ARMOR_MEDIUM
 	armor_internaldamage = CLOTHING_ARMOR_MEDIUM
 	storage_slots = 4
-	brightness_on = 7 //slightly higher
 	uniform_restricted = list(/obj/item/clothing/under/marine/officer, /obj/item/clothing/under/rank/ro_suit, /obj/item/clothing/under/marine/officer/intel,)
 	specialty = "XM4 pattern intel"
 
