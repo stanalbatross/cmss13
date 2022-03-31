@@ -2293,9 +2293,7 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 1
 	},
-/obj/effect/landmark/start{
-	name = "Commanding Officer"
-	},
+/obj/effect/landmark/start/captain,
 /turf/open/floor/carpet,
 /area/almayer/living/commandbunks)
 "agg" = (
@@ -3314,10 +3312,7 @@
 	},
 /area/almayer/shipboard/starboard_missiles)
 "aiL" = (
-/obj/effect/attach_point/weapon/dropship1{
-	dir = 1;
-	gimbal = -1
-	},
+/obj/effect/attach_point/weapon/dropship1/left_fore,
 /turf/closed/shuttle/dropship1/transparent{
 	icon_state = "84"
 	},
@@ -3478,10 +3473,8 @@
 /area/almayer/living/pilotbunks)
 "ajg" = (
 /obj/structure/bed,
-/obj/effect/landmark/start{
-	name = "Pilot Officer"
-	},
 /obj/item/bedsheet/brown,
+/obj/effect/landmark/start/pilot,
 /turf/open/floor/wood,
 /area/almayer/living/pilotbunks)
 "ajh" = (
@@ -4059,10 +4052,7 @@
 /turf/open/floor/plating/almayer,
 /area/almayer/hallways/port_hallway)
 "akG" = (
-/obj/effect/attach_point/weapon/dropship1{
-	dir = 1;
-	gimbal = 1
-	},
+/obj/effect/attach_point/weapon/dropship1/right_fore,
 /turf/closed/shuttle/dropship1/transparent{
 	icon_state = "91"
 	},
@@ -4881,9 +4871,6 @@
 	},
 /area/almayer/engineering/ce_room)
 "amH" = (
-/obj/effect/landmark/start{
-	name = "Chief Engineer"
-	},
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
@@ -4891,6 +4878,7 @@
 	dir = 4;
 	layer = 3.25
 	},
+/obj/effect/landmark/start/engineering,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "orange";
@@ -6085,11 +6073,7 @@
 /turf/open/floor/plating/almayer,
 /area/almayer/hallways/aft_hallway)
 "apn" = (
-/obj/effect/attach_point/weapon/dropship1{
-	dir = 8;
-	gimbal = -1;
-	icon_state = "equip_base_l_wing"
-	},
+/obj/effect/attach_point/weapon/dropship1/left_wing,
 /turf/closed/shuttle/dropship1/transparent{
 	icon_state = "61"
 	},
@@ -6161,11 +6145,7 @@
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hull/upper_hull)
 "apy" = (
-/obj/effect/attach_point/weapon/dropship1{
-	dir = 4;
-	gimbal = 1;
-	icon_state = "equip_base_r_wing"
-	},
+/obj/effect/attach_point/weapon/dropship1/right_wing,
 /turf/closed/shuttle/dropship1/transparent{
 	icon_state = "65"
 	},
@@ -9715,9 +9695,7 @@
 /obj/structure/bed/chair{
 	dir = 8
 	},
-/obj/effect/landmark/start{
-	name = "Maintenance Technician"
-	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer,
 /area/almayer/engineering/upper_engineering)
 "aym" = (
@@ -9974,12 +9952,10 @@
 	},
 /area/almayer/command/cic)
 "ayN" = (
-/obj/effect/landmark/start{
-	name = "Synthetic"
-	},
 /obj/structure/machinery/light{
 	dir = 8
 	},
+/obj/effect/landmark/start/synthetic,
 /turf/open/floor/almayer{
 	icon_state = "cargo";
 	tag = "icon-bluecorner (NORTH)"
@@ -11101,9 +11077,7 @@
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
-/obj/effect/landmark/start{
-	name = "Maintenance Tech"
-	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "orangecorner";
@@ -11585,9 +11559,7 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 1
 	},
-/obj/effect/landmark/start{
-	name = "Researcher"
-	},
+/obj/effect/landmark/start/researcher,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -13397,6 +13369,7 @@
 /obj/structure/bed/chair{
 	dir = 4
 	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer{
 	dir = 9;
 	icon_state = "orange";
@@ -13942,12 +13915,10 @@
 /turf/closed/wall/almayer,
 /area/almayer/hull/lower_hull)
 "aLe" = (
-/obj/effect/landmark/start{
-	name = "Executive Officer"
-	},
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
 /obj/structure/bed,
+/obj/effect/landmark/start/executive,
 /turf/open/floor/wood,
 /area/almayer/living/numbertwobunks)
 "aLf" = (
@@ -14718,9 +14689,7 @@
 /area/almayer/living/chapel)
 "aNY" = (
 /obj/structure/bed/chair/office/dark,
-/obj/effect/landmark/start{
-	name = "Researcher"
-	},
+/obj/effect/landmark/start/researcher,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -19240,6 +19209,7 @@
 /area/shuttle/drop2/sulaco)
 "bdQ" = (
 /obj/structure/machinery/computer/security/dropship/two,
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19247,6 +19217,7 @@
 /area/shuttle/drop2/sulaco)
 "bdR" = (
 /obj/structure/machinery/computer/shuttle_control/dropship2/onboard,
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19254,6 +19225,14 @@
 /area/shuttle/drop2/sulaco)
 "bdS" = (
 /obj/structure/machinery/computer/dropship_weapons/dropship2,
+/obj/structure/transmitter/rotary{
+	name = "Normandy Telephone";
+	phone_category = "Dropship";
+	phone_id = "Normandy";
+	pixel_x = 11;
+	pixel_y = 16
+	},
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19332,6 +19311,11 @@
 /area/shuttle/drop1/sulaco)
 "bec" = (
 /obj/structure/machinery/computer/security/dropship/one,
+/obj/structure/prop/ice_colony/hula_girl{
+	pixel_x = -10;
+	pixel_y = 16
+	},
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19339,6 +19323,7 @@
 /area/shuttle/drop1/sulaco)
 "bed" = (
 /obj/structure/machinery/computer/shuttle_control/dropship1/onboard,
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19346,6 +19331,14 @@
 /area/shuttle/drop1/sulaco)
 "bee" = (
 /obj/structure/machinery/computer/dropship_weapons/dropship1,
+/obj/structure/transmitter/rotary{
+	name = "Alamo Telephone";
+	phone_category = "Dropship";
+	phone_id = "Alamo";
+	pixel_x = 11;
+	pixel_y = 16
+	},
+/obj/structure/blocker/invisible_wall,
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -19858,10 +19851,7 @@
 	},
 /area/almayer/hallways/hangar)
 "bfM" = (
-/obj/effect/attach_point/weapon/dropship2{
-	dir = 1;
-	gimbal = -1
-	},
+/obj/effect/attach_point/weapon/dropship2/left_fore,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "84"
 	},
@@ -19895,6 +19885,7 @@
 /area/shuttle/drop2/sulaco)
 "bfQ" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	layer = 3.5;
 	name = "dropship intercom";
 	pixel_x = 21;
@@ -19929,10 +19920,7 @@
 	},
 /area/shuttle/drop2/sulaco)
 "bfU" = (
-/obj/effect/attach_point/weapon/dropship2{
-	dir = 1;
-	gimbal = 1
-	},
+/obj/effect/attach_point/weapon/dropship2/right_fore,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "91"
 	},
@@ -20110,6 +20098,7 @@
 	dir = 1;
 	tag = "icon-map-supply (NORTH)"
 	},
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -20162,6 +20151,7 @@
 	dir = 1;
 	tag = "icon-map-supply (NORTH)"
 	},
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -20271,13 +20261,11 @@
 /obj/structure/bed/chair/office/light{
 	dir = 8
 	},
-/obj/effect/landmark/start{
-	name = "Requisitions Officer"
-	},
 /obj/structure/pipes/standard/simple/hidden/supply{
 	dir = 10;
 	tag = "icon-intact-supply (SOUTHWEST)"
 	},
+/obj/effect/landmark/start/requisition,
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/squads/req)
 "bhf" = (
@@ -20406,10 +20394,8 @@
 /area/almayer/living/bridgebunks)
 "bhJ" = (
 /obj/structure/bed,
-/obj/effect/landmark/start{
-	name = "Staff Officer"
-	},
 /obj/item/bedsheet/brown,
+/obj/effect/landmark/start/bridge,
 /turf/open/floor/wood,
 /area/almayer/living/bridgebunks)
 "bhK" = (
@@ -20464,7 +20450,11 @@
 	},
 /area/shuttle/drop2/sulaco)
 "bhZ" = (
-/obj/structure/machinery/door/airlock/hatch/cockpit/two,
+/obj/structure/machinery/door/airlock/hatch/cockpit/two{
+	req_access = null;
+	req_access_txt = "22";
+	req_one_access = null
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -20520,7 +20510,11 @@
 	},
 /area/shuttle/drop1/sulaco)
 "bim" = (
-/obj/structure/machinery/door/airlock/hatch/cockpit,
+/obj/structure/machinery/door/airlock/hatch/cockpit{
+	req_access = null;
+	req_access_txt = "22";
+	req_one_access = null
+	},
 /turf/open/shuttle/dropship{
 	icon_state = "rasputin15";
 	tag = "icon-rasputin15"
@@ -20939,6 +20933,7 @@
 /area/shuttle/drop2/sulaco)
 "bjW" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	name = "dropship intercom";
 	pixel_y = 24
 	},
@@ -20959,7 +20954,7 @@
 	name = "Dropship Lockdown";
 	normaldoorcontrol = 3;
 	pixel_y = -19;
-	req_one_access = list(3,22);
+	req_one_access_txt = "3;22";
 	throw_range = 15
 	},
 /turf/open/shuttle/dropship{
@@ -20969,6 +20964,7 @@
 /area/shuttle/drop2/sulaco)
 "bjZ" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	name = "dropship intercom";
 	pixel_y = 24
 	},
@@ -21094,8 +21090,7 @@
 	name = "Dropship Lockdown";
 	normaldoorcontrol = 3;
 	pixel_y = -19;
-	req_access = list();
-	req_one_access = list(3,22);
+	req_one_access_txt = "3;22";
 	throw_range = 15
 	},
 /turf/open/shuttle/dropship{
@@ -22033,11 +22028,7 @@
 	},
 /area/almayer/squads/bravo)
 "bnv" = (
-/obj/effect/attach_point/weapon/dropship2{
-	dir = 8;
-	gimbal = -1;
-	icon_state = "equip_base_l_wing"
-	},
+/obj/effect/attach_point/weapon/dropship2/left_wing,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "61"
 	},
@@ -22058,11 +22049,7 @@
 	},
 /area/shuttle/drop2/sulaco)
 "bnz" = (
-/obj/effect/attach_point/weapon/dropship2{
-	dir = 4;
-	gimbal = 1;
-	icon_state = "equip_base_r_wing"
-	},
+/obj/effect/attach_point/weapon/dropship2/right_wing,
 /turf/closed/shuttle/dropship2/transparent{
 	icon_state = "65"
 	},
@@ -23294,6 +23281,7 @@
 /area/almayer/hallways/hangar)
 "brZ" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	layer = 3.5;
 	name = "normandy dropship intercom";
 	pixel_x = -10
@@ -23309,6 +23297,7 @@
 /area/shuttle/drop2/sulaco)
 "bsb" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	layer = 3.5;
 	name = "normandy dropship intercom";
 	pixel_x = 10
@@ -23705,6 +23694,7 @@
 /area/shuttle/drop2/sulaco)
 "btJ" = (
 /obj/item/device/radio/intercom{
+	frequency = 1443;
 	name = "dropship intercom";
 	pixel_y = 24
 	},
@@ -26058,6 +26048,7 @@
 /area/almayer/medical/lower_medical_lobby)
 "bCd" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -26132,6 +26123,7 @@
 /area/almayer/hull/lower_hull)
 "bCl" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -31152,14 +31144,9 @@
 	},
 /area/almayer/hull/lower_hull)
 "bRK" = (
-/obj/effect/landmark/start{
-	name = "Doctor"
-	},
-/turf/open/floor/almayer{
-	icon_state = "dark_sterile";
-	tag = "icon-sterile"
-	},
-/area/almayer/medical/lower_medical_medbay)
+/obj/effect/landmark/start/warden,
+/turf/open/floor/plating/plating_catwalk,
+/area/almayer/shipboard/brig)
 "bRL" = (
 /obj/structure/machinery/vending/coffee,
 /obj/structure/machinery/light,
@@ -33395,9 +33382,7 @@
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hallways/hangar)
 "bZk" = (
-/obj/effect/landmark/start{
-	name = "Doctor"
-	},
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "sterile_green_side";
@@ -36678,9 +36663,7 @@
 	},
 /area/almayer/hallways/port_hallway)
 "ckn" = (
-/obj/effect/landmark/start{
-	name = "Maintenance Technician"
-	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer{
 	icon_state = "orange";
 	tag = "icon-orange"
@@ -36801,9 +36784,7 @@
 /obj/structure/bed/chair{
 	dir = 4
 	},
-/obj/effect/landmark/start{
-	name = "Maintenance Technician"
-	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "orange";
@@ -37951,14 +37932,12 @@
 /area/almayer/engineering/engineering_workshop/hangar)
 "coo" = (
 /obj/structure/bed,
-/obj/effect/landmark/start{
-	name = "Vehicle Crewman"
-	},
 /obj/item/bedsheet/brown,
 /obj/structure/machinery/light{
 	dir = 1;
 	tag = "icon-tube1 (NORTH)"
 	},
+/obj/effect/landmark/start/tank_crew,
 /turf/open/floor/wood,
 /area/almayer/living/tankerbunks)
 "cop" = (
@@ -38174,9 +38153,7 @@
 	},
 /area/almayer/hallways/starboard_hallway)
 "csl" = (
-/obj/effect/landmark/start{
-	name = "Mess Sergeant"
-	},
+/obj/effect/landmark/start/chef,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -38789,9 +38766,7 @@
 	dir = 8;
 	layer = 3.25
 	},
-/obj/effect/landmark/start{
-	name = "Researcher"
-	},
+/obj/effect/landmark/start/researcher,
 /turf/open/floor/wood,
 /area/almayer/medical/medical_science)
 "ddj" = (
@@ -39660,9 +39635,7 @@
 	},
 /area/almayer/shipboard/brig/cells)
 "dVr" = (
-/obj/effect/landmark/start{
-	name = "Nurse"
-	},
+/obj/effect/landmark/start/nurse,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -40433,9 +40406,7 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 1
 	},
-/obj/effect/landmark/start{
-	name = "Researcher"
-	},
+/obj/effect/landmark/start/researcher,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -40638,6 +40609,7 @@
 /area/almayer/living/cafeteria_starboard)
 "eZh" = (
 /obj/structure/bed/stool,
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -41316,13 +41288,11 @@
 /area/almayer/squads/req)
 "fJy" = (
 /obj/structure/bed,
-/obj/effect/landmark/start{
-	name = "Pilot Officer"
-	},
 /obj/item/bedsheet/brown,
 /obj/structure/machinery/light{
 	dir = 8
 	},
+/obj/effect/landmark/start/pilot,
 /turf/open/floor/wood,
 /area/almayer/living/pilotbunks)
 "fJF" = (
@@ -41459,6 +41429,7 @@
 	dir = 9;
 	tag = "icon-intact-supply (NORTHWEST)"
 	},
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "sterile_green_side";
@@ -42049,9 +42020,7 @@
 	},
 /area/almayer/evacuation/pod17)
 "gFs" = (
-/obj/effect/landmark/start{
-	name = "Ordnance Technician"
-	},
+/obj/effect/landmark/start/maint,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "orange";
@@ -42951,9 +42920,7 @@
 /area/almayer/medical/lower_medical_lobby)
 "hFC" = (
 /obj/structure/bed/chair/office/dark,
-/obj/effect/landmark/start{
-	name = "Researcher"
-	},
+/obj/effect/landmark/start/researcher,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "sterile_green_side";
@@ -43380,9 +43347,7 @@
 /turf/open/floor/carpet,
 /area/almayer/command/cichallway)
 "igG" = (
-/obj/effect/landmark/start{
-	name = "Doctor"
-	},
+/obj/effect/landmark/start/doctor,
 /turf/open/floor/almayer{
 	icon_state = "sterile_green_side";
 	tag = "icon-sterile"
@@ -43649,13 +43614,11 @@
 /obj/structure/bed/chair/office/light{
 	dir = 4
 	},
-/obj/effect/landmark/start{
-	name = "Senior Enlisted Advisor"
-	},
 /obj/structure/pipes/standard/simple/hidden/supply,
 /obj/structure/machinery/power/apc/almayer{
 	dir = 8
 	},
+/obj/effect/landmark/start/senior,
 /turf/open/floor/wood,
 /area/almayer/shipboard/sea_office)
 "iFH" = (
@@ -43989,12 +43952,10 @@
 	},
 /area/almayer/hallways/aft_hallway)
 "iZQ" = (
-/obj/effect/landmark/start{
-	name = "Military Police"
-	},
 /obj/structure/bed/chair{
 	dir = 4
 	},
+/obj/effect/landmark/start/police,
 /turf/open/floor/almayer,
 /area/almayer/shipboard/brig)
 "jaR" = (
@@ -44043,6 +44004,7 @@
 	icon_state = "N";
 	tag = "icon-N"
 	},
+/obj/effect/landmark/start/tech,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "orange";
@@ -44187,9 +44149,7 @@
 	icon_state = "NE-out";
 	tag = "icon-NE-out"
 	},
-/obj/effect/landmark/start{
-	name = "Ordnance Technician"
-	},
+/obj/effect/landmark/start/tech,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "orangecorner";
@@ -45384,9 +45344,7 @@
 "kBY" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
-/obj/effect/landmark/start{
-	name = "Vehicle Crewman"
-	},
+/obj/effect/landmark/start/tank_crew,
 /turf/open/floor/wood,
 /area/almayer/living/tankerbunks)
 "kCE" = (
@@ -46270,9 +46228,7 @@
 	dir = 4;
 	tag = "icon-chair (WEST)"
 	},
-/obj/effect/landmark/start{
-	name = "Military Police"
-	},
+/obj/effect/landmark/start/police,
 /turf/open/floor/almayer,
 /area/almayer/shipboard/brig)
 "lCz" = (
@@ -46545,9 +46501,7 @@
 /obj/structure/bed/chair{
 	dir = 1
 	},
-/obj/effect/landmark/start{
-	name = "Cargo Technician"
-	},
+/obj/effect/landmark/start/cargo,
 /turf/open/floor/almayer{
 	dir = 8;
 	icon_state = "green";
@@ -48094,9 +48048,7 @@
 /obj/structure/bed/chair{
 	dir = 8
 	},
-/obj/effect/landmark/start{
-	name = "Cargo Technician"
-	},
+/obj/effect/landmark/start/cargo,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "green";
@@ -48744,9 +48696,7 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 4
 	},
-/obj/effect/landmark/start{
-	name = "Ordnance Technician"
-	},
+/obj/effect/landmark/start/tech,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "orange";
@@ -52018,9 +51968,7 @@
 	dir = 8;
 	tag = "icon-chair (WEST)"
 	},
-/obj/effect/landmark/start{
-	name = "Military Police"
-	},
+/obj/effect/landmark/start/police,
 /turf/open/floor/almayer,
 /area/almayer/shipboard/brig)
 "rSD" = (
@@ -52318,12 +52266,10 @@
 	},
 /area/almayer/engineering/ce_room)
 "skl" = (
-/obj/effect/landmark/start{
-	name = "Chief Medical Officer"
-	},
 /obj/structure/bed/chair/office/dark{
 	dir = 8
 	},
+/obj/effect/landmark/start/professor,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -53149,9 +53095,7 @@
 /obj/structure/bed/chair{
 	dir = 1
 	},
-/obj/effect/landmark/start{
-	name = "Military Warden"
-	},
+/obj/effect/landmark/start/warden,
 /turf/open/floor/almayer,
 /area/almayer/shipboard/brig)
 "taA" = (
@@ -55439,9 +55383,7 @@
 	},
 /area/almayer/medical/lower_medical_medbay)
 "vGp" = (
-/obj/effect/landmark/start{
-	name = "Chief MP"
-	},
+/obj/effect/landmark/start/warrant,
 /turf/open/floor/wood,
 /area/almayer/shipboard/brig/chief_mp_office)
 "vGG" = (
@@ -85516,7 +85458,7 @@ bLE
 beA
 bOB
 beA
-bRK
+beA
 beA
 bvt
 beA
@@ -85717,11 +85659,11 @@ biy
 yeJ
 bLF
 beA
-bRK
+beA
 beA
 bZn
 beA
-bRK
+beA
 beA
 byd
 dld
@@ -86529,11 +86471,11 @@ xfT
 bkC
 rBQ
 beA
-bRK
+beA
 beA
 bZn
 beA
-bRK
+beA
 beA
 bye
 bzq
@@ -86734,7 +86676,7 @@ bmk
 beA
 lYa
 beA
-bRK
+beA
 beA
 xds
 beA
@@ -93659,9 +93601,9 @@ bni
 kFy
 rDw
 vyg
-ayD
-ayD
-ayD
+bRK
+bRK
+bRK
 bto
 blt
 aLf
