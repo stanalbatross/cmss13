@@ -129,12 +129,12 @@
 	if(alert("Are you sure you want to end the round?", "End Round", "Yes", "No") != "Yes")
 		return
 
-	var/winstate = input(usr, "What do you want the round end state to be?", "End Round") as null|anything in list("Custom", "Admin Intervention") + SSticker.mode.round_end_states //Make list and custom ending, because we can!
+	var/winstate = tgui_input_list(usr, "What do you want the round end state to be?", "End Round", list("Custom", "Admin Intervention") + SSticker.mode.round_end_states) //Make list and custom ending, because we can!
 	if(!winstate)
 		return
 
 	if(winstate == "Custom")
-		winstate = input(usr, "Please enter a custom round end state.", "End Round") as null|text
+		winstate = input(usr, "Please enter a custom round end state.", "End Round Cause") as null|text
 		if(!winstate)
 			return
 
@@ -152,7 +152,7 @@
 			winstate = "The [last_living_hive] [winstate]"
 
 		if(living_hives.len > 1)
-			var/winner_hive = input(usr, "What is hive you belive win this is game?", "Choice hive (WINNER)") as null|anything in list(living_hives, "No one")
+			var/winner_hive = tgui_input_list(usr, "What is hive you belive win this is game?", "Choice hive (WINNER)", list("No one") + living_hives)
 			winstate = "The [winner_hive] [winstate]"
 
 		if(winstate == MODE_XVX_WIN)

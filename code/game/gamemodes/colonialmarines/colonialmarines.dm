@@ -351,17 +351,6 @@
 
 // for the toolbox
 /datum/game_mode/colonialmarines/end_round_message()
-	switch(round_finished)
-		if(MODE_INFESTATION_X_MAJOR)
-			return "Round has ended. Xeno Major Victory."
-		if(MODE_INFESTATION_M_MAJOR)
-			return "Round has ended. Marine Major Victory."
-		if(MODE_INFESTATION_X_MINOR)
-			return "Round has ended. Xeno Minor Victory."
-		if(MODE_INFESTATION_M_MINOR)
-			return "Round has ended. Marine Minor Victory."
-		if(MODE_INFESTATION_DRAW_DEATH)
-			return "Round has ended. Draw."
-	if(round_finished != 1 && round_finished)
-		return "[round_finished]"
+	if(round_finished)
+		return "Round has ended. [round_finished]"
 	return "Round has ended in a strange way."
