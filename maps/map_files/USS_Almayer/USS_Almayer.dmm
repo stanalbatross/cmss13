@@ -37751,7 +37751,7 @@
 /obj/structure/machinery/door/airlock/almayer/secure{
 	name = "\improper Computer Lab";
 	req_access = list();
-	req_one_access = list(32)s
+	req_one_access = list(32)
 	},
 /obj/structure/machinery/door/firedoor/border_only/almayer{
 	dir = 8;
