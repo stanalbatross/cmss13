@@ -15435,9 +15435,7 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
-	density = 0
-	},
+/obj/structure/machinery/cm_vending/clothing/rto/bravo,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "orange";
@@ -23460,9 +23458,7 @@
 	},
 /area/almayer/squads/req)
 "bsK" = (
-/obj/effect/landmark{
-	name = "SupplyElevator"
-	},
+/obj/effect/landmark/supply_elevator,
 /turf/open/floor/almayer/empty,
 /area/supply/station)
 "bsL" = (
@@ -36695,9 +36691,7 @@
 /obj/structure/machinery/firealarm{
 	pixel_y = 28
 	},
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
-	density = 0
-	},
+/obj/structure/machinery/cm_vending/clothing/rto/delta,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -37946,9 +37940,7 @@
 /turf/open/floor/wood,
 /area/almayer/living/tankerbunks)
 "coB" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
-	density = 0
-	},
+/obj/structure/machinery/cm_vending/clothing/rto/alpha,
 /turf/open/floor/almayer{
 	icon_state = "red";
 	tag = "icon-red"
@@ -41296,9 +41288,7 @@
 /turf/open/floor/wood,
 /area/almayer/living/pilotbunks)
 "fJF" = (
-/obj/structure/machinery/cm_vending/clothing/rto/charlie{
-	density = 0
-	},
+/obj/structure/machinery/cm_vending/clothing/rto,
 /turf/open/floor/almayer{
 	icon_state = "silverfull"
 	},
@@ -44340,7 +44330,7 @@
 /area/almayer/medical/lower_medical_medbay)
 "jqy" = (
 /turf/open/floor/almayer/empty,
-/area/supply/station_vehicle)
+/area/almayer/hallways/vehiclehangar)
 "jre" = (
 /obj/structure/machinery/computer/arcade,
 /turf/open/floor/almayer{
@@ -49303,11 +49293,9 @@
 	},
 /area/almayer/squads/req)
 "oTz" = (
-/obj/effect/landmark{
-	name = "VehicleElevator"
-	},
+/obj/docking_port/stationary/vehicle_elevator,
 /turf/open/floor/almayer/empty,
-/area/supply/station_vehicle)
+/area/almayer/hallways/vehiclehangar)
 "oUO" = (
 /obj/structure/machinery/camera/autoname/almayer{
 	dir = 4;
