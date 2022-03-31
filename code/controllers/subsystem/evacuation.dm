@@ -201,18 +201,13 @@ SUBSYSTEM_DEF(evacuation)
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/initiate_self_destruct(override)
-	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS)
+	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS || override)
 		var/obj/structure/machinery/self_destruct/rod/I
 		var/i
 		for(i in dest_rods)
 			I = i
 			if(I.active_state != SELF_DESTRUCT_MACHINE_ARMED && !override)
 				dest_master.state(SPAN_WARNING("WARNING: Unable to trigger detonation. Please arm all control rods."))
-				return FALSE
-			var/obj/docking_port/mobile/lifeboat/L1 = SSshuttle.getShuttle("lifeboat1")
-			var/obj/docking_port/mobile/lifeboat/L2 = SSshuttle.getShuttle("lifeboat2")
-			if(L1.available || L2.available)
-				dest_master.state(SPAN_WARNING("WARNING: Unable to trigger detonation. Not all lifeboat escaped."))
 				return FALSE
 		dest_master.in_progress = !dest_master.in_progress
 		for(i in EvacuationAuthority.dest_rods)
