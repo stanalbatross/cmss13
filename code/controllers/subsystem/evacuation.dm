@@ -347,16 +347,16 @@ SUBSYSTEM_DEF(evacuation)
 	EvacuationAuthority.dest_rods = null
 
 /obj/structure/machinery/self_destruct/console
-	lock_or_unlock(lock)
+
+/obj/structure/machinery/self_destruct/console/lock_or_unlock(lock)
 		playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
 		..()
 
-	//TODO: Add sounds.
-	attack_hand(mob/user)
+/obj/structure/machinery/self_destruct/console/attack_hand(mob/user)
 		. = ..()
 		if(.) ui_interact(user)
 
-	Topic(href, href_list)
+/obj/structure/machinery/self_destruct/console/Topic(href, href_list)
 		if(..())
 			return TRUE
 		switch(href_list["command"])
@@ -381,7 +381,7 @@ SUBSYSTEM_DEF(evacuation)
 					return
 				if(EvacuationAuthority.cancel_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
 
-	ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/structure/machinery/self_destruct/console/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 		var/data[] = list(
 			"dest_status" = active_state
 		)
