@@ -138,6 +138,26 @@
 		if(!winstate)
 			return
 
+	if(winstate == MODE_XVX_WIN)
+		var/list/living_player_list = SSticker.mode.get_xenos_hive()
+
+		var/last_living_hive
+		var/list/living_hives
+
+		for(var/H in living_player_list)
+			living_hives += H
+			last_living_hive = H
+
+		if(living_hives.len == 1)
+			winstate = "The [last_living_hive] [winstate]"
+
+		if(living_hives.len > 1)
+			var/winner_hive = input(usr, "What is hive you belive win this is game?", "Choice hive (WINNER)") as null|anything in list(living_hives, "No one")
+			winstate = "The [winner_hive] [winstate]"
+
+		if(winstate == MODE_XVX_WIN)
+			return
+
 	SSticker.mode.round_finished = winstate
 
 	log_admin("[key_name(usr)] has made the round end early - [winstate].")

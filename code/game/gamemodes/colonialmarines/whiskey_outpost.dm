@@ -725,3 +725,9 @@
 
 /datum/game_mode/whiskey_outpost/announce_bioscans(var/delta = 2)
 	return // No bioscans needed in WO
+
+// for the toolbox
+/datum/game_mode/whiskey_outpost/end_round_message()
+	if(round_finished)
+		return "Wiskey Outpost Round has ended. [round_finished]"
+	return "Wiskey Outpost Round has ended. No one has won"

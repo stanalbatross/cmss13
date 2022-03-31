@@ -1,5 +1,3 @@
-#define is_hive_living(hive) (!hive.hardcore || hive.living_xeno_queen)
-
 /datum/game_mode/xenovs
 	name = "Hive Wars"
 	config_tag = "Hive Wars"
@@ -170,27 +168,6 @@
 				check_win()
 			round_checkwin = 0
 
-
-/datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT, ZTRAIT_MARINE_MAIN_SHIP)))
-	var/list/list/hivenumbers = list()
-	var/datum/hive_status/HS
-	for(var/hivenumber in GLOB.hive_datum)
-		HS = GLOB.hive_datum[hivenumber]
-		hivenumbers += list(HS.name = list())
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
-			var/mob/living/carbon/Xenomorph/X = M
-			var/datum/hive_status/hive = GLOB.hive_datum[X.hivenumber]
-			if(!hive)
-				continue
-
-			if(istype(X) && is_hive_living(hive))
-				hivenumbers[hive.name].Add(X)
-
-
-	return hivenumbers
-
 ///////////////////////////
 //Checks to see who won///
 //////////////////////////
@@ -215,7 +192,7 @@
 	if(!living_hives)
 		round_finished = "No one has won."
 	else if (living_hives == 1)
-		round_finished = "The [last_living_hive] has won."
+		round_finished = "The [last_living_hive] [MODE_XVX_WIN]"
 
 
 ///////////////////////////////
@@ -259,5 +236,5 @@
 // for the toolbox
 /datum/game_mode/xenovs/end_round_message()
 	if(round_finished)
-		return "Hive Wars Round has ended. [round_finished]"
+		return "[round_finished]"
 	return "Hive Wars Round has ended. No one has won"

@@ -1,3 +1,5 @@
+#define is_hive_living(hive) (!hive.hardcore || hive.living_xeno_queen)
+
 #define QUEEN_DEATH_COUNTDOWN 			 10 MINUTES //10 minutes. Can be changed into a variable if it needs to be manipulated later.
 
 #define MODE_INFESTATION_X_MAJOR		"Xenomorph Major Victory"
@@ -6,8 +8,8 @@
 #define MODE_INFESTATION_M_MINOR		"Marine Minor Victory"
 #define MODE_INFESTATION_DRAW_DEATH		"DRAW: Mutual Annihilation"
 
-#define MODE_WISKEY_OUTPOST_X_MAJOR		"Xenomorph Destroyed Marines"
-#define MODE_WISKEY_OUTPOST_M_MAJOR		"Marine Stay Alive"
+#define MODE_WISKEY_OUTPOST_X_MAJOR		"Xenomorph Defeated Marines"
+#define MODE_WISKEY_OUTPOST_M_MAJOR		"Marines Failed Defense"
 
 #define MODE_BATTLEFIELD_W_MAJOR		"Wey-Yu PMC Major Success"
 #define MODE_BATTLEFIELD_M_MAJOR		"Marine Major Success"
@@ -18,7 +20,7 @@
 #define MODE_INFECTION_HUMAN_WIN		"Major Human Victory"
 #define MODE_INFECTION_ZOMBIE_WIN		"Major Zombie Victory"
 
-#define MODE_XVX_WIN					"Xeno War Ended"
+#define MODE_XVX_WIN					"Has Won. Xeno War Ended"
 
 #define MODE_HUNTERGAMES_WIN			"Hunter Games Ended"
 
@@ -289,6 +291,26 @@ var/nextAdminBioscan = 30 MINUTES//30 minutes in
 		var/name = "[MAIN_AI_SYSTEM] Bioscan Status"
 		var/input = "Bioscan complete.\n\nSensors indicate [numXenosShipAres ? "[numXenosShipAres]":"no"] unknown lifeform signature[!numXenosShipAres || numXenosShipAres > 1 ? "s":""] present on the ship[numXenosShipAres&&RandomXenosShipLocation?", including one in [RandomXenosShipLocation],":""] and [numXenosPlanet ? "approximately [numXenosPlanet]":"no"] signature[!numXenosPlanet || numXenosPlanet > 1 ? "s":""] located elsewhere[numXenosPlanet&&RandomXenosPlanetLocation?", including one in [RandomXenosPlanetLocation]":""]."
 		marine_announcement(input, name, 'sound/AI/bioscan.ogg')
+
+/datum/game_mode/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT, ZTRAIT_MARINE_MAIN_SHIP)))
+	var/list/list/hivenumbers = list()
+	var/datum/hive_status/HS
+	for(var/hivenumber in GLOB.hive_datum)
+		HS = GLOB.hive_datum[hivenumber]
+		hivenumbers += list(HS.name = list())
+
+	for(var/mob/M in GLOB.player_list)
+		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
+			var/mob/living/carbon/Xenomorph/X = M
+			var/datum/hive_status/hive = GLOB.hive_datum[X.hivenumber]
+			if(!hive)
+				continue
+
+			if(istype(X) && is_hive_living(hive))
+				hivenumbers[hive.name].Add(X)
+
+
+	return hivenumbers
 
 /*
 Count up surviving humans and aliens.
