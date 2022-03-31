@@ -346,52 +346,50 @@ SUBSYSTEM_DEF(evacuation)
 	EvacuationAuthority.dest_master = null
 	EvacuationAuthority.dest_rods = null
 
-/obj/structure/machinery/self_destruct/console
-
 /obj/structure/machinery/self_destruct/console/lock_or_unlock(lock)
-		playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
-		..()
+	playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
+	..()
 
 /obj/structure/machinery/self_destruct/console/attack_hand(mob/user)
-		. = ..()
-		if(.) ui_interact(user)
+	. = ..()
+	if(.) ui_interact(user)
 
 /obj/structure/machinery/self_destruct/console/Topic(href, href_list)
-		if(..())
-			return TRUE
-		switch(href_list["command"])
-			if("dest_start")
-				to_chat(usr, SPAN_NOTICE("You press a few keys on the panel."))
-				to_chat(usr, SPAN_NOTICE("The system must be booting up the self-destruct sequence now."))
-				ai_announcement("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 20 minutes. Automatic detonation is unavailable. Manual detonation is required.", 'sound/AI/selfdestruct.ogg')
-				active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
-				var/obj/structure/machinery/self_destruct/rod/I = EvacuationAuthority.dest_rods[EvacuationAuthority.dest_index]
-				I.activate_time = world.time
-				EvacuationAuthority.process_self_destruct()
-				var/data[] = list(
-					"dest_status" = active_state
-				)
-				nanomanager.try_update_ui(usr, src, "main",, data)
-			if("dest_trigger")
-				if(EvacuationAuthority.initiate_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
-			if("dest_cancel")
-				var/list/allowed_officers = list("Commanding Officer", "Executive Officer", "Staff Officer", "Chief MP","Chief Medical Officer","Chief Engineer")
-				if(!allowed_officers.Find(usr.job))
-					to_chat(usr, SPAN_NOTICE("You don't have the necessary clearance to cancel the emergency destruct system."))
-					return
-				if(EvacuationAuthority.cancel_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
+	if(..())
+		return TRUE
+	switch(href_list["command"])
+		if("dest_start")
+			to_chat(usr, SPAN_NOTICE("You press a few keys on the panel."))
+			to_chat(usr, SPAN_NOTICE("The system must be booting up the self-destruct sequence now."))
+			ai_announcement("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 20 minutes. Automatic detonation is unavailable. Manual detonation is required.", 'sound/AI/selfdestruct.ogg')
+			active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
+			var/obj/structure/machinery/self_destruct/rod/I = EvacuationAuthority.dest_rods[EvacuationAuthority.dest_index]
+			I.activate_time = world.time
+			EvacuationAuthority.process_self_destruct()
+			var/data[] = list(
+				"dest_status" = active_state
+			)
+			nanomanager.try_update_ui(usr, src, "main",, data)
+		if("dest_trigger")
+			if(EvacuationAuthority.initiate_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
+		if("dest_cancel")
+			var/list/allowed_officers = list("Commanding Officer", "Executive Officer", "Staff Officer", "Chief MP","Chief Medical Officer","Chief Engineer")
+			if(!allowed_officers.Find(usr.job))
+				to_chat(usr, SPAN_NOTICE("You don't have the necessary clearance to cancel the emergency destruct system."))
+				return
+			if(EvacuationAuthority.cancel_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
 
 /obj/structure/machinery/self_destruct/console/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-		var/data[] = list(
-			"dest_status" = active_state
-		)
+	var/data[] = list(
+		"dest_status" = active_state
+	)
 
-		ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-		if(!ui)
-			ui = new(user, src, ui_key, "self_destruct_console.tmpl", "OMICRON6 PAYLOAD", 470, 290)
-			ui.set_initial_data(data)
-			ui.open()
+	if(!ui)
+		ui = new(user, src, ui_key, "self_destruct_console.tmpl", "OMICRON6 PAYLOAD", 470, 290)
+		ui.set_initial_data(data)
+		ui.open()
 
 /obj/structure/machinery/self_destruct/rod
 	name = "self destruct control rod"
@@ -408,29 +406,28 @@ SUBSYSTEM_DEF(evacuation)
 	. = ..()
 	GLOB.dest_rods -= src
 
-/obj/structure/machinery/self_destruct/rod
-	lock_or_unlock(lock)
-		playsound(src, 'sound/machines/hydraulics_2.ogg', 25, 1)
-		..()
-		if(lock)
-			activate_time = null
-			density = FALSE
-			layer = initial(layer)
-		else
-			density = TRUE
-			layer = ABOVE_OBJ_LAYER
+/obj/structure/machinery/self_destruct/rod/lock_or_unlock(lock)
+	playsound(src, 'sound/machines/hydraulics_2.ogg', 25, 1)
+	..()
+	if(lock)
+		activate_time = null
+		density = FALSE
+		layer = initial(layer)
+	else
+		density = TRUE
+		layer = ABOVE_OBJ_LAYER
 
-	attack_hand(mob/user)
-		if(..())
-			switch(active_state)
-				if(SELF_DESTRUCT_MACHINE_ACTIVE)
-					to_chat(user, SPAN_NOTICE("You twist and release the control rod, arming it."))
-					playsound(src, 'sound/machines/switch.ogg', 25, 1)
-					icon_state = "rod_4"
-					active_state = SELF_DESTRUCT_MACHINE_ARMED
-				if(SELF_DESTRUCT_MACHINE_ARMED)
-					to_chat(user, SPAN_NOTICE("You twist and release the control rod, disarming it."))
-					playsound(src, 'sound/machines/switch.ogg', 25, 1)
-					icon_state = "rod_3"
-					active_state = SELF_DESTRUCT_MACHINE_ACTIVE
-				else to_chat(user, SPAN_WARNING("The control rod is not ready."))
+/obj/structure/machinery/self_destruct/rod/attack_hand(mob/user)
+	if(..())
+		switch(active_state)
+			if(SELF_DESTRUCT_MACHINE_ACTIVE)
+				to_chat(user, SPAN_NOTICE("You twist and release the control rod, arming it."))
+				playsound(src, 'sound/machines/switch.ogg', 25, 1)
+				icon_state = "rod_4"
+				active_state = SELF_DESTRUCT_MACHINE_ARMED
+			if(SELF_DESTRUCT_MACHINE_ARMED)
+				to_chat(user, SPAN_NOTICE("You twist and release the control rod, disarming it."))
+				playsound(src, 'sound/machines/switch.ogg', 25, 1)
+				icon_state = "rod_3"
+				active_state = SELF_DESTRUCT_MACHINE_ACTIVE
+			else to_chat(user, SPAN_WARNING("The control rod is not ready."))
