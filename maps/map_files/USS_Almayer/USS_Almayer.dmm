@@ -13113,9 +13113,9 @@
 /turf/open/floor/plating,
 /area/almayer/medical/medical_science)
 "aIq" = (
-/obj/effect/landmark/start/marine/rto,
-/turf/open/floor/almayer,
-/area/almayer/living/cryo_cells)
+/obj/structure/catwalk/prison,
+/turf/open/space,
+/area/space)
 "aIr" = (
 /obj/structure/machinery/door/airlock/almayer/secure{
 	dir = 2;
@@ -30572,7 +30572,6 @@
 /obj/structure/pipes/vents/pump{
 	dir = 4
 	},
-/obj/effect/landmark/start/marine/rto,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "orange";
@@ -31247,7 +31246,6 @@
 /obj/structure/pipes/vents/pump{
 	dir = 4
 	},
-/obj/effect/landmark/start/marine/rto,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "emerald";
@@ -38163,9 +38161,7 @@
 	name = "General Listening Channel";
 	pixel_y = 28
 	},
-/obj/effect/landmark/start{
-	name = "Squad Radio Telephone Operator"
-	},
+/obj/effect/landmark/start/marine/rto,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "silver";
@@ -40609,9 +40605,7 @@
 	},
 /area/almayer/medical/chemistry)
 "eZH" = (
-/obj/effect/landmark/start{
-	name = "Squad Radio Telephone Operator"
-	},
+/obj/effect/landmark/start/marine/rto,
 /turf/open/floor/almayer{
 	dir = 6;
 	icon_state = "silver";
@@ -43685,9 +43679,7 @@
 	},
 /area/almayer/medical/operating_room_three)
 "iLO" = (
-/obj/effect/landmark/start{
-	name = "Squad Radio Telephone Operator"
-	},
+/obj/effect/landmark/start/marine/rto,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "silver";
@@ -59284,7 +59276,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aIq
 aaa
 aaa
 aaa
@@ -103303,7 +103295,7 @@ aLG
 bbr
 bCO
 bDK
-aIq
+bHs
 bDK
 bCO
 bHs
@@ -103317,7 +103309,7 @@ qlz
 bHs
 bCO
 bDK
-aIq
+bHs
 bDK
 bCO
 bbr
@@ -103506,7 +103498,7 @@ aLG
 bbr
 bCM
 bDL
-aIq
+bHs
 bHr
 bCM
 bJd
@@ -103520,7 +103512,7 @@ qlz
 bJd
 bCM
 bHr
-aIq
+bHs
 bDL
 bCM
 bbr
@@ -103709,7 +103701,7 @@ beB
 bxn
 bCP
 bDL
-aIq
+bHs
 bHr
 bCN
 bJd
@@ -103723,7 +103715,7 @@ vub
 bJd
 bCN
 bHr
-aIq
+bHs
 bDL
 bCN
 bbs
