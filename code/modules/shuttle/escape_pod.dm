@@ -135,30 +135,30 @@ for(var/obj/structure/machinery/cryopod/evacuation/C in cryo_cells) C.go_out()
 /// Starboard
 /obj/docking_port/mobile/escape_pod/down
 	id = "escape_pod_down"
-	dir = NORTH
-	preferred_direction = NORTH
-	port_direction = NORTH
+	dir = SOUTH
+	preferred_direction = SOUTH
+	port_direction = SOUTH
 
 /// Aft
 /obj/docking_port/mobile/escape_pod/left
 	id = "escape_pod_left"
-	dir = EAST
-	preferred_direction = EAST
-	port_direction = EAST
+	dir = SOUTH
+	preferred_direction = SOUTH
+	port_direction = SOUTH
 
 /// Stern
 /obj/docking_port/mobile/escape_pod/right
 	id = "escape_pod_right"
-	dir = WEST
-	preferred_direction = WEST
-	port_direction = WEST
+	dir = SOUTH
+	preferred_direction = SOUTH
+	port_direction = SOUTH
 
 /// Corporate potato pod
 /obj/docking_port/mobile/escape_pod/right/corporate
 	id = "escape_pod_berth"
-	dir = WEST
-	preferred_direction = WEST
-	port_direction = WEST
+	dir = SOUTH
+	preferred_direction = SOUTH
+	port_direction = SOUTH
 
 /obj/docking_port/mobile/escape_pod/proc/send_to_infinite_transit()
 	evacuation_program.dock_state = ESCAPE_STATE_LAUNCHED

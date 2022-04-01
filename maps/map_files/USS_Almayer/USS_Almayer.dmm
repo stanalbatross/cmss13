@@ -30950,12 +30950,12 @@
 	},
 /area/almayer/command/cichallway)
 "cci" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/right,
+/obj/docking_port/stationary/escape_pod_dock/almayer/left,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/almayer/hull/upper_hull/u_m_p)
+/area/almayer/hull/lower_hull/l_m_p)
 "cck" = (
 /obj/structure/window/framed/almayer/hull/hijack_bustable,
 /obj/structure/machinery/door/firedoor/border_only/almayer{
@@ -32299,7 +32299,7 @@
 	icon_state = "plate";
 	tag = "icon-sterile"
 	},
-/area/almayer/hull/upper_hull/u_m_p)
+/area/almayer/hull/lower_hull/l_m_p)
 "ciD" = (
 /obj/structure/platform_decoration{
 	dir = 1;
@@ -50009,13 +50009,6 @@
 	},
 /turf/open/floor/plating/almayer,
 /area/almayer/shipboard/firing_range_south)
-"jIY" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/left,
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
-/area/almayer/hull/lower_hull/l_m_p)
 "jJe" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -56450,13 +56443,6 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/living/port_emb)
-"mKQ" = (
-/obj/docking_port/stationary/escape_pod_dock/almayer/up,
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
-/area/almayer/hull/lower_hull/l_m_p)
 "mKX" = (
 /obj/structure/machinery/power/apc/almayer{
 	dir = 4
@@ -112566,7 +112552,7 @@ csz
 csz
 csz
 csz
-csz
+aLs
 awE
 pQu
 kmL
@@ -112671,11 +112657,11 @@ bJt
 bJt
 bJt
 fiq
-jIY
 oed
 oed
 oed
 oed
+cci
 fiq
 oDf
 oDf
@@ -113175,7 +113161,7 @@ csz
 csz
 csz
 csz
-aLs
+csz
 awE
 aGt
 ijn
@@ -117805,12 +117791,12 @@ aao
 aao
 aao
 aao
+acb
 aao
 aao
 aao
 aao
-aao
-aao
+acb
 aej
 aeO
 afG
@@ -117842,16 +117828,16 @@ nNA
 vGk
 csz
 qVM
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
+acb
+aao
+aao
+aao
+aao
+acb
 qVM
 vGk
 xIb
@@ -118045,16 +118031,16 @@ har
 vGk
 hoX
 qVM
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
 qVM
 vGk
 lSD
@@ -118248,16 +118234,16 @@ csz
 vGk
 csz
 qVM
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
 qVM
 azH
 fQK
@@ -118414,12 +118400,12 @@ aao
 aao
 aao
 aao
-acb
 aao
 aao
 aao
 aao
-acb
+aao
+aao
 aej
 aeR
 agK
@@ -118451,16 +118437,16 @@ pzQ
 vGk
 bqG
 qVM
-csz
-csz
-csz
-csz
-cci
-csz
-csz
-csz
-csz
-cci
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
+aao
 qVM
 aCX
 tgS
@@ -119182,7 +119168,7 @@ bGb
 oed
 oed
 oed
-oed
+ciB
 fiq
 fYc
 uqH
@@ -119637,7 +119623,7 @@ aar
 aao
 aao
 aao
-aao
+agp
 ael
 afE
 agT
@@ -119678,10 +119664,10 @@ acG
 abg
 caF
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+agp
 qVM
 aPX
 vGk
@@ -119881,10 +119867,10 @@ aJd
 aJs
 cbN
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 pzQ
 csz
@@ -119991,7 +119977,7 @@ lSO
 bHa
 haT
 bGb
-mKQ
+oed
 oed
 oed
 oed
@@ -120084,10 +120070,10 @@ abx
 abx
 abx
 ceD
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 buD
 csz
@@ -120287,10 +120273,10 @@ acP
 bUE
 cbO
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 oLw
 vGk
@@ -120400,7 +120386,7 @@ bGb
 oed
 oed
 oed
-oed
+ciB
 fiq
 wlp
 oDf
@@ -120446,7 +120432,7 @@ acG
 abx
 caF
 aar
-agp
+aao
 aao
 aao
 aao
@@ -120490,10 +120476,10 @@ acG
 abx
 caF
 qVM
-ciB
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 vGk
 csz
@@ -120693,10 +120679,10 @@ oPD
 abx
 lCz
 qVM
-qVM
-qVM
-qVM
-qVM
+aar
+aar
+aar
+aar
 qVM
 csz
 csz
@@ -120855,7 +120841,7 @@ aar
 aao
 aao
 aao
-aao
+agp
 adO
 adO
 adO
@@ -120896,10 +120882,10 @@ acG
 abx
 caF
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+agp
 qVM
 lJg
 csz
@@ -121099,10 +121085,10 @@ acO
 aJs
 arJ
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 hkx
 vGk
@@ -121209,7 +121195,7 @@ ajX
 ajX
 ajX
 aLB
-mKQ
+oed
 oed
 oed
 oed
@@ -121302,10 +121288,10 @@ abx
 abx
 abx
 cix
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 lSD
 vGk
@@ -121505,10 +121491,10 @@ acP
 bUE
 cbO
 qVM
-csz
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 toE
 ofs
@@ -121664,7 +121650,7 @@ aJa
 abg
 ccf
 aar
-agp
+aao
 aao
 aao
 aao
@@ -121708,10 +121694,10 @@ aJa
 abg
 ccf
 qVM
-ciB
-csz
-csz
-csz
+aao
+aao
+aao
+aao
 qVM
 gKS
 csz
