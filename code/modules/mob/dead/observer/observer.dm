@@ -434,13 +434,20 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			targets = get_holograms()
 
 		if("Mobs by Faction")
-			choices = FACTION_LIST_HUMANOID
-			input = tgui_input_list(usr, "Please, select a Faction:", "Follow", choices)
+			var/list/choices_human = SET_FACTION_LIST_HUMANS
+			var/list/factions
+			for(var/faction_to_get in choices_human)
+				var/datum/faction_status/faction = GLOB.faction_datum[faction_to_get]
+				factions += list("[faction.name]" = faction)
+
+			input = tgui_input_list(usr, "Пожалуйста, выберите Фракцию:", "Наблюдать", factions)
+			if(!input)
+				return
 
 			targets = gethumans()
 			for(var/name in targets)
 				var/mob/living/carbon/human/M = targets[name]
-				if(!istype(M) || M.faction != input)
+				if(!istype(M) || M.faction != factions[input])
 					targets.Remove(name)
 
 		if("Xenos by Hive")
@@ -451,13 +458,20 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				hives += list("[hive.name]" = hive.hivenumber)
 
 			input = tgui_input_list(usr, "Please, select a Hive:", "Follow", hives)
+			var/list/choices_hive = SET_FACTION_LIST_XENOS
+			var/list/factions
+			for(var/faction_to_get in choices_hive)
+				var/datum/faction_status/faction = GLOB.faction_datum[faction_to_get]
+				factions += list("[faction.name]" = faction)
+
+			input = tgui_input_list(usr, "Пожалуйста, выберите Улей:", "Наблюдать", factions)
 			if(!input)
 				return
 
 			targets = getxenos()
 			for(var/name in targets)
-				var/mob/living/carbon/Xenomorph/X = targets[name]
-				if(!istype(X) || X.hivenumber != hives[input])
+				var/mob/living/carbon/Xenomorph/M = targets[name]
+				if(!istype(M) || M.faction != factions[input])
 					targets.Remove(name)
 
 	if(!LAZYLEN(targets))
@@ -608,27 +622,26 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost.View"
 
 	var/list/hives = list()
-	var/datum/hive_status/last_hive_checked
+	var/datum/faction_status/xeno/last_hive_checked
 
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		if(hive.totalXenos.len > 0)
-			hives += list("[hive.name]" = hive.hivenumber)
+	for(var/faction in SET_FACTION_LIST_XENOS)
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
+		if(hive.totalMobs.len > 0)
+			hives += list("[hive.name]" = hive)
 			last_hive_checked = hive
 
 	if(!length(hives))
 		to_chat(src, SPAN_ALERT("There seem to be no living hives at the moment"))
 		return
 	else if(length(hives) == 1) // Only one hive, don't need an input menu for that
-		last_hive_checked.hive_ui.open_hive_status(src)
+		last_hive_checked.faction_ui.open_hive_status(src)
 	else
-		faction = tgui_input_list(src, "Select which hive status menu to open up", "Hive Choice", hives)
-		if(!faction)
+		var/datum/faction_status/select = tgui_input_list(src, "Select which hive status menu to open up", "Hive Choice", hives)
+		if(!select)
 			to_chat(src, SPAN_ALERT("Hive choice error. Aborting."))
 			return
 
-		GLOB.hive_datum[hives[faction]].hive_ui.open_hive_status(src)
+		select.faction_ui.open_hive_status(src)
 
 /mob/dead/verb/join_as_alien()
 	set category = "Ghost.Join"
