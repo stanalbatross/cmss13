@@ -59,7 +59,7 @@
 	X.visible_message(SPAN_XENONOTICE("\The [X] digs out a tunnel entrance."), \
 	SPAN_XENONOTICE("You dig out an entrance to the tunnel network."), null, 5)
 
-	var/obj/structure/tunnel/tunnelobj = new(T, X.hivenumber)
+	var/obj/structure/tunnel/tunnelobj = new(T, X.faction)
 	X.tunnel_delay = 1
 	addtimer(CALLBACK(src, .proc/cooldown_end), 4 MINUTES)
 	var/msg = strip_html(input("Add a description to the tunnel:", "Tunnel Description") as text|null)
@@ -71,8 +71,8 @@
 		msg_admin_niche("[X]/([key_name(X)]) has named a new tunnel \"[msg]\".")
 		tunnelobj.tunnel_desc = "[msg]"
 
-	if(X.hive.living_xeno_queen || X.hive.allow_no_queen_actions)
-		xeno_message("Hive: A new tunnel[description ? " ([description])" : ""] has been created at <b>[get_area_name(tunnelobj)]</b>.", 3, X.hivenumber)
+	if(X.faction.living_xeno_queen || X.faction.allow_no_queen_actions)
+		xeno_message("Hive: A new tunnel[description ? " ([description])" : ""] has been created at <b>[get_area_name(tunnelobj)]</b>.", 3, X.faction)
 
 	X.use_plasma(plasma_cost)
 	to_chat(X, SPAN_NOTICE("You will be ready to dig a new tunnel in 4 minutes."))
@@ -110,13 +110,8 @@
 		return
 
 	//screech is so powerful it kills huggers in our hands
-	if(istype(X.r_hand, /obj/item/clothing/mask/facehugger))
-		var/obj/item/clothing/mask/facehugger/FH = X.r_hand
-		if(FH.stat != DEAD)
-			FH.die()
-
-	if(istype(X.l_hand, /obj/item/clothing/mask/facehugger))
-		var/obj/item/clothing/mask/facehugger/FH = X.l_hand
+	if(istype(X.r_hand || X.l_hand, /obj/item/clothing/mask/facehugger))
+		var/obj/item/clothing/mask/facehugger/FH = X.r_hand || X.l_hand
 		if(FH.stat != DEAD)
 			FH.die()
 

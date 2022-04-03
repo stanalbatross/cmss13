@@ -51,22 +51,22 @@
 	. = ..()
 
 /mob/living/carbon/Xenomorph/Larva/Corrupted
-	hivenumber = XENO_HIVE_CORRUPTED
+	faction_to_set = SET_FACTION_HIVE_CORRUPTED
 
 /mob/living/carbon/Xenomorph/Larva/Alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_set = SET_FACTION_HIVE_ALPHA
 
 /mob/living/carbon/Xenomorph/Larva/Bravo
-	hivenumber = XENO_HIVE_BRAVO
+	faction_to_set = SET_FACTION_HIVE_BRAVO
 
 /mob/living/carbon/Xenomorph/Larva/Gamma
-	hivenumber = XENO_HIVE_CHARLIE
+	faction_to_set = SET_FACTION_HIVE_CHARLIE
 
 /mob/living/carbon/Xenomorph/Larva/Delta
-	hivenumber = XENO_HIVE_DELTA
+	faction_to_set = SET_FACTION_HIVE_DELTA
 
 /mob/living/carbon/Xenomorph/Larva/Mutated
-	hivenumber = XENO_HIVE_MUTATED
+	faction_to_set = SET_FACTION_HIVE_MUTATED
 
 /mob/living/carbon/Xenomorph/Larva/predalien
 	icon_state = "Predalien Larva"
@@ -91,8 +91,8 @@
 /mob/living/carbon/Xenomorph/Larva/update_progression()
 	var/progress_amount = 1
 
-	if(hive)
-		progress_amount += (0.5 * hive.has_special_structure(XENO_STRUCTURE_EVOPOD))
+	if(faction)
+		progress_amount += (0.5 * faction.has_special_structure(XENO_STRUCTURE_EVOPOD))
 
 	if(amount_grown < max_grown)
 		amount_grown = min(max_grown, amount_grown + progress_amount)
@@ -110,9 +110,9 @@
 
 	var/name_prefix = ""
 
-	if(hive)
-		name_prefix = hive.prefix
-		color = hive.color
+	if(faction)
+		name_prefix = faction.prefix
+		color = faction.color
 
 	if(amount_grown < max_grown/2) //We're still bloody
 		progress = "Bloody "
@@ -149,12 +149,12 @@
 /mob/living/carbon/Xenomorph/Larva/pull_response(mob/puller)
 	return TRUE
 
-/proc/spawn_hivenumber_larva(var/atom/A, var/hivenumber)
-	if(!GLOB.hive_datum[hivenumber] || isnull(A))
+/proc/spawn_faction_larva(var/atom/A, var/datum/faction_status/faction)
+	if(!faction || isnull(A))
 		return
 
 	var/mob/living/carbon/Xenomorph/Larva/L = new /mob/living/carbon/Xenomorph/Larva(A)
 
-	L.set_hive_and_update(hivenumber)
+	L.set_hive_and_update(faction)
 
 	return L

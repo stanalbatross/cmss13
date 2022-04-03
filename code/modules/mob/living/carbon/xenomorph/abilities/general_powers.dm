@@ -254,8 +254,8 @@
 		SPAN_XENOWARNING("You begin to emit '[choice]' pheromones."), null, 5)
 		playsound(X.loc, "alien_drool", 25)
 
-	if(isXenoQueen(X) && X.hive && X.hive.xeno_leader_list.len && X.anchored)
-		for(var/mob/living/carbon/Xenomorph/L in X.hive.xeno_leader_list)
+	if(isXenoQueen(X) && X.faction && X.faction.xeno_leader_list.len && X.anchored)
+		for(var/mob/living/carbon/Xenomorph/L in X.faction.xeno_leader_list)
 			L.handle_xeno_leader_pheromones()
 
 
@@ -266,7 +266,8 @@
 	if(!action_cooldown_check())
 		return
 
-	if(!A) return
+	if(!A)
+		return
 
 	if(A.layer >= FLY_LAYER)//anything above that shouldn't be pounceable (hud stuff)
 		return
@@ -433,7 +434,7 @@
 		to_chat(X, SPAN_WARNING("You can only shape on weeds. Find some resin before you start building!"))
 		return
 
-	if(alien_weeds.linked_hive.hivenumber != X.hivenumber)
+	if(alien_weeds.faction != X.faction)
 		to_chat(X, SPAN_WARNING("These weeds don't belong to your hive!"))
 		return
 
@@ -459,10 +460,10 @@
 		return FALSE
 
 	//Make sure construction is unrestricted
-	if(X.hive && X.hive.construction_allowed == XENO_LEADER && X.hive_pos == NORMAL_XENO)
+	if(X.faction && X.faction.construction_allowed == XENO_LEADER && X.hive_pos == NORMAL_XENO)
 		to_chat(X, SPAN_WARNING("Construction is currently restricted to Leaders only!"))
 		return FALSE
-	else if(X.hive && X.hive.construction_allowed == XENO_QUEEN && !istype(X.caste, /datum/caste_datum/queen))
+	else if(X.faction && X.faction.construction_allowed == XENO_QUEEN && !istype(X.caste, /datum/caste_datum/queen))
 		to_chat(X, SPAN_WARNING("Construction is currently restricted to Queen only!"))
 		return FALSE
 
@@ -477,24 +478,24 @@
 		to_chat(X, SPAN_XENOWARNING("This area is too far away to affect!"))
 		return FALSE
 
-	if(GLOB.interior_manager.interior_z == X.z) 
+	if(GLOB.interior_manager.interior_z == X.z)
 		to_chat(X, SPAN_XENOWARNING("It's too tight in here to build."))
 		return FALSE
 
 	var/choice = XENO_STRUCTURE_CORE
-	if(X.hive.has_structure(XENO_STRUCTURE_CORE) || !X.hive.can_build_structure(XENO_STRUCTURE_CORE))
-		choice = tgui_input_list(X, "Choose a structure to build", "Build structure", X.hive.hive_structure_types + "help")
+	if(X.faction.has_structure(XENO_STRUCTURE_CORE) || !X.faction.can_build_structure(XENO_STRUCTURE_CORE))
+		choice = tgui_input_list(X, "Choose a structure to build", "Build structure", X.faction.hive_structure_types + "help")
 		if(!choice)
 			return
 		if(choice == "help")
 			var/message = "<br>Placing a construction node creates a template for special structures that can benefit the hive, which require the insertion of [MATERIAL_CRYSTAL] to construct the following:<br>"
-			for(var/structure_name in X.hive.hive_structure_types)
+			for(var/structure_name in X.faction.hive_structure_types)
 				message += "[get_xeno_structure_desc(structure_name)]<br>"
 			to_chat(X, SPAN_NOTICE(message))
 			return
 	if(!X.check_state(1) || !X.check_plasma(400))
 		return FALSE
-	var/structure_type = X.hive.hive_structure_types[choice]
+	var/structure_type = X.faction.hive_structure_types[choice]
 	var/datum/construction_template/xenomorph/structure_template = new structure_type()
 
 	if(!spacecheck(X,T,structure_template))
@@ -506,19 +507,19 @@
 	if(!spacecheck(X,T,structure_template)) //doublechecking
 		return FALSE
 
-	if((choice == XENO_STRUCTURE_CORE) && isXenoQueen(X) && X.hive.has_structure(XENO_STRUCTURE_CORE))
-		if(X.hive.hive_location.hardcore)
+	if((choice == XENO_STRUCTURE_CORE) && isXenoQueen(X) && X.faction.has_structure(XENO_STRUCTURE_CORE))
+		if(X.faction.hive_location.hardcore)
 			to_chat(X, SPAN_WARNING("You can't rebuild this structure"))
 			return
 
 		if(alert(X, "Are you sure that you want to move the hive and destroy the old hive core?", , "Yes", "No") == "No")
 			return
-		qdel(X.hive.hive_location)
-	else if(!X.hive.can_build_structure(choice))
-		to_chat(X, SPAN_WARNING("You can't build any more [choice]s for the hive."))
+		qdel(X.faction.hive_location)
+	else if(!X.faction.can_build_structure(choice))
+		to_chat(X, SPAN_WARNING("You can't build any more [choice]s for the faction."))
 		return FALSE
 
-	if(!X.hive.can_build_structure(structure_template.name) && !(choice == XENO_STRUCTURE_CORE))
+	if(!X.faction.can_build_structure(structure_template.name) && !(choice == XENO_STRUCTURE_CORE))
 		to_chat(X, SPAN_WARNING("You cannot build any more [structure_template.name]!"))
 		qdel(structure_template)
 		return FALSE
@@ -528,7 +529,7 @@
 		qdel(structure_template)
 		return FALSE
 
-	var/queen_on_zlevel = !X.hive.living_xeno_queen || X.hive.living_xeno_queen.z == T.z
+	var/queen_on_zlevel = !X.faction.living_xeno_queen || X.faction.living_xeno_queen.z == T.z
 	if(!queen_on_zlevel)
 		to_chat(X, SPAN_WARNING("Your link to the Queen is too weak here. She is on another world."))
 		qdel(structure_template)
@@ -564,8 +565,8 @@
 			qdel(tem)
 			return FALSE
 		var/obj/effect/alien/weeds/alien_weeds = locate() in T
-		if(!alien_weeds || alien_weeds.weed_strength < WEED_LEVEL_HIVE || alien_weeds.linked_hive.hivenumber != X.hivenumber)
-			to_chat(X, SPAN_WARNING("You can only shape on [lowertext(GLOB.hive_datum[X.hivenumber].prefix)]hive weeds. Find a hive node or core before you start building!"))
+		if(!alien_weeds || alien_weeds.weed_strength < WEED_LEVEL_HIVE || alien_weeds.faction != X.faction)
+			to_chat(X, SPAN_WARNING("You can only shape on [lowertext(X.faction.prefix)]hive weeds. Find a hive node or core before you start building!"))
 			qdel(tem)
 			return FALSE
 		if(T.density)

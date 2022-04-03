@@ -357,18 +357,22 @@ Contains most of the procs that are called when a mob is attacked by something
 	if(!istype(C))
 		return null
 
-	return C.faction_group
+	return C.faction
 
-/mob/living/proc/get_target_lock(var/access_to_check)
-	if(isnull(access_to_check))
-		return
+/mob/living/proc/get_target_lock(var/datum/faction_status/faction_check)
+	var/list/datum/faction_status/factions = list()
+	factions += faction_check
+	if(faction_check.allies)
+		for(var/datum/faction_status/i in faction_check.allies)
+			factions += i
 
-	var/compare_group = faction_group
+	var/list/datum/faction_status/factions_check = list()
+	factions_check += faction
+	if(faction.allies)
+		for(var/datum/faction_status/i in faction.allies)
+			factions_check += i
 
-	if(!islist(access_to_check))
-		return access_to_check in compare_group
-
-	var/list/overlap = compare_group & access_to_check
+	var/list/overlap = factions_check & factions
 	return length(overlap)
 
 /mob/living/carbon/human/freeze()
@@ -381,16 +385,21 @@ Contains most of the procs that are called when a mob is attacked by something
 	if(.)
 		update_xeno_hostile_hud()
 
-/mob/living/carbon/human/get_target_lock(var/access_to_check)
-	if(isnull(access_to_check))
-		return
+/mob/living/carbon/human/get_target_lock(datum/faction_status/faction_check)
+	var/list/datum/faction_status/factions = list()
+	factions += faction_check
+	if(faction_check.allies)
+		for(var/datum/faction_status/i in faction_check.allies)
+			factions += i
 
-	var/id_group = get_id_faction_group()
+	var/list/datum/faction_status/factions_check = list()
+	var/datum/faction_status/id_group = get_id_faction_group()
 	if(!id_group)
 		return ..()
+	factions_check += id_group
+	if(id_group.allies)
+		for(var/datum/faction_status/i in id_group.allies)
+			factions_check += i
 
-	if(!islist(access_to_check))
-		return access_to_check in id_group
-
-	var/list/overlap = id_group & access_to_check
+	var/list/overlap = factions_check & factions
 	return length(overlap)

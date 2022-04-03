@@ -77,7 +77,7 @@
 
 		while (eggs_cur > 0)
 			if(prob(chance))
-				new /obj/item/xeno_egg(loc, hivenumber)
+				new /obj/item/xeno_egg(loc, faction)
 				eggs_cur--
 
 
@@ -88,7 +88,7 @@
 	. += "Stored Eggs: [eggs_cur] / [eggs_max]"
 
 /mob/living/carbon/Xenomorph/Carrier/proc/store_hugger(obj/item/clothing/mask/facehugger/F)
-	if(F.hivenumber != hivenumber)
+	if(F.faction != faction)
 		to_chat(src, SPAN_WARNING("This hugger is tainted!"))
 		return
 
@@ -114,7 +114,7 @@
 	if(istype(T, /obj/item/clothing/mask/facehugger))
 		var/obj/item/clothing/mask/facehugger/F = T
 		if(isturf(F.loc) && Adjacent(F))
-			if(F.hivenumber != hivenumber)
+			if(F.faction != faction)
 				to_chat(src, SPAN_WARNING("That facehugger is tainted!"))
 				drop_inv_item_on_ground(F)
 				return
@@ -135,7 +135,7 @@
 			to_chat(src, SPAN_WARNING("Retrieving a stored facehugger while you're on fire would burn it!"))
 			return
 
-		F = new(src, hivenumber)
+		F = new(src, faction)
 		huggers_cur--
 		put_in_active_hand(F)
 		to_chat(src, SPAN_XENONOTICE("You grab one of the facehugger in your storage. Now sheltering: [huggers_cur] / [huggers_max]."))
@@ -163,7 +163,7 @@
 
 
 /mob/living/carbon/Xenomorph/Carrier/proc/store_egg(obj/item/xeno_egg/E)
-	if(E.hivenumber != hivenumber)
+	if(E.faction != faction)
 		to_chat(src, SPAN_WARNING("That egg is tainted!"))
 		return
 	if(eggs_cur < eggs_max)
@@ -196,7 +196,7 @@
 		if(eggs_cur <= 0)
 			to_chat(src, SPAN_WARNING("You don't have any egg to use!"))
 			return
-		E = new(src, hivenumber)
+		E = new(src, faction)
 		eggs_cur--
 		put_in_active_hand(E)
 		to_chat(src, SPAN_XENONOTICE("You grab one of the eggs in your storage. Now sheltering: [eggs_cur] / [eggs_max]."))

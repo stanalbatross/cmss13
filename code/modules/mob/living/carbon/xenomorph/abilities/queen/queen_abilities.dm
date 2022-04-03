@@ -144,12 +144,12 @@
 
 	charges = 0
 
-	var/datum/hive_status/hive
+	var/datum/faction_status/xeno/faction
 	var/list/transported_xenos
 
 /datum/action/xeno_action/activable/place_queen_beacon/give_to(mob/living/carbon/Xenomorph/Queen/Q)
 	. = ..()
-	hive = Q.hive
+	faction = Q.faction
 	if(!Q.ovipositor)
 		hide_from(Q)
 	RegisterSignal(Q, COMSIG_QUEEN_MOUNT_OVIPOSITOR, .proc/handle_mount_ovipositor)
@@ -157,7 +157,7 @@
 
 /datum/action/xeno_action/activable/place_queen_beacon/remove_from(mob/living/carbon/Xenomorph/X)
 	. = ..()
-	hive = null
+	faction = null
 	UnregisterSignal(X, list(
 		COMSIG_QUEEN_MOUNT_OVIPOSITOR,
 		COMSIG_QUEEN_DISMOUNT_OVIPOSITOR,

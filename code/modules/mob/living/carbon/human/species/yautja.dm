@@ -93,20 +93,20 @@
 	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PREGAME_LOBBY, .proc/setup_yautja_icons)
 
 /datum/species/yautja/larva_impregnated(var/obj/item/alien_embryo/embryo)
-	var/datum/hive_status/hive = GLOB.hive_datum[embryo.hivenumber]
+	var/datum/faction_status/xeno/faction = embryo.faction
 
-	if(!istype(hive))
+	if(!istype(faction))
 		return
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structure_types))
-		hive.hive_structure_types.Add(XENO_STRUCTURE_NEST)
+	if(!(XENO_STRUCTURE_NEST in faction.hive_structure_types))
+		faction.hive_structure_types.Add(XENO_STRUCTURE_NEST)
 
-	if(!(XENO_STRUCTURE_NEST in hive.hive_structures_limit))
-		hive.hive_structures_limit.Add(XENO_STRUCTURE_NEST)
-		hive.hive_structures_limit[XENO_STRUCTURE_NEST] = 0
+	if(!(XENO_STRUCTURE_NEST in faction.hive_structures_limit))
+		faction.hive_structures_limit.Add(XENO_STRUCTURE_NEST)
+		faction.hive_structures_limit[XENO_STRUCTURE_NEST] = 0
 
-	hive.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
-	hive.hive_structures_limit[XENO_STRUCTURE_NEST] += 1
+	faction.hive_structure_types[XENO_STRUCTURE_NEST] = /datum/construction_template/xenomorph/nest
+	faction.hive_structures_limit[XENO_STRUCTURE_NEST] += 1
 
 /datum/species/yautja/handle_death(var/mob/living/carbon/human/H, gibbed)
 	if(gibbed)

@@ -23,7 +23,6 @@
 	var/strength = 5
 	var/attached = FALSE
 	var/leaping = FALSE //Is actually attacking someone?
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/flags_embryo = NO_FLAGS
 	var/impregnated = FALSE
 
@@ -40,19 +39,18 @@
 	var/icon_xeno = 'icons/mob/hostiles/Effects.dmi'
 	var/icon_xenonid = 'icons/mob/xenonids/xenonid_crab.dmi'
 
-/obj/item/clothing/mask/facehugger/Initialize(mapload, hive)
+/obj/item/clothing/mask/facehugger/Initialize(mapload, datum/faction_status/new_faction)
 	. = ..()
 	var/new_icon = icon_xeno
-	if (hive)
-		hivenumber = hive
+	if(new_faction)
+		faction = new_faction
 
-		var/datum/hive_status/hive_s = GLOB.hive_datum[hivenumber]
-		if(HAS_TRAIT(hive_s, TRAIT_XENONID))
+		if(HAS_TRAIT(new_faction, TRAIT_XENONID))
 			new_icon = icon_xenonid
 
 	icon = new_icon
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 	go_active()
 
 
@@ -90,7 +88,7 @@
 
 /obj/item/clothing/mask/facehugger/attack_hand(var/mob/user)
 	if(stat != DEAD)
-		if(!sterile && can_hug(user, hivenumber))
+		if(!sterile && can_hug(user, faction))
 			attach(user)
 		//If we're alive, don't let them pick us up, even if attach fails. Just return.
 		if(!isXeno(user))
@@ -99,7 +97,7 @@
 
 //Deal with picking up facehuggers. "attack_alien" is the universal 'xenos click something while unarmed' proc.
 /obj/item/clothing/mask/facehugger/attack_alien(mob/living/carbon/Xenomorph/user)
-	if(user.hivenumber != hivenumber)
+	if(user.faction != faction)
 		user.animation_attack_on(src)
 		user.visible_message(SPAN_XENOWARNING("[user] crushes \the [src]"), SPAN_XENOWARNING("You crush \the [src]"))
 		die()
@@ -114,7 +112,7 @@
 		return XENO_NO_DELAY_ACTION
 
 /obj/item/clothing/mask/facehugger/attack(mob/M, mob/user)
-	if(!can_hug(M, hivenumber) || !(M.is_mob_incapacitated() || M.lying || M.buckled && !isYautja(M)))
+	if(!can_hug(M, faction) || !(M.is_mob_incapacitated() || M.lying || M.buckled && !isYautja(M)))
 		to_chat(user, SPAN_WARNING("The facehugger refuses to attach."))
 		..()
 		return
@@ -127,7 +125,7 @@
 		if(!do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_HOSTILE, M, INTERRUPT_MOVED, BUSY_ICON_HOSTILE))
 			return
 
-		if(!can_hug(M, hivenumber) || !(M.is_mob_incapacitated() || M.lying || M.buckled))
+		if(!can_hug(M, faction) || !(M.is_mob_incapacitated() || M.lying || M.buckled))
 			return
 
 	attach(M)
@@ -183,7 +181,7 @@
 	return has_proximity(finder)
 
 /obj/item/clothing/mask/facehugger/proc/has_proximity(atom/movable/AM)
-	if(stat == CONSCIOUS && can_hug(AM, hivenumber))
+	if(stat == CONSCIOUS && can_hug(AM, faction))
 		attach(AM)
 		return TRUE
 	return FALSE
@@ -207,7 +205,7 @@
 	if(stat == UNCONSCIOUS)
 		return
 
-	if(leaping && can_hug(L, hivenumber))
+	if(leaping && can_hug(L, faction))
 		attach(L)
 	else if(L.density)
 		step(src, turn(dir, 180)) //We want the hugger to bounce off if it hits a mob.
@@ -220,13 +218,13 @@
 		return FALSE
 
 	for(var/mob/living/M in loc)
-		if(can_hug(M, hivenumber))
+		if(can_hug(M, faction))
 			attach(M)
 			return TRUE
 
 	var/mob/living/target
 	for(var/mob/living/M in view(3, src))
-		if(!can_hug(M, hivenumber))
+		if(!can_hug(M, faction))
 			continue
 		target = M
 		break
@@ -240,7 +238,7 @@
 	return TRUE
 
 /obj/item/clothing/mask/facehugger/proc/attach(mob/living/M)
-	if(attached || !can_hug(M, hivenumber))
+	if(attached || !can_hug(M, faction))
 		return
 
 	// This is always going to be valid because of the can_hug check above
@@ -280,19 +278,19 @@
 	if(!sterile)
 		var/embryos = 0
 		for(var/obj/item/alien_embryo/embryo in target) // already got one, stops doubling up
-			if(embryo.hivenumber == hivenumber)
+			if(embryo.faction == faction)
 				embryos++
 			else
 				qdel(embryo)
 		if(!embryos)
 			var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(target)
-			embryo.hivenumber = hivenumber
+				embryo.faction = faction
 
-			embryo.flags_embryo = flags_embryo
-			flags_embryo = NO_FLAGS
+				embryo.flags_embryo = flags_embryo
+				flags_embryo = NO_FLAGS
 
-			if(target.species)
-				target.species.larva_impregnated(embryo)
+				if(target.species)
+					target.species.larva_impregnated(embryo)
 
 			icon_state = "[initial(icon_state)]_impregnated"
 			impregnated = TRUE
@@ -354,7 +352,7 @@
 		var/obj/effect/alien/resin/trap/T = locate() in loc
 		if(T && T.trap_type == RESIN_TRAP_EMPTY)
 			visible_message(SPAN_XENOWARNING("[src] crawls into [T]!"))
-			T.hivenumber = hivenumber
+			T.faction = faction
 			T.set_state(RESIN_TRAP_HUGGER)
 			qdel(src)
 			return
@@ -393,16 +391,16 @@
 	visible_message("[icon2html(src, viewers(src))] <span class='danger'>\The [src] decays into a mass of acid and chitin.</span>")
 	qdel(src)
 
-/proc/can_hug(mob/living/carbon/M, var/hivenumber)
+/proc/can_hug(mob/living/carbon/M, var/datum/faction_status/faction)
 	if(!istype(M) || isXeno(M) || isSynth(M) || iszombie(M) || isHellhound(M) || M.stat == DEAD || (M.huggable == FALSE))
 		return FALSE
 
-	if(M.ally_of_hivenumber(hivenumber))
+	if(M.ally(faction))
 		return FALSE
 
 	if(M.status_flags & XENO_HOST)
 		for(var/obj/item/alien_embryo/embryo in M)
-			if(embryo.hivenumber == hivenumber)
+			if(embryo.faction == faction)
 				return FALSE
 
 	//Already have a hugger? NOPE

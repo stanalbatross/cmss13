@@ -52,7 +52,7 @@
 			if(M.caste && !M.caste.is_intelligent)
 				if(HAS_TRAIT(src, TRAIT_NESTED) && (status_flags & XENO_HOST))
 					for(var/obj/item/alien_embryo/embryo in src)
-						if(HIVE_ALLIED_TO_HIVE(M.hivenumber, embryo.hivenumber))
+						if(FACTION_ALLIED_TO_FACTION(M.faction.faction_number, embryo.faction.faction_number))
 							to_chat(M, SPAN_WARNING("You should not harm this host! It has a sister inside."))
 							return XENO_NO_DELAY_ACTION
 
@@ -240,7 +240,7 @@
 				M.start_pulling(src)
 
 		if(INTENT_HARM)
-			if(isXeno(src) && xeno_hivenumber(src) == M.hivenumber)
+			if(isXeno(src) && xeno_faction(src) == M.faction)
 				var/mob/living/carbon/Xenomorph/X = src
 				if(!X.banished)
 					M.visible_message(SPAN_WARNING("[M] nibbles [src]."), \
@@ -663,7 +663,7 @@
 			playsound(loc, "alien_resin_break", 25)
 
 		M.animation_attack_on(src)
-		if (hivenumber == M.hivenumber)
+		if (faction == M.faction)
 			qdel(src)
 		else
 			health -= M.melee_damage_lower * RESIN_XENO_DAMAGE_MULTIPLIER
@@ -745,7 +745,7 @@
 				set_lz_resin_allowed(TRUE)
 
 		to_chat(M, SPAN_XENONOTICE("You interact with the machine and disable remote control."))
-		xeno_message(SPAN_XENOANNOUNCE("[message]"),3,M.hivenumber)
+		xeno_message(SPAN_XENOANNOUNCE("[message]"),3,M.faction)
 		last_locked = world.time
 		if(almayer_orbital_cannon)
 			almayer_orbital_cannon.is_disabled = TRUE
@@ -755,7 +755,7 @@
 /datum/shuttle/ferry/marine/proc/door_override(mob/living/carbon/Xenomorph/M, shuttle_tag)
 	if(!door_override)
 		to_chat(M, SPAN_XENONOTICE("You override the doors."))
-		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"),3,M.hivenumber)
+		xeno_message(SPAN_XENOANNOUNCE("The doors of the metal bird have been overridden! Rejoice!"),3,M.faction)
 		last_door_override = world.time
 		door_override = 1
 

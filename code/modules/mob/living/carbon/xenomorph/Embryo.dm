@@ -8,8 +8,6 @@
 	var/stage = 0
 	var/counter = 0 //How developed the embryo is, if it ages up highly enough it has a chance to burst
 	var/larva_autoburst_countdown = 20 //to kick the larva out
-	var/hivenumber = XENO_HIVE_NORMAL
-	var/faction = FACTION_XENOMORPH
 	var/flags_embryo = FALSE // Used in /ciphering/predator property
 
 /obj/item/alien_embryo/Initialize(mapload, ...)
@@ -72,19 +70,18 @@
 	process_growth()
 
 /obj/item/alien_embryo/proc/process_growth()
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 	//Low temperature seriously hampers larva growth (as in, way below livable), so does stasis
-	if(!hive.hardcore) // Cannot progress if the hive has entered hardcore mode.
+	if(!faction.hardcore) // Cannot progress if the hive has entered hardcore mode.
 		if(affected_mob.in_stasis || affected_mob.bodytemperature < 170)
 			if(stage < 5)
-				counter += 0.33 * hive.larva_gestation_multiplier
+				counter += 0.33 * faction.larva_gestation_multiplier
 			else if(stage == 4)
-				counter += 0.11 * hive.larva_gestation_multiplier
+				counter += 0.11 * faction.larva_gestation_multiplier
 		else if(HAS_TRAIT(affected_mob, TRAIT_NESTED)) //Hosts who are nested in resin nests provide an ideal setting, larva grows faster
-			counter += 1.5 * hive.larva_gestation_multiplier //Currently twice as much, can be changed
+			counter += 1.5 * faction.larva_gestation_multiplier //Currently twice as much, can be changed
 		else
 			if(stage < 5)
-				counter += 1.0 * hive.larva_gestation_multiplier
+				counter += 1.0 * faction.larva_gestation_multiplier
 
 		if(stage < 5 && counter >= 120)
 			counter = 0
@@ -162,10 +159,8 @@
 	else
 		new_xeno = new(affected_mob)
 
-
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-	if(hive)
-		hive.add_xeno(new_xeno)
+	if(faction)
+		faction.add_mob(new_xeno)
 
 	new_xeno.update_icons()
 
@@ -219,7 +214,7 @@
 	var/burstcount = 0
 
 	for(var/mob/living/carbon/Xenomorph/Larva/L in victim)
-		var/datum/hive_status/hive = GLOB.hive_datum[L.hivenumber]
+		var/datum/faction_status/xeno/hive = L.faction
 		L.forceMove(get_turf(victim)) //moved to the turf directly so we don't get stuck inside a cryopod or another mob container.
 		playsound(L, pick('sound/voice/alien_chestburst.ogg','sound/voice/alien_chestburst2.ogg'), 25)
 
@@ -233,14 +228,14 @@
 		if(!L.ckey && L.poolable && loc && is_ground_level(loc.z) && (locate(/obj/structure/bed/nest) in loc) && hive.living_xeno_queen && hive.living_xeno_queen.z == loc.z)
 			L.visible_message(SPAN_XENODANGER("[L] quickly burrows into the ground."))
 			if(round_statistics && !L.statistic_exempt)
-				round_statistics.track_new_participant(faction, -1) // keep stats sane
+				round_statistics.track_new_participant(hive.internal_faction, -1) // keep stats sane
 			hive.stored_larva++
-			hive.hive_ui.update_pooled_larva()
+			hive.faction_ui.update_pooled_larva()
 			qdel(L)
 
 		if(!victim.first_xeno)
 			to_chat(L, SPAN_XENOHIGHDANGER("The Queen's will overwhelms your instincts..."))
-			to_chat(L, SPAN_XENOHIGHDANGER("\"[hive.hive_orders]\""))
+			to_chat(L, SPAN_XENOHIGHDANGER("\"[hive.orders]\""))
 
 	for(var/obj/item/alien_embryo/AE in victim)
 		qdel(AE)

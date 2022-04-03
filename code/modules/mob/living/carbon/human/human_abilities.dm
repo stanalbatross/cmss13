@@ -317,7 +317,7 @@ CULT
 	if(!input)
 		return
 
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
+	var/datum/faction_status/xeno/hive = H.faction
 
 	if(!istype(hive))
 		return
@@ -383,13 +383,13 @@ CULT
 		to_chat(Hu, SPAN_WARNING("This target is too far away!"))
 		return
 
-	return H.stat != DEAD && istype(H) && isHumanStrict(H) && H.hivenumber != Hu.hivenumber && !isnull(get_hive())
+	return H.stat != DEAD && istype(H) && isHumanStrict(H) && H.faction != Hu.faction && !isnull(get_hive())
 
 /datum/action/human_action/activable/cult_leader/proc/get_hive()
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
+	var/datum/faction_status/xeno/hive = H.faction
 	if(!hive)
 		return
 
@@ -403,7 +403,7 @@ CULT
 	action_icon_state = "cultist_channel_convert"
 
 /datum/action/human_action/activable/cult_leader/convert/use_ability(var/mob/M)
-	var/datum/hive_status/hive = get_hive()
+	var/datum/faction_status/xeno/hive = get_hive()
 
 	if(!istype(hive))
 		to_chat(owner, SPAN_DANGER("There is no Queen. You are alone."))
@@ -429,13 +429,13 @@ CULT
 
 	var/datum/equipment_preset/other/xeno_cultist/XC = new()
 
-	XC.load_race(chosen, H.hivenumber)
+	XC.load_race(chosen, H.faction)
 	XC.load_status(chosen)
 
 	to_chat(chosen, SPAN_HIGHDANGER("<hr>You are now a Xeno Cultist!"))
 	to_chat(chosen, SPAN_DANGER("Worship the Xenomorphs and listen to the Cult Leader for orders. The Cult Leader is typically the person who transformed you. Do not kill anyone unless you are wearing your black robes, you may defend yourself.<hr>"))
 
-	xeno_message("[chosen] has been converted into a cultist!", 2, hive.hivenumber)
+	xeno_message("[chosen] has been converted into a cultist!", 2, hive)
 
 	chosen.KnockOut(5)
 	chosen.make_jittery(105)
@@ -453,7 +453,7 @@ CULT
 	if(!action_cooldown_check())
 		return
 
-	var/datum/hive_status/hive = get_hive()
+	var/datum/faction_status/xeno/hive = get_hive()
 
 	if(!istype(hive))
 		to_chat(owner, SPAN_DANGER("There is no Queen. You are alone."))

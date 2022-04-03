@@ -10,7 +10,7 @@
 	var/mob/living/carbon/Xenomorph/T = X.observed_xeno
 	if(!X.check_plasma(plasma_cost)) return
 
-	if(T.hivenumber != X.hivenumber)
+	if(T.faction != X.faction)
 		to_chat(X, SPAN_XENOWARNING("[T] doesn't belong to your hive!"))
 		return
 
@@ -105,8 +105,8 @@
 	new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_type] emerges from the husk of \the [T]."), \
 	SPAN_XENODANGER("[X] makes you regress into your previous form."))
 
-	if(X.hive.living_xeno_queen && X.hive.living_xeno_queen.observed_xeno == T)
-		X.hive.living_xeno_queen.overwatch(new_xeno)
+	if(X.faction.living_xeno_queen && X.faction.living_xeno_queen.observed_xeno == T)
+		X.faction.living_xeno_queen.overwatch(new_xeno)
 
 	message_staff("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
 	log_admin("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
@@ -160,7 +160,7 @@
 		to_chat(X, SPAN_XENOWARNING("It's too tight in here to grow an ovipositor."))
 		return
 
-	if(alien_weeds.linked_hive.hivenumber != X.hivenumber)
+	if(alien_weeds.faction != X.faction)
 		to_chat(X, SPAN_XENOWARNING("These weeds don't belong to your hive! You can't grow an ovipositor here."))
 		return
 
@@ -193,10 +193,10 @@
 
 	if(!action_cooldown_check())
 		return
-	var/datum/hive_status/hive = X.hive
+	var/datum/faction_status/xeno/faction = X.faction
 	if(X.observed_xeno)
-		if(!hive.open_xeno_leader_positions.len && X.observed_xeno.hive_pos == NORMAL_XENO)
-			to_chat(X, SPAN_XENOWARNING("You currently have [hive.xeno_leader_list.len] promoted leaders. You may not maintain additional leaders until your power grows."))
+		if(!faction.open_xeno_leader_positions.len && X.observed_xeno.hive_pos == NORMAL_XENO)
+			to_chat(X, SPAN_XENOWARNING("You currently have [faction.xeno_leader_list.len] promoted leaders. You may not maintain additional leaders until your power grows."))
 			return
 		var/mob/living/carbon/Xenomorph/T = X.observed_xeno
 		if(T == X)
@@ -204,18 +204,18 @@
 			return
 		apply_cooldown()
 		if(T.hive_pos == NORMAL_XENO)
-			if(!hive.add_hive_leader(T))
+			if(!faction.add_hive_leader(T))
 				to_chat(X, SPAN_XENOWARNING("Unable to add the leader."))
 				return
 			to_chat(X, SPAN_XENONOTICE("You've selected [T] as a Hive Leader."))
 			to_chat(T, SPAN_XENOANNOUNCE("[X] has selected you as a Hive Leader. The other Xenomorphs must listen to you. You will also act as a beacon for the Queen's pheromones."))
 		else
-			hive.remove_hive_leader(T)
+			faction.remove_hive_leader(T)
 			to_chat(X, SPAN_XENONOTICE("You've demoted [T] from Hive Leader."))
 			to_chat(T, SPAN_XENOANNOUNCE("[X] has demoted you from Hive Leader. Your leadership rights and abilities have waned."))
 	else
 		var/list/possible_xenos = list()
-		for(var/mob/living/carbon/Xenomorph/T in hive.xeno_leader_list)
+		for(var/mob/living/carbon/Xenomorph/T in faction.xeno_leader_list)
 			possible_xenos += T
 
 		if(possible_xenos.len > 1)
@@ -284,7 +284,7 @@
 			to_chat(X, SPAN_XENOWARNING("This xenomorph is already banished!"))
 			return
 
-		if(T.hivenumber != X.hivenumber)
+		if(T.faction != X.faction)
 			to_chat(X, SPAN_XENOWARNING("This xenomorph doesn't belong to your hive!"))
 			return
 
@@ -306,7 +306,7 @@
 			return
 
 		// Let everyone know they were banished
-		xeno_announcement("By [X]'s will, [T] has been banished from the hive!\n\n[reason]", X.hivenumber, title=SPAN_ANNOUNCEMENT_HEADER_BLUE("Banishment"))
+		xeno_announcement("By [X]'s will, [T] has been banished from the hive!\n\n[reason]", X.faction, title=SPAN_ANNOUNCEMENT_HEADER_BLUE("Banishment"))
 		to_chat(T, FONT_SIZE_LARGE(SPAN_XENOWARNING("The [X] has banished you from the hive! Other xenomorphs may now attack you freely, but your link to the hivemind remains, preventing you from harming other sisters.")))
 
 		T.banished = TRUE
@@ -354,7 +354,7 @@
 	if(!boosted)
 		return
 	var/mob/living/carbon/Xenomorph/X = owner
-	var/datum/hive_status/HS = X.hive
+	var/datum/faction_status/HS = X.faction
 	if(!HS || !HS.hive_location)
 		return
 	// 5 screen radius
@@ -421,7 +421,7 @@
 	var/obj/effect/alien/weeds/node/node
 	for(var/direction in cardinal)
 		var/obj/effect/alien/weeds/W = locate() in get_step(T, direction)
-		if(W && W.hivenumber == X.hivenumber && W.parent && !W.hibernate && !LinkBlocked(W, get_turf(W), T))
+		if(W && W.faction == X.faction && W.parent && !W.hibernate && !LinkBlocked(W, get_turf(W), T))
 			node = W.parent
 			break
 
@@ -474,7 +474,7 @@
 	to_chat(Q, SPAN_XENONOTICE("You rally the hive to the queen beacon!"))
 	LAZYCLEARLIST(transported_xenos)
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/tunnel_xeno)
-	for(var/xeno in hive.totalXenos)
+	for(var/xeno in faction.totalMobs)
 		if(xeno == Q)
 			continue
 		tunnel_xeno(src, xeno)
@@ -583,7 +583,25 @@
 	set desc = "This opens a tactical map, where you can see where every xenomorph is."
 	set category = "Alien"
 
-	var/icon/O = overlay_tacmap(TACMAP_XENO, TACMAP_BASE_OPEN, hivenumber)
-	if(O)
-		src << browse_rsc(O, "marine_minimap.png")
-		show_browser(src, "<img src=marine_minimap.png>", "Xeno Tacmap", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+	mapview()
+
+/mob/living/carbon/Xenomorph/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	update_mapview(tacmap_info, src, minimap_name, map, O)
+
+/mob/living/carbon/Xenomorph/proc/mapview()
+	if(!Adjacent(src))
+		close_browser(src, "minimap")
+		return
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
+
+/mob/living/carbon/Xenomorph/proc/xeno_tacmap_loc_change()
+	set name = "Xeno Tacmap Location Change"
+	set desc = "This changes tactical map location, where you can see where every xenomorph is."
+	set category = "Alien"
+
+	var/new_map = tacmap_info.change_mapview(src)
+	if(!new_map)
+		return
+	map = new_map
