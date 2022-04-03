@@ -27,7 +27,7 @@
 	var/recycletime = 120
 	var/long_range_cooldown = 2
 	var/blip_type = "detector"
-	var/iff_signal = FACTION_MARINE
+	var/iff_signal = SET_FACTION_USCM
 	actions_types = list(/datum/action/item_action)
 	var/scanning = FALSE // controls if MD is in process of scan
 	var/datum/shape/rectangle/range_bounds
@@ -38,6 +38,8 @@
 	to_chat(usr, SPAN_INFO(msg))
 
 /obj/item/device/motiondetector/New()
+	if(iff_signal)
+		faction = GLOB.faction_datum[iff_signal]
 	range_bounds = new //Just creating a rectangle datum
 	..()
 
@@ -178,7 +180,7 @@
 		if(M == loc) continue //device user isn't detected
 		if(world.time > M.l_move_time + 20) continue //hasn't moved recently
 		if(isrobot(M)) continue
-		if(M.get_target_lock(iff_signal))
+		if(M.get_target_lock(faction))
 			continue
 
 		apply_debuff(M)
@@ -243,7 +245,7 @@
 /obj/item/device/motiondetector/hacked
 	name = "hacked motion detector"
 	desc = "A device that usually picks up non-USCM signals, but this one's been hacked to detect all non-UPP movement instead. Fight fire with fire!"
-	iff_signal = FACTION_UPP
+	iff_signal = SET_FACTION_UPP
 
 /obj/item/device/motiondetector/hacked/elite_merc
 	name = "hacked motion detector"

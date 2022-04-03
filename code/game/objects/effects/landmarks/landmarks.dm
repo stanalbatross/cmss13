@@ -16,7 +16,7 @@
 	invisibility = 101
 
 /obj/effect/landmark/newplayer_start
-	name = "New player start"
+	name = "New Player Start"
 
 /obj/effect/landmark/newplayer_start/New() // this must be New()
 	. = ..()

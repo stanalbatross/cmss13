@@ -261,15 +261,17 @@
 	spread_speed = 7
 	smokeranking = SMOKE_RANK_BOILER
 
-	var/hivenumber = XENO_HIVE_NORMAL
+	var/faction_to_get = SET_FACTION_HIVE_NORMAL
 	var/gas_damage = 20
 
 /obj/effect/particle_effect/smoke/xeno_burn/Initialize(mapload, amount, datum/cause_data/cause_data)
+	if(faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
 	var/mob/living/carbon/Xenomorph/X = cause_data.resolve_mob()
-	if (istype(X) && X.hivenumber)
-		hivenumber = X.hivenumber
+	if(istype(X) && X.faction)
+		faction = X.faction
 
-		set_hive_data(src, hivenumber)
+		set_hive_data(src, faction)
 
 	. = ..()
 
@@ -282,8 +284,10 @@
 	for(var/obj/vehicle/multitile/R in T)
 		R.take_damage_type(20, "acid")
 
-	for(var/obj/structure/machinery/m56d_hmg/auto/H in T)
-		H.update_health(XENO_ACID_HMG_DAMAGE)
+	for(var/obj/structure/machinery/mounted_defence/H in T)
+		H.update_health(XENO_ACID_STATIONAR_DAMAGE)
+	for(var/obj/structure/machinery/defenses/D in T)
+		D.update_health(XENO_ACID_STATIONAR_DAMAGE)
 
 //No effect when merely entering the smoke turf, for balance reasons
 /obj/effect/particle_effect/smoke/xeno_burn/Crossed(mob/living/carbon/M as mob)
@@ -292,7 +296,7 @@
 /obj/effect/particle_effect/smoke/xeno_burn/affect(var/mob/living/carbon/M)
 	..()
 
-	if(M.ally_of_hivenumber(hivenumber))
+	if(M.ally(faction))
 		return
 
 	if(isYautja(M) && prob(75))
@@ -311,13 +315,17 @@
 	else
 		M.apply_damage(gas_damage, BURN) //Inhalation damage
 
-	if(M.coughedtime != 1 && !M.stat && ishuman(M)) //Coughing/gasping
-		M.coughedtime = 1
-		if(prob(50))
-			M.emote("cough")
-		else
-			M.emote("gasp")
-		addtimer(VARSET_CALLBACK(M, coughedtime, 0), 1.5 SECONDS)
+	//Gas masks protect from inhalation and face contact effects, even without internals. Breath masks don't for balance reasons
+	if(!istype(M.wear_mask, /obj/item/clothing/mask/gas))
+		M.adjustOxyLoss(10) //Basic oxyloss from "can't breathe"
+		M.adjustFireLoss(amount*rand(15, 20)) //Inhalation damage
+		if(M.coughedtime != 1 && !M.stat && ishuman(M)) //Coughing/gasping
+			M.coughedtime = 1
+			if(prob(50))
+				M.emote("cough")
+			else
+				M.emote("gasp")
+			addtimer(VARSET_CALLBACK(M, coughedtime, 0), 1.5 SECONDS)
 
 	//Topical damage (acid on exposed skin)
 	to_chat(M, SPAN_DANGER("Your skin feels like it is melting away!"))

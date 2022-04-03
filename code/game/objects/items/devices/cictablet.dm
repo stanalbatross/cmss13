@@ -23,28 +23,25 @@
 	var/state = STATE_DEFAULT
 	var/cooldown_message = 0
 
-	var/tablet_name = "Commanding Officer's Tablet"
-
-	var/announcement_title = COMMAND_ANNOUNCE
-	var/announcement_faction = FACTION_MARINE
-	var/add_pmcs = TRUE
-
-	var/tacmap_type = TACMAP_DEFAULT
-	var/tacmap_base_type = TACMAP_BASE_OCCLUDED
-	var/tacmap_additional_parameter = null
+	var/faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map
 
 /obj/item/device/cotablet/Initialize()
-	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	else if(SSticker.current_state < GAME_STATE_PLAYING)
-		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/disable_pmc)
-	return ..()
+	. = ..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+	generate_tacmap_link()
 
-/obj/item/device/cotablet/proc/disable_pmc()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP)
+/obj/item/device/cotablet/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /obj/item/device/cotablet/attack_self(mob/user as mob)
 	..()
@@ -70,7 +67,7 @@
 				dat += "<BR><A HREF='?src=\ref[src];operation=announce'>Make an announcement</A>"
 				dat += "<BR><A HREF='?src=\ref[src];operation=award'>Award a medal</A>"
 				dat += "<BR><A HREF='?src=\ref[src];operation=mapview'>Tactical Map</A>"
-				dat += "<BR><hr>"
+			dat += "<BR><A HREF='?src=\ref[src];operation=selectloctacmap'>Сменить Локацию ТК</A>"
 				switch(EvacuationAuthority.evac_status)
 					if(EVACUATION_STATUS_STANDING_BY)
 						dat += "<BR><A HREF='?src=\ref[src];operation=evacuation_start'>Initiate Emergency Evacuation</A>"
@@ -86,24 +83,25 @@
 	onclose(user, "communications")
 	updateDialog()
 
-/obj/item/device/cotablet/proc/update_mapview(var/close = 0)
-	if (close || !current_mapviewer || !Adjacent(current_mapviewer))
-		close_browser(current_mapviewer, "marineminimap")
+/obj/item/device/cotablet/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	update_mapview(tacmap_info, current_mapviewer, minimap_name, map, O)
+
+/obj/item/device/cotablet/proc/mapview()
+	if(!Adjacent(current_mapviewer))
+		close_browser(current_mapviewer, "minimap")
 		current_mapviewer = null
 		return
-
-	var/icon/O = overlay_tacmap(tacmap_type, tacmap_base_type, tacmap_additional_parameter)
-	if(O)
-		current_mapviewer << browse_rsc(O, "marine_minimap.png")
-		show_browser(current_mapviewer, "<img src=marine_minimap.png>", minimap_name, "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
 
 /obj/item/device/cotablet/Topic(href, href_list)
 	if(..())
 		return FALSE
 	usr.set_interaction(src)
 
-	if (href_list["close"] && current_mapviewer)
-		close_browser(current_mapviewer, "marineminimap")
+	if(href_list["close"] && current_mapviewer)
+		close_browser(current_mapviewer, "minimap")
 		current_mapviewer = null
 		return
 
@@ -144,12 +142,12 @@
 				visible_message(SPAN_NOTICE("[src] prints a medal."))
 
 		if("mapview")
-			if(current_mapviewer)
-				update_mapview(TRUE)
-				return
 			current_mapviewer = usr
-			update_mapview()
+			mapview()
 			return
+
+		if("selectloctacmap")
+			map = tacmap_info.change_mapview(usr)
 
 		if("evacuation_start")
 			if(announcement_faction != FACTION_MARINE)

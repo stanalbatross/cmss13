@@ -22,11 +22,15 @@
 	)
 	angle = 60
 	use_dir = TRUE
-	var/iff_signal = FACTION_MARINE
+	var/iff_signal
 	var/triggered = FALSE
 	var/hard_iff_lock = FALSE
 	var/obj/effect/mine_tripwire/tripwire
 
+/obj/item/explosive/mine/Initialize(datum/faction_status/new_faction)
+	if(new_faction)
+		faction = new_faction
+		iff_signal = GLOB.faction_datum[new_faction]
 
 /obj/item/explosive/mine/Destroy()
 	QDEL_NULL(tripwire)
@@ -64,6 +68,13 @@
 	if(active || user.action_busy)
 		return
 
+	if(!faction || !iff_signal)
+		faction = user.faction
+		iff_signal = GLOB.faction_datum[faction]
+	else if(user.faction != faction)
+		visible_message(SPAN_NOTICE("[src] blinks red."))
+		return
+
 	user.visible_message(SPAN_NOTICE("[user] starts deploying [src]."), \
 		SPAN_NOTICE("You start deploying [src]."))
 	if(!do_after(user, 40, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
@@ -94,6 +105,9 @@
 
 //Disarming
 /obj/item/explosive/mine/attackby(obj/item/W, mob/user)
+	var/disarm_timer = 3 SECONDS
+	if(user.faction == faction)
+		disarm_timer = 1 SECONDS
 	if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL))
 		if(active)
 			if(user.action_busy)
@@ -120,14 +134,16 @@
 				return
 			user.visible_message(SPAN_NOTICE("[user] finishes disarming [src]."), \
 			SPAN_NOTICE("You finish disarming [src]."))
-			disarm()
+			disarm(user)
 
 	else
 		return ..()
 
-/obj/item/explosive/mine/proc/disarm()
+/obj/item/explosive/mine/proc/disarm(mob/user)
 	if(customizable)
 		activate_sensors()
+	faction = user.faction
+	iff_signal = GLOB.faction_datum[faction]
 	anchored = FALSE
 	active = FALSE
 	triggered = FALSE
@@ -185,7 +201,7 @@
 		return
 	if(L.stat == DEAD)
 		return
-	if(L.get_target_lock(iff_signal) || isrobot(L))
+	if(L.get_target_lock(faction) || isrobot(L))
 		return
 	L.visible_message(SPAN_DANGER("[icon2html(src, viewers(src))] The [name] clicks as [L] moves in front of it."), \
 	SPAN_DANGER("[icon2html(src, L)] The [name] clicks as you move in front of it."), \
@@ -276,8 +292,7 @@
 	name = "\improper M20P Claymore anti-personnel mine"
 	desc = "The M20P Claymore is a directional proximity triggered anti-personnel mine designed by Armat Systems for use by the United States Colonial Marines. It has been modified for use by the Wey-Yu PMC forces."
 	icon_state = "m20p"
-	iff_signal = FACTION_PMC
-	hard_iff_lock = TRUE
+	iff_signal = SET_FACTION_WY
 
 /obj/item/explosive/mine/custom
 	name = "Custom mine"

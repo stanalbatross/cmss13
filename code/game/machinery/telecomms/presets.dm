@@ -44,7 +44,13 @@
 	unacidable = TRUE
 	health = 450
 	tcomms_machine = TRUE
-	freq_listening = DEPT_FREQS
+	var/sensor_radius = 80
+	var/faction_to_set = SET_FACTION_USCM
+
+/obj/structure/machinery/telecomms/relay/preset/tower/Initialize()
+	. = ..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
 
 // doesn't need power, instead uses health
 /obj/structure/machinery/telecomms/relay/preset/tower/inoperable(additional_flags)
@@ -59,6 +65,7 @@
 	if(on)
 		playsound(src, 'sound/machines/tcomms_on.ogg', vol = 80, vary = FALSE, sound_range = 16, falloff = 0.5)
 		msg_admin_niche("Portable communication relay started for Z-Level [src.z] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
+		GLOB.towers += src
 
 /obj/structure/machinery/telecomms/relay/preset/tower/tcomms_shutdown()
 	. = ..()

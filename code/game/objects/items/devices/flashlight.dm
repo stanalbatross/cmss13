@@ -415,7 +415,6 @@
 	item_state = "cas_flare"
 	layer = ABOVE_FLY_LAYER
 	ammo_datum = /datum/ammo/flare/signal
-	var/faction = ""
 	var/datum/cas_signal/signal
 	var/activate_message = TRUE
 
@@ -434,13 +433,13 @@
 		addtimer(CALLBACK(src, .proc/activate_signal, user), 5 SECONDS)
 
 /obj/item/device/flashlight/flare/signal/proc/activate_signal(mob/living/carbon/human/user)
-	if(faction && cas_groups[faction])
+	if(faction && cas_groups[faction.faction_number])
 		signal = new(src)
 		signal.target_id = ++cas_tracking_id_increment
 		name = "[user.assigned_squad ? user.assigned_squad.name : "X"]-[signal.target_id] flare"
 		signal.name = name
 		signal.linked_cam = new(loc, name)
-		cas_groups[user.faction].add_signal(signal)
+		cas_groups[user.faction.faction_number].add_signal(signal)
 		anchored = TRUE
 		if(activate_message)
 			visible_message(SPAN_DANGER("[src]'s flame reaches full strength. It's fully active now."), null, 5)
@@ -458,14 +457,14 @@
 /obj/item/device/flashlight/flare/signal/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	if(signal)
-		cas_groups[faction].remove_signal(signal)
+		cas_groups[faction.faction_number].remove_signal(signal)
 		qdel(signal)
 	return ..()
 
 /obj/item/device/flashlight/flare/signal/turn_off()
 	anchored = FALSE
 	if(signal)
-		cas_groups[faction].remove_signal(signal)
+		cas_groups[faction.faction_number].remove_signal(signal)
 		qdel(signal)
 	..()
 
@@ -492,11 +491,11 @@
 
 /obj/item/device/flashlight/flare/signal/debug/activate_signal()
 	turn_on()
-	faction = FACTION_MARINE
+	faction = GLOB.faction_datum[SET_FACTION_USCM]
 	signal = new(src)
 	signal.target_id = ++cas_tracking_id_increment
 	name += " [rand(100, 999)]"
 	signal.name = name
 	signal.linked_cam = new(loc, name)
-	cas_groups[FACTION_MARINE].add_signal(signal)
+	cas_groups[SET_FACTION_USCM].add_signal(signal)
 	anchored = TRUE
