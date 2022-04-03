@@ -21,6 +21,7 @@
 	var/mob/living/carbon/human/H = new(T)
 	M.transfer_to(H, TRUE)
 	arm_equipment(H, preset, TRUE, TRUE)
+	GLOB.ert_mobs += H
 
 	sleep(20)
 	if(H && H.loc)

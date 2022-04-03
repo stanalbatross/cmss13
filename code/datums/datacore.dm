@@ -87,7 +87,7 @@ GLOBAL_DATUM_INIT(data_core, /obj/effect/datacore, new)
 	var/list/squad_sublists = ROLES_SQUAD_ALL.Copy() //Are there any marines in the squad?
 
 	for(var/datum/data/record/t in GLOB.data_core.general)
-		if(t.fields["mob_faction"] != FACTION_MARINE)	//we process only USCM humans
+		if(t.fields["mob_faction"] != GLOB.faction_datum[SET_FACTION_USCM])	//we process only USCM humans
 			continue
 
 		var/name = t.fields["name"]

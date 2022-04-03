@@ -173,9 +173,9 @@ var/nextAdminBioscan = 30 MINUTES//30 minutes in
 
 	var/larva = 0
 	//Count all larva across all hives
-	var/datum/hive_status/HS
-	for(var/hivenumber in GLOB.hive_datum)
-		HS = GLOB.hive_datum[hivenumber]
+	var/datum/faction_status/HS
+	for(var/datum/faction_status/faction in GLOB.faction_datum)
+		HS = GLOB.faction_datum[faction]
 		larva += HS.stored_larva
 
 	//Keeping track of peak numbers to determine when a side is "losing"
@@ -202,17 +202,16 @@ var/nextAdminBioscan = 30 MINUTES//30 minutes in
 
 
 	for (var/i in GLOB.alive_human_list)
-		var/mob/living/carbon/human/H = i
-		var/atom/where = H
-		if(isSpeciesHuman(H))
-			if (where == 0 && H.loc)
-				where = H.loc
-			if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT)))
-				numHostsPlanet++
-				hostsPlanetLocations += where
-			else if(is_mainship_level(where.z))
-				numHostsShip++
-				hostsShipLocations += where
+		var/mob/M = i
+		var/atom/where = M
+		if (where == 0 && M.loc)
+			where = M.loc
+		if(where.z in SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT)))
+			numHostsPlanet++
+			hostsPlanetLocations += where
+		else if(is_mainship_level(where.z))
+			numHostsShip++
+			hostsShipLocations += where
 
 	if (world.time > nextAdminBioscan)
 		nextAdminBioscan += 30 MINUTES//every 30 minutes, straight
@@ -306,7 +305,7 @@ Only checks living mobs with a client attached.
 		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.
 			if(ishuman(M) && !isYautja(M) && !(M.status_flags & XENO_HOST) && !iszombie(M))
 				var/mob/living/carbon/human/H = M
-				if(((H.species && H.species.name == "Human") || (H.is_important)) && !H.hivenumber) //only real humans count, or those we have set to also be included
+				if((H.species && H.species.name == "Human") || (H.is_important)) //only real humans count, or those we have set to also be included
 					num_humans++
 			else
 				var/area/A = get_area(M)
@@ -328,9 +327,9 @@ Only checks living mobs with a client attached.
 	for(var/i in GLOB.alive_human_list)
 		var/mob/M = i
 		if(M.z && (M.z in z_levels) && !istype(M.loc, /turf/open/space))
-			if(M.faction in FACTION_LIST_WY)
+			if(M.faction.internal_faction in FACTION_LIST_WY)
 				num_pmcs++
-			else if(M.faction == FACTION_MARINE)
+			else if(M.faction.internal_faction == FACTION_MARINE)
 				num_marines++
 
 	return list(num_marines,num_pmcs)
@@ -341,7 +340,7 @@ Only checks living mobs with a client attached.
 	for(var/i in GLOB.alive_human_list)
 		var/mob/M = i
 		if(M.z && (M.z in z_levels) && !istype(M.loc, /turf/open/space))
-			if(M.faction == FACTION_MARINE)
+			if(M.faction.internal_faction == FACTION_MARINE)
 				num_marines++
 
 	return num_marines

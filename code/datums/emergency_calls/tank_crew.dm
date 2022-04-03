@@ -20,6 +20,7 @@
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	sleep(5)
 	arm_equipment(H, /datum/equipment_preset/uscm/tank/full, TRUE, TRUE)

@@ -49,32 +49,46 @@
 	var/stat_msg2
 	processing = TRUE
 
+	var/faction_to_set = SET_FACTION_USCM
+	var/minimap_name = "Marine Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map
+
 /obj/structure/machinery/computer/communications/Initialize()
 	. = ..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+	generate_tacmap_link()
 	start_processing()
-	SSmapview.map_machines += src
 
-/obj/structure/machinery/computer/communications/Destroy()
-	SSmapview.map_machines -= src
-	return ..()
+/obj/structure/machinery/computer/communications/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /obj/structure/machinery/computer/communications/process()
 	if(..() && state != STATE_STATUSDISPLAY)
 		updateDialog()
 
-/obj/structure/machinery/computer/communications/proc/update_mapview(var/close = 0)
-	if (close || !current_mapviewer || !Adjacent(current_mapviewer))
-		close_browser(current_mapviewer, "marineminimap")
+/obj/structure/machinery/computer/communications/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	update_mapview(tacmap_info, current_mapviewer, minimap_name, map, O)
+
+/obj/structure/machinery/computer/communications/proc/mapview()
+	if(!Adjacent(current_mapviewer))
+		close_browser(current_mapviewer, "minimap")
 		current_mapviewer = null
 		return
-	if(!populated_mapview_type_updated[TACMAP_DEFAULT])
-		overlay_tacmap(TACMAP_DEFAULT)
-	current_mapviewer << browse_rsc(populated_mapview_types[TACMAP_DEFAULT], "marine_minimap.png")
-	show_browser(current_mapviewer, "<img src=marine_minimap.png>", "Marine Minimap", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
 
 /obj/structure/machinery/computer/communications/Topic(href, href_list)
 	if (href_list["close"] && current_mapviewer)
-		close_browser(current_mapviewer, "marineminimap")
+		close_browser(current_mapviewer, "minimap_ground")
 		current_mapviewer = null
 		return
 	if(..()) return FALSE
@@ -82,12 +96,12 @@
 	usr.set_interaction(src)
 	switch(href_list["operation"])
 		if("mapview")
-			if(current_mapviewer)
-				update_mapview(1)
-				return
 			current_mapviewer = usr
-			update_mapview()
+			mapview()
 			return
+
+		if("selectloctacmap")
+			map = tacmap_info.change_mapview(usr)
 
 		if("main") state = STATE_DEFAULT
 

@@ -1,5 +1,5 @@
 /// This is the iff_group
-/obj/item/projectile/var/runtime_iff_group
+/obj/item/projectile/var/datum/faction_status/runtime_iff_group
 
 /datum/element/bullet_trait_iff
 	// General bullet trait vars
@@ -46,7 +46,7 @@
 // The cache is reset when the user drops their ID
 /datum/element/bullet_trait_iff/proc/get_user_iff_group(var/mob/living/carbon/human/user)
 	if(!ishuman(user))
-		return user.faction_group
+		return user.faction
 
 	var/iff_group = LAZYACCESS(iff_group_cache, user)
 	if(isnull(iff_group))

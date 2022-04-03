@@ -1,5 +1,5 @@
 /datum/custom_event_info
-	var/faction = "default"		//here category/faction/hive name stored
+	var/datum/faction_status/faction = "default"		//here category/faction/hive name stored
 	var/msg = ""			//here is the message itself
 
 
@@ -45,11 +45,11 @@
 		return
 
 	else
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
+		var/datum/faction_status/xeno/hive
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			hive = GLOB.faction_datum[faction]
 			if(hive.name == faction)
-				for(var/mob/M in hive.totalXenos)
+				for(var/mob/M in faction.totalMobs)
 					show_player_event_info(M)
 				return
 

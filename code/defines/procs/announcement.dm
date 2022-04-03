@@ -1,7 +1,7 @@
 #define COMMAND_ANNOUNCE		"Command Announcement"
 #define UPP_COMMAND_ANNOUNCE	"UPP Command Announcement"
 #define CLF_COMMAND_ANNOUNCE	"CLF Command Announcement"
-#define PMC_COMMAND_ANNOUNCE	"PMC Command Announcement"
+#define WY_COMMAND_ANNOUNCE		"WY Command Announcement"
 #define QUEEN_ANNOUNCE			"The words of the Queen reverberate in your head..."
 #define QUEEN_MOTHER_ANNOUNCE	"Queen Mother Psychic Directive"
 #define XENO_GENERAL_ANNOUNCE	"You sense something unusual..."	//general xeno announcement that don't involve Queen, for nuke for example
@@ -9,9 +9,9 @@
 #define HIGHER_FORCE_ANNOUNCE 	SPAN_ANNOUNCEMENT_HEADER_BLUE("Unknown Higher Force")
 
 //xenomorph hive announcement
-/proc/xeno_announcement(var/message, var/hivenumber, var/title = QUEEN_ANNOUNCE)
+/proc/xeno_announcement(var/message, var/datum/faction_status/faction, var/title = QUEEN_ANNOUNCE)
 	var/list/targets = GLOB.living_xeno_list + GLOB.dead_mob_list
-	if(hivenumber == "everything")
+	if(faction == "everything")
 		for(var/mob/M in targets)
 			var/mob/living/carbon/Xenomorph/X = M
 			if(!isobserver(X) && !istype(X))	//filter out any potential non-xenomorphs/observers mobs
@@ -23,16 +23,16 @@
 			if(isobserver(M))
 				continue
 			var/mob/living/carbon/X = M
-			if(!istype(X) || !X.ally_of_hivenumber(hivenumber))	//additionally filter out those of wrong hive
+			if(!istype(X) || !X.ally(faction))	//additionally filter out those of wrong hive
 				targets.Remove(X)
 
 		announcement_helper(message, title, targets, sound(get_sfx("queen"),wait = 0,volume = 50))
 
 
 //general marine announcement
-/proc/marine_announcement(var/message, var/title = COMMAND_ANNOUNCE, var/sound_to_play = sound('sound/misc/notice2.ogg'), var/faction_to_display = FACTION_MARINE, var/add_PMCs = TRUE, var/signature)
+/proc/marine_announcement(var/message, var/title = COMMAND_ANNOUNCE, var/sound_to_play = sound('sound/misc/notice2.ogg'), var/datum/faction_status/faction_to_display = GLOB.faction_datum[SET_FACTION_USCM], var/add_PMCs = TRUE, var/signature)
 	var/list/targets = GLOB.human_mob_list + GLOB.dead_mob_list
-	if(faction_to_display == FACTION_MARINE)
+	if(faction_to_display == GLOB.faction_datum[SET_FACTION_USCM])
 		for(var/mob/M in targets)
 			if(isobserver(M))		//observers see everything
 				continue

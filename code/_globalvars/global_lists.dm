@@ -104,6 +104,7 @@ var/global/list/all_areas = list()
 
 var/global/list/turfs = list()
 var/global/list/z1turfs = list()
+var/global/list/z2turfs = list()
 
 /var/global/list/objects_of_interest // This is used to track the stealing objective for Agents.
 
@@ -293,20 +294,16 @@ var/global/list/paramslist_cache = list()
 /proc/setup_custom_event_info()
 	//faction event messages
 	var/list/custom_event_info_list = list()
-	var/datum/custom_event_info/CEI = new /datum/custom_event_info
-	CEI.faction = "Global"		//the old public one for whole server to see
-	custom_event_info_list[CEI.faction] = CEI
-	for(var/T in FACTION_LIST_HUMANOID)
+	var/datum/custom_event_info/CEI = new()
+	CEI.faction = new()		//the old public one for whole server to see
+	CEI.faction.internal_faction = "Global"
+	custom_event_info_list[CEI.faction.internal_faction] = CEI
+	var/list/factions = GLOB.faction_datum
+	for(var/i in factions)
+		var/datum/faction_status/faction = GLOB.faction_datum[i]
 		CEI = new /datum/custom_event_info
-		CEI.faction = T
-		custom_event_info_list[T] = CEI
-
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		CEI = new /datum/custom_event_info
-		CEI.faction = hive.internal_faction
-		custom_event_info_list[hive.name] = CEI
+		CEI.faction = faction
+		custom_event_info_list[faction.internal_faction] = CEI
 
 	return custom_event_info_list
 

@@ -50,7 +50,8 @@
 		new_xeno = new picked(spawn_loc)
 
 	M.transfer_to(new_xeno, TRUE)
-	new_xeno.set_hive_and_update(XENO_HIVE_FERAL)
+	GLOB.ert_mobs += new_xeno
+	new_xeno.set_hive_and_update(GLOB.faction_datum[SET_FACTION_HIVE_FERAL])
 
 	QDEL_NULL(current_mob)
 

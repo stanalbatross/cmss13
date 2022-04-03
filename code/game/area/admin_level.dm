@@ -93,7 +93,11 @@
 	ceiling = CEILING_UNDERGROUND_ALLOW_CAS
 	flags_area = AREA_NOTUNNEL|AREA_ALLOW_XENO_JOIN
 
-	var/hivenumber = XENO_HIVE_ALPHA
+	var/datum/faction_status/faction
+
+/obj/vehicle/Initialize()
+	. = ..()
+	faction = GLOB.faction_datum[SET_FACTION_HIVE_ALPHA]
 
 /area/adminlevel/bunker01/caves/xeno/Entered(A, atom/OldLoc)
 	. = ..()
@@ -101,7 +105,7 @@
 		var/mob/living/carbon/Xenomorph/X = A
 
 		X.away_timer = XENO_LEAVE_TIMER
-		X.set_hive_and_update(hivenumber)
+		X.set_hive_and_update(faction)
 
 // ERT Station
 /area/adminlevel/ert_station

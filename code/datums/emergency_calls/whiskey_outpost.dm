@@ -20,6 +20,7 @@
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
 	M.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	sleep(5)
 	if(!leader)

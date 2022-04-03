@@ -17,6 +17,7 @@
 
 	var/mob/living/carbon/human/H = new(T)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	arm_equipment(H, /datum/equipment_preset/other/zombie, TRUE, TRUE)
 

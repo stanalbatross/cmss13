@@ -1,4 +1,3 @@
-
 //A big-game hunter, willing to hunt anything that moves.
 /datum/emergency_call/van_bandolier
 	name = "Fun - Big Game Hunter (solo)"
@@ -20,6 +19,7 @@
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	arm_equipment(H, /datum/equipment_preset/fun/van_bandolier, FALSE, TRUE)
 

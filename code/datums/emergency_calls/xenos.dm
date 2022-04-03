@@ -25,6 +25,7 @@
 		return //Didn't find a useable spawn point.
 
 	var/mob/current_mob = M.current
+	GLOB.ert_mobs += current_mob
 
 	var/mob/living/carbon/Xenomorph/new_xeno
 	if(!leader)

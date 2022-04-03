@@ -34,7 +34,7 @@
     points = 40
     max_points = 100
 
-    var/faction_belonging = "WY"
+    var/datum/faction_status/faction_belonging = "WY"
 
     var/list/types_to_convert = list(
         /obj/item/ammo_magazine/smg/m39 = /obj/item/ammo_magazine/smg/m39/rubber,

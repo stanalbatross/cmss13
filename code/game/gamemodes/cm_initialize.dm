@@ -157,7 +157,7 @@ Additional game mode variables.
 				if(!player.mind) //They have to have a key if they have a client.
 					player.mind_initialize() //Will work on ghosts too, but won't add them to active minds.
 				player.mind.setup_human_stats()
-				player.faction = FACTION_YAUTJA
+				player.faction = GLOB.faction_datum[SET_FACTION_YAUTJA_NORMAL]
 				players += player.mind
 	return players
 
@@ -251,7 +251,7 @@ Additional game mode variables.
 
 //If we are selecting xenomorphs, we NEED them to play the round. This is the expected behavior.
 //If this is an optional behavior, just override this proc or make an override here.
-/datum/game_mode/proc/initialize_starting_xenomorph_list(var/list/hives = list(XENO_HIVE_NORMAL), var/force_xenos = FALSE)
+/datum/game_mode/proc/initialize_starting_xenomorph_list(var/list/hives = SET_FACTION_LIST_XENOS, var/force_xenos = FALSE)
 	var/list/datum/mind/possible_xenomorphs = get_players_for_role(JOB_XENOMORPH)
 	var/list/datum/mind/possible_queens = get_players_for_role(JOB_XENOMORPH_QUEEN)
 	if(possible_xenomorphs.len < xeno_required_num) //We don't have enough aliens, we don't consider people rolling for only Queen.
@@ -270,7 +270,7 @@ Additional game mode variables.
 			var/new_queen = pick(possible_queens)
 			if(new_queen)
 				setup_new_xeno(new_queen)
-				picked_queens += list(GLOB.hive_datum[hive] = new_queen)
+				picked_queens += list(GLOB.faction_datum[hive] = new_queen)
 				LAZYREMOVE(possible_xenomorphs, new_queen)
 
 	for(var/datum/mind/A in possible_xenomorphs)
@@ -278,7 +278,7 @@ Additional game mode variables.
 			LAZYREMOVE(possible_xenomorphs, A)
 
 	for(var/hive in hives)
-		xenomorphs[GLOB.hive_datum[hive]] = list()
+		xenomorphs[GLOB.faction_datum[hive]] = list()
 
 	var/datum/mind/new_xeno
 	var/current_index = 1
@@ -287,14 +287,14 @@ Additional game mode variables.
 		if(current_index > LAZYLEN(hives))
 			current_index = 1
 
-		var/datum/hive_status/hive = GLOB.hive_datum[hives[current_index]]
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[hives[current_index]]
 		if(LAZYLEN(possible_xenomorphs)) //We still have candidates
 			new_xeno = pick(possible_xenomorphs)
 			LAZYREMOVE(possible_xenomorphs, new_xeno)
 
 			if(!new_xeno)
 				hive.stored_larva++
-				hive.hive_ui.update_pooled_larva()
+				hive.faction_ui.update_pooled_larva()
 				continue  //Looks like we didn't get anyone. Keep going.
 
 			setup_new_xeno(new_xeno)
@@ -310,7 +310,7 @@ Additional game mode variables.
 	if(remaining_slots)
 		var/larva_per_hive = round(remaining_slots / LAZYLEN(hives))
 		for(var/hivenumb in hives)
-			var/datum/hive_status/hive = GLOB.hive_datum[hivenumb]
+			var/datum/faction_status/xeno/hive = GLOB.faction_datum[hivenumb]
 			hive.stored_larva = larva_per_hive
 
 	/*
@@ -330,19 +330,19 @@ Additional game mode variables.
 
 
 /datum/game_mode/proc/initialize_post_xenomorph_list(list/hive_spawns = GLOB.xeno_spawns)
-	for(var/datum/hive_status/hive in xenomorphs) //Build and move the xenos.
+	for(var/hive in xenomorphs) //Build and move the xenos.
 		for(var/datum/mind/ghost_mind in xenomorphs[hive])
-			transform_xeno(ghost_mind, get_turf(pick(hive_spawns)), hive.hivenumber)
+			transform_xeno(ghost_mind, get_turf(pick(hive_spawns)), GLOB.faction_datum[hive])
 
 	// Have to spawn the queen last or the mind will be added to xenomorphs and double spawned
-	for(var/datum/hive_status/hive in picked_queens)
-		INVOKE_ASYNC(src, .proc/pick_queen_spawn, picked_queens[hive], hive.hivenumber)
+	for(var/hive in picked_queens)
+		INVOKE_ASYNC(src, .proc/pick_queen_spawn, picked_queens[hive], GLOB.faction_datum[hive])
 
 /datum/game_mode/proc/check_xeno_late_join(mob/xeno_candidate)
 	if(jobban_isbanned(xeno_candidate, JOB_XENOMORPH)) // User is jobbanned
-		to_chat(xeno_candidate, SPAN_WARNING("You are banned from playing aliens and cannot spawn as a xenomorph."))
-		return
-	return 1
+		to_chat(xeno_candidate, SPAN_WARNING("Вы забанены на игру за ксено."))
+		return FALSE
+	return TRUE
 
 /datum/game_mode/proc/attempt_to_join_as_xeno(mob/xeno_candidate, instant_join = 0)
 	var/list/available_xenos = list()
@@ -355,18 +355,18 @@ Additional game mode variables.
 			if(X.away_timer >= XENO_LEAVE_TIMER || (isXenoLarva(X) && X.away_timer >= XENO_LEAVE_TIMER_LARVA) ) available_xenos_non_ssd += X
 			available_xenos += X
 
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		var/obj/effect/alien/resin/special/pool/SP = hive.spawn_pool
+	var/list/hives_to_get = SET_FACTION_LIST_XENOS
+	for(var/i in hives_to_get)
+		var/datum/faction_status/xeno/faction = GLOB.faction_datum[i]
+		var/obj/effect/alien/resin/special/pool/SP = faction.spawn_pool
 		if(!isnull(SP) && SP.can_spawn_larva())
 			if(SSticker.mode && (SSticker.mode.flags_round_type & MODE_RANDOM_HIVE))
 				available_xenos |= "pooled larva"
-				LAZYADD(available_xenos["pooled larva"], hive)
+				LAZYADD(available_xenos["pooled larva"], faction)
 			else
-				var/larva_option = "pooled larva ([hive])"
+				var/larva_option = "pooled larva ([faction])"
 				available_xenos += larva_option
-				available_xenos[larva_option] = list(hive)
+				available_xenos[larva_option] = list(faction)
 
 	if(!available_xenos.len || (instant_join && !available_xenos_non_ssd.len))
 		to_chat(xeno_candidate, SPAN_WARNING("There aren't any available xenomorphs or pooled larvae. You can try getting spawned as a chestburster larva by toggling your Xenomorph candidacy in Preferences -> Toggle SpecialRole Candidacy."))
@@ -377,7 +377,7 @@ Additional game mode variables.
 		var/userInput = tgui_input_list(usr, "Available Xenomorphs", "Join as Xeno", available_xenos)
 
 		if(available_xenos[userInput]) //Free xeno mobs have no associated value and skip this. "Pooled larva" strings have a list of hives.
-			var/datum/hive_status/H = pick(available_xenos[userInput]) //The list contains all available hives if we are to choose at random, only one element if we already chose a hive by its name.
+			var/datum/faction_status/H = pick(available_xenos[userInput]) //The list contains all available hives if we are to choose at random, only one element if we already chose a hive by its name.
 			var/obj/effect/alien/resin/special/pool/SP = H.spawn_pool
 			if(!isnull(SP) && SP.can_spawn_larva()) //isnull() is checked here, in case the spawn pool gets destroyed while the menu is open.
 				if(!xeno_bypass_timer)
@@ -487,16 +487,19 @@ Additional game mode variables.
 	return TRUE
 
 /// Pick and setup a queen spawn from landmarks, then spawns the player there alongside any required setup
-/datum/game_mode/proc/pick_queen_spawn(datum/mind/ghost_mind, var/hivenumber = XENO_HIVE_NORMAL)
+/datum/game_mode/proc/pick_queen_spawn(datum/mind/ghost_mind, var/datum/faction_status/faction)
 	RETURN_TYPE(/turf)
 
+	if(!faction)
+		faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
+	faction = GLOB.faction_datum[faction]
+
 	var/mob/living/original = ghost_mind.current
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-	if(hive.living_xeno_queen || !original || !original.client)
+	if(faction.living_xeno_queen || !original || !original.client)
 		return
 
 	if(!length(GLOB.queen_spawns))
-		transform_queen(ghost_mind, get_turf(pick(GLOB.xeno_spawns)), hivenumber)
+		transform_queen(ghost_mind, get_turf(pick(GLOB.xeno_spawns)), faction)
 		return
 
 	// Make the list pretty
@@ -524,16 +527,17 @@ Additional game mode variables.
 		// Support maps without queen spawns
 		if(isnull(QS))
 			QS = get_turf(pick(GLOB.xeno_spawns))
-	transform_queen(ghost_mind, QS, hivenumber)
+	transform_queen(ghost_mind, QS, faction)
 	return QS
 
-/datum/game_mode/proc/transform_queen(datum/mind/ghost_mind, var/turf/xeno_turf, var/hivenumber = XENO_HIVE_NORMAL)
+/datum/game_mode/proc/transform_queen(datum/mind/ghost_mind, var/turf/xeno_turf, var/datum/faction_status/hive)
+	if(!hive)
+		hive = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
 	var/mob/living/original = ghost_mind.current
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
 	if(hive.living_xeno_queen || !original || !original.client)
 		return
 
-	var/mob/living/carbon/Xenomorph/new_queen = new /mob/living/carbon/Xenomorph/Queen(xeno_turf, null, hivenumber)
+	var/mob/living/carbon/Xenomorph/new_queen = new /mob/living/carbon/Xenomorph/Queen(xeno_turf, null, hive)
 	ghost_mind.transfer_to(new_queen) //The mind is fine, since we already labeled them as a xeno. Away they go.
 	ghost_mind.name = ghost_mind.current.name
 
@@ -550,7 +554,7 @@ Additional game mode variables.
 	//new_queen.crystal_stored = XENO_STARTING_CRYSTAL
 	new_queen.update_icons()
 
-/datum/game_mode/proc/transform_xeno(datum/mind/ghost_mind, var/turf/xeno_turf, var/hivenumber = XENO_HIVE_NORMAL, var/should_spawn_nest = TRUE)
+/datum/game_mode/proc/transform_xeno(datum/mind/ghost_mind, var/turf/xeno_turf, var/datum/faction_status/faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL], var/should_spawn_nest = TRUE)
 	if(should_spawn_nest)
 		var/mob/living/carbon/human/original = ghost_mind.current
 
@@ -570,12 +574,12 @@ Additional game mode variables.
 
 		var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(original) //Put the initial larva in a host
 		embryo.stage = 5 //Give the embryo a head-start (make the larva burst instantly)
-		embryo.hivenumber = hivenumber
+		embryo.faction = faction
 
 		if(original && !original.first_xeno)
 			qdel(original)
 	else
-		var/mob/living/carbon/Xenomorph/Larva/L = new(xeno_turf, null, hivenumber)
+		var/mob/living/carbon/Xenomorph/Larva/L = new(xeno_turf, null, faction)
 		ghost_mind.transfer_to(L)
 
 //===================================================\\

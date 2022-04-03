@@ -641,16 +641,16 @@ body
 			return
 		admin_holder.Topic(href, list("makealien"=href_list["makealien"]))
 
-	else if(href_list["changehivenumber"])
+	else if(href_list["changefaction"])
 		if(!check_rights(R_DEBUG|R_ADMIN))
 			return
 
-		var/mob/living/carbon/X = locate(href_list["changehivenumber"])
+		var/mob/living/carbon/X = locate(href_list["changefaction"])
 		if(!istype(X))
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
 			return
 
-		admin_holder.Topic(href, list("changehivenumber"=href_list["changehivenumber"]))
+		admin_holder.Topic(href, list("changefaction"=href_list["changefaction"]))
 
 	else if(href_list["makeai"])
 		if(!check_rights(R_SPAWN))

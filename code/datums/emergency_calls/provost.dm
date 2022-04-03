@@ -15,6 +15,7 @@
 
 	var/mob/living/carbon/human/H = new(T)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += src
 
 	if(!leader)       //First one spawned is always the leader.
 		leader = H
@@ -56,6 +57,7 @@
 
 	var/mob/living/carbon/human/H = new(T)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	if(!leader)       //First one spawned is always the leader.
 		leader = H

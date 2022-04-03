@@ -15,26 +15,30 @@
 
 	var/is_announcement_active = TRUE
 	var/announcement_title = COMMAND_ANNOUNCE
-	var/announcement_faction = FACTION_MARINE
+	var/announcement_faction = SET_FACTION_USCM
 	var/add_pmcs = TRUE
 	var/lz_selection = TRUE
 	var/has_squad_overwatch = TRUE
-	var/tacmap_type = TACMAP_DEFAULT
-	var/tacmap_base_type = TACMAP_BASE_OCCLUDED
-	var/tacmap_additional_parameter = null
+
+	var/faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map
 
 /obj/structure/machinery/computer/groundside_operations/Initialize()
-	if(SSticker.mode && MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	else if(SSticker.current_state < GAME_STATE_PLAYING)
-		RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/disable_pmc)
-	return ..()
+	. = ..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+	generate_tacmap_link()
 
-/obj/structure/machinery/computer/groundside_operations/proc/disable_pmc()
-	if(MODE_HAS_FLAG(MODE_FACTION_CLASH))
-		add_pmcs = FALSE
-	UnregisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP)
+/obj/structure/machinery/computer/groundside_operations/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /obj/structure/machinery/computer/groundside_operations/attack_remote(var/mob/user as mob)
 	return attack_hand(user)
@@ -182,16 +186,17 @@
 	dat += "<A href='?src=\ref[src];operation=refresh'>Refresh</a><br>"
 	return dat
 
-/obj/structure/machinery/computer/groundside_operations/proc/update_mapview(var/close = 0)
-	if (close || !current_mapviewer || !Adjacent(current_mapviewer))
-		close_browser(current_mapviewer, "marineminimap")
+/obj/structure/machinery/computer/groundside_operations/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	update_mapview(tacmap_info, current_mapviewer, minimap_name, map, O)
+
+/obj/structure/machinery/computer/groundside_operations/proc/mapview()
+	if(!Adjacent(current_mapviewer))
+		close_browser(current_mapviewer, "minimap")
 		current_mapviewer = null
 		return
-
-	var/icon/O = overlay_tacmap(tacmap_type, tacmap_base_type, tacmap_additional_parameter)
-	if(O)
-		current_mapviewer << browse_rsc(O, "marine_minimap.png")
-		show_browser(current_mapviewer, "<img src=marine_minimap.png>", minimap_name, "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
 
 /obj/structure/machinery/computer/groundside_operations/Topic(href, href_list)
 	if (href_list["close"] && current_mapviewer)
@@ -205,12 +210,12 @@
 	usr.set_interaction(src)
 	switch(href_list["operation"])
 		if("mapview")
-			if(current_mapviewer)
-				update_mapview(TRUE)
-				return
 			current_mapviewer = usr
-			update_mapview()
+			mapview()
 			return
+
+		if("selectloctacmap")
+			map = tacmap_info.change_mapview(usr)
 
 		if("announce")
 			if(!is_announcement_active)
@@ -260,7 +265,7 @@
 		if("pick_squad")
 			var/list/squad_list = list()
 			for(var/datum/squad/S in RoleAuthority.squads)
-				if(S.usable)
+				if(S.usable && S.uscm)
 					squad_list += S.name
 
 			var/name_sel = tgui_input_list(usr, "Which squad would you like to look at?", "Pick Squad", squad_list)
@@ -318,34 +323,31 @@
 
 /obj/structure/machinery/computer/groundside_operations/upp
 	announcement_title = UPP_COMMAND_ANNOUNCE
-	announcement_faction = FACTION_UPP
+	announcement_faction = SET_FACTION_UPP
 	add_pmcs = FALSE
 	lz_selection = FALSE
 	has_squad_overwatch = FALSE
-	tacmap_type = TACMAP_FACTION
-	tacmap_base_type = TACMAP_BASE_OPEN
-	tacmap_additional_parameter = FACTION_UPP
+
+	faction_to_set = SET_FACTION_UPP
 	minimap_name = "UPP Tactical Map"
 
 /obj/structure/machinery/computer/groundside_operations/clf
 	announcement_title = CLF_COMMAND_ANNOUNCE
-	announcement_faction = FACTION_CLF
+	announcement_faction = SET_FACTION_CLF
 	add_pmcs = FALSE
 	lz_selection = FALSE
 	has_squad_overwatch = FALSE
-	tacmap_type = TACMAP_FACTION
-	tacmap_base_type = TACMAP_BASE_OPEN
-	tacmap_additional_parameter = FACTION_CLF
+
+	faction_to_set = SET_FACTION_CLF
 	minimap_name = "CLF Tactical Map"
 
 /obj/structure/machinery/computer/groundside_operations/pmc
-	announcement_title = PMC_COMMAND_ANNOUNCE
-	announcement_faction = FACTION_PMC
+	announcement_title = WY_COMMAND_ANNOUNCE
+	announcement_faction = SET_FACTION_WY
 	lz_selection = FALSE
 	has_squad_overwatch = FALSE
-	tacmap_type = TACMAP_FACTION
-	tacmap_base_type = TACMAP_BASE_OPEN
-	tacmap_additional_parameter = FACTION_PMC
-	minimap_name = "PMC Tactical Map"
+
+	faction_to_set = SET_FACTION_WY
+	minimap_name = "WY Tactical Map"
 
 #undef COOLDOWN_COMM_MESSAGE

@@ -1,0 +1,112 @@
+// Faction names
+#define FACTION_NEUTRAL "Neutral"
+#define FACTION_MARINE "USCM"
+#define FACTION_SURVIVOR "Survivor"
+#define FACTION_UPP "UPP"
+#define FACTION_RESS "RESS"
+#define FACTION_WY "Wey-Yu"
+#define FACTION_CLF "CLF"
+#define FACTION_PMC "PMC"
+#define FACTION_WY_DEATHSQUAD "WY Death Squad"
+#define FACTION_MERCENARY "Mercenary"
+#define FACTION_FREELANCER "Freelancer"
+#define FACTION_HEFA "HEFA Order"
+#define FACTION_DUTCH "Dutch's Dozen"
+#define FACTION_PIRATE "Pirate"
+#define FACTION_GLADIATOR "Gladiator"
+#define FACTION_PIZZA "Pizza Delivery"
+#define FACTION_SOUTO "Souto Man"
+#define FACTION_COLONIST "Colonist"
+#define FACTION_YAUTJA "Yautja"
+#define FACTION_ZOMBIE "Zombie"
+#define FACTION_THREEWE "THREEWE"
+#define FACTION_MUTINEER "Mutineer"
+#define FACTION_PREDALIEN "Predalien"
+#define FACTION_XENOMORPH "Xenomorph"
+#define FACTION_XENOMORPH_CORRPUTED "Corrupted Xenomoprh"
+#define FACTION_XENOMORPH_ALPHA "Alpha Xenomorph"
+#define FACTION_XENOMORPH_BRAVO "Bravo Xenomorph"
+#define FACTION_XENOMORPH_CHARLIE "Charlie Xenomorph"
+#define FACTION_XENOMORPH_DELTA "Delta Xenomorph"
+#define FACTION_XENOMORPH_FERAL "Feral Xenomorph"
+#define FACTION_XENOMORPH_TAMED "Tamed Xenomorph"
+#define FACTION_XENOMORPH_MUTATED "Mutated Xenomorph"
+
+#define FACTION_LIST_MARINE list(FACTION_MARINE)
+#define FACTION_LIST_HUMANOID list(FACTION_MARINE, FACTION_MUTINEER, FACTION_PMC, FACTION_WY, FACTION_WY_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_SURVIVOR, FACTION_NEUTRAL, FACTION_COLONIST, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO, FACTION_YAUTJA, FACTION_ZOMBIE)
+#define FACTION_LIST_ERT list(FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO)
+#define FACTION_LIST_WY list(FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_WY)
+#define FACTION_LIST_MARINE_WY list(FACTION_MARINE, FACTION_PMC, FACTION_WY_DEATHSQUAD, FACTION_WY)
+#define FACTION_LIST_MARINE_UPP	list(FACTION_MARINE, FACTION_UPP)
+#define FACTION_LIST_MARINE_RESS list(FACTION_MARINE, FACTION_RESS)
+#define FACTION_LIST_XENOMORPH list(FACTION_XENOMORPH, FACTION_XENOMORPH_CORRPUTED, FACTION_XENOMORPH_ALPHA, FACTION_XENOMORPH_BRAVO, FACTION_XENOMORPH_CHARLIE, FACTION_XENOMORPH_DELTA)
+
+#define FACTION_LIST_ALL list(FACTION_MARINE, FACTION_MUTINEER, FACTION_PMC, FACTION_WY, FACTION_WY_DEATHSQUAD, FACTION_CLF, FACTION_UPP, FACTION_FREELANCER, FACTION_SURVIVOR, FACTION_NEUTRAL, FACTION_COLONIST, FACTION_MERCENARY, FACTION_DUTCH, FACTION_HEFA, FACTION_GLADIATOR, FACTION_PIRATE, FACTION_PIZZA, FACTION_SOUTO, FACTION_YAUTJA, FACTION_ZOMBIE, FACTION_XENOMORPH, FACTION_XENOMORPH_CORRPUTED, FACTION_XENOMORPH_ALPHA, FACTION_XENOMORPH_BRAVO, FACTION_XENOMORPH_CHARLIE, FACTION_XENOMORPH_DELTA)
+
+
+// =============================
+// faction types
+
+#define SET_FACTION_NEUTRAL			"faction_neutral"
+#define SET_FACTION_RESS			"faction_ress"
+#define SET_FACTION_COLONIST		"faction_colonist"
+#define SET_FACTION_PIRATE			"faction_pirate"
+#define SET_FACTION_DUTCH			"faction_dutch"
+#define SET_FACTION_HEFA			"faction_hefa"
+#define SET_FACTION_MUTINEER		"faction_mutineer"
+#define SET_FACTION_FREELANCER		"faction_freelancer"
+#define SET_FACTION_MERCENARY		"faction_mercenary"
+#define SET_FACTION_PIZZA			"faction_pizza"
+#define SET_FACTION_SOUTO			"faction_souto"
+#define SET_FACTION_USCM			"faction_uscm"
+#define SET_FACTION_UPP				"faction_upp"
+#define SET_FACTION_WY				"faction_wy"
+#define SET_FACTION_CLF				"faction_clf"
+#define SET_FACTION_THREEWE			"faction_threewe"
+#define SET_FACTION_YAUTJA_NORMAL	"faction_yautja_normal"
+#define SET_FACTION_HIVE_NORMAL		"faction_hive_normal"
+#define SET_FACTION_HIVE_CORRUPTED	"faction_hive_corrupted"
+#define SET_FACTION_HIVE_ALPHA		"faction_hive_alpha"
+#define SET_FACTION_HIVE_BRAVO		"faction_hive_bravo"
+#define SET_FACTION_HIVE_CHARLIE	"faction_hive_charlie"
+#define SET_FACTION_HIVE_DELTA		"faction_hive_delta"
+#define SET_FACTION_HIVE_FERAL		"faction_hive_feral"
+#define SET_FACTION_HIVE_TAMED		"faction_hive_tamed"
+#define SET_FACTION_HIVE_MUTATED	"faction_hive_mutated"
+
+#define SET_FACTION_LIST_XENOS list(SET_FACTION_HIVE_NORMAL, SET_FACTION_HIVE_ALPHA, SET_FACTION_HIVE_BRAVO, SET_FACTION_HIVE_DELTA, SET_FACTION_HIVE_CHARLIE, SET_FACTION_HIVE_FERAL, SET_FACTION_HIVE_TAMED, SET_FACTION_HIVE_MUTATED, SET_FACTION_HIVE_CORRUPTED)
+
+#define SET_FACTION_LIST_HUMANS list(SET_FACTION_NEUTRAL, SET_FACTION_RESS, SET_FACTION_COLONIST, SET_FACTION_PIRATE, SET_FACTION_DUTCH, SET_FACTION_HEFA, SET_FACTION_MUTINEER, SET_FACTION_FREELANCER, SET_FACTION_MERCENARY, SET_FACTION_PIZZA, SET_FACTION_SOUTO, SET_FACTION_USCM, SET_FACTION_UPP, SET_FACTION_RESS, SET_FACTION_THREEWE, SET_FACTION_WY, SET_FACTION_CLF)
+
+#define SET_FACTION_LIST_ALL list(SET_FACTION_NEUTRAL, SET_FACTION_RESS, SET_FACTION_COLONIST, SET_FACTION_PIRATE, SET_FACTION_DUTCH, SET_FACTION_HEFA, SET_FACTION_MUTINEER, SET_FACTION_FREELANCER, SET_FACTION_MERCENARY, SET_FACTION_PIZZA, SET_FACTION_SOUTO, SET_FACTION_USCM, SET_FACTION_UPP, SET_FACTION_RESS, SET_FACTION_THREEWE, SET_FACTION_WY, SET_FACTION_CLF, SET_FACTION_HIVE_NORMAL, SET_FACTION_HIVE_ALPHA, SET_FACTION_HIVE_BRAVO, SET_FACTION_HIVE_DELTA, SET_FACTION_HIVE_CHARLIE, SET_FACTION_HIVE_FERAL, SET_FACTION_HIVE_TAMED, SET_FACTION_HIVE_MUTATED, SET_FACTION_HIVE_CORRUPTED, SET_FACTION_YAUTJA_NORMAL)
+
+//FACTIONS
+#define FACTION_ALLIED_TO_FACTION(source_faction, target_faction) (source_faction == target_faction || GLOB.faction_datum[source_faction]?.faction_is_ally(GLOB.faction_datum[target_faction]))
+GLOBAL_LIST_INIT_TYPED(faction_datum, /datum/faction_status, list(
+	SET_FACTION_NEUTRAL = new /datum/faction_status/neutral(),
+	SET_FACTION_PIRATE = new /datum/faction_status/neutral/pirate(),
+	SET_FACTION_DUTCH = new /datum/faction_status/neutral/dutch(),
+	SET_FACTION_MERCENARY = new /datum/faction_status/neutral/dutch/mercenary(),
+	SET_FACTION_COLONIST = new /datum/faction_status/neutral/colonist(),
+	SET_FACTION_HEFA = new /datum/faction_status/neutral/hefa(),
+	SET_FACTION_MUTINEER = new /datum/faction_status/neutral/mutineer(),
+	SET_FACTION_PIZZA = new /datum/faction_status/neutral/pizza(),
+	SET_FACTION_SOUTO = new /datum/faction_status/neutral/pizza/souto(),
+	SET_FACTION_FREELANCER = new /datum/faction_status/neutral/freelancer(),
+	SET_FACTION_USCM = new /datum/faction_status/uscm(),
+	SET_FACTION_UPP = new /datum/faction_status/upp(),
+	SET_FACTION_WY = new /datum/faction_status/wy(),
+	SET_FACTION_CLF = new /datum/faction_status/clf(),
+	SET_FACTION_THREEWE = new /datum/faction_status/threewe(),
+	SET_FACTION_RESS = new /datum/faction_status/ress(),
+	SET_FACTION_YAUTJA_NORMAL = new /datum/faction_status/yautja(),
+	SET_FACTION_HIVE_NORMAL = new /datum/faction_status/xeno(),
+	SET_FACTION_HIVE_CORRUPTED = new /datum/faction_status/xeno/corrupted(),
+	SET_FACTION_HIVE_TAMED = new /datum/faction_status/xeno/corrupted/tamed(),
+	SET_FACTION_HIVE_ALPHA = new /datum/faction_status/xeno/alpha(),
+	SET_FACTION_HIVE_BRAVO = new /datum/faction_status/xeno/bravo(),
+	SET_FACTION_HIVE_CHARLIE = new /datum/faction_status/xeno/charlie(),
+	SET_FACTION_HIVE_DELTA = new /datum/faction_status/xeno/delta(),
+	SET_FACTION_HIVE_FERAL = new /datum/faction_status/xeno/feral(),
+	SET_FACTION_HIVE_MUTATED = new /datum/faction_status/xeno/mutated()
+))

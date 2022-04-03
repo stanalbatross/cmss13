@@ -4,7 +4,7 @@
 	name = "xenomorph structure"
 	build_type = /obj/effect/alien/resin/special
 	crystals_required = 45 * XENO_STRUCTURE_PLASMA_MULTIPLIER
-	var/datum/hive_status/hive_ref //Who gets what we build
+	var/datum/faction_status/xeno/hive_ref //Who gets what we build
 	var/block_range = 1
 
 /datum/construction_template/xenomorph/set_structure_image()

@@ -1,9 +1,9 @@
 #define BOOST_POWER_MAX 20
 #define BOOST_POWER_MIN 1
-#define EVOLUTION_INCREMENT_TIME (30 MINUTES) // Evolution increases by 1 every 25 minutes.
+#define EVOLUTION_INCREMENT_TIME (30 MINUTES) // Evolution increases by 1 every 30 minutes.
 
 SUBSYSTEM_DEF(xevolution)
-	name = "Evilution"
+	name = "Evolution"
 	wait = 1 MINUTES
 	priority = SS_PRIORITY_INACTIVITY
 
@@ -14,22 +14,20 @@ SUBSYSTEM_DEF(xevolution)
 	var/force_boost_power = FALSE // Debugging only
 
 /datum/controller/subsystem/xevolution/Initialize(start_timeofday)
-	var/datum/hive_status/HS
-	for(var/hivenumber in GLOB.hive_datum)
-		HS = GLOB.hive_datum[hivenumber]
-		boost_power[HS.hivenumber] = 1
+	var/list/xeno_hives = SET_FACTION_LIST_XENOS
+	for(var/faction in xeno_hives)
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
+		boost_power[hive] = 1
 	return ..()
 
 /datum/controller/subsystem/xevolution/fire(resumed = FALSE)
-	var/datum/hive_status/HS
-	for(var/hivenumber in GLOB.hive_datum)
-		HS = GLOB.hive_datum[hivenumber]
+	for(var/datum/faction_status/xeno/HS in GLOB.faction_datum)
 		if(!HS)
 			continue
 
 		if(!HS.dynamic_evolution)
-			boost_power[HS.hivenumber] = HS.evolution_rate + HS.evolution_bonus
-			HS.hive_ui.update_pooled_larva()
+			boost_power[HS] = HS.evolution_rate + HS.evolution_bonus
+			HS.faction_ui.update_pooled_larva()
 			continue
 
 		var/boost_power_new
@@ -37,8 +35,7 @@ SUBSYSTEM_DEF(xevolution)
 		if((world.time - SSticker.round_start_time) < XENO_ROUNDSTART_PROGRESS_TIME_2)
 			boost_power_new = max(boost_power_new, XENO_ROUNDSTART_PROGRESS_AMOUNT)
 		else
-			//boost_power_new = Floor(10 * (world.time - XENO_ROUNDSTART_PROGRESS_TIME_2 - SSticker.round_start_time) / EVOLUTION_INCREMENT_TIME) / 10
-			boost_power_new = 1
+			boost_power_new = Floor(10 * (world.time - XENO_ROUNDSTART_PROGRESS_TIME_2 - SSticker.round_start_time) / EVOLUTION_INCREMENT_TIME) / 10
 
 			//Add on any bonuses from evopods after applying upgrade progress
 			boost_power_new += (0.25 * HS.has_special_structure(XENO_STRUCTURE_EVOPOD))
@@ -47,13 +44,13 @@ SUBSYSTEM_DEF(xevolution)
 
 		boost_power_new += HS.evolution_bonus
 		if(!force_boost_power)
-			boost_power[HS.hivenumber] = boost_power_new
+			boost_power[HS] = boost_power_new
 
 		//Update displayed Evilution, which is under larva apparently
-		HS.hive_ui.update_pooled_larva()
+		HS.faction_ui.update_pooled_larva()
 
-/datum/controller/subsystem/xevolution/proc/get_evolution_boost_power(var/hivenumber)
-	return boost_power[hivenumber]
+/datum/controller/subsystem/xevolution/proc/get_evolution_boost_power(var/datum/faction_status/xeno/faction)
+	return boost_power[faction]
 
 #undef EVOLUTION_INCREMENT_TIME
 #undef BOOST_POWER_MIN

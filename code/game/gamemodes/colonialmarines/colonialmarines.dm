@@ -173,13 +173,13 @@
 		next_research_allocation = world.time + research_allocation_interval
 
 	if(!round_finished)
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
+		var/datum/faction_status/xeno/hive
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			hive = GLOB.faction_datum[faction]
 			if(!hive.xeno_queen_timer)
 				continue
 
-			if(!hive.living_xeno_queen && hive.xeno_queen_timer < world.time)
+			if(!hive.living_xeno_queen && faction.xeno_queen_timer < world.time)
 				xeno_message("The Hive is ready for a new Queen to evolve.", 3, hive.hivenumber)
 
 		if(!active_lz && world.time > lz_selection_timer)
@@ -214,8 +214,8 @@
 			round_checkwin = 0
 
 		if(!evolution_ovipositor_threshold && world.time >= SSticker.round_start_time + round_time_evolution_ovipositor)
-			for(var/hivenumber in GLOB.hive_datum)
-				hive = GLOB.hive_datum[hivenumber]
+			for(var/datum/faction_status/faction in GLOB.faction_datum)
+				hive = GLOB.faction_datum[faction]
 				hive.evolution_without_ovipositor = FALSE
 				if(hive.living_xeno_queen && !hive.living_xeno_queen.ovipositor)
 					to_chat(hive.living_xeno_queen, SPAN_XENODANGER("It is time to settle down and let your children grow."))
@@ -266,7 +266,7 @@
 		else if(!num_humans && !num_xenos)
 			round_finished = MODE_INFESTATION_DRAW_DEATH //Both were somehow destroyed.
 
-/datum/game_mode/colonialmarines/check_queen_status(var/hivenumber)
+/datum/game_mode/colonialmarines/check_queen_status(var/datum/faction_status/faction)
 	set waitfor = 0
 	if(!(flags_round_type & MODE_INFESTATION)) return
 	xeno_queen_deaths += 1
@@ -275,9 +275,9 @@
 	//We want to make sure that another queen didn't die in the interim.
 
 	if(xeno_queen_deaths == num_last_deaths && !round_finished)
-		var/datum/hive_status/HS
-		for(var/HN in GLOB.hive_datum)
-			HS = GLOB.hive_datum[HN]
+		var/datum/faction_status/HS = faction
+		for(var/HN in GLOB.faction_datum)
+			HS = GLOB.faction_datum[HN]
 			if(HS.living_xeno_queen && !is_admin_level(HS.living_xeno_queen.loc.z))
 				//Some Queen is alive, we shouldn't end the game yet
 				return

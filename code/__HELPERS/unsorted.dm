@@ -636,18 +636,17 @@
 	for(var/mob/living/carbon/human/M in sortmob)
 		if(!M.client || M.species.name == "Yautja")
 			continue
-		if(M.faction == FACTION_SURVIVOR)
+		if(M.faction == GLOB.faction_datum[SET_FACTION_COLONIST])
 			survivorlist.Add(M)
 	return survivorlist
 
 /proc/sortertmembers()
 	var/list/ertmemberlist = list()
-	var/list/sortmob = sortAtom(GLOB.human_mob_list)
+	var/list/sortmob = sortAtom(GLOB.ert_mobs)
 	for(var/mob/living/carbon/human/M in sortmob)
 		if(!M.client)
 			continue
-		if(M.faction in FACTION_LIST_ERT)
-			ertmemberlist.Add(M)
+		ertmemberlist.Add(M)
 	return ertmemberlist
 
 /proc/sortsynths()

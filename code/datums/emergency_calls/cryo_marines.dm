@@ -28,6 +28,7 @@
 
 	var/mob/living/carbon/human/H = new(spawn_loc)
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	sleep(5)
 	var/datum/squad/echo/echo_squad = locate() in RoleAuthority.squads

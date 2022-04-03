@@ -25,6 +25,7 @@
 
 	var/mob/living/carbon/human/mob = new(spawn_loc)
 	M.transfer_to(mob, TRUE)
+	GLOB.ert_mobs += mob
 
 	if(!leader)       //First one spawned is always the leader.
 		leader = mob
@@ -109,6 +110,7 @@
 	H.key = M.key
 	if(H.client)
 		H.client.change_view(world_view_size)
+	GLOB.ert_mobs += H
 
 	if(!leader)       //First one spawned is always the leader.
 		leader = H

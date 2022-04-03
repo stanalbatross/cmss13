@@ -407,3 +407,6 @@
 
 /// from /datum/squad/proc/put_marine_in_squad
 #define COMSIG_SET_SQUAD "set_squad"
+
+#define COMSIG_MAPVIEW_UPDATE "mapview_update"
+#define COMSIG_MAPVIEW_MACHINE_HANDLE "mapview_handle_machine"

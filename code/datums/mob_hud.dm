@@ -167,27 +167,27 @@ var/list/datum/mob_hud/huds = list(
 //Factions
 /datum/mob_hud/faction
 	hud_icons = list(FACTION_HUD)
-	var/faction_to_check = FACTION_UPP
+	var/datum/faction_status/faction_to_check = SET_FACTION_UPP
 
 /datum/mob_hud/faction/add_to_single_hud(mob/user, mob/target)
-	var/faction = target.faction
+	var/datum/faction_status/faction = target.faction
 	if(isobserver(target))
-		faction = faction_to_check
+		faction = GLOB.faction_datum[faction_to_check]
 
-	if(faction == faction_to_check)
+	if(faction == GLOB.faction_datum[faction_to_check])
 		..()
 
 /datum/mob_hud/faction/upp
-	faction_to_check = FACTION_UPP
+	faction_to_check = SET_FACTION_UPP
 
 /datum/mob_hud/faction/wy
-	faction_to_check = FACTION_WY
+	faction_to_check = SET_FACTION_WY
 
 /datum/mob_hud/faction/ress
-	faction_to_check = FACTION_RESS
+	faction_to_check = SET_FACTION_RESS
 
 /datum/mob_hud/faction/clf
-	faction_to_check = FACTION_CLF
+	faction_to_check = SET_FACTION_CLF
 
 ///////// MOB PROCS //////////////////////////////:
 
@@ -350,16 +350,14 @@ var/list/datum/mob_hud/huds = list(
 		var/datum/internal_organ/heart/heart = islist(internal_organs_by_name) ? internal_organs_by_name["heart"] : null
 
 		var/holder2_set = 0
-		if(hivenumber)
-			holder4.icon_state = "hudalien"
+		if(faction)
+			if(faction.xeno)
+				holder4.icon_state = "hudalien"
 
-			if(GLOB.hive_datum[hivenumber])
-				var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-
-				if(hive)
-					if(hive.color)
-						holder4.color = hive.color
-					if(hive.leading_cult_sl == src)
+				if(faction)
+					if(faction.color)
+						holder4.color = faction.color
+					if(faction.leading_cult_sl == src)
 						holder4.icon_state = "hudalien_leader"
 
 		if(status_flags & XENO_HOST)
@@ -368,10 +366,10 @@ var/list/datum/mob_hud/huds = list(
 			var/obj/item/alien_embryo/E = locate(/obj/item/alien_embryo) in src
 			if(E)
 				holder3.icon_state = "infected[E.stage]"
-				var/datum/hive_status/hive = GLOB.hive_datum[E.hivenumber]
+				var/datum/faction_status/xeno/hive = GLOB.faction_datum[E.faction]
 
-				if(hive && hive.color)
-					holder3.color = hive.color
+				if(hive && faction.color)
+					holder3.color = faction.color
 
 			else if(locate(/mob/living/carbon/Xenomorph/Larva) in src)
 				holder.icon_state = "infected5"
@@ -499,9 +497,8 @@ var/list/datum/mob_hud/huds = list(
 	var/image/holder = hud_list[QUEEN_OVERWATCH_HUD]
 	holder.overlays.Cut()
 	holder.icon_state = "hudblank"
-	if (stat != DEAD && hivenumber && hivenumber <= GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		var/mob/living/carbon/Xenomorph/Queen/Q = hive.living_xeno_queen
+	if (stat != DEAD && faction)
+		var/mob/living/carbon/Xenomorph/Queen/Q = faction.living_xeno_queen
 		if (Q && Q.observed_xeno == src)
 			holder.icon_state = "queen_overwatch"
 	hud_list[QUEEN_OVERWATCH_HUD] = holder
@@ -525,9 +522,9 @@ var/list/datum/mob_hud/huds = list(
 	if (age)
 		var/image/J = image('icons/mob/hud/hud.dmi',src, "hudxenoupgrade[age]")
 		holder.overlays += J
-	if(hive && hivenumber != XENO_HIVE_NORMAL)
+	if(faction && faction != GLOB.faction_datum[SET_FACTION_HIVE_NORMAL])
 		var/image/J = image('icons/mob/hud/hud.dmi', src, "hudalien_xeno")
-		J.color = hive.color
+		J.color = faction.color
 		holder.overlays += J
 
 //Sec HUDs

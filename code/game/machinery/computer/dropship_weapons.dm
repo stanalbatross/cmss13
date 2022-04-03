@@ -5,7 +5,7 @@
 	density = 1
 	icon = 'icons/obj/structures/machinery/shuttle-parts.dmi'
 	icon_state = "consoleright"
-	var/faction = FACTION_MARINE
+	var/faction_to_set = SET_FACTION_USCM
 	circuit = null
 	unslashable = TRUE
 	unacidable = TRUE
@@ -23,6 +23,8 @@
 
 /obj/structure/machinery/computer/dropship_weapons/New()
 	..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
 	if(firemission_envelope)
 		firemission_envelope.linked_console = src
 
@@ -64,7 +66,7 @@
 	if(!faction)
 		return //no faction, no weapons
 
-	var/datum/cas_iff_group/cas_group = cas_groups[faction]
+	var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_number]
 
 	if(!cas_group)
 		return //broken group. No fighting
@@ -249,7 +251,7 @@
 		if(!faction)
 			return //no faction, no weapons
 
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_number]
 
 		if(!cas_group)
 			return //broken group. No fighting
@@ -448,7 +450,7 @@
 		if(shuttle.moving_status != SHUTTLE_INTRANSIT)
 			to_chat(usr, SPAN_WARNING("Shuttle has to be in orbit."))
 			return
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_number]
 		var/datum/cas_signal/cas_sig
 		for(var/X in cas_group.cas_signals)
 			var/datum/cas_signal/LT = X
@@ -546,7 +548,7 @@
 			to_chat(usr, SPAN_DANGER("Bug encountered, this console doesn't have a faction set, report this to a coder!"))
 			return
 
-		var/datum/cas_iff_group/cas_group = cas_groups[faction]
+		var/datum/cas_iff_group/cas_group = cas_groups[faction.faction_number]
 		if(!cas_group)
 			to_chat(usr, SPAN_DANGER("Bug encountered, no CAS group exists for this console, report this to a coder!"))
 			return

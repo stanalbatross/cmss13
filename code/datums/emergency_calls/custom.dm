@@ -28,6 +28,7 @@
 		return
 
 	M.transfer_to(H, TRUE)
+	GLOB.ert_mobs += H
 
 	players_to_offer -= H
 

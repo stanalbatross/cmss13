@@ -106,7 +106,5 @@ SUBSYSTEM_DEF(tracking)
 
 /datum/controller/subsystem/tracking/proc/initialize_trackers()
 	setup_trackers(null, "marine_sl")
-	var/datum/hive_status/hive
-	for(var/hivenumber in GLOB.hive_datum)
-		hive = GLOB.hive_datum[hivenumber]
-		setup_trackers(null, "hive_[hive.hivenumber]")
+	for(var/datum/faction_status/faction in GLOB.faction_datum)
+		setup_trackers(null, "faction_[faction.internal_faction]")

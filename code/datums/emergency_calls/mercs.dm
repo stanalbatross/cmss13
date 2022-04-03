@@ -61,6 +61,7 @@
 	H.name = H.real_name
 	M.transfer_to(H, TRUE)
 	H.job = "Mercenary"
+	GLOB.ert_mobs += H
 
 	if(!leader)       //First one spawned is always the leader.
 		leader = H
