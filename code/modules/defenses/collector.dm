@@ -59,7 +59,7 @@ var/global/list/faction_phoron_stored_list = list(
 	var/obj/structure/resource_node/RN = null
 	var/last_gathered_time = 0
 	var/gather_cooldown = 20 SECONDS
-	var/faction_group = FACTION_MARINE
+	var/datum/faction_status/faction_group = FACTION_MARINE
 
 /obj/structure/machinery/collector/Initialize()
 	. = ..()

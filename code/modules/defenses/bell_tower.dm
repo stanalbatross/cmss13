@@ -49,7 +49,7 @@
 		if(T.density)
 			continue
 
-		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction_group)
+		var/obj/effect/bell_tripwire/FE = new /obj/effect/bell_tripwire(T, faction + faction.allies)
 		FE.linked_bell = src
 		tripwires_placed += FE
 
@@ -73,12 +73,11 @@
 	invisibility = 101
 	unacidable = TRUE
 	var/obj/structure/machinery/defenses/bell_tower/linked_bell
-	var/faction = FACTION_LIST_MARINE
 
-/obj/effect/bell_tripwire/New(var/turf/T, var/faction = null)
+/obj/effect/bell_tripwire/New(var/turf/T, var/datum/faction_status/new_faction = null)
 	..(T)
-	if(faction)
-		src.faction = faction
+	if(new_faction)
+		faction = new_faction
 
 /obj/effect/bell_tripwire/Destroy()
 	if(linked_bell)
@@ -130,11 +129,12 @@
 /obj/structure/machinery/defenses/bell_tower/md/setup_tripwires()
 	md = new(src)
 	md.linked_tower = src
-	md.iff_signal = LAZYACCESS(faction_group, 1)
+	md.faction = LAZYACCESS(faction, 1)
+	md.iff_signal = LAZYACCESS(faction.faction_number, 1)
 	md.toggle_active(null, FALSE)
 
 	if(!md.iff_signal)
-		md.iff_signal = FACTION_MARINE
+		md.iff_signal = SET_FACTION_USCM
 
 /obj/structure/machinery/defenses/bell_tower/md/clear_tripwires()
 	if(md)

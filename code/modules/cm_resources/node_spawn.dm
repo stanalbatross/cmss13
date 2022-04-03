@@ -42,9 +42,9 @@
 	icon_state = "landmark_node_trigger_xeno"
 	node_group = "hive_core_built"
 
-/obj/effect/landmark/resource_node_activator/hive/trigger(var/amount, var/hivenumber)
+/obj/effect/landmark/resource_node_activator/hive/trigger(var/amount, var/datum/faction_status/faction)
 	var/area/A = get_area(loc)
-	xeno_message(SPAN_XENOANNOUNCE("Resources have begun growing at \the [A]!"), 3, hivenumber)
+	xeno_message(SPAN_XENOANNOUNCE("Resources have begun growing at \the [A]!"), 3, faction)
 
 	// Make sure we can't trigger the other xeno resource spots
 	for(var/obj/effect/landmark/resource_node_activator/hive/H in world)

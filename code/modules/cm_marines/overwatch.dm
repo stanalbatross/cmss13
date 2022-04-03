@@ -25,13 +25,25 @@
 	var/marine_filter = list() // individual marine hiding control - list of string references
 	var/marine_filter_enabled = TRUE
 
+	var/faction_to_set = SET_FACTION_USCM
+	var/minimap_name = "Marine Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map = GROUND_MAP
+
 /obj/structure/machinery/computer/overwatch/Initialize()
 	. = ..()
-	SSmapview.map_machines += src
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+	generate_tacmap_link()
 
-/obj/structure/machinery/computer/overwatch/Destroy()
-	SSmapview.map_machines -= src
-	return ..()
+/obj/structure/machinery/computer/overwatch/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /obj/structure/machinery/computer/overwatch/attackby(var/obj/I as obj, var/mob/user as mob)  //Can't break or disassemble.
 	return
@@ -84,6 +96,7 @@
 	dat += "Current Squad: [current_squad.name] Squad</A>   "
 	dat += "<A href='?src=\ref[src];operation=message'>Message Squad</a><br><br>"
 	dat += "<A href='?src=\ref[src];operation=mapview'>Toggle Tactical Map</a>"
+	dat += "<A href='?src=\ref[src];operation=selectloctacmap'>Сменить Локацию ТК</a>"
 	dat += "<br><hr>"
 	if(current_squad.squad_leader)
 		dat += "<B>Squad Leader:</B> <A href='?src=\ref[src];operation=use_cam;cam_target=\ref[current_squad.squad_leader]'>[current_squad.squad_leader.name]</a> "
@@ -367,20 +380,22 @@
 	dat += "<A href='?src=\ref[src];operation=back'>Back</a></body>"
 	return dat
 
-/obj/structure/machinery/computer/overwatch/proc/update_mapview(var/close = 0)
-	if(close || !current_squad || !current_mapviewer || !Adjacent(current_mapviewer))
-		close_browser(current_mapviewer, "marineminimap")
+/obj/structure/machinery/computer/overwatch/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	update_mapview(tacmap_info, current_mapviewer, minimap_name, map, O)
+
+/obj/structure/machinery/computer/overwatch/proc/mapview()
+	if(!Adjacent(current_mapviewer))
+		close_browser(current_mapviewer, "minimap")
 		current_mapviewer = null
 		return
-	var/icon/O = overlay_tacmap(TACMAP_DEFAULT)
-	if(O)
-		current_mapviewer << browse_rsc(O, "marine_minimap.png")
-		show_browser(current_mapviewer, "<img src=marine_minimap.png>", "Marine Minimap", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
 
 /obj/structure/machinery/computer/overwatch/Topic(href, href_list)
 	if(href_list["close"])
 		if(current_mapviewer)
-			close_browser(current_mapviewer, "marineminimap")
+			close_browser(current_mapviewer, "minimap_ground")
 		current_mapviewer = null
 		return
 
@@ -395,12 +410,13 @@
 	switch(href_list["operation"])
 		// main interface
 		if("mapview")
-			if(current_mapviewer)
-				update_mapview(1)
-				return
 			current_mapviewer = usr
-			update_mapview()
+			mapview()
 			return
+
+		if("selectloctacmap")
+			map = tacmap_info.change_mapview(usr)
+
 		if("back")
 			state = 0
 		if("monitor")

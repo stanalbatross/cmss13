@@ -17,12 +17,11 @@
 	var/obj/item/card/id/user_id_card
 	var/obj/item/card/id/target_id_card
 	// What factions we are able to modify
-	var/list/factions = list(FACTION_MARINE)
+	var/list/datum/faction_status/factions = list()
 	var/printing
 
 	var/is_centcom = FALSE
 	var/authenticated = FALSE
-
 /obj/structure/machinery/computer/card/proc/authenticate(mob/user, obj/item/card/id/id_card)
 	if(!id_card)
 		visible_message("<span class='bold'>[src]</span> states, \"AUTH ERROR: Authority confirmation card is missing!\"")
@@ -32,6 +31,10 @@
 		authenticated = TRUE
 		visible_message("<span class='bold'>[src]</span> states, \"AUTH LOGIN: Welcome, [id_card.registered_name]. Access granted.\"")
 		update_static_data(user)
+		factions = list()
+		factions += user.faction
+		for(var/datum/faction_status/faction in user.faction.allies)
+			factions += faction
 		return TRUE
 
 	visible_message("<span class='bold'>[src]</span> states, \"AUTH ERROR: You have not enough authority! Access denied.\"")
@@ -90,18 +93,12 @@
 					printing = TRUE
 					playsound(src.loc, 'sound/machines/fax.ogg', 15, 1)
 					sleep(40)
-					var/faction = "N/A"
-					if(target_id_card.faction_group && islist(target_id_card.faction_group))
-						faction = jointext(target_id_card.faction_group, ", ")
-					if(isnull(target_id_card.faction_group))
-						target_id_card.faction_group = list()
-					else
-						faction = target_id_card.faction_group
+
 					var/contents = {"<center><h4>Access Report</h4></center>
 								<u>Prepared By:</u> [user_id_card?.registered_name ? user_id_card.registered_name : "Unknown"]<br>
 								<u>For:</u> [target_id_card.registered_name ? target_id_card.registered_name : "Unregistered"]<br>
 								<hr>
-								<u>Faction:</u> [faction]<br>
+								<u>Faction:</u> [target_id_card.name]<br>
 								<u>Assignment:</u> [target_id_card.assignment]<br>
 								<u>Account Number:</u> #[target_id_card.associated_account_number]<br>
 								<u>Blood Type:</u> [target_id_card.blood_type]<br><br>
@@ -212,18 +209,7 @@
 		if("PRG_access")
 			if(!authenticated)
 				return
-			var/access_type = params["access_target"]
-			if(params["access_target"] in factions)
-				if(!target_id_card.faction_group)
-					target_id_card.faction_group = list()
-				if(params["access_target"] in target_id_card.faction_group)
-					target_id_card.faction_group -= params["access_target"]
-					log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] revoked [access_type] IFF. </font>")
-				else
-					target_id_card.faction_group |= params["access_target"]
-					log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted [access_type] IFF. </font>")
-				return TRUE
-			access_type = text2num(params["access_target"])
+			var/access_type = text2num(params["access_target"])
 			if(access_type in (is_centcom ? get_all_centcom_access() : get_all_accesses()))
 				if(access_type in target_id_card.access)
 					target_id_card.access -= access_type
@@ -236,24 +222,18 @@
 			if(!authenticated)
 				return
 			target_id_card.access |= (is_centcom ? get_all_centcom_access() : get_all_accesses())
-			target_id_card.faction_group |= factions
-			log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted the ID all access and USCM IFF. </font>")
+			log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted the ID all access. </font>")
 			return TRUE
 		if("PRG_denyall")
 			if(!authenticated)
 				return
 			var/list/access = target_id_card.access
 			access.Cut()
-			target_id_card.faction_group -= factions
-			log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] removed all accesses and USCM IFF. </font>")
+			log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] removed all accesses. </font>")
 			return TRUE
 		if("PRG_grantregion")
 			if(!authenticated)
 				return
-			if(params["region"] == "Faction (IFF system)")
-				target_id_card.faction_group |= factions
-				log_idmod(target_id_card, "<font color='green'> [key_name_admin(usr)] granted USCM IFF. </font>")
-				return TRUE
 			var/region = text2num(params["region"])
 			if(isnull(region))
 				return
@@ -264,10 +244,6 @@
 		if("PRG_denyregion")
 			if(!authenticated)
 				return
-			if(params["region"] == "Faction (IFF system)")
-				target_id_card.faction_group -= factions
-				log_idmod(target_id_card, "<font color='red'> [key_name_admin(usr)] revoked USCM IFF. </font>")
-				return TRUE
 			var/region = text2num(params["region"])
 			if(isnull(region))
 				return
@@ -344,12 +320,9 @@
 			"accesses" = accesses
 		))
 
-	// Factions goes here
-	if(target_id_card && target_id_card.faction_group && isnull(target_id_card.faction_group))
-		target_id_card.faction_group = list()
 	var/list/localfactions = list()
 	// We can see only those factions which have our console tuned on
-	for(var/faction in factions)
+	for(var/datum/faction_status/faction in factions)
 		localfactions += list(list(
 			"desc" = faction,
 			"ref" = faction,
@@ -376,7 +349,7 @@
 	if(target_id_card)
 		data["id_rank"] = target_id_card.assignment ? target_id_card.assignment : "Unassigned"
 		data["id_owner"] = target_id_card.registered_name ? target_id_card.registered_name : "-----"
-		data["access_on_card"] = target_id_card.access + target_id_card.faction_group
+		data["access_on_card"] = target_id_card.access + target_id_card.faction
 		data["id_account"] = target_id_card.associated_account_number
 
 	return data

@@ -2,10 +2,9 @@
 	name = "WY"
 	paygrade = "WY-XA"
 
-	faction = FACTION_WY
+	faction = SET_FACTION_WY
 	rank = FACTION_WY
 	idtype = /obj/item/card/id/silver
-	faction_group = FACTION_LIST_WY
 	access = list(
 		ACCESS_WY_CORPORATE,
 		ACCESS_ILLEGAL_PIRATE,

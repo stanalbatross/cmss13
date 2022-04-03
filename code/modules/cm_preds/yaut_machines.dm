@@ -4,5 +4,5 @@
 	icon = 'icons/turf/walls/hunter.dmi'
 	icon_state = "globe"
 
-	map_type = TACMAP_YAUTJA
-	map_base_type = TACMAP_BASE_OPEN
+	faction = SET_FACTION_YAUTJA_NORMAL
+	minimap_name = "Yautja Minimap"

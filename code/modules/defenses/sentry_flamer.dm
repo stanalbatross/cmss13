@@ -15,7 +15,7 @@
 /obj/structure/machinery/defenses/sentry/flamer/actual_fire(var/atom/A)
 	var/obj/item/projectile/P = new(create_cause_data(initial(name), owner_mob))
 	P.generate_bullet(new ammo.default_ammo)
-	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
 	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	ammo.current_rounds--
 	track_shot()
@@ -55,7 +55,7 @@
 	visible_message("[icon2html(src, viewers(src))] [SPAN_WARNING("The [name] starts spitting out sparks and smoke!")]")
 	playsound(loc, 'sound/mecha/critdestrsyndi.ogg', 25, 1)
 
-	cell_explosion(loc, 10, 10, null, create_cause_data("sentry explosion", owner_mob))
+	cell_explosion(loc, 10, 10, null, create_cause_data("взрыва турели", owner_mob))
 	if(!QDELETED(src))
 		qdel(src)
 

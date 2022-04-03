@@ -12,7 +12,6 @@
 	health = 5
 	layer = RESIN_STRUCTURE_LAYER
 	var/list/tripwires = list()
-	var/hivenumber = XENO_HIVE_NORMAL //Hivenumber of the xeno that planted it OR the last Facehugger that was placed (essentially taking over the hole)
 	var/trap_type = RESIN_TRAP_EMPTY
 	var/armed = 0
 	var/created_by // ckey
@@ -24,10 +23,9 @@
 	. = ..()
 	if(X)
 		created_by = X.ckey
-		hivenumber = X.hivenumber
+		faction = X.faction
 
 	cause_data = create_cause_data("resin trap", X)
-	set_hive_data(src, hivenumber)
 
 /obj/effect/alien/resin/trap/Initialize()
 	. = ..()
@@ -76,7 +74,7 @@
 
 /obj/effect/alien/resin/trap/bullet_act(obj/item/projectile/P)
 	var/mob/living/carbon/Xenomorph/X = P.firer
-	if(istype(X) && HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
+	if(istype(X) && FACTION_ALLIED_TO_FACTION(X.faction.faction_number, faction.faction_number))
 		return
 
 	. = ..()
@@ -84,7 +82,7 @@
 /obj/effect/alien/resin/trap/HasProximity(atom/movable/AM)
 	switch(trap_type)
 		if(RESIN_TRAP_HUGGER)
-			if(can_hug(AM, hivenumber) && !isYautja(AM) && !isSynth(AM))
+			if(can_hug(AM, faction) && !isYautja(AM) && !isSynth(AM))
 				var/mob/living/L = AM
 				L.visible_message(SPAN_WARNING("[L] trips on [src]!"),\
 								SPAN_DANGER("You trip on [src]!"))
@@ -97,12 +95,12 @@
 					return
 				if(H.stat == DEAD || H.lying)
 					return
-				if(H.ally_of_hivenumber(hivenumber))
+				if(H.ally(faction))
 					return
 				trigger_trap()
 			if(isXeno(AM))
 				var/mob/living/carbon/Xenomorph/X = AM
-				if(X.hivenumber != hivenumber)
+				if(X.faction != faction)
 					trigger_trap()
 
 /obj/effect/alien/resin/trap/proc/set_state(var/state = RESIN_TRAP_EMPTY)
@@ -130,9 +128,8 @@
 	var/area/A = get_area(src)
 	facehugger_die()
 	clear_tripwires()
-	for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
-		if(X.hivenumber == hivenumber)
-			to_chat(X, SPAN_XENOMINORWARNING("You sense one of your Hive's hugger traps at [A.name] has been burnt!"))
+	for(var/mob/living/carbon/Xenomorph/X in faction.totalMobs)
+		to_chat(X, SPAN_XENOMINORWARNING("You sense one of your Hive's hugger traps at [A.name] has been burnt!"))
 
 /obj/effect/alien/resin/trap/proc/get_spray_type(var/level)
 	switch(level)
@@ -155,7 +152,7 @@
 		if(RESIN_TRAP_HUGGER)
 			trap_type_name = "hugger"
 			var/obj/item/clothing/mask/facehugger/FH = new (loc)
-			FH.hivenumber = hivenumber
+			FH.faction = faction
 			set_state()
 			visible_message(SPAN_WARNING("[FH] gets out of [src]!"))
 			sleep(15)
@@ -171,11 +168,11 @@
 			trap_type_name = "acid"
 			var/spray_type = get_spray_type(trap_type)
 
-			new spray_type(loc, cause_data, hivenumber)
+			new spray_type(loc, cause_data, faction)
 			for(var/turf/T in range(1,loc))
-				var/obj/effect/xenomorph/spray/SP = new spray_type(T, cause_data, hivenumber)
+				var/obj/effect/xenomorph/spray/SP = new spray_type(T, cause_data, faction)
 				for(var/mob/living/carbon/H in T)
-					if(H.ally_of_hivenumber(hivenumber))
+					if(H.ally(faction))
 						continue
 					SP.apply_spray(H)
 			set_state()
@@ -183,7 +180,7 @@
 	if(!A)
 		return
 	for(var/mob/living/carbon/Xenomorph/X in GLOB.living_xeno_list)
-		if(X.hivenumber == hivenumber)
+		if(X.faction == faction)
 			if(destroyed)
 				to_chat(X, SPAN_XENOMINORWARNING("You sense one of your Hive's [trap_type_name] traps at [A.name] has been destroyed!"))
 			else
@@ -194,7 +191,7 @@
 	tripwires = list()
 
 /obj/effect/alien/resin/trap/attack_alien(mob/living/carbon/Xenomorph/X)
-	if(X.hivenumber != hivenumber)
+	if(X.faction != faction)
 		return ..()
 
 	var/trap_acid_level = 0
@@ -206,7 +203,7 @@
 	if(trap_type == RESIN_TRAP_HUGGER)
 		if(X.caste.can_hold_facehuggers)
 			set_state()
-			var/obj/item/clothing/mask/facehugger/F = new (loc, hivenumber)
+			var/obj/item/clothing/mask/facehugger/F = new (loc, faction)
 			X.put_in_active_hand(F)
 			to_chat(X, SPAN_XENONOTICE("You remove the facehugger from [src]."))
 			return XENO_NONCOMBAT_ACTION
@@ -314,11 +311,11 @@
 		if (!istype(X))
 			return
 
-		if (X.hivenumber != hivenumber)
+		if (X.faction != faction)
 			to_chat(user, SPAN_XENOWARNING("This resin hole doesn't belong to your hive!"))
 			return
 
-		if (FH.hivenumber != hivenumber)
+		if (FH.faction != faction)
 			to_chat(user, SPAN_XENOWARNING("This facehugger is tainted."))
 			return
 

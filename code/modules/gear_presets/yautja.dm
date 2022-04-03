@@ -3,7 +3,7 @@
 	idtype = null //No IDs for Yautja!
 	languages = list(LANGUAGE_YAUTJA)
 	rank = "Predator"
-	faction = FACTION_YAUTJA
+	faction = SET_FACTION_YAUTJA_NORMAL
 	uses_special_name = TRUE
 	skills = /datum/skills/yautja/warrior
 
@@ -12,7 +12,7 @@
 
 /datum/equipment_preset/yautja/load_id(mob/living/carbon/human/H)
 	H.job = rank
-	H.faction = faction
+	H.faction = GLOB.faction_datum[faction]
 
 /datum/equipment_preset/yautja/load_vanity(mob/living/carbon/human/H)
 	return //No vanity items for Yautja!

@@ -15,8 +15,7 @@
 
 	var/hibernate = FALSE
 
-	var/datum/hive_status/linked_hive = null
-	var/hivenumber = XENO_HIVE_NORMAL
+	faction = null
 	var/turf/weeded_turf
 
 	// Which node is responsible for keeping this weed patch alive?
@@ -25,18 +24,17 @@
 /obj/effect/alien/weeds/Initialize(mapload, obj/effect/alien/weeds/node/node)
 	. = ..()
 	if(node)
-		linked_hive = node.linked_hive
+		faction = node.faction
 		weed_strength = node.weed_strength
 		node_range = node.node_range
 		if(weed_strength >= WEED_LEVEL_HIVE)
 			name = "hive [name]"
 			health = WEED_HEALTH_HIVE
 		node.add_child(src)
-		hivenumber = linked_hive.hivenumber
 	else
-		linked_hive = GLOB.hive_datum[hivenumber]
+		faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 
 	update_icon()
 	update_neighbours()
@@ -87,7 +85,7 @@
 	health = WEED_HEALTH_STANDARD
 	alpha = 127
 
-/obj/effect/alien/weeds/node/weak/Initialize(mapload, obj/effect/alien/weeds/node/node, var/mob/living/carbon/Xenomorph/X, var/datum/hive_status/hive)
+/obj/effect/alien/weeds/node/weak/Initialize(mapload, obj/effect/alien/weeds/node/node, var/mob/living/carbon/Xenomorph/X, var/datum/faction_status/xeno/hive)
 	. = ..()
 	name = initial(name)
 	weed_strength = WEED_LEVEL_WEAK
@@ -130,11 +128,11 @@
 /obj/effect/alien/weeds/Crossed(atom/movable/AM)
 	if (ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if (!isYautja(H) && !H.ally_of_hivenumber(linked_hive.hivenumber)) // predators are immune to weed slowdown effect
+		if (!isYautja(H) && !H.ally(faction)) // predators are immune to weed slowdown effect
 			H.next_move_slowdown = H.next_move_slowdown + weed_strength
 	else if (isXeno(AM))
 		var/mob/living/carbon/Xenomorph/X = AM
-		if (!linked_hive.is_ally(X))
+		if (!faction.is_ally(X))
 			X.next_move_slowdown = X.next_move_slowdown + (weed_strength*WEED_XENO_SPEED_MULT)
 
 // Uh oh, we might be dying!
@@ -173,7 +171,7 @@
 				continue
 			else if(W.weed_strength >= WEED_LEVEL_HIVE)
 				continue
-			else if (W.linked_hive == node.linked_hive && W.weed_strength >= node.weed_strength)
+			else if (W.faction == node.faction && W.weed_strength >= node.weed_strength)
 				continue
 			qdel(W)
 
@@ -278,7 +276,7 @@
 	take_damage(severity * WEED_EXPLOSION_DAMAGEMULT)
 
 /obj/effect/alien/weeds/attack_alien(mob/living/carbon/Xenomorph/X)
-	if(!indestructible && !HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
+	if(!indestructible && !FACTION_ALLIED_TO_FACTION(X.faction.faction_number, faction.faction_number))
 		X.animation_attack_on(src)
 		X.visible_message(SPAN_DANGER("\The [X] slashes [src]!"), \
 		SPAN_DANGER("You slash [src]!"), null, 5)
@@ -383,6 +381,8 @@
 	var/static/staticnode
 	var/overlay_node = TRUE
 
+	faction_to_get = SET_FACTION_HIVE_NORMAL
+
 	// Which weeds are being kept alive by this node?
 	var/list/obj/effect/alien/weeds/children = list()
 
@@ -414,13 +414,13 @@
 	overlay_node = TRUE
 	overlays += staticnode
 
-/obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/Xenomorph/X, datum/hive_status/hive)
-	if (istype(hive))
-		linked_hive = hive
-	else if (istype(X) && X.hive)
-		linked_hive = X.hive
-	else
-		linked_hive = GLOB.hive_datum[hivenumber]
+/obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/Xenomorph/X, datum/faction_status/xeno/hive_to_get)
+	if(hive_to_get)
+		faction = hive_to_get
+	else if (istype(X) && X.faction)
+		faction = X.faction
+	else if(faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
 
 	for(var/obj/effect/alien/weeds/W in loc)
 		if(W != src)
@@ -481,10 +481,10 @@
 	health = NODE_HEALTH_STANDARD
 
 /obj/effect/alien/weeds/node/alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = SET_FACTION_HIVE_ALPHA
 
 /obj/effect/alien/weeds/node/feral
-	hivenumber = XENO_HIVE_FERAL
+	faction_to_get = SET_FACTION_HIVE_FERAL
 
 /obj/effect/alien/weeds/node/pylon
 	health = WEED_HEALTH_HIVE

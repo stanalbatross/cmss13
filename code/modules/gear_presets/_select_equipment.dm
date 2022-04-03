@@ -18,8 +18,7 @@
 	var/paygrade
 	var/role_comm_title
 	var/minimum_age
-	var/faction = FACTION_NEUTRAL
-	var/list/faction_group
+	var/faction = SET_FACTION_NEUTRAL
 
 	//Uniform data
 	var/utility_under = null
@@ -70,9 +69,6 @@
 		UNIFORM_VEND_DRESS_EXTRA = dress_extra
 	)
 
-	if(!faction_group)
-		faction_group = list(faction)
-
 	//load_appearance()
 /datum/equipment_preset/proc/load_race(mob/living/carbon/human/H, var/client/mob_client)
 	return
@@ -109,8 +105,7 @@
 	if(assignment)
 		W.name += " ([assignment])"
 	W.access = access.Copy(1, 0)
-	W.faction = faction
-	W.faction_group = faction_group.Copy()
+	W.faction = GLOB.faction_datum[faction]
 	W.assignment = assignment
 	W.rank = rank
 	W.registered_name = H.real_name
@@ -119,15 +114,16 @@
 	W.blood_type = H.blood_type
 	W.paygrade = load_rank(H)
 	W.uniform_sets = uniform_sets
+	H.faction = GLOB.faction_datum[faction]
 	H.equip_to_slot_or_del(W, WEAR_ID)
-	H.faction = faction
-	H.faction_group = faction_group.Copy()
 	if(H.mind)
 		H.mind.name = H.real_name
 		if(H.mind.initial_account)
 			W.associated_account_number = H.mind.initial_account.account_number
 	H.job = rank
 	H.comm_title = role_comm_title
+
+	H.faction.add_mob(H)
 
 /datum/equipment_preset/proc/load_languages(mob/living/carbon/human/H, var/client/mob_client)
 	H.set_languages(languages)
@@ -145,7 +141,7 @@
 	load_vanity(H, mob_client)
 	load_traits(H, mob_client)
 	if(round_statistics && count_participant)
-		round_statistics.track_new_participant(faction)
+		round_statistics.track_new_participant(H.faction.internal_faction)
 	H.regenerate_icons()
 
 	H.marine_points = MARINE_TOTAL_BUY_POINTS		//resetting buy points

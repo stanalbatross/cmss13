@@ -64,7 +64,7 @@
 		if(M.stat == DEAD || isrobot(M))
 			continue
 
-		if(M.get_target_lock(faction_group))
+		if(M.get_target_lock(faction))
 			continue
 
 		targets += M

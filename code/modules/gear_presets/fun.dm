@@ -12,7 +12,7 @@
 /datum/equipment_preset/fun/pirate
 	name = "Fun - Pirate"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_PIRATE
+	faction = SET_FACTION_PIRATE
 
 	skills = /datum/skills/pfc/crafty
 
@@ -73,7 +73,7 @@
 	name = "Dutch's Dozen - Soldier"
 	paygrade = "DTC"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_DUTCH
+	faction = SET_FACTION_DUTCH
 
 	skills = /datum/skills/dutchmerc
 
@@ -270,8 +270,7 @@
 
 	flags = EQUIPMENT_PRESET_EXTRA
 	uses_special_name = TRUE
-	faction = FACTION_HEFA
-	faction_group = list(FACTION_HEFA, FACTION_MARINE)
+	faction = SET_FACTION_HEFA
 
 	// Cooperate!
 	idtype = /obj/item/card/id/gold
@@ -441,8 +440,7 @@
 	paygrade = "O8"
 	flags = EQUIPMENT_PRESET_EXTRA
 	skills = /datum/skills/everything
-	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
+	faction = SET_FACTION_USCM
 	assignment = "Santa"
 
 	skills = null

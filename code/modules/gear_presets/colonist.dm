@@ -4,7 +4,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = JOB_COLONIST
 	rank = JOB_COLONIST
-	faction = FACTION_COLONIST
+	faction = SET_FACTION_COLONIST
 
 	access = list(ACCESS_CIVILIAN_PUBLIC)
 	skills = /datum/skills/civilian

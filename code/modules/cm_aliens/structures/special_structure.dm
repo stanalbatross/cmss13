@@ -34,35 +34,33 @@
 	anchored = TRUE
 	block_range = 1
 
-	var/datum/hive_status/linked_hive
-
 /obj/effect/alien/resin/special/Initialize(mapload, var/hive_ref)
 	. = ..()
 	maxhealth = health
 
 	if(hive_ref)
-		linked_hive = hive_ref
+		faction = hive_ref
 	else
-		linked_hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
+		faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
 
-	set_hive_data(src, linked_hive.hivenumber)
+	set_hive_data(src, faction)
 
-	if(!linked_hive.add_special_structure(src))
+	if(!faction.add_special_structure(src))
 		return INITIALIZE_HINT_QDEL
 
 	START_PROCESSING(SSfastobj, src)
 	update_icon()
 
 /obj/effect/alien/resin/special/Destroy()
-	if(linked_hive)
-		linked_hive.remove_special_structure(src)
-		if(linked_hive.living_xeno_queen)
-			xeno_message("Hive: \A [name] has been destroyed at [sanitize(get_area_name(src))]!", 3, linked_hive.hivenumber)
-	linked_hive = null
+	if(faction)
+		faction.remove_special_structure(src)
+		if(faction.living_xeno_queen)
+			xeno_message("Hive: \A [name] has been destroyed at [sanitize(get_area_name(src))]!", 3, faction)
+	faction = null
 	STOP_PROCESSING(SSfastobj, src)
 
 	. = ..()
 
 /obj/effect/alien/resin/special/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(M.can_destroy_special() || M.hivenumber != linked_hive.hivenumber)
+	if(M.can_destroy_special() || M.faction != faction)
 		return ..()

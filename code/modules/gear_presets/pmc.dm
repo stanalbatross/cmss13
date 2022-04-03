@@ -1,11 +1,9 @@
 
 /datum/equipment_preset/pmc
 	name = "PMC"
-	faction = FACTION_PMC
+	faction = SET_FACTION_WY
 	rank = FACTION_PMC
 	idtype = /obj/item/card/id/pmc
-	faction = FACTION_PMC
-	faction_group = FACTION_LIST_WY
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 	var/human_versus_human = FALSE
 	var/headset_type = /obj/item/device/radio/headset/distress/PMC

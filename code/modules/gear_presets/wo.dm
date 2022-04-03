@@ -1,7 +1,6 @@
 /datum/equipment_preset/wo
 	name = "WO"
-	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
+	faction = SET_FACTION_USCM
 	languages = list(LANGUAGE_ENGLISH)
 	idtype = /obj/item/card/id/dogtag
 

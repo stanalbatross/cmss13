@@ -47,7 +47,7 @@
 
 /datum/equipment_preset/upp/representative
 	name = "UPP Representative"
-	faction_group = FACTION_LIST_MARINE_UPP
+	faction = SET_FACTION_UPP
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	idtype = /obj/item/card/id/silver/cl
@@ -80,8 +80,7 @@
 /datum/equipment_preset/ress/representative
 	name = "RESS Representative"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_RESS
-	faction_group = FACTION_LIST_MARINE_RESS
+	faction = SET_FACTION_RESS
 
 	idtype = /obj/item/card/id/silver/cl
 	access = list(

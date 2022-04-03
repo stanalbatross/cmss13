@@ -10,11 +10,11 @@
 	name = "Mutineer"
 	flags = EQUIPMENT_PRESET_EXTRA
 
-	faction = FACTION_MUTINEER
+	faction = SET_FACTION_MUTINEER
 
 /datum/equipment_preset/other/mutineer/load_status(mob/living/carbon/human/H)
 	. = ..()
-	H.faction = FACTION_MUTINEER
+	H.faction = GLOB.faction_datum[faction]
 	H.hud_set_squad()
 
 /datum/equipment_preset/other/mutineer/leader
@@ -38,7 +38,7 @@
 	assignment = "Freelancer"
 	rank = FACTION_FREELANCER
 	idtype = /obj/item/card/id/data
-	faction = FACTION_FREELANCER
+	faction = SET_FACTION_FREELANCER
 
 /datum/equipment_preset/other/freelancer/New()
 	. = ..()

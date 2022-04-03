@@ -10,8 +10,8 @@
 	use_power = 0
 	stat = DEFENSE_FUNCTIONAL
 	health = 200
-	var/list/faction_group
 	var/health_max = 200
+	var/faction_to_get
 	var/turned_on = FALSE
 	var/mob/owner_mob = null
 	var/defense_icon = "uac_sentry"
@@ -36,6 +36,8 @@
 
 /obj/structure/machinery/defenses/Initialize()
 	. = ..()
+	if(faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
 	update_icon()
 	connect()
 
@@ -108,9 +110,12 @@
 	if(owner_mob && owner_mob != src)
 		owner_mob.track_shot(initial(name))
 
-/obj/structure/machinery/defenses/proc/friendly_faction(var/factions)
-	if(factions in faction_group)
+/obj/structure/machinery/defenses/proc/friendly_faction(var/datum/faction_status/check_faction)
+	if(check_faction == faction)
 		return TRUE
+	else if(check_faction.allies && faction.allies)
+		if(check_faction.allies in faction.allies)
+			return TRUE
 	return FALSE
 
 /obj/structure/machinery/defenses/attackby(var/obj/item/O as obj, mob/user as mob)
@@ -138,9 +143,7 @@
 					return
 			if(additional_shock >= 2)
 				return
-			LAZYCLEARLIST(faction_group)
-			for(var/i in user.faction_group)
-				LAZYADD(faction_group, i)
+			faction = user.faction
 			to_chat(user, SPAN_WARNING("You've hacked \the [src], it's now ours!"))
 			return
 
@@ -165,9 +168,8 @@
 
 		playsound(loc, 'sound/mecha/mechmove04.ogg', 30, 1)
 		var/turf/T = get_turf(src)
-		if(!faction_group) //Littly trolling for stealing marines turrets, bad boys!
-			for(var/i in user.faction_group)
-				LAZYADD(faction_group, i)
+		if(!faction) //Littly trolling for stealing marines turrets, bad boys!
+			faction = user.faction
 		power_off()
 		HD.forceMove(T)
 		HD.dropped = 1

@@ -34,7 +34,7 @@
 /datum/equipment_preset/synth/uscm
 	name = "USCM Synthetic"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
-	faction = FACTION_MARINE
+	faction = SET_FACTION_USCM
 	idtype = /obj/item/card/id/gold
 	assignment = "Synthetic"
 	rank = "Synthetic"
@@ -58,7 +58,7 @@
 /datum/equipment_preset/synth/uscm/councillor
 	name = "USCM Synthetic Councillor"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
-	faction = FACTION_MARINE
+	faction = SET_FACTION_USCM
 	idtype = /obj/item/card/id/gold
 	assignment = "Synthetic"
 	rank = "Synthetic"
@@ -102,8 +102,7 @@
 /datum/equipment_preset/synth/survivor
 	name = "Survivor - Synthetic"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_SURVIVOR
-	faction_group = list(FACTION_MARINE, FACTION_SURVIVOR)
+	faction = SET_FACTION_COLONIST
 	idtype = /obj/item/card/id/lanyard
 	assignment = JOB_SURVIVOR
 	rank = JOB_SYNTH_SURVIVOR
@@ -143,8 +142,7 @@
 /datum/equipment_preset/synth/working_joe
 	name = "Working Joe"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_MARINE
-	faction_group = list(FACTION_MARINE)
+	faction = SET_FACTION_USCM
 	assignment = JOB_WORKING_JOE
 	rank = JOB_WORKING_JOE
 	skills = /datum/skills/colonial_synthetic
@@ -183,7 +181,7 @@
 
 /datum/equipment_preset/synth/survivor/midwife
 	name = "Fun - Xeno Cultist Midwife (Synthetic)"
-	faction = FACTION_XENOMORPH
+	faction = SET_FACTION_HIVE_NORMAL
 
 /datum/equipment_preset/synth/survivor/midwife/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel/medic

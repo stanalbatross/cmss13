@@ -1,7 +1,6 @@
 /datum/equipment_preset/uscm_ship
 	name = "USCM (ship roles)"
-	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
+	faction = SET_FACTION_USCM
 	minimum_age = 20
 	languages = list(LANGUAGE_ENGLISH)
 
@@ -26,6 +25,7 @@
 
 /datum/equipment_preset/uscm_ship/liaison
 	name = "USCM Corporate Liaison (CL)"
+	faction = SET_FACTION_WY
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 
@@ -97,7 +97,6 @@
 /datum/equipment_preset/uscm_ship/liaison/nightmare
 	name = "Nightmare USCM Corporate Liaison"
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
-	faction_group = FACTION_LIST_MARINE_WY
 
 	access = list(ACCESS_WY_PMC_GREEN, ACCESS_WY_PMC_ORANGE, ACCESS_WY_PMC_RED, ACCESS_WY_PMC_BLACK, ACCESS_WY_PMC_WHITE, ACCESS_WY_CORPORATE)
 

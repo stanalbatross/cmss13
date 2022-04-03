@@ -17,34 +17,30 @@
 
 	var/tunnel_desc = "" //description added by the hivelord.
 
-	var/hivenumber = XENO_HIVE_NORMAL
-	var/datum/hive_status/hive
+	var/faction_to_set = SET_FACTION_HIVE_NORMAL
 
 	health = 140
 	var/id = null //For mapping
 
-/obj/structure/tunnel/Initialize(mapload, var/h_number)
+/obj/structure/tunnel/Initialize(mapload, var/datum/faction_status/new_faction)
 	. = ..()
 	var/turf/L = get_turf(src)
 	tunnel_desc = L.loc.name + " ([loc.x], [loc.y]) [pick(greek_letters)]"//Default tunnel desc is the <area name> (x, y) <Greek letter>
 
-	if(h_number && GLOB.hive_datum[h_number])
-		hivenumber = h_number
-		hive = GLOB.hive_datum[h_number]
+	if(new_faction)
+		faction = new_faction
+		set_hive_data(src, faction)
+		faction.tunnels += src
 
-		set_hive_data(src, h_number)
-
-		hive.tunnels += src
-
-	if(!hive)
-		hive = GLOB.hive_datum[hivenumber]
-
-		hive.tunnels += src
+	else if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+		set_hive_data(src, faction)
+		faction.tunnels += src
 
 
 /obj/structure/tunnel/Destroy()
-	if(hive)
-		hive.tunnels -= src
+	if(faction)
+		faction.tunnels -= src
 
 	for(var/mob/living/carbon/Xenomorph/X in contents)
 		X.forceMove(loc)
@@ -53,7 +49,7 @@
 
 /obj/structure/tunnel/proc/isfriendly(var/mob/target)
 	var/mob/living/carbon/C = target
-	if(istype(C) && C.ally_of_hivenumber(hivenumber))
+	if(istype(C) && C.ally(faction))
 		return TRUE
 
 	return FALSE
@@ -100,11 +96,11 @@
 
 /obj/structure/tunnel/proc/pick_tunnel(mob/living/carbon/Xenomorph/X)
 	. = FALSE	//For peace of mind when it comes to dealing with unintended proc failures
-	if(!istype(X) || X.stat || X.lying || !isfriendly(X) || !hive)
+	if(!istype(X) || X.stat || X.lying || !isfriendly(X) || !faction)
 		return FALSE
 	if(X in contents)
 		var/list/tunnels = list()
-		for(var/obj/structure/tunnel/T in hive.tunnels)
+		for(var/obj/structure/tunnel/T in faction.tunnels)
 			if(T == src)
 				continue
 			if(!is_ground_level(T.z))
@@ -193,7 +189,7 @@
 		to_chat(M, SPAN_XENOWARNING("You can't climb through a tunnel while immobile."))
 		return XENO_NO_DELAY_ACTION
 
-	if(!hive.tunnels.len)
+	if(!faction.tunnels.len)
 		to_chat(M, SPAN_WARNING("\The [src] doesn't seem to lead anywhere."))
 		return XENO_NO_DELAY_ACTION
 
@@ -220,7 +216,7 @@
 		to_chat(M, SPAN_WARNING("Your crawling was interrupted!"))
 		return XENO_NO_DELAY_ACTION
 
-	if(hive.tunnels.len) //Make sure other tunnels exist
+	if(faction.tunnels.len) //Make sure other tunnels exist
 		M.forceMove(src) //become one with the tunnel
 		to_chat(M, SPAN_HIGHDANGER("Alt + Click the tunnel to exit, Ctrl + Click to choose a destination."))
 		pick_tunnel(M)

@@ -19,20 +19,20 @@
 	underlays.Cut()
 	underlays += "[icon_state]_underlay"
 	overlays += image(icon, "[icon_state]_overlay", layer = ABOVE_MOB_LAYER)
-	if(linked_hive.stored_larva)
+	if(faction.stored_larva)
 		overlays += "[icon_state]_bubbling"
 
 /obj/effect/alien/resin/special/pool/New(loc, var/hive_ref)
 	last_larva_time = world.time
 	..(loc, hive_ref)
-	if(isnull(linked_hive))
-		linked_hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
-	linked_hive.spawn_pool = src
+	if(isnull(faction))
+		faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
+	faction.spawn_pool = src
 
 /obj/effect/alien/resin/special/pool/examine(mob/user)
 	..()
 	if(isXeno(user) || isobserver(user))
-		var/message = "It has [linked_hive.stored_larva] more larvae to grow."
+		var/message = "It has [faction.stored_larva] more larvae to grow."
 		to_chat(user, message)
 
 /obj/effect/alien/resin/special/pool/attackby(obj/item/I, mob/user)
@@ -59,7 +59,7 @@
 
 		larva_amount += 1
 	if(isXeno(M))
-		if(!linked_hive || M.stat != DEAD)
+		if(!faction || M.stat != DEAD)
 			return
 
 		if(SSticker.mode && !(SSticker.mode.flags_round_type & MODE_XVX))
@@ -70,7 +70,7 @@
 
 		// Makes attacking hives very profitable if they can successfully wipe them out without suffering any significant losses
 		var/mob/living/carbon/Xenomorph/X = M
-		if(X.hivenumber != linked_hive.hivenumber)
+		if(X.faction != faction)
 			if(isXenoQueen(X))
 				larva_amount = 5
 			else
@@ -93,21 +93,23 @@
 	new /obj/effect/overlay/temp/acid_pool_splash(loc)
 	playsound(src, 'sound/effects/slosh.ogg', 25, 1)
 
-	linked_hive.stored_larva += larva_amount
+	faction.stored_larva += larva_amount
 
-	linked_hive.hive_ui.update_pooled_larva()
+	faction.faction_ui.update_pooled_larva()
+
+	faction.mutators.remaining_points += 0.5
 
 	melt_body()
 
 /obj/effect/alien/resin/special/pool/process()
-	if(!linked_hive)
+	if(!faction)
 		return
 
 	for(var/mob/living/carbon/Xenomorph/Larva/L in range(2, src))
 		if(!L.ckey && L.poolable && !QDELETED(L))
 			visible_message(SPAN_XENODANGER("[L] quickly dives into the pool."))
-			linked_hive.stored_larva++
-			linked_hive.hive_ui.update_pooled_larva()
+			faction.stored_larva++
+			faction.faction_ui.update_pooled_larva()
 			qdel(L)
 
 	if((last_larva_time + spawn_cooldown) < world.time && can_spawn_larva()) // every minute
@@ -116,9 +118,9 @@
 		if(players_with_xeno_pref && players_with_xeno_pref.len && can_spawn_larva())
 			spawn_pooled_larva(pick(players_with_xeno_pref))
 
-	if(linked_hive.hijack_pooled_surge && (last_surge_time + surge_cooldown) < world.time)
+	if(faction.hijack_pooled_surge && (last_surge_time + surge_cooldown) < world.time)
 		last_surge_time = world.time
-		linked_hive.stored_larva++
+		faction.stored_larva++
 		for(var/mob/dead/observer/ghost in GLOB.observer_list)
 			to_chat(ghost, SPAN_DEADSAY("The hive has gained another pooled larva! Use the Join As Xeno verb to take it."))
 		if(surge_cooldown > 30 SECONDS) //mostly for sanity purposes
@@ -138,14 +140,14 @@
 		addtimer(CALLBACK(src, /obj/effect/alien/resin/special/pool.proc/melt_body, iterations), 2 SECONDS)
 
 /obj/effect/alien/resin/special/pool/proc/can_spawn_larva()
-	if(linked_hive.hardcore)
+	if(faction.hardcore)
 		return FALSE
 
-	return linked_hive.stored_larva
+	return faction.stored_larva
 
 /obj/effect/alien/resin/special/pool/proc/spawn_pooled_larva(var/mob/xeno_candidate)
 	if(can_spawn_larva() && xeno_candidate)
-		var/mob/living/carbon/Xenomorph/Larva/new_xeno = spawn_hivenumber_larva(loc, linked_hive.hivenumber)
+		var/mob/living/carbon/Xenomorph/Larva/new_xeno = spawn_faction_larva(loc, faction)
 		if(isnull(new_xeno))
 			return FALSE
 
@@ -158,18 +160,18 @@
 		to_chat(new_xeno, SPAN_XENOANNOUNCE("You are a xenomorph larva awakened from slumber!"))
 		playsound(new_xeno, 'sound/effects/xeno_newlarva.ogg', 25, 1)
 
-		linked_hive.stored_larva--
-		linked_hive.hive_ui.update_pooled_larva()
+		faction.stored_larva--
+		faction.faction_ui.update_pooled_larva()
 
 		return TRUE
 	return FALSE
 
 /obj/effect/alien/resin/special/pool/Destroy()
-	linked_hive.spawn_pool = null
+	faction.spawn_pool = null
 	vis_contents.Cut()
 	QDEL_NULL(melting_body)
-	if(linked_hive.hijack_pooled_surge)
+	if(faction.hijack_pooled_surge)
 		visible_message(SPAN_XENODANGER("You hear something resembling a scream from [src] as it's destroyed!"))
-		xeno_message(SPAN_XENOANNOUNCE("Psychic pain storms throughout the hive as the spawn pool is destroyed! You will no longer gain pooled larva over time."), 3, linked_hive.hivenumber)
-		linked_hive.hijack_pooled_surge = FALSE
+		xeno_message(SPAN_XENOANNOUNCE("Psychic pain storms throughout the hive as the spawn pool is destroyed! You will no longer gain pooled larva over time."), 3, faction)
+		faction.hijack_pooled_surge = FALSE
 	. = ..()

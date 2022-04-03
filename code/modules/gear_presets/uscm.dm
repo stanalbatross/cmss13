@@ -1,7 +1,6 @@
 /datum/equipment_preset/uscm
 	name = "USCM"
-	faction = FACTION_MARINE
-	faction_group = FACTION_LIST_MARINE
+	faction = SET_FACTION_USCM
 	languages = list(LANGUAGE_ENGLISH)
 	idtype = /obj/item/card/id/dogtag
 
@@ -688,7 +687,7 @@
 /datum/equipment_preset/marsoc
 	name = "MARSOC Operator"
 	flags = EQUIPMENT_PRESET_EXTRA
-	faction = FACTION_MARINE
+	faction = SET_FACTION_USCM
 	assignment = "MARSOC Operator"
 	uses_special_name = TRUE
 	rank = JOB_MARSOC

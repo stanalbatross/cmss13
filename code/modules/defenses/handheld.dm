@@ -50,6 +50,10 @@
 		to_chat(usr, SPAN_WARNING("It's too cramped in here to deploy \a [src]."))
 		return
 
+	if(TR.faction != user.faction && TR.faction)
+		to_chat(usr, SPAN_WARNING("\a [src] this is not your faction."))
+		return
+
 	var/turf/T = get_step(user, user.dir)
 	var/direction = user.dir
 
@@ -75,9 +79,8 @@
 
 	playsound(T, 'sound/mecha/mechmove01.ogg', 30, 1)
 
-	if(!TR.faction_group) //Littly trolling for stealing marines turrets, bad boys!
-		for(var/i in user.faction_group)
-			LAZYADD(TR.faction_group, i)
+	if(!TR.faction) //Littly trolling for stealing marines turrets, bad boys!
+		TR.faction = user.faction
 	TR.forceMove(get_turf(T))
 	TR.placed = 1
 	TR.update_icon()

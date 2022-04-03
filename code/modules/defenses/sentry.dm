@@ -229,7 +229,7 @@
 	P.generate_bullet(new ammo.default_ammo)
 	P.damage *= damage_mult
 	P.accuracy *= accuracy_mult
-	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction_group)
+	GIVE_BULLET_TRAIT(P, /datum/element/bullet_trait_iff, faction)
 	P.fire_at(A, src, owner_mob, P.ammo.max_range, P.ammo.shell_speed, null, FALSE)
 	muzzle_flash(Get_Angle(get_turf(src), A))
 	ammo.current_rounds--
@@ -281,7 +281,7 @@
 				targets.Remove(A)
 				continue
 
-			if(M.get_target_lock(faction_group) || M.invisibility)
+			if(M.get_target_lock(faction) || M.invisibility)
 				if(M == target)
 					target = null
 				targets.Remove(M)
@@ -388,7 +388,7 @@
 	immobile = TRUE
 	turned_on = TRUE
 	icon_state = "sentry_on"
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = SET_FACTION_USCM
 	static = TRUE
 
 /obj/structure/machinery/defenses/sentry/premade/examine(mob/user)
@@ -410,7 +410,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 /obj/structure/machinery/defenses/sentry/premade/dumb
 	name = "Modified UA-577 Gauss Turret"
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a high-capacity drum magazine. This one's IFF system has been disabled, and it will open fire on any targets within range."
-	faction_group = null
+	faction_to_get = null
 	ammo = new /obj/item/ammo_magazine/sentry/premade/dumb
 
 //the turret inside a static sentry deployment system
@@ -418,7 +418,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	name = "UA-633 Static Gauss Turret"
 	desc = "An fully-automated defence turret with mid-range targeting capabilities. Armed with a modified M32-S Autocannon and an internal belt feed."
 	density = TRUE
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = SET_FACTION_USCM
 	fire_delay = 1
 	ammo = new /obj/item/ammo_magazine/sentry/premade
 	var/obj/structure/machinery/sentry_holder/deployment_system
@@ -430,12 +430,12 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	. = ..()
 
 /obj/structure/machinery/defenses/sentry/premade/deployable/colony
-	faction_group = list(FACTION_MARINE, FACTION_COLONIST)
+	faction_to_get = SET_FACTION_COLONIST
 
 //the turret inside the shuttle sentry deployment system
 /obj/structure/machinery/defenses/sentry/premade/dropship
 	density = TRUE
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = SET_FACTION_USCM
 	var/obj/structure/dropship_equipment/sentry_holder/deployment_system
 
 /obj/structure/machinery/defenses/sentry/premade/dropship/Destroy()
@@ -517,7 +517,7 @@ obj/structure/machinery/defenses/sentry/premade/damaged_action()
 	name = "\improper UA 571-O sentry post"
 	desc = "A deployable, omni-directional automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 1500-round drum magazine."
 	ammo = new /obj/item/ammo_magazine/sentry/dropped
-	faction_group = FACTION_LIST_MARINE
+	faction_to_get = SET_FACTION_USCM
 	luminosity = 5
 	omni_directional = TRUE
 	immobile = TRUE

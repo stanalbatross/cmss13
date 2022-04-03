@@ -63,7 +63,7 @@
 		return
 
 	for(var/mob/living/carbon/human/H in targets)
-		if(!(H.get_target_lock(faction_group)))
+		if(!(H.get_target_lock(faction)))
 			continue
 
 		apply_buff_to_player(H)
@@ -131,7 +131,7 @@
 	targets |= M
 
 	for(var/mob/living/carbon/human/H in targets)
-		if(!(H.get_target_lock(M.faction_group)))
+		if(!(H.get_target_lock(M.faction)))
 			continue
 
 		H.activate_order_buff(COMMAND_ORDER_MOVE, buff_intensity, 3 SECONDS)

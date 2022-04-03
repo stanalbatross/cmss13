@@ -7,8 +7,7 @@
 	languages = list(LANGUAGE_ENGLISH)
 	paygrade = "C"
 	idtype = /obj/item/card/id/lanyard
-	faction = FACTION_SURVIVOR
-	faction_group = list(FACTION_MARINE, FACTION_SURVIVOR)
+	faction = SET_FACTION_COLONIST
 	access = list(ACCESS_CIVILIAN_PUBLIC)
 
 /datum/equipment_preset/survivor/load_name(mob/living/carbon/human/H, var/randomise)

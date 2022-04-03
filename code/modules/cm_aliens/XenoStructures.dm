@@ -9,6 +9,17 @@
 	health = 1
 	flags_obj = OBJ_ORGANIC
 
+	var/faction_to_get = SET_FACTION_HIVE_NORMAL
+
+/obj/effect/alien/resin/Initialize(mapload, datum/faction_status/hive_to_get)
+	..()
+	if(hive_to_get)
+		faction = hive_to_get
+	else if(faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
+
+	set_hive_data(src, faction)
+
 /*
  * Resin
  */
@@ -147,22 +158,15 @@
 	health = HEALTH_RESIN_XENO_STICKY
 	layer = RESIN_STRUCTURE_LAYER
 	var/slow_amt = 8
-	var/hivenumber = XENO_HIVE_NORMAL
-
-/obj/effect/alien/resin/sticky/Initialize(mapload, hive)
-	..()
-	if (hive)
-		hivenumber = hive
-	set_hive_data(src, hivenumber)
 
 /obj/effect/alien/resin/sticky/Crossed(atom/movable/AM)
 	. = ..()
 	var/mob/living/carbon/human/H = AM
-	if(istype(H) && !H.lying && !H.ally_of_hivenumber(hivenumber))
+	if(istype(H) && !H.lying && !H.ally(faction))
 		H.next_move_slowdown = H.next_move_slowdown + slow_amt
 		return .
 	var/mob/living/carbon/Xenomorph/X = AM
-	if(istype(X) && !X.ally_of_hivenumber(hivenumber))
+	if(istype(X) && !X.ally(faction))
 		X.next_move_slowdown = X.next_move_slowdown + (slow_amt * WEED_XENO_SPEED_MULT)
 		return .
 
@@ -176,7 +180,6 @@
 	health = HEALTH_RESIN_XENO_SPIKE
 	layer = RESIN_STRUCTURE_LAYER
 	should_track_build = TRUE
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/damage = 8
 	var/penetration = 50
 
@@ -187,11 +190,8 @@
 		"r_foot"
 	)
 
-/obj/effect/alien/resin/spike/Initialize(mapload, hive)
+/obj/effect/alien/resin/spike/Initialize(mapload)
 	. = ..()
-	if (hive)
-		hivenumber = hive
-	set_hive_data(src, hivenumber)
 	setDir(pick(alldirs))
 
 /obj/effect/alien/resin/spike/Crossed(atom/movable/AM)
@@ -200,7 +200,7 @@
 	if(!istype(H))
 		return
 
-	if(H.ally_of_hivenumber(hivenumber))
+	if(H.ally(faction))
 		return
 
 	H.apply_armoured_damage(damage, penetration = penetration, def_zone = pick(target_limbs))
@@ -242,13 +242,13 @@
 	hardness = 1.5
 	health = HEALTH_DOOR_XENO
 	var/close_delay = 100
-	var/hivenumber = XENO_HIVE_NORMAL
 
 	flags_obj = OBJ_ORGANIC
 	layer = DOOR_CLOSED_LAYER
 	tiles_with = list(/obj/structure/mineral_door/resin)
+	var/faction_to_set = SET_FACTION_HIVE_NORMAL
 
-/obj/structure/mineral_door/resin/Initialize(mapload, hive)
+/obj/structure/mineral_door/resin/Initialize(mapload, datum/faction_status/new_faction)
 	. = ..()
 	relativewall()
 	relativewall_neighbours()
@@ -256,10 +256,12 @@
 		W.update_connections()
 		W.update_icon()
 
-	if (hive)
-		hivenumber = hive
+	if(new_faction)
+		faction = new_faction
+	else
+		faction = GLOB.faction_datum[faction_to_set]
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 
 /obj/structure/mineral_door/resin/flamer_fire_act(var/dam = BURN_LEVEL_TIER_1)
 	health -= dam
@@ -286,12 +288,12 @@
 /obj/structure/mineral_door/resin/TryToSwitchState(atom/user)
 	if(isXenoLarva(user))
 		var/mob/living/carbon/Xenomorph/Larva/L = user
-		if (L.hivenumber == hivenumber)
+		if (L.faction == faction)
 			L.scuttle(src)
 		return
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		if (C.ally_of_hivenumber(hivenumber))
+		if (C.ally(faction))
 			return ..()
 
 /obj/structure/mineral_door/resin/Open()
@@ -404,7 +406,6 @@
 	icon_state = "acid_pillar_idle"
 
 	health = HEALTH_RESIN_XENO_ACID_PILLAR
-	var/hivenumber = XENO_HIVE_NORMAL
 	should_track_build = TRUE
 	anchored = TRUE
 
@@ -415,11 +416,8 @@
 
 	var/currently_firing = FALSE
 
-/obj/effect/alien/resin/acid_pillar/Initialize(mapload, hive)
+/obj/effect/alien/resin/acid_pillar/Initialize(mapload)
 	. = ..()
-	if (hive)
-		hivenumber = hive
-	set_hive_data(src, hivenumber)
 	START_PROCESSING(SSprocessing, src)
 
 
@@ -428,7 +426,7 @@
 		return FALSE
 
 	var/check_dead = FALSE
-	if(C.ally_of_hivenumber(hivenumber))
+	if(C.ally(faction))
 		if(!C.on_fire || !isXeno(C))
 			return FALSE
 	else if(C.lying || C.is_mob_incapacitated(TRUE))
@@ -491,7 +489,7 @@
 	info.distance_travelled += 1
 	info.current_turf = next_turf
 
-	new acid_type(next_turf, create_cause_data(initial(name)), hivenumber)
+	new acid_type(next_turf, create_cause_data(initial(name)), faction)
 	return TRUE
 
 /obj/effect/alien/resin/acid_pillar/Destroy()
@@ -502,13 +500,11 @@
 	return TRUE
 
 /obj/effect/alien/resin/acid_pillar/strong
-	name = "acid pillar"
+	name = "strong acid pillar"
 	desc = "A resin pillar that is oozing with acid."
-	icon = 'icons/obj/structures/alien/structures64x64.dmi'
-	icon_state = "resin_pillar_strong"
 
-	pixel_x = -16
-	pixel_y = -16
+	color = "green"
+
 	firing_cooldown = 6 SECONDS
 
 	acid_type = /obj/effect/xenomorph/spray/strong
@@ -523,23 +519,19 @@
 	pixel_y = -16
 
 	health = HEALTH_RESIN_XENO_SHIELD_PILLAR
-	var/hivenumber = XENO_HIVE_NORMAL
 	anchored = TRUE
 
 	var/decay_rate = AMOUNT_PER_TIME(1, 10 SECONDS)
 	var/shield_to_give = 50
 	var/range = 2
 
-/obj/effect/alien/resin/shield_pillar/Initialize(mapload, hive)
+/obj/effect/alien/resin/shield_pillar/Initialize(mapload)
 	. = ..()
-	if (hive)
-		hivenumber = hive
-	set_hive_data(src, hivenumber)
 	START_PROCESSING(SSshield_pillar, src)
 
 /obj/effect/alien/resin/shield_pillar/process()
 	for(var/mob/living/carbon/Xenomorph/X in urange(range, src))
-		if((X.hivenumber != hivenumber) || X.stat == DEAD)
+		if((X.faction != faction) || X.stat == DEAD)
 			continue
 		X.add_xeno_shield(shield_to_give, XENO_SHIELD_SOURCE_SHIELD_PILLAR, decay_amount_per_second = 1, add_shield_on = TRUE, duration = 1 SECONDS)
 		X.flick_heal_overlay(1 SECONDS, "#ffa800")
@@ -711,11 +703,9 @@
 
 	var/can_prime = FALSE
 
-	var/hivenumber = XENO_HIVE_NORMAL
-
-/obj/item/explosive/grenade/alien/Initialize(mapload, hivenumber)
+/obj/item/explosive/grenade/alien/Initialize(mapload, faction)
 	. = ..()
-	src.hivenumber = hivenumber
+	src.faction = faction
 
 /obj/item/explosive/grenade/alien/try_to_throw(var/mob/living/user)
 	if(isXeno(user))
@@ -776,7 +766,7 @@
 		return
 
 	E.range = range
-	E.hivenumber = hivenumber
+	E.faction = faction
 	E.source = initial(name)
 	qdel(src)
 
@@ -788,13 +778,12 @@
 
 	// Which direction is the explosion traveling?
 	// Note that this will be null for the epicenter
-	var/hivenumber = XENO_HIVE_NORMAL
+	var/datum/faction_status/faction
 	var/source
 	var/direction = null
 	var/range = 0
 
 	var/delay = 2
-
 
 /datum/automata_cell/acid/proc/get_propagation_dirs()
 	. = list()
@@ -821,7 +810,7 @@
 		return
 	QDEL_NULL(temp)
 
-	new acid_type(in_turf, create_cause_data(source), hivenumber)
+	new acid_type(in_turf, create_cause_data(source), faction)
 
 	// Range has been reached
 	if(range <= 0)
@@ -848,7 +837,7 @@
 				if(2 to INFINITY)
 					E.acid_type = /obj/effect/xenomorph/spray/strong/no_stun
 
-			E.hivenumber = hivenumber
+			E.faction = faction
 			E.source = source
 
 	// We've done our duty, now die pls

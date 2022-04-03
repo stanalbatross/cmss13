@@ -1,6 +1,6 @@
 /datum/equipment_preset/uscm_ship/uscm_police
 	name = "USCM (police roles)"
-	faction = FACTION_MARINE
+	faction = SET_FACTION_USCM
 	minimum_age = 27
 
 //*****************************************************************************************************/
