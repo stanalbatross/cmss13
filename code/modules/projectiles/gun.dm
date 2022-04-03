@@ -22,6 +22,7 @@
 	flags_atom = FPRINT|CONDUCT
 	flags_item = TWOHANDED
 
+	var/faction_to_get = SET_FACTION_USCM
 	var/accepted_ammo = list()
 	///Determines what kind of bullet is created when the gun is unloaded - used to match rounds to magazines. Set automatically when reloading.
 	var/caliber

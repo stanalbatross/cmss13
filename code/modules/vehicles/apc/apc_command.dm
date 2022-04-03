@@ -11,7 +11,6 @@
 
 	var/sensor_radius = 45	//45 tiles radius
 
-	var/techpod_faction_requirement = FACTION_MARINE
 	var/techpod_access_settings_override = FALSE
 
 	entrances = list(

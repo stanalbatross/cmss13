@@ -77,6 +77,13 @@ GLOBAL_LIST_EMPTY(command_apc_list)
 
 	vehicle_ram_multiplier = VEHICLE_TRAMPLE_DAMAGE_APC_REDUCTION
 
+	var/faction_to_get = SET_FACTION_USCM
+
+/obj/vehicle/multitile/apc/Initialize()
+	. = ..()
+	if(faction_to_get)
+		faction = GLOB.faction_datum[faction_to_get]
+
 /obj/vehicle/multitile/apc/load_role_reserved_slots()
 	var/datum/role_reserved_slots/RRS = new
 	RRS.category_name = "Crewmen"

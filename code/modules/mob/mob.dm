@@ -33,7 +33,7 @@
 	skincmds = null
 	item_verbs = null
 	interactee = null
-	faction_group = null
+	faction = null
 	lastarea = null
 	langchat_listeners = null
 	langchat_image = null
@@ -49,9 +49,6 @@
 
 
 /mob/Initialize()
-	if(!faction_group)
-		faction_group = list(faction)
-
 	last_mob_gid++
 	gid = last_mob_gid
 

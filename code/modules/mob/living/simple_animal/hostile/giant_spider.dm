@@ -29,10 +29,11 @@
 	cold_damage_per_tick = 20
 	var/poison_per_bite = 5
 	var/poison_type = "toxin"
-	faction = "spiders"
 	var/busy = 0
 	move_to_delay = 6
 	speed = 3
+
+	faction_to_get = SET_FACTION_NEUTRAL
 
 //nursemaids - these create webs and eggs
 /mob/living/simple_animal/hostile/giant_spider/nurse

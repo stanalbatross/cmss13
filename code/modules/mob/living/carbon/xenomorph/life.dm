@@ -38,12 +38,12 @@
 			handle_regular_hud_updates()
 
 /mob/living/carbon/Xenomorph/proc/update_progression()
-	if(isnull(hive))
+	if(isnull(faction))
 		return
 	var/progress_amount = 1
 	if(SSxevolution)
-		progress_amount = SSxevolution.get_evolution_boost_power(hive.hivenumber)
-	var/ovipositor_check = (hive.allow_no_queen_actions || hive.evolution_without_ovipositor || (hive.living_xeno_queen && hive.living_xeno_queen.ovipositor))
+		progress_amount = SSxevolution.get_evolution_boost_power(faction)
+	var/ovipositor_check = (faction.allow_no_queen_actions || faction.evolution_without_ovipositor || (faction.living_xeno_queen && faction.living_xeno_queen.ovipositor))
 	if(caste && caste.evolution_allowed && evolution_stored < evolution_threshold && ovipositor_check)
 		evolution_stored = min(evolution_stored + progress_amount, evolution_threshold)
 		if(evolution_stored >= evolution_threshold - 1)
@@ -96,12 +96,12 @@
 				else
 					use_current_aura = TRUE
 
-		if(leader_current_aura && hive && hive.living_xeno_queen && hive.living_xeno_queen.loc.z == loc.z) //Same Z-level as the Queen!
+		if(leader_current_aura && faction && faction.living_xeno_queen && faction.living_xeno_queen.loc.z == loc.z) //Same Z-level as the Queen!
 			use_leader_aura = TRUE
 
 		if(use_current_aura || use_leader_aura)
 			for(var/mob/living/carbon/Xenomorph/Z as anything in GLOB.living_xeno_list)
-				if(Z.ignores_pheromones || Z.z != z || get_dist(aura_center, Z) > round(6 + aura_strength * 2) || !HIVE_ALLIED_TO_HIVE(Z.hivenumber, hivenumber))
+				if(Z.ignores_pheromones || Z.z != z || get_dist(aura_center, Z) > round(6 + aura_strength * 2) || !FACTION_ALLIED_TO_FACTION(Z.faction.faction_number, faction.faction_number))
 					continue
 				if(use_leader_aura)
 					Z.affected_by_pheromones(leader_current_aura, leader_aura_strength)
@@ -330,7 +330,7 @@ updatehealth()
 
 	if(caste)
 		if(caste.innate_healing || check_weeds_for_healing())
-			if(!hive) return // can't heal if you have no hive, sorry bud
+			if(!faction) return // can't heal if you have no hive, sorry bud
 			plasma_stored += plasma_gain * plasma_max / 100
 			if(recovery_aura)
 				plasma_stored += round(plasma_gain * plasma_max / 100 * recovery_aura/4) //Divided by four because it gets massive fast. 1 is equivalent to weed regen! Only the strongest pheromones should bypass weeds
@@ -400,21 +400,21 @@ updatehealth()
 	var/atom/tracking_atom
 	switch(QL.track_state)
 		if(TRACKER_QUEEN)
-			if(!hive || !hive.living_xeno_queen)
+			if(!faction || !faction.living_xeno_queen)
 				QL.icon_state = "trackoff"
 				return
-			tracking_atom = hive.living_xeno_queen
+			tracking_atom = faction.living_xeno_queen
 		if(TRACKER_HIVE)
-			if(!hive || !hive.hive_location)
+			if(!faction || !faction.hive_location)
 				QL.icon_state = "trackoff"
 				return
-			tracking_atom = hive.hive_location
+			tracking_atom = faction.hive_location
 		else
 			var/leader_tracker = text2num(QL.track_state)
-			if(!hive || !hive.xeno_leader_list[leader_tracker])
+			if(!faction || !faction.xeno_leader_list[leader_tracker])
 				QL.icon_state = "trackoff"
 				return
-			tracking_atom = hive.xeno_leader_list[leader_tracker]
+			tracking_atom = faction.xeno_leader_list[leader_tracker]
 
 	if(!tracking_atom)
 		QL.icon_state = "trackoff"
@@ -503,11 +503,11 @@ updatehealth()
 
 	var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in T
 
-	if(W && W.linked_hive.is_ally(src))
+	if(W && W.faction.is_ally(src))
 		return TRUE //weeds, yes!
 	if(need_weeds)
 		return FALSE //needs weeds, doesn't have any
-	if(hive && hive.living_xeno_queen && !is_mainship_level(hive.living_xeno_queen.loc.z) && is_mainship_level(loc.z))
+	if(faction && faction.living_xeno_queen && !is_mainship_level(faction.living_xeno_queen.loc.z) && is_mainship_level(loc.z))
 		return FALSE //We are on the ship, but the Queen isn't
 	return TRUE //we have off-weed healing, and either we're on Almayer with the Queen, or we're on non-Almayer, or the Queen is dead, good enough!
 

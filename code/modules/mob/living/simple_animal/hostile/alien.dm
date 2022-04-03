@@ -27,7 +27,7 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = FACTION_XENOMORPH
+	faction_to_get = SET_FACTION_HIVE_NORMAL
 	wall_smash = 1
 	status_flags = CANPUSH
 	minbodytemp = 0
@@ -39,6 +39,7 @@
 	icon = get_icon_from_source(CONFIG_GET(string/alien_lurker))
 	. = ..()
 
+
 /mob/living/simple_animal/hostile/alien/drone
 	name = "alien drone"
 	icon = 'icons/mob/hostiles/drone.dmi'
@@ -48,6 +49,7 @@
 	health = 60
 	melee_damage_lower = 15
 	melee_damage_upper = 15
+	faction_to_get = SET_FACTION_HIVE_NORMAL
 
 // Still using old projectile code - commenting this out for now
 // /mob/living/simple_animal/hostile/alien/sentinel
@@ -72,6 +74,7 @@
 	melee_damage_upper = 35
 	maxHealth = 200
 	health = 200
+	faction_to_get = SET_FACTION_HIVE_NORMAL
 
 /obj/item/projectile/neurotox
 	damage = 30

@@ -155,7 +155,7 @@
 		if(INTENT_DISARM)
 			M.animation_attack_on(src)
 			M.flick_attack_overlay(src, "disarm")
-			if(!(isXenoQueen(M)) || M.hivenumber != src.hivenumber)
+			if(!(isXenoQueen(M)) || M.faction != src.faction)
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1)
 				M.visible_message(SPAN_WARNING("\The [M] shoves \the [src]!"), \
 				SPAN_WARNING("You shove \the [src]!"), null, 5, CHAT_TYPE_XENO_COMBAT)

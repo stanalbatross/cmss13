@@ -1,6 +1,3 @@
-
-
-
 /mob/living/carbon/Xenomorph/can_ventcrawl()
 	if(stomach_contents.len)
 		for(var/atom/movable/AM in stomach_contents)
@@ -16,11 +13,11 @@
 	return FALSE
 
 /mob/living/carbon/Xenomorph/proc/can_destroy_special()
-	if(hive)
+	if(faction)
 		if(IS_XENO_LEADER(src))
-			if(hive.destruction_allowed == NORMAL_XENO || hive.destruction_allowed == XENO_LEADER)
+			if(faction.destruction_allowed == NORMAL_XENO || faction.destruction_allowed == XENO_LEADER)
 				return TRUE
-		if(hive.destruction_allowed == NORMAL_XENO && isXenoBuilder(src))
+		if(faction.destruction_allowed == NORMAL_XENO && isXenoBuilder(src))
 			return TRUE
 		if(isXenoQueen(src))
 			return TRUE
@@ -47,7 +44,7 @@
 	var/count = 0
 
 	// Compare the areas.
-	for(var/mob/living/carbon/Xenomorph/X in hive.totalXenos)
+	for(var/mob/living/carbon/Xenomorph/X in faction.totalMobs)
 		if(!(X in GLOB.living_xeno_list))
 			continue
 

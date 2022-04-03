@@ -47,7 +47,6 @@
 	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, QUEEN_OVERWATCH_HUD, ARMOR_HUD_XENO, XENO_STATUS_HUD, XENO_BANISHED_HUD, XENO_HOSTILE_ACID, XENO_HOSTILE_SLOW, XENO_HOSTILE_TAG, XENO_HOSTILE_FREEZE, HUNTER_HUD)
 	unacidable = TRUE
 	rebounds = TRUE
-	faction = FACTION_XENOMORPH
 	gender = NEUTER
 	var/icon_size = 48
 	var/obj/item/clothing/suit/wear_suit = null
@@ -113,8 +112,7 @@
 	var/datum/mutator_set/individual_mutators/mutators = new
 
 	// Hive-related vars
-	var/datum/hive_status/hive
-	hivenumber = XENO_HIVE_NORMAL
+	var/faction_to_set = SET_FACTION_HIVE_NORMAL
 	var/hive_pos = NORMAL_XENO // The position of the xeno in the hive (0 = normal xeno; 1 = queen; 2+ = hive leader)
 
 	// Variables that can be mutated
@@ -185,6 +183,10 @@
 	// 		State used by all Xeno mobs.
 	//
 	//////////////////////////////////////////////////////////////////
+	var/minimap_name = "Xeno Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map = GROUND_MAP
+
 	var/xeno_mobhud = FALSE //whether the xeno mobhud is activated or not.
 	var/xeno_hostile_hud = FALSE // 'Hostile' HUD - the verb Xenos use to see tags, etc on humans
 	var/list/plasma_types = list() //The types of plasma the caste contains
@@ -286,7 +288,9 @@
 
 	var/atom/movable/vis_obj/xeno_wounds/wound_icon_carrier
 
-/mob/living/carbon/Xenomorph/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, h_number)
+	sensor_radius = 14
+
+/mob/living/carbon/Xenomorph/Initialize(mapload, mob/living/carbon/Xenomorph/oldXeno, datum/faction_status/hive_to_set)
 	var/area/A = get_area(src)
 	if(A && A.statistic_exempt)
 		statistic_exempt = TRUE
@@ -295,10 +299,14 @@
 	vis_contents += wound_icon_carrier
 
 	if(oldXeno)
-		hivenumber = oldXeno.hivenumber
+		faction = oldXeno.faction
 		nicknumber = oldXeno.nicknumber
-	else if (h_number)
-		hivenumber = h_number
+	else if(hive_to_set)
+		faction = hive_to_set
+	else if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+
+	generate_tacmap_link()
 
 	set_languages(list(LANGUAGE_XENOMORPH, LANGUAGE_HIVEMIND))
 	if(oldXeno)
@@ -306,12 +314,12 @@
 			add_language(L.name)//Make sure to keep languages (mostly for event Queens that know English)
 
 	// Well, not yet, technically
-	var/datum/hive_status/in_hive = GLOB.hive_datum[hivenumber]
-	if(in_hive)
-		in_hive.add_xeno(src)
+	var/datum/faction_status/in_faction = faction
+	if(in_faction)
+		in_faction.add_mob(src)
 		// But now we are!
 
-	for(var/T in in_hive.hive_inherant_traits)
+	for(var/T in in_faction.hive_inherant_traits)
 		ADD_TRAIT(src, T, TRAIT_SOURCE_HIVE)
 
 	mutators.xeno = src
@@ -348,8 +356,8 @@
 	generate_name()
 
 	if(isXenoQueen(src))
-		SStracking.set_leader("hive_[hivenumber]", src)
-	SStracking.start_tracking("hive_[hivenumber]", src)
+		SStracking.set_leader("hive_[faction]", src)
+	SStracking.start_tracking("hive_[faction]", src)
 
 	. = ..()
 	//WO GAMEMODE
@@ -397,7 +405,7 @@
 		oldXeno.empty_gut()
 
 		if(IS_XENO_LEADER(oldXeno))
-			hive.replace_hive_leader(oldXeno, src)
+			faction.replace_hive_leader(oldXeno, src)
 
 	if (caste)
 		behavior_delegate = new caste.behavior_delegate_type()
@@ -410,24 +418,33 @@
 	// Only handle free slots if the xeno is not in tdome
 	if(!is_admin_level(z))
 		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
-		var/free_slots = LAZYACCESS(hive.free_slots, selected_caste)
+		var/free_slots = LAZYACCESS(faction.free_slots, selected_caste)
 		if(free_slots)
-			hive.free_slots[selected_caste] -= 1
-			var/new_val = LAZYACCESS(hive.used_free_slots, selected_caste) + 1
-			LAZYSET(hive.used_free_slots, selected_caste, new_val)
+			faction.free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(faction.used_free_slots, selected_caste) + 1
+			LAZYSET(faction.used_free_slots, selected_caste, new_val)
 
 	if(round_statistics && !statistic_exempt)
-		round_statistics.track_new_participant(faction, 1)
+		round_statistics.track_new_participant(faction.internal_faction, 1)
 	generate_name()
 
 	// This can happen if a xeno gets made before the game starts
-	if (hive && hive.hive_ui)
-		hive.hive_ui.update_all_xeno_data()
+	if(faction && faction.faction_ui)
+		faction.faction_ui.update_all_xeno_data()
 
 	job = caste.caste_type // Used for tracking the caste playtime
 
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
+
+/mob/living/carbon/Xenomorph/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /mob/living/carbon/Xenomorph/proc/handle_screech_act(var/mob/self, var/mob/living/carbon/Xenomorph/Queen/queen)
 	SIGNAL_HANDLER
@@ -486,15 +503,12 @@
 		nicknumber = tempnumber
 
 	// Even if we don't have the hive datum we usually still have the hive number
-	var/datum/hive_status/in_hive = hive
-	if(!in_hive)
-		in_hive = GLOB.hive_datum[hivenumber]
 
 	//Larvas have their own, very weird naming conventions, let's not kick a beehive, not yet
 	if(isXenoLarva(src))
 		return
 
-	var/name_prefix = in_hive.prefix
+	var/name_prefix = faction.prefix
 	var/name_client_prefix = ""
 	var/name_client_postfix = ""
 	if(client)
@@ -502,7 +516,7 @@
 		name_client_postfix = client.xeno_postfix ? ("-"+client.xeno_postfix) : ""
 
 		age_xeno()
-	color = in_hive.color
+	color = faction.color
 
 	//Queens have weird, hardcoded naming conventions based on age levels. They also never get nicknumbers
 	if(isXenoPredalien(src))
@@ -514,13 +528,16 @@
 	change_real_name(src, name)
 
 	// Since we updated our name we should update the info in the UI
-	in_hive.hive_ui.update_xeno_info()
+	faction.faction_ui.update_xeno_info()
 
 /mob/living/carbon/Xenomorph/examine(mob/user)
 	..()
-	if(HAS_TRAIT(src, TRAIT_SIMPLE_DESC))
-		to_chat(user, desc)
-		return
+	if(isXeno(user))
+		if(HAS_TRAIT(src, TRAIT_SIMPLE_DESC))
+			to_chat(user, desc)
+			return
+	else
+		to_chat(user, "This is strange creature.")
 
 	if(isXeno(user) && caste && caste.caste_desc)
 		to_chat(user, caste.caste_desc)
@@ -549,8 +566,8 @@
 			if(1 to 24)
 				to_chat(user, "It is heavily injured and limping badly.")
 
-	if(hivenumber != XENO_HIVE_NORMAL)
-		to_chat(user, "It appears to belong to [hive ? "the [hive.prefix]" : "a different "]hive.")
+	if(faction != user.faction && isXeno(user))
+		to_chat(user, "It appears to belong to [faction ? "the [faction.prefix]" : "a different "]hive.")
 
 	if(isXeno(user) || isobserver(user))
 		if(mutation_type != "Normal")
@@ -565,19 +582,19 @@
 	if(mind)
 		mind.name = name //Grabs the name when the xeno is getting deleted, to reference through hive status later.
 	if(IS_XENO_LEADER(src)) //Strip them from the Xeno leader list, if they are indexed in here
-		hive.remove_hive_leader(src, light_mode = TRUE)
+		faction.remove_hive_leader(src, light_mode = TRUE)
 	SStracking.stop_tracking("hive_[hivenumber]", src)
 
 	// Only handle free slots if the xeno is not in tdome
 	if(!is_admin_level(z))
 		var/selected_caste = GLOB.xeno_datum_list[caste_type]?.type
-		var/used_slots = LAZYACCESS(hive.used_free_slots, selected_caste)
+		var/used_slots = LAZYACCESS(faction.used_free_slots, selected_caste)
 		if(used_slots)
-			hive.used_free_slots[selected_caste] -= 1
-			var/new_val = LAZYACCESS(hive.free_slots, selected_caste) + 1
-			LAZYSET(hive.free_slots, selected_caste, new_val)
+			faction.used_free_slots[selected_caste] -= 1
+			var/new_val = LAZYACCESS(faction.free_slots, selected_caste) + 1
+			LAZYSET(faction.free_slots, selected_caste, new_val)
 
-	hive.remove_xeno(src)
+	faction.remove_mob(src)
 	remove_from_all_mob_huds()
 
 	observed_xeno = null
@@ -639,7 +656,7 @@
 /mob/living/carbon/Xenomorph/pull_response(mob/puller)
 	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
-		if(H.ally_of_hivenumber(hivenumber))
+		if(H.ally(faction))
 			return TRUE
 		puller.KnockDown(rand(caste.tacklestrength_min,caste.tacklestrength_max))
 		playsound(puller.loc, 'sound/weapons/pierce.ogg', 25, 1)
@@ -692,21 +709,17 @@
 /mob/living/carbon/Xenomorph/get_pull_miltiplier()
 	return pull_multiplier
 
-/mob/living/carbon/Xenomorph/proc/set_faction(var/new_faction = FACTION_XENOMORPH)
-	faction = new_faction
-
 //Call this function to set the hive and do other cleanup
-/mob/living/carbon/Xenomorph/proc/set_hive_and_update(var/new_hivenumber = XENO_HIVE_NORMAL)
-	var/datum/hive_status/new_hive = GLOB.hive_datum[new_hivenumber]
-	if(!new_hive)
+/mob/living/carbon/Xenomorph/proc/set_hive_and_update(var/datum/faction_status/xeno/new_faction)
+	if(!new_faction)
 		return
 
 	for(var/T in status_traits)
 		REMOVE_TRAIT(src, T, TRAIT_SOURCE_HIVE)
 
-	new_hive.add_xeno(src)
+	new_faction.add_mob(src)
 
-	for(var/T in new_hive.hive_inherant_traits)
+	for(var/T in new_faction.hive_inherant_traits)
 		ADD_TRAIT(src, T, TRAIT_SOURCE_HIVE)
 
 	if(istype(src, /mob/living/carbon/Xenomorph/Larva))
@@ -720,7 +733,7 @@
 	recalculate_everything()
 
 	// Update the hive status UI
-	new_hive.hive_ui.update_all_xeno_data()
+	new_faction.faction_ui.update_all_xeno_data()
 
 //*********************************************************//
 //********************Mutator functions********************//
@@ -733,8 +746,8 @@
 	recalculate_pheromones()
 	recalculate_maturation()
 	update_icon_source()
-	if(hive && hive.living_xeno_queen && hive.living_xeno_queen == src)
-		hive.recalculate_hive() //Recalculating stuff around Queen maturing
+	if(faction && faction.living_xeno_queen && faction.living_xeno_queen == src)
+		faction.recalculate_hive() //Recalculating stuff around Queen maturing
 
 
 /mob/living/carbon/Xenomorph/proc/recalculate_stats()
@@ -863,9 +876,9 @@
 	if(stat == DEAD && !QDELETED(src))
 		GLOB.living_xeno_list += src
 
-		if(hive)
-			hive.add_xeno(src)
-			hive.hive_ui.update_all_xeno_data()
+		if(faction)
+			faction.add_mob(src)
+			faction.faction_ui.update_all_xeno_data()
 
 	armor_integrity = 100
 	UnregisterSignal(src, COMSIG_XENO_PRE_HEAL)

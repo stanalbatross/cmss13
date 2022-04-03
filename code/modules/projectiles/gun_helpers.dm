@@ -189,9 +189,9 @@ As sniper rifles have both and weapon mods can change them as well. ..() deals w
 				"Event",
 				"UPP Armsmaster", //this rank is for the Fun - Ivan preset, it allows him to use the PMC guns randomly generated from his backpack
 			) return TRUE
-		switch(user.faction)
+		switch(user.faction.internal_faction)
 			if(
-				FACTION_WY_DEATHSQUAD,
+				FACTION_WY,
 				FACTION_PMC,
 				FACTION_MERCENARY,
 				FACTION_FREELANCER,

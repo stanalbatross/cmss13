@@ -249,7 +249,7 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 				var/count = Q.count_hivemember_same_area()
 
 				// Check if at least half of the hive is onboard. If not, we don't launch.
-				if(count < length(Q.hive.totalXenos) * 0.5)
+				if(count < length(Q.faction.totalMobs) * 0.5)
 					to_chat(Q, SPAN_WARNING("More than half of your hive is not on board. Don't leave without them!"))
 					return
 
@@ -288,8 +288,8 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 					shuttle.alerts_allowed--
 
 					to_chat(Q, SPAN_DANGER("A loud alarm erupts from [src]! The fleshy hosts must know that you can access it!"))
-					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"),3,Q.hivenumber)
-					xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."),2,Q.hivenumber)
+					xeno_message(SPAN_XENOANNOUNCE("The Queen has commanded the metal bird to depart for the metal hive in the sky! Rejoice!"),3,Q.faction)
+					xeno_message(SPAN_XENOANNOUNCE("The hive swells with power! You will now steadily gain pooled larva over time."),2,Q.faction)
 
 					// Notify the yautja too so they stop the hunt
 					message_all_yautja("The serpent Queen has commanded the landing shuttle to depart.")
@@ -297,8 +297,9 @@ GLOBAL_LIST_EMPTY(shuttle_controls)
 
 					Q.count_niche_stat(STATISTICS_NICHE_FLIGHT)
 
-					if(Q.hive)
-						addtimer(CALLBACK(Q.hive, /datum/hive_status.proc/abandon_on_hijack), DROPSHIP_WARMUP_TIME, TIMER_UNIQUE)
+					if(Q.faction)
+						addtimer(CALLBACK(Q.faction, /datum/faction_status/xeno.proc/abandon_on_hijack), DROPSHIP_WARMUP_TIME, TIMER_UNIQUE)
+						Q.faction.hijack_pooled_surge = TRUE
 
 					if(bomb_set)
 						for(var/obj/structure/machinery/nuclearbomb/bomb in world)

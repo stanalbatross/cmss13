@@ -40,7 +40,7 @@
 				to_chat(src, SPAN_XENOWARNING("The extra resin is preventing you from reinforcing [WR]. Wait until it elapse."))
 				return SECRETE_RESIN_FAIL
 
-			if (WR.hivenumber != hivenumber)
+			if (WR.faction != faction)
 				to_chat(src, SPAN_XENOWARNING("[WR] doesn't belong to your hive!"))
 				return SECRETE_RESIN_FAIL
 
@@ -57,7 +57,7 @@
 
 		else if(istype(A, /obj/structure/mineral_door/resin))
 			var/obj/structure/mineral_door/resin/DR = A
-			if (DR.hivenumber != hivenumber)
+			if (DR.faction != faction)
 				to_chat(src, SPAN_XENOWARNING("[DR] doesn't belong to your hive!"))
 				return SECRETE_RESIN_FAIL
 
@@ -68,7 +68,7 @@
 			if(DR.hardness == 1.5) //non thickened
 				var/oldloc = DR.loc
 				qdel(DR)
-				new /obj/structure/mineral_door/resin/thick (oldloc, DR.hivenumber)
+				new /obj/structure/mineral_door/resin/thick (oldloc, DR.faction)
 				total_resin_cost = XENO_THICKEN_DOOR_COST
 			else
 				to_chat(src, SPAN_XENOWARNING("[DR] can't be made thicker."))
@@ -124,7 +124,7 @@
 			SPAN_XENONOTICE("You regurgitate some resin and shape it into \a [RC.construction_name][use_plasma ? " at the cost of a total [total_resin_cost] plasma" : ""]."), null, 5)
 		playsound(loc, "alien_resin_build", 25)
 
-	var/atom/new_resin = RC.build(current_turf, hivenumber, src)
+	var/atom/new_resin = RC.build(current_turf, faction, src)
 	if(RC.max_per_xeno != RESIN_CONSTRUCTION_NO_MAX)
 		LAZYADD(built_structures[RC.build_path], new_resin)
 		RegisterSignal(new_resin, COMSIG_PARENT_QDELETING, .proc/remove_built_structure)
@@ -143,13 +143,13 @@
 		return
 
 	var/current_area_name = get_area_name(current_turf)
-	var/obj/effect/alien/resin/construction/new_structure = new(current_turf, hive)
+	var/obj/effect/alien/resin/construction/new_structure = new(current_turf, faction)
 	new_structure.set_template(structure_template)
-	hive.add_construction(new_structure)
+	faction.add_construction(new_structure)
 
 	visible_message(SPAN_XENONOTICE("A thick substance emerges from the ground and shapes into \a [new_structure]."), \
 		SPAN_XENONOTICE("You designate a new [structure_template] construction."), null, 5)
 	playsound(new_structure, "alien_resin_build", 25)
 
-	if(hive.living_xeno_queen)
-		xeno_message("Hive: A new <b>[structure_template]<b> construction has been designated at [sanitize(current_area_name)]!", 3, hivenumber)
+	if(faction.living_xeno_queen)
+		xeno_message("Hive: A new <b>[structure_template]<b> construction has been designated at [sanitize(current_area_name)]!", 3, faction)

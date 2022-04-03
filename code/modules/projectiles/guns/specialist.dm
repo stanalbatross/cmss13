@@ -316,7 +316,7 @@
 	var/range = 7
 	var/angle = 2
 	var/list/angle_list = list(180,135,90,60,30)
-	var/obj/item/device/motiondetector/sg/MD
+	var/obj/item/device/motiondetector/sg/MD = new
 	var/long_range_cooldown = 2
 	var/recycletime = 120
 
@@ -337,7 +337,11 @@
 /obj/item/weapon/gun/smartgun/Initialize(mapload, ...)
 	ammo_primary = GLOB.ammo_list[ammo_primary] //Gun initialize calls replace_ammo() so we need to set these first.
 	ammo_secondary = GLOB.ammo_list[ammo_secondary]
-	MD = new(src)
+
+	faction = GLOB.faction_datum[faction_to_get]
+	MD.faction = faction
+	MD.iff_signal = faction.faction_number
+
 	. = ..()
 
 /obj/item/weapon/gun/smartgun/set_gun_attachment_offsets()
@@ -510,10 +514,12 @@
 	if(iff_enabled)
 		add_bullet_trait(BULLET_TRAIT_ENTRY_ID("iff", /datum/element/bullet_trait_iff))
 		drain += 10
-		MD.iff_signal = initial(MD.iff_signal)
+		MD.faction = faction
+		MD.iff_signal = faction.faction_number
 	if(!iff_enabled)
 		remove_bullet_trait("iff")
 		drain -= 10
+		MD.faction = null
 		MD.iff_signal = null
 	if(!powerpack)
 		link_powerpack(usr)
@@ -619,7 +625,7 @@
 	for(var/mob/living/M in orange(range, user)) // orange allows sentry to fire through gas and darkness
 		if((M.stat & DEAD)) continue // No dead or non living.
 
-		if(M.get_target_lock(user.faction_group)) continue
+		if(M.get_target_lock(user.faction)) continue
 		if(angle > 0)
 			var/opp
 			var/adj
@@ -726,6 +732,7 @@
 	. = ..()
 	MD.iff_signal = FACTION_PMC
 
+	faction_to_get = SET_FACTION_WY
 
 //TERMINATOR SMARTGUN
 /obj/item/weapon/gun/smartgun/dirty/elite

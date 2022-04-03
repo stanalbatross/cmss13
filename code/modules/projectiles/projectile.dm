@@ -787,7 +787,7 @@
 			var/mob/living/carbon/Xenomorph/X = P.firer
 			if(!istype(X))
 				return FALSE
-			if(X.hivenumber == hivenumber)
+			if(X.faction == faction)
 				return FALSE
 
 		if(mob_size >= MOB_SIZE_BIG)	. += 10

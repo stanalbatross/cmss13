@@ -94,10 +94,10 @@
 		to_chat(src, SPAN_WARNING("A headhunter temporarily cut off your psychic connection!"))
 		return
 
-	hivemind_broadcast(message, hive)
+	hivemind_broadcast(message, faction)
 
-/mob/living/carbon/proc/hivemind_broadcast(var/message, var/datum/hive_status/hive)
-	if(!message || stat || !hive)
+/mob/living/carbon/proc/hivemind_broadcast(var/message, var/datum/faction_status/xeno/faction)
+	if(!message || stat || !faction)
 		return
 
 	if(!hive.living_xeno_queen && !SSticker?.mode?.hardcore && !hive.allow_no_queen_actions)
@@ -117,8 +117,8 @@
 		var/hear_hivemind = 0
 		if(ishuman(S))
 			var/mob/living/carbon/human/Hu = S
-			if(Hu.hivenumber)
-				hear_hivemind = Hu.hivenumber
+			if(Hu.faction)
+				hear_hivemind = Hu.faction
 
 		if(!QDELETED(S) && (isXeno(S) || S.stat == DEAD || hear_hivemind) && !istype(S,/mob/new_player))
 			var/mob/living/carbon/Xenomorph/X = src
@@ -130,7 +130,7 @@
 						if(istype(queen_eye))
 							track += " (<a href='byond://?src=\ref[S];track=\ref[queen_eye]'>E</a>)"
 						ghostrend = SPAN_XENOQUEEN("Hivemind, [src.name] [track] hisses, <span class='normal'>'[message]'</span>")
-					else if(hive.leading_cult_sl == src)
+					else if(faction.leading_cult_sl == src)
 						ghostrend = SPAN_XENOQUEEN("Hivemind, [src.name] [track] hisses, <span class='normal'>'[message]'</span>")
 					else if(istype(X) && IS_XENO_LEADER(X))
 						ghostrend = SPAN_XENOLEADER("Hivemind, Leader [src.name] [track] hisses, <span class='normal'>'[message]'</span>")
@@ -138,11 +138,11 @@
 						ghostrend = SPAN_XENO("Hivemind, [src.name] [track] hisses, <span class='normal'>'[message]'</span>")
 					S.show_message(ghostrend, 2)
 
-			else if(hive.hivenumber == xeno_hivenumber(S) || hive.hivenumber == hear_hivemind)
+			else if(faction == S.faction || faction == hear_hivemind)
 				if(isXeno(src) && isXeno(S))
 					overwatch_insert = "(<a href='byond://?src=\ref[S];[overwatch_target]=\ref[src];[overwatch_src]=\ref[S]'>watch</a>)"
 
-				if(isXenoQueen(src) || hive.leading_cult_sl == src)
+				if(isXenoQueen(src) || faction.leading_cult_sl == src)
 					rendered = SPAN_XENOQUEEN("Hivemind, [src.name] [overwatch_insert] hisses, <span class='normal'>'[message]'</span>")
 				else if(istype(X) && IS_XENO_LEADER(X))
 					rendered = SPAN_XENOLEADER("Hivemind, Leader [src.name] [overwatch_insert] hisses, <span class='normal'>'[message]'</span>")

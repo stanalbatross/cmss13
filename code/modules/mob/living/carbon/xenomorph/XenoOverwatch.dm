@@ -22,7 +22,7 @@
 	if (X.caste_type == XENO_CASTE_QUEEN)
 		isQueen = TRUE
 
-	if(!X.hive.living_xeno_queen && !X.hive.allow_no_queen_actions)
+	if(!X.faction.living_xeno_queen && !X.faction.allow_no_queen_actions)
 		to_chat(X, SPAN_WARNING("There is no Queen. You are alone."))
 		return
 
@@ -39,7 +39,7 @@
 
 	var/list/possible_xenos = list()
 	for(var/mob/living/carbon/Xenomorph/T in GLOB.living_xeno_list)
-		if (T != X && !is_admin_level(T.z) && X.hivenumber == T.hivenumber) // Can't overwatch yourself, Xenos in Thunderdome, or Xenos in other hives
+		if (T != X && !is_admin_level(T.z) && X.faction == T.faction) // Can't overwatch yourself, Xenos in Thunderdome, or Xenos in other hives
 			possible_xenos += T
 
 	var/mob/living/carbon/Xenomorph/selected_xeno = tgui_input_list(X, "Target", "Watch which xenomorph?", possible_xenos)
@@ -74,10 +74,10 @@
 
 
 	else
-		if(!hive)
+		if(!faction)
 			return
 
-		if(!hive.living_xeno_queen && !hive.allow_no_queen_actions)
+		if(!faction.living_xeno_queen && !faction.allow_no_queen_actions)
 			to_chat(src, SPAN_WARNING("There is no Queen. You are alone."))
 			return
 

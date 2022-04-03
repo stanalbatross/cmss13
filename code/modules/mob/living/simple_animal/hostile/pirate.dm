@@ -32,7 +32,7 @@
 	var/corpse = /obj/effect/landmark/corpsespawner/realpirate
 	var/weapon1 = /obj/item/weapon/melee/energy/sword/pirate
 
-	faction = FACTION_PIRATE
+	faction_to_get = SET_FACTION_PIRATE
 
 /mob/living/simple_animal/hostile/pirate/ranged
 	name = "Pirate Gunner"

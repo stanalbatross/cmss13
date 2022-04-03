@@ -6,7 +6,7 @@ GLOBAL_VAR_INIT(resin_lz_allowed, FALSE)
 	var/construction_name // The name used in messages (to replace old resin2text proc)
 	var/cost
 	var/build_time = 2 SECONDS
-	var/pass_hivenumber = TRUE
+	var/pass_faction = TRUE
 
 	var/build_overlay_icon
 
@@ -38,7 +38,7 @@ GLOBAL_VAR_INIT(resin_lz_allowed, FALSE)
 		to_chat(X, SPAN_WARNING("You can only shape on weeds. Find some resin before you start building!"))
 		return FALSE
 
-	if(alien_weeds.linked_hive.hivenumber != X.hivenumber)
+	if(alien_weeds.faction != X.faction)
 		to_chat(X, SPAN_WARNING("These weeds do not belong to your hive!"))
 		return FALSE
 
@@ -58,26 +58,26 @@ GLOBAL_VAR_INIT(resin_lz_allowed, FALSE)
 
 	return TRUE
 
-/datum/resin_construction/proc/build(var/turf/T, var/hivenumber, var/builder)
+/datum/resin_construction/proc/build(var/turf/T, var/datum/faction_status/faction, var/builder)
 	return
 
 
 // Subtype encompassing all resin constructions that are of type /obj
-/datum/resin_construction/resin_obj/build(var/turf/T, var/hivenumber, var/builder)
-	if (pass_hivenumber)
-		return new build_path(T, hivenumber, builder)
+/datum/resin_construction/resin_obj/build(var/turf/T, var/datum/faction_status/faction, var/builder)
+	if (pass_faction)
+		return new build_path(T, faction, builder)
 	return new build_path(T)
 
 
 // Subtype encompassing all resin constructions that are of type /turf
-/datum/resin_construction/resin_turf/build(var/turf/T, var/hivenumber, var/builder)
+/datum/resin_construction/resin_turf/build(var/turf/T, var/datum/faction_status/faction, var/builder)
 	T.PlaceOnTop(build_path)
 
 	var/turf/closed/wall/resin/W = T
-	if (istype(W) && pass_hivenumber)
-		W.hivenumber = hivenumber
+	if (istype(W) && pass_faction)
+		W.faction = faction
 		W.set_resin_builder(builder)
-		set_hive_data(W, hivenumber)
+		set_hive_data(W, faction)
 
 	return T
 

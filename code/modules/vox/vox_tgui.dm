@@ -47,7 +47,7 @@ GLOBAL_DATUM_INIT(vox_panel, /datum/vox_panel_tgui, new)
 					to_play_to |= M.client
 
 			play_sound_vox(message, to_play_to, vox, usr.client, text2num(params["volume"]))
-			var/factions_string = factions.Join(", ")
+			var/datum/faction_status/factions_string = factions.Join(", ")
 			message_staff("[key_name_admin(usr)] has sent a VOX report of type '[params["vox_type"]]' with an input of '[message]' to [factions_string].")
 		if("play_to_self")
 			if(!(params["vox_type"] in GLOB.vox_types))

@@ -199,7 +199,7 @@ datum/preferences/proc/randomize_skin_color()
 
 	if(show_job_gear)
 		arm_equipment(preview_dummy, J, FALSE, FALSE, owner)
-	
+
 	preview_front = new()
 	owner.screen |= preview_front
 	preview_front.icon_state = "blank"

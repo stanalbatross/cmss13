@@ -35,7 +35,7 @@
 	max_n2 = 0
 	minbodytemp = 0
 
-	faction = "carp"
+	faction_to_get = SET_FACTION_NEUTRAL
 
 /mob/living/simple_animal/hostile/tree/FindTarget()
 	. = ..()

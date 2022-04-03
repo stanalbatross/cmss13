@@ -1,8 +1,5 @@
-//Xenomorph General Procs And Functions - Colonial Marines
-//LAST EDIT: APOPHIS 22MAY16
-
 //Send a message to all xenos. Mostly used in the deathgasp display
-/proc/xeno_message(var/message = null, var/size = 3, var/hivenumber = XENO_HIVE_NORMAL)
+/proc/xeno_message(var/message = null, var/size = 3, var/datum/faction_status/faction)
 	if(!message)
 		return
 
@@ -18,7 +15,7 @@
 	if(SSticker.mode && SSticker.mode.xenomorphs.len) //Send to only xenos in our gamemode list. This is faster than scanning all mobs
 		for(var/datum/mind/L in SSticker.mode.xenomorphs)
 			var/mob/living/carbon/M = L.current
-			if(M && istype(M) && !M.stat && M.client && (!hivenumber || M.ally_of_hivenumber(hivenumber))) //Only living and connected xenos
+			if(M && istype(M) && !M.stat && M.client && (!faction || M.ally(faction))) //Only living and connected xenos
 				to_chat(M, SPAN_XENODANGER("<span class=\"[fontsize_style]\"> [message]</span>"))
 
 /proc/xeno_message_all(var/message = null, var/size = 3)
@@ -61,10 +58,10 @@
 		evolve_progress = "[round(amount_grown)]/[max_grown]"
 	else if(caste && caste.evolution_allowed)
 		evolve_progress = "[round(evolution_stored)]/[evolution_threshold]"
-		if(hive && !hive.allow_no_queen_actions)
-			if(!hive.living_xeno_queen)
+		if(faction && !faction.allow_no_queen_actions)
+			if(!faction.living_xeno_queen)
 				evolve_progress += " (NO QUEEN)"
-			else if(!(hive.living_xeno_queen.ovipositor || hive.evolution_without_ovipositor))
+			else if(!(faction.living_xeno_queen.ovipositor || faction.evolution_without_ovipositor))
 				evolve_progress += " (NO OVIPOSITOR)"
 
 	if(evolve_progress)
@@ -98,33 +95,33 @@
 		. += "Recovery: [msg_holder]"
 		. += ""
 
-	if(hive)
-		if(!hive.living_xeno_queen)
+	if(faction)
+		if(!faction.living_xeno_queen)
 			. += "Queen's Location: NO QUEEN"
 		else if(!(caste_type == XENO_CASTE_QUEEN))
-			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
+			. += "Queen's Location: [faction.living_xeno_queen.loc.loc.name]"
 
-		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
+		if(faction.slashing_allowed == XENO_SLASH_ALLOWED)
 			. += "Slashing: PERMITTED"
 		else
 			. += "Slashing: FORBIDDEN"
 
-		if(hive.construction_allowed == XENO_LEADER)
+		if(faction.construction_allowed == XENO_LEADER)
 			. += "Construction Placement: LEADERS"
-		else if(hive.construction_allowed == NORMAL_XENO)
+		else if(faction.construction_allowed == NORMAL_XENO)
 			. += "Construction Placement: ANYONE"
 		else
 			. += "Construction Placement: QUEEN"
 
-		if(hive.destruction_allowed == XENO_LEADER)
+		if(faction.destruction_allowed == XENO_LEADER)
 			. += "Special Structure Destruction: LEADERS"
-		else if(hive.destruction_allowed == NORMAL_XENO)
+		else if(faction.destruction_allowed == NORMAL_XENO)
 			. += "Special Structure Destruction: BUILDERS and LEADERS"
 		else
 			. += "Special Structure Destruction: QUEEN"
 
-		if(hive.hive_orders)
-			. += "Hive Orders: [hive.hive_orders]"
+		if(faction.orders)
+			. += "Hive Orders: [faction.orders]"
 		else
 			. += "Hive Orders: -"
 
@@ -219,13 +216,13 @@
 
 	var/obj/effect/alien/weeds/W = locate(/obj/effect/alien/weeds) in loc
 	if (W)
-		if (W.linked_hive.hivenumber == hivenumber)
+		if (W.faction == faction)
 			if(weedwalking_activated)
 				. -= 1.5
 			. *= 0.95
 
 	var/obj/effect/alien/resin/sticky/fast/FR = locate(/obj/effect/alien/resin/sticky/fast) in loc
-	if (FR && FR.hivenumber == hivenumber)
+	if (FR && FR.faction == faction)
 		. *= 0.8
 
 	if(superslowed)
@@ -465,9 +462,9 @@
 
 //When the Queen's pheromones are updated, or we add/remove a leader, update leader pheromones
 /mob/living/carbon/Xenomorph/proc/handle_xeno_leader_pheromones()
-	if(!hive)
+	if(!faction)
 		return
-	var/mob/living/carbon/Xenomorph/Queen/Q = hive.living_xeno_queen
+	var/mob/living/carbon/Xenomorph/Queen/Q = faction.living_xeno_queen
 	if(!Q || !Q.ovipositor || hive_pos == NORMAL_XENO || !Q.current_aura || Q.loc.z != loc.z) //We are no longer a leader, or the Queen attached to us has dropped from her ovi, disabled her pheromones or even died
 		leader_aura_strength = 0
 		leader_current_aura = ""

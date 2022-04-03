@@ -135,8 +135,7 @@
 
 	var/job = null					// Internal job title used when mob is spawned. Preds are "Predator", Xenos are "Xenomorph", Marines have their actual job title
 	var/comm_title = ""
-	var/faction = FACTION_NEUTRAL
-	var/faction_group
+	var/datum/faction_status/faction
 
 	var/looc_overhead = FALSE
 
@@ -146,7 +145,7 @@
 
 	var/list/viruses = list() //List of active diseases
 
-//Monkey/infected mode
+	///Monkey/infected mode
 	var/list/resistances = list()
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
@@ -156,7 +155,7 @@
 	var/area/lastarea = null
 	var/obj/control_object //Used by admins to possess objects. All mobs should have this var
 
-	//Whether or not mobs can understand other mobtypes. These stay in /mob so that ghosts can hear everything.
+	///Whether or not mobs can understand other mobtypes. These stay in /mob so that ghosts can hear everything.
 	var/universal_speak = 0 // Set to 1 to enable the mob to speak to everyone -- TLE
 	var/universal_understand = 0 // Set to 1 to enable the mob to understand everyone, not necessarily speak
 

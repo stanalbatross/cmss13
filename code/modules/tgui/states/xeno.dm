@@ -9,18 +9,18 @@ GLOBAL_LIST_INIT(hive_state, setup_hive_states())
 
 /proc/setup_hive_states()
 	. = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		.[hive.internal_faction] = new/datum/ui_state/hive_state(hive.hivenumber)
+	for(var/faction in SET_FACTION_LIST_XENOS)
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
+		.[hive] = new/datum/ui_state/hive_state(hive)
 
 /datum/ui_state/hive_state
 	var/hivenumber
-	var/datum/hive_status/hive
+	var/datum/faction_status/xeno/hive
 
-/datum/ui_state/hive_state/New(var/hive_to_assign)
+/datum/ui_state/hive_state/New(var/datum/faction_status/xeno/Hive)
 	. = ..()
-	hivenumber = hive_to_assign
-	hive = GLOB.hive_datum[hive_to_assign]
+	hive = Hive
+	hivenumber = hive.faction_number
 
 /datum/ui_state/hive_state/can_use_topic(src_object, mob/user)
 	if(hive.is_ally(user))
@@ -38,9 +38,9 @@ GLOBAL_LIST_INIT(hive_state_queen, setup_hive_queen_states())
 
 /proc/setup_hive_queen_states()
 	. = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		.[hive.internal_faction] = new/datum/ui_state/hive_state/queen(hive.hivenumber)
+	for(var/faction in SET_FACTION_LIST_XENOS)
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
+		.[hive] = new/datum/ui_state/hive_state/queen(hive)
 
 /datum/ui_state/hive_state/queen/can_use_topic(src_object, mob/user)
 	. = ..()

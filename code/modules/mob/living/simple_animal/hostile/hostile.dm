@@ -1,5 +1,4 @@
 /mob/living/simple_animal/hostile
-	faction = "hostile"
 	var/stance = HOSTILE_STANCE_IDLE	//Used to determine behavior
 	var/mob/living/target_mob
 	var/attack_same = 0
@@ -13,6 +12,11 @@
 	var/break_stuff_probability = 10
 	stop_automated_movement_when_pulled = 0
 	var/destroy_surroundings = 1
+
+	var/faction_to_get = SET_FACTION_NEUTRAL
+
+/mob/living/simple_animal/hostile/Initialize()
+	faction = GLOB.faction_datum[faction_to_get]
 
 /mob/living/simple_animal/hostile/proc/FindTarget()
 
@@ -178,8 +182,8 @@
 		qdel(A)
 		return
 	A.current = target
-	A.yo = target:y - start:y
-	A.xo = target:x - start:x
+	A.y_offset = target:y - start:y
+	A.x_offset = target:x - start:x
 	spawn( 0 )
 		A.process()
 	return

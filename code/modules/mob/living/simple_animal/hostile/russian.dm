@@ -30,9 +30,9 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = FACTION_UPP
 	status_flags = CANPUSH
 
+	faction_to_get = SET_FACTION_UPP
 
 /mob/living/simple_animal/hostile/russian/ranged
 	icon_state = "russianranged"
@@ -77,9 +77,9 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = FACTION_UPP
 	status_flags = CANPUSH
 
+	faction_to_get = SET_FACTION_UPP
 
 /mob/living/simple_animal/hostile/UPP/ranged
 	//weapon1 = /obj/item/weapon/gun/projectile/mateba
