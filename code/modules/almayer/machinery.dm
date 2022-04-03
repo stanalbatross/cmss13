@@ -221,50 +221,74 @@
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "maptable"
 
-	var/map_type = TACMAP_DEFAULT
-	var/map_base_type = TACMAP_BASE_OCCLUDED
-	var/map_additional_parameter = null
+	var/faction_to_set = SET_FACTION_USCM
+	var/minimap_name = "Marine Minimap"
+	var/datum/tacmap/tacmap_info/tacmap_info
+	var/map = GROUND_MAP
 
 /obj/structure/machinery/prop/almayer/CICmap/Initialize()
 	. = ..()
-	SSmapview.map_machines += src
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
+	generate_tacmap_link()
+
+/obj/structure/machinery/prop/almayer/CICmap/proc/generate_tacmap_link()
+	set waitfor=0
+	WAIT_MAPVIEW_READY
+
+	tacmap_info = SSmapview.mapviews["[faction.internal_faction]"]
+
+	tacmap_info.connect_to_machine(src)
+	RegisterSignal(tacmap_info, COMSIG_MAPVIEW_UPDATE, .proc/prepare_update_mapview)
 
 /obj/structure/machinery/prop/almayer/CICmap/Destroy()
 	for(var/mob/living/L in current_viewers)
 		to_chat(L, SPAN_NOTICE("You stop looking at the map."))
-		close_browser(L,"marineminimap")
+		close_browser(L,"minimap_ground")
 		current_viewers -= L
 		continue
-	SSmapview.map_machines -= src
 	return ..()
 
 /obj/structure/machinery/prop/almayer/CICmap/examine(mob/living/user)
 	if(ishuman(user) && get_dist(src,user) < 3 && powered())
 		if(user in current_viewers)
 			to_chat(user, SPAN_NOTICE("You stop looking at the map."))
-			close_browser(user, "marineminimap")
+			close_browser(user, "minimap")
 			current_viewers -= user
 			return
 		current_viewers += user
-		to_chat(user, SPAN_NOTICE("You start looking at the map."))
-		var/icon/O = overlay_tacmap(map_type, map_base_type, map_additional_parameter)
-		user << browse_rsc(O, "marine_minimap.png")
-		show_browser(user, "<img src=marine_minimap.png>", "Tactical Map Table", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
-		return
+		var/icon/O = tacmap_info.overlay_tacmap()
+		if(O)
+			user << browse_rsc(O, "minimap.png")
+			show_browser(user, "<img src=minimap.png>", minimap_name, "minimap", "size=[(tacmap_info.tacmap[map].sizes[1].x*2)+50]x[(tacmap_info.tacmap[map].sizes[2].y*2)+50]", closeref = src)
+			to_chat(user, SPAN_NOTICE("Вы начали смотреть на карту."))
+			return
 	..()
 
-/obj/structure/machinery/prop/almayer/CICmap/proc/update_mapview()
-	var/icon/O = overlay_tacmap(map_type, map_base_type, map_additional_parameter)
-	for(var/mob/living/L in current_viewers)
-		if(!powered() || get_dist(src,L) > 2)
+/obj/structure/machinery/prop/almayer/CICmap/proc/prepare_update_mapview(var/icon/O)
+	SIGNAL_HANDLER
+	for(var/mob/L in current_viewers)
+		if(!powered() || get_dist(src,L) > 2 || !O)
 			to_chat(L, SPAN_NOTICE("You stop looking at the map."))
-			close_browser(L, "marineminimap")
+			close_browser(L, "minimap")
 			current_viewers -= L
 			continue
 
-		L << browse_rsc(O, "marine_minimap.png")
-		show_browser(L, "<img src=marine_minimap.png>", "Tactical Map Table", "marineminimap", "size=[(map_sizes[1]*2)+50]x[(map_sizes[2]*2)+50]", closeref = src)
+		update_mapview(tacmap_info, L, minimap_name, map, O)
 
+/obj/structure/machinery/prop/almayer/CICmap/proc/mapview()
+	var/icon/O = tacmap_info.overlay_tacmap(map)
+	prepare_update_mapview(O)
+
+/obj/structure/machinery/prop/almayer/CICmap/verb/change_mapview_location()
+	set name = "Change TACMAP Location"
+	set category = "Object"
+	set src in usr
+
+	var/new_map = tacmap_info.change_mapview(usr)
+	if(!new_map)
+		return
+	map = new_map
 
 /obj/structure/machinery/prop/almayer/CICmap/Topic(href, href_list)
 	. = ..()
@@ -272,7 +296,7 @@
 		return
 	if(href_list["close"] && usr)
 		to_chat(usr, SPAN_NOTICE("You stop looking at the map."))
-		close_browser(usr, "marineminimap")
+		close_browser(usr, "minimap")
 		current_viewers -= usr
 
 /obj/structure/machinery/prop/almayer/CICmap/upp
@@ -403,6 +427,7 @@
 	desc = "The Mark 74 Railgun is top of the line for space based weaponry. Capable of firing a round with a diameter of 3/4ths of a meter at 24 kilometers per second. It also is capable of using a variety of round types which can be interchanged at anytime with its newly designed feed system."
 	icon = 'icons/obj/structures/machinery/artillery.dmi'
 	icon_state = "1"
+	mouse_opacity = 0
 	unslashable = TRUE
 	unacidable = TRUE
 
