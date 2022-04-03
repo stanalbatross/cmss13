@@ -51,9 +51,9 @@
 	. = ..()
 	addtimer(CALLBACK(src, .proc/end_boost), duration)
 	active = TRUE
-	hive.evolution_bonus += evo_rate
+	faction.evolution_bonus += evo_rate
 
 
 /datum/tech/xeno/powerup/evo_boost/proc/end_boost()
 	active = FALSE
-	hive.evolution_bonus -= evo_rate
+	faction.evolution_bonus -= evo_rate

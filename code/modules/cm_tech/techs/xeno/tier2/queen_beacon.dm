@@ -28,4 +28,4 @@
 	A.charges += charges_to_give
 
 /datum/tech/xeno/powerup/queen_beacon/get_applicable_xenos(var/mob/user)
-	return hive.living_xeno_queen
+	return faction.living_xeno_queen

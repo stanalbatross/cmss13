@@ -152,8 +152,7 @@
 			if(world.time > round_time_larva_interval)
 				for(var/hive in hives)
 					GLOB.faction_datum[hive].stored_larva += 1
-					GLOB.faction_datum[hive].stored_silo_larva += 1
-					GLOB.faction_datum[hive].hive_ui.update_pooled_larva()
+					GLOB.faction_datum[hive].faction_ui.update_pooled_larva()
 
 				round_time_larva_interval = world.time + hive_larva_interval_gain
 
@@ -171,10 +170,8 @@
 
 /datum/game_mode/xenovs/proc/get_xenos_hive(list/z_levels = SSmapping.levels_by_any_trait(list(ZTRAIT_GROUND, ZTRAIT_LOWORBIT, ZTRAIT_MARINE_MAIN_SHIP)))
 	var/list/list/factions = list()
-	var/datum/hive_status/HS
 	for(var/datum/faction_status/faction in GLOB.faction_datum)
-		HS = GLOB.faction_datum[faction]
-		factions += list(HS.name = list())
+		factions += list(faction.name = list())
 
 	for(var/mob/M in GLOB.player_list)
 		if(M.z && (M.z in z_levels) && M.stat != DEAD && !istype(M.loc, /turf/open/space)) //If they have a z var, they are on a turf.

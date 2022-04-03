@@ -30,12 +30,12 @@
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/give_shielding_slash)
 
-	for(var/xeno in hive.totalXenos)
+	for(var/xeno in faction.totalMobs)
 		give_shielding_slash(src, xeno)
 
 /datum/tech/xeno/shielding_slash/proc/give_shielding_slash(datum/source, mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	if(X.hivenumber != hivenumber)
+	if(X.factionnumber != faction)
 		return
 
 	X.AddComponent(/datum/component/shield_slash, max_shield, shield_per_slash, stat_name)

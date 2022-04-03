@@ -29,20 +29,16 @@
 	if(!istype(C))
 		return FALSE
 
-	if(!hive)
-		hive = GLOB.hive_datum[hivenumber]
-
-	if(!hive)
+	if(!faction)
 		return FALSE
 
-	return hive.is_ally(C)
+	return faction.is_ally(C)
 
 // need this to set the data for walls/eggs/huggers when they are initialized
-/proc/set_hive_data(var/atom/A, hivenumber)
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-	if (hive.color)
-		A.color = hive.color
-	A.name = "[lowertext(hive.prefix)][A.name]"
+/proc/set_hive_data(var/atom/A, var/datum/faction_status/faction)
+	if(faction.color)
+		A.color = faction.color
+	A.name = "[lowertext(faction.prefix)][A.name]"
 
 /proc/get_xeno_stun_duration(var/mob/A, duration)
 	if(isCarbonSizeXeno(A))

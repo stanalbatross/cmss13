@@ -300,19 +300,16 @@
 		current_viewers -= usr
 
 /obj/structure/machinery/prop/almayer/CICmap/upp
-	map_type = TACMAP_FACTION
-	map_base_type = TACMAP_BASE_OPEN
-	map_additional_parameter = FACTION_UPP
+	faction_to_set = SET_FACTION_UPP
+	minimap_name = "UPP Minimap"
 
 /obj/structure/machinery/prop/almayer/CICmap/clf
-	map_type = TACMAP_FACTION
-	map_base_type = TACMAP_BASE_OPEN
-	map_additional_parameter = FACTION_CLF
+	faction_to_set = SET_FACTION_CLF
+	minimap_name = "CLF Minimap"
 
 /obj/structure/machinery/prop/almayer/CICmap/pmc
-	map_type = TACMAP_FACTION
-	map_base_type = TACMAP_BASE_OPEN
-	map_additional_parameter = FACTION_PMC
+	faction_to_set = SET_FACTION_WY
+	minimap_name = "WY Minimap"
 
 
 //Nonpower using props

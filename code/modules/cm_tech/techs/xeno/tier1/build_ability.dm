@@ -31,7 +31,7 @@
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/give_build_ability)
 
-	for(var/m in hive.totalXenos)
+	for(var/m in faction.totalXenos)
 		give_build_ability(src, m)
 
 /datum/tech/xeno/build_distribution/proc/give_build_ability(datum/source, var/mob/living/carbon/Xenomorph/X)

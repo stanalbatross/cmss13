@@ -1,5 +1,3 @@
-var/bomb_set = FALSE
-
 /obj/structure/machinery/nuclearbomb
 	name = "\improper Nuclear Fission Explosive"
 	desc = "Nuke the entire site from orbit, it's the only way to be sure. Too bad we don't have any orbital nukes."
@@ -9,6 +7,7 @@ var/bomb_set = FALSE
 	unslashable = TRUE
 	unacidable = TRUE
 	anchored = 0
+	var/crash_nuke = 0
 	var/timing = FALSE
 	var/deployable = FALSE
 	var/explosion_time = null
@@ -17,6 +16,7 @@ var/bomb_set = FALSE
 	var/being_used = FALSE
 	var/end_round = TRUE
 	var/timer_announcements_flags = NUKE_SHOW_TIMER_ALL
+	var/has_auth
 	pixel_x = -16
 	use_power = 0
 	req_access = list()
@@ -43,6 +43,8 @@ var/bomb_set = FALSE
 
 /obj/structure/machinery/nuclearbomb/process()
 	. = ..()
+	GLOB.active_nuke_list += src
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_START, src)
 	if(timing)
 		bomb_set = TRUE //So long as there is one nuke timing, it means one nuke is armed.
 		timeleft = explosion_time - world.time
@@ -91,14 +93,15 @@ var/bomb_set = FALSE
 
 	user.set_interaction(src)
 	if(deployable)
-		if (!ishuman(user) && !isXenoQueen(user))
+		if (!ishuman(user) && (!isXenoQueen(user) && (!isXeno(user) && !crash_nuke)))
 			to_chat(usr, SPAN_DANGER("You don't have the dexterity to do this!"))
 			return
 
-		if (isXenoQueen(user))
+		if (isXeno(user))
 			if(timing && bomb_set)
 				user.visible_message(SPAN_DANGER("[user] begins to defuse [src]."), SPAN_DANGER("You begin to defuse [src]. This will take some time..."))
 				if(do_after(user, 5 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
+					SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_DIFFUSED, src)
 					disable()
 			return
 		ui_interact(user)
@@ -136,11 +139,13 @@ var/bomb_set = FALSE
 
 	if (!usr.canmove || usr.stat || usr.is_mob_restrained() || being_used || timing)
 		return
-
 	if (!ishuman(usr))
 		to_chat(usr, SPAN_DANGER("You don't have the dexterity to do this!"))
 		return
-
+	if(crash_nuke)
+		if(!has_auth)
+			to_chat(usr, SPAN_DANGER("No have disks!"))
+			return
 	var/area/A = get_area(src)
 	if (!A.can_build_special)
 		to_chat(usr, SPAN_DANGER("You don't want to deploy this here!"))
@@ -289,7 +294,7 @@ var/bomb_set = FALSE
 				if(H.stat != CONSCIOUS || isYautja(H))
 					humans_other.Remove(M)
 					continue
-			if(M.faction == FACTION_MARINE || M.faction == FACTION_SURVIVOR)			//separating marines from other factions. Survs go here too
+			if(M.faction == GLOB.faction_datum[SET_FACTION_USCM])			//separating marines from other factions. Survs go here too
 				humans_USCM += M
 				humans_other -= M
 		announcement_helper("WARNING.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_USCM, 'sound/misc/notice1.ogg')
@@ -305,12 +310,11 @@ var/bomb_set = FALSE
 			warning = "Hive killer is almost ready to trigger!"
 		else
 			warning = "DISABLE IT! NOW!"
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			if(!hive.totalXenos.len)
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			faction = GLOB.faction_datum[faction]
+			if(!faction.totalMobs.len)
 				return
-			xeno_announcement(SPAN_XENOANNOUNCE(warning), hive.hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE(warning), faction, XENO_GENERAL_ANNOUNCE)
 		return
 
 	//deal with start/stop announcements for players
@@ -325,26 +329,26 @@ var/bomb_set = FALSE
 		if(M.faction == FACTION_MARINE || M.faction == FACTION_SURVIVOR)			//separating marines from other factions. Survs go here too
 			humans_USCM += M
 			humans_other -= M
-	var/datum/hive_status/hive
+	var/datum/faction_status/xeno/hive
 	if(timing)
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE ACTIVATED.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_USCM, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE ACTIVATED.\n\nDETONATION IN [round(timeleft/10)] SECONDS.", "HQ Nuclear Tracker", humans_other, 'sound/misc/notice1.ogg')
 		var/t_left = duration2text_sec(round(rand(timeleft - timeleft / 10, timeleft + timeleft / 10)))
 		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>A human Purification Device has been detected. You have approximately [t_left] to abandon the hunting grounds before it activates."))
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			if(!hive.totalXenos.len)
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			hive = GLOB.faction_datum[faction]
+			if(!hive.totalMobs.len)
 				continue
-			xeno_announcement(SPAN_XENOANNOUNCE("The tallhosts have deployed a hive killer at [get_area_name(loc)]! Stop it at all costs!"), hive.hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("The tallhosts have deployed a hive killer at [get_area_name(loc)]! Stop it at all costs!"), faction, XENO_GENERAL_ANNOUNCE)
 	else
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "[MAIN_AI_SYSTEM] Nuclear Tracker", humans_USCM, 'sound/misc/notice1.ogg')
 		announcement_helper("ALERT.\n\nNUCLEAR EXPLOSIVE ORDNANCE DEACTIVATED.", "HQ Intel Division", humans_other, 'sound/misc/notice1.ogg')
 		yautja_announcement(SPAN_YAUTJABOLDBIG("WARNING!<br>The human Purification Device's signature has disappeared."))
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			if(!hive.totalXenos.len)
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			hive = GLOB.faction_datum[faction]
+			if(!hive.totalMobs.len)
 				continue
-			xeno_announcement(SPAN_XENOANNOUNCE("The hive killer has been disabled! Rejoice!"), hive.hivenumber, XENO_GENERAL_ANNOUNCE)
+			xeno_announcement(SPAN_XENOANNOUNCE("The hive killer has been disabled! Rejoice!"), faction, XENO_GENERAL_ANNOUNCE)
 	return
 
 /obj/structure/machinery/nuclearbomb/ex_act(severity)
@@ -355,6 +359,8 @@ var/bomb_set = FALSE
 	bomb_set = FALSE
 	timeleft = initial(timeleft)
 	explosion_time = null
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_STOP, src)
+	GLOB.active_nuke_list -= src
 	announce_to_players()
 
 /obj/structure/machinery/nuclearbomb/proc/explode()
@@ -367,10 +373,13 @@ var/bomb_set = FALSE
 	update_icon()
 	safety = TRUE
 
-	EvacuationAuthority.trigger_self_destruct(list(z), src, FALSE, NUKE_EXPLOSION_GROUND_FINISHED, FALSE, end_round)
+	if(crash_nuke == 0)
+		EvacuationAuthority.trigger_self_destruct(list(z), src, FALSE, NUKE_EXPLOSION_GROUND_FINISHED, FALSE, end_round)
+	if(crash_nuke == 1)
+		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_EXPLODED, z)
 
 	sleep(100)
-	cell_explosion(loc, 500, 150, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name)))
+	cell_explosion(loc, 4000, 1, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name)))
 	qdel(src)
 	return TRUE
 

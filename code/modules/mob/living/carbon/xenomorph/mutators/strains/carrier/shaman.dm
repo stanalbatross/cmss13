@@ -154,7 +154,7 @@
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
 			continue
-		if(!hive.is_ally(X))
+		if(!faction.is_ally(X))
 			continue
 
 		to_chat(X, SPAN_XENOBOLDNOTICE("The sacrifice of an egg spikes your adrenal system into overdrive!"))
@@ -254,7 +254,7 @@
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
 			continue
-		if(!hive.is_ally(X))
+		if(!faction.is_ally(X))
 			continue
 
 		to_chat(X, SPAN_XENONOTICE("Your mind emits a strange wave of thoughts that even other creatures can feel!"))
@@ -280,7 +280,7 @@
 	for(var/mob/living/M in view(effect, src) - src)
 		if(M.stat == DEAD)
 			continue
-		if(hive.is_ally(M))
+		if(faction.is_ally(M))
 			continue
 		if(M.scream_stun_timeout > world.time)
 			to_chat(src, SPAN_XENOWARNING("A wave of madness passes over you, but you were already shocked by the same feeling recently."))
@@ -370,7 +370,7 @@
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
 			continue
-		if(!hive.is_ally(X))
+		if(!faction.is_ally(X))
 			continue
 
 		to_chat(X, SPAN_XENONOTICE("The death of an ovomorph causes you to release adrenal pheromones!"))

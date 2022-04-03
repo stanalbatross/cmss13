@@ -58,10 +58,10 @@
 
 	user.set_interaction(src)
 	var/dat = "<body>"
-	if(announcement_faction != FACTION_MARINE && EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
+	if(faction != GLOB.faction_datum[SET_FACTION_MARINE] && EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
 		dat += "<B>Evacuation in Progress</B>\n<BR>\nETA: [EvacuationAuthority.get_status_panel_eta()]<BR>"
 
-	if(announcement_faction == FACTION_MARINE)
+	if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
 		switch(state)
 			if(STATE_DEFAULT)
 				dat += "<BR><A HREF='?src=\ref[src];operation=announce'>Make an announcement</A>"
@@ -127,13 +127,13 @@
 					var/paygrade = get_paygrades(id.paygrade, FALSE, H.gender)
 					signed = "[paygrade] [id.registered_name]"
 
-			marine_announcement(input, announcement_title, faction_to_display = announcement_faction, add_PMCs = add_pmcs, signature = signed)
+			marine_announcement(input, announcement_title, faction_to_display = faction, signature = signed)
 			message_staff("[key_name(usr)] has made a command announcement.")
 			log_announcement("[key_name(usr)] has announced the following: [input]")
 			cooldown_message = world.time
 
 		if("award")
-			if(announcement_faction != FACTION_MARINE)
+			if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
 				return
 			if(usr.job != "Commanding Officer")
 				to_chat(usr, SPAN_WARNING("Only the Commanding Officer can award medals."))
@@ -150,7 +150,7 @@
 			map = tacmap_info.change_mapview(usr)
 
 		if("evacuation_start")
-			if(announcement_faction != FACTION_MARINE)
+			if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
 				return
 			if(state == STATE_EVACUATION)
 				if(security_level < SEC_LEVEL_RED)
@@ -177,10 +177,7 @@
 
 	tablet_name = "Site Director's Tablet"
 
-	announcement_title = PMC_COMMAND_ANNOUNCE
-	announcement_faction = FACTION_PMC
+	announcement_title = WY_COMMAND_ANNOUNCE
+	faction_to_set = SET_FACTION_PMC
 
-	tacmap_type = TACMAP_FACTION
-	tacmap_base_type = TACMAP_BASE_OPEN
-	tacmap_additional_parameter = FACTION_PMC
-	minimap_name = "PMC Minimap"
+	minimap_name = "WY Minimap"

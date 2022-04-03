@@ -75,7 +75,7 @@
 		to_chat(X, SPAN_WARNING("There's no weed to place it on!"))
 		return
 
-	if(W.hivenumber != X.hivenumber)
+	if(W.faction != X.faction)
 		to_chat(X, SPAN_WARNING("This weed is toxic to the fruit. Can't plant it here!"))
 		return
 
@@ -203,8 +203,8 @@
 	var/obj/structure/mineral_door/resin/door = A
 	var/turf/closed/wall/resin/wall = T
 
-	var/wall_present = istype(wall) && wall.hivenumber == X.hivenumber
-	var/door_present = istype(door) && door.hivenumber == X.hivenumber
+	var/wall_present = istype(wall) && wall.faction == X.faction
+	var/door_present = istype(door) && door.faction == X.faction
 	// Is my tile either a wall or a door
 	if(door_present || wall_present)
 		var/structure_to_buff = door || wall
@@ -226,7 +226,7 @@
 			to_chat(X, SPAN_XENONOTICE("You haplessly try to surge resin around [structure_to_buff], but it's already reinforced. It'll take a moment for you to recover."))
 			xeno_cooldown = xeno_cooldown * 0.5
 
-	else if(F && F.hivenumber == X.hivenumber)
+	else if(F && F.faction == X.faction)
 		if(F.mature)
 			to_chat(X, SPAN_XENONOTICE("The [F] is already mature. The [src.name] does nothing."))
 			xeno_cooldown = xeno_cooldown * 0.5
@@ -234,13 +234,13 @@
 			to_chat(X, SPAN_XENONOTICE("You surge the resin around the [F], speeding its growth somewhat!"))
 			F.reduce_timer(5 SECONDS)
 
-	else if(W && istype(T, /turf/open) && W.hivenumber == X.hivenumber)
+	else if(W && istype(T, /turf/open) && W.faction == X.faction)
 		X.visible_message(SPAN_XENODANGER("\The [X] surges the resin, creating an unstable wall!"), \
 		SPAN_XENONOTICE("You surge the resin, creating an unstable wall!"), null, 5)
 		T.PlaceOnTop(/turf/closed/wall/resin/weak)
 		var/turf/closed/wall/resin/weak_wall = T
-		weak_wall.hivenumber = X.hivenumber
-		set_hive_data(weak_wall, X.hivenumber)
+		weak_wall.faction = X.faction
+		set_hive_data(weak_wall, X.faction)
 
 	else if(T)
 		if(channel_in_progress)
@@ -254,9 +254,9 @@
 		SPAN_XENONOTICE("You surge the deep resin, creating an unstable sticky resin patch!"), null, 5)
 		for (var/turf/targetTurf in orange(1, T))
 			if(!locate(/obj/effect/alien/resin/sticky) in targetTurf)
-				new /obj/effect/alien/resin/sticky/thin/weak(targetTurf, X.hivenumber)
+				new /obj/effect/alien/resin/sticky/thin/weak(targetTurf, X.faction)
 		if(!locate(/obj/effect/alien/resin/sticky) in T)
-			new /obj/effect/alien/resin/sticky/thin/weak(T, X.hivenumber)
+			new /obj/effect/alien/resin/sticky/thin/weak(T, X.faction)
 
 	else
 		xeno_cooldown = xeno_cooldown * 0.5

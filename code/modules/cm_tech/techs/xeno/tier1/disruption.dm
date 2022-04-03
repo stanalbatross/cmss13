@@ -40,7 +40,7 @@
 	if(active)
 		to_chat(M, SPAN_WARNING("This tech is still active!"))
 		return FALSE
-	if(!hive.living_xeno_queen)
+	if(!faction.living_xeno_queen)
 		return FALSE
 
 /datum/tech/xeno/powerup/disruption/on_unlock(datum/techtree/tree)
@@ -50,17 +50,17 @@
 	RegisterSignal(SSradio, COMSIG_SSRADIO_GET_AVAILABLE_TCOMMS_ZS, .proc/override_available_zlevel)
 	for(var/h in GLOB.alive_human_list)
 		var/mob/living/carbon/human/H = h
-		if(H.z == hive.living_xeno_queen.z && H.get_type_in_ears(/obj/item/device/radio/headset))
+		if(H.z == faction.living_xeno_queen.z && H.get_type_in_ears(/obj/item/device/radio/headset))
 			to_chat(H, SPAN_WARNING("You feel a psychic disturbance! All you can hear is static from your headset."))
 
 
 /datum/tech/xeno/powerup/disruption/proc/override_available_zlevel(var/datum/source, var/list/target_zs)
 	SIGNAL_HANDLER
-	if(!hive.living_xeno_queen)
+	if(!faction.living_xeno_queen)
 		return
 
 	for(var/i in target_zs)
-		if(i == hive.living_xeno_queen.z)
+		if(i == faction.living_xeno_queen.z)
 			target_zs -= i
 
 /datum/tech/xeno/powerup/disruption/proc/end_disruption()

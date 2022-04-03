@@ -69,27 +69,30 @@
 
 					if(C.mob && C.mob.stat != DEAD)
 						if(ishuman(C.mob))
-							if(C.mob.faction == FACTION_ZOMBIE)
-								counted_humanoids[FACTION_ZOMBIE]++
-								continue
-							if(C.mob.faction == FACTION_YAUTJA)
-								counted_humanoids[FACTION_YAUTJA]++
-								if(C.mob.status_flags & XENO_HOST)
-									counted_humanoids["Infected preds"]++
-								continue
-							counted_humanoids["Humans"]++
-							if(C.mob.status_flags & XENO_HOST)
-								counted_humanoids["Infected humans"]++
-							if(C.mob.faction == FACTION_MARINE)
-								counted_humanoids[FACTION_MARINE]++
-								if(C.mob.job in (ROLES_MARINES))
-									counted_humanoids["USCM Marines"]++
+							if(!C.mob.faction)
+								counted_humanoids["Observers"]++
 							else
-								counted_humanoids[C.mob.faction]++
-						if(isXeno(C.mob))
+								var/mob/living/carbon/human/Z = C.mob
+								if(Z.species.name == "Zombie")
+									counted_humanoids[FACTION_ZOMBIE]++
+								else if(C.mob.faction.internal_faction == FACTION_YAUTJA)
+									counted_humanoids[FACTION_YAUTJA]++
+									if(C.mob.status_flags & XENO_HOST)
+										counted_humanoids["Infected preds"]++
+								else if(C.mob.status_flags & XENO_HOST)
+									counted_humanoids["Infected humans"]++
+								else if(C.mob.faction.internal_faction == FACTION_MARINE)
+									counted_humanoids["Humans"]++
+									counted_humanoids[FACTION_MARINE]++
+									if(C.mob.job in (ROLES_MARINES))
+										counted_humanoids["USCM Marines"]++
+								else
+									counted_humanoids["Humans"]++
+									counted_humanoids[C.mob.faction.internal_faction]++
+						else if(isXeno(C.mob))
 							var/mob/living/carbon/Xenomorph/X = C.mob
-							counted_xenos[X.hivenumber]++
-							if(X.faction == FACTION_PREDALIEN)
+							counted_xenos[X.faction]++
+							if(X.faction.internal_faction == FACTION_PREDALIEN)
 								counted_xenos[FACTION_PREDALIEN]++
 							entry += " - <B><font color='red'>Xenomorph</font></B>"
 				entry += " (<A HREF='?_src_=admin_holder;ahelp=adminplayeropts;extra=\ref[C.mob]'>?</A>)"
@@ -117,20 +120,17 @@
 			dat += "<BR><B style='color:#688944'>[FACTION_NEUTRAL] Humans: [counted_humanoids[FACTION_NEUTRAL]]</B>"
 
 		show_fact = TRUE
-		var/datum/hive_status/hive
-		for(var/hivenumber in counted_xenos)
+		for(var/datum/faction_status/xeno/faction in counted_xenos)
 			// Print predalien counts last
-			if(hivenumber == FACTION_PREDALIEN)
+			if(faction == FACTION_PREDALIEN)
 				continue
 			if(show_fact)
 				dat += "<BR><BR>Xenomorphs:"
 				show_fact = FALSE
-			hive = GLOB.hive_datum[hivenumber]
-			if(hive)
-				dat += "<BR><B style='color:[hive.color ? hive.color : "#8200FF"]'>[hive.name]: [counted_xenos[hivenumber]]</B> <B style='color:#4D0096'>(Queen: [hive.living_xeno_queen ? "Alive" : "Dead"])</B>"
+			if(faction)
+				dat += "<BR><B style='color:[faction.color ? faction.color : "#8200FF"]'>[faction.name]: [counted_xenos[faction]]</B> <B style='color:#4D0096'>(Queen: [faction.living_xeno_queen ? "Alive" : "Dead"])</B>"
 			else
-				dat += "<BR><B style='color:#F00'>Error: no hive datum detected for [hivenumber].</B>"
-			hive = null
+				dat += "<BR><B style='color:#F00'>Error: no hive datum detected for [faction].</B>"
 		if(counted_xenos[FACTION_PREDALIEN])
 			dat += "<BR><B style='color:#7ABA19'>Predaliens: [counted_xenos[FACTION_PREDALIEN]]</B>"
 

@@ -396,8 +396,8 @@
 		new_xeno.visible_message(SPAN_XENODANGER("A [new_xeno.caste.caste_type] emerges from the husk of \the [T]."), \
 		SPAN_XENODANGER("[X] makes you regress into your previous form."))
 
-		if(X.hive.living_xeno_queen && X.hive.living_xeno_queen.observed_xeno == T)
-			X.hive.living_xeno_queen.overwatch(new_xeno)
+		if(X.faction.living_xeno_queen && X.faction.living_xeno_queen.observed_xeno == T)
+			X.faction.living_xeno_queen.overwatch(new_xeno)
 
 		message_staff("[key_name_admin(X)] has deevolved [key_name_admin(T)]. Reason: [reason]")
 

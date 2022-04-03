@@ -26,7 +26,7 @@
 	. = ..()
 	if(!.)
 		return
-	if(!hive.living_xeno_queen?.ovipositor)
+	if(!faction.living_xeno_queen?.ovipositor)
 		to_chat(M, SPAN_XENOWARNING("The Queen must be on her ovipositor to apply this tech!"))
 		return FALSE
 

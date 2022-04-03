@@ -1,13 +1,13 @@
 /datum/tech/xeno
 	name = "Xeno Tech"
 
-	var/hivenumber = XENO_HIVE_NORMAL
-	var/datum/hive_status/hive
+	var/faction_to_get = SET_FACTION_HIVE_NORMAL
+	var/datum/faction_status/faction
 
 /datum/tech/xeno/on_tree_insertion(var/datum/techtree/xenomorph/tree)
 	. = ..()
-	hivenumber = tree.hivenumber
-	hive = GLOB.hive_datum[hivenumber]
+	faction_to_get = tree.faction_to_get
+	faction = GLOB.faction_datum[faction_to_get]
 
 /datum/tech/xeno/on_unlock()
 	. = ..()
