@@ -10,7 +10,7 @@
 
 	var/mob/living/carbon/human/H = target
 
-	if(H.faction != FACTION_MARINE)
+	if(H.faction != GLOB.faction_datum[SET_FACTION_USCM])
 		to_chat(user, SPAN_WARNING("This player's faction must equal '[FACTION_MARINE]' to make them a mutineer."))
 		return
 
@@ -25,13 +25,13 @@
 	message_staff("[key_name_admin(user)] has made [key_name_admin(H)] into a [title].")
 
 // XENO
-/datum/player_action/change_hivenumber
-	action_tag = "xeno_change_hivenumber"
-	name = "Change Hivenumber"
+/datum/player_action/change_faction
+	action_tag = "xeno_change_faction"
+	name = "Change faction"
 	permissions_required = R_SPAWN
 
-/datum/player_action/change_hivenumber/act(var/client/user, var/mob/target, var/list/params)
-	if(!params["hivenumber"])
+/datum/player_action/change_faction/act(var/client/user, var/mob/target, var/list/params)
+	if(!params["faction"])
 		return
 
 	if(!isXeno(target))
@@ -39,8 +39,8 @@
 
 	var/mob/living/carbon/Xenomorph/X = target
 
-	X.set_hive_and_update(params["hivenumber"])
-	message_staff("[key_name_admin(user)] changed hivenumber of [target] to [params["hivenumber"]].")
+	X.set_hive_and_update(params["faction"])
+	message_staff("[key_name_admin(user)] changed faction of [target] to [params["faction"]].")
 	return TRUE
 
 /datum/player_action/make_cultist
@@ -49,7 +49,7 @@
 	permissions_required = R_FUN
 
 /datum/player_action/make_cultist/act(var/client/user, var/mob/target, var/list/params)
-	if(!params["hivenumber"])
+	if(!params["faction"])
 		return
 
 	if(!ishuman(target))
@@ -62,10 +62,10 @@
 		preset = GLOB.gear_path_presets_list[/datum/equipment_preset/other/xeno_cultist/leader]
 
 
-	preset.load_race(H, params["hivenumber"])
+	preset.load_race(H, params["faction"])
 	preset.load_status(H)
 
 	var/title = params["leader"]? "xeno cultist leader" : "cultist"
 
-	message_staff("[key_name_admin(user)] has made [target] into a [title], enslaved to hivenumber [params["hivenumber"]].")
+	message_staff("[key_name_admin(user)] has made [target] into a [title], enslaved to faction [params["faction"]].")
 	return TRUE

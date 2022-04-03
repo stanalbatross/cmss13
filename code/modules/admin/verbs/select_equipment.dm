@@ -33,10 +33,15 @@
 				if(rankpath)
 					var/obj/item/clothing/accessory/ranks/R = new rankpath()
 					C.attach_accessory(H, R)
-		var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
+		var/list/choices = SET_FACTION_LIST_HUMANS
+		var/list/factions
+		for(var/faction_to_get in choices)
+			var/datum/faction_status/faction = GLOB.faction_datum[faction_to_get]
+			factions += list("[faction.name]" = faction)
+		var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", factions)
 		if(!new_faction)
-			new_faction = FACTION_NEUTRAL
-		H.faction = new_faction
+			new_faction = SET_FACTION_NEUTRAL
+		H.faction = GLOB.faction_datum[new_faction]
 	else
 		switch(newrank)
 			if("Weyland-Yutani")
@@ -58,8 +63,7 @@
 
 				H.apply_wy_rank_code(code)
 
-				H.faction = FACTION_WY
-				H.faction_group = FACTION_LIST_WY
+				H.faction = GLOB.faction_datum[SET_FACTION_WY]
 
 				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", (list("Keep Skillset") +RoleAuthority.roles_by_name))
 				if(!newskillset || newskillset == "Keep Skillset")
@@ -100,10 +104,10 @@
 					I.assignment = IDtitle
 					I.name = "[I.registered_name]'s ID Card ([I.assignment])"
 
-				var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", FACTION_LIST_HUMANOID)
+				var/new_faction = tgui_input_list(usr, "Select faction.", "Faction Choice", SET_FACTION_LIST_HUMANS)
 				if(!new_faction)
-					new_faction = FACTION_NEUTRAL
-				H.faction = new_faction
+					new_faction = SET_FACTION_NEUTRAL
+				H.faction = GLOB.faction_datum[new_faction]
 
 				var/newskillset = tgui_input_list(usr, "Select a skillset", "Skill Set", RoleAuthority.roles_by_name)
 				if(!newskillset)

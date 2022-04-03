@@ -20,6 +20,8 @@
 	var/plasma_stored = 0
 	var/plasma_required_to_repair = 300
 
+	var/protection_level = TURF_PROTECTION_CAS
+
 /obj/effect/alien/resin/special/cluster/Initialize(mapload, hive_ref)
 	. = ..()
 	node = place_node()
@@ -29,7 +31,7 @@
 	return ..()
 
 /obj/effect/alien/resin/special/cluster/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(isXenoBuilder(M) && M.a_intent == INTENT_HELP && M.hivenumber == linked_hive.hivenumber)
+	if(isXenoBuilder(M) && M.a_intent == INTENT_HELP && M.faction == faction)
 		do_repair(M) //This handles the delay itself.
 		return XENO_NO_DELAY_ACTION
 	else
@@ -72,7 +74,7 @@
 	playsound(loc, "alien_resin_build", 25)
 
 /obj/effect/alien/resin/special/cluster/proc/place_node()
-	var/obj/effect/alien/weeds/node/pylon/cluster/W = new node_type(loc, null, null, linked_hive)
+	var/obj/effect/alien/weeds/node/pylon/cluster/W = new node_type(loc, null, null, faction)
 	W.resin_parent = src
 	return W
 

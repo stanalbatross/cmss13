@@ -167,7 +167,7 @@ GLOBAL_LIST_INIT(pp_transformables, list(
 		var/mob/living/carbon/Xenomorph/newXeno = M
 		if(isXeno(target))
 			var/mob/living/carbon/Xenomorph/X = target
-			newXeno.set_hive_and_update(X.hivenumber)
+			newXeno.set_hive_and_update(X.faction)
 
 		newXeno.generate_name()
 

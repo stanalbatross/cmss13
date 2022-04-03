@@ -16,7 +16,7 @@
 		var/datum/custom_event_info/CEI = GLOB.custom_event_info_list[T]
 		temp_list["[CEI.msg ? "(x) [CEI.faction]" : CEI.faction]"] = CEI.faction
 
-	var/faction = tgui_input_list(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", temp_list)
+	var/datum/faction_status/faction = tgui_input_list(usr, "Select faction. Ghosts will see only \"Global\" category message. Factions with event message set are marked with (x).", "Faction Choice", temp_list)
 	if(!faction)
 		return
 
@@ -419,7 +419,7 @@
 	if(!admin_holder || !(admin_holder.rights & R_MOD))
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/faction = tgui_input_list(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", (FACTION_LIST_HUMANOID - list(FACTION_YAUTJA) + list("Everyone (-Yautja)")))
+	var/datum/faction_status/faction = tgui_input_list(usr, "Please choose faction your announcement will be shown to.", "Faction Selection", (FACTION_LIST_HUMANOID - list(FACTION_YAUTJA) + list("Everyone (-Yautja)")))
 	if(!faction)
 		return
 	var/input = input(usr, "Please enter announcement text. Be advised, this announcement will be heard both on Almayer and planetside by conscious humans of selected faction.", "What?", "") as message|null
@@ -459,16 +459,16 @@
 		return
 
 	var/list/hives = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-		hives += list("[hive.name]" = hive.hivenumber)
+	for(var/datum/faction_status/faction in GLOB.faction_datum)
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
+		hives += list("[hive.name]" = hive.internal_faction)
 
 	hives += list("All Hives" = "everything")
 	var/hive_choice = tgui_input_list(usr, "Please choose the hive you want to see your announcement. Selecting \"All hives\" option will change title to \"Unknown Higher Force\"", "Hive Selection", hives)
 	if(!hive_choice)
 		return FALSE
 
-	var/hivenumber = hives[hive_choice]
+	var/datum/faction_status/faction = hives[hive_choice]
 
 
 	var/input = input(usr, "This should be a message from the ruler of the Xenomorph race.", "What?", "") as message|null
@@ -476,14 +476,14 @@
 		return FALSE
 
 	var/hive_prefix = ""
-	if(GLOB.hive_datum[hivenumber])
-		var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
+	if(GLOB.faction_datum[faction])
+		var/datum/faction_status/xeno/hive = GLOB.faction_datum[faction]
 		hive_prefix = "[hive.prefix] "
 
-	if(hivenumber == "everything")
-		xeno_announcement(input, hivenumber, HIGHER_FORCE_ANNOUNCE)
+	if(faction == "everything")
+		xeno_announcement(input, faction, HIGHER_FORCE_ANNOUNCE)
 	else
-		xeno_announcement(input, hivenumber, SPAN_ANNOUNCEMENT_HEADER_BLUE("[hive_prefix][QUEEN_MOTHER_ANNOUNCE]"))
+		xeno_announcement(input, faction, SPAN_ANNOUNCEMENT_HEADER_BLUE("[hive_prefix][QUEEN_MOTHER_ANNOUNCE]"))
 
 	message_staff("[key_name_admin(src)] has created a [hive_choice] Queen Mother report")
 	log_admin("[key_name_admin(src)] Queen Mother ([hive_choice]): [input]")
@@ -712,8 +712,8 @@
 		return
 
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
-		if(H && H.faction == FACTION_MUTINEER)
-			H.faction = FACTION_MARINE
+		if(H && H.faction == GLOB.faction_datum[SET_FACTION_MUTINEER])
+			H.faction = GLOB.faction_datum[SET_FACTION_USCM]
 			H.hud_set_squad()
 
 			for(var/datum/action/human_action/activable/mutineer/A in H.actions)

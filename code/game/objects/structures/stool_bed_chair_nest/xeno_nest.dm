@@ -14,18 +14,21 @@
 	var/resisting_ready = 0
 	var/nest_resist_time = 1200
 	var/mob/dead/observer/ghost_of_buckled_mob =  null
-	var/hivenumber = XENO_HIVE_NORMAL
 	layer = RESIN_STRUCTURE_LAYER
+
+	var/faction_to_set = SET_FACTION_HIVE_NORMAL
 
 	var/force_nest = FALSE
 
-/obj/structure/bed/nest/Initialize(mapload, hive)
+/obj/structure/bed/nest/Initialize(mapload, datum/faction_status/new_faction)
 	. = ..()
 
-	if (hive)
-		hivenumber = hive
+	if(new_faction)
+		faction = new_faction
+	else
+		faction = GLOB.faction_datum[faction_to_set]
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 
 /obj/structure/bed/nest/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/grab))
@@ -53,12 +56,12 @@
 
 	if(isXeno(user))
 		var/mob/living/carbon/Xenomorph/X = user
-		if(!X.hive.unnesting_allowed && !isXenoBuilder(X) && HIVE_ALLIED_TO_HIVE(X.hivenumber, hivenumber))
+		if(!X.faction.unnesting_allowed && !isXenoBuilder(X) && FACTION_ALLIED_TO_FACTION(X.faction.faction_number, faction.faction_number))
 			to_chat(X, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
 			return
 	else if(iscarbon(user))
 		var/mob/living/carbon/H = user
-		if(HIVE_ALLIED_TO_HIVE(H.hivenumber, hivenumber))
+		if(FACTION_ALLIED_TO_FACTION(H.faction.faction_number, faction.faction_number))
 			to_chat(H, SPAN_XENOWARNING("You shouldn't interfere with the nest, leave that to the drones."))
 			return
 

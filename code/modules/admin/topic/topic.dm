@@ -168,11 +168,11 @@
 		message_staff("[key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [href_list["simplemake"]]; deletemob=[delmob]")
 
 		var/mob/transformed
-		var/hivenumber = XENO_HIVE_NORMAL
+		var/datum/faction_status/faction = GLOB.faction_datum[SET_FACTION_HIVE_NORMAL]
 
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/X = M
-			hivenumber = X.hivenumber
+			faction = X.faction
 
 		switch(href_list["simplemake"])
 			if("observer")			transformed = M.change_mob_type( /mob/dead/observer , null, null, delmob )
@@ -210,9 +210,9 @@
 			if("parrot")			transformed = M.change_mob_type( /mob/living/simple_animal/parrot , null, null, delmob )
 			if("polyparrot")		transformed = M.change_mob_type( /mob/living/simple_animal/parrot/Poly , null, null, delmob )
 
-		if(isXeno(transformed) && hivenumber)
+		if(isXeno(transformed) && faction)
 			var/mob/living/carbon/Xenomorph/X = transformed
-			X.set_hive_and_update(hivenumber)
+			X.set_hive_and_update(faction)
 
 	/////////////////////////////////////new ban stuff
 	else if(href_list["unbanf"])
@@ -398,7 +398,6 @@
 		if(!RoleAuthority)
 			to_chat(usr, "Role Authority has not been set up!")
 			return
-
 
 		var/datum/entity/player/P1 = M.client?.player_data
 		if(!P1)
@@ -739,10 +738,10 @@
 			return
 
 		var/list/hives = list()
-		var/datum/hive_status/hive
-		for(var/hivenumber in GLOB.hive_datum)
-			hive = GLOB.hive_datum[hivenumber]
-			hives += list("[hive.name]" = hive.hivenumber)
+		var/datum/faction_status/xeno/hive
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			hive = GLOB.faction_datum[faction]
+			hives += list("[hive.name]" = hive.internal_faction)
 
 		var/newhive = tgui_input_list(usr,"Select a hive.", "Infect Larva", hives)
 
@@ -751,7 +750,7 @@
 			return
 
 		var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(H)
-		embryo.hivenumber = hives[newhive]
+		embryo.faction = hives[newhive]
 		embryo.faction = newhive
 
 		message_staff("[key_name_admin(usr)] infected [key_name_admin(H)] with a xeno ([newhive]) larva.")
@@ -784,30 +783,27 @@
 			return
 
 		var/list/hives = list()
-		for(var/hivenumber in GLOB.hive_datum)
-			var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-			LAZYSET(hives, hive.name, hive)
+		for(var/datum/faction_status/faction in GLOB.faction_datum)
+			LAZYSET(hives, faction.internal_faction, faction)
 		LAZYSET(hives, "CANCEL", null)
 
-		var/hive_name = tgui_input_list(usr, "Which Hive will he belongs to", "Make Cultist", hives)
-		if(!hive_name || hive_name == "CANCEL")
+		var/datum/faction_status/hive = tgui_input_list(usr, "Which Hive will he belongs to", "Make Cultist", hives)
+		if(!hive || hive == "CANCEL")
 			to_chat(usr, SPAN_ALERT("Hive choice error. Aborting."))
-
-		var/datum/hive_status/hive = hives[hive_name]
 
 		if(href_list["makecultist"])
 			var/datum/equipment_preset/other/xeno_cultist/XC = new()
-			XC.load_race(H, hive.hivenumber)
+			XC.load_race(H, hive)
 			XC.load_status(H)
-			message_staff("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist for [hive.name].")
+			message_staff("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist for [hive.internal_faction].")
 
 		else if(href_list["makecultistleader"])
 			var/datum/equipment_preset/other/xeno_cultist/leader/XC = new()
-			XC.load_race(H, hive.hivenumber)
+			XC.load_race(H, hive)
 			XC.load_status(H)
-			message_staff("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist leader for [hive.name].")
+			message_staff("[key_name_admin(usr)] has made [key_name_admin(H)] into a cultist leader for [hive.internal_faction].")
 
-		H.faction = hive.internal_faction
+		H.faction = hive
 
 	else if(href_list["forceemote"])
 		if(!check_rights(R_FUN))	return
@@ -974,15 +970,15 @@
 		message_staff(SPAN_DANGER("Admin [key_name_admin(usr)] AIized [key_name_admin(H)]!"), 1)
 		H.AIize()
 
-	else if(href_list["changehivenumber"])
+	else if(href_list["changefaction"])
 		if(!check_rights(R_DEBUG|R_ADMIN))	return
 
-		var/mob/living/carbon/H = locate(href_list["changehivenumber"])
+		var/mob/living/carbon/H = locate(href_list["changefaction"])
 		if(!istype(H))
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/")
 			return
 		if(usr.client)
-			usr.client.cmd_admin_change_their_hivenumber(H)
+			usr.client.cmd_admin_change_their_faction(H)
 
 	else if(href_list["makeyautja"])
 		if(!check_rights(R_SPAWN))	return

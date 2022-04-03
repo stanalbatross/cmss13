@@ -335,7 +335,7 @@
 			if(H)
 				dat += "<tr><td><A href='?src=\ref[usr];priv_msg=\ref[H]'>[H.real_name]</a>[H.client ? "" : " <i>(logged out)</i>"][H.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 				dat += "<td>[location]</td>"
-				dat += "<td>[H.faction]</td>"
+				dat += "<td>[H.faction.internal_faction]</td>"
 				dat += "<td><a href='?src=\ref[usr];track=\ref[H]'>F</a></td>"
 				dat += "<td><a href='?src=\ref[src];ahelp=adminplayeropts;extra=\ref[H]'>PP</a></td>"
 		dat += "</table>"
@@ -531,9 +531,9 @@ GLOBAL_LIST_INIT(pp_hives, pp_generate_hives())
 
 /proc/pp_generate_hives()
 	. = list()
-	for(var/hivenumber in GLOB.hive_datum)
-		var/datum/hive_status/H = GLOB.hive_datum[hivenumber]
-		.[H.name] = H.hivenumber
+	for(var/hive_get in SET_FACTION_LIST_XENOS)
+		var/datum/faction_status/xeno/F = GLOB.faction_datum[hive_get]
+		.[F.name] = F
 
 GLOBAL_LIST_INIT(pp_limbs, list(
 	"Head" = "head",

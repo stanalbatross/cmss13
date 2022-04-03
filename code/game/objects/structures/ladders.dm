@@ -206,7 +206,7 @@
 			ladder_dest = down
 		else return //just in case
 
-		if(G.has_iff && user.faction == FACTION_MARINE && explosive_grief_check(G))
+		if(G.has_iff && user.faction == GLOB.faction_datum[SET_FACTION_USCM] && explosive_grief_check(G))
 			to_chat(user, SPAN_WARNING("\The [G.name]'s IFF inhibitor prevents you from priming the grenade!"))
 			// Let staff know, in case someone's actually about to try to grief
 			msg_admin_niche("[key_name(user)] attempted to prime \a [G.name] in [get_area(src)] (<A HREF='?_src_=admin_holder;adminplayerobservecoodjump=1;X=[src.loc.x];Y=[src.loc.y];Z=[src.loc.z]'>JMP</a>)")

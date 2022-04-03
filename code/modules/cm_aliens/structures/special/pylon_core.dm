@@ -38,7 +38,7 @@
 	. = ..()
 
 /obj/effect/alien/resin/special/pylon/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(isXenoBuilder(M) && M.a_intent == INTENT_HELP && M.hivenumber == linked_hive.hivenumber)
+	if(isXenoBuilder(M) && M.a_intent == INTENT_HELP && M.faction == faction)
 		do_repair(M) //This handles the delay itself.
 		return XENO_NO_DELAY_ACTION
 	else
@@ -82,7 +82,7 @@
 	playsound(loc, "alien_resin_build", 25)
 
 /obj/effect/alien/resin/special/pylon/proc/place_node()
-	var/obj/effect/alien/weeds/node/pylon/W = new node_type(loc, null, null, linked_hive)
+	var/obj/effect/alien/weeds/node/pylon/W = new node_type(loc, null, null, faction)
 	W.resin_parent = src
 
 //Hive Core - Generates strong weeds, supports other buildings
@@ -105,13 +105,13 @@
 
 	protection_level = TURF_PROTECTION_OB
 
-/obj/effect/alien/resin/special/pylon/core/Initialize(mapload, var/datum/hive_status/hive_ref)
+/obj/effect/alien/resin/special/pylon/core/Initialize(mapload, var/datum/faction_status/xeno/hive_ref)
 	. = ..()
 
 	// Pick the closest xeno resource activator
 
 	if(hive_ref)
-		hive_ref.set_hive_location(src, linked_hive.hivenumber)
+		hive_ref.set_hive_location(src, faction)
 
 /obj/effect/alien/resin/special/pylon/core/process()
 	if(health >= maxhealth || last_healed > world.time) return
@@ -120,35 +120,35 @@
 	last_healed = world.time + heal_interval
 
 /obj/effect/alien/resin/special/pylon/core/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(linked_hive)
+	if(faction)
 		var/current_health = health
-		if(hardcore && HIVE_ALLIED_TO_HIVE(M.hivenumber, linked_hive.hivenumber))
+		if(hardcore && FACTION_ALLIED_TO_FACTION(M.faction.faction_number, faction.faction_number))
 			return XENO_NO_DELAY_ACTION
 
 		. = ..()
 
 		if(hardcore && last_attacked_message < world.time && current_health > health)
-			xeno_message(SPAN_XENOANNOUNCE("The hive core is under attack!"), 2, linked_hive.hivenumber)
+			xeno_message(SPAN_XENOANNOUNCE("The hive core is under attack!"), 2, faction)
 			last_attacked_message = world.time + next_attacked_message
 
 	else
 		. = ..()
 
 /obj/effect/alien/resin/special/pylon/core/Destroy()
-	if(linked_hive)
-		linked_hive.hive_location = null
+	if(faction)
+		faction.hive_location = null
 		if(hardcore)
-			xeno_message(SPAN_XENOANNOUNCE("A sudden tremor ripples through the hive... the Hive Core has been destroyed! Vengeance!"), 3, linked_hive.hivenumber)
-			xeno_message(SPAN_XENOANNOUNCE("You can no longer gain new sisters or another Queen. Additionally, you are unable to heal if your Queen is dead"), 2, linked_hive.hivenumber)
-			linked_hive.hardcore = TRUE
-			linked_hive.allow_queen_evolve = FALSE
-			linked_hive.hive_structures_limit[XENO_STRUCTURE_CORE] = 0
-			linked_hive.hive_structures_limit[XENO_STRUCTURE_POOL] = 0
+			xeno_message(SPAN_XENOANNOUNCE("A sudden tremor ripples through the hive... the Hive Core has been destroyed! Vengeance!"), 3, faction.internal_faction)
+			xeno_message(SPAN_XENOANNOUNCE("You can no longer gain new sisters or another Queen. Additionally, you are unable to heal if your Queen is dead"), 2, faction.internal_faction)
+			faction.hardcore = TRUE
+			faction.allow_queen_evolve = FALSE
+			faction.hive_structures_limit[XENO_STRUCTURE_CORE] = 0
+			faction.hive_structures_limit[XENO_STRUCTURE_POOL] = 0
 
-			xeno_announcement("\The [linked_hive.name] has lost their hive core!", "everything", HIGHER_FORCE_ANNOUNCE)
+			xeno_announcement("\The [faction.name] has lost their hive core!", "everything", HIGHER_FORCE_ANNOUNCE)
 
-			if(linked_hive.spawn_pool)
-				qdel(linked_hive.spawn_pool)
+			if(faction.spawn_pool)
+				qdel(faction.spawn_pool)
 
 	. = ..()
 

@@ -12,21 +12,21 @@
 
 		if(isXeno(mob))
 			var/mob/living/carbon/Xenomorph/X = mob
-			if(!X.hive || !GLOB.custom_event_info_list[X.hive.name])
+			if(!X.faction || !GLOB.custom_event_info_list[X.faction.internal_faction])
 				to_chat(src, SPAN_WARNING("\n\n[X] has none or incorrect hive set or hive message datum was not found, tell a dev!\n\n"))
 				CEI = GLOB.custom_event_info_list["Global"]
 			else
-				category = tgui_input_list(src, "Select category.", "Custom Event Info", list("Global", X.hive.name))
+				category = tgui_input_list(src, "Select category.", "Custom Event Info", list("Global", X.faction.internal_faction))
 				CEI = GLOB.custom_event_info_list[category]
 
 			CEI.show_player_event_info(src)
 			return
 
-		else if(!mob.faction || !GLOB.custom_event_info_list[mob.faction])
+		else if(!mob.faction || !GLOB.custom_event_info_list[mob.faction.internal_faction])
 			to_chat(src, SPAN_WARNING("\n\n[mob] has none or incorrect faction set or faction message datum was not found, tell a dev!\n\n"))
 			CEI = GLOB.custom_event_info_list["Global"]
 		else
-			category = tgui_input_list(src, "Select category.", "Custom Event Info", list("Global", mob.faction))
+			category = tgui_input_list(src, "Select category.", "Custom Event Info", list("Global", mob.faction.internal_faction))
 			CEI = GLOB.custom_event_info_list[category]
 
 		CEI.show_player_event_info(src)

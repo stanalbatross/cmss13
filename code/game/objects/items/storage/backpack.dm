@@ -379,6 +379,8 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 	icon_state = "rto_backpack"
 	item_state = "rto_backpack"
 	has_gamemode_skin = FALSE
+	var/sensor_radius = 12
+	var/visible_in_tacmap = FALSE
 
 	flags_item = ITEM_OVERRIDE_NORTHFACE
 
@@ -424,7 +426,9 @@ GLOBAL_LIST_EMPTY_TYPED(radio_packs, /obj/item/storage/backpack/marine/satchel/r
 
 /obj/item/storage/backpack/marine/satchel/rto/item_action_slot_check(mob/user, slot)
 	if(slot == WEAR_BACK)
+		faction = GLOB.faction_datum[user.faction]
 		return TRUE
+	faction = null
 	return FALSE
 
 /obj/item/storage/backpack/marine/satchel/rto/forceMove(atom/dest)

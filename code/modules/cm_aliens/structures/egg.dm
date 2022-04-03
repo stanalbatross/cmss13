@@ -13,16 +13,13 @@
 	var/list/egg_triggers = list()
 	var/status = EGG_GROWING //can be EGG_GROWING, EGG_GROWN, EGG_BURST, EGG_BURSTING, or EGG_DESTROYED; all mutually exclusive
 	var/on_fire = FALSE
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/flags_embryo = NO_FLAGS
 
-/obj/effect/alien/egg/Initialize(mapload, var/hive)
+/obj/effect/alien/egg/Initialize(mapload, datum/faction_status/faction_new)
 	. = ..()
+	if(faction_new)
+		faction = faction_new
 	create_egg_triggers()
-	if (hive)
-		hivenumber = hive
-
-	set_hive_data(src, hivenumber)
 	update_icon()
 	INVOKE_ASYNC(src, .proc/Grow)
 
@@ -39,7 +36,7 @@
 		to_chat(user, "Ctrl + Click egg to retrieve child into your empty hand if you can carry it.")
 
 /obj/effect/alien/egg/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(M.hivenumber != hivenumber)
+	if(M.faction != faction)
 		M.animation_attack_on(src)
 		M.visible_message(SPAN_XENOWARNING("[M] crushes \the [src]"),
 			SPAN_XENOWARNING("You crush \the [src]"))
@@ -128,7 +125,7 @@
 		return
 
 	status = EGG_BURST
-	var/obj/item/clothing/mask/facehugger/child = new(loc, hivenumber)
+	var/obj/item/clothing/mask/facehugger/child = new(loc, faction)
 
 	child.flags_embryo = flags_embryo
 	flags_embryo = NO_FLAGS // Lose the embryo flags when passed on
@@ -228,7 +225,7 @@
 
 /obj/effect/alien/egg/HasProximity(atom/movable/AM)
 	if(status == EGG_GROWN)
-		if(!can_hug(AM, hivenumber) || isYautja(AM) || isSynth(AM)) //Predators are too stealthy to trigger eggs to burst. Maybe the huggers are afraid of them.
+		if(!can_hug(AM, faction) || isYautja(AM) || isSynth(AM)) //Predators are too stealthy to trigger eggs to burst. Maybe the huggers are afraid of them.
 			return
 		Burst(FALSE, TRUE, null)
 
@@ -236,7 +233,7 @@
 	Burst(TRUE)
 
 /obj/effect/alien/egg/alpha
-	hivenumber = XENO_HIVE_ALPHA
+	faction_to_get = SET_FACTION_HIVE_ALPHA
 
 //The invisible traps around the egg to tell it there's a mob right next to it.
 /obj/effect/egg_trigger

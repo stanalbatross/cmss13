@@ -22,14 +22,14 @@
 	range_bounds = RECT(x, y, EGGMORPG_RANGE, EGGMORPG_RANGE)
 
 /obj/effect/alien/resin/special/eggmorph/Destroy()
-	if (stored_huggers && linked_hive)
+	if (stored_huggers && faction)
 		//Hugger explosion, like a carrier
 		var/obj/item/clothing/mask/facehugger/F
 		var/chance = 60
 		visible_message(SPAN_XENOWARNING("The chittering mass of tiny aliens is trying to escape [src]!"))
 		for(var/i in 0 to stored_huggers)
 			if(prob(chance))
-				F = new(loc, linked_hive.hivenumber)
+				F = new(loc, faction)
 				step_away(F,src,1)
 
 	vis_contents.Cut()
@@ -115,7 +115,7 @@
 /obj/effect/alien/resin/special/eggmorph/process()
 	check_facehugger_target()
 
-	if(!linked_hive || !captured_mob || world.time < (last_spawned + spawn_cooldown))
+	if(!faction || !captured_mob || world.time < (last_spawned + spawn_cooldown))
 		return
 	last_spawned = world.time
 	if(huggers_to_grow > 0)
@@ -145,26 +145,26 @@
 	if(!stored_huggers || isSynth(AM))
 		return
 
-	if (!linked_hive)
+	if (!faction)
 		return
 
-	if(!can_hug(AM, linked_hive.hivenumber))
+	if(!can_hug(AM, faction))
 		return
 
 	stored_huggers = max(0, stored_huggers - 1)
 
-	var/obj/item/clothing/mask/facehugger/child = new(loc, linked_hive.hivenumber)
+	var/obj/item/clothing/mask/facehugger/child = new(loc, faction)
 	child.leap_at_nearest_target()
 
 /obj/effect/alien/resin/special/eggmorph/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(!istype(M))
 		return attack_hand(M)
-	if(!linked_hive || (M.hivenumber != linked_hive.hivenumber))
+	if(!faction || (M.faction != faction))
 		return ..(M)
 	if(stored_huggers)
 		to_chat(M, SPAN_XENONOTICE("You retrieve a child."))
 		stored_huggers = max(0, stored_huggers - 1)
-		new /obj/item/clothing/mask/facehugger(loc, linked_hive.hivenumber)
+		new /obj/item/clothing/mask/facehugger(loc, faction)
 		return XENO_NONCOMBAT_ACTION
 	..()
 

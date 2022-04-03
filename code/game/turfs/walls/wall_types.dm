@@ -679,7 +679,7 @@
 	blend_turfs = list(/turf/closed/wall/resin)
 	blend_objects = list(/obj/structure/mineral_door/resin)
 	repair_materials = list()
-	var/hivenumber = XENO_HIVE_NORMAL
+	var/datum/faction_status/faction
 	var/should_track_build = FALSE
 	var/datum/cause_data/construction_data
 	flags_turf = TURF_ORGANIC
@@ -725,9 +725,7 @@
 	if(!istype(X))
 		return FALSE
 
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-
-	return hive.is_ally(X)
+	return X.ally(faction)
 
 /turf/closed/wall/resin/membrane/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
@@ -863,18 +861,19 @@
 	anchored = TRUE
 	opacity = TRUE
 
+	var/faction_to_set = SET_FACTION_HIVE_NORMAL
+
 	var/turf/tied_turf
 	var/list/wall_connections = list("0", "0", "0", "0")
 	drag_delay = 4
 
-
-	var/hivenumber = XENO_HIVE_NORMAL
-
-/obj/structure/alien/movable_wall/Initialize(mapload, hive)
+/obj/structure/alien/movable_wall/Initialize(mapload, datum/faction_status/new_faction)
 	. = ..()
-	if(hive)
-		hivenumber = hive
-		set_hive_data(src, hive)
+	if(new_faction)
+		faction = new_faction
+	else
+		faction = GLOB.faction_datum[faction_to_set]
+	set_hive_data(src, faction)
 	recalculate_structure()
 	update_tied_turf(loc)
 	RegisterSignal(src, COMSIG_ATOM_TURF_CHANGE, .proc/update_tied_turf)
@@ -940,7 +939,7 @@
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
-	if (M.hivenumber == hivenumber)
+	if (M.faction == faction)
 		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
@@ -1011,7 +1010,7 @@
 
 	if(isXeno(mover))
 		var/mob/living/carbon/Xenomorph/X = mover
-		if(X.hivenumber != hivenumber || X.throwing)
+		if(X.faction != faction || X.throwing)
 			return
 
 		if(X.pulling == src)
@@ -1153,7 +1152,7 @@
 	M.visible_message(SPAN_XENONOTICE("\The [M] claws \the [src]!"), \
 	SPAN_XENONOTICE("You claw \the [src]."))
 	playsound(src, "alien_resin_break", 25)
-	if (M.hivenumber == hivenumber)
+	if (M.faction == faction)
 		take_damage(Ceiling(HEALTH_WALL_XENO * 0.25)) //Four hits for a regular wall
 	else
 		take_damage(M.melee_damage_lower*RESIN_XENO_DAMAGE_MULTIPLIER)
@@ -1183,7 +1182,7 @@
 		return attack_hand(user)
 
 /turf/closed/wall/resin/ChangeTurf(newtype, ...)
-	var/hive = hivenumber
+	var/hive = faction
 	. = ..()
 	if(.)
 		var/turf/T
@@ -1195,8 +1194,8 @@
 
 		var/turf/closed/wall/resin/W = .
 		if (istype(W))
-			W.hivenumber = hive
-			set_hive_data(W, W.hivenumber)
+			W.faction = hive
+			set_hive_data(W, W.faction)
 
 /turf/closed/wall/resin/weak
 	name = "weak resin wall"

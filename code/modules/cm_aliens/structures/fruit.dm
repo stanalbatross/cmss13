@@ -14,7 +14,6 @@
 	health = 25
 	layer = RESIN_STRUCTURE_LAYER
 	var/picked = FALSE
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/consume_delay = 2 SECONDS
 	var/mature = FALSE
 	var/flags = 0
@@ -50,10 +49,10 @@
 		return INITIALIZE_HINT_QDEL
 
 	bound_xeno = X
-	hivenumber = X.hivenumber
+	faction = X.faction
 	RegisterSignal(W, COMSIG_PARENT_QDELETING, .proc/on_weed_expire)
 	RegisterSignal(X, COMSIG_PARENT_QDELETING, .proc/handle_xeno_qdel)
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, faction)
 	//Keep timer value here
 	timer_id = addtimer(CALLBACK(src, .proc/mature), time_to_mature, TIMER_UNIQUE | TIMER_STOPPABLE)
 	. = ..()
@@ -254,7 +253,7 @@
 		for(var/mob/living/carbon/Xenomorph/Z in range(pheromone_range, loc))
 			if(Z.ignores_pheromones)
 				continue
-			if(aura_strength > Z.recovery_new && hivenumber == Z.hivenumber)
+			if(aura_strength > Z.recovery_new && faction == Z.faction)
 				Z.recovery_new = aura_strength
 
 

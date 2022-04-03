@@ -10,10 +10,16 @@
 	var/timing = FALSE
 	var/time = 10 SECONDS
 	var/range = 2
-	var/iff_signal = FACTION_MARINE
+	var/iff_signal = SET_FACTION_USCM
 
 	var/delay = 1 //number of seconds between sensing and pulsing
 	var/delaying = FALSE
+
+/obj/item/device/assembly/prox_sensor/Initialize(datum/faction_status/new_faction)
+	if(new_faction)
+		faction = GLOB.faction_datum[new_faction]
+	else if(iff_signal)
+		faction = GLOB.faction_datum[iff_signal]
 
 /obj/item/device/assembly/prox_sensor/activate()
 	if(!..())
@@ -65,12 +71,11 @@
 	delaying = FALSE
 	..()
 
-
 /obj/item/device/assembly/prox_sensor/process(delta_time)
 	if(scanning)
 		var/turf/mainloc = get_turf(src)
 		for(var/mob/living/M in range(range,mainloc))
-			if(M.get_target_lock(iff_signal))
+			if(M.get_target_lock(faction))
 				continue
 			HasProximity(M)
 

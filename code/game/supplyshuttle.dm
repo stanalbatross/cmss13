@@ -1013,6 +1013,7 @@ var/datum/controller/supply/supply_controller = new()
 	var/name = "vehicle order"
 
 	var/obj/vehicle/ordered_vehicle
+	var/faction_to_get = SET_FACTION_USCM
 	var/unlocked = TRUE
 	var/failure_message = "<font color=\"red\"><b>Not enough resources were allocated to repair this vehicle during this operation.</b></font><br>"
 
@@ -1020,6 +1021,7 @@ var/datum/controller/supply/supply_controller = new()
 	return FALSE
 
 /datum/vehicle_order/proc/on_created(var/obj/vehicle/V)
+	V.faction = GLOB.faction_datum[faction_to_get]
 	return
 
 /datum/vehicle_order/tank
@@ -1030,6 +1032,7 @@ var/datum/controller/supply/supply_controller = new()
 	return
 
 /datum/vehicle_order/tank/on_created(var/obj/vehicle/multitile/tank/decrepit/tank)
+	tank.faction = GLOB.faction_datum[faction_to_get]
 	tank.req_one_access = list()
 
 /datum/vehicle_order/apc

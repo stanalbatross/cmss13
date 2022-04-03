@@ -64,6 +64,8 @@
 	turfs += src
 	if(is_ground_level(z))
 		z1turfs += src
+	else if(is_mainship_level(z))
+		z2turfs += src
 
 	assemble_baseturfs()
 

@@ -298,8 +298,8 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	if(mob && !isobserver(mob) && !isnewplayer(mob))
 		if(isXeno(mob))
 			var/mob/living/carbon/Xenomorph/X = mob
-			if(X.hive && GLOB.custom_event_info_list[X.hive])
-				CEI = GLOB.custom_event_info_list[X.hive]
+			if(X.faction && GLOB.custom_event_info_list[X.faction])
+				CEI = GLOB.custom_event_info_list[X.faction]
 				CEI.show_player_event_info(src)
 
 		else if(mob.faction && GLOB.custom_event_info_list[mob.faction])
@@ -398,7 +398,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 					else
 						message_staff("<font color='red'><B>Notice: </B>[SPAN_BLUE("<A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in).")]", 1)
 						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
-
 
 //checks if a client is afk
 //3000 frames = 5 minutes
