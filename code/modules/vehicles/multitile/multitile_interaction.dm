@@ -266,14 +266,15 @@
 	healthcheck()
 
 //to handle IFF bullets
-/obj/vehicle/multitile/proc/get_target_lock(var/access_to_check)
-	if(isnull(access_to_check) || !vehicle_faction)
+/obj/vehicle/multitile/proc/get_target_lock(var/datum/faction_status/access_to_check)
+	var/list/factions = list()
+	factions += access_to_check.internal_faction
+	for(var/datum/faction_status/i in access_to_check.allies)
+		factions += i.internal_faction
+	if(isnull(factions) || !vehicle_faction)
 		return FALSE
 
-	if(!islist(access_to_check))
-		return access_to_check == vehicle_faction
-
-	return vehicle_faction in access_to_check
+	return vehicle_faction in factions
 
 /obj/vehicle/multitile/ex_act(var/severity)
 	take_damage_type(severity * 0.5, "explosive")

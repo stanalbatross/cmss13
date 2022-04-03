@@ -34,6 +34,13 @@
 // Standard procs
 //-------------------------------------------
 
+/obj/vehicle/Initialize(var/datum/faction_status/faction_get)
+	. = ..()
+	if(faction_get)
+		faction = faction_get
+	else
+		faction = GLOB.faction_datum[SET_FACTION_USCM]
+
 /obj/vehicle/initialize_pass_flags(var/datum/pass_flags_container/PF)
 	..()
 	if (PF)
