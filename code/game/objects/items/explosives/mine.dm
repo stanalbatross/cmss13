@@ -92,7 +92,7 @@
 		SPAN_NOTICE("You finish deploying [src]."))
 
 	if(!hard_iff_lock)
-		iff_signal = user.faction
+		faction = user.faction
 
 	cause_data = create_cause_data(initial(name), user)
 	anchored = TRUE
@@ -112,17 +112,17 @@
 		if(active)
 			if(user.action_busy)
 				return
-			if(user.faction == iff_signal)
+			if(user.faction == faction)
 				user.visible_message(SPAN_NOTICE("[user] starts disarming [src]."), \
 				SPAN_NOTICE("You start disarming [src]."))
 			else
 				user.visible_message(SPAN_NOTICE("[user] starts fiddling with \the [src], trying to disarm it."), \
 				SPAN_NOTICE("You start disarming [src], but you don't know its IFF data. This might end badly..."))
-			if(!do_after(user, 30, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
+			if(!do_after(user, disarm_timer, INTERRUPT_NO_NEEDHAND, BUSY_ICON_FRIENDLY))
 				user.visible_message(SPAN_WARNING("[user] stops disarming [src]."), \
 					SPAN_WARNING("You stop disarming [src]."))
 				return
-			if(user.faction != iff_signal) //ow!
+			if(user.faction != faction) //ow!
 				if(prob(75))
 					triggered = TRUE
 					if(tripwire)
