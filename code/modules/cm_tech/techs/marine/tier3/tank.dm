@@ -1,4 +1,4 @@
-/datum/tech/tank
+/datum/tech/human/tank
 	name = "Armored Support"
 	desc = "Gives the marines the ability to send a tank up by ASRS and 2 kits to make vehicle crewmen, freeing the vehicle vendors. The kits will be delivered by ASRS."
 	icon_state = "ltb"
@@ -10,7 +10,7 @@
 
 	var/list/to_order
 
-/datum/tech/tank/New()
+/datum/tech/human/tank/New()
 	. = ..()
 	// I have to write this abomination because of ASRS
 	var/datum/supply_packs/VK = /datum/supply_packs/vc_kit
@@ -19,7 +19,7 @@
 		initial(VK.name)
 	)
 
-/datum/tech/tank/on_unlock()
+/datum/tech/human/tank/on_unlock()
 	. = ..()
 
 	var/obj/structure/machinery/computer/supplycomp/vehicle/comp = VehicleElevatorConsole

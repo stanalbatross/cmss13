@@ -1,4 +1,4 @@
-/datum/tech/droppod/item
+/datum/tech/human/droppod/item
 	name = "PLEASE SET ME!!!!!!"
 
 	var/droppod_input_message = "Choose an item to retrieve from the droppod."
@@ -13,14 +13,14 @@
 	var/options_to_give = 1
 	var/restricted_usecase = FALSE
 
-/datum/tech/droppod/item/proc/pre_item_stats()
+/datum/tech/human/droppod/item/proc/pre_item_stats()
 	return list(list(
 		"content" = "Quantity to give: [options_to_give]",
 		"color" = "orange",
 		"icon" = "warehouse"
 	))
 
-/datum/tech/droppod/item/ui_static_data(mob/user)
+/datum/tech/human/droppod/item/ui_static_data(mob/user)
 	. = ..()
 	.["stats"] += pre_item_stats()
 	var/list/data = get_options()
@@ -33,11 +33,11 @@
 			"tooltip" = "[initial(A.desc)]"
 		))
 
-/datum/tech/droppod/item/proc/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/proc/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	return list()
 
 /// This proc can potentially be blocking! Don't use unless you know what you're doing!
-/datum/tech/droppod/item/proc/get_items_to_give(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/proc/get_items_to_give(mob/living/carbon/human/H, obj/structure/droppod/D)
 	var/list/options = get_options(H, D)
 	if(!length(options))
 		return
@@ -58,7 +58,7 @@
 
 		return items_to_give
 
-/datum/tech/droppod/item/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/on_pod_access(mob/living/carbon/human/H, obj/structure/droppod/D)
 	var/list/items_to_give = get_items_to_give(H, D)
 
 	if(!length(items_to_give))
@@ -85,7 +85,7 @@
 
 	. = ..()
 
-/datum/tech/droppod/item/on_unlock()
+/datum/tech/human/droppod/item/on_unlock()
 	. = ..()
 	for(var/i in GLOB.radio_packs)
 		var/obj/item/storage/backpack/marine/satchel/rto/backpack = i

@@ -284,13 +284,13 @@
 				qdel(embryo)
 		if(!embryos)
 			var/obj/item/alien_embryo/embryo = new /obj/item/alien_embryo(target)
-				embryo.faction = faction
+			embryo.faction = faction
 
-				embryo.flags_embryo = flags_embryo
-				flags_embryo = NO_FLAGS
+			embryo.flags_embryo = flags_embryo
+			flags_embryo = NO_FLAGS
 
-				if(target.species)
-					target.species.larva_impregnated(embryo)
+			if(target.species)
+				target.species.larva_impregnated(embryo)
 
 			icon_state = "[initial(icon_state)]_impregnated"
 			impregnated = TRUE

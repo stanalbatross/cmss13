@@ -1,4 +1,4 @@
-/datum/tech/droppod/item/medic_czsp
+/datum/tech/human/droppod/item/medic_czsp
 	name = "Hospital Corpsman Combat Zone Support Package"
 	desc = "Gives corpsmen powerful tools to heal marines."
 	icon_state = "medic_qol"
@@ -9,7 +9,7 @@
 	required_points = 15
 	tier = /datum/tier/one
 
-/datum/tech/droppod/item/medic_czsp/pre_item_stats(mob/user)
+/datum/tech/human/droppod/item/medic_czsp/pre_item_stats(mob/user)
 	. = ..()
 	var/datum/supply_packs/SP = /datum/supply_packs/upgraded_medical_kits
 
@@ -28,14 +28,14 @@
 		)
 	)
 
-/datum/tech/droppod/item/medic_czsp/on_unlock()
+/datum/tech/human/droppod/item/medic_czsp/on_unlock()
 	. = ..()
 	var/datum/supply_packs/SP = /datum/supply_packs/upgraded_medical_kits
 	SP = supply_controller.supply_packs[initial(SP.name)]
 	SP.buyable = TRUE
 	SP.cost = RO_PRICE_PRICY
 
-/datum/tech/droppod/item/medic_czsp/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/medic_czsp/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 
 	if(!H || skillcheck(H, SKILL_MEDICAL, SKILL_MEDICAL_MEDIC))

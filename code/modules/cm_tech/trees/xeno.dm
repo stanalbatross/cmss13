@@ -21,11 +21,17 @@
 
 	var/bonus_wall_health = 100
 
+	faction_to_set = SET_FACTION_HIVE_NORMAL
+
 	ui_theme = "hive_status"
 	background_icon = "xeno_background"
 	background_icon_locked = "xeno"
 
 	resource_receive_process = TRUE
+
+/datum/techtree/xenomorph/New()
+	. = ..()
+	faction = GLOB.faction_datum[faction_to_set]
 
 /datum/techtree/xenomorph/ui_state(mob/user)
 	return GLOB.hive_state[hivenumber]
@@ -36,7 +42,7 @@
 
 	var/mob/living/carbon/Xenomorph/X = M
 
-	if(X.hivenumber != hivenumber)
+	if(X.faction != faction)
 		return FALSE
 
 	if(access_required == TREE_ACCESS_VIEW)
@@ -46,7 +52,7 @@
 
 
 /datum/techtree/xenomorph/can_attack(var/mob/living/carbon/H)
-	return !(H.hivenumber == hivenumber)
+	return !(H.faction == faction)
 
 /datum/techtree/xenomorph/on_node_gained(var/obj/structure/resource_node/RN)
 	. = ..()

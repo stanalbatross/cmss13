@@ -638,7 +638,7 @@
 	use_power = 1
 	idle_power_usage = 250
 	active_power_usage = 500
-	var/faction = FACTION_MARINE
+	faction_to_set = SET_FACTION_USCM
 
 /obj/structure/machinery/computer/crew/Initialize()
 	. = ..()

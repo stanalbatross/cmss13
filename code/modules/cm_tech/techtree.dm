@@ -31,6 +31,9 @@
 
 	var/obj/structure/resource_node/passive_node
 
+	var/faction_to_set = null
+	var/datum/faction_status/faction = null
+
 	// UI Variables
 	var/ui_theme
 

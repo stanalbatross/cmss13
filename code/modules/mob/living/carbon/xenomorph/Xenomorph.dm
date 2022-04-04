@@ -583,7 +583,7 @@
 		mind.name = name //Grabs the name when the xeno is getting deleted, to reference through hive status later.
 	if(IS_XENO_LEADER(src)) //Strip them from the Xeno leader list, if they are indexed in here
 		faction.remove_hive_leader(src, light_mode = TRUE)
-	SStracking.stop_tracking("hive_[hivenumber]", src)
+	SStracking.stop_tracking("hive_[faction]", src)
 
 	// Only handle free slots if the xeno is not in tdome
 	if(!is_admin_level(z))
@@ -764,8 +764,8 @@
 	tackle_min = caste.tackle_min
 	tackle_max = caste.tackle_max
 	tackle_chance = caste.tackle_chance + tackle_chance_modifier
-	tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
-	tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus + hive.mutators.tackle_strength_bonus
+	tacklestrength_min = caste.tacklestrength_min + mutators.tackle_strength_bonus + faction.mutators.tackle_strength_bonus
+	tacklestrength_max = caste.tacklestrength_max + mutators.tackle_strength_bonus + faction.mutators.tackle_strength_bonus
 
 /mob/living/carbon/Xenomorph/proc/recalculate_health()
 	var/new_max_health = nocrit ? health_modifier + maxHealth : health_modifier + caste.max_health

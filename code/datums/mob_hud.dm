@@ -195,6 +195,9 @@ var/list/datum/mob_hud/huds = list(
 /mob/proc/add_to_all_mob_huds()
 	return
 
+/mob/proc/hud_update()
+	return
+
 /mob/hologram/queen/add_to_all_mob_huds()
 	var/datum/mob_hud/hud = huds[MOB_HUD_XENO_STATUS]
 	hud.add_to_hud(src)
@@ -511,7 +514,7 @@ var/list/datum/mob_hud/huds = list(
 		holder.icon_state = "xeno_banished"
 	hud_list[XENO_BANISHED_HUD] = holder
 
-/mob/living/carbon/Xenomorph/proc/hud_update()
+/mob/living/carbon/Xenomorph/hud_update()
 	var/image/holder = hud_list[XENO_STATUS_HUD]
 	holder.overlays.Cut()
 	if (stat == DEAD)

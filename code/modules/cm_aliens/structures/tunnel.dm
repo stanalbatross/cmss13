@@ -17,7 +17,7 @@
 
 	var/tunnel_desc = "" //description added by the hivelord.
 
-	var/faction_to_set = SET_FACTION_HIVE_NORMAL
+	faction_to_set = SET_FACTION_HIVE_NORMAL
 
 	health = 140
 	var/id = null //For mapping

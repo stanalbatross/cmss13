@@ -1,11 +1,10 @@
-
 /obj/structure/machinery/computer/dropship_weapons
 	name = "abstract dropship weapons controls"
 	desc = "A computer to manage equipments and weapons installed on the dropship."
 	density = 1
 	icon = 'icons/obj/structures/machinery/shuttle-parts.dmi'
 	icon_state = "consoleright"
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	circuit = null
 	unslashable = TRUE
 	unacidable = TRUE

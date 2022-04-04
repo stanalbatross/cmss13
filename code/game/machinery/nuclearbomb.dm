@@ -1,3 +1,4 @@
+var/bomb_set
 /obj/structure/machinery/nuclearbomb
 	name = "\improper Nuclear Fission Explosive"
 	desc = "Nuke the entire site from orbit, it's the only way to be sure. Too bad we don't have any orbital nukes."
@@ -43,8 +44,6 @@
 
 /obj/structure/machinery/nuclearbomb/process()
 	. = ..()
-	GLOB.active_nuke_list += src
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_START, src)
 	if(timing)
 		bomb_set = TRUE //So long as there is one nuke timing, it means one nuke is armed.
 		timeleft = explosion_time - world.time
@@ -101,7 +100,6 @@
 			if(timing && bomb_set)
 				user.visible_message(SPAN_DANGER("[user] begins to defuse [src]."), SPAN_DANGER("You begin to defuse [src]. This will take some time..."))
 				if(do_after(user, 5 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
-					SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_DIFFUSED, src)
 					disable()
 			return
 		ui_interact(user)
@@ -359,8 +357,6 @@
 	bomb_set = FALSE
 	timeleft = initial(timeleft)
 	explosion_time = null
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_STOP, src)
-	GLOB.active_nuke_list -= src
 	announce_to_players()
 
 /obj/structure/machinery/nuclearbomb/proc/explode()
@@ -373,10 +369,7 @@
 	update_icon()
 	safety = TRUE
 
-	if(crash_nuke == 0)
-		EvacuationAuthority.trigger_self_destruct(list(z), src, FALSE, NUKE_EXPLOSION_GROUND_FINISHED, FALSE, end_round)
-	if(crash_nuke == 1)
-		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_EXPLODED, z)
+	EvacuationAuthority.trigger_self_destruct(list(z), src, FALSE, NUKE_EXPLOSION_GROUND_FINISHED, FALSE, end_round)
 
 	sleep(100)
 	cell_explosion(loc, 4000, 1, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data(initial(name)))

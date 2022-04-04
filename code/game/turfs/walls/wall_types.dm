@@ -861,7 +861,7 @@
 	anchored = TRUE
 	opacity = TRUE
 
-	var/faction_to_set = SET_FACTION_HIVE_NORMAL
+	faction_to_set = SET_FACTION_HIVE_NORMAL
 
 	var/turf/tied_turf
 	var/list/wall_connections = list("0", "0", "0", "0")

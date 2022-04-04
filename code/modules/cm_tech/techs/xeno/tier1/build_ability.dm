@@ -31,7 +31,7 @@
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/give_build_ability)
 
-	for(var/m in faction.totalXenos)
+	for(var/m in faction.totalMobs)
 		give_build_ability(src, m)
 
 /datum/tech/xeno/build_distribution/proc/give_build_ability(datum/source, var/mob/living/carbon/Xenomorph/X)
@@ -40,7 +40,7 @@
 	if(X.stat == DEAD)
 		return
 
-	if(X.hivenumber != hivenumber)
+	if(X.faction != faction)
 		return
 
 	if(X.tier == 0)

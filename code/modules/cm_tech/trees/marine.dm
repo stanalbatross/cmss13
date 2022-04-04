@@ -28,10 +28,11 @@ GLOBAL_LIST_EMPTY(marine_leaders)
 		JOB_CO
 	)
 
-	var/faction = FACTION_MARINE
+	faction_to_set = SET_FACTION_USCM
 
 /datum/techtree/marine/New()
 	. = ..()
+	faction = GLOB.faction_datum[faction_to_set]
 	RegisterSignal(SSdcs, COMSIG_GLOB_POST_SETUP, .proc/setup_leader)
 
 /datum/techtree/marine/proc/setup_leader(datum/source)

@@ -23,12 +23,12 @@
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/register_component)
 
-	for(var/m in hive.totalXenos)
+	for(var/m in faction.totalMobs)
 		register_component(src, m)
 
 /datum/tech/xeno/acidic_blood/proc/register_component(datum/source, var/mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	if(X.hivenumber == hivenumber)
+	if(X.faction == faction)
 		RegisterSignal(X, COMSIG_XENO_DEAL_ACID_DAMAGE, .proc/handle_acid_blood)
 
 /datum/tech/xeno/acidic_blood/proc/handle_acid_blood(var/mob/living/carbon/Xenomorph/X, var/mob/target, var/list/damage)

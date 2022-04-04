@@ -1,4 +1,4 @@
-/datum/tech/xeno_handler
+/datum/tech/human/xeno_handler
 	name = "Advanced Exobiology"
 	desc = "Give the Marines a Xeno ERT"
 	icon_state = "friendly_xeno"
@@ -8,7 +8,7 @@
 	required_points = 20
 	tier = /datum/tier/three
 
-/datum/tech/xeno_handler/on_unlock()
+/datum/tech/human/xeno_handler/on_unlock()
 	. = ..()
 
 	var/datum/emergency_call/xeno_handler/X = new()
@@ -32,7 +32,7 @@
 /datum/emergency_call/xeno_handler/spawn_items()
 	var/turf/drop_spawn	= get_spawn_point(TRUE)
 	if(istype(drop_spawn))
-		new /obj/effect/alien/weeds/node(drop_spawn, null, null, GLOB.hive_datum[XENO_HIVE_TAMED]) //drop some weeds for xeno plasma regen.
+		new /obj/effect/alien/weeds/node(drop_spawn, null, null, GLOB.faction_datum[SET_FACTION_HIVE_TAMED]) //drop some weeds for xeno plasma regen.
 
 /datum/emergency_call/xeno_handler/create_member(datum/mind/M)
 	var/turf/spawn_loc = get_spawn_point()
@@ -40,21 +40,19 @@
 	if(!istype(spawn_loc))
 		return //Didn't find a useable spawn point.
 
-	var/datum/hive_status/corrupted/tamed/hive = GLOB.hive_datum[XENO_HIVE_TAMED]
-
 	var/mob/living/carbon/new_mob
 	if(!leader)
 		new_mob = new/mob/living/carbon/human(spawn_loc)
 		new_mob.create_hud()
 		arm_equipment(new_mob, /datum/equipment_preset/pmc/xeno_handler, TRUE, TRUE)
 
-		hive.make_leader(new_mob)
+		GLOB.faction_datum[SET_FACTION_HIVE_TAMED].make_leader(new_mob)
 		leader = new_mob
 
 
 	else
 		var/picked = pick(/mob/living/carbon/Xenomorph/Drone, /mob/living/carbon/Xenomorph/Spitter, /mob/living/carbon/Xenomorph/Lurker)
-		new_mob = new picked(spawn_loc, null, XENO_HIVE_TAMED)
+		new_mob = new picked(spawn_loc, null, GLOB.faction_datum[SET_FACTION_HIVE_TAMED])
 
 	if(M)
 		M.transfer_to(new_mob, TRUE)

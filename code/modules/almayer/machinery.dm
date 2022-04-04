@@ -221,7 +221,7 @@
 	icon = 'icons/obj/structures/machinery/computer.dmi'
 	icon_state = "maptable"
 
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
 	var/datum/tacmap/tacmap_info/tacmap_info
 	var/map = GROUND_MAP

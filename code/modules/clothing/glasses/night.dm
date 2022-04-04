@@ -197,7 +197,7 @@
 	if(slot == WEAR_EYES)
 		if(iscarbon(user))
 			var/mob/living/carbon/H = user
-			if(!H.hivenumber)
+			if(!H.faction)
 				to_chat(user, SPAN_WARNING("You do not want to put these on, they're making you nauseous."))
 				return FALSE
 	return ..()

@@ -25,7 +25,7 @@
 	var/marine_filter = list() // individual marine hiding control - list of string references
 	var/marine_filter_enabled = TRUE
 
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
 	var/datum/tacmap/tacmap_info/tacmap_info
 	var/map = GROUND_MAP

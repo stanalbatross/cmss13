@@ -37,7 +37,7 @@
 	playsound(deployment_turf, "alien_resin_build", 50)
 
 /datum/tech/xeno/powerup/revive/get_applicable_xenos(var/mob/user)
-	return hive.living_xeno_queen
+	return faction.living_xeno_queen
 
 /obj/item/stack/revival_jelly
 	name = "revival jelly"

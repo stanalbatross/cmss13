@@ -100,7 +100,7 @@
 	if(!message || stat || !faction)
 		return
 
-	if(!hive.living_xeno_queen && !SSticker?.mode?.hardcore && !hive.allow_no_queen_actions)
+	if(!faction.living_xeno_queen && !SSticker?.mode?.hardcore && !faction.allow_no_queen_actions)
 		to_chat(src, SPAN_WARNING("There is no Queen. You are alone."))
 		return
 

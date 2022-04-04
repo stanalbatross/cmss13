@@ -49,7 +49,7 @@
 	var/stat_msg2
 	processing = TRUE
 
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
 	var/datum/tacmap/tacmap_info/tacmap_info
 	var/map

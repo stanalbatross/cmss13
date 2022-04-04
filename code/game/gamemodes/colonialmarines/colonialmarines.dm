@@ -180,7 +180,7 @@
 				continue
 
 			if(!hive.living_xeno_queen && faction.xeno_queen_timer < world.time)
-				xeno_message("The Hive is ready for a new Queen to evolve.", 3, hive.hivenumber)
+				xeno_message("The Hive is ready for a new Queen to evolve.", 3, faction)
 
 		if(!active_lz && world.time > lz_selection_timer)
 			for(var/obj/structure/machinery/computer/shuttle_control/dropship1/default_console in machines)

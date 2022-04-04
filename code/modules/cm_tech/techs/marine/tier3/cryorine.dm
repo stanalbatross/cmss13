@@ -1,4 +1,4 @@
-/datum/tech/repeatable/cryomarine
+/datum/tech/human/repeatable/cryomarine
 	name = "Wake up additional troops"
 	desc = "Wakes up additional troops to fight against any threats."
 	icon_state = "cryotroops"
@@ -12,7 +12,7 @@
 	flags = TREE_FLAG_MARINE
 	tier = /datum/tier/three
 
-/datum/tech/repeatable/cryomarine/can_unlock(mob/M)
+/datum/tech/human/repeatable/cryomarine/can_unlock(mob/M)
 	. = ..()
 	if(!.)
 		return
@@ -20,6 +20,6 @@
 		to_chat(M, SPAN_WARNING("You can't do this right now!"))
 		return
 
-/datum/tech/repeatable/cryomarine/on_unlock()
+/datum/tech/human/repeatable/cryomarine/on_unlock()
 	. = ..()
 	SSticker.mode.get_specific_call("Marine Cryo Reinforcements (Squad)", FALSE, FALSE)

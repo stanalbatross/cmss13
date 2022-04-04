@@ -73,7 +73,7 @@
 	if(istype(MS, /datum/mutator_set/individual_mutators))
 		var/datum/mutator_set/individual_mutators/IS = MS
 		if(IS.xeno)
-			IS.xeno.hive.hive_ui.update_xeno_info()
+			IS.xeno.faction.faction_ui.update_xeno_info()
 
 	return TRUE
 

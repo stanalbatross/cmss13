@@ -1,6 +1,6 @@
-GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/droppod)
+GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/human/droppod)
 
-/datum/tech/droppod
+/datum/tech/human/droppod
 	name = "droppod tech"
 	desc = "placeholder description"
 
@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/droppod)
 
 	var/list/already_accessed = list()
 
-/datum/tech/droppod/ui_static_data(mob/user)
+/datum/tech/human/droppod/ui_static_data(mob/user)
 	. = ..()
 	.["stats"] += list(list(
 		"content" = "Deployed via droppod",
@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/droppod)
 		"tooltip" = "RTOs can call down droppods using their telephone backpack."
 	))
 
-/datum/tech/droppod/on_unlock()
+/datum/tech/human/droppod/on_unlock()
 	. = ..()
 
 	GLOB.unlocked_droppod_techs += src
@@ -28,7 +28,7 @@ GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/droppod)
 	return
 
 // Called as to whether on_pod_access should be called
-/datum/tech/droppod/proc/can_access(var/mob/living/carbon/human/H, var/obj/structure/droppod/D)
+/datum/tech/human/droppod/proc/can_access(var/mob/living/carbon/human/H, var/obj/structure/droppod/D)
 	if(H in already_accessed)
 		to_chat(H, SPAN_WARNING("You've already accessed this tech!"))
 		return FALSE
@@ -36,14 +36,14 @@ GLOBAL_LIST_EMPTY_TYPED(unlocked_droppod_techs, /datum/tech/droppod)
 	return TRUE
 
 // Called when attack_hand() on a pod, and can_access check has passed
-/datum/tech/droppod/proc/on_pod_access(var/mob/living/carbon/human/H, var/obj/structure/droppod/D)
+/datum/tech/human/droppod/proc/on_pod_access(var/mob/living/carbon/human/H, var/obj/structure/droppod/D)
 	already_accessed += H
 	RegisterSignal(H, COMSIG_PARENT_QDELETING, .proc/cleanup_mob)
 	return
 
-/datum/tech/droppod/proc/cleanup_mob(var/mob/living/carbon/human/H)
+/datum/tech/human/droppod/proc/cleanup_mob(var/mob/living/carbon/human/H)
 	SIGNAL_HANDLER
 	already_accessed -= H
 
-/datum/tech/droppod/proc/on_pod_created(var/obj/structure/droppod/D)
+/datum/tech/human/droppod/proc/on_pod_created(var/obj/structure/droppod/D)
 	return

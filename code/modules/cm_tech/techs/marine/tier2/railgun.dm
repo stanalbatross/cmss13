@@ -1,7 +1,7 @@
 GLOBAL_LIST_EMPTY_TYPED(railgun_computer_turf_position, /datum/railgun_computer_location)
 GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 
-/datum/tech/railgun
+/datum/tech/human/railgun
 	name = "Enable Stellar Vessel Armements"
 	desc = "Enables the two railguns attached to CIC, allowing for bombardment of enemy positions."
 	icon_state = "railgun"
@@ -12,7 +12,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 	tier = /datum/tier/two
 	var/obj/structure/machinery/computer/railgun/railgun_type = /obj/structure/machinery/computer/railgun
 
-/datum/tech/railgun/ui_static_data(mob/user)
+/datum/tech/human/railgun/ui_static_data(mob/user)
 	. = ..()
 	.["stats"] += list(
 		list(
@@ -32,7 +32,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 		)
 	)
 
-/datum/tech/railgun/on_unlock()
+/datum/tech/human/railgun/on_unlock()
 	. = ..()
 
 	for(var/a in GLOB.railgun_computer_turf_position)

@@ -35,7 +35,7 @@
 
 /datum/tech/xeno/shielding_slash/proc/give_shielding_slash(datum/source, mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	if(X.factionnumber != faction)
+	if(X.faction != faction)
 		return
 
 	X.AddComponent(/datum/component/shield_slash, max_shield, shield_per_slash, stat_name)

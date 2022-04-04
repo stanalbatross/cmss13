@@ -1,7 +1,7 @@
 /**
  * A tech that can be purchased multiple times
  */
-/datum/tech/repeatable
+/datum/tech/human/repeatable
 	name = "Repeatable Tech"
 
 	var/announce_name
@@ -14,7 +14,7 @@
 
 	unlocked = TRUE
 
-/datum/tech/repeatable/ui_static_data(mob/user)
+/datum/tech/human/repeatable/ui_static_data(mob/user)
 	. = ..()
 	if(increase_per_purchase)
 		.["stats"] += list(list(
@@ -24,7 +24,7 @@
 			"tooltip" = "Increases the cost of this tech whenever it is purchased by [increase_per_purchase]."
 		))
 
-/datum/tech/repeatable/can_unlock(mob/M)
+/datum/tech/human/repeatable/can_unlock(mob/M)
 	. = ..()
 	if(!.)
 		return
@@ -33,7 +33,7 @@
 		to_chat(M, SPAN_WARNING("You recently purchased this! Wait [DisplayTimeText(next_purchase - world.time, 0.1)]"))
 		return FALSE
 
-/datum/tech/repeatable/on_unlock()
+/datum/tech/human/repeatable/on_unlock()
 	..()
 	if(announce_message && announce_name)
 		marine_announcement(announce_message, announce_name, 'sound/misc/notice2.ogg')

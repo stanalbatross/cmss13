@@ -1,4 +1,4 @@
-/datum/tech/droppod/item/combat_implants
+/datum/tech/human/droppod/item/combat_implants
 	name = "Combat Implants"
 	desc = "Marines get access to combat implants to improve their ability to function."
 	icon_state = "implants"
@@ -13,7 +13,7 @@
 	droppod_input_message = "Choose a combat implant to retrieve from the droppod."
 	options_to_give = 2
 
-/datum/tech/droppod/item/combat_implants/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/combat_implants/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 
 	.["Nightvision Implant"] = /obj/item/device/implanter/nvg
@@ -21,7 +21,7 @@
 	.["Agility Implant"] = /obj/item/device/implanter/agility
 	.["Subdermal Armor"] = /obj/item/device/implanter/subdermal_armor
 
-/datum/tech/droppod/item/combat_implants/get_items_to_give(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/combat_implants/get_items_to_give(mob/living/carbon/human/H, obj/structure/droppod/D)
 	var/list/chosen_options = ..()
 
 	if(!chosen_options)

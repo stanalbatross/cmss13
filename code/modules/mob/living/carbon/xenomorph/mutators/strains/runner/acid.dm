@@ -137,8 +137,8 @@
 
 		M.apply_damage(damage, BURN)
 	playsound(bound_xeno, 'sound/effects/blobattack.ogg', 75)
-	if(bound_xeno.client && bound_xeno.hive)
-		addtimer(CALLBACK(bound_xeno.hive, /datum/hive_status.proc/free_respawn, bound_xeno.client), 5 SECONDS)
+	if(bound_xeno.client && bound_xeno.faction)
+		addtimer(CALLBACK(bound_xeno.faction, /datum/faction_status.proc/free_respawn, bound_xeno.client), 5 SECONDS)
 	bound_xeno.gib()
 
 /mob/living/carbon/Xenomorph/Runner/can_ventcrawl()

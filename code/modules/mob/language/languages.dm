@@ -116,10 +116,10 @@
 	if(iscarbon(speaker))
 		var/mob/living/carbon/C = speaker
 
-		if(!(C.hivenumber in GLOB.hive_datum))
+		if(!(C.faction in GLOB.faction_datum))
 			return
 
-		C.hivemind_broadcast(message, GLOB.hive_datum[C.hivenumber])
+		C.hivemind_broadcast(message, C.faction)
 
 /datum/language/binary
 	name = LANGUAGE_BINARY

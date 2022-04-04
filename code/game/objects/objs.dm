@@ -25,12 +25,15 @@
 	var/req_access_txt = null
 	var/req_one_access_txt = null
 
+	var/faction_to_set = null
 	var/datum/faction_status/faction = null
 
 	var/flags_obj = NO_FLAGS
 
 /obj/Initialize(mapload, ...)
 	. = ..()
+	if(faction_to_set)
+		faction = GLOB.faction_datum[faction_to_set]
 	GLOB.object_list += src
 	if(garbage)
 		add_to_garbage(src)

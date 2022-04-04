@@ -440,7 +440,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				var/datum/faction_status/faction = GLOB.faction_datum[faction_to_get]
 				factions += list("[faction.name]" = faction)
 
-			input = tgui_input_list(usr, "Пожалуйста, выберите Фракцию:", "Наблюдать", factions)
+			input = tgui_input_list(usr, "Please, select a Faction:", "Follow", factions)
 			if(!input)
 				return
 
@@ -451,20 +451,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 					targets.Remove(name)
 
 		if("Xenos by Hive")
-			var/hives = list()
-			var/datum/hive_status/hive
-			for(var/hivenumber in GLOB.hive_datum)
-				hive = GLOB.hive_datum[hivenumber]
-				hives += list("[hive.name]" = hive.hivenumber)
-
-			input = tgui_input_list(usr, "Please, select a Hive:", "Follow", hives)
 			var/list/choices_hive = SET_FACTION_LIST_XENOS
 			var/list/factions
 			for(var/faction_to_get in choices_hive)
 				var/datum/faction_status/faction = GLOB.faction_datum[faction_to_get]
 				factions += list("[faction.name]" = faction)
 
-			input = tgui_input_list(usr, "Пожалуйста, выберите Улей:", "Наблюдать", factions)
+			input = tgui_input_list(usr, "Please, select a Hive:", "Follow", factions)
 			if(!input)
 				return
 

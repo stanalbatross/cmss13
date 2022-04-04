@@ -17,7 +17,7 @@
 	var/leaders = 0
 
 /datum/emergency_call/cryo_squad_equipped/spawn_candidates(announce)
-	var/datum/squad/echo/echo_squad = locate() in RoleAuthority.squads
+	var/datum/squad/uscm/echo/echo_squad = locate() in RoleAuthority.squads
 	leaders = echo_squad.num_leaders
 	return ..()
 
@@ -34,7 +34,7 @@
 	GLOB.ert_mobs += H
 
 	sleep(5)
-	var/datum/squad/echo/echo_squad = locate() in RoleAuthority.squads
+	var/datum/squad/uscm/echo/echo_squad = locate() in RoleAuthority.squads
 	if(leaders < echo_squad.max_leaders)
 		leader = H
 		leaders++

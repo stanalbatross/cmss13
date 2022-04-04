@@ -1,4 +1,4 @@
-/datum/tech/droppod/item/enhanced_antibiologicals
+/datum/tech/human/droppod/item/enhanced_antibiologicals
 	name = "Enhanced Antibiologicals"
 	desc = "Marines get access to limited-use kits that can convert ammo magazines into the specified ammo."
 	icon_state = "ammo"
@@ -10,7 +10,7 @@
 
 	droppod_input_message = "Choose an ammo kit to retrieve from the droppod."
 
-/datum/tech/droppod/item/enhanced_antibiologicals/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/enhanced_antibiologicals/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 
 	.["Incendiary Buckshot Kit"] = /obj/item/storage/box/shotgun/buckshot

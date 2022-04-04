@@ -72,7 +72,7 @@
 /datum/tech/xeno/weed_damage_reduction/proc/disable()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN)
 
-	for(var/m in hive.totalXenos)
+	for(var/m in faction.totalMobs)
 		var/mob/M = m
 		qdel(M.GetComponent(/datum/component/weed_damage_mult))
 
@@ -83,7 +83,7 @@
 /datum/tech/xeno/weed_damage_reduction/proc/enable()
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/register_component)
 
-	for(var/m in hive.totalXenos)
+	for(var/m in faction.totalMobs)
 		register_component(src, m)
 
 	START_PROCESSING(SSprocessing, src)
@@ -96,8 +96,8 @@
 
 /datum/tech/xeno/weed_damage_reduction/proc/register_component(datum/source, var/mob/living/carbon/Xenomorph/X)
 	SIGNAL_HANDLER
-	if(X.hivenumber == hivenumber)
-		X.AddComponent(/datum/component/weed_damage_mult, hivenumber, damage_mult)
+	if(X.faction == faction)
+		X.AddComponent(/datum/component/weed_damage_mult, faction, damage_mult)
 
 /datum/tech/xeno/weed_damage_reduction/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()

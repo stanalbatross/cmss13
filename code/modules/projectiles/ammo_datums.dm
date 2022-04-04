@@ -3050,5 +3050,5 @@
 
 /datum/ammo/hugger_container/proc/spawn_hugger(var/turf/T)
 	var/obj/item/clothing/mask/facehugger/child = new(T)
-	child.hivenumber = hugger_hive
+	child.faction = hugger_hive
 	child.leap_at_nearest_target()

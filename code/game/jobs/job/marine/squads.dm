@@ -55,35 +55,46 @@
 	var/obj/item/device/squad_beacon/bomb/bbeacon = null
 	var/obj/structure/supply_drop/drop_pad = null
 
-/datum/squad/alpha
+	//make in next this is proc to good HVH events, i think squads is more than marine feature
+	var/faction_to_set = null
+	var/datum/faction_status/faction = null
+
+/datum/squad/New()
+	. = ..()
+	faction = GLOB.faction_datum[faction_to_set]
+
+/datum/squad/uscm
+	faction_to_set = SET_FACTION_USCM
+
+/datum/squad/uscm/alpha
 	name = SQUAD_NAME_1
 	color = 1
 	access = list(ACCESS_MARINE_ALPHA)
 	usable = TRUE
 	radio_freq = ALPHA_FREQ
 
-/datum/squad/bravo
+/datum/squad/uscm/bravo
 	name = SQUAD_NAME_2
 	color = 2
 	access = list(ACCESS_MARINE_BRAVO)
 	usable = TRUE
 	radio_freq = BRAVO_FREQ
 
-/datum/squad/charlie
+/datum/squad/uscm/charlie
 	name = SQUAD_NAME_3
 	color = 3
 	access = list(ACCESS_MARINE_CHARLIE)
 	usable = TRUE
 	radio_freq = CHARLIE_FREQ
 
-/datum/squad/delta
+/datum/squad/uscm/delta
 	name = SQUAD_NAME_4
 	color = 4
 	access = list(ACCESS_MARINE_DELTA)
 	usable = TRUE
 	radio_freq = DELTA_FREQ
 
-/datum/squad/echo
+/datum/squad/uscm/echo
 	name = SQUAD_NAME_5
 	color = 5
 	access = list(ACCESS_MARINE_ALPHA, ACCESS_MARINE_BRAVO, ACCESS_MARINE_CHARLIE, ACCESS_MARINE_DELTA)

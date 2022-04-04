@@ -1,4 +1,4 @@
-/datum/tech/repeatable/ob
+/datum/tech/human/repeatable/ob
 	name = "OB Ammo"
 	desc = "Purchase orbital bombardment ammo."
 
@@ -9,7 +9,7 @@
 
 	var/type_to_give
 
-/datum/tech/repeatable/ob/on_unlock()
+/datum/tech/human/repeatable/ob/on_unlock()
 	. = ..()
 	if(!type_to_give)
 		return
@@ -22,7 +22,7 @@
 
 	supply_controller.shoppinglist += O
 
-/datum/tech/repeatable/ob/he
+/datum/tech/human/repeatable/ob/he
 	name = "Additional OB projectiles - HE"
 	desc = "Highly explosive bombardment ammo, to be loaded into the orbital cannon."
 	icon_state = "ob_he"
@@ -34,7 +34,7 @@
 
 	type_to_give = "OB HE Crate"
 
-/datum/tech/repeatable/ob/cluster
+/datum/tech/human/repeatable/ob/cluster
 	name = "Additional OB projectiles - Cluster"
 	desc = "Highly explosive bombardment ammo that fragments, to be loaded into the orbital cannon."
 	icon_state = "ob_cluster"
@@ -46,7 +46,7 @@
 
 	type_to_give = "OB Cluster Crate"
 
-/datum/tech/repeatable/ob/incend
+/datum/tech/human/repeatable/ob/incend
 	name = "Additional OB projectiles - Incendiary"
 	desc = "Highly flammable bombardment ammo, to be loaded into the orbital cannon"
 	icon_state = "ob_incend"

@@ -182,8 +182,8 @@
 		qdel(A)
 		return
 	A.current = target
-	A.y_offset = target:y - start:y
-	A.x_offset = target:x - start:x
+	A.yo = target:y - start:y
+	A.xo = target:x - start:x
 	spawn( 0 )
 		A.process()
 	return

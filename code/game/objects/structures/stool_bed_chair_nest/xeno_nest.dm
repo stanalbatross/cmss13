@@ -16,7 +16,7 @@
 	var/mob/dead/observer/ghost_of_buckled_mob =  null
 	layer = RESIN_STRUCTURE_LAYER
 
-	var/faction_to_set = SET_FACTION_HIVE_NORMAL
+	faction_to_set = SET_FACTION_HIVE_NORMAL
 
 	var/force_nest = FALSE
 

@@ -110,12 +110,12 @@
 
 	for(var/datum/faction_status/xeno/hive in xenomorphs) //Build and move the xenos.
 		for(var/datum/mind/ghost_mind in xenomorphs[hive])
-			transform_xeno(ghost_mind, hive_spots[hive], hive.faction, FALSE)
+			transform_xeno(ghost_mind, hive_spots[hive], hive, FALSE)
 			ghost_mind.current.close_spawn_windows()
 
 	// Have to spawn the queen last or the mind will be added to xenomorphs and double spawned
 	for(var/datum/faction_status/xeno/hive in picked_queens)
-		transform_queen(picked_queens[hive], hive_spots[hive], hive.faction)
+		transform_queen(picked_queens[hive], hive_spots[hive], hive)
 		var/datum/mind/M = picked_queens[hive]
 		M.current.close_spawn_windows()
 

@@ -35,13 +35,13 @@
 	. = ..()
 
 	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_SPAWN, .proc/apply_tech)
-	for(var/i in hive.totalXenos)
+	for(var/i in faction.totalMobs)
 		apply_tech(src, i)
 
 	START_PROCESSING(SSprocessing, src)
 
 /datum/tech/xeno/endurance/process(delta_time)
-	for(var/i in hive.totalXenos)
+	for(var/i in faction.totalMobs)
 		var/mob/living/carbon/Xenomorph/X = i
 		var/turf/T = get_turf(X)
 		if(!T.weeds)

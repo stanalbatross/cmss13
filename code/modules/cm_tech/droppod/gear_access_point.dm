@@ -26,7 +26,7 @@
 
 	var/list/list_of_techs = list()
 	for(var/i in GLOB.unlocked_droppod_techs)
-		var/datum/tech/droppod/droppod_tech = i
+		var/datum/tech/human/droppod/droppod_tech = i
 		if(!droppod_tech.can_access(user))
 			continue
 
@@ -40,7 +40,7 @@
 	if(!user_input)
 		return
 
-	var/datum/tech/droppod/chosen_tech = list_of_techs[user_input]
+	var/datum/tech/human/droppod/chosen_tech = list_of_techs[user_input]
 	if(!chosen_tech.can_access(user))
 		to_chat(user, SPAN_WARNING("You cannot access this tech!"))
 		return

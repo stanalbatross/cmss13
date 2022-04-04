@@ -1,10 +1,10 @@
 /obj/structure/droppod/tech
 	name = "\improper USCM droppod"
 
-	var/datum/tech/droppod/attached_tech
+	var/datum/tech/human/droppod/attached_tech
 	var/time_until_return = 2 MINUTES
 
-/obj/structure/droppod/tech/Initialize(mapload, var/datum/tech/droppod/attached_tech)
+/obj/structure/droppod/tech/Initialize(mapload, var/datum/tech/human/droppod/attached_tech)
 	if(!attached_tech)
 		qdel(src)
 		return

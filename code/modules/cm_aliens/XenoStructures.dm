@@ -246,7 +246,7 @@
 	flags_obj = OBJ_ORGANIC
 	layer = DOOR_CLOSED_LAYER
 	tiles_with = list(/obj/structure/mineral_door/resin)
-	var/faction_to_set = SET_FACTION_HIVE_NORMAL
+	faction_to_set = SET_FACTION_HIVE_NORMAL
 
 /obj/structure/mineral_door/resin/Initialize(mapload, datum/faction_status/new_faction)
 	. = ..()

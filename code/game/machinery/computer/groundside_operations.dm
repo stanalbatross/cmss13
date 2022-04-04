@@ -20,7 +20,7 @@
 	var/lz_selection = TRUE
 	var/has_squad_overwatch = TRUE
 
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
 	var/datum/tacmap/tacmap_info/tacmap_info
 	var/map
@@ -265,7 +265,7 @@
 		if("pick_squad")
 			var/list/squad_list = list()
 			for(var/datum/squad/S in RoleAuthority.squads)
-				if(S.usable && S.uscm)
+				if(S.usable && S.faction == faction)
 					squad_list += S.name
 
 			var/name_sel = tgui_input_list(usr, "Which squad would you like to look at?", "Pick Squad", squad_list)

@@ -638,7 +638,7 @@ GLOBAL_LIST_INIT(alliable_factions, generate_alliable_factions())
 	xeno = TRUE
 
 /datum/faction_status/xeno/New()
-	mutators.faction = src
+	mutators.hive = src
 	faction_ui = new /datum/faction_status_ui/hive(src)
 	initialize_faction_statuses()
 
@@ -943,7 +943,7 @@ GLOBAL_LIST_INIT(alliable_factions, generate_alliable_factions())
 			xeno_name = "Larva ([X.nicknumber])"
 		xenos["[X.nicknumber]"] = list(
 			"name" = xeno_name,
-			"strain" = X.strain_type,
+			"strain" = X.mutation_type,
 			"ref" = "\ref[X]"
 		)
 

@@ -462,7 +462,7 @@
 			continue
 		if(X.mutation_type == CARRIER_SHAMAN) // Shamans are disconnected from the effect
 			continue
-		if(!hive.is_ally(X))
+		if(!faction.is_ally(X))
 			continue
 
 		effect_overlay.flick_overlay(X, 20)

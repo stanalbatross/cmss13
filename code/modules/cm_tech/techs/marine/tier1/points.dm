@@ -1,4 +1,4 @@
-/datum/tech/repeatable/req_points
+/datum/tech/human/repeatable/req_points
 	name = "Requisition Budget Increase"
 	icon_state = "budget_req"
 	desc = "Distributes resources to requisitions for spending."
@@ -14,11 +14,11 @@
 
 	var/points_to_give = 200
 
-/datum/tech/repeatable/req_points/on_unlock()
+/datum/tech/human/repeatable/req_points/on_unlock()
 	. = ..()
 	supply_controller.points += points_to_give
 
-/datum/tech/repeatable/dropship_points
+/datum/tech/human/repeatable/dropship_points
 	name = "Dropship Budget Increase"
 	icon_state = "budget_ds"
 	desc = "Distributes resources to the dropship fabricator."
@@ -34,6 +34,6 @@
 
 	var/points_to_give = 1600
 
-/datum/tech/repeatable/dropship_points/on_unlock()
+/datum/tech/human/repeatable/dropship_points/on_unlock()
 	. = ..()
 	supply_controller.dropship_points += points_to_give

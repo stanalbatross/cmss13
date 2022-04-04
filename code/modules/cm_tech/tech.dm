@@ -18,6 +18,8 @@
 	// Variables for the physical node in the tree
 	var/obj/effect/node
 
+	var/datum/faction_status/faction
+
 	var/background_icon = "background"
 	var/background_icon_locked = "marine"
 
@@ -114,6 +116,7 @@
 			. = TRUE
 
 /datum/tech/proc/on_tree_insertion(var/datum/techtree/tree)
+	faction = tree.faction
 	holder = tree
 	background_icon = tree.background_icon
 	background_icon_locked = tree.background_icon_locked

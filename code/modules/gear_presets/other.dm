@@ -781,14 +781,12 @@
 	. = ..()
 	access = get_all_civilian_accesses()
 
-/datum/equipment_preset/other/xeno_cultist/load_race(mob/living/carbon/human/H, var/hivenumber = XENO_HIVE_NORMAL)
+/datum/equipment_preset/other/xeno_cultist/load_race(mob/living/carbon/human/H, var/faction_to_get)
 	. = ..()
-	H.hivenumber = hivenumber
-
-	var/datum/hive_status/hive = GLOB.hive_datum[hivenumber]
-
-	if(hive)
-		H.faction = hive.internal_faction
+	if(!faction_to_get)
+		H.faction = GLOB.faction_datum[faction]
+	else
+		H.faction = GLOB.faction_datum[faction_to_get]
 
 /datum/equipment_preset/other/xeno_cultist/load_gear(mob/living/carbon/human/H)
 	var/backItem = /obj/item/storage/backpack/marine/satchel
@@ -806,14 +804,12 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/dutch(H), WEAR_L_EAR)
 
 //*****************************************************************************************************/
-/datum/equipment_preset/other/xeno_cultist/load_status(mob/living/carbon/human/H, var/hivenumber = XENO_HIVE_NORMAL)
+/datum/equipment_preset/other/xeno_cultist/load_status(mob/living/carbon/human/H)
 	if(SSticker.mode && H.mind)
 		SSticker.mode.xenomorphs += H.mind
 
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-
-	if(hive.leading_cult_sl == H)
-		hive.leading_cult_sl = null
+	if(H.faction.leading_cult_sl == H)
+		H.faction.leading_cult_sl = null
 
 	GLOB.xeno_cultists += H
 
@@ -847,8 +843,7 @@
 /datum/equipment_preset/other/xeno_cultist/leader/load_status(mob/living/carbon/human/H)
 	. = ..()
 
-	var/datum/hive_status/hive = GLOB.hive_datum[H.hivenumber]
-	hive.leading_cult_sl = H
+	H.faction.leading_cult_sl = H
 
 	var/list/types = subtypesof(/datum/action/human_action/activable/cult_leader/)
 

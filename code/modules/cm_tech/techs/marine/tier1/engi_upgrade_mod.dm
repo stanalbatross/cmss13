@@ -1,4 +1,4 @@
-/datum/tech/droppod/item/engi_czsp
+/datum/tech/human/droppod/item/engi_czsp
 	name = "Combat Technician Combat Zone Support Package"
 	desc = {"Gives upgraded composite (deployable) cades to regulars. \
 			Gives ComTechs a mod kit for their deployable."}
@@ -10,7 +10,7 @@
 	required_points = 15
 	tier = /datum/tier/one
 
-/datum/tech/droppod/item/engi_czsp/pre_item_stats(mob/user)
+/datum/tech/human/droppod/item/engi_czsp/pre_item_stats(mob/user)
 	. = ..()
 	. += list(list(
 		"content" = "Restricted usecase",
@@ -20,7 +20,7 @@
 	))
 
 
-/datum/tech/droppod/item/engi_czsp/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
+/datum/tech/human/droppod/item/engi_czsp/get_options(mob/living/carbon/human/H, obj/structure/droppod/D)
 	. = ..()
 	if(!H || H.job == JOB_SQUAD_ENGI)
 		.["Engineering Upgrade Kit"] = /obj/item/engi_upgrade_kit

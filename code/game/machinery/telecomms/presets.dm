@@ -45,7 +45,7 @@
 	health = 450
 	tcomms_machine = TRUE
 	var/sensor_radius = 80
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 
 /obj/structure/machinery/telecomms/relay/preset/tower/Initialize()
 	. = ..()

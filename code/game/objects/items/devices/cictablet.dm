@@ -22,8 +22,10 @@
 	var/mob/living/carbon/human/current_mapviewer
 	var/state = STATE_DEFAULT
 	var/cooldown_message = 0
+	var/announcement_title = COMMAND_ANNOUNCE
+	var/tablet_name = "Commanding Officer's Tablet"
 
-	var/faction_to_set = SET_FACTION_USCM
+	faction_to_set = SET_FACTION_USCM
 	var/minimap_name = "Marine Minimap"
 	var/datum/tacmap/tacmap_info/tacmap_info
 	var/map
@@ -58,16 +60,16 @@
 
 	user.set_interaction(src)
 	var/dat = "<body>"
-	if(faction != GLOB.faction_datum[SET_FACTION_MARINE] && EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
+	if(faction == GLOB.faction_datum[SET_FACTION_USCM] && EvacuationAuthority.evac_status == EVACUATION_STATUS_INITIATING)
 		dat += "<B>Evacuation in Progress</B>\n<BR>\nETA: [EvacuationAuthority.get_status_panel_eta()]<BR>"
 
-	if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
+	if(faction == GLOB.faction_datum[SET_FACTION_USCM])
 		switch(state)
 			if(STATE_DEFAULT)
 				dat += "<BR><A HREF='?src=\ref[src];operation=announce'>Make an announcement</A>"
 				dat += "<BR><A HREF='?src=\ref[src];operation=award'>Award a medal</A>"
 				dat += "<BR><A HREF='?src=\ref[src];operation=mapview'>Tactical Map</A>"
-			dat += "<BR><A HREF='?src=\ref[src];operation=selectloctacmap'>Сменить Локацию ТК</A>"
+				dat += "<BR><A HREF='?src=\ref[src];operation=selectloctacmap'>Change Tactical Map Location</A>"
 				switch(EvacuationAuthority.evac_status)
 					if(EVACUATION_STATUS_STANDING_BY)
 						dat += "<BR><A HREF='?src=\ref[src];operation=evacuation_start'>Initiate Emergency Evacuation</A>"
@@ -133,7 +135,7 @@
 			cooldown_message = world.time
 
 		if("award")
-			if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
+			if(faction != GLOB.faction_datum[SET_FACTION_USCM])
 				return
 			if(usr.job != "Commanding Officer")
 				to_chat(usr, SPAN_WARNING("Only the Commanding Officer can award medals."))
@@ -150,7 +152,7 @@
 			map = tacmap_info.change_mapview(usr)
 
 		if("evacuation_start")
-			if(faction != GLOB.faction_datum[SET_FACTION_MARINE])
+			if(faction != GLOB.faction_datum[SET_FACTION_USCM])
 				return
 			if(state == STATE_EVACUATION)
 				if(security_level < SEC_LEVEL_RED)
@@ -173,11 +175,11 @@
 	updateUsrDialog()
 
 /obj/item/device/cotablet/pmc
-	desc = "A special device used by corporate PMC directors."
+	desc = "A special device used by corporate WY directors."
 
 	tablet_name = "Site Director's Tablet"
 
 	announcement_title = WY_COMMAND_ANNOUNCE
-	faction_to_set = SET_FACTION_PMC
+	faction_to_set = SET_FACTION_WY
 
 	minimap_name = "WY Minimap"

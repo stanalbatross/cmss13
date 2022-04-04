@@ -552,18 +552,18 @@
 		var/area/current_area = get_area(user)
 		to_chat(user, SPAN_NOTICE("You are currently at: <b>[current_area.name]</b>."))
 		return
-	if(!user.hive)
+	if(!user.faction)
 		to_chat(user, SPAN_WARNING("You don't belong to a hive!"))
 		return FALSE
 	if(mods["alt"])
 		var/list/options = list()
-		if(user.hive.living_xeno_queen)
+		if(user.faction.living_xeno_queen)
 			options["Queen"] = TRACKER_QUEEN
-		if(user.hive.hive_location)
+		if(user.faction.hive_location)
 			options["Hive Core"] = TRACKER_HIVE
 		var/xeno_leader_index = 1
-		for(var/xeno in user.hive.xeno_leader_list)
-			var/mob/living/carbon/Xenomorph/xeno_lead = user.hive.xeno_leader_list[xeno_leader_index]
+		for(var/xeno in user.faction.xeno_leader_list)
+			var/mob/living/carbon/Xenomorph/xeno_lead = user.faction.xeno_leader_list[xeno_leader_index]
 			if(xeno_lead)
 				options["Xeno Leader [xeno_lead]"] = "[xeno_leader_index]"
 			xeno_leader_index++
@@ -571,12 +571,12 @@
 		if(selected)
 			track_state = options[selected]
 		return
-	if(!user.hive.living_xeno_queen)
+	if(!user.faction.living_xeno_queen)
 		to_chat(user, SPAN_WARNING("Your hive doesn't have a living queen!"))
 		return FALSE
 	if(user.burrow || user.is_mob_incapacitated() || user.buckled)
 		return FALSE
-	user.overwatch(user.hive.living_xeno_queen)
+	user.overwatch(user.faction.living_xeno_queen)
 
 /obj/screen/xenonightvision
 	icon = 'icons/mob/hud/alien_standard.dmi'

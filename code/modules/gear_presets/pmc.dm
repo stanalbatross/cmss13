@@ -435,8 +435,6 @@
     name = "Weyland-Yutani PMC (Xeno Handler)"
     flags = EQUIPMENT_PRESET_EXTRA
 
-    faction_group = FACTION_LIST_MARINE_WY
-
     assignment = JOB_PMC_XENO_HANDLER
     rank = JOB_PMC_XENO_HANDLER
     paygrade = "PMC-XS"

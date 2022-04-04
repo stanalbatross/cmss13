@@ -27,4 +27,4 @@
 	B.charges += charges_to_give
 
 /datum/tech/xeno/powerup/blockade/get_applicable_xenos(var/mob/user)
-	return hive.living_xeno_queen
+	return faction.living_xeno_queen
