@@ -50680,7 +50680,8 @@
 /area/almayer/living/captain_mess)
 "jmR" = (
 /obj/structure/ladder/fragile_almayer{
-	id = "kitchen"
+	id = "kitchen";
+	height = 2
 	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
@@ -63927,7 +63928,8 @@
 	icon_state = "pipe-c"
 	},
 /obj/structure/ladder/fragile_almayer{
-	id = "kitchen"
+	id = "kitchen";
+	height = 1
 	},
 /turf/open/floor/almayer{
 	dir = 1;
