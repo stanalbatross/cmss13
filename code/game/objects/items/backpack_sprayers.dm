@@ -307,6 +307,9 @@
 	update_icon()
 
 /obj/item/reagent_container/spray/mister/atmos/afterattack(atom/target, mob/user)
+	if(!isSynth(user))
+		to_chat(user, SPAN_WARNING("You have no idea how use \the [src]!"))
+		return
 	if(nozzle_mode == EXTINGUISHER)
 		if(istype(target, /obj/screen)) //so we don't end up wasting water when clicking
 			return
@@ -320,6 +323,10 @@
 	if(nozzle_mode == METAL_LAUNCHER)
 		if(Adj || istype(target, /obj/screen))
 			return //Safety check so you don't blast yourself trying to refill your tank
+		for(var/S in target)
+			if(istype(S, /obj/effect/particle_effect/foam) || istype(S, /obj/structure/foamed_metal))
+				to_chat(user, SPAN_WARNING("There's already metal foam here!"))
+				return
 		//actually firing the launcher
 		if(tank.launcher_cooldown > world.time)
 			to_chat(user, SPAN_WARNING("\The [tank] cannot fire another foam ball just yet. Wait [round(tank.launcher_cooldown/10)] seconds."))
@@ -344,7 +351,7 @@
 			return
 		//check for the foamer - is there already foam on the tile?
 		for(var/S in target)
-			if(istype(S, /obj/effect/particle_effect/foam) || istype(S, /obj/structure/foamedmetal))
+			if(istype(S, /obj/effect/particle_effect/foam) || istype(S, /obj/structure/foamed_metal))
 				to_chat(user, SPAN_WARNING("There's already metal foam here!"))
 				return
 		//check for tank reagents
@@ -352,13 +359,12 @@
 			//firing code
 			tank.reagents.remove_reagent("water", foamer_cost)
 			var/datum/effect_system/foam_spread/S = new /datum/effect_system/foam_spread(get_turf(target))
-			S.set_up(0, target, null, 2)
+			S.set_up(0, target, null, metal_foam = FOAM_METAL_TYPE_ALUMINIUM)
 			S.start()
 			return
 		else
 			to_chat(user, SPAN_WARNING("You need at least [foamer_cost] units of water to use the metal foamer!"))
 			return
-
 
 /obj/effect/resin_container //the projectile that the launcher fires
 	name = "metal foam ball"
@@ -367,11 +373,12 @@
 	icon_state = "foam_ball"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	anchored = TRUE
+	var/foam_metal_type = FOAM_METAL_TYPE_ALUMINIUM
 
 /obj/effect/resin_container/proc/Smoke()
-	var/datum/effect_system/foam_spread/S = new /datum/effect_system/foam_spread(get_turf(loc))
-	S.set_up(8, loc, null, 2)
-	S.start()
+	var/datum/effect_system/foam_spread/s = new /datum/effect_system/foam_spread(get_turf(loc))
+	s.set_up(12, get_turf(src), metal_foam = foam_metal_type) //Metalfoam 1 for aluminum foam, 2 for iron foam (Stronger), 12 amt = 2 tiles radius (5 tile length diamond)
+	s.start()
 	playsound(src,'sound/effects/bamf.ogg',100,TRUE)
 	qdel(src)
 
