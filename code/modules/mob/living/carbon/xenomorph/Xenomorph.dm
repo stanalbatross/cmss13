@@ -151,6 +151,9 @@
 	/// xenomorph type is given upon spawn
 	var/base_actions
 
+	// Mark tracking --
+	var/obj/effect/alien/resin/marker/tracked_marker = null //this is the resin mark that is currently being tracked by the xeno
+
 	//////////////////////////////////////////////////////////////////
 	//
 	//		Modifiers
@@ -245,6 +248,7 @@
 	var/list/resin_build_order
 	var/selected_resin // Which resin structure to build when we secrete resin, defaults to null.
 	var/selected_construction = XENO_STRUCTURE_CORE //which special structure to build when we place constructions
+	var/selected_mark // If leader what mark you will place when you make one
 	var/datum/ammo/xeno/ammo = null //The ammo datum for our spit projectiles. We're born with this, it changes sometimes.
 	var/tunnel_delay = 0
 	var/steelcrest = FALSE
@@ -491,6 +495,9 @@
 	if(!in_hive)
 		in_hive = GLOB.hive_datum[hivenumber]
 
+	//Im putting this in here, because this proc gets called when a player inhabits a SSD xeno and it needs to go somewhere (sorry)
+	hud_set_marks()
+
 	//Larvas have their own, very weird naming conventions, let's not kick a beehive, not yet
 	if(isXenoLarva(src))
 		return
@@ -665,6 +672,8 @@
 	med_hud_set_armor()
 	hud_set_plasma()
 	hud_set_pheromone()
+	hud_set_marks()
+
 
 	//and display them
 	add_to_all_mob_huds()
@@ -932,3 +941,16 @@
 	resin_build_order = build_order
 	if(length(resin_build_order))
 		selected_resin = resin_build_order[1]
+
+/mob/living/carbon/Xenomorph/ghostize(can_reenter_corpse = TRUE)
+	. = ..()
+	if(. && !can_reenter_corpse && stat != DEAD && !QDELETED(src) && !is_admin_level(z))
+		handle_ghost_message()
+
+/mob/living/carbon/Xenomorph/proc/handle_ghost_message()
+	announce_dchat("[src] ([mutation_type] [caste_type])</b> has ghosted and their body is up for grabs!", src)
+
+/mob/living/carbon/Xenomorph/Larva/handle_ghost_message()
+	if(locate(/obj/effect/alien/resin/special/pool) in range(2, get_turf(src)))
+		return
+	return ..()

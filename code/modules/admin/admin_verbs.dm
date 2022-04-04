@@ -49,7 +49,9 @@ var/list/admin_verbs_ban = list(
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_web_sound,
 	/client/proc/play_sound,
-	/client/proc/cmd_admin_vox_panel,
+	/client/proc/stop_web_sound,
+	/client/proc/stop_sound,
+	/client/proc/cmd_admin_vox_panel
 )
 var/list/admin_verbs_fun = list(
 	/client/proc/enable_event_mob_verbs,
@@ -71,7 +73,8 @@ var/list/admin_verbs_fun = list(
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,
 	/client/proc/game_panel,
-	/client/proc/create_humans
+	/client/proc/create_humans,
+	/client/proc/create_xenos
 )
 var/list/admin_verbs_server = list(
 	/datum/admins/proc/startnow,
