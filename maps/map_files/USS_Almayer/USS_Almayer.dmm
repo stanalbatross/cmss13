@@ -75135,7 +75135,6 @@
 /area/almayer/hull/lower_hull/l_m_s)
 "uGz" = (
 /obj/structure/machinery/camera/autoname/almayer{
-	dir = 1;
 	name = "ship-grade camera";
 	tag = "icon-camera (NORTH)"
 	},
