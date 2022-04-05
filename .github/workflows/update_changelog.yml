@@ -34,7 +34,7 @@ jobs:
         git pull origin master
         git config --local user.email "action@github.com"
         git config --local user.name "Changelogs"
-        git add html/changelogs
+        git add html/changelogs/archive
         git commit -m "Automatic changelog compile [ci skip]" -a || true
     - name: "Push"
       uses: ad-m/github-push-action@master
