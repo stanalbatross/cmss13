@@ -37,9 +37,9 @@ jobs:
         python ss13_genchangelog.py html/changelogs
     - name: Commit
       run: |
+        git pull origin master
         git config --local user.email "action@github.com"
         git config --local user.name "Changelogs"
-        git pull origin master
         git add html/changelogs
         git commit -m "Automatic changelog compile [ci skip]" -a || true
     - name: "Push"
