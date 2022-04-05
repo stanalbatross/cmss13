@@ -22,7 +22,7 @@ def parse_pr_changelog(pr):
 	if changelog_match is None:
 		return
 	lines = changelog_match.group(1).split('\n')
-	entries = []
+	entries = {}
 	for index, line in enumerate(lines):
 		line = line.strip()
 		if not line:
