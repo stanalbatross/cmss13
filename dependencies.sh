@@ -7,9 +7,15 @@
 export BYOND_MAJOR="513"
 export BYOND_MINOR="1542"
 
+#rust_g git tag
+export RUST_G_VERSION=0.5.0
+
 #node version
 export NODE_VERSION=14
 export NODE_VERSION_PRECISE=14.16.1
 
 # SpacemanDMM git tag
 export SPACEMAN_DMM_VERSION=suite-1.5
+
+# Python version for mapmerge and other tools
+export PYTHON_VERSION=3.7.9
