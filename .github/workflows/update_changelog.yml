@@ -7,7 +7,7 @@ on:
 jobs:
   update-changelog:
     runs-on: ubuntu-20.04
-    if: github.repository == 'cmss13-devs/cmss13'
+    if: github.repository == 'Watermelon914/cmss13'
     steps:
     - name: Get The Script
       run: |
