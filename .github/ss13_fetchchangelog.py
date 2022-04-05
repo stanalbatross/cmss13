@@ -45,7 +45,9 @@ def parse_pr_changelog(pr):
 		contentStr = content.group(1).strip()
 		if keyStr in prefixToActual:
 			keyStr = prefixToActual[keyStr]
-		entries.append((keyStr, contentStr))
+		entries.append({
+            keyStr: contentStr
+        })
 	yaml_object["changes"] = entries
 	return yaml_object
 
