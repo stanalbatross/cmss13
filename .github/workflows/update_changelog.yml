@@ -23,10 +23,7 @@ jobs:
         python -m pip install pyyaml pygithub pytz
         sudo apt-get install  dos2unix
     - name: Checkout
-      if: steps.value_holder.outputs.ACTIONS_ENABLED
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 25
     - name: Fetch Changelog
       run: |
         python ss13_fetchchangelog.py html/changelogs
