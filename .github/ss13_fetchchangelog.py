@@ -22,13 +22,13 @@ def parse_pr_changelog(pr):
 	if changelog_match is None:
 		return
 	lines = changelog_match.group(1).split('\n')
-	entries = {}
+	entries = []
 	for index, line in enumerate(lines):
 		line = line.strip()
 		if not line:
 			continue
 		if index == 0:
-			author = None
+			author = line.strip()
 			if not author or author == "John Titor":
 				author = pr.user.name
 				print("Author not set, substituting", author)
@@ -45,10 +45,7 @@ def parse_pr_changelog(pr):
 		contentStr = content.group(1).strip()
 		if keyStr in prefixToActual:
 			keyStr = prefixToActual[keyStr]
-
-		if not keyStr in entries:
-			entries[keyStr] = []
-		entries[keyStr].append(contentStr)
+		entries.append((keyStr, contentStr))
 	yaml_object["changes"] = entries
 	return yaml_object
 
