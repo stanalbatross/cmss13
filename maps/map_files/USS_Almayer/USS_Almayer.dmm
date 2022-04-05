@@ -4655,7 +4655,6 @@
 	},
 /area/shuttle/drop1/sulaco)
 "ana" = (
-/obj/structure/machinery/cm_vending/sorted/cargo_guns/pilot_officer,
 /obj/structure/sign/safety/hazard{
 	pixel_x = -17;
 	pixel_y = -8
@@ -4664,6 +4663,7 @@
 	pixel_x = -17;
 	pixel_y = 7
 	},
+/obj/structure/machinery/cm_vending/clothing/pilot_officer,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -50683,6 +50683,10 @@
 	id = "kitchen";
 	height = 2
 	},
+/obj/structure/sign/safety/ladder{
+	pixel_x = 8;
+	pixel_y = 24
+	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -63931,6 +63935,10 @@
 	id = "kitchen";
 	height = 1
 	},
+/obj/structure/sign/safety/ladder{
+	pixel_x = 8;
+	pixel_y = 24
+	},
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "green";
@@ -70264,6 +70272,13 @@
 	tag = "icon-emerald (SOUTHEAST)"
 	},
 /area/almayer/squads/charlie)
+"szO" = (
+/obj/structure/machinery/cm_vending/sorted/cargo_guns/pilot_officer,
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/living/pilotbunks)
 "sAc" = (
 /obj/structure/machinery/cm_vending/clothing/senior_officer{
 	density = 0;
@@ -106562,7 +106577,7 @@ aws
 amh
 aiX
 ana
-aqw
+szO
 aqw
 aiX
 amh
