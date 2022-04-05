@@ -9,10 +9,6 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.repository == 'Watermelon914/cmss13'
     steps:
-    - name: Get The Script
-      run: |
-        wget "https://raw.githubusercontent.com/${{ github.repository }}/master/.github/ss13_genchangelog.py"
-        wget "https://raw.githubusercontent.com/${{ github.repository }}/master/.github/ss13_fetchchangelog.py"
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -26,12 +22,12 @@ jobs:
       uses: actions/checkout@v2
     - name: Fetch Changelog
       run: |
-        python ss13_fetchchangelog.py html/changelogs
+        python .github/ss13_fetchchangelog.py html/changelogs
       env:
         REPO: ${{ github.repository }}
     - name: Update Changelog
       run: |
-        python ss13_genchangelog.py html/changelogs
+        python .github/ss13_genchangelog.py html/changelogs
     - name: Commit
       run: |
         git pull origin master
