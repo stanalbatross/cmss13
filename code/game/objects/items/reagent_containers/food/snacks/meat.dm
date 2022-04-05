@@ -57,6 +57,10 @@
 	icon_state = "fish_meat"
 	icon = 'icons/obj/items/fishing_atoms.dmi'
 
+/obj/item/reagent_container/food/snacks/meat/fish/Initialize()
+	. = ..()
+	reagents.add_reagent("fish", 4)
+
 /obj/item/reagent_container/food/snacks/meat/fish/crab
 	name = "crab meat"
 	desc = "Delicious crab meat."
@@ -73,7 +77,7 @@
 	icon_state = "squid_meat"
 
 
-/obj/item/reagent_container/food/snack/meat/fish/squid/alt
+/obj/item/reagent_container/food/snack/meat/fish/squid/sock
 	name = "sock squid meat"
 	desc = "Pink squishy meat from a squid or squid like creature. You're no marine biologist."
 	icon_state = "squid_meat_2"
