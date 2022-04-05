@@ -30789,9 +30789,9 @@
 /area/almayer/living/pilotbunks)
 "bZc" = (
 /obj/structure/machinery/door/poddoor/almayer/locked{
-	icon_state = "almayer_pdoor"
+	icon_state = "almayer_pdoor";
+	id = "s_engi"
 	},
-/obj/structure/blocker/invisible_wall,
 /turf/open/floor/almayer{
 	icon_state = "plate";
 	tag = "icon-sterile"
@@ -45695,6 +45695,12 @@
 /obj/structure/bed/sofa/vert/grey/bot,
 /turf/open/floor/almayer,
 /area/almayer/lifeboat_pumps/south1)
+"gZA" = (
+/obj/structure/sign/safety/nonpress_0g{
+	pixel_x = 32
+	},
+/turf/open/floor/plating/plating_catwalk,
+/area/almayer/engineering/upper_engineering/notunnel)
 "haq" = (
 /turf/closed/wall/almayer,
 /area/almayer/hull/lower_hull/l_a_p)
@@ -49212,17 +49218,6 @@
 	},
 /area/almayer/hallways/hangar)
 "iHc" = (
-/obj/structure{
-	dir = 4;
-	health = 150;
-	icon = 'icons/obj/pipes/pipes.dmi';
-	icon_state = "intact-scrubbers";
-	indestructible = 1;
-	layer = 4.5;
-	pixel_y = 13;
-	projectile_coverage = 0;
-	unacidable = 1
-	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/engineering/upper_engineering/notunnel)
 "iHF" = (
@@ -66097,6 +66092,12 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/almayer/command/cic)
+"qEl" = (
+/obj/structure/sign/safety/nonpress_0g{
+	pixel_x = -16
+	},
+/turf/open/floor/plating/plating_catwalk,
+/area/almayer/engineering/upper_engineering/notunnel)
 "qEn" = (
 /turf/closed/wall/almayer/research/containment/wall/corner,
 /area/almayer/medical/containment/cell)
@@ -69212,7 +69213,8 @@
 /area/almayer/engineering/engineering_workshop/hangar)
 "sbq" = (
 /obj/structure/machinery/door/poddoor/almayer/locked{
-	icon_state = "almayer_pdoor"
+	icon_state = "almayer_pdoor";
+	id = "n_engi"
 	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
@@ -131900,12 +131902,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
 aad
 bYn
 apB
@@ -131955,12 +131957,12 @@ aag
 aag
 aag
 ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -132103,12 +132105,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
 aad
 bYn
 alO
@@ -132158,12 +132160,12 @@ bYn
 aag
 aag
 ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -132306,13 +132308,13 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aad
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
+hzc
 hzc
 hzc
 bYn
@@ -132360,13 +132362,13 @@ kPR
 bYn
 hzc
 hzc
-ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+hzc
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -132509,14 +132511,14 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aad
-bZc
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
+sbq
+qEl
 iHc
 sbq
 alR
@@ -132560,16 +132562,16 @@ iEr
 fBt
 atq
 alR
-sbq
-iHc
 bZc
-ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+iHc
+qEl
+bZc
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -132712,14 +132714,14 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aad
-bZc
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
+sbq
+gZA
 iHc
 sbq
 alR
@@ -132763,16 +132765,16 @@ iEr
 fBt
 atq
 alR
-sbq
-iHc
 bZc
-ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+iHc
+gZA
+bZc
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -132915,13 +132917,13 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aad
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
+hzc
 hzc
 hzc
 bYn
@@ -132969,13 +132971,13 @@ uGc
 bYn
 hzc
 hzc
-ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+hzc
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -133118,12 +133120,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
 aad
 aag
 aag
@@ -133173,12 +133175,12 @@ bYn
 aag
 aag
 ajZ
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -133321,12 +133323,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+ljD
+ljD
+ljD
+ljD
+ljD
+ljD
 aae
 aah
 aah
@@ -133376,12 +133378,12 @@ aah
 aah
 aah
 afm
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+szi
+szi
+szi
+szi
+szi
+szi
 aaa
 aaa
 aaa
@@ -133524,12 +133526,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+bdH
+ljD
+ljD
+ljD
+ljD
+bdH
 aaa
 aaa
 aaa
@@ -133579,12 +133581,12 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+bdH
+szi
+szi
+szi
+szi
+bdH
 aaa
 aaa
 aaa
