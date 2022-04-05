@@ -8,7 +8,7 @@ jobs:
   update-changelog:
     concurrency: changelog
     runs-on: ubuntu-20.04
-    if: github.repository == 'Watermelon914/cmss13'
+    if: github.repository == 'cmss13-devs/cmss13'
     steps:
     - name: Set up Python
       uses: actions/setup-python@v1
