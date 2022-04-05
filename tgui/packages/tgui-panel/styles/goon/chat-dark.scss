@@ -255,7 +255,7 @@ a.popt {
 /* ADD HERE FOR ITALIC */
 
 
-.italic, .italics, {
+.italic, .italics {
   font-style: italic;
 }
 
@@ -283,6 +283,7 @@ em {
 }
 
 .ooc {
+  color: #cca300;
   font-weight: bold;
 }
 
@@ -297,11 +298,10 @@ em {
 }
 
 .adminsay {
-  color: #9611D4;
+  color: #ff4500;
   font-weight: bold;
 }
 
-.attacklog,
 .admin {
   color: #5975da;
   font-weight: bold;
@@ -311,10 +311,12 @@ em {
   font-weight: bold;
 }
 
-.say {
+.say, .emote, .infoplain, .oocplain, .warningplain {
 }
 
-// deadsay below
+.deadsay {
+  color: #e2c1ff;
+}
 
 .binarysay {
   color: #1e90ff;
@@ -328,6 +330,9 @@ em {
   color: #88ff88;
 }
 
+/* RADIO COLORS */
+/* IF YOU CHANGE THIS KEEP IT IN SYNC WITH TGUI CONSTANTS */
+
 .radio {
   color: #1ecc43;
 }
@@ -336,13 +341,21 @@ em {
   color: #c68cfa;
 }
 
-// comradio below
+.comradio {
+  color: #fcdf03;
+}
 
-// secradio below
+.secradio {
+  color: #dd3535;
+}
 
-// medradio below
+.medradio {
+  color: #57b8f0;
+}
 
-// engradio below
+.engradio {
+  color: #f37746;
+}
 
 .suppradio {
   color: #b88646;
@@ -354,6 +367,10 @@ em {
 
 .syndradio {
   color: #8f4a4b;
+}
+
+.gangradio {
+  color: #ac2ea1;
 }
 
 .centcomradio {
@@ -372,6 +389,14 @@ em {
   color: #3434fd;
 }
 
+.greenteamradio {
+  color: #34fd34;
+}
+
+.yellowteamradio {
+  color: #fdfd34;
+}
+
 .yell {
   font-weight: bold;
 }
@@ -384,6 +409,11 @@ em {
   color: #c51e1e;
   font-weight: bold;
   font-size: 185%;
+}
+
+.bolddanger {
+  color: #c51e1e;
+  font-weight: bold;
 }
 
 .danger {
@@ -414,6 +444,11 @@ em {
 .boldannounce {
   color: #c51e1e;
   font-weight: bold;
+}
+
+.minorannounce {
+  font-weight: bold;
+  font-size: 185%;
 }
 
 .greenannounce {
@@ -488,6 +523,10 @@ em {
   color: #059223;
 }
 
+.grey {
+  color: #838383;
+}
+
 .red {
   color: #FF0000;
 }
@@ -498,6 +537,11 @@ em {
 
 .nicegreen {
   color: #059223;
+}
+
+.boldnicegreen {
+  color: #059223;
+  font-weight: bold;
 }
 
 .cult {
@@ -651,6 +695,11 @@ em {
   font-family: "Courier New", cursive, sans-serif;
 }
 
+.tape_recorder {
+  color: #FF0000;
+  font-family: "Courier New", cursive, sans-serif;
+}
+
 .command_headset {
   font-weight: bold;
   font-size: 160%;
@@ -660,7 +709,9 @@ em {
   font-size: 60%;
 }
 
-// big below
+.big {
+  font-size: 185%;
+}
 
 .reallybig {
   font-size: 245%;
@@ -750,6 +801,10 @@ em {
 .icon {
   height: 1em;
   width: auto;
+}
+
+.bigicon {
+  font-size: 2.5em;
 }
 
 .memo {
@@ -845,160 +900,7 @@ em {
   margin-left: 3em;
 }
 
-/* CM stuff */
-
-.xooc					{color: #ac04e9;	font-weight: bold; font-size: 140%;}
-.mooc					{color: #009900;	font-weight: bold; font-size: 140%;}
-.yooc					{color: #999600;	font-weight: bold; font-size: 140%;}
-
-.headminsay				{color: #653d78;	font-weight: bold;}
-
-.radio					{color: #b4b4b4;}
-.deptradio				{color: #993399;}
-.comradio				{color: #779cc2;}
-
-.centradio				{color: #5C5C8A;}
-.airadio				{color: #FF00FF;}
-
-.secradio				{color: #a52929;}
-.engradio				{color: #A66300;}
-.medradio				{color: #008160;}
-
-.supradio				{color: #5F4519;}
-.jtacradio				{color: #702963;}
-.intelradio				{color: #027D02;}
-.wyradio				{color: #FE9B24;}
-
-.alpharadio				{color: #db2626;}
-.bravoradio				{color: #C68610;}
-.charlieradio			{color: #AA55AA;}
-.deltaradio				{color: #007FCF;}
-.echoradio				{color: #3EB489;}
-
-.medium					{					font-size: 110%}
-.big					{					font-size: 115%}
-.large					{					font-size: 125%}
-.extra_large			{					font-size: 130%}
-.huge					{					font-size: 150%}
-
-.underline				{text-decoration: underline;}
-
-.orange 				{color: #eca100;}
-
-.normal					{font-style: normal;}
-
-.attack					{color: #ff3838;}
-.moderate				{color: #CC0000;}
-.disarm					{color: #990000;}
-.passive				{color: #660000;}
-
-.helpful				{color: #368f31;}
-
-.scanner				{color: #ff3838;}
-.scannerb				{color: #ff3838;	font-weight: bold;}
-.scannerburn			{color: #ffa500;}
-.scannerburnb			{color: #ffa500;	font-weight: bold;}
-.rose					{color: #ff5050;}
-
-.debuginfo				{color: #493D26;	font-style: italic;}
-
-.xenonotice				{color: #51a16c;}
-.xenoboldnotice		{color: #51a16c;	font-style: italic;}
-
-.xenowarning			{color: #51a16c;	font-style: italic;}
-.xenominorwarning		{color: #51a16c;	font-weight: bold; font-style: italic;}
-
-.xenodanger				{color: #51a16c;	font-weight: bold;}
-.avoidharm				{color:	#72a0e5;	font-weight: bold;}
-.highdanger				{color: #ff3838;	font-weight: bold; font-size: 140%;}
-.xenohighdanger			{color: #51a16c; 	font-weight: bold; font-size: 140%;}
-.xenoannounce           {color: #65c585;    font-family: book-antiqua; font-weight: bold; font-size: 140%;}
-.yautjabold				{color: #800080;	font-weight: bold;}
-.yautjaboldbig			{color: #800080;	font-weight: bold; font-size: 120%;}
-
-.objectivebig			{font-weight: bold; font-size: 130%;}
-.objectivegreen			{color: #00ff00;}
-.objectivered			{color: #ff0000;}
-.objectivesuccess		{color: #00ff00;	font-weight: bold; font-size: 110%;}
-.objectivefail			{color: #ff0000;	font-weight: bold; font-size: 110%;}
-
-.xenotalk,
-.xeno					    {color: #c048c0;	font-style: italic;}
-.xenoleader				{color: #996e99;	font-style: italic;						font-size: 125%;}
-.xenoqueen				{color: #996e99; 	font-style: italic; font-weight: bold; font-size: 125%;}
-.newscaster				{color: #800000;}
-
-.role_header			{color: #e92d2d;	display: block; text-align: center; font-weight: bold; font-family: trebuchet-ms; font-size: 150%;}
-.role_body				{color: #3a3ae9;	display: block; text-align: center; font-size: 125%;}
-
-.round_header			{color: #e92d2d; 	display: block; text-align: center; font-family: courier; font-weight: bold; font-size: 180%;}
-.round_body				{color: #c5c5c5; 	display: block; text-align: center; font-family: trebuchet-ms; font-weight: bold; font-size: 125%;}
-.event_announcement		{color: #600d48; 	font-family: arial-narrow; font-weight: bold; font-size: 125%;}
-
-.announce_header		{color: #cecece;	font-weight: bold; font-size: 150%;}
-.announce_header_blue	{color: #7575f3;	font-weight: bold; font-size: 150%;}
-.announce_header_admin {color: #7575f3; font-weight: bold; font-size: 150%;}
-.announce_body			{color: #e92d2d;	font-weight: normal; font-size: 125%;}
-
-.centerbold				{						display: block; text-align: center; font-weight: bold;}
-
-.mod					{color: #917455;	font-weight: bold;}
-.modooc					{color: #184880;	font-weight: bold;}
-.adminmod				{color: #7c440c;	font-weight: bold;}
-.mentorsay				{color: #d4af57;	font-weight: bold;}
-.staffsay				{color: #b5850d;	font-weight: bold;}
-.tajaran				{color: #803B56;}
-.tajaran_signlang		{color: #941C1C;}
-.skrell					{color: #00CED1;}
-.soghun					{color: #228B22;}
-.changeling				{color: #800080;}
-.vox					{color: #AA00AA;}
-.monkey					{color: #966C47;}
-.german					{color: #858F1E; 	font-family: 'Times New Roman', Times, serif;}
-.spanish				{color: #CF982B;}
-.japanese				{color: #be0029}
-.zombie 				{color: #2dacb1; font-style: italic;}
-.rough					{font-family: trebuchet-ms, cursive, sans-serif;}
-.commando				{color: #FE9B24; font-style: bold;}
-.say_quote				{font-family: Georgia, Verdana, sans-serif;}
-
-.admin .message         {color: #314cad;}
-.admin .prefix          {font-weight: bolder;}
-.pm                     {font-size: 110%;}
-
-.deadsay {
-  color: #8b4dff;
-}
-
-.retro_translator {
-  font-weight: bold;
-}
-
-.yautja_translator {
-  color: #aa0000;
-  font-weight: bold;
-
-  /*Animation*/
-  animation: glitch 0.5s infinite;
-}
-
-/*Keyframes*/
-
-@keyframes glitch {
-  25% {
-    color: #aa0000;
-    transform: translate(-2px, -1px);
-  }
-  50% {
-    color: #be0000;
-    transform: translate(1px, -2px);
-  }
-  75% {
-    color: #8d0000;
-    transform: translate(-1px, 2px);
-  }
-  100% {
-    color: #830000;
-    transform: translate(1px, 1px);
-  }
+.tooltip {
+  font-style: italic;
+  border-bottom: 1px dashed #fff;
 }
