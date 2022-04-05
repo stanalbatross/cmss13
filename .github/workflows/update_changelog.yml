@@ -1,0 +1,48 @@
+name: "Update Changelog"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-20.04
+    if: github.repository == 'cmss13-devs/cmss13'
+    steps:
+    - name: Get The Script
+      run: |
+        wget "https://raw.githubusercontent.com/${{ github.repository }}/master/.github/ss13_genchangelog.py"
+        wget "https://raw.githubusercontent.com/${{ github.repository }}/master/.github/ss13_fetchchangelog.py"
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pyyaml pygithub pytz
+        sudo apt-get install  dos2unix
+    - name: Checkout
+      if: steps.value_holder.outputs.ACTIONS_ENABLED
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 25
+    - name: Fetch Changelog
+      run: |
+        python ss13_fetchchangelog.py html/changelogs
+      env:
+        REPO: ${{ github.repository }}
+    - name: Update Changelog
+      run: |
+        python ss13_genchangelog.py html/changelogs
+    - name: Commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Changelogs"
+        git pull origin master
+        git add html/changelogs
+        git commit -m "Automatic changelog compile [ci skip]" -a || true
+    - name: "Push"
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
