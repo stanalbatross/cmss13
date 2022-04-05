@@ -30788,14 +30788,10 @@
 	},
 /area/almayer/living/pilotbunks)
 "bZc" = (
-/obj/structure/machinery/door/poddoor/almayer/locked{
-	icon_state = "almayer_pdoor";
-	id = "s_engi"
+/obj/structure/sign/safety/nonpress_0g{
+	pixel_x = -16
 	},
-/turf/open/floor/almayer{
-	icon_state = "plate";
-	tag = "icon-sterile"
-	},
+/turf/open/floor/plating/plating_catwalk,
 /area/almayer/engineering/upper_engineering/notunnel)
 "bZe" = (
 /turf/open/floor/almayer{
@@ -42729,6 +42725,9 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/hull/lower_hull/l_a_p)
+"fHa" = (
+/turf/open/space/basic,
+/area/shuttle/distress/arrive_n_engi)
 "fHc" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/head/hardhat{
@@ -45695,12 +45694,6 @@
 /obj/structure/bed/sofa/vert/grey/bot,
 /turf/open/floor/almayer,
 /area/almayer/lifeboat_pumps/south1)
-"gZA" = (
-/obj/structure/sign/safety/nonpress_0g{
-	pixel_x = 32
-	},
-/turf/open/floor/plating/plating_catwalk,
-/area/almayer/engineering/upper_engineering/notunnel)
 "haq" = (
 /turf/closed/wall/almayer,
 /area/almayer/hull/lower_hull/l_a_p)
@@ -50346,6 +50339,12 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/living/captain_mess)
+"jgw" = (
+/obj/structure/sign/safety/nonpress_0g{
+	pixel_x = 32
+	},
+/turf/open/floor/plating/plating_catwalk,
+/area/almayer/engineering/upper_engineering/notunnel)
 "jgA" = (
 /obj/structure/surface/table/almayer,
 /obj/item/clothing/accessory/storage/black_vest/acid_harness,
@@ -51073,6 +51072,16 @@
 	tag = "icon-bluecorner (NORTH)"
 	},
 /area/almayer/hallways/hangar)
+"jzD" = (
+/obj/structure/machinery/door/poddoor/almayer/locked{
+	icon_state = "almayer_pdoor";
+	id = "s_engi"
+	},
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/engineering/upper_engineering/notunnel)
 "jzY" = (
 /obj/effect/landmark/shuttle_loc/marine_crs/dropship,
 /turf/open/floor/almayer{
@@ -63673,6 +63682,9 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/almayer/shipboard/port_missiles)
+"pyn" = (
+/turf/open/space/basic,
+/area/shuttle/distress/arrive_s_engi)
 "pyy" = (
 /obj/structure/filingcabinet,
 /turf/open/floor/almayer{
@@ -66092,12 +66104,6 @@
 	tag = "icon-blue (NORTHEAST)"
 	},
 /area/almayer/command/cic)
-"qEl" = (
-/obj/structure/sign/safety/nonpress_0g{
-	pixel_x = -16
-	},
-/turf/open/floor/plating/plating_catwalk,
-/area/almayer/engineering/upper_engineering/notunnel)
 "qEn" = (
 /turf/closed/wall/almayer/research/containment/wall/corner,
 /area/almayer/medical/containment/cell)
@@ -131902,12 +131908,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 aad
 bYn
 apB
@@ -131957,12 +131963,12 @@ aag
 aag
 aag
 ajZ
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -132105,12 +132111,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 aad
 bYn
 alO
@@ -132160,12 +132166,12 @@ bYn
 aag
 aag
 ajZ
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -132308,12 +132314,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 hzc
 hzc
 hzc
@@ -132363,12 +132369,12 @@ bYn
 hzc
 hzc
 hzc
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -132511,14 +132517,14 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 sbq
-qEl
+bZc
 iHc
 sbq
 alR
@@ -132562,16 +132568,16 @@ iEr
 fBt
 atq
 alR
-bZc
+jzD
 iHc
-qEl
 bZc
-szi
-szi
-szi
-szi
-szi
-szi
+jzD
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -132714,14 +132720,14 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 sbq
-gZA
+jgw
 iHc
 sbq
 alR
@@ -132765,16 +132771,16 @@ iEr
 fBt
 atq
 alR
-bZc
+jzD
 iHc
-gZA
-bZc
-szi
-szi
-szi
-szi
-szi
-szi
+jgw
+jzD
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -132917,12 +132923,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 hzc
 hzc
 hzc
@@ -132972,12 +132978,12 @@ bYn
 hzc
 hzc
 hzc
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -133120,12 +133126,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 aad
 aag
 aag
@@ -133175,12 +133181,12 @@ bYn
 aag
 aag
 ajZ
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -133323,12 +133329,12 @@ aaa
 aaa
 aaa
 aaa
-ljD
-ljD
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
+fHa
+fHa
 aae
 aah
 aah
@@ -133378,12 +133384,12 @@ aah
 aah
 aah
 afm
-szi
-szi
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
+pyn
+pyn
 aaa
 aaa
 aaa
@@ -133527,10 +133533,10 @@ aaa
 aaa
 aaa
 bdH
-ljD
-ljD
-ljD
-ljD
+fHa
+fHa
+fHa
+fHa
 bdH
 aaa
 aaa
@@ -133582,10 +133588,10 @@ aaa
 aaa
 aaa
 bdH
-szi
-szi
-szi
-szi
+pyn
+pyn
+pyn
+pyn
 bdH
 aaa
 aaa
