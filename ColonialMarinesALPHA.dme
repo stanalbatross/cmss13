@@ -129,6 +129,7 @@
 #include "code\_globalvars\global_lists.dm"
 #include "code\_globalvars\misc.dm"
 #include "code\_globalvars\regexes.dm"
+#include "code\_globalvars\tgui.dm"
 #include "code\_globalvars\lists\client.dm"
 #include "code\_globalvars\lists\keybindings.dm"
 #include "code\_globalvars\lists\mapping_globals.dm"
