@@ -18,7 +18,6 @@ prefixToActual = {
 
 def parse_pr_changelog(pr):
 	yaml_object = {}
-	author = None
 	changelog_match = re.search(r"🆑(.*)🆑", pr.body, re.S | re.M)
 	if changelog_match is None:
 		return
@@ -29,10 +28,11 @@ def parse_pr_changelog(pr):
 		if not line:
 			continue
 		if index == 0:
+			author = None
 			if not author or author == "John Titor":
 				author = pr.user.name
 				print("Author not set, substituting", author)
-			yaml_object[author] = author
+			yaml_object["author"] = author
 			continue
 
 		key = re.search(r"(.*):", line)
