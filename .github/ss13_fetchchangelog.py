@@ -12,7 +12,6 @@ prefixToActual = {
 	'add': 'rscadd',
 	'del': 'rscdel',
 	'sprite': 'imageadd',
-	'grammar': 'spellcheck',
 	'code': 'code_imp',
 }
 
@@ -35,19 +34,18 @@ def parse_pr_changelog(pr):
 			yaml_object["author"] = author
 			continue
 
-		key = re.search(r"(.*):", line)
-		if key is None:
+		splitData = line.split(":")
+
+		if len(splitData) < 2:
 			continue
-		content = re.search(r":(.*)", line)
-		if content is None:
-			continue
-		keyStr = key.group(1).strip()
-		contentStr = content.group(1).strip()
-		if keyStr in prefixToActual:
-			keyStr = prefixToActual[keyStr]
+
+		key = splitData.pop(0).strip()
+		content = ":".join(splitData).strip()
+		if key in prefixToActual:
+			key = prefixToActual[key]
 		entries.append({
-            keyStr: contentStr
-        })
+			key: content
+		})
 	yaml_object["changes"] = entries
 	return yaml_object
 
