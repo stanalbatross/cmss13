@@ -41,12 +41,18 @@ def get_labels(pr):
 		if not line:
 			continue
 
-		key = line.split(":")[0]
+		contentSplit = line.split(":")
+
+		key = contentSplit.pop(0).strip()
+		content = ":".join(contentSplit).strip()
 
 		if not key in changelogToPrefix:
 			continue
 
-		labels[changelogToPrefix[key]] = True
+		if content in changelogToPrefix[key][1]:
+			continue
+
+		labels[changelogToPrefix[key][0]] = True
 
 	files = pr.get_files()
 	for file in files:
