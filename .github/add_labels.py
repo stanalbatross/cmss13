@@ -63,7 +63,7 @@ def get_labels(pr):
 	return labels
 
 def main():
-	g = Github(os.environ["TOKEN"])
+	g = Github()#Github(os.environ["TOKEN"])
 	repo = g.get_repo(os.environ['REPO'])
 
 	commit = repo.get_commit(os.environ["GITHUB_SHA"])
