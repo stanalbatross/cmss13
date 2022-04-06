@@ -17,6 +17,7 @@
 // `librust_g.so` (preferred) or `rust_g` (old).
 
 /* This comment bypasses grep checks */ /var/__rust_g
+// very cool!
 
 /proc/__detect_rust_g()
 	if (world.system_type == UNIX)
