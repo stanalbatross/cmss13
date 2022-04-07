@@ -25,6 +25,4 @@ maps/**/backup
 *.before
 __pycache__
 test_environment.txt
-*.json
-*.vscode/*
-!/.vscode/extensions.json
+.cache

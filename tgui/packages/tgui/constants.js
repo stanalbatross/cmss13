@@ -23,19 +23,6 @@ export const COLORS = {
     centcom: '#00c100',
     other: '#c38312',
   },
-  // Almayer colors
-  shipDeps: {
-    command: '#004080',
-    security: '#a30000',
-    medsci: '#008160',
-    engineering: '#a66300',
-    cargo: '#5f4519',
-    alpha: '#ea0000',
-    bravo: '#c68610',
-    charlie: '#aa55aa',
-    delta: '#007fcf',
-    echo: '#027d02',
-  },
   // Damage type colors
   damageType: {
     oxy: '#3498db',
@@ -70,14 +57,14 @@ export const CSS_COLORS = [
   'average',
   'bad',
   'label',
-  'xeno',
 ];
 
+/* IF YOU CHANGE THIS KEEP IT IN SYNC WITH CHAT CSS */
 export const RADIO_CHANNELS = [
   {
     name: 'Syndicate',
     freq: 1213,
-    color: '#a52a2a',
+    color: '#8f4a4b',
   },
   {
     name: 'Red Team',
@@ -88,6 +75,16 @@ export const RADIO_CHANNELS = [
     name: 'Blue Team',
     freq: 1217,
     color: '#3434fd',
+  },
+  {
+    name: 'Green Team',
+    freq: 1219,
+    color: '#34fd34',
+  },
+  {
+    name: 'Yellow Team',
+    freq: 1221,
+    color: '#fdfd34',
   },
   {
     name: 'CentCom',
@@ -112,7 +109,7 @@ export const RADIO_CHANNELS = [
   {
     name: 'Command',
     freq: 1353,
-    color: '#5177ff',
+    color: '#fcdf03',
   },
   {
     name: 'Medical',
@@ -170,7 +167,7 @@ const GASES = [
     'id': 'water_vapor',
     'name': 'Water Vapor',
     'label': 'H₂O',
-    'color': 'grey',
+    'color': 'lightsteelblue',
   },
   {
     'id': 'nob',
@@ -182,37 +179,31 @@ const GASES = [
     'id': 'n2o',
     'name': 'Nitrous Oxide',
     'label': 'N₂O',
-    'color': 'red',
+    'color': 'bisque',
   },
   {
     'id': 'no2',
-    'name': 'Nitryl',
-    'label': 'NO₂',
+    'name': 'Nitrium',
+    'label': 'Nitrium',
     'color': 'brown',
   },
   {
     'id': 'tritium',
     'name': 'Tritium',
     'label': 'Tritium',
-    'color': 'green',
+    'color': 'limegreen',
   },
   {
     'id': 'bz',
     'name': 'BZ',
     'label': 'BZ',
-    'color': 'purple',
-  },
-  {
-    'id': 'stim',
-    'name': 'Stimulum',
-    'label': 'Stimulum',
-    'color': 'purple',
+    'color': 'mediumpurple',
   },
   {
     'id': 'pluox',
     'name': 'Pluoxium',
     'label': 'Pluoxium',
-    'color': 'blue',
+    'color': 'mediumslateblue',
   },
   {
     'id': 'miasma',
@@ -221,10 +212,52 @@ const GASES = [
     'color': 'olive',
   },
   {
+    'id': 'Freon',
+    'name': 'Freon',
+    'label': 'Freon',
+    'color': 'paleturquoise',
+  },
+  {
     'id': 'hydrogen',
     'name': 'Hydrogen',
     'label': 'H₂',
     'color': 'white',
+  },
+  {
+    'id': 'healium',
+    'name': 'Healium',
+    'label': 'Healium',
+    'color': 'salmon',
+  },
+  {
+    'id': 'proto_nitrate',
+    'name': 'Proto Nitrate',
+    'label': 'Proto-Nitrate',
+    'color': 'greenyellow',
+  },
+  {
+    'id': 'zauker',
+    'name': 'Zauker',
+    'label': 'Zauker',
+    'color': 'darkgreen',
+  },
+  {
+    'id': 'halon',
+    'name': 'Halon',
+    'label': 'Halon',
+    'color': 'purple',
+  },
+  {
+    'id': 'helium',
+    'name': 'Helium',
+    'label': 'He',
+    'color': 'aliceblue',
+  },
+  {
+    'id': 'antinoblium',
+    'name': 'Antinoblium',
+    'label': 'Anti-Noblium',
+    'color': 'maroon',
   },
 ];
 
