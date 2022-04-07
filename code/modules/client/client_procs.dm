@@ -359,9 +359,10 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 
 	if(!check_rights(R_DEBUG|R_PROFILER))
 		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE(@%Greetings valued staff member! Game start is disabled, click here for redirection to test server: <a href="byond://linux.cm-ss13.com:1400">HERE</a>%)))
+		return
 	var/timer = rand(120)
 	to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE("Thanks for applying for the CM-SS13 beta-testing program! Stay seated until you get transfered in about [timer] seconds... ")))
-	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 1) * 10)
+	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 10)
 
 	if(mob && !isobserver(mob) && !isnewplayer(mob))
 		if(isXeno(mob))
