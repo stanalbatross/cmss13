@@ -896,7 +896,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/time_remaining = SSticker.GetTimeLeft()
 	if(time_remaining > 0)
-		. += "Time To Start: [round(time_remaining)]s"
+		. += "Time Spend in Lobby: [round(time_remaining)]s"
 	else if(time_remaining == -10)
 		. += "Time To Start: DELAYED"
 	else

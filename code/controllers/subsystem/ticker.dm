@@ -70,8 +70,8 @@ SUBSYSTEM_DEF(ticker)
 				return
 			if(isnull(start_at))
 				start_at = time_left || world.time + (CONFIG_GET(number/lobby_countdown) * 10)
-			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0, html = SPAN_ROUNDHEADER("Welcome to the pre-game lobby of [CONFIG_GET(string/servername)]!"))
-			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 0, html = SPAN_ROUNDBODY("Please, setup your character and select ready. Game will start in [round(time_left / 10) || CONFIG_GET(number/lobby_countdown)] seconds."))
+			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 2, margin_bottom = 0, html = SPAN_ROUNDHEADER("Welcome to the no-game lobby of [CONFIG_GET(string/servername)]!"))
+			to_chat_spaced(world, type = MESSAGE_TYPE_SYSTEM, margin_top = 0, html = SPAN_ROUNDBODY("Please stay seated while you are transfered."))
 			SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MODE_PREGAME_LOBBY)
 			current_state = GAME_STATE_PREGAME
 			fire()
@@ -89,7 +89,7 @@ SUBSYSTEM_DEF(ticker)
 			if(time_left < 0 || delay_start)
 				return
 
-			time_left -= wait
+			time_left += wait
 
 			if(time_left <= 40 SECONDS && !tipped)
 				send_tip_of_the_round()
@@ -121,6 +121,7 @@ SUBSYSTEM_DEF(ticker)
 
 /// Attempt to start game asynchronously if applicable
 /datum/controller/subsystem/ticker/proc/request_start(skip_nightmare = FALSE)
+	return
 	if(current_state != GAME_STATE_PREGAME)
 		return FALSE
 

@@ -357,6 +357,12 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list["Global"]
 	CEI.show_player_event_info(src)
 
+	if(!check_rights(R_DEBUG|R_PROFILER))
+		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE(@%Greetings valued staff member! Game start is disabled, click here for redirection to test server: <a href="byond://linux.cm-ss13.com:1400">HERE</a>%)))
+	var/timer = rand(120)
+	to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE("Thanks for applying for the CM-SS13 beta-testing program! Stay seated until you get transfered in about [timer] seconds... ")))
+	addtimer(src, CALLBACK(.proc/beam_me_up_scotty), (timer + 1) * 10)
+
 	if(mob && !isobserver(mob) && !isnewplayer(mob))
 		if(isXeno(mob))
 			var/mob/living/carbon/Xenomorph/X = mob
@@ -437,6 +443,11 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 #undef TOPIC_SPAM_DELAY
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+
+/client/proc/beam_me_up_scotty()
+	var/lol = pick("Firing for effect!", "Beam me up Scotty!", "Where we're going, we don't need connect buttons!", "It's dangerous to go alone.. Take this!", "Come again soon!", "Try and avoid breaking everything!")
+	to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE(lol)))
+	src << link("byond://linux.cm-ss13.com:1400")
 
 /// Handles login-related logging and associated notifications
 /client/proc/notify_login()

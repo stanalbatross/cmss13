@@ -160,6 +160,9 @@
 	set desc = "Start the round RIGHT NOW"
 	set category = "Server.Round"
 
+	alert("This is disabled!")
+	return
+
 	if (!SSticker)
 		alert("Unable to start the game as it is not set up.")
 		return
