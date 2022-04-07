@@ -357,15 +357,6 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	var/datum/custom_event_info/CEI = GLOB.custom_event_info_list["Global"]
 	CEI.show_player_event_info(src)
 
-	if(check_rights(R_DEBUG|R_PROFILER))
-		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE(@%Greetings valued staff member! Game start is disabled, click here for redirection to test server: <a href="byond://linux.cm-ss13.com:1400">HERE</a>%)))
-		return
-	var/timer = rand(60)
-	to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE("Thanks for applying for the CM-SS13 beta-testing program! Stay seated until you get transfered in about [timer] seconds... ")))
-	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 10)
-	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 20)
-	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 30)
-
 	if(mob && !isobserver(mob) && !isnewplayer(mob))
 		if(isXeno(mob))
 			var/mob/living/carbon/Xenomorph/X = mob
@@ -412,6 +403,15 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	load_player_data()
 
 	view = world_view_size
+
+	if(check_rights(R_DEBUG|R_PROFILER))
+		to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE(@%Greetings valued staff member! Game start is disabled, click here for redirection to test server: <a href="byond://linux.cm-ss13.com:1400">HERE</a>%)))
+		return
+	var/timer = rand(60)
+	to_chat_immediate(src, SPAN_WARNING(FONT_SIZE_HUGE("Thanks for applying for the CM-SS13 beta-testing program! Stay seated until you get transfered in about [timer] seconds... ")))
+	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 10)
+	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 20)
+	addtimer(CALLBACK(src, .proc/beam_me_up_scotty), (timer + 30) * 30)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CLIENT_LOGIN, src)
 
