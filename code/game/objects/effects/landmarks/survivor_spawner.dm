@@ -60,8 +60,6 @@
 	make_objective = 1
 
 //LV_522 forecon Specials
-obj/effect/landmark/survivor_spawner/forecon/standard
-	equipment = "Survivor - USCM Reconnaissance Marine"
 
 obj/effect/landmark/survivor_spawner/forecon/forecon_support_Tech
 	equipment = "Survivor - USCM Reconnaissance Support Technician"
