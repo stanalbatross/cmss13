@@ -10070,7 +10070,7 @@
 	},
 /area/lv522/buildings/B_Block)
 "gZi" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_grenadier,
+/obj/effect/landmark/survivor_spawner/forecon/forecon_grenadier,
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Admin)
 "gZr" = (
@@ -12496,7 +12496,7 @@
 	},
 /area/lv522/buildings/colony_streets)
 "izo" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_marksman,
+/obj/effect/landmark/survivor_spawner/forecon/forecon_marksman,
 /turf/open/floor/strata{
 	icon_state = "blue1"
 	},
@@ -13708,7 +13708,7 @@
 	},
 /area/lv522/buildings/C_Block/Mining)
 "jqb" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_squad_leader,
+/obj/effect/landmark/survivor_spawner/forecon/forecon_squad_leader,
 /turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/A_block/Admin)
 "jqg" = (
@@ -16731,6 +16731,12 @@
 	icon_state = "marked"
 	},
 /area/lv522/buildings/A_block/Admin)
+"lgK" = (
+/obj/effect/landmark/survivor_spawner/forecon/standard,
+/turf/open/floor/strata{
+	icon_state = "multi_tiles"
+	},
+/area/lv522/buildings/A_block/Admin)
 "lhk" = (
 /obj/structure/barricade/handrail{
 	dir = 1
@@ -16797,10 +16803,6 @@
 /obj/item/weapon/gun/shotgun/double,
 /turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/landing_zone_1)
-"lln" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_captain,
-/turf/open/floor/strata,
-/area/lv522/buildings/A_block/Admin)
 "llt" = (
 /obj/structure/filingcabinet{
 	density = 0;
@@ -17378,7 +17380,7 @@
 /turf/open/auto_turf/shale/layer1,
 /area/lv522/buildings/colony_streets)
 "lCX" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_machinegunner,
+/obj/effect/landmark/survivor_spawner/forecon/forecon_machinegunner,
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Admin)
 "lDr" = (
@@ -22942,6 +22944,10 @@
 "rIl" = (
 /turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/buildings/A_block/Admin)
+"rIK" = (
+/obj/effect/landmark/survivor_spawner/forecon/standard,
+/turf/open/floor/strata,
+/area/lv522/buildings/A_block/Admin)
 "rIP" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/strata{
@@ -27555,7 +27561,7 @@
 	},
 /area/lv522/landing_zone_2/UD6_Typhoon)
 "wSU" = (
-/obj/effect/landmark/survivor_spawner/Forcon/FORCON_support_Tech,
+/obj/effect/landmark/survivor_spawner/forecon/forecon_support_Tech,
 /turf/open/floor/strata,
 /area/lv522/buildings/A_block/Admin)
 "wTn" = (
@@ -67571,7 +67577,7 @@ goj
 goj
 nrP
 qbG
-qbG
+rIK
 nrP
 goj
 goj
@@ -69160,7 +69166,7 @@ sFt
 hJH
 vPq
 nrP
-qbG
+rIK
 qbG
 nrP
 sqq
@@ -70743,7 +70749,7 @@ oCi
 oCi
 oCi
 sFh
-sFh
+lgK
 sFh
 ulH
 nrP
@@ -71068,7 +71074,7 @@ mVo
 iam
 wPt
 qbG
-qbG
+rIK
 qbG
 qbG
 qbG
@@ -72977,7 +72983,7 @@ ijc
 jHr
 jUA
 kNk
-lln
+qbG
 qbG
 qbG
 qbG
@@ -73282,7 +73288,7 @@ iuK
 fuR
 qbG
 nTb
-qbG
+rIK
 qbG
 nTb
 qbG

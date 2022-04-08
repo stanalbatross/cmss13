@@ -3,7 +3,9 @@
 	"map_path": "map_files/LV522_Chances_Claim",
 	"map_file": "LV522_Chances_Claim.dmm",
     "survivor_types": [
-        "Survivor - USCM Reconnaissance Marine"
+        "/datum/equipment_preset/survivor/forecon/standard",
+        "/datum/equipment_preset/survivor/forecon/Tech",
+        "/datum/equipment_preset/survivor/forecon/Marksman"
     ],
     "defcon_triggers": [
         3300,

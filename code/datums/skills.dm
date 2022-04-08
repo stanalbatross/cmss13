@@ -424,9 +424,9 @@ CIVILIAN
 MILITARY SURVIVORS
 ---------------------
 */
-//Hardcore survivors with poor equipment and skills prove you're the best of the best
+//Hardcore survivors with poor equipment and skills, prove you're the best of the best.
 
-/datum/skills/military/Survivor/FORCON_Standard
+/datum/skills/military/Survivor/forecon_Standard
 	name = "Force Recon Squad Marine"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
@@ -440,7 +440,7 @@ MILITARY SURVIVORS
 		SKILL_VEHICLE = SKILL_VEHICLE_DEFAULT
 	)
 
-/datum/skills/military/Survivor/FORCON_Tech
+/datum/skills/military/Survivor/forecon_Tech
 	name = "Force Recon Support Tech"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
@@ -455,7 +455,7 @@ MILITARY SURVIVORS
 		SKILL_VEHICLE = SKILL_VEHICLE_DEFAULT
 	)
 
-/datum/skills/military/Survivor/FORCON_Marksman
+/datum/skills/military/Survivor/forecon_Marksman
 	name = "Force Recon Squad Marksman"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
@@ -470,7 +470,7 @@ MILITARY SURVIVORS
 		SKILL_VEHICLE = SKILL_VEHICLE_DEFAULT
 	)
 
-/datum/skills/military/Survivor/FORCON_Machinegunner
+/datum/skills/military/Survivor/forecon_Machinegunner
 	name = "Force Recon Squad Machinegunner"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
@@ -485,7 +485,7 @@ MILITARY SURVIVORS
 		SKILL_VEHICLE = SKILL_VEHICLE_DEFAULT
 	)
 
-/datum/skills/military/Survivor/FORCON_Grenadier
+/datum/skills/military/Survivor/forecon_Grenadier
 	name = "Force Recon Squad Machinegunner"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
@@ -500,7 +500,7 @@ MILITARY SURVIVORS
 		SKILL_VEHICLE = SKILL_VEHICLE_DEFAULT
 	)
 
-/datum/skills/military/Survivor/FORCON_Squad_Lead
+/datum/skills/military/Survivor/forecon_Squad_Lead
 	name = "Force Recon Squad Leader"
 	skills = list(
 		SKILL_ENGINEER = SKILL_ENGINEER_ENGI,
