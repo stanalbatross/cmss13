@@ -4041,7 +4041,9 @@
 /area/lv522/buildings/A_block/Admin)
 "cKw" = (
 /obj/structure/surface/table/woodentable/fancy,
-/obj/item/weapon/gun/pistol/heavy/co/gold,
+/obj/item/weapon/gun/pistol/heavy/co/gold{
+	current_mag = null
+	},
 /turf/open/floor{
 	icon_state = "wood"
 	},
@@ -6589,9 +6591,8 @@
 /turf/open/floor/strata,
 /area/lv522/buildings/C_Block/Mining)
 "etE" = (
-/obj/structure/platform{
-	dir = 8;
-	icon_state = "platform_deco"
+/obj/structure/platform_decoration{
+	dir = 8
 	},
 /turf/open/asphalt/cement{
 	icon_state = "cement3"
@@ -11840,12 +11841,12 @@
 	pixel_x = -7;
 	pixel_y = -6
 	},
+/obj/item/weapon/gun/boltaction{
+	pixel_y = -6
+	},
 /obj/item/clothing/head/collectable/tophat{
 	pixel_x = -7;
 	pixel_y = 5
-	},
-/obj/item/weapon/gun/boltaction{
-	pixel_y = -6
 	},
 /turf/open/floor/strata{
 	dir = 10;
@@ -16732,11 +16733,11 @@
 	},
 /area/lv522/buildings/A_block/Admin)
 "lgK" = (
-/obj/effect/landmark/survivor_spawner/forecon/standard,
-/turf/open/floor/strata{
-	icon_state = "multi_tiles"
+/obj/structure/platform_decoration,
+/turf/open/asphalt/cement{
+	icon_state = "cement3"
 	},
-/area/lv522/buildings/A_block/Admin)
+/area/lv522/buildings/colony_streets)
 "lhk" = (
 /obj/structure/barricade/handrail{
 	dir = 1
@@ -16800,7 +16801,6 @@
 "lkH" = (
 /obj/structure/surface/rack,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/obj/item/weapon/gun/shotgun/double,
 /turf/open/floor/plating/plating_catwalk/strata,
 /area/lv522/landing_zone_1)
 "llt" = (
@@ -19512,7 +19512,6 @@
 "nUY" = (
 /obj/structure/surface/rack,
 /obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/obj/item/weapon/gun/shotgun/double,
 /turf/open/floor/strata{
 	icon_state = "orange_cover"
 	},
@@ -22943,10 +22942,6 @@
 /area/lv522/buildings/A_block/Admin)
 "rIl" = (
 /turf/open/floor/plating/plating_catwalk/strata,
-/area/lv522/buildings/A_block/Admin)
-"rIK" = (
-/obj/effect/landmark/survivor_spawner/forecon/standard,
-/turf/open/floor/strata,
 /area/lv522/buildings/A_block/Admin)
 "rIP" = (
 /obj/structure/barricade/wooden,
@@ -62505,7 +62500,7 @@ kdF
 pSO
 pSO
 kfq
-bwj
+lgK
 qoG
 qoG
 etE
@@ -67577,7 +67572,7 @@ goj
 goj
 nrP
 qbG
-rIK
+qbG
 nrP
 goj
 goj
@@ -69166,7 +69161,7 @@ sFt
 hJH
 vPq
 nrP
-rIK
+qbG
 qbG
 nrP
 sqq
@@ -70749,7 +70744,7 @@ oCi
 oCi
 oCi
 sFh
-lgK
+sFh
 sFh
 ulH
 nrP
@@ -71074,7 +71069,7 @@ mVo
 iam
 wPt
 qbG
-rIK
+qbG
 qbG
 qbG
 qbG
@@ -73288,7 +73283,7 @@ iuK
 fuR
 qbG
 nTb
-rIK
+qbG
 qbG
 nTb
 qbG
