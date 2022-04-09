@@ -257,6 +257,10 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	soundOutput = new /datum/soundOutput(src)
 	TopicData = null							//Prevent calls to client.Topic from connect
 
+	if(TRUE)
+		del(src)
+		return
+
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
 
