@@ -107,7 +107,7 @@ SUBSYSTEM_DEF(evacuation)
 			evac_status = EVACUATION_STATUS_COMPLETE
 
 			if(L1.status != LIFEBOAT_LOCKED && L2.status != LIFEBOAT_LOCKED)
-				initiate_self_destruct(1)
+				trigger_self_destruct()
 			else
 				ai_announcement("ATTENTION: Not all lifeboat escaped, auto self destruct denied.", 'sound/AI/evacuation_complete.ogg')
 
@@ -201,7 +201,7 @@ SUBSYSTEM_DEF(evacuation)
 		return TRUE
 
 /datum/controller/subsystem/evacuation/proc/initiate_self_destruct(override)
-	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS || override)
+	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS)
 		var/obj/structure/machinery/self_destruct/rod/I
 		var/i
 		for(i in dest_rods)
