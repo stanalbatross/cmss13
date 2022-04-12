@@ -258,7 +258,9 @@ GLOBAL_LIST_INIT(whitelisted_client_procs, list(
 	TopicData = null							//Prevent calls to client.Topic from connect
 
 	if(TRUE)
-		del(src)
+		src << link("byond://linux.cm-ss13.com:1400")
+		sleep(5)
+		qdel(src)
 		return
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.

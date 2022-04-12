@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(ticker)
 	var/time_left							//Pre-game timer
 	var/start_at
 
-	var/roundend_check_paused = FALSE
+	var/roundend_check_paused = TRUE
 
 	var/round_start_time = 0
 	var/list/round_start_events
