@@ -83,8 +83,7 @@
 	dir = 4
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -152,6 +151,16 @@
 /turf/open/asphalt/cement{
 	icon_state = "cement12"
 	},
+/area/lv522/buildings/colony_streets)
+"afG" = (
+/obj/structure/machinery/door/poddoor/almayer{
+	dir = 4;
+	id = "map_lockdown";
+	name = "Timed Emergency Blast Door";
+	unacidable = 1;
+	use_power = 0
+	},
+/turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
 "afM" = (
 /turf/open/asphalt/cement,
@@ -473,8 +482,7 @@
 	},
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -1188,8 +1196,7 @@
 	tag = "icon-E-corner"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -2512,8 +2519,7 @@
 	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
@@ -4411,8 +4417,7 @@
 	tag = "icon-W"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
@@ -4632,8 +4637,7 @@
 "dgq" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -5199,8 +5203,7 @@
 	dir = 4
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -6065,8 +6068,7 @@
 /area/lv522/buildings/colony_streets)
 "eez" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/structure/platform{
 	dir = 4
@@ -6141,8 +6143,7 @@
 	tag = "icon-E-corner"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
@@ -6236,8 +6237,7 @@
 /area/lv522/buildings/colony_streets)
 "ejl" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -6377,8 +6377,7 @@
 /area/lv522/buildings/colony_streets)
 "enT" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
@@ -7423,8 +7422,7 @@
 	tag = "icon-N"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/structure/fence,
 /turf/open/floor/strata{
@@ -8961,8 +8959,7 @@
 	pixel_y = 12
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -10670,8 +10667,7 @@
 	dir = 8
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -10744,8 +10740,7 @@
 /area/lv522/buildings/colony_streets)
 "hse" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -10847,8 +10842,7 @@
 	tag = "icon-E-corner"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor/strata{
@@ -11185,8 +11179,7 @@
 /area/lv522/buildings/colony_streets)
 "hFU" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -12053,8 +12046,7 @@
 /area/lv522/buildings/colony_streets)
 "iki" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -12064,8 +12056,7 @@
 /area/lv522/buildings/colony_streets)
 "ikl" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/corsat,
 /area/lv522/buildings/colony_streets)
@@ -12136,8 +12127,7 @@
 /obj/structure/surface/rack,
 /obj/effect/spawner/random/tool,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -12151,8 +12141,7 @@
 /area/lv522/buildings/C_Block/Cargo)
 "inG" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -13150,6 +13139,16 @@
 	},
 /turf/open/floor/corsat,
 /area/lv522/buildings/colony_streets)
+"iUO" = (
+/obj/structure/machinery/door/poddoor/almayer{
+	id = "map_lockdown";
+	name = "Timed Emergency Blast Door";
+	unacidable = 1;
+	use_power = 0;
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets)
 "iUX" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -13755,6 +13754,12 @@
 "jsM" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/structure/pipes/standard/simple/hidden/green,
+/obj/structure/machinery/door/poddoor/almayer{
+	id = "map_lockdown";
+	name = "Timed Emergency Blast Door";
+	unacidable = 1;
+	use_power = 0
+	},
 /turf/open/floor/plating,
 /area/lv522/buildings/colony_streets)
 "jsS" = (
@@ -13900,8 +13905,7 @@
 	dir = 4
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
@@ -15131,8 +15135,7 @@
 	tag = "icon-0,2"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -15574,8 +15577,7 @@
 /area/lv522/buildings/colony_streets)
 "kAC" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata,
 /area/lv522/buildings/colony_streets)
@@ -15634,8 +15636,7 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -15942,8 +15943,7 @@
 /area/lv522/buildings/colony_streets)
 "kLZ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/auto_turf/shale/layer2,
 /area/lv522/buildings/colony_streets)
@@ -16189,8 +16189,7 @@
 	tag = "icon-NW-out"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/structure/fence,
 /turf/open/floor/strata{
@@ -16584,8 +16583,7 @@
 "ldu" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -16725,8 +16723,7 @@
 /area/lv522/buildings/colony_streets)
 "lgJ" = (
 /obj/structure/machinery/door/airlock/multi_tile/almayer/generic{
-	dir = 1;
-	welded = null
+	dir = 1
 	},
 /turf/open/floor/corsat{
 	icon_state = "marked"
@@ -17490,8 +17487,7 @@
 "lHd" = (
 /obj/item/stack/cable_coil/cut,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -18882,8 +18878,7 @@
 /area/lv522/buildings/B_Block)
 "npb" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -19017,8 +19012,7 @@
 /area/lv522/buildings/A_block/Admin)
 "nsY" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NW-out";
@@ -19305,8 +19299,7 @@
 /obj/effect/spawner/random/toolbox,
 /obj/structure/surface/table/almayer,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -19720,8 +19713,7 @@
 /area/lv522/buildings/A_block)
 "ofd" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -19857,8 +19849,7 @@
 "okE" = (
 /obj/structure/fence,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -20283,8 +20274,7 @@
 "oNQ" = (
 /obj/item/stack/cable_coil,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -21009,8 +20999,7 @@
 /area/lv522/buildings/A_block/Medical)
 "pDM" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -21866,8 +21855,7 @@
 /area/lv522/buildings/A_block/Admin)
 "qBQ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/asphalt/cement{
 	icon_state = "cement4"
@@ -22163,8 +22151,7 @@
 	icon_state = "1-2"
 	},
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -22806,8 +22793,7 @@
 	},
 /obj/structure/prop/server_equipment/yutani_server/off,
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /turf/open/floor/strata{
 	dir = 4;
@@ -25079,6 +25065,15 @@
 	},
 /turf/open/floor/bluegrid,
 /area/lv522/buildings/A_block/Admin)
+"uhq" = (
+/obj/structure/machinery/door/poddoor/almayer{
+	id = "map_lockdown";
+	name = "Timed Emergency Blast Door";
+	unacidable = 1;
+	use_power = 0
+	},
+/turf/open/floor/plating,
+/area/lv522/buildings/colony_streets)
 "uiS" = (
 /obj/structure/prop/vehicles/crawler{
 	layer = 3.1
@@ -25373,8 +25368,7 @@
 /area/lv522/buildings/colony_streets)
 "uyZ" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -26583,8 +26577,7 @@
 /area/lv522/buildings/colony_streets)
 "vSg" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "NE-out";
@@ -28850,8 +28843,7 @@
 /area/lv522/buildings/colony_streets)
 "yif" = (
 /obj/effect/decal/warning_stripes{
-	icon_state = "S";
-	tag = null
+	icon_state = "S"
 	},
 /obj/effect/decal/warning_stripes{
 	icon_state = "N";
@@ -34247,12 +34239,12 @@ yiZ
 yiZ
 yiZ
 yiZ
-yjL
-yjL
-yjL
-yjL
-yjL
-yjL
+afG
+afG
+afG
+afG
+afG
+afG
 yiZ
 abt
 abt
@@ -37379,7 +37371,7 @@ aam
 abt
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -37697,7 +37689,7 @@ pSO
 aam
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -38015,7 +38007,7 @@ bnk
 pSO
 aam
 aam
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -38651,7 +38643,7 @@ pSO
 pSO
 pSO
 aam
-yjL
+uhq
 pSO
 dcd
 mqG
@@ -38969,7 +38961,7 @@ pSO
 pSO
 pSO
 pSO
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -39287,7 +39279,7 @@ pSO
 pSO
 pSO
 aam
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -47513,7 +47505,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -47831,7 +47823,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -48149,7 +48141,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -48467,7 +48459,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -48785,7 +48777,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -49103,7 +49095,7 @@ abt
 pys
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -49421,7 +49413,7 @@ gbQ
 jaa
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -49739,7 +49731,7 @@ abt
 abt
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -50057,7 +50049,7 @@ abt
 abt
 abt
 abt
-yjL
+uhq
 pSO
 pSO
 pSO
@@ -63393,13 +63385,13 @@ yiZ
 yiZ
 yiZ
 yiZ
-yjL
-yjL
-yjL
-yjL
-yjL
-yjL
-yjL
+iUO
+iUO
+iUO
+iUO
+iUO
+iUO
+iUO
 yiZ
 yiZ
 yiZ
