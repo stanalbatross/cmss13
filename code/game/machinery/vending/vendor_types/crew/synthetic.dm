@@ -274,7 +274,9 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 
 		list("Experimental Meson Goggles", 15, /obj/item/clothing/glasses/night/experimental_mesons, null, VENDOR_ITEM_REGULAR),
 
-		list("Telescopic Baton", 15, /obj/item/weapon/melee/telebaton, null, VENDOR_ITEM_REGULAR),
+		list("Portable Dialysis Machine", 15, /obj/item/tool/portadialysis, null, VENDOR_ITEM_REGULAR),
+
+		list("Telescopic Baton", 15, /obj/item/weapon/melee/telebaton, null, VENDOR_ITEM_REGULAR)
 	)
 
 //------------EXPERIMENTAL TOOL KITS---------------
@@ -282,5 +284,5 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
     spawned_gear_list = list(
         /obj/item/weapon/gun/smg/nailgun/compact,
         /obj/item/ammo_magazine/smg/nailgun,
-        /obj/item/ammo_magazine/smg/nailgun,
+        /obj/item/ammo_magazine/smg/nailgun
     )

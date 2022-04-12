@@ -115,6 +115,36 @@
 	handle_reactions()
 	return total_transfered
 
+/datum/reagents/proc/remove_any_but(var/amount=1, var/reagent_to_ignore) //removes all other than the designated ignored reagent
+	var/total_transfered = 0
+	var/current_list_element = 1
+
+	current_list_element = rand(1, reagent_list.len)
+
+	while(total_transfered != amount)
+		if(total_transfered >= amount) break
+		if(total_volume <= 0 || !reagent_list.len) break
+
+		if(current_list_element > reagent_list.len) current_list_element = 1
+		var/datum/reagent/current_reagent = reagent_list[current_list_element]
+
+		if(current_reagent.id == reagent_to_ignore)
+			if(reagent_list.len == 1) break //if the reagent to be avoided is the only one in the list, we're done here.
+			if(current_list_element == 1)
+				current_reagent = reagent_list[current_list_element + 1] //if the selected reagent was number 1, we don't want it trying to draw id.0, so we add 1
+			else
+				current_reagent = reagent_list[current_list_element - 1] //same for if it was the last one in the list
+
+		remove_reagent(current_reagent.id, 1)
+
+		current_list_element++
+		total_transfered++
+		update_total()
+
+	handle_reactions()
+	return total_transfered
+
+
 /datum/reagents/proc/get_master_reagent()
 	var/the_volume = 0
 	for(var/datum/reagent/A in reagent_list)
