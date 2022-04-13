@@ -3,7 +3,15 @@
 	"map_path": "map_files/LV522_Chances_Claim",
 	"map_file": "LV522_Chances_Claim.dmm",
     "survivor_types": [
-        "/datum/equipment_preset/survivor/forecon/standard"
+        "/datum/equipment_preset/survivor/forecon/standard",
+        "/datum/equipment_preset/survivor/forecon/Marksman",
+        "/datum/equipment_preset/survivor/forecon/Tech",
+        "/datum/equipment_preset/survivor/forecon/Machinegunner",
+        "/datum/equipment_preset/survivor/forecon/Grenadier",
+        "/datum/equipment_preset/survivor/forecon/Squad_Leader"
+    ],
+    "commander_survivor_types": [
+        "/datum/equipment_preset/survivor/forecon/Commander"
     ],
     "defcon_triggers": [
         3300,

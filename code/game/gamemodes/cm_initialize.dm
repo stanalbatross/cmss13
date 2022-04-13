@@ -626,13 +626,14 @@ Additional game mode variables.
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
 					if(RoleAuthority.roles_whitelist[ckey(new_survivor.key)] & WHITELIST_COMMANDER)
 						possible_commander_survivors += new_survivor
-					if(!commander_survivor && new_survivor in possible_commander_survivors)
-						var/choice = tgui_input_list(original, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
+					if((!commander_survivor) && (new_survivor in possible_commander_survivors))
+						var/choice = tgui_input_list(new_survivor, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
 						if(choice == "Yes")
 							new_survivor.roundstart_picked = TRUE
 							commander_survivor = new_survivor
 							possible_human_survivors -= new_survivor
 							possible_commander_survivors = null //we've got our CO surv, no need for this anymore
+							i--
 						else
 							possible_commander_survivors -= new_survivor //so it doesn't try to pick them again
 				else if(new_survivor in possible_human_survivors) //so we don't draft people that want to be synth survivors but not normal survivors
@@ -660,17 +661,20 @@ Additional game mode variables.
 	else
 		picked_spawn = pick(GLOB.survivor_spawns)
 	if(istype(picked_spawn, /obj/effect/landmark/survivor_spawner))
-		return survivor_event_transform(ghost.current, picked_spawn, is_synth)
+		return survivor_event_transform(ghost.current, picked_spawn, is_synth, is_commander)
 	else
-		return survivor_non_event_transform(ghost.current, picked_spawn, is_synth)
+		return survivor_non_event_transform(ghost.current, picked_spawn, is_synth, is_commander)
 
-/datum/game_mode/proc/survivor_old_equipment(var/mob/living/carbon/human/H, var/is_synth = FALSE)
+/datum/game_mode/proc/survivor_old_equipment(var/mob/living/carbon/human/H, var/is_synth = FALSE, var/is_commander = FALSE)
 	var/list/survivor_types = SSmapping.configs[GROUND_MAP].survivor_types
 
 	if(is_synth)
 		survivor_types = list(
 			/datum/equipment_preset/synth/survivor, //to be expanded later
 		)
+
+	if(is_commander)
+		survivor_types = SSmapping.configs[GROUND_MAP].commander_survivor_types
 
 	//Give them proper jobs and stuff here later
 	var/randjob = pick(survivor_types)
@@ -686,7 +690,7 @@ Additional game mode variables.
 	if(H.first_xeno)
 		not_a_xenomorph = FALSE
 	if(!spawner.equipment || is_synth)
-		survivor_old_equipment(H, is_synth)
+		survivor_old_equipment(H, is_synth, is_commander)
 	else
 		if(arm_equipment(H, spawner.equipment, FALSE, not_a_xenomorph) == -1)
 			to_chat(H, "SET02: Something went wrong, tell a coder. You may ask admin to spawn you as a survivor.")
@@ -719,7 +723,7 @@ Additional game mode variables.
 
 /datum/game_mode/proc/survivor_non_event_transform(mob/living/carbon/human/H, obj/effect/landmark/spawn_point, is_synth = FALSE, is_commander = FALSE)
 	H.forceMove(get_turf(spawn_point))
-	survivor_old_equipment(H, is_synth)
+	survivor_old_equipment(H, is_synth, is_commander)
 	H.name = H.get_visible_name()
 
 	//Give them some information

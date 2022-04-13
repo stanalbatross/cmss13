@@ -210,23 +210,23 @@
 
 //---------------------------\\
 
-//datum/equipment_preset/survivor/forecon/Officer
-//	name = "Survivor - USCM Reconnaissance Captain"
-//	assignment = "Reconnaissance Captain"
-//	skills = /datum/skills/commander
-//
-//datum/equipment_preset/survivor/forecon/Officer/load_gear(mob/living/carbon/human/H)
-//	var/obj/item/clothing/under/marine/forecon = new()
-//	var/obj/item/clothing/accessory/storage/webbing/W = new()
-//	forecon.attach_accessory(H, W)
-//	H.equip_to_slot_or_del(forecon, WEAR_BODY)
-//	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
-//	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
-//	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
-//	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
-//	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
-//
-//	..()
+/datum/equipment_preset/survivor/forecon/Commander
+	name = "Survivor - USCM Reconnaissance Captain"
+	assignment = "Reconnaissance Captain"
+	skills = /datum/skills/commander
+
+/datum/equipment_preset/survivor/forecon/Commander/load_gear(mob/living/carbon/human/H)
+	var/obj/item/clothing/under/marine/forecon = new()
+	var/obj/item/clothing/accessory/storage/webbing/W = new()
+	forecon.attach_accessory(H, W)
+	H.equip_to_slot_or_del(forecon, WEAR_BODY)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pill_bottle/packet/tricordrazine(H), WEAR_IN_ACCESSORY)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/survival/full(H), WEAR_R_STORE)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
+
+	..()
 
 
 //---------------------------\\

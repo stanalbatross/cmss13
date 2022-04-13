@@ -44,6 +44,8 @@
 		/datum/equipment_preset/survivor/engineer
 	)
 
+	var/list/commander_survivor_types = null
+
 	var/list/defcon_triggers = list(5150, 4225, 2800, 1000, 0.0)
 
 	var/survivor_message = "You are a survivor of the attack on the colony. You worked or lived in the archaeology colony, and managed to avoid the alien attacks... until now."
@@ -237,7 +239,7 @@
 
 	if(json["perf_mode"])
 		perf_mode = json["perf_mode"]
-		
+
 	if(json["vote_cycle"])
 		vote_cycle = json["vote_cycle"]
 
