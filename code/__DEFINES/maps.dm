@@ -34,6 +34,8 @@ require only minor tweaks.
 #define ZTRAIT_LOCKDOWN "Lockdown"
 #define ZTRAIT_BASIC_RT "BasicRT"
 
+#define ZTRAIT_COMMANDER_SURVIVORS "Commander Survivors" //does it have CO survs
+
 // boolean - weather types that occur on the level
 #define ZTRAIT_SNOWSTORM "weather_snowstorm"
 #define ZTRAIT_ASHSTORM "weather_ashstorm"

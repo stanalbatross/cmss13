@@ -18,7 +18,10 @@
         "neaera",
         "stok"
     ],
-    "environment_traits": { "Lockdown": true },
+    "environment_traits": {
+        "Lockdown": true,
+        "Commander Survivors": true
+    },
     "traits": [{ "Ground": true }],
     "xvx_hives": {
         "xeno_hive_alpha": 0,

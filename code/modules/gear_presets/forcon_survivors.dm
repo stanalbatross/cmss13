@@ -31,12 +31,12 @@
 /datum/equipment_preset/survivor/forecon/add_survivor_weapon_pistol(mob/living/carbon/human/H)
 	var/random_pistol = rand(1,6)
 	switch(random_pistol)
-		if(1 || 2 || 3 || 4) 
+		if(1, 2, 3, 4)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3(H), WEAR_WAIST)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
-		if(5 || 6)
+		if(5, 6)
 			H.equip_to_slot_or_del(new /obj/item/device/motiondetector(H),WEAR_WAIST)
 
 /datum/equipment_preset/survivor/forecon/add_random_survivor_equipment(mob/living/carbon/human/H)
@@ -77,15 +77,15 @@
 /datum/equipment_preset/survivor/forecon/proc/spawn_random_headgear(var/mob/living/carbon/human/H)
 	var/i = rand(1, 10)
 	switch(i)
-		if (1 || 2)
+		if(1, 2)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap(H), WEAR_HEAD)
-		if (3 || 4)
+		if(3, 4)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie/gray(H), WEAR_HEAD)
-		if (5 || 6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)			
-		if (7 || 8)
+		if(5, 6)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)
+		if(7, 8)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
-		if (9)
+		if(9)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
 
 ///*****************************//
@@ -115,7 +115,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/welding(H), WEAR_EYES)
 	H.equip_to_slot_or_del(new /obj/item/clothing/accessory/health(H), WEAR_IN_BACK)
 	spawn_random_headgear(H)
-	
+
 	..()
 
 ///*****************************//
@@ -176,7 +176,7 @@
 	spawn_random_headgear(H)
 
 	..()
-	
+
 ///*****************************//
 
 /datum/equipment_preset/survivor/forecon/Grenadier
@@ -207,7 +207,7 @@
 	spawn_random_headgear(H)
 
 	..()
-	
+
 //---------------------------\\
 
 //datum/equipment_preset/survivor/forecon/Officer

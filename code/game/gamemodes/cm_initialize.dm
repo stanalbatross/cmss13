@@ -43,6 +43,7 @@ Additional game mode variables.
 	var/list/datum/mind/picked_queens = list()
 	var/datum/mind/survivors[] = list()
 	var/datum/mind/synth_survivor = null
+	var/datum/mind/commander_survivor = null
 	var/datum/mind/hellhounds[] = list() //Hellhound spawning is not supported at round start.
 	var/list/dead_queens // A list of messages listing the dead queens
 	var/predators = list()
@@ -586,6 +587,7 @@ Additional game mode variables.
 /datum/game_mode/proc/initialize_starting_survivor_list()
 	var/list/datum/mind/possible_human_survivors = get_players_for_role(JOB_SURVIVOR)
 	var/list/datum/mind/possible_synth_survivors = get_players_for_role(JOB_SYNTH_SURVIVOR)
+	var/list/datum/mind/possible_commander_survivors
 
 	var/list/datum/mind/possible_survivors = possible_human_survivors.Copy() //making a copy so we'd be able to distinguish between survivor types
 
@@ -621,6 +623,18 @@ Additional game mode variables.
 				if(!synth_survivor && (new_survivor in possible_synth_survivors))
 					new_survivor.roundstart_picked = TRUE
 					synth_survivor = new_survivor
+				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
+					if(RoleAuthority.roles_whitelist[ckey(new_survivor.key)] & WHITELIST_COMMANDER)
+						possible_commander_survivors += new_survivor
+					if(!commander_survivor && new_survivor in possible_commander_survivors)
+						var/choice = tgui_input_list(original, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
+						if(choice == "Yes")
+							new_survivor.roundstart_picked = TRUE
+							commander_survivor = new_survivor
+							possible_human_survivors -= new_survivor
+							possible_commander_survivors = null //we've got our CO surv, no need for this anymore
+						else
+							possible_commander_survivors -= new_survivor //so it doesn't try to pick them again
 				else if(new_survivor in possible_human_survivors) //so we don't draft people that want to be synth survivors but not normal survivors
 					new_survivor.roundstart_picked = TRUE
 					survivors += new_survivor
@@ -629,7 +643,9 @@ Additional game mode variables.
 
 /datum/game_mode/proc/initialize_post_survivor_list()
 	if(synth_survivor)
-		transform_survivor(synth_survivor, TRUE)
+		transform_survivor(synth_survivor, is_synth = TRUE)
+	if(commander_survivor)
+		transform_survivor(commander_survivor, is_commander = TRUE)
 	for(var/datum/mind/survivor in survivors)
 		if(transform_survivor(survivor) == 1)
 			survivors -= survivor
@@ -637,7 +653,7 @@ Additional game mode variables.
 
 //Start the Survivor players. This must go post-setup so we already have a body.
 //No need to transfer their mind as they begin as a human.
-/datum/game_mode/proc/transform_survivor(var/datum/mind/ghost, var/is_synth = FALSE, var/turf/xeno_turf)
+/datum/game_mode/proc/transform_survivor(var/datum/mind/ghost, var/is_synth = FALSE, var/turf/xeno_turf, var/is_commander = FALSE)
 	var/picked_spawn = null
 	if(istype(ghost.current, /mob/living) && ghost.current.first_xeno)
 		picked_spawn = xeno_turf
@@ -664,7 +680,7 @@ Additional game mode variables.
 	arm_equipment(H, randjob, FALSE, not_a_xenomorph)
 
 
-/datum/game_mode/proc/survivor_event_transform(var/mob/living/carbon/human/H, var/obj/effect/landmark/survivor_spawner/spawner, var/is_synth = FALSE)
+/datum/game_mode/proc/survivor_event_transform(var/mob/living/carbon/human/H, var/obj/effect/landmark/survivor_spawner/spawner, var/is_synth = FALSE, var/is_commander = FALSE)
 	H.forceMove(get_turf(spawner))
 	var/not_a_xenomorph = TRUE
 	if(H.first_xeno)
@@ -701,7 +717,7 @@ Additional game mode variables.
 				//remove ourselves, so we don't get stuff generated for us
 				survivors -= H.mind
 
-/datum/game_mode/proc/survivor_non_event_transform(mob/living/carbon/human/H, obj/effect/landmark/spawn_point, is_synth = FALSE)
+/datum/game_mode/proc/survivor_non_event_transform(mob/living/carbon/human/H, obj/effect/landmark/spawn_point, is_synth = FALSE, is_commander = FALSE)
 	H.forceMove(get_turf(spawn_point))
 	survivor_old_equipment(H, is_synth)
 	H.name = H.get_visible_name()
