@@ -12,7 +12,7 @@
         580,
         0.0
     ],
-    "survivor_message": "You are USCM Force Reconnaissance (FORCON) marine, stranded on this planet after your team was wiped out while investigating the distress signal. With your pilot dead along with the majority of your unit you and your team have been running and gunning to survive..until now",
+    "survivor_message": "You are USCM Force Reconnaissance (FORECON) marine, stranded on this planet after your team was wiped out while investigating the distress signal. With your pilot dead along with the majority of your unit you and your team have been running and gunning to survive..until now",
     "announce_text": "An automated distress signal has been recieved from the conestoga-class troop transport the USS Hanyut orbiting the mining colony \"Chances Claim\". A response team from the ###SHIPNAME### will be dispatched shortly to investigate.",
     "monkey_types": [
         "neaera",
