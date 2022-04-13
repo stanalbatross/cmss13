@@ -2,7 +2,7 @@
 //Nanu told me to put them here so they dont clutter up survivors.dm
 
 /datum/equipment_preset/survivor/forecon/
-	paygrade = "E5"
+	paygrade = "E5 "
 	idtype = /obj/item/card/id/dogtag
 	rank = JOB_SURVIVOR
 	flags = EQUIPMENT_PRESET_START_OF_ROUND
@@ -31,12 +31,12 @@
 /datum/equipment_preset/survivor/forecon/add_survivor_weapon_pistol(mob/living/carbon/human/H)
 	var/random_pistol = rand(1,6)
 	switch(random_pistol)
-		if(1 || 2 || 3 || 4) 
+		if(1 , 2 , 3 , 4) 
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3(H), WEAR_WAIST)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
-		if(5 || 6)
+		if(5 , 6)
 			H.equip_to_slot_or_del(new /obj/item/device/motiondetector(H),WEAR_WAIST)
 
 /datum/equipment_preset/survivor/forecon/add_random_survivor_equipment(mob/living/carbon/human/H)
@@ -49,6 +49,20 @@
 			H.equip_to_slot_or_del(new /obj/item/toy/deck(H), WEAR_IN_BACK)
 		if(3)
 			H.equip_to_slot_or_del(new /obj/item/storage/fancy/cigarettes/lucky_strikes(H), WEAR_IN_BACK)
+
+/datum/equipment_preset/survivor/forecon/proc/spawn_random_headgear(var/mob/living/carbon/human/H)
+	var/i = rand(1,10)
+	switch(i)
+		if (1 , 2)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap(H), WEAR_HEAD)
+		if (3 , 4)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie/gray(H), WEAR_HEAD)
+		if (5 , 6)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)			
+		if (7 , 8)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
+		if (9)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
 
 /datum/equipment_preset/survivor/forecon/standard
 	name = "Survivor - USCM Reconnaissance Marine"
@@ -64,6 +78,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full/alternate(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -73,20 +88,6 @@
 	spawn_random_headgear(H)
 
 	..()
-
-/datum/equipment_preset/survivor/forecon/proc/spawn_random_headgear(var/mob/living/carbon/human/H)
-	var/i = rand(1, 10)
-	switch(i)
-		if (1 || 2)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap(H), WEAR_HEAD)
-		if (3 || 4)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie/gray(H), WEAR_HEAD)
-		if (5 || 6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)			
-		if (7 || 8)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
-		if (9)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(H), WEAR_HEAD)
 
 ///*****************************//
 
@@ -134,6 +135,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full/alternate(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -163,6 +165,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full/alternate(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -193,6 +196,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full/alternate(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
@@ -245,6 +249,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/tool/crowbar/red(H), WEAR_IN_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/box/MRE(H), WEAR_IN_L_STORE)
+	H.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full/alternate(H), WEAR_R_STORE)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/flask/marine(H), WEAR_IN_ACCESSORY)
