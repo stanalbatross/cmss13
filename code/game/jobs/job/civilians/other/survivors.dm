@@ -19,12 +19,29 @@
 
 /datum/job/civilian/survivor/spawn_in_player(var/mob/new_player/NP)
 	. = ..()
+	var/co_survivor = FALSE
+	var/datum/game_mode/colonialmarines/G = SSticker.mode
 	var/mob/living/carbon/human/H = .
+
+	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
+		var/list/possible_commander_survivors
+		if(istype(G))
+			if(RoleAuthority.roles_whitelist[ckey(NP.key)] & WHITELIST_COMMANDER)
+				possible_commander_survivors += NP
+				if((G.round_status_flags & ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED) && (NP in possible_commander_survivors))
+					var/choice = tgui_input_list(NP, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
+					if(choice == "Yes")
+						co_survivor = TRUE
+						G.round_status_flags |= ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED
+					else
+						possible_commander_survivors -= NP
 
 	var/obj/effect/landmark/survivor_spawner/spawner = pick(GLOB.survivor_spawns)
 	H.forceMove(get_turf(spawner))
 
-	if(istype(spawner) && spawner.equipment)
+	if((co_survivor) && (!(G.round_status_flags & ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED)))
+		survivor_old_equipment(H, co_survivor)
+	else if(istype(spawner) && spawner.equipment)
 		arm_equipment(H, spawner.equipment, FALSE, TRUE)
 	else
 		survivor_old_equipment(H)
@@ -95,8 +112,12 @@
 
 	return TRUE
 
-/datum/job/civilian/survivor/proc/survivor_old_equipment(var/mob/living/carbon/human/H)
+/datum/job/civilian/survivor/proc/survivor_old_equipment(var/mob/living/carbon/human/H, is_commander = FALSE) //WHY ARE THERE TWO PROCS WITH THE SAME NAME I HATE YOU - Stan_Albatross, 13th April 2022
 	var/list/survivor_types = SSmapping.configs[GROUND_MAP].survivor_types
+
+	if(is_commander)
+		survivor_types = SSmapping.configs[GROUND_MAP].commander_survivor_types
+
 	arm_equipment(H, pick(survivor_types), FALSE, TRUE)
 
 /datum/job/civilian/survivor/synth

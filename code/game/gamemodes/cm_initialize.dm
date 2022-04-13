@@ -626,16 +626,16 @@ Additional game mode variables.
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
 					if(RoleAuthority.roles_whitelist[ckey(new_survivor.key)] & WHITELIST_COMMANDER)
 						possible_commander_survivors += new_survivor
-					if((!commander_survivor) && (new_survivor in possible_commander_survivors))
-						var/choice = tgui_input_list(new_survivor, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
-						if(choice == "Yes")
-							new_survivor.roundstart_picked = TRUE
-							commander_survivor = new_survivor
-							possible_human_survivors -= new_survivor
-							possible_commander_survivors = null //we've got our CO surv, no need for this anymore
-							i--
-						else
-							possible_commander_survivors -= new_survivor //so it doesn't try to pick them again
+						if((!commander_survivor) && (new_survivor in possible_commander_survivors))
+							var/choice = tgui_input_list(new_survivor, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
+							if(choice == "Yes")
+								new_survivor.roundstart_picked = TRUE
+								commander_survivor = new_survivor
+								possible_human_survivors -= new_survivor
+								possible_commander_survivors = null //we've got our CO surv, no need for this anymore
+								i--
+							else
+								possible_commander_survivors -= new_survivor //so it doesn't try to pick them again
 				else if(new_survivor in possible_human_survivors) //so we don't draft people that want to be synth survivors but not normal survivors
 					new_survivor.roundstart_picked = TRUE
 					survivors += new_survivor
