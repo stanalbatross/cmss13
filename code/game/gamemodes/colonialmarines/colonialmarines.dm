@@ -100,6 +100,25 @@
 	return TRUE
 
 ////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////CO survivor selection/////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+var/global/list/possible_co_survivors
+
+/datum/game_mode/colonialmarines/proc/select_commander_survivor()
+	if((!(G.round_status_flags & ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED)) && (H in possible_commander_survivors))
+		message_admins("showing input box")
+		var/choice = tgui_input_list(H, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
+			if(choice == "Yes")
+				message_admins("co selected")
+				co_survivor = TRUE
+				G.round_status_flags |= ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED
+			else
+				possible_co_survivors -= H
+
+/datum/game_mode/colonialmarines/proc/ask_commander_survivor_question()
+
+////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
 /* Post-setup */
@@ -109,6 +128,9 @@
 /datum/game_mode/colonialmarines/post_setup()
 	initialize_post_marine_gear_list()
 	spawn_smallhosts()
+
+	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS])
+		select_commander_survivor()
 
 	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_BASIC_RT])
 		flags_round_type |= MODE_BASIC_RT

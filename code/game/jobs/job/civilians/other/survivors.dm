@@ -19,27 +19,8 @@
 
 /datum/job/civilian/survivor/spawn_in_player(var/mob/new_player/NP)
 	. = ..()
-	var/co_survivor = FALSE
-	var/datum/game_mode/colonialmarines/G = SSticker.mode
-	var/mob/living/carbon/human/H = .
 
-	if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
-		var/list/possible_commander_survivors
-		message_admins("map has trait")
-		if(istype(G))
-			message_admins("mode is type")
-			if(RoleAuthority.roles_whitelist[H.ckey] & WHITELIST_COMMANDER)
-				message_admins("key in h list")
-				possible_commander_survivors += H
-				if((!(G.round_status_flags & ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED)) && (H in possible_commander_survivors))
-					message_admins("showing input box")
-					var/choice = tgui_input_list(H, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
-					if(choice == "Yes")
-						message_admins("co selected")
-						co_survivor = TRUE
-						G.round_status_flags |= ROUNDSTATUS_COMMANDER_SURVIVOR_SELECTED
-					else
-						possible_commander_survivors -= H
+	var/mob/living/carbon/human/H = .
 
 	var/obj/effect/landmark/survivor_spawner/spawner = pick(GLOB.survivor_spawns)
 	H.forceMove(get_turf(spawner))
