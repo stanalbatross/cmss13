@@ -624,7 +624,7 @@ Additional game mode variables.
 					new_survivor.roundstart_picked = TRUE
 					synth_survivor = new_survivor
 				if(SSmapping.configs[GROUND_MAP].environment_traits[ZTRAIT_COMMANDER_SURVIVORS]) //check for if the groundmap allows CO survivors
-					if(RoleAuthority.roles_whitelist[ckey(new_survivor.key)] & WHITELIST_COMMANDER)
+					if(RoleAuthority.roles_whitelist[new_survivor.ckey] & WHITELIST_COMMANDER)
 						possible_commander_survivors += new_survivor
 						if((!commander_survivor) && (new_survivor in possible_commander_survivors))
 							var/choice = tgui_input_list(new_survivor, "Do you wish to play as a CO survivor?", "CO survivor selection", list("Yes", "No"), CO_SURV_PICK_TIMEOUT)
