@@ -117,6 +117,24 @@
 
 	arm_equipment(H, pick(survivor_types), FALSE, TRUE)
 
+/datum/job/civilian/survivor/commander
+	title = JOB_COMMANDER_SURVIVOR
+	selection_class = "job_synth"
+	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADMIN_NOTIFY|ROLE_WHITELISTED|ROLE_CUSTOM_SPAWN
+	flags_whitelist = WHITELIST_COMMANDER
+	total_positions = 1
+	spawn_positions = 1
+
+/datum/job/civilian/survivor/synth/set_spawn_positions(var/count)
+	return spawn_positions
+
+/datum/job/civilian/survivor/synth/survivor_old_equipment(var/mob/living/carbon/human/H)
+	var/list/survivor_types = list(
+
+	)
+
+	arm_equipment(H, pick(survivor_types), FALSE, TRUE)
+
 AddTimelock(/datum/job/civilian/survivor, list(
 	JOB_SQUAD_ROLES = 5 HOURS,
 	JOB_ENGINEER_ROLES = 5 HOURS,
