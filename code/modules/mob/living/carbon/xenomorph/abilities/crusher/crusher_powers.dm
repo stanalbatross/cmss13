@@ -106,6 +106,57 @@
 	..()
 	return
 
+/datum/action/xeno_action/onclick/crusher_stomp/charger/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	var/mob/living/carbon/V
+	if (!istype(X))
+		return
+
+	if (!action_cooldown_check())
+		return
+
+	if (!X.check_state())
+		return
+
+	if (!check_and_use_plasma_owner())
+		return
+
+	playsound(get_turf(X), 'sound/effects/bang.ogg', 25, 0)
+	X.visible_message(SPAN_XENODANGER("[X] smashes into the ground!"), SPAN_XENODANGER("You smash into the ground!"))
+	X.create_stomp()
+
+	for (var/mob/living/carbon/H in get_turf(X)) // MOBS ONTOP
+		if (H.stat == DEAD || X.can_not_harm(H))
+			continue
+
+		new effect_type_base(H, X, , , get_xeno_stun_duration(H, effect_duration))
+		to_chat(H, SPAN_XENOHIGHDANGER("You are BRUTALLY crushed an stompted on by [X] !!!"))
+
+		if(H.mob_size < MOB_SIZE_BIG)
+			H.KnockDown(get_xeno_stun_duration(H, 0.2))
+
+		H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE,"chest", 3)
+		H.apply_armoured_damage(15, BRUTE) // random
+		H.last_damage_data = create_cause_data(X.caste_type, X)
+		H.emote("pain")
+		V = H
+	for (var/mob/living/carbon/H in orange(distance, get_turf(X))) // MOBS AROUND
+		if (H.stat == DEAD || X.can_not_harm(H))
+			continue
+		//new effect_type_base(H, X, , , get_xeno_stun_duration(H, effect_duration))
+		//if(H.mob_size < MOB_SIZE_BIG)
+			//H.KnockDown(get_xeno_stun_duration(H, 0.2))
+		if(H.client)
+			shake_camera(H, 2, 2)
+		//to_chat(H, SPAN_XENOHIGHDANGER("You are slowed as [X] knocks you off balance!"))
+		if(V)
+			to_chat(H, SPAN_XENOHIGHDANGER("You watch as [V] gets crushed by [X]!"))
+		to_chat(H, SPAN_XENOHIGHDANGER("You are shaken as [X] quakes the earth!"))
+
+	apply_cooldown()
+	..()
+	return
+
 /datum/action/xeno_action/onclick/crusher_shield/use_ability(atom/A)
 	var/mob/living/carbon/Xenomorph/X = owner
 
@@ -164,3 +215,78 @@
 		to_chat(X, SPAN_XENOHIGHDANGER("You feel your enhanced shield end!"))
 
 	X.overlay_shields()
+
+/datum/action/xeno_action/onclick/charger_charge/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+
+	activated = !activated
+	var/will_charge = "[activated ? "now" : "no longer"]"
+	to_chat(X, SPAN_XENONOTICE("You will [will_charge] charge when moving."))
+	if(activated)
+		RegisterSignal(X, COMSIG_MOVABLE_MOVED, .proc/handle_movement)
+		RegisterSignal(X, COMSIG_ATOM_DIR_CHANGE, .proc/handle_dir_change)
+		RegisterSignal(X, COMSIG_XENO_RECALCULATE_SPEED, .proc/update_speed)
+		RegisterSignal(X, COMSIG_XENO_STOP_MOMENTUM, .proc/stop_momentum)
+		RegisterSignal(X, COMSIG_MOVABLE_ENTERED_RIVER, .proc/handle_river)
+		RegisterSignal(X, COMSIG_LIVING_PRE_COLLIDE, .proc/handle_collision)
+		RegisterSignal(X, COMSIG_XENO_START_CHARGING, .proc/start_charging)
+		button.icon_state = "template_on"
+	else
+		stop_momentum()
+		UnregisterSignal(X, list(
+			COMSIG_MOVABLE_MOVED,
+			COMSIG_ATOM_DIR_CHANGE,
+			COMSIG_XENO_RECALCULATE_SPEED,
+			COMSIG_MOVABLE_ENTERED_RIVER,
+			COMSIG_LIVING_PRE_COLLIDE,
+			COMSIG_XENO_STOP_MOMENTUM,
+			COMSIG_XENO_START_CHARGING,
+			button.icon_state = "template"
+		))
+	if(!activated)
+		button.icon_state = "template"
+
+/datum/action/xeno_action/activable/croosh/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+
+/datum/action/xeno_action/activable/tumble/use_ability(atom/A)
+	if(!action_cooldown_check())
+		return
+	var/mob/living/carbon/Xenomorph/X = owner
+	if (!X.check_state())
+		return
+	if(X.plasma_stored <= plasma_cost)
+		return
+	var/target_dist = get_dist(X, A)
+	var/dir_between = get_dir(X, A)
+	var/target_dir
+	for(var/perpen_dir in get_perpen_dir(X.dir))
+		if(dir_between & perpen_dir)
+			target_dir = perpen_dir
+			break
+
+	if(!target_dir)
+		return
+
+	X.visible_message(SPAN_XENOWARNING("[X] tumbles over to the side!"), SPAN_XENOHIGHDANGER("You tumble over to the side!"))
+	X.spin(5,1) // note: This spins the sprite and DOES NOT affect directional armor
+	var/start_charging = HAS_TRAIT(X, TRAIT_CHARGING)
+	SEND_SIGNAL(X, COMSIG_XENO_STOP_MOMENTUM)
+	X.flags_atom |= DIRLOCK
+	playsound(X,"alien_tail_swipe", 50, 1)
+
+	X.use_plasma(plasma_cost)
+	var/datum/launch_metadata/LM = new()
+	LM.target = get_step(get_step(X, target_dir), target_dir)
+	LM.range = target_dist
+	LM.speed = SPEED_FAST
+	LM.thrower = X
+	LM.spin = FALSE
+	LM.pass_flags = PASS_CRUSHER_CHARGE
+	LM.collision_callbacks = list(/mob/living/carbon/human = CALLBACK(src, .proc/handle_mob_collision))
+	LM.end_throw_callbacks = list(CALLBACK(src, .proc/on_end_throw, start_charging))
+
+	X.launch_towards(LM)
+
+	apply_cooldown()
+	..()

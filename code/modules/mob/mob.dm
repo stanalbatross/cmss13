@@ -375,6 +375,22 @@
 			return SPAN_NOTICE("[copytext(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a>")
 
 
+
+/client/verb/changes()
+	set name = "Changelog"
+	set category = "OOC"
+
+	var/datum/asset/simple/changelog = get_asset_datum(/datum/asset/simple/changelog)
+	changelog.send(src)
+
+	var/changelog_html = file2text('html/changelog.html')
+
+	show_browser(src, changelog_html, null, "changes", "size=675x650")
+	if(prefs.lastchangelog != changelog_hash)
+		prefs.lastchangelog = changelog_hash
+		prefs.save_preferences()
+		winset(src, "infowindow.changelog", "background-color=none;font-style=;")
+
 /mob/Topic(href, href_list)
 	. = ..()
 	if(.)
@@ -705,9 +721,13 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 
 /mob/proc/set_face_dir(var/newdir)
+	if(SEND_SIGNAL(src, COMSIG_MOB_SET_FACE_DIR, newdir) & COMPONENT_CANCEL_SET_FACE_DIR)
+		facedir(newdir)
+		return
+
 	if(newdir == dir && flags_atom & DIRLOCK)
 		flags_atom &= ~DIRLOCK
-	else if ( facedir(newdir) )
+	else if (facedir(newdir))
 		flags_atom |= DIRLOCK
 
 
