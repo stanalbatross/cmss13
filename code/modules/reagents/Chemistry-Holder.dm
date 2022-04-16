@@ -115,7 +115,8 @@
 	handle_reactions()
 	return total_transfered
 
-/datum/reagents/proc/remove_any_but(var/amount=1, var/reagent_to_ignore) //removes all other than the designated ignored reagent
+///This proc is one that removes all reagents from the targeted datum other than the designated ignored reagent
+/datum/reagents/proc/remove_any_but(var/reagent_to_ignore, var/amount=1)
 	var/total_transfered = 0
 	var/current_list_element = 1
 
