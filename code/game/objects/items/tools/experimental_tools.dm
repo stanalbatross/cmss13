@@ -190,19 +190,18 @@
 		return
 
 	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.stat || H.blinded || H.lying)
+		if(user.stat || user.blinded || user.lying)
 			return
 
 		if(attaching)
 			return
 
 		if(attached && !(target == attached)) //are we already attached to something that isn't the target?
-			to_chat(H, SPAN_WARNING("You're already using \the [src] on someone else!"))
+			to_chat(user, SPAN_WARNING("You're already using \the [src] on someone else!"))
 			return
 
 		if(target == attached) //are we attached to the target?
-			H.visible_message("[H] detaches \the [src] from [attached].", \
+			user.visible_message("[user] detaches \the [src] from [attached].", \
 			"You detach \the [src] from [attached].")
 			attached = null
 			filtering = FALSE
@@ -216,23 +215,23 @@
 			var/obj/limb/l_arm = target.get_limb("l_arm")
 			var/obj/limb/r_arm = target.get_limb("r_arm")
 			if((l_arm.status & LIMB_DESTROYED) && (r_arm.status & LIMB_DESTROYED))
-				to_chat(H, SPAN_WARNING("[target] has no arms to attach \the [src] to!"))
+				to_chat(user, SPAN_WARNING("[target] has no arms to attach \the [src] to!"))
 				return
 
 			attaching = TRUE
 			update_icon()
-			to_chat(target, SPAN_DANGER("[H] is trying to attach \the [src] to you!"))
-			H.visible_message(SPAN_WARNING("[H] starts setting up \the [src]'s needle on [target]'s arm."), \
+			to_chat(target, SPAN_DANGER("[user] is trying to attach \the [src] to you!"))
+			user.visible_message(SPAN_WARNING("[user] starts setting up \the [src]'s needle on [target]'s arm."), \
 				SPAN_WARNING("You start setting up \the [src]'s needle on [target]'s arm."))
 			if(!do_after(H, 30, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, target, INTERRUPT_MOVED, BUSY_ICON_MEDICAL))
-				H.visible_message(SPAN_WARNING("[H] stops setting up \the [src]'s needle on [target]'s arm."), \
+				user.visible_message(SPAN_WARNING("[user] stops setting up \the [src]'s needle on [target]'s arm."), \
 				SPAN_WARNING("You stop setting up \the [src]'s needle on [target]'s arm."))
 				visible_message("\The [src]'s tubing snaps back onto the machine frame.")
 				attaching = FALSE
 				update_icon()
 				return
 
-			H.visible_message("[H] attaches \the [src] to [target].", \
+			user.visible_message("[user] attaches \the [src] to [target].", \
 			"You attach \the [src] to [target].")
 			attached = target
 			filtering = TRUE
