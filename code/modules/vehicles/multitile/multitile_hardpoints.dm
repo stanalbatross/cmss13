@@ -147,7 +147,28 @@
 			continue
 		hps += H
 
-	var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Hardpoint Removal", (hps + "Cancel"))
+	var/static/list/hardpoint_slots
+	if(!hardpoint_slots)
+		hardpoint_slots = list(
+			"primary",
+			"support",
+			"locomotion",
+			"secondary",
+			"holder",
+			"armor",
+		)
+
+	var/list/choices = list()
+	var/list/vehicle_hardpoints = get_hardpoints_copy()
+
+
+	for(var/hardpoint_key in hardpoint_slots)
+		var/obj/item/hardpoint/HP = vehicle_hardpoints[hardpoint_key]
+		if(HP.w_class == SIZE_MASSIVE && !ispowerclamp(O) || HP.w_class <= SIZE_HUGE && ispowerclamp(O) || istype(HP, /obj/item/hardpoint/special))
+			choices[hardpoint_key] = HP
+
+	var/chosen_hp = show_radial_menu(usr, src, choices, require_near = TRUE)
+//	var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Hardpoint Removal", (hps + "Cancel"))
 	if(chosen_hp == "Cancel")
 		return
 	var/obj/item/hardpoint/old = chosen_hp
