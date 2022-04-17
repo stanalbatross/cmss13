@@ -210,7 +210,7 @@
 			to_chat(user, SPAN_NOTICE("The [src] has been flipped too recently!"))
 			return
 		user.visible_message(SPAN_NOTICE("[user] flips [src] open."),
-		SPAN_NOTICE("You flip [src] open."))
+		SPAN_NOTICE("You flip [src] up."))
 		open(src)
 		recentlyflipped = TRUE
 		spawn(10)
@@ -222,7 +222,7 @@
 			to_chat(user, SPAN_NOTICE("The [src] has been flipped too recently!"))
 			return
 		user.visible_message(SPAN_NOTICE("[user] flips [src] closed."),
-		SPAN_NOTICE("You flip [src] closed."))
+		SPAN_NOTICE("You flip [src] down."))
 		close(src)
 		recentlyflipped = TRUE
 		spawn(10)
