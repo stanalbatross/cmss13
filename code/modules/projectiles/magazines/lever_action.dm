@@ -94,3 +94,14 @@ Handfuls of lever_action rounds. For spawning directly on mobs in roundstart, ER
 	icon_state = "marksman_lever_action_bullet"
 	default_ammo = /datum/ammo/bullet/lever_action/marksman
 	handful_state = "marksman_lever_action_bullet"
+
+
+//================XM99A ammo================\\
+
+/obj/item/ammo_magazine/internal/xm99a
+	name = "XM99A phased pulse plasma rifle magazine"
+	icon_state = "l42mk1_extended"
+	default_ammo = /datum/ammo/bullet/lever_action
+	caliber = "45-70"
+	gun_type = /obj/item/weapon/gun/lever_action/xm99a
+	max_rounds = 90

@@ -32,6 +32,10 @@ their unique feature is that a direct hit will buff your damage and firerate
 	var/buff_fire_reduc = 2
 	var/uses_streaks = FALSE //does it have the streaks buff where you get more damage for direct hitting? if true then yes.
 	var/streak
+	var/base_lever_delay= FIRE_DELAY_TIER_3
+	var/base_fire_delay = FIRE_DELAY_TIER_1
+	var/base_damage_mult = BASE_BULLET_DAMAGE_MULT
+	var/work_lever_sprite = "r4t_l"
 
 /obj/item/weapon/gun/lever_action/examine(user)
 	..()
@@ -128,9 +132,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 	wield_delay = initial(wield_delay)
 	cur_onehand_chance = initial(cur_onehand_chance)
 	//these are init configs and so cannot be initial()
-	lever_delay = FIRE_DELAY_TIER_3
-	fire_delay = FIRE_DELAY_TIER_1
-	damage_mult = BASE_BULLET_DAMAGE_MULT
+	lever_delay = base_lever_delay
+	fire_delay = base_fire_delay
+	damage_mult = base_damage_mult
 	recalculate_attachment_bonuses() //stock wield delay
 	if(one_hand_lever)
 		addtimer(VARSET_CALLBACK(src, cur_onehand_chance, reset_onehand_chance), 4 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
@@ -258,7 +262,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 
 	recent_lever = world.time
 	if(in_chamber)
-		flick("r4t_l", src)
+		if(work_lever_sprite)
+			flick(work_lever_sprite, src)
 		if(world.time < (last_fired + 2 SECONDS)) //if it's not wielded and you shot recently, one-hand lever
 			try_onehand_lever(user)
 		else
@@ -298,6 +303,7 @@ their unique feature is that a direct hit will buff your damage and firerate
 
 
 //===================THE R4T===================\\
+
 /obj/item/weapon/gun/lever_action/r4t
 	name = "R4T lever-action rifle"
 	desc = "This lever-action was designed for small scout operations in harsh environments such as the jungle or particularly windy deserts, as such its internal mechanisms are simple yet robust."
@@ -327,3 +333,29 @@ their unique feature is that a direct hit will buff your damage and firerate
 						)
 	map_specific_decoration = TRUE
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_AMMO_COUNTER
+
+//===================THE XM99A PHASED PULSE PLASMA RIFLE===================\\
+
+/obj/item/weapon/gun/lever_action/xm99a
+	name = "XM99A phased pulse plasma rifle"
+	desc = "Placeholder."
+	icon_state = "xm99a"
+	item_state = "xm99a"
+	flags_equip_slot = SLOT_BACK
+	attachable_allowed = list(
+						//Barrel
+						/obj/item/attachable/bayonet/upp,
+						/obj/item/attachable/bayonet,
+						//Rail
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/reflex,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/scope/mini,
+						//Under
+						/obj/item/attachable/gyro,
+						/obj/item/attachable/lasersight
+						)
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	current_mag = /obj/item/ammo_magazine/internal/xm99a
+	uses_streaks = TRUE
