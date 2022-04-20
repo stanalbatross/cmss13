@@ -154,20 +154,32 @@
 			"support",
 			"locomotion",
 			"secondary",
-			"holder",
 			"armor",
 		)
 
 	var/list/choices = list()
-	var/list/vehicle_hardpoints = get_hardpoints_copy()
-
+	var/i
 
 	for(var/hardpoint_key in hardpoint_slots)
-		var/obj/item/hardpoint/HP = vehicle_hardpoints[hardpoint_key]
+		var/obj/item/hardpoint/HP = hardpoints[i]
 		if(HP.w_class == SIZE_MASSIVE && !ispowerclamp(O) || HP.w_class <= SIZE_HUGE && ispowerclamp(O) || istype(HP, /obj/item/hardpoint/special))
-			choices[hardpoint_key] = HP
+			return
+		switch(HP.slot)
+			if(HDPT_PRIMARY)
+				hardpoint_slots["primary"] = HP
+			if(HDPT_SECONDARY)
+				hardpoint_slots["secondary"] = HP
+			if(HDPT_ARMOR)
+				hardpoint_slots["armor"] = HP
+			if(HDPT_SUPPORT)
+				hardpoint_slots["support"] = HP
+			if(HDPT_TREADS)
+				hardpoint_slots["locomotion"] = HP
+			if(HDPT_WHEELS)
+				hardpoint_slots["locomotion"] = HP
+		i++
 
-	var/chosen_hp = show_radial_menu(usr, src, choices, require_near = TRUE)
+	var/chosen_hp = show_radial_menu(usr, src, hardpoints, require_near = TRUE)
 //	var/chosen_hp = tgui_input_list(usr, "Select a hardpoint to remove", "Hardpoint Removal", (hps + "Cancel"))
 	if(chosen_hp == "Cancel")
 		return
