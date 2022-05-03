@@ -215,6 +215,14 @@
 	item_state = "lspacket"
 	default_cig_type = /obj/item/clothing/mask/cigarette/ucigarette
 	storage_slots = 4
+	can_hold = list(
+		/obj/item/clothing/mask/cigarette,
+		/obj/item/clothing/mask/cigarette/ucigarette,
+		/obj/item/clothing/mask/cigarette/bcigarette,
+		/obj/item/tool/lighter,
+		/obj/item/storage/fancy/cigar/matchbook
+	)
+	var/held_matchbook
 
 /////////////
 //CIGAR BOX//

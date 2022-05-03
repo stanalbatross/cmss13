@@ -202,6 +202,7 @@ GLOBAL_LIST_INIT(allowed_helmet_items, list(
 	/obj/item/tool/lighter/random = HELMET_GARB_RELAY_ICON_STATE,
 	/obj/item/tool/lighter/zippo = "helmet_lighter_zippo",
 	/obj/item/storage/box/matches = "helmet_matches",
+	/obj/item/storage/fancy/cigar/matchbook = "helmet_matches",
 	/obj/item/storage/fancy/cigarettes/emeraldgreen = "helmet_cig_cig",
 	/obj/item/storage/fancy/cigarettes/kpack = "helmet_cig_kpack",
 	/obj/item/storage/fancy/cigarettes/lucky_strikes = "helmet_cig_ls",
