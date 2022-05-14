@@ -23,6 +23,7 @@
 	var/locate_setting = TRACKER_SL
 	var/misc_tracking = FALSE
 	var/hud_type = MOB_HUD_FACTION_USCM_LIMITED
+	var/list/possible_hud_types = list("none")
 
 /obj/item/device/radio/headset/Initialize()
 	. = ..()
@@ -30,6 +31,8 @@
 	for (var/key in initial_keys)
 		keys += new key(src)
 	recalculateChannels()
+
+	possible_hud_types += hud_type
 
 	if(length(volume_settings))
 		verbs += /obj/item/device/radio/headset/proc/set_volume_setting
@@ -218,13 +221,19 @@
 	on = TRUE
 
 /obj/item/device/radio/headset/proc/toggle_squadhud()
-	set name = "Toggle Headset HUD"
+	set name = "Toggle Headset HUD Detail Level"
 	set category = "Object"
 	set src in usr
 
 	if(usr.is_mob_incapacitated())
-		return 0
-	headset_hud_on = !headset_hud_on
+		return FALSE
+
+	var/choice = tgui_input_list(usr, "Change your HUD detail level", "Headset HUD detail level", possible_hud_types)
+	if(choice == "none")
+		headset_hud_on = FALSE
+	else
+		headset_hud_on = TRUE
+		hud_type = choice
 	if(ishuman(usr))
 		var/mob/living/carbon/human/user = usr
 		if(user.has_item_in_ears(src)) //worn
@@ -241,7 +250,7 @@
 					user.hide_hud_tracker()
 				if(misc_tracking)
 					SStracking.stop_misc_tracking(user)
-	to_chat(usr, SPAN_NOTICE("You toggle [src]'s headset HUD [headset_hud_on ? "on":"off"]."))
+	to_chat(usr, SPAN_NOTICE("You set \the [src]'s headset HUD to [headset_hud_on ? "off" : "[hud_type]"]."))
 	playsound(src,'sound/machines/click.ogg', 20, 1)
 
 /obj/item/device/radio/headset/proc/switch_tracker_target()
@@ -309,6 +318,11 @@
 	item_state = "headset"
 	frequency = PUB_FREQ
 	has_hud = TRUE
+
+/obj/item/device/radio/headset/almayer/Initialize()
+	. = ..()
+	possible_hud_types |= MOB_HUD_FACTION_USCM_LIMITED
+	possible_hud_types |= MOB_HUD_FACTION_USCM_FULL
 
 /obj/item/device/radio/headset/almayer/ce
 	name = "chief engineer's headset"
