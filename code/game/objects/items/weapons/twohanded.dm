@@ -8,6 +8,7 @@
 	var/force_wielded 	= 0
 	var/wieldsound 		= null
 	var/unwieldsound 	= null
+	var/vary_wieldsounds = TRUE
 	force = MELEE_FORCE_NORMAL
 	force_wielded = MELEE_FORCE_VERY_STRONG
 	flags_item = TWOHANDED
@@ -77,14 +78,14 @@
 	. = ..()
 	if(!.) return
 	user.recalculate_move_delay = TRUE
-	if(wieldsound) playsound(user, wieldsound, 15, 1)
+	if(wieldsound) playsound(user, wieldsound, 15, vary_wieldsounds)
 	force 		= force_wielded
 
 /obj/item/weapon/melee/twohanded/unwield(mob/user)
 	. = ..()
 	if(!.) return
 	user.recalculate_move_delay = TRUE
-	if(unwieldsound) playsound(user, unwieldsound, 15, 1)
+	if(unwieldsound) playsound(user, unwieldsound, 15, vary_wieldsounds)
 	force 	 	= initial(force)
 
 /obj/item/weapon/melee/twohanded/attack_self(mob/user)
@@ -320,3 +321,42 @@
 		to_chat(user, SPAN_WARNING("\The [src] is too heavy for you to use as a weapon!"))
 		return
 	..()
+
+/obj/item/weapon/melee/twohanded/high_frequency_sword
+	name = "Larp Sword"
+	desc = "THERE WILL BE BLOOD"
+	icon_state = "hfblade"
+	item_state = "hfblade"
+	flags_atom = FPRINT|CONDUCT
+	force = MELEE_FORCE_TIER_11
+	throwforce = MELEE_FORCE_NORMAL
+	sharp = IS_SHARP_ITEM_BIG
+	edge = 1
+	w_class = SIZE_LARGE
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	attack_speed = 5
+	vary_wieldsounds = FALSE
+	var/special_mode_activated
+	var/special_mode_length = 30 SECONDS
+
+/obj/item/weapon/melee/twohanded/high_frequency_sword/attackby(obj/item/W, mob/user)
+	. = ..()
+	if(istype(W, /obj/item/reagent_container/food/drinks/cans/souto/blue))
+		if(!special_mode_activated)
+			activate_special_mode()
+			to_chat(user, SPAN_WARNING("\The [src] takes in the electrolytes from \the [W], and charges up, turning red!"))
+			qdel(W)
+			addtimer(CALLBACK(src, .proc/deactivate_special_mode), special_mode_length)
+
+/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/activate_special_mode()
+	wieldsound = 'sound/weapons/hfblade_wield.ogg'
+	icon_state = "hfblade-red"
+	item_state = "hfblade-red"
+	special_mode_activated = TRUE
+
+/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/deactivate_special_mode()
+	wieldsound = initial(wieldsound)
+	icon_state = "hfblade"
+	item_state = "hfblade"
+	special_mode_activated = FALSE

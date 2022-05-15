@@ -14,6 +14,7 @@
 	///Icon/item states change based on contents; this stores base icon state.
 	var/base_icon
 	var/drawSound = 'sound/weapons/gun_rifle_draw.ogg'
+	var/drawSound_vary = TRUE
 
 
 /obj/item/storage/large_holster/post_skin_selection()
@@ -48,13 +49,13 @@
 /obj/item/storage/large_holster/_item_insertion(obj/item/W, prevent_warning = 0)
 	..()
 	if(drawSound)
-		playsound(src, drawSound, 15, TRUE)
+		playsound(src, drawSound, 15, drawSound_vary)
 
 //Call this proc to handle the removal of an item from the storage item. The item will be moved to the atom sent as new_target
 /obj/item/storage/large_holster/_item_removal(obj/item/W, atom/new_location)
 	..()
 	if(drawSound)
-		playsound(src, drawSound, 15, TRUE)
+		playsound(src, drawSound, 15, drawSound_vary)
 
 /obj/item/storage/large_holster/m37
 	name = "\improper L44 M37A2 scabbard"
@@ -104,7 +105,7 @@
 
 /obj/item/storage/large_holster/katana
 	name = "\improper katana scabbard"
-	desc = "A large, vibrantly colored katana scabbard used to carry a japanese sword. It can be strapped to the back or worn at the belt. Because of the sturdy wood casing of the scabbard, it makes an okay defensive weapon in a pinch."
+	desc = "A large, vibrantly colored katana scabbard used to carry a Japanese sword. It can be strapped to the back or worn at the belt. Because of the sturdy wood casing of the scabbard, it makes an okay defensive weapon in a pinch."
 	icon_state = "katana_holster"
 	force = 12
 	attack_verb = list("bludgeoned", "struck", "cracked")
@@ -124,6 +125,26 @@
 
 /obj/item/storage/large_holster/ceremonial_sword/full/fill_preset_inventory()
 	new /obj/item/weapon/melee/claymore/mercsword/ceremonial(src)
+
+/obj/item/storage/large_holster/katana/high_frequency_sword
+	name = "\improper katana scabbard"
+	desc = "A large, vibrantly colored katana scabbard used to carry a japanese sword. It can be strapped to the back or worn at the belt. Because of the sturdy wood casing of the scabbard, it makes an okay defensive weapon in a pinch."
+	icon_state = "hfsheath"
+	flags_equip_slot = SLOT_BACK
+	can_hold = list(/obj/item/weapon/melee/twohanded/high_frequency_sword)
+	drawSound_vary = FALSE
+
+/obj/item/storage/large_holster/katana/high_frequency_sword/full/fill_preset_inventory()
+	new /obj/item/weapon/melee/twohanded/high_frequency_sword(src)
+
+/obj/item/storage/large_holster/_item_removal(obj/item/W, atom/new_location)
+	if(istype(W, /obj/item/weapon/melee/twohanded/high_frequency_sword))
+		var/obj/item/weapon/melee/twohanded/high_frequency_sword/HFS = W
+		if(HFS.special_mode_activated)
+			drawSound = 'sound/weapons/hfblade_draw.ogg'
+		else if(drawSound != initial(drawSound))
+			drawSound = initial(drawSound)
+	. = ..()
 
 /obj/item/storage/large_holster/m39
 	name = "\improper M276 pattern M39 holster rig"
