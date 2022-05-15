@@ -323,7 +323,7 @@
 	..()
 
 /obj/item/weapon/melee/twohanded/high_frequency_sword
-	name = "Larp Sword"
+	name = "high-frequency katana"
 	desc = "THERE WILL BE BLOOD"
 	icon_state = "hfblade"
 	item_state = "hfblade"
@@ -344,19 +344,27 @@
 	. = ..()
 	if(istype(W, /obj/item/reagent_container/food/drinks/cans/souto/blue))
 		if(!special_mode_activated)
-			activate_special_mode()
-			to_chat(user, SPAN_WARNING("\The [src] takes in the electrolytes from \the [W], and charges up, turning red!"))
+			activate_special_mode(user)
+			to_chat(user, SPAN_WARNING("\The [src] takes in the electrolytes from \the [W], and charges up, turning red! It will lose its charge in [special_mode_length/10] seconds"))
 			qdel(W)
-			addtimer(CALLBACK(src, .proc/deactivate_special_mode), special_mode_length)
+			addtimer(CALLBACK(src, .proc/deactivate_special_mode, user), special_mode_length)
 
-/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/activate_special_mode()
+/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/activate_special_mode(mob/user)
 	wieldsound = 'sound/weapons/hfblade_wield.ogg'
-	icon_state = "hfblade-red"
-	item_state = "hfblade-red"
+	icon_state = "hfblade_red"
+	item_state = "hfblade_red"
 	special_mode_activated = TRUE
+	playsound(src, 'sound/weapons/hfblade_draw.ogg', 30)
+	if(user)
+		user.update_inv_l_hand(0)
+		user.update_inv_r_hand()
 
-/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/deactivate_special_mode()
+/obj/item/weapon/melee/twohanded/high_frequency_sword/proc/deactivate_special_mode(mob/user)
 	wieldsound = initial(wieldsound)
 	icon_state = "hfblade"
 	item_state = "hfblade"
 	special_mode_activated = FALSE
+	if(user)
+		user.update_inv_l_hand(0)
+		user.update_inv_r_hand()
+		to_chat(user, SPAN_WARNING("\The [src] powers down!"))

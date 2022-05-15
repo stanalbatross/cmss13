@@ -127,8 +127,8 @@
 	new /obj/item/weapon/melee/claymore/mercsword/ceremonial(src)
 
 /obj/item/storage/large_holster/katana/high_frequency_sword
-	name = "\improper katana scabbard"
-	desc = "A large, vibrantly colored katana scabbard used to carry a japanese sword. It can be strapped to the back or worn at the belt. Because of the sturdy wood casing of the scabbard, it makes an okay defensive weapon in a pinch."
+	name = "high-frequency sword scabbard"
+	desc = "THOSE MOUNTAINS DON'T GIVE BACK WHAT THEY TAKE"
 	icon_state = "hfsheath"
 	flags_equip_slot = SLOT_BACK
 	can_hold = list(/obj/item/weapon/melee/twohanded/high_frequency_sword)
@@ -140,11 +140,18 @@
 /obj/item/storage/large_holster/_item_removal(obj/item/W, atom/new_location)
 	if(istype(W, /obj/item/weapon/melee/twohanded/high_frequency_sword))
 		var/obj/item/weapon/melee/twohanded/high_frequency_sword/HFS = W
+		if(!(HFS.special_mode_activated))
+			if(drawSound != initial(drawSound))
+				drawSound = initial(drawSound)
+	. = ..()
+
+/obj/item/storage/large_holster/katana/high_frequency_sword/_item_insertion(obj/item/W, prevent_warning = 0)
+	drawSound = initial(drawSound)
+	. = ..()
+	if(istype(W, /obj/item/weapon/melee/twohanded/high_frequency_sword))
+		var/obj/item/weapon/melee/twohanded/high_frequency_sword/HFS = W
 		if(HFS.special_mode_activated)
 			drawSound = 'sound/weapons/hfblade_draw.ogg'
-		else if(drawSound != initial(drawSound))
-			drawSound = initial(drawSound)
-	. = ..()
 
 /obj/item/storage/large_holster/m39
 	name = "\improper M276 pattern M39 holster rig"
