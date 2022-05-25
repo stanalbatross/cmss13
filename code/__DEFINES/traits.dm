@@ -147,6 +147,14 @@
 #define TRAIT_CHARGING "t_charging"
  /// If the mob has leadership abilities (giving orders).
 #define TRAIT_LEADERSHIP "t_leadership"
+ /// If the mob can see the reagents contents of stuff
+#define TRAIT_REAGENT_SCANNER "reagent_scanner"
+
+// -- ability traits --
+ /// Xenos with this trait cannot have plasma transfered to them
+#define TRAIT_ABILITY_NO_PLASMA_TRANSFER "t_ability_no_plasma_transfer"
+ /// Shows that the xeno queen is on ovi
+#define TRAIT_ABILITY_OVIPOSITOR "t_ability_ovipositor"
 
 //-- item traits --
 // TOOL TRAITS
@@ -172,7 +180,9 @@ GLOBAL_LIST_INIT(mob_traits, list(
 	TRAIT_CRAWLER,
 	TRAIT_SIMPLE_DESC,
 	TRAIT_TWOBORE_TRAINING,
-	TRAIT_DEXTROUS
+	TRAIT_LEADERSHIP,
+	TRAIT_DEXTROUS,
+	TRAIT_REAGENT_SCANNER
 ))
 
 //trait SOURCES
@@ -198,5 +208,7 @@ GLOBAL_LIST_INIT(mob_traits, list(
 #define TRAIT_SOURCE_SKILL(skill) "t_s_skill_[skill]"
 ///Status trait coming from attachment
 #define TRAIT_SOURCE_ATTACHMENT(slot) "t_s_attachment_[slot]"
+ ///Status trait coming from ability
+#define TRAIT_SOURCE_ABILITY(ability) "t_s_ability_[ability]"
  ///Status trait forced by the xeno action charge
 #define TRAIT_SOURCE_XENO_ACTION_CHARGE "t_s_xeno_action_charge"

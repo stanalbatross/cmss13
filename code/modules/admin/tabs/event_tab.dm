@@ -158,6 +158,8 @@
 		var/dock_list = list("Port", "Starboard", "Aft")
 		if(shuttle.use_umbilical)
 			dock_list = list("Port Hangar", "Starboard Hangar")
+		if(shuttle.use_small_docks)
+			dock_list = list("Port Engineering", "Starboard Engineering")
 		var/dock_name = tgui_input_list(usr, "Where on the [MAIN_SHIP_NAME] should the shuttle dock?", "Select a docking zone:", dock_list)
 		switch(dock_name)
 			if("Port") dock_id = /area/shuttle/distress/arrive_2
@@ -267,7 +269,6 @@
 	set name = "Disable Shuttle Console"
 	set desc = "Prevents a shuttle control console from being accessed."
 	set category = "Admin.Events"
-
 	if(!SSticker.mode || !check_rights(R_ADMIN))
 		return
 
@@ -278,6 +279,27 @@
 
 	message_staff("[key_name_admin(usr)] set [input]'s disabled to [input.disabled].")
 
+/datum/admins/proc/add_req_points()
+	set name = "Add Requisitions Points"
+	set desc = "Add points to the ship requisitions department."
+	set category = "Admin.Events"
+	if(!SSticker.mode || !check_rights(R_ADMIN))
+		return
+
+	var/points_to_add = input(usr, "Enter the amount of points to give, or a negative number to subtract. 1 point = $100.", "Points", 0) as num
+	if(points_to_add == 0)
+		return
+	else if((supply_controller.points + points_to_add) < 0)
+		supply_controller.points = 0
+	else if((supply_controller.points + points_to_add) > 99999)
+		supply_controller.points = 99999
+	else
+		supply_controller.points += points_to_add
+
+
+	message_staff("[key_name_admin(usr)] granted requisitions [points_to_add] points.")
+	if(points_to_add >= 0)
+		shipwide_ai_announcement("Additional Supply Budget has been authorised for this operation.")
 
 /datum/admins/proc/admin_force_selfdestruct()
 	set name = "Self Destruct"
@@ -620,6 +642,7 @@
 		<A href='?src=\ref[src];events=evacuation_start'>Trigger Evacuation</A><BR>
 		<A href='?src=\ref[src];events=evacuation_cancel'>Cancel Evacuation</A><BR>
 		<A href='?src=\ref[src];events=disable_shuttle_console'>Disable Shuttle Control</A><BR>
+		<A href='?src=\ref[src];events=add_req_points'>Add Requisitions Points</A><BR>
 		<BR>
 		<B>Research</B><BR>
 		<A href='?src=\ref[src];events=change_clearance'>Change Research Clearance</A><BR>

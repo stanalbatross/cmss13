@@ -12267,7 +12267,6 @@
 /obj/structure/machinery/door/airlock/glass_medical{
 	id_tag = "mbayexit";
 	name = "Medbay Reception";
-	req_access = null;
 	req_one_access_txt = "2;8;19"
 	},
 /turf/open/floor{
@@ -12542,7 +12541,7 @@
 	icon_state = "mars_cave_7";
 	tag = "icon-mars_cave_7"
 	},
-/area/bigredv2/caves_virology)
+/area/bigredv2/outside/virology)
 "aGp" = (
 /turf/open/mars_cave{
 	icon_state = "mars_cave_14";
@@ -12866,7 +12865,7 @@
 	icon_state = "mars_cave_13";
 	tag = "icon-mars_cave_13"
 	},
-/area/bigredv2/caves_virology)
+/area/bigredv2/outside/virology)
 "aHg" = (
 /turf/open/floor{
 	dir = 9;
@@ -18848,8 +18847,7 @@
 /obj/structure/machinery/door_control{
 	id = "viro";
 	name = "Virology Lockdown";
-	pixel_x = -25;
-	req_one_access = null
+	pixel_x = -25
 	},
 /turf/open/floor{
 	icon_state = "white"
@@ -29796,7 +29794,6 @@
 	id = "filtration";
 	name = "Filtration Lockdown";
 	pixel_x = 30;
-	req_one_access = null;
 	throw_range = 15
 	},
 /turf/open/floor,
@@ -31716,6 +31713,12 @@
 	},
 /turf/open/mars,
 /area/bigredv2/outside/nw)
+"pdW" = (
+/turf/open/mars_cave{
+	icon_state = "mars_cave_13";
+	tag = "icon-mars_cave_13"
+	},
+/area/bigredv2/outside/virology)
 "per" = (
 /obj/structure/window_frame/solaris,
 /turf/open/floor/plating,
@@ -32786,6 +32789,12 @@
 	tag = "icon-asteroidfloor (NORTH)"
 	},
 /area/bigred/ground/garage_workshop)
+"uJF" = (
+/obj/structure/machinery/power/apc{
+	dir = 1
+	},
+/turf/open/floor,
+/area/bigred/ground/garage_workshop)
 "uPm" = (
 /turf/open/mars_cave{
 	icon_state = "mars_cave_5";
@@ -32932,7 +32941,6 @@
 	id = "eta";
 	name = "Eta Lockdown";
 	pixel_x = 30;
-	req_one_access = null;
 	throw_range = 15
 	},
 /turf/open/floor{
@@ -33164,8 +33172,12 @@
 	},
 /area/bigredv2/outside/medical)
 "wvk" = (
-/turf/closed/wall/solaris/reinforced/hull,
-/area/bigredv2/outside/nw)
+/obj/structure/fence,
+/turf/open/mars_cave{
+	icon_state = "mars_cave_2";
+	tag = "icon-mars_cave_2"
+	},
+/area/bigredv2/outside/virology)
 "wvR" = (
 /turf/open/floor{
 	icon_state = "delivery"
@@ -36587,7 +36599,7 @@ eci
 aao
 aao
 fwa
-ucH
+gJw
 gJw
 vNh
 vNm
@@ -36600,7 +36612,7 @@ aao
 aao
 aao
 aao
-aao
+fwa
 fwa
 mZC
 aao
@@ -36805,10 +36817,10 @@ aao
 aao
 mZC
 aao
-aao
+wvk
 aGo
 aHf
-aao
+aHf
 aao
 aao
 aao
@@ -36817,7 +36829,7 @@ qTu
 aao
 aao
 aao
-aao
+fwa
 fwa
 rDP
 aao
@@ -37022,7 +37034,7 @@ aao
 aao
 aao
 aao
-aao
+pdW
 aGp
 aGq
 aFs
@@ -37034,7 +37046,7 @@ aao
 aao
 aao
 aao
-aao
+rGP
 gYl
 gKk
 aao
@@ -37239,7 +37251,7 @@ aao
 aao
 aao
 aao
-aao
+aFs
 aGq
 aFs
 aFt
@@ -38088,7 +38100,7 @@ upE
 vLd
 vLd
 upE
-vLd
+uJF
 qsE
 aao
 aao
@@ -38106,7 +38118,7 @@ aao
 aao
 aao
 aao
-aoa
+aoD
 aFu
 aFt
 aHh
@@ -38322,8 +38334,8 @@ aao
 aao
 aao
 aao
-aoa
-aoa
+aoD
+aoD
 aFv
 aGr
 aHh
@@ -38540,7 +38552,7 @@ aao
 aao
 aao
 aeI
-aoa
+aoD
 aFv
 aGr
 aHh
@@ -38757,7 +38769,7 @@ aeI
 aeI
 aeI
 aeI
-aoa
+aoD
 aFv
 aGr
 aHh
@@ -38973,8 +38985,8 @@ aeI
 aeI
 aeI
 aeI
-aoa
-aoa
+aoD
+aoD
 aFw
 aFt
 aHh
@@ -39191,7 +39203,7 @@ aeI
 aeI
 aeI
 aeI
-aoa
+aoD
 aFt
 aFt
 aHh
@@ -39408,7 +39420,7 @@ aeI
 aeI
 aeI
 aeI
-aoa
+aoD
 aFt
 aFt
 aHh
@@ -39624,8 +39636,8 @@ aeI
 aeI
 aeI
 aeI
-aoa
-aoa
+aoD
+aoD
 aFt
 aFt
 aHh
@@ -39842,7 +39854,7 @@ aeI
 aeI
 aeI
 aeI
-aoa
+aoD
 aFt
 aFt
 aHh
@@ -40059,7 +40071,7 @@ aeI
 aeI
 aeI
 aeI
-aoa
+aoD
 aFt
 aFt
 aHh
@@ -40276,7 +40288,7 @@ aog
 ahO
 aeI
 aeI
-aoa
+aoD
 aFt
 aGs
 aHj
@@ -40493,13 +40505,13 @@ ahP
 ahP
 aog
 aog
-aoa
+aoD
 aFt
-aoa
+aoD
 grU
 aIg
 hTO
-aoa
+aoD
 aHZ
 aFv
 aoD
@@ -40710,15 +40722,15 @@ aqp
 aiw
 aqp
 aDw
-aoa
-aoa
-aoa
+aoD
+aoD
+aoD
 aHj
 aIb
 aHj
-aoa
-aoa
-aoa
+aoD
+aoD
+aoD
 aoD
 aoD
 aoD
@@ -40737,10 +40749,10 @@ aoD
 aoD
 aoD
 aoa
-aoa
-aoa
-aoa
-aoa
+aoD
+aoD
+aoD
+aoD
 aoa
 azR
 azR
@@ -40929,13 +40941,13 @@ alm
 aDx
 aDw
 ahP
-aoa
+aoD
 grU
 aIg
 grU
-wvk
+anp
 aln
-aoa
+aoD
 aEu
 aEu
 aoD
@@ -40956,7 +40968,7 @@ aEu
 aoa
 aSB
 aSB
-aoa
+aoD
 aSB
 aSB
 azR

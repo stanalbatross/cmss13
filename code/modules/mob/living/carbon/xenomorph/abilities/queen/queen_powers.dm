@@ -67,7 +67,7 @@
 	to_chat(T, SPAN_XENOWARNING("The queen is deevolving you for the following reason: [reason]"))
 
 	var/xeno_type
-
+	var/level_to_switch_to = T.get_vision_level()
 	switch(newcaste)
 		if(XENO_CASTE_RUNNER)
 			xeno_type = /mob/living/carbon/Xenomorph/Runner
@@ -107,7 +107,8 @@
 
 	//Regenerate the new mob's name now that our player is inside
 	new_xeno.generate_name()
-
+	if(new_xeno.client)
+		new_xeno.set_lighting_alpha(level_to_switch_to)
 	// If the player has self-deevolved before, don't allow them to do it again
 	if(!(/mob/living/carbon/Xenomorph/verb/Deevolve in T.verbs))
 		remove_verb(new_xeno, /mob/living/carbon/Xenomorph/verb/Deevolve)
@@ -430,8 +431,9 @@
 
 	var/obj/effect/alien/weeds/node/node
 	for(var/direction in cardinal)
-		var/obj/effect/alien/weeds/W = locate() in get_step(T, direction)
-		if(W && W.hivenumber == X.hivenumber && W.parent && !W.hibernate && !LinkBlocked(W, get_turf(W), T))
+		var/turf/weed_turf = get_step(T, direction)
+		var/obj/effect/alien/weeds/W = locate() in weed_turf
+		if(W && W.hivenumber == X.hivenumber && W.parent && !W.hibernate && !LinkBlocked(W, weed_turf, T))
 			node = W.parent
 			break
 
