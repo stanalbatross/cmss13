@@ -244,12 +244,12 @@
 //Returns a list of damageable limbs
 /mob/living/carbon/human/proc/get_damageable_limbs(var/inclusion_chance)
     var/list/obj/limb/parts = list()
-    for(var/obj/limb/O in limbs)
-        if(O.brute_dam + O.burn_dam >= O.max_damage)
+    for(var/obj/limb/limb in limbs)
+        if(limb.brute_dam + limb.burn_dam >= limb.max_damage)
             continue
         if(inclusion_chance && !prob(inclusion_chance))
             continue
-        parts += O
+        parts += limb
     return parts
 
 //Heals ONE external organ, organ gets randomly selected from damaged ones.

@@ -852,11 +852,11 @@
 	if(bound_xeno.stat == DEAD)
 		return
 
-	var/mob/living/carbon/Xenomorph/Queen/Q = bound_xeno
-	if(Q.ovipositor)
-		Q.icon = Q.queen_ovipositor_icon
-		Q.icon_state = "[Q.mutation_type] Queen Ovipositor"
+	var/mob/living/carbon/Xenomorph/Queen/Queen = bound_xeno
+	if(Queen.ovipositor)
+		Queen.icon = Queen.queen_ovipositor_icon
+		Queen.icon_state = "[Queen.mutation_type] Queen Ovipositor"
 		return TRUE
 
 	// Switch icon back and then let normal icon behavior happen
-	Q.icon = Q.queen_standing_icon
+	Queen.icon = Queen.queen_standing_icon

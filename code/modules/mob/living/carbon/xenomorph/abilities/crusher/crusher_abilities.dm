@@ -117,25 +117,25 @@
 	/// Dictates speed and damage dealt via collision, increased with movement
 	var/momentum = 0
 
-/datum/action/xeno_action/onclick/charger_charge/proc/handle_movement(mob/living/carbon/Xenomorph/X, atom/oldloc, dir, forced)
+/datum/action/xeno_action/onclick/charger_charge/proc/handle_movement(mob/living/carbon/Xenomorph/Xeno, atom/oldloc, dir, forced)
 	SIGNAL_HANDLER
-	if(X.pulling)
+	if(Xeno.pulling)
 		if(!momentum)
 			steps_taken = 0
 			return
 		else
-			X.stop_pulling()
+			Xeno.stop_pulling()
 
-	if(X.is_mob_incapacitated())
+	if(Xeno.is_mob_incapacitated())
 		var/lol = get_ranged_target_turf(charge_dir,momentum/2)
-		INVOKE_ASYNC(X, /atom/movable.proc/throw_atom, lol, momentum/2, SPEED_FAST, null, TRUE)
+		INVOKE_ASYNC(Xeno, /atom/movable.proc/throw_atom, lol, momentum/2, SPEED_FAST, null, TRUE)
 		stop_momentum()
 		return
-	if(!isturf(X.loc))
+	if(!isturf(Xeno.loc))
 		stop_momentum()
 		return
 	// Don't build up charge if you move via getting propelled by something
-	if(X.throwing)
+	if(Xeno.throwing)
 		stop_momentum()
 		return
 
@@ -150,7 +150,7 @@
 
 	if(do_stop_momentum)
 		stop_momentum()
-	if(X.plasma_stored <= plasma_per_step)
+	if(Xeno.plasma_stored <= plasma_per_step)
 		stop_momentum()
 		return
 	last_charge_move = world.time
@@ -159,28 +159,28 @@
 		return
 	if(momentum < max_momentum)
 		momentum++
-		ADD_TRAIT(X, TRAIT_CHARGING, TRAIT_SOURCE_XENO_ACTION_CHARGE)
-		X.update_icons()
+		ADD_TRAIT(Xeno, TRAIT_CHARGING, TRAIT_SOURCE_XENO_ACTION_CHARGE)
+		Xeno.update_icons()
 		if(momentum == max_momentum)
-			X.emote("roar")
+			Xeno.emote("roar")
 	//X.use_plasma(plasma_per_step) // take if you are in toggle charge mode
 	if(momentum > 0)
-		X.use_plasma(plasma_per_step) // take plasma when you have momentum
+		Xeno.use_plasma(plasma_per_step) // take plasma when you have momentum
 
 	noise_timer = noise_timer ? --noise_timer : 3
 	if(noise_timer == 3)
-		playsound(X, 'sound/effects/alien_footstep_charge1.ogg', 50)
+		playsound(Xeno, 'sound/effects/alien_footstep_charge1.ogg', 50)
 
-	for(var/mob/living/carbon/human/M in X.loc)
-		if(M.lying && M.stat != DEAD)
-			X.visible_message(SPAN_DANGER("[X] runs [M] over!"),
-				SPAN_DANGER("You run [M] over!")
+	for(var/mob/living/carbon/human/Mob in Xeno.loc)
+		if(Mob.lying && Mob.stat != DEAD)
+			Xeno.visible_message(SPAN_DANGER("[Xeno] runs [Mob] over!"),
+				SPAN_DANGER("You run [Mob] over!")
 			)
 
-			M.apply_damage(momentum * 10)
-			animation_flash_color(M)
+			Mob.apply_damage(momentum * 10)
+			animation_flash_color(Mob)
 
-	X.recalculate_speed()
+	Xeno.recalculate_speed()
 
 /datum/action/xeno_action/onclick/charger_charge/proc/handle_dir_change(datum/source, old_dir, new_dir)
 	SIGNAL_HANDLER
@@ -194,40 +194,40 @@
 	if(!covered)
 		stop_momentum()
 
-/datum/action/xeno_action/onclick/charger_charge/proc/update_speed(mob/living/carbon/Xenomorph/X)
+/datum/action/xeno_action/onclick/charger_charge/proc/update_speed(mob/living/carbon/Xenomorph/Xeno)
 	SIGNAL_HANDLER
-	X.speed += momentum * speed_per_momentum
+	Xeno.speed += momentum * speed_per_momentum
 
 /datum/action/xeno_action/onclick/charger_charge/proc/stop_momentum(datum/source)
 	SIGNAL_HANDLER
-	var/mob/living/carbon/Xenomorph/X = owner
+	var/mob/living/carbon/Xenomorph/Xeno = owner
 	if(momentum == max_momentum)
-		X.visible_message(SPAN_DANGER("[X] skids to a halt!"))
+		Xeno.visible_message(SPAN_DANGER("[Xeno] skids to a halt!"))
 
-	REMOVE_TRAIT(X, TRAIT_CHARGING, TRAIT_SOURCE_XENO_ACTION_CHARGE)
+	REMOVE_TRAIT(Xeno, TRAIT_CHARGING, TRAIT_SOURCE_XENO_ACTION_CHARGE)
 	steps_taken = 0
 	momentum = 0
-	X.recalculate_speed()
-	X.update_icons()
+	Xeno.recalculate_speed()
+	Xeno.update_icons()
 
 /datum/action/xeno_action/onclick/charger_charge/proc/lose_momentum(amount)
 	if(amount >= momentum)
 		stop_momentum()
 	else
 		momentum -= amount
-		var/mob/living/carbon/Xenomorph/X = owner
-		X.recalculate_speed()
+		var/mob/living/carbon/Xenomorph/Xeno = owner
+		Xeno.recalculate_speed()
 
-/datum/action/xeno_action/onclick/charger_charge/proc/handle_collision(mob/living/carbon/Xenomorph/X, atom/A)
+/datum/action/xeno_action/onclick/charger_charge/proc/handle_collision(mob/living/carbon/Xenomorph/Xeno, atom/tar)
 	SIGNAL_HANDLER
 	if(!momentum)
 		stop_momentum()
 		return
 
-	var/result = A.handle_charge_collision(X, src)
+	var/result = tar.handle_charge_collision(Xeno, src)
 	switch(result)
 		if(XENO_CHARGE_TRY_MOVE)
-			if(step(X, charge_dir))
+			if(step(Xeno, charge_dir))
 				return COMPONENT_LIVING_COLLIDE_HANDLED
 
 /datum/action/xeno_action/onclick/charger_charge/proc/start_charging(datum/source)
@@ -245,22 +245,22 @@
 	plasma_cost = 25
 	xeno_cooldown = 10 SECONDS
 
-/datum/action/xeno_action/activable/tumble/proc/handle_mob_collision(mob/living/carbon/human/H)
-	var/mob/living/carbon/Xenomorph/X = owner
+/datum/action/xeno_action/activable/tumble/proc/handle_mob_collision(mob/living/carbon/human/Human)
+	var/mob/living/carbon/Xenomorph/Xeno = owner
 
-	X.visible_message(SPAN_XENODANGER("[X] Sweeps to the side, knocking down [H]!"), SPAN_XENODANGER("You knock over [H] as you sweep to the side!"))
+	Xeno.visible_message(SPAN_XENODANGER("[Xeno] Sweeps to the side, knocking down [Human]!"), SPAN_XENODANGER("You knock over [Human] as you sweep to the side!"))
 
-	var/turf/target_turf = get_turf(H)
-	xeno_throw_human(H, X, get_dir(X, H), 1)
-	H.apply_damage(15,BRUTE)
-	H.KnockDown(1)
-	playsound(H,'sound/weapons/alien_claw_block.ogg', 50, 1)
-	if(!LinkBlocked(X, get_turf(X), target_turf))
-		X.forceMove(target_turf)
+	var/turf/target_turf = get_turf(Human)
+	xeno_throw_human(Human, Xeno, get_dir(Xeno, Human), 1)
+	Human.apply_damage(15,BRUTE)
+	Human.KnockDown(1)
+	playsound(Human,'sound/weapons/alien_claw_block.ogg', 50, 1)
+	if(!LinkBlocked(Xeno, get_turf(Xeno), target_turf))
+		Xeno.forceMove(target_turf)
 
 /datum/action/xeno_action/activable/tumble/proc/on_end_throw(start_charging)
-	var/mob/living/carbon/Xenomorph/X = owner
-	X.flags_atom &= ~DIRLOCK
+	var/mob/living/carbon/Xenomorph/Xeno = owner
+	Xeno.flags_atom &= ~DIRLOCK
 	if(start_charging)
-		SEND_SIGNAL(X, COMSIG_XENO_START_CHARGING)
+		SEND_SIGNAL(Xeno, COMSIG_XENO_START_CHARGING)
 
