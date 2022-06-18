@@ -336,6 +336,8 @@ var/datum/controller/supply/supply_controller = new()
 	var/points_per_process = 1.5
 	var/points_per_slip = 1
 	var/points_per_crate = 2
+	//black market stuff
+	var/black_market_points = 0 //in Weyland-Yutani dollars - Stan_Albatross.
 
 	var/base_random_crate_interval = 10 //Every how many processing intervals do we get a random crates.
 
@@ -471,6 +473,17 @@ var/datum/controller/supply/supply_controller = new()
 			var/obj/item/paper/manifest/M = MA
 			if(M.stamped && M.stamped.len)
 				points += points_per_slip
+				qdel(M)
+		var/black_market_points_to_add
+		if(istype(MA, /obj/item))
+			var/obj/item/I = MA
+			if(I.black_market_value)
+				if(istype(I, /obj/item/stack))
+					var/obj/item/stack/S = I
+					black_market_points_to_add = (S.black_market_value * S.amount)
+				else
+					black_market_points_to_add = I.black_market_value
+				black_market_points += black_market_points_to_add
 
 		// Delete everything else.
 		qdel(MA)
@@ -771,8 +784,10 @@ var/datum/controller/supply/supply_controller = new()
 					dat += "<BR>\n<BR>"
 
 
-		dat += {"<HR>\nSupply budget: $[supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>\n<BR>
-		\n<A href='?src=\ref[src];order=categories'>Order items</A><BR>\n<BR>
+		dat += {"<HR>\nSupply budget: $[supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]"}
+		if(can_order_contraband)
+			dat+= {"\nWeyland-Yutani Dollars: W-Y $[supply_controller.black_market_points * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>\n<BR>"}
+		dat += {"\n<A href='?src=\ref[src];order=categories'>Order items</A><BR>\n<BR>
 		\n<A href='?src=\ref[src];viewrequests=1'>View requests</A><BR>\n<BR>
 		\n<A href='?src=\ref[src];vieworders=1'>View orders</A><BR>\n<BR>
 		\n<A href='?src=\ref[user];mach_close=computer'>Close</A>"}
@@ -825,6 +840,8 @@ var/datum/controller/supply/supply_controller = new()
 			//Request what?
 			last_viewed_group = "categories"
 			temp = "<b>Supply budget: $[supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
+			if(can_order_contraband)
+				temp = "<b>Weyland-Yutani Dollars: W-Y $[supply_controller.black_market_points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
 			temp += "<A href='?src=\ref[src];mainmenu=1'>Main Menu</A><HR><BR><BR>"
 			temp += "<b>Select a category</b><BR><BR>"
 			for(var/supply_group_name in all_supply_groups )
@@ -832,12 +849,18 @@ var/datum/controller/supply/supply_controller = new()
 		else
 			last_viewed_group = href_list["order"]
 			temp = "<b>Supply budget: $[supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
+			if(can_order_contraband)
+				temp = "<b>Weyland-Yutani Dollars: W-Y $[supply_controller.black_market_points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
 			temp += "<A href='?src=\ref[src];order=categories'>Back to all categories</A><HR><BR><BR>"
 			temp += "<b>Request from: [last_viewed_group]</b><BR><BR>"
 			for(var/supply_name in supply_controller.supply_packs )
 				var/datum/supply_packs/N = supply_controller.supply_packs[supply_name]
 				if((N.hidden && !hacked) || (N.contraband && !can_order_contraband) || N.group != last_viewed_group || !N.buyable) continue								//Have to send the type instead of a reference to
-				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"		//the obj because it would get caught by the garbage
+				if(N.contraband)
+					temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: W-Y $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"
+				else
+					temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: $[round(N.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>"		//the obj because it would get caught by the garbage
+
 
 		/*temp = "Supply points: [supply_controller.points]<BR><HR><BR>Request what?<BR><BR>"
 
@@ -922,6 +945,20 @@ var/datum/controller/supply/supply_controller = new()
 			if(SO.ordernum == ordernum)
 				O = SO
 				P = O.object
+				if(P.contraband) //handle black market interactions
+					if(supply_controller.black_market_points >= round(P.cost))
+						supply_controller.requestlist.Cut(i,i+1)
+						supply_controller.black_market_points -= round(P.cost)
+						supply_controller.shoppinglist += O
+						P.cost = P.cost * SUPPLY_COST_MULTIPLIER
+						temp = "Thank you for your order, a safe and inconspicuous delivery is guaranteed.<BR>"
+						temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
+						O.approvedby = usr.name
+						msg_admin_niche("[usr] confirmed black market supply order of [P.name].")
+				else
+					temp = "Not enough W-Y Dollars left.<BR>"
+					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
+				break
 				if(supply_controller.points >= round(P.cost))
 					supply_controller.requestlist.Cut(i,i+1)
 					supply_controller.points -= round(P.cost)

@@ -249,6 +249,7 @@
 	pill_desc = "An Ultrazine pill. A highly-potent, long-lasting combination CNS and muscle stimulant. Extremely addictive."
 	pill_initial_reagents = list("ultrazine" = 5)
 	pill_icon_class = "psych"
+	black_market_value = 5
 
 /obj/item/reagent_container/pill/ultrazine/unmarked
 	pill_desc = "An unknown pill." // Or is it ?

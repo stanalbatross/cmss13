@@ -10,6 +10,7 @@
 	w_class = SIZE_TINY
 	var/string_attached
 	var/sides = 2
+	black_market_value = 1
 
 /obj/item/coin/Initialize()
 	. = ..()
@@ -19,6 +20,7 @@
 /obj/item/coin/gold
 	name = "gold coin"
 	icon_state = "coin_gold"
+	black_market_value = 15 //CMP has it
 
 /obj/item/coin/silver
 	name = "silver coin"
@@ -27,6 +29,7 @@
 /obj/item/coin/diamond
 	name = "diamond coin"
 	icon_state = "coin_diamond"
+	black_market_value = 2
 
 /obj/item/coin/iron
 	name = "iron coin"
@@ -48,6 +51,7 @@
 	name = "synthetic experimental tool redemption token"
 	desc = "Insert this into a synthetic experimental tools vendor in order to access a variety of experimental support tools."
 	icon_state = "coin_adamantine"
+	black_market_value = 0
 
 /obj/item/coin/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack/cable_coil))

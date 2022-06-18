@@ -10,6 +10,7 @@
 	volume = 100
 	item_state = "broken_beer" //Generic held-item sprite until unique ones are made.
 	///This excludes all the juices and dairy in cartons that are also defined in this file.
+	black_market_value = 1
 	var/isGlass = TRUE
 
 ///Audio/visual bottle breaking effects start here

@@ -65,6 +65,8 @@
 
 	var/list/obj/item/uniform_restricted //Need to wear this uniform to equip this
 
+	var/black_market_value = 0 //This is how many points you get added to the black market budget when you sell it down the ASRS.
+
 	var/time_to_equip = 0 // set to ticks it takes to equip a worn suit.
 	var/time_to_unequip = 0 // set to ticks it takes to unequip a worn suit.
 
