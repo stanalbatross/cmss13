@@ -197,6 +197,28 @@
 	playsound(src.loc, 'sound/weapons/armbomb.ogg', 25, 1, 6)
 	addtimer(CALLBACK(src, .proc/prime), rand(10,20))
 
+/obj/item/explosive/grenade/flashbang/cluster/recursive
+	name = "recursive cluster flashbang"
+	desc = "The USS Almayer is 87% clusterbang and clusterbang launchers (by mass)."
+	icon_state = "cluster"
+	var/recursion_level = 2 //2 levels by default
+
+/obj/item/explosive/grenade/flashbang/cluster/recursive/prime()
+	if(recursion_level == 0) //detonate like usual
+		for(var/i in 1 to rand(2,5))
+			//Creates a 'segment' that launches a few more flashbangs
+			new /obj/item/explosive/grenade/flashbang/cluster/segment(get_turf(src))
+		qdel(src)
+	else
+		for(var/i in 1 to rand(2,5))
+			var/obj/item/explosive/grenade/flashbang/cluster/recursive/R = new /obj/item/explosive/grenade/flashbang/cluster/recursive(get_turf(src))
+			R.recursion_level--
+			var/temploc = get_turf(R)
+			walk_away(R,temploc,rand(1,7))
+			playsound(R.loc, 'sound/weapons/armbomb.ogg', 25, 1, 6)
+			addtimer(CALLBACK(R, .proc/prime), rand(5,10))
+		qdel(src)
+
 //special flashbang nade for events. Skills are not required neither affect the effect.
 //Knockdowns only within 3x3 area, causes temporary blindness, deafness and daze, depending on range and type of mob. Effects reduced when lying.
 //Makes it perfect support tool, but not an insta win.
