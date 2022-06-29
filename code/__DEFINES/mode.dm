@@ -66,8 +66,9 @@
 
 #define LATEJOIN_MARINES_PER_LATEJOIN_LARVA 3
 
-#define BE_ALIEN_AFTER_DEATH	1
-#define BE_AGENT				2
+#define BE_ALIEN_AFTER_DEATH	(1<<0)
+#define BE_AGENT				(1<<1)
+#define SQUAD_STRICT			(1<<2)
 
 #define TOGGLE_IGNORE_SELF					(1<<0) // Determines whether you will not hurt yourself when clicking yourself
 #define TOGGLE_HELP_INTENT_SAFETY			(1<<1) // Determines whether help intent will be completely harmless
@@ -90,6 +91,7 @@
 var/list/be_special_flags = list(
 	"Xenomorph after unrevivable death" = BE_ALIEN_AFTER_DEATH,
 	"Agent" = BE_AGENT,
+	"Prefer squad over role" = SQUAD_STRICT,
 )
 
 #define AGE_MIN 19			//youngest a character can be
