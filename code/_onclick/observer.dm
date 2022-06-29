@@ -18,7 +18,7 @@
 		if(A == src)
 			if(!can_reenter_corpse || !mind || !mind.current)
 				return
-			if(alert(src, "Are you sure you want to re-enter your corpse?", "Confirm", "Yes", "No") == "Yes")
+			if(tgui_alert(src, "Are you sure you want re-enter your corpse?", "Confirm", list("Yes", "No")) == "Yes")
 				reenter_corpse()
 				return 1
 

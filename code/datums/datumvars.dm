@@ -1086,7 +1086,7 @@ body
 		A.base_transform = MX
 		A.transform = MX
 
-		if (alert(usr, "Would you like to enable pixel scaling?", "Confirm", "Yes", "No") == "Yes")
+		if(tgui_alert(usr, "Would you like to enable pixel scaling?", "Confirm", list("Yes", "No")) == "Yes")
 			A.enable_pixel_scaling()
 
 		href_list["datumrefresh"] = href_list["setmatrix"]

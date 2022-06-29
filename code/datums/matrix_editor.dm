@@ -65,7 +65,7 @@
 		if("new")
 			var/matrix/M
 
-			if(alert("Identity matrix?", "Matrix creation", "Yes", "No") == "Yes")
+			if(tgui_alert(src, "Identity matrix?", "Matrix creation", list("Yes", "No")) == "Yes")
 				M = matrix()
 			else
 				var/elements_str = input("Please enter the elements of the matrix as a comma-separated string. Elements should be given by column first, not row!", "Matrix elements") as null|text

@@ -433,7 +433,7 @@ Additional game mode variables.
 				to_chat(xeno_candidate, SPAN_WARNING("That player hasn't been away long enough. Please wait [to_wait] second\s longer."))
 				return FALSE
 
-		if(alert(xeno_candidate, "Everything checks out. Are you sure you want to transfer yourself into [new_xeno]?", "Confirm Transfer", "Yes", "No") == "Yes")
+		if(tgui_alert(xeno_candidate, "Everything checks out. Are you sure you want to transfer yourself into [new_xeno]?", "Confirm Transfer", list("Yes", "No")) == "Yes")
 			if(((!isXenoLarva(new_xeno) && new_xeno.away_timer < XENO_LEAVE_TIMER) || (isXenoLarva(new_xeno) && new_xeno.away_timer < XENO_LEAVE_TIMER_LARVA)) || !(new_xeno in GLOB.living_xeno_list) || new_xeno.stat == DEAD || !xeno_candidate) // Do it again, just in case
 				to_chat(xeno_candidate, SPAN_WARNING("That xenomorph can no longer be controlled. Please try another."))
 				return FALSE
