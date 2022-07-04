@@ -211,6 +211,9 @@ Administrative related.
 /datum/config_entry/number/notify_new_player_age
 	min_val = -1
 
+/datum/config_entry/number/double_round_roll_limit
+	min_val = -1
+
 /datum/config_entry/flag/allow_shutdown
 	protection = CONFIG_ENTRY_LOCKED
 

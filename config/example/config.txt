@@ -153,6 +153,9 @@ TICKLAG 0.5
 ## Uncomment this to have country flags pop up in OOC alongside names if the user has the pref turned on (uses IP-API)
 #OOC_COUNTRY_FLAGS
 
+## Any players that join after this time will not be subject to the double round roll feature
+DOUBLE_ROUND_ROLL_LIMIT -1
+
 ## Comment this out to disable automuting
 #AUTOMUTE_ON
 
