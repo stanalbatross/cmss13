@@ -93,3 +93,8 @@
 
 /datum/behavior_delegate/proc/handle_death(mob/M)
 	return
+
+// generic proc to be subtyped for use with generic stacks
+
+/datum/behavior_delegate/proc/increase_stack_level(var/number_to_increase)
+	return

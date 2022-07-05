@@ -125,8 +125,9 @@
 /datum/behavior_delegate/warrior_base
 	name = "Base Warrior Behavior Delegate"
 
-	var/stored_stacks_max = 4
+	var/stored_stacks_max = 3
 	var/stored_stacks_per_slash = 1
+	var/stored_stacks
 	var/datum/component/stacks_component
 
 /datum/behavior_delegate/warrior_base/New()
@@ -139,9 +140,18 @@
 			/datum/component/generic_stacks,\
 			stored_stacks_max,\
 			stored_stacks_per_slash,\
-			"Warrior Punch Stacks")
+			"Warrior Punch Stacks",\
+			src)
 	else
 		bound_xeno.TakeComponent(stacks_component)
+
+/datum/behavior_delegate/warrior_base/proc/remove_one_stack()
+	stored_stacks--
+
+/datum/behavior_delegate/warrior_base/increase_stack_level(var/number_to_increase)
+	for(var/i = 1, i < number_to_increase, i++)
+		stored_stacks++
+		addtimer(CALLBACK())
 
 /datum/behavior_delegate/warrior_base/remove_from_xeno()
 	stacks_component.RemoveComponent()
