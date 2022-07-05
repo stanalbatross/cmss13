@@ -4,11 +4,11 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_3
 	melee_damage_upper = XENO_DAMAGE_TIER_5
-	max_health = XENO_HEALTH_TIER_5
+	max_health = XENO_HEALTH_TIER_6
 	plasma_gain = XENO_PLASMA_GAIN_TIER_9
 	plasma_max = XENO_NO_PLASMA
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_4
-	armor_deflection = XENO_ARMOR_TIER_1
+	armor_deflection = XENO_ARMOR_TIER_2
 	evasion = XENO_EVASION_NONE
 	speed = XENO_SPEED_TIER_7
 
@@ -125,31 +125,30 @@
 /datum/behavior_delegate/warrior_base
 	name = "Base Warrior Behavior Delegate"
 
-	var/stored_shield_max = 100
-	var/stored_shield_per_slash = 25
-	var/datum/component/shield_component
+	var/stored_stacks_max = 4
+	var/stored_stacks_per_slash = 1
+	var/datum/component/stacks_component
 
 /datum/behavior_delegate/warrior_base/New()
 	. = ..()
 
 /datum/behavior_delegate/warrior_base/add_to_xeno()
 	. = ..()
-	if(!shield_component)
-		shield_component = bound_xeno.AddComponent(\
-			/datum/component/shield_slash,\
-			stored_shield_max,\
-			stored_shield_per_slash,\
-			"Warrior Shield")
+	if(!stacks_component)
+		stacks_component = bound_xeno.AddComponent(\
+			/datum/component/generic_stacks,\
+			stored_stacks_max,\
+			stored_stacks_per_slash,\
+			"Warrior Punch Stacks")
 	else
-		bound_xeno.TakeComponent(shield_component)
+		bound_xeno.TakeComponent(stacks_component)
 
 /datum/behavior_delegate/warrior_base/remove_from_xeno()
-	bound_xeno.remove_xeno_shield()
-	shield_component.RemoveComponent()
+	stacks_component.RemoveComponent()
 	return ..()
 
 /datum/behavior_delegate/warrior_base/Destroy(force, ...)
-	qdel(shield_component)
+	qdel(stacks_component)
 	return ..()
 
 /datum/behavior_delegate/boxer
