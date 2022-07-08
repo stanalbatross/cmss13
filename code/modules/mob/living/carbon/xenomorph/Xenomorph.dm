@@ -458,6 +458,8 @@
 	plasma_max += rand(-100, 100)
 	plasma_stored = plasma_max
 	maxHealth += rand(-150, 150)
+	if(maxHealth < 100)
+		maxHealth = 100
 	if(armor_deflection)
 		armor_deflection += rand(-10, 10)
 
