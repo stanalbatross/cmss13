@@ -59,6 +59,15 @@
 
 	//////////////////////////////////////////////////////////////////
 	//
+	//		RANDOMISER EVENT STUFF
+	//
+	// 		SNEED'S FEED AND SEED
+	//
+	//////////////////////////////////////////////////////////////////
+	var/screech_sound_effect = 'sound/voice/alien_queen_screech.ogg' //the noise the Queen makes when she screeches. Done this way for VV purposes.
+
+	//////////////////////////////////////////////////////////////////
+	//
 	//		Core Stats
 	//
 	// 		Self-Explanatory.
@@ -152,7 +161,7 @@
 
 	/// List of actions (typepaths) that a
 	/// xenomorph type is given upon spawn
-	var/base_actions
+	var/list/base_actions
 
 	// Mark tracking --
 	var/obj/effect/alien/resin/marker/tracked_marker = null //this is the resin mark that is currently being tracked by the xeno

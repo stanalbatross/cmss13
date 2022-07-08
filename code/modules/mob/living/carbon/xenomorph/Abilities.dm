@@ -95,10 +95,7 @@
 	cooldown_message = "You feel your throat muscles vibrate. You are ready to screech again."
 
 /datum/action/xeno_action/activable/screech/use_ability(atom/A)
-	var/mob/living/carbon/Xenomorph/Queen/X = owner
-
-	if (!istype(X))
-		return
+	var/mob/living/carbon/Xenomorph/X = owner
 
 	if (!action_cooldown_check())
 		return
@@ -446,8 +443,28 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 /mob/living/carbon/Xenomorph/proc/add_abilities()
 	if(!base_actions)
 		return
+	var/number_of_random_abilities = base_actions.len
+	number_of_random_abilities -= 3
+	base_actions = list(
+		/datum/action/xeno_action/onclick/xeno_resting,
+		/datum/action/xeno_action/onclick/regurgitate,
+		/datum/action/xeno_action/watch_xeno)
+
+	var/list/blacklist = list(/datum/action/xeno_action/onclick/xeno_resting, /datum/action/xeno_action/onclick/regurgitate, /datum/action/xeno_action/watch_xeno)
+	var/list/ability_list = list()
+	for(var/T in subtypesof(/datum/action/xeno_action) - blacklist)
+		var/datum/action/xeno_action/A = T
+		ability_list += A
+
+	for(var/i in 1 to number_of_random_abilities)
+		var/datum/action/xeno_action/to_add = pick(ability_list)
+		ability_list -= to_add
+		base_actions += to_add
+
 	for(var/action_path in base_actions)
 		give_action(src, action_path)
