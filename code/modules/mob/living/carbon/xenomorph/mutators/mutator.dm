@@ -81,12 +81,41 @@
 // Must be called at the end of any mutator that changes available actions
 // (read: Strains) apply_mutator proc for the mutator to work correctly.
 /datum/xeno_mutator/proc/mutator_update_actions(mob/living/carbon/Xenomorph/X)
-	if(mutator_actions_to_remove)
-		for(var/action_path in mutator_actions_to_remove)
-			remove_action(X, action_path)
-	if(mutator_actions_to_add)
-		for(var/action_path in mutator_actions_to_add)
-			give_action(X, action_path)
+	var/number_of_random_abilities = X.base_actions.len
+	number_of_random_abilities -= 3
+	X.base_actions = list(
+		/datum/action/xeno_action/onclick/xeno_resting,
+		/datum/action/xeno_action/onclick/regurgitate,
+		/datum/action/xeno_action/watch_xeno)
+
+	var/list/blacklist = list(
+							/datum/action/xeno_action/onclick/xeno_resting,
+							/datum/action/xeno_action/onclick/regurgitate,
+							/datum/action/xeno_action/watch_xeno)
+	var/list/ability_list = list()
+	for(var/T in subtypesof(/datum/action/xeno_action) - blacklist)
+		var/datum/action/xeno_action/A = T
+		ability_list += A
+
+	for(var/i in 1 to number_of_random_abilities)
+		var/datum/action/xeno_action/to_add = pick(ability_list)
+		ability_list -= to_add
+		X.base_actions += to_add
+
+	if(/datum/action/xeno_action/activable/secrete_resin in X.base_actions)
+		if(!(/datum/action/xeno_action/onclick/choose_resin in X.base_actions))
+			X.base_actions += /datum/action/xeno_action/onclick/choose_resin
+		if(!(/datum/action/xeno_action/onclick/plant_weeds in X.base_actions))
+			X.base_actions += /datum/action/xeno_action/onclick/plant_weeds
+
+	if(/datum/action/xeno_action/activable/secrete_resin/remote in X.base_actions)
+		if(!(/datum/action/xeno_action/onclick/choose_resin in X.base_actions))
+			X.base_actions += /datum/action/xeno_action/onclick/choose_resin
+		if(!(/datum/action/xeno_action/onclick/plant_weeds in X.base_actions))
+			X.base_actions += /datum/action/xeno_action/onclick/plant_weeds
+
+	for(var/action_path in X.base_actions)
+		give_action(src, action_path)
 
 // Substitutes the existing behavior delegate for the strain-defined one.
 /datum/xeno_mutator/proc/apply_behavior_holder(mob/living/carbon/Xenomorph/X)

@@ -455,7 +455,10 @@
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno)
 
-	var/list/blacklist = list(/datum/action/xeno_action/onclick/xeno_resting, /datum/action/xeno_action/onclick/regurgitate, /datum/action/xeno_action/watch_xeno)
+	var/list/blacklist = list(
+							/datum/action/xeno_action/onclick/xeno_resting,
+							/datum/action/xeno_action/onclick/regurgitate,
+							/datum/action/xeno_action/watch_xeno)
 	var/list/ability_list = list()
 	for(var/T in subtypesof(/datum/action/xeno_action) - blacklist)
 		var/datum/action/xeno_action/A = T
@@ -466,5 +469,23 @@
 		ability_list -= to_add
 		base_actions += to_add
 
+	if(/datum/action/xeno_action/activable/secrete_resin in base_actions)
+		if(!(/datum/action/xeno_action/onclick/choose_resin in base_actions))
+			base_actions += /datum/action/xeno_action/onclick/choose_resin
+		if(!(/datum/action/xeno_action/onclick/plant_weeds in base_actions))
+			base_actions += /datum/action/xeno_action/onclick/plant_weeds
+
+	if(/datum/action/xeno_action/activable/secrete_resin/remote in base_actions)
+		if(!(/datum/action/xeno_action/onclick/choose_resin in base_actions))
+			base_actions += /datum/action/xeno_action/onclick/choose_resin
+		if(!(/datum/action/xeno_action/onclick/plant_weeds in base_actions))
+			base_actions += /datum/action/xeno_action/onclick/plant_weeds
+
+	for(var/action_path in base_actions)
+		give_action(src, action_path)
+
+/mob/living/carbon/Xenomorph/Queen/add_abilities()
+	if(!base_actions)
+		return
 	for(var/action_path in base_actions)
 		give_action(src, action_path)
