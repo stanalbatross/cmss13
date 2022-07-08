@@ -454,6 +454,9 @@
 
 	job = caste.caste_type // Used for tracking the caste playtime
 
+	//funny randomiser
+	small_explosives_stun = pick(TRUE, FALSE)
+	mob_size = pick(MOB_SIZE_BIG, MOB_SIZE_XENO_SMALL, MOB_SIZE_XENO)
 	plasma_max = 350
 	plasma_max += rand(-100, 100)
 	plasma_stored = plasma_max
