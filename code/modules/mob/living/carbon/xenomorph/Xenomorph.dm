@@ -85,7 +85,7 @@
 	var/burn_damage_lower = 0
 	var/burn_damage_upper = 0
 	var/plasma_stored = 10
-	var/plasma_max = 10
+	var/plasma_max = XENO_PLASMA_TIER_3
 	var/plasma_gain = 5
 	var/cooldown_reduction_percentage = 0 // By what % cooldown are reduced by. 1 => No cooldown. Should normally be clamped at 50%
 
@@ -453,6 +453,13 @@
 		hive.hive_ui.update_all_xeno_data()
 
 	job = caste.caste_type // Used for tracking the caste playtime
+
+	plasma_max = 350
+	plasma_max += rand(-100, 100)
+	plasma_stored = plasma_max
+	maxHealth += rand(-150, 150)
+	if(armor_deflection)
+		armor_deflection += rand(-10, 10)
 
 	RegisterSignal(src, COMSIG_MOB_SCREECH_ACT, .proc/handle_screech_act)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_XENO_SPAWN, src)
