@@ -53,7 +53,7 @@
 	action_icon_state = "stomp"
 	macro_path = /datum/action/xeno_action/verb/verb_crusher_charger_stomp
 	action_type = XENO_ACTION_CLICK
-	ability_primacy = XENO_PRIMARY_ACTION_3
+	ability_primacy = XENO_PRIMARY_ACTION_2
 	plasma_cost = 25
 	damage = 75
 	distance = 3
@@ -73,7 +73,7 @@
 
 /datum/action/xeno_action/activable/fling/charger
 	name = "Ram"
-	action_icon_state = "fling"
+	action_icon_state = "ram"
 	ability_name = "Fling"
 	macro_path = /datum/action/xeno_action/verb/verb_fling
 	action_type = XENO_ACTION_CLICK
@@ -238,7 +238,7 @@
 	action_icon_state = "tumble"
 	macro_path = /datum/action/xeno_action/verb/verb_crusher_tumble
 	action_type = XENO_ACTION_CLICK
-	ability_primacy = XENO_PRIMARY_ACTION_2
+	ability_primacy = XENO_PRIMARY_ACTION_4
 
 	plasma_cost = 25
 	xeno_cooldown = 10 SECONDS
