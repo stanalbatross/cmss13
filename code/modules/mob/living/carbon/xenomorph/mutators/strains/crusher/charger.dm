@@ -39,8 +39,8 @@
 /datum/behavior_delegate/crusher_charger
 	name = "Charger Crusher Behavior Delegate"
 
-	var/frontal_armor = 32
-	var/side_armor = 15
+	var/frontal_armor = 25
+	var/side_armor = 10
 
 /datum/behavior_delegate/crusher_charger/add_to_xeno()
 	RegisterSignal(bound_xeno, COMSIG_MOB_SET_FACE_DIR, .proc/cancel_dir_lock)

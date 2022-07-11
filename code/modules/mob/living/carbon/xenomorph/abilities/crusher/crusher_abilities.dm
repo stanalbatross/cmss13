@@ -78,7 +78,7 @@
 	macro_path = /datum/action/xeno_action/verb/verb_fling
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
-	xeno_cooldown = 55
+	xeno_cooldown = 10 SECONDS
 
 	// Configurables
 	fling_distance = 2
