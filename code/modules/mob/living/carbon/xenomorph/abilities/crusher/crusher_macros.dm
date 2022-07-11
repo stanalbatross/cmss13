@@ -1,7 +1,7 @@
 
 /datum/action/xeno_action/verb/verb_crusher_charge()
 	set category = "Alien"
-	set name = "ram"
+	set name = "Charge"
 	set hidden = 1
 	var/action_name = "Charge"
 	handle_xeno_macro(src, action_name)
