@@ -1,4 +1,3 @@
-/*
 /datum/xeno_mutator/charger
 	name = "STRAIN: Crusher - Charger"
 	description = "You trade your shield and pounce for speed and health."
@@ -7,7 +6,7 @@
 	individual_only = TRUE
 	caste_whitelist = list(XENO_CASTE_CRUSHER)
 	mutator_actions_to_remove = list (
-		/datum/action/xeno_action/activable/pounce/ram
+		/datum/action/xeno_action/activable/pounce/crusher_charge,
 		/datum/action/xeno_action/onclick/crusher_stomp,
 		/datum/action/xeno_action/onclick/crusher_shield,
 	)
@@ -15,7 +14,7 @@
 		/datum/action/xeno_action/onclick/charger_charge,
 		/datum/action/xeno_action/activable/tumble,
 		/datum/action/xeno_action/onclick/crusher_stomp/charger,
-
+		///datum/action/xeno_action/onclick/croosh
 	)
 	keystone = TRUE
 	behavior_delegate_type = /datum/behavior_delegate/crusher_charger
@@ -27,6 +26,10 @@
 
 	var/mob/living/carbon/Xenomorph/Crusher/C = MS.xeno
 	C.mutation_type = CRUSHER_CHARGER
+	C.small_explosives_stun = FALSE
+	C.health_modifier += XENO_HEALTH_MOD_MED
+	C.speed_modifier += XENO_SPEED_FASTMOD_TIER_3
+	C.armor_modifier -= XENO_ARMOR_MOD_VERYSMALL
 
 	mutator_update_actions(C)
 	MS.recalculate_actions(description, flavor_description)
@@ -574,4 +577,3 @@ bell immunity [d]
 		return XENO_CHARGE_TRY_MOVE
 
 	CCA.stop_momentum()
-*/

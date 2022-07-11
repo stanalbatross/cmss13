@@ -61,6 +61,19 @@
 	damage = 75
 	distance = 3
 	xeno_cooldown = 12 SECONDS
+
+
+/datum/action/xeno_action/onclick/crusher_shield
+	name = "Defensive Shield"
+	action_icon_state = "empower"
+	ability_name = "defensive shield"
+	macro_path = /datum/action/xeno_action/verb/verb_crusher_charge
+	action_type = XENO_ACTION_CLICK
+	ability_primacy = XENO_PRIMARY_ACTION_3
+	plasma_cost = 25
+	damage = 75
+	distance = 3
+	xeno_cooldown = 12 SECONDS
 // remove
 
 
