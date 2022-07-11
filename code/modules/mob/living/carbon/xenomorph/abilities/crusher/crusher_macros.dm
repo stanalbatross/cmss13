@@ -1,5 +1,5 @@
 
-/datum/action/xeno_action/verb/verb_crusher_ram()
+/datum/action/xeno_action/verb/verb_crusher_charge()
 	set category = "Alien"
 	set name = "ram"
 	set hidden = 1

@@ -1,38 +1,35 @@
-/datum/action/xeno_action/activable/pounce/ram
+/datum/action/xeno_action/activable/pounce/crusher_charge
 	name = "Charge"
-	action_icon_state = "ram"
+	action_icon_state = "ready_charge"
 	ability_name = "charge"
-	macro_path = /datum/action/xeno_action/verb/verb_crusher_ram
+	macro_path = /datum/action/xeno_action/verb/verb_crusher_charge
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_1
 	xeno_cooldown = 140
-	plasma_cost = 20
-
+	plasma_cost = 5
 	// Config options
-	distance = 2
-
+	distance = 9
 	knockdown = TRUE
 	knockdown_duration = 2
 	slash = FALSE
 	freeze_self = FALSE
 	windup = TRUE
-	windup_duration = 5
+	windup_duration = 12
 	windup_interruptable = FALSE
 	should_destroy_objects = TRUE
 	throw_speed = SPEED_FAST
 	tracks_target = FALSE
-
-	var/direct_hit_damage = 17.5
-	var/frontal_armor= 5
-
+	var/direct_hit_damage = 60
+	var/frontal_armor = 15
 	// Object types that dont reduce cooldown when hit
 	var/list/not_reducing_objects = list()
 
-/datum/action/xeno_action/activable/pounce/ram/New()
+
+/datum/action/xeno_action/activable/pounce/crusher_charge/New()
 	. = ..()
 	not_reducing_objects = typesof(/obj/structure/barricade) + typesof(/obj/structure/machinery/defenses)
 
-/datum/action/xeno_action/activable/pounce/ram/initialize_pounce_pass_flags()
+/datum/action/xeno_action/activable/pounce/crusher_charge/initialize_pounce_pass_flags()
 	pounce_pass_flags = PASS_CRUSHER_CHARGE
 
 /datum/action/xeno_action/onclick/crusher_stomp
@@ -70,12 +67,23 @@
 	macro_path = /datum/action/xeno_action/verb/verb_crusher_charge
 	action_type = XENO_ACTION_CLICK
 	ability_primacy = XENO_PRIMARY_ACTION_3
-	plasma_cost = 25
-	damage = 75
-	distance = 3
+	plasma_cost = 20
 	xeno_cooldown = 12 SECONDS
-// remove
+	var/shield_amount = 200
 
+/datum/action/xeno_action/activable/fling/charger
+	name = "Ram"
+	action_icon_state = "fling"
+	ability_name = "Fling"
+	macro_path = /datum/action/xeno_action/verb/verb_fling
+	action_type = XENO_ACTION_CLICK
+	ability_primacy = XENO_PRIMARY_ACTION_3
+	xeno_cooldown = 55
+
+	// Configurables
+	fling_distance = 2
+	stun_power = 2
+	weaken_power = 1
 
 /datum/action/xeno_action/onclick/charger_charge
 	name = "Toggle Charging"
@@ -149,7 +157,6 @@
 		return
 	if(momentum < max_momentum)
 		momentum++
-		// to_chat(world,momentum) use to debug momentum
 		ADD_TRAIT(Xeno, TRAIT_CHARGING, TRAIT_SOURCE_XENO_ACTION_CHARGE)
 		Xeno.update_icons()
 		if(momentum == max_momentum)

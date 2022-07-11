@@ -4,15 +4,15 @@
 
 	melee_damage_lower = XENO_DAMAGE_TIER_5
 	melee_damage_upper = XENO_DAMAGE_TIER_5
-	max_health = XENO_HEALTH_TIER_12
+	max_health = XENO_HEALTH_TIER_10
 	plasma_gain = XENO_PLASMA_GAIN_TIER_7
 	plasma_max = XENO_PLASMA_TIER_4
 	xeno_explosion_resistance = XENO_EXPLOSIVE_ARMOR_TIER_10
-	armor_deflection = XENO_ARMOR_TIER_2
+	armor_deflection = XENO_ARMOR_TIER_3
 	evasion = XENO_EVASION_NONE
-	speed = XENO_SPEED_TIER_3
+	speed = XENO_SPEED_TIER_2
 	heal_standing = 0.66
-	//small_explosives_stun = FALSE this probably does something
+
 	behavior_delegate_type = /datum/behavior_delegate/crusher_base
 
 	tackle_min = 2
@@ -48,10 +48,9 @@
 		/datum/action/xeno_action/onclick/xeno_resting,
 		/datum/action/xeno_action/onclick/regurgitate,
 		/datum/action/xeno_action/watch_xeno,
-		/datum/action/xeno_action/onclick/charger_charge,
-		/datum/action/xeno_action/onclick/crusher_stomp/charger,
-		/datum/action/xeno_action/activable/tumble,
-		/datum/action/xeno_action/activable/pounce/ram
+		/datum/action/xeno_action/activable/pounce/crusher_charge,
+		/datum/action/xeno_action/onclick/crusher_stomp,
+		/datum/action/xeno_action/onclick/crusher_shield,
 	)
 
 	mutation_type = CRUSHER_NORMAL
@@ -63,47 +62,8 @@
 	icon_xeno = get_icon_from_source(CONFIG_GET(string/alien_crusher))
 	. = ..()
 
-// Mutator delegate for base crusher
-/datum/behavior_delegate/crusher_base
-	name = "Base Crusher Behavior Delegate"
-
-	var/frontal_armor = 32
-	var/side_armor = 15
-/datum/behavior_delegate/crusher_base/add_to_xeno()
-	RegisterSignal(bound_xeno, COMSIG_MOB_SET_FACE_DIR, .proc/cancel_dir_lock)
-	RegisterSignal(bound_xeno, COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE_PROJECTILE, .proc/apply_directional_armor)
-//crusher_base
-
-/datum/behavior_delegate/crusher_base/on_update_icons()
-	if(bound_xeno.throwing) //Let it build up a bit so we're not changing icons every single turf
-		bound_xeno.icon_state = "[bound_xeno.mutation_type] Crusher Charging"
-		return TRUE
-
-/datum/behavior_delegate/crusher_base/proc/cancel_dir_lock()
-	SIGNAL_HANDLER
-	return COMPONENT_CANCEL_SET_FACE_DIR
-
-/datum/behavior_delegate/crusher_base/proc/apply_directional_armor(mob/living/carbon/Xenomorph/X, list/damagedata)
-	SIGNAL_HANDLER
-	var/projectile_direction = damagedata["direction"]
-	if(X.dir & REVERSE_DIR(projectile_direction))
-		// During the charge windup, crusher gets an extra 15 directional armor in the direction its charging
-		damagedata["armor"] += frontal_armor
-	else
-		for(var/side_direction in get_perpen_dir(X.dir))
-			if(projectile_direction == side_direction)
-				damagedata["armor"] += side_armor
-				return
-
-/datum/behavior_delegate/crusher_base/on_update_icons()
-	if(HAS_TRAIT(bound_xeno, TRAIT_CHARGING) && !bound_xeno.lying)
-		bound_xeno.icon_state = "[bound_xeno.mutation_type] Crusher Charging"
-		return TRUE
-
-// -------------------- General/Legacy collision procs
-
+// Refactored to handle all of crusher's interactions with object during charge.
 /mob/living/carbon/Xenomorph/proc/handle_collision(atom/target)
-	var/datum/effect_system/spark_spread/s = new
 	if(!target)
 		return FALSE
 
@@ -122,21 +82,11 @@
 		M.Collided(src)
 		. = FALSE
 
-// below doesnt work
-	else if (istype(target,/obj/structure/machinery/m56d_hmg/auto)) // we don't want to charge it to the point of downgrading it (:
-		var/obj/structure/machinery/m56d_hmg/auto/O = target
-		var/obj/item/device/m2c_gun/HMG
-		O.CrusherImpact()
-		to_chat(world, "TEST STEST")
-		s.set_up(1, 1, O.loc)
-		s.start()
-		playsound(src, "sound/effects/metal_crash.ogg", 25, TRUE)
-		HMG = new(O.loc)
-		HMG.health = O.health
-		HMG.set_name_label(name_label)
-		HMG.rounds = O.rounds //Inherent the amount of ammo we had.
-		HMG.update_icon()
-		qdel(O)
+	else if (istype(target, /obj/structure/machinery/m56d_hmg))
+		var/obj/structure/machinery/m56d_hmg/HMG = target
+		visible_message(SPAN_DANGER("[src] rams [HMG]!"), SPAN_XENODANGER("You ram [HMG]!"))
+		playsound(loc, "punch", 25, 1)
+		HMG.CrusherImpact()
 		. =  FALSE
 
 	else if (istype(target, /obj/structure/window))
@@ -172,8 +122,7 @@
 	else if (istype(target, /obj/structure/machinery/defenses))
 		var/obj/structure/machinery/defenses/DF = target
 		visible_message(SPAN_DANGER("[src] rams [DF]!"), SPAN_XENODANGER("You ram [DF]!"))
-		s.set_up(5, 5, DF.loc)
-		s.start()
+
 		if (!DF.unacidable)
 			playsound(loc, "punch", 25, 1)
 			DF.stat = 1
@@ -191,8 +140,7 @@
 			visible_message(SPAN_DANGER("[src] smashes straight into [V]!"), SPAN_XENODANGER("You smash straight into [V]!"))
 			playsound(loc, "punch", 25, 1)
 			V.tip_over()
-			s.set_up(2, 2, V.loc)
-			s.start()
+
 			var/impact_range = 1
 			var/turf/TA = get_diagonal_step(V, dir)
 			TA = get_step_away(TA, src)
@@ -254,94 +202,67 @@
 /datum/behavior_delegate/crusher_base
 	name = "Base Crusher Behavior Delegate"
 
-/obj/structure/window/handle_charge_collision(mob/living/carbon/Xenomorph/X, datum/action/xeno_action/onclick/charger_charge/CCA)
-	if(unacidable)
-		CCA.stop_momentum()
+	var/aoe_slash_damage_reduction = 0.40
+
+/datum/behavior_delegate/crusher_base/melee_attack_additional_effects_target(mob/living/carbon/A)
+
+	if (!isXenoOrHuman(A))
 		return
 
-	if(!CCA.momentum)
-		CCA.stop_momentum()
-		return
+	new /datum/effects/xeno_slow(A, bound_xeno, , , 20)
 
-	health -= CCA.momentum * 40 //Usually knocks it down.
-	healthcheck()
+	var/damage = bound_xeno.melee_damage_upper * aoe_slash_damage_reduction
 
-	if(QDELETED(src))
-		CCA.lose_momentum(2) //Lose two turfs worth of speed
-		return XENO_CHARGE_TRY_MOVE
+	var/cdr_amount = 15
+	for (var/mob/living/carbon/H in orange(1, A))
+		if (H.stat == DEAD)
+			continue
 
-	CCA.stop_momentum()
+		if(!isXenoOrHuman(H) || bound_xeno.can_not_harm(H))
+			continue
 
-// Grills
+		cdr_amount += 5
 
-/obj/structure/grille/handle_charge_collision(mob/living/carbon/Xenomorph/X, datum/action/xeno_action/onclick/charger_charge/CCA)
-	if(unacidable)
-		CCA.stop_momentum()
-		return
+		bound_xeno.visible_message(SPAN_DANGER("[bound_xeno] slashes [H]!"), \
+			SPAN_DANGER("You slash [H]!"), null, null, CHAT_TYPE_XENO_COMBAT)
 
-	if(!CCA.momentum)
-		CCA.stop_momentum()
-		return
+		bound_xeno.flick_attack_overlay(H, "slash")
 
-	health -= CCA.momentum * 40 //Usually knocks it down.
-	healthcheck()
+		H.last_damage_data = create_cause_data(initial(bound_xeno.name), bound_xeno)
 
-	if(QDELETED(src))
-		CCA.lose_momentum(1) //Lose one turf worth of speed
-		return XENO_CHARGE_TRY_MOVE
-
-	CCA.stop_momentum()
-
-// Airlock Doors
-
-/obj/structure/machinery/door/airlock/handle_charge_collision(mob/living/carbon/Xenomorph/X, datum/action/xeno_action/onclick/charger_charge/CCA)
-	if(!CCA.momentum)
-		CCA.stop_momentum()
-		return
-
-	// Need at least 4 momentum to destroy a full health door
-	take_damage(CCA.momentum * damage_cap * 0.25, X)
-	if(QDELETED(src))
-		CCA.lose_momentum(2) //Lose two turfs worth of speed
-		return XENO_CHARGE_TRY_MOVE
-
-	CCA.stop_momentum()
-
-// Vending machines
-
-/obj/structure/machinery/vending/handle_charge_collision(mob/living/carbon/Xenomorph/X, datum/action/xeno_action/onclick/charger_charge/CCA)
-	if(CCA.momentum >= 3)
-		if(unacidable)
-			CCA.stop_momentum()
-			return
-		X.visible_message(
-			SPAN_DANGER("[X] smashes straight into [src]!"),
-			SPAN_XENODANGER("You smash straight into [src]!")
-		)
-		playsound(loc, "punch", 25, TRUE)
-		tip_over()
-		step_away(src, X)
-		step_away(src, X)
-		CCA.lose_momentum(2)
-		return XENO_CHARGE_TRY_MOVE
-
-	CCA.stop_momentum()
+		//Logging, including anti-rulebreak logging
+		if(H.status_flags & XENO_HOST && H.stat != DEAD)
+			if(HAS_TRAIT(H, TRAIT_NESTED)) //Host was buckled to nest while infected, this is a rule break
+				H.attack_log += text("\[[time_stamp()]\] <font color='orange'><B>was slashed by [key_name(bound_xeno)] while they were infected and nested</B></font>")
+				bound_xeno.attack_log += text("\[[time_stamp()]\] <font color='red'><B>slashed [key_name(H)] while they were infected and nested</B></font>")
+				message_staff("[key_name(bound_xeno)] slashed [key_name(H)] while they were infected and nested.") //This is a blatant rulebreak, so warn the admins
+			else //Host might be rogue, needs further investigation
+				H.attack_log += text("\[[time_stamp()]\] <font color='orange'>was slashed by [key_name(bound_xeno)] while they were infected</font>")
+				bound_xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>slashed [key_name(src)] while they were infected</font>")
+		else //Normal xenomorph friendship with benefits
+			H.attack_log += text("\[[time_stamp()]\] <font color='orange'>was slashed by [key_name(bound_xeno)]</font>")
+			bound_xeno.attack_log += text("\[[time_stamp()]\] <font color='red'>slashed [key_name(H)]</font>")
+		log_attack("[key_name(bound_xeno)] slashed [key_name(H)]")
 
 
-// Barine Vending machines
+		H.apply_armoured_damage(get_xeno_damage_slash(H, damage), ARMOR_MELEE, BRUTE, bound_xeno.zone_selected)
 
-/obj/structure/machinery/cm_vending/handle_charge_collision(mob/living/carbon/Xenomorph/X, datum/action/xeno_action/onclick/charger_charge/CCA)
-	if(CCA.momentum >= 3)
-		X.visible_message(
-			SPAN_DANGER("[X] smashes straight into [src]!"),
-			SPAN_XENODANGER("You smash straight into [src]!")
-		)
-		playsound(loc, "punch", 25, TRUE)
-		tip_over()
-		CCA.lose_momentum(2)
-		return XENO_CHARGE_TRY_MOVE
+	var/datum/action/xeno_action/activable/pounce/crusher_charge/cAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/activable/pounce/crusher_charge)
+	if (!cAction.action_cooldown_check())
+		cAction.reduce_cooldown(cdr_amount)
 
-	CCA.stop_momentum()
+	var/datum/action/xeno_action/onclick/crusher_shield/sAction = get_xeno_action_by_type(bound_xeno, /datum/action/xeno_action/onclick/crusher_shield)
+	if (!sAction.action_cooldown_check())
+		sAction.reduce_cooldown(cdr_amount)
+
+/datum/behavior_delegate/crusher_base/append_to_stat()
+	. = list()
+	var/shield_total = 0
+	for (var/datum/xeno_shield/XS in bound_xeno.xeno_shields)
+		if (XS.shield_source == XENO_SHIELD_SOURCE_CRUSHER)
+			shield_total += XS.amount
+
+	. += "Shield: [shield_total]"
 
 /datum/behavior_delegate/crusher_base/on_update_icons()
 	if(bound_xeno.throwing) //Let it build up a bit so we're not changing icons every single turf
