@@ -105,15 +105,19 @@
 	var/charge_dir
 	var/noise_timer = 0
 
-	//ultimate vars
-	var/ultimate_momentum = 10
-	var/charged_mobs = 0
-	var/ultimate_activation = 10
+	//How much shield you gain on max momentum
+	var/shield_amount = 100
+	// How long the max momentum shield lasts
+	var/shield_timeout = 4
+	// If the shield is active or not
+	var/shield_active = FALSE
 
 	/// The last time the crusher moved while charging
 	var/last_charge_move
 	/// Dictates speed and damage dealt via collision, increased with movement
 	var/momentum = 0
+
+
 
 /datum/action/xeno_action/onclick/charger_charge/proc/handle_movement(mob/living/carbon/Xenomorph/Xeno, atom/oldloc, dir, forced)
 	SIGNAL_HANDLER
