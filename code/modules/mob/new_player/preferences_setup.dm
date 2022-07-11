@@ -15,8 +15,8 @@ datum/preferences/proc/randomize_appearance(var/mob/living/carbon/human/H)
 	randomize_hair_color("facial")
 	randomize_eyes_color()
 	randomize_skin_color()
-	underwear = gender == MALE ? pick(underwear_m) : pick(underwear_f)
-	undershirt = rand(1,undershirt_t.len)
+	underwear = gender == MALE ? pick(GLOB.underwear_m) : pick(GLOB.underwear_f)
+	undershirt = gender == MALE ? pick(GLOB.undershirt_m) : pick(GLOB.undershirt_f)
 	backbag = 2
 	age = rand(AGE_MIN,AGE_MAX)
 	if(H)
@@ -253,6 +253,8 @@ datum/preferences/proc/randomize_skin_color()
 				var/datum/job/J = RoleAuthority.roles_by_name[JOB_SYNTH]
 				return J.gear_preset_whitelist["[JOB_SYNTH][J.get_whitelist_status(RoleAuthority.roles_whitelist, owner)]"]
 			return /datum/equipment_preset/synth/uscm
+		if(JOB_WORKING_JOE)
+			return /datum/equipment_preset/synth/working_joe
 		if(JOB_POLICE_CADET)
 			return /datum/equipment_preset/uscm_ship/uscm_police/mp_cadet
 		if(JOB_POLICE)

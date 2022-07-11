@@ -206,6 +206,8 @@ cases. Override_icon_state should be a list.*/
 	to_chat(user, "This is a [blood_color ? blood_color != "#030303" ? "bloody " : "oil-stained " : ""][icon2html(src, user)][src.name]. It is a [size] item.")
 	if(desc)
 		to_chat(user, desc)
+	if(desc_lore)
+		to_chat(user, SPAN_NOTICE("This has an <a href='byond://?src=\ref[src];desc_lore=1'>extended lore description</a>."))
 
 /obj/item/attack_hand(mob/user)
 	if (!user)
@@ -301,9 +303,9 @@ cases. Override_icon_state should be a list.*/
 /obj/item/proc/on_exit_storage(obj/item/storage/S as obj)
 	SHOULD_CALL_PARENT(TRUE)
 	appearance_flags &= ~NO_CLIENT_COLOR
-	if(src in S.hearing_items)
+	if(LAZYISIN(S.hearing_items, src))
 		LAZYREMOVE(S.hearing_items, src)
-		if(!S.hearing_items.len)
+		if(!LAZYLEN(S.hearing_items))
 			S.flags_atom &= ~USES_HEARING
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
@@ -589,9 +591,9 @@ cases. Override_icon_state should be a list.*/
 							var/obj/item/clothing/accessory/storage/S = A
 							if(S.hold.can_be_inserted(src, TRUE))
 								return TRUE
-						else if(istype(A, /obj/item/clothing/accessory/holster))
-							var/obj/item/clothing/accessory/holster/AH = A
-							if(!(AH.holstered) && AH.can_holster(src))
+						else if(istype(A, /obj/item/storage/internal/accessory/holster))
+							var/obj/item/storage/internal/accessory/holster/AH = A
+							if(!(AH.current_gun) && AH.can_be_inserted(src))
 								return TRUE
 				return FALSE
 			if(WEAR_IN_JACKET)

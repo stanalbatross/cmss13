@@ -224,9 +224,12 @@
 
 // leader Marker
 
-/datum/action/xeno_action/activable/info_marker/use_ability(atom/A)
+/datum/action/xeno_action/activable/info_marker/use_ability(atom/A, mods)
 	if(!..())
 		return FALSE
+
+	if(mods["click_catcher"])
+		return
 
 	if(!action_cooldown_check())
 		return
@@ -234,6 +237,11 @@
 	var/mob/living/carbon/Xenomorph/X = owner
 	if(!X.check_state(TRUE))
 		return FALSE
+
+	if(ismob(A)) //anticheese : if they click a mob, it will cancel.
+		to_chat(X, SPAN_XENOWARNING("You can't place resin markers on living things!"))
+		return FALSE //this is because xenos have thermal vision and can see mobs through walls - which would negate not being able to place them through walls
+
 	if(isstorage(A.loc) || X.contains(A) || istype(A, /obj/screen)) return FALSE
 	var/turf/target_turf = get_turf(A)
 
@@ -396,7 +404,7 @@
 			X.update_canmove()
 		post_windup_effects()
 
-	X.visible_message(SPAN_XENOWARNING("\The [X] [ability_name]s at [A]!"), SPAN_XENOWARNING("You [ability_name] at [A]!"))
+	X.visible_message(SPAN_XENOWARNING("\The [X] [ability_name][findtext(ability_name, "e", -1) ? "s" : "es"] at [A]!"), SPAN_XENOWARNING("You [ability_name] at [A]!"))
 
 	var/datum/launch_metadata/LM = new()
 	LM.target = A
@@ -556,6 +564,9 @@
 		return FALSE
 
 	var/choice = XENO_STRUCTURE_CORE
+	if(X.hive.hivecore_cooldown)
+		to_chat(X, SPAN_WARNING("The weeds are still recovering from the death of the hive core, wait until the weeds have recovered!"))
+		return FALSE
 	if(X.hive.has_structure(XENO_STRUCTURE_CORE) || !X.hive.can_build_structure(XENO_STRUCTURE_CORE))
 		choice = tgui_input_list(X, "Choose a structure to build", "Build structure", X.hive.hive_structure_types + "help")
 		if(!choice)
@@ -581,10 +592,9 @@
 		return FALSE
 
 	if((choice == XENO_STRUCTURE_CORE) && isXenoQueen(X) && X.hive.has_structure(XENO_STRUCTURE_CORE))
-		if(X.hive.hive_location.hardcore)
-			to_chat(X, SPAN_WARNING("You can't rebuild this structure"))
+		if(X.hive.hive_location.hardcore || world.time > HIVECORE_COOLDOWN_CUTOFF)
+			to_chat(X, SPAN_WARNING("You can't rebuild this structure!"))
 			return
-
 		if(alert(X, "Are you sure that you want to move the hive and destroy the old hive core?", , "Yes", "No") == "No")
 			return
 		qdel(X.hive.hive_location)

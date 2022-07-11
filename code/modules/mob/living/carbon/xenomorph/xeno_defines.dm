@@ -254,6 +254,10 @@
 
 	var/list/resin_marks = list()
 
+	var/list/banished_ckeys = list()
+
+	var/hivecore_cooldown = FALSE
+
 /datum/hive_status/New()
 	mutators.hive = src
 	hive_ui = new(src)
@@ -772,6 +776,8 @@
 			embryo.hivenumber = XENO_HIVE_FORSAKEN
 		potential_host.update_med_icon()
 	hijack_pooled_surge = TRUE
+	hivecore_cooldown = FALSE
+	xeno_message(SPAN_XENOBOLDNOTICE("The weeds have recovered! A new hive core can be built!"),3,hivenumber)
 
 /datum/hive_status/proc/free_respawn(var/client/C)
 	stored_larva++
@@ -798,6 +804,8 @@
 	return faction_is_ally(C.faction)
 
 /datum/hive_status/proc/faction_is_ally(var/faction)
+	if(faction == internal_faction)
+		return TRUE
 	if(!living_xeno_queen)
 		return FALSE
 
