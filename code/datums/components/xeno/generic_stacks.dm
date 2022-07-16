@@ -36,7 +36,10 @@
 	stored_stacks += stacks_per_slash
 	if(stored_stacks < max_stacks)
 		return
-	BD.increase_stack_level(1)
+	if(isXenoWarrior(X))
+		var/datum/behavior_delegate/warrior_base/BD = X.caste.behavior_delegate_type
+		BD.increase_stack_level(1)
+	stored_stacks = 0
 	X.visible_message(SPAN_XENOWARNING("[X] roars as it mauls its target, its exoskeleton shimmering for a second!"), SPAN_XENOHIGHDANGER("You feel your rage increase your resiliency to damage!"))
 	X.xeno_jitter(1 SECONDS)
 	X.flick_heal_overlay(2 SECONDS, "#FFA800")

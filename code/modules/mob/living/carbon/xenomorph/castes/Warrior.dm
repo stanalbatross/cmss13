@@ -149,9 +149,11 @@
 	stored_stacks--
 
 /datum/behavior_delegate/warrior_base/increase_stack_level(var/number_to_increase)
-	for(var/i = 1, i < number_to_increase, i++)
-		stored_stacks++
-		addtimer(CALLBACK())
+	if((stored_stacks += number_to_increase) >= stored_stacks_max)
+		stored_stacks = stored_stacks_max
+		return
+	else
+		stored_stacks += number_to_increase
 
 /datum/behavior_delegate/warrior_base/remove_from_xeno()
 	stacks_component.RemoveComponent()
