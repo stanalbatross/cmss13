@@ -48,7 +48,7 @@
 	if(..())  //Checks for power outages
 		return
 
-	if(!ishighersilicon(usr) && !skillcheck(user, SKILL_LEADERSHIP, SKILL_LEAD_EXPERT) && SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST)
+	if(!ishighersilicon(usr) && !skillcheck(user, SKILL_LEADERSHIP, SKILL_LEAD_EXPERT) && !Check_WO())
 		to_chat(user, SPAN_WARNING("You don't have the training to use [src]."))
 		return
 

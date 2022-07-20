@@ -3,8 +3,8 @@
 //Global proc for checking if the game is whiskey outpost so I dont need to type if(gamemode == whiskey outpost) 50000 times
 /proc/Check_WO()
 	if(SSticker.mode == "Whiskey Outpost" || master_mode == "Whiskey Outpost")
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /datum/game_mode/whiskey_outpost
 	name = "Whiskey Outpost"

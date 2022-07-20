@@ -151,7 +151,7 @@
 	var/deathtime = world.time - usr.timeofdeath
 
 	if(deathtime < 1 MINUTES) //Nice try, ghosting right after the announcement
-		if(SSmapping.configs[GROUND_MAP].map_name != MAP_WHISKEY_OUTPOST) // people ghost so often on whiskey outpost.
+		if(!Check_WO()) // people ghost so often on whiskey outpost.
 			to_chat(usr, SPAN_WARNING("You ghosted too recently."))
 			return
 

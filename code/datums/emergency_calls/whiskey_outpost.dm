@@ -15,7 +15,7 @@
 
 /datum/emergency_call/wo/create_member(datum/mind/M, var/turf/override_spawn_loc)
 	set waitfor = 0
-	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
+	if(Check_WO())
 		name_of_spawn = /obj/effect/landmark/ert_spawns/distress_wo
 	var/turf/spawn_loc = override_spawn_loc ? override_spawn_loc : get_spawn_point()
 

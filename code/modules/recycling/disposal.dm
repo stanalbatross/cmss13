@@ -766,7 +766,7 @@
 
 //Test health for brokenness
 /obj/structure/disposalpipe/proc/healthcheck()
-	if(SSmapping.configs[GROUND_MAP].map_name == MAP_WHISKEY_OUTPOST)
+	if(Check_WO())
 		return
 	if(health < -2)
 		broken(0)
