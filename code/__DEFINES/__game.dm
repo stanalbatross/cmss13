@@ -24,19 +24,19 @@
 
 #define MAP_MAXSIZE 300
 
-#define MAP_ICE_COLONY "Ice Colony" // Highpop only
+#define MAP_ICE_COLONY "Ice Colony" // disabled
 #define MAP_LV_624 "LV-624"
 #define MAP_BIG_RED "Solaris Ridge"
-#define MAP_PRISON_STATION "Fiorina Cellblocks"
+#define MAP_PRISON_STATION "Fiorina Cellblocks" // disabled
 #define MAP_PRISON_STATION_V3 "Fiorina Science Annex"
-#define MAP_WHISKEY_OUTPOST "Whiskey Outpost" // Unused
+#define MAP_WHISKEY_OUTPOST "Whiskey Outpost" // rare
 #define MAP_DESERT_DAM "Trijent Dam"  // Highpop only
 #define MAP_SOROKYNE_STRATA "Sorokyne Strata"
-#define MAP_CORSAT "CORSAT" // Highpop only
+#define MAP_CORSAT "CORSAT" // disabled
 #define MAP_KUTJEVO "Kutjevo Refinery"
 #define MAP_ICE_COLONY_V3 "Shivas Snowball" //Ice Rework, low pop enabled.
-#define MAP_HAUNTED_HOUSE_V2 "Haunted House V2"
-#define MAP_RUNTIME "USS Runtime"
+#define MAP_HAUNTED_HOUSE_V2 "Haunted House V2" // event only
+#define MAP_RUNTIME "USS Runtime" //local testing only
 
 #define PLAYERCOUNT_LOWPOP_MAP_LIMIT 130 // number of players before we switch to lowpop maps only (LV, BR, Prison)
 
