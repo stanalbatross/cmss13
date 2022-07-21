@@ -4882,7 +4882,7 @@
 	},
 /area/lv522/outdoors/colony_streets)
 "cSB" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	icon_state = "blue"
 	},
@@ -10124,7 +10124,7 @@
 /area/lv522/outdoors/colony_streets/north_street)
 "fPV" = (
 /obj/structure/bed/chair/comfy,
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "fQU" = (
@@ -16942,7 +16942,7 @@
 	},
 /area/lv522/indoors/A_block/Admin)
 "jCq" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue"
@@ -17024,7 +17024,7 @@
 /obj/structure/barricade/deployable{
 	dir = 4
 	},
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/plating{
 	dir = 8;
 	icon_state = "platingdmg3";
@@ -17213,7 +17213,7 @@
 /turf/open/floor/prison,
 /area/lv522/outdoors/colony_streets/north_west_street)
 "jJj" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -17827,7 +17827,7 @@
 /area/lv522/landing_zone_1)
 "kbJ" = (
 /obj/item/trash/uscm_mre,
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -18654,7 +18654,7 @@
 /area/lv522/indoors/A_block/Admin)
 "kzB" = (
 /obj/item/stack/sheet/metal,
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "kzD" = (
@@ -18704,7 +18704,7 @@
 /turf/open/floor/plating,
 /area/lv522/outdoors/colony_streets/north_west_street)
 "kAC" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -18728,7 +18728,7 @@
 	},
 /area/lv522/landing_zone_2)
 "kBl" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "kBm" = (
@@ -20186,7 +20186,7 @@
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/indoors/A_block/Admin)
 "lmu" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/indoors/A_block/Admin)
 "lmz" = (
@@ -20629,7 +20629,7 @@
 	},
 /area/lv522/indoors/A_block/Admin)
 "lxR" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "blue"
@@ -20944,7 +20944,7 @@
 "lHd" = (
 /obj/structure/platform_decoration,
 /obj/structure/bed/roller,
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -22229,7 +22229,7 @@
 	},
 /area/lv522/indoors/A_block/Dorms)
 "mEn" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/effect/landmark/survivor_spawner,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "blue"
