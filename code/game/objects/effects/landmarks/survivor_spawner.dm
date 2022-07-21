@@ -60,13 +60,11 @@
 	roundstart_damage_min = 3
 	roundstart_damage_max = 10
 	roundstart_damage_times = 2
-	make_objective = 1
 
 /obj/effect/landmark/survivor_spawner/lv426_forecon_major
 	equipment = /datum/equipment_preset/survivor/forecon/major
-	intro_text = list("<h2>Bobby</h2>"\
-	"<span class='notice'>Put some text here.</span>"
-	)
+	intro_text = list("<h2>Bobby</h2>",\
+	"<span class='notice'>Put some text here.</span>")
 	story_text = "Real good flavour in here"
 
 /obj/effect/landmark/survivor_spawner/lv426_forecon_major/check_can_spawn(var/mob/living/carbon/human/survivor)
