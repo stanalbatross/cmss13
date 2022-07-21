@@ -4882,8 +4882,9 @@
 	},
 /area/lv522/outdoors/colony_streets)
 "cSB" = (
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
+	dir = 9;
 	icon_state = "blue"
 	},
 /area/lv522/indoors/A_block/Admin)
@@ -10124,7 +10125,7 @@
 /area/lv522/outdoors/colony_streets/north_street)
 "fPV" = (
 /obj/structure/bed/chair/comfy,
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_squad_leader,
 /turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "fQU" = (
@@ -10739,6 +10740,7 @@
 /obj/structure/bed/chair/comfy{
 	dir = 4
 	},
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_major,
 /turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "giH" = (
@@ -14311,6 +14313,7 @@
 "ikw" = (
 /obj/structure/platform_decoration,
 /obj/item/reagent_container/food/drinks/flask/marine,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -15440,6 +15443,13 @@
 	icon_state = "squares"
 	},
 /area/lv522/outdoors/colony_streets)
+"iOO" = (
+/obj/effect/landmark/survivor_spawner/lv_522,
+/turf/open/floor/prison{
+	dir = 6;
+	icon_state = "blue"
+	},
+/area/lv522/indoors/A_block/Admin)
 "iPu" = (
 /obj/structure/prop/ice_colony/ground_wire{
 	dir = 4
@@ -16942,11 +16952,11 @@
 	},
 /area/lv522/indoors/A_block/Admin)
 "jCq" = (
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison{
-	dir = 1;
-	icon_state = "blue"
+/obj/structure/bed/chair/comfy{
+	dir = 8
 	},
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_tech,
+/turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "jCD" = (
 /obj/effect/decal/cleanable/blood/xeno,
@@ -16981,6 +16991,7 @@
 /obj/item/shard{
 	icon_state = "medium"
 	},
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue"
@@ -17024,7 +17035,7 @@
 /obj/structure/barricade/deployable{
 	dir = 4
 	},
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_marksman,
 /turf/open/floor/plating{
 	dir = 8;
 	icon_state = "platingdmg3";
@@ -17201,6 +17212,13 @@
 	icon_state = "cement1"
 	},
 /area/lv522/landing_zone_1)
+"jIV" = (
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_grenadier,
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "blue"
+	},
+/area/lv522/indoors/A_block/Admin)
 "jJd" = (
 /obj/item/clothing/mask/facehugger{
 	desc = "It has some sort of a tube at the end of its tail. What the hell is this thing?";
@@ -17213,10 +17231,10 @@
 /turf/open/floor/prison,
 /area/lv522/outdoors/colony_streets/north_west_street)
 "jJj" = (
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
-	icon_state = "floor_plate";
-	tag = "icon-floor_plate"
+	dir = 4;
+	icon_state = "blue"
 	},
 /area/lv522/indoors/A_block/Admin)
 "jKo" = (
@@ -17826,12 +17844,8 @@
 	},
 /area/lv522/landing_zone_1)
 "kbJ" = (
-/obj/item/trash/uscm_mre,
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison{
-	dir = 1;
-	icon_state = "blue_plate"
-	},
+/obj/effect/landmark/survivor_spawner/lv_522,
+/turf/open/floor/prison,
 /area/lv522/indoors/A_block/Admin)
 "kbV" = (
 /obj/structure/pipes/standard/manifold/hidden/green{
@@ -18164,6 +18178,7 @@
 /area/lv522/indoors/A_block/Admin)
 "klD" = (
 /obj/structure/bed/roller,
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_smartgunner,
 /turf/open/floor/prison{
 	dir = 8;
 	icon_state = "blue"
@@ -18652,11 +18667,6 @@
 /obj/structure/barricade/wooden,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/indoors/A_block/Admin)
-"kzB" = (
-/obj/item/stack/sheet/metal,
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison,
-/area/lv522/indoors/A_block/Admin)
 "kzD" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "W";
@@ -18703,13 +18713,6 @@
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating,
 /area/lv522/outdoors/colony_streets/north_west_street)
-"kAC" = (
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison{
-	dir = 1;
-	icon_state = "blue_plate"
-	},
-/area/lv522/indoors/A_block/Admin)
 "kAI" = (
 /obj/structure/bed/chair/comfy{
 	dir = 1;
@@ -18727,10 +18730,6 @@
 	icon_state = "greenfull"
 	},
 /area/lv522/landing_zone_2)
-"kBl" = (
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison,
-/area/lv522/indoors/A_block/Admin)
 "kBm" = (
 /obj/structure/machinery/prop/almayer/computer/PC{
 	dir = 8;
@@ -19527,6 +19526,7 @@
 /area/lv522/outdoors/colony_streets)
 "kVT" = (
 /obj/structure/bed/roller,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
 	dir = 9;
 	icon_state = "blue"
@@ -20186,7 +20186,7 @@
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/indoors/A_block/Admin)
 "lmu" = (
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/indoors/A_block/Admin)
 "lmz" = (
@@ -20628,13 +20628,6 @@
 	icon_state = "blue"
 	},
 /area/lv522/indoors/A_block/Admin)
-"lxR" = (
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison{
-	dir = 10;
-	icon_state = "blue"
-	},
-/area/lv522/indoors/A_block/Admin)
 "lxZ" = (
 /obj/structure/bed/chair/comfy,
 /turf/open/floor/prison{
@@ -20944,7 +20937,7 @@
 "lHd" = (
 /obj/structure/platform_decoration,
 /obj/structure/bed/roller,
-/obj/effect/landmark/survivor_spawner,
+/obj/effect/landmark/survivor_spawner/lv_522,
 /turf/open/floor/prison{
 	dir = 1;
 	icon_state = "blue_plate"
@@ -22228,13 +22221,6 @@
 	icon_state = "marked"
 	},
 /area/lv522/indoors/A_block/Dorms)
-"mEn" = (
-/obj/effect/landmark/survivor_spawner,
-/turf/open/floor/prison{
-	dir = 8;
-	icon_state = "blue"
-	},
-/area/lv522/indoors/A_block/Admin)
 "mFm" = (
 /obj/structure/cargo_container{
 	icon_state = "red 1,0";
@@ -28538,6 +28524,12 @@
 	},
 /turf/open/auto_turf/shale/layer0,
 /area/lv522/outdoors/colony_streets/east_central_street)
+"rcd" = (
+/obj/effect/landmark/survivor_spawner/lv_522,
+/turf/open/floor/prison{
+	icon_state = "blue"
+	},
+/area/lv522/indoors/A_block/Admin)
 "rcr" = (
 /turf/open/floor/plating,
 /area/lv522/outdoors/colony_streets/north_east_street)
@@ -78548,7 +78540,7 @@ eTY
 jLs
 jCc
 njr
-mEn
+jIV
 lrD
 btb
 iss
@@ -78833,7 +78825,7 @@ njr
 njr
 lbD
 njr
-lxR
+lrD
 hdk
 ddC
 mhT
@@ -79110,7 +79102,7 @@ gaw
 qws
 gaw
 gaw
-gaw
+lmu
 lmo
 wcW
 lHa
@@ -79660,7 +79652,7 @@ xjF
 hqA
 oKI
 oKI
-kbJ
+kbd
 klz
 ksa
 peS
@@ -79937,13 +79929,13 @@ qSH
 xQV
 nWD
 qUq
-jCc
+cSB
 njr
 njr
 klD
 njr
 qws
-gaw
+lmu
 wcW
 kMY
 iuK
@@ -80216,7 +80208,7 @@ qSH
 xQV
 ddC
 kdx
-jCq
+peS
 gaw
 gaw
 kmg
@@ -80778,12 +80770,12 @@ jCG
 jSZ
 qws
 giF
-kzB
+wCA
 qws
 qws
-kMN
+iOO
 ibk
-jJj
+eTY
 peS
 gaw
 lxZ
@@ -81065,7 +81057,7 @@ jjt
 eTY
 peS
 gaw
-cSB
+rcd
 lHY
 xjF
 btb
@@ -81893,9 +81885,9 @@ fmg
 jDy
 gaw
 hNR
-hNR
+jCq
 qws
-kBl
+kbJ
 wcW
 hEG
 ihh
@@ -82452,14 +82444,14 @@ jEN
 jTb
 hup
 wCA
-gaw
+lmu
 gaw
 wcW
 hEG
 eTY
 peS
 qws
-lmu
+gaw
 wcW
 btb
 xjF
@@ -83009,7 +83001,7 @@ jvW
 gVS
 jTi
 tlX
-pYp
+jJj
 kup
 pYp
 kHd
@@ -83290,7 +83282,7 @@ jTn
 rsL
 gCa
 gCa
-kAC
+btb
 ikw
 jjt
 btb

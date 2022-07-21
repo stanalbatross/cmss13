@@ -61,13 +61,30 @@
 	roundstart_damage_max = 10
 	roundstart_damage_times = 2
 
-/obj/effect/landmark/survivor_spawner/lv426_forecon_major
-	equipment = /datum/equipment_preset/survivor/forecon/major
-	intro_text = list("<h2>Bobby</h2>",\
-	"<span class='notice'>Put some text here.</span>")
-	story_text = "Real good flavour in here"
+//Military Survivors//
 
-/obj/effect/landmark/survivor_spawner/lv426_forecon_major/check_can_spawn(var/mob/living/carbon/human/survivor)
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_major
+	equipment = /datum/equipment_preset/survivor/forecon/major
+	intro_text = list("<h2>You are the commanding officer of the USS Hayut</h2>",\
+	"<span class='notice'>You are VERY aware of the xenomorph threat</span>")
+	story_text = "This entire operation went shits up when your team investigated the atmospheric processor two weeks ago, from that point on you've been surviving by the skin of your teeth waiting your ships automated distress beacon to be picked up...until now"
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_major/check_can_spawn(var/mob/living/carbon/human/survivor)
 	if(RoleAuthority.roles_whitelist[survivor.ckey] & WHITELIST_COMMANDER)
 		return ..()
 	return FALSE
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_tech
+	equipment = /datum/equipment_preset/survivor/forecon/tech
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_marksman
+	equipment = /datum/equipment_preset/survivor/forecon/marksman
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_smartgunner
+	equipment = /datum/equipment_preset/survivor/forecon/smartgunner
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_grenadier
+	equipment = /datum/equipment_preset/survivor/forecon/grenadier
+
+/obj/effect/landmark/survivor_spawner/lv_522/lv522_forecon_squad_leader
+	equipment = /datum/equipment_preset/survivor/forecon/squad_leader

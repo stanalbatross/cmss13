@@ -24,7 +24,7 @@
 	var/list/potential_spawners = list()
 	for(var/obj/effect/landmark/survivor_spawner/spawner as anything in GLOB.survivor_spawns)
 		if(spawner.check_can_spawn(H))
-			potential_spawners += H
+			potential_spawners += spawner
 	var/obj/effect/landmark/survivor_spawner/picked_spawner = pick(potential_spawners)
 	H.forceMove(get_turf(picked_spawner))
 
