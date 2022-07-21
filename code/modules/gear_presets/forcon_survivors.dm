@@ -60,7 +60,7 @@
 /datum/equipment_preset/survivor/forecon/proc/add_forecon_weapon_pistol(mob/living/carbon/human/H)
 	var/random_pistol = rand(1,6)
 	switch(random_pistol)
-		if(1 , 2 , 3 , 4) 
+		if(1 , 2 , 3 , 4)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3(H), WEAR_WAIST)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
@@ -90,7 +90,7 @@
 		if (3 , 4)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie/gray(H), WEAR_HEAD)
 		if (5 , 6)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)			
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/durag(H), WEAR_HEAD)
 		if (7 , 8)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/boonie/tan(H), WEAR_HEAD)
 		if (9)
@@ -163,7 +163,7 @@
 	add_forecon_weapon(H)
 	spawn_random_headgear(H)
 	add_forecon_equipment(H)
-	
+
 ///*****************************//
 
 /datum/equipment_preset/survivor/forecon/grenadier
@@ -207,7 +207,7 @@
 
 //---------------------------\\
 
-datum/equipment_preset/survivor/forecon/major
+/datum/equipment_preset/survivor/forecon/major
 	name = "Survivor - USCM Reconnaissance Major"
 	assignment = "Reconnaissance Commander"
 	skills = /datum/skills/commander
@@ -215,7 +215,7 @@ datum/equipment_preset/survivor/forecon/major
 	idtype = /obj/item/card/id/gold
 	role_comm_title = "FORECON CO"
 
-datum/equipment_preset/survivor/forecon/major/load_gear(mob/living/carbon/human/H)
+/datum/equipment_preset/survivor/forecon/major/load_gear(mob/living/carbon/human/H)
 	var/obj/item/clothing/under/marine/random/Uniform = new()
 	var/obj/item/clothing/accessory/storage/droppouch/Pouch = new()
 	var/obj/item/clothing/accessory/ranks/marine/o5/Pin = new()
