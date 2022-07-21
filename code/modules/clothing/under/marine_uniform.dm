@@ -376,6 +376,25 @@
 	name = "\improper Provost Chief Marshal Uniform"
 	desc = "The crisp uniform of the Provost Chief Marshal."
 
+//=========================//USCM Survivors\\================================\\
+//=======================================================================\\
+
+/obj/item/clothing/under/marine/random
+	name = "USCM reconnaissance uniform"
+	desc = "Primarily used during reconnaissance."
+
+/obj/item/clothing/under/marine/random/Initialize(mapload)
+	. = ..()
+	var/R = rand(1,4)
+	switch(R) //this is no longer shitcode, courtesy of stan_albatross
+		if(1)
+			roll_suit_sleeves(FALSE)
+		if(2)
+			roll_suit_jacket(FALSE)
+		if(3)
+			cut_suit_jacket(FALSE)
+
+
 //=========================//RESPONDERS\\================================\\
 //=======================================================================\\
 

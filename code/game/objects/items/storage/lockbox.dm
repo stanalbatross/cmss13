@@ -37,13 +37,13 @@
 		if(!locked)
 			..()
 		else
-			to_chat(user, SPAN_DANGER("Its locked!"))
+			to_chat(user, SPAN_DANGER("It's locked!"))
 		return
 
 
 	show_to(mob/user as mob)
 		if(locked)
-			to_chat(user, SPAN_DANGER("Its locked!"))
+			to_chat(user, SPAN_DANGER("It's locked!"))
 		else
 			..()
 		return
@@ -67,3 +67,43 @@
 
 /obj/item/storage/lockbox/clusterbang/fill_preset_inventory()
 	new /obj/item/explosive/grenade/flashbang/cluster(src)
+
+/obj/item/storage/co_wl_surv_lockbox
+	name = "\improper FORECON major's briefcase"
+	desc = "A brown briefcase with a fingerprint locking mechanism. 'PROPERTY OF USCM FORCE RECONNAISSANCE' Is written along the side."
+	icon_state = "secure"
+	item_state = "sec-case"
+	max_storage_space = 14 //The sum of the w_classes of all the items in this storage item.
+	storage_slots = 4
+
+/obj/item/storage/co_wl_surv_lockbox/fill_preset_inventory()
+	new /obj/item/ammo_magazine/pistol/mod88(src)
+	new /obj/item/ammo_magazine/pistol/mod88(src)
+	new /obj/item/ammo_magazine/pistol/mod88/rubber(src)
+	new /obj/item/ammo_magazine/pistol/mod88/rubber(src)
+
+/obj/item/storage/co_wl_surv_lockbox/proc/wl_and_job_check(mob/user)
+	var/mob/living/carbon/human/H = user
+	var/whitelist_flags = RoleAuthority.roles_whitelist[user.ckey]
+	if(!ishuman(user))
+		return FALSE
+	if(!issurvivorjob(H.job))
+		to_chat(H, SPAN_WARNING("You try to open \the [src], but it won't budge! You probably don't have the right ship's access codes..."))
+		return FALSE
+	if(!(whitelist_flags & (WHITELIST_COMMANDER_COUNCIL|WHITELIST_COMMANDER_COUNCIL_LEGACY)))
+		to_chat(H, SPAN_WARNING("You try to open \the [src], but it won't budge! You probably don't have the right rank's access codes..."))
+		return FALSE
+	return TRUE
+
+/obj/item/storage/co_wl_surv_lockbox/show_to(mob/user)
+	if(wl_and_job_check(user))
+		. = ..()
+
+/obj/item/storage/co_wl_surv_lockbox/attackby(obj/item/W, mob/user)
+	if(wl_and_job_check(user))
+		. = ..()
+
+/obj/item/storage/co_wl_surv_lockbox/empty(mob/user, turf/T)
+	if(wl_and_job_check(user))
+		. = ..()
+
