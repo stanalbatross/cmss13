@@ -178,6 +178,7 @@
 	H.equip_to_slot_or_del(new /obj/item/storage/belt/grenade(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BACK)
 	H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BACK)
+	H.equip_to_slot_or_del(new /obj/item/storage/box/packet/incendiary(H), WEAR_IN_BACK)
 	spawn_random_headgear(H)
 	add_forecon_equipment(H)
 

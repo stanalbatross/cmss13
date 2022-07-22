@@ -57,6 +57,7 @@
 /area/lv522/landing_zone_2
 	name = "Chance's Claim - Landing Zone Two"
 	icon_state = "explored"
+
 /area/shuttle/drop2/lv522
 	name = "Chance's Claim - Dropship Normandy Landing Zone"
 	icon_state = "shuttle2"
@@ -68,11 +69,29 @@
 	icon_state = "tcomsatcham"
 	requires_power = FALSE
 
-/area/lv522/landing_zone_2/UD6_Typhoon
-	name = "Chance's Claim - UD6 Typhoon"
+//Landing Zone 3 & 4
+
+/area/lv522/landing_zone_forecon
+	name = "Chance's Claim - FORECON Shuttle"
 	icon_state = "shuttle"
 	ceiling =  CEILING_METAL
 	requires_power = FALSE
+
+/area/lv522/landing_zone_forecon/landing_zone_3
+	name = "Chance's claim - Landing Zone 3"
+	icon_state = "blue"
+	ceiling = CEILING_NONE
+
+/area/lv522/landing_zone_forecon/landing_zone_4
+	name = "Chance's claim - Landing Zone 4"
+	icon_state = "blue"
+	ceiling = CEILING_NONE
+
+/area/lv522/landing_zone_forecon/UD6_Typhoon
+	name = "Chance's Claim - UD6 Typhoon"
+
+/area/lv522/landing_zone_forecon/UD6_Tornado
+	name = "Chance's Claim - UD6 Tornado"
 
 //Outdoors areas
 /area/lv522/outdoors/colony_streets //WHY IS THIS A SUBTYPE OF BUILDINGS AAAARGGHGHHHH YOU DIDN'T EVEN USE OBJECT INHERITANCE FOR THE CIELINGS I HATE YOU BOBBY
@@ -82,8 +101,16 @@
 
 /area/lv522/outdoors/colony_streets/windbreaker
 	name = "Colony Windbreakers"
-	icon_state = "tumor1"
+	icon_state = "tcomsatcham"
 	requires_power = FALSE
+	ceiling = CEILING_NONE
+
+/area/lv522/outdoors/colony_streets/windbreaker/observation
+	name = "Colony Windbreakers - Observation"
+	icon_state = "purple"
+	requires_power = FALSE
+	ceiling = CEILING_NONE
+	soundscape_playlist = SCAPE_PL_LV522_INDOORS
 
 /area/lv522/outdoors/colony_streets/central_streets
 	name = "Central Street West"
@@ -117,73 +144,144 @@
 	name = "Colony Street North"
 	icon_state = "north"
 
+/area/lv522/outdoors/colony_streets/winde
+	name = "Colony Street Northwest"
+	icon_state = "northwest"
+
 //misc indoors areas
-/area/lv522/indoors/engineering
+
+/area/lv522/indoors/lone_buildings
+	name = "LV522 - Lone buildings"
+	icon_state = "green"
+
+/area/lv522/indoors/lone_buildings/engineering
 	name = "Emergency Engineering"
 	icon_state = "engine_smes"
 
-/area/lv522/indoors/West_LZ_Storage
-	name = "West LZ1 Storage"
-	icon_state = ""
+/area/lv522/indoors/lone_buildings/spaceport
+	name = "North LZ1 - Spaceport"
+	icon_state = "red"
 
-/area/lv522/indoors/West_LZ_House
-	name = "West LZ1 House"
-	icon_state = ""
+/area/lv522/indoors/lone_buildings/outdoor_bot
+	name = "East LZ1 - Outdoor Botony"
+	icon_state = "yellow"
+	ceiling = CEILING_GLASS
 
-/area/lv522/indoors/South_Cargo_Buildings
-	name = "South Cargo Buildings"
-	icon_state = ""
-
-//A Block
-/area/lv522/indoors/A_block
-	name = "A-Block"
+/area/lv522/indoors/lone_buildings/storage_blocks
+	name = "Outdoor Storage"
 	icon_state = "blue"
 
-/area/lv522/indoors/A_block/Admin
-	name = "A-Block Admin"
+//A Block
+/area/lv522/indoors/a_block
+	name = "A-Block"
+	icon_state = "blue"
+	ceiling = CEILING_METAL
+
+/area/lv522/indoors/a_block/admin
+	name = "A-Block - Colony Operations Centre"
 	icon_state = "mechbay"
 	ceiling = CEILING_GLASS
 
-/area/lv522/indoors/A_block/Dorms
-	name = "A-Block Dorms"
+/area/lv522/indoors/a_block/dorms
+	name = "A-Block - Western Dorms And Offices"
 	icon_state = "fitness"
 
-/area/lv522/indoors/A_block/Medical
-	name = "A-Block Medical"
+/area/lv522/indoors/a_block/hallway
+	name = "A-Block - South Operations Hallway"
+	icon_state = "green"
+
+/area/lv522/indoors/a_block/hallway/damage
+	name = "A-Block - South Operations Hallway"
+	icon_state = "green"
+	ceiling = CEILING_NONE
+	soundscape_playlist = SCAPE_PL_LV522_OUTDOORS
+
+/area/lv522/indoors/a_block/medical
+	name = "A-Block - Medical"
 	icon_state = "medbay"
 	ceiling =  CEILING_GLASS
 
-/area/lv522/indoors/A_block/Security
-	name = "A-Block Security"
-	icon_state = "security"
+/area/lv522/indoors/a_block/security
+	name = "A-Block - Security"
+	icon_state = "head_quarters"
+
+/area/lv522/indoors/a_block/kitchen
+	name = "A-Block - Kitchen & Dining"
+	icon_state = "kitchen"
+	ceiling = CEILING_GLASS
+
+/area/lv522/indoors/a_block/executive
+	name = "A-Block - Executive Suite"
+	icon_state = "captain"
+	ceiling = CEILING_GLASS
+
+/area/lv522/indoors/a_block/dorm_north
+	name = "A-Block - Northen Shared Dorms"
+	icon_state = "fitness"
+
+/area/lv522/indoors/a_block/bridges
+	name = "A-Block - Western Dorms To Security Bridge"
+	icon_state = "hallC1"
+	ceiling = CEILING_GLASS
+
+/area/lv522/indoors/a_block/bridges/corpo
+	name = "A-Block - Security To Corporate Bridge"
+	icon_state = "hallC1"
+
+/area/lv522/indoors/a_block/bridges/op_centre
+	name = "A-Block - Security To Operations Centre Bridge"
+	icon_state = "hallC1"
+
+/area/lv522/indoors/a_block/corpo
+	name = "A-Block - Corporate Office"
+	icon_state = "toxlab"
 
 //B Block
 
-/area/lv522/indoors/B_Block
+/area/lv522/indoors/b_block
 	name = "B-Block"
 	icon_state = "red"
+	ceiling =  CEILING_METAL
 
-/area/lv522/indoors/B_Block/Science_Lab
-	name = "Science Lab"
-	icon_state = "purple"
+/area/lv522/indoors/b_block/hydro
+	name = "B-Block - Hydroponics"
+	icon_state = "hydro"
+
+/area/lv522/indoors/b_block/bar
+	name = "B-Block - Bar"
+	icon_state = "cafeteria"
+
+/area/lv522/indoors/b_block/bridge
+	name = "B-Block - Hydroponics Bridge Network"
+	icon_state = "hallC1"
+	ceiling = CEILING_GLASS
 
 //C Block
 
-/area/lv522/indoors/C_Block
+/area/lv522/indoors/c_block
 	name = "C-Block"
-	icon_state = ""
+	icon_state = "green"
 
-/area/lv522/indoors/C_Block/Cargo
-	name = "C-Block Cargo"
+/area/lv522/indoors/c_block/cargo
+	name = "C-Block - Cargo"
 	icon_state = "primarystorage"
 
-/area/lv522/indoors/C_Block/Mining
-	name = "C-Block Mining"
-	icon_state = "orange"
+/area/lv522/indoors/c_block/mining
+	name = "C-Block - Mining"
+	icon_state = "yellow"
 
-/area/lv522/indoors/C_Block/Garage
-	name = "C-Block Garage"
+/area/lv522/indoors/c_block/garage
+	name = "C-Block - Garage"
 	icon_state = "storage"
+
+/area/lv522/indoors/c_block/casino
+	name = "C-Block - Casino"
+	icon_state = "purple"
+
+/area/lv522/indoors/c_block/bridge
+	name = "C-Block - Cargo To Garage Bridge"
+	icon_state = "hallC1"
+	ceiling = CEILING_GLASS
 
 //Rockies
 
@@ -214,3 +312,54 @@
 /area/lv522/outdoors/p_e_rockies
 	name = "East Processor - Rockies"
 	icon_state = "away3"
+
+//ATMOS
+/area/lv522/atmos
+	name = "Atmospheric Processor"
+	icon_state = "engineering"
+	ceiling = CEILING_REINFORCED_METAL
+	soundscape_playlist = SCAPE_PL_LV522_ATMOS
+
+/area/lv522/atmos/outdoor
+	name = "Atmospheric Processor - Outdoors"
+	icon_state = "quart"
+	ceiling = CEILING_NONE
+
+/area/lv522/atmos/east_reactor
+	name = "Atmospheric Processor - Eastern Reactor"
+	icon_state = "blue"
+
+/area/lv522/atmos/east_reactor/north
+	name = "Atmospheric Processor - Outer East Reactor - North"
+	icon_state = "yellow"
+
+/area/lv522/atmos/east_reactor/south
+	name = "Atmospheric Processor - Outer East Reactor - south"
+	icon_state = "red"
+
+/area/lv522/atmos/east_reactor/east
+	name = "Atmospheric Processor - Outer East Reactor - east"
+	icon_state = "green"
+
+/area/lv522/atmos/east_reactor/west
+	name = "Atmospheric Processor - Outer East Reactor - west"
+	icon_state = "purple"
+/area/lv522/atmos/west_reactor
+	name = "Atmospheric Processor - Western Reactor"
+	icon_state = "blue"
+
+/area/lv522/atmos/cargo_intake
+	name = "Atmospheric Processor - Cargo Intake"
+	icon_state = "yellow"
+
+/area/lv522/atmos/command_centre
+	name = "Atmospheric Processor - Central Command"
+	icon_state = "red"
+
+/area/lv522/atmos/north_command_centre
+	name = "Atmospheric Processor - North Command Centre Checkpoint"
+	icon_state = "green"
+
+/area/lv522/atmos/filt
+	name = "Atmospheric Processor - Filtration System"
+	icon_state = "mechbay"
