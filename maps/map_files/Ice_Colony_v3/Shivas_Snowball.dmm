@@ -15869,10 +15869,10 @@
 	},
 /area/shiva/interior/colony/central)
 "kLB" = (
-/obj/effect/landmark/survivor_spawn,
+/obj/structure/surface/table,
+/obj/structure/machinery/computer/emails,
 /turf/open/floor/shiva{
-	dir = 6;
-	icon_state = "multi_tiles"
+	dir = 1
 	},
 /area/shiva/interior/lz2_habs)
 "kLG" = (
@@ -22496,6 +22496,9 @@
 /area/shiva/exterior/cp_lz2)
 "rZj" = (
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/station_alert{
+	dir = 8
+	},
 /turf/open/floor/shiva{
 	dir = 6;
 	icon_state = "yellow"
@@ -37323,9 +37326,9 @@ pda
 wPP
 hKS
 qZa
-cwm
-qhJ
 kLB
+qhJ
+qZa
 pth
 anc
 kXx

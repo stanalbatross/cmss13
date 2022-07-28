@@ -547,8 +547,6 @@ Additional game mode variables.
 	//new_queen.crystal_stored = XENO_STARTING_CRYSTAL
 	new_queen.update_icons()
 
-		for(var/obj/item/device/radio/radio in original.contents_recursive())
-			radio.listening = FALSE
 //===================================================\\
 
 			//SURVIVOR INITIATLIZE\\
