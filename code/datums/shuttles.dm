@@ -103,3 +103,7 @@
 /datum/map_template/shuttle/vehicle
 	shuttle_id = "vehicle_elevator"
 	name = "Vehicle Elevator"
+
+/datum/map_template/shuttle/almayer_elevator
+	shuttle_id = "almayer_elevator"
+	name = "Almayer Elevator"

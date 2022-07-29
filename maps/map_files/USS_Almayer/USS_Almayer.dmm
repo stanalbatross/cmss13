@@ -22332,10 +22332,11 @@
 /turf/open/floor/wood/ship,
 /area/almayer/command/corporateliason)
 "bvd" = (
-/obj/structure/machinery/constructable_frame,
-/turf/open/floor/almayer{
-	icon_state = "mono"
+/obj/structure/stairs/perspective{
+	dir = 4;
+	icon_state = "p_stair_sn_full_cap"
 	},
+/turf/open/floor/almayer,
 /area/almayer/lifeboat_pumps/north1)
 "bve" = (
 /obj/structure/disposalpipe/segment,
@@ -31470,10 +31471,7 @@
 	},
 /area/almayer/evacuation/pod6)
 "cbM" = (
-/obj/structure/closet/crate,
-/obj/item/clothing/glasses/welding,
-/obj/item/circuitboard,
-/turf/open/floor/plating/plating_catwalk,
+/turf/open/space/basic,
 /area/almayer/lifeboat_pumps/north1)
 "cbN" = (
 /obj/effect/decal/warning_stripes{
@@ -38353,6 +38351,9 @@
 	tag = "icon-red (WEST)"
 	},
 /area/almayer/hallways/starboard_hallway)
+"dRS" = (
+/turf/open/space/basic,
+/area/almayer/hallways/hangar)
 "dRT" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 4;
@@ -63414,6 +63415,15 @@
 	},
 /turf/open/floor/plating/plating_catwalk,
 /area/almayer/hallways/hangar)
+"ptU" = (
+/obj/structure/machinery/status_display{
+	pixel_y = -30
+	},
+/turf/open/floor/almayer{
+	icon_state = "plate";
+	tag = "icon-sterile"
+	},
+/area/almayer/hallways/hangar)
 "ptW" = (
 /obj/structure/bed/chair,
 /turf/open/floor/almayer,
@@ -82438,6 +82448,13 @@
 	},
 /turf/open/floor/almayer,
 /area/almayer/living/synthcloset)
+"xKV" = (
+/obj/structure/stairs/perspective{
+	dir = 1;
+	icon_state = "p_stair_full"
+	},
+/turf/open/floor/almayer,
+/area/almayer/lifeboat_pumps/north1)
 "xKW" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure{
@@ -107404,12 +107421,12 @@ nXP
 hJp
 dnX
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
 aXj
 bHB
@@ -107607,12 +107624,12 @@ nXP
 mGL
 dnX
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
 aTc
 bHB
@@ -107705,9 +107722,9 @@ acW
 awW
 auK
 aIr
-aTm
-bvd
-aTm
+cbM
+cbM
+cbM
 juX
 scu
 awW
@@ -107810,12 +107827,12 @@ nXP
 mGL
 fJX
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
 hmy
 bHB
@@ -107906,13 +107923,13 @@ adZ
 awW
 acW
 awW
-avc
-aIv
-aTm
 bvd
+bZe
 cbM
-jzZ
-sLo
+cbM
+cbM
+aSJ
+xKV
 awW
 acW
 afr
@@ -108013,13 +108030,13 @@ nXP
 tRV
 dnX
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
-bcm
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 aTc
 bHB
 aZM
@@ -108109,13 +108126,13 @@ adq
 add
 ajI
 add
-auJ
-aHU
-aTm
-bzz
-aTm
-jgF
-auJ
+avc
+aIv
+cbM
+cbM
+cbM
+jzZ
+sLo
 add
 ajI
 add
@@ -108216,14 +108233,14 @@ nXP
 nun
 vJM
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
-bcm
-bGQ
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
+aTc
 bHB
 aZU
 baO
@@ -108312,13 +108329,13 @@ adq
 aeY
 ajI
 add
-add
-aIw
-aUa
-aUa
-aUa
-jAz
-add
+auJ
+aHU
+aTm
+bzz
+aTm
+jgF
+auJ
 add
 ajI
 add
@@ -108419,14 +108436,14 @@ nXP
 hJp
 qNG
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
-bcm
-bGR
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
+aTc
 bHB
 aTc
 bkA
@@ -108516,11 +108533,11 @@ awW
 ajT
 aoC
 add
-add
-add
-add
-add
-add
+aIw
+aUa
+aUa
+aUa
+jAz
 add
 awW
 acW
@@ -108622,16 +108639,16 @@ nXP
 mGL
 kKG
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
-aTc
+bGR
 bHB
-aTc
+ptU
 bkA
 bnj
 kPx
@@ -108825,12 +108842,12 @@ mGL
 mGL
 eKO
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
 aTc
 bHB
@@ -109028,12 +109045,12 @@ cmk
 xJi
 cIi
 uNL
-aRu
-aRu
-aRu
-aRu
-aRu
-aRu
+dRS
+dRS
+dRS
+dRS
+dRS
+dRS
 bcm
 aZZ
 aYC

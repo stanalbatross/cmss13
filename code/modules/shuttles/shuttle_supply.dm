@@ -183,3 +183,15 @@
 
 /datum/shuttle/ferry/supply/vehicle/pick_loc()
 	return GLOB.vehicle_elevator
+
+/obj/effect/landmark/almayer_elevator/Initialize(mapload, ...)
+	. = ..()
+	GLOB.almayer_elevator = get_turf(src)
+	return INITIALIZE_HINT_QDEL
+
+/datum/shuttle/ferry/supply/almayer_elevator
+	railing_id = "almayer_elevator_railing"
+	gear_id = "almayer_elevator_gears"
+
+/datum/shuttle/ferry/supply/almayer_elevator/pick_loc()
+	return GLOB.almayer_elevator
