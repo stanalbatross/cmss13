@@ -29336,9 +29336,6 @@
 "bNy" = (
 /turf/closed/wall/solaris/reinforced,
 /area/bigredv2/outside/telecomm/security)
-"bNE" = (
-/turf/closed/wall/solaris,
-/area)
 "bPy" = (
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_nest,
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_nest,
@@ -38230,8 +38227,6 @@
 	tag = "icon-platingdmg3 (WEST)"
 	},
 /area/bigredv2/caves/mining)
-"uia" = (
-)
 "uij" = (
 /turf/open/floor{
 	dir = 8;
@@ -52786,7 +52781,7 @@ aBR
 aBR
 aMc
 aoH
-uia
+aNm
 aOA
 aPG
 aQM
@@ -64690,7 +64685,7 @@ alF
 akw
 akw
 akw
-uia
+akw
 acP
 acP
 amD
@@ -71007,7 +71002,7 @@ aCo
 aEU
 aCZ
 aCZ
-bNE
+anT
 aIA
 aJv
 aKF
