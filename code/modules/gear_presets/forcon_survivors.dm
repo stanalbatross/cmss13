@@ -59,14 +59,14 @@
 	return
 
 /datum/equipment_preset/survivor/forecon/proc/add_forecon_weapon_pistol(mob/living/carbon/human/H)
-	var/random_pistol = rand(1,6)
+	var/random_pistol = rand(1,3)
 	switch(random_pistol)
-		if(1 , 2 , 3 , 4)
+		if(1 , 2)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3(H), WEAR_WAIST)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/m1911(H), WEAR_IN_BELT)
-		if(5 , 6)
+		if(3)
 			H.equip_to_slot_or_del(new /obj/item/device/motiondetector(H),WEAR_WAIST)
 
 /datum/equipment_preset/survivor/forecon/add_random_survivor_equipment(mob/living/carbon/human/H)
