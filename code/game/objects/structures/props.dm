@@ -26,7 +26,7 @@
 		return
 	else if (ishuman(user) && istype(W, /obj/item/tool/wrench))
 		on = !on
-		visible_message("Wrench the controls of [src]. The drill jumps to life." , "[user] wrenches the controls of [src]. The drill jumps to life.")
+		visible_message("You wrench the controls of \the [src]. The drill jumps to life." , "[user] wrenches the controls of \the [src]. The drill jumps to life.")
 
 		Update()
 
