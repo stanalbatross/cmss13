@@ -28,9 +28,9 @@
 		on = !on
 		visible_message("You wrench the controls of \the [src]. The drill jumps to life." , "[user] wrenches the controls of \the [src]. The drill jumps to life.")
 
-		Update()
+		update()
 
-/obj/structure/prop/dam/drill/proc/Update()
+/obj/structure/prop/dam/drill/proc/update()
 	icon_state = "thumper[on ? "-on" : ""]"
 	if(on)
 		SetLuminosity(3)
@@ -42,7 +42,7 @@
 
 /obj/structure/prop/dam/drill/Initialize()
 	. = ..()
-	Update()
+	update()
 
 /obj/structure/prop/dam/truck
 	name = "truck"
