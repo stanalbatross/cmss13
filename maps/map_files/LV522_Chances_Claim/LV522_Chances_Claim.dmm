@@ -38428,7 +38428,6 @@
 /area/lv522/atmos/east_reactor/south)
 "rrI" = (
 /obj/structure/surface/table/almayer,
-/obj/item/storage/co_wl_surv_lockbox,
 /turf/open/floor/prison,
 /area/lv522/indoors/a_block/admin)
 "rrN" = (
