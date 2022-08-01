@@ -763,7 +763,7 @@
 	name = "M1 pattern festive needle torus"
 	desc = "In 2140 after a two different sub levels of the São Luís Bay Underground Habitat burned out (evidence points to a Bladerunner incident, but local police denies such claims) due to actual wreaths made with REAL needles, these have been issued ever since. They're made of ''''''pine'''''' scented poly-kevlon. According to the grunts from the American Corridor, during the SACO riots, protestors would pack these things into pillow cases, forming rudimentary body armor against soft point ballistics."
 	icon_state = "wreath"
-/obj/structure/prop/vehicles/
+/obj/structure/prop/vehicles
 	name = "van"
 	desc = "An old van, seems to be broken down."
 	icon = 'icons/obj/structures/props/vehicles.dmi'
