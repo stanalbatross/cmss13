@@ -160,7 +160,6 @@
 	pixel_x = 7;
 	pixel_y = 10
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/carpet,
 /area/lv522/atmos/east_reactor/north)
 "adB" = (
@@ -702,11 +701,8 @@
 /area/lv522/outdoors/colony_streets/north_west_street)
 "aoG" = (
 /obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	dir = 6;
-	icon_state = "brown"
-	},
-/area/lv522/atmos/east_reactor/north)
+/turf/open/floor/prison,
+/area/lv522/outdoors/colony_streets/north_west_street)
 "aoJ" = (
 /obj/structure/platform{
 	dir = 1
@@ -1002,7 +998,6 @@
 	pixel_x = 7;
 	pixel_y = 20
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	dir = 5;
 	icon_state = "brown"
@@ -1711,7 +1706,6 @@
 /area/lv522/indoors/c_block/mining)
 "aIw" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "browncorner"
 	},
@@ -6317,6 +6311,7 @@
 	dir = 1;
 	pixel_y = 20
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
@@ -6402,17 +6397,12 @@
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/lv522/atmos/command_centre)
 "cTT" = (
-/obj/structure/surface/table/almayer,
-/obj/item/paper_bin{
-	pixel_x = 8;
-	pixel_y = 6
-	},
-/obj/item/tool/pen/blue/clicky,
+/obj/structure/surface/table/reinforced/prison,
 /obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "squares"
+/turf/open/floor/strata{
+	icon_state = "white_cyan2"
 	},
-/area/lv522/atmos/east_reactor/north)
+/area/lv522/indoors/a_block/corpo)
 "cTX" = (
 /obj/structure/bed/chair{
 	dir = 1
@@ -6495,7 +6485,6 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -6514,7 +6503,6 @@
 	name = "remote door-control";
 	pixel_y = 3
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -7770,6 +7758,7 @@
 /obj/structure/machinery/light{
 	dir = 1
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
@@ -7958,7 +7947,6 @@
 	pixel_x = 8;
 	pixel_y = 14
 	},
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -9908,6 +9896,7 @@
 	name = "remote door-control"
 	},
 /obj/structure/surface/table/almayer,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/strata{
 	icon_state = "multi_tiles"
 	},
@@ -13139,6 +13128,7 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison,
 /area/lv522/indoors/lone_buildings/spaceport)
 "fSs" = (
@@ -15583,6 +15573,7 @@
 	dir = 4;
 	pixel_y = -5
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/strata{
 	dir = 8;
 	icon_state = "white_cyan2"
@@ -15673,7 +15664,7 @@
 "gZr" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/cane,
-/obj/effect/landmark/objective_landmark/science,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
@@ -17063,11 +17054,27 @@
 /turf/open/asphalt/cement,
 /area/lv522/outdoors/colony_streets/east_central_street)
 "hBW" = (
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "plate"
+/obj/structure/toilet{
+	dir = 4
 	},
-/area/lv522/atmos/west_reactor)
+/obj/structure/sink{
+	pixel_y = 23
+	},
+/obj/structure/machinery/light/small{
+	dir = 8;
+	pixel_x = -11;
+	pixel_y = 10
+	},
+/obj/structure/mirror{
+	pixel_x = -1;
+	pixel_y = 29
+	},
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/strata{
+	dir = 8;
+	icon_state = "white_cyan2"
+	},
+/area/lv522/outdoors/colony_streets/north_street)
 "hCp" = (
 /obj/structure/barricade/deployable,
 /turf/open/shuttle/dropship{
@@ -17118,6 +17125,7 @@
 	pixel_x = 4;
 	pixel_y = 13
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/strata{
 	icon_state = "white_cyan2"
 	},
@@ -17201,7 +17209,6 @@
 /obj/structure/bed/chair/comfy{
 	dir = 8
 	},
-/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	dir = 10;
 	icon_state = "blue"
@@ -17319,13 +17326,13 @@
 	},
 /area/lv522/indoors/a_block/corpo)
 "hGe" = (
-/obj/structure/surface/table/almayer,
-/obj/structure/machinery/prop/almayer/computer/PC,
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "plate"
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/prison{
+	icon_state = "darkbrownfull2";
+	tag = "icon-darkbrownfull2"
 	},
-/area/lv522/atmos/command_centre)
+/area/lv522/indoors/c_block/garage)
 "hGO" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 9
@@ -17667,6 +17674,7 @@
 	pixel_y = 14
 	},
 /obj/item/device/binoculars,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv522/indoors/a_block/executive)
 "hOG" = (
@@ -18434,6 +18442,7 @@
 	pixel_x = 8;
 	pixel_y = -7
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/carpet,
 /area/lv522/indoors/a_block/executive)
 "iez" = (
@@ -19566,6 +19575,7 @@
 	pixel_x = -7;
 	pixel_y = 5
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/carpet,
 /area/lv522/indoors/a_block/executive)
 "iBe" = (
@@ -20046,16 +20056,16 @@
 	},
 /area/lv522/indoors/a_block/bridges/corpo)
 "iMC" = (
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "brown"
-	},
-/area/lv522/atmos/west_reactor)
+/obj/structure/surface/table/woodentable/fancy,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/carpet,
+/area/lv522/indoors/b_block/bar)
 "iMQ" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/item/storage/fancy/cigarettes/blackpack{
 	pixel_y = 4
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv522/indoors/a_block/executive)
 "iMS" = (
@@ -20079,7 +20089,6 @@
 "iNN" = (
 /obj/structure/surface/table/almayer,
 /obj/item/paper/janitor,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -28674,6 +28683,22 @@
 	icon_state = "brown"
 	},
 /area/lv522/atmos/east_reactor)
+"mms" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "N";
+	pixel_y = 1;
+	tag = "icon-N"
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	tag = "icon-W"
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
+	},
+/area/lv522/outdoors/colony_streets/south_west_street)
 "mmv" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -31524,6 +31549,7 @@
 	damtype = "tox";
 	name = "strange dagger"
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/carpet,
 /area/lv522/indoors/a_block/executive)
 "nIF" = (
@@ -32028,6 +32054,7 @@
 	pixel_y = 4
 	},
 /obj/item/tool/pen/blue/clicky,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -32172,7 +32199,6 @@
 /area/lv522/outdoors/colony_streets/central_streets)
 "nWb" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -33025,6 +33051,7 @@
 "oqW" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/tool/pen/blue,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
@@ -33418,12 +33445,10 @@
 	},
 /area/lv522/indoors/c_block/mining)
 "oCt" = (
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	dir = 10;
-	icon_state = "brown"
-	},
-/area/lv522/atmos/east_reactor/north)
+/obj/structure/surface/table/gamblingtable,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/prison,
+/area/lv522/indoors/c_block/casino)
 "oDk" = (
 /obj/structure/prop/invuln/ice_prefab,
 /turf/open/auto_turf/shale/layer0,
@@ -34248,6 +34273,7 @@
 	pixel_x = 8;
 	pixel_y = 15
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "cyan2"
@@ -35714,6 +35740,7 @@
 	},
 /obj/item/storage/firstaid/adv,
 /obj/structure/pipes/vents/pump,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
@@ -35824,6 +35851,7 @@
 	pixel_y = 9
 	},
 /obj/item/storage/firstaid/fire,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
@@ -35902,10 +35930,7 @@
 	pixel_x = 7;
 	pixel_y = 14
 	},
-/obj/item/newspaper{
-	pixel_x = -6;
-	pixel_y = 1
-	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/wood,
 /area/lv522/indoors/a_block/executive)
 "pOD" = (
@@ -36058,6 +36083,7 @@
 "pRM" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/device/autopsy_scanner,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/strata{
 	dir = 4;
 	icon_state = "white_cyan1"
@@ -39288,6 +39314,7 @@
 /area/lv522/oob)
 "rDh" = (
 /obj/structure/surface/table/almayer,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating,
 /area/lv522/indoors/c_block/cargo)
 "rDu" = (
@@ -39372,6 +39399,7 @@
 /obj/item/storage/box/drinkingglasses{
 	pixel_y = 4
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/carpet,
 /area/lv522/indoors/c_block/casino)
 "rFp" = (
@@ -39853,6 +39881,7 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
@@ -40243,6 +40272,7 @@
 /obj/item/device/flashlight/lamp{
 	pixel_x = 7
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
@@ -40269,7 +40299,6 @@
 	pixel_y = 5
 	},
 /obj/item/tool/pen/blue/clicky,
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/corsat{
 	icon_state = "plate"
 	},
@@ -41222,12 +41251,12 @@
 /area/lv522/outdoors/colony_streets/central_streets)
 "sEq" = (
 /obj/structure/surface/table/almayer,
-/obj/effect/landmark/item_pool_spawner/survivor_ammo/buckshot,
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "plate"
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
 	},
-/area/lv522/atmos/command_centre)
+/area/lv522/indoors/b_block/bar)
 "sEt" = (
 /obj/structure/largecrate,
 /turf/open/floor/prison{
@@ -42731,6 +42760,7 @@
 /area/lv522/atmos/outdoor)
 "trd" = (
 /obj/structure/surface/table/almayer,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -42774,6 +42804,7 @@
 	pixel_y = 16
 	},
 /obj/structure/pipes/vents/pump,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -44051,6 +44082,7 @@
 	pixel_x = -6;
 	pixel_y = 5
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -44202,6 +44234,7 @@
 /obj/item/paper/crumpled/bloody{
 	pixel_x = -9
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating,
 /area/lv522/indoors/c_block/cargo)
 "ucb" = (
@@ -44865,6 +44898,7 @@
 "uuB" = (
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/tool/pen/blue/clicky,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "floor_plate";
 	tag = "icon-floor_plate"
@@ -45329,6 +45363,7 @@
 	pixel_x = 13;
 	pixel_y = 17
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "wood"
 	},
@@ -45551,6 +45586,7 @@
 	pixel_x = 5;
 	registered_name = "John Forklift"
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
@@ -46048,6 +46084,7 @@
 	pixel_x = -9;
 	pixel_y = 10
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "darkbrownfull2";
 	tag = "icon-darkbrownfull2"
@@ -47333,6 +47370,7 @@
 /obj/item/shard{
 	icon_state = "medium"
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "darkyellowfull2";
@@ -48651,16 +48689,12 @@
 /turf/closed/wall/solaris/reinforced/hull,
 /area/lv522/oob)
 "wog" = (
-/obj/structure/surface/table/almayer,
-/obj/item/paper_bin{
-	pixel_y = 5
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/prison{
+	icon_state = "floor_plate";
+	tag = "icon-floor_plate"
 	},
-/obj/item/tool/pen/blue/clicky,
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/corsat{
-	icon_state = "plate"
-	},
-/area/lv522/atmos/command_centre)
+/area/lv522/indoors/lone_buildings/storage_blocks)
 "woq" = (
 /obj/structure/cargo_container{
 	icon_state = "gorg 0,0";
@@ -50646,6 +50680,7 @@
 /obj/structure/machinery/light{
 	dir = 4
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	dir = 4;
 	icon_state = "greenfull"
@@ -52089,6 +52124,13 @@
 	},
 /turf/open/floor/prison,
 /area/lv522/indoors/lone_buildings/spaceport)
+"xZy" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/corsat{
+	icon_state = "squares"
+	},
+/area/lv522/indoors/c_block/mining)
 "xZz" = (
 /obj/structure/cargo_container{
 	icon_state = "blue 2,0";
@@ -60468,7 +60510,7 @@ uIW
 wYo
 wYo
 dmN
-hBW
+vAi
 wYo
 wYo
 qNl
@@ -62420,7 +62462,7 @@ uIW
 uIW
 wYo
 wYo
-iMC
+vZu
 vAi
 wYo
 wYo
@@ -65267,7 +65309,7 @@ cjm
 cjm
 cjm
 bda
-eiZ
+aoG
 eiZ
 jiM
 fXh
@@ -65365,7 +65407,7 @@ dOw
 bpD
 fUT
 uVN
-yiM
+sEq
 mBF
 rZv
 rZv
@@ -67155,7 +67197,7 @@ tce
 lgt
 xho
 fdP
-wog
+uHz
 pcs
 cLd
 xrF
@@ -67310,7 +67352,7 @@ xZP
 smR
 cmF
 srg
-kmo
+iMC
 tEY
 dsm
 dsm
@@ -68728,7 +68770,7 @@ rZv
 gJG
 max
 dJR
-leO
+mms
 xMC
 xMC
 yfH
@@ -73293,7 +73335,7 @@ cOP
 cOP
 xho
 fdP
-hGe
+fht
 cog
 cLd
 vrj
@@ -76365,7 +76407,7 @@ mGI
 fdP
 dYX
 fdP
-sEq
+cLp
 kck
 uHz
 fdP
@@ -79513,7 +79555,7 @@ exI
 rEa
 tfV
 bbX
-hai
+cTT
 vLh
 hbD
 bbX
@@ -81760,7 +81802,7 @@ uRt
 yco
 aTA
 yco
-aTA
+hBW
 yco
 iMq
 ugV
@@ -82440,7 +82482,7 @@ vpe
 kZs
 pIx
 wpF
-lNT
+xZy
 lNT
 lNT
 wpF
@@ -83772,7 +83814,7 @@ xva
 seD
 dKF
 dKF
-fgB
+oCt
 lBh
 lBh
 uew
@@ -87684,7 +87726,7 @@ onh
 vNk
 vNk
 uNp
-vdZ
+nmX
 vNk
 ugX
 jqy
@@ -88813,7 +88855,7 @@ wMq
 wRX
 xaO
 eAh
-hYf
+wog
 ylo
 xvl
 uwT
@@ -91119,7 +91161,7 @@ yim
 aow
 vwt
 awB
-cTT
+aAC
 spI
 vwt
 vwt
@@ -91858,7 +91900,7 @@ vyH
 cUG
 cUG
 tiM
-tiM
+hGe
 cUG
 sju
 syv
@@ -93531,7 +93573,7 @@ tTD
 vyH
 cUG
 cUG
-tiM
+hGe
 rMi
 cUG
 uPG
@@ -95025,7 +95067,7 @@ omB
 omB
 auE
 nEM
-oCt
+kdJ
 aPc
 kln
 sDS
@@ -95583,7 +95625,7 @@ omB
 omB
 avi
 rJK
-aoG
+hzX
 jMQ
 aGt
 aIK
