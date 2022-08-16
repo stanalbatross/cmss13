@@ -11,32 +11,34 @@
 #define HEADSHOT_OVERLAY_MEDIUM "medium_headshot"
 #define HEADSHOT_OVERLAY_HEAVY "heavy_headshot"
 
-#define AMMO_EXPLOSIVE 			(1<<0)
-#define AMMO_XENO_ACID 			(1<<1)
-#define AMMO_XENO_TOX			(1<<2)
-#define AMMO_ENERGY 			(1<<3)
-#define AMMO_ROCKET				(1<<4)
-#define AMMO_SNIPER				(1<<5)
-#define AMMO_ANTISTRUCT			(1<<6) // Primarily for railgun but can be implemented for other projectiles that are for antitank and antistructure (wall/machine)
-#define AMMO_SKIPS_ALIENS 		(1<<7)
-#define AMMO_IS_SILENCED 		(1<<8) //Unused right now.
-#define AMMO_IGNORE_ARMOR		(1<<9)
-#define AMMO_IGNORE_RESIST		(1<<10)
-#define AMMO_BALLISTIC			(1<<11)
-#define AMMO_IGNORE_COVER		(1<<12)
-#define AMMO_SCANS_NEARBY		(1<<13) //ammo that is scanning stuff nearby - VERY resource intensive
-#define AMMO_STOPPED_BY_COVER	(1<<14)
-#define AMMO_SPECIAL_EMBED		(1<<15)
-#define AMMO_STRIKES_SURFACE	(1<<16) // If the projectile hits a dense turf it'll do on_hit_turf on the turf just in front of the turf instead of on the turf itself
-#define AMMO_HITS_TARGET_TURF	(1<<17) // Whether or not the bullet hits the target that was clicked or if it keeps travelling
-#define AMMO_ALWAYS_FF			(1<<18)
-#define AMMO_HOMING				(1<<19) // If the bullet target is a mob, it will correct its trajectory toward the mob.
+#define AMMO_EXPLOSIVE 				(1<<0)
+#define AMMO_XENO_ACID 				(1<<1)
+#define AMMO_XENO_TOX				(1<<2)
+#define AMMO_ENERGY 				(1<<3)
+#define AMMO_ROCKET					(1<<4)
+#define AMMO_SNIPER					(1<<5)
+#define AMMO_ANTISTRUCT				(1<<6) // Primarily for railgun but can be implemented for other projectiles that are for antitank and antistructure (wall/machine)
+#define AMMO_SKIPS_ALIENS 			(1<<7)
+#define AMMO_IS_SILENCED 			(1<<8) //Unused right now.
+#define AMMO_IGNORE_ARMOR			(1<<9)
+#define AMMO_IGNORE_RESIST			(1<<10)
+#define AMMO_BALLISTIC				(1<<11)
+#define AMMO_IGNORE_COVER			(1<<12)
+#define AMMO_SCANS_NEARBY			(1<<13) //ammo that is scanning stuff nearby - VERY resource intensive
+#define AMMO_STOPPED_BY_COVER		(1<<14)
+#define AMMO_SPECIAL_EMBED			(1<<15)
+#define AMMO_STRIKES_SURFACE		(1<<16) // If the projectile hits a dense turf it'll do on_hit_turf on the turf just in front of the turf instead of on the turf itself
+#define AMMO_HITS_TARGET_TURF		(1<<17) // Whether or not the bullet hits the target that was clicked or if it keeps travelling
+#define AMMO_ALWAYS_FF				(1<<18)
+#define AMMO_HOMING					(1<<19) // If the bullet target is a mob, it will correct its trajectory toward the mob.
 /// Can't be deflected
-#define AMMO_NO_DEFLECT			(1<<20)
+#define AMMO_NO_DEFLECT				(1<<20)
 ///Can only hit people with criminal status
-#define AMMO_MP					(1<<21)
+#define AMMO_MP						(1<<21)
 /// Can BE people with it
-#define AMMO_HIGHIMPACT			(1<<22)
+#define AMMO_HIGHIMPACT				(1<<22)
+#define AMMO_PASS_THROUGH_MOVABLE 	(1<<23) //If the projectile passes through mobs and objects causing damage to them
+#define AMMO_PASS_THROUGH_MOB 		(1<<24) //If the projectile passes through mobs only causing damage to them
 
 //Gun defines for gun related thing. More in the projectile folder.
 #define GUN_CAN_POINTBLANK		(1<<0)
