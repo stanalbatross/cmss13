@@ -15,7 +15,7 @@
 	var/obj/item/reagent_container/beaker = null
 	var/obj/item/storage/pill_bottle/loaded_pill_bottle = null
 	var/mode = 0
-	var/condi = 0
+	var/condi = FALSE
 	var/useramount = 30 // Last used amount
 	var/pillamount = 16
 	var/bottlesprite = "1" //yes, strings
@@ -24,6 +24,10 @@
 	var/max_pill_count = 20
 	var/tether_range = 3
 	var/obj/structure/machinery/smartfridge/chemistry/connected
+	/// Current UI screen. On the moment of writing this comment there were two: 'home' - main screen, and 'analyze' - info about specific reagent
+	var/screen = "home"
+	/// Info to display on 'analyze' screen
+	var/analyze_vars[0]
 
 /obj/structure/machinery/chem_master/Initialize()
 	. = ..()
@@ -98,6 +102,101 @@
 			else if(dest.reagents)
 				source.reagents.trans_id_to(dest, reagent_id, amount)
 
+// TGUI \\
+
+
+/obj/structure/machinery/chem_master/ui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/spritesheet/simple/pills)
+	)
+
+/obj/structure/machinery/chem_master/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "ChemMaster", name)
+		ui.open()
+
+/obj/structure/machinery/chem_master/ui_data(mob/user)
+	var/list/data = list()
+	data["isBeakerLoaded"] = beaker ? 1 : 0
+	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, 0.01) : null
+	data["beakerMaxVolume"] = beaker ? beaker.volume : null
+	data["mode"] = mode
+	data["condi"] = condi
+	data["screen"] = screen
+	data["analyzeVars"] = analyze_vars
+	data["chosenPillStyle"] = pillsprite
+	data["isPillBottleLoaded"] = loaded_pill_bottle ? 1 : 0
+	if(loaded_pill_bottle)
+		data["pillBottleCurrentAmount"] = loaded_pill_bottle.contents.len
+		data["pillBottleMaxAmount"] = loaded_pill_bottle.atom_storage.max_slots
+
+	var/beaker_contents[0]
+	if(beaker)
+		for(var/datum/reagent/R in beaker.reagents.reagent_list)
+			beaker_contents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
+	data["beakerContents"] = beaker_contents
+
+	var/buffer_contents[0]
+	if(reagents.total_volume)
+		for(var/datum/reagent/N in reagents.reagent_list)
+			buffer_contents.Add(list(list("name" = N.name, "id" = ckey(N.name), "volume" = round(N.volume, 0.01)))) // ^
+	data["bufferContents"] = buffer_contents
+
+	//Calculated at init time as it never changes
+	data["pillStyles"] = pill_styles
+	return data
+
+/obj/structure/machinery/chem_master/ui_act(action, params)
+	. = ..()
+	if(.)
+		return
+
+	if(action == "eject")
+
+
+	if(action == "ejectPillBottle")
+		if(!loaded_pill_bottle)
+			return
+
+		if(!Adjacent(usr) || !usr.put_in_hands(loaded_pill_bottle))
+			loaded_pill_bottle.forceMove(loc)
+
+		loaded_pill_bottle = null
+
+	if(action == "transfer")
+
+
+	if(action == "toggleMode")
+
+
+	if(action == "pillStyle")
+		var/id = text2num(params["id"])
+		chosen_pill_style = id
+		return TRUE
+
+	if(action == "condiStyle")
+		chosen_condi_style = params["id"]
+		return TRUE
+
+	if(action == "create")
+
+	if(action == "analyze")
+		var/datum/reagent/analyzed_reagent = chemical_reagents_list[params["id"]]
+		if(analyzed_reagent)
+			analyze_vars = list("name" = initial(analyzed_reagent.name), "state" = state, "color" = initial(analyzed_reagent.color), "description" = initial(analyzed_reagent.description), "metaRate" = metabolization_rate, "overD" = initial(analyzed_reagent.overdose))
+			screen = "analyze"
+			return TRUE
+
+	if(action == "goScreen")
+		screen = params["screen"]
+		return TRUE
+
+	return FALSE
+
+// END TGUI \\
+
+/*
 /obj/structure/machinery/chem_master/Topic(href, href_list)
 	. = ..()
 	if(.)
@@ -331,6 +430,8 @@
 	//src.updateUsrDialog()
 	attack_hand(user)
 
+	*/
+
 /obj/structure/machinery/chem_master/attack_hand(mob/living/user)
 	if(stat & BROKEN)
 		return
@@ -422,7 +523,7 @@
 	name = "CondiMaster 3000"
 	req_skill = null
 	req_skill_level = null
-	condi = 1
+	condi = TRUE
 
 /obj/structure/machinery/chem_master/industry_mixer
 	name = "Industrial Chemical Mixer"
