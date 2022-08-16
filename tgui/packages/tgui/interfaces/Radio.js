@@ -22,9 +22,11 @@ export const Radio = (props, context) => {
   const tunedChannel = RADIO_CHANNELS.find(
     (channel) => channel.freq === frequency
   );
-  const channels = map((value, key) => ({
-    name: key,
-    status: !!value,
+  const channels = map((val, index) => ({
+    truename: index,
+    name: val.channel_id,
+    status: !!val.channel_listening,
+    prefix: val.channel_prefix,
   }))(data.channels);
   // Calculate window height
   let height = 106;
@@ -110,10 +112,11 @@ export const Radio = (props, context) => {
                 )}
                 {channels.map((channel) => (
                   <Box key={channel.name}>
+                    {channel.channel_prefix}
                     <Button
                       icon={channel.status ? 'check-square-o' : 'square-o'}
                       selected={channel.status}
-                      content={channel.name}
+                      content={channel.truename}
                       onClick={() =>
                         act('channel', {
                           channel: channel.name,

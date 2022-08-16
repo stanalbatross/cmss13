@@ -110,7 +110,15 @@
 	data["freqlock"] = freqlock
 	data["channels"] = list()
 	for(var/channel in channels)
-		data["channels"][channel] = channels[channel] & FREQ_LISTENING
+		var/channel_key
+		for(var/key in department_radio_keys)
+			if(department_radio_keys[key] == channel)
+				channel_key = key
+				break
+		data["channels"][channel] = list(
+			"channel_id" = channels[channel],
+			"channel_listening" = channel.FREQ_LISTENING,
+			"channel_prefix" = channel_key)
 	data["command"] = volume
 	data["useCommand"] = use_volume
 	data["subspace"] = subspace_transmission
