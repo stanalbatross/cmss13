@@ -2,9 +2,16 @@
 #define FRIDGE_WIRE_SHOOT_INV	2
 #define FRIDGE_WIRE_IDSCAN		3
 
+GLOBAL_LIST_INIT(fridge_wire_descriptions, list(
+		FRIDGE_WIRE_SHOCK   = "Ground safety",
+		FRIDGE_WIRE_IDSCAN 	  = "ID scanner",
+		FRIDGE_WIRE_SHOOT_INV = "Dispenser motor control"
+	))
+
+#define FRIDGE_LOCK_NOLOCK		0
 #define FRIDGE_LOCK_COMPLETE	1
 #define FRIDGE_LOCK_ID			2
-#define FRIDGE_LOCK_NOLOCK		3
+
 
 /* SmartFridge.  Much todo
 */
@@ -122,13 +129,19 @@
 
 /obj/structure/machinery/smartfridge/attack_hand(mob/user)
 	if(!ispowered)
-		to_chat(user, SPAN_WARNING("[src] has no power."))
+		to_chat(user, SPAN_WARNING("\The [src] has no power."))
 		return
 	if(seconds_electrified != 0)
 		if(shock(user, 100))
 			return
-
-	ui_interact(user)
+	if(is_secure_fridge)
+		if(locked == FRIDGE_LOCK_COMPLETE)
+			to_chat(user, SPAN_WARNING("Access denied!"))
+			return
+		if(!allowed(usr) && locked == FRIDGE_LOCK_ID)
+			to_chat(user, SPAN_WARNING("Access denied!"))
+			return
+	tgui_interact(user)
 
 /obj/structure/machinery/smartfridge/proc/add_item(var/obj/item/O)
 	O.forceMove(src)
@@ -149,9 +162,180 @@
 		return TRUE
 	return FALSE
 
+/obj/structure/machinery/smartfridge/proc/dispense(obj/item/O, mob/M)
+	if(!M.put_in_hands(O))
+		O.forceMove(src.loc)
+
+
+//*******************
+//*   tgui
+//********************/
+
+/obj/structure/machinery/smartfridge/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+	if(is_secure_fridge)
+		if(locked == FRIDGE_LOCK_COMPLETE)
+			return UI_DISABLED
+		if(!allowed(usr) && locked == FRIDGE_LOCK_ID)
+			return UI_DISABLED
+
+/obj/structure/machinery/smartfridge/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		if(panel_open)
+			ui = new(user, src, "Wires", "[name] Wires")
+			ui.open()
+		else
+			ui = new(user, src, "SmartVend", name)
+			ui.open()
+
+/obj/structure/machinery/smartfridge/ui_data(mob/user)
+	var/list/data = list()
+
+	var/listofitems = list()
+	var/listofshareditems = list()
+	for(var/I in src)
+		var/atom/movable/O = I
+		if(!QDELETED(O))
+			if(listofitems[O.name])
+				listofitems[O.name]["amount"]++
+			else
+				listofitems[O.name] = list("name" = O.name, "type" = O.type, "amount" = 1)
+	sortList(listofitems)
+
+	if(is_in_network())
+		for(var/I in chemical_data.shared_item_storage)
+			var/atom/movable/O = I
+			if(!QDELETED(O))
+				if (listofshareditems[O.name])
+					listofshareditems[O.name]["amount"]++
+				else
+					listofshareditems[O.name] = list("name" = O.name, "type" = O.type, "amount" = 1)
+		sortList(listofshareditems)
+
+	data["networked_contents"] = listofshareditems
+	data["contents"] = listofitems
+	data["locked"] = locked
+	data["secure"] = is_secure_fridge
+	data["networked"] = is_in_network()
+	data["transfer_mode"] = transfer_mode
+
+	var/list/payload = list()
+	for(var/wire in 1 to length(GLOB.fridge_wire_descriptions))
+		payload.Add(list(list(
+			"number" = wire,
+			"cut" = isWireCut(wire),
+		)))
+	data["wires"] = payload
+
+	data["proper_name"] = name
+
+	return data
+
+/obj/structure/machinery/smartfridge/ui_act(action, list/params)
+	. = ..()
+	if(.)
+		return
+	var/target_wire = params["wire"]
+	switch(action)
+		if("Release")
+			if(is_secure_fridge)
+				if(locked == FRIDGE_LOCK_COMPLETE)
+					to_chat(usr, SPAN_DANGER("Access denied."))
+					return FALSE
+				if(!allowed(usr) && locked == FRIDGE_LOCK_ID)
+					to_chat(usr, SPAN_DANGER("Access denied."))
+					return FALSE
+
+			var/desired = 0
+
+			if(params["amount"])
+				desired = text2num(params["amount"])
+			else
+				desired = input(usr, "How many items?") as num
+
+			if(QDELETED(src) || QDELETED(usr) || !usr.Adjacent(src)) // Sanity checkin' in case stupid stuff happens while we wait for input()
+				return FALSE
+			if(!params["from_network"])
+				if(!transfer_mode)
+					if(desired == 1 && Adjacent(usr))
+						for(var/obj/item/O in src)
+							if(O.name == params["name"])
+								dispense(O, usr)
+								break
+						return TRUE
+
+					for(var/obj/item/O in src)
+						if(desired <= 0)
+							break
+						if(O.name == params["name"])
+							dispense(O, usr)
+							desired--
+					return TRUE
+				else
+
+			else
+				if(desired == 1 && Adjacent(usr))
+					for(var/obj/item/O in chemical_data.shared_item_storage)
+						if(O.name == params["name"])
+							dispense(O, usr)
+							break
+					return TRUE
+
+				for(var/obj/item/O in chemical_data.shared_item_storage)
+					if(desired <= 0)
+						break
+					if(O.name == params["name"])
+						dispense(O, usr)
+						desired--
+				return TRUE
+
+		if("toggletransfer")
+			if(is_secure_fridge)
+				if(locked == FRIDGE_LOCK_COMPLETE)
+					to_chat(usr, SPAN_DANGER("Access denied."))
+					return FALSE
+				if(!allowed(usr) && locked == FRIDGE_LOCK_ID)
+					to_chat(usr, SPAN_DANGER("Access denied."))
+					return FALSE
+			if(is_in_network() && !transfer_mode)
+				transfer_mode = TRUE
+			else
+				transfer_mode = FALSE
+			return TRUE
+		if("cut")
+			if(!panel_open)
+				return
+			var/obj/item/held_item = usr.get_held_item()
+			if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_WIRECUTTERS))
+				to_chat(usr, SPAN_WARNING("You need wirecutters!"))
+				return FALSE
+
+			if(isWireCut(target_wire))
+				mend(target_wire, usr)
+			else
+				playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
+				cut(target_wire, usr)
+			return TRUE
+		if("pulse")
+			if(!panel_open)
+				return
+			var/obj/item/held_item = usr.get_held_item()
+			if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
+				to_chat(usr, SPAN_WARNING("You need a multitool!"))
+				return FALSE
+			if (isWireCut(target_wire))
+				to_chat(usr, "You can't pulse a cut wire.")
+				return FALSE
+			playsound(src.loc, 'sound/effects/zzzt.ogg', 25, 1)
+			pulse(target_wire, usr)
+			return TRUE
+
+	return FALSE
+
 //*******************
 //*   SmartFridge Menu
-//********************/
+/*
 
 /obj/structure/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	user.set_interaction(src)
@@ -318,16 +502,11 @@
 
 	return FALSE
 
+*/
+
 //*************
 //*	Hacking
 //**************/
-
-/obj/structure/machinery/smartfridge/proc/get_wire_descriptions()
-	return list(
-		FRIDGE_WIRE_SHOCK      = "Ground safety",
-		FRIDGE_WIRE_SHOOT_INV  = "Dispenser motor control",
-		FRIDGE_WIRE_IDSCAN     = "ID scanner"
-	)
 
 /obj/structure/machinery/smartfridge/proc/cut(var/wire)
 	wires ^= getWireFlag(wire)

@@ -322,6 +322,9 @@ GLOBAL_LIST_INIT(apc_wire_descriptions, list(
 			if (!held_item || !HAS_TRAIT(held_item, TRAIT_TOOL_MULTITOOL))
 				to_chat(usr, SPAN_WARNING("You need a multitool!"))
 				return TRUE
+			if (isWireCut(target_wire))
+				to_chat(usr, "You can't pulse a cut wire.")
+				return FALSE
 			playsound(src.loc, 'sound/effects/zzzt.ogg', 25, 1)
 			pulse(target_wire, usr)
 			. = TRUE
