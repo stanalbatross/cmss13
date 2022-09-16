@@ -20804,8 +20804,12 @@
 	},
 /area/prison/residential/central)
 "bcP" = (
-/turf/open/floor/plating,
-/area/shuttle/drop1/BigRed)
+/obj/effect/decal/cleanable/blood,
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
+	},
+/area/prison/maintenance/hangar_barracks)
 "bcQ" = (
 /turf/open/floor/prison,
 /area/prison/residential/central)
@@ -31815,7 +31819,10 @@
 	pixel_x = -24;
 	start_charge = 0
 	},
-/turf/open/floor/prison,
+/turf/open/floor/prison{
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe"
+	},
 /area/prison/maintenance/hangar_barracks)
 "bHn" = (
 /obj/effect/decal/cleanable/blood,
@@ -32052,11 +32059,6 @@
 	},
 /turf/open/floor/plating/plating_catwalk/prison,
 /area/prison/hallway/east)
-"bHY" = (
-/obj/structure/surface/table/reinforced,
-/obj/effect/spawner/random/tool,
-/turf/open/floor/prison,
-/area/prison/maintenance/hangar_barracks)
 "bHZ" = (
 /turf/open/floor/prison,
 /area/prison/maintenance/hangar_barracks)
@@ -32248,8 +32250,7 @@
 	},
 /area/prison/quarters/security)
 "bIG" = (
-/obj/structure/surface/table/reinforced,
-/obj/effect/landmark/good_item,
+/obj/effect/landmark/static_comms/net_one,
 /turf/open/floor/prison,
 /area/prison/maintenance/hangar_barracks)
 "bIH" = (
@@ -32458,12 +32459,11 @@
 	},
 /area/prison/security)
 "bJi" = (
-/obj/structure/surface/table/reinforced,
-/obj/effect/spawner/random/tool,
-/obj/structure/machinery/light{
-	dir = 8
+/turf/open/floor/prison{
+	dir = 1;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (NORTH)"
 	},
-/turf/open/floor/prison,
 /area/prison/maintenance/hangar_barracks)
 "bJk" = (
 /obj/structure/largecrate/random,
@@ -32477,7 +32477,9 @@
 	},
 /area/prison/hallway/east)
 "bJo" = (
-/obj/structure/bed/chair/office/dark{
+/obj/structure/surface/table/reinforced,
+/obj/effect/spawner/random/tool,
+/obj/structure/machinery/light{
 	dir = 8
 	},
 /turf/open/floor/prison,
@@ -33084,7 +33086,10 @@
 /turf/closed/wall/prison,
 /area/prison/toilet/security)
 "bKO" = (
-/turf/open/floor/plating/plating_catwalk/prison,
+/turf/open/floor/prison{
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe"
+	},
 /area/prison/maintenance/hangar_barracks)
 "bKP" = (
 /obj/structure/machinery/shower{
@@ -46750,6 +46755,11 @@
 /obj/effect/spawner/random/tool,
 /turf/open/floor/prison,
 /area/prison/telecomms)
+"dij" = (
+/obj/structure/surface/table/reinforced,
+/obj/effect/spawner/random/tool,
+/turf/open/floor/prison,
+/area/prison/maintenance/hangar_barracks)
 "diQ" = (
 /obj/structure/pipes/standard/manifold/hidden/supply{
 	dir = 4
@@ -51594,7 +51604,11 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 8
 	},
-/turf/open/floor/plating/plating_catwalk/prison,
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (WEST)"
+	},
 /area/prison/maintenance/hangar_barracks)
 "rrG" = (
 /obj/structure/pipes/standard/simple/hidden/supply,
@@ -52334,6 +52348,13 @@
 	},
 /turf/open/floor/carpet,
 /area/prison/residential/north)
+"tJe" = (
+/turf/open/floor/prison{
+	dir = 8;
+	icon_state = "cell_stripe";
+	tag = "icon-cell_stripe (WEST)"
+	},
+/area/prison/maintenance/hangar_barracks)
 "tMB" = (
 /obj/structure/girder/reinforced,
 /turf/open/floor/plating,
@@ -53266,6 +53287,12 @@
 	},
 /turf/open/floor/carpet,
 /area/prison/residential/central)
+"wTx" = (
+/turf/open/floor/prison{
+	icon_state = "bright_clean_marked";
+	tag = "icon-bright_clean_marked"
+	},
+/area/prison/maintenance/hangar_barracks)
 "wTF" = (
 /obj/effect/landmark/corpsespawner/prison_security,
 /obj/item/weapon/gun/shotgun/pump/cmb,
@@ -101893,7 +101920,7 @@ bwQ
 bEK
 bFQ
 bHl
-bHY
+bHZ
 bIG
 bJi
 byt
@@ -102105,9 +102132,9 @@ bwQ
 bHZ
 bFR
 bKO
-bKO
-bKO
-bHY
+bHZ
+bHZ
+bJi
 byt
 bKN
 bKN
@@ -102316,10 +102343,10 @@ bzQ
 bwQ
 bJk
 bFS
-bHn
+bcP
 rqT
-bKO
-bJk
+tJe
+wTx
 byt
 bKP
 bLI
@@ -102743,7 +102770,7 @@ bFW
 bHp
 bHZ
 bKQ
-bJo
+dij
 byt
 bKP
 bLI
@@ -103559,12 +103586,12 @@ aYM
 bcF
 bcF
 bcF
-bcP
-bcP
-bcP
-bcP
-bcP
-bcP
+bcF
+bcF
+bcF
+bcF
+bcF
+bcF
 bcF
 bcF
 bcF

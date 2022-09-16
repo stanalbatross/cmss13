@@ -562,6 +562,7 @@
 
 /turf/closed/wall/solaris/reinforced/hull
 	hull = 1
+	icon_state = "solaris_interior_hull"
 
 /turf/closed/wall/solaris/rock
 	name = "solaris ridge rock wall"

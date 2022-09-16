@@ -181,6 +181,8 @@
 /area/lv624/ground/colony/telecomm/cargo
 	name = "\improper Far North Storage Dome Communications Relay"
 
+/area/lv624/ground/colony/telecomm/center_colony
+	name = "\improper Center Colony Communications Relay"
 
 /area/lv624/ground/colony/telecomm/sw_lz1
 	name = "\improper South-West LZ1 Communications Relay"
