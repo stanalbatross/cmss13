@@ -66,7 +66,7 @@ SUBSYSTEM_DEF(landmark_init)
 			newly_spawned.forceMove(T)
 			pool.turfs -= T
 
-	return SS_INIT_SUCCESS
+	return ..()
 
 // Java bean thingy to hold what I need to populate these
 /datum/item_pool_holder

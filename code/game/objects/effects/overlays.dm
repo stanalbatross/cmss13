@@ -57,7 +57,7 @@
 
 	start_on_spawn = FALSE
 
-/obj/effect/overlay/temp/point/Initialize(mapload, var/mob/M, atom/actual_pointed_atom)
+/obj/effect/overlay/temp/point/Initialize(mapload, var/mob/M)
 	. = ..()
 	var/turf/T1 = loc
 	var/turf/T2 = M.loc
@@ -69,10 +69,7 @@
 		pixel_x = dist_x * 32
 		pixel_y = dist_y * 32
 
-		var/offset_x = actual_pointed_atom ? get_pixel_position_x(actual_pointed_atom, relative = TRUE) : 0
-		var/offset_y = actual_pointed_atom ? get_pixel_position_y(actual_pointed_atom, relative = TRUE) : 0
-
-		animate(src, pixel_x = offset_x, pixel_y = offset_y, time = glide_time, easing = QUAD_EASING)
+		animate(src, pixel_x = 0, pixel_y = 0, time = glide_time, easing = QUAD_EASING)
 
 	QDEL_IN(src, effect_duration + glide_time)
 
@@ -83,11 +80,8 @@
 /obj/effect/overlay/temp/point/big/greyscale
 	icon_state = "big_arrow_grey"
 
-/obj/effect/overlay/temp/point/big/observer
+/obj/effect/overlay/temp/point/big/greyscale
 	icon_state = "big_arrow_grey"
-	color = "#1c00f6"
-	invisibility = INVISIBILITY_OBSERVER
-	plane = GHOST_PLANE
 
 /obj/effect/overlay/temp/point/big/queen
 	icon_state = "big_arrow_grey"
@@ -223,9 +217,9 @@
 	name = "emp sparks"
 	effect_duration = 10
 
-/obj/effect/overlay/temp/emp_sparks/New(loc)
-	setDir(pick(cardinal))
-	..()
+	New(loc)
+		setDir(pick(cardinal))
+		..()
 
 /obj/effect/overlay/temp/emp_pulse
 	name = "emp pulse"
@@ -258,7 +252,7 @@
 
 
 /obj/effect/overlay/temp/gib_animation/xeno
-	icon = 'icons/mob/xenos/effects.dmi'
+	icon = 'icons/mob/hostiles/Effects.dmi'
 	effect_duration = 10
 
 /obj/effect/overlay/temp/gib_animation/xeno/Initialize(mapload, mob/source_mob, gib_icon, new_icon)
@@ -282,6 +276,6 @@
 
 /obj/effect/overlay/temp/acid_pool_splash
 	name = "acid splash"
-	icon = 'icons/mob/xenos/effects.dmi'
-	icon_state = "pool_splash"
+	icon = 'icons/mob/hostiles/Effects.dmi'
+	icon_state = "acidpoolsplash"
 	effect_duration = 10 SECONDS

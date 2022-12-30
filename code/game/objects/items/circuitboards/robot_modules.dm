@@ -8,14 +8,14 @@
 	var/obj/item/robot/upgrade/jetpack = null
 	var/list/stacktypes
 
-/obj/item/circuitboard/robot_module/emp_act(severity)
-	if(modules)
-		for(var/obj/O in modules)
-			O.emp_act(severity)
-	if(emag)
-		emag.emp_act(severity)
-	..()
-	return
+	emp_act(severity)
+		if(modules)
+			for(var/obj/O in modules)
+				O.emp_act(severity)
+		if(emag)
+			emag.emp_act(severity)
+		..()
+		return
 
 
 /obj/item/circuitboard/robot_module/Initialize()
@@ -61,16 +61,16 @@
 /obj/item/circuitboard/robot_module/standard
 	name = "standard robot module"
 
-/obj/item/circuitboard/robot_module/standard/New()
-	src.modules += new /obj/item/device/flashlight(src)
-	src.modules += new /obj/item/device/flash(src)
-	src.modules += new /obj/item/tool/extinguisher(src)
-	src.modules += new /obj/item/tool/wrench(src)
-	src.modules += new /obj/item/tool/crowbar(src)
-	src.modules += new /obj/item/device/healthanalyzer(src)
-	src.modules += new /obj/item/robot/stun(src)
-	src.emag = new /obj/item/weapon/melee/energy/sword(src)
-	return
+	New()
+		src.modules += new /obj/item/device/flashlight(src)
+		src.modules += new /obj/item/device/flash(src)
+		src.modules += new /obj/item/tool/extinguisher(src)
+		src.modules += new /obj/item/tool/wrench(src)
+		src.modules += new /obj/item/tool/crowbar(src)
+		src.modules += new /obj/item/device/healthanalyzer(src)
+		src.modules += new /obj/item/robot/stun(src)
+		src.emag = new /obj/item/weapon/melee/energy/sword(src)
+		return
 
 /obj/item/circuitboard/robot_module/surgeon
 	name = "surgeon robot module"

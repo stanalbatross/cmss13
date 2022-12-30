@@ -168,12 +168,6 @@
 	H.equip_to_slot_or_del(new /obj/item/device/demo_scanner(H), WEAR_L_STORE)
 	H.equip_to_slot_or_del(new /obj/item/storage/bag/trash(H), WEAR_L_HAND)
 
-/datum/equipment_preset/uscm_ship/maint/load_rank(mob/living/carbon/human/H)
-	if(H.client)
-		if(get_job_playtime(H.client, rank) < JOB_PLAYTIME_TIER_1)
-			return "ME1"
-	return paygrade
-
 //*****************************************************************************************************/
 
 /datum/equipment_preset/uscm_ship/ordn
@@ -280,12 +274,6 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/beanie(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(H), WEAR_R_STORE)
-
-/datum/equipment_preset/uscm_ship/cargo/load_rank(mob/living/carbon/human/H)
-	if(H.client)
-		if(get_job_playtime(H.client, rank) < JOB_PLAYTIME_TIER_1)
-			return "ME1"
-	return paygrade
 
 //*****************************************************************************************************/
 
@@ -425,7 +413,7 @@
 	flags = EQUIPMENT_PRESET_START_OF_ROUND|EQUIPMENT_PRESET_MARINE
 
 	idtype = /obj/item/card/id/silver
-	access = list(ACCESS_MARINE_COMMANDER, ACCESS_MARINE_BRIDGE, ACCESS_MARINE_BRIG, ACCESS_MARINE_DROPSHIP, ACCESS_MARINE_LOGISTICS, ACCESS_MARINE_MEDBAY)
+	access = list(ACCESS_MARINE_COMMANDER, ACCESS_MARINE_BRIDGE, ACCESS_MARINE_BRIG, ACCESS_MARINE_DROPSHIP, ACCESS_MARINE_LOGISTICS)
 	assignment = JOB_SO
 	rank = JOB_SO
 	paygrade = "MO1"
@@ -441,7 +429,7 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(H), WEAR_L_EAR)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/bridge(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/dress(H), WEAR_FEET)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/commander(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/cmcap/ro(H), WEAR_HEAD)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_L_STORE)
@@ -545,7 +533,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/pilot(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/commander(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/pilot(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
@@ -593,7 +581,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/pilot/dcc(H), WEAR_BODY)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine/knife(H), WEAR_FEET)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(H), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/mod88(H), WEAR_WAIST)
+	H.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/commander(H), WEAR_WAIST)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/light/vest/dcc(H), WEAR_JACKET)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(H), WEAR_R_STORE)
@@ -670,9 +658,3 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/latex(H), WEAR_HANDS)
 	H.equip_to_slot_or_del(new backItem(H), WEAR_BACK)
 	H.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(H), WEAR_R_STORE)
-
-/datum/equipment_preset/uscm_ship/chef/load_rank(mob/living/carbon/human/H)
-	if(H.client)
-		if(get_job_playtime(H.client, rank) < JOB_PLAYTIME_TIER_1)
-			return "ME1"
-	return paygrade

@@ -16,7 +16,7 @@ var/list/reboot_sfx = file2list("config/reboot_sfx.txt")
 /world/New()
 	var/debug_server = world.GetConfig("env", "AUXTOOLS_DEBUG_DLL")
 	if (debug_server)
-		LIBCALL(debug_server, "auxtools_init")()
+		call(debug_server, "auxtools_init")()
 		enable_debugging()
 	internal_tick_usage = 0.2 * world.tick_lag
 	hub_password = "kMZy3U5jJHSiBQjr"
@@ -287,7 +287,7 @@ var/failed_old_db_connections = 0
 // 	return 1
 
 var/datum/BSQL_Connection/connection
-/proc/setup_database_connection()
+proc/setup_database_connection()
 
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
@@ -349,6 +349,6 @@ var/datum/BSQL_Connection/connection
 		else
 			CRASH("unsupported platform")
 
-	var/init = LIBCALL(lib, "init")()
+	var/init = call(lib, "init")()
 	if("0" != init)
 		CRASH("[lib] init error: [init]")

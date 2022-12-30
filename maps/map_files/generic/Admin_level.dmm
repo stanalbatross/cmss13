@@ -2308,7 +2308,7 @@
 	},
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/security{
-	network = list("Military","Almayer")
+	network = list("Military", "Almayer")
 	},
 /turf/open/floor/almayer{
 	icon_state = "plate";
@@ -3458,7 +3458,7 @@
 /turf/open/floor/plating/almayer,
 /area/shuttle/distress/start_small)
 "th" = (
-/obj/structure/machinery/medical_pod/bodyscanner,
+/obj/structure/machinery/bodyscanner,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -4168,7 +4168,7 @@
 "Fd" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/security{
-	network = list("Military","Almayer")
+	network = list("Military", "Almayer")
 	},
 /turf/open/floor/almayer{
 	icon_state = "tcomms"
@@ -4672,10 +4672,7 @@
 	dir = 8;
 	name = "Secure Storage"
 	},
-/obj/structure/machinery/door/poddoor/almayer{
-	dir = 4;
-	unacidable = 1
-	},
+/obj/structure/machinery/door/poddoor/almayer,
 /turf/open/floor/almayer{
 	dir = 5;
 	icon_state = "plating";
@@ -5342,7 +5339,7 @@
 /turf/open/space/transit/east/shuttlespace_ew6,
 /area/space)
 "VS" = (
-/obj/structure/machinery/medical_pod/sleeper,
+/obj/structure/machinery/sleeper,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"
@@ -5493,7 +5490,7 @@
 	},
 /area/adminlevel/ert_station)
 "YJ" = (
-/obj/structure/machinery/medical_pod/autodoc/unskilled,
+/obj/structure/machinery/autodoc/event,
 /turf/open/floor/almayer{
 	icon_state = "dark_sterile";
 	tag = "icon-sterile"

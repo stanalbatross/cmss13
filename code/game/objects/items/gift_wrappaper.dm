@@ -31,18 +31,18 @@
 		user.put_in_active_hand(gift)
 		gift.add_fingerprint(user)
 	else
-		to_chat(user, SPAN_NOTICE("The gift was empty!"))
-	deconstruct(TRUE)
+		to_chat(user, SPAN_NOTICE(" The gift was empty!"))
+	qdel(src)
 	return
 
 /obj/item/a_gift/ex_act()
-	deconstruct(FALSE)
+	qdel(src)
 	return
 
 /obj/effect/spresent/relaymove(mob/user)
 	if (user.stat)
 		return
-	to_chat(user, SPAN_NOTICE(" You can't move."))
+	to_chat(user, SPAN_NOTICE(" You cant move."))
 
 /obj/effect/spresent/attackby(obj/item/W as obj, mob/user as mob)
 	..()
@@ -59,7 +59,7 @@
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
-	deconstruct()
+	qdel(src)
 
 /obj/item/a_gift/attack_self(mob/M)
 	..()
@@ -150,7 +150,8 @@
 					W.add_fingerprint(user)
 					add_fingerprint(user)
 			if (src.amount <= 0)
-				deconstruct(TRUE)
+				new /obj/item/trash/c_tube( src.loc )
+				qdel(src)
 				return
 		else
 			to_chat(user, SPAN_NOTICE(" You need scissors!"))
@@ -158,10 +159,6 @@
 		to_chat(user, SPAN_NOTICE(" The object is FAR too large!"))
 	return
 
-/obj/item/wrapping_paper/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/trash/c_tube( src.loc )
-	return ..()
 
 /obj/item/wrapping_paper/get_examine_text(mob/user)
 	. = ..()

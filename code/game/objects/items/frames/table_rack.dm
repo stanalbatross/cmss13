@@ -82,14 +82,11 @@
 	table_type = /obj/structure/surface/table/reinforced
 
 /obj/item/frame/table/reinforced/attackby(obj/item/W, mob/user)
-	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		deconstruct()
 
-/obj/item/frame/table/reinforced/deconstruct(disassembled = TRUE)
-	if(disassembled)
+	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
 		new /obj/item/stack/sheet/metal(get_turf(src))
 		new /obj/item/stack/rods(get_turf(src))
-	return ..()
+		qdel(src)
 
 /*
  * Wooden Table Parts
@@ -105,7 +102,8 @@
 /obj/item/frame/table/wood/attackby(obj/item/W, mob/user)
 
 	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		deconstruct()
+		new /obj/item/stack/sheet/wood(get_turf(src))
+		qdel(src)
 
 	if(istype(W, /obj/item/stack/tile/carpet) && table_type == /obj/structure/surface/table/woodentable)
 		var/obj/item/stack/tile/carpet/C = W
@@ -113,11 +111,6 @@
 			to_chat(user, SPAN_NOTICE("You put a layer of carpet on [src]."))
 			new /obj/item/frame/table/gambling(get_turf(src))
 			qdel(src)
-
-/obj/item/frame/table/wood/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/stack/sheet/wood(get_turf(src))
-	return ..()
 
 /obj/item/frame/table/wood/poor
 	name = "poor wooden table parts"
@@ -145,18 +138,15 @@
 /obj/item/frame/table/gambling/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
-		deconstruct()
+		new /obj/item/stack/sheet/wood(get_turf(src))
+		new /obj/item/stack/tile/carpet(get_turf(src))
+		qdel(src)
+
 	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		to_chat(user, SPAN_NOTICE("You pry the carpet out of [src]."))
 		new /obj/item/stack/tile/carpet(get_turf(src))
 		new /obj/item/frame/table/wood(get_turf(src))
 		qdel(src)
-
-/obj/item/frame/table/gambling/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/stack/sheet/wood(get_turf(src))
-		new /obj/item/stack/tile/carpet(get_turf(src))
-	return ..()
 
 /*
  * Almayer Tables

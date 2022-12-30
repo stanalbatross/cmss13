@@ -4,7 +4,7 @@
 /obj/effect/alien
 	name = "alien thing"
 	desc = "There's something alien about this."
-	icon = 'icons/mob/xenos/effects.dmi'
+	icon = 'icons/mob/hostiles/Effects.dmi'
 	unacidable = TRUE
 	health = 1
 	flags_obj = OBJ_ORGANIC
@@ -44,7 +44,8 @@
 
 /obj/effect/alien/resin/proc/healthcheck()
 	if(health <= 0)
-		deconstruct(FALSE)
+		density = 0
+		qdel(src)
 
 /obj/effect/alien/resin/flamer_fire_act()
 	health -= 50
@@ -163,7 +164,7 @@
 		return .
 	var/mob/living/carbon/Xenomorph/X = AM
 	if(istype(X) && !X.ally_of_hivenumber(hivenumber))
-		X.next_move_slowdown = X.next_move_slowdown + slow_amt
+		X.next_move_slowdown = X.next_move_slowdown + (slow_amt * WEED_XENO_SPEED_MULT)
 		return .
 
 /obj/effect/alien/resin/spike
@@ -230,8 +231,8 @@
 	health = HEALTH_RESIN_XENO_FAST
 	var/speed_amt = 0.7
 
-/obj/effect/alien/resin/sticky/fast/Crossed(atom/movable/AM)
-	return
+	Crossed(atom/movable/AM)
+		return
 
 
 //xeno marker :0)
@@ -246,7 +247,6 @@
 	var/image/seenMeaning //this needs to be a static image because it needs to be dynamically added/removed from xenos' huds as resin marks are created/destroyed
 	var/datum/hivenumber = null
 	var/createdby = null
-	var/createdTime = null
 
 	//scuffed variables so the overwatch code doesnt have a fit
 	var/interference = 0
@@ -265,7 +265,6 @@
 	seenMeaning =  image(icon, src.loc, mark_meaning.icon_state, ABOVE_HUD_LAYER, "pixel_y" = 5)
 	seenMeaning.plane = ABOVE_HUD_PLANE
 	hivenumber = X.hivenumber
-	createdTime = worldtime2text()
 	X.hive.resin_marks += src
 
 	X.hive.mark_ui.update_all_data()
@@ -273,7 +272,7 @@
 	for(var/mob/living/carbon/Xenomorph/XX in X.hive.totalXenos)
 		XX.hud_set_marks()		//this should be a hud thing, but that code is too confusing so I am doing it here
 
-	addtimer(CALLBACK(src, PROC_REF(check_for_weeds)), 30 SECONDS, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, .proc/check_for_weeds), 30 SECONDS, TIMER_UNIQUE)
 
 /obj/effect/alien/resin/marker/Destroy()
 	var/datum/hive_status/builder_hive = GLOB.hive_datum[hivenumber]
@@ -295,7 +294,7 @@
 	var/turf/T = get_turf(src)
 	for(var/i in T.contents)
 		if(istype(i, /obj/effect/alien/weeds))
-			addtimer(CALLBACK(src, PROC_REF(check_for_weeds)), 30 SECONDS, TIMER_UNIQUE)
+			addtimer(CALLBACK(src, .proc/check_for_weeds), 30 SECONDS, TIMER_UNIQUE)
 			return
 	qdel(src)
 
@@ -322,7 +321,7 @@
 //Resin Doors
 /obj/structure/mineral_door/resin
 	name = "resin door"
-	icon = 'icons/mob/xenos/effects.dmi'
+	icon = 'icons/mob/hostiles/Effects.dmi'
 	mineralType = "resin"
 	hardness = 1.5
 	health = HEALTH_DOOR_XENO
@@ -566,10 +565,7 @@
 	if(QDELETED(src))
 		return FALSE
 
-	if(info.distance_travelled > range)
-		return FALSE
-
-	if(info.distance_travelled && info.current_turf == info.target_turf )
+	if(info.distance_travelled > range || info.current_turf == info.target_turf)
 		return FALSE
 
 	var/turf/next_turf = get_step_towards(info.current_turf, info.target_turf)
@@ -681,10 +677,10 @@
 		LAZYADD(walls, T)
 
 /obj/effect/alien/resin/resin_pillar/proc/setup_signals(var/turf/T)
-	RegisterSignal(T, COMSIG_TURF_BULLET_ACT, PROC_REF(handle_bullet))
-	RegisterSignal(T, COMSIG_ATOM_HITBY, PROC_REF(handle_hitby))
-	RegisterSignal(T, COMSIG_WALL_RESIN_XENO_ATTACK, PROC_REF(handle_attack_alien))
-	RegisterSignal(T, COMSIG_WALL_RESIN_ATTACKBY, PROC_REF(handle_attackby))
+	RegisterSignal(T, COMSIG_TURF_BULLET_ACT, .proc/handle_bullet)
+	RegisterSignal(T, COMSIG_ATOM_HITBY, .proc/handle_hitby)
+	RegisterSignal(T, COMSIG_WALL_RESIN_XENO_ATTACK, .proc/handle_attack_alien)
+	RegisterSignal(T, COMSIG_WALL_RESIN_ATTACKBY, .proc/handle_attackby)
 
 /obj/effect/alien/resin/resin_pillar/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -721,7 +717,7 @@
 	time_to_brittle = brittle_time_override
 	time_to_collapse = collapse_time_override
 
-	addtimer(CALLBACK(src, PROC_REF(brittle)), time_to_brittle)
+	addtimer(CALLBACK(src, .proc/brittle), time_to_brittle)
 
 /obj/effect/alien/resin/resin_pillar/proc/brittle()
 	//playsound(granite cracking)
@@ -735,7 +731,7 @@
 
 	playsound(loc, "alien_resin_break", 25, TRUE)
 	START_PROCESSING(SSobj, src)
-	addtimer(CALLBACK(src, PROC_REF(collapse), TRUE), time_to_collapse)
+	addtimer(CALLBACK(src, .proc/collapse, TRUE), time_to_collapse)
 	brittle = TRUE
 
 /obj/effect/alien/resin/resin_pillar/healthcheck()

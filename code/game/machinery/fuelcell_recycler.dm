@@ -63,11 +63,11 @@
 
 /obj/structure/machinery/fuelcell_recycler/process()
 	if(inoperable())
-		update_use_power(USE_POWER_NONE)
+		update_use_power(0)
 		update_icon()
 		return
 	if(!cell_left && !cell_right)
-		update_use_power(USE_POWER_IDLE)
+		update_use_power(1)
 		update_icon()
 		stop_processing()
 		return
@@ -82,9 +82,9 @@
 				active = TRUE
 				cell_right.give(active_power_usage*(CELLRATE * 0.1))
 		if(active)
-			update_use_power(USE_POWER_ACTIVE)
+			update_use_power(2)
 		else
-			update_use_power(USE_POWER_IDLE)
+			update_use_power(1)
 			stop_processing()
 
 		update_icon()

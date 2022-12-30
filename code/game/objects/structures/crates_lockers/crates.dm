@@ -119,16 +119,19 @@
 /obj/structure/closet/crate/ex_act(severity)
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
-			if(prob(50))
-				deconstruct(FALSE)
+			if (prob(50))
+				qdel(src)
 			return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			contents_explosion(severity)
-			deconstruct(FALSE)
+			for(var/obj/O in src.contents)
+				if(prob(50))
+					qdel(O)
+			qdel(src)
 			return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			contents_explosion(severity)
-			deconstruct(FALSE)
+			for(var/obj/O in src.contents)
+				qdel(O)
+			qdel(src)
 			return
 		else
 	return

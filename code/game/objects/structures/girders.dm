@@ -215,15 +215,10 @@
 		if(!do_after(user, 40 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 			return TRUE
 		to_chat(user, SPAN_NOTICE("You wrenched it apart!"))
-		deconstruct(TRUE)
-
+		new /obj/item/stack/sheet/metal(loc, 2)
+		qdel(src)
 		return TRUE
 	return FALSE
-
-/obj/structure/girder/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/stack/sheet/metal(loc, 2)
-	return ..()
 
 /obj/structure/girder/proc/do_wall(var/obj/item/W, var/mob/user)
 	if(!(state == STATE_WALL))
@@ -368,7 +363,7 @@
 	if(health <= 0)
 		var/location = get_turf(src)
 		handle_debris(severity, direction)
-		deconstruct(FALSE)
+		qdel(src)
 		create_shrapnel(location, rand(2,5), direction, 45, /datum/ammo/bullet/shrapnel/light, cause_data) // Shards go flying
 	else
 		update_state()

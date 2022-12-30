@@ -20,7 +20,7 @@
 	. = ..()
 	update_icon()
 	if(is_mainship_level(z))
-		RegisterSignal(SSdcs, COMSIG_GLOB_SECURITY_LEVEL_CHANGED, PROC_REF(sec_changed))
+		RegisterSignal(SSdcs, COMSIG_GLOB_SECURITY_LEVEL_CHANGED, .proc/sec_changed)
 
 /obj/structure/closet/secure_closet/guncabinet/proc/sec_changed(datum/source, new_sec)
 	SIGNAL_HANDLER
@@ -62,8 +62,10 @@
 
 /obj/structure/closet/secure_closet/guncabinet/ex_act(severity)
 	if(severity > EXPLOSION_THRESHOLD_MEDIUM)
-		contents_explosion(severity - EXPLOSION_THRESHOLD_LOW)
-		deconstruct(FALSE)
+		for(var/atom/movable/A in contents)//pulls everything out of the locker and hits it with an explosion
+			A.forceMove(loc)
+			A.ex_act(severity - EXPLOSION_THRESHOLD_LOW)
+		qdel(src)
 
 /obj/structure/closet/secure_closet/guncabinet/mp_armory
 //	req_access = list(ACCESS_MARINE_BRIG)

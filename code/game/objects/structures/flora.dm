@@ -185,8 +185,8 @@ ICE GRASS
 	burning = TRUE
 	var/spread_time = rand(75, 150)
 	if(!(fire_flag & FLORA_BURN_NO_SPREAD))
-		addtimer(CALLBACK(src, PROC_REF(spread_fire)), spread_time)
-	addtimer(CALLBACK(src, PROC_REF(burn_up)), spread_time + 5 SECONDS)
+		addtimer(CALLBACK(src, .proc/spread_fire), spread_time)
+	addtimer(CALLBACK(src, .proc/burn_up), spread_time + 5 SECONDS)
 
 /obj/structure/flora/proc/spread_fire()
 	for(var/D in cardinal) //Spread fire
@@ -206,7 +206,7 @@ ICE GRASS
 
 /obj/structure/flora/ex_act(var/power)
 	if(power >= EXPLOSION_THRESHOLD_VLOW)
-		deconstruct(FALSE)
+		qdel(src)
 
 // MAP VARIANTS //
 // PARENT FOR COLOR, CORNERS AND CENTERS, BASED ON DIRECTIONS //

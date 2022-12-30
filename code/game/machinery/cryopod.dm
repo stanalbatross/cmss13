@@ -160,12 +160,19 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 		icon_state = "cryo_rear"
 
 
+
+
+
+
+
+
+
 //Cryopods themselves.
 /obj/structure/machinery/cryopod
 	name = "hypersleep chamber"
 	desc = "A large automated capsule with LED displays intended to put anyone inside into 'hypersleep', a form of non-cryogenic statis used on most ships, linked to a long-term hypersleep bay on a lower level."
 	icon = 'icons/obj/structures/machinery/cryogenics.dmi'
-	icon_state = "body_scanner_open"
+	icon_state = "body_scanner_0"
 	density = 1
 	anchored = 1
 
@@ -359,7 +366,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 			GLOB.data_core.general -= G
 			qdel(G)
 
-	icon_state = "body_scanner_open"
+	icon_state = "body_scanner_0"
 
 	if(occupant.key)
 		occupant.ghostize(0)
@@ -442,13 +449,13 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 		to_chat(usr, SPAN_WARNING("You can't drag people out of hypersleep!"))
 		return
 
-	if(!silent_exit && alert(usr, "Would you like eject out of the hypersleep chamber?", "Confirm", "Yes", "No") != "Yes")
+	if(!silent_exit && alert(usr, "Would you like eject out of the hypersleep chamber?", "Confirm", "Yes", "No") == "No")
 		return
 
 	go_out() //Not adding a delay for this because for some reason it refuses to work. Not a big deal imo
 	add_fingerprint(usr)
 
-	to_chat(usr, SPAN_NOTICE("You get out of \the [src]."))
+	to_chat(usr, SPAN_NOTICE("You get out of \the [src] chamber."))
 	if(!silent_exit)
 		visible_message(SPAN_WARNING("\The [src]'s casket starts moving!"))
 		var/mob/living/M = usr
@@ -499,7 +506,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 		return
 	M.forceMove(src)
 	occupant = M
-	icon_state = "body_scanner_closed"
+	icon_state = "body_scanner_1"
 	time_entered = world.time
 	start_processing()
 
@@ -519,7 +526,7 @@ GLOBAL_LIST_INIT(frozen_items, list(SQUAD_MARINE_1 = list(), SQUAD_MARINE_2 = li
 	occupant.forceMove(get_turf(src))
 	occupant = null
 	stop_processing()
-	icon_state = "body_scanner_open"
+	icon_state = "body_scanner_0"
 	playsound(src, 'sound/machines/pod_open.ogg', 30)
 
 #ifdef OBJECTS_PROXY_SPEECH

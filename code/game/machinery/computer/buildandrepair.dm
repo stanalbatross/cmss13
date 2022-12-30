@@ -31,7 +31,8 @@
 				if(do_after(user, 20, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 					if(!src || !WT.isOn()) return
 					to_chat(user, SPAN_NOTICE(" You deconstruct the frame."))
-					deconstruct()
+					new /obj/item/stack/sheet/metal( src.loc, 5 )
+					qdel(src)
 		if(1)
 			if(HAS_TRAIT(P, TRAIT_TOOL_WRENCH))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
@@ -111,8 +112,3 @@
 				var/B = new src.circuit.build_path ( src.loc )
 				src.circuit.construct(B)
 				qdel(src)
-
-/obj/structure/computerframe/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/stack/sheet/metal(src.loc, 5)
-	return ..()

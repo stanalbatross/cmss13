@@ -46,9 +46,6 @@
 	// Weather
 	var/weather_enabled = TRUE	// Manual override for weather if set to false
 
-	// Fishing
-	var/fishing_loot = /datum/fish_loot_table
-
 	// Ambience sounds
 	var/list/soundscape_playlist = list() //Clients in this area will hear one of the sounds in this list from time to time
 	var/soundscape_interval = INITIAL_SOUNDSCAPE_COOLDOWN //The base interval between each soundscape.
@@ -202,7 +199,7 @@
 				if(E.operating)
 					E:nextstate = OPEN
 				else if(!E.density)
-					INVOKE_ASYNC(E, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+					INVOKE_ASYNC(E, /obj/structure/machinery/door.proc/close)
 
 /area/proc/air_doors_open()
 	if(src.master.air_doors_activated)
@@ -212,7 +209,7 @@
 				if(E.operating)
 					E:nextstate = OPEN
 				else if(E.density)
-					INVOKE_ASYNC(E, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+					INVOKE_ASYNC(E, /obj/structure/machinery/door.proc/open)
 
 
 /area/proc/firealert()
@@ -228,7 +225,7 @@
 				if(D.operating)
 					D.nextstate = CLOSED
 				else if(!D.density)
-					INVOKE_ASYNC(D, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+					INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/close)
 		var/list/cameras = list()
 		for(var/area/RA in related)
 			for (var/obj/structure/machinery/camera/C in RA)
@@ -250,7 +247,7 @@
 				if(D.operating)
 					D.nextstate = OPEN
 				else if(D.density)
-					INVOKE_ASYNC(D, TYPE_PROC_REF(/obj/structure/machinery/door, open))
+					INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/open)
 		for(var/area/RA in related)
 			for (var/obj/structure/machinery/camera/C in RA)
 				C.network.Remove(CAMERA_NET_FIRE_ALARMS)
@@ -436,8 +433,8 @@
 		var/mob/living/carbon/human/H = M
 		if((istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.flags_inventory & NOSLIPPING)))
 			return
-		H.adjust_effect(5, STUN)
-		H.adjust_effect(5, WEAKEN)
+		H.AdjustStunned(5)
+		H.AdjustKnockeddown(5)
 
 	to_chat(M, "Gravity!")
 

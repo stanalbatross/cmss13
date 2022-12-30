@@ -19,13 +19,12 @@
 		user.drop_held_item()
 		O.forceMove(src)
 		update_icon()
-	else if(HAS_TRAIT(O, TRAIT_TOOL_PEN))
+	else if(istype(O, /obj/item/tool/pen))
 		var/newname = stripped_input(usr, "What would you like to title this bookshelf?")
 		if(!newname)
 			return
 		else
 			name = ("bookcase ([strip_html(newname)])")
-			playsound(src, "paper_writing", 15, TRUE)
 	else
 		..()
 
@@ -48,15 +47,18 @@
 			if (prob(50))
 				for(var/obj/item/book/b in contents)
 					b.forceMove((get_turf(src)))
-				deconstruct(FALSE)
+				qdel(src)
 			return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
-			contents_explosion(severity)
-			deconstruct(FALSE)
+			for(var/obj/item/book/b in contents)
+				if (prob(50)) b.forceMove((get_turf(src)))
+				else qdel(b)
+			qdel(src)
 			return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			contents_explosion(severity)
-			deconstruct(FALSE)
+			for(var/obj/item/book/b in contents)
+				qdel(b)
+			qdel(src)
 			return
 		else
 	return

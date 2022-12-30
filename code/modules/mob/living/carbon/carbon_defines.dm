@@ -21,4 +21,6 @@
 	//blood.dm
 	blood_volume = BLOOD_VOLUME_NORMAL
 
+	var/hivenumber
+
 	var/datum/huntdata/hunter_data //Stores all information relating to Hunters for use with their HUD and other systems.

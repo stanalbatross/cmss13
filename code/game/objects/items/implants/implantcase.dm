@@ -20,7 +20,7 @@
 
 /obj/item/implantcase/attackby(obj/item/I as obj, mob/user as mob)
 	..()
-	if (HAS_TRAIT(I, TRAIT_TOOL_PEN))
+	if (istype(I, /obj/item/tool/pen))
 		var/t = stripped_input(user, "What would you like the label to be?", text("[]", src.name), null)
 		if (user.get_active_hand() != I)
 			return

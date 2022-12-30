@@ -7,6 +7,7 @@
 	var/climbable
 	var/climb_delay = CLIMB_DELAY_LONG
 	var/breakable
+	var/parts
 	var/list/debris
 	var/unslashable = FALSE
 	var/wrenchable = FALSE
@@ -31,11 +32,17 @@
 	debris = null
 	. = ..()
 
+/obj/structure/proc/destroy(deconstruct)
+	if(parts)
+		new parts(loc)
+	density = 0
+	qdel(src)
+
 /obj/structure/attack_animal(mob/living/user)
 	if(breakable)
 		if(user.wall_smash)
 			visible_message(SPAN_DANGER("[user] smashes [src] apart!"))
-			deconstruct(FALSE)
+			destroy()
 
 /obj/structure/attackby(obj/item/W, mob/user)
 	if(HAS_TRAIT(W, TRAIT_TOOL_WRENCH))
@@ -53,7 +60,7 @@
 		src.health -= severity
 		if(src.health <= 0)
 			handle_debris(severity, direction)
-			deconstruct(FALSE)
+			qdel(src)
 
 /obj/structure/proc/handle_debris(severity = 0, direction = 0)
 	if(!LAZYLEN(debris))
@@ -146,7 +153,7 @@
 
 		if(M.lying) return //No spamming this on people.
 
-		M.apply_effect(5, WEAKEN)
+		M.KnockDown(5)
 		to_chat(M, SPAN_WARNING("You topple as \the [src] moves under you!"))
 
 		if(prob(25))

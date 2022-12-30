@@ -18,25 +18,18 @@
 	return
 
 /obj/structure/largecrate/proc/unpack()
-	for(var/atom/movable/A in contents)
-		A.forceMove(loc)
+	if(parts_type)
+		new parts_type(loc, 2)
+	for(var/obj/O in contents)
+		O.forceMove(loc)
 	playsound(src, unpacking_sound, 35)
-	deconstruct(TRUE)
-
-/obj/structure/largecrate/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		if(parts_type)
-			new parts_type(loc, 2)
-	else
-		new /obj/item/stack/sheet/wood(loc)
-	return ..()
-
+	qdel(src)
 
 /obj/structure/largecrate/attackby(obj/item/W as obj, mob/user as mob)
 	if(HAS_TRAIT(W, TRAIT_TOOL_CROWBAR))
 		unpack()
 		user.visible_message(SPAN_NOTICE("[user] pries \the [src] open."), \
-							SPAN_NOTICE("You pry open \the [src]."))
+							 SPAN_NOTICE("You pry open \the [src]."))
 	else
 		return attack_hand(user)
 
@@ -217,34 +210,34 @@
 
 /obj/structure/largecrate/random/barrel
 	name = "blue barrel"
-	desc = "A blue storage barrel."
+	desc = "A blue storage barrel"
 	icon_state = "barrel_blue"
 	parts_type = /obj/item/stack/sheet/metal
 	unpacking_sound = 'sound/effects/metalhit.ogg'
 
 /obj/structure/largecrate/random/barrel/blue
 	name = "blue barrel"
-	desc = "A blue storage barrel."
+	desc = "A blue storage barrel"
 	icon_state = "barrel_blue"
 
 /obj/structure/largecrate/random/barrel/red
 	name = "red barrel"
-	desc = "A red storage barrel."
+	desc = "A red storage barrel"
 	icon_state = "barrel_red"
 
 /obj/structure/largecrate/random/barrel/green
 	name = "green barrel"
-	desc = "A green storage barrel."
+	desc = "A green storage barrel"
 	icon_state = "barrel_green"
 
 /obj/structure/largecrate/random/barrel/yellow
 	name = "yellow barrel"
-	desc = "A yellow storage barrel."
+	desc = "A yellow storage barrel"
 	icon_state = "barrel_yellow"
 
 /obj/structure/largecrate/random/barrel/white
 	name = "white barrel"
-	desc = "A white storage barrel."
+	desc = "A white storage barrel"
 	icon_state = "barrel_white"
 
 /obj/structure/largecrate/random/secure
@@ -322,7 +315,7 @@
 					/obj/item/weapon/gun/revolver/small = /obj/item/ammo_magazine/revolver/small,
 					/obj/item/weapon/gun/revolver/cmb = /obj/item/ammo_magazine/revolver/cmb,
 					/obj/item/weapon/gun/shotgun/merc = /obj/item/ammo_magazine/handful/shotgun/buckshot,
-					/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/buckshot,
+					/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 					/obj/item/weapon/gun/shotgun/double = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 					/obj/item/weapon/gun/shotgun/double/with_stock = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 					/obj/item/weapon/gun/smg/mp27 = /obj/item/ammo_magazine/smg/mp27,
@@ -531,7 +524,7 @@
 		new /obj/item/weapon/gun/smg/mac15(src)
 		new /obj/item/ammo_magazine/smg/mac15(src)
 		new /obj/item/ammo_magazine/smg/mac15(src)
-	new /obj/item/weapon/gun/shotgun/pump/dual_tube/cmb(src)
+	new /obj/item/weapon/gun/shotgun/pump/cmb(src)
 	new /obj/item/ammo_magazine/shotgun(src)
 	new /obj/item/ammo_magazine/shotgun/buckshot(src)
 	new /obj/item/weapon/gun/revolver/m44(src)

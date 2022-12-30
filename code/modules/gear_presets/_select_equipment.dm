@@ -125,7 +125,8 @@
 	H.faction_group = faction_group.Copy()
 	if(H.mind)
 		H.mind.name = H.real_name
-		// Bank account details handled in generate_money_account()
+		if(H.mind.initial_account)
+			W.associated_account_number = H.mind.initial_account.account_number
 	H.job = rank
 	H.comm_title = role_comm_title
 
@@ -340,8 +341,8 @@
 	var/list/rebel_firearms = list(
 		/obj/item/weapon/gun/shotgun/double = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 		/obj/item/weapon/gun/shotgun/double/with_stock = /obj/item/ammo_magazine/handful/shotgun/flechette,
-		/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
-		/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
+		/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
+		/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
 		/obj/item/weapon/gun/shotgun/double/sawn = /obj/item/ammo_magazine/handful/shotgun/incendiary,
 		/obj/item/weapon/gun/shotgun/double/sawn = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 		/obj/item/weapon/gun/rifle/mar40 = /obj/item/ammo_magazine/rifle/mar40,
@@ -437,8 +438,8 @@
 var/list/rebel_shotguns = list(
 	/obj/item/weapon/gun/shotgun/double = /obj/item/ammo_magazine/handful/shotgun/buckshot,
 	/obj/item/weapon/gun/shotgun/double/with_stock = /obj/item/ammo_magazine/handful/shotgun/flechette,
-	/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
-	/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
+	/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
+	/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
 	/obj/item/weapon/gun/shotgun/double/sawn = /obj/item/ammo_magazine/handful/shotgun/incendiary,
 	/obj/item/weapon/gun/shotgun/double/sawn = /obj/item/ammo_magazine/handful/shotgun/buckshot
 	)
@@ -530,7 +531,7 @@ var/list/rebel_rifles = list(
 		/obj/item/weapon/gun/shotgun/merc = /obj/item/ammo_magazine/handful/shotgun/slug,
 		/obj/item/weapon/gun/shotgun/combat = /obj/item/ammo_magazine/handful/shotgun/slug,
 		/obj/item/weapon/gun/shotgun/double/with_stock = /obj/item/ammo_magazine/handful/shotgun/buckshot,
-		/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
+		/obj/item/weapon/gun/shotgun/pump/cmb = /obj/item/ammo_magazine/handful/shotgun/incendiary,
 		/obj/item/weapon/gun/rifle/mar40 = /obj/item/ammo_magazine/rifle/mar40,
 		/obj/item/weapon/gun/rifle/mar40/carbine = /obj/item/ammo_magazine/rifle/mar40,
 		/obj/item/weapon/gun/rifle/mar40/lmg = /obj/item/ammo_magazine/rifle/mar40/lmg,
@@ -552,7 +553,7 @@ var/list/rebel_rifles = list(
 		/obj/item/weapon/gun/shotgun/merc = pick(shotgun_handfuls_12g),
 		/obj/item/weapon/gun/shotgun/combat = pick(shotgun_handfuls_12g),
 		/obj/item/weapon/gun/shotgun/double/with_stock = pick(shotgun_handfuls_12g),
-		/obj/item/weapon/gun/shotgun/pump/dual_tube/cmb = pick(shotgun_handfuls_12g))
+		/obj/item/weapon/gun/shotgun/pump/cmb = pick(shotgun_handfuls_12g))
 
 	var/gunpath = pick(merc_shotguns)
 	var/ammopath = merc_shotguns[gunpath]
@@ -908,7 +909,7 @@ var/list/rebel_rifles = list(
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/fp9000(H), WEAR_L_HAND)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/marine/fp9000(H), WEAR_WAIST)
 		if(2)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/dual_tube/cmb(H), WEAR_L_HAND)
+			H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/cmb(H), WEAR_L_HAND)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/handful/shotgun/buckshot(H), WEAR_IN_BACK)
 		if(3)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/nsg23/stripped(H), WEAR_L_HAND)
@@ -924,7 +925,7 @@ var/list/rebel_rifles = list(
 	var/random_weapon = rand(0,15)
 	switch(random_weapon)
 		if(0 to 8)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/dual_tube/cmb(H), WEAR_L_HAND)
+			H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/cmb(H), WEAR_L_HAND)
 		if(9)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/fp9000(H), WEAR_L_HAND)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/marine/fp9000(H), WEAR_WAIST)

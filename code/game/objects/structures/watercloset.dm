@@ -212,7 +212,7 @@
 	icon_state = "shower"
 	density = 0
 	anchored = 1
-	use_power = USE_POWER_NONE
+	use_power = 0
 	var/on = 0
 	var/obj/effect/mist/mymist = null
 	var/ismist = 0				//needs a var so we can make it linger~
@@ -467,7 +467,7 @@
 	to_chat(usr, SPAN_NOTICE(" You start washing your hands."))
 	flick("sink_animation_fill", src) //<- play the filling animation then automatically switch back to the loop
 	icon_state = "sink_animation_fill_loop" //<- set it to the loop
-	addtimer(CALLBACK(src, PROC_REF(stop_flow)), 6 SECONDS)
+	addtimer(CALLBACK(src, .proc/stop_flow), 6 SECONDS)
 	playsound(loc, 'sound/effects/sinkrunning.ogg', 25, TRUE)
 
 	busy = TRUE
@@ -480,7 +480,7 @@
 	if(ishuman(user))
 		user:update_inv_gloves()
 	for(var/mob/V in viewers(src, null))
-		V.show_message(SPAN_NOTICE("[user] washes their hands using \the [src]."), SHOW_MESSAGE_VISIBLE)
+		V.show_message(SPAN_NOTICE("[user] washes their hands using \the [src]."))
 
 
 /obj/structure/sink/attackby(obj/item/O as obj, mob/user as mob)
@@ -499,9 +499,9 @@
 		if(B.bcell)
 			if(B.bcell.charge > 0 && B.status == 1)
 				flick("baton_active", src)
-				user.apply_effect(10, STUN)
+				user.Stun(10)
 				user.stuttering = 10
-				user.apply_effect(10, WEAKEN)
+				user.KnockDown(10)
 				if(isrobot(user))
 					var/mob/living/silicon/robot/R = user
 					R.cell.charge -= 20

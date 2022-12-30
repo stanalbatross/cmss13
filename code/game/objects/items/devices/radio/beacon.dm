@@ -34,6 +34,7 @@
 	src.add_fingerprint(usr)
 	return
 
-//Probably a better way of doing this, I'm lazy.
-/obj/item/device/radio/beacon/bacon/proc/digest_delay()
-	QDEL_IN(src, 1 MINUTES)
+
+/obj/item/device/radio/beacon/bacon //Probably a better way of doing this, I'm lazy.
+	proc/digest_delay()
+		QDEL_IN(src, 1 MINUTES)

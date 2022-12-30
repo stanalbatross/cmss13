@@ -13,7 +13,7 @@
 	level = 1		// underfloor
 	layer = UNDERFLOOR_OBJ_LAYER
 	anchored = 1
-	use_power = USE_POWER_IDLE
+	use_power = 1
 	idle_power_usage = 50
 
 	var/freq = 1449		// radio frequency
@@ -38,153 +38,158 @@
 
 	SSradio.add_object(src, freq, RADIO_MAGNETS)
 
-	INVOKE_ASYNC(src, PROC_REF(magnetic_process))
+	INVOKE_ASYNC(src, .proc/magnetic_process)
 
+/obj/structure/machinery/magnetic_module
 	// update the invisibility and icon
-/obj/structure/machinery/magnetic_module/hide(var/intact)
-	invisibility = intact ? 101 : 0
-	updateicon()
+	hide(var/intact)
+		invisibility = intact ? 101 : 0
+		updateicon()
 
 	// update the icon_state
-/obj/structure/machinery/magnetic_module/proc/updateicon()
-	var/state="floor_magnet"
-	var/onstate=""
-	if(!on)
-		onstate="0"
+	proc/updateicon()
+		var/state="floor_magnet"
+		var/onstate=""
+		if(!on)
+			onstate="0"
 
-	if(invisibility)
-		icon_state = "[state][onstate]-f"	// if invisible, set icon to faded version
-											// in case of being revealed by T-scanner
-	else
-		icon_state = "[state][onstate]"
+		if(invisibility)
+			icon_state = "[state][onstate]-f"	// if invisible, set icon to faded version
+												// in case of being revealed by T-scanner
+		else
+			icon_state = "[state][onstate]"
 
-/obj/structure/machinery/magnetic_module/receive_signal(datum/signal/signal)
+	receive_signal(datum/signal/signal)
 
-	var/command = signal.data["command"]
-	var/modifier = signal.data["modifier"]
-	var/signal_code = signal.data["code"]
-	if(command && (signal_code == code))
+		var/command = signal.data["command"]
+		var/modifier = signal.data["modifier"]
+		var/signal_code = signal.data["code"]
+		if(command && (signal_code == code))
 
-		Cmd(command, modifier)
-
-
-
-/obj/structure/machinery/magnetic_module/proc/Cmd(var/command, var/modifier)
-
-	if(command)
-		switch(command)
-			if("set-electriclevel")
-				if(modifier)	electricity_level = modifier
-			if("set-magneticfield")
-				if(modifier)	magnetic_field = modifier
-
-			if("add-elec")
-				electricity_level++
-				if(electricity_level > 12)
-					electricity_level = 12
-			if("sub-elec")
-				electricity_level--
-				if(electricity_level <= 0)
-					electricity_level = 1
-			if("add-mag")
-				magnetic_field++
-				if(magnetic_field > 4)
-					magnetic_field = 4
-			if("sub-mag")
-				magnetic_field--
-				if(magnetic_field <= 0)
-					magnetic_field = 1
-
-			if("set-x")
-				if(modifier)	center_x = modifier
-			if("set-y")
-				if(modifier)	center_y = modifier
-
-			if("N") // NORTH
-				center_y++
-			if("S")	// SOUTH
-				center_y--
-			if("E") // EAST
-				center_x++
-			if("W") // WEST
-				center_x--
-			if("C") // CENTER
-				center_x = 0
-				center_y = 0
-			if("R") // RANDOM
-				center_x = rand(-max_dist, max_dist)
-				center_y = rand(-max_dist, max_dist)
-
-			if("set-code")
-				if(modifier)	code = modifier
-			if("toggle-power")
-				on = !on
-
-				if(on)
-					INVOKE_ASYNC(src, PROC_REF(magnetic_process))
+			Cmd(command, modifier)
 
 
-/obj/structure/machinery/magnetic_module/process()
-	if(stat & NOPOWER)
-		on = 0
 
-	// Sanity checks:
-	if(electricity_level <= 0)
-		electricity_level = 1
-	if(magnetic_field <= 0)
-		magnetic_field = 1
+	proc/Cmd(var/command, var/modifier)
+
+		if(command)
+			switch(command)
+				if("set-electriclevel")
+					if(modifier)	electricity_level = modifier
+				if("set-magneticfield")
+					if(modifier)	magnetic_field = modifier
+
+				if("add-elec")
+					electricity_level++
+					if(electricity_level > 12)
+						electricity_level = 12
+				if("sub-elec")
+					electricity_level--
+					if(electricity_level <= 0)
+						electricity_level = 1
+				if("add-mag")
+					magnetic_field++
+					if(magnetic_field > 4)
+						magnetic_field = 4
+				if("sub-mag")
+					magnetic_field--
+					if(magnetic_field <= 0)
+						magnetic_field = 1
+
+				if("set-x")
+					if(modifier)	center_x = modifier
+				if("set-y")
+					if(modifier)	center_y = modifier
+
+				if("N") // NORTH
+					center_y++
+				if("S")	// SOUTH
+					center_y--
+				if("E") // EAST
+					center_x++
+				if("W") // WEST
+					center_x--
+				if("C") // CENTER
+					center_x = 0
+					center_y = 0
+				if("R") // RANDOM
+					center_x = rand(-max_dist, max_dist)
+					center_y = rand(-max_dist, max_dist)
+
+				if("set-code")
+					if(modifier)	code = modifier
+				if("toggle-power")
+					on = !on
+
+					if(on)
+						INVOKE_ASYNC(src, .proc/magnetic_process)
 
 
-	// Limitations:
-	if(abs(center_x) > max_dist)
-		center_x = max_dist
-	if(abs(center_y) > max_dist)
-		center_y = max_dist
-	if(magnetic_field > 4)
-		magnetic_field = 4
-	if(electricity_level > 12)
-		electricity_level = 12
 
-	// Update power usage:
-	if(on)
-		use_power = USE_POWER_ACTIVE
-		active_power_usage = electricity_level*15
-	else
-		use_power = USE_POWER_NONE
+	process()
+		if(stat & NOPOWER)
+			on = 0
+
+		// Sanity checks:
+		if(electricity_level <= 0)
+			electricity_level = 1
+		if(magnetic_field <= 0)
+			magnetic_field = 1
 
 
-	// Overload conditions:
-	/* // Eeeehhh kinda stupid
-	if(on)
-		if(electricity_level > 11)
-			if(prob(electricity_level))
-				explosion(loc, 0, 1, 2, 3) // ooo dat shit EXPLODES son
-				spawn(2)
-					qdel(src)
-	*/
+		// Limitations:
+		if(abs(center_x) > max_dist)
+			center_x = max_dist
+		if(abs(center_y) > max_dist)
+			center_y = max_dist
+		if(magnetic_field > 4)
+			magnetic_field = 4
+		if(electricity_level > 12)
+			electricity_level = 12
 
-	updateicon()
+		// Update power usage:
+		if(on)
+			use_power = 2
+			active_power_usage = electricity_level*15
+		else
+			use_power = 0
 
 
-/obj/structure/machinery/magnetic_module/proc/magnetic_process() // proc that actually does the pulling
-	if(pulling) return
-	while(on)
+		// Overload conditions:
+		/* // Eeeehhh kinda stupid
+		if(on)
+			if(electricity_level > 11)
+				if(prob(electricity_level))
+					explosion(loc, 0, 1, 2, 3) // ooo dat shit EXPLODES son
+					spawn(2)
+						qdel(src)
+		*/
 
-		pulling = 1
-		center = locate(x+center_x, y+center_y, z)
-		if(center)
-			for(var/obj/M in orange(magnetic_field, center))
-				if(!M.anchored && (M.flags_atom & CONDUCT))
-					step_towards(M, center)
+		updateicon()
 
-			for(var/mob/living/silicon/S in orange(magnetic_field, center))
-				if(isAI(S)) continue
-				step_towards(S, center)
 
-		use_power(electricity_level * 5)
-		sleep(13 - electricity_level)
+	proc/magnetic_process() // proc that actually does the pulling
+		if(pulling) return
+		while(on)
 
-	pulling = 0
+			pulling = 1
+			center = locate(x+center_x, y+center_y, z)
+			if(center)
+				for(var/obj/M in orange(magnetic_field, center))
+					if(!M.anchored && (M.flags_atom & CONDUCT))
+						step_towards(M, center)
+
+				for(var/mob/living/silicon/S in orange(magnetic_field, center))
+					if(isAI(S)) continue
+					step_towards(S, center)
+
+			use_power(electricity_level * 5)
+			sleep(13 - electricity_level)
+
+		pulling = 0
+
+
+
 
 /obj/structure/machinery/magnetic_controller
 	name = "Magnetic Control Console"
@@ -192,7 +197,7 @@
 	icon_state = "airlock_control_standby"
 	density = 1
 	anchored = 1.0
-	use_power = USE_POWER_IDLE
+	use_power = 1
 	idle_power_usage = 45
 	var/frequency = 1449
 	var/code = 0
@@ -222,168 +227,170 @@
 	if(path) // check for default path
 		filter_path() // renders rpath
 
-/obj/structure/machinery/magnetic_controller/process()
-	if(magnets.len == 0 && autolink)
-		for(var/obj/structure/machinery/magnetic_module/M in machines)
-			if(M.freq == frequency && M.code == code)
-				magnets.Add(M)
-
-/obj/structure/machinery/magnetic_controller/attack_remote(mob/user as mob)
-	return src.attack_hand(user)
-
-/obj/structure/machinery/magnetic_controller/attack_hand(mob/user as mob)
-	if(inoperable())
-		return
-	user.set_interaction(src)
-	var/dat = "<B>Magnetic Control Console</B><BR><BR>"
-	if(!autolink)
-		dat += {"
-		Frequency: <a href='?src=\ref[src];operation=setfreq'>[frequency]</a><br>
-		Code: <a href='?src=\ref[src];operation=setfreq'>[code]</a><br>
-		<a href='?src=\ref[src];operation=probe'>Probe Generators</a><br>
-		"}
-
-	if(magnets.len >= 1)
-
-		dat += "Magnets confirmed: <br>"
-		var/i = 0
-		for(var/obj/structure/machinery/magnetic_module/M in magnets)
-			i++
-			dat += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;< \[[i]\] (<a href='?src=\ref[src];radio-op=togglepower'>[M.on ? "On":"Off"]</a>)|Electricity level: <a href='?src=\ref[src];radio-op=minuselec'>-</a> [M.electricity_level] <a href='?src=\ref[src];radio-op=pluselec'>+</a>; Magnetic field: <a href='?src=\ref[src];radio-op=minusmag'>-</a> [M.magnetic_field] <a href='?src=\ref[src];radio-op=plusmag'>+</a><br>"
-
-	dat += "<br>Speed: <a href='?src=\ref[src];operation=minusspeed'>-</a> [speed] <a href='?src=\ref[src];operation=plusspeed'>+</a><br>"
-	dat += "Path: {<a href='?src=\ref[src];operation=setpath'>[path]</a>}<br>"
-	dat += "Moving: <a href='?src=\ref[src];operation=togglemoving'>[moving ? "Enabled":"Disabled"]</a>"
+/obj/structure/machinery/magnetic_controller
+	process()
+		if(magnets.len == 0 && autolink)
+			for(var/obj/structure/machinery/magnetic_module/M in machines)
+				if(M.freq == frequency && M.code == code)
+					magnets.Add(M)
 
 
-	show_browser(user, dat, name, "magnet", "size=400x500")
+	attack_remote(mob/user as mob)
+		return src.attack_hand(user)
 
-/obj/structure/machinery/magnetic_controller/Topic(href, href_list)
-	. = ..()
-	if(.)
-		return
-	if(inoperable())
-		return
-	usr.set_interaction(src)
-	src.add_fingerprint(usr)
-
-	if(href_list["radio-op"])
-
-		// Prepare signal beforehand, because this is a radio operation
-		var/datum/signal/signal = new
-		signal.transmission_method = 1 // radio transmission
-		signal.source = src
-		signal.frequency = frequency
-		signal.data["code"] = code
-
-		// Apply any necessary commands
-		switch(href_list["radio-op"])
-			if("togglepower")
-				signal.data["command"] = "toggle-power"
-
-			if("minuselec")
-				signal.data["command"] = "sub-elec"
-			if("pluselec")
-				signal.data["command"] = "add-elec"
-
-			if("minusmag")
-				signal.data["command"] = "sub-mag"
-			if("plusmag")
-				signal.data["command"] = "add-mag"
-
-
-		// Broadcast the signal
-
-		radio_connection.post_signal(src, signal, filter = RADIO_MAGNETS)
-
-		addtimer(CALLBACK(src, PROC_REF(updateUsrDialog)), 1)
-
-	if(href_list["operation"])
-		switch(href_list["operation"])
-			if("plusspeed")
-				speed ++
-				if(speed > 10)
-					speed = 10
-			if("minusspeed")
-				speed --
-				if(speed <= 0)
-					speed = 1
-			if("setpath")
-				var/newpath = copytext(sanitize(input(usr, "Please define a new path!",,path) as text|null),1,MAX_MESSAGE_LEN)
-				if(newpath && newpath != "")
-					moving = 0 // stop moving
-					path = newpath
-					pathpos = 1 // reset position
-					filter_path() // renders rpath
-
-			if("togglemoving")
-				moving = !moving
-				if(moving)
-					INVOKE_ASYNC(src, PROC_REF(MagnetMove))
-
-
-	updateUsrDialog()
-
-/obj/structure/machinery/magnetic_controller/proc/MagnetMove()
-	if(looping) return
-
-	while(moving && rpath.len >= 1)
-
+	attack_hand(mob/user as mob)
 		if(inoperable())
-			break
+			return
+		user.set_interaction(src)
+		var/dat = "<B>Magnetic Control Console</B><BR><BR>"
+		if(!autolink)
+			dat += {"
+			Frequency: <a href='?src=\ref[src];operation=setfreq'>[frequency]</a><br>
+			Code: <a href='?src=\ref[src];operation=setfreq'>[code]</a><br>
+			<a href='?src=\ref[src];operation=probe'>Probe Generators</a><br>
+			"}
 
-		looping = 1
+		if(magnets.len >= 1)
 
-		// Prepare the radio signal
-		var/datum/signal/signal = new
-		signal.transmission_method = 1 // radio transmission
-		signal.source = src
-		signal.frequency = frequency
-		signal.data["code"] = code
+			dat += "Magnets confirmed: <br>"
+			var/i = 0
+			for(var/obj/structure/machinery/magnetic_module/M in magnets)
+				i++
+				dat += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;< \[[i]\] (<a href='?src=\ref[src];radio-op=togglepower'>[M.on ? "On":"Off"]</a>)|Electricity level: <a href='?src=\ref[src];radio-op=minuselec'>-</a> [M.electricity_level] <a href='?src=\ref[src];radio-op=pluselec'>+</a>; Magnetic field: <a href='?src=\ref[src];radio-op=minusmag'>-</a> [M.magnetic_field] <a href='?src=\ref[src];radio-op=plusmag'>+</a><br>"
 
-		if(pathpos > rpath.len) // if the position is greater than the length, we just loop through the list!
-			pathpos = 1
-
-		var/nextmove = uppertext(rpath[pathpos]) // makes it un-case-sensitive
-
-		if(!(nextmove in list("N","S","E","W","C","R")))
-			// N, S, E, W are directional
-			// C is center
-			// R is random (in magnetic field's bounds)
-			qdel(signal)
-			break // break the loop if the character located is invalid
-
-		signal.data["command"] = nextmove
+		dat += "<br>Speed: <a href='?src=\ref[src];operation=minusspeed'>-</a> [speed] <a href='?src=\ref[src];operation=plusspeed'>+</a><br>"
+		dat += "Path: {<a href='?src=\ref[src];operation=setpath'>[path]</a>}<br>"
+		dat += "Moving: <a href='?src=\ref[src];operation=togglemoving'>[moving ? "Enabled":"Disabled"]</a>"
 
 
-		pathpos++ // increase iterator
+		show_browser(user, dat, name, "magnet", "size=400x500")
 
-		// Broadcast the signal
-		spawn()
+	Topic(href, href_list)
+		. = ..()
+		if(.)
+			return
+		if(inoperable())
+			return
+		usr.set_interaction(src)
+		src.add_fingerprint(usr)
+
+		if(href_list["radio-op"])
+
+			// Prepare signal beforehand, because this is a radio operation
+			var/datum/signal/signal = new
+			signal.transmission_method = 1 // radio transmission
+			signal.source = src
+			signal.frequency = frequency
+			signal.data["code"] = code
+
+			// Apply any necessary commands
+			switch(href_list["radio-op"])
+				if("togglepower")
+					signal.data["command"] = "toggle-power"
+
+				if("minuselec")
+					signal.data["command"] = "sub-elec"
+				if("pluselec")
+					signal.data["command"] = "add-elec"
+
+				if("minusmag")
+					signal.data["command"] = "sub-mag"
+				if("plusmag")
+					signal.data["command"] = "add-mag"
+
+
+			// Broadcast the signal
+
 			radio_connection.post_signal(src, signal, filter = RADIO_MAGNETS)
 
-		if(speed == 10)
-			sleep(1)
-		else
-			sleep(12-speed)
+			addtimer(CALLBACK(src, .proc/updateUsrDialog), 1)
 
-	looping = 0
+		if(href_list["operation"])
+			switch(href_list["operation"])
+				if("plusspeed")
+					speed ++
+					if(speed > 10)
+						speed = 10
+				if("minusspeed")
+					speed --
+					if(speed <= 0)
+						speed = 1
+				if("setpath")
+					var/newpath = copytext(sanitize(input(usr, "Please define a new path!",,path) as text|null),1,MAX_MESSAGE_LEN)
+					if(newpath && newpath != "")
+						moving = 0 // stop moving
+						path = newpath
+						pathpos = 1 // reset position
+						filter_path() // renders rpath
+
+				if("togglemoving")
+					moving = !moving
+					if(moving)
+						INVOKE_ASYNC(src, .proc/MagnetMove)
 
 
-/obj/structure/machinery/magnetic_controller/proc/filter_path()
-	// Generates the rpath variable using the path string, think of this as "string2list"
-	// Doesn't use params2list() because of the akward way it stacks entities
-	rpath = list() //  clear rpath
-	var/maximum_character = min( 50, length(path) ) // chooses the maximum length of the iterator. 50 max length
+		updateUsrDialog()
 
-	for(var/i=1, i<=maximum_character, i++) // iterates through all characters in path
+	proc/MagnetMove()
+		if(looping) return
 
-		var/nextchar = copytext(path, i, i+1) // find next character
+		while(moving && rpath.len >= 1)
 
-		if(!(nextchar in list(";", "&", "*", " "))) // if char is a separator, ignore
-			rpath += copytext(path, i, i+1) // else, add to list
+			if(inoperable())
+				break
 
-		// there doesn't HAVE to be separators but it makes paths syntatically visible
+			looping = 1
+
+			// Prepare the radio signal
+			var/datum/signal/signal = new
+			signal.transmission_method = 1 // radio transmission
+			signal.source = src
+			signal.frequency = frequency
+			signal.data["code"] = code
+
+			if(pathpos > rpath.len) // if the position is greater than the length, we just loop through the list!
+				pathpos = 1
+
+			var/nextmove = uppertext(rpath[pathpos]) // makes it un-case-sensitive
+
+			if(!(nextmove in list("N","S","E","W","C","R")))
+				// N, S, E, W are directional
+				// C is center
+				// R is random (in magnetic field's bounds)
+				qdel(signal)
+				break // break the loop if the character located is invalid
+
+			signal.data["command"] = nextmove
+
+
+			pathpos++ // increase iterator
+
+			// Broadcast the signal
+			spawn()
+				radio_connection.post_signal(src, signal, filter = RADIO_MAGNETS)
+
+			if(speed == 10)
+				sleep(1)
+			else
+				sleep(12-speed)
+
+		looping = 0
+
+
+	proc/filter_path()
+		// Generates the rpath variable using the path string, think of this as "string2list"
+		// Doesn't use params2list() because of the akward way it stacks entities
+		rpath = list() //  clear rpath
+		var/maximum_character = min( 50, length(path) ) // chooses the maximum length of the iterator. 50 max length
+
+		for(var/i=1, i<=maximum_character, i++) // iterates through all characters in path
+
+			var/nextchar = copytext(path, i, i+1) // find next character
+
+			if(!(nextchar in list(";", "&", "*", " "))) // if char is a separator, ignore
+				rpath += copytext(path, i, i+1) // else, add to list
+
+			// there doesn't HAVE to be separators but it makes paths syntatically visible
 
 
 

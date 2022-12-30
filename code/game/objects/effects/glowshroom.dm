@@ -90,14 +90,14 @@
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if (prob(5))
-				deconstruct(FALSE)
+				qdel(src)
 				return
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if (prob(50))
-				deconstruct(FALSE)
+				qdel(src)
 				return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			deconstruct(FALSE)
+			qdel(src)
 			return
 		else
 	return

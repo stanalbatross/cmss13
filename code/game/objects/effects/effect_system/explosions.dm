@@ -7,57 +7,57 @@
 	var/flashing = 0			// does explosion creates flash effect?
 	var/flashing_factor = 0		// factor of how powerful the flash effect relatively to the explosion
 
-/datum/effect_system/reagents_explosion/set_up(amt, loc, flash = 0, flash_fact = 0)
-	amount = amt
-	if(istype(loc, /turf/))
-		location = loc
-	else
-		location = get_turf(loc)
+	set_up (amt, loc, flash = 0, flash_fact = 0)
+		amount = amt
+		if(istype(loc, /turf/))
+			location = loc
+		else
+			location = get_turf(loc)
 
-	flashing = flash
-	flashing_factor = flash_fact
+		flashing = flash
+		flashing_factor = flash_fact
 
-	return
-
-/datum/effect_system/reagents_explosion/start()
-	if (amount <= 2)
-		var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
-		s.set_up(2, 1, location)
-		s.start()
-
-		for(var/mob/M as anything in viewers(5, location))
-			to_chat(M, SPAN_WARNING("The solution violently explodes."))
-		for(var/mob/M as anything in viewers(1, location))
-			if (prob (50 * amount))
-				to_chat(M, SPAN_WARNING("The explosion knocks you down."))
-				M.apply_effect(rand(1,5), WEAKEN)
 		return
-	else
-		var/light = -1
-		var/flash = -1
 
-		light = max(-1, amount/8)
-		if (flash && flashing_factor) flash = light + 1
+	start()
+		if (amount <= 2)
+			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+			s.set_up(2, 1, location)
+			s.start()
 
-		for(var/mob/M as anything in viewers(8, location))
-			to_chat(M, SPAN_WARNING("The solution violently explodes."))
+			for(var/mob/M as anything in viewers(5, location))
+				to_chat(M, SPAN_WARNING("The solution violently explodes."))
+			for(var/mob/M as anything in viewers(1, location))
+				if (prob (50 * amount))
+					to_chat(M, SPAN_WARNING("The explosion knocks you down."))
+					M.KnockDown(rand(1,5))
+			return
+		else
+			var/light = -1
+			var/flash = -1
 
-		explosion(location, -1, -1, light, flash)
-		if(light > 0)
-			return TRUE
+			light = max(-1, amount/8)
+			if (flash && flashing_factor) flash = light + 1
 
-/datum/effect_system/reagents_explosion/proc/holder_damage(var/atom/holder)
-	if(holder)
-		var/dmglevel = 4
+			for(var/mob/M as anything in viewers(8, location))
+				to_chat(M, SPAN_WARNING("The solution violently explodes."))
 
-		if (round(amount/8) > 0)
-			dmglevel = 1
-		else if (round(amount/4) > 0)
-			dmglevel = 2
-		else if (round(amount/2) > 0)
-			dmglevel = 3
+			explosion(location, -1, -1, light, flash)
+			if(light > 0)
+				return TRUE
 
-		if(dmglevel<4) holder.ex_act(dmglevel)
+	proc/holder_damage(var/atom/holder)
+		if(holder)
+			var/dmglevel = 4
+
+			if (round(amount/8) > 0)
+				dmglevel = 1
+			else if (round(amount/4) > 0)
+				dmglevel = 2
+			else if (round(amount/2) > 0)
+				dmglevel = 3
+
+			if(dmglevel<4) holder.ex_act(dmglevel)
 
 
 

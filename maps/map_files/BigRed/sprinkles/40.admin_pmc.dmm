@@ -73,11 +73,6 @@
 	icon_state = "metal_2";
 	dir = 4
 	},
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_x = -9;
-	pixel_y = -4
-	},
 /turf/open/floor,
 /area/bigredv2/outside/admin_building)
 "an" = (
@@ -134,7 +129,8 @@
 	},
 /area/bigredv2/outside/admin_building)
 "au" = (
-/obj/effect/landmark/corpsespawner/wygoon,
+/obj/effect/landmark/corpsespawner/pmc,
+/obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/floor{
 	tag = "icon-carpet11-12 (WEST)";
 	icon_state = "carpet11-12";
@@ -162,7 +158,8 @@
 	},
 /area/bigredv2/outside/admin_building)
 "aA" = (
-/obj/effect/landmark/corpsespawner/wygoon,
+/obj/effect/landmark/corpsespawner/pmc,
+/obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/floor{
 	tag = "icon-carpet7-3 (WEST)";
 	icon_state = "carpet7-3";
@@ -236,10 +233,6 @@
 /obj/structure/surface/table,
 /obj/item/device/radio/marine,
 /obj/effect/landmark/objective_landmark/medium,
-/obj/item/weapon/gun/pistol/m4a3/training{
-	name = "dented M4A3 service pistol"
-	},
-/obj/item/ammo_magazine/pistol/rubber,
 /turf/open/floor{
 	tag = "icon-carpet15-15 (WEST)";
 	icon_state = "carpet15-15";
@@ -296,14 +289,12 @@
 /turf/open/floor,
 /area/bigredv2/outside/admin_building)
 "aS" = (
-/obj/item/ammo_magazine/rifle/rubber{
-	current_rounds = 3;
-	pixel_x = -3;
-	pixel_y = -6
-	},
+/obj/structure/pipes/standard/simple/hidden/green,
+/obj/effect/landmark/corpsespawner/pmc,
+/obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/floor{
-	tag = "icon-carpet11-12 (WEST)";
-	icon_state = "carpet11-12";
+	tag = "icon-darkred2 (WEST)";
+	icon_state = "darkred2";
 	dir = 8
 	},
 /area/bigredv2/outside/admin_building)
@@ -327,7 +318,6 @@
 /area/bigredv2/outside/admin_building)
 "aV" = (
 /obj/structure/surface/table,
-/obj/item/ammo_magazine/rifle/rubber,
 /turf/open/floor{
 	tag = "icon-carpet15-15 (WEST)";
 	icon_state = "carpet15-15";
@@ -363,14 +353,6 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_x = -2;
-	pixel_y = -10
-	},
-/obj/item/ammo_box/magazine/m4a3{
-	num_of_magazines = 2
-	},
 /turf/open/floor{
 	tag = "icon-carpet7-3 (WEST)";
 	icon_state = "carpet7-3";
@@ -396,7 +378,8 @@
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 4
 	},
-/obj/effect/landmark/corpsespawner/wygoon,
+/obj/effect/landmark/corpsespawner/pmc,
+/obj/item/weapon/gun/rifle/nsg23/no_lock,
 /turf/open/floor{
 	tag = "icon-carpet15-15 (WEST)";
 	icon_state = "carpet15-15";
@@ -417,11 +400,6 @@
 "bd" = (
 /obj/structure/pipes/standard/simple/hidden/green{
 	dir = 10
-	},
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_x = -8;
-	pixel_y = 9
 	},
 /turf/open/floor,
 /area/bigredv2/outside/admin_building)
@@ -467,8 +445,49 @@
 	},
 /area/bigredv2/outside/admin_building)
 "bi" = (
-/obj/item/ammo_box/magazine/ext{
-	num_of_magazines = 1
+/obj/item/stack/sheet/cardboard{
+	pixel_x = 5;
+	pixel_y = 9
+	},
+/obj/item/ammo_magazine/rifle/nsg23,
+/obj/item/ammo_magazine/rifle/nsg23,
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = -1;
+	pixel_x = -9
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = 7;
+	pixel_x = 15
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_x = 7
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = -8
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = -1;
+	pixel_x = -17
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_x = -9;
+	pixel_y = -10
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = 8;
+	pixel_x = -10
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = -9;
+	pixel_x = 5
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = 10;
+	pixel_x = -16
+	},
+/obj/item/ammo_magazine/rifle/nsg23{
+	pixel_y = -7;
+	pixel_x = 12
 	},
 /turf/open/floor{
 	tag = "icon-carpet5-1 (WEST)";
@@ -551,126 +570,6 @@
 	dir = 6
 	},
 /area/bigredv2/outside/admin_building)
-"dp" = (
-/obj/item/ammo_magazine/rifle/rubber{
-	current_rounds = 0;
-	pixel_x = -6;
-	pixel_y = -4
-	},
-/turf/open/floor{
-	tag = "icon-carpet15-15 (WEST)";
-	icon_state = "carpet15-15";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"is" = (
-/obj/item/ammo_magazine/pistol/rubber{
-	current_rounds = 0
-	},
-/turf/open/floor,
-/area/bigredv2/outside/admin_building)
-"jq" = (
-/obj/item/weapon/gun/rifle/m41a/corporate{
-	current_mag = /obj/item/ammo_magazine/rifle/rubber;
-	name = "battered M41A pulse rifle MK2";
-	pixel_x = 4;
-	desc = "A Weyland-Yutani creation, this M41A MK2 comes equipped in corporate white. Uses 10x24mm caseless ammunition. It seems to be pretty battered and broken up.."
-	},
-/turf/open/floor{
-	tag = "icon-carpet15-15 (WEST)";
-	icon_state = "carpet15-15";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"lz" = (
-/obj/item/ammo_magazine/rifle/rubber{
-	current_rounds = 0;
-	pixel_y = 11
-	},
-/turf/open/floor{
-	tag = "icon-carpet7-3 (WEST)";
-	icon_state = "carpet7-3";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"rv" = (
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0
-	},
-/turf/open/floor{
-	tag = "icon-carpet7-3 (WEST)";
-	icon_state = "carpet7-3";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"si" = (
-/obj/item/ammo_box/magazine{
-	num_of_magazines = 2
-	},
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_x = -8;
-	pixel_y = 13
-	},
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_x = 14;
-	pixel_y = 17
-	},
-/turf/open/floor{
-	tag = "icon-carpet13-5 (WEST)";
-	icon_state = "carpet13-5";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"uv" = (
-/obj/item/ammo_magazine/rifle{
-	current_rounds = 0;
-	pixel_y = 7;
-	pixel_x = -9
-	},
-/turf/open/floor,
-/area/bigredv2/outside/admin_building)
-"AC" = (
-/obj/item/ammo_magazine/pistol/rubber{
-	current_rounds = 0
-	},
-/turf/open/floor{
-	tag = "icon-carpet15-15 (WEST)";
-	icon_state = "carpet15-15";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"Br" = (
-/obj/structure/surface/table,
-/obj/item/storage/firstaid/regular/empty,
-/turf/open/floor{
-	tag = "icon-carpet15-15 (WEST)";
-	icon_state = "carpet15-15";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
-"QR" = (
-/obj/structure/barricade/metal/wired{
-	dir = 4
-	},
-/obj/item/ammo_magazine/pistol/rubber{
-	current_rounds = 0
-	},
-/turf/open/floor,
-/area/bigredv2/outside/admin_building)
-"Sz" = (
-/obj/item/ammo_magazine/rifle/rubber{
-	current_rounds = 0;
-	pixel_x = 5;
-	pixel_y = -5
-	},
-/turf/open/floor{
-	tag = "icon-carpet15-15 (WEST)";
-	icon_state = "carpet15-15";
-	dir = 8
-	},
-/area/bigredv2/outside/admin_building)
 
 (1,1,1) = {"
 ab
@@ -689,9 +588,9 @@ ac
 aD
 ar
 aA
-lz
 aI
-rv
+aI
+aI
 aZ
 bi
 ab
@@ -699,13 +598,13 @@ ab
 (3,1,1) = {"
 aj
 ak
-dp
-AC
+as
+as
 aJ
 aO
 aJ
 as
-si
+bj
 bp
 "}
 (4,1,1) = {"
@@ -714,20 +613,20 @@ ak
 at
 aB
 aK
-Br
+aV
 aV
 ba
 bj
-uv
+aR
 "}
 (5,1,1) = {"
 aj
 ak
-jq
+as
 aC
 as
 aC
-Sz
+as
 bb
 bj
 aR
@@ -738,11 +637,11 @@ al
 au
 aW
 aL
-aS
+aQ
 aQ
 bc
 bk
-is
+aR
 "}
 (7,1,1) = {"
 ad
@@ -750,7 +649,7 @@ am
 av
 aP
 aP
-QR
+aP
 aP
 bd
 bl
@@ -774,7 +673,7 @@ an
 an
 be
 aM
-an
+aS
 aX
 be
 bn

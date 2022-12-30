@@ -33,7 +33,7 @@ SUBSYSTEM_DEF(lighting)
 		if(istype(thing))
 			thing.shift_to_subarea()
 
-	return SS_INIT_SUCCESS
+	return ..()
 
 
 /datum/controller/subsystem/lighting/fire(resumed = FALSE)

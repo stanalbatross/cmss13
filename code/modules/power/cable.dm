@@ -117,11 +117,16 @@
 		if (shock(user, 50))
 			return
 
-		deconstruct()
+		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
+			new/obj/item/stack/cable_coil(T, 2, color)
+		else
+			new/obj/item/stack/cable_coil(T, 1, color)
+
 		for(var/mob/O in viewers(src, null))
-			O.show_message(SPAN_WARNING("[user] cuts the cable."), SHOW_MESSAGE_VISIBLE)
-		// wires are irrelevant so I have disabled this message for now
-		//message_staff("[key_name(user)](<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo;extra=\ref[user]'>?</A>) cut a wire at ([x],[y],[z]) - <A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>")
+			O.show_message(SPAN_WARNING("[user] cuts the cable."), 1)
+		message_staff("[key_name(user)](<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminmoreinfo;extra=\ref[user]'>?</A>) cut a wire at ([x],[y],[z]) - <A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>")
+
+		qdel(src)
 
 		return	// not needed, but for clarity
 
@@ -164,20 +169,17 @@
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if (prob(25))
-				deconstruct(TRUE)
+				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				qdel(src)
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if (prob(50))
-				deconstruct(TRUE)
+				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				qdel(src)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			deconstruct(FALSE)
+			qdel(src)
 	return
 
-/obj/structure/cable/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
-	return ..()
-
-/obj/structure/cable/proc/cableColor(var/colorC)
+obj/structure/cable/proc/cableColor(var/colorC)
 	if(colorC)
 		color = colorC
 	else

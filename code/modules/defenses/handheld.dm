@@ -26,10 +26,6 @@
 	. = ..()
 	connect()
 
-/obj/item/defenses/handheld/Destroy()
-	TR = null // FIXME: Might also need to delete. Unsure.
-	return ..()
-
 /obj/item/defenses/handheld/proc/connect()
 	sleep(0.5 SECONDS)
 	if(dropped && !TR)
@@ -85,7 +81,7 @@
 	TR.placed = 1
 	TR.update_icon()
 	TR.setDir(direction)
-	transfer_label_component(TR)
+	TR.set_name_label(name_label)
 	TR.owner_mob = user
 	dropped = 0
 	user.drop_inv_item_to_loc(src, TR)

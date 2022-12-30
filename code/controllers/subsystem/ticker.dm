@@ -46,15 +46,22 @@ SUBSYSTEM_DEF(ticker)
 
 	var/totalPlayers = 0					//used for pregame stats on statpanel
 	var/totalPlayersReady = 0				//used for pregame stats on statpanel
+	var/datum/nmcontext/NM
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
 	load_mode()
+
+	if(CONFIG_GET(flag/nightmare_enabled))
+		NM = new
+		if(!NM.init_config() || !NM.init_scenario())
+			QDEL_NULL(NM)
+			log_debug("TICKER: Error during Nightmare Init, aborting")
 
 	var/all_music = CONFIG_GET(keyed_list/lobby_music)
 	var/key = SAFEPICK(all_music)
 	if(key)
 		login_music = file(all_music[key])
-	return SS_INIT_SUCCESS
+	return ..()
 
 /datum/controller/subsystem/ticker/fire(resumed = FALSE)
 	switch(current_state)
@@ -106,38 +113,53 @@ SUBSYSTEM_DEF(ticker)
 						/datum/controller/subsystem/vote/proc/initiate_vote,
 						"gamemode",
 						"SERVER",
-						CALLBACK(src, PROC_REF(handle_map_reboot))
+						CALLBACK(src, .proc/handle_map_reboot)
 					), 3 SECONDS)
 				else
 					handle_map_reboot()
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
 /// Attempt to start game asynchronously if applicable
-/datum/controller/subsystem/ticker/proc/request_start()
-	if(current_state == GAME_STATE_PREGAME)
-		time_left = 0
-
-	// Killswitch if hanging or interrupted
-	if(SSnightmare.stat != NIGHTMARE_STATUS_DONE)
-		if(SSnightmare.start_time && (world.time - SSnightmare.start_time) > 30 SECONDS)
-			SSnightmare.stat = NIGHTMARE_STATUS_DONE
-			log_admin("Nightmare setup was cancelled as it took more than 30 seconds! Game might be inconsistent!")
-		else
-			var/ret = INVOKE_ASYNC(SSnightmare, TYPE_PROC_REF(/datum/controller/subsystem/nightmare, prepare_game))
-			if(!ret)
-				return // Wait for completion
-			log_debug("Nightmare setup finished")
-
+/datum/controller/subsystem/ticker/proc/request_start(skip_nightmare = FALSE)
 	if(current_state != GAME_STATE_PREGAME)
-		return
+		return FALSE
+
+	if(!CONFIG_GET(flag/nightmare_enabled))
+		skip_nightmare = TRUE
+		QDEL_NULL(NM)
+
 	current_state = GAME_STATE_SETTING_UP
-	INVOKE_ASYNC(src, PROC_REF(setup_start))
+	if(!skip_nightmare)
+		setup_nightmare()
+	else
+		INVOKE_ASYNC(src, .proc/setup_start)
 
 	for(var/client/C in GLOB.admins)
 		remove_verb(C, roundstart_mod_verbs)
 	admin_verbs_minor_event -= roundstart_mod_verbs
 
 	return TRUE
+
+/// Request to start nightmare setup before moving on to regular setup
+/datum/controller/subsystem/ticker/proc/setup_nightmare()
+	PRIVATE_PROC(TRUE)
+	if(NM && !NM.done)
+		RegisterSignal(SSdcs, COMSIG_GLOB_NIGHTMARE_SETUP_DONE, .proc/nightmare_setup_done)
+		if(!NM.start_setup())
+			QDEL_NULL(NM)
+			INVOKE_ASYNC(src, .proc/setup_start)
+		return
+	INVOKE_ASYNC(src, .proc/setup_start)
+
+/// Catches nightmare result to proceed to game start
+/datum/controller/subsystem/ticker/proc/nightmare_setup_done(_, datum/nmcontext/ctx, retval)
+	SIGNAL_HANDLER
+	PRIVATE_PROC(TRUE)
+	if(ctx != NM)
+		return
+	if(retval != NM_TASK_OK)
+		QDEL_NULL(NM)
+	INVOKE_ASYNC(src, .proc/setup_start)
 
 /// Try to effectively setup gamemode and start now
 /datum/controller/subsystem/ticker/proc/setup_start()
@@ -158,7 +180,7 @@ SUBSYSTEM_DEF(ticker)
 		/datum/controller/subsystem/vote/proc/initiate_vote,
 		"groundmap",
 		"SERVER",
-		CALLBACK(src, PROC_REF(Reboot))
+		CALLBACK(src, .proc/Reboot)
 	), 3 SECONDS)
 
 /datum/controller/subsystem/ticker/proc/setup()
@@ -184,7 +206,7 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	mode.announce()
 	if(mode.taskbar_icon)
-		RegisterSignal(SSdcs, COMSIG_GLOB_CLIENT_LOGIN, PROC_REF(handle_mode_icon))
+		RegisterSignal(SSdcs, COMSIG_GLOB_CLIENT_LOGIN, .proc/handle_mode_icon)
 		set_clients_taskbar_icon(mode.taskbar_icon)
 
 	if(GLOB.perf_flags & PERF_TOGGLE_LAZYSS)
@@ -229,7 +251,7 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 
 	for(var/mob/new_player/np in GLOB.new_player_list)
-		INVOKE_ASYNC(np, TYPE_PROC_REF(/mob/new_player, new_player_panel_proc), TRUE)
+		INVOKE_ASYNC(np, /mob/new_player.proc/new_player_panel_proc, TRUE)
 
 	setup_economy()
 
@@ -256,9 +278,9 @@ SUBSYSTEM_DEF(ticker)
 
 	for(var/i in GLOB.closet_list) //Set up special equipment for lockers and vendors, depending on gamemode
 		var/obj/structure/closet/C = i
-		INVOKE_ASYNC(C, TYPE_PROC_REF(/obj/structure/closet, select_gamemode_equipment), mode.type)
+		INVOKE_ASYNC(C, /obj/structure/closet.proc/select_gamemode_equipment, mode.type)
 	for(var/obj/structure/machinery/vending/V in machines)
-		INVOKE_ASYNC(V, TYPE_PROC_REF(/obj/structure/machinery/vending, select_gamemode_equipment), mode.type)
+		INVOKE_ASYNC(V, /obj/structure/machinery/vending.proc/select_gamemode_equipment, mode.type)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_POST_SETUP)
 
@@ -381,7 +403,7 @@ SUBSYSTEM_DEF(ticker)
 		if(!player || !player.ready || !player.mind || !player.job)
 			continue
 
-		INVOKE_ASYNC(src, PROC_REF(spawn_and_equip_char), player)
+		INVOKE_ASYNC(src, .proc/spawn_and_equip_char, player)
 
 /datum/controller/subsystem/ticker/proc/spawn_and_equip_char(var/mob/new_player/player)
 	var/datum/job/J = RoleAuthority.roles_for_mode[player.job]
@@ -427,7 +449,7 @@ SUBSYSTEM_DEF(ticker)
 				if(C.player_data && C.player_data.playtime_loaded && length(C.player_data.playtimes) == 0)
 					msg_admin_niche("NEW PLAYER: <b>[key_name(player, 1, 1, 0)] (<A HREF='?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];ahelp=adminmoreinfo;extra=\ref[player]'>?</A>)</b>. IP: [player.lastKnownIP], CID: [player.computer_id]")
 				if(C.player_data && C.player_data.playtime_loaded && ((round(C.get_total_human_playtime() DECISECONDS_TO_HOURS, 0.1)) <= 5))
-					msg_sea(("NEW PLAYER: <b>[key_name(player, 0, 1, 0)]</b> only has [(round(C.get_total_human_playtime() DECISECONDS_TO_HOURS, 0.1))] hours as a human. Current role: [get_actual_job_name(player)] - Current location: [get_area(player)]"), TRUE)
+					msg_sea(("NEW PLAYER: <b>[key_name(player, 0, 1, 0)] has less than 5 hours as a human. Current role: [get_actual_job_name(player)] - Current location: [get_area(player)]"), TRUE)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
 			if(!istype(M,/mob/new_player))

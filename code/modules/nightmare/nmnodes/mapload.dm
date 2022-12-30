@@ -1,35 +1,28 @@
-/// Abstract config node designating a map insertion
+/// Abstract node to queue a map insertion task
 /datum/nmnode/mapload
-	id = "abstract-mapload"
-	/// Base file (or directory) path of map files
+	name = "Abstract Map Insert"
 	var/filepath
 
-/datum/nmnode/mapload/New(list/spec)
+/datum/nmnode/mapload/New(datum/nmreader/reader, list/nodespec)
 	. = ..()
-	filepath = spec["path"]
+	filepath = nodespec["path"]
+	filepath = "[CONFIG_GET(string/nightmare_map_path)][filepath]"
 
-/// Designates insert of a given map file at a specified landmark
 /datum/nmnode/mapload/landmark
-	id = "map_insert"
-	/// Landmark identifier
+	name = "Landmark Map Insert"
 	var/landmark
-	var/keep
-
-/datum/nmnode/mapload/landmark/New(list/spec)
+	var/keep = FALSE
+/datum/nmnode/mapload/landmark/New(datum/nmreader/reader, list/nodespec)
 	. = ..()
-	if(spec["landmark"])
-		landmark = spec["landmark"]
-	if(spec["keep"])
+	if(nodespec["landmark"])
+		landmark = nodespec["landmark"]
+	if(nodespec["keep"])
 		keep = TRUE
-
 /datum/nmnode/mapload/landmark/resolve(datum/nmcontext/context)
 	. = ..()
 	if(.)
-		var/path = context.get_file_path(filepath, "map")
-		var/datum/nmtask/mapload/task = new("[name] @ [landmark]", path, landmark, keep)
-		context.add_task(task)
-
-
+		var/datum/nmtask/mapload/T = new(filepath, landmark, keep)
+		context.mapcontroller.register_task(T)
 
 /**
  * Inserts a map file among a set of variations in a folder
@@ -41,25 +34,23 @@
  *    some/folder/20+extras.dmm is added on top
  */
 /datum/nmnode/mapload/variations
-	id = "map_variations"
 	name = "Map Variations"
 	var/landmark
-/datum/nmnode/mapload/variations/New(list/spec)
+/datum/nmnode/mapload/variations/New(datum/nmreader/reader, list/nodespec)
 	. = ..()
-	if(spec["landmark"])
-		landmark = spec["landmark"]
-		if(!spec["name"])
+	if(nodespec["landmark"])
+		landmark = nodespec["landmark"]
+		if(!nodespec["name"])
 			name += ": [landmark]"
 /datum/nmnode/mapload/variations/resolve(datum/nmcontext/context)
 	. = ..()
 	if(!. || !landmark)
 		return
-	var/dir_path = context.get_file_path(filepath, "map")
 	var/regex/matcher = new(@"^([0-9]+)([\.\+]).*?\.dmm$", "i")
 	var/list/filelist = list()
 	var/list/weights = list()
 	var/sum = 0
-	for(var/filename in flist(dir_path))
+	for(var/filename in flist(filepath))
 		if(!matcher.Find(filename))
 			continue
 		filelist += filename
@@ -72,8 +63,8 @@
 		sum += weights[i]
 		if(sum >= roll && matcher.Find(filelist[i]))
 			var/keep = (matcher.group[2] == "+")
-			var/datum/nmtask/mapload/task = new("[name] @ [landmark]", "[dir_path][matcher.match]", landmark, keep)
-			context.add_task(task)
+			var/datum/nmtask/mapload/T = new("[filepath][matcher.match]", landmark, keep)
+			context.mapcontroller.register_task(T)
 			break
 
 /**
@@ -86,21 +77,24 @@
  * would have 10% chance to insert at 'something' landmark
  */
 /datum/nmnode/mapload/sprinkles
-	id = "map_sprinkle"
 	name = "Map Sprinkles"
-/datum/nmnode/mapload/sprinkles/resolve(datum/nmcontext/context, list/statsmap)
+/datum/nmnode/mapload/sprinkles/resolve(datum/nmcontext/context)
 	. = ..()
 	if(!.) return
-	var/dir_path = context.get_file_path(filepath, "map")
+	var/successes = 0
 	var/regex/matcher = new(@"^([0-9]+)([\.\+])([^_]+)(_.*)?\.dmm$", "i")
-	var/list/dircontents = flist(dir_path)
+	var/list/dircontents = flist(filepath)
 	for(var/filename in dircontents)
 		if(!matcher.Find(filename))
 			continue
-		var/fprob = Clamp(text2num(matcher.group[1]) / 100, 0, 1)
-		if(fprob < rand())
+		var/chance = Clamp(text2num(matcher.group[1]) / 100, 0, 1)
+		if(context.scenario["chaos"])
+			chance = 1 - (1 - chance) ** context.scenario["chaos"]
+		if(chance < rand())
 			continue
-		var/landmark = matcher.group[3]
 		var/keep = (matcher.group[2] == "+")
-		var/datum/nmtask/mapload/task = new("[name] @ [landmark]", "[dir_path][matcher.match]", landmark, keep)
-		context.add_task(task)
+		var/landmark = matcher.group[3]
+		var/datum/nmtask/mapload/T = new("[filepath][matcher.match]", landmark, keep)
+		context.mapcontroller.register_task(T)
+		successes++
+	logself("Queued [successes]/[length(dircontents)] map inserts", FALSE, "OK")

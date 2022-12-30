@@ -60,7 +60,7 @@
 		else
 			clear_fullscreen("blind")
 
-		if(dazed)
+		if(eye_blurry || dazed)
 			overlay_fullscreen("eye_blurry", /atom/movable/screen/fullscreen/impaired, 5)
 		else if((disabilities & NEARSIGHTED) && !HAS_TRAIT(src, TRAIT_NEARSIGHTED_EQUIPMENT))
 			overlay_fullscreen("eye_blurry", /atom/movable/screen/fullscreen/impaired, 2)

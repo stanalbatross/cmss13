@@ -14,4 +14,5 @@ SUBSYSTEM_DEF(assets)
 			get_asset_datum(type)
 
 	transport.Initialize(cache)
-	return SS_INIT_SUCCESS
+
+	return ..()

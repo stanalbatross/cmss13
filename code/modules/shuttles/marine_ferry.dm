@@ -116,7 +116,7 @@
 
 /datum/shuttle/ferry/marine/proc/prepare_automated_launch()
 	ai_silent_announcement("The [name] will automatically depart in [automated_launch_delay * 0.1] seconds")
-	automated_launch_timer = addtimer(CALLBACK(src, PROC_REF(automated_launch)), automated_launch_delay, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_STOPPABLE)
+	automated_launch_timer = addtimer(CALLBACK(src, .proc/automated_launch), automated_launch_delay, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_STOPPABLE)
 
 /datum/shuttle/ferry/marine/proc/automated_launch()
 	if(!queen_locked)
@@ -140,7 +140,7 @@
 				announce_preflight_failure()
 				if(automated_launch)
 					ai_silent_announcement("Automated launch of [name] failed. New launch in [DROPSHIP_AUTO_RETRY_COOLDOWN] SECONDS.")
-					automated_launch_timer = addtimer(CALLBACK(src, PROC_REF(automated_launch)), automated_launch_delay)
+					automated_launch_timer = addtimer(CALLBACK(src, .proc/automated_launch), automated_launch_delay)
 
 				process_state = IDLE_STATE
 				in_use = null
@@ -486,9 +486,6 @@
 
 	marine_announcement("DROPSHIP ON COLLISION COURSE. CRASH IMMINENT." , "EMERGENCY", 'sound/AI/dropship_emergency.ogg')
 
-	for(var/mob/dead/observer/observer as anything in GLOB.observer_list)
-		to_chat(observer, SPAN_DEADSAY(FONT_SIZE_LARGE("The dropship is about to impact [get_area_name(T_trg)]" + " (<a href='?src=\ref[observer];jumptocoord=1;X=[T_trg.x];Y=[T_trg.y];Z=[T_trg.z]'>JMP</a>)")))
-
 	playsound_area(get_area(turfs_int[sound_target]), sound_landing, 100)
 	playsound_area(get_area(turfs_int[sound_target]), channel = SOUND_CHANNEL_AMBIENCE, status = SOUND_UPDATE)
 
@@ -520,11 +517,11 @@
 	// Break the briefing windows.
 	for(var/i in GLOB.hijack_bustable_windows)
 		var/obj/structure/window/H = i
-		H.deconstruct(FALSE)
+		H.shatter_window(1)
 
 	for(var/k in GLOB.hijack_bustable_ladders)
 		var/obj/structure/ladder/fragile_almayer/L = k
-		L.deconstruct()
+		L.break_and_replace()
 
 	// Delete the briefing door(s).
 	for(var/D in GLOB.hijack_deletable_windows)
@@ -549,9 +546,9 @@
 		else
 			to_chat(M, SPAN_WARNING("The floor jolts under your feet!"))
 			shake_camera(M, 10, 1)
-			M.apply_effect(3, WEAKEN)
+			M.KnockDown(3)
 
-	addtimer(CALLBACK(src, PROC_REF(disable_latejoin)), 3 MINUTES) // latejoin cryorines have 3 minutes to get the hell out
+	addtimer(CALLBACK(src, .proc/disable_latejoin), 3 MINUTES) // latejoin cryorines have 3 minutes to get the hell out
 
 	var/list/turfs_trg = get_shuttle_turfs(T_trg, info_datums) //Final destination turfs <insert bad jokey reference here>
 
@@ -652,18 +649,18 @@
 	for(var/turf/T in L) // For every turf
 		for(var/obj/structure/machinery/door/D in T) // For every relevant door there
 			if(!D.density && istype(D, /obj/structure/machinery/door/poddoor/shutters/transit))
-				INVOKE_ASYNC(D, TYPE_PROC_REF(/obj/structure/machinery/door, close)) // Pod can't close if blocked
+				INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/close) // Pod can't close if blocked
 			if(iselevator && istype(D, /obj/structure/machinery/door/airlock)) // Just close. Why is this here though...?
-				INVOKE_ASYNC(D, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+				INVOKE_ASYNC(D, /obj/structure/machinery/door.proc/close)
 			else if(istype(D, /obj/structure/machinery/door/airlock/dropship_hatch) || istype(D, /obj/structure/machinery/door/airlock/multi_tile/almayer/dropshiprear))
-				INVOKE_ASYNC(src, PROC_REF(force_close_launch), D) // The whole shabang
+				INVOKE_ASYNC(src, .proc/force_close_launch, D) // The whole shabang
 
 /datum/shuttle/ferry/marine/force_close_launch(var/obj/structure/machinery/door/AL)
 	if(!iselevator)
 		for(var/mob/M in AL.loc) // Bump all mobs outta the way for outside airlocks of shuttles
 			if(isliving(M))
 				to_chat(M, SPAN_HIGHDANGER("You get thrown back as the dropship doors slam shut!"))
-				M.apply_effect(4, WEAKEN)
+				M.KnockDown(4)
 				for(var/turf/T in orange(1, AL)) // Forcemove to a non shuttle turf
 					if(!istype(T, /turf/open/shuttle) && !istype(T, /turf/closed/shuttle))
 						M.forceMove(T)
@@ -682,7 +679,7 @@
 		for(var/obj/structure/machinery/door/poddoor/shutters/P in T)
 			if(!istype(P)) continue
 			if(P.density)
-				INVOKE_ASYNC(P, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+				INVOKE_ASYNC(P, /obj/structure/machinery/door.proc/close)
 				//No break since transit shutters are the same parent type
 
 		if (iselevator)
@@ -691,7 +688,7 @@
 				if(A.locked)
 					A.unlock()
 				if(A.density)
-					INVOKE_ASYNC(A, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+					INVOKE_ASYNC(A, /obj/structure/machinery/door.proc/close)
 				break
 		else
 			for(var/obj/structure/machinery/door/airlock/dropship_hatch/M in T)

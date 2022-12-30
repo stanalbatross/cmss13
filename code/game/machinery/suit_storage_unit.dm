@@ -73,11 +73,11 @@
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if(prob(50))
 				dump_everything()
-				deconstruct(FALSE)
+				qdel(src)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
 			if(prob(50))
 				dump_everything() //So suits dont survive all the time
-			deconstruct(FALSE)
+			qdel(src)
 
 
 /obj/structure/machinery/suit_storage_unit/attack_hand(mob/user)

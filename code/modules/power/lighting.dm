@@ -38,10 +38,6 @@
 		if(3)
 			. += "The casing is closed."
 
-/obj/structure/machinery/light_construct/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new /obj/item/stack/sheet/metal(get_turf(src.loc), sheets_refunded)
-	return ..()
 
 /obj/structure/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
@@ -51,13 +47,15 @@
 			to_chat(usr, "You begin deconstructing [src].")
 			if (!do_after(usr, 30, INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
 				return
+			new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 			user.visible_message("[user.name] deconstructs [src].", \
 				"You deconstruct [src].", "You hear a noise.")
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 25, 1)
-			deconstruct()
+			qdel(src)
 		if (src.stage == 2)
 			to_chat(usr, "You have to remove the wires first.")
 			return
+
 		if (src.stage == 3)
 			to_chat(usr, "You have to unscrew the case first.")
 			return
@@ -134,7 +132,7 @@
 	desc = "A bright fluorescent tube light. Looking at it for too long makes your eyes go watery."
 	anchored = 1
 	layer = FLY_LAYER
-	use_power = USE_POWER_IDLE
+	use_power = 2
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = POWER_CHANNEL_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
@@ -214,8 +212,7 @@
 			if(prob(5))
 				broken(1)
 
-	active_power_usage = (brightness * 10)
-	addtimer(CALLBACK(src, PROC_REF(update), 0), 1)
+	addtimer(CALLBACK(src, .proc/update, 0), 1)
 
 	set_pixel_location()
 
@@ -287,12 +284,13 @@
 					on = 0
 					SetLuminosity(0)
 			else
-				update_use_power(USE_POWER_ACTIVE)
+				update_use_power(2)
 				SetLuminosity(brightness)
 	else
-		update_use_power(USE_POWER_NONE)
+		update_use_power(1)
 		SetLuminosity(0)
 
+	active_power_usage = (luminosity * 10)
 	if(on != on_gs)
 		on_gs = on
 
@@ -304,7 +302,7 @@
 
 // examine verb
 /obj/structure/machinery/light/get_examine_text(mob/user)
-	. = ..()
+	..()
 	switch(status)
 		if(LIGHT_OK)
 			to_chat(user, "It is turned [on? "on" : "off"].")
@@ -370,7 +368,7 @@
 			for(var/mob/M as anything in viewers(src))
 				if(M == user)
 					continue
-				M.show_message("[user.name] smashed the light!", SHOW_MESSAGE_VISIBLE, "You hear a tinkle of breaking glass", SHOW_MESSAGE_AUDIBLE)
+				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 			if(on && (W.flags_atom & CONDUCT))
 				if (prob(12))
 					electrocute_mob(user, get_area(src), src, 0.3)
@@ -413,8 +411,6 @@
 // true if area has power and lightswitch is on
 /obj/structure/machinery/light/proc/has_power()
 	var/area/A = src.loc.loc
-	if(!src.needs_power)
-		return A.master.lightswitch
 	return A.master.lightswitch && A.master.power_light
 
 /obj/structure/machinery/light/proc/flicker(var/amount = rand(10, 20))
@@ -448,7 +444,7 @@
 		return
 	else if (status == LIGHT_OK||status == LIGHT_BURNED)
 		for(var/mob/O in viewers(src))
-			O.show_message(SPAN_DANGER("[M.name] smashed the light!"), SHOW_MESSAGE_VISIBLE, "You hear a tinkle of breaking glass", SHOW_MESSAGE_AUDIBLE)
+			O.show_message(SPAN_DANGER("[M.name] smashed the light!"), 3, "You hear a tinkle of breaking glass", 2)
 		broken()
 	return
 // attack with hand - remove tube/bulb
@@ -466,7 +462,7 @@
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
 			for(var/mob/M as anything in viewers(src))
-				M.show_message(SPAN_DANGER("[user.name] smashed the light!"), SHOW_MESSAGE_VISIBLE, "You hear a tinkle of breaking glass", SHOW_MESSAGE_AUDIBLE)
+				M.show_message(SPAN_DANGER("[user.name] smashed the light!"), 3, "You hear a tinkle of breaking glass", 2)
 			broken()
 			return
 
@@ -547,7 +543,7 @@
 			if (prob(75))
 				broken()
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			deconstruct(FALSE)
+			qdel(src)
 			return
 	return
 
@@ -567,9 +563,6 @@
 		if(loc)
 			var/area/A = src.loc.loc
 			A = A.master
-			if(!src.needs_power)
-				seton(A.lightswitch)
-				return
 			seton(A.lightswitch && A.power_light)
 
 // called when on fire
@@ -722,7 +715,7 @@
 	anchored = 1
 	density = 0
 	layer = BELOW_TABLE_LAYER
-	use_power = USE_POWER_ACTIVE
+	use_power = 2
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = POWER_CHANNEL_LIGHT //Lights are calc'd via area so they dont need to be in the machine list

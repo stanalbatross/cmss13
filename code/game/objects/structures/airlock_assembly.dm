@@ -59,12 +59,11 @@
 		to_chat(user, SPAN_WARNING("You are not trained to configure \the [src]..."))
 		return
 
-	if(HAS_TRAIT(W, TRAIT_TOOL_PEN))
+	if(istype(W, /obj/item/tool/pen))
 		var/t = copytext(stripped_input(user, "Enter the name for the airlock.", name, created_name), 1, MAX_NAME_LEN)
 		if(!t || !in_range(src, usr) && loc != usr)
 			return
 		created_name = t
-		playsound(src, "paper_writing", 15, TRUE)
 		return
 
 	if(istype(W, /obj/item/stack/sheet/glass))

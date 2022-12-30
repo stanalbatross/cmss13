@@ -4,7 +4,6 @@
 #define RUNNER_MODE		"Xenomorph Runners"
 #define SPITTER_MODE	"Xenomorph Spitters"
 #define DEFENDER_MODE	"Xenomorph Defenders"
-#define RAVAGER_MODE	"Xenomorph Ravagers"
 #define CRUSHER_MODE	"Xenomorph Crushers"
 
 /obj/structure/machinery/computer/demo_sim
@@ -30,7 +29,6 @@
 		RUNNER_MODE = /mob/living/carbon/Xenomorph/Runner,
 		SPITTER_MODE = /mob/living/carbon/Xenomorph/Spitter,
 		DEFENDER_MODE = /mob/living/carbon/Xenomorph/Defender,
-		RAVAGER_MODE = /mob/living/carbon/Xenomorph/Ravager,
 		CRUSHER_MODE = /mob/living/carbon/Xenomorph/Crusher,
 	)
 

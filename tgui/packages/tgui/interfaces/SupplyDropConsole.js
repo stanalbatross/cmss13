@@ -6,6 +6,8 @@ import {
   ProgressBar,
   Divider,
   NumberInput,
+  Dimmer,
+  Icon,
   NoticeBox,
   Box,
   Tabs,
@@ -14,6 +16,8 @@ import { Window } from '../layouts';
 
 export const SupplyDropConsole = (_props, context) => {
   const { act, data } = useBackend(context);
+
+  const active = data.active;
 
   const can_pick_squad = data.can_pick_squad;
 
@@ -117,6 +121,12 @@ export const SupplyDropConsole = (_props, context) => {
               content="Launch Supply Drop"
               onClick={() => act('send_beacon')}
             />
+            {active === 1 && (
+              <Dimmer fontSize="32px">
+                <Icon name="cog" spin />
+                {'Launching...'}
+              </Dimmer>
+            )}
           </Section>
         </Section>
       </Window.Content>

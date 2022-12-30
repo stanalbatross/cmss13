@@ -12,8 +12,11 @@
 	var/obj/item/implantcase/case = null
 	var/broadcasting = null
 	var/listening = 1.0
+/obj/item/implantpad/proc
+	update()
 
-/obj/item/implantpad/proc/update()
+
+/obj/item/implantpad/update()
 	if (src.case)
 		src.icon_state = "implantpad-1"
 	else

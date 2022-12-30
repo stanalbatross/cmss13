@@ -49,7 +49,7 @@
 			var/obj/effect/plantsegment/SV = locate(/obj/effect/plantsegment) in loc
 			qdel(SV)
 			if(prob(10))
-				INVOKE_ASYNC(src, PROC_REF(say), "Nom")
+				INVOKE_ASYNC(src, .proc/say, "Nom")
 
 		if(!pulledby)
 			for(var/direction in shuffle(list(1,2,4,8,5,6,9,10)))
@@ -69,7 +69,7 @@
 			var/obj/effect/plantsegment/SV = locate(/obj/effect/plantsegment) in loc
 			qdel(SV)
 			if(prob(10))
-				INVOKE_ASYNC(src, PROC_REF(say), "Nom")
+				INVOKE_ASYNC(src, .proc/say, "Nom")
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	var/obj/item/reagent_container/glass/G = O
@@ -141,7 +141,7 @@
 	if(!stat && M.a_intent == INTENT_DISARM && icon_state != icon_dead)
 		M.visible_message(SPAN_WARNING("[M] tips over [src]."), \
 			SPAN_NOTICE("You tip over [src]."))
-		apply_effect(30, WEAKEN)
+		KnockDown(30)
 		icon_state = icon_dead
 		spawn(rand(20,50))
 			if(!stat && M)

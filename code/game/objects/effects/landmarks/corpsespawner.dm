@@ -94,11 +94,6 @@
 	name = "Weyland-Yutani Corporate Security Guard"
 	equip_path = /datum/equipment_preset/corpse/wysec
 
-/obj/effect/landmark/corpsespawner/wygoon
-	name = "Weyland-Yutani Corporate Security Goon"
-	equip_path = /datum/equipment_preset/corpse/pmc/goon
-
-
 ///CM specific jobs///
 
 /obj/effect/landmark/corpsespawner/colonist //default is a colonist

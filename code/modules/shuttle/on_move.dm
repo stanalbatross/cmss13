@@ -164,7 +164,7 @@ All ShuttleMove procs go here
 /obj/structure/machinery/door/airlock/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	for(var/obj/structure/machinery/door/airlock/A in range(1, src))  // includes src
-		INVOKE_ASYNC(A, TYPE_PROC_REF(/obj/structure/machinery/door, close))
+		INVOKE_ASYNC(A, /obj/structure/machinery/door/.proc/close)
 
 /obj/structure/machinery/camera/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
@@ -212,7 +212,7 @@ All ShuttleMove procs go here
 
 	var/knockdown = movement_force["KNOCKDOWN"]
 	if(knockdown)
-		apply_effect(knockdown, WEAKEN)
+		KnockDown(knockdown)
 
 
 /* ***********************************Structure move procs************************************/

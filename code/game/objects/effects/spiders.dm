@@ -12,12 +12,12 @@
 	switch(severity)
 		if(0 to EXPLOSION_THRESHOLD_LOW)
 			if (prob(5))
-				deconstruct(FALSE)
+				qdel(src)
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if (prob(50))
-				deconstruct(FALSE)
+				qdel(src)
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			deconstruct(FALSE)
+			qdel(src)
 	return
 
 /obj/effect/spider/attackby(var/obj/item/W, var/mob/user)
@@ -55,10 +55,9 @@
 
 /obj/effect/spider/stickyweb
 	icon_state = "stickyweb1"
-
-/obj/effect/spider/stickyweb/New()
-	if(prob(50))
-		icon_state = "stickyweb2"
+	New()
+		if(prob(50))
+			icon_state = "stickyweb2"
 
 /obj/effect/spider/stickyweb/BlockedPassDirs(atom/movable/mover, target_dir)
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
@@ -105,7 +104,6 @@
 	var/amount_grown = -1
 	var/obj/structure/pipes/vents/pump/entry_vent
 	var/travelling_in_vent = 0
-
 /obj/effect/spider/spiderling/Initialize(mapload, ...)
 	. = ..()
 	pixel_x = rand(6,-6)
@@ -114,12 +112,6 @@
 	//50% chance to grow up
 	if(prob(50))
 		amount_grown = 1
-
-/obj/effect/spider/spiderling/nogrow/Initialize(mapload, ...)
-	. = ..()
-	pixel_x = rand(6,-6)
-	pixel_y = rand(6,-6)
-	START_PROCESSING(SSobj, src)
 
 /obj/effect/spider/spiderling/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -166,26 +158,6 @@
 			new spawn_type(src.loc)
 			qdel(src)
 
-/obj/effect/spider/spiderling/nogrow/process()
-	//=================
-	if(prob(25))
-		var/list/nearby = oview(5, src)
-		if(nearby.len)
-			var/target_atom = pick(nearby)
-			walk_to(src, target_atom, 5)
-			if(prob(25))
-				src.visible_message(SPAN_NOTICE("\the [src] skitters[pick(" away"," around","")]."))
-	else if(prob(5))
-		//vent crawl!
-		for(var/obj/structure/pipes/vents/pump/v in view(7,src))
-			if(!v.welded)
-				entry_vent = v
-				walk_to(src, entry_vent, 5)
-				break
-
-	if(prob(1))
-		src.visible_message(SPAN_NOTICE("\the [src] chitters."))
-
 /obj/effect/decal/cleanable/spiderling_remains
 	name = "spiderling remains"
 	desc = "Green squishy mess."
@@ -198,8 +170,8 @@
 	icon_state = "cocoon1"
 	health = 60
 
-/obj/effect/decal/cleanable/spiderling_remains/New()
-	icon_state = pick("cocoon1","cocoon2","cocoon3")
+	New()
+		icon_state = pick("cocoon1","cocoon2","cocoon3")
 
 /obj/effect/spider/cocoon/Destroy()
 	visible_message(SPAN_DANGER("[src] splits open."))

@@ -223,8 +223,8 @@
 		RegisterSignal(user, list(
 			COMSIG_LIVING_REJUVENATED,
 			COMSIG_HUMAN_REVIVED,
-		), PROC_REF(turn_on))
-		RegisterSignal(user, COMSIG_MOB_LOGIN, PROC_REF(add_hud_tracker))
+		), .proc/turn_on)
+		RegisterSignal(user, COMSIG_MOB_LOGIN, .proc/add_hud_tracker)
 		if(headset_hud_on)
 			var/datum/mob_hud/H = huds[hud_type]
 			H.add_hud_to(user)
@@ -321,6 +321,14 @@
 	if (disabledAi)
 		return -1 //Transciever Disabled.
 	return ..(freq, level, 1)
+
+/obj/item/device/radio/headset/ert
+	name = "Wey-Yu Response Team headset"
+	desc = "The headset of the boss's boss. Channels are as follows: :h - Response Team :c - command, :p - military police, :n - engineering, :m - medical."
+	icon_state = "com_headset"
+	item_state = "headset"
+	freerange = 1
+	initial_keys = list(/obj/item/device/encryptionkey/ert)
 
 //MARINE HEADSETS
 
@@ -741,9 +749,9 @@
 	desc = "A standard headset used by colonists."
 	frequency = COLONY_FREQ
 
-/obj/item/device/radio/headset/distress/WY
-	name = "WY corporate headset"
-	desc = "A headset commonly worn by WY corporate personnel."
+/obj/item/device/radio/headset/distress/goon
+	name = "WY corporate security headset"
+	desc = "A headset commonly worn by WY corporate security."
 	frequency = WY_FREQ
 	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/WY)
 
@@ -776,14 +784,13 @@
 
 /obj/item/device/radio/headset/distress/PMC/hvh/cct
 	name = "PMC-CCT headset"
-	desc = "A special headset used by corporate personnel. Channels are as follows: :h - public, .O - combat controller"
+	desc = "A special headset used by corporate personnel. Channels are as follows: :h - public, :o - combat controller."
 	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/cct)
 
-//UPP Headsets
 /obj/item/device/radio/headset/distress/UPP
 	name = "UPP headset"
-	desc = "A special headset used by UPP military. To access the colony channel, use :o or :h."
-	frequency = UPP_FREQ
+	desc = "A special headset used by UPP military. To access the colony channel, use :h."
+	frequency = RUS_FREQ
 	initial_keys = list(/obj/item/device/encryptionkey/colony)
 	has_hud = TRUE
 	hud_type = MOB_HUD_FACTION_UPP
@@ -794,38 +801,12 @@
 
 /obj/item/device/radio/headset/distress/UPP/cct
 	name = "UPP-CCT headset"
-	desc = "A special headset used by UPP military. Channels are as follows: :h - public, .j - combat controller, .n engineering."
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/upp/engi)
+	desc = "A special headset used by UPP military. Channels are as follows: :h - public, :o - combat controller."
+	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/cct)
 
-/obj/item/device/radio/headset/distress/UPP/medic
-	name = "UPP-MED headset"
-	desc = "A special headset used by UPP military. Channels are as follows: :h - public, .m - medical."
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/upp/medic)
-
-/obj/item/device/radio/headset/distress/UPP/command
-	name = "UPP-CMD headset"
-	desc = "A special headset used by UPP military. Channels are as follows: :h - public, .j - combat controller, .n - engineering, .m - medical, .v - command, .u - UPP general."
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/upp/command)
-
-/obj/item/device/radio/headset/distress/UPP/kdo
-	name = "UPP-Kdo headset"
-	desc = "A specialist headset used by UPP kommandos. Channels are as follows: :h - public, .j - combat controller, .u - UPP general, .T - kommandos."
-	initial_keys = list(/obj/item/device/encryptionkey/upp/kdo, /obj/item/device/encryptionkey/colony)
-
-/obj/item/device/radio/headset/distress/UPP/kdo/medic
-	name = "UPP-KdoM headset"
-	desc = "A specialist headset used by UPP kommandos. Channels are as follows: :h - public, .j - combat controller, .m - medical .u - UPP general, .T - kommandos."
-	initial_keys = list(/obj/item/device/encryptionkey/upp/kdo, /obj/item/device/encryptionkey/colony)
-
-/obj/item/device/radio/headset/distress/UPP/kdo/command
-	name = "UPP-KdoC headset"
-	desc = "A specialist headset used by UPP kommandos. Channels are as follows: :h - public, .j - combat controller, .n - engineering, .m - medical, .v - command, .u - UPP general, .T - kommandos."
-	initial_keys = list(/obj/item/device/encryptionkey/upp/kdo, /obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/upp/command)
-
-//CLF Headsets
 /obj/item/device/radio/headset/distress/CLF
 	name = "CLF headset"
-	desc = "A special headset used by small groups of trained operatives. Or terrorists. To access the colony channel, use :h or :o."
+	desc = "A special headset used by small groups of trained operatives. Or terrorists. To access the colony channel, use :h."
 	frequency = CLF_FREQ
 	initial_keys = list(/obj/item/device/encryptionkey/colony)
 	has_hud = TRUE
@@ -833,22 +814,14 @@
 
 /obj/item/device/radio/headset/distress/CLF/cct
 	name = "CLF-CCT headset"
-	desc = "A special headset used by small groups of trained operatives. Or terrorists. Channels are as follows: :h - public, .d - combat controller, .b - engineering"
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/clf/engi)
+	desc = "A special headset used by small groups of trained operatives. Or terrorists. Channels are as follows: :h - public, :o - combat controller."
+	frequency = CLF_FREQ
+	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/cct)
 
-/obj/item/device/radio/headset/distress/CLF/medic
-	name = "CLF-MED headset"
-	desc = "A special headset used by small groups of trained operatives. Or terrorists. Channels are as follows: :h - public, .a - medical"
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/clf/medic)
-/obj/item/device/radio/headset/distress/CLF/command
-	desc = "A special headset used by small groups of trained operatives. Or terrorists. Channels are as follows: :h - public, .a - medical, .b - engineering, .c - command, .d - combat controller, .g clf general"
-	initial_keys = list(/obj/item/device/encryptionkey/colony, /obj/item/device/encryptionkey/clf/command)
-
-//WY Headsets
 /obj/item/device/radio/headset/distress/commando
 	name = "Commando headset"
 	desc = "A special headset used by unidentified operatives. Channels are as follows: :g - public, :v - marine command, :a - alpha squad, :b - bravo squad, :c - charlie squad, :d - delta squad, :n - engineering, :m - medbay, :u - requisitions, :j - JTAC, :t - intel."
-	frequency = WY_WO_FREQ
+	frequency = DTH_FREQ
 	icon_state = "pmc_headset"
 	initial_keys = list(/obj/item/device/encryptionkey/public, /obj/item/device/encryptionkey/mcom)
 

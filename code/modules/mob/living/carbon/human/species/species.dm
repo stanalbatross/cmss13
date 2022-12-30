@@ -95,9 +95,6 @@
 	var/stun_reduction = 1 //how much the stunned effect is reduced per Life call.
 	var/knock_out_reduction = 1 //same thing
 
-	 /// If different from 1, a signal is registered on post_spawn().
-	var/weed_slowdown_mult = 1
-
 	var/acid_blood_dodge_chance = 0
 
 	var/list/slot_equipment_priority = DEFAULT_SLOT_PRIORITY
@@ -124,7 +121,7 @@
 	return
 
 /datum/species/proc/handle_npc(var/mob/living/carbon/human/H)
-	return
+    return
 
 /datum/species/proc/create_organs(var/mob/living/carbon/human/H) //Handles creation of mob organs and limbs.
 	for(var/L in H.limbs) //In case of pre-existing limbs/organs, we remove the old ones.
@@ -242,8 +239,8 @@
 		H.visible_message(SPAN_NOTICE("[H] plays <b>[protagonist_plays]</b>![winner_text]"), SPAN_NOTICE("You play <b>[protagonist_plays]</b>![winner_text]"), max_distance = 5)
 		target.visible_message(SPAN_NOTICE("[target] plays <b>[antagonist_plays]</b>![winner_text]"), SPAN_NOTICE("You play <b>[antagonist_plays]</b>![winner_text]"), max_distance = 5)
 		playsound(target, "clownstep", 35, TRUE)
-		INVOKE_ASYNC(GLOBAL_PROC, PROC_REF(do_after), H, 8, INTERRUPT_NONE, play_to_emote[protagonist_plays])
-		INVOKE_ASYNC(GLOBAL_PROC, PROC_REF(do_after), target, 8, INTERRUPT_NONE, play_to_emote[antagonist_plays])
+		INVOKE_ASYNC(GLOBAL_PROC, .proc/do_after, H, 8, INTERRUPT_NONE, play_to_emote[protagonist_plays])
+		INVOKE_ASYNC(GLOBAL_PROC, .proc/do_after, target, 8, INTERRUPT_NONE, play_to_emote[antagonist_plays])
 		H.animation_attack_on(target)
 		target.animation_attack_on(H)
 		H.start_audio_emote_cooldown(5 SECONDS)
@@ -366,6 +363,11 @@
 	add_inherent_verbs(H)
 	apply_signals(H)
 
+	if(icobase_source)
+		icobase = get_icon_from_source(icobase_source)
+	if(deform_source)
+		deform = get_icon_from_source(deform_source)
+
 /// Apply signals to the human
 /datum/species/proc/apply_signals(var/mob/living/carbon/human/H)
 	return
@@ -470,6 +472,3 @@
 
 /datum/species/proc/handle_head_loss(var/mob/living/carbon/human/human)
 	return
-
-/datum/species/proc/handle_paygrades(var/paygrade, var/size, var/gender)
-	return get_paygrades(paygrade, size, gender)

@@ -15,7 +15,6 @@
 	SSobjectives.add_objective(src)
 
 /datum/cm_objective/Destroy()
-	SSobjectives.stop_processing_objective(src)
 	SSobjectives.remove_objective(src)
 	for(var/datum/cm_objective/R as anything in required_objectives)
 		LAZYREMOVE(R.enables_objectives, src)
@@ -62,7 +61,3 @@
 // Make this objective call process() and check_completion() every SS tick.
 /datum/cm_objective/proc/activate()
 	SSobjectives.start_processing_objective(src)
-
-// Stops the Objective from processing
-/datum/cm_objective/proc/deactivate()
-	SSobjectives.stop_processing_objective(src)

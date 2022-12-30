@@ -95,9 +95,11 @@
 	cuff_sound = 'sound/weapons/cablecuff.ogg'
 	cuff_delay = 20
 
-/obj/item/handcuffs/zip/place_handcuffs(mob/living/carbon/target, mob/user)
-	..()
-	flags_item |= DELONDROP
+	place_handcuffs(mob/living/carbon/target, mob/user)
+		..()
+		flags_item |= DELONDROP
+
+
 
 /obj/item/handcuffs/cable
 	name = "cable restraints"
@@ -195,7 +197,7 @@
 		var/turf/p_loc_m = C.loc
 		playsound(src.loc, 'sound/weapons/handcuffs.ogg', 25, 1, 6)
 		for(var/mob/O in viewers(user, null))
-			O.show_message(SPAN_DANGER("<B>[user] is trying to put restraints on [C]!</B>"), SHOW_MESSAGE_VISIBLE)
+			O.show_message(SPAN_DANGER("<B>[user] is trying to put restraints on [C]!</B>"), 1)
 		spawn(30)
 			if(!C)	return
 			if(p_loc == user.loc && p_loc_m == C.loc)

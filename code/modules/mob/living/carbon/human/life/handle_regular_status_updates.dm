@@ -21,7 +21,7 @@
 					if(prob(3))
 						fake_attack(src)
 					if(!handling_hal)
-						INVOKE_ASYNC(src, TYPE_PROC_REF(/mob/living/carbon, handle_hallucinations))
+						INVOKE_ASYNC(src, /mob/living/carbon.proc/handle_hallucinations)
 
 				if(hallucination <= 2)
 					hallucination = 0
@@ -37,12 +37,12 @@
 				if(halloss > 100)
 					visible_message(SPAN_WARNING("\The [src] slumps to the ground, too weak to continue fighting."), \
 					SPAN_WARNING("You slump to the ground, you're in too much pain to keep going."))
-					apply_effect(10, PARALYZE)
+					KnockOut(10)
 					setHalLoss(99)
 
 		//UNCONSCIOUS. NO-ONE IS HOME
 		if(regular_update && ((getOxyLoss() > 50)))
-			apply_effect(3, PARALYZE)
+			KnockOut(3)
 
 		if((src.species.flags & HAS_HARDCRIT) && HEALTH_THRESHOLD_CRIT > health)
 			var/already_in_crit = FALSE
@@ -67,7 +67,7 @@
 					if((mind.active && client != null) || immune_to_ssd) //This also checks whether a client is connected, if not, sleep is not reduced.
 						sleeping = max(sleeping - 1, 0)
 				if(prob(2) && health && !hal_crit)
-					addtimer(CALLBACK(src, PROC_REF(emote), "snore"))
+					addtimer(CALLBACK(src, .proc/emote, "snore"))
 			blinded = 1
 			stat = UNCONSCIOUS
 		else
@@ -82,16 +82,16 @@
 			eye_blind = 0
 			if(stat == CONSCIOUS) //even with 'eye-less' vision, unconsciousness makes you blind
 				blinded = 0
-			SetEyeBlur(0)
+			eye_blurry = 0
 		else if(!has_eyes())           //Eyes cut out? Permablind.
 			eye_blind =  1
 			blinded =    1
-			// we don't need to blur vision if they are blind...
+			eye_blurry = 1
 		else if(eye_blind)		       //Blindness, heals slowly over time
 			eye_blind =  max(eye_blind - 1, 0)
 			blinded =    1
 		else if(eye_blurry)	           //Blurry eyes heal slowly
-			ReduceEyeBlur(1)
+			eye_blurry = max(eye_blurry - 1, 0)
 
 		//Ears
 		if(ear_deaf) //Deafness, heals slowly over time
@@ -123,7 +123,7 @@
 
 		if(paralyzed)
 			speech_problem_flag = 1
-			apply_effect(1, WEAKEN)
+			KnockDown(1)
 			silent = 1
 			blinded = 1
 			use_me = 0
@@ -132,10 +132,10 @@
 
 		if(drowsyness)
 			drowsyness = max(0,drowsyness - 2)
-			EyeBlur(2)
+			eye_blurry = max(2, eye_blurry)
 			if(drowsyness > 10 && prob(5))
 				sleeping++
-				apply_effect(5, PARALYZE)
+				KnockOut(5)
 
 		confused = max(0, confused - 1)
 

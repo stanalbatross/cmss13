@@ -105,9 +105,10 @@
 			playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
 			if(do_after(user, 30 * user.get_skill_duration_multiplier(SKILL_CONSTRUCTION), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))	// takes 3 seconds to deconstruct
 				playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
-				to_chat(user, SPAN_NOTICE("You deconstruct [src]."))
+				new buildstacktype(loc, buildstackamount)
+				to_chat(user, SPAN_NOTICE(" You deconstruct [src]."))
 				SEND_SIGNAL(user, COMSIG_MOB_DISASSEMBLE_W_FRAME, src)
-				deconstruct()
+				qdel(src)
 
 	else if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
@@ -125,7 +126,7 @@
 					var/oldloc = loc
 					if(!do_after(user, 20, INTERRUPT_ALL, BUSY_ICON_GENERIC, M) || loc != oldloc)
 						return
-					M.apply_effect(2, WEAKEN)
+					M.KnockDown(2)
 					user.visible_message(SPAN_WARNING("[user] pulls [M] onto [src]."),
 					SPAN_NOTICE("You pull [M] onto [src]."))
 					M.forceMove(loc)
@@ -158,12 +159,11 @@
 	health = min(health, max_health)
 
 	if(health <= 0)
-		deconstruct()
+		destroy()
 
-/obj/structure/window_frame/deconstruct(disassembled = TRUE)
-	if(disassembled)
-		new buildstacktype(loc, buildstackamount)
-	return ..()
+/obj/structure/window_frame/destroy()
+	new buildstacktype(loc, buildstackamount)
+	qdel(src)
 
 /obj/structure/window_frame/almayer
 	icon_state = "alm_window0_frame"

@@ -26,7 +26,6 @@
 		update_canmove()
 		update_icons()
 		handle_luminosity()
-		handle_blood()
 
 		if(behavior_delegate)
 			behavior_delegate.on_life()
@@ -70,7 +69,7 @@
 	if(!caste || !(caste.fire_immunity & FIRE_IMMUNITY_NO_DAMAGE) || fire_reagent.fire_penetrating)
 		var/dmg = armor_damage_reduction(GLOB.xeno_fire, PASSIVE_BURN_DAM_CALC(fire_reagent.intensityfire, fire_reagent.durationfire, fire_stacks))
 		apply_damage(dmg, BURN)
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), pick("roar", "needhelp"))
+		INVOKE_ASYNC(src, /mob.proc/emote, pick("roar", "needhelp"))
 
 #undef PASSIVE_BURN_DAM_CALC
 
@@ -141,17 +140,6 @@
 			if(strength > recovery_new)
 				recovery_new = strength
 
-	// Also cap the auras
-	for(var/capped_aura in received_phero_caps)
-		switch(capped_aura)
-			if("frenzy")
-				frenzy_new = min(frenzy_new, received_phero_caps[capped_aura])
-			if("warding")
-				warding_new = min(warding_new, received_phero_caps[capped_aura])
-			if("recovery")
-				recovery_new = min(recovery_new, received_phero_caps[capped_aura])
-
-
 /mob/living/carbon/Xenomorph/handle_regular_status_updates(regular_update = TRUE)
 	if(regular_update && health <= 0 && (!caste || (caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE) || !on_fire)) //Sleeping Xenos are also unconscious, but all crit Xenos are under 0 HP. Go figure
 		var/turf/T = loc
@@ -194,7 +182,11 @@
 
 		if(regular_update)
 			if(eye_blurry)
-				src.ReduceEyeBlur(1)
+				overlay_fullscreen("eye_blurry", /atom/movable/screen/fullscreen/impaired, 5)
+				src.eye_blurry--
+				src.eye_blurry = max(0, src.eye_blurry)
+			else
+				clear_fullscreen("eye_blurry")
 
 			handle_statuses()//natural decrease of stunned, knocked_down, etc...
 			handle_interference()
@@ -489,12 +481,11 @@ Make sure their actual health updates immediately.*/
 				var/grace_time = crit_grace_time > 0 ? crit_grace_time + (1 SECONDS * max(round(warding_aura - 1), 0)) : 0
 				if(grace_time)
 					sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
-					addtimer(CALLBACK(src, PROC_REF(handle_crit)), grace_time)
+					addtimer(CALLBACK(src, .proc/handle_crit), grace_time)
 				else
 					handle_crit()
 				next_grace_time = world.time + grace_time
-	if(!gibbing)
-		med_hud_set_health()
+	med_hud_set_health()
 
 /mob/living/carbon/Xenomorph/proc/handle_crit()
 	if(stat == DEAD || gibbing)
@@ -520,7 +511,7 @@ Make sure their actual health updates immediately.*/
 
 /mob/living/carbon/Xenomorph/handle_stunned()
 	if(stunned)
-		adjust_effect(life_stun_reduction, STUN, EFFECT_FLAG_LIFE)
+		stunned = max(stunned-1.5,0)
 		stun_callback_check()
 
 	return stunned
@@ -536,28 +527,28 @@ Make sure their actual health updates immediately.*/
 
 /mob/living/carbon/Xenomorph/handle_dazed()
 	if(dazed)
-		adjust_effect(life_daze_reduction, DAZE, EFFECT_FLAG_LIFE)
+		dazed = max(dazed-1.5,0)
 	return dazed
 
 /mob/living/carbon/Xenomorph/handle_slowed()
 	if(slowed)
-		adjust_effect(life_slow_reduction, SLOW, EFFECT_FLAG_LIFE)
+		slowed = max(slowed-1.5,0)
 	return slowed
 
 /mob/living/carbon/Xenomorph/handle_superslowed()
 	if(superslowed)
-		adjust_effect(life_slow_reduction, SUPERSLOW, EFFECT_FLAG_LIFE)
+		superslowed = max(superslowed-1.5,0)
 	return superslowed
 
 /mob/living/carbon/Xenomorph/handle_knocked_down()
 	if(knocked_down)
-		adjust_effect(life_knockdown_reduction, WEAKEN, EFFECT_FLAG_LIFE)
+		knocked_down = max(knocked_down-1.5,0)
 		knocked_down_callback_check()
 	return knocked_down
 
 /mob/living/carbon/Xenomorph/handle_knocked_out()
 	if(knocked_out)
-		adjust_effect(life_knockout_reduction, PARALYZE, EFFECT_FLAG_LIFE)
+		knocked_out = max(knocked_out - 1.5, 0)
 		knocked_out_callback_check()
 	return knocked_out
 
@@ -577,7 +568,7 @@ Make sure their actual health updates immediately.*/
 	return TRUE //we have off-weed healing, and either we're on Almayer with the Queen, or we're on non-Almayer, or the Queen is dead, good enough!
 
 
-#define XENO_TIMER_TO_EFFECT_CONVERSION (0.075) // (1.5/20) //once per 2 seconds, with 1.5 effect per that once
+#define XENO_TIMER_TO_EFFECT_CONVERSION 1.5/20 //once per 2 seconds, with 1.5 effect per that once
 
 // This is here because sometimes our stun comes too early and tick is about to start, so we need to compensate
 // this is the best place to do it, tho name might be a bit misleading I guess

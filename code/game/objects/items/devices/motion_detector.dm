@@ -42,14 +42,10 @@
 	. = ..()
 	. += SPAN_INFO("Blue bubble-like indicators on your HUD will show pings locations or direction to them. The device screen will show the amount of unidentified movements detected (up to 9). Has two modes: slow long-range [SPAN_HELPFUL("([MOTION_DETECTOR_RANGE_LONG] tiles)")] and fast short-range [SPAN_HELPFUL("([MOTION_DETECTOR_RANGE_SHORT] tiles)")]. Use [SPAN_HELPFUL("Alt + Click")] on the device to switch between modes. Using the device on the adjacent multitile vehicle will start the process of recalibrating and scanning vehicle interior for unidentified movements inside.")
 
-/obj/item/device/motiondetector/Initialize()
-	. = ..()
+/obj/item/device/motiondetector/New()
 	range_bounds = new //Just creating a rectangle datum
 	update_icon()
-
-/obj/item/device/motiondetector/Destroy()
-	. = ..()
-	range_bounds = null
+	..()
 
 /obj/item/device/motiondetector/update_icon()
 	//clear overlays
@@ -273,7 +269,7 @@
 
 		DB.screen_loc = "[Clamp(c_view + 1 - view_x_offset + (target.x - user.x), 1, 2*c_view+1)],[Clamp(c_view + 1 - view_y_offset + (target.y - user.y), 1, 2*c_view+1)]"
 		user.client.screen += DB
-		addtimer(CALLBACK(src, PROC_REF(clear_pings), user, DB), 1 SECONDS)
+		addtimer(CALLBACK(src, .proc/clear_pings, user, DB), 1 SECONDS)
 
 /obj/item/device/motiondetector/proc/clear_pings(mob/user, var/obj/effect/detector_blip/DB)
 	if(user.client)

@@ -22,9 +22,9 @@
 
 /mob/living/silicon/robot/proc/clamp_values()
 
-//	set_effect(min(stunned, 30), STUN)
-	set_effect(min(knocked_out, 30), PARALYZE)
-//	set_effect(min(knocked_down, 20), WEAKEN)
+//	SetStunned(min(stunned, 30))
+	SetKnockedout(min(knocked_out, 30))
+//	SetKnockeddown(min(knocked_down, 20))
 	sleeping = 0
 	apply_damage(0, BRUTE)
 	apply_damage(0, TOX)
@@ -69,11 +69,11 @@
 	updatehealth()
 
 	if(regular_update && src.sleeping)
-		apply_effect(3, PARALYZE)
+		KnockOut(3)
 		src.sleeping--
 
 	if(regular_update && src.resting)
-		apply_effect(5, WEAKEN)
+		KnockDown(5)
 
 	if(health < HEALTH_THRESHOLD_DEAD && stat != DEAD) //die only once
 		death()
@@ -83,11 +83,11 @@
 			stat = UNCONSCIOUS
 			if(regular_update)
 				if (src.stunned > 0)
-					adjust_effect(-1, STUN)
+					AdjustStunned(-1)
 				if (src.knocked_down > 0)
-					adjust_effect(-1, WEAKEN)
+					AdjustKnockeddown(-1)
 				if (src.knocked_out > 0)
-					adjust_effect(-1, PARALYZE)
+					AdjustKnockedout(-1)
 					src.blinded = 1
 				else
 					src.blinded = 0
@@ -121,7 +121,8 @@
 		SetEarDeafness(1)
 
 	if (src.eye_blurry > 0)
-		src.ReduceEyeBlur(1)
+		src.eye_blurry--
+		src.eye_blurry = max(0, src.eye_blurry)
 
 	if (src.druggy > 0)
 		src.druggy--
@@ -222,6 +223,11 @@
 			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 		else
 			clear_fullscreen("blind")
+
+		if (eye_blurry)
+			overlay_fullscreen("eye_blurry", /atom/movable/screen/fullscreen/impaired, 5)
+		else
+			clear_fullscreen("eye_blurry")
 
 		if(druggy)
 			overlay_fullscreen("high", /atom/movable/screen/fullscreen/high)

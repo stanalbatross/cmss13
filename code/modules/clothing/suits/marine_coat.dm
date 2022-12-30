@@ -81,38 +81,6 @@
 	has_buttons = TRUE
 	icon_state = "coat_officer"
 
-/obj/item/clothing/suit/storage/jacket/marine/pilot
-	name = "\improper M70B1 light flak jacket"
-	desc = "A light flak jacket used by dropship pilots to protect themselves while flying in the cockpit. This specific flak jacket has been designed for style and comfort over protection, and it shows. Don't get hit by any stray bullets!"
-	icon_state = "pilot_alt"
-	has_buttons = TRUE
-	flags_atom = NO_SNOW_TYPE
-	initial_icon_state = "pilot_alt"
-
-/obj/item/clothing/suit/storage/jacket/marine/service/mp
-	name = "military police service jacket"
-	desc = "A marine service jacket adopted for use by Military Police personnel on board USCM ships. Ironically most ships require their MP departments to use full armor, making these barely used by on duty MPs. This variant is also available to regular Marines, if they are willing to bear the shame."
-	has_buttons = TRUE
-	icon_state = "coat_mp"
-	flags_atom = NO_SNOW_TYPE
-	initial_icon_state = "coat_mp"
-
-/obj/item/clothing/suit/storage/jacket/marine/service/warden
-	name = "military warden service jacket"
-	desc = "A marine service jacket adopted for use by Military Wardens on board USCM ships. Ironically most ships require their MP departments to use full armor, making these barely used by on duty Wardens. The jacket of choice for looking all night at a set of monitors, while cigarette butts pile around you."
-	has_buttons = TRUE
-	icon_state = "coat_warden"
-	flags_atom = NO_SNOW_TYPE
-	initial_icon_state = "coat_warden"
-
-/obj/item/clothing/suit/storage/jacket/marine/service/cmp
-	name = "chief military police service jacket"
-	desc = "A marine service jacket adopted for use by Military Police personnel on board USCM ships. Ironically most ships require their MP departments to use full armor, making these barely used by on duty MPs. Very popular among those who want to inexplicably smell like donuts."
-	has_buttons = TRUE
-	icon_state = "coat_cmp"
-	flags_atom = NO_SNOW_TYPE
-	initial_icon_state = "coat_cmp"
-
 /obj/item/clothing/suit/storage/jacket/marine/service/tanker
 	name = "tanker jacket"
 	desc = "A comfortable jacket provided to anyone expected to operate near or inside heavy machinery. Special material within the arms jams up any machinery it gets caught up in, protecting the wearer from injury."

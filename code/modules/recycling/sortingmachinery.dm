@@ -38,7 +38,7 @@
 		else
 			to_chat(user, SPAN_WARNING("You need to set a destination first!"))
 
-	else if(HAS_TRAIT(W, TRAIT_TOOL_PEN))
+	else if(istype(W, /obj/item/tool/pen))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = trim(strip_html(input(usr,"Label text?","Set label","")))
@@ -145,7 +145,7 @@
 		else
 			to_chat(user, SPAN_WARNING("You need to set a destination first!"))
 
-	else if(HAS_TRAIT(W, TRAIT_TOOL_PEN))
+	else if(istype(W, /obj/item/tool/pen))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = trim(strip_html(input(usr,"Label text?","Set label","")))

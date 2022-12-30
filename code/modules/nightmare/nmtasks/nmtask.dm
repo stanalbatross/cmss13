@@ -1,44 +1,38 @@
-/// Nightmare task, executing game actions as part of context
+/// Generic task
 /datum/nmtask
 	/// Task name
-	var/name = "abstract task"
-	/// Task behavior flags
-	var/flags = NIGHTMARE_TASKFLAG_ONESHOT
+	var/name
 
-/datum/nmtask/New(name)
-	. = ..()
-	if(name)
-		src.name = name
-
-/// Free resources used by the task and its state, without deleting it
-/datum/nmtask/proc/cleanup()
-	return
-
-/// Task implementation
+/// Performs work, returning status as boolean
 /datum/nmtask/proc/execute()
 	PROTECTED_PROC(TRUE)
-	return NIGHTMARE_TASK_OK
+	return NM_TASK_OK
 
-/// Invoke task execution synchronously
-/datum/nmtask/proc/invoke_sync()
+/**
+ * Call wrapper for executing the task
+ * Very important note that the whole thing relies on this single one *NOT* crashing
+ * as it's our mechanism for handling sleeps, or crashes within task implements.
+ * This ensures something is always returned eventually and tasks are not left dangling.
+ * 
+ * Intended usage is to call it from a waitfor=0 wrapper, passing a callback
+ * If the task sleeps, invoke() early-returns NM_TASK_ASYNC and keeps following it
+ * Once it effectively finishes, the provided callback receives result.
+ *
+ * Do note that on_completion is completion of invocation, not task
+ */
+/datum/nmtask/proc/invoke(datum/callback/on_completion)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	if(flags & NIGHTMARE_TASKFLAG_DISABLED)
-		return NIGHTMARE_TASK_ERROR
-	if(flags & NIGHTMARE_TASKFLAG_ONESHOT)
-		flags |= NIGHTMARE_TASKFLAG_DISABLED
-	. = NIGHTMARE_TASK_ASYNC // Feedback & Safety
+	. = NM_TASK_ASYNC
 	. = execute()
+	if(. == NM_TASK_ASYNC) // No explicit detach, clunky to handle
+		. = NM_TASK_ERROR
+	on_completion?.Invoke(.)
 
-/// Internal wrapper for async exec
-/datum/nmtask/proc/_invoke_async(datum/callback/async_callback)
-	PRIVATE_PROC(TRUE)
-	. = invoke_sync()
-	async_callback?.Invoke(.)
-
-/// Invoke task execution asynchronously
-/// If the return value is anything else than NIGHTMARE_TASK_ASYNC,
-/// the task will have completed, and callback fired, before this proc returns
-/datum/nmtask/proc/invoke_async(datum/callback/async_callback)
-	SHOULD_NOT_OVERRIDE(TRUE)
-	set waitfor = FALSE
-	. = _invoke_async(async_callback)
+/// Logging wrapper
+/datum/nmtask/proc/logself(message, critical = FALSE, prefix)
+	if(!critical && !CONFIG_GET(flag/nightmare_debug))
+		return
+	if(prefix)
+		log_debug("NMTASK  \[[prefix]\] \[[name]\]: [message]")
+		return
+	log_debug("NMTASK \[[name]\]: [message]")

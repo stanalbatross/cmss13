@@ -268,9 +268,9 @@
 	GLOB.hijack_bustable_windows -= src
 	return ..()
 
-/obj/structure/ladder/fragile_almayer/deconstruct()
+/obj/structure/ladder/fragile_almayer/proc/break_and_replace()
 	new /obj/structure/prop/broken_ladder(loc)
-	return ..()
+	qdel(src)
 
 /obj/structure/prop/broken_ladder
 	name = "rickety ladder"

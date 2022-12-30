@@ -2,6 +2,7 @@ SUBSYSTEM_DEF(tracking)
 	name          = "Tracking"
 	wait          = 2 SECONDS
 	priority      = SS_PRIORITY_TRACKING
+	flags         = SS_DISABLE_FOR_TESTING
 
 	// Mobs add themselves to the tracking, so it gets a bit finnicky. Make sure leaders get set in the proper places, removed and added.
 
@@ -19,7 +20,7 @@ SUBSYSTEM_DEF(tracking)
 
 /datum/controller/subsystem/tracking/Initialize(start_timeofday)
 	initialize_trackers()
-	return SS_INIT_SUCCESS
+	return ..()
 
 
 /datum/controller/subsystem/tracking/stat_entry(msg)

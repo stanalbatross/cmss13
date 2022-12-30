@@ -2,7 +2,7 @@
 ##Path/can_vv_get(var_name){\
 	return FALSE;\
 }\
-##Path/is_datum_protected(){\
+##path/is_datum_protected(){\
     return TRUE;\
 }\
 ##Path/CanProcCall(procname){\

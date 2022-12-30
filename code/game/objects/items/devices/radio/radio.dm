@@ -190,12 +190,12 @@
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)
 	// If a channel isn't specified, send to common.
-	if(!message_mode || message_mode == RADIO_CHANNEL_HEADSET)
+	if(!message_mode || message_mode == "headset")
 		return radio_connection
 
 	// Otherwise, if a channel is specified, look for it.
 	if(channels && channels.len)
-		if (message_mode == RADIO_CHANNEL_DEPARTMENT ) // Department radio shortcut
+		if (message_mode == "department" ) // Department radio shortcut
 			message_mode = channels[1]
 
 		if (channels[message_mode]) // only broadcast if the channel is set on
@@ -370,6 +370,9 @@
 			receive_z = SSmapping.levels_by_trait(ZTRAIT_ADMIN)[1] //this area always has comms
 
 		if(!position || !(receive_z in level))
+			return -1
+	if(freq in ANTAG_FREQS)
+		if(!(src.syndie))//Checks to see if it's allowed on that frequency, based on the encryption keys
 			return -1
 	if (!on)
 		return -1

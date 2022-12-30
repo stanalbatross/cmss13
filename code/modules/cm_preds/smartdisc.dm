@@ -32,7 +32,7 @@
 	if(L)
 		throw_atom(L.loc, 4, SPEED_FAST, usr)
 	throw_atom(usr, 12, SPEED_SLOW, usr)
-	addtimer(CALLBACK(src, PROC_REF(clear_boomerang)), 3 SECONDS)
+	addtimer(CALLBACK(src, .proc/clear_boomerang), 3 SECONDS)
 
 /obj/item/explosive/grenade/spawnergrenade/smartdisc/proc/clear_boomerang()
 	icon_state = initial(icon_state)
@@ -274,7 +274,7 @@
 		var/mob/living/L = target_mob
 		L.attack_animal(src)
 		if(prob(5))
-			L.apply_effect(3, WEAKEN)
+			L.KnockDown(3)
 			L.visible_message(SPAN_DANGER("\The [src] viciously slashes at \the [L]!"))
 			log_attack("[key_name(L)] was knocked down by [src]")
 		log_attack("[key_name(L)] was attacked by [src]")

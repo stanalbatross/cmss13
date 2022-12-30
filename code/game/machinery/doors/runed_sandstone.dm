@@ -63,22 +63,22 @@
 //ASYNC procs (Probably ok to get rid of)
 /obj/structure/machinery/door/airlock/sandstone/runed/proc/open_door()
 	if(src.density)
-		INVOKE_ASYNC(src, PROC_REF(open))
+		INVOKE_ASYNC(src, .proc/open)
 	return TRUE
 
 /obj/structure/machinery/door/airlock/sandstone/runed/proc/close_door()
 	if(!src.density)
-		INVOKE_ASYNC(src, PROC_REF(close))
+		INVOKE_ASYNC(src, .proc/close)
 	return TRUE
 
 /obj/structure/machinery/door/airlock/sandstone/runed/proc/lock_door()
 	if(!src.locked)
-		INVOKE_ASYNC(src, PROC_REF(lock))
+		INVOKE_ASYNC(src, .proc/lock)
 	return TRUE
 
 /obj/structure/machinery/door/airlock/sandstone/runed/proc/unlock_door()
 	if(src.locked)
-		INVOKE_ASYNC(src, PROC_REF(unlock))
+		INVOKE_ASYNC(src, .proc/unlock)
 	return TRUE
 
 /// Stops the door being interacted with, without wristblades.
@@ -140,8 +140,8 @@
 	for(var/turf/turf in locs)
 		for(var/mob/living/M in turf)
 			M.apply_damage(DOOR_CRUSH_DAMAGE, BRUTE)
-			M.set_effect(5, STUN)
-			M.set_effect(5, WEAKEN)
+			M.SetStunned(5)
+			M.SetKnockeddown(5)
 			M.emote("pain")
 			var/turf/location = loc
 			if(istype(location, /turf))
@@ -182,25 +182,25 @@
 		if(M && istype(M))
 			M.count_niche_stat(STATISTICS_NICHE_DESTRUCTION_DOORS, 1)
 			SEND_SIGNAL(M, COMSIG_MOB_DESTROY_AIRLOCK, src)
-		to_chat(loc, SPAN_DANGER("[src] blows apart!"))
-		deconstruct(FALSE)
-		playsound(src, 'sound/effects/metal_crash.ogg', 25, 1)
-
+		destroy_airlock()
 		return TRUE
 
 	return FALSE
 
-/obj/structure/machinery/door/airlock/sandstone/runed/deconstruct(disassembled = TRUE)
+/obj/structure/machinery/door/airlock/sandstone/runed/destroy_airlock()
 	if(!src)
 		return
+	var/turf/T = get_turf(src)
 
-	if(!disassembled)
-		var/turf/T = get_turf(src)
-		new /obj/item/stack/sheet/mineral/sandstone/runed(T)
-		new /obj/item/stack/sheet/mineral/sandstone/runed(T)
-		new /obj/item/stack/sheet/mineral/sandstone/runed(T)
-		new /obj/item/stack/sheet/mineral/sandstone/runed(T)
-	return ..()
+	to_chat(loc, SPAN_DANGER("[src] blows apart!"))
+
+	new /obj/item/stack/sheet/mineral/sandstone/runed(T)
+	new /obj/item/stack/sheet/mineral/sandstone/runed(T)
+	new /obj/item/stack/sheet/mineral/sandstone/runed(T)
+	new /obj/item/stack/sheet/mineral/sandstone/runed(T)
+
+	playsound(src, 'sound/effects/metal_crash.ogg', 25, 1)
+	qdel(src)
 
 /obj/structure/machinery/door/airlock/sandstone/runed/ex_act(severity, explosion_direction)
 	var/exp_damage = severity * EXPLOSION_DAMAGE_MULTIPLIER_DOOR

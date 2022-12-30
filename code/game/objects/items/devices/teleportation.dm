@@ -167,11 +167,11 @@
 		if(PO.creator == src)
 			count++
 	if(count >= 3)
-		user.show_message(SPAN_NOTICE("\The [src] is recharging!"), SHOW_MESSAGE_VISIBLE)
+		user.show_message(SPAN_NOTICE("\The [src] is recharging!"))
 		return
 	var/T = L[t1]
 	for(var/mob/O in hearers(user, null))
-		O.show_message(SPAN_NOTICE("Locked In."), SHOW_MESSAGE_AUDIBLE)
+		O.show_message(SPAN_NOTICE("Locked In."), 2)
 	var/obj/effect/portal/P = new /obj/effect/portal( get_turf(src) )
 	P.target = T
 	P.creator = src

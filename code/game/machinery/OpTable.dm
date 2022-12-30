@@ -14,7 +14,7 @@
 	unslashable = TRUE
 	unacidable = TRUE
 	climbable = TRUE
-	use_power = USE_POWER_IDLE
+	use_power = 1
 	idle_power_usage = 1
 	active_power_usage = 5
 	var/strapped = 0.0
@@ -53,10 +53,10 @@
 				src.density = 0
 		if(EXPLOSION_THRESHOLD_LOW to EXPLOSION_THRESHOLD_MEDIUM)
 			if (prob(50))
-				deconstruct(FALSE)
+				qdel(src)
 				return
 		if(EXPLOSION_THRESHOLD_MEDIUM to INFINITY)
-			deconstruct(FALSE)
+			qdel(src)
 			return
 		else
 	return

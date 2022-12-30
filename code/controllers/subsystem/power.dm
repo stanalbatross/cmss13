@@ -4,6 +4,7 @@ SUBSYSTEM_DEF(power)
 	name          = "Power"
 	init_order    = SS_INIT_POWER
 	priority      = SS_PRIORITY_POWER
+	flags         = SS_DISABLE_FOR_TESTING
 	wait          = 2 SECONDS
 
 	var/list/currentrun_cables = list()
@@ -18,7 +19,7 @@ SUBSYSTEM_DEF(power)
 
 /datum/controller/subsystem/power/Initialize(timeofday)
 	makepowernets()
-	return SS_INIT_SUCCESS
+	return ..()
 
 
 /datum/controller/subsystem/power/fire(resumed = FALSE)
