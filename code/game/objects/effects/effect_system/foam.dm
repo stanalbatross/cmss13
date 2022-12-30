@@ -27,8 +27,8 @@
 	icon_state = "[ismetal ? "m":""]foam"
 	metal = ismetal
 	playsound(src, 'sound/effects/bubbles2.ogg', 25, 1, 5)
-	addtimer(CALLBACK(src, .proc/foam_react), 3 + metal*3)
-	addtimer(CALLBACK(src, .proc/foam_metal_final_react), 120)
+	addtimer(CALLBACK(src, PROC_REF(foam_react)), 3 + metal*3)
+	addtimer(CALLBACK(src, PROC_REF(foam_metal_final_react)), 120)
 
 /obj/effect/particle_effect/foam/proc/foam_react()
 	process()
@@ -179,9 +179,10 @@
 
 /obj/structure/foamed_metal/proc/take_damage(var/damage)
 	health -= damage
-
+	playsound(src,'sound/weapons/Genhit.ogg', 25, 1)
 	if(health <= 0)
 		visible_message(SPAN_WARNING("[src] crumbles into pieces!"))
+		playsound(src, 'sound/effects/meteorimpact.ogg', 25, 1)
 		qdel(src)
 
 /obj/structure/foamed_metal/ex_act(severity)

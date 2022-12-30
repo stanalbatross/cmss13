@@ -41,6 +41,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_mp, list(
 	desc = "An automated rack hooked up to a colossal storage of Military Police standard-issue equipment."
 	req_access = list(ACCESS_MARINE_BRIG)
 	vendor_role = list(JOB_POLICE)
+	vendor_role = list(JOB_POLICE)
 
 /obj/structure/machinery/cm_vending/clothing/military_police/get_listed_products(var/mob/user)
 	return GLOB.cm_vending_clothing_mp

@@ -171,7 +171,17 @@
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 	flags_atom = NO_NAME_OVERRIDE
 	flags_cold_protection = ICE_PLANET_min_cold_protection_temperature
-	suit_restricted = list(/obj/item/clothing/suit/armor/vest/pilot, /obj/item/clothing/suit/storage/marine/light/vest/dcc)
+	suit_restricted = list(/obj/item/clothing/suit/armor/vest/pilot, /obj/item/clothing/suit/storage/marine/light/vest/dcc, /obj/item/clothing/suit/storage/jacket/marine/pilot)
+
+/obj/item/clothing/under/marine/officer/pilot/flight
+	name = "tactical pilot officer flightsuit"
+	desc = "A flightsuit worn by pilot officers of the USCM, with plenty of leather straps, pouches, and other essential gear you will never use. Looks badass."
+	icon_state = "pilot_flightsuit_alt"
+	item_state = "pilot_flightsuit_alt"
+	worn_state = "pilot_flightsuit_alt"
+	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
+	flags_atom = NO_NAME_OVERRIDE|NO_SNOW_TYPE
+	flags_cold_protection = ICE_PLANET_min_cold_protection_temperature
 
 /obj/item/clothing/under/marine/officer/pilot/dcc
 	name = "dropship crew chief bodysuit"
@@ -416,6 +426,27 @@
 	icon_state = "BO_jumpsuit"
 	worn_state = "BO_jumpsuit"
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
+//=========================//USCM Survivors\\================================\\
+//=======================================================================\\
+
+/obj/item/clothing/under/marine/reconnaissance
+	name = "USCM reconnaissance uniform"
+	desc = "Primarily used during reconnaissance."
+	icon_state = "recon_marine"
+	worn_state = "recon_marine"
+	flags_atom = NO_SNOW_TYPE
+
+/obj/item/clothing/under/marine/reconnaissance/Initialize(mapload)
+	. = ..()
+	var/R = rand(1,4)
+	switch(R) //this is no longer shitcode, courtesy of stan_albatross
+		if(1)
+			roll_suit_sleeves(FALSE)
+		if(2)
+			roll_suit_jacket(FALSE)
+		if(3)
+			cut_suit_jacket(FALSE)
+
 
 //=========================//RESPONDERS\\================================\\
 //=======================================================================\\
@@ -498,7 +529,7 @@
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
 	has_sensor = UNIFORM_HAS_SENSORS
 	sensor_faction = FACTION_UPP
-	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet)
+	suit_restricted = list(/obj/item/clothing/suit/storage/marine/faction/UPP, /obj/item/clothing/suit/gimmick/jason, /obj/item/clothing/suit/storage/snow_suit/soviet, /obj/item/clothing/suit/storage/snow_suit/survivor)
 	flags_jumpsuit = UNIFORM_SLEEVE_ROLLABLE
 
 /obj/item/clothing/under/marine/veteran/UPP/medic
@@ -623,6 +654,13 @@
 	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE //Let's make them keep their original name.
 	flags_jumpsuit = FALSE
 	suit_restricted = null
+
+/obj/item/clothing/under/marine/ucf_clown
+	name = "\improper UCF uniform"
+	desc = "A Unified Clown Federation combat uniform. Features the latest in anti-mime technology."
+	icon_state = "clown"
+	worn_state = "clown"
+	flags_atom = NO_SNOW_TYPE|NO_NAME_OVERRIDE //Let's make them keep their original name.
 
 /obj/item/clothing/under/pizza
 	name = "pizza delivery uniform"

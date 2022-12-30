@@ -131,6 +131,10 @@
 // HIVE TRAITS
  /// If the Hive is a Xenonid Hive
 #define TRAIT_XENONID "t_xenonid"
+ /// If the Hive delays round end (this is overriden for some hives). Does not occur naturally. Must be applied in events.
+#define TRAIT_NO_HIVE_DELAY "t_no_hive_delay"
+ /// If the Hive uses it's colors on the mobs. Does not occur naturally, excepting the Mutated hive.
+#define TRAIT_NO_COLOR "t_no_color"
 
 // MISC MOB TRAITS
  /// If the mob is nested.
@@ -153,6 +157,8 @@
 #define TRAIT_REAGENT_SCANNER "reagent_scanner"
  /// If the mob is being lazed by a sniper spotter
 #define TRAIT_SPOTTER_LAZED "t_spotter_lazed"
+ /// If the mob has ear protection. Protects from external ear damage effects. Includes explosions, firing the RPG, screeching DEAFNESS only, and flashbangs.
+#define TRAIT_EAR_PROTECTION "t_ear_protection"
 
 // -- ability traits --
  /// Xenos with this trait cannot have plasma transfered to them
@@ -170,6 +176,8 @@
 
 #define TRAIT_TOOL_BLOWTORCH "t_tool_blowtorch"
 #define TRAIT_TOOL_SIMPLE_BLOWTORCH "t_tool_simple_blowtorch"
+
+#define TRAIT_TOOL_PEN "t_tool_pen"
 
 // GUN TRAITS
 #define TRAIT_GUN_SILENCED "t_gun_silenced"
