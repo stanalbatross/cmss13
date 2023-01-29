@@ -45,3 +45,8 @@
 #define DETAIL_LEVEL_HEALTHANALYSER 0
 #define DETAIL_LEVEL_BODYSCAN 1
 #define DETAIL_LEVEL_FULL 2
+
+// basic defines for tgui yesno alerts
+
+#define RESPONSE_YES "Yes"
+#define RESPONSE_NO "No"

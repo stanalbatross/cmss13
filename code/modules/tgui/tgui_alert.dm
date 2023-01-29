@@ -25,6 +25,9 @@
 		. = alert.choice
 		qdel(alert)
 
+/proc/tgui_yesno(mob/user, message, title, timeout = 60 SECONDS)
+	return tgui_alert(user, message, title, list(RESPONSE_YES, RESPONSE_NO), timeout)
+
 /**
  * Creates an asynchronous TGUI alert window with an associated callback.
  *
@@ -48,6 +51,9 @@
 			return
 	var/datum/tgui_modal/async/alert = new(user, message, title, buttons, callback, timeout)
 	alert.tgui_interact(user)
+
+/proc/tgui_yesno_async(mob/user, message, title, datum/callback/callback, timeout = 60 SECONDS)
+	return tgui_alert_async(user, message, title, list(RESPONSE_YES, RESPONSE_NO), callback, timeout)
 
 /**
  * # tgui_modal
