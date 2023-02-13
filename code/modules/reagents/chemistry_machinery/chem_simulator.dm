@@ -101,24 +101,30 @@
 	if(!skillcheck(user, SKILL_RESEARCH, SKILL_RESEARCH_TRAINED))
 		to_chat(user, SPAN_WARNING("You have no idea how to use this."))
 		return
-	ui_interact(user)
+	tgui_interact(user)
 
-/obj/structure/machinery/chem_simulator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0)
-	var/list/data = list(
-		"rsc_credits" = chemical_data.rsc_credits,
-		"target" = target,
-		"reference" = reference,
-		"mode" = mode,
-		"complexity_editor" = complexity_editor,
-		"property_costs" = property_costs,
-		"simulating" = simulating,
-		"status_bar" = status_bar,
-		"ready" = ready,
-		"od_lvl" = new_od_level,
-		"recipe_target" = recipe_target,
-		"recipe_targets" = list(),
-		"property_codings" = list()
-	)
+/obj/structure/machinery/chem_simulator/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if (!ui)
+		ui = new(user, src, "ChemSimulator", name)
+		ui.open()
+
+/obj/structure/machinery/chem_simulator/ui_data(mob/user)
+	var/list/data = list()
+
+	data["rsc_credits"] = chemical_data.rsc_credits
+	data["target"] = target
+	data["reference"] = reference
+	data["mode"] = mode
+	data["complexity_editor"] = complexity_editor
+	data["property_costs"] = property_costs
+	data["simulating"] = simulating
+	data["status_bar"] = status_bar
+	data["ready"] = ready
+	data["od_lvl"] = new_od_level
+	data["recipe_target"] = recipe_target
+	data["recipe_targets"] = list()
+	data["property_codings"] = list()
 
 	if(simulating == SIMULATION_STAGE_FINAL)
 		for(var/reagent_id in recipe_targets)
@@ -182,175 +188,181 @@
 	else
 		data["reference_info"] = ""
 
-	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "chem_simulator.tmpl", "Synthesis Simulator", 800, 550)
-		ui.set_initial_data(data)
-		ui.open()
+	return data
 
-/obj/structure/machinery/chem_simulator/Topic(href, href_list)
+/obj/structure/machinery/chem_simulator/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
-		return
-	if(inoperable() || !ishuman(usr))
-		return
-	var/mob/living/carbon/human/user = usr
-	if(user.stat || user.is_mob_restrained() || !in_range(src, user))
 		return
 
 	if(mode == MODE_CREATE && chemical_data.has_new_properties)
 		update_costs()
 
-	if(href_list["simulate"] && ready)
-		simulating = SIMULATION_STAGE_BEGIN
-		status_bar = "COMMENCING SIMULATION"
-		icon_state = "modifier_running"
-		recipe_targets = list() //reset
-		start_processing()
-		if(mode == MODE_CREATE)
-			msg_admin_niche("[key_name(user)] has created the chemical: [creation_name]")
-	else if(href_list["ejectT"])
-		if(target)
-			if(!user.put_in_active_hand(target))
-				target.forceMove(loc)
-			target = null
-		target_property = null
-		stop_processing()
-		simulating = SIMULATION_STAGE_OFF
-		flick("[icon_state]_printing",src)
-	else if(href_list["ejectR"])
-		if(reference)
-			if(!user.put_in_active_hand(reference))
-				reference.forceMove(loc)
-			reference = null
-		reference_property = null
-		stop_processing()
-		simulating = SIMULATION_STAGE_OFF
-		flick("[icon_state]_printing",src)
-	else if(href_list["set_mode"])
-		if(mode == MODE_CREATE) //for when you set the mode away from MODE_CREATE
+	switch(ui_act)
+		if("simulate" && ready)
+			simulating = SIMULATION_STAGE_BEGIN
+			status_bar = "COMMENCING SIMULATION"
+			icon_state = "modifier_running"
+			recipe_targets = list() //reset
+			start_processing()
+			if(mode == MODE_CREATE)
+				msg_admin_niche("[key_name(user)] has created the chemical: [creation_name]")
+			. = TRUE
+		if("ejectT")
+			if(target)
+				if(!user.put_in_active_hand(target))
+					target.forceMove(loc)
+				target = null
 			target_property = null
+			stop_processing()
+			simulating = SIMULATION_STAGE_OFF
+			flick("[icon_state]_printing",src)
+			. = TRUE
+		if("ejectR")
+			if(reference)
+				if(!user.put_in_active_hand(reference))
+					reference.forceMove(loc)
+				reference = null
 			reference_property = null
-			complexity_editor = FALSE
-		switch(href_list["set_mode"])
-			if("amp")
-				mode = MODE_AMPLIFY
-			if("sup")
-				mode = MODE_SUPPRESS
-			if("rel")
-				mode = MODE_RELATE
-			if("cre")
-				mode = MODE_CREATE
+			stop_processing()
+			simulating = SIMULATION_STAGE_OFF
+			flick("[icon_state]_printing",src)
+			. = TRUE
+		if("set_mode")
+			if(mode == MODE_CREATE) //for when you set the mode away from MODE_CREATE
 				target_property = null
 				reference_property = null
-		calculate_new_od_level()
-		if(mode == MODE_CREATE)
-			calculate_creation_cost()
-		update_costs()
-	else if(href_list["set_target"])
-		if(simulating)
-			return
-		if(mode == MODE_CREATE)
-			var/target_name = href_list["set_target"]
-			for(var/datum/chem_property/P in chemical_data.research_property_data)
-				if(P.name == target_name)
-					if(target_property && target_property.name == target_name)
-						//Toggle the property
-						if(LAZYISIN(creation_template, target_property))
-							target_property.level = 0
-							LAZYREMOVE(creation_template, target_property)
-						else
-							target_property.level = 1
-							LAZYADD(creation_template, target_property)
-						calculate_creation_cost()
-					else
-						target_property = P
-					break
-		else
-			target_property = target.data.get_property(href_list["set_target"])
+				complexity_editor = FALSE
+			switch(params["set_mode"])
+				if("amp")
+					mode = MODE_AMPLIFY
+				if("sup")
+					mode = MODE_SUPPRESS
+				if("rel")
+					mode = MODE_RELATE
+				if("cre")
+					mode = MODE_CREATE
+					target_property = null
+					reference_property = null
 			calculate_new_od_level()
-		if(simulating)
-			stop_processing()
-			icon_state = "modifier"
-			simulating = SIMULATION_STAGE_OFF
-	else if(href_list["set_reference"])
-		reference_property = reference.data.get_property(href_list["set_reference"])
-		if(simulating)
-			stop_processing()
-			icon_state = "modifier"
-			simulating = SIMULATION_STAGE_OFF
-		update_costs()
-	else if(href_list["set_recipe_target"])
-		recipe_target = href_list["set_recipe_target"]
-	else if(href_list["stop_simulation"])
-		stop_processing()
-		icon_state = "modifier"
-		simulating = SIMULATION_STAGE_OFF
-	else if(href_list["finalize_simulation"] && recipe_target)
-		finalize_simulation(chem_cache)
-	//Template creation editor
-	else if(href_list["set_name"])
-		var/newname = input("Set name for template (2-20 characters)","[src]") as text
-		newname = reject_bad_name(newname, TRUE, 20, FALSE)
-		if(isnull(newname))
-			to_chat(user, "Bad name.")
-		else if(chemical_reagents_list[newname])
-			to_chat(user, "Name already taken.")
-		else
-			creation_name = newname
-	else if(href_list["set_level"] && target_property)
-		var/level_to_set = 1
-		if(chemical_data.clearance_level <= 2)
-			level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4))
-		else if(chemical_data.clearance_level <= 4)
-			level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4,5,6,7,8))
-		else
-			level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4,5,6,7,8,9,10))
-		if(!level_to_set)
-			return
-
-		target_property.level = level_to_set
-		if(target_property.max_level && target_property.level > target_property.max_level)
-			target_property.level = target_property.max_level
-			to_chat(user, "Max level for [target_property.name] is [target_property.max_level].")
-		calculate_creation_cost()
-	else if(href_list["set_od"])
-		var/od_to_set = tgui_input_list(usr, "Set new OD:", "[src]", list(5,10,15,20,25,30,35,40,45,50,55,60))
-		if(!od_to_set)
-			return
-		new_od_level = od_to_set
-		creation_od_level = od_to_set
-		calculate_creation_cost()
-	else if(href_list["set_filter"])
-		if(href_list["set_filter"] == "ALL")
-			template_filter = 0
-		else
-			var/flag_value = text2num(href_list["config_value"])
-			if(template_filter & flag_value)
-				template_filter &= ~flag_value
+			if(mode == MODE_CREATE)
+				calculate_creation_cost()
+			update_costs()
+			. = TRUE
+		if("set_target")
+			if(simulating)
+				return
+			if(mode == MODE_CREATE)
+				var/target_name = params["set_target"]
+				for(var/datum/chem_property/P in chemical_data.research_property_data)
+					if(P.name == target_name)
+						if(target_property && target_property.name == target_name)
+							//Toggle the property
+							if(LAZYISIN(creation_template, target_property))
+								target_property.level = 0
+								LAZYREMOVE(creation_template, target_property)
+							else
+								target_property.level = 1
+								LAZYADD(creation_template, target_property)
+							calculate_creation_cost()
+						else
+							target_property = P
+						break
 			else
-				template_filter |= flag_value
-	else if(href_list["toggle_complexity_editor"])
-		complexity_editor = !complexity_editor
-	else if(href_list["set_complexity"])
-		var/slot = text2num(href_list["set_complexity"])
-		var/new_rarity = tgui_input_list(usr, "Set chemical rarity for complexity slot [slot]:","[src]", list("BASIC (+7)","COMMON (+4)","UNCOMMON (1)","RARE (-5)"))
-		if(!new_rarity)
-			return
+				target_property = target.data.get_property(params["set_target"])
+				calculate_new_od_level()
+			if(simulating)
+				stop_processing()
+				icon_state = "modifier"
+				simulating = SIMULATION_STAGE_OFF
+		if("set_reference")
+			reference_property = reference.data.get_property(params["set_reference"])
+			if(simulating)
+				stop_processing()
+				icon_state = "modifier"
+				simulating = SIMULATION_STAGE_OFF
+			update_costs()
+			. = TRUE
+		if("set_recipe_target")
+			recipe_target = params["set_recipe_target"]
+			. = TRUE
+		if("stop_simulation")
+			stop_processing()
+			icon_state = "modifier"
+			simulating = SIMULATION_STAGE_OFF
+			. = TRUE
+		if("finalize_simulation" && recipe_target)
+			finalize_simulation(chem_cache)
+			. = TRUE
+		//Template creation editor
+		if("set_name")
+			var/newname = input("Set name for template (2-20 characters)","[src]") as text
+			newname = reject_bad_name(newname, TRUE, 20, FALSE)
+			if(isnull(newname))
+				to_chat(user, "Bad name.")
+			else if(chemical_reagents_list[newname])
+				to_chat(user, "Name already taken.")
+			else
+				creation_name = newname
+			. = TRUE
+		if("set_level" && target_property)
+			var/level_to_set = 1
+			if(chemical_data.clearance_level <= 2)
+				level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4))
+			else if(chemical_data.clearance_level <= 4)
+				level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4,5,6,7,8))
+			else
+				level_to_set = tgui_input_list(usr, "Set target level for [target_property.name]:","[src]", list(1,2,3,4,5,6,7,8,9,10))
+			if(!level_to_set)
+				return
 
-		switch(new_rarity)
-			if("BASIC (+7)")
-				creation_complexity[slot] = CHEM_CLASS_BASIC
-			if("COMMON (+4)")
-				creation_complexity[slot] = CHEM_CLASS_COMMON
-			if("UNCOMMON (1)")
-				creation_complexity[slot] = CHEM_CLASS_UNCOMMON
-			if("RARE (-5)")
-				creation_complexity[slot] = CHEM_CLASS_RARE
-		calculate_creation_cost()
-	ready = check_ready()
-	playsound(loc, pick('sound/machines/computer_typing1.ogg','sound/machines/computer_typing2.ogg','sound/machines/computer_typing3.ogg'), 5, 1)
-	nanomanager.update_uis(src)
+			target_property.level = level_to_set
+			if(target_property.max_level && target_property.level > target_property.max_level)
+				target_property.level = target_property.max_level
+				to_chat(user, "Max level for [target_property.name] is [target_property.max_level].")
+			calculate_creation_cost()
+			. = TRUE
+		if("set_od")
+			var/od_to_set = tgui_input_list(usr, "Set new OD:", "[src]", list(5,10,15,20,25,30,35,40,45,50,55,60))
+			if(!od_to_set)
+				return
+			new_od_level = od_to_set
+			creation_od_level = od_to_set
+			calculate_creation_cost()
+			. = TRUE
+		if("set_filter")
+			if("set_filter" == "ALL")
+				template_filter = 0
+			else
+				var/flag_value = text2num(params["config_value"])
+				if(template_filter & flag_value)
+					template_filter &= ~flag_value
+				else
+					template_filter |= flag_value
+			. = TRUE
+		if("toggle_complexity_editor")
+			complexity_editor = !complexity_editor
+			. = TRUE
+		if("set_complexity")
+			var/slot = text2num(params["set_complexity"])
+			var/new_rarity = tgui_input_list(usr, "Set chemical rarity for complexity slot [slot]:","[src]", list("BASIC (+7)","COMMON (+4)","UNCOMMON (1)","RARE (-5)"))
+			if(!new_rarity)
+				return
+
+			switch(new_rarity)
+				if("BASIC (+7)")
+					creation_complexity[slot] = CHEM_CLASS_BASIC
+				if("COMMON (+4)")
+					creation_complexity[slot] = CHEM_CLASS_COMMON
+				if("UNCOMMON (1)")
+					creation_complexity[slot] = CHEM_CLASS_UNCOMMON
+				if("RARE (-5)")
+					creation_complexity[slot] = CHEM_CLASS_RARE
+			calculate_creation_cost()
+			. = TRUE
+
+		ready = check_ready()
+		playsound(loc, pick('sound/machines/computer_typing1.ogg','sound/machines/computer_typing2.ogg','sound/machines/computer_typing3.ogg'), 5, 1)
 
 /obj/structure/machinery/chem_simulator/process()
 	if(inoperable())
@@ -359,11 +371,11 @@
 		simulating = max(simulating - 1, SIMULATION_STAGE_FINAL)
 		switch(simulating)
 			if(SIMULATION_STAGE_5)
-				status_bar = pick("SIMULATING HUMANS","SIMULATING MONKEYS","SIMULATING BODILY FUNCTIONS","MEASURING PROPERTIES","INJECTING VIRTUAL HUMANS","TORTURING DIGITAL MONKEYS","EMULATING METABOLISM")
+				status_bar = pick("SIMULATING HUMANS","SIMULATING MONKEYS","SIMULATING BODILY FUNCTIONS","MEASURING PROPERTIES","INJECTING VIRTUAL HUMANS","TORTURING DIGITAL MONKEYS","EMULATING METABOLISM","INTEGRATING THE S-GERÄT","ALANLYSING <i>Une Perm au Casino Hermann Goering</i> FOR SIMILARITIES")
 			if(SIMULATION_STAGE_4)
-				status_bar = pick("SEARCHING FOR CHIMPANZEES","PLAYING CHESS WITH ARES","CONSULTING DOC","BLAMING GOD","SEARCHING FOR MY PURPOSE","SPYING ON JONES","DIVIDING BY NULL","EQUATING SPACE TIME")
+				status_bar = pick("SEARCHING FOR CHIMPANZEES","PLAYING CHESS WITH ARES","CONSULTING DOC","BLAMING GOD","SEARCHING FOR MY PURPOSE","SPYING ON JONES","DIVIDING BY NULL","EQUATING SPACE TIME","ANALYSING SOMNABMULISMS","ACTIVATING PARTICLE COLLIDER","CONTACTING THE UNITED NATIONS")
 			if(SIMULATION_STAGE_3)
-				status_bar = pick("PREDICTING REACTION PATTERNS","CALCULATING OVERDOSE RATIOS","CALCULATING SYNTHESIS","CLOSING THE EVENTUALITY","COMPUTING REAGENT INTERPRETATIONS",)
+				status_bar = pick("PREDICTING REACTION PATTERNS","CALCULATING OVERDOSE RATIOS","CALCULATING SYNTHESIS","CLOSING THE EVENTUALITY","COMPUTING REAGENT INTERPRETATIONS","EVALUATING BEYOND THE ZERO","RINGING MENDOZA","CLOSING TRAJECTORIES","MELTING ICE","PLOTTING RAINBOWS","RE-READING ULYSSES")
 			if(SIMULATION_STAGE_WAIT)
 				var/datum/reagent/generated/C = new /datum/reagent/generated
 				if(mode == MODE_CREATE)
