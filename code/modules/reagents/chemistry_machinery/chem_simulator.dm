@@ -123,7 +123,9 @@
 	data["ready"] = ready
 	data["od_lvl"] = new_od_level
 	data["recipe_target"] = recipe_target
+	// list that is populated along index
 	data["recipe_targets"] = list()
+	// list that is populated along index
 	data["property_codings"] = list()
 
 	if(simulating == SIMULATION_STAGE_FINAL)
@@ -361,8 +363,8 @@
 			calculate_creation_cost()
 			. = TRUE
 
-		ready = check_ready()
-		playsound(loc, pick('sound/machines/computer_typing1.ogg','sound/machines/computer_typing2.ogg','sound/machines/computer_typing3.ogg'), 5, 1)
+	ready = check_ready()
+	playsound(loc, pick('sound/machines/computer_typing1.ogg','sound/machines/computer_typing2.ogg','sound/machines/computer_typing3.ogg'), 5, 1)
 
 /obj/structure/machinery/chem_simulator/process()
 	if(inoperable())
